@@ -78,81 +78,81 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector badgeValue = Selector.register("badgeValue");
     @Bridge(symbol = "objc_msgSend") private native static String objc_getBadgeValue(UITabBarItem __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getBadgeValueSuper(ObjCSuper __super__, UITabBarItem __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getBadgeValueSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarItem/badgeValue">@property(nonatomic, copy) NSString *badgeValue</a>
      * @since Available in iOS 2.0 and later.
      */
     public String getBadgeValue() {
-        if (customClass) { return objc_getBadgeValueSuper(getSuper(), this, badgeValue); } else { return objc_getBadgeValue(this, badgeValue); }
+        if (customClass) { return objc_getBadgeValueSuper(getSuper(), badgeValue); } else { return objc_getBadgeValue(this, badgeValue); }
     }
     
     private static final Selector setBadgeValue$ = Selector.register("setBadgeValue:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setBadgeValue(UITabBarItem __self__, Selector __cmd__, String badgeValue);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBadgeValueSuper(ObjCSuper __super__, UITabBarItem __self__, Selector __cmd__, String badgeValue);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBadgeValueSuper(ObjCSuper __super__, Selector __cmd__, String badgeValue);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarItem/badgeValue">@property(nonatomic, copy) NSString *badgeValue</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setBadgeValue(String badgeValue) {
-        if (customClass) { objc_setBadgeValueSuper(getSuper(), this, setBadgeValue$, badgeValue); } else { objc_setBadgeValue(this, setBadgeValue$, badgeValue); }
+        if (customClass) { objc_setBadgeValueSuper(getSuper(), setBadgeValue$, badgeValue); } else { objc_setBadgeValue(this, setBadgeValue$, badgeValue); }
     }
     /*</properties>*/
     /*<methods>*/
     
     private static final Selector finishedSelectedImage = Selector.register("finishedSelectedImage");
     @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getFinishedSelectedImage(UITabBarItem __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getFinishedSelectedImageSuper(ObjCSuper __super__, UITabBarItem __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getFinishedSelectedImageSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarItem_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBarItem/finishedSelectedImage">- (UIImage *)finishedSelectedImage</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIImage getFinishedSelectedImage() {
-        if (customClass) { return objc_getFinishedSelectedImageSuper(getSuper(), this, finishedSelectedImage); } else { return objc_getFinishedSelectedImage(this, finishedSelectedImage); }
+        if (customClass) { return objc_getFinishedSelectedImageSuper(getSuper(), finishedSelectedImage); } else { return objc_getFinishedSelectedImage(this, finishedSelectedImage); }
     }
     
     private static final Selector finishedUnselectedImage = Selector.register("finishedUnselectedImage");
     @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getFinishedUnselectedImage(UITabBarItem __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getFinishedUnselectedImageSuper(ObjCSuper __super__, UITabBarItem __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getFinishedUnselectedImageSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarItem_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBarItem/finishedUnselectedImage">- (UIImage *)finishedUnselectedImage</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIImage getFinishedUnselectedImage() {
-        if (customClass) { return objc_getFinishedUnselectedImageSuper(getSuper(), this, finishedUnselectedImage); } else { return objc_getFinishedUnselectedImage(this, finishedUnselectedImage); }
+        if (customClass) { return objc_getFinishedUnselectedImageSuper(getSuper(), finishedUnselectedImage); } else { return objc_getFinishedUnselectedImage(this, finishedUnselectedImage); }
     }
     
     private static final Selector titlePositionAdjustment = Selector.register("titlePositionAdjustment");
-    @Bridge(symbol = "objc_msgSend") private native static UIOffset objc_getTitlePositionAdjustment(UITabBarItem __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIOffset objc_getTitlePositionAdjustmentSuper(ObjCSuper __super__, UITabBarItem __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend") private native static @ByVal UIOffset objc_getTitlePositionAdjustment(UITabBarItem __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal UIOffset objc_getTitlePositionAdjustmentSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarItem_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBarItem/titlePositionAdjustment">- (UIOffset)titlePositionAdjustment</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIOffset getTitlePositionAdjustment() {
-        if (customClass) { return objc_getTitlePositionAdjustmentSuper(getSuper(), this, titlePositionAdjustment); } else { return objc_getTitlePositionAdjustment(this, titlePositionAdjustment); }
+        if (customClass) { return objc_getTitlePositionAdjustmentSuper(getSuper(), titlePositionAdjustment); } else { return objc_getTitlePositionAdjustment(this, titlePositionAdjustment); }
     }
     
     private static final Selector setFinishedSelectedImage$withFinishedUnselectedImage$ = Selector.register("setFinishedSelectedImage:withFinishedUnselectedImage:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setFinishedImages(UITabBarItem __self__, Selector __cmd__, UIImage selectedImage, UIImage unselectedImage);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setFinishedImagesSuper(ObjCSuper __super__, UITabBarItem __self__, Selector __cmd__, UIImage selectedImage, UIImage unselectedImage);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setFinishedImagesSuper(ObjCSuper __super__, Selector __cmd__, UIImage selectedImage, UIImage unselectedImage);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarItem_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBarItem/setFinishedSelectedImage:withFinishedUnselectedImage:">- (void)setFinishedSelectedImage:(UIImage *)selectedImage withFinishedUnselectedImage:(UIImage *)unselectedImage</a>
      * @since Available in iOS 5.0 and later.
      */
     public void setFinishedImages(UIImage selectedImage, UIImage unselectedImage) {
-        if (customClass) { objc_setFinishedImagesSuper(getSuper(), this, setFinishedSelectedImage$withFinishedUnselectedImage$, selectedImage, unselectedImage); } else { objc_setFinishedImages(this, setFinishedSelectedImage$withFinishedUnselectedImage$, selectedImage, unselectedImage); }
+        if (customClass) { objc_setFinishedImagesSuper(getSuper(), setFinishedSelectedImage$withFinishedUnselectedImage$, selectedImage, unselectedImage); } else { objc_setFinishedImages(this, setFinishedSelectedImage$withFinishedUnselectedImage$, selectedImage, unselectedImage); }
     }
     
     private static final Selector setTitlePositionAdjustment$ = Selector.register("setTitlePositionAdjustment:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTitlePositionAdjustment(UITabBarItem __self__, Selector __cmd__, UIOffset adjustment);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTitlePositionAdjustmentSuper(ObjCSuper __super__, UITabBarItem __self__, Selector __cmd__, UIOffset adjustment);
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setTitlePositionAdjustment(UITabBarItem __self__, Selector __cmd__, @ByVal UIOffset adjustment);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTitlePositionAdjustmentSuper(ObjCSuper __super__, Selector __cmd__, @ByVal UIOffset adjustment);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarItem_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBarItem/setTitlePositionAdjustment:">- (void)setTitlePositionAdjustment:(UIOffset)adjustment</a>
      * @since Available in iOS 5.0 and later.
      */
     public void setTitlePositionAdjustment(UIOffset adjustment) {
-        if (customClass) { objc_setTitlePositionAdjustmentSuper(getSuper(), this, setTitlePositionAdjustment$, adjustment); } else { objc_setTitlePositionAdjustment(this, setTitlePositionAdjustment$, adjustment); }
+        if (customClass) { objc_setTitlePositionAdjustmentSuper(getSuper(), setTitlePositionAdjustment$, adjustment); } else { objc_setTitlePositionAdjustment(this, setTitlePositionAdjustment$, adjustment); }
     }
     /*</methods>*/
     /*<callbacks>*/
@@ -161,9 +161,9 @@ import org.robovm.rt.bro.ptr.*;
         @Callback @BindSelector("setBadgeValue:") public static void setBadgeValue(UITabBarItem __self__, Selector __cmd__, String badgeValue) { __self__.setBadgeValue(badgeValue); }
         @Callback @BindSelector("finishedSelectedImage") public static UIImage getFinishedSelectedImage(UITabBarItem __self__, Selector __cmd__) { return __self__.getFinishedSelectedImage(); }
         @Callback @BindSelector("finishedUnselectedImage") public static UIImage getFinishedUnselectedImage(UITabBarItem __self__, Selector __cmd__) { return __self__.getFinishedUnselectedImage(); }
-        @Callback @BindSelector("titlePositionAdjustment") public static UIOffset getTitlePositionAdjustment(UITabBarItem __self__, Selector __cmd__) { return __self__.getTitlePositionAdjustment(); }
+        @Callback @BindSelector("titlePositionAdjustment") public static @ByVal UIOffset getTitlePositionAdjustment(UITabBarItem __self__, Selector __cmd__) { return __self__.getTitlePositionAdjustment(); }
         @Callback @BindSelector("setFinishedSelectedImage:withFinishedUnselectedImage:") public static void setFinishedImages(UITabBarItem __self__, Selector __cmd__, UIImage selectedImage, UIImage unselectedImage) { __self__.setFinishedImages(selectedImage, unselectedImage); }
-        @Callback @BindSelector("setTitlePositionAdjustment:") public static void setTitlePositionAdjustment(UITabBarItem __self__, Selector __cmd__, UIOffset adjustment) { __self__.setTitlePositionAdjustment(adjustment); }
+        @Callback @BindSelector("setTitlePositionAdjustment:") public static void setTitlePositionAdjustment(UITabBarItem __self__, Selector __cmd__, @ByVal UIOffset adjustment) { __self__.setTitlePositionAdjustment(adjustment); }
     }
     /*</callbacks>*/
 

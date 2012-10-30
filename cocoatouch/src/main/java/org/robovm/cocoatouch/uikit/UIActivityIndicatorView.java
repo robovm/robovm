@@ -69,103 +69,103 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector activityIndicatorViewStyle = Selector.register("activityIndicatorViewStyle");
     @Bridge(symbol = "objc_msgSend") private native static UIActivityIndicatorViewStyle objc_getActivityIndicatorViewStyle(UIActivityIndicatorView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIActivityIndicatorViewStyle objc_getActivityIndicatorViewStyleSuper(ObjCSuper __super__, UIActivityIndicatorView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIActivityIndicatorViewStyle objc_getActivityIndicatorViewStyleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityIndicatorView_Class/Reference/UIActivityIndicatorView.html#//apple_ref/occ/instp/UIActivityIndicatorView/activityIndicatorViewStyle">@property UIActivityIndicatorViewStyle activityIndicatorViewStyle</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIActivityIndicatorViewStyle getActivityIndicatorViewStyle() {
-        if (customClass) { return objc_getActivityIndicatorViewStyleSuper(getSuper(), this, activityIndicatorViewStyle); } else { return objc_getActivityIndicatorViewStyle(this, activityIndicatorViewStyle); }
+        if (customClass) { return objc_getActivityIndicatorViewStyleSuper(getSuper(), activityIndicatorViewStyle); } else { return objc_getActivityIndicatorViewStyle(this, activityIndicatorViewStyle); }
     }
     
     private static final Selector setActivityIndicatorViewStyle$ = Selector.register("setActivityIndicatorViewStyle:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setActivityIndicatorViewStyle(UIActivityIndicatorView __self__, Selector __cmd__, UIActivityIndicatorViewStyle activityIndicatorViewStyle);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setActivityIndicatorViewStyleSuper(ObjCSuper __super__, UIActivityIndicatorView __self__, Selector __cmd__, UIActivityIndicatorViewStyle activityIndicatorViewStyle);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setActivityIndicatorViewStyleSuper(ObjCSuper __super__, Selector __cmd__, UIActivityIndicatorViewStyle activityIndicatorViewStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityIndicatorView_Class/Reference/UIActivityIndicatorView.html#//apple_ref/occ/instp/UIActivityIndicatorView/activityIndicatorViewStyle">@property UIActivityIndicatorViewStyle activityIndicatorViewStyle</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setActivityIndicatorViewStyle(UIActivityIndicatorViewStyle activityIndicatorViewStyle) {
-        if (customClass) { objc_setActivityIndicatorViewStyleSuper(getSuper(), this, setActivityIndicatorViewStyle$, activityIndicatorViewStyle); } else { objc_setActivityIndicatorViewStyle(this, setActivityIndicatorViewStyle$, activityIndicatorViewStyle); }
+        if (customClass) { objc_setActivityIndicatorViewStyleSuper(getSuper(), setActivityIndicatorViewStyle$, activityIndicatorViewStyle); } else { objc_setActivityIndicatorViewStyle(this, setActivityIndicatorViewStyle$, activityIndicatorViewStyle); }
     }
     
     private static final Selector color = Selector.register("color");
     @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getColor(UIActivityIndicatorView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getColorSuper(ObjCSuper __super__, UIActivityIndicatorView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getColorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityIndicatorView_Class/Reference/UIActivityIndicatorView.html#//apple_ref/occ/instp/UIActivityIndicatorView/color">@property (readwrite, nonatomic, retain) UIColor *color</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIColor getColor() {
-        if (customClass) { return objc_getColorSuper(getSuper(), this, color); } else { return objc_getColor(this, color); }
+        if (customClass) { return objc_getColorSuper(getSuper(), color); } else { return objc_getColor(this, color); }
     }
     
     private static final Selector setColor$ = Selector.register("setColor:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setColor(UIActivityIndicatorView __self__, Selector __cmd__, UIColor color);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setColorSuper(ObjCSuper __super__, UIActivityIndicatorView __self__, Selector __cmd__, UIColor color);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor color);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityIndicatorView_Class/Reference/UIActivityIndicatorView.html#//apple_ref/occ/instp/UIActivityIndicatorView/color">@property (readwrite, nonatomic, retain) UIColor *color</a>
      * @since Available in iOS 5.0 and later.
      */
     public void setColor(UIColor color) {
-        if (customClass) { objc_setColorSuper(getSuper(), this, setColor$, color); } else { objc_setColor(this, setColor$, color); }
+        if (customClass) { objc_setColorSuper(getSuper(), setColor$, color); } else { objc_setColor(this, setColor$, color); }
     }
     
     private static final Selector hidesWhenStopped = Selector.register("hidesWhenStopped");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_isHidesWhenStopped(UIActivityIndicatorView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isHidesWhenStoppedSuper(ObjCSuper __super__, UIActivityIndicatorView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isHidesWhenStoppedSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityIndicatorView_Class/Reference/UIActivityIndicatorView.html#//apple_ref/occ/instp/UIActivityIndicatorView/hidesWhenStopped">@property BOOL hidesWhenStopped</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isHidesWhenStopped() {
-        if (customClass) { return objc_isHidesWhenStoppedSuper(getSuper(), this, hidesWhenStopped); } else { return objc_isHidesWhenStopped(this, hidesWhenStopped); }
+        if (customClass) { return objc_isHidesWhenStoppedSuper(getSuper(), hidesWhenStopped); } else { return objc_isHidesWhenStopped(this, hidesWhenStopped); }
     }
     
     private static final Selector setHidesWhenStopped$ = Selector.register("setHidesWhenStopped:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setHidesWhenStopped(UIActivityIndicatorView __self__, Selector __cmd__, boolean hidesWhenStopped);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setHidesWhenStoppedSuper(ObjCSuper __super__, UIActivityIndicatorView __self__, Selector __cmd__, boolean hidesWhenStopped);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setHidesWhenStoppedSuper(ObjCSuper __super__, Selector __cmd__, boolean hidesWhenStopped);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityIndicatorView_Class/Reference/UIActivityIndicatorView.html#//apple_ref/occ/instp/UIActivityIndicatorView/hidesWhenStopped">@property BOOL hidesWhenStopped</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setHidesWhenStopped(boolean hidesWhenStopped) {
-        if (customClass) { objc_setHidesWhenStoppedSuper(getSuper(), this, setHidesWhenStopped$, hidesWhenStopped); } else { objc_setHidesWhenStopped(this, setHidesWhenStopped$, hidesWhenStopped); }
+        if (customClass) { objc_setHidesWhenStoppedSuper(getSuper(), setHidesWhenStopped$, hidesWhenStopped); } else { objc_setHidesWhenStopped(this, setHidesWhenStopped$, hidesWhenStopped); }
     }
     /*</properties>*/
     /*<methods>*/
     
     private static final Selector isAnimating = Selector.register("isAnimating");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_isAnimating(UIActivityIndicatorView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isAnimatingSuper(ObjCSuper __super__, UIActivityIndicatorView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isAnimatingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityIndicatorView_Class/Reference/UIActivityIndicatorView.html#//apple_ref/occ/instm/UIActivityIndicatorView/isAnimating">- (BOOL)isAnimating</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isAnimating() {
-        if (customClass) { return objc_isAnimatingSuper(getSuper(), this, isAnimating); } else { return objc_isAnimating(this, isAnimating); }
+        if (customClass) { return objc_isAnimatingSuper(getSuper(), isAnimating); } else { return objc_isAnimating(this, isAnimating); }
     }
     
     private static final Selector startAnimating = Selector.register("startAnimating");
     @Bridge(symbol = "objc_msgSend") private native static void objc_startAnimating(UIActivityIndicatorView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_startAnimatingSuper(ObjCSuper __super__, UIActivityIndicatorView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_startAnimatingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityIndicatorView_Class/Reference/UIActivityIndicatorView.html#//apple_ref/occ/instm/UIActivityIndicatorView/startAnimating">- (void)startAnimating</a>
      * @since Available in iOS 2.0 and later.
      */
     public void startAnimating() {
-        if (customClass) { objc_startAnimatingSuper(getSuper(), this, startAnimating); } else { objc_startAnimating(this, startAnimating); }
+        if (customClass) { objc_startAnimatingSuper(getSuper(), startAnimating); } else { objc_startAnimating(this, startAnimating); }
     }
     
     private static final Selector stopAnimating = Selector.register("stopAnimating");
     @Bridge(symbol = "objc_msgSend") private native static void objc_stopAnimating(UIActivityIndicatorView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_stopAnimatingSuper(ObjCSuper __super__, UIActivityIndicatorView __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_stopAnimatingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityIndicatorView_Class/Reference/UIActivityIndicatorView.html#//apple_ref/occ/instm/UIActivityIndicatorView/stopAnimating">- (void)stopAnimating</a>
      * @since Available in iOS 2.0 and later.
      */
     public void stopAnimating() {
-        if (customClass) { objc_stopAnimatingSuper(getSuper(), this, stopAnimating); } else { objc_stopAnimating(this, stopAnimating); }
+        if (customClass) { objc_stopAnimatingSuper(getSuper(), stopAnimating); } else { objc_stopAnimating(this, stopAnimating); }
     }
     /*</methods>*/
     /*<callbacks>*/

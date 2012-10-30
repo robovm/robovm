@@ -22,6 +22,7 @@ import org.robovm.rt.VM;
 import org.robovm.rt.bro.NativeObject;
 import org.robovm.rt.bro.annotation.Library;
 import org.robovm.rt.bro.annotation.Marshaler;
+import org.robovm.rt.bro.annotation.Pointer;
 import org.robovm.rt.bro.ptr.Ptr;
 import org.robovm.rt.bro.ptr.Ptr.MarshalerCallback;
 
@@ -157,11 +158,14 @@ public abstract class ObjCObject extends NativeObject {
         if (o != null) {
             return o;
         }
-        ObjCClass fallback = ObjCClass.getByType(cls);
+        ObjCClass fallback = ObjCClass.getByType(cls.isInterface() ? ObjCObject.class : cls);
         ObjCClass objCClass = ObjCClass.getFromObject(handle, fallback);
         Class<T> c = (Class<T>) objCClass.getType();
         if (c == ObjCClass.class) {
             return (T) objCClass;
+        }
+        if (c == ObjCObject.class && cls.isInterface()) {
+            throw new ObjCClassNotFoundException("Could not create a Java object for interface: " + cls.getName());
         }
 
         o = VM.allocateObject(c);
@@ -236,7 +240,7 @@ public abstract class ObjCObject extends NativeObject {
             Ptr.updatePtr(ptr, cls, wrapCount, MARSHALER_CALLBACK);
         }
         
-        public static long toNative(Object o) {
+        public static @Pointer long toNative(Object o) {
             if (o == null) {
                 return 0L;
             }

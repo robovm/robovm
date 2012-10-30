@@ -56,31 +56,31 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector paperSize = Selector.register("paperSize");
-    @Bridge(symbol = "objc_msgSend") private native static CGSize objc_getPaperSize(UIPrintPaper __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static CGSize objc_getPaperSizeSuper(ObjCSuper __super__, UIPrintPaper __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGSize objc_getPaperSize(UIPrintPaper __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGSize objc_getPaperSizeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintPaper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintPaper/paperSize">@property(readonly) CGSize paperSize</a>
      * @since Available in iOS 4.2 and later.
      */
     public CGSize getPaperSize() {
-        if (customClass) { return objc_getPaperSizeSuper(getSuper(), this, paperSize); } else { return objc_getPaperSize(this, paperSize); }
+        if (customClass) { return objc_getPaperSizeSuper(getSuper(), paperSize); } else { return objc_getPaperSize(this, paperSize); }
     }
     
     private static final Selector printableRect = Selector.register("printableRect");
-    @Bridge(symbol = "objc_msgSend") private native static CGRect objc_getPrintableRect(UIPrintPaper __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static CGRect objc_getPrintableRectSuper(ObjCSuper __super__, UIPrintPaper __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getPrintableRect(UIPrintPaper __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getPrintableRectSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintPaper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintPaper/printableRect">@property(readonly) CGRect printableRect</a>
      * @since Available in iOS 4.2 and later.
      */
     public CGRect getPrintableRect() {
-        if (customClass) { return objc_getPrintableRectSuper(getSuper(), this, printableRect); } else { return objc_getPrintableRect(this, printableRect); }
+        if (customClass) { return objc_getPrintableRectSuper(getSuper(), printableRect); } else { return objc_getPrintableRect(this, printableRect); }
     }
     /*</properties>*/
     /*<methods>*/
     
     private static final Selector bestPaperForPageSize$withPapersFromArray$ = Selector.register("bestPaperForPageSize:withPapersFromArray:");
-    @Bridge(symbol = "objc_msgSend") private native static UIPrintPaper objc_forPageSize(ObjCClass __self__, Selector __cmd__, CGSize pageSize, NSArray paperList);
+    @Bridge(symbol = "objc_msgSend") private native static UIPrintPaper objc_forPageSize(ObjCClass __self__, Selector __cmd__, @ByVal CGSize pageSize, NSArray paperList);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintPaper_Class/Reference/Reference.html#//apple_ref/occ/clm/UIPrintPaper/bestPaperForPageSize:withPapersFromArray:">+ (UIPrintPaper *)bestPaperForPageSize:(CGSize)pageSize withPapersFromArray:(NSArray *)paperList</a>
      * @since Available in iOS 4.2 and later.
@@ -91,8 +91,8 @@ import org.robovm.rt.bro.ptr.*;
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
-        @Callback @BindSelector("paperSize") public static CGSize getPaperSize(UIPrintPaper __self__, Selector __cmd__) { return __self__.getPaperSize(); }
-        @Callback @BindSelector("printableRect") public static CGRect getPrintableRect(UIPrintPaper __self__, Selector __cmd__) { return __self__.getPrintableRect(); }
+        @Callback @BindSelector("paperSize") public static @ByVal CGSize getPaperSize(UIPrintPaper __self__, Selector __cmd__) { return __self__.getPaperSize(); }
+        @Callback @BindSelector("printableRect") public static @ByVal CGRect getPrintableRect(UIPrintPaper __self__, Selector __cmd__) { return __self__.getPrintableRect(); }
     }
     /*</callbacks>*/
 

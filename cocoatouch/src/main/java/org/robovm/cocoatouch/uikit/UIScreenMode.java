@@ -57,24 +57,24 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector pixelAspectRatio = Selector.register("pixelAspectRatio");
     @Bridge(symbol = "objc_msgSend") private native static float objc_getPixelAspectRatio(UIScreenMode __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getPixelAspectRatioSuper(ObjCSuper __super__, UIScreenMode __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getPixelAspectRatioSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreenMode_class/Reference/Reference.html#//apple_ref/occ/instp/UIScreenMode/pixelAspectRatio">@property(readonly,nonatomic) CGFloat pixelAspectRatio</a>
      * @since Available in iOS 3.2 and later.
      */
     public float getPixelAspectRatio() {
-        if (customClass) { return objc_getPixelAspectRatioSuper(getSuper(), this, pixelAspectRatio); } else { return objc_getPixelAspectRatio(this, pixelAspectRatio); }
+        if (customClass) { return objc_getPixelAspectRatioSuper(getSuper(), pixelAspectRatio); } else { return objc_getPixelAspectRatio(this, pixelAspectRatio); }
     }
     
     private static final Selector size = Selector.register("size");
-    @Bridge(symbol = "objc_msgSend") private native static CGSize objc_getSize(UIScreenMode __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static CGSize objc_getSizeSuper(ObjCSuper __super__, UIScreenMode __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGSize objc_getSize(UIScreenMode __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGSize objc_getSizeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreenMode_class/Reference/Reference.html#//apple_ref/occ/instp/UIScreenMode/size">@property(readonly,nonatomic) CGSize size</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGSize getSize() {
-        if (customClass) { return objc_getSizeSuper(getSuper(), this, size); } else { return objc_getSize(this, size); }
+        if (customClass) { return objc_getSizeSuper(getSuper(), size); } else { return objc_getSize(this, size); }
     }
     /*</properties>*/
     /*<methods>*/
@@ -83,7 +83,7 @@ import org.robovm.rt.bro.ptr.*;
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("pixelAspectRatio") public static float getPixelAspectRatio(UIScreenMode __self__, Selector __cmd__) { return __self__.getPixelAspectRatio(); }
-        @Callback @BindSelector("size") public static CGSize getSize(UIScreenMode __self__, Selector __cmd__) { return __self__.getSize(); }
+        @Callback @BindSelector("size") public static @ByVal CGSize getSize(UIScreenMode __self__, Selector __cmd__) { return __self__.getSize(); }
     }
     /*</callbacks>*/
 

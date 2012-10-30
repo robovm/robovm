@@ -67,48 +67,48 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector destinationViewController = Selector.register("destinationViewController");
     @Bridge(symbol = "objc_msgSend") private native static NSObject objc_getDestinationViewController(UIStoryboardSegue __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSObject objc_getDestinationViewControllerSuper(ObjCSuper __super__, UIStoryboardSegue __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSObject objc_getDestinationViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStoryboardSegue/destinationViewController">@property(nonatomic, readonly) id destinationViewController</a>
      * @since Available in iOS 5.0 and later.
      */
     public NSObject getDestinationViewController() {
-        if (customClass) { return objc_getDestinationViewControllerSuper(getSuper(), this, destinationViewController); } else { return objc_getDestinationViewController(this, destinationViewController); }
+        if (customClass) { return objc_getDestinationViewControllerSuper(getSuper(), destinationViewController); } else { return objc_getDestinationViewController(this, destinationViewController); }
     }
     
     private static final Selector identifier = Selector.register("identifier");
     @Bridge(symbol = "objc_msgSend") private native static String objc_getIdentifier(UIStoryboardSegue __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getIdentifierSuper(ObjCSuper __super__, UIStoryboardSegue __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getIdentifierSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStoryboardSegue/identifier">@property (nonatomic, readonly) NSString *identifier</a>
      * @since Available in iOS 5.0 and later.
      */
     public String getIdentifier() {
-        if (customClass) { return objc_getIdentifierSuper(getSuper(), this, identifier); } else { return objc_getIdentifier(this, identifier); }
+        if (customClass) { return objc_getIdentifierSuper(getSuper(), identifier); } else { return objc_getIdentifier(this, identifier); }
     }
     
     private static final Selector sourceViewController = Selector.register("sourceViewController");
     @Bridge(symbol = "objc_msgSend") private native static NSObject objc_getSourceViewController(UIStoryboardSegue __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSObject objc_getSourceViewControllerSuper(ObjCSuper __super__, UIStoryboardSegue __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSObject objc_getSourceViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStoryboardSegue/sourceViewController">@property(nonatomic, readonly) id sourceViewController</a>
      * @since Available in iOS 5.0 and later.
      */
     public NSObject getSourceViewController() {
-        if (customClass) { return objc_getSourceViewControllerSuper(getSuper(), this, sourceViewController); } else { return objc_getSourceViewController(this, sourceViewController); }
+        if (customClass) { return objc_getSourceViewControllerSuper(getSuper(), sourceViewController); } else { return objc_getSourceViewController(this, sourceViewController); }
     }
     /*</properties>*/
     /*<methods>*/
     
     private static final Selector perform = Selector.register("perform");
     @Bridge(symbol = "objc_msgSend") private native static void objc_perform(UIStoryboardSegue __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_performSuper(ObjCSuper __super__, UIStoryboardSegue __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_performSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instm/UIStoryboardSegue/perform">- (void)perform</a>
      * @since Available in iOS 5.0 and later.
      */
     public void perform() {
-        if (customClass) { objc_performSuper(getSuper(), this, perform); } else { objc_perform(this, perform); }
+        if (customClass) { objc_performSuper(getSuper(), perform); } else { objc_perform(this, perform); }
     }
     /*</methods>*/
     /*<callbacks>*/

@@ -66,46 +66,46 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector clearsSelectionOnViewWillAppear = Selector.register("clearsSelectionOnViewWillAppear");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_isClearsSelectionOnViewWillAppear(UICollectionViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isClearsSelectionOnViewWillAppearSuper(ObjCSuper __super__, UICollectionViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isClearsSelectionOnViewWillAppearSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewController_clas/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewController/clearsSelectionOnViewWillAppear">@property (nonatomic) BOOL clearsSelectionOnViewWillAppear</a>
      * @since Available in iOS 6.0 and later.
      */
     public boolean isClearsSelectionOnViewWillAppear() {
-        if (customClass) { return objc_isClearsSelectionOnViewWillAppearSuper(getSuper(), this, clearsSelectionOnViewWillAppear); } else { return objc_isClearsSelectionOnViewWillAppear(this, clearsSelectionOnViewWillAppear); }
+        if (customClass) { return objc_isClearsSelectionOnViewWillAppearSuper(getSuper(), clearsSelectionOnViewWillAppear); } else { return objc_isClearsSelectionOnViewWillAppear(this, clearsSelectionOnViewWillAppear); }
     }
     
     private static final Selector setClearsSelectionOnViewWillAppear$ = Selector.register("setClearsSelectionOnViewWillAppear:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setClearsSelectionOnViewWillAppear(UICollectionViewController __self__, Selector __cmd__, boolean clearsSelectionOnViewWillAppear);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setClearsSelectionOnViewWillAppearSuper(ObjCSuper __super__, UICollectionViewController __self__, Selector __cmd__, boolean clearsSelectionOnViewWillAppear);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setClearsSelectionOnViewWillAppearSuper(ObjCSuper __super__, Selector __cmd__, boolean clearsSelectionOnViewWillAppear);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewController_clas/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewController/clearsSelectionOnViewWillAppear">@property (nonatomic) BOOL clearsSelectionOnViewWillAppear</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setClearsSelectionOnViewWillAppear(boolean clearsSelectionOnViewWillAppear) {
-        if (customClass) { objc_setClearsSelectionOnViewWillAppearSuper(getSuper(), this, setClearsSelectionOnViewWillAppear$, clearsSelectionOnViewWillAppear); } else { objc_setClearsSelectionOnViewWillAppear(this, setClearsSelectionOnViewWillAppear$, clearsSelectionOnViewWillAppear); }
+        if (customClass) { objc_setClearsSelectionOnViewWillAppearSuper(getSuper(), setClearsSelectionOnViewWillAppear$, clearsSelectionOnViewWillAppear); } else { objc_setClearsSelectionOnViewWillAppear(this, setClearsSelectionOnViewWillAppear$, clearsSelectionOnViewWillAppear); }
     }
     
     private static final Selector collectionView = Selector.register("collectionView");
     @Bridge(symbol = "objc_msgSend") private native static UICollectionView objc_getCollectionView(UICollectionViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UICollectionView objc_getCollectionViewSuper(ObjCSuper __super__, UICollectionViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UICollectionView objc_getCollectionViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewController_clas/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewController/collectionView">@property (nonatomic, retain) UICollectionView *collectionView</a>
      * @since Available in iOS 6.0 and later.
      */
     public UICollectionView getCollectionView() {
-        if (customClass) { return objc_getCollectionViewSuper(getSuper(), this, collectionView); } else { return objc_getCollectionView(this, collectionView); }
+        if (customClass) { return objc_getCollectionViewSuper(getSuper(), collectionView); } else { return objc_getCollectionView(this, collectionView); }
     }
     
     private static final Selector setCollectionView$ = Selector.register("setCollectionView:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setCollectionView(UICollectionViewController __self__, Selector __cmd__, UICollectionView collectionView);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCollectionViewSuper(ObjCSuper __super__, UICollectionViewController __self__, Selector __cmd__, UICollectionView collectionView);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCollectionViewSuper(ObjCSuper __super__, Selector __cmd__, UICollectionView collectionView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewController_clas/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewController/collectionView">@property (nonatomic, retain) UICollectionView *collectionView</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setCollectionView(UICollectionView collectionView) {
-        if (customClass) { objc_setCollectionViewSuper(getSuper(), this, setCollectionView$, collectionView); } else { objc_setCollectionView(this, setCollectionView$, collectionView); }
+        if (customClass) { objc_setCollectionViewSuper(getSuper(), setCollectionView$, collectionView); } else { objc_setCollectionView(this, setCollectionView$, collectionView); }
     }
     /*</properties>*/
     /*<methods>*/

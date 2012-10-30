@@ -90,13 +90,13 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector description = Selector.register("description");
     @Bridge(symbol = "objc_msgSend") private native static String objc_description(NSObject __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_descriptionSuper(ObjCSuper __super__, NSObject __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_descriptionSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Protocols/NSObject_Protocol/Reference/NSObject.html#//apple_ref/occ/intfm/NSObject/description">- (NSString *)description</a>
      * @since Available in iOS 2.0 and later.
      */
     public String description() {
-        if (customClass) { return objc_descriptionSuper(getSuper(), this, description); } else { return objc_description(this, description); }
+        if (customClass) { return objc_descriptionSuper(getSuper(), description); } else { return objc_description(this, description); }
     }
     
     private static final Selector init = Selector.register("init");
@@ -111,24 +111,24 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector release = Selector.register("release");
     @Bridge(symbol = "objc_msgSend") private native static void objc_release(NSObject __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_releaseSuper(ObjCSuper __super__, NSObject __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_releaseSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Protocols/NSObject_Protocol/Reference/NSObject.html#//apple_ref/occ/intfm/NSObject/release">- (oneway void)release</a>
      * @since Available in iOS 2.0 and later.
      */
     protected void release() {
-        if (customClass) { objc_releaseSuper(getSuper(), this, release); } else { objc_release(this, release); }
+        if (customClass) { objc_releaseSuper(getSuper(), release); } else { objc_release(this, release); }
     }
     
     private static final Selector retain = Selector.register("retain");
     @Bridge(symbol = "objc_msgSend") private native static NSObject objc_retain(NSObject __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSObject objc_retainSuper(ObjCSuper __super__, NSObject __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSObject objc_retainSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Protocols/NSObject_Protocol/Reference/NSObject.html#//apple_ref/occ/intfm/NSObject/retain">- (id)retain</a>
      * @since Available in iOS 2.0 and later.
      */
     protected NSObject retain() {
-        if (customClass) { return objc_retainSuper(getSuper(), this, retain); } else { return objc_retain(this, retain); }
+        if (customClass) { return objc_retainSuper(getSuper(), retain); } else { return objc_retain(this, retain); }
     }
     /*</methods>*/
     /*<callbacks>*/

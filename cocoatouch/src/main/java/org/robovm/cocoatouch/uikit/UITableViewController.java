@@ -67,68 +67,68 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector clearsSelectionOnViewWillAppear = Selector.register("clearsSelectionOnViewWillAppear");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_isClearsSelectionOnViewWillAppear(UITableViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isClearsSelectionOnViewWillAppearSuper(ObjCSuper __super__, UITableViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isClearsSelectionOnViewWillAppearSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewController/clearsSelectionOnViewWillAppear">@property(nonatomic) BOOL clearsSelectionOnViewWillAppear</a>
      * @since Available in iOS 3.2 and later.
      */
     public boolean isClearsSelectionOnViewWillAppear() {
-        if (customClass) { return objc_isClearsSelectionOnViewWillAppearSuper(getSuper(), this, clearsSelectionOnViewWillAppear); } else { return objc_isClearsSelectionOnViewWillAppear(this, clearsSelectionOnViewWillAppear); }
+        if (customClass) { return objc_isClearsSelectionOnViewWillAppearSuper(getSuper(), clearsSelectionOnViewWillAppear); } else { return objc_isClearsSelectionOnViewWillAppear(this, clearsSelectionOnViewWillAppear); }
     }
     
     private static final Selector setClearsSelectionOnViewWillAppear$ = Selector.register("setClearsSelectionOnViewWillAppear:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setClearsSelectionOnViewWillAppear(UITableViewController __self__, Selector __cmd__, boolean clearsSelectionOnViewWillAppear);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setClearsSelectionOnViewWillAppearSuper(ObjCSuper __super__, UITableViewController __self__, Selector __cmd__, boolean clearsSelectionOnViewWillAppear);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setClearsSelectionOnViewWillAppearSuper(ObjCSuper __super__, Selector __cmd__, boolean clearsSelectionOnViewWillAppear);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewController/clearsSelectionOnViewWillAppear">@property(nonatomic) BOOL clearsSelectionOnViewWillAppear</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setClearsSelectionOnViewWillAppear(boolean clearsSelectionOnViewWillAppear) {
-        if (customClass) { objc_setClearsSelectionOnViewWillAppearSuper(getSuper(), this, setClearsSelectionOnViewWillAppear$, clearsSelectionOnViewWillAppear); } else { objc_setClearsSelectionOnViewWillAppear(this, setClearsSelectionOnViewWillAppear$, clearsSelectionOnViewWillAppear); }
+        if (customClass) { objc_setClearsSelectionOnViewWillAppearSuper(getSuper(), setClearsSelectionOnViewWillAppear$, clearsSelectionOnViewWillAppear); } else { objc_setClearsSelectionOnViewWillAppear(this, setClearsSelectionOnViewWillAppear$, clearsSelectionOnViewWillAppear); }
     }
     
     private static final Selector refreshControl = Selector.register("refreshControl");
     @Bridge(symbol = "objc_msgSend") private native static UIRefreshControl objc_getRefreshControl(UITableViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIRefreshControl objc_getRefreshControlSuper(ObjCSuper __super__, UITableViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIRefreshControl objc_getRefreshControlSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewController/refreshControl">@property (nonatomic,retain) UIRefreshControl *refreshControl</a>
      * @since Available in iOS 6.0 and later.
      */
     public UIRefreshControl getRefreshControl() {
-        if (customClass) { return objc_getRefreshControlSuper(getSuper(), this, refreshControl); } else { return objc_getRefreshControl(this, refreshControl); }
+        if (customClass) { return objc_getRefreshControlSuper(getSuper(), refreshControl); } else { return objc_getRefreshControl(this, refreshControl); }
     }
     
     private static final Selector setRefreshControl$ = Selector.register("setRefreshControl:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setRefreshControl(UITableViewController __self__, Selector __cmd__, UIRefreshControl refreshControl);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setRefreshControlSuper(ObjCSuper __super__, UITableViewController __self__, Selector __cmd__, UIRefreshControl refreshControl);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setRefreshControlSuper(ObjCSuper __super__, Selector __cmd__, UIRefreshControl refreshControl);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewController/refreshControl">@property (nonatomic,retain) UIRefreshControl *refreshControl</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setRefreshControl(UIRefreshControl refreshControl) {
-        if (customClass) { objc_setRefreshControlSuper(getSuper(), this, setRefreshControl$, refreshControl); } else { objc_setRefreshControl(this, setRefreshControl$, refreshControl); }
+        if (customClass) { objc_setRefreshControlSuper(getSuper(), setRefreshControl$, refreshControl); } else { objc_setRefreshControl(this, setRefreshControl$, refreshControl); }
     }
     
     private static final Selector tableView = Selector.register("tableView");
     @Bridge(symbol = "objc_msgSend") private native static UITableView objc_getTableView(UITableViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UITableView objc_getTableViewSuper(ObjCSuper __super__, UITableViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITableView objc_getTableViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewController/tableView">@property(nonatomic, retain) UITableView *tableView</a>
      * @since Available in iOS 2.0 and later.
      */
     public UITableView getTableView() {
-        if (customClass) { return objc_getTableViewSuper(getSuper(), this, tableView); } else { return objc_getTableView(this, tableView); }
+        if (customClass) { return objc_getTableViewSuper(getSuper(), tableView); } else { return objc_getTableView(this, tableView); }
     }
     
     private static final Selector setTableView$ = Selector.register("setTableView:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setTableView(UITableViewController __self__, Selector __cmd__, UITableView tableView);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTableViewSuper(ObjCSuper __super__, UITableViewController __self__, Selector __cmd__, UITableView tableView);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTableViewSuper(ObjCSuper __super__, Selector __cmd__, UITableView tableView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewController/tableView">@property(nonatomic, retain) UITableView *tableView</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setTableView(UITableView tableView) {
-        if (customClass) { objc_setTableViewSuper(getSuper(), this, setTableView$, tableView); } else { objc_setTableView(this, setTableView$, tableView); }
+        if (customClass) { objc_setTableViewSuper(getSuper(), setTableView$, tableView); } else { objc_setTableView(this, setTableView$, tableView); }
     }
     /*</properties>*/
     /*<methods>*/

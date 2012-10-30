@@ -60,147 +60,147 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector barStyle = Selector.register("barStyle");
     @Bridge(symbol = "objc_msgSend") private native static UIBarStyle objc_getBarStyle(UIToolbar __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIBarStyle objc_getBarStyleSuper(ObjCSuper __super__, UIToolbar __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIBarStyle objc_getBarStyleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIToolbar_Class/Reference/Reference.html#//apple_ref/occ/instp/UIToolbar/barStyle">@property(nonatomic) UIBarStyle barStyle</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIBarStyle getBarStyle() {
-        if (customClass) { return objc_getBarStyleSuper(getSuper(), this, barStyle); } else { return objc_getBarStyle(this, barStyle); }
+        if (customClass) { return objc_getBarStyleSuper(getSuper(), barStyle); } else { return objc_getBarStyle(this, barStyle); }
     }
     
     private static final Selector setBarStyle$ = Selector.register("setBarStyle:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setBarStyle(UIToolbar __self__, Selector __cmd__, UIBarStyle barStyle);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBarStyleSuper(ObjCSuper __super__, UIToolbar __self__, Selector __cmd__, UIBarStyle barStyle);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBarStyleSuper(ObjCSuper __super__, Selector __cmd__, UIBarStyle barStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIToolbar_Class/Reference/Reference.html#//apple_ref/occ/instp/UIToolbar/barStyle">@property(nonatomic) UIBarStyle barStyle</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setBarStyle(UIBarStyle barStyle) {
-        if (customClass) { objc_setBarStyleSuper(getSuper(), this, setBarStyle$, barStyle); } else { objc_setBarStyle(this, setBarStyle$, barStyle); }
+        if (customClass) { objc_setBarStyleSuper(getSuper(), setBarStyle$, barStyle); } else { objc_setBarStyle(this, setBarStyle$, barStyle); }
     }
     
     private static final Selector items = Selector.register("items");
     @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getItems(UIToolbar __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getItemsSuper(ObjCSuper __super__, UIToolbar __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getItemsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIToolbar_Class/Reference/Reference.html#//apple_ref/occ/instp/UIToolbar/items">@property(nonatomic, copy) NSArray *items</a>
      * @since Available in iOS 2.0 and later.
      */
     public NSArray getItems() {
-        if (customClass) { return objc_getItemsSuper(getSuper(), this, items); } else { return objc_getItems(this, items); }
+        if (customClass) { return objc_getItemsSuper(getSuper(), items); } else { return objc_getItems(this, items); }
     }
     
     private static final Selector setItems$ = Selector.register("setItems:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setItems(UIToolbar __self__, Selector __cmd__, NSArray items);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setItemsSuper(ObjCSuper __super__, UIToolbar __self__, Selector __cmd__, NSArray items);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setItemsSuper(ObjCSuper __super__, Selector __cmd__, NSArray items);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIToolbar_Class/Reference/Reference.html#//apple_ref/occ/instp/UIToolbar/items">@property(nonatomic, copy) NSArray *items</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setItems(NSArray items) {
-        if (customClass) { objc_setItemsSuper(getSuper(), this, setItems$, items); } else { objc_setItems(this, setItems$, items); }
+        if (customClass) { objc_setItemsSuper(getSuper(), setItems$, items); } else { objc_setItems(this, setItems$, items); }
     }
     
     private static final Selector tintColor = Selector.register("tintColor");
     @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getTintColor(UIToolbar __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getTintColorSuper(ObjCSuper __super__, UIToolbar __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getTintColorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIToolbar_Class/Reference/Reference.html#//apple_ref/occ/instp/UIToolbar/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIColor getTintColor() {
-        if (customClass) { return objc_getTintColorSuper(getSuper(), this, tintColor); } else { return objc_getTintColor(this, tintColor); }
+        if (customClass) { return objc_getTintColorSuper(getSuper(), tintColor); } else { return objc_getTintColor(this, tintColor); }
     }
     
     private static final Selector setTintColor$ = Selector.register("setTintColor:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setTintColor(UIToolbar __self__, Selector __cmd__, UIColor tintColor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTintColorSuper(ObjCSuper __super__, UIToolbar __self__, Selector __cmd__, UIColor tintColor);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor tintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIToolbar_Class/Reference/Reference.html#//apple_ref/occ/instp/UIToolbar/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setTintColor(UIColor tintColor) {
-        if (customClass) { objc_setTintColorSuper(getSuper(), this, setTintColor$, tintColor); } else { objc_setTintColor(this, setTintColor$, tintColor); }
+        if (customClass) { objc_setTintColorSuper(getSuper(), setTintColor$, tintColor); } else { objc_setTintColor(this, setTintColor$, tintColor); }
     }
     
     private static final Selector isTranslucent = Selector.register("isTranslucent");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_isTranslucent(UIToolbar __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isTranslucentSuper(ObjCSuper __super__, UIToolbar __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isTranslucentSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIToolbar_Class/Reference/Reference.html#//apple_ref/occ/instp/UIToolbar/translucent">@property(nonatomic, assign, getter=isTranslucent) BOOL translucent</a>
      * @since Available in iOS 3.0 and later.
      */
     public boolean isTranslucent() {
-        if (customClass) { return objc_isTranslucentSuper(getSuper(), this, isTranslucent); } else { return objc_isTranslucent(this, isTranslucent); }
+        if (customClass) { return objc_isTranslucentSuper(getSuper(), isTranslucent); } else { return objc_isTranslucent(this, isTranslucent); }
     }
     
     private static final Selector setTranslucent$ = Selector.register("setTranslucent:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setTranslucent(UIToolbar __self__, Selector __cmd__, boolean translucent);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTranslucentSuper(ObjCSuper __super__, UIToolbar __self__, Selector __cmd__, boolean translucent);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTranslucentSuper(ObjCSuper __super__, Selector __cmd__, boolean translucent);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIToolbar_Class/Reference/Reference.html#//apple_ref/occ/instp/UIToolbar/translucent">@property(nonatomic, assign, getter=isTranslucent) BOOL translucent</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setTranslucent(boolean translucent) {
-        if (customClass) { objc_setTranslucentSuper(getSuper(), this, setTranslucent$, translucent); } else { objc_setTranslucent(this, setTranslucent$, translucent); }
+        if (customClass) { objc_setTranslucentSuper(getSuper(), setTranslucent$, translucent); } else { objc_setTranslucent(this, setTranslucent$, translucent); }
     }
     /*</properties>*/
     /*<methods>*/
     
     private static final Selector backgroundImageForToolbarPosition$barMetrics$ = Selector.register("backgroundImageForToolbarPosition:barMetrics:");
     @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getBackgroundImage(UIToolbar __self__, Selector __cmd__, UIToolbarPosition topOrBottom, UIBarMetrics barMetrics);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getBackgroundImageSuper(ObjCSuper __super__, UIToolbar __self__, Selector __cmd__, UIToolbarPosition topOrBottom, UIBarMetrics barMetrics);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getBackgroundImageSuper(ObjCSuper __super__, Selector __cmd__, UIToolbarPosition topOrBottom, UIBarMetrics barMetrics);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIToolbar_Class/Reference/Reference.html#//apple_ref/occ/instm/UIToolbar/backgroundImageForToolbarPosition:barMetrics:">- (UIImage *)backgroundImageForToolbarPosition:(UIToolbarPosition)topOrBottom barMetrics:(UIBarMetrics)barMetrics</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIImage getBackgroundImage(UIToolbarPosition topOrBottom, UIBarMetrics barMetrics) {
-        if (customClass) { return objc_getBackgroundImageSuper(getSuper(), this, backgroundImageForToolbarPosition$barMetrics$, topOrBottom, barMetrics); } else { return objc_getBackgroundImage(this, backgroundImageForToolbarPosition$barMetrics$, topOrBottom, barMetrics); }
+        if (customClass) { return objc_getBackgroundImageSuper(getSuper(), backgroundImageForToolbarPosition$barMetrics$, topOrBottom, barMetrics); } else { return objc_getBackgroundImage(this, backgroundImageForToolbarPosition$barMetrics$, topOrBottom, barMetrics); }
     }
     
     private static final Selector shadowImageForToolbarPosition$ = Selector.register("shadowImageForToolbarPosition:");
     @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getShadowImage(UIToolbar __self__, Selector __cmd__, UIToolbarPosition topOrBottom);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getShadowImageSuper(ObjCSuper __super__, UIToolbar __self__, Selector __cmd__, UIToolbarPosition topOrBottom);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getShadowImageSuper(ObjCSuper __super__, Selector __cmd__, UIToolbarPosition topOrBottom);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIToolbar_Class/Reference/Reference.html#//apple_ref/occ/instm/UIToolbar/shadowImageForToolbarPosition:">- (UIImage *)shadowImageForToolbarPosition:(UIToolbarPosition)topOrBottom</a>
      * @since Available in iOS 6.0 and later.
      */
     public UIImage getShadowImage(UIToolbarPosition topOrBottom) {
-        if (customClass) { return objc_getShadowImageSuper(getSuper(), this, shadowImageForToolbarPosition$, topOrBottom); } else { return objc_getShadowImage(this, shadowImageForToolbarPosition$, topOrBottom); }
+        if (customClass) { return objc_getShadowImageSuper(getSuper(), shadowImageForToolbarPosition$, topOrBottom); } else { return objc_getShadowImage(this, shadowImageForToolbarPosition$, topOrBottom); }
     }
     
     private static final Selector setBackgroundImage$forToolbarPosition$barMetrics$ = Selector.register("setBackgroundImage:forToolbarPosition:barMetrics:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setBackgroundImage(UIToolbar __self__, Selector __cmd__, UIImage backgroundImage, UIToolbarPosition topOrBottom, UIBarMetrics barMetrics);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBackgroundImageSuper(ObjCSuper __super__, UIToolbar __self__, Selector __cmd__, UIImage backgroundImage, UIToolbarPosition topOrBottom, UIBarMetrics barMetrics);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBackgroundImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage backgroundImage, UIToolbarPosition topOrBottom, UIBarMetrics barMetrics);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIToolbar_Class/Reference/Reference.html#//apple_ref/occ/instm/UIToolbar/setBackgroundImage:forToolbarPosition:barMetrics:">- (void)setBackgroundImage:(UIImage *)backgroundImage forToolbarPosition:(UIToolbarPosition)topOrBottom barMetrics:(UIBarMetrics)barMetrics</a>
      * @since Available in iOS 5.0 and later.
      */
     public void setBackgroundImage(UIImage backgroundImage, UIToolbarPosition topOrBottom, UIBarMetrics barMetrics) {
-        if (customClass) { objc_setBackgroundImageSuper(getSuper(), this, setBackgroundImage$forToolbarPosition$barMetrics$, backgroundImage, topOrBottom, barMetrics); } else { objc_setBackgroundImage(this, setBackgroundImage$forToolbarPosition$barMetrics$, backgroundImage, topOrBottom, barMetrics); }
+        if (customClass) { objc_setBackgroundImageSuper(getSuper(), setBackgroundImage$forToolbarPosition$barMetrics$, backgroundImage, topOrBottom, barMetrics); } else { objc_setBackgroundImage(this, setBackgroundImage$forToolbarPosition$barMetrics$, backgroundImage, topOrBottom, barMetrics); }
     }
     
     private static final Selector setItems$animated$ = Selector.register("setItems:animated:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setItems(UIToolbar __self__, Selector __cmd__, NSArray items, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setItemsSuper(ObjCSuper __super__, UIToolbar __self__, Selector __cmd__, NSArray items, boolean animated);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setItemsSuper(ObjCSuper __super__, Selector __cmd__, NSArray items, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIToolbar_Class/Reference/Reference.html#//apple_ref/occ/instm/UIToolbar/setItems:animated:">- (void)setItems:(NSArray *)items animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setItems(NSArray items, boolean animated) {
-        if (customClass) { objc_setItemsSuper(getSuper(), this, setItems$animated$, items, animated); } else { objc_setItems(this, setItems$animated$, items, animated); }
+        if (customClass) { objc_setItemsSuper(getSuper(), setItems$animated$, items, animated); } else { objc_setItems(this, setItems$animated$, items, animated); }
     }
     
     private static final Selector setShadowImage$forToolbarPosition$ = Selector.register("setShadowImage:forToolbarPosition:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setShadowImage(UIToolbar __self__, Selector __cmd__, UIImage shadowImage, UIToolbarPosition topOrBottom);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShadowImageSuper(ObjCSuper __super__, UIToolbar __self__, Selector __cmd__, UIImage shadowImage, UIToolbarPosition topOrBottom);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShadowImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage shadowImage, UIToolbarPosition topOrBottom);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIToolbar_Class/Reference/Reference.html#//apple_ref/occ/instm/UIToolbar/setShadowImage:forToolbarPosition:">- (void)setShadowImage:(UIImage *)shadowImage forToolbarPosition:(UIToolbarPosition)topOrBottom</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setShadowImage(UIImage shadowImage, UIToolbarPosition topOrBottom) {
-        if (customClass) { objc_setShadowImageSuper(getSuper(), this, setShadowImage$forToolbarPosition$, shadowImage, topOrBottom); } else { objc_setShadowImage(this, setShadowImage$forToolbarPosition$, shadowImage, topOrBottom); }
+        if (customClass) { objc_setShadowImageSuper(getSuper(), setShadowImage$forToolbarPosition$, shadowImage, topOrBottom); } else { objc_setShadowImage(this, setShadowImage$forToolbarPosition$, shadowImage, topOrBottom); }
     }
     /*</methods>*/
     /*<callbacks>*/

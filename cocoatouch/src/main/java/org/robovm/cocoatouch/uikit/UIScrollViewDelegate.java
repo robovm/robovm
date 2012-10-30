@@ -140,7 +140,7 @@ public interface /*<name>*/ UIScrollViewDelegate /*</name>*/ /*<implements>*/ ex
         @Callback @BindSelector("scrollViewWillBeginDecelerating:") public static void willBeginDecelerating(UIScrollViewDelegate __self__, Selector __cmd__, UIScrollView scrollView) { __self__.willBeginDecelerating(scrollView); }
         @Callback @BindSelector("scrollViewWillBeginDragging:") public static void willBeginDragging(UIScrollViewDelegate __self__, Selector __cmd__, UIScrollView scrollView) { __self__.willBeginDragging(scrollView); }
         @Callback @BindSelector("scrollViewWillBeginZooming:withView:") public static void willBeginZooming(UIScrollViewDelegate __self__, Selector __cmd__, UIScrollView scrollView, UIView view) { __self__.willBeginZooming(scrollView, view); }
-        @Callback @BindSelector("scrollViewWillEndDragging:withVelocity:targetContentOffset:") public static void willEndDragging(UIScrollViewDelegate __self__, Selector __cmd__, UIScrollView scrollView, CGPoint velocity, CGPoint targetContentOffset) { __self__.willEndDragging(scrollView, velocity, targetContentOffset); }
+        @Callback @BindSelector("scrollViewWillEndDragging:withVelocity:targetContentOffset:") public static void willEndDragging(UIScrollViewDelegate __self__, Selector __cmd__, UIScrollView scrollView, @ByVal CGPoint velocity, CGPoint targetContentOffset) { __self__.willEndDragging(scrollView, velocity, targetContentOffset); }
     }
     /*</callbacks>*/
 

@@ -57,35 +57,35 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector isEmpty = Selector.register("isEmpty");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_isEmpty(UITextRange __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isEmptySuper(ObjCSuper __super__, UITextRange __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isEmptySuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextRange_Class/Reference/Reference.html#//apple_ref/occ/instp/UITextRange/empty">@property(nonatomic, readonly, getter=isEmpty) BOOL empty</a>
      * @since Available in iOS 3.2 and later.
      */
     public boolean isEmpty() {
-        if (customClass) { return objc_isEmptySuper(getSuper(), this, isEmpty); } else { return objc_isEmpty(this, isEmpty); }
+        if (customClass) { return objc_isEmptySuper(getSuper(), isEmpty); } else { return objc_isEmpty(this, isEmpty); }
     }
     
     private static final Selector end = Selector.register("end");
     @Bridge(symbol = "objc_msgSend") private native static UITextPosition objc_getEnd(UITextRange __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UITextPosition objc_getEndSuper(ObjCSuper __super__, UITextRange __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextPosition objc_getEndSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextRange_Class/Reference/Reference.html#//apple_ref/occ/instp/UITextRange/end">@property(nonatomic, readonly) UITextPosition *end</a>
      * @since Available in iOS 3.2 and later.
      */
     public UITextPosition getEnd() {
-        if (customClass) { return objc_getEndSuper(getSuper(), this, end); } else { return objc_getEnd(this, end); }
+        if (customClass) { return objc_getEndSuper(getSuper(), end); } else { return objc_getEnd(this, end); }
     }
     
     private static final Selector start = Selector.register("start");
     @Bridge(symbol = "objc_msgSend") private native static UITextPosition objc_getStart(UITextRange __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UITextPosition objc_getStartSuper(ObjCSuper __super__, UITextRange __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UITextPosition objc_getStartSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextRange_Class/Reference/Reference.html#//apple_ref/occ/instp/UITextRange/start">@property(nonatomic, readonly) UITextPosition *start</a>
      * @since Available in iOS 3.2 and later.
      */
     public UITextPosition getStart() {
-        if (customClass) { return objc_getStartSuper(getSuper(), this, start); } else { return objc_getStart(this, start); }
+        if (customClass) { return objc_getStartSuper(getSuper(), start); } else { return objc_getStart(this, start); }
     }
     /*</properties>*/
     /*<methods>*/

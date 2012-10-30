@@ -57,13 +57,13 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector primaryLanguage = Selector.register("primaryLanguage");
     @Bridge(symbol = "objc_msgSend") private native static String objc_getPrimaryLanguage(UITextInputMode __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getPrimaryLanguageSuper(ObjCSuper __super__, UITextInputMode __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getPrimaryLanguageSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputMode_Class/Reference/Reference.html#//apple_ref/occ/instp/UITextInputMode/primaryLanguage">@property (nonatomic, readonly, retain) NSString *primaryLanguage</a>
      * @since Available in iOS 4.2 and later.
      */
     public String getPrimaryLanguage() {
-        if (customClass) { return objc_getPrimaryLanguageSuper(getSuper(), this, primaryLanguage); } else { return objc_getPrimaryLanguage(this, primaryLanguage); }
+        if (customClass) { return objc_getPrimaryLanguageSuper(getSuper(), primaryLanguage); } else { return objc_getPrimaryLanguage(this, primaryLanguage); }
     }
     /*</properties>*/
     /*<methods>*/

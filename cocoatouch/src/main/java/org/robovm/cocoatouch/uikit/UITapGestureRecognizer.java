@@ -57,46 +57,46 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector numberOfTapsRequired = Selector.register("numberOfTapsRequired");
     @Bridge(symbol = "objc_msgSend") private native static int objc_getNumberOfTapsRequired(UITapGestureRecognizer __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getNumberOfTapsRequiredSuper(ObjCSuper __super__, UITapGestureRecognizer __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getNumberOfTapsRequiredSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITapGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UITapGestureRecognizer/numberOfTapsRequired">@property(nonatomic) NSUInteger numberOfTapsRequired</a>
      * @since Available in iOS 3.2 and later.
      */
     public int getNumberOfTapsRequired() {
-        if (customClass) { return objc_getNumberOfTapsRequiredSuper(getSuper(), this, numberOfTapsRequired); } else { return objc_getNumberOfTapsRequired(this, numberOfTapsRequired); }
+        if (customClass) { return objc_getNumberOfTapsRequiredSuper(getSuper(), numberOfTapsRequired); } else { return objc_getNumberOfTapsRequired(this, numberOfTapsRequired); }
     }
     
     private static final Selector setNumberOfTapsRequired$ = Selector.register("setNumberOfTapsRequired:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setNumberOfTapsRequired(UITapGestureRecognizer __self__, Selector __cmd__, int numberOfTapsRequired);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setNumberOfTapsRequiredSuper(ObjCSuper __super__, UITapGestureRecognizer __self__, Selector __cmd__, int numberOfTapsRequired);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setNumberOfTapsRequiredSuper(ObjCSuper __super__, Selector __cmd__, int numberOfTapsRequired);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITapGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UITapGestureRecognizer/numberOfTapsRequired">@property(nonatomic) NSUInteger numberOfTapsRequired</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setNumberOfTapsRequired(int numberOfTapsRequired) {
-        if (customClass) { objc_setNumberOfTapsRequiredSuper(getSuper(), this, setNumberOfTapsRequired$, numberOfTapsRequired); } else { objc_setNumberOfTapsRequired(this, setNumberOfTapsRequired$, numberOfTapsRequired); }
+        if (customClass) { objc_setNumberOfTapsRequiredSuper(getSuper(), setNumberOfTapsRequired$, numberOfTapsRequired); } else { objc_setNumberOfTapsRequired(this, setNumberOfTapsRequired$, numberOfTapsRequired); }
     }
     
     private static final Selector numberOfTouchesRequired = Selector.register("numberOfTouchesRequired");
     @Bridge(symbol = "objc_msgSend") private native static int objc_getNumberOfTouchesRequired(UITapGestureRecognizer __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getNumberOfTouchesRequiredSuper(ObjCSuper __super__, UITapGestureRecognizer __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getNumberOfTouchesRequiredSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITapGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UITapGestureRecognizer/numberOfTouchesRequired">@property(nonatomic) NSUInteger numberOfTouchesRequired</a>
      * @since Available in iOS 3.2 and later.
      */
     public int getNumberOfTouchesRequired() {
-        if (customClass) { return objc_getNumberOfTouchesRequiredSuper(getSuper(), this, numberOfTouchesRequired); } else { return objc_getNumberOfTouchesRequired(this, numberOfTouchesRequired); }
+        if (customClass) { return objc_getNumberOfTouchesRequiredSuper(getSuper(), numberOfTouchesRequired); } else { return objc_getNumberOfTouchesRequired(this, numberOfTouchesRequired); }
     }
     
     private static final Selector setNumberOfTouchesRequired$ = Selector.register("setNumberOfTouchesRequired:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setNumberOfTouchesRequired(UITapGestureRecognizer __self__, Selector __cmd__, int numberOfTouchesRequired);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setNumberOfTouchesRequiredSuper(ObjCSuper __super__, UITapGestureRecognizer __self__, Selector __cmd__, int numberOfTouchesRequired);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setNumberOfTouchesRequiredSuper(ObjCSuper __super__, Selector __cmd__, int numberOfTouchesRequired);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITapGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UITapGestureRecognizer/numberOfTouchesRequired">@property(nonatomic) NSUInteger numberOfTouchesRequired</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setNumberOfTouchesRequired(int numberOfTouchesRequired) {
-        if (customClass) { objc_setNumberOfTouchesRequiredSuper(getSuper(), this, setNumberOfTouchesRequired$, numberOfTouchesRequired); } else { objc_setNumberOfTouchesRequired(this, setNumberOfTouchesRequired$, numberOfTouchesRequired); }
+        if (customClass) { objc_setNumberOfTouchesRequiredSuper(getSuper(), setNumberOfTouchesRequired$, numberOfTouchesRequired); } else { objc_setNumberOfTouchesRequired(this, setNumberOfTouchesRequired$, numberOfTouchesRequired); }
     }
     /*</properties>*/
     /*<methods>*/

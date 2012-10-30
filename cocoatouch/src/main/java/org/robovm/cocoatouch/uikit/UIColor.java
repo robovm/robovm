@@ -89,24 +89,24 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector CGColor = Selector.register("CGColor");
     @Bridge(symbol = "objc_msgSend") private native static CGColor objc_getCGColor(UIColor __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static CGColor objc_getCGColorSuper(ObjCSuper __super__, UIColor __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CGColor objc_getCGColorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instp/UIColor/CGColor">@property(nonatomic, readonly) CGColorRef CGColor</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGColor getCGColor() {
-        if (customClass) { return objc_getCGColorSuper(getSuper(), this, CGColor); } else { return objc_getCGColor(this, CGColor); }
+        if (customClass) { return objc_getCGColorSuper(getSuper(), CGColor); } else { return objc_getCGColor(this, CGColor); }
     }
     
     private static final Selector CIColor = Selector.register("CIColor");
     @Bridge(symbol = "objc_msgSend") private native static CIColor objc_getCIColor(UIColor __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static CIColor objc_getCIColorSuper(ObjCSuper __super__, UIColor __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static CIColor objc_getCIColorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instp/UIColor/CIColor">@property(nonatomic, readonly) CIColor *CIColor</a>
      * @since Available in iOS 5.0 and later.
      */
     public CIColor getCIColor() {
-        if (customClass) { return objc_getCIColorSuper(getSuper(), this, CIColor); } else { return objc_getCIColor(this, CIColor); }
+        if (customClass) { return objc_getCIColorSuper(getSuper(), CIColor); } else { return objc_getCIColor(this, CIColor); }
     }
     /*</properties>*/
     /*<methods>*/
@@ -383,79 +383,79 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector colorWithAlphaComponent$ = Selector.register("colorWithAlphaComponent:");
     @Bridge(symbol = "objc_msgSend") private native static UIColor objc_colorWithAlpha(UIColor __self__, Selector __cmd__, float alpha);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_colorWithAlphaSuper(ObjCSuper __super__, UIColor __self__, Selector __cmd__, float alpha);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_colorWithAlphaSuper(ObjCSuper __super__, Selector __cmd__, float alpha);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instm/UIColor/colorWithAlphaComponent:">- (UIColor *)colorWithAlphaComponent:(CGFloat)alpha</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIColor colorWithAlpha(float alpha) {
-        if (customClass) { return objc_colorWithAlphaSuper(getSuper(), this, colorWithAlphaComponent$, alpha); } else { return objc_colorWithAlpha(this, colorWithAlphaComponent$, alpha); }
+        if (customClass) { return objc_colorWithAlphaSuper(getSuper(), colorWithAlphaComponent$, alpha); } else { return objc_colorWithAlpha(this, colorWithAlphaComponent$, alpha); }
     }
     
     private static final Selector getHue$saturation$brightness$alpha$ = Selector.register("getHue:saturation:brightness:alpha:");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_getHSBA(UIColor __self__, Selector __cmd__, FloatPtr hue, FloatPtr saturation, FloatPtr brightness, FloatPtr alpha);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_getHSBASuper(ObjCSuper __super__, UIColor __self__, Selector __cmd__, FloatPtr hue, FloatPtr saturation, FloatPtr brightness, FloatPtr alpha);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_getHSBASuper(ObjCSuper __super__, Selector __cmd__, FloatPtr hue, FloatPtr saturation, FloatPtr brightness, FloatPtr alpha);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instm/UIColor/getHue:saturation:brightness:alpha:">- (BOOL)getHue:(CGFloat *)hue saturation:(CGFloat *)saturation brightness:(CGFloat *)brightness alpha:(CGFloat *)alpha</a>
      * @since Available in iOS 5.0 and later.
      */
     public boolean getHSBA(FloatPtr hue, FloatPtr saturation, FloatPtr brightness, FloatPtr alpha) {
-        if (customClass) { return objc_getHSBASuper(getSuper(), this, getHue$saturation$brightness$alpha$, hue, saturation, brightness, alpha); } else { return objc_getHSBA(this, getHue$saturation$brightness$alpha$, hue, saturation, brightness, alpha); }
+        if (customClass) { return objc_getHSBASuper(getSuper(), getHue$saturation$brightness$alpha$, hue, saturation, brightness, alpha); } else { return objc_getHSBA(this, getHue$saturation$brightness$alpha$, hue, saturation, brightness, alpha); }
     }
     
     private static final Selector getRed$green$blue$alpha$ = Selector.register("getRed:green:blue:alpha:");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_getRGBA(UIColor __self__, Selector __cmd__, FloatPtr red, FloatPtr green, FloatPtr blue, FloatPtr alpha);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_getRGBASuper(ObjCSuper __super__, UIColor __self__, Selector __cmd__, FloatPtr red, FloatPtr green, FloatPtr blue, FloatPtr alpha);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_getRGBASuper(ObjCSuper __super__, Selector __cmd__, FloatPtr red, FloatPtr green, FloatPtr blue, FloatPtr alpha);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instm/UIColor/getRed:green:blue:alpha:">- (BOOL)getRed:(CGFloat *)red green:(CGFloat *)green blue:(CGFloat *)blue alpha:(CGFloat *)alpha</a>
      * @since Available in iOS 5.0 and later.
      */
     public boolean getRGBA(FloatPtr red, FloatPtr green, FloatPtr blue, FloatPtr alpha) {
-        if (customClass) { return objc_getRGBASuper(getSuper(), this, getRed$green$blue$alpha$, red, green, blue, alpha); } else { return objc_getRGBA(this, getRed$green$blue$alpha$, red, green, blue, alpha); }
+        if (customClass) { return objc_getRGBASuper(getSuper(), getRed$green$blue$alpha$, red, green, blue, alpha); } else { return objc_getRGBA(this, getRed$green$blue$alpha$, red, green, blue, alpha); }
     }
     
     private static final Selector getWhite$alpha$ = Selector.register("getWhite:alpha:");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_getWhiteAlpha(UIColor __self__, Selector __cmd__, FloatPtr white, FloatPtr alpha);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_getWhiteAlphaSuper(ObjCSuper __super__, UIColor __self__, Selector __cmd__, FloatPtr white, FloatPtr alpha);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_getWhiteAlphaSuper(ObjCSuper __super__, Selector __cmd__, FloatPtr white, FloatPtr alpha);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instm/UIColor/getWhite:alpha:">- (BOOL)getWhite:(CGFloat *)white alpha:(CGFloat *)alpha</a>
      * @since Available in iOS 5.0 and later.
      */
     public boolean getWhiteAlpha(FloatPtr white, FloatPtr alpha) {
-        if (customClass) { return objc_getWhiteAlphaSuper(getSuper(), this, getWhite$alpha$, white, alpha); } else { return objc_getWhiteAlpha(this, getWhite$alpha$, white, alpha); }
+        if (customClass) { return objc_getWhiteAlphaSuper(getSuper(), getWhite$alpha$, white, alpha); } else { return objc_getWhiteAlpha(this, getWhite$alpha$, white, alpha); }
     }
     
     private static final Selector setFill = Selector.register("setFill");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setFill(UIColor __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setFillSuper(ObjCSuper __super__, UIColor __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setFillSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instm/UIColor/setFill">- (void)setFill</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setFill() {
-        if (customClass) { objc_setFillSuper(getSuper(), this, setFill); } else { objc_setFill(this, setFill); }
+        if (customClass) { objc_setFillSuper(getSuper(), setFill); } else { objc_setFill(this, setFill); }
     }
     
     private static final Selector set = Selector.register("set");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setFillAndStroke(UIColor __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setFillAndStrokeSuper(ObjCSuper __super__, UIColor __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setFillAndStrokeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instm/UIColor/set">- (void)set</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setFillAndStroke() {
-        if (customClass) { objc_setFillAndStrokeSuper(getSuper(), this, set); } else { objc_setFillAndStroke(this, set); }
+        if (customClass) { objc_setFillAndStrokeSuper(getSuper(), set); } else { objc_setFillAndStroke(this, set); }
     }
     
     private static final Selector setStroke = Selector.register("setStroke");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setStroke(UIColor __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStrokeSuper(ObjCSuper __super__, UIColor __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStrokeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instm/UIColor/setStroke">- (void)setStroke</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setStroke() {
-        if (customClass) { objc_setStrokeSuper(getSuper(), this, setStroke); } else { objc_setStroke(this, setStroke); }
+        if (customClass) { objc_setStrokeSuper(getSuper(), setStroke); } else { objc_setStroke(this, setStroke); }
     }
     /*</methods>*/
     /*<callbacks>*/

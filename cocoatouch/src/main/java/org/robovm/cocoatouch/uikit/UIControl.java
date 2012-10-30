@@ -60,268 +60,268 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector contentHorizontalAlignment = Selector.register("contentHorizontalAlignment");
     @Bridge(symbol = "objc_msgSend") private native static UIControlContentHorizontalAlignment objc_getContentHorizontalAlignment(UIControl __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIControlContentHorizontalAlignment objc_getContentHorizontalAlignmentSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIControlContentHorizontalAlignment objc_getContentHorizontalAlignmentSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIControl/contentHorizontalAlignment">@property(nonatomic) UIControlContentHorizontalAlignment contentHorizontalAlignment</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIControlContentHorizontalAlignment getContentHorizontalAlignment() {
-        if (customClass) { return objc_getContentHorizontalAlignmentSuper(getSuper(), this, contentHorizontalAlignment); } else { return objc_getContentHorizontalAlignment(this, contentHorizontalAlignment); }
+        if (customClass) { return objc_getContentHorizontalAlignmentSuper(getSuper(), contentHorizontalAlignment); } else { return objc_getContentHorizontalAlignment(this, contentHorizontalAlignment); }
     }
     
     private static final Selector setContentHorizontalAlignment$ = Selector.register("setContentHorizontalAlignment:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setContentHorizontalAlignment(UIControl __self__, Selector __cmd__, UIControlContentHorizontalAlignment contentHorizontalAlignment);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setContentHorizontalAlignmentSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__, UIControlContentHorizontalAlignment contentHorizontalAlignment);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setContentHorizontalAlignmentSuper(ObjCSuper __super__, Selector __cmd__, UIControlContentHorizontalAlignment contentHorizontalAlignment);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIControl/contentHorizontalAlignment">@property(nonatomic) UIControlContentHorizontalAlignment contentHorizontalAlignment</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setContentHorizontalAlignment(UIControlContentHorizontalAlignment contentHorizontalAlignment) {
-        if (customClass) { objc_setContentHorizontalAlignmentSuper(getSuper(), this, setContentHorizontalAlignment$, contentHorizontalAlignment); } else { objc_setContentHorizontalAlignment(this, setContentHorizontalAlignment$, contentHorizontalAlignment); }
+        if (customClass) { objc_setContentHorizontalAlignmentSuper(getSuper(), setContentHorizontalAlignment$, contentHorizontalAlignment); } else { objc_setContentHorizontalAlignment(this, setContentHorizontalAlignment$, contentHorizontalAlignment); }
     }
     
     private static final Selector contentVerticalAlignment = Selector.register("contentVerticalAlignment");
     @Bridge(symbol = "objc_msgSend") private native static UIControlContentVerticalAlignment objc_getContentVerticalAlignment(UIControl __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIControlContentVerticalAlignment objc_getContentVerticalAlignmentSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIControlContentVerticalAlignment objc_getContentVerticalAlignmentSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIControl/contentVerticalAlignment">@property(nonatomic) UIControlContentVerticalAlignment contentVerticalAlignment</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIControlContentVerticalAlignment getContentVerticalAlignment() {
-        if (customClass) { return objc_getContentVerticalAlignmentSuper(getSuper(), this, contentVerticalAlignment); } else { return objc_getContentVerticalAlignment(this, contentVerticalAlignment); }
+        if (customClass) { return objc_getContentVerticalAlignmentSuper(getSuper(), contentVerticalAlignment); } else { return objc_getContentVerticalAlignment(this, contentVerticalAlignment); }
     }
     
     private static final Selector setContentVerticalAlignment$ = Selector.register("setContentVerticalAlignment:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setContentVerticalAlignment(UIControl __self__, Selector __cmd__, UIControlContentVerticalAlignment contentVerticalAlignment);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setContentVerticalAlignmentSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__, UIControlContentVerticalAlignment contentVerticalAlignment);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setContentVerticalAlignmentSuper(ObjCSuper __super__, Selector __cmd__, UIControlContentVerticalAlignment contentVerticalAlignment);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIControl/contentVerticalAlignment">@property(nonatomic) UIControlContentVerticalAlignment contentVerticalAlignment</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setContentVerticalAlignment(UIControlContentVerticalAlignment contentVerticalAlignment) {
-        if (customClass) { objc_setContentVerticalAlignmentSuper(getSuper(), this, setContentVerticalAlignment$, contentVerticalAlignment); } else { objc_setContentVerticalAlignment(this, setContentVerticalAlignment$, contentVerticalAlignment); }
+        if (customClass) { objc_setContentVerticalAlignmentSuper(getSuper(), setContentVerticalAlignment$, contentVerticalAlignment); } else { objc_setContentVerticalAlignment(this, setContentVerticalAlignment$, contentVerticalAlignment); }
     }
     
     private static final Selector isEnabled = Selector.register("isEnabled");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_isEnabled(UIControl __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isEnabledSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isEnabledSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIControl/enabled">@property(nonatomic, getter=isEnabled) BOOL enabled</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isEnabled() {
-        if (customClass) { return objc_isEnabledSuper(getSuper(), this, isEnabled); } else { return objc_isEnabled(this, isEnabled); }
+        if (customClass) { return objc_isEnabledSuper(getSuper(), isEnabled); } else { return objc_isEnabled(this, isEnabled); }
     }
     
     private static final Selector setEnabled$ = Selector.register("setEnabled:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setEnabled(UIControl __self__, Selector __cmd__, boolean enabled);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setEnabledSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__, boolean enabled);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setEnabledSuper(ObjCSuper __super__, Selector __cmd__, boolean enabled);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIControl/enabled">@property(nonatomic, getter=isEnabled) BOOL enabled</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setEnabled(boolean enabled) {
-        if (customClass) { objc_setEnabledSuper(getSuper(), this, setEnabled$, enabled); } else { objc_setEnabled(this, setEnabled$, enabled); }
+        if (customClass) { objc_setEnabledSuper(getSuper(), setEnabled$, enabled); } else { objc_setEnabled(this, setEnabled$, enabled); }
     }
     
     private static final Selector isHighlighted = Selector.register("isHighlighted");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_isHighlighted(UIControl __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isHighlightedSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isHighlightedSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIControl/highlighted">@property(nonatomic, getter=isHighlighted) BOOL highlighted</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isHighlighted() {
-        if (customClass) { return objc_isHighlightedSuper(getSuper(), this, isHighlighted); } else { return objc_isHighlighted(this, isHighlighted); }
+        if (customClass) { return objc_isHighlightedSuper(getSuper(), isHighlighted); } else { return objc_isHighlighted(this, isHighlighted); }
     }
     
     private static final Selector setHighlighted$ = Selector.register("setHighlighted:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setHighlighted(UIControl __self__, Selector __cmd__, boolean highlighted);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setHighlightedSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__, boolean highlighted);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setHighlightedSuper(ObjCSuper __super__, Selector __cmd__, boolean highlighted);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIControl/highlighted">@property(nonatomic, getter=isHighlighted) BOOL highlighted</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setHighlighted(boolean highlighted) {
-        if (customClass) { objc_setHighlightedSuper(getSuper(), this, setHighlighted$, highlighted); } else { objc_setHighlighted(this, setHighlighted$, highlighted); }
+        if (customClass) { objc_setHighlightedSuper(getSuper(), setHighlighted$, highlighted); } else { objc_setHighlighted(this, setHighlighted$, highlighted); }
     }
     
     private static final Selector isSelected = Selector.register("isSelected");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_isSelected(UIControl __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isSelectedSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isSelectedSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIControl/selected">@property(nonatomic, getter=isSelected) BOOL selected</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isSelected() {
-        if (customClass) { return objc_isSelectedSuper(getSuper(), this, isSelected); } else { return objc_isSelected(this, isSelected); }
+        if (customClass) { return objc_isSelectedSuper(getSuper(), isSelected); } else { return objc_isSelected(this, isSelected); }
     }
     
     private static final Selector setSelected$ = Selector.register("setSelected:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setSelected(UIControl __self__, Selector __cmd__, boolean selected);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSelectedSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__, boolean selected);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSelectedSuper(ObjCSuper __super__, Selector __cmd__, boolean selected);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIControl/selected">@property(nonatomic, getter=isSelected) BOOL selected</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setSelected(boolean selected) {
-        if (customClass) { objc_setSelectedSuper(getSuper(), this, setSelected$, selected); } else { objc_setSelected(this, setSelected$, selected); }
+        if (customClass) { objc_setSelectedSuper(getSuper(), setSelected$, selected); } else { objc_setSelected(this, setSelected$, selected); }
     }
     
     private static final Selector state = Selector.register("state");
     @Bridge(symbol = "objc_msgSend") private native static UIControlState objc_getState(UIControl __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIControlState objc_getStateSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIControlState objc_getStateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIControl/state">@property(nonatomic, readonly) UIControlState state</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIControlState getState() {
-        if (customClass) { return objc_getStateSuper(getSuper(), this, state); } else { return objc_getState(this, state); }
+        if (customClass) { return objc_getStateSuper(getSuper(), state); } else { return objc_getState(this, state); }
     }
     
     private static final Selector isTouchInside = Selector.register("isTouchInside");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_isTouchInside(UIControl __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isTouchInsideSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isTouchInsideSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIControl/touchInside">@property(nonatomic, readonly, getter=isTouchInside) BOOL touchInside</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isTouchInside() {
-        if (customClass) { return objc_isTouchInsideSuper(getSuper(), this, isTouchInside); } else { return objc_isTouchInside(this, isTouchInside); }
+        if (customClass) { return objc_isTouchInsideSuper(getSuper(), isTouchInside); } else { return objc_isTouchInside(this, isTouchInside); }
     }
     
     private static final Selector isTracking = Selector.register("isTracking");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_isTracking(UIControl __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isTrackingSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isTrackingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIControl/tracking">@property(nonatomic, readonly, getter=isTracking) BOOL tracking</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isTracking() {
-        if (customClass) { return objc_isTrackingSuper(getSuper(), this, isTracking); } else { return objc_isTracking(this, isTracking); }
+        if (customClass) { return objc_isTrackingSuper(getSuper(), isTracking); } else { return objc_isTracking(this, isTracking); }
     }
     /*</properties>*/
     /*<methods>*/
     
     private static final Selector addTarget$action$forControlEvents$ = Selector.register("addTarget:action:forControlEvents:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_addTarget(UIControl __self__, Selector __cmd__, NSObject target, Selector action, UIControlEvents controlEvents);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_addTargetSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__, NSObject target, Selector action, UIControlEvents controlEvents);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_addTargetSuper(ObjCSuper __super__, Selector __cmd__, NSObject target, Selector action, UIControlEvents controlEvents);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instm/UIControl/addTarget:action:forControlEvents:">- (void)addTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents</a>
      * @since Available in iOS 2.0 and later.
      */
     public void addTarget(NSObject target, Selector action, UIControlEvents controlEvents) {
-        if (customClass) { objc_addTargetSuper(getSuper(), this, addTarget$action$forControlEvents$, target, action, controlEvents); } else { objc_addTarget(this, addTarget$action$forControlEvents$, target, action, controlEvents); }
+        if (customClass) { objc_addTargetSuper(getSuper(), addTarget$action$forControlEvents$, target, action, controlEvents); } else { objc_addTarget(this, addTarget$action$forControlEvents$, target, action, controlEvents); }
     }
     
     private static final Selector beginTrackingWithTouch$withEvent$ = Selector.register("beginTrackingWithTouch:withEvent:");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_beginTracking(UIControl __self__, Selector __cmd__, UITouch touch, UIEvent event);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_beginTrackingSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__, UITouch touch, UIEvent event);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_beginTrackingSuper(ObjCSuper __super__, Selector __cmd__, UITouch touch, UIEvent event);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instm/UIControl/beginTrackingWithTouch:withEvent:">- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean beginTracking(UITouch touch, UIEvent event) {
-        if (customClass) { return objc_beginTrackingSuper(getSuper(), this, beginTrackingWithTouch$withEvent$, touch, event); } else { return objc_beginTracking(this, beginTrackingWithTouch$withEvent$, touch, event); }
+        if (customClass) { return objc_beginTrackingSuper(getSuper(), beginTrackingWithTouch$withEvent$, touch, event); } else { return objc_beginTracking(this, beginTrackingWithTouch$withEvent$, touch, event); }
     }
     
     private static final Selector cancelTrackingWithEvent$ = Selector.register("cancelTrackingWithEvent:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_cancelTracking(UIControl __self__, Selector __cmd__, UIEvent event);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_cancelTrackingSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__, UIEvent event);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_cancelTrackingSuper(ObjCSuper __super__, Selector __cmd__, UIEvent event);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instm/UIControl/cancelTrackingWithEvent:">- (void)cancelTrackingWithEvent:(UIEvent *)event</a>
      * @since Available in iOS 2.0 and later.
      */
     public void cancelTracking(UIEvent event) {
-        if (customClass) { objc_cancelTrackingSuper(getSuper(), this, cancelTrackingWithEvent$, event); } else { objc_cancelTracking(this, cancelTrackingWithEvent$, event); }
+        if (customClass) { objc_cancelTrackingSuper(getSuper(), cancelTrackingWithEvent$, event); } else { objc_cancelTracking(this, cancelTrackingWithEvent$, event); }
     }
     
     private static final Selector continueTrackingWithTouch$withEvent$ = Selector.register("continueTrackingWithTouch:withEvent:");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_continueTracking(UIControl __self__, Selector __cmd__, UITouch touch, UIEvent event);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_continueTrackingSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__, UITouch touch, UIEvent event);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_continueTrackingSuper(ObjCSuper __super__, Selector __cmd__, UITouch touch, UIEvent event);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instm/UIControl/continueTrackingWithTouch:withEvent:">- (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean continueTracking(UITouch touch, UIEvent event) {
-        if (customClass) { return objc_continueTrackingSuper(getSuper(), this, continueTrackingWithTouch$withEvent$, touch, event); } else { return objc_continueTracking(this, continueTrackingWithTouch$withEvent$, touch, event); }
+        if (customClass) { return objc_continueTrackingSuper(getSuper(), continueTrackingWithTouch$withEvent$, touch, event); } else { return objc_continueTracking(this, continueTrackingWithTouch$withEvent$, touch, event); }
     }
     
     private static final Selector endTrackingWithTouch$withEvent$ = Selector.register("endTrackingWithTouch:withEvent:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_endTracking(UIControl __self__, Selector __cmd__, UITouch touch, UIEvent event);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_endTrackingSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__, UITouch touch, UIEvent event);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_endTrackingSuper(ObjCSuper __super__, Selector __cmd__, UITouch touch, UIEvent event);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instm/UIControl/endTrackingWithTouch:withEvent:">- (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event</a>
      * @since Available in iOS 2.0 and later.
      */
     public void endTracking(UITouch touch, UIEvent event) {
-        if (customClass) { objc_endTrackingSuper(getSuper(), this, endTrackingWithTouch$withEvent$, touch, event); } else { objc_endTracking(this, endTrackingWithTouch$withEvent$, touch, event); }
+        if (customClass) { objc_endTrackingSuper(getSuper(), endTrackingWithTouch$withEvent$, touch, event); } else { objc_endTracking(this, endTrackingWithTouch$withEvent$, touch, event); }
     }
     
     private static final Selector actionsForTarget$forControlEvent$ = Selector.register("actionsForTarget:forControlEvent:");
     @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getActions(UIControl __self__, Selector __cmd__, NSObject target, UIControlEvents controlEvent);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getActionsSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__, NSObject target, UIControlEvents controlEvent);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getActionsSuper(ObjCSuper __super__, Selector __cmd__, NSObject target, UIControlEvents controlEvent);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instm/UIControl/actionsForTarget:forControlEvent:">- (NSArray *)actionsForTarget:(id)target forControlEvent:(UIControlEvents)controlEvent</a>
      * @since Available in iOS 2.0 and later.
      */
     public NSArray getActions(NSObject target, UIControlEvents controlEvent) {
-        if (customClass) { return objc_getActionsSuper(getSuper(), this, actionsForTarget$forControlEvent$, target, controlEvent); } else { return objc_getActions(this, actionsForTarget$forControlEvent$, target, controlEvent); }
+        if (customClass) { return objc_getActionsSuper(getSuper(), actionsForTarget$forControlEvent$, target, controlEvent); } else { return objc_getActions(this, actionsForTarget$forControlEvent$, target, controlEvent); }
     }
     
     private static final Selector allControlEvents = Selector.register("allControlEvents");
     @Bridge(symbol = "objc_msgSend") private native static UIControlEvents objc_getAllControlEvents(UIControl __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIControlEvents objc_getAllControlEventsSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIControlEvents objc_getAllControlEventsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instm/UIControl/allControlEvents">- (UIControlEvents)allControlEvents</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIControlEvents getAllControlEvents() {
-        if (customClass) { return objc_getAllControlEventsSuper(getSuper(), this, allControlEvents); } else { return objc_getAllControlEvents(this, allControlEvents); }
+        if (customClass) { return objc_getAllControlEventsSuper(getSuper(), allControlEvents); } else { return objc_getAllControlEvents(this, allControlEvents); }
     }
     
     private static final Selector allTargets = Selector.register("allTargets");
     @Bridge(symbol = "objc_msgSend") private native static NSSet objc_getAllTargets(UIControl __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSSet objc_getAllTargetsSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSSet objc_getAllTargetsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instm/UIControl/allTargets">- (NSSet *)allTargets</a>
      * @since Available in iOS 2.0 and later.
      */
     public NSSet getAllTargets() {
-        if (customClass) { return objc_getAllTargetsSuper(getSuper(), this, allTargets); } else { return objc_getAllTargets(this, allTargets); }
+        if (customClass) { return objc_getAllTargetsSuper(getSuper(), allTargets); } else { return objc_getAllTargets(this, allTargets); }
     }
     
     private static final Selector removeTarget$action$forControlEvents$ = Selector.register("removeTarget:action:forControlEvents:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_removeTarget(UIControl __self__, Selector __cmd__, NSObject target, Selector action, UIControlEvents controlEvents);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_removeTargetSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__, NSObject target, Selector action, UIControlEvents controlEvents);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_removeTargetSuper(ObjCSuper __super__, Selector __cmd__, NSObject target, Selector action, UIControlEvents controlEvents);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instm/UIControl/removeTarget:action:forControlEvents:">- (void)removeTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents</a>
      * @since Available in iOS 2.0 and later.
      */
     public void removeTarget(NSObject target, Selector action, UIControlEvents controlEvents) {
-        if (customClass) { objc_removeTargetSuper(getSuper(), this, removeTarget$action$forControlEvents$, target, action, controlEvents); } else { objc_removeTarget(this, removeTarget$action$forControlEvents$, target, action, controlEvents); }
+        if (customClass) { objc_removeTargetSuper(getSuper(), removeTarget$action$forControlEvents$, target, action, controlEvents); } else { objc_removeTarget(this, removeTarget$action$forControlEvents$, target, action, controlEvents); }
     }
     
     private static final Selector sendAction$to$forEvent$ = Selector.register("sendAction:to:forEvent:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_sendAction(UIControl __self__, Selector __cmd__, Selector action, NSObject target, UIEvent event);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_sendActionSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__, Selector action, NSObject target, UIEvent event);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_sendActionSuper(ObjCSuper __super__, Selector __cmd__, Selector action, NSObject target, UIEvent event);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instm/UIControl/sendAction:to:forEvent:">- (void)sendAction:(SEL)action to:(id)target forEvent:(UIEvent *)event</a>
      * @since Available in iOS 2.0 and later.
      */
     public void sendAction(Selector action, NSObject target, UIEvent event) {
-        if (customClass) { objc_sendActionSuper(getSuper(), this, sendAction$to$forEvent$, action, target, event); } else { objc_sendAction(this, sendAction$to$forEvent$, action, target, event); }
+        if (customClass) { objc_sendActionSuper(getSuper(), sendAction$to$forEvent$, action, target, event); } else { objc_sendAction(this, sendAction$to$forEvent$, action, target, event); }
     }
     
     private static final Selector sendActionsForControlEvents$ = Selector.register("sendActionsForControlEvents:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_sendControlEventsActions(UIControl __self__, Selector __cmd__, UIControlEvents controlEvents);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_sendControlEventsActionsSuper(ObjCSuper __super__, UIControl __self__, Selector __cmd__, UIControlEvents controlEvents);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_sendControlEventsActionsSuper(ObjCSuper __super__, Selector __cmd__, UIControlEvents controlEvents);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instm/UIControl/sendActionsForControlEvents:">- (void)sendActionsForControlEvents:(UIControlEvents)controlEvents</a>
      * @since Available in iOS 2.0 and later.
      */
     public void sendControlEventsActions(UIControlEvents controlEvents) {
-        if (customClass) { objc_sendControlEventsActionsSuper(getSuper(), this, sendActionsForControlEvents$, controlEvents); } else { objc_sendControlEventsActions(this, sendActionsForControlEvents$, controlEvents); }
+        if (customClass) { objc_sendControlEventsActionsSuper(getSuper(), sendActionsForControlEvents$, controlEvents); } else { objc_sendControlEventsActions(this, sendActionsForControlEvents$, controlEvents); }
     }
     /*</methods>*/
     /*<callbacks>*/

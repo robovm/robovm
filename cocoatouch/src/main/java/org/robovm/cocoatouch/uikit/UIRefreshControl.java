@@ -59,81 +59,81 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector attributedTitle = Selector.register("attributedTitle");
     @Bridge(symbol = "objc_msgSend") private native static NSAttributedString objc_getAttributedTitle(UIRefreshControl __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSAttributedString objc_getAttributedTitleSuper(ObjCSuper __super__, UIRefreshControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSAttributedString objc_getAttributedTitleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIRefreshControl_class/Reference/Reference.html#//apple_ref/occ/instp/UIRefreshControl/attributedTitle">@property (nonatomic, retain) NSAttributedString *attributedTitle</a>
      * @since Available in iOS 6.0 and later.
      */
     public NSAttributedString getAttributedTitle() {
-        if (customClass) { return objc_getAttributedTitleSuper(getSuper(), this, attributedTitle); } else { return objc_getAttributedTitle(this, attributedTitle); }
+        if (customClass) { return objc_getAttributedTitleSuper(getSuper(), attributedTitle); } else { return objc_getAttributedTitle(this, attributedTitle); }
     }
     
     private static final Selector setAttributedTitle$ = Selector.register("setAttributedTitle:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setAttributedTitle(UIRefreshControl __self__, Selector __cmd__, NSAttributedString attributedTitle);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAttributedTitleSuper(ObjCSuper __super__, UIRefreshControl __self__, Selector __cmd__, NSAttributedString attributedTitle);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAttributedTitleSuper(ObjCSuper __super__, Selector __cmd__, NSAttributedString attributedTitle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIRefreshControl_class/Reference/Reference.html#//apple_ref/occ/instp/UIRefreshControl/attributedTitle">@property (nonatomic, retain) NSAttributedString *attributedTitle</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setAttributedTitle(NSAttributedString attributedTitle) {
-        if (customClass) { objc_setAttributedTitleSuper(getSuper(), this, setAttributedTitle$, attributedTitle); } else { objc_setAttributedTitle(this, setAttributedTitle$, attributedTitle); }
+        if (customClass) { objc_setAttributedTitleSuper(getSuper(), setAttributedTitle$, attributedTitle); } else { objc_setAttributedTitle(this, setAttributedTitle$, attributedTitle); }
     }
     
     private static final Selector isRefreshing = Selector.register("isRefreshing");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_isRefreshing(UIRefreshControl __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isRefreshingSuper(ObjCSuper __super__, UIRefreshControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isRefreshingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIRefreshControl_class/Reference/Reference.html#//apple_ref/occ/instp/UIRefreshControl/refreshing">@property (nonatomic, readonly, getter=isRefreshing) BOOL refreshing</a>
      * @since Available in iOS 6.0 and later.
      */
     public boolean isRefreshing() {
-        if (customClass) { return objc_isRefreshingSuper(getSuper(), this, isRefreshing); } else { return objc_isRefreshing(this, isRefreshing); }
+        if (customClass) { return objc_isRefreshingSuper(getSuper(), isRefreshing); } else { return objc_isRefreshing(this, isRefreshing); }
     }
     
     private static final Selector tintColor = Selector.register("tintColor");
     @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getTintColor(UIRefreshControl __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getTintColorSuper(ObjCSuper __super__, UIRefreshControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getTintColorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIRefreshControl_class/Reference/Reference.html#//apple_ref/occ/instp/UIRefreshControl/tintColor">@property (nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 6.0 and later.
      */
     public UIColor getTintColor() {
-        if (customClass) { return objc_getTintColorSuper(getSuper(), this, tintColor); } else { return objc_getTintColor(this, tintColor); }
+        if (customClass) { return objc_getTintColorSuper(getSuper(), tintColor); } else { return objc_getTintColor(this, tintColor); }
     }
     
     private static final Selector setTintColor$ = Selector.register("setTintColor:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setTintColor(UIRefreshControl __self__, Selector __cmd__, UIColor tintColor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTintColorSuper(ObjCSuper __super__, UIRefreshControl __self__, Selector __cmd__, UIColor tintColor);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor tintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIRefreshControl_class/Reference/Reference.html#//apple_ref/occ/instp/UIRefreshControl/tintColor">@property (nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setTintColor(UIColor tintColor) {
-        if (customClass) { objc_setTintColorSuper(getSuper(), this, setTintColor$, tintColor); } else { objc_setTintColor(this, setTintColor$, tintColor); }
+        if (customClass) { objc_setTintColorSuper(getSuper(), setTintColor$, tintColor); } else { objc_setTintColor(this, setTintColor$, tintColor); }
     }
     /*</properties>*/
     /*<methods>*/
     
     private static final Selector beginRefreshing = Selector.register("beginRefreshing");
     @Bridge(symbol = "objc_msgSend") private native static void objc_beginRefreshing(UIRefreshControl __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_beginRefreshingSuper(ObjCSuper __super__, UIRefreshControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_beginRefreshingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIRefreshControl_class/Reference/Reference.html#//apple_ref/occ/instm/UIRefreshControl/beginRefreshing">- (void)beginRefreshing</a>
      * @since Available in iOS 6.0 and later.
      */
     public void beginRefreshing() {
-        if (customClass) { objc_beginRefreshingSuper(getSuper(), this, beginRefreshing); } else { objc_beginRefreshing(this, beginRefreshing); }
+        if (customClass) { objc_beginRefreshingSuper(getSuper(), beginRefreshing); } else { objc_beginRefreshing(this, beginRefreshing); }
     }
     
     private static final Selector endRefreshing = Selector.register("endRefreshing");
     @Bridge(symbol = "objc_msgSend") private native static void objc_endRefreshing(UIRefreshControl __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_endRefreshingSuper(ObjCSuper __super__, UIRefreshControl __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_endRefreshingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIRefreshControl_class/Reference/Reference.html#//apple_ref/occ/instm/UIRefreshControl/endRefreshing">- (void)endRefreshing</a>
      * @since Available in iOS 6.0 and later.
      */
     public void endRefreshing() {
-        if (customClass) { objc_endRefreshingSuper(getSuper(), this, endRefreshing); } else { objc_endRefreshing(this, endRefreshing); }
+        if (customClass) { objc_endRefreshingSuper(getSuper(), endRefreshing); } else { objc_endRefreshing(this, endRefreshing); }
     }
     /*</methods>*/
     /*<callbacks>*/

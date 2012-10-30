@@ -80,13 +80,13 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector instantiateWithOwner$options$ = Selector.register("instantiateWithOwner:options:");
     @Bridge(symbol = "objc_msgSend") private native static NSArray objc_instantiate(UINib __self__, Selector __cmd__, NSObject ownerOrNil, NSDictionary optionsOrNil);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_instantiateSuper(ObjCSuper __super__, UINib __self__, Selector __cmd__, NSObject ownerOrNil, NSDictionary optionsOrNil);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_instantiateSuper(ObjCSuper __super__, Selector __cmd__, NSObject ownerOrNil, NSDictionary optionsOrNil);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINib_Ref/Reference/Reference.html#//apple_ref/occ/instm/UINib/instantiateWithOwner:options:">- (NSArray *)instantiateWithOwner:(id)ownerOrNil options:(NSDictionary *)optionsOrNil</a>
      * @since Available in iOS 4.0 and later.
      */
     public NSArray instantiate(NSObject ownerOrNil, NSDictionary optionsOrNil) {
-        if (customClass) { return objc_instantiateSuper(getSuper(), this, instantiateWithOwner$options$, ownerOrNil, optionsOrNil); } else { return objc_instantiate(this, instantiateWithOwner$options$, ownerOrNil, optionsOrNil); }
+        if (customClass) { return objc_instantiateSuper(getSuper(), instantiateWithOwner$options$, ownerOrNil, optionsOrNil); } else { return objc_instantiate(this, instantiateWithOwner$options$, ownerOrNil, optionsOrNil); }
     }
     /*</methods>*/
     /*<callbacks>*/

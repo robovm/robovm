@@ -78,213 +78,213 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector delegate = Selector.register("delegate");
     @Bridge(symbol = "objc_msgSend") private native static UINavigationControllerDelegate objc_getDelegate(UINavigationController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UINavigationControllerDelegate objc_getDelegateSuper(ObjCSuper __super__, UINavigationController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UINavigationControllerDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationController_Class/Reference/Reference.html#//apple_ref/occ/instp/UINavigationController/delegate">@property(nonatomic, assign) id&amp;lt;UINavigationControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
     public UINavigationControllerDelegate getDelegate() {
-        if (customClass) { return objc_getDelegateSuper(getSuper(), this, delegate); } else { return objc_getDelegate(this, delegate); }
+        if (customClass) { return objc_getDelegateSuper(getSuper(), delegate); } else { return objc_getDelegate(this, delegate); }
     }
     
     private static final Selector setDelegate$ = Selector.register("setDelegate:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UINavigationController __self__, Selector __cmd__, UINavigationControllerDelegate delegate);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, UINavigationController __self__, Selector __cmd__, UINavigationControllerDelegate delegate);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UINavigationControllerDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationController_Class/Reference/Reference.html#//apple_ref/occ/instp/UINavigationController/delegate">@property(nonatomic, assign) id&amp;lt;UINavigationControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setDelegate(UINavigationControllerDelegate delegate) {
-        if (customClass) { objc_setDelegateSuper(getSuper(), this, setDelegate$, delegate); } else { objc_setDelegate(this, setDelegate$, delegate); }
+        if (customClass) { objc_setDelegateSuper(getSuper(), setDelegate$, delegate); } else { objc_setDelegate(this, setDelegate$, delegate); }
     }
     
     private static final Selector navigationBar = Selector.register("navigationBar");
     @Bridge(symbol = "objc_msgSend") private native static UINavigationBar objc_getNavigationBar(UINavigationController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UINavigationBar objc_getNavigationBarSuper(ObjCSuper __super__, UINavigationController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UINavigationBar objc_getNavigationBarSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationController_Class/Reference/Reference.html#//apple_ref/occ/instp/UINavigationController/navigationBar">@property(nonatomic, readonly) UINavigationBar *navigationBar</a>
      * @since Available in iOS 2.0 and later.
      */
     public UINavigationBar getNavigationBar() {
-        if (customClass) { return objc_getNavigationBarSuper(getSuper(), this, navigationBar); } else { return objc_getNavigationBar(this, navigationBar); }
+        if (customClass) { return objc_getNavigationBarSuper(getSuper(), navigationBar); } else { return objc_getNavigationBar(this, navigationBar); }
     }
     
     private static final Selector isNavigationBarHidden = Selector.register("isNavigationBarHidden");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_isNavigationBarHidden(UINavigationController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isNavigationBarHiddenSuper(ObjCSuper __super__, UINavigationController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isNavigationBarHiddenSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationController_Class/Reference/Reference.html#//apple_ref/occ/instp/UINavigationController/navigationBarHidden">@property(nonatomic, getter=isNavigationBarHidden) BOOL navigationBarHidden</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isNavigationBarHidden() {
-        if (customClass) { return objc_isNavigationBarHiddenSuper(getSuper(), this, isNavigationBarHidden); } else { return objc_isNavigationBarHidden(this, isNavigationBarHidden); }
+        if (customClass) { return objc_isNavigationBarHiddenSuper(getSuper(), isNavigationBarHidden); } else { return objc_isNavigationBarHidden(this, isNavigationBarHidden); }
     }
     
     private static final Selector setNavigationBarHidden$ = Selector.register("setNavigationBarHidden:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setNavigationBarHidden(UINavigationController __self__, Selector __cmd__, boolean navigationBarHidden);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setNavigationBarHiddenSuper(ObjCSuper __super__, UINavigationController __self__, Selector __cmd__, boolean navigationBarHidden);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setNavigationBarHiddenSuper(ObjCSuper __super__, Selector __cmd__, boolean navigationBarHidden);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationController_Class/Reference/Reference.html#//apple_ref/occ/instp/UINavigationController/navigationBarHidden">@property(nonatomic, getter=isNavigationBarHidden) BOOL navigationBarHidden</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setNavigationBarHidden(boolean navigationBarHidden) {
-        if (customClass) { objc_setNavigationBarHiddenSuper(getSuper(), this, setNavigationBarHidden$, navigationBarHidden); } else { objc_setNavigationBarHidden(this, setNavigationBarHidden$, navigationBarHidden); }
+        if (customClass) { objc_setNavigationBarHiddenSuper(getSuper(), setNavigationBarHidden$, navigationBarHidden); } else { objc_setNavigationBarHidden(this, setNavigationBarHidden$, navigationBarHidden); }
     }
     
     private static final Selector toolbar = Selector.register("toolbar");
     @Bridge(symbol = "objc_msgSend") private native static UIToolbar objc_getToolbar(UINavigationController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIToolbar objc_getToolbarSuper(ObjCSuper __super__, UINavigationController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIToolbar objc_getToolbarSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationController_Class/Reference/Reference.html#//apple_ref/occ/instp/UINavigationController/toolbar">@property(nonatomic,readonly) UIToolbar *toolbar</a>
      * @since Available in iOS 3.0 and later.
      */
     public UIToolbar getToolbar() {
-        if (customClass) { return objc_getToolbarSuper(getSuper(), this, toolbar); } else { return objc_getToolbar(this, toolbar); }
+        if (customClass) { return objc_getToolbarSuper(getSuper(), toolbar); } else { return objc_getToolbar(this, toolbar); }
     }
     
     private static final Selector isToolbarHidden = Selector.register("isToolbarHidden");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_isToolbarHidden(UINavigationController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isToolbarHiddenSuper(ObjCSuper __super__, UINavigationController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isToolbarHiddenSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationController_Class/Reference/Reference.html#//apple_ref/occ/instp/UINavigationController/toolbarHidden">@property(nonatomic,getter=isToolbarHidden) BOOL toolbarHidden</a>
      * @since Available in iOS 3.0 and later.
      */
     public boolean isToolbarHidden() {
-        if (customClass) { return objc_isToolbarHiddenSuper(getSuper(), this, isToolbarHidden); } else { return objc_isToolbarHidden(this, isToolbarHidden); }
+        if (customClass) { return objc_isToolbarHiddenSuper(getSuper(), isToolbarHidden); } else { return objc_isToolbarHidden(this, isToolbarHidden); }
     }
     
     private static final Selector setToolbarHidden$ = Selector.register("setToolbarHidden:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setToolbarHidden(UINavigationController __self__, Selector __cmd__, boolean toolbarHidden);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setToolbarHiddenSuper(ObjCSuper __super__, UINavigationController __self__, Selector __cmd__, boolean toolbarHidden);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setToolbarHiddenSuper(ObjCSuper __super__, Selector __cmd__, boolean toolbarHidden);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationController_Class/Reference/Reference.html#//apple_ref/occ/instp/UINavigationController/toolbarHidden">@property(nonatomic,getter=isToolbarHidden) BOOL toolbarHidden</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setToolbarHidden(boolean toolbarHidden) {
-        if (customClass) { objc_setToolbarHiddenSuper(getSuper(), this, setToolbarHidden$, toolbarHidden); } else { objc_setToolbarHidden(this, setToolbarHidden$, toolbarHidden); }
+        if (customClass) { objc_setToolbarHiddenSuper(getSuper(), setToolbarHidden$, toolbarHidden); } else { objc_setToolbarHidden(this, setToolbarHidden$, toolbarHidden); }
     }
     
     private static final Selector topViewController = Selector.register("topViewController");
     @Bridge(symbol = "objc_msgSend") private native static UIViewController objc_getTopViewController(UINavigationController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIViewController objc_getTopViewControllerSuper(ObjCSuper __super__, UINavigationController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIViewController objc_getTopViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationController_Class/Reference/Reference.html#//apple_ref/occ/instp/UINavigationController/topViewController">@property(nonatomic, readonly, retain) UIViewController *topViewController</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIViewController getTopViewController() {
-        if (customClass) { return objc_getTopViewControllerSuper(getSuper(), this, topViewController); } else { return objc_getTopViewController(this, topViewController); }
+        if (customClass) { return objc_getTopViewControllerSuper(getSuper(), topViewController); } else { return objc_getTopViewController(this, topViewController); }
     }
     
     private static final Selector viewControllers = Selector.register("viewControllers");
     @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getViewControllers(UINavigationController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getViewControllersSuper(ObjCSuper __super__, UINavigationController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getViewControllersSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationController_Class/Reference/Reference.html#//apple_ref/occ/instp/UINavigationController/viewControllers">@property(nonatomic, copy) NSArray *viewControllers</a>
      * @since Available in iOS 2.0 and later.
      */
     public NSArray getViewControllers() {
-        if (customClass) { return objc_getViewControllersSuper(getSuper(), this, viewControllers); } else { return objc_getViewControllers(this, viewControllers); }
+        if (customClass) { return objc_getViewControllersSuper(getSuper(), viewControllers); } else { return objc_getViewControllers(this, viewControllers); }
     }
     
     private static final Selector setViewControllers$ = Selector.register("setViewControllers:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setViewControllers(UINavigationController __self__, Selector __cmd__, NSArray viewControllers);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setViewControllersSuper(ObjCSuper __super__, UINavigationController __self__, Selector __cmd__, NSArray viewControllers);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setViewControllersSuper(ObjCSuper __super__, Selector __cmd__, NSArray viewControllers);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationController_Class/Reference/Reference.html#//apple_ref/occ/instp/UINavigationController/viewControllers">@property(nonatomic, copy) NSArray *viewControllers</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setViewControllers(NSArray viewControllers) {
-        if (customClass) { objc_setViewControllersSuper(getSuper(), this, setViewControllers$, viewControllers); } else { objc_setViewControllers(this, setViewControllers$, viewControllers); }
+        if (customClass) { objc_setViewControllersSuper(getSuper(), setViewControllers$, viewControllers); } else { objc_setViewControllers(this, setViewControllers$, viewControllers); }
     }
     
     private static final Selector visibleViewController = Selector.register("visibleViewController");
     @Bridge(symbol = "objc_msgSend") private native static UIViewController objc_getVisibleViewController(UINavigationController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIViewController objc_getVisibleViewControllerSuper(ObjCSuper __super__, UINavigationController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIViewController objc_getVisibleViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationController_Class/Reference/Reference.html#//apple_ref/occ/instp/UINavigationController/visibleViewController">@property(nonatomic, readonly, retain) UIViewController *visibleViewController</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIViewController getVisibleViewController() {
-        if (customClass) { return objc_getVisibleViewControllerSuper(getSuper(), this, visibleViewController); } else { return objc_getVisibleViewController(this, visibleViewController); }
+        if (customClass) { return objc_getVisibleViewControllerSuper(getSuper(), visibleViewController); } else { return objc_getVisibleViewController(this, visibleViewController); }
     }
     /*</properties>*/
     /*<methods>*/
     
     private static final Selector popToRootViewControllerAnimated$ = Selector.register("popToRootViewControllerAnimated:");
     @Bridge(symbol = "objc_msgSend") private native static NSArray objc_popToRootViewController(UINavigationController __self__, Selector __cmd__, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_popToRootViewControllerSuper(ObjCSuper __super__, UINavigationController __self__, Selector __cmd__, boolean animated);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_popToRootViewControllerSuper(ObjCSuper __super__, Selector __cmd__, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationController_Class/Reference/Reference.html#//apple_ref/occ/instm/UINavigationController/popToRootViewControllerAnimated:">- (NSArray *)popToRootViewControllerAnimated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
      */
     public NSArray popToRootViewController(boolean animated) {
-        if (customClass) { return objc_popToRootViewControllerSuper(getSuper(), this, popToRootViewControllerAnimated$, animated); } else { return objc_popToRootViewController(this, popToRootViewControllerAnimated$, animated); }
+        if (customClass) { return objc_popToRootViewControllerSuper(getSuper(), popToRootViewControllerAnimated$, animated); } else { return objc_popToRootViewController(this, popToRootViewControllerAnimated$, animated); }
     }
     
     private static final Selector popToViewController$animated$ = Selector.register("popToViewController:animated:");
     @Bridge(symbol = "objc_msgSend") private native static NSArray objc_popToViewController(UINavigationController __self__, Selector __cmd__, UIViewController viewController, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_popToViewControllerSuper(ObjCSuper __super__, UINavigationController __self__, Selector __cmd__, UIViewController viewController, boolean animated);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_popToViewControllerSuper(ObjCSuper __super__, Selector __cmd__, UIViewController viewController, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationController_Class/Reference/Reference.html#//apple_ref/occ/instm/UINavigationController/popToViewController:animated:">- (NSArray *)popToViewController:(UIViewController *)viewController animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
      */
     public NSArray popToViewController(UIViewController viewController, boolean animated) {
-        if (customClass) { return objc_popToViewControllerSuper(getSuper(), this, popToViewController$animated$, viewController, animated); } else { return objc_popToViewController(this, popToViewController$animated$, viewController, animated); }
+        if (customClass) { return objc_popToViewControllerSuper(getSuper(), popToViewController$animated$, viewController, animated); } else { return objc_popToViewController(this, popToViewController$animated$, viewController, animated); }
     }
     
     private static final Selector popViewControllerAnimated$ = Selector.register("popViewControllerAnimated:");
     @Bridge(symbol = "objc_msgSend") private native static UIViewController objc_popViewControllerAnimated(UINavigationController __self__, Selector __cmd__, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIViewController objc_popViewControllerAnimatedSuper(ObjCSuper __super__, UINavigationController __self__, Selector __cmd__, boolean animated);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIViewController objc_popViewControllerAnimatedSuper(ObjCSuper __super__, Selector __cmd__, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationController_Class/Reference/Reference.html#//apple_ref/occ/instm/UINavigationController/popViewControllerAnimated:">- (UIViewController *)popViewControllerAnimated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIViewController popViewControllerAnimated(boolean animated) {
-        if (customClass) { return objc_popViewControllerAnimatedSuper(getSuper(), this, popViewControllerAnimated$, animated); } else { return objc_popViewControllerAnimated(this, popViewControllerAnimated$, animated); }
+        if (customClass) { return objc_popViewControllerAnimatedSuper(getSuper(), popViewControllerAnimated$, animated); } else { return objc_popViewControllerAnimated(this, popViewControllerAnimated$, animated); }
     }
     
     private static final Selector pushViewController$animated$ = Selector.register("pushViewController:animated:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_pushViewController(UINavigationController __self__, Selector __cmd__, UIViewController viewController, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_pushViewControllerSuper(ObjCSuper __super__, UINavigationController __self__, Selector __cmd__, UIViewController viewController, boolean animated);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_pushViewControllerSuper(ObjCSuper __super__, Selector __cmd__, UIViewController viewController, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationController_Class/Reference/Reference.html#//apple_ref/occ/instm/UINavigationController/pushViewController:animated:">- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
      */
     public void pushViewController(UIViewController viewController, boolean animated) {
-        if (customClass) { objc_pushViewControllerSuper(getSuper(), this, pushViewController$animated$, viewController, animated); } else { objc_pushViewController(this, pushViewController$animated$, viewController, animated); }
+        if (customClass) { objc_pushViewControllerSuper(getSuper(), pushViewController$animated$, viewController, animated); } else { objc_pushViewController(this, pushViewController$animated$, viewController, animated); }
     }
     
     private static final Selector setNavigationBarHidden$animated$ = Selector.register("setNavigationBarHidden:animated:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setNavigationBarHidden(UINavigationController __self__, Selector __cmd__, boolean hidden, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setNavigationBarHiddenSuper(ObjCSuper __super__, UINavigationController __self__, Selector __cmd__, boolean hidden, boolean animated);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setNavigationBarHiddenSuper(ObjCSuper __super__, Selector __cmd__, boolean hidden, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationController_Class/Reference/Reference.html#//apple_ref/occ/instm/UINavigationController/setNavigationBarHidden:animated:">- (void)setNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setNavigationBarHidden(boolean hidden, boolean animated) {
-        if (customClass) { objc_setNavigationBarHiddenSuper(getSuper(), this, setNavigationBarHidden$animated$, hidden, animated); } else { objc_setNavigationBarHidden(this, setNavigationBarHidden$animated$, hidden, animated); }
+        if (customClass) { objc_setNavigationBarHiddenSuper(getSuper(), setNavigationBarHidden$animated$, hidden, animated); } else { objc_setNavigationBarHidden(this, setNavigationBarHidden$animated$, hidden, animated); }
     }
     
     private static final Selector setToolbarHidden$animated$ = Selector.register("setToolbarHidden:animated:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setToolbarHidden(UINavigationController __self__, Selector __cmd__, boolean hidden, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setToolbarHiddenSuper(ObjCSuper __super__, UINavigationController __self__, Selector __cmd__, boolean hidden, boolean animated);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setToolbarHiddenSuper(ObjCSuper __super__, Selector __cmd__, boolean hidden, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationController_Class/Reference/Reference.html#//apple_ref/occ/instm/UINavigationController/setToolbarHidden:animated:">- (void)setToolbarHidden:(BOOL)hidden animated:(BOOL)animated</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setToolbarHidden(boolean hidden, boolean animated) {
-        if (customClass) { objc_setToolbarHiddenSuper(getSuper(), this, setToolbarHidden$animated$, hidden, animated); } else { objc_setToolbarHidden(this, setToolbarHidden$animated$, hidden, animated); }
+        if (customClass) { objc_setToolbarHiddenSuper(getSuper(), setToolbarHidden$animated$, hidden, animated); } else { objc_setToolbarHidden(this, setToolbarHidden$animated$, hidden, animated); }
     }
     
     private static final Selector setViewControllers$animated$ = Selector.register("setViewControllers:animated:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setViewControllers(UINavigationController __self__, Selector __cmd__, NSArray viewControllers, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setViewControllersSuper(ObjCSuper __super__, UINavigationController __self__, Selector __cmd__, NSArray viewControllers, boolean animated);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setViewControllersSuper(ObjCSuper __super__, Selector __cmd__, NSArray viewControllers, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationController_Class/Reference/Reference.html#//apple_ref/occ/instm/UINavigationController/setViewControllers:animated:">- (void)setViewControllers:(NSArray *)viewControllers animated:(BOOL)animated</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setViewControllers(NSArray viewControllers, boolean animated) {
-        if (customClass) { objc_setViewControllersSuper(getSuper(), this, setViewControllers$animated$, viewControllers, animated); } else { objc_setViewControllers(this, setViewControllers$animated$, viewControllers, animated); }
+        if (customClass) { objc_setViewControllersSuper(getSuper(), setViewControllers$animated$, viewControllers, animated); } else { objc_setViewControllers(this, setViewControllers$animated$, viewControllers, animated); }
     }
     /*</methods>*/
     /*<callbacks>*/

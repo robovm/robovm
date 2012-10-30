@@ -127,7 +127,7 @@ public interface /*<name>*/ UISearchBarDelegate /*</name>*/ /*<implements>*/ ext
         @Callback @BindSelector("searchBarSearchButtonClicked:") public static void searchButtonClicked(UISearchBarDelegate __self__, Selector __cmd__, UISearchBar searchBar) { __self__.searchButtonClicked(searchBar); }
         @Callback @BindSelector("searchBar:selectedScopeButtonIndexDidChange:") public static void selectedScopeButtonIndexDidChange(UISearchBarDelegate __self__, Selector __cmd__, UISearchBar searchBar, int selectedScope) { __self__.selectedScopeButtonIndexDidChange(searchBar, selectedScope); }
         @Callback @BindSelector("searchBarShouldBeginEditing:") public static boolean shouldBeginEditing(UISearchBarDelegate __self__, Selector __cmd__, UISearchBar searchBar) { return __self__.shouldBeginEditing(searchBar); }
-        @Callback @BindSelector("searchBar:shouldChangeTextInRange:replacementText:") public static boolean shouldChange(UISearchBarDelegate __self__, Selector __cmd__, UISearchBar searchBar, NSRange range, String text) { return __self__.shouldChange(searchBar, range, text); }
+        @Callback @BindSelector("searchBar:shouldChangeTextInRange:replacementText:") public static boolean shouldChange(UISearchBarDelegate __self__, Selector __cmd__, UISearchBar searchBar, @ByVal NSRange range, String text) { return __self__.shouldChange(searchBar, range, text); }
         @Callback @BindSelector("searchBarShouldEndEditing:") public static boolean shouldEndEditing(UISearchBarDelegate __self__, Selector __cmd__, UISearchBar searchBar) { return __self__.shouldEndEditing(searchBar); }
     }
     /*</callbacks>*/

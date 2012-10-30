@@ -5,6 +5,7 @@ require 'nokogiri'
 require 'open-uri'
 require 'yaml'
 require 'fileutils'
+require 'set'
 
 IGNORED_PROTOCOLS = ['NSObject', 'NSCoding', 'NSCopying', 'NSMutableCopying', 'NSFastEnumeration']
 
@@ -63,7 +64,7 @@ class ObjCType
   attr_accessor :decl
   attr_accessor :attributes
   attr_accessor :type
-  def initialize(decl, instancetype, typedefs, overrides = nil)
+  def initialize(decl, clazz, overrides = nil)
     @decl = decl
     @attributes = []
     if decl =~ /\boneway\b/ 
@@ -79,13 +80,20 @@ class ObjCType
       @attributes.push('const')
     end
     @type = decl.strip
-    @java_type = objc_to_java(@type, instancetype, typedefs, overrides)
+    @clazz = clazz
+    @java_type = objc_to_java(@type, @clazz.name, @clazz.typedefs, overrides)
   end
   def primitive?
     @java_type =~ /void|byte|boolean|char|short|int|long|float|double/
   end
+  def by_val?
+    @clazz.structs.include?(@java_type) && @type == @java_type
+  end
   def to_java
     @java_type
+  end
+  def to_java_bro
+    (by_val? ? '@ByVal ' : '') + @java_type
   end
 end
 
@@ -96,14 +104,16 @@ class ObjCClass
   attr_accessor :availability
   attr_accessor :conf
   attr_accessor :typedefs
+  attr_accessor :structs
   attr_accessor :protocols
   attr_accessor :methods
   attr_accessor :properties
   attr_accessor :is_protocol
-  def initialize(name, conf, typedefs, is_protocol = false)
+  def initialize(name, conf, typedefs, structs, is_protocol = false)
     @name = name
     @conf = conf
     @typedefs = typedefs
+    @structs = structs
     @protocols = []
     @methods = []
     @properties = []
@@ -202,10 +212,10 @@ class ObjCMethod
     @name = @conf['name'] || parts[1].chomp(':')
     @visibility = @conf['visibility'] || 'public'
 
-    @return_type = ObjCType.new(parts.first.sub(/^\((.*)\)$/, '\\1'), @clazz.name, @clazz.typedefs, @conf['return_type'])
+    @return_type = ObjCType.new(parts.first.sub(/^\((.*)\)$/, '\\1'), @clazz, @conf['return_type'])
     @parameters = parts[1..-1].odd_values.map {|part| part.match(/^\((.*?)\)([^\)]+?)[.;]*$/).values_at(1, 2)}.map do |pair|
       overrides = @conf['parameters'] ? (@conf['parameters'][pair[1]] ? @conf['parameters'][pair[1]]['type'] : nil) : nil
-      [ObjCType.new(pair[0], @clazz.name, @clazz.typedefs, overrides), pair[1]]
+      [ObjCType.new(pair[0], @clazz, overrides), pair[1]]
     end
   end
   def static?
@@ -241,20 +251,19 @@ class ObjCMethod
       java = "#{get_javadoc}\n#{sig};"
     else
       msg_send = "objc_#{@name}"
-      msg_send_parameters_s = [@static ? 'ObjCClass __self__' : "#{@clazz.name} __self__", 'Selector __cmd__', @parameters.map {|p| "#{p[0].to_java} #{p[1]}"}].flatten.join(', ')
+      msg_send_parameters_s = [@static ? 'ObjCClass __self__' : "#{@clazz.name} __self__", 'Selector __cmd__', @parameters.map {|p| "#{p[0].to_java_bro} #{p[1]}"}].flatten.join(', ')
+      msg_send_super_parameters_s = ['ObjCSuper __super__', 'Selector __cmd__', @parameters.map {|p| "#{p[0].to_java_bro} #{p[1]}"}].flatten.join(', ')
+      msg_send_ret_s = constructor? ? '@Pointer long' : @return_type.to_java_bro
       java = "#{java}\nprivate static final Selector #{selector_var} = Selector.register(\"#{@selector}\");"
-      if constructor? then
-        java = "#{java}\n@Bridge(symbol = \"objc_msgSend\") private native static @Pointer long #{msg_send}(#{msg_send_parameters_s});"
-      else
-        java = "#{java}\n@Bridge(symbol = \"objc_msgSend\") private native static #{@return_type.to_java} #{msg_send}(#{msg_send_parameters_s});"
-      end
+      java = "#{java}\n@Bridge(symbol = \"objc_msgSend\") private native static #{msg_send_ret_s} #{msg_send}(#{msg_send_parameters_s});"
       args = [@static ? 'objCClass' : 'this', selector_var, @parameters.map {|p| p[1]}].flatten.join(', ')
+      args_super = ['getSuper()', selector_var, @parameters.map {|p| p[1]}].flatten.join(', ')
       body = ""
       ret = !constructor? && @return_type.to_java != 'void' ? 'return ' : ''
       if !@static && !constructor? && !(@visibility.include?('private') || @visibility.include?('final'))
         # Call objc_msgSendSuper if this is a custom class
-        java = "#{java}\n@Bridge(symbol = \"objc_msgSendSuper\") private native static #{@return_type.to_java} #{msg_send}Super(ObjCSuper __super__, #{msg_send_parameters_s});"
-        body = "if (customClass) { #{ret}#{msg_send}Super(getSuper(), #{args}); } else { #{ret}#{msg_send}(#{args}); }"
+        java = "#{java}\n@Bridge(symbol = \"objc_msgSendSuper\") private native static #{@return_type.to_java_bro} #{msg_send}Super(#{msg_send_super_parameters_s});"
+        body = "if (customClass) { #{ret}#{msg_send}Super(#{args_super}); } else { #{ret}#{msg_send}(#{args}); }"
       elsif constructor?
         body = "super((SkipInit) null);\nsetHandle(#{msg_send}(#{args}));"
       else
@@ -268,10 +277,10 @@ class ObjCMethod
   def callbacks
     if !@static && !constructor? && !(@visibility.include?('private') || @visibility.include?('final'))
       # This method can be overridden
-      parameters_s = ["#{@clazz.name} __self__", "Selector __cmd__", @parameters.map {|p| "#{p[0].to_java} #{p[1]}"}].flatten.join(', ')
+      parameters_s = ["#{@clazz.name} __self__", "Selector __cmd__", @parameters.map {|p| "#{p[0].to_java_bro} #{p[1]}"}].flatten.join(', ')
       args = @parameters.map {|p| p[1]}.join(', ')
       ret = @return_type.to_java != 'void' ? 'return ' : ''
-      ["@Callback @BindSelector(\"#{@selector}\") public static #{@return_type.to_java} #{@name}(#{parameters_s}) { #{ret}__self__.#{name}(#{args}); }"]
+      ["@Callback @BindSelector(\"#{@selector}\") public static #{@return_type.to_java_bro} #{@name}(#{parameters_s}) { #{ret}__self__.#{name}(#{args}); }"]
     else
       []
     end
@@ -329,7 +338,7 @@ class ObjCProperty
     @name = @conf['name'] || @name
     @base_java_name = @name.slice(0,1).capitalize + @name.slice(1..-1)
     @visibility = @conf['visibility'] || 'public'
-    @type = ObjCType.new(@type, @clazz.name, @clazz.typedefs, @conf['type'])
+    @type = ObjCType.new(@type, @clazz, @conf['type'])
   end
   def read_only?
     @attrs['readonly']
@@ -345,13 +354,15 @@ class ObjCProperty
       sig = "#{@visibility} #{@type.to_java} #{getter}()"
       msg_send = "objc_#{getter}"
       msg_send_parameters_s = "#{@clazz.name} __self__, Selector __cmd__"
-      java = "#{java}\n@Bridge(symbol = \"objc_msgSend\") private native static #{@type.to_java} #{msg_send}(#{msg_send_parameters_s});"
+      msg_send_super_parameters_s = "ObjCSuper __super__, Selector __cmd__"
+      java = "#{java}\n@Bridge(symbol = \"objc_msgSend\") private native static #{@type.to_java_bro} #{msg_send}(#{msg_send_parameters_s});"
       args = "this, #{selector_var}"
+      args_super = "getSuper(), #{selector_var}"
       body = ""
       if !(@visibility.include?('private') || @visibility.include?('final'))
         # Call objc_msgSendSuper if this is a custom class
-        java = "#{java}\n@Bridge(symbol = \"objc_msgSendSuper\") private native static #{@type.to_java} #{msg_send}Super(ObjCSuper __super__, #{msg_send_parameters_s});"
-        body = "if (customClass) { return #{msg_send}Super(getSuper(), #{args}); } else { return #{msg_send}(#{args}); }"
+        java = "#{java}\n@Bridge(symbol = \"objc_msgSendSuper\") private native static #{@type.to_java_bro} #{msg_send}Super(#{msg_send_super_parameters_s});"
+        body = "if (customClass) { return #{msg_send}Super(#{args_super}); } else { return #{msg_send}(#{args}); }"
       else
         body = "return #{msg_send}(#{args});"
       end
@@ -370,14 +381,16 @@ class ObjCProperty
       java = "#{java}\nprivate static final Selector #{selector_var} = Selector.register(\"#{@setter_selector}\");"
       sig = "#{@visibility} void #{setter}(#{@type.to_java} #{@name})"
       msg_send = "objc_#{setter}"
-      msg_send_parameters_s = "#{@clazz.name} __self__, Selector __cmd__, #{@type.to_java} #{@name}"
+      msg_send_parameters_s = "#{@clazz.name} __self__, Selector __cmd__, #{@type.to_java_bro} #{@name}"
+      msg_send_super_parameters_s = "ObjCSuper __super__, Selector __cmd__, #{@type.to_java_bro} #{@name}"
       java = "#{java}\n@Bridge(symbol = \"objc_msgSend\") private native static void #{msg_send}(#{msg_send_parameters_s});"
       args = "this, #{selector_var}, #{@name}"
+      args_super = "getSuper(), #{selector_var}, #{@name}"
       body = ""
       if !(@visibility.include?('private') || @visibility.include?('final'))
         # Call objc_msgSendSuper if this is a custom class
-        java = "#{java}\n@Bridge(symbol = \"objc_msgSendSuper\") private native static void #{msg_send}Super(ObjCSuper __super__, #{msg_send_parameters_s});"
-        body = "if (customClass) { #{msg_send}Super(getSuper(), #{args}); } else { #{msg_send}(#{args}); }"
+        java = "#{java}\n@Bridge(symbol = \"objc_msgSendSuper\") private native static void #{msg_send}Super(#{msg_send_super_parameters_s});"
+        body = "if (customClass) { #{msg_send}Super(#{args_super}); } else { #{msg_send}(#{args}); }"
       else
         body = "#{msg_send}(#{args});"
       end
@@ -399,12 +412,12 @@ class ObjCProperty
     if !(@visibility.include?('private') || @visibility.include?('final'))
       # This property can be overridden
       getter = @type.decl == 'BOOL' ? "is#{@base_java_name}" : "get#{@base_java_name}"
-      get = "@Callback @BindSelector(\"#{@getter_selector}\") public static #{@type.to_java} #{getter}(#{@clazz.name} __self__, Selector __cmd__) { return __self__.#{getter}(); }"
+      get = "@Callback @BindSelector(\"#{@getter_selector}\") public static #{@type.to_java_bro} #{getter}(#{@clazz.name} __self__, Selector __cmd__) { return __self__.#{getter}(); }"
       if read_only?
         [get]
       else
         setter = @attrs.has_key?('setter') ? @attrs['setter'] : "set#{@base_java_name}"
-        set = "@Callback @BindSelector(\"#{@setter_selector}\") public static void #{setter}(#{@clazz.name} __self__, Selector __cmd__, #{@type.to_java} #{@name}) { __self__.#{setter}(#{@name}); }"
+        set = "@Callback @BindSelector(\"#{@setter_selector}\") public static void #{setter}(#{@clazz.name} __self__, Selector __cmd__, #{@type.to_java_bro} #{@name}) { __self__.#{setter}(#{@name}); }"
         [get, set]
       end
     else
@@ -614,6 +627,7 @@ script_dir = File.expand_path(File.dirname(__FILE__))
 target_dir = ARGV[0]
 def_class_template = IO.read("#{script_dir}/class_template.java")
 def_protocol_template = IO.read("#{script_dir}/protocol_template.java")
+global = YAML.load_file("#{script_dir}/global.yaml")
 
 ARGV[1..-1].each do |yaml_file|
   conf = YAML.load_file(yaml_file)
@@ -633,12 +647,13 @@ ARGV[1..-1].each do |yaml_file|
   enums = []
   enums_conf = conf['enums'] || {}
 
-  typedefs = conf['typedefs'] || {}
+  typedefs = (global['typedefs'] || {}).merge(conf['typedefs'] || {})
+  structs = Set.new(global['structs'] || []).merge(conf['structs'] || [])
 
   conf['classes'].keys.sort.each do |class_name|
     puts "#{class_name}..."
     class_conf = conf['classes'][class_name]
-    clazz = ObjCClass.new(class_name, class_conf, typedefs)
+    clazz = ObjCClass.new(class_name, class_conf, typedefs, structs)
     urls = class_conf['urls'] || [class_conf['url']]
     clazz.url = base_url + urls.first
     urls.each_with_index do |url, i|
@@ -672,7 +687,7 @@ ARGV[1..-1].each do |yaml_file|
   (conf['protocols'] || {}).keys.sort.each do |class_name|
     puts "#{class_name}..."
     class_conf = conf['protocols'][class_name]
-    clazz = ObjCClass.new(class_name, class_conf, typedefs, true)
+    clazz = ObjCClass.new(class_name, class_conf, typedefs, structs, true)
     urls = class_conf['urls'] || [class_conf['url']]
     clazz.url = base_url + urls.first
     urls.each_with_index do |url, i|
@@ -709,8 +724,9 @@ ARGV[1..-1].each do |yaml_file|
     if !File.size?(target_file)
       FileUtils.mkdir_p(File.dirname(target_file))
       open(target_file, 'wb') do |f|
-        if conf['license']
-          f << conf['license']
+        license = conf['license'] || global['license']
+        if license
+          f << license
         end
         if package.size > 0
           f << "package #{package};\n\n"

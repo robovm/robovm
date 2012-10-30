@@ -70,24 +70,24 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector instantiateInitialViewController = Selector.register("instantiateInitialViewController");
     @Bridge(symbol = "objc_msgSend") private native static NSObject objc_instantiateInitialViewController(UIStoryboard __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSObject objc_instantiateInitialViewControllerSuper(ObjCSuper __super__, UIStoryboard __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSObject objc_instantiateInitialViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboard_Class/Reference/Reference.html#//apple_ref/occ/instm/UIStoryboard/instantiateInitialViewController">- (id)instantiateInitialViewController</a>
      * @since Available in iOS 5.0 and later.
      */
     public NSObject instantiateInitialViewController() {
-        if (customClass) { return objc_instantiateInitialViewControllerSuper(getSuper(), this, instantiateInitialViewController); } else { return objc_instantiateInitialViewController(this, instantiateInitialViewController); }
+        if (customClass) { return objc_instantiateInitialViewControllerSuper(getSuper(), instantiateInitialViewController); } else { return objc_instantiateInitialViewController(this, instantiateInitialViewController); }
     }
     
     private static final Selector instantiateViewControllerWithIdentifier$ = Selector.register("instantiateViewControllerWithIdentifier:");
     @Bridge(symbol = "objc_msgSend") private native static NSObject objc_instantiateViewController(UIStoryboard __self__, Selector __cmd__, String identifier);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSObject objc_instantiateViewControllerSuper(ObjCSuper __super__, UIStoryboard __self__, Selector __cmd__, String identifier);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSObject objc_instantiateViewControllerSuper(ObjCSuper __super__, Selector __cmd__, String identifier);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboard_Class/Reference/Reference.html#//apple_ref/occ/instm/UIStoryboard/instantiateViewControllerWithIdentifier:">- (id)instantiateViewControllerWithIdentifier:(NSString *)identifier</a>
      * @since Available in iOS 5.0 and later.
      */
     public NSObject instantiateViewController(String identifier) {
-        if (customClass) { return objc_instantiateViewControllerSuper(getSuper(), this, instantiateViewControllerWithIdentifier$, identifier); } else { return objc_instantiateViewController(this, instantiateViewControllerWithIdentifier$, identifier); }
+        if (customClass) { return objc_instantiateViewControllerSuper(getSuper(), instantiateViewControllerWithIdentifier$, identifier); } else { return objc_instantiateViewController(this, instantiateViewControllerWithIdentifier$, identifier); }
     }
     /*</methods>*/
     /*<callbacks>*/

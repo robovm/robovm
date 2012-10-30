@@ -84,288 +84,288 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector applicationIconBadgeNumber = Selector.register("applicationIconBadgeNumber");
     @Bridge(symbol = "objc_msgSend") private native static int objc_getApplicationIconBadgeNumber(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getApplicationIconBadgeNumberSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getApplicationIconBadgeNumberSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/applicationIconBadgeNumber">@property(nonatomic) NSInteger applicationIconBadgeNumber</a>
      * @since Available in iOS 2.0 and later.
      */
     public int getApplicationIconBadgeNumber() {
-        if (customClass) { return objc_getApplicationIconBadgeNumberSuper(getSuper(), this, applicationIconBadgeNumber); } else { return objc_getApplicationIconBadgeNumber(this, applicationIconBadgeNumber); }
+        if (customClass) { return objc_getApplicationIconBadgeNumberSuper(getSuper(), applicationIconBadgeNumber); } else { return objc_getApplicationIconBadgeNumber(this, applicationIconBadgeNumber); }
     }
     
     private static final Selector setApplicationIconBadgeNumber$ = Selector.register("setApplicationIconBadgeNumber:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setApplicationIconBadgeNumber(UIApplication __self__, Selector __cmd__, int applicationIconBadgeNumber);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setApplicationIconBadgeNumberSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, int applicationIconBadgeNumber);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setApplicationIconBadgeNumberSuper(ObjCSuper __super__, Selector __cmd__, int applicationIconBadgeNumber);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/applicationIconBadgeNumber">@property(nonatomic) NSInteger applicationIconBadgeNumber</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setApplicationIconBadgeNumber(int applicationIconBadgeNumber) {
-        if (customClass) { objc_setApplicationIconBadgeNumberSuper(getSuper(), this, setApplicationIconBadgeNumber$, applicationIconBadgeNumber); } else { objc_setApplicationIconBadgeNumber(this, setApplicationIconBadgeNumber$, applicationIconBadgeNumber); }
+        if (customClass) { objc_setApplicationIconBadgeNumberSuper(getSuper(), setApplicationIconBadgeNumber$, applicationIconBadgeNumber); } else { objc_setApplicationIconBadgeNumber(this, setApplicationIconBadgeNumber$, applicationIconBadgeNumber); }
     }
     
     private static final Selector applicationState = Selector.register("applicationState");
     @Bridge(symbol = "objc_msgSend") private native static UIApplicationState objc_getApplicationState(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIApplicationState objc_getApplicationStateSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIApplicationState objc_getApplicationStateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/applicationState">@property(nonatomic, readonly) UIApplicationState applicationState</a>
      * @since Available in iOS 4.0 and later.
      */
     public UIApplicationState getApplicationState() {
-        if (customClass) { return objc_getApplicationStateSuper(getSuper(), this, applicationState); } else { return objc_getApplicationState(this, applicationState); }
+        if (customClass) { return objc_getApplicationStateSuper(getSuper(), applicationState); } else { return objc_getApplicationState(this, applicationState); }
     }
     
     private static final Selector applicationSupportsShakeToEdit = Selector.register("applicationSupportsShakeToEdit");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_isApplicationSupportsShakeToEdit(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isApplicationSupportsShakeToEditSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isApplicationSupportsShakeToEditSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/applicationSupportsShakeToEdit">@property(nonatomic) BOOL applicationSupportsShakeToEdit</a>
      * @since Available in iOS 3.0 and later.
      */
     public boolean isApplicationSupportsShakeToEdit() {
-        if (customClass) { return objc_isApplicationSupportsShakeToEditSuper(getSuper(), this, applicationSupportsShakeToEdit); } else { return objc_isApplicationSupportsShakeToEdit(this, applicationSupportsShakeToEdit); }
+        if (customClass) { return objc_isApplicationSupportsShakeToEditSuper(getSuper(), applicationSupportsShakeToEdit); } else { return objc_isApplicationSupportsShakeToEdit(this, applicationSupportsShakeToEdit); }
     }
     
     private static final Selector setApplicationSupportsShakeToEdit$ = Selector.register("setApplicationSupportsShakeToEdit:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setApplicationSupportsShakeToEdit(UIApplication __self__, Selector __cmd__, boolean applicationSupportsShakeToEdit);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setApplicationSupportsShakeToEditSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, boolean applicationSupportsShakeToEdit);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setApplicationSupportsShakeToEditSuper(ObjCSuper __super__, Selector __cmd__, boolean applicationSupportsShakeToEdit);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/applicationSupportsShakeToEdit">@property(nonatomic) BOOL applicationSupportsShakeToEdit</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setApplicationSupportsShakeToEdit(boolean applicationSupportsShakeToEdit) {
-        if (customClass) { objc_setApplicationSupportsShakeToEditSuper(getSuper(), this, setApplicationSupportsShakeToEdit$, applicationSupportsShakeToEdit); } else { objc_setApplicationSupportsShakeToEdit(this, setApplicationSupportsShakeToEdit$, applicationSupportsShakeToEdit); }
+        if (customClass) { objc_setApplicationSupportsShakeToEditSuper(getSuper(), setApplicationSupportsShakeToEdit$, applicationSupportsShakeToEdit); } else { objc_setApplicationSupportsShakeToEdit(this, setApplicationSupportsShakeToEdit$, applicationSupportsShakeToEdit); }
     }
     
     private static final Selector backgroundTimeRemaining = Selector.register("backgroundTimeRemaining");
     @Bridge(symbol = "objc_msgSend") private native static double objc_getBackgroundTimeRemaining(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static double objc_getBackgroundTimeRemainingSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static double objc_getBackgroundTimeRemainingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/backgroundTimeRemaining">@property(nonatomic, readonly) NSTimeInterval backgroundTimeRemaining</a>
      * @since Available in iOS 4.0 and later.
      */
     public double getBackgroundTimeRemaining() {
-        if (customClass) { return objc_getBackgroundTimeRemainingSuper(getSuper(), this, backgroundTimeRemaining); } else { return objc_getBackgroundTimeRemaining(this, backgroundTimeRemaining); }
+        if (customClass) { return objc_getBackgroundTimeRemainingSuper(getSuper(), backgroundTimeRemaining); } else { return objc_getBackgroundTimeRemaining(this, backgroundTimeRemaining); }
     }
     
     private static final Selector delegate = Selector.register("delegate");
     @Bridge(symbol = "objc_msgSend") private native static UIApplicationDelegate objc_getDelegate(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIApplicationDelegate objc_getDelegateSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIApplicationDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/delegate">@property(nonatomic, assign) id&amp;lt;UIApplicationDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIApplicationDelegate getDelegate() {
-        if (customClass) { return objc_getDelegateSuper(getSuper(), this, delegate); } else { return objc_getDelegate(this, delegate); }
+        if (customClass) { return objc_getDelegateSuper(getSuper(), delegate); } else { return objc_getDelegate(this, delegate); }
     }
     
     private static final Selector setDelegate$ = Selector.register("setDelegate:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UIApplication __self__, Selector __cmd__, UIApplicationDelegate delegate);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, UIApplicationDelegate delegate);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIApplicationDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/delegate">@property(nonatomic, assign) id&amp;lt;UIApplicationDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setDelegate(UIApplicationDelegate delegate) {
-        if (customClass) { objc_setDelegateSuper(getSuper(), this, setDelegate$, delegate); } else { objc_setDelegate(this, setDelegate$, delegate); }
+        if (customClass) { objc_setDelegateSuper(getSuper(), setDelegate$, delegate); } else { objc_setDelegate(this, setDelegate$, delegate); }
     }
     
     private static final Selector isIdleTimerDisabled = Selector.register("isIdleTimerDisabled");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_isIdleTimerDisabled(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isIdleTimerDisabledSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isIdleTimerDisabledSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/idleTimerDisabled">@property(nonatomic, getter=isIdleTimerDisabled) BOOL idleTimerDisabled</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isIdleTimerDisabled() {
-        if (customClass) { return objc_isIdleTimerDisabledSuper(getSuper(), this, isIdleTimerDisabled); } else { return objc_isIdleTimerDisabled(this, isIdleTimerDisabled); }
+        if (customClass) { return objc_isIdleTimerDisabledSuper(getSuper(), isIdleTimerDisabled); } else { return objc_isIdleTimerDisabled(this, isIdleTimerDisabled); }
     }
     
     private static final Selector setIdleTimerDisabled$ = Selector.register("setIdleTimerDisabled:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setIdleTimerDisabled(UIApplication __self__, Selector __cmd__, boolean idleTimerDisabled);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setIdleTimerDisabledSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, boolean idleTimerDisabled);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setIdleTimerDisabledSuper(ObjCSuper __super__, Selector __cmd__, boolean idleTimerDisabled);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/idleTimerDisabled">@property(nonatomic, getter=isIdleTimerDisabled) BOOL idleTimerDisabled</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setIdleTimerDisabled(boolean idleTimerDisabled) {
-        if (customClass) { objc_setIdleTimerDisabledSuper(getSuper(), this, setIdleTimerDisabled$, idleTimerDisabled); } else { objc_setIdleTimerDisabled(this, setIdleTimerDisabled$, idleTimerDisabled); }
+        if (customClass) { objc_setIdleTimerDisabledSuper(getSuper(), setIdleTimerDisabled$, idleTimerDisabled); } else { objc_setIdleTimerDisabled(this, setIdleTimerDisabled$, idleTimerDisabled); }
     }
     
     private static final Selector keyWindow = Selector.register("keyWindow");
     @Bridge(symbol = "objc_msgSend") private native static UIWindow objc_getKeyWindow(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIWindow objc_getKeyWindowSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIWindow objc_getKeyWindowSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/keyWindow">@property(nonatomic, readonly) UIWindow *keyWindow</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIWindow getKeyWindow() {
-        if (customClass) { return objc_getKeyWindowSuper(getSuper(), this, keyWindow); } else { return objc_getKeyWindow(this, keyWindow); }
+        if (customClass) { return objc_getKeyWindowSuper(getSuper(), keyWindow); } else { return objc_getKeyWindow(this, keyWindow); }
     }
     
     private static final Selector isNetworkActivityIndicatorVisible = Selector.register("isNetworkActivityIndicatorVisible");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_isNetworkActivityIndicatorVisible(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isNetworkActivityIndicatorVisibleSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isNetworkActivityIndicatorVisibleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/networkActivityIndicatorVisible">@property(nonatomic, getter=isNetworkActivityIndicatorVisible) BOOL networkActivityIndicatorVisible</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isNetworkActivityIndicatorVisible() {
-        if (customClass) { return objc_isNetworkActivityIndicatorVisibleSuper(getSuper(), this, isNetworkActivityIndicatorVisible); } else { return objc_isNetworkActivityIndicatorVisible(this, isNetworkActivityIndicatorVisible); }
+        if (customClass) { return objc_isNetworkActivityIndicatorVisibleSuper(getSuper(), isNetworkActivityIndicatorVisible); } else { return objc_isNetworkActivityIndicatorVisible(this, isNetworkActivityIndicatorVisible); }
     }
     
     private static final Selector setNetworkActivityIndicatorVisible$ = Selector.register("setNetworkActivityIndicatorVisible:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setNetworkActivityIndicatorVisible(UIApplication __self__, Selector __cmd__, boolean networkActivityIndicatorVisible);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setNetworkActivityIndicatorVisibleSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, boolean networkActivityIndicatorVisible);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setNetworkActivityIndicatorVisibleSuper(ObjCSuper __super__, Selector __cmd__, boolean networkActivityIndicatorVisible);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/networkActivityIndicatorVisible">@property(nonatomic, getter=isNetworkActivityIndicatorVisible) BOOL networkActivityIndicatorVisible</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setNetworkActivityIndicatorVisible(boolean networkActivityIndicatorVisible) {
-        if (customClass) { objc_setNetworkActivityIndicatorVisibleSuper(getSuper(), this, setNetworkActivityIndicatorVisible$, networkActivityIndicatorVisible); } else { objc_setNetworkActivityIndicatorVisible(this, setNetworkActivityIndicatorVisible$, networkActivityIndicatorVisible); }
+        if (customClass) { objc_setNetworkActivityIndicatorVisibleSuper(getSuper(), setNetworkActivityIndicatorVisible$, networkActivityIndicatorVisible); } else { objc_setNetworkActivityIndicatorVisible(this, setNetworkActivityIndicatorVisible$, networkActivityIndicatorVisible); }
     }
     
     private static final Selector isProtectedDataAvailable = Selector.register("isProtectedDataAvailable");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_isProtectedDataAvailable(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isProtectedDataAvailableSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isProtectedDataAvailableSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/protectedDataAvailable">@property(nonatomic, readonly, getter=isProtectedDataAvailable) BOOL protectedDataAvailable</a>
      * @since Available in iOS 4.0 and later.
      */
     public boolean isProtectedDataAvailable() {
-        if (customClass) { return objc_isProtectedDataAvailableSuper(getSuper(), this, isProtectedDataAvailable); } else { return objc_isProtectedDataAvailable(this, isProtectedDataAvailable); }
+        if (customClass) { return objc_isProtectedDataAvailableSuper(getSuper(), isProtectedDataAvailable); } else { return objc_isProtectedDataAvailable(this, isProtectedDataAvailable); }
     }
     
     private static final Selector scheduledLocalNotifications = Selector.register("scheduledLocalNotifications");
     @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getScheduledLocalNotifications(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getScheduledLocalNotificationsSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getScheduledLocalNotificationsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/scheduledLocalNotifications">@property(nonatomic, copy) NSArray *scheduledLocalNotifications</a>
      * @since Available in iOS 4.2 and later.
      */
     public NSArray getScheduledLocalNotifications() {
-        if (customClass) { return objc_getScheduledLocalNotificationsSuper(getSuper(), this, scheduledLocalNotifications); } else { return objc_getScheduledLocalNotifications(this, scheduledLocalNotifications); }
+        if (customClass) { return objc_getScheduledLocalNotificationsSuper(getSuper(), scheduledLocalNotifications); } else { return objc_getScheduledLocalNotifications(this, scheduledLocalNotifications); }
     }
     
     private static final Selector setScheduledLocalNotifications$ = Selector.register("setScheduledLocalNotifications:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setScheduledLocalNotifications(UIApplication __self__, Selector __cmd__, NSArray scheduledLocalNotifications);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setScheduledLocalNotificationsSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, NSArray scheduledLocalNotifications);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setScheduledLocalNotificationsSuper(ObjCSuper __super__, Selector __cmd__, NSArray scheduledLocalNotifications);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/scheduledLocalNotifications">@property(nonatomic, copy) NSArray *scheduledLocalNotifications</a>
      * @since Available in iOS 4.2 and later.
      */
     public void setScheduledLocalNotifications(NSArray scheduledLocalNotifications) {
-        if (customClass) { objc_setScheduledLocalNotificationsSuper(getSuper(), this, setScheduledLocalNotifications$, scheduledLocalNotifications); } else { objc_setScheduledLocalNotifications(this, setScheduledLocalNotifications$, scheduledLocalNotifications); }
+        if (customClass) { objc_setScheduledLocalNotificationsSuper(getSuper(), setScheduledLocalNotifications$, scheduledLocalNotifications); } else { objc_setScheduledLocalNotifications(this, setScheduledLocalNotifications$, scheduledLocalNotifications); }
     }
     
     private static final Selector statusBarFrame = Selector.register("statusBarFrame");
-    @Bridge(symbol = "objc_msgSend") private native static CGRect objc_getStatusBarFrame(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static CGRect objc_getStatusBarFrameSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGRect objc_getStatusBarFrame(UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGRect objc_getStatusBarFrameSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarFrame">@property(nonatomic, readonly) CGRect statusBarFrame</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getStatusBarFrame() {
-        if (customClass) { return objc_getStatusBarFrameSuper(getSuper(), this, statusBarFrame); } else { return objc_getStatusBarFrame(this, statusBarFrame); }
+        if (customClass) { return objc_getStatusBarFrameSuper(getSuper(), statusBarFrame); } else { return objc_getStatusBarFrame(this, statusBarFrame); }
     }
     
     private static final Selector isStatusBarHidden = Selector.register("isStatusBarHidden");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_isStatusBarHidden(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isStatusBarHiddenSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isStatusBarHiddenSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarHidden">@property(nonatomic, getter=isStatusBarHidden) BOOL statusBarHidden</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isStatusBarHidden() {
-        if (customClass) { return objc_isStatusBarHiddenSuper(getSuper(), this, isStatusBarHidden); } else { return objc_isStatusBarHidden(this, isStatusBarHidden); }
+        if (customClass) { return objc_isStatusBarHiddenSuper(getSuper(), isStatusBarHidden); } else { return objc_isStatusBarHidden(this, isStatusBarHidden); }
     }
     
     private static final Selector setStatusBarHidden$ = Selector.register("setStatusBarHidden:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setStatusBarHidden(UIApplication __self__, Selector __cmd__, boolean statusBarHidden);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStatusBarHiddenSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, boolean statusBarHidden);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStatusBarHiddenSuper(ObjCSuper __super__, Selector __cmd__, boolean statusBarHidden);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarHidden">@property(nonatomic, getter=isStatusBarHidden) BOOL statusBarHidden</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setStatusBarHidden(boolean statusBarHidden) {
-        if (customClass) { objc_setStatusBarHiddenSuper(getSuper(), this, setStatusBarHidden$, statusBarHidden); } else { objc_setStatusBarHidden(this, setStatusBarHidden$, statusBarHidden); }
+        if (customClass) { objc_setStatusBarHiddenSuper(getSuper(), setStatusBarHidden$, statusBarHidden); } else { objc_setStatusBarHidden(this, setStatusBarHidden$, statusBarHidden); }
     }
     
     private static final Selector statusBarOrientation = Selector.register("statusBarOrientation");
     @Bridge(symbol = "objc_msgSend") private native static UIInterfaceOrientation objc_getStatusBarOrientation(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIInterfaceOrientation objc_getStatusBarOrientationSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIInterfaceOrientation objc_getStatusBarOrientationSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarOrientation">@property(nonatomic) UIInterfaceOrientation statusBarOrientation</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIInterfaceOrientation getStatusBarOrientation() {
-        if (customClass) { return objc_getStatusBarOrientationSuper(getSuper(), this, statusBarOrientation); } else { return objc_getStatusBarOrientation(this, statusBarOrientation); }
+        if (customClass) { return objc_getStatusBarOrientationSuper(getSuper(), statusBarOrientation); } else { return objc_getStatusBarOrientation(this, statusBarOrientation); }
     }
     
     private static final Selector setStatusBarOrientation$ = Selector.register("setStatusBarOrientation:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setStatusBarOrientation(UIApplication __self__, Selector __cmd__, UIInterfaceOrientation statusBarOrientation);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStatusBarOrientationSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, UIInterfaceOrientation statusBarOrientation);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStatusBarOrientationSuper(ObjCSuper __super__, Selector __cmd__, UIInterfaceOrientation statusBarOrientation);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarOrientation">@property(nonatomic) UIInterfaceOrientation statusBarOrientation</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setStatusBarOrientation(UIInterfaceOrientation statusBarOrientation) {
-        if (customClass) { objc_setStatusBarOrientationSuper(getSuper(), this, setStatusBarOrientation$, statusBarOrientation); } else { objc_setStatusBarOrientation(this, setStatusBarOrientation$, statusBarOrientation); }
+        if (customClass) { objc_setStatusBarOrientationSuper(getSuper(), setStatusBarOrientation$, statusBarOrientation); } else { objc_setStatusBarOrientation(this, setStatusBarOrientation$, statusBarOrientation); }
     }
     
     private static final Selector statusBarOrientationAnimationDuration = Selector.register("statusBarOrientationAnimationDuration");
     @Bridge(symbol = "objc_msgSend") private native static double objc_getStatusBarOrientationAnimationDuration(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static double objc_getStatusBarOrientationAnimationDurationSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static double objc_getStatusBarOrientationAnimationDurationSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarOrientationAnimationDuration">@property(nonatomic, readonly) NSTimeInterval statusBarOrientationAnimationDuration</a>
      * @since Available in iOS 2.0 and later.
      */
     public double getStatusBarOrientationAnimationDuration() {
-        if (customClass) { return objc_getStatusBarOrientationAnimationDurationSuper(getSuper(), this, statusBarOrientationAnimationDuration); } else { return objc_getStatusBarOrientationAnimationDuration(this, statusBarOrientationAnimationDuration); }
+        if (customClass) { return objc_getStatusBarOrientationAnimationDurationSuper(getSuper(), statusBarOrientationAnimationDuration); } else { return objc_getStatusBarOrientationAnimationDuration(this, statusBarOrientationAnimationDuration); }
     }
     
     private static final Selector statusBarStyle = Selector.register("statusBarStyle");
     @Bridge(symbol = "objc_msgSend") private native static UIStatusBarStyle objc_getStatusBarStyle(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIStatusBarStyle objc_getStatusBarStyleSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIStatusBarStyle objc_getStatusBarStyleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarStyle">@property(nonatomic) UIStatusBarStyle statusBarStyle</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIStatusBarStyle getStatusBarStyle() {
-        if (customClass) { return objc_getStatusBarStyleSuper(getSuper(), this, statusBarStyle); } else { return objc_getStatusBarStyle(this, statusBarStyle); }
+        if (customClass) { return objc_getStatusBarStyleSuper(getSuper(), statusBarStyle); } else { return objc_getStatusBarStyle(this, statusBarStyle); }
     }
     
     private static final Selector setStatusBarStyle$ = Selector.register("setStatusBarStyle:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setStatusBarStyle(UIApplication __self__, Selector __cmd__, UIStatusBarStyle statusBarStyle);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStatusBarStyleSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, UIStatusBarStyle statusBarStyle);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStatusBarStyleSuper(ObjCSuper __super__, Selector __cmd__, UIStatusBarStyle statusBarStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarStyle">@property(nonatomic) UIStatusBarStyle statusBarStyle</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setStatusBarStyle(UIStatusBarStyle statusBarStyle) {
-        if (customClass) { objc_setStatusBarStyleSuper(getSuper(), this, setStatusBarStyle$, statusBarStyle); } else { objc_setStatusBarStyle(this, setStatusBarStyle$, statusBarStyle); }
+        if (customClass) { objc_setStatusBarStyleSuper(getSuper(), setStatusBarStyle$, statusBarStyle); } else { objc_setStatusBarStyle(this, setStatusBarStyle$, statusBarStyle); }
     }
     
     private static final Selector userInterfaceLayoutDirection = Selector.register("userInterfaceLayoutDirection");
     @Bridge(symbol = "objc_msgSend") private native static UIUserInterfaceLayoutDirection objc_getUserInterfaceLayoutDirection(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIUserInterfaceLayoutDirection objc_getUserInterfaceLayoutDirectionSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIUserInterfaceLayoutDirection objc_getUserInterfaceLayoutDirectionSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/userInterfaceLayoutDirection">@property(nonatomic, readonly) UIUserInterfaceLayoutDirection userInterfaceLayoutDirection</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIUserInterfaceLayoutDirection getUserInterfaceLayoutDirection() {
-        if (customClass) { return objc_getUserInterfaceLayoutDirectionSuper(getSuper(), this, userInterfaceLayoutDirection); } else { return objc_getUserInterfaceLayoutDirection(this, userInterfaceLayoutDirection); }
+        if (customClass) { return objc_getUserInterfaceLayoutDirectionSuper(getSuper(), userInterfaceLayoutDirection); } else { return objc_getUserInterfaceLayoutDirection(this, userInterfaceLayoutDirection); }
     }
     
     private static final Selector windows = Selector.register("windows");
     @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getWindows(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getWindowsSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getWindowsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/windows">@property(nonatomic, readonly) NSArray *windows</a>
      * @since Available in iOS 2.0 and later.
      */
     public NSArray getWindows() {
-        if (customClass) { return objc_getWindowsSuper(getSuper(), this, windows); } else { return objc_getWindows(this, windows); }
+        if (customClass) { return objc_getWindowsSuper(getSuper(), windows); } else { return objc_getWindows(this, windows); }
     }
     /*</properties>*/
     /*<methods>*/
@@ -382,299 +382,299 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector beginBackgroundTaskWithExpirationHandler$ = Selector.register("beginBackgroundTaskWithExpirationHandler:");
     @Bridge(symbol = "objc_msgSend") private native static int objc_beginBackgroundTask(UIApplication __self__, Selector __cmd__, VoidBlock handler);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_beginBackgroundTaskSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, VoidBlock handler);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_beginBackgroundTaskSuper(ObjCSuper __super__, Selector __cmd__, VoidBlock handler);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/beginBackgroundTaskWithExpirationHandler:">- (UIBackgroundTaskIdentifier)beginBackgroundTaskWithExpirationHandler:(void (^)(void))handler</a>
      * @since Available in iOS 4.0 and later.
      */
     public int beginBackgroundTask(VoidBlock handler) {
-        if (customClass) { return objc_beginBackgroundTaskSuper(getSuper(), this, beginBackgroundTaskWithExpirationHandler$, handler); } else { return objc_beginBackgroundTask(this, beginBackgroundTaskWithExpirationHandler$, handler); }
+        if (customClass) { return objc_beginBackgroundTaskSuper(getSuper(), beginBackgroundTaskWithExpirationHandler$, handler); } else { return objc_beginBackgroundTask(this, beginBackgroundTaskWithExpirationHandler$, handler); }
     }
     
     private static final Selector beginIgnoringInteractionEvents = Selector.register("beginIgnoringInteractionEvents");
     @Bridge(symbol = "objc_msgSend") private native static void objc_beginIgnoringInteractionEvents(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_beginIgnoringInteractionEventsSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_beginIgnoringInteractionEventsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/beginIgnoringInteractionEvents">- (void)beginIgnoringInteractionEvents</a>
      * @since Available in iOS 2.0 and later.
      */
     public void beginIgnoringInteractionEvents() {
-        if (customClass) { objc_beginIgnoringInteractionEventsSuper(getSuper(), this, beginIgnoringInteractionEvents); } else { objc_beginIgnoringInteractionEvents(this, beginIgnoringInteractionEvents); }
+        if (customClass) { objc_beginIgnoringInteractionEventsSuper(getSuper(), beginIgnoringInteractionEvents); } else { objc_beginIgnoringInteractionEvents(this, beginIgnoringInteractionEvents); }
     }
     
     private static final Selector beginReceivingRemoteControlEvents = Selector.register("beginReceivingRemoteControlEvents");
     @Bridge(symbol = "objc_msgSend") private native static void objc_beginReceivingRemoteControlEvents(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_beginReceivingRemoteControlEventsSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_beginReceivingRemoteControlEventsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/beginReceivingRemoteControlEvents">- (void)beginReceivingRemoteControlEvents</a>
      * @since Available in iOS 4.0 and later.
      */
     public void beginReceivingRemoteControlEvents() {
-        if (customClass) { objc_beginReceivingRemoteControlEventsSuper(getSuper(), this, beginReceivingRemoteControlEvents); } else { objc_beginReceivingRemoteControlEvents(this, beginReceivingRemoteControlEvents); }
+        if (customClass) { objc_beginReceivingRemoteControlEventsSuper(getSuper(), beginReceivingRemoteControlEvents); } else { objc_beginReceivingRemoteControlEvents(this, beginReceivingRemoteControlEvents); }
     }
     
     private static final Selector canOpenURL$ = Selector.register("canOpenURL:");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_canOpenURL(UIApplication __self__, Selector __cmd__, NSURL url);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_canOpenURLSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, NSURL url);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_canOpenURLSuper(ObjCSuper __super__, Selector __cmd__, NSURL url);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/canOpenURL:">- (BOOL)canOpenURL:(NSURL *)url</a>
      * @since Available in iOS 3.0 and later.
      */
     public boolean canOpenURL(NSURL url) {
-        if (customClass) { return objc_canOpenURLSuper(getSuper(), this, canOpenURL$, url); } else { return objc_canOpenURL(this, canOpenURL$, url); }
+        if (customClass) { return objc_canOpenURLSuper(getSuper(), canOpenURL$, url); } else { return objc_canOpenURL(this, canOpenURL$, url); }
     }
     
     private static final Selector cancelAllLocalNotifications = Selector.register("cancelAllLocalNotifications");
     @Bridge(symbol = "objc_msgSend") private native static void objc_cancelAllLocalNotifications(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_cancelAllLocalNotificationsSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_cancelAllLocalNotificationsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/cancelAllLocalNotifications">- (void)cancelAllLocalNotifications</a>
      * @since Available in iOS 4.0 and later.
      */
     public void cancelAllLocalNotifications() {
-        if (customClass) { objc_cancelAllLocalNotificationsSuper(getSuper(), this, cancelAllLocalNotifications); } else { objc_cancelAllLocalNotifications(this, cancelAllLocalNotifications); }
+        if (customClass) { objc_cancelAllLocalNotificationsSuper(getSuper(), cancelAllLocalNotifications); } else { objc_cancelAllLocalNotifications(this, cancelAllLocalNotifications); }
     }
     
     private static final Selector cancelLocalNotification$ = Selector.register("cancelLocalNotification:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_cancelLocalNotification(UIApplication __self__, Selector __cmd__, UILocalNotification notification);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_cancelLocalNotificationSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, UILocalNotification notification);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_cancelLocalNotificationSuper(ObjCSuper __super__, Selector __cmd__, UILocalNotification notification);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/cancelLocalNotification:">- (void)cancelLocalNotification:(UILocalNotification *)notification</a>
      * @since Available in iOS 4.0 and later.
      */
     public void cancelLocalNotification(UILocalNotification notification) {
-        if (customClass) { objc_cancelLocalNotificationSuper(getSuper(), this, cancelLocalNotification$, notification); } else { objc_cancelLocalNotification(this, cancelLocalNotification$, notification); }
+        if (customClass) { objc_cancelLocalNotificationSuper(getSuper(), cancelLocalNotification$, notification); } else { objc_cancelLocalNotification(this, cancelLocalNotification$, notification); }
     }
     
     private static final Selector clearKeepAliveTimeout = Selector.register("clearKeepAliveTimeout");
     @Bridge(symbol = "objc_msgSend") private native static void objc_clearKeepAliveTimeout(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_clearKeepAliveTimeoutSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_clearKeepAliveTimeoutSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/clearKeepAliveTimeout">- (void)clearKeepAliveTimeout</a>
      * @since Available in iOS 4.0 and later.
      */
     public void clearKeepAliveTimeout() {
-        if (customClass) { objc_clearKeepAliveTimeoutSuper(getSuper(), this, clearKeepAliveTimeout); } else { objc_clearKeepAliveTimeout(this, clearKeepAliveTimeout); }
+        if (customClass) { objc_clearKeepAliveTimeoutSuper(getSuper(), clearKeepAliveTimeout); } else { objc_clearKeepAliveTimeout(this, clearKeepAliveTimeout); }
     }
     
     private static final Selector completeStateRestoration = Selector.register("completeStateRestoration");
     @Bridge(symbol = "objc_msgSend") private native static void objc_completeStateRestoration(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_completeStateRestorationSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_completeStateRestorationSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/completeStateRestoration">- (void)completeStateRestoration</a>
      * @since Available in iOS 6.0 and later.
      */
     public void completeStateRestoration() {
-        if (customClass) { objc_completeStateRestorationSuper(getSuper(), this, completeStateRestoration); } else { objc_completeStateRestoration(this, completeStateRestoration); }
+        if (customClass) { objc_completeStateRestorationSuper(getSuper(), completeStateRestoration); } else { objc_completeStateRestoration(this, completeStateRestoration); }
     }
     
     private static final Selector endBackgroundTask$ = Selector.register("endBackgroundTask:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_endBackgroundTask(UIApplication __self__, Selector __cmd__, int identifier);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_endBackgroundTaskSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, int identifier);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_endBackgroundTaskSuper(ObjCSuper __super__, Selector __cmd__, int identifier);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/endBackgroundTask:">- (void)endBackgroundTask:(UIBackgroundTaskIdentifier)identifier</a>
      * @since Available in iOS 4.0 and later.
      */
     public void endBackgroundTask(int identifier) {
-        if (customClass) { objc_endBackgroundTaskSuper(getSuper(), this, endBackgroundTask$, identifier); } else { objc_endBackgroundTask(this, endBackgroundTask$, identifier); }
+        if (customClass) { objc_endBackgroundTaskSuper(getSuper(), endBackgroundTask$, identifier); } else { objc_endBackgroundTask(this, endBackgroundTask$, identifier); }
     }
     
     private static final Selector endIgnoringInteractionEvents = Selector.register("endIgnoringInteractionEvents");
     @Bridge(symbol = "objc_msgSend") private native static void objc_endIgnoringInteractionEvents(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_endIgnoringInteractionEventsSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_endIgnoringInteractionEventsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/endIgnoringInteractionEvents">- (void)endIgnoringInteractionEvents</a>
      * @since Available in iOS 2.0 and later.
      */
     public void endIgnoringInteractionEvents() {
-        if (customClass) { objc_endIgnoringInteractionEventsSuper(getSuper(), this, endIgnoringInteractionEvents); } else { objc_endIgnoringInteractionEvents(this, endIgnoringInteractionEvents); }
+        if (customClass) { objc_endIgnoringInteractionEventsSuper(getSuper(), endIgnoringInteractionEvents); } else { objc_endIgnoringInteractionEvents(this, endIgnoringInteractionEvents); }
     }
     
     private static final Selector endReceivingRemoteControlEvents = Selector.register("endReceivingRemoteControlEvents");
     @Bridge(symbol = "objc_msgSend") private native static void objc_endReceivingRemoteControlEvents(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_endReceivingRemoteControlEventsSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_endReceivingRemoteControlEventsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/endReceivingRemoteControlEvents">- (void)endReceivingRemoteControlEvents</a>
      * @since Available in iOS 4.0 and later.
      */
     public void endReceivingRemoteControlEvents() {
-        if (customClass) { objc_endReceivingRemoteControlEventsSuper(getSuper(), this, endReceivingRemoteControlEvents); } else { objc_endReceivingRemoteControlEvents(this, endReceivingRemoteControlEvents); }
+        if (customClass) { objc_endReceivingRemoteControlEventsSuper(getSuper(), endReceivingRemoteControlEvents); } else { objc_endReceivingRemoteControlEvents(this, endReceivingRemoteControlEvents); }
     }
     
     private static final Selector extendStateRestoration = Selector.register("extendStateRestoration");
     @Bridge(symbol = "objc_msgSend") private native static void objc_extendStateRestoration(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_extendStateRestorationSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_extendStateRestorationSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/extendStateRestoration">- (void)extendStateRestoration</a>
      * @since Available in iOS 6.0 and later.
      */
     public void extendStateRestoration() {
-        if (customClass) { objc_extendStateRestorationSuper(getSuper(), this, extendStateRestoration); } else { objc_extendStateRestoration(this, extendStateRestoration); }
+        if (customClass) { objc_extendStateRestorationSuper(getSuper(), extendStateRestoration); } else { objc_extendStateRestoration(this, extendStateRestoration); }
     }
     
     private static final Selector enabledRemoteNotificationTypes = Selector.register("enabledRemoteNotificationTypes");
     @Bridge(symbol = "objc_msgSend") private native static UIRemoteNotificationType objc_getEnabledRemoteNotificationTypes(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIRemoteNotificationType objc_getEnabledRemoteNotificationTypesSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIRemoteNotificationType objc_getEnabledRemoteNotificationTypesSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/enabledRemoteNotificationTypes">- (UIRemoteNotificationType)enabledRemoteNotificationTypes</a>
      * @since Available in iOS 3.0 and later.
      */
     public UIRemoteNotificationType getEnabledRemoteNotificationTypes() {
-        if (customClass) { return objc_getEnabledRemoteNotificationTypesSuper(getSuper(), this, enabledRemoteNotificationTypes); } else { return objc_getEnabledRemoteNotificationTypes(this, enabledRemoteNotificationTypes); }
+        if (customClass) { return objc_getEnabledRemoteNotificationTypesSuper(getSuper(), enabledRemoteNotificationTypes); } else { return objc_getEnabledRemoteNotificationTypes(this, enabledRemoteNotificationTypes); }
     }
     
     private static final Selector supportedInterfaceOrientationsForWindow$ = Selector.register("supportedInterfaceOrientationsForWindow:");
     @Bridge(symbol = "objc_msgSend") private native static int objc_getSupportedInterfaceOrientations(UIApplication __self__, Selector __cmd__, UIWindow window);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getSupportedInterfaceOrientationsSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, UIWindow window);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getSupportedInterfaceOrientationsSuper(ObjCSuper __super__, Selector __cmd__, UIWindow window);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/supportedInterfaceOrientationsForWindow:">- (NSUInteger)supportedInterfaceOrientationsForWindow:(UIWindow *)window</a>
      * @since Available in iOS 6.0 and later.
      */
     public int getSupportedInterfaceOrientations(UIWindow window) {
-        if (customClass) { return objc_getSupportedInterfaceOrientationsSuper(getSuper(), this, supportedInterfaceOrientationsForWindow$, window); } else { return objc_getSupportedInterfaceOrientations(this, supportedInterfaceOrientationsForWindow$, window); }
+        if (customClass) { return objc_getSupportedInterfaceOrientationsSuper(getSuper(), supportedInterfaceOrientationsForWindow$, window); } else { return objc_getSupportedInterfaceOrientations(this, supportedInterfaceOrientationsForWindow$, window); }
     }
     
     private static final Selector isIgnoringInteractionEvents = Selector.register("isIgnoringInteractionEvents");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_isIgnoringInteractionEvents(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isIgnoringInteractionEventsSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isIgnoringInteractionEventsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/isIgnoringInteractionEvents">- (BOOL)isIgnoringInteractionEvents</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isIgnoringInteractionEvents() {
-        if (customClass) { return objc_isIgnoringInteractionEventsSuper(getSuper(), this, isIgnoringInteractionEvents); } else { return objc_isIgnoringInteractionEvents(this, isIgnoringInteractionEvents); }
+        if (customClass) { return objc_isIgnoringInteractionEventsSuper(getSuper(), isIgnoringInteractionEvents); } else { return objc_isIgnoringInteractionEvents(this, isIgnoringInteractionEvents); }
     }
     
     private static final Selector openURL$ = Selector.register("openURL:");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_openURL(UIApplication __self__, Selector __cmd__, NSURL url);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_openURLSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, NSURL url);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_openURLSuper(ObjCSuper __super__, Selector __cmd__, NSURL url);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/openURL:">- (BOOL)openURL:(NSURL *)url</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean openURL(NSURL url) {
-        if (customClass) { return objc_openURLSuper(getSuper(), this, openURL$, url); } else { return objc_openURL(this, openURL$, url); }
+        if (customClass) { return objc_openURLSuper(getSuper(), openURL$, url); } else { return objc_openURL(this, openURL$, url); }
     }
     
     private static final Selector presentLocalNotificationNow$ = Selector.register("presentLocalNotificationNow:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_presentLocalNotificationNow(UIApplication __self__, Selector __cmd__, UILocalNotification notification);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_presentLocalNotificationNowSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, UILocalNotification notification);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_presentLocalNotificationNowSuper(ObjCSuper __super__, Selector __cmd__, UILocalNotification notification);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/presentLocalNotificationNow:">- (void)presentLocalNotificationNow:(UILocalNotification *)notification</a>
      * @since Available in iOS 4.0 and later.
      */
     public void presentLocalNotificationNow(UILocalNotification notification) {
-        if (customClass) { objc_presentLocalNotificationNowSuper(getSuper(), this, presentLocalNotificationNow$, notification); } else { objc_presentLocalNotificationNow(this, presentLocalNotificationNow$, notification); }
+        if (customClass) { objc_presentLocalNotificationNowSuper(getSuper(), presentLocalNotificationNow$, notification); } else { objc_presentLocalNotificationNow(this, presentLocalNotificationNow$, notification); }
     }
     
     private static final Selector registerForRemoteNotificationTypes$ = Selector.register("registerForRemoteNotificationTypes:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_registerForRemoteNotificationTypes(UIApplication __self__, Selector __cmd__, UIRemoteNotificationType types);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_registerForRemoteNotificationTypesSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, UIRemoteNotificationType types);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_registerForRemoteNotificationTypesSuper(ObjCSuper __super__, Selector __cmd__, UIRemoteNotificationType types);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/registerForRemoteNotificationTypes:">- (void)registerForRemoteNotificationTypes:(UIRemoteNotificationType)types</a>
      * @since Available in iOS 3.0 and later.
      */
     public void registerForRemoteNotificationTypes(UIRemoteNotificationType types) {
-        if (customClass) { objc_registerForRemoteNotificationTypesSuper(getSuper(), this, registerForRemoteNotificationTypes$, types); } else { objc_registerForRemoteNotificationTypes(this, registerForRemoteNotificationTypes$, types); }
+        if (customClass) { objc_registerForRemoteNotificationTypesSuper(getSuper(), registerForRemoteNotificationTypes$, types); } else { objc_registerForRemoteNotificationTypes(this, registerForRemoteNotificationTypes$, types); }
     }
     
     private static final Selector scheduleLocalNotification$ = Selector.register("scheduleLocalNotification:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_scheduleLocalNotification(UIApplication __self__, Selector __cmd__, UILocalNotification notification);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_scheduleLocalNotificationSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, UILocalNotification notification);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_scheduleLocalNotificationSuper(ObjCSuper __super__, Selector __cmd__, UILocalNotification notification);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/scheduleLocalNotification:">- (void)scheduleLocalNotification:(UILocalNotification *)notification</a>
      * @since Available in iOS 4.0 and later.
      */
     public void scheduleLocalNotification(UILocalNotification notification) {
-        if (customClass) { objc_scheduleLocalNotificationSuper(getSuper(), this, scheduleLocalNotification$, notification); } else { objc_scheduleLocalNotification(this, scheduleLocalNotification$, notification); }
+        if (customClass) { objc_scheduleLocalNotificationSuper(getSuper(), scheduleLocalNotification$, notification); } else { objc_scheduleLocalNotification(this, scheduleLocalNotification$, notification); }
     }
     
     private static final Selector sendAction$to$from$forEvent$ = Selector.register("sendAction:to:from:forEvent:");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_sendAction(UIApplication __self__, Selector __cmd__, Selector action, NSObject target, NSObject sender, UIEvent event);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_sendActionSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, Selector action, NSObject target, NSObject sender, UIEvent event);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_sendActionSuper(ObjCSuper __super__, Selector __cmd__, Selector action, NSObject target, NSObject sender, UIEvent event);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/sendAction:to:from:forEvent:">- (BOOL)sendAction:(SEL)action to:(id)target from:(id)sender forEvent:(UIEvent *)event</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean sendAction(Selector action, NSObject target, NSObject sender, UIEvent event) {
-        if (customClass) { return objc_sendActionSuper(getSuper(), this, sendAction$to$from$forEvent$, action, target, sender, event); } else { return objc_sendAction(this, sendAction$to$from$forEvent$, action, target, sender, event); }
+        if (customClass) { return objc_sendActionSuper(getSuper(), sendAction$to$from$forEvent$, action, target, sender, event); } else { return objc_sendAction(this, sendAction$to$from$forEvent$, action, target, sender, event); }
     }
     
     private static final Selector sendEvent$ = Selector.register("sendEvent:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_sendEvent(UIApplication __self__, Selector __cmd__, UIEvent event);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_sendEventSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, UIEvent event);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_sendEventSuper(ObjCSuper __super__, Selector __cmd__, UIEvent event);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/sendEvent:">- (void)sendEvent:(UIEvent *)event</a>
      * @since Available in iOS 2.0 and later.
      */
     public void sendEvent(UIEvent event) {
-        if (customClass) { objc_sendEventSuper(getSuper(), this, sendEvent$, event); } else { objc_sendEvent(this, sendEvent$, event); }
+        if (customClass) { objc_sendEventSuper(getSuper(), sendEvent$, event); } else { objc_sendEvent(this, sendEvent$, event); }
     }
     
     private static final Selector setKeepAliveTimeout$handler$ = Selector.register("setKeepAliveTimeout:handler:");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_setKeepAliveTimeout(UIApplication __self__, Selector __cmd__, double timeout, VoidBlock keepAliveHandler);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_setKeepAliveTimeoutSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, double timeout, VoidBlock keepAliveHandler);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_setKeepAliveTimeoutSuper(ObjCSuper __super__, Selector __cmd__, double timeout, VoidBlock keepAliveHandler);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/setKeepAliveTimeout:handler:">- (BOOL)setKeepAliveTimeout:(NSTimeInterval)timeout handler:(void (^)(void))keepAliveHandler</a>
      * @since Available in iOS 4.0 and later.
      */
     public boolean setKeepAliveTimeout(double timeout, VoidBlock keepAliveHandler) {
-        if (customClass) { return objc_setKeepAliveTimeoutSuper(getSuper(), this, setKeepAliveTimeout$handler$, timeout, keepAliveHandler); } else { return objc_setKeepAliveTimeout(this, setKeepAliveTimeout$handler$, timeout, keepAliveHandler); }
+        if (customClass) { return objc_setKeepAliveTimeoutSuper(getSuper(), setKeepAliveTimeout$handler$, timeout, keepAliveHandler); } else { return objc_setKeepAliveTimeout(this, setKeepAliveTimeout$handler$, timeout, keepAliveHandler); }
     }
     
     private static final Selector setNewsstandIconImage$ = Selector.register("setNewsstandIconImage:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setNewsstandIconImage(UIApplication __self__, Selector __cmd__, UIImage image);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setNewsstandIconImageSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, UIImage image);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setNewsstandIconImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage image);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/setNewsstandIconImage:">- (void)setNewsstandIconImage:(UIImage *)image</a>
      * @since Available in iOS 5.0 and later.
      */
     public void setNewsstandIconImage(UIImage image) {
-        if (customClass) { objc_setNewsstandIconImageSuper(getSuper(), this, setNewsstandIconImage$, image); } else { objc_setNewsstandIconImage(this, setNewsstandIconImage$, image); }
+        if (customClass) { objc_setNewsstandIconImageSuper(getSuper(), setNewsstandIconImage$, image); } else { objc_setNewsstandIconImage(this, setNewsstandIconImage$, image); }
     }
     
     private static final Selector setStatusBarHidden$withAnimation$ = Selector.register("setStatusBarHidden:withAnimation:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setStatusBarHidden(UIApplication __self__, Selector __cmd__, boolean hidden, UIStatusBarAnimation animation);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStatusBarHiddenSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, boolean hidden, UIStatusBarAnimation animation);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStatusBarHiddenSuper(ObjCSuper __super__, Selector __cmd__, boolean hidden, UIStatusBarAnimation animation);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/setStatusBarHidden:withAnimation:">- (void)setStatusBarHidden:(BOOL)hidden withAnimation:(UIStatusBarAnimation)animation</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setStatusBarHidden(boolean hidden, UIStatusBarAnimation animation) {
-        if (customClass) { objc_setStatusBarHiddenSuper(getSuper(), this, setStatusBarHidden$withAnimation$, hidden, animation); } else { objc_setStatusBarHidden(this, setStatusBarHidden$withAnimation$, hidden, animation); }
+        if (customClass) { objc_setStatusBarHiddenSuper(getSuper(), setStatusBarHidden$withAnimation$, hidden, animation); } else { objc_setStatusBarHidden(this, setStatusBarHidden$withAnimation$, hidden, animation); }
     }
     
     private static final Selector setStatusBarOrientation$animated$ = Selector.register("setStatusBarOrientation:animated:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setStatusBarOrientation(UIApplication __self__, Selector __cmd__, UIInterfaceOrientation interfaceOrientation, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStatusBarOrientationSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, UIInterfaceOrientation interfaceOrientation, boolean animated);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStatusBarOrientationSuper(ObjCSuper __super__, Selector __cmd__, UIInterfaceOrientation interfaceOrientation, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/setStatusBarOrientation:animated:">- (void)setStatusBarOrientation:(UIInterfaceOrientation)interfaceOrientation animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setStatusBarOrientation(UIInterfaceOrientation interfaceOrientation, boolean animated) {
-        if (customClass) { objc_setStatusBarOrientationSuper(getSuper(), this, setStatusBarOrientation$animated$, interfaceOrientation, animated); } else { objc_setStatusBarOrientation(this, setStatusBarOrientation$animated$, interfaceOrientation, animated); }
+        if (customClass) { objc_setStatusBarOrientationSuper(getSuper(), setStatusBarOrientation$animated$, interfaceOrientation, animated); } else { objc_setStatusBarOrientation(this, setStatusBarOrientation$animated$, interfaceOrientation, animated); }
     }
     
     private static final Selector setStatusBarStyle$animated$ = Selector.register("setStatusBarStyle:animated:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setStatusBarStyle(UIApplication __self__, Selector __cmd__, UIStatusBarStyle statusBarStyle, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStatusBarStyleSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__, UIStatusBarStyle statusBarStyle, boolean animated);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStatusBarStyleSuper(ObjCSuper __super__, Selector __cmd__, UIStatusBarStyle statusBarStyle, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/setStatusBarStyle:animated:">- (void)setStatusBarStyle:(UIStatusBarStyle)statusBarStyle animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setStatusBarStyle(UIStatusBarStyle statusBarStyle, boolean animated) {
-        if (customClass) { objc_setStatusBarStyleSuper(getSuper(), this, setStatusBarStyle$animated$, statusBarStyle, animated); } else { objc_setStatusBarStyle(this, setStatusBarStyle$animated$, statusBarStyle, animated); }
+        if (customClass) { objc_setStatusBarStyleSuper(getSuper(), setStatusBarStyle$animated$, statusBarStyle, animated); } else { objc_setStatusBarStyle(this, setStatusBarStyle$animated$, statusBarStyle, animated); }
     }
     
     private static final Selector unregisterForRemoteNotifications = Selector.register("unregisterForRemoteNotifications");
     @Bridge(symbol = "objc_msgSend") private native static void objc_unregisterForRemoteNotifications(UIApplication __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_unregisterForRemoteNotificationsSuper(ObjCSuper __super__, UIApplication __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_unregisterForRemoteNotificationsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/unregisterForRemoteNotifications">- (void)unregisterForRemoteNotifications</a>
      * @since Available in iOS 3.0 and later.
      */
     public void unregisterForRemoteNotifications() {
-        if (customClass) { objc_unregisterForRemoteNotificationsSuper(getSuper(), this, unregisterForRemoteNotifications); } else { objc_unregisterForRemoteNotifications(this, unregisterForRemoteNotifications); }
+        if (customClass) { objc_unregisterForRemoteNotificationsSuper(getSuper(), unregisterForRemoteNotifications); } else { objc_unregisterForRemoteNotifications(this, unregisterForRemoteNotifications); }
     }
     /*</methods>*/
     /*<callbacks>*/
@@ -695,7 +695,7 @@ import org.robovm.rt.bro.ptr.*;
         @Callback @BindSelector("isProtectedDataAvailable") public static boolean isProtectedDataAvailable(UIApplication __self__, Selector __cmd__) { return __self__.isProtectedDataAvailable(); }
         @Callback @BindSelector("scheduledLocalNotifications") public static NSArray getScheduledLocalNotifications(UIApplication __self__, Selector __cmd__) { return __self__.getScheduledLocalNotifications(); }
         @Callback @BindSelector("setScheduledLocalNotifications:") public static void setScheduledLocalNotifications(UIApplication __self__, Selector __cmd__, NSArray scheduledLocalNotifications) { __self__.setScheduledLocalNotifications(scheduledLocalNotifications); }
-        @Callback @BindSelector("statusBarFrame") public static CGRect getStatusBarFrame(UIApplication __self__, Selector __cmd__) { return __self__.getStatusBarFrame(); }
+        @Callback @BindSelector("statusBarFrame") public static @ByVal CGRect getStatusBarFrame(UIApplication __self__, Selector __cmd__) { return __self__.getStatusBarFrame(); }
         @Callback @BindSelector("isStatusBarHidden") public static boolean isStatusBarHidden(UIApplication __self__, Selector __cmd__) { return __self__.isStatusBarHidden(); }
         @Callback @BindSelector("setStatusBarHidden:") public static void setStatusBarHidden(UIApplication __self__, Selector __cmd__, boolean statusBarHidden) { __self__.setStatusBarHidden(statusBarHidden); }
         @Callback @BindSelector("statusBarOrientation") public static UIInterfaceOrientation getStatusBarOrientation(UIApplication __self__, Selector __cmd__) { return __self__.getStatusBarOrientation(); }

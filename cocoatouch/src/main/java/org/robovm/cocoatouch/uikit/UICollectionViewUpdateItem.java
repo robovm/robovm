@@ -56,45 +56,45 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector elementKind = Selector.register("elementKind");
     @Bridge(symbol = "objc_msgSend") private native static String objc_getElementKind(UICollectionViewUpdateItem __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getElementKindSuper(ObjCSuper __super__, UICollectionViewUpdateItem __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getElementKindSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewUpdateItem_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewUpdateItem/elementKind">@property (nonatomic, readonly) NSString *elementKind</a>
      */
     public String getElementKind() {
-        if (customClass) { return objc_getElementKindSuper(getSuper(), this, elementKind); } else { return objc_getElementKind(this, elementKind); }
+        if (customClass) { return objc_getElementKindSuper(getSuper(), elementKind); } else { return objc_getElementKind(this, elementKind); }
     }
     
     private static final Selector indexPathAfterUpdate = Selector.register("indexPathAfterUpdate");
     @Bridge(symbol = "objc_msgSend") private native static NSIndexPath objc_getIndexPathAfterUpdate(UICollectionViewUpdateItem __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSIndexPath objc_getIndexPathAfterUpdateSuper(ObjCSuper __super__, UICollectionViewUpdateItem __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSIndexPath objc_getIndexPathAfterUpdateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewUpdateItem_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewUpdateItem/indexPathAfterUpdate">@property (nonatomic, readonly) NSIndexPath *indexPathAfterUpdate</a>
      * @since Available in iOS 6.0 and later.
      */
     public NSIndexPath getIndexPathAfterUpdate() {
-        if (customClass) { return objc_getIndexPathAfterUpdateSuper(getSuper(), this, indexPathAfterUpdate); } else { return objc_getIndexPathAfterUpdate(this, indexPathAfterUpdate); }
+        if (customClass) { return objc_getIndexPathAfterUpdateSuper(getSuper(), indexPathAfterUpdate); } else { return objc_getIndexPathAfterUpdate(this, indexPathAfterUpdate); }
     }
     
     private static final Selector indexPathBeforeUpdate = Selector.register("indexPathBeforeUpdate");
     @Bridge(symbol = "objc_msgSend") private native static NSIndexPath objc_getIndexPathBeforeUpdate(UICollectionViewUpdateItem __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSIndexPath objc_getIndexPathBeforeUpdateSuper(ObjCSuper __super__, UICollectionViewUpdateItem __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSIndexPath objc_getIndexPathBeforeUpdateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewUpdateItem_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewUpdateItem/indexPathBeforeUpdate">@property (nonatomic, readonly) NSIndexPath *indexPathBeforeUpdate</a>
      * @since Available in iOS 6.0 and later.
      */
     public NSIndexPath getIndexPathBeforeUpdate() {
-        if (customClass) { return objc_getIndexPathBeforeUpdateSuper(getSuper(), this, indexPathBeforeUpdate); } else { return objc_getIndexPathBeforeUpdate(this, indexPathBeforeUpdate); }
+        if (customClass) { return objc_getIndexPathBeforeUpdateSuper(getSuper(), indexPathBeforeUpdate); } else { return objc_getIndexPathBeforeUpdate(this, indexPathBeforeUpdate); }
     }
     
     private static final Selector updateAction = Selector.register("updateAction");
     @Bridge(symbol = "objc_msgSend") private native static UICollectionUpdateAction objc_getUpdateAction(UICollectionViewUpdateItem __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UICollectionUpdateAction objc_getUpdateActionSuper(ObjCSuper __super__, UICollectionViewUpdateItem __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UICollectionUpdateAction objc_getUpdateActionSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewUpdateItem_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewUpdateItem/updateAction">@property (nonatomic, readonly) UICollectionUpdateAction updateAction</a>
      * @since Available in iOS 6.0 and later.
      */
     public UICollectionUpdateAction getUpdateAction() {
-        if (customClass) { return objc_getUpdateActionSuper(getSuper(), this, updateAction); } else { return objc_getUpdateAction(this, updateAction); }
+        if (customClass) { return objc_getUpdateActionSuper(getSuper(), updateAction); } else { return objc_getUpdateAction(this, updateAction); }
     }
     /*</properties>*/
     /*<methods>*/

@@ -59,90 +59,90 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector canPerformWithActivityItems$ = Selector.register("canPerformWithActivityItems:");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_canPerform(UIActivity __self__, Selector __cmd__, NSArray activityItems);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_canPerformSuper(ObjCSuper __super__, UIActivity __self__, Selector __cmd__, NSArray activityItems);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_canPerformSuper(ObjCSuper __super__, Selector __cmd__, NSArray activityItems);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivity_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActivity/canPerformWithActivityItems:">- (BOOL)canPerformWithActivityItems:(NSArray *)activityItems</a>
      * @since Available in iOS 6.0 and later.
      */
     public boolean canPerform(NSArray activityItems) {
-        if (customClass) { return objc_canPerformSuper(getSuper(), this, canPerformWithActivityItems$, activityItems); } else { return objc_canPerform(this, canPerformWithActivityItems$, activityItems); }
+        if (customClass) { return objc_canPerformSuper(getSuper(), canPerformWithActivityItems$, activityItems); } else { return objc_canPerform(this, canPerformWithActivityItems$, activityItems); }
     }
     
     private static final Selector activityDidFinish$ = Selector.register("activityDidFinish:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_didFinish(UIActivity __self__, Selector __cmd__, boolean completed);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_didFinishSuper(ObjCSuper __super__, UIActivity __self__, Selector __cmd__, boolean completed);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_didFinishSuper(ObjCSuper __super__, Selector __cmd__, boolean completed);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivity_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActivity/activityDidFinish:">- (void)activityDidFinish:(BOOL)completed</a>
      * @since Available in iOS 6.0 and later.
      */
     public void didFinish(boolean completed) {
-        if (customClass) { objc_didFinishSuper(getSuper(), this, activityDidFinish$, completed); } else { objc_didFinish(this, activityDidFinish$, completed); }
+        if (customClass) { objc_didFinishSuper(getSuper(), activityDidFinish$, completed); } else { objc_didFinish(this, activityDidFinish$, completed); }
     }
     
     private static final Selector activityImage = Selector.register("activityImage");
     @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getImage(UIActivity __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getImageSuper(ObjCSuper __super__, UIActivity __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getImageSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivity_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActivity/activityImage">- (UIImage *)activityImage</a>
      * @since Available in iOS 6.0 and later.
      */
     public UIImage getImage() {
-        if (customClass) { return objc_getImageSuper(getSuper(), this, activityImage); } else { return objc_getImage(this, activityImage); }
+        if (customClass) { return objc_getImageSuper(getSuper(), activityImage); } else { return objc_getImage(this, activityImage); }
     }
     
     private static final Selector activityTitle = Selector.register("activityTitle");
     @Bridge(symbol = "objc_msgSend") private native static String objc_getTitle(UIActivity __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getTitleSuper(ObjCSuper __super__, UIActivity __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getTitleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivity_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActivity/activityTitle">- (NSString *)activityTitle</a>
      * @since Available in iOS 6.0 and later.
      */
     public String getTitle() {
-        if (customClass) { return objc_getTitleSuper(getSuper(), this, activityTitle); } else { return objc_getTitle(this, activityTitle); }
+        if (customClass) { return objc_getTitleSuper(getSuper(), activityTitle); } else { return objc_getTitle(this, activityTitle); }
     }
     
     private static final Selector activityType = Selector.register("activityType");
     @Bridge(symbol = "objc_msgSend") private native static String objc_getType(UIActivity __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getTypeSuper(ObjCSuper __super__, UIActivity __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getTypeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivity_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActivity/activityType">- (NSString *)activityType</a>
      * @since Available in iOS 6.0 and later.
      */
     public String getType() {
-        if (customClass) { return objc_getTypeSuper(getSuper(), this, activityType); } else { return objc_getType(this, activityType); }
+        if (customClass) { return objc_getTypeSuper(getSuper(), activityType); } else { return objc_getType(this, activityType); }
     }
     
     private static final Selector activityViewController = Selector.register("activityViewController");
     @Bridge(symbol = "objc_msgSend") private native static UIViewController objc_getViewController(UIActivity __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIViewController objc_getViewControllerSuper(ObjCSuper __super__, UIActivity __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIViewController objc_getViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivity_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActivity/activityViewController">- (UIViewController *)activityViewController</a>
      * @since Available in iOS 6.0 and later.
      */
     public UIViewController getViewController() {
-        if (customClass) { return objc_getViewControllerSuper(getSuper(), this, activityViewController); } else { return objc_getViewController(this, activityViewController); }
+        if (customClass) { return objc_getViewControllerSuper(getSuper(), activityViewController); } else { return objc_getViewController(this, activityViewController); }
     }
     
     private static final Selector performActivity = Selector.register("performActivity");
     @Bridge(symbol = "objc_msgSend") private native static void objc_perform(UIActivity __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_performSuper(ObjCSuper __super__, UIActivity __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_performSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivity_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActivity/performActivity">- (void)performActivity</a>
      * @since Available in iOS 6.0 and later.
      */
     public void perform() {
-        if (customClass) { objc_performSuper(getSuper(), this, performActivity); } else { objc_perform(this, performActivity); }
+        if (customClass) { objc_performSuper(getSuper(), performActivity); } else { objc_perform(this, performActivity); }
     }
     
     private static final Selector prepareWithActivityItems$ = Selector.register("prepareWithActivityItems:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_prepare(UIActivity __self__, Selector __cmd__, NSArray activityItems);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_prepareSuper(ObjCSuper __super__, UIActivity __self__, Selector __cmd__, NSArray activityItems);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_prepareSuper(ObjCSuper __super__, Selector __cmd__, NSArray activityItems);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivity_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActivity/prepareWithActivityItems:">- (void)prepareWithActivityItems:(NSArray *)activityItems</a>
      * @since Available in iOS 6.0 and later.
      */
     public void prepare(NSArray activityItems) {
-        if (customClass) { objc_prepareSuper(getSuper(), this, prepareWithActivityItems$, activityItems); } else { objc_prepare(this, prepareWithActivityItems$, activityItems); }
+        if (customClass) { objc_prepareSuper(getSuper(), prepareWithActivityItems$, activityItems); } else { objc_prepare(this, prepareWithActivityItems$, activityItems); }
     }
     /*</methods>*/
     /*<callbacks>*/

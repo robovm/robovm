@@ -67,46 +67,46 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector action = Selector.register("action");
     @Bridge(symbol = "objc_msgSend") private native static Selector objc_getAction(UIMenuItem __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static Selector objc_getActionSuper(ObjCSuper __super__, UIMenuItem __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static Selector objc_getActionSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIMenuItem_Class/Reference/MenuItem.html#//apple_ref/occ/instp/UIMenuItem/action">@property SEL action</a>
      * @since Available in iOS 3.2 and later.
      */
     public Selector getAction() {
-        if (customClass) { return objc_getActionSuper(getSuper(), this, action); } else { return objc_getAction(this, action); }
+        if (customClass) { return objc_getActionSuper(getSuper(), action); } else { return objc_getAction(this, action); }
     }
     
     private static final Selector setAction$ = Selector.register("setAction:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setAction(UIMenuItem __self__, Selector __cmd__, Selector action);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setActionSuper(ObjCSuper __super__, UIMenuItem __self__, Selector __cmd__, Selector action);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setActionSuper(ObjCSuper __super__, Selector __cmd__, Selector action);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIMenuItem_Class/Reference/MenuItem.html#//apple_ref/occ/instp/UIMenuItem/action">@property SEL action</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setAction(Selector action) {
-        if (customClass) { objc_setActionSuper(getSuper(), this, setAction$, action); } else { objc_setAction(this, setAction$, action); }
+        if (customClass) { objc_setActionSuper(getSuper(), setAction$, action); } else { objc_setAction(this, setAction$, action); }
     }
     
     private static final Selector title = Selector.register("title");
     @Bridge(symbol = "objc_msgSend") private native static String objc_getTitle(UIMenuItem __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getTitleSuper(ObjCSuper __super__, UIMenuItem __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getTitleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIMenuItem_Class/Reference/MenuItem.html#//apple_ref/occ/instp/UIMenuItem/title">@property(copy) NSString *title</a>
      * @since Available in iOS 3.2 and later.
      */
     public String getTitle() {
-        if (customClass) { return objc_getTitleSuper(getSuper(), this, title); } else { return objc_getTitle(this, title); }
+        if (customClass) { return objc_getTitleSuper(getSuper(), title); } else { return objc_getTitle(this, title); }
     }
     
     private static final Selector setTitle$ = Selector.register("setTitle:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setTitle(UIMenuItem __self__, Selector __cmd__, String title);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTitleSuper(ObjCSuper __super__, UIMenuItem __self__, Selector __cmd__, String title);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTitleSuper(ObjCSuper __super__, Selector __cmd__, String title);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIMenuItem_Class/Reference/MenuItem.html#//apple_ref/occ/instp/UIMenuItem/title">@property(copy) NSString *title</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setTitle(String title) {
-        if (customClass) { objc_setTitleSuper(getSuper(), this, setTitle$, title); } else { objc_setTitle(this, setTitle$, title); }
+        if (customClass) { objc_setTitleSuper(getSuper(), setTitle$, title); } else { objc_setTitle(this, setTitle$, title); }
     }
     /*</properties>*/
     /*<methods>*/

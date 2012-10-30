@@ -57,189 +57,189 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector batteryLevel = Selector.register("batteryLevel");
     @Bridge(symbol = "objc_msgSend") private native static float objc_getBatteryLevel(UIDevice __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getBatteryLevelSuper(ObjCSuper __super__, UIDevice __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getBatteryLevelSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDevice_Class/Reference/UIDevice.html#//apple_ref/occ/instp/UIDevice/batteryLevel">@property(nonatomic, readonly) float batteryLevel</a>
      * @since Available in iOS 3.0 and later.
      */
     public float getBatteryLevel() {
-        if (customClass) { return objc_getBatteryLevelSuper(getSuper(), this, batteryLevel); } else { return objc_getBatteryLevel(this, batteryLevel); }
+        if (customClass) { return objc_getBatteryLevelSuper(getSuper(), batteryLevel); } else { return objc_getBatteryLevel(this, batteryLevel); }
     }
     
     private static final Selector isBatteryMonitoringEnabled = Selector.register("isBatteryMonitoringEnabled");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_isBatteryMonitoringEnabled(UIDevice __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isBatteryMonitoringEnabledSuper(ObjCSuper __super__, UIDevice __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isBatteryMonitoringEnabledSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDevice_Class/Reference/UIDevice.html#//apple_ref/occ/instp/UIDevice/batteryMonitoringEnabled">@property(nonatomic, getter=isBatteryMonitoringEnabled) BOOL batteryMonitoringEnabled</a>
      * @since Available in iOS 3.0 and later.
      */
     public boolean isBatteryMonitoringEnabled() {
-        if (customClass) { return objc_isBatteryMonitoringEnabledSuper(getSuper(), this, isBatteryMonitoringEnabled); } else { return objc_isBatteryMonitoringEnabled(this, isBatteryMonitoringEnabled); }
+        if (customClass) { return objc_isBatteryMonitoringEnabledSuper(getSuper(), isBatteryMonitoringEnabled); } else { return objc_isBatteryMonitoringEnabled(this, isBatteryMonitoringEnabled); }
     }
     
     private static final Selector setBatteryMonitoringEnabled$ = Selector.register("setBatteryMonitoringEnabled:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setBatteryMonitoringEnabled(UIDevice __self__, Selector __cmd__, boolean batteryMonitoringEnabled);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBatteryMonitoringEnabledSuper(ObjCSuper __super__, UIDevice __self__, Selector __cmd__, boolean batteryMonitoringEnabled);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBatteryMonitoringEnabledSuper(ObjCSuper __super__, Selector __cmd__, boolean batteryMonitoringEnabled);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDevice_Class/Reference/UIDevice.html#//apple_ref/occ/instp/UIDevice/batteryMonitoringEnabled">@property(nonatomic, getter=isBatteryMonitoringEnabled) BOOL batteryMonitoringEnabled</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setBatteryMonitoringEnabled(boolean batteryMonitoringEnabled) {
-        if (customClass) { objc_setBatteryMonitoringEnabledSuper(getSuper(), this, setBatteryMonitoringEnabled$, batteryMonitoringEnabled); } else { objc_setBatteryMonitoringEnabled(this, setBatteryMonitoringEnabled$, batteryMonitoringEnabled); }
+        if (customClass) { objc_setBatteryMonitoringEnabledSuper(getSuper(), setBatteryMonitoringEnabled$, batteryMonitoringEnabled); } else { objc_setBatteryMonitoringEnabled(this, setBatteryMonitoringEnabled$, batteryMonitoringEnabled); }
     }
     
     private static final Selector batteryState = Selector.register("batteryState");
     @Bridge(symbol = "objc_msgSend") private native static UIDeviceBatteryState objc_getBatteryState(UIDevice __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIDeviceBatteryState objc_getBatteryStateSuper(ObjCSuper __super__, UIDevice __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIDeviceBatteryState objc_getBatteryStateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDevice_Class/Reference/UIDevice.html#//apple_ref/occ/instp/UIDevice/batteryState">@property(nonatomic, readonly) UIDeviceBatteryState batteryState</a>
      * @since Available in iOS 3.0 and later.
      */
     public UIDeviceBatteryState getBatteryState() {
-        if (customClass) { return objc_getBatteryStateSuper(getSuper(), this, batteryState); } else { return objc_getBatteryState(this, batteryState); }
+        if (customClass) { return objc_getBatteryStateSuper(getSuper(), batteryState); } else { return objc_getBatteryState(this, batteryState); }
     }
     
     private static final Selector isGeneratingDeviceOrientationNotifications = Selector.register("isGeneratingDeviceOrientationNotifications");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_isGeneratesDeviceOrientationNotifications(UIDevice __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isGeneratesDeviceOrientationNotificationsSuper(ObjCSuper __super__, UIDevice __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isGeneratesDeviceOrientationNotificationsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDevice_Class/Reference/UIDevice.html#//apple_ref/occ/instp/UIDevice/generatesDeviceOrientationNotifications">@property(nonatomic, readonly, getter=isGeneratingDeviceOrientationNotifications) BOOL generatesDeviceOrientationNotifications</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isGeneratesDeviceOrientationNotifications() {
-        if (customClass) { return objc_isGeneratesDeviceOrientationNotificationsSuper(getSuper(), this, isGeneratingDeviceOrientationNotifications); } else { return objc_isGeneratesDeviceOrientationNotifications(this, isGeneratingDeviceOrientationNotifications); }
+        if (customClass) { return objc_isGeneratesDeviceOrientationNotificationsSuper(getSuper(), isGeneratingDeviceOrientationNotifications); } else { return objc_isGeneratesDeviceOrientationNotifications(this, isGeneratingDeviceOrientationNotifications); }
     }
     
     private static final Selector localizedModel = Selector.register("localizedModel");
     @Bridge(symbol = "objc_msgSend") private native static String objc_getLocalizedModel(UIDevice __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getLocalizedModelSuper(ObjCSuper __super__, UIDevice __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getLocalizedModelSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDevice_Class/Reference/UIDevice.html#//apple_ref/occ/instp/UIDevice/localizedModel">@property(nonatomic, readonly, retain) NSString *localizedModel</a>
      * @since Available in iOS 2.0 and later.
      */
     public String getLocalizedModel() {
-        if (customClass) { return objc_getLocalizedModelSuper(getSuper(), this, localizedModel); } else { return objc_getLocalizedModel(this, localizedModel); }
+        if (customClass) { return objc_getLocalizedModelSuper(getSuper(), localizedModel); } else { return objc_getLocalizedModel(this, localizedModel); }
     }
     
     private static final Selector model = Selector.register("model");
     @Bridge(symbol = "objc_msgSend") private native static String objc_getModel(UIDevice __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getModelSuper(ObjCSuper __super__, UIDevice __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getModelSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDevice_Class/Reference/UIDevice.html#//apple_ref/occ/instp/UIDevice/model">@property(nonatomic, readonly, retain) NSString *model</a>
      * @since Available in iOS 2.0 and later.
      */
     public String getModel() {
-        if (customClass) { return objc_getModelSuper(getSuper(), this, model); } else { return objc_getModel(this, model); }
+        if (customClass) { return objc_getModelSuper(getSuper(), model); } else { return objc_getModel(this, model); }
     }
     
     private static final Selector isMultitaskingSupported = Selector.register("isMultitaskingSupported");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_isMultitaskingSupported(UIDevice __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isMultitaskingSupportedSuper(ObjCSuper __super__, UIDevice __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isMultitaskingSupportedSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDevice_Class/Reference/UIDevice.html#//apple_ref/occ/instp/UIDevice/multitaskingSupported">@property(nonatomic, readonly, getter=isMultitaskingSupported) BOOL multitaskingSupported</a>
      * @since Available in iOS 4.0 and later.
      */
     public boolean isMultitaskingSupported() {
-        if (customClass) { return objc_isMultitaskingSupportedSuper(getSuper(), this, isMultitaskingSupported); } else { return objc_isMultitaskingSupported(this, isMultitaskingSupported); }
+        if (customClass) { return objc_isMultitaskingSupportedSuper(getSuper(), isMultitaskingSupported); } else { return objc_isMultitaskingSupported(this, isMultitaskingSupported); }
     }
     
     private static final Selector name = Selector.register("name");
     @Bridge(symbol = "objc_msgSend") private native static String objc_getName(UIDevice __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getNameSuper(ObjCSuper __super__, UIDevice __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getNameSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDevice_Class/Reference/UIDevice.html#//apple_ref/occ/instp/UIDevice/name">@property(nonatomic, readonly, retain) NSString *name</a>
      * @since Available in iOS 2.0 and later.
      */
     public String getName() {
-        if (customClass) { return objc_getNameSuper(getSuper(), this, name); } else { return objc_getName(this, name); }
+        if (customClass) { return objc_getNameSuper(getSuper(), name); } else { return objc_getName(this, name); }
     }
     
     private static final Selector orientation = Selector.register("orientation");
     @Bridge(symbol = "objc_msgSend") private native static UIDeviceOrientation objc_getOrientation(UIDevice __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIDeviceOrientation objc_getOrientationSuper(ObjCSuper __super__, UIDevice __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIDeviceOrientation objc_getOrientationSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDevice_Class/Reference/UIDevice.html#//apple_ref/occ/instp/UIDevice/orientation">@property(nonatomic, readonly) UIDeviceOrientation orientation</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIDeviceOrientation getOrientation() {
-        if (customClass) { return objc_getOrientationSuper(getSuper(), this, orientation); } else { return objc_getOrientation(this, orientation); }
+        if (customClass) { return objc_getOrientationSuper(getSuper(), orientation); } else { return objc_getOrientation(this, orientation); }
     }
     
     private static final Selector isProximityMonitoringEnabled = Selector.register("isProximityMonitoringEnabled");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_isProximityMonitoringEnabled(UIDevice __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isProximityMonitoringEnabledSuper(ObjCSuper __super__, UIDevice __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isProximityMonitoringEnabledSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDevice_Class/Reference/UIDevice.html#//apple_ref/occ/instp/UIDevice/proximityMonitoringEnabled">@property(nonatomic, getter=isProximityMonitoringEnabled) BOOL proximityMonitoringEnabled</a>
      * @since Available in iOS 3.0 and later.
      */
     public boolean isProximityMonitoringEnabled() {
-        if (customClass) { return objc_isProximityMonitoringEnabledSuper(getSuper(), this, isProximityMonitoringEnabled); } else { return objc_isProximityMonitoringEnabled(this, isProximityMonitoringEnabled); }
+        if (customClass) { return objc_isProximityMonitoringEnabledSuper(getSuper(), isProximityMonitoringEnabled); } else { return objc_isProximityMonitoringEnabled(this, isProximityMonitoringEnabled); }
     }
     
     private static final Selector setProximityMonitoringEnabled$ = Selector.register("setProximityMonitoringEnabled:");
     @Bridge(symbol = "objc_msgSend") private native static void objc_setProximityMonitoringEnabled(UIDevice __self__, Selector __cmd__, boolean proximityMonitoringEnabled);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setProximityMonitoringEnabledSuper(ObjCSuper __super__, UIDevice __self__, Selector __cmd__, boolean proximityMonitoringEnabled);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setProximityMonitoringEnabledSuper(ObjCSuper __super__, Selector __cmd__, boolean proximityMonitoringEnabled);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDevice_Class/Reference/UIDevice.html#//apple_ref/occ/instp/UIDevice/proximityMonitoringEnabled">@property(nonatomic, getter=isProximityMonitoringEnabled) BOOL proximityMonitoringEnabled</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setProximityMonitoringEnabled(boolean proximityMonitoringEnabled) {
-        if (customClass) { objc_setProximityMonitoringEnabledSuper(getSuper(), this, setProximityMonitoringEnabled$, proximityMonitoringEnabled); } else { objc_setProximityMonitoringEnabled(this, setProximityMonitoringEnabled$, proximityMonitoringEnabled); }
+        if (customClass) { objc_setProximityMonitoringEnabledSuper(getSuper(), setProximityMonitoringEnabled$, proximityMonitoringEnabled); } else { objc_setProximityMonitoringEnabled(this, setProximityMonitoringEnabled$, proximityMonitoringEnabled); }
     }
     
     private static final Selector proximityState = Selector.register("proximityState");
     @Bridge(symbol = "objc_msgSend") private native static boolean objc_isProximityState(UIDevice __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isProximityStateSuper(ObjCSuper __super__, UIDevice __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isProximityStateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDevice_Class/Reference/UIDevice.html#//apple_ref/occ/instp/UIDevice/proximityState">@property(nonatomic, readonly) BOOL proximityState</a>
      * @since Available in iOS 3.0 and later.
      */
     public boolean isProximityState() {
-        if (customClass) { return objc_isProximityStateSuper(getSuper(), this, proximityState); } else { return objc_isProximityState(this, proximityState); }
+        if (customClass) { return objc_isProximityStateSuper(getSuper(), proximityState); } else { return objc_isProximityState(this, proximityState); }
     }
     
     private static final Selector systemName = Selector.register("systemName");
     @Bridge(symbol = "objc_msgSend") private native static String objc_getSystemName(UIDevice __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getSystemNameSuper(ObjCSuper __super__, UIDevice __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getSystemNameSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDevice_Class/Reference/UIDevice.html#//apple_ref/occ/instp/UIDevice/systemName">@property(nonatomic, readonly, retain) NSString *systemName</a>
      * @since Available in iOS 2.0 and later.
      */
     public String getSystemName() {
-        if (customClass) { return objc_getSystemNameSuper(getSuper(), this, systemName); } else { return objc_getSystemName(this, systemName); }
+        if (customClass) { return objc_getSystemNameSuper(getSuper(), systemName); } else { return objc_getSystemName(this, systemName); }
     }
     
     private static final Selector systemVersion = Selector.register("systemVersion");
     @Bridge(symbol = "objc_msgSend") private native static String objc_getSystemVersion(UIDevice __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getSystemVersionSuper(ObjCSuper __super__, UIDevice __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getSystemVersionSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDevice_Class/Reference/UIDevice.html#//apple_ref/occ/instp/UIDevice/systemVersion">@property(nonatomic, readonly, retain) NSString *systemVersion</a>
      * @since Available in iOS 2.0 and later.
      */
     public String getSystemVersion() {
-        if (customClass) { return objc_getSystemVersionSuper(getSuper(), this, systemVersion); } else { return objc_getSystemVersion(this, systemVersion); }
+        if (customClass) { return objc_getSystemVersionSuper(getSuper(), systemVersion); } else { return objc_getSystemVersion(this, systemVersion); }
     }
     
     private static final Selector userInterfaceIdiom = Selector.register("userInterfaceIdiom");
     @Bridge(symbol = "objc_msgSend") private native static UIUserInterfaceIdiom objc_getUserInterfaceIdiom(UIDevice __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIUserInterfaceIdiom objc_getUserInterfaceIdiomSuper(ObjCSuper __super__, UIDevice __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIUserInterfaceIdiom objc_getUserInterfaceIdiomSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDevice_Class/Reference/UIDevice.html#//apple_ref/occ/instp/UIDevice/userInterfaceIdiom">@property(nonatomic, readonly) UIUserInterfaceIdiom userInterfaceIdiom</a>
      * @since Available in iOS 3.2 and later.
      */
     public UIUserInterfaceIdiom getUserInterfaceIdiom() {
-        if (customClass) { return objc_getUserInterfaceIdiomSuper(getSuper(), this, userInterfaceIdiom); } else { return objc_getUserInterfaceIdiom(this, userInterfaceIdiom); }
+        if (customClass) { return objc_getUserInterfaceIdiomSuper(getSuper(), userInterfaceIdiom); } else { return objc_getUserInterfaceIdiom(this, userInterfaceIdiom); }
     }
     
     private static final Selector identifierForVendor = Selector.register("identifierForVendor");
     @Bridge(symbol = "objc_msgSend") private native static NSUUID objc_getVendorIdentifier(UIDevice __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSUUID objc_getVendorIdentifierSuper(ObjCSuper __super__, UIDevice __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSUUID objc_getVendorIdentifierSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDevice_Class/Reference/UIDevice.html#//apple_ref/occ/instp/UIDevice/identifierForVendor">@property(nonatomic, readonly, retain) NSUUID *identifierForVendor</a>
      * @since Available in iOS 6.0 and later.
      */
     public NSUUID getVendorIdentifier() {
-        if (customClass) { return objc_getVendorIdentifierSuper(getSuper(), this, identifierForVendor); } else { return objc_getVendorIdentifier(this, identifierForVendor); }
+        if (customClass) { return objc_getVendorIdentifierSuper(getSuper(), identifierForVendor); } else { return objc_getVendorIdentifier(this, identifierForVendor); }
     }
     /*</properties>*/
     /*<methods>*/
@@ -256,35 +256,35 @@ import org.robovm.rt.bro.ptr.*;
     
     private static final Selector beginGeneratingDeviceOrientationNotifications = Selector.register("beginGeneratingDeviceOrientationNotifications");
     @Bridge(symbol = "objc_msgSend") private native static void objc_beginGeneratingDeviceOrientationNotifications(UIDevice __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_beginGeneratingDeviceOrientationNotificationsSuper(ObjCSuper __super__, UIDevice __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_beginGeneratingDeviceOrientationNotificationsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDevice_Class/Reference/UIDevice.html#//apple_ref/occ/instm/UIDevice/beginGeneratingDeviceOrientationNotifications">- (void)beginGeneratingDeviceOrientationNotifications</a>
      * @since Available in iOS 2.0 and later.
      */
     public void beginGeneratingDeviceOrientationNotifications() {
-        if (customClass) { objc_beginGeneratingDeviceOrientationNotificationsSuper(getSuper(), this, beginGeneratingDeviceOrientationNotifications); } else { objc_beginGeneratingDeviceOrientationNotifications(this, beginGeneratingDeviceOrientationNotifications); }
+        if (customClass) { objc_beginGeneratingDeviceOrientationNotificationsSuper(getSuper(), beginGeneratingDeviceOrientationNotifications); } else { objc_beginGeneratingDeviceOrientationNotifications(this, beginGeneratingDeviceOrientationNotifications); }
     }
     
     private static final Selector endGeneratingDeviceOrientationNotifications = Selector.register("endGeneratingDeviceOrientationNotifications");
     @Bridge(symbol = "objc_msgSend") private native static void objc_endGeneratingDeviceOrientationNotifications(UIDevice __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_endGeneratingDeviceOrientationNotificationsSuper(ObjCSuper __super__, UIDevice __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_endGeneratingDeviceOrientationNotificationsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDevice_Class/Reference/UIDevice.html#//apple_ref/occ/instm/UIDevice/endGeneratingDeviceOrientationNotifications">- (void)endGeneratingDeviceOrientationNotifications</a>
      * @since Available in iOS 2.0 and later.
      */
     public void endGeneratingDeviceOrientationNotifications() {
-        if (customClass) { objc_endGeneratingDeviceOrientationNotificationsSuper(getSuper(), this, endGeneratingDeviceOrientationNotifications); } else { objc_endGeneratingDeviceOrientationNotifications(this, endGeneratingDeviceOrientationNotifications); }
+        if (customClass) { objc_endGeneratingDeviceOrientationNotificationsSuper(getSuper(), endGeneratingDeviceOrientationNotifications); } else { objc_endGeneratingDeviceOrientationNotifications(this, endGeneratingDeviceOrientationNotifications); }
     }
     
     private static final Selector playInputClick = Selector.register("playInputClick");
     @Bridge(symbol = "objc_msgSend") private native static void objc_playInputClick(UIDevice __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_playInputClickSuper(ObjCSuper __super__, UIDevice __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_playInputClickSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDevice_Class/Reference/UIDevice.html#//apple_ref/occ/instm/UIDevice/playInputClick">- (void)playInputClick</a>
      * @since Available in iOS 4.2 and later.
      */
     public void playInputClick() {
-        if (customClass) { objc_playInputClickSuper(getSuper(), this, playInputClick); } else { objc_playInputClick(this, playInputClick); }
+        if (customClass) { objc_playInputClickSuper(getSuper(), playInputClick); } else { objc_playInputClick(this, playInputClick); }
     }
     /*</methods>*/
     /*<callbacks>*/

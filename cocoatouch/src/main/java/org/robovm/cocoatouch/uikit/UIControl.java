@@ -22,6 +22,9 @@ import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
+
+import javax.sound.midi.ControllerEventListener;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -50,9 +53,43 @@ import org.robovm.rt.bro.ptr.*;
     private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIControl /*</name>*/.class);
 
+    private static final Selector handleEvent = Selector.register("handleEvent");
+    public static abstract class OnTouchDownListener extends NSObject {
+        public abstract void onTouchDown(UIControl control, UIEvent event);
+        @Callback @BindSelector("handleEvent") 
+        private static void handleEvent(OnTouchDownListener l, Selector sel, UIControl control, UIEvent event) {
+            l.onTouchDown(control, event);
+        }
+    }
+    public static abstract class OnTouchUpInsideListener extends NSObject {
+        public abstract void onTouchUpInside(UIControl control, UIEvent event);
+        @Callback @BindSelector("handleEvent") 
+        private static void handleEvent(OnTouchUpInsideListener l, Selector sel, UIControl control, UIEvent event) {
+            l.onTouchUpInside(control, event);
+        }
+    }
+    public static abstract class OnTouchUpOutsideListener extends NSObject {
+        public abstract void onTouchUpOutside(UIControl control, UIEvent event);
+        @Callback @BindSelector("handleEvent") 
+        private static void handleEvent(OnTouchUpOutsideListener l, Selector sel, UIControl control, UIEvent event) {
+            l.onTouchUpOutside(control, event);
+        }
+    }
+    
     public UIControl(CGRect aRect) {
         super(aRect);
     }
+    
+    public void addOnTouchDownListener(OnTouchDownListener l) {
+        addTarget(l, handleEvent, UIControlEvents.TouchDown);
+    }
+    public void addOnTouchUpInsideListener(OnTouchUpInsideListener l) {
+        addTarget(l, handleEvent, UIControlEvents.TouchUpInside);
+    }
+    public void addOnTouchUpOutsideListener(OnTouchUpOutsideListener l) {
+        addTarget(l, handleEvent, UIControlEvents.TouchUpOutside);
+    }
+    
     /*<constructors>*/
     protected UIControl(SkipInit skipInit) { super(skipInit); }
     public UIControl() {}

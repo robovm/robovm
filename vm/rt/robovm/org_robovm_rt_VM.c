@@ -112,6 +112,7 @@ jlong Java_org_robovm_rt_VM_malloc(Env* env, Class* c, jint size) {
         rvmThrowOutOfMemoryError(env);
         return 0;
     }
+    memset(m, 0, size);
     return PTR_TO_LONG(m);
 }
 

@@ -54,6 +54,7 @@ void* rvmAllocateMemoryAtomic(Env* env, jint size) {
         rvmThrowOutOfMemoryError(env);
         return NULL;
     }
+    memset(m, 0, size);
     return m;
 }
 

@@ -211,7 +211,6 @@ public final class Ptr<T extends NativeObject> extends Struct<Ptr<T>> {
             throw new IllegalArgumentException("n < 1");
         }
         long handle = VM.malloc(Ptr.sizeOf() * n);
-        VM.memset(handle, (byte) 0, Ptr.sizeOf() * n);
         return toPtr(cls, handle, wrapCount, lazy());
     }
     

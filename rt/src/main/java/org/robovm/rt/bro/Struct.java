@@ -196,7 +196,6 @@ public abstract class Struct<T extends Struct<T>> extends NativeObject implement
         }
         T o = VM.allocateObject(cls);
         long handle = VM.malloc(o._sizeOf() * n);
-        VM.memset(handle, (byte) 0, o._sizeOf() * n);
         o.setHandle(handle);
         return o;        
     }

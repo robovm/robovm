@@ -54,19 +54,22 @@ public abstract class Bits<T extends Bits<T>> implements Iterable<T>, Comparable
     protected abstract T[] values();
     
     public T set(T bits) {
-        return wrap((this.value & ~bits.mask) | bits.value, this.mask | bits.mask);
+        Bits<?> bits_ = bits; // Avoids "... has private access in Bits" error with javac from OpenJDK 1.7
+        return wrap((this.value & ~bits_.mask) | bits_.value, this.mask | bits_.mask);
     }
 
     @SuppressWarnings("unchecked")
     public T clear(T bits) {
-        if (bits.value == 0) {
+        Bits<?> bits_ = bits; // Avoids "... has private access in Bits" error with javac from OpenJDK 1.7
+        if (bits_.value == 0) {
             return (T) this;
         }
-        return wrap(this.value & ~bits.mask, this.mask & ~bits.mask);
+        return wrap(this.value & ~bits_.mask, this.mask & ~bits_.mask);
     }    
 
     public boolean contains(T bits) {
-        return (this.value | bits.mask) == bits.value;
+        Bits<?> bits_ = bits; // Avoids "... has private access in Bits" error with javac from OpenJDK 1.7
+        return (this.value | bits_.mask) == bits_.value;
     }
     
     @Override
@@ -89,15 +92,18 @@ public abstract class Bits<T extends Bits<T>> implements Iterable<T>, Comparable
         T[] all = values();
         Arrays.sort(all, new Comparator<T>() {
             public int compare(T lhs, T rhs) {
-                return Long.compare(cardinality(rhs.mask), cardinality(lhs.mask));
+                Bits<?> lhs_ = lhs; // Avoids "... has private access in Bits" error with javac from OpenJDK 1.7
+                Bits<?> rhs_ = rhs; // Avoids "... has private access in Bits" error with javac from OpenJDK 1.7
+                return Long.compare(cardinality(rhs_.mask), cardinality(lhs_.mask));
             }
         });
         Set<T> values = new TreeSet<T>();
         long value = this.value;
         for (T bits : all) {
-            if ((value & bits.mask) == bits.value) {
+            Bits<?> bits_ = bits; // Avoids "... has private access in Bits" error with javac from OpenJDK 1.7
+            if ((value & bits_.mask) == bits_.value) {
                 values.add(bits);
-                value &= ~bits.mask;
+                value &= ~bits_.mask;
                 if (value == 0) {
                     break;
                 }
@@ -139,8 +145,9 @@ public abstract class Bits<T extends Bits<T>> implements Iterable<T>, Comparable
     }
 
     public int compareTo(T another) {
-        int c = Long.compare(mask, another.mask);
-        return c == 0 ? Long.compare(value, another.value) : c;
+        Bits<?> another_ = another; // Avoids "... has private access in Bits" error with javac from OpenJDK 1.7
+        int c = Long.compare(mask, another_.mask);
+        return c == 0 ? Long.compare(value, another_.value) : c;
     }
     
     @Override
@@ -151,7 +158,7 @@ public abstract class Bits<T extends Bits<T>> implements Iterable<T>, Comparable
         sb.append(" = ");
         Iterator<T> it = this.iterator();
         while (it.hasNext()) {
-            T bits = it.next();
+            Bits<?> bits = it.next();
             if (bits.name != null) {
                 sb.append(bits.name);
                 sb.append("(0x");
@@ -180,8 +187,9 @@ public abstract class Bits<T extends Bits<T>> implements Iterable<T>, Comparable
                 int mod = field.getModifiers();
                 if (Modifier.isPublic(mod) && Modifier.isStatic(mod) && Modifier.isFinal(mod) && field.getType() == cls) {
                     T bits = (T) field.get(null);
-                    bits.name = field.getName();
-                    if (bits.mask != 0) {
+                    Bits<?> bits_ = bits; // Avoids "... has private access in Bits" error with javac from OpenJDK 1.7
+                    bits_.name = field.getName();
+                    if (bits_.mask != 0) {
                         values.add(bits);
                     }
                 }
@@ -199,7 +207,7 @@ public abstract class Bits<T extends Bits<T>> implements Iterable<T>, Comparable
     public static class AsIntMarshaler {
         @SuppressWarnings({ "rawtypes", "unchecked" })
         public static Object toObject(Class cls, int value) {
-            Bits f = VM.allocateObject(cls);
+            Bits<?> f = (Bits<?>) VM.allocateObject(cls);
             f.value = ((long) value) & 0xffffffff;
             f.mask = f.value == 0 ? -1 : f.value;
             return f;

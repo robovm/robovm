@@ -49,7 +49,7 @@ static Array* newArray(Env* env, Class* arrayType, jint elementSize, jint dims, 
         return NULL;
     }
 
-    Array* array = rvmAllocateMemory(env, sizeof(Array) + length * elementSize);
+    Array* array = rvmAllocateMemoryForArray(env, length, elementSize);
     if (!array) return NULL;
 
     ((Object*) array)->clazz = arrayType;
@@ -138,7 +138,7 @@ Array* rvmNewMultiArray(Env* env, jint dims, jint* lengths, Class* clazz) {
 Array* rvmCloneArray(Env* env, Array* array) {
     jint elementSize = getElementSize(array->object.clazz->name);
     jint size = sizeof(Array) + array->length * elementSize;
-    Array* copy = rvmAllocateMemory(env, size);
+    Array* copy = rvmAllocateMemoryForArray(env, array->length, elementSize);
     if (!copy) return NULL;
     memcpy(copy, array, size);
     copy->object.lock = 0;

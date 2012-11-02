@@ -55,6 +55,13 @@ static struct GC_ms_entry* markObject(GC_word* addr, struct GC_ms_entry* mark_st
         mark_stack_ptr = GC_MARK_AND_PUSH(clazz->_methods, mark_stack_ptr, mark_stack_limit, NULL);
         p = (void**) (((char*) clazz) + offsetof(Class, data));
         end = (void**) (((char*) clazz) + clazz->classDataSize);
+    } else if (CLASS_IS_ARRAY(obj->clazz)) {
+        if (!CLASS_IS_PRIMITIVE(obj->clazz->componentType)) {
+            // Array of objects. Mark all values in the array.
+            ObjectArray* array = (ObjectArray*) obj;
+            p = (void**) (((char*) array) + offsetof(ObjectArray, values));
+            end = (void**) (((char*) p) + sizeof(Object*) * array->length);
+        }
     } else {
         // Object*
         p = (void**) (((char*) obj) + offsetof(DataObject, data));
@@ -149,6 +156,10 @@ Class* rvmAllocateMemoryForClass(Env* env, jint classDataSize) {
 
 Object* rvmAllocateMemoryForObject(Env* env, Class* clazz) {
     return gcAllocateKind(clazz->instanceDataSize, object_gc_kind);
+}
+
+Array* rvmAllocateMemoryForArray(Env* env, jint length, jint elementSize) {
+    return gcAllocateKind(sizeof(Array) + length * elementSize, object_gc_kind);
 }
 
 void* rvmAllocateMemory(Env* env, jint size) {

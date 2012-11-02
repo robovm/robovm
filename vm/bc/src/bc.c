@@ -208,7 +208,8 @@ static Class* createClass(Env* env, ClassInfoHeader* header, ClassLoader* classL
     }
 
     Class* clazz = rvmAllocateClass(env, header->className, superclass, classLoader, ci.access, header->classDataSize, 
-            header->instanceDataSize, header->instanceDataOffset, ci.attributes, header->initializer);
+            header->instanceDataSize, header->instanceDataOffset, header->classRefCount, header->instanceRefCount,
+            ci.attributes, header->initializer);
 
     if (clazz) {
         if (!rvmRegisterClass(env, clazz)) return NULL;

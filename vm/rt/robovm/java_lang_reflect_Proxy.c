@@ -200,12 +200,6 @@ static void handler(Env* env, Object* receiver, ProxyMethod* method, jvalue* arg
     }
 }
 
-struct ProxyInstance {
-    Object object;
-    Object* h;
-    void* data[0];
-};
-
 Class* Java_java_lang_reflect_Proxy_generateProxy(Env* env, Class* java_lang_reflect_Proxy, 
       Object* name, ObjectArray* interfaces, ClassLoader* loader) {
 
@@ -213,6 +207,5 @@ Class* Java_java_lang_reflect_Proxy_generateProxy(Env* env, Class* java_lang_ref
     if (!cname) return NULL;
 
     return rvmProxyCreateProxyClass(env, java_lang_reflect_Proxy, loader, cname, interfaces->length, (Class**) interfaces->values, 
-                sizeof(struct ProxyInstance), offsetof(struct ProxyInstance, data), handler);
+                java_lang_reflect_Proxy->instanceDataSize, java_lang_reflect_Proxy->instanceDataOffset, 0, handler);
 }
-

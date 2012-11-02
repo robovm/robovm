@@ -20,6 +20,8 @@
 static Class* java_nio_ReadWriteDirectByteBuffer = NULL;
 static Method* java_nio_ReadWriteDirectByteBuffer_init = NULL;
 static InstanceField* java_nio_ReadWriteDirectByteBuffer_effectiveDirectAddress = NULL;
+static Class* java_lang_ref_Reference = NULL;
+static InstanceField* java_lang_ref_Reference_referent = NULL;
 static Class* java_lang_ref_FinalizerReference = NULL;
 static Method* java_lang_ref_FinalizerReference_add = NULL;
 static VM* vm = NULL;
@@ -137,6 +139,10 @@ void gcRegisterFinalizer(Env* env, Object* obj) {
 
 jboolean rvmInitMemory(Env* env) {
     vm = env->vm;
+    java_lang_ref_Reference = rvmFindClassUsingLoader(env, "java/lang/ref/Reference", NULL);
+    if (!java_lang_ref_Reference) return FALSE;
+    java_lang_ref_Reference_referent = rvmGetInstanceField(env, java_lang_ref_Reference, "referent", "Ljava/lang/Object;");
+    if (!java_lang_ref_Reference_referent) return FALSE;
     java_lang_ref_FinalizerReference = rvmFindClassUsingLoader(env, "java/lang/ref/FinalizerReference", NULL);
     if (!java_lang_ref_FinalizerReference) return FALSE;
     java_lang_ref_FinalizerReference_add = rvmGetClassMethod(env, java_lang_ref_FinalizerReference, "add", "(Ljava/lang/Object;)V");

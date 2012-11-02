@@ -19,7 +19,7 @@
 typedef void (*ProxyHandler)(Env*, Object*, ProxyMethod*, jvalue*, jvalue*);
 
 extern Class* rvmProxyCreateProxyClass(Env* env, Class* superclass, ClassLoader* classLoader, char* className, jint interfacesCount, Class** interfaces, 
-	jint instanceDataSize, jint instanceDataOffset, ProxyHandler handler);
+	jint instanceDataSize, jint instanceDataOffset, unsigned short instanceRefCount, ProxyHandler handler);
 
 #endif
 

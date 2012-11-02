@@ -157,7 +157,7 @@ static inline void releaseClassLock() {
 static Class* createPrimitiveClass(Env* env, const char* desc) {
     Class* clazz = rvmAllocateClass(env, desc, NULL, NULL, 
         CLASS_TYPE_PRIMITIVE | CLASS_STATE_INITIALIZED | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, 
-        sizeof(Class), sizeof(Object), sizeof(Object), NULL, NULL);
+        sizeof(Class), sizeof(Object), sizeof(Object), 0, 0, NULL, NULL);
     if (!clazz) return NULL;
     clazz->_interfaces = NULL;
     clazz->_fields = NULL;
@@ -185,7 +185,8 @@ static Class* createArrayClass(Env* env, Class* componentType) {
 
     // TODO: Add clone() method.
     Class* clazz = rvmAllocateClass(env, desc, java_lang_Object, componentType->classLoader, 
-        CLASS_TYPE_ARRAY | CLASS_STATE_INITIALIZED | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, sizeof(Class), sizeof(Object), sizeof(Object), NULL, NULL);
+        CLASS_TYPE_ARRAY | CLASS_STATE_INITIALIZED | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, 
+        sizeof(Class), sizeof(Object), sizeof(Object), 0, 0, NULL, NULL);
     if (!clazz) return NULL;
     clazz->componentType = componentType;
     // Initialize methods to NULL to prevent rvmGetMethods() from trying to load the methods if called with this array class
@@ -673,7 +674,8 @@ ClassLoader* rvmGetSystemClassLoader(Env* env) {
 }
 
 Class* rvmAllocateClass(Env* env, const char* className, Class* superclass, ClassLoader* classLoader, jint flags, 
-        jint classDataSize, jint instanceDataSize, jint instanceDataOffset, void* attributes, void* initializer) {
+        jint classDataSize, jint instanceDataSize, jint instanceDataOffset, unsigned short classRefCount, 
+        unsigned short instanceRefCount, void* attributes, void* initializer) {
 
     if (superclass && CLASS_IS_INTERFACE(superclass)) {
         // TODO: Message should look like ?
@@ -699,6 +701,8 @@ Class* rvmAllocateClass(Env* env, const char* className, Class* superclass, Clas
     clazz->classDataSize = classDataSize;
     clazz->instanceDataSize = instanceDataSize;
     clazz->instanceDataOffset = instanceDataOffset;
+    clazz->classRefCount = classRefCount;
+    clazz->instanceRefCount = instanceRefCount;
     clazz->_interfaces = &INTERFACES_NOT_LOADED;
     clazz->_fields = &FIELDS_NOT_LOADED;
     clazz->_methods = &METHODS_NOT_LOADED;

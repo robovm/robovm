@@ -33,8 +33,8 @@ typedef struct {
 } LookupEntry;
 
 typedef struct {
-    ProxyHandler handler;
     LookupEntry* lookupsHash;
+    ProxyHandler handler;
 } ProxyClassData;
 
 static ProxyMethod* hasMethod(Env* env, Class* clazz, const char* name, const char* desc) {
@@ -130,11 +130,11 @@ static jboolean implementAbstractInterfaceMethods(Env* env, Class* proxyClass, I
 }
 
 Class* rvmProxyCreateProxyClass(Env* env, Class* superclass, ClassLoader* classLoader, char* className, jint interfacesCount, Class** interfaces, 
-        jint instanceDataSize, jint instanceDataOffset, ProxyHandler handler) {
+        jint instanceDataSize, jint instanceDataOffset, unsigned short instanceRefCount, ProxyHandler handler) {
 
     // Allocate the proxy class.
     Class* proxyClass = rvmAllocateClass(env, className, superclass, classLoader, CLASS_TYPE_PROXY | ACC_PUBLIC | ACC_FINAL, 
-        offsetof(Class, data) + sizeof(ProxyClassData), instanceDataSize, instanceDataOffset, NULL, NULL);
+        offsetof(Class, data) + sizeof(ProxyClassData), instanceDataSize, instanceDataOffset, 1, instanceRefCount, NULL, NULL);
     if (!proxyClass) return NULL;
 
     ProxyClassData* proxyClassData = (ProxyClassData*) proxyClass->data;

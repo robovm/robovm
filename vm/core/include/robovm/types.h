@@ -140,9 +140,9 @@ struct Class {
   jint classDataSize;
   jint instanceDataOffset; // The offset from the base of Object->data
                            // where the instance fields of this class can be found.
-  jint instanceDataSize;   // The number of bytes needed to store the instance fields declared by this class.
-                           // instanceDataOffset + instanceDataSize gives the total number of bytes
-                           // needed to store the instance data for instances of this class including superclasses.
+  jint instanceDataSize;   // The total number of bytes needed to store instances of this class.
+  unsigned short classRefCount;
+  unsigned short instanceRefCount;
   void* data[0];           // This is where static fields are stored for the class
 };
 

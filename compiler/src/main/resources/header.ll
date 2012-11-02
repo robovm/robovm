@@ -1,6 +1,6 @@
 %GatewayFrame = type {i8*, i8*, i8*}
 %Env = type {i8*, i8*, i8*, i8*, i8*, i8*, i8*, i32}
-%Class = type {i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i32, i8*, i8*, i8*, i8*, i32, i32, i32}
+%Class = type {i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i32, i8*, i8*, i8*, i8*, i32, i32, i32, i16, i16}
 %Method = type opaque
 %Field = type opaque
 %Object = type {%Class*, i8*}

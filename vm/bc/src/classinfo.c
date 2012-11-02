@@ -79,7 +79,7 @@ static const char* S = &str__28_29S_00;
 static const char* Z = &str__28_29Z_00;
 static const char* V = &str__28_29V_00;
 
-static jboolean parseFieldInfo(Env* env, ClassInfoHeader* header, void** p, ParseClassInfoCallbacks* callbacks, void* data) {
+void readFieldInfo(void** p, FieldInfo* result) {
     jint flags = readShort(p);
     char* name = readString(p);
     jint access = 0;
@@ -114,11 +114,17 @@ static jboolean parseFieldInfo(Env* env, ClassInfoHeader* header, void** p, Pars
     void* attributes = NULL;
     if (flags & FI_ATTRIBUTES) attributes = readPtr(p);
 
-    if (!callbacks->fieldCallback) return TRUE;
-    return callbacks->fieldCallback(env, header, name, desc, access, offset, attributes, data);
+    if (result) {
+        result->flags = flags;
+        result->access = access;
+        result->name = name;
+        result->desc = desc;
+        result->attributes = attributes;
+        result->offset = offset;
+    }
 }
 
-static jboolean parseMethodInfo(Env* env, ClassInfoHeader* header, void** p, ParseClassInfoCallbacks* callbacks, void* data) {
+void readMethodInfo(void** p, MethodInfo* result) {
     jint flags = readShort(p);
     char* name = readString(p);
     jint access = 0;
@@ -167,11 +173,22 @@ static jboolean parseMethodInfo(Env* env, ClassInfoHeader* header, void** p, Par
     void* callbackImpl = NULL;
     if (flags & MI_BRO_CALLBACK) callbackImpl = readPtr(p);
 
-    if (!callbacks->methodCallback) return TRUE;
-    return callbacks->methodCallback(env, header, name, desc, access, size, impl, synchronizedImpl, targetFnPtr, callbackImpl, attributes, data);
+    if (result) {
+        result->flags = flags;
+        result->access = access;
+        result->name = name;
+        result->desc = desc;
+        result->attributes = attributes;
+        result->size = size;
+        result->impl = impl;
+        result->synchronizedImpl = synchronizedImpl;
+        result->targetFnPtr = targetFnPtr;
+        result->callbackImpl = callbackImpl;
+    }
 }
 
-void parseClassInfo(Env* env, ClassInfoHeader* header, ParseClassInfoCallbacks* callbacks, void* data) {
+void readClassInfo(void** p, ClassInfo* result) {
+    ClassInfoHeader* header = *p;
     jint flags = header->flags;
 
     jint access = 0;
@@ -182,64 +199,35 @@ void parseClassInfo(Env* env, ClassInfoHeader* header, ParseClassInfoCallbacks* 
     if (flags & CI_SYNTHETIC) access |= ACC_SYNTHETIC;
     if (flags & CI_ANNOTATION) access |= ACC_ANNOTATION;
     if (flags & CI_ENUM) access |= ACC_ENUM;
+    if (flags & CI_FINALIZABLE) access |= CLASS_FLAG_FINALIZABLE;
 
-    flags >>= CI_FLAGS_BITS;
-    jint methodCount = flags & CI_METHOD_COUNT_MASK;
-    flags >>= CI_METHOD_COUNT_BITS;
-    jint fieldCount = flags & CI_FIELD_COUNT_MASK;
-    flags >>= CI_FIELD_COUNT_BITS;
-    jint interfaceCount = flags & CI_INTERFACE_COUNT_MASK;
+    *p = ((void*) header) + sizeof(ClassInfoHeader);
 
-    void* p = ((void*) header) + sizeof(ClassInfoHeader);
-
-    if (interfaceCount == CI_INTERFACE_COUNT_MASK) {
-        interfaceCount = readShort(&p);
-    }
-    if (fieldCount == CI_FIELD_COUNT_MASK) {
-        fieldCount = readShort(&p);
-    }
-    if (methodCount == CI_METHOD_COUNT_MASK) {
-        methodCount = readShort(&p);
-    }
+    jint interfaceCount = readShort(p);
+    jint fieldCount = readShort(p);
+    jint methodCount = readShort(p);
 
     char* superclassName = NULL;
     if (!IS_INTERFACE(access)) {
-        superclassName = readString(&p);
+        superclassName = readString(p);
     }
 
     void* attributes = NULL;
     if (header->flags & CI_ATTRIBUTES) {
-        attributes = readPtr(&p);
+        attributes = readPtr(p);
     }
 
-    if (callbacks->classCallback) {
-        if (!callbacks->classCallback(env, header, header->className, superclassName, 
-                access, header->classDataSize, header->instanceDataSize, header->instanceDataOffset,
-                attributes, header->initializer, data)) {
-            return;
-        }
-    }
-
-    if (!callbacks->interfaceCallback && !callbacks->fieldCallback && !callbacks->methodCallback) return;
-
-    jint i;
-    for (i = 0; i < interfaceCount; i++) {
-        char* interfaceName = readString(&p);
-        if (callbacks->interfaceCallback) {
-            if (!callbacks->interfaceCallback(env, header, interfaceName, data)) return;
-        }
-    }
-
-    if (!callbacks->fieldCallback && !callbacks->methodCallback) return;
-
-    for (i = 0; i < fieldCount; i++) {
-        if (!parseFieldInfo(env, header, &p, callbacks, data)) return;
-    }
-
-    if (!callbacks->methodCallback) return;
-
-    for (i = 0; i < methodCount; i++) {
-        if (!parseMethodInfo(env, header, &p, callbacks, data)) return;
+    if (result) {
+        result->header = *header;
+        result->access = access;
+        result->interfaceCount = interfaceCount;
+        result->fieldCount = fieldCount;
+        result->methodCount = methodCount;
+        result->superclassName = superclassName;
+        result->attributes = attributes;
     }
 }
 
+const char* readInterfaceName(void** p) {
+    return readString(p);
+}

@@ -119,12 +119,24 @@ static ClassInfoHeader* lookupClassInfo(Env* env, const char* className, void* h
     return NULL;
 }
 
-static void iterateClassInfos(Env* env, ParseClassInfoCallbacks* callbacks, void* hash, void* data) {
+static void iterateClassInfos(Env* env, jboolean (*callback)(Env*, ClassInfoHeader*, MethodInfo*, void*), void* hash, void* data) {
     ClassInfoHeader** base = getClassInfosBase(hash);
     jint count = getClassInfosCount(hash);
     jint i = 0;
     for (i = 0; i < count; i++) {
-        parseClassInfo(env, base[i], callbacks, data);        
+        ClassInfo ci;
+        void* p = base[i];
+        readClassInfo(&p, &ci);
+        skipInterfaceNames(&p, &ci);
+        skipFieldInfos(&p, &ci);
+        jint j;
+        for (j = 0; j < ci.methodCount; j++) {
+            MethodInfo mi;
+            readMethodInfo(&p, &mi);
+            if (!callback(env, base[i], &mi, data)) {
+                break;
+            }
+        }
     }
 }
 
@@ -184,39 +196,26 @@ static void wrapClassNotFoundException(Env* env, const char* className) {
     }
 }
 
-typedef struct {
-    Class* clazz;
-    ClassLoader* classLoader;
-} CreateClassData;
-
-static jboolean createClassCallback(Env* env, ClassInfoHeader* header, const char* className, const char* superclassName, jint flags, 
-        jint classDataSize, jint instanceDataSize, jint instanceDataOffset, void* attributes, void* initializer, void* d) {
-
-    CreateClassData* data = (CreateClassData*) d;
+static Class* createClass(Env* env, ClassInfoHeader* header, ClassLoader* classLoader) {
+    ClassInfo ci;
+    void* p = header;
+    readClassInfo(&p, &ci);
 
     Class* superclass = NULL;
-    if (superclassName) {
-        superclass = rvmFindClassUsingLoader(env, superclassName, data->classLoader);
-        if (!superclass) return FALSE;
+    if (ci.superclassName) {
+        superclass = rvmFindClassUsingLoader(env, ci.superclassName, classLoader);
+        if (!superclass) return NULL;
     }
 
-    Class* clazz = rvmAllocateClass(env, className, superclass, data->classLoader, flags, classDataSize, instanceDataSize, instanceDataOffset, attributes, initializer);
-    if (!clazz) return FALSE;
-    data->clazz = clazz;
-    return TRUE;
-}
+    Class* clazz = rvmAllocateClass(env, header->className, superclass, classLoader, ci.access, header->classDataSize, 
+            header->instanceDataSize, header->instanceDataOffset, ci.attributes, header->initializer);
 
-static Class* createClass(Env* env, ClassInfoHeader* header, ClassLoader* classLoader) {
-    ParseClassInfoCallbacks callbacks = {0};
-    callbacks.classCallback = createClassCallback;
-    CreateClassData data = {0};
-    data.classLoader = classLoader;
-    parseClassInfo(env, header, &callbacks, &data);
-    if (data.clazz) {
-        if (!rvmRegisterClass(env, data.clazz)) return NULL;
+    if (clazz) {
+        if (!rvmRegisterClass(env, clazz)) return NULL;
+        header->clazz = clazz;
     }
-    header->clazz = data.clazz;
-    return data.clazz;
+
+    return clazz;
 }
 
 static void classInitialized(Env* env, Class* clazz) {
@@ -226,66 +225,72 @@ static void classInitialized(Env* env, Class* clazz) {
     header->flags |= CI_INITIALIZED;
 }
 
-static jboolean loadInterfacesCallback(Env* env, ClassInfoHeader* header, const char* interfaceName, void* d) {
-    Class* clazz = (Class*) d;
-    Class* interface = rvmFindClassUsingLoader(env, interfaceName, clazz->classLoader);
-    if (rvmExceptionCheck(env)) return FALSE;
-    rvmAddInterface(env, clazz, interface);
-    if (rvmExceptionCheck(env)) return FALSE;
-    return TRUE;
-}
-
 static void loadInterfaces(Env* env, Class* clazz) {
     ClassInfoHeader* header = lookupClassInfo(env, clazz->name, 
         !clazz->classLoader || !clazz->classLoader->parent ? _bcBootClassesHash : _bcClassesHash);
     if (!header) return;
-    ParseClassInfoCallbacks callbacks = {0};
-    callbacks.interfaceCallback = loadInterfacesCallback;
-    parseClassInfo(env, header, &callbacks, clazz);
-}
 
-static jboolean loadFieldsCallback(Env* env, ClassInfoHeader* header, const char* name, const char* desc, jint access, jint offset, void* attributes, void* d) {
-    Class* clazz = (Class*) d;
-    if (!rvmAddField(env, clazz, name, desc, access, offset, attributes)) return FALSE;
-    return TRUE;
+    ClassInfo ci;
+    jint i;
+    void* p = header;
+    readClassInfo(&p, &ci);
+
+    for (i = 0; i < ci.interfaceCount; i++) {
+        const char* interfaceName = readInterfaceName(&p);
+        Class* interface = rvmFindClassUsingLoader(env, interfaceName, clazz->classLoader);
+        if (!interface) return;
+        rvmAddInterface(env, clazz, interface);
+        if (rvmExceptionCheck(env)) return;
+    }
 }
 
 static void loadFields(Env* env, Class* clazz) {
     ClassInfoHeader* header = lookupClassInfo(env, clazz->name, 
         !clazz->classLoader || !clazz->classLoader->parent ? _bcBootClassesHash : _bcClassesHash);
     if (!header) return;
-    ParseClassInfoCallbacks callbacks = {0};
-    callbacks.fieldCallback = loadFieldsCallback;
-    parseClassInfo(env, header, &callbacks, clazz);
-}
 
-static jboolean loadMethodsCallback(Env* env, ClassInfoHeader* header, const char* name, const char* desc, jint access, jint size, void* impl, void* synchronizedImpl, void** targetFnPtr, 
-        void* callbackImpl, void* attributes, void* d) {
+    ClassInfo ci;
+    jint i;
+    void* p = header;
+    readClassInfo(&p, &ci);
 
-    Class* clazz = (Class*) d;
-    if (targetFnPtr) {
-        if (!rvmAddBridgeMethod(env, clazz, name, desc, access, size, impl, synchronizedImpl, targetFnPtr, attributes)) return FALSE;
-    } else if (callbackImpl) {
-        if (!rvmAddCallbackMethod(env, clazz, name, desc, access, size, impl, synchronizedImpl, callbackImpl, attributes)) return FALSE;
-    } else {
-        if (!rvmAddMethod(env, clazz, name, desc, access, size, impl, synchronizedImpl, attributes)) return FALSE;
+    skipInterfaceNames(&p, &ci);
+
+    for (i = 0; i < ci.fieldCount; i++) {
+        FieldInfo fi;
+        readFieldInfo(&p, &fi);
+        if (!rvmAddField(env, clazz, fi.name, fi.desc, fi.access, fi.offset, fi.attributes)) return;
     }
-    return TRUE;
 }
 
 static void loadMethods(Env* env, Class* clazz) {
     ClassInfoHeader* header = lookupClassInfo(env, clazz->name, 
         !clazz->classLoader || !clazz->classLoader->parent ? _bcBootClassesHash : _bcClassesHash);
     if (!header) return;
-    ParseClassInfoCallbacks callbacks = {0};
-    callbacks.methodCallback = loadMethodsCallback;
-    parseClassInfo(env, header, &callbacks, clazz);
+
+    ClassInfo ci;
+    jint i;
+    void* p = header;
+    readClassInfo(&p, &ci);
+    
+    skipInterfaceNames(&p, &ci);
+    skipFieldInfos(&p, &ci);
+
+    for (i = 0; i < ci.methodCount; i++) {
+        MethodInfo mi;
+        readMethodInfo(&p, &mi);
+        if (mi.targetFnPtr) {
+            if (!rvmAddBridgeMethod(env, clazz, mi.name, mi.desc, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.targetFnPtr, mi.attributes)) return;
+        } else if (mi.callbackImpl) {
+            if (!rvmAddCallbackMethod(env, clazz, mi.name, mi.desc, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.callbackImpl, mi.attributes)) return;
+        } else {
+            if (!rvmAddMethod(env, clazz, mi.name, mi.desc, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.attributes)) return;
+        }
+    }
 }
 
-static jboolean countClassesWithConcreteMethodsCallback(Env* env, ClassInfoHeader* header, const char* name, const char* desc, jint access, jint size, void* impl, void* synchronizedImpl, void** targetFnPtr, 
-        void* callbackImpl, void* attributes, void* d) {
-
-    if (impl) {
+static jboolean countClassesWithConcreteMethodsCallback(Env* env, ClassInfoHeader* header, MethodInfo* mi, void* d) {
+    if (mi->impl) {
         jint* count = (jint*) d;
         *count = *count + 1;
         return FALSE;
@@ -293,10 +298,8 @@ static jboolean countClassesWithConcreteMethodsCallback(Env* env, ClassInfoHeade
     return TRUE;
 }
 
-static jboolean initAddressClassLookupsCallback(Env* env, ClassInfoHeader* header, const char* name, const char* desc, jint access, jint size, void* impl, void* synchronizedImpl, void** targetFnPtr, 
-        void* callbackImpl, void* attributes, void* d) {
-
-    if (impl) {
+static jboolean initAddressClassLookupsCallback(Env* env, ClassInfoHeader* header, MethodInfo* mi, void* d) {
+    if (mi->impl) {
         AddressClassLookup** lookupPtr = (AddressClassLookup**) d;
         AddressClassLookup* lookup = *lookupPtr;
         if (lookup->classInfoHeader != header) {
@@ -305,12 +308,12 @@ static jboolean initAddressClassLookupsCallback(Env* env, ClassInfoHeader* heade
                 lookup = *lookupPtr;
             }
             lookup->classInfoHeader = header;
-            lookup->start = impl;
-            lookup->end = impl + size;
-        } else if (lookup->start > impl) {
-            lookup->start = impl;
-        } else if (lookup->end <= impl) {
-            lookup->end = impl + size;
+            lookup->start = mi->impl;
+            lookup->end = mi->impl + mi->size;
+        } else if (lookup->start > mi->impl) {
+            lookup->start = mi->impl;
+        } else if (lookup->end <= mi->impl) {
+            lookup->end = mi->impl + mi->size;
         }
     }
     return TRUE;
@@ -331,17 +334,14 @@ static int addressClassLookupCompareQSort(const void* _a, const void* _b) {
 
 static AddressClassLookup* getAddressClassLookups(Env* env) {
     if (!addressClassLookups) {
-        ParseClassInfoCallbacks callbacks = {0};
-        callbacks.methodCallback = countClassesWithConcreteMethodsCallback;
         jint count = 0;
-        iterateClassInfos(env, &callbacks, _bcBootClassesHash, &count);
-        iterateClassInfos(env, &callbacks, _bcClassesHash, &count);
+        iterateClassInfos(env, countClassesWithConcreteMethodsCallback, _bcBootClassesHash, &count);
+        iterateClassInfos(env, countClassesWithConcreteMethodsCallback, _bcClassesHash, &count);
         AddressClassLookup* lookups = rvmAllocateMemory(env, sizeof(AddressClassLookup) * count);
         if (!lookups) return NULL;
         AddressClassLookup* _lookups = lookups;
-        callbacks.methodCallback = initAddressClassLookupsCallback;
-        iterateClassInfos(env, &callbacks, _bcBootClassesHash, &_lookups);
-        iterateClassInfos(env, &callbacks, _bcClassesHash, &_lookups);
+        iterateClassInfos(env, initAddressClassLookupsCallback, _bcBootClassesHash, &_lookups);
+        iterateClassInfos(env, initAddressClassLookupsCallback, _bcClassesHash, &_lookups);
         qsort(lookups, count, sizeof(AddressClassLookup), addressClassLookupCompareQSort);
         addressClassLookupsCount = count;
         addressClassLookups = lookups;

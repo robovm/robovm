@@ -104,13 +104,6 @@ import soot.tagkit.Tag;
  */
 public class ClassCompiler {
     private static final int DUMMY_METHOD_SIZE = 0x01abcdef;
-    public static final int CI_FLAGS_BITS = 10;
-    public static final int CI_INTERFACE_COUNT_BITS = 6;
-    public static final int CI_INTERFACE_COUNT_MASK = (1 << CI_INTERFACE_COUNT_BITS) - 1;
-    public static final int CI_FIELD_COUNT_BITS = 8;
-    public static final int CI_FIELD_COUNT_MASK = (1 << CI_FIELD_COUNT_BITS) - 1;
-    public static final int CI_METHOD_COUNT_BITS = 8;
-    public static final int CI_METHOD_COUNT_MASK = (1 << CI_METHOD_COUNT_BITS) - 1;
     public static final int CI_PUBLIC = 0x1;
     public static final int CI_FINAL = 0x2;
     public static final int CI_INTERFACE = 0x4;
@@ -121,6 +114,7 @@ public class ClassCompiler {
     public static final int CI_ATTRIBUTES = 0x80;
     public static final int CI_ERROR = 0x100;
     public static final int CI_INITIALIZED = 0x200;
+    public static final int CI_FINALIZABLE = 0x400;
 
     public static final int CI_ERROR_TYPE_NONE = 0x0;
     public static final int CI_ERROR_TYPE_NO_CLASS_DEF_FOUND = 0x1;
@@ -610,28 +604,6 @@ public class ClassCompiler {
     private StructureConstant createClassInfoStruct() {
         int flags = 0;
         
-        flags <<= CI_INTERFACE_COUNT_BITS;
-        if (sootClass.getInterfaceCount() < CI_INTERFACE_COUNT_MASK) {
-            flags |= sootClass.getInterfaceCount();
-        } else {
-            flags |= CI_INTERFACE_COUNT_MASK;
-        }
-        
-        flags <<= CI_FIELD_COUNT_BITS;
-        if (sootClass.getFieldCount() < CI_FIELD_COUNT_MASK) {
-            flags |= sootClass.getFieldCount();
-        } else {
-            flags |= CI_FIELD_COUNT_MASK;
-        }
-        
-        flags <<= CI_METHOD_COUNT_BITS;
-        if (sootClass.getMethodCount() < CI_METHOD_COUNT_MASK) {
-            flags |= sootClass.getMethodCount();
-        } else {
-            flags |= CI_METHOD_COUNT_MASK;
-        }
-        
-        flags <<= CI_FLAGS_BITS;
         if (Modifier.isPublic(sootClass.getModifiers())) {
             flags |= CI_PUBLIC;
         }
@@ -656,6 +628,9 @@ public class ClassCompiler {
         if (attributesEncoder.classHasAttributes()) {
             flags |= CI_ATTRIBUTES;
         }
+        if (hasFinalizer(sootClass)) {
+            flags |= CI_FINALIZABLE;
+        }
         
         // Create the ClassInfoHeader structure.
         StructureConstantBuilder header = new StructureConstantBuilder();
@@ -675,17 +650,13 @@ public class ClassCompiler {
         } else {
             header.add(sizeof(instanceType));
         }
+        header.add(new IntegerConstant((short) countReferences(classFields)));
+        header.add(new IntegerConstant((short) countReferences(instanceFields)));
 
         PackedStructureConstantBuilder body = new PackedStructureConstantBuilder();
-        if (sootClass.getInterfaceCount() >= CI_INTERFACE_COUNT_MASK) {
-            body.add(new IntegerConstant((short) sootClass.getInterfaceCount()));
-        }
-        if (sootClass.getFieldCount() >= CI_FIELD_COUNT_MASK) {
-            body.add(new IntegerConstant((short) sootClass.getFieldCount()));
-        }
-        if (sootClass.getMethodCount() >= CI_METHOD_COUNT_MASK) {
-            body.add(new IntegerConstant((short) sootClass.getMethodCount()));
-        }
+        body.add(new IntegerConstant((short) sootClass.getInterfaceCount()));
+        body.add(new IntegerConstant((short) sootClass.getFieldCount()));
+        body.add(new IntegerConstant((short) sootClass.getMethodCount()));
         
         if (!sootClass.isInterface()) {
             body.add(getStringOrNull(sootClass.hasSuperclass() ? getInternalName(sootClass.getSuperclass()) : null));
@@ -699,12 +670,7 @@ public class ClassCompiler {
             body.add(getString(getInternalName(s)));
         }
         
-        int classFieldCounter = 0;
-        int instanceFieldCounter = 0;
-        List<SootField> fields = new ArrayList<SootField>();
-        fields.addAll(classFields);
-        fields.addAll(instanceFields);
-        for (SootField f : fields) {
+        for (SootField f : sootClass.getFields()) {
             flags = 0;
             soot.Type t = f.getType();
             if (t instanceof PrimType) {
@@ -761,9 +727,11 @@ public class ClassCompiler {
                 body.add(getString(getDescriptor(f)));
             }
             if (f.isStatic()) {
-                body.add(offsetof(classType, 1, classFieldCounter++));
+                int index = classFields.indexOf(f);
+                body.add(offsetof(classType, 1, index, 1));
             } else {
-                body.add(offsetof(instanceType, 1, 1 + instanceFieldCounter++));
+                int index = instanceFields.indexOf(f);
+                body.add(offsetof(instanceType, 1, 1 + index, 1));
             }
             if (attributesEncoder.fieldHasAttributes(f)) {
                 body.add(new ConstantBitcast(attributesEncoder.getFieldAttributes(f).ref(), I8_PTR));
@@ -1011,21 +979,47 @@ public class ClassCompiler {
         return fn;
     }
 
-    private static int getFieldSize(SootField f) {
-        if (LongType.v().equals(f.getType()) || DoubleType.v().equals(f.getType())) {
+    private static int countReferences(List<SootField> l) {
+        int count = 0;
+        for (SootField f : l) {
+            if (f.getType() instanceof RefLikeType) {
+                count++;
+            }
+        }
+        return count;
+    }
+    
+    private static int getFieldAlignment(SootField f) {
+        soot.Type t = f.getType();
+        if (LongType.v().equals(t) && Modifier.isVolatile(f.getModifiers())) {
+            // On ARM volatile longs must be 8 byte aligned
             return 8;
         }
-        if (IntType.v().equals(f.getType()) || FloatType.v().equals(f.getType())) {
+        if (LongType.v().equals(t) || DoubleType.v().equals(t)) {
             return 4;
         }
-        if (f.getType() instanceof RefLikeType) {
+        return getFieldSize(f);
+    }
+    
+    private static int getFieldSize(SootField f) {
+        soot.Type t = f.getType();
+        if (LongType.v().equals(t) || DoubleType.v().equals(t)) {
+            return 8;
+        }
+        if (IntType.v().equals(t) || FloatType.v().equals(t)) {
+            return 4;
+        }
+        if (t instanceof RefLikeType) {
             // Assume pointers are 32-bit
             return 4;
         }
-        if (ShortType.v().equals(f.getType()) || CharType.v().equals(f.getType())) {
+        if (ShortType.v().equals(t) || CharType.v().equals(t)) {
             return 2;
         }
-        return 1;
+        if (ByteType.v().equals(t) || BooleanType.v().equals(t)) {
+            return 1;
+        }
+        throw new IllegalArgumentException("Unknown Type: " + t);
     }
     
     private static List<SootField> getFields(SootClass clazz, boolean ztatic) {
@@ -1035,19 +1029,43 @@ public class ClassCompiler {
                 l.add(f);
             }
         }
-        // sort the fields by size. longs/doubles come first.
+        // Sort the fields. references, volatile long, double, long, float, int, char, short, boolean, byte.
+        // Fields of same type are sorted by name.
         Collections.sort(l, new Comparator<SootField>() {
             @Override
             public int compare(SootField o1, SootField o2) {
-                int size1 = getFieldSize(o1);
-                int size2 = getFieldSize(o2);
-                if (size1 > size2) {
-                    return -1;
+                soot.Type t1 = o1.getType();
+                soot.Type t2 = o2.getType();
+                if (t1 instanceof RefLikeType) {
+                    if (!(t2 instanceof RefLikeType)) {
+                        return -1;
+                    }
                 }
-                if (size1 < size2) {
-                    return 1;
+                if (t2 instanceof RefLikeType) {
+                    if (!(t1 instanceof RefLikeType)) {
+                        return 1;
+                    }
                 }
-                return 0;
+                
+                // Compare alignment. Higher first.
+                int align1 = getFieldAlignment(o1);
+                int align2 = getFieldAlignment(o2);
+                int c = new Integer(align2).compareTo(align1);
+                if (c == 0) {
+                    // Compare size. Larger first.
+                    int size1 = getFieldSize(o1);
+                    int size2 = getFieldSize(o2);
+                    c = new Integer(size2).compareTo(size1);
+                    if (c == 0) {
+                        // Compare type name.
+                        c = t1.getClass().getSimpleName().compareTo(t2.getClass().getSimpleName());
+                        if (c == 0) {
+                            // Compare name.
+                            c = o1.getName().compareTo(o2.getName());
+                        }
+                    }
+                }
+                return c;
             }
         });
         return l;
@@ -1072,37 +1090,62 @@ public class ClassCompiler {
         return false;
     }
     
+    private static boolean hasFinalizer(SootClass clazz) {
+        // Don't search interfaces or java.lang.Object
+        if (clazz.isInterface() || !clazz.hasSuperclass()) {
+            return false;
+        }
+        return clazz.declaresMethod("finalize", Collections.emptyList(), VoidType.v());
+    }
+    
+    private static StructureType padType(Type t, int padding) {
+        // t = i64, padding = 3 => {{i8, i8, i8}, i64}
+        // t = i8, padding = 0 => {{}, i8}
+        List<Type> paddingType = new ArrayList<Type>();
+        for (int i = 0; i < padding; i++) {
+            paddingType.add(I8);
+        }
+        return new StructureType(new StructureType(paddingType.toArray(new Type[paddingType.size()])), t);
+    }
+
     private static StructureType getClassType(SootClass clazz) {
         List<Type> types = new ArrayList<Type>();
+        int offset = 0;
         for (SootField field : getClassFields(clazz)) {
-            types.add(getType(field.getType()));
+            int falign = getFieldAlignment(field);
+            int padding = (offset & (falign - 1)) != 0 ? (falign - (offset & (falign - 1))) : 0;
+            types.add(padType(getType(field.getType()), padding));
+            offset += padding + getFieldSize(field);
         }
         return new StructureType(CLASS, new StructureType(types.toArray(new Type[types.size()])));
     }
     
-    private static StructureType getInstanceType0(SootClass clazz, int alignment) {
+    private static StructureType getInstanceType0(SootClass clazz, int subClassAlignment) {
         List<Type> types = new ArrayList<Type>();
         List<SootField> fields = getInstanceFields(clazz);
         int superAlignment = 1;
         if (!fields.isEmpty()) {
             // Pad the super type so that the first field is aligned properly
             SootField field = fields.get(0);
-            superAlignment = getFieldSize(field);
+            superAlignment = getFieldAlignment(field);
         }
         if (clazz.hasSuperclass()) {
             types.add(getInstanceType0(clazz.getSuperclass(), superAlignment));
         }
-        int size = 0;
+        int offset = 0;
         for (SootField field : fields) {
-            size += getFieldSize(field);
-            types.add(getType(field.getType()));
+            int falign = getFieldAlignment(field);
+            int padding = (offset & (falign - 1)) != 0 ? (falign - (offset & (falign - 1))) : 0;
+            types.add(padType(getType(field.getType()), padding));
+            offset += padding + getFieldSize(field);
         }
-        if (size > 0 && alignment > 1) {
-            int padding = alignment - size % alignment;
-            for (int i = 0; i < padding; i++) {
-                types.add(I8);
-            }
+        
+        int padding = (offset & (subClassAlignment - 1)) != 0 
+                ? (subClassAlignment - (offset & (subClassAlignment - 1))) : 0;
+        for (int i = 0; i < padding; i++) {
+            types.add(I8);
         }
+        
         return new StructureType(types.toArray(new Type[types.size()]));
     }
     
@@ -1123,7 +1166,7 @@ public class ClassCompiler {
         Variable base = f.newVariable(I8_PTR);
         f.add(new Load(base, info));
         return getFieldPtr(f, new VariableRef(base), offsetof(classType, 1, 
-                classFields.indexOf(field)), getType(field.getType()));
+                classFields.indexOf(field), 1), getType(field.getType()));
     }
 
     private Value getInfoStruct(Function f) {
@@ -1132,6 +1175,6 @@ public class ClassCompiler {
     
     private Value getInstanceFieldPtr(Function f, Value base, SootField field) {
         return getFieldPtr(f, base, offsetof(instanceType, 1, 
-                1 + instanceFields.indexOf(field)), getType(field.getType()));
+                1 + instanceFields.indexOf(field), 1), getType(field.getType()));
     }
 }

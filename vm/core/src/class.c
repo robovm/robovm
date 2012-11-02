@@ -159,7 +159,7 @@ static Class* createPrimitiveClass(Env* env, const char* desc) {
     if (!clazz) return NULL;
     clazz->name = desc;
     clazz->object.clazz = java_lang_Class;
-    clazz->flags = CLASS_FLAG_PRIMITIVE | CLASS_STATE_INITIALIZED | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT;
+    clazz->flags = CLASS_TYPE_PRIMITIVE | CLASS_STATE_INITIALIZED | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT;
     return clazz;
 }
 
@@ -183,7 +183,7 @@ static Class* createArrayClass(Env* env, Class* componentType) {
 
     // TODO: Add clone() method.
     Class* clazz = rvmAllocateClass(env, desc, java_lang_Object, componentType->classLoader, 
-        CLASS_FLAG_ARRAY | CLASS_STATE_INITIALIZED | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, sizeof(Class), sizeof(Object), sizeof(Object), NULL, NULL);
+        CLASS_TYPE_ARRAY | CLASS_STATE_INITIALIZED | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, sizeof(Class), sizeof(Object), sizeof(Object), NULL, NULL);
     if (!clazz) return NULL;
     clazz->componentType = componentType;
     // Initialize methods to NULL to prevent rvmGetMethods() from trying to load the methods if called with this array class
@@ -703,6 +703,11 @@ Class* rvmAllocateClass(Env* env, const char* className, Class* superclass, Clas
     clazz->attributes = attributes;
     clazz->initializer = initializer;
 
+    // Inherit the CLASS_FLAG_FINALIZABLE flag from the superclass
+    if (superclass && !CLASS_IS_FINALIZABLE(clazz) && CLASS_IS_FINALIZABLE(superclass)) {
+        clazz->flags |= CLASS_FLAG_FINALIZABLE;
+    }
+
     return clazz;
 }
 
@@ -988,6 +993,9 @@ Object* rvmAllocateObject(Env* env, Class* clazz) {
     Object* obj = rvmAllocateMemory(env, clazz->instanceDataSize);
     if (!obj) return NULL;
     obj->clazz = clazz;
+    if (CLASS_IS_FINALIZABLE(clazz)) {
+        gcRegisterFinalizer(env, obj);
+    }
     return obj;
 }
 

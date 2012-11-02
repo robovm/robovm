@@ -133,7 +133,7 @@ Class* rvmProxyCreateProxyClass(Env* env, Class* superclass, ClassLoader* classL
         jint instanceDataSize, jint instanceDataOffset, ProxyHandler handler) {
 
     // Allocate the proxy class.
-    Class* proxyClass = rvmAllocateClass(env, className, superclass, classLoader, CLASS_FLAG_PROXY | ACC_PUBLIC | ACC_FINAL, 
+    Class* proxyClass = rvmAllocateClass(env, className, superclass, classLoader, CLASS_TYPE_PROXY | ACC_PUBLIC | ACC_FINAL, 
         offsetof(Class, data) + sizeof(ProxyClassData), instanceDataSize, instanceDataOffset, NULL, NULL);
     if (!proxyClass) return NULL;
 

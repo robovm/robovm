@@ -18,13 +18,6 @@
 
 #include <robovm.h>
 
-#define CI_FLAGS_BITS 10
-#define CI_INTERFACE_COUNT_BITS 6
-#define CI_INTERFACE_COUNT_MASK ((1 << CI_INTERFACE_COUNT_BITS) - 1)
-#define CI_FIELD_COUNT_BITS 8
-#define CI_FIELD_COUNT_MASK ((1 << CI_FIELD_COUNT_BITS) - 1)
-#define CI_METHOD_COUNT_BITS 8
-#define CI_METHOD_COUNT_MASK ((1 << CI_METHOD_COUNT_BITS) - 1)
 #define CI_PUBLIC 0x1
 #define CI_FINAL 0x2
 #define CI_INTERFACE 0x4
@@ -35,6 +28,7 @@
 #define CI_ATTRIBUTES 0x80
 #define CI_ERROR 0x100
 #define CI_INITIALIZED 0x200
+#define CI_FINALIZABLE 0x400
 
 #define CI_ERROR_TYPE_NONE 0x0
 #define CI_ERROR_TYPE_NO_CLASS_DEF_FOUND 0x1
@@ -49,6 +43,8 @@ typedef struct {
     jint classDataSize;
     jint instanceDataSize;
     jint instanceDataOffset;
+    unsigned short classRefCount;
+    unsigned short instanceRefCount;
 } ClassInfoHeader;
 
 typedef struct {
@@ -60,13 +56,54 @@ typedef struct {
 } ClassInfoError;
 
 typedef struct {
-    jboolean (*classCallback)(Env*, ClassInfoHeader*, const char*, const char*, jint, jint, jint, jint, void*, void*, void*);
-    jboolean (*interfaceCallback)(Env*, ClassInfoHeader*, const char*, void*);
-    jboolean (*fieldCallback)(Env*, ClassInfoHeader*, const char*, const char*, jint, jint, void*, void*);
-    jboolean (*methodCallback)(Env*, ClassInfoHeader*, const char*, const char*, jint, jint, void*, void*, void**, void*, void*, void*);
-} ParseClassInfoCallbacks;
+    ClassInfoHeader header;
+    jint access;
+    jint interfaceCount;
+    jint fieldCount;
+    jint methodCount;
+    char* superclassName;
+    void* attributes;
+} ClassInfo;
 
-void parseClassInfo(Env* env, ClassInfoHeader* header, ParseClassInfoCallbacks* callbacks, void* data);
+typedef struct {
+    jint flags;
+    jint access;
+    const char* name;
+    const char* desc;
+    void* attributes;
+    jint offset;
+} FieldInfo;
+
+typedef struct {
+    jint flags;
+    jint access;
+    const char* name;
+    const char* desc;
+    void* attributes;
+    jint size;
+    void* impl;
+    void* synchronizedImpl;
+    void** targetFnPtr;
+    void* callbackImpl;
+} MethodInfo;
+
+extern void readClassInfo(void** p, ClassInfo* result);
+extern const char* readInterfaceName(void** p);
+extern void readFieldInfo(void** p, FieldInfo* result);
+extern void readMethodInfo(void** p, MethodInfo* result);
+
+static inline void skipInterfaceNames(void** p, ClassInfo* ci) {
+    jint i;
+    for (i = 0; i < ci->interfaceCount; i++) {
+        readInterfaceName(p);
+    }
+}
+
+static inline void skipFieldInfos(void** p, ClassInfo* ci) {
+    jint i;
+    for (i = 0; i < ci->fieldCount; i++) {
+        readFieldInfo(p, NULL);
+    }
+}
 
 #endif
-

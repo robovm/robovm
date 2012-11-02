@@ -19,6 +19,13 @@
 #include <pthread.h>
 #include <robovm.h>
 
+/* memory.c */
+extern jboolean initGC(Options* options);
+extern void* gcAllocate(jint size);
+extern void* gcAllocateUncollectable(jint size);
+extern void* gcAllocateAtomic(jint size);
+extern void gcRegisterFinalizer(Env* env, Object* obj);
+
 /* unwind.c / unwind-zero.c / unwind-sjlj.c */
 #define UNWIND_EXCEPTION_CLASS 0x4A4A4A4A4A4A4A4A // "JJJJJJJJ"
 #define UNWIND_UNHANDLED_EXCEPTION 1

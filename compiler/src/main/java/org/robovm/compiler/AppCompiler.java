@@ -179,6 +179,8 @@ public class AppCompiler {
                     }
                 } else if (args[i].startsWith("-D")) {
                 } else if (args[i].startsWith("-X")) {
+                } else if (args[i].startsWith("-rvm:")) {
+                    runArgs.add(args[i]);
                 } else if (args[i].startsWith("-")) {
                     throw new IllegalArgumentException("Unrecognized option: " + args[i]);
                 } else {

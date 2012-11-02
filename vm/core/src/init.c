@@ -18,11 +18,14 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <dlfcn.h>
+#include "private.h"
 #include "utlist.h"
 
 #define LOG_TAG "core.init"
 
 ClassLoader* systemClassLoader = NULL;
+static Class* java_lang_Daemons = NULL;
+static Method* java_lang_Daemons_start = NULL;
 
 extern int registerJniHelp(JNIEnv* env);
 extern int registerCoreLibrariesJni(JNIEnv* env);
@@ -86,6 +89,32 @@ jboolean rvmInitOptions(int argc, char* argv[], Options* options, jboolean ignor
                     if (options->logLevel == 0) options->logLevel = LOG_LEVEL_ERROR;
                 } else if (startsWith(arg, "log=silent")) {
                     if (options->logLevel == 0) options->logLevel = LOG_LEVEL_SILENT;
+                } else if (startsWith(arg, "Xmx") || startsWith(arg, "Xms")) {
+                    char* unit;
+                    jlong n = strtol(&arg[3], &unit, 10);
+                    if (n > 0) {
+                        if (unit[0] != '\0') {
+                            switch (unit[0]) {
+                            case 'g':
+                            case 'G':
+                                n *= 1024 * 1024 * 1024;
+                                break;
+                            case 'm':
+                            case 'M':
+                                n *= 1024 * 1024;
+                                break;
+                            case 'k':
+                            case 'K':
+                                n *= 1024 * 1024;
+                                break;
+                            }
+                        }
+                    }
+                    if (startsWith(arg, "Xmx")) {
+                        options->maxHeapSize = n;
+                    } else {
+                        options->initialHeapSize = n;
+                    }
                 } else if (startsWith(arg, "MainClass=")) {
                     if (!options->mainClass) {
                         char* s = strdup(&arg[10]);
@@ -113,7 +142,7 @@ jboolean rvmInitOptions(int argc, char* argv[], Options* options, jboolean ignor
 }
 
 VM* rvmCreateVM(Options* options) {
-    VM* vm = GC_MALLOC(sizeof(VM));
+    VM* vm = gcAllocate(sizeof(VM));
     if (!vm) return NULL;
     vm->options = options;
     rvmInitJavaVM(vm);
@@ -121,7 +150,7 @@ VM* rvmCreateVM(Options* options) {
 }
 
 Env* rvmCreateEnv(VM* vm) {
-    Env* env = GC_MALLOC(sizeof(Env));
+    Env* env = gcAllocate(sizeof(Env));
     if (!env) return NULL;
     env->vm = vm;
     rvmInitJNIEnv(env);
@@ -129,8 +158,10 @@ Env* rvmCreateEnv(VM* vm) {
 }
 
 Env* rvmStartup(Options* options) {
-    GC_INIT();
-    // TODO: Handle args like -Xmx?
+    // TODO: Error handling
+
+    TRACE("Initializing GC");
+    if (!initGC(options)) return NULL;
 
     VM* vm = rvmCreateVM(options);
     if (!vm) return NULL;
@@ -177,12 +208,28 @@ Env* rvmStartup(Options* options) {
 
     TRACE("Creating system ClassLoader");
     systemClassLoader = rvmGetSystemClassLoader(env);
-    if (rvmExceptionOccurred(env)) return NULL;
+    if (rvmExceptionOccurred(env)) goto error_system_ClassLoader;
     env->currentThread->threadObj->contextClassLoader = systemClassLoader;
 
     TRACE("Initialization done");
 
+    // Start Daemons
+    TRACE("Starting Daemons");
+    java_lang_Daemons = rvmFindClassUsingLoader(env, "java/lang/Daemons", NULL);
+    if (!java_lang_Daemons) goto error_daemons;
+    java_lang_Daemons_start = rvmGetClassMethod(env, java_lang_Daemons, "start", "()V");
+    if (!java_lang_Daemons_start) goto error_daemons;
+    rvmCallVoidClassMethod(env, java_lang_Daemons, java_lang_Daemons_start);
+    if (rvmExceptionCheck(env)) goto error_daemons;
+    TRACE("Daemons started");
+
     return env;
+
+error_daemons:
+error_system_ClassLoader:
+    rvmDetachCurrentThread(env->vm, TRUE);
+
+    return NULL;
 }
 
 jboolean rvmRun(Env* env) {

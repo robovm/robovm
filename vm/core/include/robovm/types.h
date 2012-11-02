@@ -146,10 +146,12 @@ struct Class {
   void* data[0];           // This is where static fields are stored for the class
 };
 
+// NOTE: The compiler sorts fields by type (ref, volatile long, double, long, float, int, char, short, boolean, byte) and then by name
+// so the order of the fields here don't match the order in ClassLoader.java
 struct ClassLoader {
   Object object;
-  ClassLoader* parent;
   Object* packages;
+  ClassLoader* parent;
 };
 
 struct DataObject {
@@ -181,24 +183,25 @@ struct Monitor {
   Mutex lock;
 };
 
-// NOTE: The compiler sorts fields by size so the order of the fields here don't match the order in Thread.java
+// NOTE: The compiler sorts fields by type (ref, volatile long, double, long, float, int, char, short, boolean, byte) and then by name
+// so the order of the fields here don't match the order in Thread.java
 struct JavaThread {
   Object object;
-  jlong threadPtr; // Points to the Thread
+  ClassLoader* contextClassLoader;
+  Object* group;
+  Object* inheritableValues;
+  Object* interruptActions;
+  Object* localValues;
+  Object* lock;
+  Object* name;
+  Object* parkBlocker;
+  Object* target;
+  Object* uncaughtHandler;
+  /*volatile*/ jlong threadPtr __attribute__ ((aligned (8))); // Points to the Thread
   jlong id;
   jlong stackSize;
-  Object* group;
-  Object* name;
-  jint priority;
-  Object* target;
-  Object* interruptActions;
-  ClassLoader* contextClassLoader;
-  Object* uncaughtHandler;
-  Object* localValues;
-  Object* inheritableValues;
   jint parkState;
-  Object* parkBlocker;
-  Object* lock;
+  jint priority;
   jboolean daemon;
   jboolean started;
 };
@@ -305,6 +308,8 @@ typedef struct Options {
     char** commandLineArgs;
     jint commandLineArgsCount;
     jint logLevel;
+    jlong maxHeapSize;
+    jlong initialHeapSize;
     char basePath[PATH_MAX];
     char executablePath[PATH_MAX];
     char** rawBootclasspath; 

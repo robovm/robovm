@@ -155,11 +155,13 @@ static inline void releaseClassLock() {
 }
 
 static Class* createPrimitiveClass(Env* env, const char* desc) {
-    Class* clazz = rvmAllocateMemory(env, sizeof(Class));
+    Class* clazz = rvmAllocateClass(env, desc, NULL, NULL, 
+        CLASS_TYPE_PRIMITIVE | CLASS_STATE_INITIALIZED | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, 
+        sizeof(Class), sizeof(Object), sizeof(Object), NULL, NULL);
     if (!clazz) return NULL;
-    clazz->name = desc;
-    clazz->object.clazz = java_lang_Class;
-    clazz->flags = CLASS_TYPE_PRIMITIVE | CLASS_STATE_INITIALIZED | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT;
+    clazz->_interfaces = NULL;
+    clazz->_fields = NULL;
+    clazz->_methods = NULL;
     return clazz;
 }
 
@@ -679,7 +681,7 @@ Class* rvmAllocateClass(Env* env, const char* className, Class* superclass, Clas
         return NULL;
     }
 
-    Class* clazz = rvmAllocateMemory(env, classDataSize);
+    Class* clazz = rvmAllocateMemoryForClass(env, classDataSize);
     if (!clazz) return NULL;
 
     /*
@@ -990,7 +992,7 @@ Object* rvmAllocateObject(Env* env, Class* clazz) {
     }
     rvmInitialize(env, clazz);
     if (rvmExceptionOccurred(env)) return NULL;
-    Object* obj = rvmAllocateMemory(env, clazz->instanceDataSize);
+    Object* obj = rvmAllocateMemoryForObject(env, clazz);
     if (!obj) return NULL;
     obj->clazz = clazz;
     if (CLASS_IS_FINALIZABLE(clazz)) {
@@ -1284,7 +1286,7 @@ Object* rvmCloneObject(Env* env, Object* obj) {
         return (Object*) rvmCloneArray(env, (Array*) obj);
     }
     jint size = obj->clazz->instanceDataSize;
-    Object* copy = rvmAllocateMemory(env, size);
+    Object* copy = rvmAllocateMemoryForObject(env, obj->clazz);
     if (!copy) return NULL;
     memcpy(copy, obj, size);
     copy->lock = 0;

@@ -15,6 +15,7 @@
  */
 #include <robovm.h>
 #include <string.h>
+#include <gc/gc_mark.h>
 
 static Class* java_nio_ReadWriteDirectByteBuffer = NULL;
 static Method* java_nio_ReadWriteDirectByteBuffer_init = NULL;
@@ -22,6 +23,51 @@ static InstanceField* java_nio_ReadWriteDirectByteBuffer_effectiveDirectAddress 
 static Class* java_lang_ref_FinalizerReference = NULL;
 static Method* java_lang_ref_FinalizerReference_add = NULL;
 static VM* vm = NULL;
+
+// The GC kind used when allocating Objects (and arrays and Classes which are also Objects)
+static int object_gc_kind;
+
+static struct GC_ms_entry* markObject(GC_word* addr, struct GC_ms_entry* mark_stack_ptr, struct GC_ms_entry* mark_stack_limit, GC_word env) {
+    Object* obj = (Object*) addr;
+
+    if (obj == NULL || obj->clazz == NULL || obj->clazz->object.clazz != java_lang_Class) {
+        // According to the comments in gc_mark.h the GC sometimes calls the mark_proc with unused objects.
+        // Such objects have been cleared except for the first word which points to a free list link field.
+        // A valid RovoVM Object must point to a Class and the Class of the Object's Class must be java.lang.Class.
+        return mark_stack_ptr;
+    }
+
+    mark_stack_ptr = GC_MARK_AND_PUSH(obj->clazz, mark_stack_ptr, mark_stack_limit, NULL);
+
+    void** p = NULL;
+    void** end = NULL;
+
+    if (obj->clazz == java_lang_Class) {
+        // Class*
+        Class* clazz = (Class*) obj;
+        mark_stack_ptr = GC_MARK_AND_PUSH(clazz->_data, mark_stack_ptr, mark_stack_limit, NULL);
+        mark_stack_ptr = GC_MARK_AND_PUSH((void*) clazz->name, mark_stack_ptr, mark_stack_limit, NULL);
+        mark_stack_ptr = GC_MARK_AND_PUSH(clazz->classLoader, mark_stack_ptr, mark_stack_limit, NULL);
+        mark_stack_ptr = GC_MARK_AND_PUSH(clazz->superclass, mark_stack_ptr, mark_stack_limit, NULL);
+        mark_stack_ptr = GC_MARK_AND_PUSH(clazz->componentType, mark_stack_ptr, mark_stack_limit, NULL);
+        mark_stack_ptr = GC_MARK_AND_PUSH(clazz->_interfaces, mark_stack_ptr, mark_stack_limit, NULL);
+        mark_stack_ptr = GC_MARK_AND_PUSH(clazz->_fields, mark_stack_ptr, mark_stack_limit, NULL);
+        mark_stack_ptr = GC_MARK_AND_PUSH(clazz->_methods, mark_stack_ptr, mark_stack_limit, NULL);
+        p = (void**) (((char*) clazz) + offsetof(Class, data));
+        end = (void**) (((char*) clazz) + clazz->classDataSize);
+    } else {
+        // Object*
+        p = (void**) (((char*) obj) + offsetof(DataObject, data));
+        end = (void**) (((char*) obj) + obj->clazz->instanceDataSize);
+    }
+
+    while (p < end) {
+        mark_stack_ptr = GC_MARK_AND_PUSH(*p, mark_stack_ptr, mark_stack_limit, NULL);
+        p++;
+    }
+
+    return mark_stack_ptr;
+}
 
 jboolean initGC(Options* options) {
     GC_INIT();
@@ -35,9 +81,15 @@ jboolean initGC(Options* options) {
             GC_expand_hp(options->initialHeapSize - now);
         }
     }
+
+    object_gc_kind = GC_new_kind(GC_new_free_list(), GC_MAKE_PROC(GC_new_proc(markObject), 0), 0, 1);
+
     return TRUE;
 }
 
+static void* gcAllocateKind(jint size, jint kind) {
+    return GC_generic_malloc(size, kind);
+}
 void* gcAllocate(jint size) {
     return GC_MALLOC(size);
 }
@@ -89,6 +141,14 @@ jboolean rvmInitMemory(Env* env) {
     java_nio_ReadWriteDirectByteBuffer_effectiveDirectAddress = rvmGetInstanceField(env, java_nio_ReadWriteDirectByteBuffer, "effectiveDirectAddress", "I");
     if (!java_nio_ReadWriteDirectByteBuffer_effectiveDirectAddress) return FALSE;
     return TRUE;
+}
+
+Class* rvmAllocateMemoryForClass(Env* env, jint classDataSize) {
+    return gcAllocateKind(classDataSize, object_gc_kind);
+}
+
+Object* rvmAllocateMemoryForObject(Env* env, Class* clazz) {
+    return gcAllocateKind(clazz->instanceDataSize, object_gc_kind);
 }
 
 void* rvmAllocateMemory(Env* env, jint size) {

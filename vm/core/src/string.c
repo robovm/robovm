@@ -273,7 +273,7 @@ jchar* rvmGetStringChars(Env* env, Object* str) {
     jint offset = rvmGetIntInstanceFieldValue(env, str, stringOffsetField);
     jint count = rvmGetIntInstanceFieldValue(env, str, stringCountField);
 
-    jchar* result = rvmAllocateMemory(env, sizeof(jchar) * count);
+    jchar* result = rvmAllocateMemoryAtomic(env, sizeof(jchar) * count);
     if (!result) return NULL;
 
     memcpy(result, value->values + offset, sizeof(jchar) * count);
@@ -294,7 +294,7 @@ char* rvmGetStringUTFChars(Env* env, Object* str) {
 
     jint length = getUtf8LengthOfUnicode(value->values + offset, count);
 
-    char* result = rvmAllocateMemory(env, length + 1);
+    char* result = rvmAllocateMemoryAtomic(env, length + 1);
     if (!result) return NULL;
 
     unicodeToUtf8(result, value->values + offset, count);

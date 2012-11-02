@@ -160,7 +160,7 @@ ObjectArray* Java_java_lang_reflect_Method_getParameterTypes(Env* env, Class* cl
     const char* s;
     jint i = 0;
     while ((s = rvmGetNextParameterType(&desc))) {
-        char* paramTypeName = rvmAllocateMemory(env, desc - s + 1);
+        char* paramTypeName = rvmAllocateMemoryAtomic(env, desc - s + 1);
         if (!paramTypeName) return NULL;
         strncpy(paramTypeName, s, desc - s);
         Class* paramType = rvmFindClassByDescriptor(env, paramTypeName, method->clazz->classLoader);

@@ -26,7 +26,7 @@ static char* createClasspathFromClasspathEntries(Env* env, ClasspathEntry* first
         if (entry) length++; // Make room for the :
     }
 
-    char* p = rvmAllocateMemory(env, length + 1);
+    char* p = rvmAllocateMemoryAtomic(env, length + 1);
     if (!p) return NULL;
 
     entry = first;

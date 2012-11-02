@@ -106,12 +106,12 @@ ObjectArray* rvmNewObjectArray(Env* env, jint length, Class* elementClass, Class
     if (!arrayClass) {
         char* name = NULL;
         if (CLASS_IS_ARRAY(elementClass)) {
-            name = rvmAllocateMemory(env, strlen(elementClass->name) + 2);
+            name = rvmAllocateMemoryAtomic(env, strlen(elementClass->name) + 2);
             if (!name) return NULL;
             strcpy(name, "[");
             strcat(name, elementClass->name);
         } else {
-            name = rvmAllocateMemory(env, strlen(elementClass->name) + 4);
+            name = rvmAllocateMemoryAtomic(env, strlen(elementClass->name) + 4);
             if (!name) return NULL;
             strcpy(name, "[L");
             strcat(name, elementClass->name);

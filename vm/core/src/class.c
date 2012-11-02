@@ -170,12 +170,12 @@ static Class* createArrayClass(Env* env, Class* componentType) {
     char* desc = NULL;
 
     if (CLASS_IS_ARRAY(componentType) || CLASS_IS_PRIMITIVE(componentType)) {
-        desc = rvmAllocateMemory(env, length + 2);
+        desc = rvmAllocateMemoryAtomic(env, length + 2);
         if (!desc) return NULL;
         desc[0] = '[';
         strcat(desc, componentType->name);
     } else {
-        desc = rvmAllocateMemory(env, length + 4);
+        desc = rvmAllocateMemoryAtomic(env, length + 4);
         if (!desc) return NULL;
         desc[0] = '[';
         desc[1] = 'L';
@@ -275,7 +275,7 @@ static Class* findClassByDescriptor(Env* env, const char* desc, ClassLoader* cla
     }
     // desc[0] == 'L'
     jint length = strlen(desc);
-    char* className = rvmAllocateMemory(env, length - 2 + 1);
+    char* className = rvmAllocateMemoryAtomic(env, length - 2 + 1);
     if (!className) return NULL;
     strncpy(className, &desc[1], length - 2);
     return findClass(env, className, classLoader, loaderFunc);
@@ -306,7 +306,7 @@ Class* rvmFindClassByDescriptor(Env* env, const char* desc, ClassLoader* classLo
     }
     // desc[0] == 'L'
     jint length = strlen(desc);
-    char* className = rvmAllocateMemory(env, length - 2 + 1);
+    char* className = rvmAllocateMemoryAtomic(env, length - 2 + 1);
     if (!className) return NULL;
     strncpy(className, &desc[1], length - 2);
     return rvmFindClassUsingLoader(env, className, classLoader);

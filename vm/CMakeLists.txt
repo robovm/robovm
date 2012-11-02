@@ -194,10 +194,14 @@ set(EXTGC_LD_FLAGS  "${EXT_LD_FLAGS}")
 if(DARWIN)
   set(EXTGC_C_FLAGS "${EXTGC_C_FLAGS} -DNO_DYLD_BIND_FULLY_IMAGE")
 endif()
+set(EXTGC_PARAMS  "--enable-shared=no")
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+  set(EXTGC_PARAMS "${EXTGC_PARAMS} --enable-gc-debug=yes")
+endif()
 ExternalProject_Add(extgc 
   URL ${CMAKE_SOURCE_DIR}/dependencies/bdwgc-20120327.tar.gz
   PATCH_COMMAND patch -d ../extgc -p1 < ${CMAKE_SOURCE_DIR}/dependencies/bdwgc.patch
-  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTGC_C_FLAGS}' LDFLAGS='${EXTGC_LD_FLAGS}' ../extgc/configure ${EXT_HOST} --enable-shared=no --prefix=${CMAKE_BINARY_DIR}/gc"
+  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTGC_C_FLAGS}' LDFLAGS='${EXTGC_LD_FLAGS}' ../extgc/configure ${EXT_HOST} ${EXTGC_PARAMS} --prefix=${CMAKE_BINARY_DIR}/gc"
 )
 install(FILES ${CMAKE_BINARY_DIR}/gc/lib/libgc.a DESTINATION ${INSTALL_DIR})
 

@@ -1,19 +1,22 @@
 %GatewayFrame = type {i8*, i8*, i8*}
 %Env = type {i8*, i8*, i8*, i8*, i8*, i8*, i8*, i32}
-%Class = type {i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i32, i8*, i8*, i8*, i8*, i32, i32, i32, i16, i16}
+; NOTE: The compiler assumes that %Class is a multiple of 8 in size (which is why we pad it with {i8,i8})
+%Class = type {i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i32, i8*, i8*, i8*, i8*, i32, i32, i32, i16, i16, {i8,i8}}
 %Method = type opaque
 %Field = type opaque
 %Object = type {%Class*, i8*}
-%Array = type {%Object, i32}
-%BooleanArray = type {%Object, i32, i8}
-%ByteArray = type {%Object, i32, i8}
-%CharArray = type {%Object, i32, i16}
-%ShortArray = type {%Object, i32, i16}
-%IntArray = type {%Object, i32, i32}
-%LongArray = type {%Object, i32, i64}
-%FloatArray = type {%Object, i32, float}
-%DoubleArray = type {%Object, i32, double}
-%ObjectArray = type {%Object, i32, %Object*}
+; NOTE: The compiler assumes that %DataObject is a multiple of 8 in size (we don't need to pad it since it's already 8 bytes in size)
+%DataObject = type {%Object}
+%Array = type {%DataObject, i32}
+%BooleanArray = type {%DataObject, i32, i8}
+%ByteArray = type {%DataObject, i32, i8}
+%CharArray = type {%DataObject, i32, i16}
+%ShortArray = type {%DataObject, i32, i16}
+%IntArray = type {%DataObject, i32, i32}
+%LongArray = type {%DataObject, i32, i64}
+%FloatArray = type {%DataObject, i32, float}
+%DoubleArray = type {%DataObject, i32, double}
+%ObjectArray = type {%DataObject, i32, %Object*}
 
 @array_Z = external global %Object*
 @array_B = external global %Object*

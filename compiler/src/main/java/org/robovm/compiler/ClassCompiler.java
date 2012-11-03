@@ -1150,7 +1150,7 @@ public class ClassCompiler {
     }
     
     private static StructureType getInstanceType(SootClass clazz) {
-        return new StructureType(OBJECT, getInstanceType0(clazz, 1));
+        return new StructureType(DATA_OBJECT, getInstanceType0(clazz, 1));
     }
     
     private Constant getString(String string) {

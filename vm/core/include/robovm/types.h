@@ -143,7 +143,7 @@ struct Class {
   jint instanceDataSize;   // The total number of bytes needed to store instances of this class.
   unsigned short classRefCount;
   unsigned short instanceRefCount;
-  void* data[0] __attribute__ ((aligned (8)));           // This is where static fields are stored for the class
+  void* data[0] __attribute__ ((aligned (8)));  // This is where static fields are stored for the class. Must be 8-byte aligned.
 };
 
 // NOTE: The compiler sorts fields by type (ref, volatile long, double, long, float, int, char, short, boolean, byte) and then by name
@@ -224,14 +224,14 @@ struct Thread {
 
 struct Array {
   Object object;
-  jint length;
+  jint length __attribute__ ((aligned (8)));
   void* values[0];
 };
 
 #define MAKE_ARRAY(T, N) \
 typedef struct _ ## N ## Array { \
   Object object; \
-  jint length; \
+  jint length __attribute__ ((aligned (8))); \
   T values[0]; \
 } N ## Array;
 

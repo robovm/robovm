@@ -81,6 +81,8 @@ public class Types {
     public static final Type CLASS_PTR = new PointerType(CLASS);
     // Dummy Object type definition. The real one is in header.ll
     public static final StructureType OBJECT = new StructureType("Object", CLASS_PTR);
+    // Dummy DataObject type definition. The real one is in header.ll
+    public static final StructureType DATA_OBJECT = new StructureType("DataObject", OBJECT);
     public static final Type OBJECT_PTR = new PointerType(OBJECT);
     public static final Type METHOD_PTR = new PointerType(new OpaqueType("Method"));
     public static final Type FIELD_PTR = new PointerType(new OpaqueType("Field"));

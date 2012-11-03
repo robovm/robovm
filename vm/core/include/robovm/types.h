@@ -143,7 +143,7 @@ struct Class {
   jint instanceDataSize;   // The total number of bytes needed to store instances of this class.
   unsigned short classRefCount;
   unsigned short instanceRefCount;
-  void* data[0];           // This is where static fields are stored for the class
+  void* data[0] __attribute__ ((aligned (8)));           // This is where static fields are stored for the class
 };
 
 // NOTE: The compiler sorts fields by type (ref, volatile long, double, long, float, int, char, short, boolean, byte) and then by name
@@ -156,7 +156,7 @@ struct ClassLoader {
 
 struct DataObject {
   Object object;
-  void* data[0];
+  void* data[0] __attribute__ ((aligned (8)));
 };
 
 struct InnerClass {

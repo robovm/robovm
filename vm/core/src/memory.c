@@ -29,6 +29,15 @@ static VM* vm = NULL;
 // The GC kind used when allocating Objects (and arrays and Classes which are also Objects)
 static int object_gc_kind;
 
+static inline struct GC_ms_entry* markRegion(void** start, void** end, struct GC_ms_entry* mark_stack_ptr, struct GC_ms_entry* mark_stack_limit) {
+    void** p = start;
+    while (p < end) {
+        mark_stack_ptr = GC_MARK_AND_PUSH(*p, mark_stack_ptr, mark_stack_limit, NULL);
+        p++;
+    }
+    return mark_stack_ptr;
+}
+
 static struct GC_ms_entry* markObject(GC_word* addr, struct GC_ms_entry* mark_stack_ptr, struct GC_ms_entry* mark_stack_limit, GC_word env) {
     Object* obj = (Object*) addr;
 
@@ -41,9 +50,6 @@ static struct GC_ms_entry* markObject(GC_word* addr, struct GC_ms_entry* mark_st
 
     mark_stack_ptr = GC_MARK_AND_PUSH(obj->clazz, mark_stack_ptr, mark_stack_limit, NULL);
 
-    void** p = NULL;
-    void** end = NULL;
-
     if (obj->clazz == java_lang_Class) {
         // Class*
         Class* clazz = (Class*) obj;
@@ -55,24 +61,34 @@ static struct GC_ms_entry* markObject(GC_word* addr, struct GC_ms_entry* mark_st
         mark_stack_ptr = GC_MARK_AND_PUSH(clazz->_interfaces, mark_stack_ptr, mark_stack_limit, NULL);
         mark_stack_ptr = GC_MARK_AND_PUSH(clazz->_fields, mark_stack_ptr, mark_stack_limit, NULL);
         mark_stack_ptr = GC_MARK_AND_PUSH(clazz->_methods, mark_stack_ptr, mark_stack_limit, NULL);
-        p = (void**) (((char*) clazz) + offsetof(Class, data));
-        end = (void**) (((char*) clazz) + clazz->classDataSize);
+        void** start = (void**) (((char*) clazz) + offsetof(Class, data));
+        void** end = (void**) (((char*) start) + clazz->classRefCount * sizeof(Object*));
+        mark_stack_ptr = markRegion(start, end, mark_stack_ptr, mark_stack_limit);
     } else if (CLASS_IS_ARRAY(obj->clazz)) {
         if (!CLASS_IS_PRIMITIVE(obj->clazz->componentType)) {
             // Array of objects. Mark all values in the array.
             ObjectArray* array = (ObjectArray*) obj;
-            p = (void**) (((char*) array) + offsetof(ObjectArray, values));
-            end = (void**) (((char*) p) + sizeof(Object*) * array->length);
+            void** start = (void**) (((char*) array) + offsetof(ObjectArray, values));
+            void** end = (void**) (((char*) start) + sizeof(Object*) * array->length);
+            mark_stack_ptr = markRegion(start, end, mark_stack_ptr, mark_stack_limit);
         }
     } else {
-        // Object*
-        p = (void**) (((char*) obj) + offsetof(DataObject, data));
-        end = (void**) (((char*) obj) + obj->clazz->instanceDataSize);
-    }
-
-    while (p < end) {
-        mark_stack_ptr = GC_MARK_AND_PUSH(*p, mark_stack_ptr, mark_stack_limit, NULL);
-        p++;
+        // Object* - for each Class in the hierarchy of obj's Class we mark the first instanceRefCount*sizeof(Object*) bytes
+        Class* clazz = obj->clazz;
+        while (clazz != NULL) {
+            void** start = (void**) (((char*) obj) + clazz->instanceDataOffset);
+            void** end = (void**) (((char*) start) + clazz->instanceRefCount * sizeof(Object*));
+            if (clazz == java_lang_ref_Reference) {
+                // Don't mark the referent field
+                void** referent_start = (void**) (((char*) obj) + java_lang_ref_Reference_referent->offset);
+                void** referent_end = (void**) (((char*) referent_start) + sizeof(Object*));
+                mark_stack_ptr = markRegion(start, referent_start, mark_stack_ptr, mark_stack_limit);
+                mark_stack_ptr = markRegion(referent_end, end, mark_stack_ptr, mark_stack_limit);
+            } else {
+                mark_stack_ptr = markRegion(start, end, mark_stack_ptr, mark_stack_limit);
+            }
+            clazz = clazz->superclass;
+        }
     }
 
     return mark_stack_ptr;

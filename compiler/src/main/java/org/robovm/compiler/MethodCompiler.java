@@ -207,10 +207,20 @@ public class MethodCompiler extends AbstractMethodCompiler {
     
     protected void doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
         function = FunctionBuilder.method(method);
-        trapsAt = new HashMap<Unit, List<Trap>>();
         moduleBuilder.addFunction(function);
         
         env = function.getParameterRef(0);
+
+        if (this.className.equals("java/lang/Object") && "<init>".equals(method.getName())) {
+            // Compile Object.<init>(). JLS 12.6.1: "An object o is not finalizable until its constructor has invoked 
+            // the constructor for Object on o and that invocation has completed successfully".
+            // Object.<init>() calls register_finalizable() in header.ll which checks if the class of 'this' is finalizable.
+            // If it is the object will be registered for finalization.
+            compileObjectInit();
+            return;
+        }
+        
+        trapsAt = new HashMap<Unit, List<Trap>>();
         
         Body body = method.retrieveActiveBody();
         PackManager.v().getPack("jtp").apply(body);
@@ -393,6 +403,11 @@ public class MethodCompiler extends AbstractMethodCompiler {
         }
     }
 
+    private void compileObjectInit() {
+        call(REGISTER_FINALIZABLE, env, function.getParameterRef(1));
+        function.add(new Ret());
+    }
+    
     /**
      * Returns <code>true</code> if the {@link Trap}s at {@link Unit} <code>unit</code>
      * differ from any of those at the {@link Unit}s that branch to <code>unit</code>.

@@ -562,6 +562,12 @@ Object* _bcAllocate(Env* env, ClassInfoHeader* header) {
     LEAVE(obj);
 }
 
+void _bcRegisterFinalizer(Env* env, Object* obj) {
+    ENTER;
+    rvmRegisterFinalizer(env, obj);
+    LEAVEV;
+}
+
 BooleanArray* _bcNewBooleanArray(Env* env, jint length) {
     ENTER;
     BooleanArray* array = rvmNewBooleanArray(env, length);

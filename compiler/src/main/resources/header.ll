@@ -37,6 +37,7 @@ declare %Object* @_bcCheckcast(%Env*, i8**, %Object*)
 declare %Object* @_bcCheckcastArray(%Env*, %Object*, %Object*)
 declare i32 @_bcInstanceof(%Env*, i8**, %Object*)
 declare i32 @_bcInstanceofArray(%Env*, %Object*, %Object*)
+declare void @_bcRegisterFinalizer(%Env* %env, %Object* %o)
 
 declare i8* @_bcLookupVirtualMethod(%Env*, %Object*, i8*, i8*)
 declare i8* @_bcLookupInterfaceMethod(%Env*, i8**, %Object*, i8*, i8*)
@@ -428,4 +429,21 @@ loaded:
 notLoaded:
     %4 = call %Object* @_bcLdcClass(%Env* %env, i8** %header)
     ret %Object* %4
+}
+
+define private void @register_finalizable(%Env* %env, %Object* %o) alwaysinline {
+    %1 = getelementptr %Object* %o, i32 0, i32 0
+    %2 = load %Class** %1
+    %3 = getelementptr %Class* %2, i32 0, i32 8 ; Class->flags
+    %4 = load i32* %3
+    %5 = and i32 %4, 1048576  ; CLASS_FLAG_FINALIZABLE = 0x00100000
+    %6 = icmp eq i32 %5, 0
+    br i1 %6, label %done, label %register
+
+register:
+    call void @_bcRegisterFinalizer(%Env* %env, %Object* %o)
+    br label %done
+
+done:
+    ret void
 }

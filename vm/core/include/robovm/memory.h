@@ -19,6 +19,7 @@
 extern jboolean rvmInitMemory(Env* env);
 extern Class* rvmAllocateMemoryForClass(Env* env, jint classDataSize);
 extern Object* rvmAllocateMemoryForObject(Env* env, Class* clazz);
+extern void rvmRegisterFinalizer(Env* env, Object* obj);
 extern Array* rvmAllocateMemoryForArray(Env* env, jint length, jint elementSize);
 extern void* rvmAllocateMemory(Env* env, int size);
 extern void* rvmAllocateMemoryUncollectable(Env* env, int size);

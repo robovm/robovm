@@ -94,6 +94,7 @@ public class Functions {
 
     public static final FunctionRef LLVM_FRAMEADDRESS = new FunctionRef("llvm.frameaddress", new FunctionType(I8_PTR, I32));
 
+    public static final FunctionRef REGISTER_FINALIZABLE = new FunctionRef("register_finalizable", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
     public static final FunctionRef CHECK_NULL = new FunctionRef("checknull", new FunctionType(I8, ENV_PTR, OBJECT_PTR));
     public static final FunctionRef CHECK_NULL_I8_PTR = new FunctionRef("checknull_i8_ptr", new FunctionType(I8, ENV_PTR, I8_PTR));
     public static final FunctionRef CHECK_LOWER = new FunctionRef("checklower", new FunctionType(VOID, ENV_PTR, OBJECT_PTR, I32));

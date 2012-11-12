@@ -146,7 +146,7 @@ static void enqueueObjectForFinalization(GC_PTR addr, GC_PTR client_data) {
 */
 }
 
-void gcRegisterFinalizer(Env* env, Object* obj) {
+void rvmRegisterFinalizer(Env* env, Object* obj) {
     rvmCallVoidClassMethod(env, java_lang_ref_FinalizerReference, java_lang_ref_FinalizerReference_add, obj);
     if (!rvmExceptionCheck(env)) {
         GC_REGISTER_FINALIZER_NO_ORDER(obj, enqueueObjectForFinalization, NULL, NULL, NULL);

@@ -999,9 +999,6 @@ Object* rvmAllocateObject(Env* env, Class* clazz) {
     Object* obj = rvmAllocateMemoryForObject(env, clazz);
     if (!obj) return NULL;
     obj->clazz = clazz;
-    if (CLASS_IS_FINALIZABLE(clazz)) {
-        gcRegisterFinalizer(env, obj);
-    }
     return obj;
 }
 

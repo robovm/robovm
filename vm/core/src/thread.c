@@ -90,6 +90,21 @@ static jboolean initThread(Env* env, Thread* thread, JavaThread* threadObj) {
     return TRUE;
 }
 
+/**
+ * Associates the specified Env* with the current thread.
+ */
+static void setThreadEnv(Env* env) {
+    int err = pthread_setspecific(tlsEnvKey, env);
+    assert(err == 0);
+    if (err != 0) {
+        rvmThrowInternalErrorErrno(env, err);
+    }
+}
+
+static void clearThreadEnv() {
+    pthread_setspecific(tlsEnvKey, NULL);
+}
+
 static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboolean daemon) {
     Env* env = *envPtr; // env is NULL if rvmAttachCurrentThread() was called. If non NULL rvmInitThreads() was called.
     if (!env) {
@@ -107,12 +122,8 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboole
         if (!env) goto error;
     }
 
-    // Associate the current Env* with the thread
-    int err = 0;
-    if ((err = pthread_setspecific(tlsEnvKey, env)) != 0) {
-        rvmThrowInternalErrorErrno(env, err);
-        goto error;
-    }
+    setThreadEnv(env);
+    if (rvmExceptionOccurred(env)) goto error;
 
     Thread* thread = allocThread(env);
     if (!thread) goto error;
@@ -158,7 +169,7 @@ error_remove:
     rvmUnlockThreadsList();
 error:
     if (env) env->currentThread = NULL;
-    pthread_setspecific(tlsEnvKey, NULL);
+    clearThreadEnv();
     return JNI_ERR;
 }
 
@@ -272,12 +283,17 @@ static void* startThreadEntryPoint(void* _args) {
 
     rvmLockThreadsList();
     jboolean failure = TRUE;
-    if (initThread(env, thread, threadObj)) {
-        if (rvmSetupSignals(env)) {
-            failure = FALSE;
-            thread->stackAddr = getStackAddress();
+
+    setThreadEnv(env);
+    if (!rvmExceptionOccurred(env)) {
+        if (initThread(env, thread, threadObj)) {
+            if (rvmSetupSignals(env)) {
+                failure = FALSE;
+                thread->stackAddr = getStackAddress();
+            }
         }
     }
+    
     thread->status = THREAD_STARTING;
     pthread_cond_broadcast(&threadStartCond);
     while (thread->status != THREAD_VMWAIT) {

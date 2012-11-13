@@ -248,5 +248,10 @@ public final class VMRuntime {
     /**
      * Returns true if either a Java debugger or native debugger is active.
      */
-    public native boolean isDebuggerActive();
+    public boolean isDebuggerActive() {
+        // RoboVM note: This is native in Android. Called by the FinalizerWatchdogDaemon thread the check whether a 
+        // debugger is attached. If there is a debugger the  FinalizerWatchdogDaemon thread will not exit the VM if a
+        // finalizer takes more time than the allowed MAX_FINALIZE_MILLIS.
+        return false;
+    }
 }

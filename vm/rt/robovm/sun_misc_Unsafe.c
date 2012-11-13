@@ -22,8 +22,17 @@ jlong Java_sun_misc_Unsafe_objectFieldOffset0(Env* env, Object* unsafe, Object* 
     return field->offset;
 }
 
-jboolean Java_sun_misc_Unsafe_compareAndSwapInt(Env* env, Object* unsafe, Object* object, jlong fieldOffset, jint expected, jint update) {
-    jint* address = (jint*) (((jbyte*) object) + fieldOffset);
-    return rvmAtomicCompareAndSwapInt(address, expected, update);
+jboolean Java_sun_misc_Unsafe_compareAndSwapInt(Env* env, Object* unsafe, Object* object, jlong offset, jint expectedValue, jint newValue) {
+    jint* address = (jint*) (((jbyte*) object) + offset);
+    return rvmAtomicCompareAndSwapInt(address, expectedValue, newValue);
 }
 
+jboolean Java_sun_misc_Unsafe_compareAndSwapLong(Env* env, Object* unsafe, Object* object, jlong offset, jlong expectedValue, jlong newValue) {
+    jlong* address = (jlong*) (((jbyte*) object) + offset);
+    return rvmAtomicCompareAndSwapLong(address, expectedValue, newValue);
+}
+
+jboolean Java_sun_misc_Unsafe_compareAndSwapObject(Env* env, Object* unsafe, Object* object, jlong offset, Object* expectedValue, Object* newValue) {
+    void** address = (void**) (((jbyte*) object) + offset);
+    return rvmAtomicCompareAndSwapPtr(address, expectedValue, newValue);
+}

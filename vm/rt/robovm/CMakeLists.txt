@@ -13,6 +13,7 @@ set(SRC
   java_lang_String.c 
   java_lang_System.c 
   java_lang_VMClassLoader.c 
+  java_lang_ref_Reference.c 
   java_lang_reflect_Array.c 
   java_lang_reflect_Constructor.c 
   java_lang_reflect_Field.c 

@@ -80,13 +80,20 @@ public abstract class Reference<T> {
      * Constructs a new instance of this class.
      */
     Reference() {
+        register(null);
     }
 
     Reference(T r, ReferenceQueue q) {
         referent = r;
         queue = q;
+        register(r);
     }
 
+    /**
+     * RoboVM note: This is not in Android.
+     */
+    private native void register(T r);
+    
     /**
      * Makes the referent {@code null}. This does not force the reference
      * object to be enqueued.

@@ -550,12 +550,50 @@ extern "C" jobject Java_libcore_icu_ICU_getAvailableCurrencyCodes(JNIEnv* env, j
     return result;
 }
 
+// RoboVM note: The code below was added to support different ICU .dat files and 
+// determine which one to use at runtime rather than at compile time.
+// iOS 5.0/5.1 use ICU 4.8 while iOS 6.0 uses ICU 49.
+// We had to add a hack to icu4c/common/udata.cpp to intercept lookups in the data
+// file and modify the entry names.
+
+// Paths of supported ICU versions in order of preference
+const char * const supportedIcuPaths[] = { "icudt48l", "icudt49l" };
+// The ICU path we're using
+static const char *icuPath = NULL;
+
+extern void (*icuModTocEntryNameFunc)(const char *, char *);
+
+static void modTocEntryName(const char *oldTocEntryName, char *newTocEntryName) {
+    if (!strncmp(oldTocEntryName, U_ICUDATA_NAME, sizeof(U_ICUDATA_NAME) - 1)) {
+        strcpy(newTocEntryName, icuPath);
+        strcat(newTocEntryName, &oldTocEntryName[sizeof(U_ICUDATA_NAME) - 1]);
+    } else {
+        strcpy(newTocEntryName, oldTocEntryName);
+    }
+}
+
 int register_libcore_icu_ICU(JNIEnv* env) {
     std::string path;
-    path = u_getDataDirectory();
-    path += "/";
-    path += U_ICUDATA_NAME;
-    path += ".dat";
+    for (unsigned int i = 0; i < sizeof(supportedIcuPaths); i++) {
+        path = u_getDataDirectory();
+        path += "/";
+        path += supportedIcuPaths[i];
+        path += ".dat";
+        if (!access(path.c_str(), R_OK)) {
+            icuPath = supportedIcuPaths[i];
+            break;
+        }
+    }
+
+    if (!icuPath) {
+        // None of the supported paths found.
+        ALOGE("No supported ICU data file found in %s", u_getDataDirectory()); \
+        abort();
+    }
+
+    icuModTocEntryNameFunc = modTocEntryName;
+
+// RoboVM note: This ends the changes made to support different ICU versions.
 
     #define FAIL_WITH_STRERROR(s) \
         ALOGE("Couldn't " s " '%s': %s", path.c_str(), strerror(errno)); \

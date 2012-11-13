@@ -36,7 +36,7 @@ _rvmTrycatchEnter:
     str sp, [r2, #sp_offset]
     add r2, r2, #r4_offset
     stmia r2!, {r4-r8, r10, r11, lr}
-    fstmiax r2, {d8-d15}
+    vstmia r2, {d8-d15}
 
     /* tc->prev = env->trycatchContext; */
     /* env->trycatchContext = tc; */
@@ -61,7 +61,7 @@ _rvmTrycatchJump:
     ldr sp, [r1, #sp_offset]
     add r1, r1, #r4_offset
     ldmia r1!, {r4-r8, r10, r11, lr}
-    fldmiax r1, {d8-d15}
+    vldmia r1, {d8-d15}
 
     @ Set the return value that the call to rvmTrycatchEnter will return
     ldr r0, [r0, #sel_offset]

@@ -26,6 +26,8 @@ import static org.robovm.compiler.llvm.Linkage.*;
 import static org.robovm.compiler.llvm.Type.*;
 
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.llvm.Bitcast;
@@ -92,13 +94,19 @@ public class TrampolineCompiler {
     
     private final Config config;
     private ModuleBuilder mb;
+    private Set<String> dependencies;
 
     public TrampolineCompiler(Config config) {
         this.config = config;
     }
     
+    public Set<String> getDependencies() {
+        return dependencies;
+    }
+    
     public void compile(ModuleBuilder mb, Trampoline t) {
         this.mb = mb;
+        this.dependencies = new HashSet<String>();
         
         if (t instanceof LdcString) {
             Function f = new FunctionBuilder(t).linkage(weak).build();
@@ -261,6 +269,9 @@ public class TrampolineCompiler {
             }
         } else if (t instanceof FieldAccessor) {
             SootField field = resolveField(f, (FieldAccessor) t);
+            if (field != null) {
+                dependencies.add(getInternalName(field.getDeclaringClass()));
+            }
             if (field == null || !checkMemberAccessible(f, t, field)) {
                 mb.addFunction(f);
                 return;
@@ -279,6 +290,9 @@ public class TrampolineCompiler {
             createTrampolineAliasForField((FieldAccessor) t, field);
         } else if (t instanceof Invokeinterface) {
             SootMethod rm = resolveInterfaceMethod(f, (Invokeinterface) t);
+            if (rm != null) {
+                dependencies.add(getInternalName(rm.getDeclaringClass()));
+            }
             if (rm == null || !checkMemberAccessible(f, t, rm)) {
                 mb.addFunction(f);
                 return;
@@ -286,6 +300,9 @@ public class TrampolineCompiler {
             createTrampolineAliasForMethod((Invoke) t, rm);
         } else if (t instanceof Invoke) {
             SootMethod method = resolveMethod(f, (Invoke) t);
+            if (method != null) {
+                dependencies.add(getInternalName(method.getDeclaringClass()));
+            }
             if (method == null || !checkMemberAccessible(f, t, method)) {
                 mb.addFunction(f);
                 return;

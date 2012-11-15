@@ -20,12 +20,18 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.exec.ExecuteException;
 import org.robovm.compiler.clazz.Clazz;
+import org.robovm.compiler.clazz.Dependency;
 import org.robovm.compiler.clazz.Path;
 
 /**
@@ -33,6 +39,58 @@ import org.robovm.compiler.clazz.Path;
  * @version $Id$
  */
 public class AppCompiler {
+    /**
+     * {@link Pattern} used to convert an ANT-style pattern into a regular expression.
+     */
+    private static final Pattern ANT_WILDCARDS = Pattern.compile("\\*\\*\\.?|\\*|\\?");
+    
+    /**
+     * Patterns for root classes. Classes matching these patterns will always be linked in.
+     */
+    private static final String[] ROOT_CLASS_PATTERNS = {
+        "java.lang.**.*",
+        "org.apache.harmony.lang.annotation.*",
+        "org.robovm.rt.**.*"
+    };
+    /**
+     * Names of root classes. These classes will always be linked in. Most of these
+     * are here because they are required by Android's libcore native code.
+     */
+    private static final String[] ROOT_CLASSES = {
+        "java/io/FileDescriptor",
+        "java/io/PrintWriter",
+        "java/io/Serializable",
+        "java/io/StringWriter",
+        "java/math/BigDecimal",
+        "java/net/Inet6Address",
+        "java/net/InetAddress",
+        "java/net/InetSocketAddress",
+        "java/net/Socket",
+        "java/net/SocketImpl",
+        "java/nio/charset/CharsetICU",
+        "java/text/Bidi$Run",
+        "java/text/ParsePosition",
+        "java/util/regex/PatternSyntaxException",
+        "java/util/zip/Deflater",
+        "java/util/zip/Inflater",
+        "libcore/icu/LocaleData",
+        "libcore/icu/NativeDecimalFormat$FieldPositionIterator",
+        "libcore/io/ErrnoException",
+        "libcore/io/GaiException",
+        "libcore/io/StructAddrinfo",
+        "libcore/io/StructFlock",
+        "libcore/io/StructGroupReq",
+        "libcore/io/StructLinger",
+        "libcore/io/StructPasswd",
+        "libcore/io/StructPollfd",
+        "libcore/io/StructStat",
+        "libcore/io/StructStatFs",
+        "libcore/io/StructTimeval",
+        "libcore/io/StructUtsname",
+        "libcore/util/MutableInt",
+        "libcore/util/MutableLong"
+    };
+    
     private final Config config;
     private final ClassCompiler classCompiler;
     private final Linker linker;
@@ -42,68 +100,130 @@ public class AppCompiler {
         this.classCompiler = new ClassCompiler(config);
         this.linker = new Linker(config);
     }
+    
+    /**
+     * Converts an ANT-style pattern into a regular expression.
+     */
+    private Pattern antPatternToRegexp(String pattern) {
+        StringBuilder sb = new StringBuilder();
+        int start = 0;
+        Matcher matcher = ANT_WILDCARDS.matcher(pattern);
+        while (matcher.find()) {
+            if (matcher.start() - start > 0) {
+                sb.append(Pattern.quote(pattern.substring(start, matcher.start())));
+            }
+            if ("**".equals(matcher.group()) || "**.".equals(matcher.group())) {
+                sb.append(".*");
+            } else if ("*".equals(matcher.group())) {
+                sb.append("[^.]+");
+            } else if ("?".equals(matcher.group())) {
+                sb.append(".");
+            }
+            start = matcher.end();
+        }
+        if (start < pattern.length()) {
+            sb.append(Pattern.quote(pattern.substring(start)));
+        }
+        return Pattern.compile(sb.toString());
+    }
+    
+    /**
+     * Returns all {@link Clazz}es in all {@link Path}s matching the specified ANT-style pattern.
+     */
+    private Collection<Clazz> getMatchingClasses(String pattern) {
+        Pattern regexp = antPatternToRegexp(pattern);
+        Map<String, Clazz> matches = new HashMap<String, Clazz>();
+        for (Path path : config.getClazzes().getPaths()) {
+            for (Clazz clazz : path.listClasses()) {
+                if (!matches.containsKey(clazz.getClassName()) 
+                        && regexp.matcher(clazz.getClassName()).matches()) {
+                    
+                    matches.put(clazz.getClassName(), clazz);
+                }
+            }
+        }
+        return matches.values();
+    }
+    
+    /**
+     * Returns all root classes. These are the minimum set of classes that needs to be compiled
+     * and linked. The compiler will use this set to determine which classes need to be recompiled
+     * and linked in through the root classes' dependencies.
+     * 
+     * The classes matching {@link #ROOT_CLASS_PATTERNS} and {@link #ROOT_CLASSES} will always be 
+     * included. If a main class has been specified it will also become a root. Any root class 
+     * pattern specified on the command line (as returned by {@link Config#getRoots()} will also be 
+     * used to find root classes. If no main class has been specified and {@link Config#getRoots()} 
+     * returns an empty set all classes available on the bootclasspath and the classpath will become 
+     * roots.
+     */
+    private TreeSet<Clazz> getRootClasses() {
+        TreeSet<Clazz> classes = new TreeSet<Clazz>();
+        for (String rootClassPattern : ROOT_CLASS_PATTERNS) {
+            classes.addAll(getMatchingClasses(rootClassPattern));            
+        }
+        for (String rootClassName : ROOT_CLASSES) {
+            classes.add(config.getClazzes().load(rootClassName));            
+        }
 
-    private boolean rebuildStructDependents(Collection<String> dirtyStructs, 
-            Collection<Clazz> compiled) throws IOException {
+        if (config.getMainClass() != null) {
+            Clazz clazz = config.getClazzes().load(config.getMainClass().replace('.', '/'));
+            if (clazz == null) {
+                throw new CompilerException("Main class " + config.getMainClass() + " not found");
+            }
+            classes.add(clazz);
+        }
         
-        boolean done = true;
-        for (Clazz clazz : config.getClazzes().listClasses()) {
-            if (clazz.getClazzInfo().hasStructDependencies() 
-                    && !compiled.contains(clazz.getInternalName())) {
-                
-                Set<String> structDependencies = 
-                        new HashSet<String>(clazz.getClazzInfo().getStructDependencies());
-                structDependencies.retainAll(dirtyStructs);
-                
-                if (!structDependencies.isEmpty()) {
-                    config.getLogger().debug("Recompiling class %s which depends on " 
-                            + "changed @Struct classes: ", clazz, structDependencies);
-                    classCompiler.compile(clazz, true);
-                    compiled.add(clazz);
-                    if (clazz.getClazzInfo().isStruct()) {
-                        /*
-                         * Record struct classes. Other classes which depend on
-                         * this class may have to be recompiled. 
-                         */
-                        dirtyStructs.add(clazz.getInternalName());
-                        done = false;
+        if (config.getRoots().isEmpty()) {
+            if (config.getMainClass() == null) {
+                classes.addAll(config.getClazzes().listClasses());
+            }
+        } else {
+            for (String root : config.getRoots()) {
+                if (root.indexOf('*') == -1) {
+                    Clazz clazz = config.getClazzes().load(root.replace('.', '/'));
+                    if (clazz == null) {
+                        throw new CompilerException("Root class " + root + " not found");
+                    }
+                    classes.add(clazz);
+                } else {
+                    Collection<Clazz> matches = getMatchingClasses(root);
+                    if (matches.isEmpty()) {
+                        config.getLogger().warn("Root pattern %s matches no classes", root);
+                    } else {
+                        classes.addAll(matches);
                     }
                 }
             }
         }
-        return done;
-    }
+        return classes;
+    }    
     
-    private void compile(Collection<String> dirtyStructs, 
-            Collection<Clazz> compiled) throws IOException {
-
-        for (Path path : config.getClazzes().getPaths()) {
-            for (Clazz clazz : path.listClasses()) {
-                if (classCompiler.compile(clazz)) {
-                    compiled.add(clazz);
-                    if (clazz.getClazzInfo().isStruct()) {
-                        /*
-                         * Record struct classes. Other classes which depend on
-                         * this class may have to be recompiled. 
-                         */
-                        dirtyStructs.add(clazz.getInternalName());
-                    }
-                }
+    private void compile(Clazz clazz, Set<Clazz> compileQueue, Set<Clazz> compiled) throws IOException {
+        if (config.isClean() || classCompiler.mustCompile(clazz)) {
+            classCompiler.compile(clazz);
+        }
+        for (Dependency dep : clazz.getDependencies()) {
+            Clazz depClazz = config.getClazzes().load(dep.getClassName());
+            if (depClazz != null && !compiled.contains(depClazz)) {
+                compileQueue.add(depClazz);
             }
         }
     }
     
     public void compile() throws IOException {
-        Set<String> dirtyStructs = new HashSet<String>();
-        Set<Clazz> compiled = new HashSet<Clazz>();
-        // First pass. Compile any changed classes.
-        compile(dirtyStructs, compiled);
-        // Second pass. Compile classes which depend on just compiled @Struct classes.
-        while (!rebuildStructDependents(dirtyStructs, compiled)) {
+        TreeSet<Clazz> compileQueue = getRootClasses();
+        Set<Clazz> linkClasses = new HashSet<Clazz>();
+        while (!compileQueue.isEmpty()) {
+            Clazz clazz = compileQueue.pollFirst();
+            if (!linkClasses.contains(clazz)) {
+                compile(clazz, compileQueue, linkClasses);
+                linkClasses.add(clazz);
+            }
         }
         
         if (!config.isSkipLinking()) {
-            linker.link();
+            linker.link(linkClasses);
         }
     }
         

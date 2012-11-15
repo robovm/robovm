@@ -24,6 +24,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 
@@ -38,20 +43,16 @@ public abstract class Clazz implements Comparable<Clazz> {
     private final String fileName;
     private final String className;
     private final String internalName;
-    private final String packageName;
     private final AbstractPath path;
     
     private SootClass sootClass = null;
-    private Package packag = null;
-    private ClazzInfo clazzInfo = null;
+    private Map<String, Dependency> dependencies = null;
     
     Clazz(Clazzes clazzes, String fileName, AbstractPath path) {
         this.clazzes = clazzes;
         this.fileName = fileName;
         this.className = fileName.replace(File.separatorChar, '.').substring(0, fileName.lastIndexOf(".class"));
         this.internalName = className.replace('.', '/');
-        int index = this.className.lastIndexOf('.');
-        this.packageName = index == -1 ? "" : this.className.substring(0, index);
         this.path = path;
     }
     
@@ -75,60 +76,68 @@ public abstract class Clazz implements Comparable<Clazz> {
         return internalName;
     }
     
-    public String getPackageName() {
-        return packageName;
-    }
-    
-    public Package getPackage() {
-        if (packag == null) {
-            packag = path.getPackagesMap().get(packageName);
-        }
-        return packag;
-    }
-    
-    public ClazzInfo resetClazzInfo() {
-        File f = clazzes.getConfig().getInfoFile(this);
-        if (f.exists()) {
-            f.delete();
-        }
-        clazzInfo = new ClazzInfo();
-        return clazzInfo;
-    }
-    
-    public ClazzInfo getClazzInfo() {
-        if (clazzInfo == null) {
-            File f = clazzes.getConfig().getInfoFile(this);
-            if (!f.exists()) {
-                clazzInfo = new ClazzInfo();
-            } else {
+    @SuppressWarnings("unchecked")
+    private void loadDependencies() {
+        if (dependencies == null) {
+            File depsFile = clazzes.getConfig().getDepsFile(this);
+            if (depsFile.exists()) {
                 ObjectInputStream ois = null;
                 try {
-                    ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(f)));
-                    clazzInfo = (ClazzInfo) ois.readObject();
+                    ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(depsFile)));
+                    dependencies = (HashMap<String, Dependency>) ois.readObject();
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
                 } catch (ClassNotFoundException e) {
-                    throw new RuntimeException(e);
                 } finally {
                     IOUtils.closeQuietly(ois);
                 }
             }
+            if (dependencies == null) {
+                dependencies = new HashMap<String,Dependency>();
+            }
         }
-        return clazzInfo;
     }
     
-    public void commitClazzInfo() throws IOException {
-        if (clazzInfo == null) {
-            throw new IllegalStateException("No ClazzInfo associated with the Clazz " + this);
+    public void saveDependencies() throws IOException {
+        if (dependencies == null) {
+            return;
         }
-        File f = clazzes.getConfig().getInfoFile(this);
+        File depsFile = clazzes.getConfig().getDepsFile(this);
         ObjectOutputStream oos = null;
         try {
-            oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(f)));
-            oos.writeObject(clazzInfo);
+            oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(depsFile)));
+            oos.writeObject(dependencies);
         } finally {
             IOUtils.closeQuietly(oos);
         }
+    }
+    
+    public void addDependency(String className) {
+        loadDependencies();
+        if (!dependencies.containsKey(className)) {
+            Clazz clazz = clazzes.load(className);
+            String path = null;
+            boolean inBootClasspath = false;
+            if (clazz != null) {
+                path = clazz.getPath().getFile().getAbsolutePath();
+                inBootClasspath = clazz.isInBootClasspath();
+            }
+            dependencies.put(className, new Dependency(className, path,inBootClasspath));
+        }
+    }
+
+    public void addDependencies(Collection<String> classNames) {
+        for (String className : classNames) {
+            addDependency(className);
+        }
+    }
+
+    public void clearDependencies() {
+        dependencies = new HashMap<String, Dependency>();
+    }
+
+    public Set<Dependency> getDependencies() {
+        loadDependencies();
+        return new HashSet<Dependency>(dependencies.values());
     }
     
     public SootClass getSootClass() {

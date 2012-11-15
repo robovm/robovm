@@ -263,6 +263,37 @@ public class Types {
         return sb.toString();
     }
     
+    private static void nextDescriptor(CharBuffer cb, StringBuilder sb) {
+        char c = cb.get();
+        sb.append(c);
+        if (c == 'L') {
+            do {
+                c = cb.get();
+                sb.append(c);
+            } while (c != ';');
+        } else if (c == '[') {
+            nextDescriptor(cb, sb);
+        } else {
+            // Must be a primitive
+        }
+    }
+    public static String getReturnTypeDescriptor(String methodDescriptor) {
+        return methodDescriptor.substring(methodDescriptor.indexOf(')') + 1);
+    }
+    public static List<String> getParameterDescriptors(String methodDescriptor) {
+        return getParameterDescriptors(CharBuffer.wrap(methodDescriptor));
+    }
+    private static List<String> getParameterDescriptors(CharBuffer cb) {
+        List<String> result = new ArrayList<String>();
+        cb.get(); // Skip the initial '('
+        while (cb.hasRemaining() && cb.get(cb.position()) != ')') {
+            StringBuilder sb = new StringBuilder();
+            nextDescriptor(cb, sb);
+            result.add(sb.toString());
+        }
+        return result;
+    }
+    
     public static boolean isEnum(soot.Type t) {
         if (t instanceof RefType) {
             return isEnum(((RefType) t).getSootClass());
@@ -274,6 +305,10 @@ public class Types {
         return sc.hasSuperclass() && sc.getSuperclass().getName().equals("java.lang.Enum");
     }
     
+    public static boolean isPrimitive(String descriptor) {
+        return descriptor.length() == 1;
+    }
+
     public static boolean isArray(String descriptor) {
         return descriptor.charAt(0) == '[';
     }
@@ -292,19 +327,20 @@ public class Types {
         return descriptor.charAt(descriptor.length() - 1) != ';';
     }
     
+    /**
+     * Returns the internal name of the base type for an array of references 
+     * ([[Ljava/lang/String; => java/lang/String) or plain reference 
+     * (Ljava/lang/String => java/lang/String).
+     */
     public static String getBaseType(String descriptor) {
         if (!isArray(descriptor) || descriptor.charAt(descriptor.length() - 1) != ';') {
             throw new IllegalArgumentException("Not an array or base type is primitive");
         }
-        int start = descriptor.lastIndexOf('[');
-        if (start == -1) {
-            return descriptor;
+        int start = descriptor.lastIndexOf('[') + 1;
+        if (descriptor.charAt(start) != 'L') {
+            throw new IllegalArgumentException("Invalid descriptor: " + descriptor);
         }
-        if (descriptor.charAt(start + 1) == 'L') {
-            return descriptor.substring(start + 2, descriptor.length() - 1);
-        } else {
-            return String.valueOf(descriptor.charAt(start + 1));
-        }
+        return descriptor.substring(start + 1, descriptor.length() - 1);
     }
     
     public static FunctionType getFunctionType(SootMethod method) {

@@ -72,7 +72,8 @@ public class Clazzes {
     }
     
     private static boolean isArchive(File f) {
-        return f.getName().matches("(?i)^.*(\\.zip|\\.jar)$");
+        String name = f.getName().toLowerCase();
+        return name.endsWith(".zip") || name.endsWith(".jar");
     }
     
     private void addPaths(List<File> files, List<Path> cp, Set<File> seen) throws IOException {
@@ -119,11 +120,7 @@ public class Clazzes {
     }
     
     public Clazz load(String internalName) {
-        Clazz clazz = cache.get(internalName);
-        if (clazz != null) {
-            return clazz;
-        }
-        return null;
+        return cache.get(internalName);
     }
     
     public List<Path> getBootclasspathPaths() {
@@ -185,7 +182,7 @@ public class Clazzes {
          * Hack: Remove the UnreachableCodeEliminator since it seems to remove
          * try-catch blocks which catches a non-existing Throwable class. This
          * should generate a NoClassDefFoundError at runtime but with the UCE
-         * in place to exception is thrown.
+         * in place no exception is thrown.
          */
         Pack pack = PackManager.v().getPack("jb");
         for (Iterator<?> it = pack.iterator(); it.hasNext();) {

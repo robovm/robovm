@@ -44,9 +44,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.clazz.Clazz;
-import org.robovm.compiler.clazz.ClazzInfo;
-import org.robovm.compiler.clazz.ClazzInfo.FieldInfo;
-import org.robovm.compiler.clazz.ClazzInfo.MethodInfo;
+import org.robovm.compiler.clazz.Dependency;
 import org.robovm.compiler.llvm.And;
 import org.robovm.compiler.llvm.Bitcast;
 import org.robovm.compiler.llvm.Br;
@@ -75,6 +73,9 @@ import org.robovm.compiler.llvm.Type;
 import org.robovm.compiler.llvm.Value;
 import org.robovm.compiler.llvm.Variable;
 import org.robovm.compiler.llvm.VariableRef;
+import org.robovm.compiler.trampoline.FieldAccessor;
+import org.robovm.compiler.trampoline.Invoke;
+import org.robovm.compiler.trampoline.LdcString;
 import org.robovm.compiler.trampoline.Trampoline;
 
 import soot.BooleanType;
@@ -196,11 +197,48 @@ public class ClassCompiler {
         this.trampolineResolver = new TrampolineCompiler(config);
     }
     
-    public boolean compile(Clazz clazz) throws IOException {
-        return compile(clazz, false);
+    public boolean mustCompile(Clazz clazz) {
+        File oFile = config.getOFile(clazz);
+        if (!oFile.exists() || oFile.lastModified() < clazz.lastModified()) {
+            return true;
+        }
+        
+        Set<Dependency> dependencies = clazz.getDependencies();
+        for (Dependency dep : dependencies) {
+            Clazz depClazz = config.getClazzes().load(dep.getClassName());
+            if (depClazz == null) {
+                if (dep.getPath() != null) {
+                    // depClazz was available the last time clazz was compiled but is now gone
+                    return true;
+                }
+            } else {
+                if (dep.getPath() == null) {
+                    // depClazz was not available the last time clazz was compiled but is now available
+                    return true;
+                }
+                if (!dep.getPath().equals(depClazz.getPath().getFile().getAbsolutePath())) {
+                    // depClazz was located in another place the last time clazz was built
+                    return true;
+                }
+                if (depClazz.isInBootClasspath() != dep.isInBootClasspath()) {
+                    // depClazz has moved to/from the bootclasspath since the last time clazz was built
+                    return true;
+                }
+                if (depClazz.lastModified() > oFile.lastModified()) {
+                    // depClazz has been changed since the last time clazz was built 
+                    return true;
+                }
+            }
+        }
+        
+        // No class or interface has zero dependencies (we always add java.lang.Object as a dependency)
+        // If dependencies is empty it probably means that an error occurred while reading the
+        // serialized dependencies. By returning true here in that case the class will be recompiled
+        // and the dependencies regenerated.
+        return dependencies.isEmpty();
     }
     
-    public boolean compile(Clazz clazz, boolean force) throws IOException {
+    public void compile(Clazz clazz) throws IOException {
         reset();        
         
         File llFile = config.getLlFile(clazz);
@@ -212,42 +250,34 @@ public class ClassCompiler {
         sFile.getParentFile().mkdirs();
         oFile.getParentFile().mkdirs();
         
-        boolean recompiled = false;
-        
-        if (force || config.isClean() || !oFile.exists() || oFile.lastModified() < clazz.lastModified()) {
-            OutputStream out = null;
-            try {
-                config.getLogger().debug("Compiling %s", clazz);
-                out = new FileOutputStream(llFile);
-                compile(clazz, out);
-            } catch (Throwable t) {
-                FileUtils.deleteQuietly(llFile);
-                if (t instanceof IOException) {
-                    throw (IOException) t;
-                }
-                if (t instanceof RuntimeException) {
-                    throw (RuntimeException) t;
-                }
-                throw new RuntimeException(t);
-            } finally {
-                IOUtils.closeQuietly(out);
+        OutputStream out = null;
+        try {
+            config.getLogger().debug("Compiling %s", clazz);
+            out = new FileOutputStream(llFile);
+            compile(clazz, out);
+        } catch (Throwable t) {
+            FileUtils.deleteQuietly(llFile);
+            if (t instanceof IOException) {
+                throw (IOException) t;
             }
-
-            config.getLogger().debug("Optimizing %s", clazz);
-            CompilerUtil.opt(config, llFile, bcFile, "-mem2reg", "-always-inline");
-
-            config.getLogger().debug("Generating %s assembly for %s", config.getArch(), clazz);
-            CompilerUtil.llc(config, bcFile, sFile);
-
-            patchAsmWithFunctionSizes(clazz, sFile);
-            
-            config.getLogger().debug("Assembling %s", clazz);
-            CompilerUtil.assemble(config, sFile, oFile);
-
-            recompiled = true;
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            }
+            throw new RuntimeException(t);
+        } finally {
+            IOUtils.closeQuietly(out);
         }
+
+        config.getLogger().debug("Optimizing %s", clazz);
+        CompilerUtil.opt(config, llFile, bcFile, "-mem2reg", "-always-inline");
+
+        config.getLogger().debug("Generating %s assembly for %s", config.getArch(), clazz);
+        CompilerUtil.llc(config, bcFile, sFile);
+
+        patchAsmWithFunctionSizes(clazz, sFile);
         
-        return recompiled;
+        config.getLogger().debug("Assembling %s", clazz);
+        CompilerUtil.assemble(config, sFile, oFile);
     }
     
     private void patchAsmWithFunctionSizes(Clazz clazz, File sFile) throws IOException {
@@ -458,34 +488,65 @@ public class ClassCompiler {
         
         out.write(mb.build().toString().getBytes("UTF-8"));
         
-        ClazzInfo clazzInfo = clazz.resetClazzInfo();
-        clazzInfo.setModifiers(sootClass.getModifiers());
-        clazzInfo.setName(clazz.getInternalName());
+        clazz.clearDependencies();
+        clazz.addDependency("java/lang/Object"); // Make sure no class or interface has zero dependencies
         if (sootClass.hasSuperclass() && !sootClass.isInterface()) {
-            clazzInfo.setSuperclass(sootClass.getSuperclass().getName().replace('.', '/'));
-        } else {
-            clazzInfo.setSuperclass(null);
+            clazz.addDependency(getInternalName(sootClass.getSuperclass()));
         }
-        List<String> interfaces = new ArrayList<String>();
         for (SootClass iface : sootClass.getInterfaces()) {
-            interfaces.add(iface.getName().replace('.', '/'));
+            clazz.addDependency(getInternalName(iface));
         }
-        clazzInfo.setInterfaces(interfaces);
-        List<FieldInfo> fieldInfos = new ArrayList<FieldInfo>();
         for (SootField f : sootClass.getFields()) {
-            fieldInfos.add(new FieldInfo(f.getModifiers(), f.getName(), getDescriptor(f)));
+            addDependencyIfNeeded(clazz, f.getType());
         }
-        clazzInfo.setFields(fieldInfos);
-        List<MethodInfo> methodInfos = new ArrayList<MethodInfo>();
         for (SootMethod m : sootClass.getMethods()) {
-            methodInfos.add(new MethodInfo(m.getModifiers(), m.getName(), getDescriptor(m)));
+            addDependencyIfNeeded(clazz, m.getReturnType());
+            @SuppressWarnings("unchecked")
+            List<soot.Type> paramTypes = (List<soot.Type>) m.getParameterTypes();
+            for (soot.Type type : paramTypes) {
+                addDependencyIfNeeded(clazz, type);
+            }
         }
-        clazzInfo.setMethods(methodInfos);
-        clazzInfo.setStruct(isStruct(this.sootClass));
-        clazzInfo.setAttributeDependencies(attributesEncoder.getDependencies());
-        clazzInfo.setTrampolines(trampolines);
-        clazzInfo.setCatches(catches);
-        clazz.commitClazzInfo();
+        clazz.addDependencies(attributesEncoder.getDependencies());
+        clazz.addDependencies(trampolineResolver.getDependencies());
+        clazz.addDependencies(catches);
+        
+        for (Trampoline t : trampolines) {
+            if (!(t instanceof LdcString)) {
+                String desc = t.getTarget();
+                if (desc.charAt(0) == 'L' || desc.charAt(0) == '[') {
+                    // Target is a descriptor
+                    addDependencyIfNeeded(clazz, desc);
+                } else {
+                    clazz.addDependency(t.getTarget());
+                }
+            }
+            if (t instanceof FieldAccessor) {
+                addDependencyIfNeeded(clazz, ((FieldAccessor) t).getFieldDesc());
+            } else if (t instanceof Invoke) {
+                String methodDesc = ((Invoke) t).getMethodDesc();
+                addDependencyIfNeeded(clazz, getReturnTypeDescriptor(methodDesc));
+                for (String desc : getParameterDescriptors(methodDesc)) {
+                    addDependencyIfNeeded(clazz, desc);
+                }
+            }
+        }
+        clazz.saveDependencies();
+    }
+
+    private static void addDependencyIfNeeded(Clazz clazz, soot.Type type) {
+        if (type instanceof RefLikeType) {
+            addDependencyIfNeeded(clazz, getDescriptor(type));
+        }
+    }
+
+    private static void addDependencyIfNeeded(Clazz clazz, String desc) {
+        if (!isPrimitive(desc) && (!isArray(desc) || !isPrimitiveBaseType(desc))) {
+            String internalName = isArray(desc) ? getBaseType(desc) : getInternalNameFromDescriptor(desc);
+            if (!clazz.getInternalName().equals(internalName)) {
+                clazz.addDependency(internalName);
+            }
+        }
     }
     
     private void createLookupFunction(SootMethod m) {

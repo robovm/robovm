@@ -16,45 +16,43 @@
  */
 package org.robovm.compiler.clazz;
 
-import java.util.Set;
+import java.io.Serializable;
 
 /**
- * @author niklas
- *
+ * Records a dependency on {@link Clazz} <code>A</code> for a {@link Clazz} <code>B</code> and 
+ * the path where <code>A</code> was located when <code>B</code> was built.
  */
-public class Package implements Comparable<Package> {
-    private final String name;
-    private final Set<Clazz> clazzSet;
-    private final AbstractPath path;
-
-    Package(String name, Set<Clazz> clazzSet, AbstractPath path) {
-        this.name = name;
-        this.clazzSet = clazzSet;
+public class Dependency implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
+    private final String className;
+    private final String path;
+    private final boolean inBootClasspath;
+    
+    Dependency(String className, String path, boolean inBootClasspath) {
+        this.className = className;
         this.path = path;
-    }
-    
-    public String getName() {
-        return name;
+        this.inBootClasspath = inBootClasspath;
     }
 
-    public Set<Clazz> listClasses() {
-        return clazzSet;
+    public String getClassName() {
+        return className;
     }
-    
-    public Path getPath() {
+
+    public String getPath() {
         return path;
     }
     
-    @Override
-    public int compareTo(Package o) {
-        return name.compareTo(o.name);
+    public boolean isInBootClasspath() {
+        return inBootClasspath;
     }
-    
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result
+                + ((className == null) ? 0 : className.hashCode());
         return result;
     }
 
@@ -69,12 +67,12 @@ public class Package implements Comparable<Package> {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        Package other = (Package) obj;
-        if (name == null) {
-            if (other.name != null) {
+        Dependency other = (Dependency) obj;
+        if (className == null) {
+            if (other.className != null) {
                 return false;
             }
-        } else if (!name.equals(other.name)) {
+        } else if (!className.equals(other.className)) {
             return false;
         }
         return true;
@@ -82,6 +80,9 @@ public class Package implements Comparable<Package> {
     
     @Override
     public String toString() {
-        return name;
+        return Dependency.class.getName() 
+                + "{className=" + className 
+                + ", path=" + path 
+                + ", inBootClasspath=" + inBootClasspath + "}";
     }
 }

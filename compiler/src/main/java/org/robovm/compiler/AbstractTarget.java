@@ -18,10 +18,12 @@ package org.robovm.compiler;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -172,67 +174,87 @@ public abstract class AbstractTarget implements Target {
         }        
     }
     
+    protected Target build(Config config) {
+        return this;
+    }
+    
     protected void stripArchives(File installDir) throws IOException {
         for (Path path : config.getClazzes().getPaths()) {
             File destJar = new File(installDir, getInstallRelativeArchivePath(path));
             if (!destJar.getParentFile().exists()) {
                 destJar.getParentFile().mkdirs();
             }
-            stripArchive(config.getArchivePath(path), destJar);
+            stripArchive(path, destJar);
         }
     }
     
-    protected Target build(Config config) {
-        return this;
-    }
-    
-    protected void stripArchive(File input, File output) throws IOException {
+    protected void stripArchive(Path path, File output) throws IOException {
         
-        if (!config.isClean() && output.exists() && output.lastModified() >= input.lastModified()) {
-            config.getLogger().debug("Not stripping unchanged archive file %s", input);
+        if (!config.isClean() && output.exists() && !path.hasChangedSince(output.lastModified())) {
+            config.getLogger().debug("Not creating stripped archive file %s for unchanged path %s", 
+                    output, path.getFile());
             return;
         }
         
-        ZipFile archive = null;
+        config.getLogger().debug("Creating stripped archive file %s", output);
+
+        ZipOutputStream out = null;
         try {
-            archive = new ZipFile(input);
-        
-            File strippedFile = output;
-            config.getLogger().debug("Creating stripped archive file %s", strippedFile);
-            
-            ZipOutputStream out = null;
-            try {
-                out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(strippedFile)));
-                
-                Enumeration<? extends ZipEntry> entries = archive.entries();
-                while (entries.hasMoreElements()) {
-                    ZipEntry entry = entries.nextElement();
-                    if (entry.getName().toLowerCase().endsWith(".class")) {
+            out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(output)));
+
+            if (path.getFile().isFile()) {
+                ZipFile archive = null;
+                try {
+                    archive = new ZipFile(path.getFile());
+                    Enumeration<? extends ZipEntry> entries = archive.entries();
+                    while (entries.hasMoreElements()) {
+                        ZipEntry entry = entries.nextElement();
+                        if (entry.getName().toLowerCase().endsWith(".class")) {
+                            continue;
+                        }
+                        ZipEntry newEntry = new ZipEntry(entry.getName());
+                        newEntry.setTime(entry.getTime());
+                        out.putNextEntry(newEntry);
+                        InputStream in = null;
+                        try {
+                            in = archive.getInputStream(entry);
+                            IOUtils.copy(in, out);
+                            out.closeEntry();
+                        } finally {
+                            IOUtils.closeQuietly(in);
+                        }
+                    }
+                } finally {
+                    try {
+                        archive.close();
+                    } catch (Throwable t) {}
+                }
+            } else {
+                String basePath = path.getFile().getAbsolutePath();
+                @SuppressWarnings("unchecked")
+                Collection<File> files = FileUtils.listFiles(path.getFile(), null, true);
+                for (File f : files) {
+                    if (f.getName().toLowerCase().endsWith(".class")) {
                         continue;
                     }
-                    ZipEntry newEntry = new ZipEntry(entry.getName());
-                    newEntry.setTime(entry.getTime());
+                    ZipEntry newEntry = new ZipEntry(f.getAbsolutePath().substring(basePath.length() + 1));
+                    newEntry.setTime(f.lastModified());
                     out.putNextEntry(newEntry);
                     InputStream in = null;
                     try {
-//                        if (!entry.getName().toLowerCase().endsWith(".class")) {
-                            in = archive.getInputStream(entry);
-//                        } else {
-//                            in = new ByteArrayInputStream(new byte[0]);
-//                        }
+                        in = new FileInputStream(f);
                         IOUtils.copy(in, out);
                         out.closeEntry();
                     } finally {
                         IOUtils.closeQuietly(in);
                     }
                 }
-            } finally {
-                IOUtils.closeQuietly(out);
             }
+        } catch (IOException e) {
+            IOUtils.closeQuietly(out);
+            output.delete();
         } finally {
-            try {
-                archive.close();
-            } catch (Throwable t) {}
+            IOUtils.closeQuietly(out);
         }
     }
 }

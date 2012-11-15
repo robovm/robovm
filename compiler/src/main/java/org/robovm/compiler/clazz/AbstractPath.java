@@ -18,12 +18,7 @@ package org.robovm.compiler.clazz;
 
 import java.io.File;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  *
@@ -34,7 +29,6 @@ public abstract class AbstractPath implements Path {
     protected final Clazzes clazzes;
     protected final int index;
     protected Set<Clazz> clazzSet = null;
-    protected Map<String, Package> packageMap = null;
     protected Set<Package> packageSet = null;
     
     AbstractPath(File file, Clazzes clazzes, int index) {
@@ -55,13 +49,6 @@ public abstract class AbstractPath implements Path {
         return file;
     }
     
-    public Set<Package> listPackages() {
-        if (packageSet == null) {
-            packageSet = new TreeSet<Package>(getPackagesMap().values());
-        }
-        return Collections.unmodifiableSet(packageSet);
-    }
-    
     public Set<Clazz> listClasses() {
         if (clazzSet == null) {
             clazzSet = doListClasses();
@@ -70,25 +57,6 @@ public abstract class AbstractPath implements Path {
     }
     
     protected abstract Set<Clazz> doListClasses();
-    
-    protected Map<String, Package> getPackagesMap() {
-        if (packageMap == null) {
-            Map<String, Set<Clazz>> m = new HashMap<String, Set<Clazz>>();
-            for (Clazz clazz : listClasses()) {
-                Set<Clazz> s = m.get(clazz.getPackageName());
-                if (s == null) {
-                    s = new HashSet<Clazz>();
-                    m.put(clazz.getPackageName(), s);
-                }
-                s.add(clazz);
-            }
-            packageMap = new HashMap<String, Package>();
-            for (Entry<String, Set<Clazz>> entry : m.entrySet()) {
-                packageMap.put(entry.getKey(), new Package(entry.getKey(), entry.getValue(), this));
-            }
-        }
-        return packageMap;
-    }
     
     @Override
     public int hashCode() {

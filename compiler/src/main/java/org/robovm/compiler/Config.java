@@ -16,26 +16,15 @@
  */
 package org.robovm.compiler;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.Clazzes;
 import org.robovm.compiler.clazz.Path;
@@ -185,60 +174,12 @@ public class Config {
         return new File(makeFileRelativeTo(dir, f.getParentFile()), f.getName());
     }
     
-    @SuppressWarnings("unchecked")
-    private void createArchive(File dir, File output, boolean skipClassFiles) throws IOException {
-        logger.debug("Creating archive file '%s' from files in directory '%s'", output, dir);
-        
-        output.getParentFile().mkdirs();
-        
-        ZipOutputStream out = null;
-        try {
-            out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(output)));
-            
-            for (File f : (Collection<File>) FileUtils.listFiles(dir, null, true)) {
-                ZipEntry newEntry = new ZipEntry(f.getAbsolutePath().substring(dir.getAbsolutePath().length() + 1).replace(File.separatorChar, '/'));
-                newEntry.setTime(f.lastModified());
-                out.putNextEntry(newEntry);
-                InputStream in = null;
-                try {
-                    if (!skipClassFiles || !f.getName().toLowerCase().endsWith(".class")) {
-                        in = new BufferedInputStream(new FileInputStream(f));
-                    } else {
-                        in = new ByteArrayInputStream(new byte[0]);
-                    }
-                    IOUtils.copy(in, out);
-                    out.closeEntry();
-                } finally {
-                    IOUtils.closeQuietly(in);
-                }
-            }
-        } finally {
-            IOUtils.closeQuietly(out);
-        }
-    }
-
-    
     public String getArchiveName(Path path) {
         if (path.getFile().isFile()) {
             return path.getFile().getName();
         } else {
             return "classes" + path.getIndex() + ".jar";
         }
-    }
-    
-    public File getArchivePath(Path path) {
-        if (path.getFile().isFile()) {
-            return path.getFile();
-        }
-        File archive = new File(getCacheDir(path).getParentFile(), getArchiveName(path));
-        if (!archive.exists() || path.hasChangedSince(archive.lastModified())) {
-            try {
-                createArchive(path.getFile(), archive, false);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return archive;
     }
     
     public File getLlFile(Clazz clazz) {
@@ -261,20 +202,16 @@ public class Config {
         return new File(getCacheDir(clazz.getPath()), baseName + ".class.o");
     }
     
-    public File getInfoFile(Clazz clazz) {
+    public File getDepsFile(Clazz clazz) {
         String baseName = clazz.getInternalName().replace('/', File.separatorChar);
-        return new File(getCacheDir(clazz.getPath()), baseName + ".class.info");
+        return new File(getCacheDir(clazz.getPath()), baseName + ".class.deps");
     }
     
     public File getCacheDir(Path path) {
-        File srcRoot = path.getFile();
-        if (path.getFile().isFile()) {
-            srcRoot = srcRoot.getParentFile();
-        }
+        File srcRoot = path.getFile().getParentFile();
+        String name = path.getFile().getName();
         try {
-            return new File(makeFileRelativeTo(cacheDir, 
-                    srcRoot.getCanonicalFile()), 
-                    getArchiveName(path) + ".classes");
+            return new File(makeFileRelativeTo(cacheDir, srcRoot.getCanonicalFile()), name);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

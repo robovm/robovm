@@ -92,7 +92,8 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
         List<Object> args = new ArrayList<Object>();
         args.add("-u");
         args.add("-d");
-        args.add("--mi");
+        args.add("-g");
+        args.add("-i mi -q");
         
         if (!launchParameters.getArguments().isEmpty()) {
             args.add("--args");
@@ -195,16 +196,23 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
     
     public static List<SDK> listSDKs() {
         try {
+            // TODO: Use xcode-select to determine the path to Xcode
             List<SDK> sdks = new ArrayList<SDK>();
-            File sdksDir = new File("/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/");
-            for (File root : sdksDir.listFiles()) {
-                File settingsFile = new File(root, "SDKSettings.plist");
-                if (settingsFile.exists()) {
-                    NSDictionary settings = (NSDictionary) PropertyListParser.parse(settingsFile);
-                    NSObject displayName = settings.get("DisplayName");
-                    NSObject version = settings.get("Version");
-                    if (displayName != null && version != null) {
-                        sdks.add(new SDK(displayName.toString(), version.toString(), root));
+            List<File> sdksDirs = Arrays.asList(
+                    new File("/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs"),
+                    new File("/Developer/Platforms/iPhoneOS.platform/Developer/SDKs"));
+            for (File sdksDir : sdksDirs) {
+                if (sdksDir.exists() && sdksDir.isDirectory()) {
+                    for (File root : sdksDir.listFiles()) {
+                        File settingsFile = new File(root, "SDKSettings.plist");
+                        if (settingsFile.exists()) {
+                            NSDictionary settings = (NSDictionary) PropertyListParser.parse(settingsFile);
+                            NSObject displayName = settings.get("DisplayName");
+                            NSObject version = settings.get("Version");
+                            if (displayName != null && version != null) {
+                                sdks.add(new SDK(displayName.toString(), version.toString(), root));
+                            }
+                        }
                     }
                 }
             }

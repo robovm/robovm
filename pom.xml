@@ -14,11 +14,11 @@
     <name>RoboVM</name>
   </organization>
 
-<!--  <scm>
-    <connection></connection>
-    <url></url>
-    <developerConnection></developerConnection>
-  </scm> -->
+  <scm>
+    <connection>scm:git:ssh://blackbox.therning.org:30022/home/niklas/repos/robovm.git</connection>
+    <url>scm:git:ssh://blackbox.therning.org:30022/home/niklas/repos/robovm.git</url>
+    <developerConnection>scm:git:ssh://blackbox.therning.org:30022/home/niklas/repos/robovm.git</developerConnection>
+  </scm>
 
   <dependencies>
   </dependencies>

@@ -1,0 +1,22 @@
+#!/bin/bash
+
+BASE=$(cd $(dirname $0)/..; pwd -P)
+COMPILER_JAR="$BASE/lib/robovm-compiler.jar"
+if [ -f $COMPILER_JAR ]; then
+    export ROBOVM_HOME=$BASE
+else
+    if [ "x$ROBOVM_DEV_ROOT" != 'x' ]; then
+        COMPILER_JAR=$(ls $BASE/compiler/target/robovm-compiler-*.jar 2> /dev/null)
+    fi
+fi
+if [ ! -f $COMPILER_JAR ]; then
+  echo "robovm-compiler.jar not found"
+  exit 1
+fi
+
+java \
+    -XX:+HeapDumpOnOutOfMemoryError \
+    -Xmx1024m \
+    -Xss1024k \
+    -jar $COMPILER_JAR \
+    $@

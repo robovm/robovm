@@ -32,7 +32,7 @@ public abstract class AbstractPath implements Path {
     protected Set<Package> packageSet = null;
     
     AbstractPath(File file, Clazzes clazzes, int index) {
-        this.file = file;
+        this.file = file.getAbsoluteFile();
         this.clazzes = clazzes;
         this.index = index;
     }

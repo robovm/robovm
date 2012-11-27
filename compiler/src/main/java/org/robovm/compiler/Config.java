@@ -240,6 +240,27 @@ public class Config {
             home = Home.find();
         }
         
+        if (llvmHomeDir == null) {
+            // Look for llc in the PATH environment variable
+            String path = System.getenv("PATH");
+            boolean found = false;
+            if (path != null) {
+                for (String part : path.split(File.pathSeparator)) {
+                    if (new File(part, "llc").exists()) {
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            if (!found) {
+                if (new File("/opt/llvm/bin/llc").exists()) {
+                    llvmHomeDir = new File("/opt/llvm");
+                } else if (new File(home.getBinDir().getParent(), "llvm/bin/llc").exists()) {
+                    llvmHomeDir = new File(home.getBinDir().getParent(), "llvm");
+                }
+            }
+        }
+        
         if (mainJar != null) {
             mainClass = getMainClass(mainJar);
             classpath.add(mainJar);

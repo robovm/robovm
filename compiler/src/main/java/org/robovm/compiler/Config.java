@@ -241,7 +241,7 @@ public class Config {
         }
         
         if (llvmHomeDir == null) {
-            // Look for llc in the PATH environment variable
+            // Look for llc in the paths in the PATH environment variable
             String path = System.getenv("PATH");
             boolean found = false;
             if (path != null) {
@@ -255,6 +255,8 @@ public class Config {
             if (!found) {
                 if (new File("/opt/llvm/bin/llc").exists()) {
                     llvmHomeDir = new File("/opt/llvm");
+                } else if (new File("/usr/local/llvm/bin/llc").exists()) {
+                    llvmHomeDir = new File("/usr/local/llvm");
                 } else if (new File(home.getBinDir().getParent(), "llvm/bin/llc").exists()) {
                     llvmHomeDir = new File(home.getBinDir().getParent(), "llvm");
                 }

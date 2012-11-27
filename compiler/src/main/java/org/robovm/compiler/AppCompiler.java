@@ -275,7 +275,7 @@ public class AppCompiler {
                     builder.clean(true);
                 } else if ("-help".equals(args[i]) || "-?".equals(args[i])) {
                     printUsageAndExit(null);
-                } else if ("-cc-bin".equals(args[i])) {
+                } else if ("-cc".equals(args[i])) {
                     builder.ccBinPath(new File(args[++i]));
                 } else if ("-llvm-home".equals(args[i])) {
                     builder.llvmHomeDir(new File(args[++i]));
@@ -399,7 +399,7 @@ public class AppCompiler {
         System.err.println("  -clean                Compile class files even if a compiled version already \n" 
                          + "                        exists in the cache.");
         System.err.println("  -d <dir>              Install the generated executable and other files in <dir>.\n" 
-                         + "                        Default is <wd>/<class>");
+                         + "                        Default is <wd>/<class>. Ignored if -run is specified.");
         System.err.println("  -cc <path>            Path to the c compiler binary. gcc and clang are supported.");
         System.err.println("  -home <dir>           Directory where RoboVM runtime has been installed.\n"
                          + "                        Default is $ROBOVM_HOME. If not set the following paths\n" 
@@ -410,22 +410,28 @@ public class AppCompiler {
                          + "                        ${java.io.tmpdir}.");
         System.err.println("  -jar <path>           Use main class as specified by the manifest in this JAR \n" 
                          + "                        archive.");
-        System.err.println("  -llvm-home <path>     Path where LLVM has been installed");
-        System.err.println("  -o <name>             The name of the target executable or library");
+        System.err.println("  -llvm-home <path>     Path where LLVM has been installed. If not set the LLVM\n" 
+                         + "                        tools will be searched for in the paths in your $PATH\n" 
+                         + "                        environment variable. If not found in $PATH /opt/llvm and\n" 
+                         + "                        /usr/local/llvm will be searched.");
+        System.err.println("  -o <name>             The name of the target executable");
         System.err.println("  -os <name>            The name of the OS to build for. Allowed values are \n" 
                          + "                        'auto', 'linux', 'macosx' and 'ios'. Default is 'auto' which\n" 
-                         + "                        means autodetect.");
+                         + "                        means use the LLVM deafult.");
         System.err.println("  -arch <name>          The name of the LLVM arch to compile for. Allowed values\n" 
-                         + "                        are 'auto', 'x86', 'armv6', 'armv7', 'thumbv6',\n" 
-                         + "                        'thumbv7' Default is 'auto' which means autodetect.");
+                         + "                        are 'auto', 'x86', 'thumbv7'. Default is 'auto' which means\n" 
+                         + "                        use the LLVM default.");
         System.err.println("  -cpu <name>           The name of the LLVM cpu to compile for. The LLVM default\n" 
-                         + "                        is used by default. Use llc to determine allowed values.");
+                         + "                        is used if not specified. Use llc to determine allowed values.");
         System.err.println("  -roots <list>         : separated list of class patterns matching\n" 
                          + "                        classes that must be included when determinig the required\n" 
                          + "                        classes. If a main class is specified it will automatically\n" 
                          + "                        become a root. If no main class is specified and no roots\n" 
                          + "                        all classes will be included. A pattern is an ANT style\n" 
                          + "                        path pattern, e.g. com.foo.**.bar.*.Main.");
+        System.err.println("  -run                  Run the executable directly without installing it (-d is\n" 
+                         + "                        ignored). The executable will be executed from the\n" 
+                         + "                        temporary dir specified with -tmp.");
         System.err.println("  -debug                Generates debug information");
         System.err.println("  -skiprt               Do not add default robovm-rt.jar to bootclasspath");
         System.err.println("  -skiplink             Do not link the final executable");

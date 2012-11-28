@@ -51,10 +51,6 @@ Object* Java_org_robovm_rt_VM_classPath(Env* env, Class* c) {
     return rvmNewStringUTF(env, classpath, -1);
 }
 
-Object* Java_org_robovm_rt_VM_vmVersion(Env* env, Class* c) {
-    return rvmNewStringUTF(env, VMVERSION, -1);
-}
-
 ObjectArray* Java_org_robovm_rt_VM_getStackClasses(Env* env, Class* c, jint skipNum, jint maxDepth) {
     CallStack* callStack = rvmCaptureCallStack(env, NULL);
     if (!callStack) return NULL;

@@ -39,7 +39,9 @@ public final class VM {
     /**
      * Returns the VM's version.
      */
-    public static native String vmVersion();
+    public static String vmVersion() {
+        return VMVersion.VERSION;
+    }
 
     /**
      * Returns the defining classes of the methods in the call stack. If 

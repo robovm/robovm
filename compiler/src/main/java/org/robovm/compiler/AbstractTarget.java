@@ -69,15 +69,17 @@ public abstract class AbstractTarget implements Target {
         LinkedList<String> ccArgs = new LinkedList<String>();
         LinkedList<String> libs = new LinkedList<String>();
         
-        libs.add("-lrobovm-bc"); 
+        String libSuffix = config.isUseDebugLibs() ? "-dbg" : "";
+        
+        libs.add("-lrobovm-bc" + libSuffix); 
         if (config.getOs().getFamily() == OS.Family.darwin) {
             libs.add("-force_load");
-            libs.add(new File(config.getOsArchDepLibDir(), "librobovm-rt.a").getAbsolutePath());
+            libs.add(new File(config.getOsArchDepLibDir(), "librobovm-rt" + libSuffix + ".a").getAbsolutePath());
         } else {
-            libs.addAll(Arrays.asList("-Wl,--whole-archive", "-lrobovm-rt", "-Wl,--no-whole-archive"));            
+            libs.addAll(Arrays.asList("-Wl,--whole-archive", "-lrobovm-rt" + libSuffix, "-Wl,--no-whole-archive"));            
         }
         libs.addAll(Arrays.asList(
-                "-lrobovm-core", "-lgc", "-lpthread", "-ldl", "-lm", "-lstdc++"));
+                "-lrobovm-core" + libSuffix, "-lgc" + libSuffix, "-lpthread", "-ldl", "-lm", "-lstdc++"));
         if (config.getOs().getFamily() == OS.Family.linux) {
             libs.add("-lrt");
         }

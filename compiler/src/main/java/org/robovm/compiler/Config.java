@@ -47,6 +47,7 @@ public class Config {
     
     private boolean clean = false;
     private boolean debug = true;
+    private boolean useDebugLibs = false;
     private boolean skipRuntimeLib = false;
     private boolean skipLinking = false;
     private boolean skipInstall = false;
@@ -106,6 +107,10 @@ public class Config {
         return debug;
     }
 
+    public boolean isUseDebugLibs() {
+        return useDebugLibs;
+    }
+    
     public boolean isSkipRuntimeLib() {
         return skipRuntimeLib;
     }
@@ -288,8 +293,8 @@ public class Config {
             skipInstall = true;
         }
         
-        osArchDepLibDir = new File(new File(new File(home.libVmDir, os.toString()), 
-                arch.toString()), debug ? "Debug" : "Release");
+        osArchDepLibDir = new File(new File(home.libVmDir, os.toString()), 
+                arch.toString());
         
         File osDir = new File(cacheDir, os.toString());
         File archDir = new File(osDir, arch.toString());
@@ -355,7 +360,7 @@ public class Config {
                 File dir = new File(System.getenv("ROBOVM_DEV_ROOT"));
                 validateDevRootDir(dir);
                 return new Home(new File(dir, "bin"), 
-                                 new File(dir, "vm/binaries"), 
+                                 new File(dir, "vm/target/binaries"), 
                                  new File(dir, "rt/target/classes"));
             }
             
@@ -420,7 +425,7 @@ public class Config {
             // Compare the version of this compiler with the version of the
             // robovm-compiler.jar.
             try {
-                String thisVersion = Config.class.getPackage().getImplementationVersion();
+                String thisVersion = Version.getVersion();
                 String thatVersion = getImplementationVersion(compilerJarFile);
                 if (thisVersion == null || thatVersion == null || !thisVersion.equals(thatVersion)) {
                     throw new IllegalArgumentException(error + "compiler version mismatch (expected: " 
@@ -443,9 +448,9 @@ public class Config {
                 throw new IllegalArgumentException(error + "not a directory");
             }
             
-            File vmBinariesDir = new File(dir, "vm/binaries");
+            File vmBinariesDir = new File(dir, "vm/target/binaries");
             if (!vmBinariesDir.exists() || !vmBinariesDir.isDirectory()) {
-                throw new IllegalArgumentException(error + "vm/binaries/ missing or invalid");
+                throw new IllegalArgumentException(error + "vm/target/binaries/ missing or invalid");
             }
             File binDir = new File(dir, "bin");
             if (!binDir.exists() || !binDir.isDirectory()) {
@@ -536,6 +541,11 @@ public class Config {
             return this;
         }
 
+        public Builder useDebugLibs(boolean b) {
+            config.useDebugLibs = b;
+            return this;
+        }
+        
         public Builder skipRuntimeLib(boolean b) {
             config.skipRuntimeLib = b;
             return this;

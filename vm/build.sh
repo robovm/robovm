@@ -34,8 +34,24 @@ if [ "x$TARGETS" = 'x' ]; then
   esac
 fi
 if [ "x$BUILDS" = 'x' ]; then
-  BUILDS="Debug Release"
+  BUILDS="debug release"
 fi
+
+# Validate targets
+for T in $TARGETS; do
+  if ! [[ $T =~ (macosx|ios|linux)-(x86|thumbv7) ]] ; then
+    echo "Unsupported target: $T"
+    exit 1
+  fi
+done
+
+# Validate build types
+for B in $BUILDS; do
+  if ! [[ $B =~ (debug|release) ]] ; then
+    echo "Unsupported build type: $B"
+    exit 1
+  fi
+done
 
 mkdir -p "$BASE/target/build"
 if [ "$CLEAN" = '1' ]; then
@@ -51,15 +67,14 @@ if [ $(uname) = 'Darwin' ]; then
   CXX=$(which clang++)
 fi
 
-VMVERSION=$(grep '<version>' "$BASE/../pom.xml" | head -1 | sed 's/ *<\/*version> *//g')
-
 for T in $TARGETS; do
   OS=${T%%-*}
   ARCH=${T#*-}
   for B in $BUILDS; do
+    BUILD_TYPE=$B
+    if [ $B = 'release' ]; then BUILD_TYPE="minsizerel"; fi
     mkdir -p "$BASE/target/build/$T-$B"
     rm -rf "$BASE/binaries/$OS/$ARCH/$B"
-    bash -c "cd '$BASE/target/build/$T-$B'; cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_BUILD_TYPE=$B -DOS=$OS -DARCH=$ARCH -DVMVERSION=$VMVERSION '$BASE'; make install"
+    bash -c "cd '$BASE/target/build/$T-$B'; cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DOS=$OS -DARCH=$ARCH '$BASE'; make install"
   done
 done
-

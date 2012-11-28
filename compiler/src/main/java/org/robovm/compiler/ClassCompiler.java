@@ -467,8 +467,10 @@ public class ClassCompiler {
             }
         }
         
+        Set<String> trampolineDependencies = new HashSet<String>();
         for (Trampoline trampoline : trampolines) {
             trampolineResolver.compile(mb, trampoline);
+            trampolineDependencies.addAll(trampolineResolver.getDependencies());
         }
 
         Global classInfoStruct = null;
@@ -508,7 +510,7 @@ public class ClassCompiler {
             }
         }
         clazz.addDependencies(attributesEncoder.getDependencies());
-        clazz.addDependencies(trampolineResolver.getDependencies());
+        clazz.addDependencies(trampolineDependencies);
         clazz.addDependencies(catches);
         
         for (Trampoline t : trampolines) {

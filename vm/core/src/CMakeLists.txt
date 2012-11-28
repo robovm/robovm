@@ -27,6 +27,7 @@ set(SRC
 add_library(robovm-core STATIC ${SRC})
 add_dependencies(robovm-core extgc)
 
+set_target_properties(robovm-core PROPERTIES SUFFIX "${LIB_SUFFIX}")
 install(TARGETS robovm-core DESTINATION ${INSTALL_DIR})
 
 add_executable(test_call0 test/test_call0.c test/CuTest.c call0-${OS_FAMILY}-${ARCH}.s unwind.c)

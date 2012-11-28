@@ -222,9 +222,7 @@ public class AppCompiler {
             }
         }
         
-        if (!config.isSkipLinking()) {
-            linker.link(linkClasses);
-        }
+        linker.link(linkClasses);
     }
         
     public static void main(String[] args) throws IOException {
@@ -267,14 +265,16 @@ public class AppCompiler {
                     verbose = true;
                 } else if ("-debug".equals(args[i])) {
                     builder.debug(true);
+                } else if ("-use-debug-libs".equals(args[i])) {
+                    builder.useDebugLibs(true);
                 } else if ("-skiprt".equals(args[i])) {
                     builder.skipRuntimeLib(true);
-                } else if ("-skiplink".equals(args[i])) {
-                    builder.skipLinking(true);
                 } else if ("-clean".equals(args[i])) {
                     builder.clean(true);
                 } else if ("-help".equals(args[i]) || "-?".equals(args[i])) {
                     printUsageAndExit(null);
+                } else if ("-version".equals(args[i])) {
+                    printVersionAndExit();
                 } else if ("-cc".equals(args[i])) {
                     builder.ccBinPath(new File(args[++i]));
                 } else if ("-llvm-home".equals(args[i])) {
@@ -376,13 +376,17 @@ public class AppCompiler {
         }
     }
     
+    private static void printVersionAndExit() {
+        System.err.println(Version.getVersion());
+        System.exit(0);
+    }
+    
     private static void printUsageAndExit(String errorMessage) {
         if (errorMessage != null) {
             System.err.format("robovm: %s\n", errorMessage);
         }
         System.err.println("Usage: robovm [-options] class [run-args]");
         System.err.println("   or  robovm [-options] -jar jarfile [run-args]");
-        System.err.println("   or  robovm [-options] -skiplink");
         System.err.println("Options:");
         
         System.err.println("  -bootclasspath <list> ");
@@ -433,9 +437,10 @@ public class AppCompiler {
                          + "                        ignored). The executable will be executed from the\n" 
                          + "                        temporary dir specified with -tmp.");
         System.err.println("  -debug                Generates debug information");
+        System.err.println("  -use-debug-libs       Links against debug versions of the RoboVM VM libraries");
         System.err.println("  -skiprt               Do not add default robovm-rt.jar to bootclasspath");
-        System.err.println("  -skiplink             Do not link the final executable");
         System.err.println("  -verbose              Output messages about what the compiler is doing");
+        System.err.println("  -version              Print the version of the compiler version and exit");
         System.err.println("  -help, -?             Display this information");
         
         System.exit(errorMessage != null ? 1 : 0);

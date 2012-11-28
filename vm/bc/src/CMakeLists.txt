@@ -1,6 +1,6 @@
 project(bc)
 
-include_directories(../../hyprt/include ../../core/include ${CMAKE_BINARY_DIR}/gc/include)
+include_directories(../../core/include ${CMAKE_BINARY_DIR}/gc/include)
 
 if (WITH_FPIC)
   remove_definitions(-fPIC)
@@ -12,5 +12,5 @@ add_library(robovm-bc STATIC
   MurmurHash3.c
 )
 
+set_target_properties(robovm-bc PROPERTIES SUFFIX "${LIB_SUFFIX}")
 install(TARGETS robovm-bc DESTINATION ${INSTALL_DIR})
-

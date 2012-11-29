@@ -72,7 +72,6 @@ for T in $TARGETS; do
   ARCH=${T#*-}
   for B in $BUILDS; do
     BUILD_TYPE=$B
-    if [ $B = 'release' ]; then BUILD_TYPE="minsizerel"; fi
     mkdir -p "$BASE/target/build/$T-$B"
     rm -rf "$BASE/binaries/$OS/$ARCH/$B"
     bash -c "cd '$BASE/target/build/$T-$B'; cmake -DCMAKE_C_COMPILER=$CC -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DOS=$OS -DARCH=$ARCH '$BASE'; make install"

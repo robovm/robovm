@@ -64,10 +64,10 @@ void testTrycatchJumpOnce(CuTest* tc) {
     Env env = {0};
     TrycatchContext ctx = {0};
     ctx.sel = 1;
-    jint count = 0;
-    jint p1 = -1;
-    jint p2 = -1;
-    jint p3 = -1;
+    volatile jint count = 0;
+    volatile jint p1 = -1;
+    volatile jint p2 = -1;
+    volatile jint p3 = -1;
     jint ret = rvmTrycatchEnter(&env, &ctx);
     if (ret == 0) {
         p1 = ++count;
@@ -84,17 +84,17 @@ void testTrycatchJumpOnce(CuTest* tc) {
 }
 
 
-void inner(TrycatchContext* ctx) {
+__attribute__ ((noinline)) void inner(TrycatchContext* ctx) {
     rvmTrycatchJump(ctx);
 }
 void testTrycatchJumpNested(CuTest* tc) {
     Env env = {0};
     TrycatchContext ctx = {0};
     ctx.sel = 1;
-    jint count = 0;
-    jint p1 = -1;
-    jint p2 = -1;
-    jint p3 = -1;
+    volatile jint count = 0;
+    volatile jint p1 = -1;
+    volatile jint p2 = -1;
+    volatile jint p3 = -1;
     jint ret = rvmTrycatchEnter(&env, &ctx);
     if (ret == 0) {
         p1 = ++count;

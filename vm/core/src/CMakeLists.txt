@@ -24,6 +24,9 @@ set(SRC
   unwind.c
 )
 
+# The code in unwind.c doesn't work properly if compiled with tail call optimizations
+set_property(SOURCE unwind.c PROPERTY COMPILE_FLAGS "-fno-optimize-sibling-calls")
+
 add_library(robovm-core STATIC ${SRC})
 add_dependencies(robovm-core extgc)
 
@@ -42,6 +45,7 @@ add_test(testCall0ManyArgsOfEach test_call0 "testCall0ManyArgsOfEach")
 add_test(testCall0Unwind test_call0 "testCall0Unwind")
 
 add_executable(test_proxy0 test/test_proxy0.c test/CuTest.c proxy0-${OS_FAMILY}-${ARCH}.s unwind.c)
+set_property(SOURCE test/test_proxy0.c PROPERTY COMPILE_FLAGS "-fno-optimize-sibling-calls") # Disable tail calls
 add_test(testProxy0ReturnByte test_proxy0 "testProxy0ReturnByte")
 add_test(testProxy0ReturnInt test_proxy0 "testProxy0ReturnInt")
 add_test(testProxy0ReturnPtr test_proxy0 "testProxy0ReturnPtr")

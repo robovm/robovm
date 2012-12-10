@@ -106,6 +106,10 @@ void Java_org_robovm_rt_VM_registerDisappearingLink(Env* env, Class* c, jlong ad
     rvmRegisterDisappearingLink(env, LONG_TO_PTR(address), obj);
 }
 
+void Java_org_robovm_rt_VM_unregisterDisappearingLink(Env* env, Class* c, jlong address) {
+    rvmUnregisterDisappearingLink(env, LONG_TO_PTR(address));
+}
+
 jlong Java_org_robovm_rt_VM_malloc(Env* env, Class* c, jint size) {
     void* m = malloc(size);
     if (!m) {

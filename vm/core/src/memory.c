@@ -386,6 +386,9 @@ void rvmRegisterDisappearingLink(Env* env, void** address, Object* obj) {
     GC_GENERAL_REGISTER_DISAPPEARING_LINK(address, obj);
 }
 
+void rvmUnregisterDisappearingLink(Env* env, void** address) {
+    GC_unregister_disappearing_link(address);
+}
 
 jboolean rvmInitMemory(Env* env) {
     vm = env->vm;

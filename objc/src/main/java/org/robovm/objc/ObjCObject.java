@@ -17,6 +17,10 @@ package org.robovm.objc;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.robovm.objc.annotation.NativeClass;
 import org.robovm.rt.VM;
@@ -57,19 +61,19 @@ public abstract class ObjCObject extends NativeObject {
     protected ObjCObject() {
         long handle = alloc();
         setHandle(handle);
-        PeerWrapper.setPeerObject(handle, this);
+        AssociatedObjectHelper.setPeerObject(handle, this);
         customClass = getObjCClass().isCustom();
     }
     
     protected ObjCObject(long handle) {
         setHandle(handle);
-        PeerWrapper.setPeerObject(handle, this);
+        AssociatedObjectHelper.setPeerObject(handle, this);
         customClass = getObjCClass().isCustom();
     }
     
     ObjCObject(long handle, boolean customClass) {
         setHandle(handle);
-        PeerWrapper.setPeerObject(handle, this);
+        AssociatedObjectHelper.setPeerObject(handle, this);
         this.customClass = customClass;
     }
     
@@ -99,7 +103,15 @@ public abstract class ObjCObject extends NativeObject {
     }
     
     public static <T extends ObjCObject> T getPeerObject(long handle) {
-        return PeerWrapper.getPeerObject(handle);
+        return AssociatedObjectHelper.getPeerObject(handle);
+    }
+    
+    public void addStrongRef(ObjCObject to) {
+        AssociatedObjectHelper.addStrongRef(this, to);
+    }
+    
+    public void removeStrongRef(ObjCObject to) {
+        AssociatedObjectHelper.removeStrongRef(this, to);
     }
     
     @SuppressWarnings("unchecked")
@@ -123,7 +135,7 @@ public abstract class ObjCObject extends NativeObject {
 
         o = VM.allocateObject(c);
         o.setHandle(handle);
-        PeerWrapper.setPeerObject(handle, o);
+        AssociatedObjectHelper.setPeerObject(handle, o);
         if (objCClass.isCustom()) {
             VM.setBoolean(VM.getObjectAddress(o) + CUSTOM_CLASS_OFFSET, true);
         }
@@ -170,87 +182,144 @@ public abstract class ObjCObject extends NativeObject {
         }
     }
     
-    public static class PeerWrapper {
-        private static final long PEER_OBJECT_KEY = VM.getObjectAddress(PeerWrapper.class);
+    static class AssociatedObjectHelper {
+        private enum Key {Peer, StrongRefs};
         private static final int OBJC_ASSOCIATION_RETAIN_NONATOMIC = 1;
-        private static final long NS_OBJECT_CLS;
+        private static final long NS_OBJECT_CLASS;
         private static final long CLS;
-        private static final int PEER_IVAR_OFFSET;
+        private static final String JAVA_OBJECT_IVAR_NAME = "javaObj";
+        private static final int JAVA_OBJECT_IVAR_OFFSET;
+        private static final String KEY_IVAR_NAME = "key";
+        private static final int KEY_IVAR_OFFSET;
         private static final Selector alloc = Selector.register("alloc");
         private static final Selector init = Selector.register("init");
         private static final Selector release = Selector.register("release");
+        private static final Map<Long, List> strongRefs = new HashMap<Long, List>();
 
         static {
-            NS_OBJECT_CLS = ObjCRuntime.objc_getClass(VM.getStringUTFChars("NSObject"));
-            long cls = ObjCRuntime.objc_allocateClassPair(NS_OBJECT_CLS, VM.getStringUTFChars("RoboVMPeerWrapper"), 4);
+            NS_OBJECT_CLASS = ObjCRuntime.objc_getClass(VM.getStringUTFChars("NSObject"));
+            long cls = ObjCRuntime.objc_allocateClassPair(NS_OBJECT_CLASS, VM.getStringUTFChars("RoboVMAssocObjWrapper"), 8);
             if (cls == 0L) {
-                throw new Error("Failed to create the RoboVMPeerWrapper Objective-C class: objc_allocateClassPair(...) failed");
+                throw new Error("Failed to create the RoboVMAssocObjWrapper Objective-C class: objc_allocateClassPair(...) failed");
             }
-            if (!ObjCRuntime.class_addIvar(cls, VM.getStringUTFChars("peer"), 4, (byte) 2, VM.getStringUTFChars("?"))) {
-                throw new Error("Failed to create the RoboVMPeerWrapper Objective-C class: class_addIvar(...) failed");
+            if (!ObjCRuntime.class_addIvar(cls, VM.getStringUTFChars(JAVA_OBJECT_IVAR_NAME), 4, (byte) 2, VM.getStringUTFChars("?"))) {
+                throw new Error("Failed to create the RoboVMAssocObjWrapper Objective-C class: class_addIvar(...) failed");
+            }
+            if (!ObjCRuntime.class_addIvar(cls, VM.getStringUTFChars(KEY_IVAR_NAME), 4, (byte) 2, VM.getStringUTFChars("I"))) {
+                throw new Error("Failed to create the RoboVMAssocObjWrapper Objective-C class: class_addIvar(...) failed");
             }
             Method releaseMethod = null;
             try {
-                releaseMethod = PeerWrapper.class.getDeclaredMethod("release", Long.TYPE, Long.TYPE);
+                releaseMethod = AssociatedObjectHelper.class.getDeclaredMethod("release", Long.TYPE, Long.TYPE);
             } catch (Throwable t) {
                 throw new Error(t);
             }
-            long superReleaseMethod = ObjCRuntime.class_getInstanceMethod(NS_OBJECT_CLS, release.getHandle());
+            long superReleaseMethod = ObjCRuntime.class_getInstanceMethod(NS_OBJECT_CLASS, release.getHandle());
             long releaseType = ObjCRuntime.method_getTypeEncoding(superReleaseMethod);
             if (!ObjCRuntime.class_addMethod(cls, release.getHandle(), VM.getCallbackMethodImpl(releaseMethod), releaseType)) {
-                throw new Error("Failed to create the RoboVMPeerWrapper Objective-C class: class_addMethod(...) failed");                
+                throw new Error("Failed to create the RoboVMAssocObjWrapper Objective-C class: class_addMethod(...) failed");                
             }
             ObjCRuntime.objc_registerClassPair(cls);
             
             CLS = cls;
-            PEER_IVAR_OFFSET = ObjCRuntime.ivar_getOffset(ObjCRuntime.class_getInstanceVariable(cls, VM.getStringUTFChars("peer")));
+            JAVA_OBJECT_IVAR_OFFSET = ObjCRuntime.ivar_getOffset(ObjCRuntime.class_getInstanceVariable(cls, VM.getStringUTFChars(JAVA_OBJECT_IVAR_NAME)));
+            KEY_IVAR_OFFSET = ObjCRuntime.ivar_getOffset(ObjCRuntime.class_getInstanceVariable(cls, VM.getStringUTFChars(KEY_IVAR_NAME)));
         }
-        
-        @SuppressWarnings("unchecked")
-        public static <T extends ObjCObject> T getPeerObject(long handle) {
+
+        private static Object getAssociatedObject(long handle, Key key) {
             if (handle == 0L) {
                 return null;
             }
-            long peerWrapper = ObjCRuntime.objc_getAssociatedObject(handle, PEER_OBJECT_KEY);
-            if (peerWrapper != 0L) {
-                long address = VM.getPointer(peerWrapper + PEER_IVAR_OFFSET);
+            long wrapper = ObjCRuntime.objc_getAssociatedObject(handle, key.hashCode());
+            if (wrapper != 0L) {
+                long address = VM.getPointer(wrapper + JAVA_OBJECT_IVAR_OFFSET);
                 if (address != 0L) {
-                    return (T) VM.castAddressToObject(address);
+                    return VM.castAddressToObject(address);
                 }
-                System.out.println("RoboVMPeerWrapper " + Long.toHexString(peerWrapper) + " associated with " 
-                        + Long.toHexString(handle) + " points to null");
+                System.out.println("RoboVMAssocObjWrapper " + Long.toHexString(wrapper) + " associated with " 
+                        + Long.toHexString(handle) + " points to null for key " + key);
             }
             return null;
         }
-        
-        public static void setPeerObject(long handle, Object o) {
-            if (o == null) {
-                ObjCRuntime.objc_setAssociatedObject(handle, PEER_OBJECT_KEY, 0L, 0);
+
+        public static void setAssociatedObject(long handle, Key key, Object value, boolean weak) {
+            long wrapper = ObjCRuntime.objc_getAssociatedObject(handle, key.hashCode());
+            if (wrapper != 0L && weak) {
+                VM.unregisterDisappearingLink(wrapper + JAVA_OBJECT_IVAR_OFFSET);
+            }
+            if (value == null) {
+                ObjCRuntime.objc_setAssociatedObject(handle, key.hashCode(), 0L, 0);
             } else {
-                long peerWrapper = ObjCRuntime.ptr_objc_msgSend(CLS, alloc.getHandle());
-                if (peerWrapper == 0L) {
+                wrapper = ObjCRuntime.ptr_objc_msgSend(CLS, alloc.getHandle());
+                if (wrapper == 0L) {
                     throw new OutOfMemoryError();
                 }
-                peerWrapper = ObjCRuntime.ptr_objc_msgSend(peerWrapper, init.getHandle());
-                long address = VM.getObjectAddress(o);
-                VM.setPointer(peerWrapper + PEER_IVAR_OFFSET, address);
-                VM.registerDisappearingLink(peerWrapper + PEER_IVAR_OFFSET, o);
-                ObjCRuntime.objc_setAssociatedObject(handle, PEER_OBJECT_KEY, peerWrapper, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-                System.out.println("RoboVMPeerWrapper " + Long.toHexString(peerWrapper) + " associated with " 
-                        + Long.toHexString(handle) + " a " + o.getClass().getName());
+                wrapper = ObjCRuntime.ptr_objc_msgSend(wrapper, init.getHandle());
+                long address = VM.getObjectAddress(value);
+                VM.setPointer(wrapper + JAVA_OBJECT_IVAR_OFFSET, address);
+                VM.setInt(wrapper + KEY_IVAR_OFFSET, key.ordinal());
+                if (weak) {
+                    VM.registerDisappearingLink(wrapper + JAVA_OBJECT_IVAR_OFFSET, value);
+                }
+                ObjCRuntime.objc_setAssociatedObject(handle, key.hashCode(), wrapper, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+                System.out.println("RoboVMAssocObjWrapper " + Long.toHexString(wrapper) + " associated with " 
+                        + Long.toHexString(handle) + " a " + value.getClass().getName() + " for key " + key);
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        public static <T extends ObjCObject> T getPeerObject(long handle) {
+            return (T) getAssociatedObject(handle, Key.Peer);
+        }
+        
+        public static void setPeerObject(long handle, ObjCObject o) {
+            setAssociatedObject(handle, Key.Peer, o, true);
+        }
+
+        public static void addStrongRef(ObjCObject from, ObjCObject to) {
+            synchronized (strongRefs) {
+                List l = (List) getAssociatedObject(from.getHandle(), Key.StrongRefs);
+                if (l == null) {
+                    l = new ArrayList();
+                    setAssociatedObject(from.getHandle(), Key.StrongRefs, l, false);
+                    strongRefs.put(from.getHandle(), l);
+                }
+                l.add(to);
+            }
+        }
+
+        public static void removeStrongRef(ObjCObject from, ObjCObject to) {
+            synchronized (strongRefs) {
+                List l = (List) getAssociatedObject(from.getHandle(), Key.StrongRefs);
+                if (l == null || !l.remove(to)) {
+                    throw new IllegalArgumentException("No string ref exists from " + from + " to " + to);
+                }
+                if (l.isEmpty()) {
+                    setAssociatedObject(from.getHandle(), Key.StrongRefs, null, false);
+                    strongRefs.remove(from.getHandle());
+                }
             }
         }
         
+        @SuppressWarnings("unused")
         @Callback
         private static void release(@Pointer long self, @Pointer long sel) {
-            ObjCObject o = (ObjCObject) VM.castAddressToObject(VM.getLong(self + PEER_IVAR_OFFSET));
-            if (o != null) {
-                System.out.println("RoboVMPeerWrapper.release() called on " + Long.toHexString(self) + " associated with " 
-                        + Long.toHexString(o.getHandle()) + " a " + o.getClass().getName());
-            } else {
-                System.out.println("RoboVMPeerWrapper.release() called on " + Long.toHexString(self) + " which points to null");
+            Object o = VM.castAddressToObject(VM.getLong(self + JAVA_OBJECT_IVAR_OFFSET));
+            Key key = Key.values()[VM.getInt(self + KEY_IVAR_OFFSET)];
+            if (key == Key.Peer && o != null) {
+                VM.unregisterDisappearingLink(self + JAVA_OBJECT_IVAR_OFFSET);
+            } else if (key == Key.StrongRefs) {
+                synchronized (strongRefs) {
+                    strongRefs.remove(self);   
+                }
             }
-            ObjCRuntime.void_objc_msgSendSuper(new Super(self, NS_OBJECT_CLS).getHandle(), sel);
+            if (o != null) {
+                System.out.println("RoboVMAssocObjWrapper.release() called on " + Long.toHexString(self) + " associated with " 
+                        + o + " a " + o.getClass().getName() + " for key " + key);
+            } else {
+                System.out.println("RoboVMAssocObjWrapper.release() called on " + Long.toHexString(self) + " which points to null");
+            }
+            ObjCRuntime.void_objc_msgSendSuper(new Super(self, NS_OBJECT_CLASS).getHandle(), sel);
         }
         
         public static final class Super extends Struct<Super> {

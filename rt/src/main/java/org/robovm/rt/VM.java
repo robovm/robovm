@@ -61,6 +61,7 @@ public final class VM {
     public native static final long freeMemoryUncollectable(long address);
     
     public native static void registerDisappearingLink(long address, Object obj);
+    public native static void unregisterDisappearingLink(long address);
     
     public native static final long malloc(int size);
     public native static final void free(long address);

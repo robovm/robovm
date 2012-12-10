@@ -102,6 +102,10 @@ void Java_org_robovm_rt_VM_freeMemory(Env* env, Class* c, jlong address) {
     rvmFreeMemory(LONG_TO_PTR(address));
 }
 
+void Java_org_robovm_rt_VM_registerDisappearingLink(Env* env, Class* c, jlong address, Object* obj) {
+    rvmRegisterDisappearingLink(env, LONG_TO_PTR(address), obj);
+}
+
 jlong Java_org_robovm_rt_VM_malloc(Env* env, Class* c, jint size) {
     void* m = malloc(size);
     if (!m) {
@@ -117,7 +121,11 @@ void Java_org_robovm_rt_VM_free(Env* env, Class* c, jlong address) {
 }
 
 Object* Java_org_robovm_rt_VM_allocateObject(Env* env, Class* c, Class* cls) {
-    return rvmAllocateObject(env, cls);
+    Object *o = rvmAllocateObject(env, cls);
+    if (o && CLASS_IS_FINALIZABLE(cls)) {
+        rvmRegisterFinalizer(env, o);
+    }
+    return o;
 }
 
 Object* Java_org_robovm_rt_VM_newDirectByteBuffer(Env* env, Class* c, jlong address, jlong capacity) {

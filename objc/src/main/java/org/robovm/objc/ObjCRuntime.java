@@ -79,7 +79,22 @@ public class ObjCRuntime {
     public static native boolean class_addMethod(@Pointer long cls, @Pointer long name, @Pointer long imp, @Pointer long types);
     
     @Bridge
+    public static native boolean class_addIvar(@Pointer long cls, @Pointer long name, int size, byte alignment, @Pointer long types);
+    
+    @Bridge
+    public static native @Pointer long class_getInstanceVariable(@Pointer long cls, @Pointer long name);
+    
+    @Bridge
+    public static native @Pointer long class_getIvarLayout(@Pointer long cls);
+    
+    @Bridge
+    public static native int ivar_getOffset(@Pointer long ivar);
+    
+    @Bridge
     public static native @Pointer long method_getTypeEncoding(@Pointer long method);
+    
+    @Bridge
+    public static native @Pointer long method_getImplementation(@Pointer long method);
     
     @Bridge(symbol = "objc_msgSend")
     public static native @Pointer long ptr_objc_msgSend(@Pointer long receiver, @Pointer long selector);
@@ -90,6 +105,9 @@ public class ObjCRuntime {
     @Bridge(symbol = "objc_msgSend")
     public static native void void_objc_msgSend(@Pointer long receiver, @Pointer long selector);
 
+    @Bridge(symbol = "objc_msgSendSuper")
+    public static native void void_objc_msgSendSuper(@Pointer long zuper, @Pointer long selector);
+    
     @Bridge(symbol = "objc_msgSend")
     public static native boolean boolean_objc_msgSend(@Pointer long receiver, @Pointer long selector);
     

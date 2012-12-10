@@ -16,13 +16,17 @@
 package org.robovm.objc;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import org.robovm.objc.annotation.NativeClass;
 import org.robovm.rt.VM;
 import org.robovm.rt.bro.NativeObject;
+import org.robovm.rt.bro.Struct;
+import org.robovm.rt.bro.annotation.Callback;
 import org.robovm.rt.bro.annotation.Library;
 import org.robovm.rt.bro.annotation.Marshaler;
 import org.robovm.rt.bro.annotation.Pointer;
+import org.robovm.rt.bro.annotation.StructMember;
 import org.robovm.rt.bro.ptr.Ptr;
 import org.robovm.rt.bro.ptr.Ptr.MarshalerCallback;
 
@@ -45,13 +49,7 @@ public abstract class ObjCObject extends NativeObject {
         }
     }
 	
-    private static final long PEER_OBJECT_KEY = VM.getObjectAddress(ObjCObject.class);
     private static final long CUSTOM_CLASS_OFFSET;
-    private static final long NSNUMBER_CLASS = ObjCRuntime.objc_getClass(VM.getStringUTFChars("NSNumber"));
-    private static final int OBJC_ASSOCIATION_RETAIN_NONATOMIC = 1;
-    private static final Selector alloc = Selector.register("alloc");
-    private static final Selector initWithLongLong$ = Selector.register("initWithLongLong:");
-    private static final Selector longLongValue = Selector.register("longLongValue");
     
     private ObjCSuper zuper;
     protected final boolean customClass;
@@ -59,19 +57,19 @@ public abstract class ObjCObject extends NativeObject {
     protected ObjCObject() {
         long handle = alloc();
         setHandle(handle);
-        setAssociatedObject(handle, PEER_OBJECT_KEY, this);
+        PeerWrapper.setPeerObject(handle, this);
         customClass = getObjCClass().isCustom();
     }
     
     protected ObjCObject(long handle) {
         setHandle(handle);
-        setAssociatedObject(handle, PEER_OBJECT_KEY, this);
+        PeerWrapper.setPeerObject(handle, this);
         customClass = getObjCClass().isCustom();
     }
     
     ObjCObject(long handle, boolean customClass) {
         setHandle(handle);
-        setAssociatedObject(handle, PEER_OBJECT_KEY, this);
+        PeerWrapper.setPeerObject(handle, this);
         this.customClass = customClass;
     }
     
@@ -93,19 +91,6 @@ public abstract class ObjCObject extends NativeObject {
         return zuper;
     }
     
-//    protected void setHandle(long h) {
-//        if (h == 0L) {
-//            throw new IllegalArgumentException("Trying to set handle to 0");
-//        }
-//        if (this.handle != h) {
-//            if (this.handle != 0L) {
-//                setAssociatedObject(this.handle, PEER_OBJECT_KEY, null);
-//            }
-//            this.handle = h;
-//            setAssociatedObject(this.handle, PEER_OBJECT_KEY, this);
-//        }
-//    }
-    
     protected void afterMarshaled() {
     }
     
@@ -113,40 +98,8 @@ public abstract class ObjCObject extends NativeObject {
         return ObjCClass.getFromObject(this);
     }
     
-//    public <T> T getAssociatedObject(Object key) {
-//        return getAssociatedObject(getHandle(), VM.getObjectAddress(key));
-//    }
-//    
-//    public void setAssociatedObject(Object key, Object value) {
-//        setAssociatedObject(getHandle(), VM.getObjectAddress(key), value);
-//    }
-    
-//    @SuppressWarnings("unchecked")
-//    public static <T extends Id> T fromHandle(long handle, Class<T> fallback) {
-//        T o = Id.getPeerObject(handle);
-//        if (handle == 0L || o != null) {
-//            return o;
-//        }
-//        ObjCClass objcClass = ObjCClass.getFromObject(handle, ObjCClass.getByType(fallback));
-//        Class<T> c = (Class<T>) objcClass.getType();
-//        if (c == ObjCClass.class) {
-//            return (T) objcClass;
-//        }
-//
-//        try {
-//            Constructor<T> constructor = c.getDeclaredConstructor(Initializer.class);
-//            constructor.setAccessible(true);
-//            return constructor.newInstance(new SetHandleInitializer(handle));
-//        } catch (Exception e) {
-//            if (e instanceof RuntimeException) {
-//                throw (RuntimeException) e;
-//            }
-//            throw new ObjCUnmarshalException("Failed to unmarshal object of type: " + c, e);
-//        }
-//    }
-    
     public static <T extends ObjCObject> T getPeerObject(long handle) {
-        return getAssociatedObject(handle, PEER_OBJECT_KEY);
+        return PeerWrapper.getPeerObject(handle);
     }
     
     @SuppressWarnings("unchecked")
@@ -170,46 +123,12 @@ public abstract class ObjCObject extends NativeObject {
 
         o = VM.allocateObject(c);
         o.setHandle(handle);
-        setAssociatedObject(handle, PEER_OBJECT_KEY, o);
+        PeerWrapper.setPeerObject(handle, o);
         if (objCClass.isCustom()) {
             VM.setBoolean(VM.getObjectAddress(o) + CUSTOM_CLASS_OFFSET, true);
         }
         o.afterMarshaled();
         return o;
-    }
-    
-    @SuppressWarnings("unchecked")
-    private static <T> T getAssociatedObject(long handle, long key) {
-        if (handle == 0L) {
-            return null;
-        }
-        long numberPtr = ObjCRuntime.objc_getAssociatedObject(handle, key);
-        if (numberPtr != 0L) {
-            long address = ObjCRuntime.ptr_objc_msgSend(numberPtr, longLongValue.getHandle());
-            return (T) VM.castAddressToObject(address);
-        }
-        return null;
-    }
-
-    private static void setAssociatedObject(long handle, long key, Object o) {
-        if (o == null) {
-            ObjCRuntime.objc_setAssociatedObject(handle, key, 0L, 0);
-        } else {
-            long address = VM.getObjectAddress(o);
-
-            /*
-             * Wrap the address in an NSNumber as objc_setAssociatedObject seems to expect 
-             * an NSObject. We cannot use the Java NSNumber class since that could result 
-             * in infinite recursion. Also, we cannot use the class method 
-             * numberWithLongLong: since it requires an NSAutoReleasePool.
-             */
-            long numberPtr = ObjCRuntime.ptr_objc_msgSend(NSNUMBER_CLASS, alloc.getHandle());
-            if (numberPtr == 0L) {
-                throw new OutOfMemoryError();
-            }
-            numberPtr = ObjCRuntime.ptr_objc_msgSend_long(numberPtr, initWithLongLong$.getHandle(), address);
-            ObjCRuntime.objc_setAssociatedObject(handle, PEER_OBJECT_KEY, numberPtr, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        }
     }
     
     public static class Marshaler {
@@ -248,6 +167,110 @@ public abstract class ObjCObject extends NativeObject {
         }
         
         public static void updateNative(Object o, long handle) {
+        }
+    }
+    
+    public static class PeerWrapper {
+        private static final long PEER_OBJECT_KEY = VM.getObjectAddress(PeerWrapper.class);
+        private static final int OBJC_ASSOCIATION_RETAIN_NONATOMIC = 1;
+        private static final long NS_OBJECT_CLS;
+        private static final long CLS;
+        private static final int PEER_IVAR_OFFSET;
+        private static final Selector alloc = Selector.register("alloc");
+        private static final Selector init = Selector.register("init");
+        private static final Selector release = Selector.register("release");
+
+        static {
+            NS_OBJECT_CLS = ObjCRuntime.objc_getClass(VM.getStringUTFChars("NSObject"));
+            long cls = ObjCRuntime.objc_allocateClassPair(NS_OBJECT_CLS, VM.getStringUTFChars("RoboVMPeerWrapper"), 4);
+            if (cls == 0L) {
+                throw new Error("Failed to create the RoboVMPeerWrapper Objective-C class: objc_allocateClassPair(...) failed");
+            }
+            if (!ObjCRuntime.class_addIvar(cls, VM.getStringUTFChars("peer"), 4, (byte) 2, VM.getStringUTFChars("?"))) {
+                throw new Error("Failed to create the RoboVMPeerWrapper Objective-C class: class_addIvar(...) failed");
+            }
+            Method releaseMethod = null;
+            try {
+                releaseMethod = PeerWrapper.class.getDeclaredMethod("release", Long.TYPE, Long.TYPE);
+            } catch (Throwable t) {
+                throw new Error(t);
+            }
+            long superReleaseMethod = ObjCRuntime.class_getInstanceMethod(NS_OBJECT_CLS, release.getHandle());
+            long releaseType = ObjCRuntime.method_getTypeEncoding(superReleaseMethod);
+            if (!ObjCRuntime.class_addMethod(cls, release.getHandle(), VM.getCallbackMethodImpl(releaseMethod), releaseType)) {
+                throw new Error("Failed to create the RoboVMPeerWrapper Objective-C class: class_addMethod(...) failed");                
+            }
+            ObjCRuntime.objc_registerClassPair(cls);
+            
+            CLS = cls;
+            PEER_IVAR_OFFSET = ObjCRuntime.ivar_getOffset(ObjCRuntime.class_getInstanceVariable(cls, VM.getStringUTFChars("peer")));
+        }
+        
+        @SuppressWarnings("unchecked")
+        public static <T extends ObjCObject> T getPeerObject(long handle) {
+            if (handle == 0L) {
+                return null;
+            }
+            long peerWrapper = ObjCRuntime.objc_getAssociatedObject(handle, PEER_OBJECT_KEY);
+            if (peerWrapper != 0L) {
+                long address = VM.getPointer(peerWrapper + PEER_IVAR_OFFSET);
+                if (address != 0L) {
+                    return (T) VM.castAddressToObject(address);
+                }
+                System.out.println("RoboVMPeerWrapper " + Long.toHexString(peerWrapper) + " associated with " 
+                        + Long.toHexString(handle) + " points to null");
+            }
+            return null;
+        }
+        
+        public static void setPeerObject(long handle, Object o) {
+            if (o == null) {
+                ObjCRuntime.objc_setAssociatedObject(handle, PEER_OBJECT_KEY, 0L, 0);
+            } else {
+                long peerWrapper = ObjCRuntime.ptr_objc_msgSend(CLS, alloc.getHandle());
+                if (peerWrapper == 0L) {
+                    throw new OutOfMemoryError();
+                }
+                peerWrapper = ObjCRuntime.ptr_objc_msgSend(peerWrapper, init.getHandle());
+                long address = VM.getObjectAddress(o);
+                VM.setPointer(peerWrapper + PEER_IVAR_OFFSET, address);
+                VM.registerDisappearingLink(peerWrapper + PEER_IVAR_OFFSET, o);
+                ObjCRuntime.objc_setAssociatedObject(handle, PEER_OBJECT_KEY, peerWrapper, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+                System.out.println("RoboVMPeerWrapper " + Long.toHexString(peerWrapper) + " associated with " 
+                        + Long.toHexString(handle) + " a " + o.getClass().getName());
+            }
+        }
+        
+        @Callback
+        private static void release(@Pointer long self, @Pointer long sel) {
+            ObjCObject o = (ObjCObject) VM.castAddressToObject(VM.getLong(self + PEER_IVAR_OFFSET));
+            if (o != null) {
+                System.out.println("RoboVMPeerWrapper.release() called on " + Long.toHexString(self) + " associated with " 
+                        + Long.toHexString(o.getHandle()) + " a " + o.getClass().getName());
+            } else {
+                System.out.println("RoboVMPeerWrapper.release() called on " + Long.toHexString(self) + " which points to null");
+            }
+            ObjCRuntime.void_objc_msgSendSuper(new Super(self, NS_OBJECT_CLS).getHandle(), sel);
+        }
+        
+        public static final class Super extends Struct<Super> {
+
+            public Super(long receiver, long objcClass) {
+                receiver(receiver);
+                objCClass(objcClass);
+            }
+            
+            @StructMember(0)
+            public native @Pointer long receiver();
+            
+            @StructMember(0)
+            public native Super receiver(@Pointer long receiver);
+            
+            @StructMember(1)
+            public native @Pointer long objCClass();
+            
+            @StructMember(1)
+            public native Super objCClass(@Pointer long objCClass);
         }
     }
 }

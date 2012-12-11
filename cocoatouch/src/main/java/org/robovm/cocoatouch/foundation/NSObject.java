@@ -60,6 +60,22 @@ import org.robovm.rt.bro.ptr.*;
         retain();
     }
     
+    @Override
+    protected final void finalize() throws Throwable {
+        dispose(true);
+    }
+    
+    public final void dispose() throws Throwable {
+        dispose(false);
+    }
+    
+    protected void dispose(boolean finalizing) throws Throwable {
+        release();
+        if (finalizing) {
+            super.finalize();
+        }
+    }
+    
     private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSObject /*</name>*/.class);
 

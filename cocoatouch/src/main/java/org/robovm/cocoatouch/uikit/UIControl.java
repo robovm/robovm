@@ -65,14 +65,14 @@ import org.robovm.rt.bro.ptr.*;
         private static void handleEvent(ListenerWrapper wrapper, Selector sel, UIControl control, UIEvent event) {
             Listener listener = wrapper.listener;
             UIControlEvents controlEvent = wrapper.controlEvent;
-            if (controlEvent.contains(UIControlEvents.TouchDown)) {
+            if (controlEvent == UIControlEvents.TouchDown) {
                 ((OnTouchDownListener) listener).onTouchDown(control, event);
-            } else if (controlEvent.contains(UIControlEvents.TouchUpInside)) {
+            } else if (controlEvent == UIControlEvents.TouchUpInside) {
                 ((OnTouchUpInsideListener) listener).onTouchUpInside(control, event);
-            } else if (controlEvent.contains(UIControlEvents.TouchUpOutside)) {
+            } else if (controlEvent == UIControlEvents.TouchUpOutside) {
                 ((OnTouchUpOutsideListener) listener).onTouchUpOutside(control, event);
             }
-        }        
+        }
     }
     public interface Listener {}
     public interface OnTouchDownListener extends Listener {

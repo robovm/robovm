@@ -54,26 +54,35 @@ import org.robovm.rt.bro.ptr.*;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIControl /*</name>*/.class);
 
     private static final Selector handleEvent = Selector.register("handleEvent");
-    public static abstract class OnTouchDownListener extends NSObject {
-        public abstract void onTouchDown(UIControl control, UIEvent event);
-        @Callback @BindSelector("handleEvent") 
-        private static void handleEvent(OnTouchDownListener l, Selector sel, UIControl control, UIEvent event) {
-            l.onTouchDown(control, event);
+    private static class ListenerWrapper extends NSObject {
+        private final Listener listener;
+        private final UIControlEvents controlEvent;
+        private ListenerWrapper(Listener listener, UIControlEvents controlEvent) {
+            this.listener = listener;
+            this.controlEvent = controlEvent;
         }
+        @Callback @BindSelector("handleEvent") 
+        private static void handleEvent(ListenerWrapper wrapper, Selector sel, UIControl control, UIEvent event) {
+            Listener listener = wrapper.listener;
+            UIControlEvents controlEvent = wrapper.controlEvent;
+            if (controlEvent.contains(UIControlEvents.TouchDown)) {
+                ((OnTouchDownListener) listener).onTouchDown(control, event);
+            } else if (controlEvent.contains(UIControlEvents.TouchUpInside)) {
+                ((OnTouchUpInsideListener) listener).onTouchUpInside(control, event);
+            } else if (controlEvent.contains(UIControlEvents.TouchUpOutside)) {
+                ((OnTouchUpOutsideListener) listener).onTouchUpOutside(control, event);
+            }
+        }        
     }
-    public static abstract class OnTouchUpInsideListener extends NSObject {
-        public abstract void onTouchUpInside(UIControl control, UIEvent event);
-        @Callback @BindSelector("handleEvent") 
-        private static void handleEvent(OnTouchUpInsideListener l, Selector sel, UIControl control, UIEvent event) {
-            l.onTouchUpInside(control, event);
-        }
+    public interface Listener {}
+    public interface OnTouchDownListener extends Listener {
+        void onTouchDown(UIControl control, UIEvent event);
     }
-    public static abstract class OnTouchUpOutsideListener extends NSObject {
-        public abstract void onTouchUpOutside(UIControl control, UIEvent event);
-        @Callback @BindSelector("handleEvent") 
-        private static void handleEvent(OnTouchUpOutsideListener l, Selector sel, UIControl control, UIEvent event) {
-            l.onTouchUpOutside(control, event);
-        }
+    public interface OnTouchUpInsideListener extends Listener {
+        void onTouchUpInside(UIControl control, UIEvent event);
+    }
+    public interface OnTouchUpOutsideListener extends Listener {
+        void onTouchUpOutside(UIControl control, UIEvent event);
     }
     
     public UIControl(CGRect aRect) {
@@ -81,13 +90,49 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     public void addOnTouchDownListener(OnTouchDownListener l) {
-        addTarget(l, handleEvent, UIControlEvents.TouchDown);
+        addListener(l, UIControlEvents.TouchDown);
     }
     public void addOnTouchUpInsideListener(OnTouchUpInsideListener l) {
-        addTarget(l, handleEvent, UIControlEvents.TouchUpInside);
+        addListener(l, UIControlEvents.TouchUpInside);
     }
     public void addOnTouchUpOutsideListener(OnTouchUpOutsideListener l) {
-        addTarget(l, handleEvent, UIControlEvents.TouchUpOutside);
+        addListener(l, UIControlEvents.TouchUpOutside);
+    }
+    @SuppressWarnings("unchecked")
+    private List<ListenerWrapper> getListeners(boolean create) {
+        synchronized (UIControl.class) {
+            List<ListenerWrapper> listeners = 
+                    (List<ListenerWrapper>) getAssociatedObject(UIControl.class.getName() + ".listeners");
+            if (listeners == null && create) {
+                listeners = new LinkedList<ListenerWrapper>();
+                setAssociatedObject(UIControl.class.getName() + ".listeners", listeners);
+            }
+            return listeners;
+        }
+    }
+    private void addListener(Listener listener, UIControlEvents controlEvent) {
+        ListenerWrapper wrapper = new ListenerWrapper(listener, controlEvent);
+        List<ListenerWrapper> listeners = getListeners(true);
+        synchronized (listeners) {
+            listeners.add(wrapper);
+        }
+        addTarget(wrapper, handleEvent, controlEvent);
+    }
+    
+    public void removeListener(Listener listener) {
+        List<ListenerWrapper> listeners = getListeners(false);
+        if (listeners == null) {
+            return;
+        }
+        synchronized (listeners) {
+            for (Iterator<ListenerWrapper> it = listeners.iterator(); it.hasNext();) {
+                ListenerWrapper wrapper = it.next();
+                if (wrapper.listener == listener) {
+                    it.remove();
+                    break;
+                }
+            }
+        }        
     }
     
     /*<constructors>*/

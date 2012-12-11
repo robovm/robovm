@@ -114,6 +114,14 @@ public abstract class ObjCObject extends NativeObject {
         AssociatedObjectHelper.removeStrongRef(this, to);
     }
     
+    public Object getAssociatedObject(Object key) {
+        return AssociatedObjectHelper.getAssociatedObject(this, key);
+    }
+
+    public void setAssociatedObject(Object key, Object value) {
+        AssociatedObjectHelper.setAssociatedObject(this, key, value);
+    }
+    
     @SuppressWarnings("unchecked")
     public static <T extends ObjCObject> T toObjCObject(Class<T> cls, long handle) {
         if (handle == 0L) {

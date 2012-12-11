@@ -183,18 +183,21 @@ public abstract class ObjCObject extends NativeObject {
     }
     
     static class AssociatedObjectHelper {
-        private enum Key {Peer, StrongRefs};
+        private static final String STRONG_REFS_KEY = AssociatedObjectHelper.class.getName() + ".StrongRefs";
+
+        private enum Key {Peer, AssociatedObjects};
         private static final int OBJC_ASSOCIATION_RETAIN_NONATOMIC = 1;
         private static final long NS_OBJECT_CLASS;
         private static final long CLS;
-        private static final String JAVA_OBJECT_IVAR_NAME = "javaObj";
-        private static final int JAVA_OBJECT_IVAR_OFFSET;
         private static final String KEY_IVAR_NAME = "key";
         private static final int KEY_IVAR_OFFSET;
+        private static final String VALUE_IVAR_NAME = "value";
+        private static final int VALUE_IVAR_OFFSET;
         private static final Selector alloc = Selector.register("alloc");
         private static final Selector init = Selector.register("init");
         private static final Selector release = Selector.register("release");
-        private static final Map<Long, List> strongRefs = new HashMap<Long, List>();
+        private static final Selector retainCount = Selector.register("retainCount");
+        private static final Map<Long, Map<Object, Object>> ASSOCIATED_OBJECTS = new HashMap<Long, Map<Object, Object>>();
 
         static {
             NS_OBJECT_CLASS = ObjCRuntime.objc_getClass(VM.getStringUTFChars("NSObject"));
@@ -202,7 +205,7 @@ public abstract class ObjCObject extends NativeObject {
             if (cls == 0L) {
                 throw new Error("Failed to create the RoboVMAssocObjWrapper Objective-C class: objc_allocateClassPair(...) failed");
             }
-            if (!ObjCRuntime.class_addIvar(cls, VM.getStringUTFChars(JAVA_OBJECT_IVAR_NAME), 4, (byte) 2, VM.getStringUTFChars("?"))) {
+            if (!ObjCRuntime.class_addIvar(cls, VM.getStringUTFChars(VALUE_IVAR_NAME), 4, (byte) 2, VM.getStringUTFChars("?"))) {
                 throw new Error("Failed to create the RoboVMAssocObjWrapper Objective-C class: class_addIvar(...) failed");
             }
             if (!ObjCRuntime.class_addIvar(cls, VM.getStringUTFChars(KEY_IVAR_NAME), 4, (byte) 2, VM.getStringUTFChars("I"))) {
@@ -222,7 +225,7 @@ public abstract class ObjCObject extends NativeObject {
             ObjCRuntime.objc_registerClassPair(cls);
             
             CLS = cls;
-            JAVA_OBJECT_IVAR_OFFSET = ObjCRuntime.ivar_getOffset(ObjCRuntime.class_getInstanceVariable(cls, VM.getStringUTFChars(JAVA_OBJECT_IVAR_NAME)));
+            VALUE_IVAR_OFFSET = ObjCRuntime.ivar_getOffset(ObjCRuntime.class_getInstanceVariable(cls, VM.getStringUTFChars(VALUE_IVAR_NAME)));
             KEY_IVAR_OFFSET = ObjCRuntime.ivar_getOffset(ObjCRuntime.class_getInstanceVariable(cls, VM.getStringUTFChars(KEY_IVAR_NAME)));
         }
 
@@ -232,20 +235,18 @@ public abstract class ObjCObject extends NativeObject {
             }
             long wrapper = ObjCRuntime.objc_getAssociatedObject(handle, key.hashCode());
             if (wrapper != 0L) {
-                long address = VM.getPointer(wrapper + JAVA_OBJECT_IVAR_OFFSET);
+                long address = VM.getPointer(wrapper + VALUE_IVAR_OFFSET);
                 if (address != 0L) {
                     return VM.castAddressToObject(address);
                 }
-                System.out.println("RoboVMAssocObjWrapper " + Long.toHexString(wrapper) + " associated with " 
-                        + Long.toHexString(handle) + " points to null for key " + key);
             }
             return null;
         }
 
-        public static void setAssociatedObject(long handle, Key key, Object value, boolean weak) {
+        private static void setAssociatedObject(long handle, Key key, Object value, boolean weak) {
             long wrapper = ObjCRuntime.objc_getAssociatedObject(handle, key.hashCode());
             if (wrapper != 0L && weak) {
-                VM.unregisterDisappearingLink(wrapper + JAVA_OBJECT_IVAR_OFFSET);
+                VM.unregisterDisappearingLink(wrapper + VALUE_IVAR_OFFSET);
             }
             if (value == null) {
                 ObjCRuntime.objc_setAssociatedObject(handle, key.hashCode(), 0L, 0);
@@ -256,14 +257,13 @@ public abstract class ObjCObject extends NativeObject {
                 }
                 wrapper = ObjCRuntime.ptr_objc_msgSend(wrapper, init.getHandle());
                 long address = VM.getObjectAddress(value);
-                VM.setPointer(wrapper + JAVA_OBJECT_IVAR_OFFSET, address);
+                VM.setPointer(wrapper + VALUE_IVAR_OFFSET, address);
                 VM.setInt(wrapper + KEY_IVAR_OFFSET, key.ordinal());
                 if (weak) {
-                    VM.registerDisappearingLink(wrapper + JAVA_OBJECT_IVAR_OFFSET, value);
+                    VM.registerDisappearingLink(wrapper + VALUE_IVAR_OFFSET, value);
                 }
                 ObjCRuntime.objc_setAssociatedObject(handle, key.hashCode(), wrapper, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-                System.out.println("RoboVMAssocObjWrapper " + Long.toHexString(wrapper) + " associated with " 
-                        + Long.toHexString(handle) + " a " + value.getClass().getName() + " for key " + key);
+                ObjCRuntime.void_objc_msgSend(wrapper, release.getHandle());
             }
         }
 
@@ -276,48 +276,91 @@ public abstract class ObjCObject extends NativeObject {
             setAssociatedObject(handle, Key.Peer, o, true);
         }
 
+        public static Object getAssociatedObject(ObjCObject object, Object key) {
+            synchronized (ASSOCIATED_OBJECTS) {
+                Map<Object, Object> map = ASSOCIATED_OBJECTS.get(object.getHandle());
+                if (map == null) {
+                    return null;
+                }
+                return map.get(key);
+            }
+        }
+
+        public static void setAssociatedObject(ObjCObject object, Object key, Object value) {
+            synchronized (ASSOCIATED_OBJECTS) {
+                Map<Object, Object> map = ASSOCIATED_OBJECTS.get(object.getHandle());
+                if (map == null && value == null) {
+                    return;
+                }
+                if (map == null) {
+                    map = new HashMap<Object, Object>();
+                    setAssociatedObject(object.getHandle(), Key.AssociatedObjects, map, false);
+                    ASSOCIATED_OBJECTS.put(object.getHandle(), map);
+                }
+                if (value != null) {
+                    map.put(key, value);
+                } else {
+                    map.remove(key);
+                    if (map.isEmpty()) {
+                        setAssociatedObject(object.getHandle(), Key.AssociatedObjects, null, false);
+                        ASSOCIATED_OBJECTS.remove(object.getHandle());                        
+                    }
+                }
+            }
+        }
+
+        @SuppressWarnings({ "rawtypes", "unchecked" })
         public static void addStrongRef(ObjCObject from, ObjCObject to) {
-            synchronized (strongRefs) {
-                List l = (List) getAssociatedObject(from.getHandle(), Key.StrongRefs);
+            if (to == null) {
+                throw new NullPointerException();
+            }
+            synchronized (ASSOCIATED_OBJECTS) {
+                List l = (List) getAssociatedObject(from, STRONG_REFS_KEY);
                 if (l == null) {
                     l = new ArrayList();
-                    setAssociatedObject(from.getHandle(), Key.StrongRefs, l, false);
-                    strongRefs.put(from.getHandle(), l);
+                    setAssociatedObject(from, STRONG_REFS_KEY, l);
                 }
                 l.add(to);
             }
         }
 
+        @SuppressWarnings("rawtypes")
         public static void removeStrongRef(ObjCObject from, ObjCObject to) {
-            synchronized (strongRefs) {
-                List l = (List) getAssociatedObject(from.getHandle(), Key.StrongRefs);
+            if (to == null) {
+                throw new NullPointerException();
+            }
+            synchronized (ASSOCIATED_OBJECTS) {
+                List l = (List) getAssociatedObject(from, STRONG_REFS_KEY);
                 if (l == null || !l.remove(to)) {
-                    throw new IllegalArgumentException("No string ref exists from " + from + " to " + to);
+                    throw new IllegalArgumentException("No strong ref exists from " + from 
+                            + " (a " + from.getClass().getName() + ") to " + to 
+                            + " a (" + to.getClass().getName() + ")");
                 }
                 if (l.isEmpty()) {
-                    setAssociatedObject(from.getHandle(), Key.StrongRefs, null, false);
-                    strongRefs.remove(from.getHandle());
+                    setAssociatedObject(from, STRONG_REFS_KEY, null);
                 }
             }
         }
         
-        @SuppressWarnings("unused")
         @Callback
-        private static void release(@Pointer long self, @Pointer long sel) {
-            Object o = VM.castAddressToObject(VM.getLong(self + JAVA_OBJECT_IVAR_OFFSET));
-            Key key = Key.values()[VM.getInt(self + KEY_IVAR_OFFSET)];
-            if (key == Key.Peer && o != null) {
-                VM.unregisterDisappearingLink(self + JAVA_OBJECT_IVAR_OFFSET);
-            } else if (key == Key.StrongRefs) {
-                synchronized (strongRefs) {
-                    strongRefs.remove(self);   
+        static void release(@Pointer long self, @Pointer long sel) {
+            if (ObjCRuntime.int_objc_msgSend(self, retainCount.getHandle()) == 1) {
+                Key key = Key.values()[VM.getInt(self + KEY_IVAR_OFFSET)];
+                Object value = VM.castAddressToObject(VM.getLong(self + VALUE_IVAR_OFFSET));
+                if (key == Key.Peer && value != null) {
+                    VM.unregisterDisappearingLink(self + VALUE_IVAR_OFFSET);
+                } else if (key == Key.AssociatedObjects) {
+                    synchronized (ASSOCIATED_OBJECTS) {
+                        ASSOCIATED_OBJECTS.remove(self);   
+                    }
                 }
-            }
-            if (o != null) {
-                System.out.println("RoboVMAssocObjWrapper.release() called on " + Long.toHexString(self) + " associated with " 
-                        + o + " a " + o.getClass().getName() + " for key " + key);
-            } else {
-                System.out.println("RoboVMAssocObjWrapper.release() called on " + Long.toHexString(self) + " which points to null");
+//                if (value != null) {
+//                    System.out.format("RoboVMAssocObjWrapper.release() called on 0x%x associated with " 
+//                            + "value %s (a %s) for key %s", self, value, value.getClass().getName(), key);
+//                } else {
+//                    System.out.format("RoboVMAssocObjWrapper.release() called on 0x%x associated with " 
+//                            + "null for key %s", self, key);
+//                }
             }
             ObjCRuntime.void_objc_msgSendSuper(new Super(self, NS_OBJECT_CLASS).getHandle(), sel);
         }

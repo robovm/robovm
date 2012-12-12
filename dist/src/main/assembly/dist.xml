@@ -30,22 +30,26 @@
     </fileSet>
   </fileSets>
 
-  <moduleSets>
-    <moduleSet>
-      <useAllReactorProjects>true</useAllReactorProjects>
+  <dependencySets>
+    <dependencySet>
       <includes>
-        <include>org.robovm:robovm-compiler</include>
-        <include>org.robovm:robovm-rt</include>
-        <include>org.robovm:robovm-objc</include>
-        <include>org.robovm:robovm-cocoatouch</include>
+        <include>*:*:jar:*</include>
       </includes>
-      <binaries>
-        <outputDirectory>lib</outputDirectory>
-        <unpack>false</unpack>
-        <outputFileNameMapping>${module.artifactId}.${module.extension}</outputFileNameMapping>
-        <fileMode>644</fileMode>
-      </binaries>
-    </moduleSet>
-  </moduleSets>
+      <outputDirectory>lib</outputDirectory>
+      <unpack>false</unpack>
+      <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
+      <fileMode>644</fileMode>
+      <useProjectArtifact>false</useProjectArtifact>
+    </dependencySet>
+    <dependencySet>
+      <includes>
+        <include>*:*:*:sources</include>
+      </includes>
+      <outputDirectory>lib</outputDirectory>
+      <unpack>false</unpack>
+      <outputFileNameMapping>${artifact.artifactId}-${artifact.classifier}.${artifact.extension}</outputFileNameMapping>
+      <fileMode>644</fileMode>
+      <useProjectArtifact>false</useProjectArtifact>
+    </dependencySet>
+  </dependencySets>
 </assembly>
-

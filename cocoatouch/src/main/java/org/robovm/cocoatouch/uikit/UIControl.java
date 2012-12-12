@@ -128,6 +128,7 @@ import org.robovm.rt.bro.ptr.*;
             for (Iterator<ListenerWrapper> it = listeners.iterator(); it.hasNext();) {
                 ListenerWrapper wrapper = it.next();
                 if (wrapper.listener == listener) {
+                    removeTarget(wrapper, handleEvent, wrapper.controlEvent);
                     it.remove();
                     break;
                 }

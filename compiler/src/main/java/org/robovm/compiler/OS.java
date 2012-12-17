@@ -59,6 +59,9 @@ public enum OS {
     
     @SuppressWarnings("rawtypes")
     static String getHost(File llvmHomeDir) {
+        if (llvmHomeDir == null) {
+            llvmHomeDir = Config.findLlvmHomeDir();
+        }
         String llvmHostString = llvmHostStrings.get(llvmHomeDir);
         if (llvmHostString != null) {
             return llvmHostString;
@@ -90,7 +93,8 @@ public enum OS {
             msg += "LLVM in dir " + llvmHomeDir + ".";
         } else {
             msg += "system provided LLVM. Make sure the path of the LLVM binaries "
-                 + "has been added to the $PATH environment variable.";
+                 + "has been added to the $PATH environment variable or install LLVM " 
+                 + "to /opt/llvm/.";
         }
         throw new CompilerException(msg);
     }

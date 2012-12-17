@@ -38,8 +38,18 @@ public class RoboVMClasspathContainer implements IClasspathContainer {
     
     public IClasspathEntry[] getClasspathEntries() {
         File f = RoboVMPlugin.getRoboVMHome().getRtPath();
+        IPath sourceAttachment = null;
+        if (f.isFile()) {
+            // robovm-rt.jar. Use robovm-rt-sources.jar as source attachment.
+            sourceAttachment = new Path(new File(f.getParentFile(), "robovm-rt-sources.jar").getAbsolutePath());
+        } else {
+            // ROBOVM_DEV_ROOT has been set and rtPath is $ROBOVM_DEV_ROOT/rt/target/classes. Use
+            // $ROBOVM_DEV_ROOT/rt/src/main/java as source attachment.
+            sourceAttachment = new Path(new File(f.getParentFile().getParent(), 
+                    "src/main/java").getAbsolutePath());
+        }
         return new IClasspathEntry[] {
-            JavaCore.newLibraryEntry(new Path(f.getAbsolutePath()), null, null,
+            JavaCore.newLibraryEntry(new Path(f.getAbsolutePath()), sourceAttachment, new Path(""),
                     new IAccessRule[] {}, new IClasspathAttribute[] {}, false)
         };
     }

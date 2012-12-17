@@ -6,5 +6,5 @@ a.out
 target/
 /tests/bin/robovm-vts.env
 /tests/drlvm-vts-bundle/
-/eclipse/lib/
+/eclipse/ui/lib/
 /tmp/

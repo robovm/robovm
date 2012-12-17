@@ -12,24 +12,15 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>org.robovm.eclipse</artifactId>
-  <name>RoboVM Eclipse IDE Plugin</name>
-  <packaging>eclipse-plugin</packaging>
+  <artifactId>org.robovm.eclipse.parent</artifactId>
+  <name>RoboVM for Eclipse</name>
+  <packaging>pom</packaging>
 
   <properties>
-    <tycho-version>0.14.1</tycho-version>
+    <tycho.version>0.16.0</tycho.version>
+    <tycho-extras.version>0.16.0</tycho-extras.version>
     <eclipse-site>http://download.eclipse.org/releases/indigo</eclipse-site>
   </properties>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.robovm</groupId>
-        <artifactId>robovm-compiler</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 
   <repositories>
     <repository>
@@ -39,67 +30,92 @@
     </repository>
   </repositories>
   
+  <profiles>
+    <profile>
+      <id>sign</id>
+      <!-- To sign plug-ins and features, run: mvn -Psign -Dkeystore=<path>
+        -Dstorepass=*** -Dalias=<keyalias> clean install -->
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-jar-plugin</artifactId>
+              <version>2.4</version>
+              <executions>
+                <execution>
+                  <goals>
+                    <goal>sign</goal>
+                  </goals>
+                </execution>
+              </executions>
+              <configuration>
+                <verify>true</verify>
+                <jarPath>${project.build.directory}/${project.build.finalName}.jar</jarPath>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+  </profiles>
+
   <build>
     <plugins>
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-maven-plugin</artifactId>
-        <version>${tycho-version}</version>
+        <version>${tycho.version}</version>
         <extensions>true</extensions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <version>2.4</version>
-        <configuration>
-          <outputDirectory>lib</outputDirectory>
-          <stripVersion>true</stripVersion>
-          <artifactItems>
-            <artifactItem>
-              <groupId>org.robovm</groupId>
-              <artifactId>robovm-compiler</artifactId>
-            </artifactItem>
-          </artifactItems>
-        </configuration>
-        <executions>
-          <execution>
-            <id>copy</id>
-            <phase>initialize</phase>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>org.eclipse.m2e</groupId>
-          <artifactId>lifecycle-mapping</artifactId>
-          <version>1.0.0</version>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>2.4</version>
+        </plugin>
+        <plugin>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>tycho-packaging-plugin</artifactId>
+          <version>${tycho.version}</version>
+          <dependencies>
+           <dependency>
+             <groupId>org.eclipse.tycho.extras</groupId>
+             <artifactId>tycho-buildtimestamp-jgit</artifactId>
+             <version>${tycho-extras.version}</version>
+           </dependency>
+         </dependencies>          
           <configuration>
-            <lifecycleMappingMetadata>
-              <pluginExecutions>
-                <pluginExecution>
-                  <pluginExecutionFilter>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <versionRange>[2.0,)</versionRange>
-                    <goals>
-                      <goal>copy</goal>
-                    </goals>
-                  </pluginExecutionFilter>
-                  <action>
-                    <ignore />
-                  </action>
-                </pluginExecution>
-              </pluginExecutions>
-            </lifecycleMappingMetadata>
+            <archive>
+              <addMavenDescriptor>false</addMavenDescriptor>
+            </archive>
+            <timestampProvider>jgit</timestampProvider>
+           <jgit.ignore>
+             pom.xml
+           </jgit.ignore>
           </configuration>
         </plugin>
+        <plugin>
+         <groupId>org.eclipse.tycho</groupId>
+         <artifactId>tycho-p2-plugin</artifactId>
+         <version>${tycho.version}</version>
+         <configuration>
+           <baselineRepositories>
+             <repository>
+               <url>http://download.robovm.org/eclipse/</url>
+             </repository>
+           </baselineRepositories>
+         </configuration>
+       </plugin>
       </plugins>
     </pluginManagement>
   </build>
-</project>
 
+  <modules>
+    <module>ui</module>
+    <module>feature</module>
+    <module>update-site</module>
+  </modules>
+</project>

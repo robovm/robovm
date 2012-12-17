@@ -1,0 +1,46 @@
+Copyright (C) 2012 Trillian AB
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
+
+Third party libraries
+---------------------
+
+The RoboVM compiler includes the "Property List Library". This  library is
+copyright 2011, Yørn de Jong and released under the LGPL 2.1 license.
+http://plist.sf.net/
+
+The "Property List Library" depends on the util.Base64 class which is copyright
+2004, Mikael Grev and released under the BSD license.
+
+The MurmurHash3 algorithm in MurmurHash3.java was created by Austin Appleby and
+ported to Java by Yonik Seeley. The original C code and the Java port are placed
+into the public domain. Both authors disclaim copyright to the source code.
+http://code.google.com/p/smhasher/
+https://github.com/yonik/java_util
+
+The RoboVM compiler includes parts of the Netbeans C/C++ support module (cnd).
+This code is copyright 2010, Oracle and/or its affiliates and released under
+the GPLv2 and CDDL licenses. http://cnd.netbeans.org/
+
+The RoboVM compiler includes Soot which is copyright Sable Research Group and
+various contributors. Please see http://www.sable.mcgill.ca/soot/credits for a
+full list of contributors. LGPL 2.1 license. http://www.sable.mcgill.ca/soot/
+
+The RoboVM compiler includes Apache Commons IO which is copyright 2001-2008, the
+Apache Software Foundation and released under the Apache License 2.0.
+http://commons.apache.org/io/
+
+The RoboVM compiler includes Apache Commons Exec which is copyright 2005-2009,
+The Apache Software Foundation and released under the Apache License 2.0.
+http://commons.apache.org/exec/

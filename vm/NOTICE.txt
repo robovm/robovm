@@ -1,0 +1,49 @@
+   =========================================================================
+   ==  NOTICE file corresponding to the section 4 d of                    ==
+   ==  the Apache License, Version 2.0,                                   ==
+   ==  in this case for the RoboVM VM Library.                            ==
+   =========================================================================
+
+RoboVM VM Library
+Copyright (C) 2012 Trillian AB
+
+The RoboVM VM Library includes software developed as part of The Android Open
+Source Project which is copyright 2005-2012, The Android Open Source Project and
+released under the Apache License 2.0. http://source.android.com
+
+The RoboVM VM Library includes uthash (uthash.c and utlist.c) which are
+copyright 2003-2013, Troy D. Hanson and released under a revised BSD license
+(Simplified BSD License without the second clause concerning binary
+distribution). http://uthash.sourceforge.net
+
+The MurmurHash3 algorithm in MurmurHash3.c was created by Austin Appleby. The
+code is placed in the public domain. The author disclaims copyright to the
+source code. http://code.google.com/p/smhasher/
+
+The RoboVM Vm Library includes the Boehm-Demers-Weiser conservative garbage
+collector. For copyright and license information please see
+http://www.hpl.hp.com/personal/Hans_Boehm/gc/license.txt.
+http://www.hpl.hp.com/personal/Hans_Boehm/gc/
+
+The code in realpath.cpp is copyright 2003 Constantin S. Svintsoff and released
+under a 3-clause BSD License.
+
+The code in rt/android/external/expat is licensed under a BSD like license.
+Please see the NOTICE file in this directory for copyright and license
+information. http://expat.sourceforge.net
+
+The code in rt/android/external/fdlibm is licensed under a BSD like license.
+Please see the NOTICE file in this directory for copyright and license
+information. http://www.netlib.org/fdlibm/
+
+The code in rt/android/external/icu4c is licensed under a BSD like license.
+Please see the NOTICE file in this directory for copyright and license
+information. http://site.icu-project.org
+
+The code in rt/android/external/openssl is licensed under a BSD like license.
+Please see the NOTICE file in this directory for copyright and license
+information. http://www.openssl.org
+
+The code in rt/android/external/zlib is licensed under a BSD like license.
+Please see the NOTICE file in this directory for copyright and license
+information. http://www.zlib.net

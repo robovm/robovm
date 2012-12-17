@@ -1,0 +1,35 @@
+   =========================================================================
+   ==  NOTICE file corresponding to the section 4 d of                    ==
+   ==  the Apache License, Version 2.0,                                   ==
+   ==  in this case for the RoboVM Runtime Library.                       ==
+   =========================================================================
+
+RoboVM Runtime Library
+Copyright (C) 2012 Trillian AB
+
+The RoboVM Runtime Library includes software developed as part of the dalvik
+module of The Android Open Source Project which is copyright 2005-2012, The
+Android Open Source Project and released under the Apache License 2.0.
+http://source.android.com
+
+The RoboVM Runtime Library includes software developed as part of the libcore
+module of The Android Open Source Project which is copyright 2005-2012, The
+Android Open Source Project and released under the Apache License 2.0.
+http://source.android.com
+
+The RoboVM Runtime Library includes software developed as part of the Apache
+Harmony project which is copyright 2006, The Apache Software Foundation and
+released under the Apache License 2.0. http://harmony.apache.org
+
+The RoboVM Runtime Library includes software developed as part of ICU which is
+copyright 1995-2012, International Business Machines Corporation and others and
+released under the ICU License. http://site.icu-project.org
+
+The RoboVM Runtime Library includes the kXML 2 library which is copyright
+2002,2003, Stefan Haustein and released under the BSD License.
+http://kxml.sourceforge.net/kxml2/
+
+The RoboVM Runtime Library includes software developed by W3C which is copyright
+2000 World Wide Web Consortium, (Massachusetts Institute of Technology, Institut
+National de Recherche en Informatique et en Automatique, Keio University) and
+released under the W3C License. http://www.w3.org

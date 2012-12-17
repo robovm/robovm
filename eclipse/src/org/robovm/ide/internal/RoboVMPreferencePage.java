@@ -14,9 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
  */
-package org.robovm.ide.internal;
+package org.robovm.eclipse.internal;
 
-import static org.robovm.ide.RoboVMPlugin.*;
+import static org.robovm.eclipse.RoboVMPlugin.*;
 
 import java.io.File;
 
@@ -35,7 +35,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.robovm.compiler.Arch;
 import org.robovm.compiler.Config;
 import org.robovm.compiler.OS;
-import org.robovm.ide.RoboVMPlugin;
+import org.robovm.eclipse.RoboVMPlugin;
 
 /**
  * @author niklas
@@ -44,7 +44,7 @@ import org.robovm.ide.RoboVMPlugin;
 public class RoboVMPreferencePage extends FieldEditorPreferencePage implements
         IWorkbenchPreferencePage {
 
-    public static final String ID = "org.robovm.ide.preferences.main";
+    public static final String ID = "org.robovm.eclipse.preferences.main";
     
     public RoboVMPreferencePage() {
         super("RoboVM", GRID);

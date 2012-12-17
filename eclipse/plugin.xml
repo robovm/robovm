@@ -2,59 +2,59 @@
 <?eclipse version="3.4"?>
 <plugin>
   <extension point="org.eclipse.ui.newWizards">
-    <category id="org.robovm.ide.wizards.category" name="RoboVM"/>
+    <category id="org.robovm.eclipse.wizards.category" name="RoboVM"/>
     <wizard
       canFinishEarly="false"
-      category="org.robovm.ide.wizards.category"
-      class="org.robovm.ide.internal.NewProjectWizard"
+      category="org.robovm.eclipse.wizards.category"
+      class="org.robovm.eclipse.internal.NewProjectWizard"
       finalPerspective="org.eclipse.jdt.ui.JavaPerspective"
       hasPages="true"
       icon="icons/new_robovm_project.png"
-      id="org.robovm.ide.NewProjectWizard"
+      id="org.robovm.eclipse.NewProjectWizard"
       name="RoboVM Project"
       preferredPerspectives="org.eclipse.jdt.ui.JavaPerspective"
       project="true"/>
   </extension>
   <extension point="org.eclipse.ui.perspectiveExtensions">
     <perspectiveExtension targetID="org.eclipse.jdt.ui.JavaPerspective">
-      <newWizardShortcut id="org.robovm.ide.NewProjectWizard" />
+      <newWizardShortcut id="org.robovm.eclipse.NewProjectWizard" />
     </perspectiveExtension>
   </extension>  
   <extension point="org.eclipse.jdt.core.classpathContainerInitializer">
     <classpathContainerInitializer
-      class="org.robovm.ide.internal.RoboVMClasspathContainerInitializer"
-      id="org.robovm.ide.ROBOVM_CONTAINER">
+      class="org.robovm.eclipse.internal.RoboVMClasspathContainerInitializer"
+      id="org.robovm.eclipse.ROBOVM_CONTAINER">
     </classpathContainerInitializer>
   </extension>
   <extension point="org.eclipse.jdt.ui.classpathContainerPage">
     <classpathContainerPage
-      id="org.robovm.ide.ROBOVM_CONTAINER"
+      id="org.robovm.eclipse.ROBOVM_CONTAINER"
       name="RoboVM Runtime Library"
-      class="org.robovm.ide.internal.RoboVMClasspathContainerPage">
+      class="org.robovm.eclipse.internal.RoboVMClasspathContainerPage">
     </classpathContainerPage>
   </extension>
   <extension
-    id="org.robovm.ide.RoboVMClassBuilder"
+    id="org.robovm.eclipse.RoboVMClassBuilder"
     name="RoboVM Class Builder"
     point="org.eclipse.core.resources.builders">
     <builder hasNature="true">
-      <run class="org.robovm.ide.internal.RoboVMClassBuilder" />
+      <run class="org.robovm.eclipse.internal.RoboVMClassBuilder" />
     </builder>
   </extension>
   <extension
-    id="org.robovm.ide.RoboVMNature"
+    id="org.robovm.eclipse.RoboVMNature"
     name="RoboVM Project Nature"
     point="org.eclipse.core.resources.natures">
     <runtime>
-      <run class="org.robovm.ide.internal.RoboVMNature" />
+      <run class="org.robovm.eclipse.internal.RoboVMNature" />
     </runtime>
-    <builder id="org.robovm.ide.RoboVMClassBuilder" />
+    <builder id="org.robovm.eclipse.RoboVMClassBuilder" />
     <requires-nature id="org.eclipse.jdt.core.javanature"/>
   </extension>
   <extension point="org.eclipse.debug.core.launchConfigurationTypes">
     <launchConfigurationType
-      id="org.robovm.ide.ConsoleLaunchConfigurationType"
-      delegate="org.robovm.ide.internal.ConsoleLaunchConfigurationDelegate"
+      id="org.robovm.eclipse.ConsoleLaunchConfigurationType"
+      delegate="org.robovm.eclipse.internal.ConsoleLaunchConfigurationDelegate"
       delegateName="RoboVM Console Launcher"
       modes="debug, run"
       name="Console Application"
@@ -63,8 +63,8 @@
       sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
     </launchConfigurationType>
     <launchConfigurationType
-      id="org.robovm.ide.IOSSimulatorLaunchConfigurationType"
-      delegate="org.robovm.ide.internal.IOSSimulatorLaunchConfigurationDelegate"
+      id="org.robovm.eclipse.IOSSimulatorLaunchConfigurationType"
+      delegate="org.robovm.eclipse.internal.IOSSimulatorLaunchConfigurationDelegate"
       delegateName="iOS Simulator Launcher"
       modes="debug, run"
       name="iOS Simulator App"
@@ -73,8 +73,8 @@
       sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer">
     </launchConfigurationType>
     <launchConfigurationType
-      id="org.robovm.ide.IOSDeviceLaunchConfigurationType"
-      delegate="org.robovm.ide.internal.IOSDeviceLaunchConfigurationDelegate"
+      id="org.robovm.eclipse.IOSDeviceLaunchConfigurationType"
+      delegate="org.robovm.eclipse.internal.IOSDeviceLaunchConfigurationDelegate"
       delegateName="iOS Device Launcher"
       modes="debug, run"
       name="iOS Device App"
@@ -85,25 +85,25 @@
   </extension>
   <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
     <launchConfigurationTabGroup
-        class="org.robovm.ide.internal.RoboVMLaunchConfigurationTabGroup"
+        class="org.robovm.eclipse.internal.RoboVMLaunchConfigurationTabGroup"
         description="Console Application"
-        id="org.robovm.ide.ConsoleLaunchConfigurationTabGroup"
-        type="org.robovm.ide.ConsoleLaunchConfigurationType" />
+        id="org.robovm.eclipse.ConsoleLaunchConfigurationTabGroup"
+        type="org.robovm.eclipse.ConsoleLaunchConfigurationType" />
     <launchConfigurationTabGroup
-        class="org.robovm.ide.internal.RoboVMLaunchConfigurationTabGroup"
+        class="org.robovm.eclipse.internal.RoboVMLaunchConfigurationTabGroup"
         description="iOS Simulator App"
-        id="org.robovm.ide.IOSSimulatorLaunchConfigurationTabGroup"
-        type="org.robovm.ide.IOSSimulatorLaunchConfigurationType" />
+        id="org.robovm.eclipse.IOSSimulatorLaunchConfigurationTabGroup"
+        type="org.robovm.eclipse.IOSSimulatorLaunchConfigurationType" />
     <launchConfigurationTabGroup
-        class="org.robovm.ide.internal.RoboVMLaunchConfigurationTabGroup"
+        class="org.robovm.eclipse.internal.RoboVMLaunchConfigurationTabGroup"
         description="iOS Device App"
-        id="org.robovm.ide.IOSDeviceLaunchConfigurationTabGroup"
-        type="org.robovm.ide.IOSDeviceLaunchConfigurationType" />
+        id="org.robovm.eclipse.IOSDeviceLaunchConfigurationTabGroup"
+        type="org.robovm.eclipse.IOSDeviceLaunchConfigurationType" />
   </extension>
   <extension point="org.eclipse.debug.ui.launchShortcuts">
     <shortcut
-        class="org.robovm.ide.internal.ConsoleLaunchShortcut"
-        id="org.robovm.ide.ConsoleLaunchShortcut"
+        class="org.robovm.eclipse.internal.ConsoleLaunchShortcut"
+        id="org.robovm.eclipse.ConsoleLaunchShortcut"
         label="Console Application"
         modes="run, debug">
       <contextualLaunch>
@@ -128,8 +128,8 @@
       </contextualLaunch>
     </shortcut>
     <shortcut
-        class="org.robovm.ide.internal.IOSSimulatorLaunchShortcut"
-        id="org.robovm.ide.IOSSimulatorLaunchShortcut"
+        class="org.robovm.eclipse.internal.IOSSimulatorLaunchShortcut"
+        id="org.robovm.eclipse.IOSSimulatorLaunchShortcut"
         label="iOS Simulator App"
         modes="run, debug">
       <contextualLaunch>
@@ -154,8 +154,8 @@
       </contextualLaunch>
     </shortcut>
     <shortcut
-        class="org.robovm.ide.internal.IOSDeviceLaunchShortcut"
-        id="org.robovm.ide.IOSDeviceLaunchShortcut"
+        class="org.robovm.eclipse.internal.IOSDeviceLaunchShortcut"
+        id="org.robovm.eclipse.IOSDeviceLaunchShortcut"
         label="iOS Device App"
         modes="run, debug">
       <contextualLaunch>
@@ -181,25 +181,25 @@
     </shortcut>
   </extension>
   <extension point="org.eclipse.core.runtime.preferences">
-    <initializer class="org.robovm.ide.internal.RoboVMPreferenceInitializer"/>
+    <initializer class="org.robovm.eclipse.internal.RoboVMPreferenceInitializer"/>
   </extension>
   <extension point="org.eclipse.ui.preferencePages">
     <page
-      class="org.robovm.ide.internal.RoboVMPreferencePage"
-      id="org.robovm.ide.preferences.main"
+      class="org.robovm.eclipse.internal.RoboVMPreferencePage"
+      id="org.robovm.eclipse.preferences.main"
       name="RoboVM" />
   </extension>
   <extension point="org.eclipse.ui.propertyPages">
     <page
-      class="org.robovm.ide.internal.RoboVMPropertyPage"
-      id="org.robovm.ide.RoboVMPropertyPage"
+      class="org.robovm.eclipse.internal.RoboVMPropertyPage"
+      id="org.robovm.eclipse.RoboVMPropertyPage"
       name="RoboVM"
       nameFilter="*">
       <enabledWhen>
         <and>
           <adapt type="org.eclipse.core.resources.IProject"/>
           <test property="org.eclipse.jdt.launching.hasProjectNature" 
-                args="org.robovm.ide.RoboVMNature" />
+                args="org.robovm.eclipse.RoboVMNature" />
         </and>
       </enabledWhen>
     </page>

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
  */
-package org.robovm.ide.internal;
+package org.robovm.eclipse.internal;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.robovm.compiler.ClassCompiler;
 import org.robovm.compiler.Config;
 import org.robovm.compiler.clazz.Clazz;
-import org.robovm.ide.RoboVMPlugin;
+import org.robovm.eclipse.RoboVMPlugin;
 
 /**
  *
@@ -47,7 +47,7 @@ import org.robovm.ide.RoboVMPlugin;
  */
 public class RoboVMClassBuilder extends IncrementalProjectBuilder {
 
-    public static final String ID = "org.robovm.ide.RoboVMClassBuilder";
+    public static final String ID = "org.robovm.eclipse.RoboVMClassBuilder";
 
     @Override
     protected IProject[] build(int kind, Map<String, String> args,

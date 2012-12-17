@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
  */
-package org.robovm.ide.internal;
+package org.robovm.eclipse.internal;
 
 import java.io.File;
 
@@ -25,7 +25,7 @@ import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.JavaCore;
-import org.robovm.ide.RoboVMPlugin;
+import org.robovm.eclipse.RoboVMPlugin;
 
 /**
  *
@@ -33,7 +33,7 @@ import org.robovm.ide.RoboVMPlugin;
  */
 public class RoboVMClasspathContainer implements IClasspathContainer {
 
-    public static final String ID = "org.robovm.ide.ROBOVM_CONTAINER";
+    public static final String ID = "org.robovm.eclipse.ROBOVM_CONTAINER";
     public static final IPath PATH = new Path(ID);
     
     public IClasspathEntry[] getClasspathEntries() {

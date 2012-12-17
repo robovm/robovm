@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
  */
-package org.robovm.ide.internal;
+package org.robovm.eclipse.internal;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,7 +45,7 @@ import org.robovm.compiler.LaunchParameters;
 import org.robovm.compiler.OS;
 import org.robovm.compiler.Target;
 import org.robovm.compiler.io.OpenOnReadFileInputStream;
-import org.robovm.ide.RoboVMPlugin;
+import org.robovm.eclipse.RoboVMPlugin;
 
 /**
  * @author niklas

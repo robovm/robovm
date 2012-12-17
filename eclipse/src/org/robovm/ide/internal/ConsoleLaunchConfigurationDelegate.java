@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
  */
-package org.robovm.ide.internal;
+package org.robovm.eclipse.internal;
 
 import java.io.IOException;
 
@@ -23,7 +23,7 @@ import org.robovm.compiler.Arch;
 import org.robovm.compiler.Config;
 import org.robovm.compiler.ConsoleTarget;
 import org.robovm.compiler.OS;
-import org.robovm.ide.RoboVMPlugin;
+import org.robovm.eclipse.RoboVMPlugin;
 
 /**
  * @author niklas
@@ -31,7 +31,7 @@ import org.robovm.ide.RoboVMPlugin;
  */
 public class ConsoleLaunchConfigurationDelegate extends AbstractLaunchConfigurationDelegate {
 
-    public static final String TYPE_ID = "org.robovm.ide.ConsoleLaunchConfigurationType";
+    public static final String TYPE_ID = "org.robovm.eclipse.ConsoleLaunchConfigurationType";
     public static final String TYPE_NAME = "Console Application";
 
     @Override

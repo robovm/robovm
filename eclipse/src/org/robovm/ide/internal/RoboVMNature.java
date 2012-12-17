@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
  */
-package org.robovm.ide.internal;
+package org.robovm.eclipse.internal;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,7 +37,7 @@ import org.eclipse.jdt.core.JavaCore;
  */
 public class RoboVMNature implements IProjectNature {
 
-    public static final String ID = "org.robovm.ide.RoboVMNature";
+    public static final String ID = "org.robovm.eclipse.RoboVMNature";
     
     private IProject project;
     

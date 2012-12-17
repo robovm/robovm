@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
  */
-package org.robovm.ide;
+package org.robovm.eclipse;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -53,7 +53,7 @@ import org.robovm.compiler.OS;
  */
 public class RoboVMPlugin extends AbstractUIPlugin {
 
-    public static final String PLUGIN_ID = "org.robovm.ide";
+    public static final String PLUGIN_ID = "org.robovm.eclipse";
     public static final String PREFERENCE_USE_SYSTEM_LLVM = PLUGIN_ID + ".prefs.useSystemLlvm";
     public static final String PREFERENCE_LLVM_HOME_DIR = PLUGIN_ID + ".prefs.llvmHomeDir";
     public static final String PREFERENCE_USE_SYSTEM_ROBOVM = PLUGIN_ID + ".prefs.useSystemRoboVM";

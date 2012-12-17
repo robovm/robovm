@@ -118,7 +118,7 @@
     <module>rt</module>
     <module>objc</module>
     <module>cocoatouch</module>
-    <module>ide</module>
+    <module>eclipse</module>
     <module>dist</module>
   </modules>
 </project>

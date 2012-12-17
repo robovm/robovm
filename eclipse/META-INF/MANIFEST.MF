@@ -14,7 +14,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jdt.launching;bundle-version="3.6.1"
 Bundle-Version: 0.0.1.qualifier
 Bundle-ManifestVersion: 2
-Bundle-Activator: org.robovm.ide.RoboVMPlugin
-Bundle-SymbolicName: org.robovm.ide;singleton:=true
+Bundle-Activator: org.robovm.eclipse.RoboVMPlugin
+Bundle-SymbolicName: org.robovm.eclipse;singleton:=true
 Bundle-ClassPath: .,
  lib/robovm-compiler.jar

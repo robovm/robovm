@@ -6,8 +6,7 @@
       provider-name="Trillian AB">
 
    <description url="http://www.robovm.org">
-      The RoboVM for Eclipse plug-in makes it possible to build RoboVM projects from within the 
-      Eclipse IDE.
+      The RoboVM for Eclipse plug-in makes it possible to build RoboVM projects from within the Eclipse IDE.
    </description>
 
    <copyright>
@@ -15,7 +14,7 @@
    </copyright>
 
    <license url="http://www.gnu.org/licenses/gpl-2.0.html">
-      GNU GENERAL PUBLIC LICENSE
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;GNU GENERAL PUBLIC LICENSE
                        Version 2, June 1991
 
  Copyright (C) 1989, 1991 Free Software Foundation, Inc.,
@@ -353,8 +352,7 @@ This General Public License does not permit incorporating your program into
 proprietary programs.  If your program is a subroutine library, you may
 consider it more useful to permit linking proprietary applications with the
 library.  If this is what you want to do, use the GNU Lesser General
-Public License instead of this License.
-   </license>
+Public License instead of this License.</license>
 
    <plugin
          id="org.robovm.eclipse.ui"

@@ -28,6 +28,14 @@
       <fileMode>755</fileMode>
       <outputDirectory>bin</outputDirectory>
     </fileSet>
+    <fileSet>
+      <directory>${basedir}/..</directory>
+      <outputDirectory>license</outputDirectory>
+      <includes>
+        <include>*/LICENSE.txt</include>
+        <include>*/NOTICE.txt</include>
+      </includes>
+    </fileSet>
   </fileSets>
 
   <dependencySets>

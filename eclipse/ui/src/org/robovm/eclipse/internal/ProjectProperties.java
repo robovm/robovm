@@ -79,7 +79,7 @@ public class ProjectProperties {
         return composite;
     }
     
-    private void setArch(String arch) {
+    public void setArch(String arch) {
         this.arch = arch;
         if (arch == null) {
             archCombo.select(0);
@@ -95,7 +95,7 @@ public class ProjectProperties {
         }
     }
     
-    private void setOs(String os) {
+    public void setOs(String os) {
         this.os = os;
         if (os == null) {
             osCombo.select(0);
@@ -121,9 +121,6 @@ public class ProjectProperties {
         archCombo.setItems(new String[] {
                 "Use workspace default", 
                 "Auto (build for current host)",
-                Arch.armv6.toString(),
-                Arch.armv7.toString(),
-                Arch.thumbv6.toString(),
                 Arch.thumbv7.toString(),
                 Arch.x86.toString()
         });

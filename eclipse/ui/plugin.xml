@@ -15,9 +15,24 @@
       preferredPerspectives="org.eclipse.jdt.ui.JavaPerspective"
       project="true"/>
   </extension>
+  <extension point="org.eclipse.ui.newWizards">
+    <category id="org.robovm.eclipse.wizards.category" name="RoboVM"/>
+    <wizard
+      canFinishEarly="false"
+      category="org.robovm.eclipse.wizards.category"
+      class="org.robovm.eclipse.internal.NewCocoaTouchProjectWizard"
+      finalPerspective="org.eclipse.jdt.ui.JavaPerspective"
+      hasPages="true"
+      icon="icons/new_robovm_cocoa_touch_project.png"
+      id="org.robovm.eclipse.NewCocoaTouchProjectWizard"
+      name="RoboVM Cocoa Touch Project"
+      preferredPerspectives="org.eclipse.jdt.ui.JavaPerspective"
+      project="true"/>
+  </extension>
   <extension point="org.eclipse.ui.perspectiveExtensions">
     <perspectiveExtension targetID="org.eclipse.jdt.ui.JavaPerspective">
       <newWizardShortcut id="org.robovm.eclipse.NewProjectWizard" />
+      <newWizardShortcut id="org.robovm.eclipse.NewCocoaTouchProjectWizard" />
     </perspectiveExtension>
   </extension>  
   <extension point="org.eclipse.jdt.core.classpathContainerInitializer">
@@ -26,11 +41,24 @@
       id="org.robovm.eclipse.ROBOVM_CONTAINER">
     </classpathContainerInitializer>
   </extension>
+  <extension point="org.eclipse.jdt.core.classpathContainerInitializer">
+    <classpathContainerInitializer
+      class="org.robovm.eclipse.internal.RoboVMCocoaTouchClasspathContainerInitializer"
+      id="org.robovm.eclipse.ROBOVM_COCOA_TOUCH_CONTAINER">
+    </classpathContainerInitializer>
+  </extension>
   <extension point="org.eclipse.jdt.ui.classpathContainerPage">
     <classpathContainerPage
       id="org.robovm.eclipse.ROBOVM_CONTAINER"
       name="RoboVM Runtime Library"
       class="org.robovm.eclipse.internal.RoboVMClasspathContainerPage">
+    </classpathContainerPage>
+  </extension>
+  <extension point="org.eclipse.jdt.ui.classpathContainerPage">
+    <classpathContainerPage
+      id="org.robovm.eclipse.ROBOVM_COCOA_TOUCH_CONTAINER"
+      name="RoboVM CocoaTouch Library"
+      class="org.robovm.eclipse.internal.RoboVMCocoaTouchClasspathContainerPage">
     </classpathContainerPage>
   </extension>
   <extension

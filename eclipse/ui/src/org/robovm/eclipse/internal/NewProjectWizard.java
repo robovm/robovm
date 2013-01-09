@@ -36,6 +36,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.osgi.service.prefs.BackingStoreException;
+import org.robovm.eclipse.RoboVMPlugin;
 
 /**
  *
@@ -53,7 +54,7 @@ public class NewProjectWizard extends Wizard implements INewWizard {
     @Override
     public void addPages() {
         if (page1 == null) {
-            page1 = new RoboVMPageOne();
+            page1 = new RoboVMPageOne(getDefaultArch(), getDefaultOs());
             page1.setTitle(page1.getTitle().replace("Java", "RoboVM"));
         }
         addPage(page1);
@@ -67,6 +68,18 @@ public class NewProjectWizard extends Wizard implements INewWizard {
         setHelpAvailable(false);
     }
 
+    protected String getDefaultArch() {
+        return RoboVMPlugin.ARCH_AUTO;
+    }
+    
+    protected String getDefaultOs() {
+        return RoboVMPlugin.OS_AUTO;
+    }
+    
+    protected List<IClasspathEntry> customizeClasspath(List<IClasspathEntry> classpath) {
+        return classpath;
+    }
+    
     @Override
     public boolean performFinish() {
         try {
@@ -85,6 +98,7 @@ public class NewProjectWizard extends Wizard implements INewWizard {
                     newClasspath.add(entry);
                 }
             }
+            newClasspath = customizeClasspath(newClasspath);
             javaProject.setRawClasspath(newClasspath.toArray(
                     new IClasspathEntry[newClasspath.size()]), 
                     new NullProgressMonitor());
@@ -100,7 +114,14 @@ public class NewProjectWizard extends Wizard implements INewWizard {
     
     private static class RoboVMPageOne extends NewJavaProjectWizardPageOne {
         
+        private final String defaultArch;
+        private final String defaultOs;
         private ProjectProperties projectProperties = null;
+        
+        public RoboVMPageOne(String defaultArch, String defaultOs) {
+            this.defaultArch = defaultArch;
+            this.defaultOs = defaultOs;
+        }
         
         @Override
         public String getCompilerCompliance() {
@@ -126,6 +147,8 @@ public class NewProjectWizard extends Wizard implements INewWizard {
         }
         protected void addCustomControls(Composite parent) {
             projectProperties = new ProjectProperties(parent, true);
+            projectProperties.setArch(defaultArch);
+            projectProperties.setOs(defaultOs);
         }
         
         public void storePreferences(IProject project) throws BackingStoreException {

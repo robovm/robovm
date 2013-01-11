@@ -557,7 +557,7 @@ extern "C" jobject Java_libcore_icu_ICU_getAvailableCurrencyCodes(JNIEnv* env, j
 // file and modify the entry names.
 
 // Paths of supported ICU versions in order of preference
-const char * const supportedIcuPaths[] = { "icudt48l", "icudt49l" };
+const char * const supportedIcuPaths[] = { "icudt48l", "icudt49l", "icudt46l" };
 // The ICU path we're using
 static const char *icuPath = NULL;
 

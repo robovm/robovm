@@ -558,6 +558,7 @@ extern "C" jobject Java_libcore_icu_ICU_getAvailableCurrencyCodes(JNIEnv* env, j
 
 // Paths of supported ICU versions in order of preference
 const char * const supportedIcuPaths[] = { "icudt48l", "icudt49l", "icudt46l" };
+#define SUPPORTED_ICU_PATHS_LENGTH 3
 // The ICU path we're using
 static const char *icuPath = NULL;
 
@@ -574,7 +575,7 @@ static void modTocEntryName(const char *oldTocEntryName, char *newTocEntryName) 
 
 int register_libcore_icu_ICU(JNIEnv* env) {
     std::string path;
-    for (unsigned int i = 0; i < sizeof(supportedIcuPaths); i++) {
+    for (unsigned int i = 0; i < SUPPORTED_ICU_PATHS_LENGTH; i++) {
         path = u_getDataDirectory();
         path += "/";
         path += supportedIcuPaths[i];

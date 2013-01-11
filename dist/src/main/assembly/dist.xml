@@ -32,8 +32,16 @@
       <directory>${basedir}/..</directory>
       <outputDirectory>license</outputDirectory>
       <includes>
-        <include>*/LICENSE.txt</include>
-        <include>*/NOTICE.txt</include>
+        <include>compiler/LICENSE.txt</include>
+        <include>compiler/NOTICE.txt</include>
+        <include>cocoatouch/LICENSE.txt</include>
+        <include>cocoatouch/NOTICE.txt</include>
+        <include>objc/LICENSE.txt</include>
+        <include>objc/NOTICE.txt</include>
+        <include>rt/LICENSE.txt</include>
+        <include>rt/NOTICE.txt</include>
+        <include>vm/LICENSE.txt</include>
+        <include>vm/NOTICE.txt</include>
       </includes>
     </fileSet>
   </fileSets>

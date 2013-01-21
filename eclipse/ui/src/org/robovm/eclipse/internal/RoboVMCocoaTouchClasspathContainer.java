@@ -72,7 +72,7 @@ public class RoboVMCocoaTouchClasspathContainer implements IClasspathContainer {
     }
 
     public int getKind() {
-        return K_DEFAULT_SYSTEM;
+        return K_APPLICATION;
     }
 
     public IPath getPath() {

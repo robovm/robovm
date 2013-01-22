@@ -1183,7 +1183,7 @@ public class ClassCompiler {
         return new StructureType(CLASS, new StructureType(types.toArray(new Type[types.size()])));
     }
     
-    private static StructureType getInstanceType0(SootClass clazz, int subClassAlignment) {
+    private static StructureType getInstanceType0(SootClass clazz, int subClassAlignment, int[] superSize) {
         List<Type> types = new ArrayList<Type>();
         List<SootField> fields = getInstanceFields(clazz);
         int superAlignment = 1;
@@ -1193,9 +1193,9 @@ public class ClassCompiler {
             superAlignment = getFieldAlignment(field);
         }
         if (clazz.hasSuperclass()) {
-            types.add(getInstanceType0(clazz.getSuperclass(), superAlignment));
+            types.add(getInstanceType0(clazz.getSuperclass(), superAlignment, superSize));
         }
-        int offset = 0;
+        int offset = superSize[0];
         for (SootField field : fields) {
             int falign = getFieldAlignment(field);
             int padding = (offset & (falign - 1)) != 0 ? (falign - (offset & (falign - 1))) : 0;
@@ -1207,13 +1207,16 @@ public class ClassCompiler {
                 ? (subClassAlignment - (offset & (subClassAlignment - 1))) : 0;
         for (int i = 0; i < padding; i++) {
             types.add(I8);
+            offset++;
         }
+        
+        superSize[0] = offset;
         
         return new StructureType(types.toArray(new Type[types.size()]));
     }
     
     private static StructureType getInstanceType(SootClass clazz) {
-        return new StructureType(DATA_OBJECT, getInstanceType0(clazz, 1));
+        return new StructureType(DATA_OBJECT, getInstanceType0(clazz, 1, new int[] {0}));
     }
     
     private Constant getString(String string) {

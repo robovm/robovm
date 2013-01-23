@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.debug.ui;bundle-version="3.7.101",
  org.eclipse.jdt.debug.ui;bundle-version="3.6.1",
  org.eclipse.jdt.launching;bundle-version="3.6.1"
-Bundle-Version: 0.0.1.qualifier
+Bundle-Version: 0.0.2.qualifier
 Bundle-ManifestVersion: 2
 Bundle-Activator: org.robovm.eclipse.RoboVMPlugin
 Bundle-SymbolicName: org.robovm.eclipse.ui;singleton:=true

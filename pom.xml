@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.robovm</groupId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.2-SNAPSHOT</version>
   <artifactId>robovm-parent</artifactId>
   <name>RoboVM</name>
   <packaging>pom</packaging>

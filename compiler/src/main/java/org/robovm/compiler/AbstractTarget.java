@@ -22,6 +22,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -101,6 +102,23 @@ public abstract class AbstractTarget implements Target {
             ccArgs.add(unexportedSymbolsFile.getAbsolutePath());
             ccArgs.add("-Wl,-no_implicit_dylibs");
             ccArgs.add("-Wl,-dead_strip");
+        }
+        
+        if (!config.getStaticLibs().isEmpty()) {
+            objectFiles = new ArrayList<File>(objectFiles);
+            for (String p : config.getStaticLibs()) {
+                if (p.endsWith(".o")) {
+                    objectFiles.add(new File(p));
+                } else {
+                    // .a file
+                    if (config.getOs().getFamily() == OS.Family.darwin) {
+                        libs.add("-force_load");
+                        libs.add(new File(p).getAbsolutePath());
+                    } else {
+                        libs.addAll(Arrays.asList("-Wl,--whole-archive", new File(p).getAbsolutePath(), "-Wl,--no-whole-archive"));            
+                    }
+                }
+            }
         }
      
         doBuild(outFile, ccArgs, objectFiles, libs);

@@ -51,9 +51,11 @@ public class Config {
     private boolean skipRuntimeLib = false;
     private boolean skipLinking = false;
     private boolean skipInstall = false;
+    private boolean dynamicJNI = false;
     private File mainJar;
     private String mainClass;
     private List<String> roots = new ArrayList<String>();
+    private List<String> staticLibs = new ArrayList<String>();
     
     private File osArchDepLibDir;
     private List<File> bootclasspath = new ArrayList<File>();
@@ -123,6 +125,10 @@ public class Config {
         return skipInstall;
     }
     
+    public boolean isDynamicJNI() {
+        return dynamicJNI;
+    }
+    
     public File getMainJar() {
         return mainJar;
     }
@@ -146,6 +152,10 @@ public class Config {
 
     public List<String> getRoots() {
         return roots;
+    }
+    
+    public List<String> getStaticLibs() {
+        return staticLibs;
     }
     
     public File getLlvmHomeDir() {
@@ -563,6 +573,11 @@ public class Config {
             return this;
         }
         
+        public Builder dynamicJNI(boolean b) {
+            config.dynamicJNI = b;
+            return this;
+        }
+        
         public Builder mainClass(String mainClass) {
             config.mainClass = mainClass;
             return this;
@@ -583,6 +598,11 @@ public class Config {
             return this;
         }
 
+        public Builder addStaticLib(String path) {
+            config.staticLibs.add(path);
+            return this;
+        }
+        
         public Builder targetBuilder(Target.Builder targetBuilder) {
             config.targetBuilder = targetBuilder;
             return this;

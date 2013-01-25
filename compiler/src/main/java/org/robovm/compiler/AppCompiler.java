@@ -267,6 +267,8 @@ public class AppCompiler {
                     builder.debug(true);
                 } else if ("-use-debug-libs".equals(args[i])) {
                     builder.useDebugLibs(true);
+                } else if ("-dynamic-jni".equals(args[i])) {
+                    builder.dynamicJNI(true);
                 } else if ("-skiprt".equals(args[i])) {
                     builder.skipRuntimeLib(true);
                 } else if ("-clean".equals(args[i])) {
@@ -296,6 +298,10 @@ public class AppCompiler {
                 } else if ("-roots".equals(args[i])) {
                     for (String p : args[++i].split(":")) {
                         builder.addRoot(p);
+                    }
+                } else if ("-static-libs".equals(args[i])) {
+                    for (String p : args[++i].split(":")) {
+                        builder.addStaticLib(p);
                     }
                 } else if (args[i].startsWith("-D")) {
                 } else if (args[i].startsWith("-X")) {
@@ -438,6 +444,12 @@ public class AppCompiler {
                          + "                        temporary dir specified with -tmp.");
         System.err.println("  -debug                Generates debug information");
         System.err.println("  -use-debug-libs       Links against debug versions of the RoboVM VM libraries");
+        System.err.println("  -dynamic-jni          Use dynamic JNI. Native methods will be dynamically\n" 
+                         + "                        linked at runtime. Native methods in classes in the boot\n"
+                         + "                        classpath will always use static JNI. On iOS only static\n" 
+                         + "                        JNI is supported and this option is ignored.");
+        System.err.println("  -static-libs <list>   : separated list of static library files (.a) and object\n"
+        		 + "                        files (.o) that should be linked into the final executable.");
         System.err.println("  -skiprt               Do not add default robovm-rt.jar to bootclasspath");
         System.err.println("  -verbose              Output messages about what the compiler is doing");
         System.err.println("  -version              Print the version of the compiler version and exit");

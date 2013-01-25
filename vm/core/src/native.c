@@ -1166,18 +1166,15 @@ static jboolean ExceptionCheck(JNIEnv* env) {
 }
 
 static jobject NewDirectByteBuffer(JNIEnv* env, void* address, jlong capacity) {
-    // TODO: Implement me
-    return NULL;
+    return (jobject) rvmNewDirectByteBuffer((Env*) env, address, capacity);
 }
 
 static void* GetDirectBufferAddress(JNIEnv* env, jobject buf) {
-    // TODO: Implement me
-    return NULL;
+    return rvmGetDirectBufferAddress((Env*) env, (Object*) buf);
 }
 
 static jlong GetDirectBufferCapacity(JNIEnv* env, jobject buf) {
-    // TODO: Implement me
-    return -1;
+    return rvmGetDirectBufferCapacity((Env*) env, (Object*) buf);
 }
 
 struct JNIInvokeInterface_ javaVM = {

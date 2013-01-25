@@ -31,6 +31,8 @@ extern void rvmFreeMemory(void* m);
 extern void* rvmCopyMemory(Env* env, const void* src, int size);
 extern void* rvmCopyMemoryZ(Env* env, const char* src);
 extern Object* rvmNewDirectByteBuffer(Env* env, void* address, jlong capacity);
+extern void* rvmGetDirectBufferAddress(Env* env, Object* buf);
+extern jlong rvmGetDirectBufferCapacity(Env* env, Object* buf);
 
 #endif
 

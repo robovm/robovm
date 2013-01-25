@@ -21,7 +21,8 @@
 
 static Class* java_nio_ReadWriteDirectByteBuffer = NULL;
 static Method* java_nio_ReadWriteDirectByteBuffer_init = NULL;
-static InstanceField* java_nio_ReadWriteDirectByteBuffer_effectiveDirectAddress = NULL;
+static InstanceField* java_nio_Buffer_effectiveDirectAddress = NULL;
+static InstanceField* java_nio_Buffer_capacity = NULL;
 static Class* java_lang_ref_Reference = NULL;
 static InstanceField* java_lang_ref_Reference_referent = NULL;
 static InstanceField* java_lang_ref_Reference_pendingNext = NULL;
@@ -422,8 +423,12 @@ jboolean rvmInitMemory(Env* env) {
     if (!java_nio_ReadWriteDirectByteBuffer) return FALSE;
     java_nio_ReadWriteDirectByteBuffer_init = rvmGetInstanceMethod(env, java_nio_ReadWriteDirectByteBuffer, "<init>", "(II)V");
     if (!java_nio_ReadWriteDirectByteBuffer_init) return FALSE;
-    java_nio_ReadWriteDirectByteBuffer_effectiveDirectAddress = rvmGetInstanceField(env, java_nio_ReadWriteDirectByteBuffer, "effectiveDirectAddress", "I");
-    if (!java_nio_ReadWriteDirectByteBuffer_effectiveDirectAddress) return FALSE;
+    Class* java_nio_Buffer = rvmFindClassUsingLoader(env, "java/nio/Buffer", NULL);
+    if (!java_nio_Buffer) return FALSE;
+    java_nio_Buffer_effectiveDirectAddress = rvmGetInstanceField(env, java_nio_Buffer, "effectiveDirectAddress", "I");
+    if (!java_nio_Buffer_effectiveDirectAddress) return FALSE;
+    java_nio_Buffer_capacity = rvmGetInstanceField(env, java_nio_Buffer, "capacity", "I");
+    if (!java_nio_Buffer_capacity) return FALSE;
 
     // Make sure that java.lang.ReferenceQueue is initialized now to prevent deadlocks during finalization
     // when both holding the referentsLock and the classLock.
@@ -492,4 +497,14 @@ Object* rvmNewDirectByteBuffer(Env* env, void* address, jlong capacity) {
     args[0].i = (jint) address;
     args[1].i = (jint) capacity;
     return rvmNewObjectA(env, java_nio_ReadWriteDirectByteBuffer, java_nio_ReadWriteDirectByteBuffer_init, args);
+}
+
+void* rvmGetDirectBufferAddress(Env* env, Object* buf) {
+    jint effectiveDirectAddress = rvmGetIntInstanceFieldValue(env, buf, java_nio_Buffer_effectiveDirectAddress);
+    return (void*) (intptr_t) effectiveDirectAddress;
+}
+
+jlong rvmGetDirectBufferCapacity(Env* env, Object* buf) {
+    jlong capacity = rvmGetIntInstanceFieldValue(env, buf, java_nio_Buffer_capacity);
+    return capacity & 0x00000000ffffffffULL;
 }

@@ -151,6 +151,7 @@ import soot.jimple.InstanceOfExpr;
 import soot.jimple.InterfaceInvokeExpr;
 import soot.jimple.InvokeExpr;
 import soot.jimple.InvokeStmt;
+import soot.jimple.Jimple;
 import soot.jimple.LeExpr;
 import soot.jimple.LengthExpr;
 import soot.jimple.LookupSwitchStmt;
@@ -161,6 +162,7 @@ import soot.jimple.NegExpr;
 import soot.jimple.NewArrayExpr;
 import soot.jimple.NewExpr;
 import soot.jimple.NewMultiArrayExpr;
+import soot.jimple.NopStmt;
 import soot.jimple.OrExpr;
 import soot.jimple.ParameterRef;
 import soot.jimple.RemExpr;
@@ -223,6 +225,16 @@ public class MethodCompiler extends AbstractMethodCompiler {
         trapsAt = new HashMap<Unit, List<Trap>>();
         
         Body body = method.retrieveActiveBody();
+        
+        if (method.isStatic() && !body.getUnits().getFirst().getBoxesPointingToThis().isEmpty()) {
+            // Fix for issue #1. This prevents an NPE in Soot's ArrayBoundsCheckerAnalysis. The NPE
+            // occurs for static methods which start with a unit that is the target of some other
+            // unit. We work around this by inserting a nop statement as the first unit in such 
+            // methods. See http://www.sable.mcgill.ca/listarchives/soot-list/msg01397.html.
+            Unit inserPoint = body.getUnits().getFirst();
+            body.getUnits().getNonPatchingChain().insertBefore(Jimple.v().newNopStmt(), inserPoint);
+        }
+        
         PackManager.v().getPack("jtp").apply(body);
         PackManager.v().getPack("jop").apply(body);
         PackManager.v().getPack("jap").apply(body);
@@ -397,6 +409,8 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 enterMonitor((EnterMonitorStmt) unit);
             } else if (unit instanceof ExitMonitorStmt) {
                 exitMonitor((ExitMonitorStmt) unit);
+            } else if (unit instanceof NopStmt) {
+                // Ignore
             } else {
                 throw new IllegalArgumentException("Unknown Unit type: " + unit.getClass());
             }

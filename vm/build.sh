@@ -1,7 +1,27 @@
 #!/bin/bash
 
+SELF=$(basename $0)
 BASE=$(cd $(dirname $0); pwd -P)
 CLEAN=0
+
+function usage {
+  cat <<EOF
+Usage: $SELF [options]
+Options:
+  --build=[release|debug] Specifies the build type. If not set both release and 
+                          debug versions of the libraries will be built.
+  --target=...            Specifies the target(s) to build for. Supported 
+                          targets are macosx-x86, ios-x86, ios-thumbv7, 
+                          linux-x86. Enclose multiple targets in quotes and 
+                          seperate with spaces or specify --target multiple 
+                          times. If not set the current host OS determines the
+                          targets. macosx-x86, ios-x86 and ios-thumbv7 on MacOSX
+                          and linux-x86 on Linux.
+  --clean                 Cleans the build dir before starting the build.
+  --help                  Displays this information and exits.
+EOF
+  exit $1
+}
 
 while [ "${1:0:2}" = '--' ]; do
   NAME=${1%%=*}
@@ -10,9 +30,12 @@ while [ "${1:0:2}" = '--' ]; do
     '--target') TARGETS="$TARGETS $VALUE" ;;
     '--clean') CLEAN=1 ;;
     '--build') BUILDS="$BUILDS $VALUE" ;;
+    '--help')
+      usage 0
+      ;;
     *)
       echo "Unrecognized option or syntax error in option '$1'"
-      exit 1
+      usage 1
       ;;
   esac
   shift

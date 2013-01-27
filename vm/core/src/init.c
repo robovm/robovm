@@ -83,15 +83,21 @@ jboolean rvmInitOptions(int argc, char* argv[], Options* options, jboolean ignor
                 char* arg = &argv[i][5];
                 if (startsWith(arg, "log=trace")) {
                     if (options->logLevel == 0) options->logLevel = LOG_LEVEL_TRACE;
+                } else if (startsWith(arg, "log=debug")) {
+                    if (options->logLevel == 0) options->logLevel = LOG_LEVEL_DEBUG;
+                } else if (startsWith(arg, "log=info")) {
+                    if (options->logLevel == 0) options->logLevel = LOG_LEVEL_INFO;
                 } else if (startsWith(arg, "log=warn")) {
                     if (options->logLevel == 0) options->logLevel = LOG_LEVEL_WARN;
                 } else if (startsWith(arg, "log=error")) {
                     if (options->logLevel == 0) options->logLevel = LOG_LEVEL_ERROR;
+                } else if (startsWith(arg, "log=fatal")) {
+                    if (options->logLevel == 0) options->logLevel = LOG_LEVEL_FATAL;
                 } else if (startsWith(arg, "log=silent")) {
                     if (options->logLevel == 0) options->logLevel = LOG_LEVEL_SILENT;
-                } else if (startsWith(arg, "Xmx") || startsWith(arg, "Xms")) {
+                } else if (startsWith(arg, "mx") || startsWith(arg, "ms")) {
                     char* unit;
-                    jlong n = strtol(&arg[3], &unit, 10);
+                    jlong n = strtol(&arg[2], &unit, 10);
                     if (n > 0) {
                         if (unit[0] != '\0') {
                             switch (unit[0]) {
@@ -105,12 +111,12 @@ jboolean rvmInitOptions(int argc, char* argv[], Options* options, jboolean ignor
                                 break;
                             case 'k':
                             case 'K':
-                                n *= 1024 * 1024;
+                                n *= 1024;
                                 break;
                             }
                         }
                     }
-                    if (startsWith(arg, "Xmx")) {
+                    if (startsWith(arg, "mx")) {
                         options->maxHeapSize = n;
                     } else {
                         options->initialHeapSize = n;

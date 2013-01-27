@@ -12,9 +12,9 @@ fi
 if [ ! -f $COMPILER_JAR ]; then
   echo "robovm-compiler.jar not found"
   exit 1
-java
+fi
 
-fi \
+java \
     -XX:+HeapDumpOnOutOfMemoryError \
     -Xmx1024m \
     -Xss1024k \

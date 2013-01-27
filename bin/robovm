@@ -6,15 +6,15 @@ if [ -f $COMPILER_JAR ]; then
     export ROBOVM_HOME=$BASE
 else
     if [ "x$ROBOVM_DEV_ROOT" != 'x' ]; then
-        COMPILER_JAR=$(ls $BASE/compiler/target/robovm-compiler-*.jar 2> /dev/null)
+        COMPILER_JAR=$(ls "$ROBOVM_DEV_ROOT"/compiler/target/robovm-compiler-*.jar 2> /dev/null)
     fi
 fi
 if [ ! -f $COMPILER_JAR ]; then
   echo "robovm-compiler.jar not found"
   exit 1
-fi
+java
 
-java \
+fi \
     -XX:+HeapDumpOnOutOfMemoryError \
     -Xmx1024m \
     -Xss1024k \

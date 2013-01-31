@@ -109,7 +109,7 @@ public abstract class AbstractTarget implements Target {
             for (String p : config.getStaticLibs()) {
                 if (p.endsWith(".o")) {
                     objectFiles.add(new File(p));
-                } else {
+                } else if(p.endsWith(".a")) {
                     // .a file
                     if (config.getOs().getFamily() == OS.Family.darwin) {
                         libs.add("-force_load");
@@ -117,6 +117,9 @@ public abstract class AbstractTarget implements Target {
                     } else {
                         libs.addAll(Arrays.asList("-Wl,--whole-archive", new File(p).getAbsolutePath(), "-Wl,--no-whole-archive"));            
                     }
+                } else {
+                	// link via -l if suffix is omitted
+                	libs.add("-l" + p);
                 }
             }
         }

@@ -104,9 +104,9 @@ public abstract class AbstractTarget implements Target {
             ccArgs.add("-Wl,-dead_strip");
         }
         
-        if (!config.getStaticLibs().isEmpty()) {
+        if (!config.getLibs().isEmpty()) {
             objectFiles = new ArrayList<File>(objectFiles);
-            for (String p : config.getStaticLibs()) {
+            for (String p : config.getLibs()) {
                 if (p.endsWith(".o")) {
                     objectFiles.add(new File(p));
                 } else if(p.endsWith(".a")) {

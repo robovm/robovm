@@ -299,9 +299,9 @@ public class AppCompiler {
                     for (String p : args[++i].split(":")) {
                         builder.addRoot(p);
                     }
-                } else if ("-static-libs".equals(args[i])) {
+                } else if ("-libs".equals(args[i])) {
                     for (String p : args[++i].split(":")) {
-                        builder.addStaticLib(p);
+                        builder.addLib(p);
                     }
                 } else if (args[i].startsWith("-D")) {
                 } else if (args[i].startsWith("-X")) {
@@ -448,8 +448,9 @@ public class AppCompiler {
                          + "                        linked at runtime. Native methods in classes in the boot\n"
                          + "                        classpath will always use static JNI. On iOS only static\n" 
                          + "                        JNI is supported and this option is ignored.");
-        System.err.println("  -static-libs <list>   : separated list of static library files (.a) and object\n"
-        		 + "                        files (.o) that should be linked into the final executable.");
+        System.err.println("  -libs <list>          : separated list of static library files (.a), object\n"
+                         + "                        files (.o) and system libraries that should be included\n" 
+                         + "                        when linking the final executable.");
         System.err.println("  -skiprt               Do not add default robovm-rt.jar to bootclasspath");
         System.err.println("  -verbose              Output messages about what the compiler is doing");
         System.err.println("  -version              Print the version of the compiler version and exit");

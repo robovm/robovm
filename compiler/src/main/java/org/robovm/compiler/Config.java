@@ -55,7 +55,7 @@ public class Config {
     private File mainJar;
     private String mainClass;
     private List<String> roots = new ArrayList<String>();
-    private List<String> staticLibs = new ArrayList<String>();
+    private List<String> libs = new ArrayList<String>();
     
     private File osArchDepLibDir;
     private List<File> bootclasspath = new ArrayList<File>();
@@ -154,8 +154,8 @@ public class Config {
         return roots;
     }
     
-    public List<String> getStaticLibs() {
-        return staticLibs;
+    public List<String> getLibs() {
+        return libs;
     }
     
     public File getLlvmHomeDir() {
@@ -598,8 +598,8 @@ public class Config {
             return this;
         }
 
-        public Builder addStaticLib(String path) {
-            config.staticLibs.add(path);
+        public Builder addLib(String path) {
+            config.libs.add(path);
             return this;
         }
         

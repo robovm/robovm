@@ -118,8 +118,8 @@ public abstract class AbstractTarget implements Target {
                         libs.addAll(Arrays.asList("-Wl,--whole-archive", new File(p).getAbsolutePath(), "-Wl,--no-whole-archive"));            
                     }
                 } else {
-                	// link via -l if suffix is omitted
-                	libs.add("-l" + p);
+                    // link via -l if suffix is omitted
+                    libs.add("-l" + p);
                 }
             }
         }

@@ -25,7 +25,7 @@ void _rvmProxyHandler(CallInfo* ci) {
     handler(ci);
 }
 
-void* rvmAllocateMemory(Env* env, int size) {
+void* rvmAllocateMemory(Env* env, size_t size) {
     return calloc(1, size);
 }
 

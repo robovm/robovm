@@ -141,16 +141,16 @@ jboolean initGC(Options* options) {
     return TRUE;
 }
 
-static void* gcAllocateKind(jint size, jint kind) {
+static void* gcAllocateKind(size_t size, jint kind) {
     return GC_generic_malloc(size, kind);
 }
-void* gcAllocate(jint size) {
+void* gcAllocate(size_t size) {
     return GC_MALLOC(size);
 }
-void* gcAllocateUncollectable(jint size) {
+void* gcAllocateUncollectable(size_t size) {
     return GC_MALLOC_UNCOLLECTABLE(size);
 }
-void* gcAllocateAtomic(jint size) {
+void* gcAllocateAtomic(size_t size) {
     void* m = GC_MALLOC_ATOMIC(size);
     if (m) {
         memset(m, 0, size);
@@ -447,10 +447,15 @@ Object* rvmAllocateMemoryForObject(Env* env, Class* clazz) {
 }
 
 Array* rvmAllocateMemoryForArray(Env* env, jint length, jint elementSize) {
-    return gcAllocateKind(sizeof(Array) + length * elementSize, object_gc_kind);
+    jlong size = (jlong) sizeof(Array) + (jlong) length * (jlong) elementSize;
+    if (size > (jlong) (size_t) -1) {
+        rvmThrowOutOfMemoryError(env);
+        return NULL;
+    }
+    return gcAllocateKind((size_t) size, object_gc_kind);
 }
 
-void* rvmAllocateMemory(Env* env, jint size) {
+void* rvmAllocateMemory(Env* env, size_t size) {
     void* m = gcAllocate(size);
     if (!m) {
         rvmThrowOutOfMemoryError(env);
@@ -459,7 +464,7 @@ void* rvmAllocateMemory(Env* env, jint size) {
     return m;
 }
 
-void* rvmAllocateMemoryUncollectable(Env* env, jint size) {
+void* rvmAllocateMemoryUncollectable(Env* env, size_t size) {
     void* m = gcAllocateUncollectable(size);
     if (!m) {
         rvmThrowOutOfMemoryError(env);
@@ -468,7 +473,7 @@ void* rvmAllocateMemoryUncollectable(Env* env, jint size) {
     return m;
 }
 
-void* rvmAllocateMemoryAtomic(Env* env, jint size) {
+void* rvmAllocateMemoryAtomic(Env* env, size_t size) {
     void* m = gcAllocateAtomic(size);
     if (!m) {
         rvmThrowOutOfMemoryError(env);
@@ -481,7 +486,7 @@ void rvmFreeUncollectable(Env* env, void* m) {
     GC_FREE(m);
 }
 
-void* rvmCopyMemory(Env* env, const void* src, jint size) {
+void* rvmCopyMemory(Env* env, const void* src, size_t size) {
     void* dest = rvmAllocateMemory(env, size);
     if (!dest) return NULL;
     memcpy(dest, src, size);

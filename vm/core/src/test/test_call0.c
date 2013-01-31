@@ -18,7 +18,7 @@
 #include "../private.h"
 #include "CuTest.h"
 
-void* rvmAllocateMemory(Env* env, int size) {
+void* rvmAllocateMemory(Env* env, size_t size) {
     return calloc(1, size);
 }
 

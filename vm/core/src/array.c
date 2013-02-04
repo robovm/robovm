@@ -136,11 +136,11 @@ Array* rvmNewMultiArray(Env* env, jint dims, jint* lengths, Class* clazz) {
 }
 
 Array* rvmCloneArray(Env* env, Array* array) {
-    jint elementSize = getElementSize(array->object.clazz->name);
-    jint size = sizeof(Array) + array->length * elementSize;
+    jint elementSize = getElementSize(array->object.clazz->componentType->name);
     Array* copy = rvmAllocateMemoryForArray(env, array->length, elementSize);
     if (!copy) return NULL;
-    memcpy(copy, array, size);
+    jlong size = (jlong) sizeof(Array) + (jlong) array->length * (jlong) elementSize;
+    memcpy(copy, array, (size_t) size);
     copy->object.lock = 0;
     return copy;
 }

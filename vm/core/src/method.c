@@ -535,6 +535,10 @@ static jdouble callDoubleMethod(Env* env, CallInfo* callInfo) {
 void rvmCallVoidInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return;
+    if (obj && CLASS_IS_PROXY(obj->clazz)) {
+        env->reserved0 = (void*) method->name;
+        env->reserved1 = (void*) method->desc;
+    }
     callVoidMethod(env, callInfo);
 }
 
@@ -553,6 +557,10 @@ void rvmCallVoidInstanceMethod(Env* env, Object* obj, Method* method, ...) {
 Object* rvmCallObjectInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return NULL;
+    if (obj && CLASS_IS_PROXY(obj->clazz)) {
+        env->reserved0 = (void*) method->name;
+        env->reserved1 = (void*) method->desc;
+    }
     return callObjectMethod(env, callInfo);
 }
 
@@ -571,6 +579,10 @@ Object* rvmCallObjectInstanceMethod(Env* env, Object* obj, Method* method, ...) 
 jboolean rvmCallBooleanInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return FALSE;
+    if (obj && CLASS_IS_PROXY(obj->clazz)) {
+        env->reserved0 = (void*) method->name;
+        env->reserved1 = (void*) method->desc;
+    }
     return callBooleanMethod(env, callInfo);
 }
 
@@ -589,6 +601,10 @@ jboolean rvmCallBooleanInstanceMethod(Env* env, Object* obj, Method* method, ...
 jbyte rvmCallByteInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0;
+    if (obj && CLASS_IS_PROXY(obj->clazz)) {
+        env->reserved0 = (void*) method->name;
+        env->reserved1 = (void*) method->desc;
+    }
     return callByteMethod(env, callInfo);
 }
 
@@ -607,6 +623,10 @@ jbyte rvmCallByteInstanceMethod(Env* env, Object* obj, Method* method, ...) {
 jchar rvmCallCharInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0;
+    if (obj && CLASS_IS_PROXY(obj->clazz)) {
+        env->reserved0 = (void*) method->name;
+        env->reserved1 = (void*) method->desc;
+    }
     return callCharMethod(env, callInfo);
 }
 
@@ -625,6 +645,10 @@ jchar rvmCallCharInstanceMethod(Env* env, Object* obj, Method* method, ...) {
 jshort rvmCallShortInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0;
+    if (obj && CLASS_IS_PROXY(obj->clazz)) {
+        env->reserved0 = (void*) method->name;
+        env->reserved1 = (void*) method->desc;
+    }
     return callShortMethod(env, callInfo);
 }
 
@@ -643,6 +667,10 @@ jshort rvmCallShortInstanceMethod(Env* env, Object* obj, Method* method, ...) {
 jint rvmCallIntInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0;
+    if (obj && CLASS_IS_PROXY(obj->clazz)) {
+        env->reserved0 = (void*) method->name;
+        env->reserved1 = (void*) method->desc;
+    }
     return callIntMethod(env, callInfo);
 }
 
@@ -661,6 +689,10 @@ jint rvmCallIntInstanceMethod(Env* env, Object* obj, Method* method, ...) {
 jlong rvmCallLongInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0;
+    if (obj && CLASS_IS_PROXY(obj->clazz)) {
+        env->reserved0 = (void*) method->name;
+        env->reserved1 = (void*) method->desc;
+    }
     return callLongMethod(env, callInfo);
 }
 
@@ -679,6 +711,10 @@ jlong rvmCallLongInstanceMethod(Env* env, Object* obj, Method* method, ...) {
 jfloat rvmCallFloatInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0.0f;
+    if (obj && CLASS_IS_PROXY(obj->clazz)) {
+        env->reserved0 = (void*) method->name;
+        env->reserved1 = (void*) method->desc;
+    }
     return callFloatMethod(env, callInfo);
 }
 
@@ -697,6 +733,10 @@ jfloat rvmCallFloatInstanceMethod(Env* env, Object* obj, Method* method, ...) {
 jdouble rvmCallDoubleInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, TRUE, args);
     if (!callInfo) return 0.0;
+    if (obj && CLASS_IS_PROXY(obj->clazz)) {
+        env->reserved0 = (void*) method->name;
+        env->reserved1 = (void*) method->desc;
+    }
     return callDoubleMethod(env, callInfo);
 }
 
@@ -715,6 +755,10 @@ jdouble rvmCallDoubleInstanceMethod(Env* env, Object* obj, Method* method, ...) 
 void rvmCallNonvirtualVoidInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return;
+    if (obj && CLASS_IS_PROXY(obj->clazz)) {
+        env->reserved0 = (void*) method->name;
+        env->reserved1 = (void*) method->desc;
+    }
     callVoidMethod(env, callInfo);
 }
 
@@ -733,6 +777,10 @@ void rvmCallNonvirtualVoidInstanceMethod(Env* env, Object* obj, Method* method, 
 Object* rvmCallNonvirtualObjectInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return NULL;
+    if (obj && CLASS_IS_PROXY(obj->clazz)) {
+        env->reserved0 = (void*) method->name;
+        env->reserved1 = (void*) method->desc;
+    }
     return callObjectMethod(env, callInfo);
 }
 
@@ -751,6 +799,10 @@ Object* rvmCallNonvirtualObjectInstanceMethod(Env* env, Object* obj, Method* met
 jboolean rvmCallNonvirtualBooleanInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return FALSE;
+    if (obj && CLASS_IS_PROXY(obj->clazz)) {
+        env->reserved0 = (void*) method->name;
+        env->reserved1 = (void*) method->desc;
+    }
     return callBooleanMethod(env, callInfo);
 }
 
@@ -769,6 +821,10 @@ jboolean rvmCallNonvirtualBooleanInstanceMethod(Env* env, Object* obj, Method* m
 jbyte rvmCallNonvirtualByteInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0;
+    if (obj && CLASS_IS_PROXY(obj->clazz)) {
+        env->reserved0 = (void*) method->name;
+        env->reserved1 = (void*) method->desc;
+    }
     return callByteMethod(env, callInfo);
 }
 
@@ -787,6 +843,10 @@ jbyte rvmCallNonvirtualByteInstanceMethod(Env* env, Object* obj, Method* method,
 jchar rvmCallNonvirtualCharInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0;
+    if (obj && CLASS_IS_PROXY(obj->clazz)) {
+        env->reserved0 = (void*) method->name;
+        env->reserved1 = (void*) method->desc;
+    }
     return callCharMethod(env, callInfo);
 }
 
@@ -805,6 +865,10 @@ jchar rvmCallNonvirtualCharInstanceMethod(Env* env, Object* obj, Method* method,
 jshort rvmCallNonvirtualShortInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0;
+    if (obj && CLASS_IS_PROXY(obj->clazz)) {
+        env->reserved0 = (void*) method->name;
+        env->reserved1 = (void*) method->desc;
+    }
     return callShortMethod(env, callInfo);
 }
 
@@ -823,6 +887,10 @@ jshort rvmCallNonvirtualShortInstanceMethod(Env* env, Object* obj, Method* metho
 jint rvmCallNonvirtualIntInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0;
+    if (obj && CLASS_IS_PROXY(obj->clazz)) {
+        env->reserved0 = (void*) method->name;
+        env->reserved1 = (void*) method->desc;
+    }
     return callIntMethod(env, callInfo);
 }
 
@@ -841,6 +909,10 @@ jint rvmCallNonvirtualIntInstanceMethod(Env* env, Object* obj, Method* method, .
 jlong rvmCallNonvirtualLongInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0;
+    if (obj && CLASS_IS_PROXY(obj->clazz)) {
+        env->reserved0 = (void*) method->name;
+        env->reserved1 = (void*) method->desc;
+    }
     return callLongMethod(env, callInfo);
 }
 
@@ -859,6 +931,10 @@ jlong rvmCallNonvirtualLongInstanceMethod(Env* env, Object* obj, Method* method,
 jfloat rvmCallNonvirtualFloatInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0.0f;
+    if (obj && CLASS_IS_PROXY(obj->clazz)) {
+        env->reserved0 = (void*) method->name;
+        env->reserved1 = (void*) method->desc;
+    }
     return callFloatMethod(env, callInfo);
 }
 
@@ -877,6 +953,10 @@ jfloat rvmCallNonvirtualFloatInstanceMethod(Env* env, Object* obj, Method* metho
 jdouble rvmCallNonvirtualDoubleInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args) {
     CallInfo* callInfo = initCallInfo(env, obj, method, FALSE, args);
     if (!callInfo) return 0.0;
+    if (obj && CLASS_IS_PROXY(obj->clazz)) {
+        env->reserved0 = (void*) method->name;
+        env->reserved1 = (void*) method->desc;
+    }
     return callDoubleMethod(env, callInfo);
 }
 

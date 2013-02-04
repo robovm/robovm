@@ -84,7 +84,10 @@ ObjectArray* Java_java_lang_Throwable_nativeGetStackTrace(Env* env, Object* thiz
             args[0].l = (jobject) m->clazz;
             args[1].l = (jobject) rvmNewStringUTF(env, m->name, -1);
             if (!args[1].l) return NULL;
-            args[2].l = NULL; // TODO: File names
+            args[2].l = (jobject) rvmAttributeGetClassSourceFile(env, m->clazz);
+            if (rvmExceptionOccurred(env)) {
+                return NULL;
+            }
             args[3].i = METHOD_IS_NATIVE(m) ? -2 : -1; // TODO: Line numbers
             array->values[i] = rvmNewObjectA(env, java_lang_StackTraceElement, steConstructor, args);
             if (!array->values[i]) return NULL;

@@ -22,6 +22,7 @@ extern Class* rvmAttributeGetEnclosingClass(Env* env, Class* clazz);
 extern Method* rvmAttributeGetEnclosingMethod(Env* env, Class* clazz);
 extern jboolean rvmAttributeIsAnonymousClass(Env* env, Class* clazz);
 extern Object* rvmAttributeGetClassSignature(Env* env, Class* clazz);
+extern Object* rvmAttributeGetClassSourceFile(Env* env, Class* clazz);
 extern Object* rvmAttributeGetMethodSignature(Env* env, Method* method);
 extern Object* rvmAttributeGetFieldSignature(Env* env, Field* field);
 extern Object* rvmAttributeGetAnnotationDefault(Env* env, Method* method);

@@ -71,7 +71,7 @@ import soot.tagkit.VisibilityParameterAnnotationTag;
  *
  */
 public class AttributesEncoder {
-//    private static final byte SOURCE_FILE = 1;
+    private static final byte SOURCE_FILE = 1;
     private static final byte SIGNATURE = 2;
     private static final byte INNER_CLASS = 3;
     private static final byte ENCLOSING_METHOD = 4;
@@ -261,9 +261,9 @@ public class AttributesEncoder {
         for (Tag tag : host.getTags()) {
             if (tag instanceof SourceFileTag) {
                 // Skip. We don't need this at this time.
-//                Value sourceFile = getString(((SourceFileTag) tag).getSourceFile());
-//                attributes.add(new PackedStructureConstant(new PackedStructureType(I8, I8_PTR), 
-//                        new IntegerConstant(SOURCE_FILE), sourceFile));
+                Value sourceFile = getString(((SourceFileTag) tag).getSourceFile());
+                attributes.add(new PackedStructureConstant(new PackedStructureType(I8, I8_PTR), 
+                        new IntegerConstant(SOURCE_FILE), sourceFile));
             } else if (tag instanceof EnclosingMethodTag) {
                 EnclosingMethodTag emt = (EnclosingMethodTag) tag;
                 Value eClass = getString(emt.getEnclosingClass());

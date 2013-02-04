@@ -580,6 +580,15 @@ static jboolean getSignatureIterator(Env* env, jbyte type, void* attributes, voi
     return TRUE; // Continue with next attribute
 }
 
+static jboolean getSourceFileIterator(Env* env, jbyte type, void* attributes, void* data) {
+    Object** result = (Object**) data;
+    if (type == SOURCE_FILE) {
+        *result = rvmNewStringUTF(env, getString(&attributes), -1);
+        return FALSE; // Stop iterating
+    }
+    return TRUE; // Continue with next attribute
+}
+
 static jboolean getExceptionsIterator(Env* env, jbyte type, void* attributes, void* data) {
     ObjectArray** result = (ObjectArray**) ((void**) data)[0];
     Method* method = (Method*) ((void**) data)[1];
@@ -764,6 +773,12 @@ jboolean rvmAttributeIsAnonymousClass(Env* env, Class* clazz) {
 Object* rvmAttributeGetClassSignature(Env* env, Class* clazz) {
     Object* result = NULL;
     iterateAttributes(env, clazz->attributes, getSignatureIterator, &result);
+    return result;
+}
+
+Object* rvmAttributeGetClassSourceFile(Env* env, Class* clazz) {
+    Object* result = NULL;
+    iterateAttributes(env, clazz->attributes, getSourceFileIterator, &result);
     return result;
 }
 

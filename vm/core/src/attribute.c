@@ -160,7 +160,9 @@ static void skipElementValue(void** attributes) {
 static void iterateAttributes(Env* env, void* attributes, jboolean (*f)(Env*, jbyte, void*, void*), void* data) {
     if (!attributes) return;
 
+    jint i, j;
     jint length = 0;
+    jint numParams = 0;
     jint count = getInt(&attributes);
 
     while (count > 0) {
@@ -196,8 +198,13 @@ static void iterateAttributes(Env* env, void* attributes, jboolean (*f)(Env*, jb
             }
             break;
         case RUNTIME_VISIBLE_PARAMETER_ANNOTATIONS:
-            // TODO: Implement
-            count = 0;
+            numParams = getInt(&attributes);
+            for (i = 0; i < numParams; i++) {
+                length = getInt(&attributes);
+                for (j = 0; j < length; j++) {
+                    skipAnnotationElementValue(&attributes);
+                }
+            }
             break;
         }
         count--;

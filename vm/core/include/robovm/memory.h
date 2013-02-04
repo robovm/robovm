@@ -28,6 +28,7 @@ extern void* rvmAllocateMemory(Env* env, size_t size);
 extern void* rvmAllocateMemoryUncollectable(Env* env, size_t size);
 extern void* rvmAllocateMemoryAtomic(Env* env, size_t size);
 extern void rvmFreeMemory(void* m);
+extern void rvmGCCollect(Env* env);
 extern void* rvmCopyMemory(Env* env, const void* src, size_t size);
 extern void* rvmCopyMemoryZ(Env* env, const char* src);
 extern Object* rvmNewDirectByteBuffer(Env* env, void* address, jlong capacity);

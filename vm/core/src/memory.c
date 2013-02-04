@@ -486,6 +486,10 @@ void rvmFreeUncollectable(Env* env, void* m) {
     GC_FREE(m);
 }
 
+void rvmGCCollect(Env* env) {
+    GC_gcollect();
+}
+
 void* rvmCopyMemory(Env* env, const void* src, size_t size) {
     void* dest = rvmAllocateMemory(env, size);
     if (!dest) return NULL;

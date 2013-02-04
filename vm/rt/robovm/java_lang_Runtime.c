@@ -26,3 +26,6 @@ void Java_java_lang_Runtime_nativeLoad(Env* env, Class* clazz, Object* filename,
     rvmLoadNativeLibrary(env, path, classLoader);
 }
 
+void Java_java_lang_Runtime_gc(Env* env, Class* clazz) {
+    rvmGCCollect(env);
+}

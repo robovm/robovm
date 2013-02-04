@@ -119,8 +119,15 @@ static inline void* getPC(ucontext_t* context) {
 }
 
 static void signalHandler(int signum, siginfo_t* info, void* context) {
+    // rvmGetEnv() uses pthread_getspecific() which isn't listed as 
+    // async-signal-safe. Others (e.g. mono) do this too so we assume it is safe 
+    // in practice.
     Env* env = rvmGetEnv();
     if (env && rvmIsNonNativeFrame(env)) {
+        // We now know the fault occurred in non-native code and not in our 
+        // native code or in any non-async-signal-safe system function. It 
+        // should be safe to do things here that would normally be unsafe to do
+        // in a signal handler.
         void* faultAddr = info->si_addr;
         void* stackAddr = env->currentThread->stackAddr;
         Class* exClass = NULL;

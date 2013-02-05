@@ -17,9 +17,29 @@
 #define _GNU_SOURCE
 #include <robovm.h>
 #include <signal.h>
-#include <semaphore.h>
+#if defined(DARWIN)
+#   include <mach/mach.h>
+#   include <mach/task.h>
+#   include <mach/semaphore.h>
+#else
+#   include <semaphore.h>
+#endif
 #include <errno.h>
 #include "private.h"
+
+#if defined(DARWIN)
+// Darwin doesn't implement sem_init(). Use Mach semaphores instead.
+typedef semaphore_t sem_t;
+static inline int sem_init(sem_t* sem, int pshared, unsigned int value) {
+    return semaphore_create(mach_task_self(), sem, SYNC_POLICY_FIFO, value);
+}
+static inline int sem_wait(sem_t* sem) {
+    return semaphore_wait(*sem);
+}
+static inline int sem_post(sem_t* sem) {
+    return semaphore_signal(*sem);
+}
+#endif
 
 #define LOG_TAG "core.signal"
 
@@ -47,7 +67,7 @@ static void signalHandler_dump_thread(int signum, siginfo_t* info, void* context
 jboolean rvmInitSignals(Env* env) {
     stackStateField = rvmGetInstanceField(env, java_lang_Throwable, "stackState", "J");
     if (!stackStateField) return FALSE;
-    if (sem_init(&dumpThreadStackTraceCallSemaphore, 0, 0) == -1) {
+    if (sem_init(&dumpThreadStackTraceCallSemaphore, 0, 0) != 0) {
         return FALSE;
     }
     return TRUE;

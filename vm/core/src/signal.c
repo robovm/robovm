@@ -17,10 +17,13 @@
 #define _GNU_SOURCE
 #include <robovm.h>
 #include <signal.h>
+#include <semaphore.h>
 #include <errno.h>
 #include "private.h"
 
 #define LOG_TAG "core.signal"
+
+#define DUMP_THREAD_STACK_TRACE_SIGNAL SIGUSR2
 
 /*
  * The common way to implement stack overflow detection is to catch SIGSEGV and see if the
@@ -35,12 +38,18 @@
  */
 
 static InstanceField* stackStateField = NULL;
+static CallStack* dumpThreadStackTraceCallStack = NULL;
+static sem_t dumpThreadStackTraceCallSemaphore;
 
-static void signalHandler(int signum, siginfo_t* info, void* context);
+static void signalHandler_npe_so(int signum, siginfo_t* info, void* context);
+static void signalHandler_dump_thread(int signum, siginfo_t* info, void* context);
 
 jboolean rvmInitSignals(Env* env) {
     stackStateField = rvmGetInstanceField(env, java_lang_Throwable, "stackState", "J");
     if (!stackStateField) return FALSE;
+    if (sem_init(&dumpThreadStackTraceCallSemaphore, 0, 0) == -1) {
+        return FALSE;
+    }
     return TRUE;
 }
 
@@ -49,7 +58,7 @@ static jboolean installSignalHandlers(Env* env) {
 
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = SA_SIGINFO | SA_ONSTACK;
-    sa.sa_sigaction = &signalHandler;
+    sa.sa_sigaction = &signalHandler_npe_so;
 
 #if defined(DARWIN)
     // On Darwin SIGBUS is generated when dereferencing NULL pointers
@@ -61,6 +70,16 @@ static jboolean installSignalHandlers(Env* env) {
 #endif
 
     if (sigaction(SIGSEGV, &sa, NULL) != 0) {
+        rvmThrowInternalErrorErrno(env, errno);
+        rvmTearDownSignals(env);
+        return FALSE;
+    }
+
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = SA_SIGINFO | SA_ONSTACK;
+    sa.sa_sigaction = &signalHandler_dump_thread;
+
+    if (sigaction(DUMP_THREAD_STACK_TRACE_SIGNAL, &sa, NULL) != 0) {
         rvmThrowInternalErrorErrno(env, errno);
         rvmTearDownSignals(env);
         return FALSE;
@@ -88,6 +107,20 @@ void rvmRestoreSignalMask(Env* env) {
 }
 
 void rvmTearDownSignals(Env* env) {
+}
+
+void dumpThreadStackTrace(Env* env, Thread* thread, CallStack* callStack) {
+    // NOTE: This function must not be called concurrently. It uses global 
+    // variables to transfer data to/from a signal handler.
+
+    rvmAtomicGetAndSetPtr((void**) &dumpThreadStackTraceCallStack, callStack);
+    if (pthread_kill(thread->pThread, DUMP_THREAD_STACK_TRACE_SIGNAL) != 0) {
+        // The thread is probably not alive
+        return;
+    }
+
+    while (sem_wait(&dumpThreadStackTraceCallSemaphore) == EINTR) {
+    }
 }
 
 static inline void* getFramePointer(ucontext_t* context) {
@@ -118,7 +151,7 @@ static inline void* getPC(ucontext_t* context) {
 #endif
 }
 
-static void signalHandler(int signum, siginfo_t* info, void* context) {
+static void signalHandler_npe_so(int signum, siginfo_t* info, void* context) {
     // rvmGetEnv() uses pthread_getspecific() which isn't listed as 
     // async-signal-safe. Others (e.g. mono) do this too so we assume it is safe 
     // in practice.
@@ -147,11 +180,9 @@ static void signalHandler(int signum, siginfo_t* info, void* context) {
             Frame fakeFrame;
             fakeFrame.prev = (Frame*) getFramePointer((ucontext_t*) context);
             fakeFrame.returnAddress = getPC((ucontext_t*) context);
-            CallStack* callStack = rvmCaptureCallStack(env, &fakeFrame);
+            CallStack* callStack = captureCallStackFromFrame(env, &fakeFrame);
             rvmSetLongInstanceFieldValue(env, throwable, stackStateField, PTR_TO_LONG(callStack));
             rvmRaiseException(env, throwable);
-                puts("foo7\n");
-
         }
     }
 
@@ -160,4 +191,26 @@ static void signalHandler(int signum, siginfo_t* info, void* context) {
     sa.sa_handler = SIG_DFL;
     sigaction(signum, &sa, NULL);
     kill(0, signum);
+}
+
+static void signalHandler_dump_thread(int signum, siginfo_t* info, void* context) {
+    Env* env = rvmGetEnv();
+    if (env) {
+        Frame fakeFrame;
+        if (rvmIsNonNativeFrame(env)) {
+            // Signalled in non-native code
+            fakeFrame.prev = (Frame*) getFramePointer((ucontext_t*) context);
+            fakeFrame.returnAddress = getPC((ucontext_t*) context);
+        } else {
+            // The thread was signalled while in native code, possibly a system 
+            // function. We cannot trust that this code uses proper frame 
+            // pointers so we cannot use the context's frame pointer. The top
+            // most GatewayFrame in env was pushed when native code was entered.
+            // Use its frame as frame pointer.
+            fakeFrame = *(Frame*) env->gatewayFrames->frameAddress;
+        }
+
+        captureCallStack(env, &fakeFrame, dumpThreadStackTraceCallStack, MAX_CALL_STACK_LENGTH);
+    }
+    sem_post(&dumpThreadStackTraceCallSemaphore);
 }

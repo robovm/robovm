@@ -25,11 +25,7 @@ extern void* gcAllocate(jint size);
 extern void* gcAllocateUncollectable(jint size);
 extern void* gcAllocateAtomic(jint size);
 
-/* unwind.c / unwind-zero.c / unwind-sjlj.c */
-#define UNWIND_EXCEPTION_CLASS 0x4A4A4A4A4A4A4A4A // "JJJJJJJJ"
-#define UNWIND_UNHANDLED_EXCEPTION 1
-#define UNWIND_FATAL_ERROR 2
-
+/* unwind.c */
 typedef struct Frame {
     struct Frame* prev;
     void* returnAddress;
@@ -46,6 +42,13 @@ extern void* unwindGetIP(UnwindContext* context);
 extern jint unwindRaiseException(Env* env);
 extern jint unwindReraiseException(Env* env, void* exInfo);
 extern void unwindIterateCallStack(Env* env, void* fp, jboolean (*iterator)(Env*, void*, ProxyMethod*, void*), void* data);
+
+/* method.c */
+extern void captureCallStack(Env* env, Frame* fp, CallStack* data, jint maxLength);
+extern CallStack* captureCallStackFromFrame(Env* env, Frame* fp);
+
+/* signal.c */
+extern void dumpThreadStackTrace(Env* env, Thread* thread, CallStack* callStack);
 
 /* class.c */
 extern ProxyMethod* addProxyMethod(Env* env, Class* clazz, Method* proxiedMethod, jint access, void* impl);

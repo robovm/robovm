@@ -25,7 +25,11 @@ DynamicLib* bootNativeLibs = NULL;
 DynamicLib* mainNativeLibs = NULL;
 
 static Mutex nativeLibsLock;
+static Mutex threadStackTraceLock;
 static jvalue emptyJValueArgs[1];
+static Class* java_lang_StackTraceElement = NULL;
+static Method* java_lang_StackTraceElement_constructor = NULL;
+static ObjectArray* empty_java_lang_StackTraceElement_array = NULL;
 
 static inline void obtainNativeLibsLock() {
     rvmLockMutex(&nativeLibsLock);
@@ -33,6 +37,14 @@ static inline void obtainNativeLibsLock() {
 
 static inline void releaseNativeLibsLock() {
     rvmUnlockMutex(&nativeLibsLock);
+}
+
+static inline void obtainThreadStackTraceLock() {
+    rvmLockMutex(&threadStackTraceLock);
+}
+
+static inline void releaseThreadStackTraceLock() {
+    rvmUnlockMutex(&threadStackTraceLock);
 }
 
 static Method* findMethod(Env* env, Class* clazz, const char* name, const char* desc) {
@@ -88,6 +100,23 @@ jboolean rvmInitMethods(Env* env) {
     if (rvmInitMutex(&nativeLibsLock) != 0) {
         return FALSE;
     }
+    if (rvmInitMutex(&threadStackTraceLock) != 0) {
+        return FALSE;
+    }
+    java_lang_StackTraceElement = rvmFindClassUsingLoader(env, "java/lang/StackTraceElement", NULL);
+    if (!java_lang_StackTraceElement) {
+        return FALSE;
+    }
+    java_lang_StackTraceElement_constructor = rvmGetInstanceMethod(env, java_lang_StackTraceElement, "<init>", 
+                                      "(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/String;I)V");
+    if (!java_lang_StackTraceElement_constructor) {
+        return FALSE;
+    }
+    empty_java_lang_StackTraceElement_array = rvmNewObjectArray(env, 0, java_lang_StackTraceElement, NULL, NULL);
+    if (!empty_java_lang_StackTraceElement_array) {
+        return FALSE;
+    }
+
     return TRUE;
 }
 
@@ -172,22 +201,87 @@ static jboolean captureCallStackCountFramesIterator(Env* env, void* pc, ProxyMet
     return *countPtr < MAX_CALL_STACK_LENGTH ? TRUE : FALSE;
 }
 
-static jboolean captureCallStackIterator(Env* env, void* pc, ProxyMethod* proxyMethod, void* _data) {
-    CallStack* data = (CallStack*) _data;
+typedef struct {
+    CallStack* data;
+    jint maxLength;
+} CaptureCallStackArgs;
+
+static jboolean captureCallStackIterator(Env* env, void* pc, ProxyMethod* proxyMethod, void* _args) {
+    CaptureCallStackArgs* args =  (CaptureCallStackArgs*) _args;
+    CallStack* data = args->data;
     data->frames[data->length].pc = pc;
     data->frames[data->length].method = (Method*) proxyMethod;
     data->length++;
-    return data->length < MAX_CALL_STACK_LENGTH ? TRUE : FALSE;
+    return data->length < args->maxLength ? TRUE : FALSE;
 }
 
-CallStack* rvmCaptureCallStack(Env* env, void* fp) {
+jint countCallStackFrames(Env* env, Frame* fp) {
     jint count = 0;
     unwindIterateCallStack(env, fp, captureCallStackCountFramesIterator, &count);
+    return count;
+}
+
+CallStack* allocateCallStackFrames(Env* env, jint maxLength) {
+    return rvmAllocateMemory(env, sizeof(CallStack) + sizeof(CallStackFrame) * maxLength);
+}
+
+void captureCallStack(Env* env, Frame* fp, CallStack* data, jint maxLength) {
+    CaptureCallStackArgs args = {data, maxLength};
+    unwindIterateCallStack(env, fp, captureCallStackIterator, &args);
+}
+
+CallStack* captureCallStackFromFrame(Env* env, Frame* fp) {
+    jint count = countCallStackFrames(env, fp);
     if (rvmExceptionOccurred(env)) return NULL;
-    CallStack* data = rvmAllocateMemory(env, sizeof(CallStack) + sizeof(CallStackFrame) * count);
+    CallStack* data = allocateCallStackFrames(env, count);
     if (!data) return NULL;
-    unwindIterateCallStack(env, fp, captureCallStackIterator, data);
+    captureCallStack(env, fp, data, count);
+    if (rvmExceptionOccurred(env)) return NULL;
     return data;
+}
+
+CallStack* rvmCaptureCallStack(Env* env) {
+    return captureCallStackFromFrame(env, NULL);
+}
+
+CallStack* rvmCaptureCallStackForThread(Env* env, Thread* thread) {
+    if (thread == env->currentThread) {
+        return rvmCaptureCallStack(env);
+    }
+
+    // dumpThreadStackTrace() must not be called concurrently
+    obtainThreadStackTraceLock();
+    
+    // Use a shared CallStack struct that can store at most 
+    // MAX_CALL_STACK_LENGTH frames. dumpThreadStackTrace() assumes 
+    // MAX_CALL_STACK_LENGTH.
+    static CallStack* callStack = NULL;
+    if (!callStack) {
+        callStack = allocateCallStackFrames(env, MAX_CALL_STACK_LENGTH);
+        if (!callStack) {
+            releaseThreadStackTraceLock();
+            return NULL;
+        }
+    }
+
+    memset(callStack, 0, sizeof(CallStack) + sizeof(CallStackFrame) * MAX_CALL_STACK_LENGTH);
+    dumpThreadStackTrace(env, thread, callStack);
+    if (rvmExceptionOccurred(env)) {
+        releaseThreadStackTraceLock();
+        return NULL;
+    }
+
+    // Make a copy of the CallStack that is just big enough
+    CallStack* copy = allocateCallStackFrames(env, callStack->length);
+    if (!copy) {
+        releaseThreadStackTraceLock();
+        return NULL;
+    }
+    memcpy(copy, callStack, sizeof(CallStack) + sizeof(CallStackFrame) * callStack->length);
+
+    releaseThreadStackTraceLock();
+
+    return copy;
 }
 
 Method* rvmResolveCallStackFrame(Env* env, CallStackFrame* frame) {
@@ -208,6 +302,48 @@ Method* rvmResolveCallStackFrame(Env* env, CallStackFrame* frame) {
         return NULL;
     }
     return frame->method;
+}
+
+ObjectArray* rvmCallStackToStackTraceElements(Env* env, CallStack* callStack, jint first) {
+    if (!callStack || callStack->length == 0) {
+        return empty_java_lang_StackTraceElement_array;
+    }
+
+    // Count the number of methods
+    jint index = first;
+    jint length = 0;
+    while (rvmGetNextCallStackMethod(env, callStack, &index)) {
+        length++;
+    }
+
+    if (length == 0) {
+        return empty_java_lang_StackTraceElement_array;
+    }
+
+    ObjectArray* array = rvmNewObjectArray(env, length, java_lang_StackTraceElement, NULL, NULL);
+    if (!array) return NULL;
+
+    if (length > 0) {
+        jvalue args[4];
+        index = first;
+        jint i;
+        for (i = 0; i < length; i++) {
+            Method* m = rvmGetNextCallStackMethod(env, callStack, &index);
+            args[0].l = (jobject) m->clazz;
+            args[1].l = (jobject) rvmNewStringUTF(env, m->name, -1);
+            if (!args[1].l) return NULL;
+            args[2].l = (jobject) rvmAttributeGetClassSourceFile(env, m->clazz);
+            if (rvmExceptionOccurred(env)) {
+                return NULL;
+            }
+            args[3].i = METHOD_IS_NATIVE(m) ? -2 : -1; // TODO: Line numbers
+            array->values[i] = rvmNewObjectA(env, java_lang_StackTraceElement, 
+                java_lang_StackTraceElement_constructor, args);
+            if (!array->values[i]) return NULL;
+        }
+    }
+
+    return array;
 }
 
 const char* rvmGetReturnType(const char* desc) {

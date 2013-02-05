@@ -52,7 +52,7 @@ Object* Java_org_robovm_rt_VM_classPath(Env* env, Class* c) {
 }
 
 ObjectArray* Java_org_robovm_rt_VM_getStackClasses(Env* env, Class* c, jint skipNum, jint maxDepth) {
-    CallStack* callStack = rvmCaptureCallStack(env, NULL);
+    CallStack* callStack = rvmCaptureCallStack(env);
     if (!callStack) return NULL;
 
     jint index = 0;

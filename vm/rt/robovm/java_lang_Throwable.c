@@ -15,18 +15,16 @@
  */
 #include <string.h>
 #include <robovm.h>
-#include <unwind.h>
 
 jlong Java_java_lang_Throwable_nativeFillInStackTrace(Env* env, Object* thiz) {
-    return PTR_TO_LONG(rvmCaptureCallStack(env, NULL));
+    return PTR_TO_LONG(rvmCaptureCallStack(env));
 }
 
 ObjectArray* Java_java_lang_Throwable_nativeGetStackTrace(Env* env, Object* thiz, jlong stackState) {
-    Class* java_lang_StackTraceElement = rvmFindClassUsingLoader(env, "java/lang/StackTraceElement", NULL);
-    if (!java_lang_StackTraceElement) return NULL;
-
     CallStack* callStack = (CallStack*) LONG_TO_PTR(stackState);
-    if (!callStack) return rvmNewObjectArray(env, 0, java_lang_StackTraceElement, NULL, NULL);;
+    if (!callStack) {
+        return rvmCallStackToStackTraceElements(env, NULL, 0);
+    }
 
     jint index = 0;
     jint first = 0;
@@ -61,38 +59,5 @@ ObjectArray* Java_java_lang_Throwable_nativeGetStackTrace(Env* env, Object* thiz
         }
     }
 
-    // Count the number of methods remaining
-    index = first;
-    jint length = 0;
-    while (rvmGetNextCallStackMethod(env, callStack, &index)) {
-        length++;
-    }
-
-    ObjectArray* array = rvmNewObjectArray(env, length, java_lang_StackTraceElement, NULL, NULL);
-    if (!array) return NULL;
-
-    if (length > 0) {
-        Method* steConstructor = rvmGetInstanceMethod(env, java_lang_StackTraceElement, "<init>", 
-                                      "(Ljava/lang/Class;Ljava/lang/String;Ljava/lang/String;I)V");
-        if (!steConstructor) return NULL;
-
-        jvalue args[4];
-        index = first;
-        jint i;
-        for (i = 0; i < length; i++) {
-            m = rvmGetNextCallStackMethod(env, callStack, &index);
-            args[0].l = (jobject) m->clazz;
-            args[1].l = (jobject) rvmNewStringUTF(env, m->name, -1);
-            if (!args[1].l) return NULL;
-            args[2].l = (jobject) rvmAttributeGetClassSourceFile(env, m->clazz);
-            if (rvmExceptionOccurred(env)) {
-                return NULL;
-            }
-            args[3].i = METHOD_IS_NATIVE(m) ? -2 : -1; // TODO: Line numbers
-            array->values[i] = rvmNewObjectA(env, java_lang_StackTraceElement, steConstructor, args);
-            if (!array->values[i]) return NULL;
-        }
-    }
-
-    return array;
+    return rvmCallStackToStackTraceElements(env, callStack, first);
 }

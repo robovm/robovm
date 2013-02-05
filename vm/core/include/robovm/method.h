@@ -51,8 +51,10 @@ extern void* rvmResolveNativeMethodImpl(Env* env, NativeMethod* method, const ch
 extern jboolean rvmLoadNativeLibrary(Env* env, const char* path, ClassLoader* classLoader);
 extern Method* rvmFindMethodAtAddress(Env* env, void* address);
 extern Method* rvmGetCallingMethod(Env* env);
-extern CallStack* rvmCaptureCallStack(Env* env, void* fp);
+extern CallStack* rvmCaptureCallStack(Env* env);
+extern CallStack* rvmCaptureCallStackForThread(Env* env, Thread* thread);
 extern Method* rvmResolveCallStackFrame(Env* env, CallStackFrame* frame);
+extern ObjectArray* rvmCallStackToStackTraceElements(Env* env, CallStack* callStack, jint first);
 extern void rvmCallVoidInstanceMethod(Env* env, Object* obj, Method* method, ...);
 extern void rvmCallVoidInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args);
 extern void rvmCallVoidInstanceMethodV(Env* env, Object* obj, Method* method, va_list args);

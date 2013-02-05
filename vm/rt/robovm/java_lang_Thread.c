@@ -78,3 +78,12 @@ jint Java_java_lang_Thread_internalGetState(Env* env, Class* cls, JavaThread* th
     rvmUnlockThreadsList();
     return status;
 }
+
+ObjectArray* Java_java_lang_Thread_internalGetStackTrace(Env* env, Class* cls, JavaThread* threadObj) {
+    Thread* thread = (Thread*) LONG_TO_PTR(threadObj->threadPtr);
+    CallStack* callStack = NULL;
+    if (thread) {
+        callStack = rvmCaptureCallStackForThread(env, thread);
+    }
+    return rvmCallStackToStackTraceElements(env, callStack, 0);
+}

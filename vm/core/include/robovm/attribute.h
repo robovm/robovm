@@ -32,7 +32,7 @@ extern ObjectArray* rvmAttributeGetMethodRuntimeVisibleAnnotations(Env* env, Met
 extern ObjectArray* rvmAttributeGetFieldRuntimeVisibleAnnotations(Env* env, Field* field);
 extern ObjectArray* rvmAttributeGetMethodRuntimeVisibleParameterAnnotations(Env* env, Method* method);
 extern ObjectArray* rvmAttributeGetDeclaredClasses(Env* env, Class* clazz);
-extern Object* rvmAttributeGetInnerClassName(Env* env, Class* clazz);
+extern jboolean rvmAttributeGetInnerClass(Env* env, Class* clazz, Object** innerClassName, jint* access);
 
 #endif
 

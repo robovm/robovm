@@ -695,14 +695,27 @@ static jboolean getDeclaredClassesIterator(Env* env, char* innerClass, char* out
     return TRUE; // Continue with next attribute
 }
 
-static jboolean getInnerClassNameIterator(Env* env, char* innerClass, char* outerClass, char* innerName, jint access, void* data) {
-    Object** result = (Object**) ((void**) data)[0];
-    Class* clazz = (Class*) ((void**) data)[1];
-    if (innerName && innerClass && !strcmp(innerClass, clazz->name)) {
-        *result = rvmNewStringUTF(env, innerName, -1);
-        return FALSE; // Stop iterating
+typedef struct {
+    Class* clazz;
+    Object** innerClassName;
+    jint* access;
+    jboolean found;
+} GetInnerClassArgs;
+
+static jboolean getInnerClassIterator(Env* env, char* innerClass, char* outerClass, char* innerName, jint access, void* data) {
+    GetInnerClassArgs* args = (GetInnerClassArgs*) data;
+    Class* clazz = args->clazz;
+    if (!innerClass || strcmp(innerClass, clazz->name)) {
+        return TRUE; // Continue with next attribute
     }
-    return TRUE; // Continue with next attribute
+    if (args->access) {
+        *args->access = access;
+    }
+    if (innerName && args->innerClassName) {
+        *args->innerClassName = rvmNewStringUTF(env, innerName, -1);
+    }
+    args->found = TRUE;
+    return FALSE; // Stop iterating
 }
 
 jboolean rvmInitAttributes(Env* env) {
@@ -850,10 +863,11 @@ ObjectArray* rvmAttributeGetDeclaredClasses(Env* env, Class* clazz) {
     return result;
 }
 
-Object* rvmAttributeGetInnerClassName(Env* env, Class* clazz) {
-    Object* result = NULL;
-    void* data[2] = {&result, clazz};
-    iterateInnerClasses(env, clazz->attributes, getInnerClassNameIterator, data);
-    return result;
+jboolean rvmAttributeGetInnerClass(Env* env, Class* clazz, Object** innerClassName, jint* access) {
+    GetInnerClassArgs args = {0};
+    args.clazz = clazz;
+    args.innerClassName = innerClassName ? innerClassName : NULL;
+    args.access = access ? access : NULL;
+    iterateInnerClasses(env, clazz->attributes, getInnerClassIterator, &args);
+    return args.found;
 }
-

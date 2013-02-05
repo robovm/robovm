@@ -50,7 +50,14 @@ jboolean Java_java_lang_Class_isInstance(Env* env, Class* thiz, Object* object) 
 }
 
 jint Java_java_lang_Class_getModifiers(Env* env, Class* c, Class* thiz, jboolean ignoreInnerClassesAttrib) {
-    return thiz->flags & CLASS_ACCESS_MASK;
+    jint modifiers = thiz->flags & CLASS_ACCESS_MASK;
+    if (!ignoreInnerClassesAttrib) {
+        jint innerModifiers = 0;
+        if (rvmAttributeGetInnerClass(env, thiz, NULL, &innerModifiers)) {
+            modifiers = innerModifiers & CLASS_ACCESS_MASK;
+        }
+    }
+    return modifiers;
 }
 
 Object* Java_java_lang_Class_getSignatureAttribute(Env* env, Class* thiz) {
@@ -58,7 +65,9 @@ Object* Java_java_lang_Class_getSignatureAttribute(Env* env, Class* thiz) {
 }
 
 Object* Java_java_lang_Class_getInnerClassName(Env* env, Class* thiz) {
-    return rvmAttributeGetInnerClassName(env, thiz);
+    Object* innerClassName = NULL;
+    rvmAttributeGetInnerClass(env, thiz, &innerClassName, NULL);
+    return innerClassName;
 }
 
 Object* Java_java_lang_Class_getName0(Env* env, Class* thiz) {

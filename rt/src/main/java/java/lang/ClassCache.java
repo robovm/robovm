@@ -262,9 +262,6 @@ class ClassCache<T> {
                     seen.add(s);
                 }
             }
-            for (Class<?> intf : c.getInterfaces()) {
-                intf.getClassCache().buildClassesList(result, seen, publicOnly);
-            }
         }
         return result;
     }

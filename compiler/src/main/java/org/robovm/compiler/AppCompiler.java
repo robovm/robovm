@@ -297,6 +297,7 @@ public class AppCompiler {
                     builder.cpu(args[++i]);
                 } else if ("-roots".equals(args[i])) {
                     for (String p : args[++i].split(":")) {
+                        p = p.replace('#', '*');
                         builder.addRoot(p);
                     }
                 } else if ("-libs".equals(args[i])) {
@@ -438,7 +439,8 @@ public class AppCompiler {
                          + "                        classes. If a main class is specified it will automatically\n" 
                          + "                        become a root. If no main class is specified and no roots\n" 
                          + "                        all classes will be included. A pattern is an ANT style\n" 
-                         + "                        path pattern, e.g. com.foo.**.bar.*.Main.");
+                         + "                        path pattern, e.g. com.foo.**.bar.*.Main. Alternative\n" 
+                         + "                        syntax using # is also supported, e.g. com.##.#.Main.");
         System.err.println("  -run                  Run the executable directly without installing it (-d is\n" 
                          + "                        ignored). The executable will be executed from the\n" 
                          + "                        temporary dir specified with -tmp.");

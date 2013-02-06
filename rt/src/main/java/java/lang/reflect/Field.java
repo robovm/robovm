@@ -833,6 +833,12 @@ public final class Field extends AccessibleObject implements Member {
                 throwSetConversionException(type, value.getClass());
             }
         } else {
+            if (value != null && !getType().isInstance(value)) {
+                throw new IllegalArgumentException(
+                        String.format("Can not set %s field %s.%s to %s", 
+                                getType().getName(), getDeclaringClass().getName(), 
+                                getName(), value.getClass().getName()));
+            }
             VM.setObject(address, value);
         }
     }

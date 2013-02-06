@@ -13,9 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include <string.h>
 #include <robovm.h>
 
 Object* Java_java_lang_reflect_Array_createObjectArray(Env* env, Class* cls, Class* componentType, jint length) {
     return (Object*) rvmNewObjectArray(env, length, componentType, NULL, NULL);
 }
 
+Object* Java_java_lang_reflect_Array_createMultiArray(Env* env, Class* cls, Class* componentType, IntArray* dimensions) {
+    const char* componentTypeDesc = rvmGetClassDescriptor(env, componentType);
+    char* desc = rvmAllocateMemoryAtomic(env, strlen(componentTypeDesc) + dimensions->length + 1);
+    memset(desc, '[', dimensions->length);
+    strcat(desc, componentTypeDesc);
+
+    Class* clazz = rvmFindClassByDescriptor(env, desc, componentType->classLoader);
+    return (Object*) rvmNewMultiArray(env, dimensions->length, dimensions->values, clazz);
+}

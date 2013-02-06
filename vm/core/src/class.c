@@ -333,6 +333,23 @@ char* rvmFromBinaryClassName(Env* env, const char* binaryClassName) {
     return className;
 }
 
+const char* rvmGetClassDescriptor(Env* env, Class* clazz) {
+    jint length = strlen(clazz->name);
+    char* desc = NULL;
+
+    if (CLASS_IS_ARRAY(clazz) || CLASS_IS_PRIMITIVE(clazz)) {
+        desc = (char*) clazz->name;
+    } else {
+        desc = rvmAllocateMemoryAtomic(env, length + 3);
+        if (!desc) return NULL;
+        desc[0] = 'L';
+        strcat(desc, clazz->name);
+        desc[length + 1] = ';';
+    }
+
+    return (const char*) desc;
+}
+
 jboolean rvmIsSubClass(Class* superclass, Class* clazz) {
     // TODO: Array types
     while (clazz && clazz != superclass) {

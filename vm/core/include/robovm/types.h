@@ -132,7 +132,8 @@ struct Class {
   Class* superclass;       // Superclass pointer. Only java.lang.Object, primitive classes and interfaces have NULL here.
   Class* componentType;
   void* initializer;       // Points to the <clinit> method implementation of the class. NULL if there is no <clinit>.
-  jint flags;
+  jint flags;              // Low 16-bits are access flags. High 16-bits are RoboVM specific flags defined in class.h.
+  Thread* initThread;      // The Thread which is currently initializing this class.
   Interface* _interfaces;  // Lazily loaded linked list of interfaces. Use rvmGetInterfaces() to get this value.
   Field* _fields;          // Lazily loaded linked list of fields. Use rvmGetFields() to get this value.
   Method* _methods;        // Lazily loaded linked list of methods. Use rvmGetMethods() to get this value.

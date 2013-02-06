@@ -921,71 +921,118 @@ jboolean rvmRegisterClass(Env* env, Class* clazz) {
 }
 
 void rvmInitialize(Env* env, Class* clazz) {
-    obtainClassLock();
-    // TODO: Throw java.lang.NoClassDefFoundError if state == CLASS_ERROR?
-    if (CLASS_IS_STATE_ERROR(clazz)) {
-        // TODO: Add the class' binary name in the message
-        rvmThrowNew(env, java_lang_NoClassDefFoundError, "Could not initialize class ??");
-        releaseClassLock();
+    assert(env->currentThread != NULL);
+
+    // The initialization of a class or interface is described in the JVMS JavaSE7 edition section 5.5
+    rvmLockObject(env, (Object*) clazz);
+
+    while (CLASS_IS_STATE_INITIALIZING(clazz)) {
+
+         if (clazz->initThread != env->currentThread) {
+            rvmObjectWait(env, (Object*) clazz, 0, 0, FALSE);
+         } else {
+            // Recursive initialization. Release lock and return normally.
+            rvmUnlockObject(env, (Object*) clazz);
+            return;
+         }
+
+    }
+
+    if (CLASS_IS_STATE_INITIALIZED(clazz)) {
+        // Initialized. Release lock and return normally.
+        rvmUnlockObject(env, (Object*) clazz);
         return;
     }
-    if (!CLASS_IS_STATE_INITIALIZED(clazz) && !CLASS_IS_STATE_INITIALIZING(clazz)) {
-        jint oldState = clazz->flags & CLASS_STATE_MASK;
-        clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_INITIALIZING;
-        if (clazz->superclass) {
-            rvmInitialize(env, clazz->superclass);
-            if (rvmExceptionOccurred(env)) {
-                clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | oldState;
-                releaseClassLock();
-                return;
-            }
-        }
 
-        TRACEF("Initializing class %s", clazz->name);
-        void* initializer = clazz->initializer;
-        if (!initializer) {
-            if (!CLASS_IS_ARRAY(clazz) && !CLASS_IS_PROXY(clazz) && !CLASS_IS_PRIMITIVE(clazz)) {
-                env->vm->options->classInitialized(env, clazz);
-            }
-            clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_INITIALIZED;
-            releaseClassLock();
-            return;
-        }
+    if (CLASS_IS_STATE_ERROR(clazz)) {
+        rvmThrowNewf(env, java_lang_NoClassDefFoundError, "Could not initialize class %s", 
+            rvmToBinaryClassName(env, clazz->name));
+        rvmUnlockObject(env, (Object*) clazz);
+        return;
+    }
 
-        CallInfo* callInfo = call0AllocateCallInfo(env, initializer, 1, 0, 0, 0, 0);
-        call0AddPtr(callInfo, env);
-        void (*f)(CallInfo*) = (void (*)(CallInfo*)) _call0;
-        rvmPushGatewayFrame(env);
-        TrycatchContext tc = {0};
-        tc.sel = CATCH_ALL_SEL;
-        if (!rvmTrycatchEnter(env, &tc)) {
-            f(callInfo);
-        }
-        rvmTrycatchLeave(env);
-        rvmPopGatewayFrame(env);
+    assert(clazz->initThread == NULL);
+    assert(CLASS_IS_STATE_LOADED(clazz));
 
-        Object* exception = rvmExceptionClear(env);
-        if (exception) {
+    // Indicate that this thread is currently initializing the class and release the lock.
+    clazz->initThread = env->currentThread;
+    clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_INITIALIZING;
+    rvmUnlockObject(env, (Object*) clazz);
+
+    TRACEF("Initializing class %s", clazz->name);
+
+    // NOTE: The JVMS says to initialize static fields before initializing the 
+    // superclass. Dalvik initializes the superclass first. We do what Dalvik does.
+    if (clazz->superclass) {
+        // Initialize the superclass
+        rvmInitialize(env, clazz->superclass);
+        if (rvmExceptionOccurred(env)) {
+            rvmLockObject(env, (Object*) clazz);
             clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_ERROR;
-            if (!rvmIsInstanceOf(env, exception, java_lang_Error)) {
-                // If exception isn't an instance of java.lang.Error 
-                // we must wrap it in a java.lang.ExceptionInInitializerError
-                Method* constructor = rvmGetInstanceMethod(env, java_lang_ExceptionInInitializerError, "<init>", "(Ljava/lang/Throwable;)V");
-                if (!constructor) return;
-                Object* wrappedException = rvmNewObject(env, java_lang_ExceptionInInitializerError, constructor, exception);
-                if (!wrappedException) return;
-                exception = wrappedException;
-            }
-            rvmThrow(env, exception);
-            releaseClassLock();
+            rvmObjectNotifyAll(env, (Object*) clazz);
+            rvmUnlockObject(env, (Object*) clazz);
             return;
         }
+    }
+
+    void* initializer = clazz->initializer;
+    if (!initializer) {
+        // No <clinit> in class
         if (!CLASS_IS_ARRAY(clazz) && !CLASS_IS_PROXY(clazz) && !CLASS_IS_PRIMITIVE(clazz)) {
             env->vm->options->classInitialized(env, clazz);
         }
+        rvmLockObject(env, (Object*) clazz);
         clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_INITIALIZED;
+        rvmObjectNotifyAll(env, (Object*) clazz);
+        rvmUnlockObject(env, (Object*) clazz);
+        return;
     }
-    releaseClassLock();
+
+    CallInfo* callInfo = call0AllocateCallInfo(env, initializer, 1, 0, 0, 0, 0);
+    call0AddPtr(callInfo, env);
+    void (*f)(CallInfo*) = (void (*)(CallInfo*)) _call0;
+    rvmPushGatewayFrame(env);
+    TrycatchContext tc = {0};
+    tc.sel = CATCH_ALL_SEL;
+    if (!rvmTrycatchEnter(env, &tc)) {
+        f(callInfo);
+    }
+    rvmTrycatchLeave(env);
+    rvmPopGatewayFrame(env);
+
+    Object* exception = rvmExceptionClear(env);
+    if (!exception) {
+        // Successful initialization
+        if (!CLASS_IS_ARRAY(clazz) && !CLASS_IS_PROXY(clazz) && !CLASS_IS_PRIMITIVE(clazz)) {
+            env->vm->options->classInitialized(env, clazz);
+        }
+        rvmLockObject(env, (Object*) clazz);
+        clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_INITIALIZED;
+        rvmObjectNotifyAll(env, (Object*) clazz);
+        rvmUnlockObject(env, (Object*) clazz);
+        return;
+    }
+
+    // <clinit> failed with an exception
+
+    if (!rvmIsInstanceOf(env, exception, java_lang_Error)) {
+        // If exception isn't an instance of java.lang.Error 
+        // we must wrap it in a java.lang.ExceptionInInitializerError
+        Method* constructor = rvmGetInstanceMethod(env, java_lang_ExceptionInInitializerError, "<init>", "(Ljava/lang/Throwable;)V");
+        if (constructor) {
+            Object* wrappedException = rvmNewObject(env, java_lang_ExceptionInInitializerError, constructor, exception);
+            if (wrappedException) {
+                rvmThrow(env, wrappedException);
+            }
+        }
+    } else {
+        rvmThrow(env, exception);
+    }
+
+    rvmLockObject(env, (Object*) clazz);
+    clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_ERROR;
+    rvmObjectNotifyAll(env, (Object*) clazz);
+    rvmUnlockObject(env, (Object*) clazz);
 }
 
 Object* rvmAllocateObject(Env* env, Class* clazz) {

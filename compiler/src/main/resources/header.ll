@@ -1,7 +1,7 @@
 %GatewayFrame = type {i8*, i8*, i8*}
 %Env = type {i8*, i8*, i8*, i8*, i8*, i8*, i8*, i32}
-; NOTE: The compiler assumes that %Class is a multiple of 8 in size (which is why we pad it with {i8,i8})
-%Class = type {i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i32, i8*, i8*, i8*, i8*, i32, i32, i32, i16, i16, {i8,i8}}
+; NOTE: The compiler assumes that %Class is a multiple of 8 in size (we don't need to pad it since it's already a multiple of 8 bytes in size, 72 bytes)
+%Class = type {i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i32, i8*, i8*, i8*, i8*, i8*, i32, i32, i32, i16, i16}
 %Method = type opaque
 %Field = type opaque
 %Object = type {%Class*, i8*}

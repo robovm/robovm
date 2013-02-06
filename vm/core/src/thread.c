@@ -127,6 +127,11 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboole
 
     Thread* thread = allocThread(env);
     if (!thread) goto error;
+    thread->stackAddr = getStackAddress();
+    thread->pThread = pthread_self();
+    env->currentThread = thread;
+    rvmChangeThreadStatus(env, thread, THREAD_RUNNING);
+    
     JavaThread* threadObj = (JavaThread*) rvmAllocateObject(env, java_lang_Thread);
     if (!threadObj) goto error;
 
@@ -139,12 +144,8 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboole
         rvmUnlockThreadsList();
         goto error;
     }
-    thread->stackAddr = getStackAddress();
-    thread->pThread = pthread_self();
     DL_PREPEND(threads, thread);
     rvmUnlockThreadsList();
-
-    rvmChangeThreadStatus(env, thread, THREAD_RUNNING);
 
     Object* threadName = NULL;
     if (name) {

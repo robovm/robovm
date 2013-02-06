@@ -53,6 +53,7 @@ import libcore.util.EmptyArray;
 import org.apache.harmony.luni.lang.reflect.GenericSignatureParser;
 import org.apache.harmony.luni.lang.reflect.ListOfTypes;
 import org.apache.harmony.luni.lang.reflect.Types;
+import org.robovm.rt.VM;
 
 /**
  * This class represents a method. Information about the method can be accessed,
@@ -526,8 +527,6 @@ public final class Method extends AccessibleObject implements GenericDeclaration
     public Object invoke(Object receiver, Object... args)
             throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
-        // TODO: Check access
-        
         if (!Modifier.isStatic(getModifiers())) {
             if (receiver == null) {
                 throw new NullPointerException();
@@ -545,6 +544,15 @@ public final class Method extends AccessibleObject implements GenericDeclaration
         Class<?>[] pTypes = getParameterTypes(false);
         if (args.length != pTypes.length) {
             throw new IllegalArgumentException("wrong number of arguments");
+        }
+        
+        if (!flag) {
+            // Check access
+            Class<?> caller = VM.getStackClasses(0, 1)[0];
+            if (!checkAccessible(caller, this)) {
+                throw new IllegalAccessException(String.format("Attempt to access method %s.%s(%s) from class %s", 
+                        getDeclaringClass().getName(), getName(), toString(parameterTypes), caller.getName()));
+            }
         }
         
         return internalInvoke(method, pTypes, receiver, args);

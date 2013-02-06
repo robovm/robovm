@@ -331,6 +331,59 @@ public class AccessibleObject implements AnnotatedElement {
         throw new UnsupportedOperationException();
     }
 
+    private static boolean isSamePackage(Class<?> c1, Class<?> c2) {
+        if (c1 == c2) {
+            return true;
+        }
+        if (c1.getClassLoader() != c2.getClassLoader()) {
+            return false;
+        }
+        String n1 = c1.getName();
+        String n2 = c2.getName();
+        int dot1 = n1.lastIndexOf('.');
+        int dot2 = n2.lastIndexOf('.');
+        if (dot1 == -1) {
+            return dot2 == -1;
+        }
+        if (dot1 != dot2) {
+            return false;
+        }
+        return n1.substring(0, dot1).equals(n2.substring(0, dot2));
+    }
+    
+    static boolean checkAccessible(Class<?> caller, Member member) {
+        Class<?> callee = member.getDeclaringClass();
+        if (caller == callee) {
+            return true;
+        }
+        
+        // Check if callee class is accessible
+        if ((callee.getModifiers() & Modifier.PUBLIC) == 0) {
+            if (!isSamePackage(caller, callee)) {
+                return false;
+            }
+        }
+        
+        // Check member accessible
+        int access = member.getModifiers();
+        if ((access & Modifier.PUBLIC) > 0) {
+            return true;
+        }
+        if ((access & Modifier.PRIVATE) > 0) {
+            return false;
+        }
+        if ((access & Modifier.PROTECTED) > 0) {
+            Class<?> sc = caller.getSuperclass();
+            while (sc != null) {
+                if (sc == callee) {
+                    return true;
+                }
+                sc = caller.getSuperclass();
+            }
+        }
+        return isSamePackage(caller, callee);
+    }
+    
     /**
      * Appends the specified class name to the buffer. The class may represent
      * a simple type, a reference type or an array type.

@@ -47,7 +47,6 @@
 
 package java.lang;
 
-import dalvik.system.VMStack;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
@@ -57,23 +56,20 @@ import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.GenericDeclaration;
-import java.lang.reflect.Member;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.net.URL;
 import java.security.ProtectionDomain;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
-import libcore.util.CollectionUtils;
-import libcore.util.EmptyArray;
-import org.apache.harmony.kernel.vm.StringUtils;
+
 import org.apache.harmony.luni.lang.reflect.GenericSignatureParser;
 import org.apache.harmony.luni.lang.reflect.Types;
+
+import dalvik.system.VMStack;
 
 /**
  * The in-memory representation of a Java class. This representation serves as
@@ -1129,10 +1125,17 @@ public final class Class<T> implements Serializable, AnnotatedElement, GenericDe
      *             if the instance can not be created.
      */
     public T newInstance() throws InstantiationException, IllegalAccessException {
-        return newInstanceImpl();
+        try {
+            Constructor<T> constructor = getDeclaredConstructor();
+            return constructor.newInstance();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+            throw new InstantiationException(e.getMessage());
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+            throw new InstantiationException(e.getMessage());
+        }
     }
-
-    private native T newInstanceImpl() throws IllegalAccessException, InstantiationException;
 
     @Override
     public String toString() {

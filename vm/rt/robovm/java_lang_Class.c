@@ -279,28 +279,6 @@ ObjectArray* Java_java_lang_Class_getDeclaredAnnotations(Env* env, Class* clazz)
     return rvmAttributeGetClassRuntimeVisibleAnnotations(env, clazz);
 }
 
-Object* Java_java_lang_Class_newInstanceImpl(Env* env, Class* clazz) {
-    if (CLASS_IS_PRIMITIVE(clazz) || CLASS_IS_INTERFACE(clazz) || CLASS_IS_ARRAY(clazz) || CLASS_IS_ABSTRACT(clazz)) {
-        rvmThrowNew(env, java_lang_InstantiationException, clazz->name);
-        return NULL;
-    }
-    Method* constructor = rvmGetInstanceMethod(env, clazz, "<init>", "()V");
-    if (!constructor) {
-        rvmThrowNew(env, java_lang_InstantiationException, clazz->name);
-        return NULL;
-    }
-
-    // TODO: Access checks
-
-    jvalue args[1];
-    Object* o = rvmNewObjectA(env, clazz, constructor, args);
-    if (!o) {
-        throwInvocationTargetException(env, rvmExceptionOccurred(env));
-        return NULL;
-    }
-    return o;
-}
-
 Class* Java_java_lang_Class_classForName(Env* env, Class* cls, Object* className, jboolean initializeBoolean,
             ClassLoader* classLoader) {
 

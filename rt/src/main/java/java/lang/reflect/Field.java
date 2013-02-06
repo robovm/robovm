@@ -223,8 +223,14 @@ public final class Field extends AccessibleObject implements Member {
             if (setter && (mod & Modifier.FINAL) > 0) {
                 throw new IllegalAccessException("Cannot set final field");
             }
-            // TODO: Check that the caller class may access the field
-            //Class<?> caller = VM.getStackClasses(1, 1)[0];
+            if (!flag) {
+                // Check access
+                Class<?> caller = VM.getStackClasses(1, 1)[0];
+                if (!checkAccessible(caller, this)) {
+                    throw new IllegalAccessException(String.format("Attempt to access field %s.%s from class %s", 
+                            getDeclaringClass().getName(), getName(), caller.getName()));
+                }
+            }
         }
     }
     

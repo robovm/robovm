@@ -54,6 +54,7 @@ extern void rvmThreadYield(Env* env);
 extern jint rvmAttachCurrentThread(VM* vm, Env** env, char* name, Object* group);
 extern jint rvmAttachCurrentThreadAsDaemon(VM* vm, Env** env, char* name, Object* group);
 extern jint rvmDetachCurrentThread(VM* vm, jboolean ignoreAttachCount);
+extern void rvmJoinNonDaemonThreads(Env* env);
 extern Env* rvmGetEnv();
 extern Thread* rvmGetThreadByThreadId(Env* env, uint32_t threadId);
 extern jint rvmChangeThreadStatus(Env* env, Thread* thread, jint newStatus);

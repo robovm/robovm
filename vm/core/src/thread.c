@@ -24,7 +24,8 @@
 
 static Mutex threadsLock;
 static pthread_cond_t threadStartCond;
-static Thread* threads = NULL;
+static Thread* threads = NULL; // List of currently running threads
+static pthread_cond_t threadsChangedCond; // Condition variable notified when the list of threads changes
 static pthread_key_t tlsEnvKey;
 static jint nextThreadId = 1;
 static Method* getUncaughtExceptionHandlerMethod;
@@ -145,6 +146,7 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboole
         goto error;
     }
     DL_PREPEND(threads, thread);
+    pthread_cond_broadcast(&threadsChangedCond);
     rvmUnlockThreadsList();
 
     Object* threadName = NULL;
@@ -166,6 +168,7 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboole
 error_remove:
     rvmLockThreadsList();
     DL_DELETE(threads, thread);
+    pthread_cond_broadcast(&threadsChangedCond);
     rvmTearDownSignals(env);
     rvmUnlockThreadsList();
 error:
@@ -226,6 +229,7 @@ static jint detachThread(Env* env, jboolean ignoreAttachCount) {
     rvmLockThreadsList();
     thread->status = THREAD_ZOMBIE;
     DL_DELETE(threads, thread);
+    pthread_cond_broadcast(&threadsChangedCond);
     rvmTearDownSignals(env);
     env->currentThread = NULL;
     pthread_setspecific(tlsEnvKey, NULL);
@@ -238,6 +242,7 @@ jboolean rvmInitThreads(Env* env) {
     if (rvmInitMutex(&threadsLock) != 0) return FALSE;
     if (pthread_key_create(&tlsEnvKey, NULL) != 0) return FALSE;
     if (pthread_cond_init(&threadStartCond, NULL) != 0) return FALSE;
+    if (pthread_cond_init(&threadsChangedCond, NULL) != 0) return FALSE;
     getUncaughtExceptionHandlerMethod = rvmGetInstanceMethod(env, java_lang_Thread, "getUncaughtExceptionHandler", "()Ljava/lang/Thread$UncaughtExceptionHandler;");
     if (!getUncaughtExceptionHandlerMethod) return FALSE;
     Class* uncaughtExceptionHandler = rvmFindClassInClasspathForLoader(env, "java/lang/Thread$UncaughtExceptionHandler", NULL);
@@ -369,12 +374,41 @@ jlong rvmStartThread(Env* env, JavaThread* threadObj) {
     }
 
     DL_PREPEND(threads, thread);
+    pthread_cond_broadcast(&threadsChangedCond);
     
     thread->status = THREAD_VMWAIT;
     pthread_cond_broadcast(&threadStartCond);
     rvmUnlockThreadsList();
 
     return PTR_TO_LONG(thread);
+}
+
+/**
+ * Waits until all non-daemon threads have exited. This is typically only called
+ * from the main thread after it has been detached. Calling this from an
+ * attached thread is not supported.
+ */
+void rvmJoinNonDaemonThreads(Env* env) {
+    assert(env->currentThread == NULL);
+
+    rvmLockThreadsList();
+    while (1) {
+        // Count the number of non-daemon thread.
+        jint count = 0;
+        Thread* thread = NULL;
+        DL_FOREACH(threads, thread) {
+            assert(thread->threadObj != NULL);
+            if (!thread->threadObj->daemon) {
+                count++;
+            }
+        }
+        if (count == 0) {
+            break;
+        }
+        // Wait for changes to the threads list
+        pthread_cond_wait(&threadsChangedCond, &threadsLock);
+    }
+    rvmUnlockThreadsList();
 }
 
 jint rvmChangeThreadStatus(Env* env, Thread* thread, jint newStatus) {

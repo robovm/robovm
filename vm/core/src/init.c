@@ -263,6 +263,9 @@ jboolean rvmRun(Env* env) {
 
     Object* throwable = rvmExceptionOccurred(env);
     rvmDetachCurrentThread(env->vm, TRUE);
+
+    rvmJoinNonDaemonThreads(env);
+
     return throwable == NULL ? TRUE : FALSE;
 }
 

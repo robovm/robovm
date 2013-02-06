@@ -15,6 +15,7 @@
  */
 #include <robovm.h>
 #include "reflection_helpers.h"
+#include "utlist.h"
 
 static Class* java_lang_reflect_InvocationHandler = NULL;
 static Method* java_lang_reflect_InvocationHandler_invoke = NULL;
@@ -78,18 +79,17 @@ static void handler(Env* env, Object* receiver, ProxyMethod* method, jvalue* arg
     invokeArgs[1].l = (jobject) methodObject;
     invokeArgs[2].l = (jobject) argsArray;
     Object* result = rvmCallObjectInstanceMethodA(env, h, java_lang_reflect_InvocationHandler_invoke, invokeArgs);
-    if (rvmExceptionCheck(env)) {
-        Object* throwable = rvmExceptionClear(env);
+    Object* throwable = rvmExceptionOccurred(env);
+    if (throwable) {
         if (rvmIsSubClass(java_lang_RuntimeException, throwable->clazz) || rvmIsSubClass(java_lang_Error, throwable->clazz)) {
             // Instances of java.lang.RuntimeException and java.lang.Error can always be thrown
             return;
         }
         rvmExceptionClear(env);
-        ObjectArray* exceptionTypes = rvmAttributeGetExceptions(env, method->proxiedMethod);
-        if (!exceptionTypes) return;
-        for (i = 0; i < exceptionTypes->length; i++) {
-            Class* exceptionType = (Class*) exceptionTypes->values[i];
-            if (rvmIsSubClass(exceptionType, throwable->clazz)) {
+
+        ProxyMethodException* pme = NULL;
+        LL_FOREACH(method->allowedExceptions, pme) {
+            if (rvmIsSubClass(pme->clazz, throwable->clazz)) {
                 rvmThrow(env, throwable);
                 return;
             }

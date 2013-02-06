@@ -38,6 +38,7 @@ typedef struct NativeMethod NativeMethod;
 typedef struct BridgeMethod BridgeMethod;
 typedef struct CallbackMethod CallbackMethod;
 typedef struct ProxyMethod ProxyMethod;
+typedef struct ProxyMethodException ProxyMethodException;
 typedef struct ObjectHeader ObjectHeader;
 typedef struct Interface Interface;
 typedef struct Exception Exception;
@@ -100,18 +101,19 @@ struct CallbackMethod {
 };
 
 struct ProxyMethod {
-    Method method;
-    Method* proxiedMethod;
+  Method method;
+  Method* proxiedMethod;
+  ProxyMethodException* allowedExceptions;
+};
+
+struct ProxyMethodException {
+  ProxyMethodException* next;
+  Class* clazz;
 };
 
 struct Interface {
   Interface* next;
   Class* interface;
-};
-
-struct Exception {
-  Exception* next;
-  char* name;
 };
 
 struct Object {

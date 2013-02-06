@@ -39,12 +39,119 @@ typedef struct {
 
 static ProxyMethod* hasMethod(Env* env, Class* clazz, const char* name, const char* desc) {
     Method* method = clazz->_methods;
+    char* paramsEnd = strchr(desc, ')');
+    assert(paramsEnd != NULL);
+    jint paramsLength = paramsEnd - desc + 1;
     for (; method != NULL; method = method->next) {
-        if (!strcmp(method->name, name) && !strcmp(method->desc, desc)) {
+        if (!strcmp(method->name, name) && !strncmp(method->desc, desc, paramsLength)) {
             return (ProxyMethod*) method;
         }
     }
     return NULL;
+}
+
+/**
+ * Checks that a proxy method with the same name and parameter types as a method
+ * have compatible return types.
+ */
+static jboolean checkCompatible(Env* env, Class* proxyClass, ProxyMethod* proxyMethod, Method* method, Class** t1, Class** t2) {
+    // method's return type must be more specific that that of proxyMethod
+    ClassLoader* classLoader = proxyClass->classLoader;
+    Class* proxyRetType = rvmFindClassByDescriptor(env, rvmGetReturnType(proxyMethod->method.desc), classLoader);
+    if (rvmExceptionClear(env)) {
+        goto incompatible;
+    }
+    Class* methodRetType = rvmFindClassByDescriptor(env, rvmGetReturnType(method->desc), classLoader);
+    if (rvmExceptionClear(env)) {
+        goto incompatible;
+    }
+    *t1 = proxyRetType;
+    *t2 = methodRetType;
+    if (CLASS_IS_PRIMITIVE(methodRetType) || CLASS_IS_PRIMITIVE(proxyRetType)) {
+        // If the return type of any of the methods is a primitive type or void,
+        // then all of the methods must have that same return type.
+        if (methodRetType != proxyRetType) {
+            goto incompatible;
+        }
+    }
+    if (!rvmIsAssignableFrom(env, proxyRetType, methodRetType) && !rvmIsAssignableFrom(env, methodRetType, proxyRetType)) {
+        // Otherwise, one of the methods must have a return type that is assignable 
+        // to all of the return types of the rest of the methods.
+        goto incompatible;
+    }
+    return TRUE;
+incompatible:
+    rvmThrowNewf(env, java_lang_IllegalArgumentException, "Incompatible methods %s.%s%s and %s.%s%s", 
+        rvmToBinaryClassName(env, proxyMethod->proxiedMethod->clazz->name),
+        proxyMethod->method.name, proxyMethod->method.desc, 
+        rvmToBinaryClassName(env, method->clazz->name),
+        method->name, method->desc);
+    return FALSE;
+}
+
+static jboolean tryAddProxyMethod(Env* env, Class* proxyClass, Method* method, jint access, ProxyClassData* proxyClassData) {
+    ProxyMethod* proxyMethod = hasMethod(env, proxyClass, method->name, method->desc);
+    if (rvmExceptionOccurred(env)) return FALSE;
+    if (!proxyMethod) {
+        proxyMethod = addProxyMethod(env, proxyClass, method, access, _proxy0);
+        if (!proxyMethod) return FALSE;
+        ObjectArray* exceptionTypes = rvmAttributeGetExceptions(env, method);        
+        if (!exceptionTypes) return FALSE;
+        jint i;
+        for (i = exceptionTypes->length - 1; i >= 0; i--) {
+            ProxyMethodException* pme = rvmAllocateMemory(env, sizeof(ProxyMethodException));
+            if (!pme) {
+                return FALSE;
+            }
+            pme->clazz = (Class*) exceptionTypes->values[i];
+            LL_PREPEND(proxyMethod->allowedExceptions, pme);
+        }
+    } else {
+        Class* t1;
+        Class* t2;
+        if (!checkCompatible(env, proxyClass, proxyMethod, method, &t1, &t2)) {
+            return FALSE;
+        }
+        // t1 is the current return type of proxyMethod. If t2 
+        // is more specific then use that instead.
+        if (!CLASS_IS_PRIMITIVE(t1) && rvmIsAssignableFrom(env, t2, t1)) {
+            proxyMethod->method.desc = method->desc;
+        }
+
+        // Remove exceptions from the proxied method that aren't thrown by all methods
+        ObjectArray* exceptionTypes = rvmAttributeGetExceptions(env, method);        
+        if (!exceptionTypes) return FALSE;
+        ProxyMethodException* pme = NULL;
+        ProxyMethodException* tmp = NULL;
+        LL_FOREACH_SAFE(proxyMethod->allowedExceptions, pme, tmp) {
+            Class* matchExClazz = NULL;
+            jint i;
+            for (i = 0; i < exceptionTypes->length; i++) {
+                Class* exClazz = (Class*) exceptionTypes->values[i];
+                if (rvmIsSubClass(pme->clazz, exClazz)) {
+                    // exClazz is compatible with pme->clazz. Don't delete.
+                    if (!matchExClazz || rvmIsSubClass(exClazz, matchExClazz)) {
+                        // The previously found compatible exception class is 
+                        // equal to or more specific than this one. Use this one.
+                        matchExClazz = exClazz;
+                    }
+                }
+            }
+            if (matchExClazz) {
+                pme->clazz = matchExClazz;
+            } else {
+                LL_DELETE(proxyMethod->allowedExceptions, pme);
+            }
+        }
+    }
+    // Record the lookup function in proxyClassData
+    LookupEntry* entry = rvmAllocateMemory(env, sizeof(LookupEntry));
+    if (!entry) return FALSE;
+    entry->key.name = method->name;
+    entry->key.desc = method->desc;
+    entry->method = proxyMethod;
+    HASH_ADD(hh, proxyClassData->lookupsHash, key, sizeof(LookupKey), entry);
+    return TRUE;
 }
 
 static jboolean addProxyMethods(Env* env, Class* proxyClass, Class* clazz, ProxyClassData* proxyClassData) {
@@ -61,29 +168,13 @@ static jboolean addProxyMethods(Env* env, Class* proxyClass, Class* clazz, Proxy
         if (!METHOD_IS_STATIC(method) && !METHOD_IS_PRIVATE(method) && !METHOD_IS_FINAL(method)
                 && (!METHOD_IS_CONSTRUCTOR(method) || clazz == proxyClass->superclass)) {
 
-            void* impl = NULL;
-            jint access = (method->access & (~ACC_ABSTRACT & ~ACC_NATIVE)) | ACC_FINAL;
             if (METHOD_IS_CONSTRUCTOR(method)) {
-                impl = method->impl;
                 // TODO: For now we make all constructors public to satisfy java.lang.reflect.Proxy. 
-                access = ACC_PUBLIC;
-                if (!addProxyMethod(env, proxyClass, method, access, impl)) return FALSE;
+                if (!addProxyMethod(env, proxyClass, method, ACC_PUBLIC, method->impl)) return FALSE;
             } else {
-                impl = _proxy0;
                 if (METHOD_IS_PUBLIC(method)) { 
-                    ProxyMethod* proxyMethod = hasMethod(env, proxyClass, method->name, method->desc);
-                    if (rvmExceptionOccurred(env)) return FALSE;
-                    if (!proxyMethod) {
-                        proxyMethod = addProxyMethod(env, proxyClass, method, access, impl);
-                        if (!proxyMethod) return FALSE;
-                    }
-                    // Record the lookup function in proxyClassData
-                    LookupEntry* entry = rvmAllocateMemory(env, sizeof(LookupEntry));
-                    if (!entry) return FALSE;
-                    entry->key.name = method->name;
-                    entry->key.desc = method->desc;
-                    entry->method = proxyMethod;
-                    HASH_ADD(hh, proxyClassData->lookupsHash, key, sizeof(LookupKey), entry);
+                    jint access = (method->access & (~ACC_ABSTRACT & ~ACC_NATIVE)) | ACC_FINAL;
+                    tryAddProxyMethod(env, proxyClass, method, access, proxyClassData);
                 }
             }
         }
@@ -104,27 +195,17 @@ static jboolean implementAbstractInterfaceMethods(Env* env, Class* proxyClass, I
     if (rvmExceptionOccurred(env)) return FALSE;
     for (; method != NULL; method = method->next) {
         if (!METHOD_IS_CLASS_INITIALIZER(method)) {
-            ProxyMethod* proxyMethod = hasMethod(env, proxyClass, method->name, method->desc);
-            if (rvmExceptionOccurred(env)) return FALSE;
-            if (!proxyMethod) { 
-                jint access = (method->access & (~ACC_ABSTRACT)) | ACC_FINAL;
-                proxyMethod = addProxyMethod(env, proxyClass, method, access, _proxy0);
-                if (!proxyMethod) return FALSE;
-            }
-            // Record the lookup function in proxyClassData
-            LookupEntry* entry = rvmAllocateMemory(env, sizeof(LookupEntry));
-            if (!entry) return FALSE;
-            entry->key.name = method->name;
-            entry->key.desc = method->desc;
-            entry->method = proxyMethod;
-            HASH_ADD(hh, proxyClassData->lookupsHash, key, sizeof(LookupKey), entry);
+            jint access = (method->access & (~ACC_ABSTRACT)) | ACC_FINAL;
+            tryAddProxyMethod(env, proxyClass, method, access, proxyClassData);
         }
     }
 
-    if (!implementAbstractInterfaceMethods(env, proxyClass, interface->next, proxyClassData)) return FALSE;
+    // Interfaces are implemented depth-first so call recursively with the super interfaces of the current interface first
     Interface* interfaceInterfaces = rvmGetInterfaces(env, interface->interface);
     if (rvmExceptionCheck(env)) return FALSE;
     if (!implementAbstractInterfaceMethods(env, proxyClass, interfaceInterfaces, proxyClassData)) return FALSE;
+    // Now proceed with the next interface
+    if (!implementAbstractInterfaceMethods(env, proxyClass, interface->next, proxyClassData)) return FALSE;
 
     return TRUE;
 }
@@ -149,6 +230,8 @@ Class* rvmProxyCreateProxyClass(Env* env, Class* superclass, ClassLoader* classL
     // Initialize methods to NULL to prevent rvmGetMethods() from trying to load the methods if called with this proxy class
     proxyClass->_methods = NULL;
 
+    if (!addProxyMethods(env, proxyClass, superclass, proxyClassData)) return NULL;
+
     Class* c = proxyClass;
     while (c) {
         Interface* interface = rvmGetInterfaces(env, c);
@@ -156,8 +239,6 @@ Class* rvmProxyCreateProxyClass(Env* env, Class* superclass, ClassLoader* classL
         if (!implementAbstractInterfaceMethods(env, proxyClass, interface, proxyClassData)) return NULL;
         c = c->superclass;
     }
-
-    if (!addProxyMethods(env, proxyClass, superclass, proxyClassData)) return NULL;
 
     if (!rvmRegisterClass(env, proxyClass)) return NULL;
 

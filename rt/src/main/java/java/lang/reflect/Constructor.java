@@ -115,8 +115,8 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
         if (!genericTypesAreInitialized) {
             String signatureAttribute = getSignatureAttribute();
             GenericSignatureParser parser = new GenericSignatureParser(
-                    declaringClass.getClassLoader());
-            parser.parseForConstructor(this, signatureAttribute, exceptionTypes);
+                    getDeclaringClass().getClassLoader());
+            parser.parseForConstructor(this, signatureAttribute, getExceptionTypes());
             formalTypeParameters = parser.formalTypeParameters;
             genericParameterTypes = parser.parameterTypes;
             genericExceptionTypes = parser.exceptionTypes;

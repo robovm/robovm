@@ -382,7 +382,7 @@ public class AccessibleObject implements AnnotatedElement {
                 if (sc == callee) {
                     return true;
                 }
-                sc = caller.getSuperclass();
+                sc = sc.getSuperclass();
             }
         }
         return samePackage || isSamePackage(caller, callee);

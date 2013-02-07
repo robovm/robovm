@@ -19,6 +19,8 @@
 #include "uthash.h"
 #include "utlist.h"
 
+#define LOG_TAG "core.memory"
+
 static Class* java_nio_ReadWriteDirectByteBuffer = NULL;
 static Method* java_nio_ReadWriteDirectByteBuffer_init = NULL;
 static InstanceField* java_nio_Buffer_effectiveDirectAddress = NULL;
@@ -152,6 +154,10 @@ static struct GC_ms_entry* markObject(GC_word* addr, struct GC_ms_entry* mark_st
     return mark_stack_ptr;
 }
 
+static void gcWarnProc(char* msg, GC_word arg) {
+    WARNF(msg, arg);
+}
+
 jboolean initGC(Options* options) {
     GC_INIT();
     GC_set_java_finalization(1);
@@ -170,6 +176,8 @@ jboolean initGC(Options* options) {
     if (rvmInitMutex(&referentsLock) != 0) {
         return FALSE;
     }
+
+    GC_set_warn_proc(gcWarnProc);
 
     return TRUE;
 }
@@ -486,11 +494,21 @@ jboolean rvmInitMemory(Env* env) {
 }
 
 Class* rvmAllocateMemoryForClass(Env* env, jint classDataSize) {
-    return gcAllocateKind(classDataSize, object_gc_kind);
+    Class* m = (Class*) gcAllocateKind(classDataSize, object_gc_kind);
+    if (!m) {
+        rvmThrowOutOfMemoryError(env);
+        return NULL;
+    }
+    return m;
 }
 
 Object* rvmAllocateMemoryForObject(Env* env, Class* clazz) {
-    return gcAllocateKind(clazz->instanceDataSize, object_gc_kind);
+    Object* m = (Object*) gcAllocateKind(clazz->instanceDataSize, object_gc_kind);
+    if (!m) {
+        rvmThrowOutOfMemoryError(env);
+        return NULL;
+    }
+    return m;
 }
 
 Array* rvmAllocateMemoryForArray(Env* env, jint length, jint elementSize) {
@@ -499,7 +517,12 @@ Array* rvmAllocateMemoryForArray(Env* env, jint length, jint elementSize) {
         rvmThrowOutOfMemoryError(env);
         return NULL;
     }
-    return gcAllocateKind((size_t) size, object_gc_kind);
+    Array* m = (Array*) gcAllocateKind((size_t) size, object_gc_kind);
+    if (!m) {
+        rvmThrowOutOfMemoryError(env);
+        return NULL;
+    }
+    return m;
 }
 
 void* rvmAllocateMemory(Env* env, size_t size) {

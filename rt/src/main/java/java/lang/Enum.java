@@ -36,6 +36,7 @@ public abstract class Enum<E extends Enum<E>> implements Serializable, Comparabl
         @Override protected Object[] create(Class<? extends Enum> enumType) {
             try {
                 Method method = enumType.getDeclaredMethod("values", EmptyArray.CLASS);
+                method.setAccessible(true); // RoboVM note: Required on RoboVM
                 return (Object[]) method.invoke((Object[]) null);
             } catch (IllegalAccessException impossible) {
                 throw new AssertionError();

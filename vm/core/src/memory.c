@@ -39,6 +39,8 @@ static Method* java_lang_ref_ReferenceQueue_add = NULL;
 static InstanceField* java_lang_Throwable_stackState = NULL;
 static Class* org_robovm_rt_bro_Struct = NULL;
 static InstanceField* org_robovm_rt_bro_Struct_handle = NULL;
+static Class* java_nio_MemoryBlock = NULL;
+static InstanceField* java_nio_MemoryBlock_address = NULL;
 static VM* vm = NULL;
 
 typedef struct ReferenceList {
@@ -135,6 +137,12 @@ static struct GC_ms_entry* markObject(GC_word* addr, struct GC_ms_entry* mark_st
                 // Possibly to an address on the GCed heap.
                 void** field_start = (void**) (((char*) obj) + org_robovm_rt_bro_Struct_handle->offset);
                 void** field_end = (void**) (((char*) field_start) + sizeof(jlong));
+                mark_stack_ptr = markRegion(field_start, field_end, mark_stack_ptr, mark_stack_limit);
+            } else if (clazz == java_nio_MemoryBlock) {
+                // The 'address' field in java.nio.MemoryBlock is an int but contains a pointer.
+                // Possibly to an address on the GCed heap.
+                void** field_start = (void**) (((char*) obj) + java_nio_MemoryBlock_address->offset);
+                void** field_end = (void**) (((char*) field_start) + sizeof(jint));
                 mark_stack_ptr = markRegion(field_start, field_end, mark_stack_ptr, mark_stack_limit);
             }
             clazz = clazz->superclass;
@@ -464,6 +472,10 @@ jboolean rvmInitMemory(Env* env) {
         org_robovm_rt_bro_Struct_handle = rvmGetInstanceField(env, org_robovm_rt_bro_Struct, "handle", "J");
         if (!org_robovm_rt_bro_Struct_handle) return FALSE;
     }
+    java_nio_MemoryBlock = rvmFindClassUsingLoader(env, "java/nio/MemoryBlock", NULL);
+    if (!java_nio_MemoryBlock) return FALSE;
+    java_nio_MemoryBlock_address = rvmGetInstanceField(env, java_nio_MemoryBlock, "address", "I");
+    if (!java_nio_MemoryBlock_address) return FALSE;
 
     // Make sure that java.lang.ReferenceQueue is initialized now to prevent deadlocks during finalization
     // when both holding the referentsLock and the classLock.

@@ -225,10 +225,12 @@ public final class Field extends AccessibleObject implements Member {
             }
             if (!flag) {
                 // Check access
-                Class<?> caller = VM.getStackClasses(1, 1)[0];
-                if (!checkAccessible(caller, this)) {
-                    throw new IllegalAccessException(String.format("Attempt to access field %s.%s from class %s", 
-                            getDeclaringClass().getName(), getName(), caller.getName()));
+                if (!checkAccessibleFast(this)) {
+                    Class<?> caller = VM.getStackClasses(1, 1)[0];
+                    if (!checkAccessible(caller, this)) {
+                        throw new IllegalAccessException(String.format("Attempt to access field %s.%s from class %s", 
+                                getDeclaringClass().getName(), getName(), caller.getName()));
+                    }
                 }
             }
         }

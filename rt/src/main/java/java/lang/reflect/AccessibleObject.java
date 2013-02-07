@@ -351,15 +351,23 @@ public class AccessibleObject implements AnnotatedElement {
         return n1.substring(0, dot1).equals(n2.substring(0, dot2));
     }
     
+    static boolean checkAccessibleFast(Member member) {
+        int access = member.getModifiers();
+        return (member.getDeclaringClass().getModifiers() & access & Modifier.PUBLIC) > 0;
+    }
+    
     static boolean checkAccessible(Class<?> caller, Member member) {
         Class<?> callee = member.getDeclaringClass();
         if (caller == callee) {
             return true;
         }
         
+        boolean samePackage = false;
+        
         // Check if callee class is accessible
         if ((callee.getModifiers() & Modifier.PUBLIC) == 0) {
-            if (!isSamePackage(caller, callee)) {
+            samePackage = isSamePackage(caller, callee);
+            if (!samePackage) {
                 return false;
             }
         }
@@ -381,7 +389,7 @@ public class AccessibleObject implements AnnotatedElement {
                 sc = caller.getSuperclass();
             }
         }
-        return isSamePackage(caller, callee);
+        return samePackage || isSamePackage(caller, callee);
     }
     
     /**

@@ -548,10 +548,12 @@ public final class Method extends AccessibleObject implements GenericDeclaration
         
         if (!flag) {
             // Check access
-            Class<?> caller = VM.getStackClasses(0, 1)[0];
-            if (!checkAccessible(caller, this)) {
-                throw new IllegalAccessException(String.format("Attempt to access method %s.%s(%s) from class %s", 
-                        getDeclaringClass().getName(), getName(), toString(parameterTypes), caller.getName()));
+            if (!checkAccessibleFast(this)) {
+                Class<?> caller = VM.getStackClasses(0, 1)[0];
+                if (!checkAccessible(caller, this)) {
+                    throw new IllegalAccessException(String.format("Attempt to access method %s.%s(%s) from class %s", 
+                            getDeclaringClass().getName(), getName(), toString(parameterTypes), caller.getName()));
+                }
             }
         }
         

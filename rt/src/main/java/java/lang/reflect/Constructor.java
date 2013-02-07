@@ -428,12 +428,14 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
         
         if (!flag) {
             // Check access
-            Class<?>[] callers = VM.getStackClasses(0, 2);
-            // If we've been called from Class.newInstance() we should use the caller's caller
-            Class<?> caller = callers[0] == Class.class ? callers[1] : callers[0];
-            if (!checkAccessible(caller, this)) {
-                throw new IllegalAccessException(String.format("Attempt to access constructor %s(%s) from class %s", 
-                        clazz.getName(), toString(parameterTypes), caller.getName()));
+            if (!checkAccessibleFast(this)) {
+                Class<?>[] callers = VM.getStackClasses(0, 2);
+                // If we've been called from Class.newInstance() we should use the caller's caller
+                Class<?> caller = callers[0] == Class.class ? callers[1] : callers[0];
+                if (!checkAccessible(caller, this)) {
+                    throw new IllegalAccessException(String.format("Attempt to access constructor %s(%s) from class %s", 
+                            clazz.getName(), toString(parameterTypes), caller.getName()));
+                }
             }
         }
         

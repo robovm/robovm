@@ -1154,9 +1154,9 @@ public final class Field extends AccessibleObject implements Member {
         if (result.length() != 0) {
             result.append(' ');
         }
-        appendArrayType(result, type);
+        appendTypeName(result, type);
         result.append(' ');
-        result.append(declaringClass.getName());
+        appendTypeName(result, declaringClass);
         result.append('.');
         result.append(name);
         return result.toString();

@@ -204,7 +204,7 @@ public final class Method extends AccessibleObject implements GenericDeclaration
         appendGenericType(sb, Types.getType(genericReturnType));
         sb.append(' ');
         // append method name
-        appendArrayType(sb, getDeclaringClass());
+        appendTypeName(sb, getDeclaringClass());
         sb.append(".").append(getName());
         // append parameters
         sb.append('(');
@@ -597,7 +597,7 @@ public final class Method extends AccessibleObject implements GenericDeclaration
 
         if (result.length() != 0)
             result.append(' ');
-        result.append(returnType.getName());
+        appendTypeName(result, returnType);
         result.append(' ');
         result.append(declaringClass.getName());
         result.append('.');

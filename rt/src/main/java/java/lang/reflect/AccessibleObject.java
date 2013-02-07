@@ -305,20 +305,16 @@ public class AccessibleObject implements AnnotatedElement {
         StringBuilder result = new StringBuilder();
 
         if (types.length != 0) {
-            result.append(getTypeName(types[0]));
+            appendTypeName(result, types[0]);
             for (int i = 1; i < types.length; i++) {
                 result.append(',');
-                result.append(getTypeName(types[i]));
+                appendTypeName(result, types[i]);
             }
         }
 
         return result.toString();
     }
 
-    private String getTypeName(Class<?> type) {
-        return type.isArray() ? type.getCanonicalName() : type.getName();
-    }
-    
     /**
      * Gets the Signature attribute for this instance. Returns {@code null}
      * if not found.
@@ -393,23 +389,21 @@ public class AccessibleObject implements AnnotatedElement {
     }
     
     /**
-     * Appends the specified class name to the buffer. The class may represent
-     * a simple type, a reference type or an array type.
-     *
-     * @param sb buffer
-     * @param obj the class which name should be appended to the buffer
-     *
-     * @throws NullPointerException if any of the arguments is null
+     * Appends the best {@link #toString} name for {@code c} to {@code out}.
+     * This works around the fact that {@link Class#getName} is lousy for
+     * primitive arrays (it writes "[C" instead of "char[]") and {@link
+     * Class#getCanonicalName()} is lousy for nested classes (it uses a "."
+     * separator rather than a "$" separator).
      */
-    void appendArrayType(StringBuilder sb, Class<?> obj) {
+    void appendTypeName(StringBuilder out, Class<?> c) {
         int dimensions = 0;
-        while (obj.isArray()) {
-            obj = obj.getComponentType();
+        while (c.isArray()) {
+            c = c.getComponentType();
             dimensions++;
         }
-        sb.append(obj.getName());
+        out.append(c.getName());
         for (int d = 0; d < dimensions; d++) {
-            sb.append("[]");
+            out.append("[]");
         }
     }
 

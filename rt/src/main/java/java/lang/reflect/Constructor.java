@@ -160,7 +160,7 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
             sb.append("> ");
         }
         // append constructor name
-        appendArrayType(sb, getDeclaringClass());
+        appendTypeName(sb, getDeclaringClass());
         // append parameters
         sb.append('(');
         appendArrayGenericType(sb,

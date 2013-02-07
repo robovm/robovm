@@ -537,6 +537,26 @@ void rvmGCCollect(Env* env) {
     GC_gcollect();
 }
 
+jlong rvmGetFreeMemory(Env* env) {
+    GC_word pfree_bytes;
+    GC_CALL GC_get_heap_usage_safe(NULL, &pfree_bytes, NULL, NULL, NULL);
+    return (jlong) pfree_bytes;
+}
+
+jlong rvmGetTotalMemory(Env* env) {
+    GC_word pheap_size;
+    GC_CALL GC_get_heap_usage_safe(&pheap_size, NULL, NULL, NULL, NULL);
+    return (jlong) pheap_size;
+}
+
+jlong rvmGetMaxMemory(Env* env) {
+    if (env->vm->options->maxHeapSize > 0) {
+        return env->vm->options->maxHeapSize;
+    }
+    // No limit. Return Long.MAX_VALUE as specified by java.lang.Runtime.maxMemory().
+    return 0x7fffffffffffffffLL;
+}
+
 void* rvmCopyMemory(Env* env, const void* src, size_t size) {
     void* dest = rvmAllocateMemory(env, size);
     if (!dest) return NULL;

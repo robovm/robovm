@@ -26,6 +26,18 @@ void Java_java_lang_Runtime_nativeLoad(Env* env, Class* clazz, Object* filename,
     rvmLoadNativeLibrary(env, path, classLoader);
 }
 
-void Java_java_lang_Runtime_gc(Env* env, Class* clazz) {
+void Java_java_lang_Runtime_gc(Env* env, Class* clazz, Object* thiz) {
     rvmGCCollect(env);
+}
+
+jlong Java_java_lang_Runtime_freeMemory(Env* env, Class* clazz, Object* thiz) {
+    return rvmGetFreeMemory(env);
+}
+
+jlong Java_java_lang_Runtime_totalMemory(Env* env, Class* clazz, Object* thiz) {
+    return rvmGetTotalMemory(env);
+}
+
+jlong Java_java_lang_Runtime_maxMemory(Env* env, Class* clazz, Object* thiz) {
+    return rvmGetMaxMemory(env);
 }

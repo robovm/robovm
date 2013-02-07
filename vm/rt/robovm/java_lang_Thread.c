@@ -79,6 +79,15 @@ jint Java_java_lang_Thread_internalGetState(Env* env, Class* cls, JavaThread* th
     return status;
 }
 
+void Java_java_lang_Thread_internalSetPriority(Env* env, Class* cls, JavaThread* threadObj, jint priority) {
+    rvmLockThreadsList();
+    Thread* thread = (Thread*) LONG_TO_PTR(threadObj->threadPtr);
+    if (thread) {
+        rvmChangeThreadPriority(env, thread, priority);
+    }
+    rvmUnlockThreadsList();
+}
+
 ObjectArray* Java_java_lang_Thread_internalGetStackTrace(Env* env, Class* cls, JavaThread* threadObj) {
     Thread* thread = (Thread*) LONG_TO_PTR(threadObj->threadPtr);
     CallStack* callStack = NULL;

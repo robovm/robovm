@@ -21,9 +21,9 @@
 
 /* memory.c */
 extern jboolean initGC(Options* options);
-extern void* gcAllocate(jint size);
-extern void* gcAllocateUncollectable(jint size);
-extern void* gcAllocateAtomic(jint size);
+extern void* gcAllocate(size_t size);
+extern void* gcAllocateUncollectable(size_t size);
+extern void* gcAllocateAtomic(size_t size);
 
 /* unwind.c */
 typedef struct Frame {

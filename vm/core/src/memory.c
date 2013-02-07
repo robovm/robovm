@@ -16,6 +16,7 @@
 #include <robovm.h>
 #include <string.h>
 #include <gc/gc_mark.h>
+#include "private.h"
 #include "uthash.h"
 #include "utlist.h"
 
@@ -44,6 +45,11 @@ static InstanceField* org_robovm_rt_bro_Struct_handle = NULL;
 static Class* java_nio_MemoryBlock = NULL;
 static InstanceField* java_nio_MemoryBlock_address = NULL;
 static VM* vm = NULL;
+
+// A shared OutOfMemoryError instance with an empty stack trace that we will use
+// when memory is so low that there's not even enough left to allocate a new 
+// OutOfMemoryError.
+static Object* criticalOutOfMemoryError = NULL;
 
 typedef struct ReferenceList {
     struct ReferenceList* next;
@@ -183,16 +189,39 @@ jboolean initGC(Options* options) {
 }
 
 static void* gcAllocateKind(size_t size, jint kind) {
-    return GC_generic_malloc(size, kind);
+    void* m = GC_generic_malloc(size, kind);
+    if (!m) {
+        // Force GC and try again
+        GC_gcollect();
+        m = GC_generic_malloc(size, kind);
+    }
+    return m;
 }
 void* gcAllocate(size_t size) {
-    return GC_MALLOC(size);
+    void* m = GC_MALLOC(size);
+    if (!m) {
+        // Force GC and try again
+        GC_gcollect();
+        m = GC_MALLOC(size);
+    }
+    return m;
 }
 void* gcAllocateUncollectable(size_t size) {
-    return GC_MALLOC_UNCOLLECTABLE(size);
+    void* m = GC_MALLOC_UNCOLLECTABLE(size);
+    if (!m) {
+        // Force GC and try again
+        GC_gcollect();
+        m = GC_MALLOC_UNCOLLECTABLE(size);
+    }
+    return m;
 }
 void* gcAllocateAtomic(size_t size) {
     void* m = GC_MALLOC_ATOMIC(size);
+    if (!m) {
+        // Force GC and try again
+        GC_gcollect();
+        m = GC_MALLOC_ATOMIC(size);
+    }
     if (m) {
         memset(m, 0, size);
     }
@@ -485,6 +514,9 @@ jboolean rvmInitMemory(Env* env) {
     java_nio_MemoryBlock_address = rvmGetInstanceField(env, java_nio_MemoryBlock, "address", "I");
     if (!java_nio_MemoryBlock_address) return FALSE;
 
+    criticalOutOfMemoryError = rvmAllocateObject(env, java_lang_OutOfMemoryError);
+    if (!criticalOutOfMemoryError) return FALSE;
+
     // Make sure that java.lang.ReferenceQueue is initialized now to prevent deadlocks during finalization
     // when both holding the referentsLock and the classLock.
     rvmInitialize(env, java_lang_ref_ReferenceQueue);
@@ -505,6 +537,12 @@ Class* rvmAllocateMemoryForClass(Env* env, jint classDataSize) {
 Object* rvmAllocateMemoryForObject(Env* env, Class* clazz) {
     Object* m = (Object*) gcAllocateKind(clazz->instanceDataSize, object_gc_kind);
     if (!m) {
+        if (clazz == java_lang_OutOfMemoryError) {
+            // We can't even allocate an OutOfMemoryError object. Prevent
+            // infinite recursion by returning the shared criticalOutOfMemoryError
+            // object.
+            return criticalOutOfMemoryError;
+        }
         rvmThrowOutOfMemoryError(env);
         return NULL;
     }
@@ -550,6 +588,10 @@ void* rvmAllocateMemoryAtomic(Env* env, size_t size) {
         return NULL;
     }
     return m;
+}
+
+jboolean rvmIsCriticalOutOfMemoryError(Env* env, Object* throwable) {
+    return throwable == criticalOutOfMemoryError;
 }
 
 void rvmFreeUncollectable(Env* env, void* m) {

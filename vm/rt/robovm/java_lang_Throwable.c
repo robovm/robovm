@@ -17,6 +17,12 @@
 #include <robovm.h>
 
 jlong Java_java_lang_Throwable_nativeFillInStackTrace(Env* env, Object* thiz) {
+    if (rvmIsCriticalOutOfMemoryError(env, thiz)) {
+        // nativeFillInStackTrace() was called on the shared criticalOutOfMemoryError. 
+        // Don't try to capture the call stack since it will most likely just 
+        // lead to another OOM and more recursion.
+        return 0;
+    }
     return PTR_TO_LONG(rvmCaptureCallStack(env));
 }
 

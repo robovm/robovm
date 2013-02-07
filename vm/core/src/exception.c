@@ -106,7 +106,9 @@ jboolean rvmThrowNew(Env* env, Class* clazz, const char* message) {
         string = rvmNewStringUTF(env, message, -1);
         if (!string) return FALSE;
     }
-    Object* e = rvmNewObject(env, clazz, constructor, string);
+    jvalue args[1];
+    args[0].l = (jobject) string;
+    Object* e = rvmNewObjectA(env, clazz, constructor, args);
     if (!e) return FALSE;
     rvmThrow(env, e);
     return TRUE;
@@ -137,7 +139,14 @@ jboolean rvmThrowInternalErrorErrno(Env* env, int errnum) {
 }
 
 jboolean rvmThrowOutOfMemoryError(Env* env) {
-    return rvmThrowNew(env, java_lang_OutOfMemoryError, NULL);
+    // Don't run the constructor on OutOfMemoryError instances since that will
+    // likely cause more OOM.
+    Object* e = rvmAllocateObject(env, java_lang_OutOfMemoryError);
+    if (!e) {
+        return FALSE;
+    }
+    rvmThrow(env, e);
+    return TRUE;
 }
 
 jboolean rvmThrowNoClassDefFoundError(Env* env, const char* message) {

@@ -448,7 +448,10 @@ void* lookupInterfaceMethod(Env* env, ClassInfoHeader* header, Object* thiz, cha
     if (rvmExceptionCheck(env)) return NULL;
     Class* ownerInterface = header->clazz;
     if (!rvmIsInstanceOf(env, thiz, ownerInterface)) {
-        rvmThrowLinkageError(env);
+        char message[256];
+        snprintf(message, 256, "Class %s does not implement the requested interface %s", 
+            rvmToBinaryClassName(env, thiz->clazz->name), rvmToBinaryClassName(env, ownerInterface->name));
+        rvmThrowIncompatibleClassChangeError(env, message);
         return NULL;
     }
     Method* method = rvmGetInstanceMethod(env, thiz->clazz, name, desc);

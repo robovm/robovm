@@ -59,6 +59,7 @@ extern Env* rvmGetEnv();
 extern Thread* rvmGetThreadByThreadId(Env* env, uint32_t threadId);
 extern jint rvmChangeThreadStatus(Env* env, Thread* thread, jint newStatus);
 extern void rvmChangeThreadPriority(Env* env, Thread* thread, jint priority);
+extern void rvmThreadNameChanged(Env* env, Thread* thread);
 
 #endif
 

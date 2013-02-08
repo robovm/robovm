@@ -421,3 +421,11 @@ jint rvmChangeThreadStatus(Env* env, Thread* thread, jint newStatus) {
 void rvmChangeThreadPriority(Env* env, Thread* thread, jint priority) {
     // TODO: Implement rvmChangeThreadPriority()
 }
+
+void rvmThreadNameChanged(Env* env, Thread* thread) {
+    // Signal the threadsChangedCond conditional variable to notify anyone
+    // interested (debugger).
+    rvmLockThreadsList();
+    pthread_cond_broadcast(&threadsChangedCond);
+    rvmUnlockThreadsList();
+}

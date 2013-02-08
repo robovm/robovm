@@ -27,6 +27,15 @@ void Java_java_lang_Thread_internalSleep(Env* env, Class* cls, jlong millis, jin
     rvmThreadSleep(env, millis, nanos);
 }
 
+void Java_java_lang_Thread_internalSetName(Env* env, Class* cls, JavaThread* threadObj, Object* threadName) {
+    rvmLockThreadsList();
+    Thread* thread = (Thread*) LONG_TO_PTR(threadObj->threadPtr);
+    if (thread) {
+        rvmThreadNameChanged(env, thread);
+    }
+    rvmUnlockThreadsList();
+}
+
 jboolean Java_java_lang_Thread_internalInterrupted(Env* env, Class* cls) {
     jboolean interrupted = env->currentThread->interrupted;
     env->currentThread->interrupted = FALSE;

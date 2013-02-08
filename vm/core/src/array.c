@@ -70,6 +70,11 @@ static Array* newArray(Env* env, Class* arrayType, jint elementSize, jint dims, 
     return array;
 }
 
+jint rvmGetArrayElementSize(Env* env, Class* arrayClass) {
+    assert(CLASS_IS_ARRAY(arrayClass));
+    return getElementSize(arrayClass->componentType->name);
+}
+
 BooleanArray* rvmNewBooleanArray(Env* env, jint length) {
     return (BooleanArray*) newArray(env, array_Z, sizeof(jboolean), 1, &length);
 }

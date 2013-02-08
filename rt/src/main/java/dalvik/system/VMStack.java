@@ -16,6 +16,8 @@
 
 package dalvik.system;
 
+import java.util.Arrays;
+
 import org.robovm.rt.VM;
 
 /**
@@ -79,7 +81,10 @@ public final class VMStack {
      * @return an array of stack trace elements, or null if the thread
      *      doesn't have a stack trace (e.g. because it exited)
      */
-    native public static StackTraceElement[] getThreadStackTrace(Thread t);
+    public static StackTraceElement[] getThreadStackTrace(Thread t) {
+        // RoboVM note: This is native in Android.
+        return t.getStackTrace();
+    }
 
     /**
      * Retrieves a partial stack trace from the specified thread into
@@ -92,6 +97,13 @@ public final class VMStack {
      *      desired. Unused elements will be filled with null values.
      * @return the number of elements filled
      */
-    native public static int fillStackTraceElements(Thread t,
-        StackTraceElement[] stackTraceElements);
+    public static int fillStackTraceElements(Thread t,
+        StackTraceElement[] stackTraceElements) {
+        // RoboVM note: This is native in Android.
+        Arrays.fill(stackTraceElements, null);
+        StackTraceElement[] st = t.getStackTrace();
+        int n = Math.min(st.length, stackTraceElements.length);
+        System.arraycopy(st, 0, stackTraceElements, 0, n);
+        return n;
+    }
 }

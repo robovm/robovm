@@ -176,7 +176,9 @@ public final class VMRuntime {
      * @param newTarget the new suggested ideal heap utilization.
      *                  This value may be adjusted internally.
      */
-    private native void nativeSetTargetHeapUtilization(float newTarget);
+    private void nativeSetTargetHeapUtilization(float newTarget) {
+        // RoboVM note: This is native in Android. In RoboVM this is a nop.
+    }
 
     /**
      * This method exists for binary compatibility.  It was part of

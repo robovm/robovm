@@ -138,8 +138,12 @@ public class UseChecker extends AbstractStmtSwitch
 	
 	private void handleInstanceFieldRef(InstanceFieldRef ifr, Stmt stmt)
 	{
+	    // RoboVM note: Soot used to resolve the field here but that can throw a ResolutionFailedException
+	    // if e.g. the field is has been changed from static to non-static since the time of compilation.
+	    // Instead we just use the declaringClass from the InstanceFieldRef similarly to what
+	    // handleInvokeExpr() does.
 		ifr.setBase(this.uv.visit(ifr.getBase(),
-			ifr.getField().getDeclaringClass().getType(), stmt));
+			ifr.getFieldRef().declaringClass().getType(), stmt));
 	}
 
 	public void caseBreakpointStmt(BreakpointStmt stmt) { }

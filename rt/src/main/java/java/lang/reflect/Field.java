@@ -258,14 +258,6 @@ public final class Field extends AccessibleObject implements Member {
         }
     }
 
-    private long getAddress(Object object) {
-        int mod = getModifiers();
-        if ((mod & Modifier.STATIC) > 0) {
-            return VM.getClassFieldAddress(field);
-        }
-        return VM.getObjectAddress(object) + VM.getInstanceFieldOffset(field);
-    }
-    
     private void throwGetConversionException(Class<?> fieldType, Class<?> expectedType) {
         throw new IllegalArgumentException("Cannot convert " + fieldType + " field " 
                 + getDeclaringClass().getName() + "." + getName() + " to " 
@@ -278,127 +270,127 @@ public final class Field extends AccessibleObject implements Member {
                 + valueType);
     }
     
-    private double getDouble(long address, Class<?> fieldType, Class<?> expectedType) {
+    private double getDouble(Object object, Class<?> fieldType, Class<?> expectedType) {
         if (fieldType == Double.TYPE) {
-            return VM.getDouble(address);
+            return getD(object, field);
         }
-        return getFloat(address, fieldType, expectedType); 
+        return getFloat(object, fieldType, expectedType); 
     }
     
-    private float getFloat(long address, Class<?> fieldType, Class<?> expectedType) {
+    private float getFloat(Object object, Class<?> fieldType, Class<?> expectedType) {
         if (fieldType == Float.TYPE) {
-            return VM.getFloat(address);
+            return getF(object, field);
         }
-        return getLong(address, fieldType, expectedType); 
+        return getLong(object, fieldType, expectedType); 
     }
     
-    private long getLong(long address, Class<?> fieldType, Class<?> expectedType) {
+    private long getLong(Object object, Class<?> fieldType, Class<?> expectedType) {
         if (fieldType == Long.TYPE) {
-            return VM.getLong(address);
+            return getJ(object, field);
         }
-        return getInt(address, fieldType, expectedType);
+        return getInt(object, fieldType, expectedType);
     }
     
-    private int getInt(long address, Class<?> fieldType, Class<?> expectedType) {
+    private int getInt(Object object, Class<?> fieldType, Class<?> expectedType) {
         if (fieldType == Integer.TYPE) {
-            return VM.getInt(address);
+            return getI(object, field);
         }
         if (fieldType == Character.TYPE) {
-            return VM.getChar(address);
+            return getC(object, field);
         }
-        return getShort(address, fieldType, expectedType);
+        return getShort(object, fieldType, expectedType);
     }
     
-    private char getChar(long address, Class<?> fieldType, Class<?> expectedType) {
+    private char getChar(Object object, Class<?> fieldType, Class<?> expectedType) {
         if (fieldType == Character.TYPE) {
-            return VM.getChar(address);
+            return getC(object, field);
         }
         throwGetConversionException(fieldType, expectedType);
         return 0;
     }
 
-    private short getShort(long address, Class<?> fieldType, Class<?> expectedType) {
+    private short getShort(Object object, Class<?> fieldType, Class<?> expectedType) {
         if (fieldType == Short.TYPE) {
-            return VM.getShort(address);
+            return getS(object, field);
         }
-        return getByte(address, fieldType, expectedType);
+        return getByte(object, fieldType, expectedType);
     }
 
-    private byte getByte(long address, Class<?> fieldType, Class<?> expectedType) {
+    private byte getByte(Object object, Class<?> fieldType, Class<?> expectedType) {
         if (fieldType == Byte.TYPE) {
-            return VM.getByte(address);
+            return getB(object, field);
         }
         throwGetConversionException(fieldType, expectedType);
         return 0;
     }
     
-    private boolean getBoolean(long address, Class<?> fieldType, Class<?> expectedType) {
+    private boolean getBoolean(Object object, Class<?> fieldType, Class<?> expectedType) {
         if (fieldType == Boolean.TYPE) {
-            return VM.getBoolean(address);
+            return getZ(object, field);
         }
         throwGetConversionException(fieldType, expectedType);
         return false;
     }
     
-    private void setDouble(long address, double value, Class<?> fieldType, Class<?> valueType) {
+    private void setDouble(Object object, double value, Class<?> fieldType, Class<?> valueType) {
         if (fieldType == Double.TYPE) {
-            VM.setDouble(address, value);
+            setD(object, field, value);
         } else {
             throwSetConversionException(fieldType, valueType);
         }
     }
 
-    private void setFloat(long address, float value, Class<?> fieldType, Class<?> valueType) {
+    private void setFloat(Object object, float value, Class<?> fieldType, Class<?> valueType) {
         if (fieldType == Float.TYPE) {
-            VM.setFloat(address, value);
+            setF(object, field, value);
         } else {
-            setDouble(address, value, fieldType, valueType);
+            setDouble(object, value, fieldType, valueType);
         }
     }
 
-    private void setLong(long address, long value, Class<?> fieldType, Class<?> valueType) {
+    private void setLong(Object object, long value, Class<?> fieldType, Class<?> valueType) {
         if (fieldType == Long.TYPE) {
-            VM.setLong(address, value);
+            setJ(object, field, value);
         } else {
-            setFloat(address, value, fieldType, valueType);
+            setFloat(object, value, fieldType, valueType);
         }
     }
     
-    private void setInt(long address, int value, Class<?> fieldType, Class<?> valueType) {
+    private void setInt(Object object, int value, Class<?> fieldType, Class<?> valueType) {
         if (fieldType == Integer.TYPE) {
-            VM.setInt(address, value);
+            setI(object, field, value);
         } else {
-            setLong(address, value, fieldType, valueType);
+            setLong(object, value, fieldType, valueType);
         }
     }
     
-    private void setChar(long address, char value, Class<?> fieldType, Class<?> valueType) {
+    private void setChar(Object object, char value, Class<?> fieldType, Class<?> valueType) {
         if (fieldType == Character.TYPE) {
-            VM.setChar(address, value);
+            setC(object, field, value);
         } else {
-            setInt(address, value, fieldType, valueType);
+            setInt(object, value, fieldType, valueType);
         }
     }
 
-    private void setShort(long address, short value, Class<?> fieldType, Class<?> valueType) {
+    private void setShort(Object object, short value, Class<?> fieldType, Class<?> valueType) {
         if (fieldType == Short.TYPE) {
-            VM.setShort(address, value);
+            setS(object, field, value);
         } else {
-            setInt(address, value, fieldType, valueType);
+            setInt(object, value, fieldType, valueType);
         }
     }
     
-    private void setByte(long address, byte value, Class<?> fieldType, Class<?> valueType) {
+    private void setByte(Object object, byte value, Class<?> fieldType, Class<?> valueType) {
         if (fieldType == Byte.TYPE) {
-            VM.setByte(address, value);
+            setB(object, field, value);
         } else {
-            setShort(address, value, fieldType, valueType);
+            setShort(object, value, fieldType, valueType);
         }
     }
     
-    private void setBoolean(long address, boolean value, Class<?> fieldType, Class<?> valueType) {
+    private void setBoolean(Object object, boolean value, Class<?> fieldType, Class<?> valueType) {
         if (fieldType == Boolean.TYPE) {
-            VM.setBoolean(address, value);
+            setZ(object, field, value);
         } else {
             throwSetConversionException(fieldType, valueType);
         }
@@ -436,34 +428,33 @@ public final class Field extends AccessibleObject implements Member {
         checkAccess(object, false);
         checkReceiver(object);
         Class<?> type = getType();
-        long address = getAddress(object);
         if (type.isPrimitive()) {
             if (type == Boolean.TYPE) {
-                return Boolean.valueOf(VM.getBoolean(address));
+                return Boolean.valueOf(getZ(object, field));
             }
             if (type == Byte.TYPE) {
-                return Byte.valueOf(VM.getByte(address));
+                return Byte.valueOf(getB(object, field));
             }
             if (type == Short.TYPE) {
-                return Short.valueOf(VM.getShort(address));
+                return Short.valueOf(getS(object, field));
             }
             if (type == Character.TYPE) {
-                return Character.valueOf(VM.getChar(address));
+                return Character.valueOf(getC(object, field));
             }
             if (type == Integer.TYPE) {
-                return Integer.valueOf(VM.getInt(address));
+                return Integer.valueOf(getI(object, field));
             }
             if (type == Long.TYPE) {
-                return Long.valueOf(VM.getLong(address));
+                return Long.valueOf(getJ(object, field));
             }
             if (type == Float.TYPE) {
-                return Float.valueOf(VM.getFloat(address));
+                return Float.valueOf(getF(object, field));
             }
             if (type == Double.TYPE) {
-                return Double.valueOf(VM.getDouble(address));
+                return Double.valueOf(getD(object, field));
             }
         }
-        return VM.getObject(address);
+        return getL(object, field);
     }
 
     /**
@@ -494,7 +485,7 @@ public final class Field extends AccessibleObject implements Member {
         
         checkAccess(object, false);
         checkReceiver(object);
-        return getBoolean(getAddress(object), getType(), Boolean.TYPE);
+        return getBoolean(object, getType(), Boolean.TYPE);
     }
 
     /**
@@ -525,7 +516,7 @@ public final class Field extends AccessibleObject implements Member {
                 
         checkAccess(object, false);
         checkReceiver(object);
-        return getByte(getAddress(object), getType(), Byte.TYPE);
+        return getByte(object, getType(), Byte.TYPE);
     }
 
     /**
@@ -556,7 +547,7 @@ public final class Field extends AccessibleObject implements Member {
                 
         checkAccess(object, false);
         checkReceiver(object);
-        return getChar(getAddress(object), getType(), Character.TYPE);
+        return getChar(object, getType(), Character.TYPE);
     }
 
     /**
@@ -600,7 +591,7 @@ public final class Field extends AccessibleObject implements Member {
                 
         checkAccess(object, false);
         checkReceiver(object);
-        return getDouble(getAddress(object), getType(), Double.TYPE);
+        return getDouble(object, getType(), Double.TYPE);
     }
 
     /**
@@ -631,7 +622,7 @@ public final class Field extends AccessibleObject implements Member {
                 
         checkAccess(object, false);
         checkReceiver(object);
-        return getFloat(getAddress(object), getType(), Float.TYPE);
+        return getFloat(object, getType(), Float.TYPE);
     }
 
     /**
@@ -662,7 +653,7 @@ public final class Field extends AccessibleObject implements Member {
                 
         checkAccess(object, false);
         checkReceiver(object);
-        return getInt(getAddress(object), getType(), Integer.TYPE);
+        return getInt(object, getType(), Integer.TYPE);
     }
 
     /**
@@ -693,7 +684,7 @@ public final class Field extends AccessibleObject implements Member {
                 
         checkAccess(object, false);
         checkReceiver(object);
-        return getLong(getAddress(object), getType(), Long.TYPE);
+        return getLong(object, getType(), Long.TYPE);
     }
 
     /**
@@ -752,7 +743,7 @@ public final class Field extends AccessibleObject implements Member {
                 
         checkAccess(object, false);
         checkReceiver(object);
-        return getShort(getAddress(object), getType(), Short.TYPE);
+        return getShort(object, getType(), Short.TYPE);
     }
 
     /**
@@ -819,27 +810,26 @@ public final class Field extends AccessibleObject implements Member {
         checkAccess(object, true);
         checkReceiver(object);
         Class<?> type = getType();
-        long address = getAddress(object);
         if (type.isPrimitive()) {
             if (value == null) {
                 throwSetConversionException(type, null);
             }
             if (value instanceof Boolean) {
-                setBoolean(address, ((Boolean) value).booleanValue(), type, Boolean.TYPE);
+                setBoolean(object, ((Boolean) value).booleanValue(), type, Boolean.TYPE);
             } else if (value instanceof Byte) {
-                setByte(address, ((Byte) value).byteValue(), type, Byte.TYPE);
+                setByte(object, ((Byte) value).byteValue(), type, Byte.TYPE);
             } else if (value instanceof Short) {
-                setShort(address, ((Short) value).shortValue(), type, Short.TYPE);
+                setShort(object, ((Short) value).shortValue(), type, Short.TYPE);
             } else if (value instanceof Character) {
-                setChar(address, ((Character) value).charValue(), type, Character.TYPE);
+                setChar(object, ((Character) value).charValue(), type, Character.TYPE);
             } else if (value instanceof Integer) {
-                setInt(address, ((Integer) value).intValue(), type, Integer.TYPE);
+                setInt(object, ((Integer) value).intValue(), type, Integer.TYPE);
             } else if (value instanceof Long) {
-                setLong(address, ((Long) value).longValue(), type, Long.TYPE);
+                setLong(object, ((Long) value).longValue(), type, Long.TYPE);
             } else if (value instanceof Float) {
-                setFloat(address, ((Float) value).floatValue(), type, Float.TYPE);
+                setFloat(object, ((Float) value).floatValue(), type, Float.TYPE);
             } else if (value instanceof Double) {
-                setDouble(address, ((Double) value).doubleValue(), type, Double.TYPE);
+                setDouble(object, ((Double) value).doubleValue(), type, Double.TYPE);
             } else {
                 throwSetConversionException(type, value.getClass());
             }
@@ -850,7 +840,7 @@ public final class Field extends AccessibleObject implements Member {
                                 getType().getName(), getDeclaringClass().getName(), 
                                 getName(), value.getClass().getName()));
             }
-            VM.setObject(address, value);
+            setL(object, field, value);
         }
     }
 
@@ -887,7 +877,7 @@ public final class Field extends AccessibleObject implements Member {
                 
         checkAccess(object, true);
         checkReceiver(object);
-        setBoolean(getAddress(object), value, getType(), Boolean.TYPE);
+        setBoolean(object, value, getType(), Boolean.TYPE);
     }
 
     /**
@@ -922,7 +912,7 @@ public final class Field extends AccessibleObject implements Member {
         
         checkAccess(object, true);
         checkReceiver(object);
-        setByte(getAddress(object), value, getType(), Byte.TYPE);
+        setByte(object, value, getType(), Byte.TYPE);
     }
 
     /**
@@ -957,7 +947,7 @@ public final class Field extends AccessibleObject implements Member {
         
         checkAccess(object, true);
         checkReceiver(object);
-        setChar(getAddress(object), value, getType(), Character.TYPE);
+        setChar(object, value, getType(), Character.TYPE);
     }
 
     /**
@@ -992,7 +982,7 @@ public final class Field extends AccessibleObject implements Member {
         
         checkAccess(object, true);
         checkReceiver(object);
-        setDouble(getAddress(object), value, getType(), Double.TYPE);
+        setDouble(object, value, getType(), Double.TYPE);
     }
 
     /**
@@ -1027,7 +1017,7 @@ public final class Field extends AccessibleObject implements Member {
         
         checkAccess(object, true);
         checkReceiver(object);
-        setFloat(getAddress(object), value, getType(), Float.TYPE);
+        setFloat(object, value, getType(), Float.TYPE);
     }
 
     /**
@@ -1062,7 +1052,7 @@ public final class Field extends AccessibleObject implements Member {
                 
         checkAccess(object, true);
         checkReceiver(object);
-        setInt(getAddress(object), value, getType(), Integer.TYPE);
+        setInt(object, value, getType(), Integer.TYPE);
     }
 
     /**
@@ -1097,7 +1087,7 @@ public final class Field extends AccessibleObject implements Member {
                 
         checkAccess(object, true);
         checkReceiver(object);
-        setLong(getAddress(object), value, getType(), Long.TYPE);
+        setLong(object, value, getType(), Long.TYPE);
     }
 
     /**
@@ -1132,7 +1122,7 @@ public final class Field extends AccessibleObject implements Member {
         
         checkAccess(object, true);
         checkReceiver(object);
-        setShort(getAddress(object), value, getType(), Short.TYPE);
+        setShort(object, value, getType(), Short.TYPE);
     }
 
     /**
@@ -1170,4 +1160,23 @@ public final class Field extends AccessibleObject implements Member {
         result.append(name);
         return result.toString();
     }
+
+    private static native boolean getZ(Object o, long field);
+    private static native byte getB(Object o, long field);
+    private static native char getC(Object o, long field);
+    private static native short getS(Object o, long field);
+    private static native int getI(Object o, long field);
+    private static native long getJ(Object o, long field);
+    private static native float getF(Object o, long field);
+    private static native double getD(Object o, long field);
+    private static native Object getL(Object o, long field);
+    private static native void setZ(Object o, long field, boolean value);
+    private static native void setB(Object o, long field, byte value);
+    private static native void setC(Object o, long field, char value);
+    private static native void setS(Object o, long field, short value);
+    private static native void setI(Object o, long field, int value);
+    private static native void setJ(Object o, long field, long value);
+    private static native void setF(Object o, long field, float value);
+    private static native void setD(Object o, long field, double value);
+    private static native void setL(Object o, long field, Object value);
 }

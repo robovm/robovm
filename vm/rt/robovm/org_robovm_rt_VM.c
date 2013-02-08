@@ -98,8 +98,8 @@ jlong Java_org_robovm_rt_VM_allocateMemoryAtomic(Env* env, Class* c, jint size) 
     return PTR_TO_LONG(rvmAllocateMemoryAtomic(env, size));
 }
 
-void Java_org_robovm_rt_VM_freeMemory(Env* env, Class* c, jlong address) {
-    rvmFreeMemory(LONG_TO_PTR(address));
+void Java_org_robovm_rt_VM_freeMemoryUncollectable(Env* env, Class* c, jlong address) {
+    rvmFreeMemoryUncollectable(env, LONG_TO_PTR(address));
 }
 
 void Java_org_robovm_rt_VM_registerDisappearingLink(Env* env, Class* c, jlong address, Object* obj) {

@@ -594,7 +594,7 @@ jboolean rvmIsCriticalOutOfMemoryError(Env* env, Object* throwable) {
     return throwable == criticalOutOfMemoryError;
 }
 
-void rvmFreeUncollectable(Env* env, void* m) {
+void rvmFreeMemoryUncollectable(Env* env, void* m) {
     GC_FREE(m);
 }
 

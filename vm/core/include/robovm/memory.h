@@ -28,7 +28,7 @@ extern Array* rvmAllocateMemoryForArray(Env* env, jint length, jint elementSize)
 extern void* rvmAllocateMemory(Env* env, size_t size);
 extern void* rvmAllocateMemoryUncollectable(Env* env, size_t size);
 extern void* rvmAllocateMemoryAtomic(Env* env, size_t size);
-extern void rvmFreeMemory(void* m);
+extern void rvmFreeMemoryUncollectable(Env* env, void* m);
 extern void rvmGCCollect(Env* env);
 extern jlong rvmGetFreeMemory(Env* env);
 extern jlong rvmGetTotalMemory(Env* env);

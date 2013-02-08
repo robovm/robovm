@@ -115,7 +115,7 @@ extern "C" double Java_java_lang_Math_sin(JNIEnv*, jclass, double d)
 extern "C" jint Java_java_lang_Float_floatToIntBits(JNIEnv*, jclass, float value)
 {
     Convert32 convert;
-    convert.arg = value;
+    convert.ff = value;
     return isnanf(convert.ff) ? 0x7fc00000 : convert.arg;
 }
 

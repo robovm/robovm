@@ -217,18 +217,27 @@ public final class Field extends AccessibleObject implements Member {
         return object instanceof Field && toString().equals(object.toString());
     }
 
-    private void checkAccess(boolean setter) throws IllegalAccessException {
+    private void checkAccess(Object receiver, boolean setter) throws IllegalAccessException {
         if (!flag) {
             int mod = getModifiers();
             if (setter && (mod & Modifier.FINAL) > 0) {
                 throw new IllegalAccessException("Cannot set final field");
             }
-            if (!flag) {
-                // Check access
-                if (!checkAccessibleFast(this)) {
-                    Class<?> caller = VM.getStackClasses(1, 1)[0];
-                    if (!checkAccessible(caller, this)) {
-                        throw new IllegalAccessException(String.format("Attempt to access field %s.%s from class %s", 
+            // Check access
+            if (!checkAccessibleFast(this)) {
+                Class<?> caller = VM.getStackClasses(1, 1)[0];
+                if (!checkAccessible(caller, this)) {
+                    throw new IllegalAccessException(String.format(
+                            "Attempt to access field %s.%s from class %s", 
+                            getDeclaringClass().getName(), getName(), caller.getName()));
+                }
+                
+                if ((getModifiers() & Modifier.PROTECTED) > 0) {
+                    boolean isInstance = caller.isInstance(receiver);
+                    boolean samePackage = isSamePackage(getDeclaringClass(), caller);
+                    if (!isInstance && !samePackage) {
+                        throw new IllegalAccessException(String.format(
+                                "Attempt to access protected field %s.%s from class %s", 
                                 getDeclaringClass().getName(), getName(), caller.getName()));
                     }
                 }
@@ -424,7 +433,7 @@ public final class Field extends AccessibleObject implements Member {
     public Object get(Object object) throws IllegalAccessException,
             IllegalArgumentException {
 
-        checkAccess(false);
+        checkAccess(object, false);
         checkReceiver(object);
         Class<?> type = getType();
         long address = getAddress(object);
@@ -483,7 +492,7 @@ public final class Field extends AccessibleObject implements Member {
     public boolean getBoolean(Object object)
             throws IllegalAccessException, IllegalArgumentException {
         
-        checkAccess(false);
+        checkAccess(object, false);
         checkReceiver(object);
         return getBoolean(getAddress(object), getType(), Boolean.TYPE);
     }
@@ -514,7 +523,7 @@ public final class Field extends AccessibleObject implements Member {
     public byte getByte(Object object) throws IllegalAccessException,
             IllegalArgumentException {
                 
-        checkAccess(false);
+        checkAccess(object, false);
         checkReceiver(object);
         return getByte(getAddress(object), getType(), Byte.TYPE);
     }
@@ -545,7 +554,7 @@ public final class Field extends AccessibleObject implements Member {
     public char getChar(Object object) throws IllegalAccessException,
             IllegalArgumentException {
                 
-        checkAccess(false);
+        checkAccess(object, false);
         checkReceiver(object);
         return getChar(getAddress(object), getType(), Character.TYPE);
     }
@@ -589,7 +598,7 @@ public final class Field extends AccessibleObject implements Member {
     public double getDouble(Object object)
             throws IllegalAccessException, IllegalArgumentException {
                 
-        checkAccess(false);
+        checkAccess(object, false);
         checkReceiver(object);
         return getDouble(getAddress(object), getType(), Double.TYPE);
     }
@@ -620,7 +629,7 @@ public final class Field extends AccessibleObject implements Member {
     public float getFloat(Object object) throws IllegalAccessException,
             IllegalArgumentException {
                 
-        checkAccess(false);
+        checkAccess(object, false);
         checkReceiver(object);
         return getFloat(getAddress(object), getType(), Float.TYPE);
     }
@@ -651,7 +660,7 @@ public final class Field extends AccessibleObject implements Member {
     public int getInt(Object object) throws IllegalAccessException,
             IllegalArgumentException {
                 
-        checkAccess(false);
+        checkAccess(object, false);
         checkReceiver(object);
         return getInt(getAddress(object), getType(), Integer.TYPE);
     }
@@ -682,7 +691,7 @@ public final class Field extends AccessibleObject implements Member {
     public long getLong(Object object) throws IllegalAccessException,
             IllegalArgumentException {
                 
-        checkAccess(false);
+        checkAccess(object, false);
         checkReceiver(object);
         return getLong(getAddress(object), getType(), Long.TYPE);
     }
@@ -741,7 +750,7 @@ public final class Field extends AccessibleObject implements Member {
     public short getShort(Object object) throws IllegalAccessException,
             IllegalArgumentException {
                 
-        checkAccess(false);
+        checkAccess(object, false);
         checkReceiver(object);
         return getShort(getAddress(object), getType(), Short.TYPE);
     }
@@ -807,7 +816,7 @@ public final class Field extends AccessibleObject implements Member {
     public void set(Object object, Object value)
             throws IllegalAccessException, IllegalArgumentException {
 
-        checkAccess(true);
+        checkAccess(object, true);
         checkReceiver(object);
         Class<?> type = getType();
         long address = getAddress(object);
@@ -876,7 +885,7 @@ public final class Field extends AccessibleObject implements Member {
     public void setBoolean(Object object, boolean value)
             throws IllegalAccessException, IllegalArgumentException {
                 
-        checkAccess(true);
+        checkAccess(object, true);
         checkReceiver(object);
         setBoolean(getAddress(object), value, getType(), Boolean.TYPE);
     }
@@ -911,7 +920,7 @@ public final class Field extends AccessibleObject implements Member {
     public void setByte(Object object, byte value)
             throws IllegalAccessException, IllegalArgumentException {
         
-        checkAccess(true);
+        checkAccess(object, true);
         checkReceiver(object);
         setByte(getAddress(object), value, getType(), Byte.TYPE);
     }
@@ -946,7 +955,7 @@ public final class Field extends AccessibleObject implements Member {
     public void setChar(Object object, char value)
             throws IllegalAccessException, IllegalArgumentException {
         
-        checkAccess(true);
+        checkAccess(object, true);
         checkReceiver(object);
         setChar(getAddress(object), value, getType(), Character.TYPE);
     }
@@ -981,7 +990,7 @@ public final class Field extends AccessibleObject implements Member {
     public void setDouble(Object object, double value)
             throws IllegalAccessException, IllegalArgumentException {
         
-        checkAccess(true);
+        checkAccess(object, true);
         checkReceiver(object);
         setDouble(getAddress(object), value, getType(), Double.TYPE);
     }
@@ -1016,7 +1025,7 @@ public final class Field extends AccessibleObject implements Member {
     public void setFloat(Object object, float value)
             throws IllegalAccessException, IllegalArgumentException {
         
-        checkAccess(true);
+        checkAccess(object, true);
         checkReceiver(object);
         setFloat(getAddress(object), value, getType(), Float.TYPE);
     }
@@ -1051,7 +1060,7 @@ public final class Field extends AccessibleObject implements Member {
     public void setInt(Object object, int value)
             throws IllegalAccessException, IllegalArgumentException {
                 
-        checkAccess(true);
+        checkAccess(object, true);
         checkReceiver(object);
         setInt(getAddress(object), value, getType(), Integer.TYPE);
     }
@@ -1086,7 +1095,7 @@ public final class Field extends AccessibleObject implements Member {
     public void setLong(Object object, long value)
             throws IllegalAccessException, IllegalArgumentException {
                 
-        checkAccess(true);
+        checkAccess(object, true);
         checkReceiver(object);
         setLong(getAddress(object), value, getType(), Long.TYPE);
     }
@@ -1121,7 +1130,7 @@ public final class Field extends AccessibleObject implements Member {
     public void setShort(Object object, short value)
             throws IllegalAccessException, IllegalArgumentException {
         
-        checkAccess(true);
+        checkAccess(object, true);
         checkReceiver(object);
         setShort(getAddress(object), value, getType(), Short.TYPE);
     }

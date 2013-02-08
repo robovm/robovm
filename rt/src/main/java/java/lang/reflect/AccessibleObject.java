@@ -327,7 +327,7 @@ public class AccessibleObject implements AnnotatedElement {
         throw new UnsupportedOperationException();
     }
 
-    private static boolean isSamePackage(Class<?> c1, Class<?> c2) {
+    static boolean isSamePackage(Class<?> c1, Class<?> c2) {
         if (c1 == c2) {
             return true;
         }

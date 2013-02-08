@@ -133,7 +133,7 @@ void dumpThreadStackTrace(Env* env, Thread* thread, CallStack* callStack) {
     // NOTE: This function must not be called concurrently. It uses global 
     // variables to transfer data to/from a signal handler.
 
-    rvmAtomicGetAndSetPtr((void**) &dumpThreadStackTraceCallStack, callStack);
+    rvmAtomicStorePtr((void**) &dumpThreadStackTraceCallStack, callStack);
     if (pthread_kill(thread->pThread, DUMP_THREAD_STACK_TRACE_SIGNAL) != 0) {
         // The thread is probably not alive
         return;

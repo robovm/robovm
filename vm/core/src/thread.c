@@ -219,7 +219,7 @@ static jint detachThread(Env* env, jboolean ignoreAttachCount) {
     }
 
     // Set threadPtr to null
-    rvmAtomicGetAndSetLong(&thread->threadObj->threadPtr, 0);
+    rvmAtomicStoreLong(&thread->threadObj->threadPtr, 0);
 
     // Notify anyone waiting on this thread (using Thread.join())
     rvmLockObject(env, thread->threadObj->lock);
@@ -414,7 +414,7 @@ void rvmJoinNonDaemonThreads(Env* env) {
 jint rvmChangeThreadStatus(Env* env, Thread* thread, jint newStatus) {
     jint oldStatus = thread->status;
     if (oldStatus == newStatus) return newStatus;
-    rvmAtomicGetAndSetInt(&thread->status, newStatus);
+    rvmAtomicStoreInt(&thread->status, newStatus);
     return oldStatus;
 }
 

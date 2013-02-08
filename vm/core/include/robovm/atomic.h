@@ -44,7 +44,19 @@ static inline jboolean rvmAtomicCompareAndSwapPtr(void** ptr, void* oldval, void
 #endif
 }
 
-static inline jint rvmAtomicGetAndSetInt(jint* ptr, jint newval) {
+static inline jint rvmAtomicLoadInt(jint* ptr) {
+    return __sync_fetch_and_or(ptr, 0);
+}
+
+static inline jlong rvmAtomicLoadLong(jlong* ptr) {
+    return __sync_fetch_and_or(ptr, 0LL);
+}
+
+static inline void* rvmAtomicLoadPtr(void** ptr) {
+    return __sync_fetch_and_or(ptr, NULL);
+}
+
+static inline jint rvmAtomicStoreInt(jint* ptr, jint newval) {
     while (TRUE) {
         jint oldval = *ptr;
         if (rvmAtomicCompareAndSwapInt(ptr, oldval, newval)) {
@@ -53,7 +65,7 @@ static inline jint rvmAtomicGetAndSetInt(jint* ptr, jint newval) {
     }
 }
 
-static inline jlong rvmAtomicGetAndSetLong(jlong* ptr, jlong newval) {
+static inline jlong rvmAtomicStoreLong(jlong* ptr, jlong newval) {
     while (TRUE) {
         jlong oldval = *ptr;
         if (rvmAtomicCompareAndSwapLong(ptr, oldval, newval)) {
@@ -62,7 +74,7 @@ static inline jlong rvmAtomicGetAndSetLong(jlong* ptr, jlong newval) {
     }
 }
 
-static inline void* rvmAtomicGetAndSetPtr(void** ptr, void* newval) {
+static inline void* rvmAtomicStorePtr(void** ptr, void* newval) {
     while (TRUE) {
         void* oldval = *ptr;
         if (rvmAtomicCompareAndSwapPtr(ptr, oldval, newval)) {

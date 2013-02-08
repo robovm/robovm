@@ -223,7 +223,7 @@ static void classInitialized(Env* env, Class* clazz) {
     ClassInfoHeader* header = lookupClassInfo(env, clazz->name, 
         !clazz->classLoader || !clazz->classLoader->parent ? _bcBootClassesHash : _bcClassesHash);
     if (!header) return;
-    rvmAtomicGetAndSetInt(&header->flags, header->flags | CI_INITIALIZED);
+    rvmAtomicStoreInt(&header->flags, header->flags | CI_INITIALIZED);
 }
 
 static void loadInterfaces(Env* env, Class* clazz) {

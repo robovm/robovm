@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.robovm.objc.annotation.BindSelector;
+import org.robovm.objc.annotation.CustomClass;
 import org.robovm.objc.annotation.NativeClass;
 import org.robovm.objc.annotation.NotImplemented;
 import org.robovm.objc.annotation.TypeEncoding;
@@ -133,10 +134,7 @@ public final class ObjCClass extends ObjCObject {
                     name = nativeClassAnno.value();
                     name = "".equals(name) ? type.getSimpleName() : name;
                 } else {
-                    name = type.getName();
-                    if (name.indexOf('.') == -1) {
-                        name = "." + name;
-                    }
+                    name = getCustomClassName(type);
                     c = register(type, name);
                 }
                 if (c == null) {
@@ -160,15 +158,25 @@ public final class ObjCClass extends ObjCObject {
         }
         synchronized (typeToClass) {
             ObjCClass c = typeToClass.get(type);
-            if (c != null) {
-                String name = type.getName();
-                if (name.indexOf('.') == -1) {
-                    name = "." + name;
-                }
+            if (c == null) {
+                String name = getCustomClassName(type);
                 c = register(type, name);
+                typeToClass.put(type, c);
+                nameToClass.put(name, c);
             }
             return c;
         }
+    }
+
+    private static String getCustomClassName(Class<? extends ObjCObject> type) {
+        CustomClass customClassAnno = type.getAnnotation(CustomClass.class);
+        String name = type.getName();
+        if (customClassAnno != null && customClassAnno.value().length() > 0) {
+            name = customClassAnno.value();
+        } else if (name.indexOf('.') == -1) {
+            name = "." + name;
+        }
+        return name;
     }
     
     @SuppressWarnings("unchecked")

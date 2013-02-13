@@ -18,6 +18,8 @@
 #include "reflection_helpers.h"
 #include "utlist.h"
 
+#define LOG_TAG "java.lang.Class"
+
 // Defined in java_lang_VMClassLoader.c
 extern char* toBinaryName(Env* env, Object* className);
 
@@ -289,7 +291,10 @@ Class* Java_java_lang_Class_classForName(Env* env, Class* cls, Object* className
     char* classNameUTF = toBinaryName(env, className);
     if (!classNameUTF) return NULL;
     Class* clazz = rvmFindClassUsingLoader(env, classNameUTF, classLoader);
-    if (!clazz) return NULL;
+    if (!clazz) {
+        WARNF("Class forName failed to load '%s'", classNameUTF);
+        return NULL;
+    }
     if (initializeBoolean) {
         rvmInitialize(env, clazz);
         if (rvmExceptionCheck(env)) return NULL;

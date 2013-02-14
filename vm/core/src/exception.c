@@ -50,14 +50,6 @@ void rvmRaiseException(Env* env, Object* e) {
     rvmAbort("Unhandled exception: %s", e->clazz->name);
 }
 
-jboolean rvmExceptionCheck(Env* env) {
-    return env->throwable ? TRUE : FALSE;
-}
-
-Object* rvmExceptionOccurred(Env* env) {
-    return env->throwable;
-}
-
 void rvmExceptionPrintStackTrace(Env* env, Object* e, FILE* f) {
     // TODO: Write the stack trace to the FILE*
     fprintf(stderr, "Exception occurred: %s\n", e->clazz->name);
@@ -67,12 +59,6 @@ void rvmPrintStackTrace(Env* env, Object* throwable) {
     jvalue args[1];
     args[0].l = (jobject) throwable;
     rvmCallVoidInstanceMethodA(env, (Object*) env->currentThread, printStackTraceMethod, args);
-}
-
-Object* rvmExceptionClear(Env* env) {
-    Object* e = env->throwable;
-    env->throwable = NULL;
-    return e;
 }
 
 void rvmThrow(Env* env, Object* e) {

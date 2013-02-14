@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2013 Trillian AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.cocoatouch.coreanimation;
+package org.robovm.cocoatouch.foundation;
 
 /*<imports>*/
-import org.robovm.cocoatouch.coregraphics.*;
-import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
@@ -30,25 +28,25 @@ import org.robovm.rt.bro.ptr.*;
 /**
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../GraphicsImaging/Reference/CALayer_class/Introduction/Introduction.html">CALayer Class Reference</a>
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSTimer_Class/Reference/NSTimer.html">NSTimer Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
-/*<library>*/@Library("QuartzCore")/*</library>*/
-@NativeClass public class /*<name>*/ CALayer /*</name>*/ 
+/*<library>*/@Library("Foundation")/*</library>*/
+@NativeClass public class /*<name>*/ NSTimer /*</name>*/ 
     extends /*<extends>*/ NSObject /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 
     static {
-        ObjCRuntime.bind(/*<name>*/ CALayer /*</name>*/.class);
+        ObjCRuntime.bind(/*<name>*/ NSTimer /*</name>*/.class);
     }
 
     private static final boolean X86 = Bro.IS_X86;
-    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ CALayer /*</name>*/.class);
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSTimer /*</name>*/.class);
 
     /*<constructors>*/
-    protected CALayer(SkipInit skipInit) { super(skipInit); }
-    public CALayer() {}
+    protected NSTimer(SkipInit skipInit) { super(skipInit); }
+    public NSTimer() {}
     
     /*</constructors>*/
     /*<properties>*/

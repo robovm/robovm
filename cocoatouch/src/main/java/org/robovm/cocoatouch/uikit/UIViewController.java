@@ -720,13 +720,13 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector supportedInterfaceOrientations = Selector.register("supportedInterfaceOrientations");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_getSupportedInterfaceOrientations(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getSupportedInterfaceOrientationsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend") private native static UIInterfaceOrientationMask objc_getSupportedInterfaceOrientations(UIViewController __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static UIInterfaceOrientationMask objc_getSupportedInterfaceOrientationsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/supportedInterfaceOrientations">- (NSUInteger)supportedInterfaceOrientations</a>
      * @since Available in iOS 6.0 and later.
      */
-    public int getSupportedInterfaceOrientations() {
+    public UIInterfaceOrientationMask getSupportedInterfaceOrientations() {
         if (customClass) { return objc_getSupportedInterfaceOrientationsSuper(getSuper(), supportedInterfaceOrientations); } else { return objc_getSupportedInterfaceOrientations(this, supportedInterfaceOrientations); }
     }
     
@@ -1120,7 +1120,7 @@ import org.robovm.rt.bro.ptr.*;
         @Callback @BindSelector("preferredInterfaceOrientationForPresentation") public static UIInterfaceOrientation getPreferredInterfaceOrientation(UIViewController __self__, Selector __cmd__) { return __self__.getPreferredInterfaceOrientation(); }
         @Callback @BindSelector("rotatingFooterView") public static UIView getRotatingFooterView(UIViewController __self__, Selector __cmd__) { return __self__.getRotatingFooterView(); }
         @Callback @BindSelector("rotatingHeaderView") public static UIView getRotatingHeaderView(UIViewController __self__, Selector __cmd__) { return __self__.getRotatingHeaderView(); }
-        @Callback @BindSelector("supportedInterfaceOrientations") public static int getSupportedInterfaceOrientations(UIViewController __self__, Selector __cmd__) { return __self__.getSupportedInterfaceOrientations(); }
+        @Callback @BindSelector("supportedInterfaceOrientations") public static UIInterfaceOrientationMask getSupportedInterfaceOrientations(UIViewController __self__, Selector __cmd__) { return __self__.getSupportedInterfaceOrientations(); }
         @Callback @BindSelector("segueForUnwindingToViewController:fromViewController:identifier:") public static UIStoryboardSegue getUnwindSegue(UIViewController __self__, Selector __cmd__, UIViewController toViewController, UIViewController fromViewController, String identifier) { return __self__.getUnwindSegue(toViewController, fromViewController, identifier); }
         @Callback @BindSelector("viewControllerForUnwindSegueAction:fromViewController:withSender:") public static UIViewController getUnwindSegueActionViewController(UIViewController __self__, Selector __cmd__, Selector action, UIViewController fromViewController, NSObject sender) { return __self__.getUnwindSegueActionViewController(action, fromViewController, sender); }
         @Callback @BindSelector("isBeingDismissed") public static boolean isBeingDismissed(UIViewController __self__, Selector __cmd__) { return __self__.isBeingDismissed(); }

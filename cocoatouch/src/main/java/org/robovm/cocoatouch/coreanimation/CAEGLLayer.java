@@ -30,25 +30,25 @@ import org.robovm.rt.bro.ptr.*;
 /**
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../GraphicsImaging/Reference/CALayer_class/Introduction/Introduction.html">CALayer Class Reference</a>
+ *   @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../QuartzCore/Reference/CAEAGLLayer_Class/CAEGLLayer/CAEGLLayer.html">CAEGLLayer Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
 /*<library>*/@Library("QuartzCore")/*</library>*/
-@NativeClass public class /*<name>*/ CALayer /*</name>*/ 
-    extends /*<extends>*/ NSObject /*</extends>*/ 
+@NativeClass public class /*<name>*/ CAEGLLayer /*</name>*/ 
+    extends /*<extends>*/ CALayer /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 
     static {
-        ObjCRuntime.bind(/*<name>*/ CALayer /*</name>*/.class);
+        ObjCRuntime.bind(/*<name>*/ CAEGLLayer /*</name>*/.class);
     }
 
     private static final boolean X86 = Bro.IS_X86;
-    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ CALayer /*</name>*/.class);
+    private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ CAEGLLayer /*</name>*/.class);
 
     /*<constructors>*/
-    protected CALayer(SkipInit skipInit) { super(skipInit); }
-    public CALayer() {}
+    protected CAEGLLayer(SkipInit skipInit) { super(skipInit); }
+    public CAEGLLayer() {}
     
     /*</constructors>*/
     /*<properties>*/

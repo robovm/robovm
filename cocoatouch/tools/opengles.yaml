@@ -1,0 +1,23 @@
+package: org.robovm.cocoatouch.opengles
+library: OpenGLES
+base_url: http://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/
+imports:
+    - org.robovm.cocoatouch.coregraphics.*
+    - org.robovm.cocoatouch.foundation.*
+typedefs:
+enums:
+    EAGLRenderingAPI:
+        first: kEAGLRenderingAPIOpenGLES1
+classes:
+    EAGLContext:
+        url: ../EAGLContext_ClassRef/Reference/EAGLContext.html
+        protocols: []
+        methods:
+            "+currentContext":
+                name: getCurrentContext
+    EAGLSharegroup:
+        url: ../EAGLSharegroup_ClassRef/Reference/EAGLSharegroup.html
+        protocols: []
+protocols:
+    EAGLDrawable:
+        url: ../../../iPhone/Reference/EAGLDrawable_Ref/EAGLDrawable/EAGLDrawable.html

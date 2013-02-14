@@ -559,6 +559,9 @@ classes:
         properties:
             "identifierForVendor":
                 name: vendorIdentifier
+        methods:
+            "+currentDevice":
+                name: getCurrentDevice
     UIDictationPhrase:
         url: ../UIDictationPhraseClass/Reference/Reference.html
     UIDocument:
@@ -1461,6 +1464,7 @@ classes:
                 name: shouldPerformSegue
             "-supportedInterfaceOrientations":
                 name: getSupportedInterfaceOrientations
+                return_type: UIInterfaceOrientationMask
             "-viewControllerForUnwindSegueAction:fromViewController:withSender:":
                 name: getUnwindSegueActionViewController
         properties:

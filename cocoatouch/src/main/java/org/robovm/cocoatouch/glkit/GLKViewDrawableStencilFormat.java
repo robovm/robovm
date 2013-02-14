@@ -13,16 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.cocoatouch.uikit;
+package org.robovm.cocoatouch.glkit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import java.util.*;
 
-public enum UIUserInterfaceIdiom implements ValuedEnum {
-    Phone(0),
-    Pad(1);
+public enum GLKViewDrawableStencilFormat {
+    None(0),
+    Format8(1);
 
     private final int n;
 
-    private UIUserInterfaceIdiom(int n) { this.n = n; }
+    private GLKViewDrawableStencilFormat(int n) { this.n = n; }
     public int value() { return n; }
+    public static GLKViewDrawableStencilFormat fromValue(int n) {
+        for (GLKViewDrawableStencilFormat v : values()) {
+            if (n == v.value()) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("Unknown GLKViewDrawableStencilFormat value: " + n);
+    }
 }

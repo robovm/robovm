@@ -22,9 +22,6 @@ import org.robovm.cocoatouch.coregraphics.*;
 import org.robovm.cocoatouch.coreimage.*;
 import org.robovm.cocoatouch.foundation.*;
 import java.util.*;
-
-import javax.sound.midi.ControllerEventListener;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;

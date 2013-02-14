@@ -13,16 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.cocoatouch.uikit;
+package org.robovm.cocoatouch.glkit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import java.util.*;
 
-public enum UIUserInterfaceIdiom implements ValuedEnum {
-    Phone(0),
-    Pad(1);
+public enum GLKViewDrawableMultisample {
+    None(0),
+    Sample4X(1);
 
     private final int n;
 
-    private UIUserInterfaceIdiom(int n) { this.n = n; }
+    private GLKViewDrawableMultisample(int n) { this.n = n; }
     public int value() { return n; }
+    public static GLKViewDrawableMultisample fromValue(int n) {
+        for (GLKViewDrawableMultisample v : values()) {
+            if (n == v.value()) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("Unknown GLKViewDrawableMultisample value: " + n);
+    }
 }

@@ -104,6 +104,19 @@ import org.robovm.rt.bro.ptr.*;
         return h;
     }
     
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof NSObject)) {
+            return false;
+        }
+        return isEqual((NSObject) obj) ;
+    }
+    
+    @Override
+    public int hashCode() {
+        return hash();
+    }
+    
     /*<methods>*/
     
     private static final Selector description = Selector.register("description");
@@ -117,6 +130,17 @@ import org.robovm.rt.bro.ptr.*;
         if (customClass) { return objc_descriptionSuper(getSuper(), description); } else { return objc_description(this, description); }
     }
     
+    private static final Selector hash = Selector.register("hash");
+    @Bridge(symbol = "objc_msgSend") private native static int objc_hash(NSObject __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_hashSuper(ObjCSuper __super__, Selector __cmd__);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Protocols/NSObject_Protocol/Reference/NSObject.html#//apple_ref/occ/intfm/NSObject/hash">- (NSUInteger)hash</a>
+     * @since Available in iOS 2.0 and later.
+     */
+    protected int hash() {
+        if (customClass) { return objc_hashSuper(getSuper(), hash); } else { return objc_hash(this, hash); }
+    }
+    
     private static final Selector init = Selector.register("init");
     @Bridge(symbol = "objc_msgSend") private native static NSObject objc_init(NSObject __self__, Selector __cmd__);
     /**
@@ -125,6 +149,17 @@ import org.robovm.rt.bro.ptr.*;
      */
     private NSObject init() {
         return objc_init(this, init);
+    }
+    
+    private static final Selector isEqual$ = Selector.register("isEqual:");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isEqual(NSObject __self__, Selector __cmd__, NSObject anObject);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isEqualSuper(ObjCSuper __super__, Selector __cmd__, NSObject anObject);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Protocols/NSObject_Protocol/Reference/NSObject.html#//apple_ref/occ/intfm/NSObject/isEqual:">- (BOOL)isEqual:(id)anObject</a>
+     * @since Available in iOS 2.0 and later.
+     */
+    protected boolean isEqual(NSObject anObject) {
+        if (customClass) { return objc_isEqualSuper(getSuper(), isEqual$, anObject); } else { return objc_isEqual(this, isEqual$, anObject); }
     }
     
     private static final Selector release = Selector.register("release");
@@ -152,6 +187,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<callbacks>*/
     static class Callbacks {
         @Callback @BindSelector("description") public static String description(NSObject __self__, Selector __cmd__) { return __self__.description(); }
+        @Callback @BindSelector("hash") public static int hash(NSObject __self__, Selector __cmd__) { return __self__.hash(); }
+        @Callback @BindSelector("isEqual:") public static boolean isEqual(NSObject __self__, Selector __cmd__, NSObject anObject) { return __self__.isEqual(anObject); }
         @Callback @BindSelector("release") public static void release(NSObject __self__, Selector __cmd__) { __self__.release(); }
         @Callback @BindSelector("retain") public static NSObject retain(NSObject __self__, Selector __cmd__) { return __self__.retain(); }
     }

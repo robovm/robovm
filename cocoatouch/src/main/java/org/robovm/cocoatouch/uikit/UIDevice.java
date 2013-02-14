@@ -247,13 +247,13 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector currentDevice = Selector.register("currentDevice");
-    @Bridge(symbol = "objc_msgSend") private native static UIDevice objc_currentDevice(ObjCClass __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSend") private native static UIDevice objc_getCurrentDevice(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDevice_Class/Reference/UIDevice.html#//apple_ref/occ/clm/UIDevice/currentDevice">+ (UIDevice *)currentDevice</a>
      * @since Available in iOS 2.0 and later.
      */
-    public static UIDevice currentDevice() {
-        return objc_currentDevice(objCClass, currentDevice);
+    public static UIDevice getCurrentDevice() {
+        return objc_getCurrentDevice(objCClass, currentDevice);
     }
     
     private static final Selector beginGeneratingDeviceOrientationNotifications = Selector.register("beginGeneratingDeviceOrientationNotifications");

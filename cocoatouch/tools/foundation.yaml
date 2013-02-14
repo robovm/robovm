@@ -23,6 +23,27 @@ classes:
         url: ../Classes/NSArray_Class/NSArray.html
         protocols: []
         methods:
+            "-initWithArray:":
+                visibility: protected
+                constructor: false
+                return_type: "@Pointer long"
+            "-initWithObjects:count:":
+                visibility: protected
+                constructor: false
+                return_type: "@Pointer long"
+                parameters:
+                    objects:
+                        type: "@Pointer long"
+            "-containsObject:":
+                visibility: protected
+            "-count":
+                visibility: protected
+            "-objectAtIndex:":
+                visibility: protected
+            "-indexOfObject:":
+                visibility: protected
+            "-subarrayWithRange:":
+                visibility: protected
             "+*":
                 exclude: true
             "-*":
@@ -88,6 +109,43 @@ classes:
         url: ../Classes/NSDictionary_Class/Reference/Reference.html
         protocols: []
         methods:
+            "+dictionaryWithContentsOfFile:":
+                name: fromFile
+            "+dictionaryWithContentsOfURL:":
+                name: fromUrl
+            "-initWithDictionary:":
+                visibility: protected
+                constructor: false
+                return_type: "@Pointer long"
+            "-initWithObjects:forKeys:":
+                visibility: protected
+                constructor: false
+                return_type: "@Pointer long"
+            "-allKeys":
+                visibility: protected
+            "-allValues":
+                visibility: protected
+            "-count":
+                visibility: protected
+            "-objectForKey:":
+                visibility: protected
+            "+*":
+                exclude: true
+            "-*":
+                exclude: true
+    NSEnumerator:
+        url: ../Classes/NSEnumerator_Class/Reference/Reference.html
+        protocols: []
+        methods:
+            "-allObjects":
+                return_type: NSArray<T>
+            "-nextObject":
+                name: _nextObject
+                visibility: protected
+    NSMutableDictionary:
+        url: ../Classes/NSMutableDictionary_Class/Reference/Reference.html
+        protocols: []
+        methods:
             "+*":
                 exclude: true
             "-*":
@@ -127,6 +185,43 @@ classes:
         properties:
             "*":
                 exclude: true
+    NSNumber:
+        url: ../Classes/NSNumber_Class/Reference/Reference.html
+        protocols: []
+        methods:
+            "+numberWithBool:":
+                name: valueOf
+            "+numberWithChar:":
+                name: valueOf
+            "+numberWithDouble:":
+                name: valueOf
+            "+numberWithFloat:":
+                name: valueOf
+            "+numberWithInt:":
+                name: valueOf
+            "+numberWithShort:":
+                name: valueOf
+            "+numberWithUnsignedShort:":
+                name: valueOf
+            "+numberWithLongLong:":
+                name: valueOf
+            "-boolValue":
+                name: booleanValue
+            "-charValue":
+                name: byteValue
+            "-shortValue":
+                name: shortValue
+            "-unsignedShortValue":
+                name: charValue
+            "-intValue":
+            "-longLongValue":
+                name: longValue
+            "-doubleValue":
+            "-floatValue":
+            "+*":
+                exclude: true
+            "-*":
+                exclude: true
     NSObject:
         urls: [../Classes/NSObject_Class/Reference/Reference.html, ../Protocols/NSObject_Protocol/Reference/NSObject.html, ../Protocols/NSCoding_Protocol/Reference/Reference.html]
         protocols: []
@@ -141,6 +236,10 @@ classes:
                 visibility: private
                 constructor: false
             "-description":
+            "-isEqual:":
+                visibility: protected
+            "-hash":
+                visibility: protected
             "+*":
                 exclude: true
             "-*":
@@ -153,10 +252,55 @@ classes:
                 exclude: true
             "-*":
                 exclude: true
+    NSRunLoop:
+        url: ../Classes/NSRunLoop_Class/Reference/Reference.html
+        protocols: []
+        methods:
+            "+currentRunLoop":
+                name: getCurrent
+            "+mainRunLoop":
+                name: getMain
+            "-currentMode":
+                name: getCurrentMode
+            "-runMode:beforeDate:":
+                name: runUntil
+            "-runUntilDate:":
+                name: runUntil
+            "-performSelector:target:argument:order:modes:":
+                name: perform
+            "-cancelPerformSelectorsWithTarget:":
+                name: cancel
+            "-cancelPerformSelector:target:argument:":
+                name: cancel
+            "-addPort:forMode:":
+                exclude: true
+            "-removePort:forMode:":
+                exclude: true
+            "-getCFRunLoop":
+                exclude: true
     NSSet:
         url: ../Classes/NSSet_Class/Reference/Reference.html
         protocols: []
         methods:
+            "-initWithArray:":
+                visibility: protected
+                constructor: false
+                return_type: "@Pointer long"
+            "-initWithSet:":
+                visibility: protected
+                constructor: false
+                return_type: "@Pointer long"
+            "-initWithObjects:count:":
+                visibility: protected
+                constructor: false
+                return_type: "@Pointer long"
+                parameters:
+                    objects:
+                        type: "@Pointer long"
+            "-count":
+                visibility: protected
+            "-member:":
+                visibility: protected
             "+*":
                 exclude: true
             "-*":
@@ -177,6 +321,14 @@ classes:
                 parameters:
                     buffer:
                         type: @Pointer long
+            "+*":
+                exclude: true
+            "-*":
+                exclude: true
+    NSTimer:
+        url: ../Classes/NSTimer_Class/Reference/NSTimer.html
+        protocols: []
+        methods:
             "+*":
                 exclude: true
             "-*":
@@ -223,5 +375,13 @@ classes:
                 exclude: true
         properties:
             "*":
+                exclude: true
+    NSValue:
+        url: ../Classes/NSValue_Class/Reference/Reference.html
+        protocols: []
+        methods:
+            "+*":
+                exclude: true
+            "-*":
                 exclude: true
 protocols:

@@ -37,6 +37,13 @@ def objc_to_java(type, instancetype, typedefs, overrides = nil)
   when 'unichar' then 'char'
   when 'unichar *' then 'CharPtr'
   when 'void *' then 'VoidPtr'
+  when 'char' then 'byte'
+  when 'unsigned char' then 'byte'
+  when 'long long' then 'long'
+  when 'unsigned long long' then 'long'
+  when 'unsigned short' then 'char'
+  when 'unsigned int' then 'int'
+  when 'unsigned' then 'int'
   when 'SEL' then 'Selector'
   when /NSString\s*\*/ then 'String'
   when /^id\s*<\s*(.*?)\s*>$/ then $1
@@ -91,10 +98,10 @@ class ObjCType
     @java_type
   end
   def to_bro
-    (by_val? ? '@ByVal ' : '') + @java_type
+    (by_val? ? '@ByVal ' : '') + (@java_type.match(/Ptr<.*>/) ? @java_type : @java_type.sub(/<.*>/, ''))
   end
   def to_bro_return_type
-    (by_val? ? '@StructRet ' : '') + @java_type
+    (by_val? ? '@StructRet ' : '') + (@java_type.match(/Ptr<.*>/) ? @java_type : @java_type.sub(/<.*>/, ''))
   end
 end
 
@@ -164,6 +171,8 @@ class ObjCClass
       if !callbacks.empty?
         callbacks_s = callbacks.join("\n").gsub(/\n/m, "\n        ")
         template = template.sub(/\/\*<callbacks>\*\/.*\/\*<\/callbacks>\*\//m, "/*<callbacks>*/\n    static class Callbacks {\n        #{callbacks_s}\n    }\n    /*</callbacks>*/")
+      else
+        template = template.sub(/\/\*<callbacks>\*\/.*\/\*<\/callbacks>\*\//m, "/*<callbacks>*/\n    /*</callbacks>*/")
       end
     end
     if @is_protocol

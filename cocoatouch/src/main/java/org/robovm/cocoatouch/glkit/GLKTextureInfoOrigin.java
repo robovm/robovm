@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2013 Trillian AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.cocoatouch.uikit;
+package org.robovm.cocoatouch.glkit;
 
-import org.robovm.rt.bro.ValuedEnum;
+import java.util.*;
 
-public enum UIUserInterfaceIdiom implements ValuedEnum {
-    Phone(0),
-    Pad(1);
+public enum GLKTextureInfoOrigin {
+    Unknown(0),
+    TopLeft(1),
+    BottomLeft(2);
 
     private final int n;
 
-    private UIUserInterfaceIdiom(int n) { this.n = n; }
+    private GLKTextureInfoOrigin(int n) { this.n = n; }
     public int value() { return n; }
+    public static GLKTextureInfoOrigin fromValue(int n) {
+        for (GLKTextureInfoOrigin v : values()) {
+            if (n == v.value()) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("Unknown GLKTextureInfoOrigin value: " + n);
+    }
 }

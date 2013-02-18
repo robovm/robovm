@@ -124,17 +124,20 @@ static void iterateClassInfos(Env* env, jboolean (*callback)(Env*, ClassInfoHead
     jint count = getClassInfosCount(hash);
     jint i = 0;
     for (i = 0; i < count; i++) {
-        ClassInfo ci;
-        void* p = base[i];
-        readClassInfo(&p, &ci);
-        skipInterfaceNames(&p, &ci);
-        skipFieldInfos(&p, &ci);
-        jint j;
-        for (j = 0; j < ci.methodCount; j++) {
-            MethodInfo mi;
-            readMethodInfo(&p, &mi);
-            if (!callback(env, base[i], &mi, data)) {
-                break;
+        ClassInfoHeader* header = base[i];
+        if ((header->flags & CI_ERROR) == 0) {
+            ClassInfo ci;
+            void* p = base[i];
+            readClassInfo(&p, &ci);
+            skipInterfaceNames(&p, &ci);
+            skipFieldInfos(&p, &ci);
+            jint j;
+            for (j = 0; j < ci.methodCount; j++) {
+                MethodInfo mi;
+                readMethodInfo(&p, &mi);
+                if (!callback(env, base[i], &mi, data)) {
+                    break;
+                }
             }
         }
     }

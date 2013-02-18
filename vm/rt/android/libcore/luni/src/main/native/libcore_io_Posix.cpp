@@ -454,7 +454,8 @@ extern "C" void Java_libcore_io_Posix_bind(JNIEnv* env, jobject, jobject javaFd,
     }
     int fd;
     const sockaddr* sa = reinterpret_cast<const sockaddr*>(&ss);
-    NET_FAILURE_RETRY("bind", bind(fd, sa, sizeof(sockaddr_storage)));
+    // RoboVM note: bind() on Darwin is picky about the the length specified. It has to match the family type.
+    NET_FAILURE_RETRY("bind", bind(fd, sa, (sa->sa_family == AF_INET6) ? sizeof(sockaddr_in6) : sizeof(sockaddr_in)));
 }
 
 extern "C" void Java_libcore_io_Posix_chmod(JNIEnv* env, jobject, jstring javaPath, jint mode) {
@@ -484,7 +485,8 @@ extern "C" void Java_libcore_io_Posix_connect(JNIEnv* env, jobject, jobject java
     }
     int fd;
     const sockaddr* sa = reinterpret_cast<const sockaddr*>(&ss);
-    NET_FAILURE_RETRY("connect", connect(fd, sa, sizeof(sockaddr_storage)));
+    // RoboVM note: connect() on Darwin is picky about the the length specified. It has to match the family type.
+    NET_FAILURE_RETRY("connect", connect(fd, sa, (sa->sa_family == AF_INET6) ? sizeof(sockaddr_in6) : sizeof(sockaddr_in)));
 }
 
 extern "C" jobject Java_libcore_io_Posix_dup(JNIEnv* env, jobject, jobject javaOldFd) {

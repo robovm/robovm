@@ -3,15 +3,11 @@
 export HOME=$(cd ~; pwd)
 
 BASE=$(cd $(dirname $0)/../..; pwd -P)
-if [ -f "$BASE/tests/bin/robovm-vts.env" ]; then
-  . $BASE/tests/bin/robovm-vts.env
-fi
-[ "x$COMPILER_JAR" == 'x' ] && COMPILER_JAR=$(ls $BASE/compiler/target/robovm-compiler-*.jar 2> /dev/null)
-if [ "x$COMPILER_JAR" == 'x' ]; then
-  echo "robovm-compiler-*.jar file not found in path $BASE/compiler/target/"
-  exit 1
+if [ -f "$BASE/tests/drlvm/robovm-vts.env" ]; then
+  . $BASE/tests/drlvm/robovm-vts.env
 fi
 [ "x$ARCH" == 'x' ] && ARCH=auto
+[ "x$OS" == 'x' ] && OS=auto
 [ "x$TARGET" == 'x' ] && TARGET=/tmp/robovm-vts.$ARCH
 
 export PATH
@@ -47,22 +43,20 @@ while [ "x$1" != 'x' ]; do
   shift
 done
 
-#echo "ARGS=$ARGS"
 #echo "RUNARGS=$RUNARGS"
 #echo "MAINCLASS=$MAINCLASS"
 
 if [ ! -x $TARGET/vts ]; then
-  ROBOVM_DEV_ROOT=$BASE java \
-    -XX:+HeapDumpOnOutOfMemoryError \
-    -Xmx1024m \
-    -Xss1024k \
-    -jar $COMPILER_JAR \
+  export ROBOVM_DEV_ROOT=$BASE
+  $ROBOVM_DEV_ROOT/bin/robovm \
     -tmp /tmp/robovm-vts.tmp \
     -d $TARGET \
     -arch $ARCH \
+    -os $OS \
     -o vts \
-    -debug \
     -verbose \
+    -use-debug-libs \
+    -dynamic-jni \
     -cp $CP
 fi
 
@@ -77,4 +71,3 @@ fi
 LD_LIBRARY_PATH=$LIBPATH DYLD_LIBRARY_PATH=$LIBPATH $TARGET/vts -rvm:MainClass=$MAINCLASS $RUNARGS
 CODE=$?
 exit $CODE
-

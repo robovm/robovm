@@ -1,0 +1,11 @@
+This is a miscellaneous test that was imported into the new-at-the-time
+runtime test framework. The test is intended to exercise basic features,
+and as such cannot be build on top of junit, since failure of such basic
+features might disrupt junit.
+
+This test covers JIT regressions
+
+2296099 JIT shift bug
+2302318 Crash during spin-on-suspend testing
+2487514 Missed exception in PriorityBlockingQueueTest.testToArray1_BadArg
+5884080 ICS JIT regression in nested loop formation

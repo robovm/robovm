@@ -1,0 +1,1 @@
+Verify that exceptions thrown from finalizers are ignored.

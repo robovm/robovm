@@ -1,0 +1,3 @@
+found field CRAWLING
+  synthetic? false
+  enum? true

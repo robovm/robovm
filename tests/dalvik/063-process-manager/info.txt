@@ -1,0 +1,2 @@
+Test that spawning a child process and then reaping it (a) works and (b)
+doesn't cause the system to busy-wait.

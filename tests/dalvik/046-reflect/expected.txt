@@ -1,0 +1,102 @@
+Method name is myMethod
+ Declaring class is Target
+ Arg 0: int
+ Exc 0: java.lang.NullPointerException
+ Exc 1: java.io.IOException
+ Return type is int
+ Access flags are 0x1
+Method name is myMethod
+ Declaring class is SuperTarget
+ Arg 0: float
+ Return type is int
+ Access flags are 0x1
+Method name is myNoargMethod
+ Declaring class is Target
+ Return type is void
+ Access flags are 0x9
+Method name is myMethod
+ Declaring class is Target
+ Arg 0: [Ljava.lang.String;
+ Arg 1: float
+ Arg 2: char
+ Return type is int
+ Access flags are 0x1
+SuperTarget constructor ()V
+Target constructor ()V
+Before, float is 3.1415925
+myMethod: hi there 3.1415925 Q !
+Result of invoke: 7
+Calling no-arg void-return method
+myNoargMethod ()V
+throwingMethod
+Invoke got expected exception:
+java.lang.reflect.InvocationTargetException
+java.lang.NullPointerException: gratuitous throw!
+
+Field name is string1
+ Declaring class is Target
+ Field type is java.lang.String
+ Access flags are 0x1
+  string1 value is 'hey'
+  ::: hey:yo:there
+  string1 value is now 'a new string'
+  ::: a new string:yo:there
+  got expected illegal obj store exc
+  got the other expected access exc
+  got expected arg exc
+pubLong initial value is 1122334455667788
+pubLong new value is 9988776655443322
+Field name is superInt
+ Declaring class is SuperTarget
+ Field type is int
+ Access flags are 0x1
+  superInt value is 1010101
+  superInt boxed is 1010101
+  superInt value is now 20202
+  superInt value (from short) is now 30303
+  superInt value is now 40404
+  got expected long->int failure
+  got expected long->int failure
+  got expected string->int failure
+  got expected int->short failure
+Field name is superClassInt
+ Declaring class is SuperTarget
+ Field type is int
+ Access flags are 0x9
+  superClassInt value is 1010102
+Field name is staticDouble
+ Declaring class is Target
+ Field type is double
+ Access flags are 0x9
+  staticDoubleVal value is 3.3
+  got expected double->long failure
+as expected: aPrivateInt not found
+Field name is constantString
+ Declaring class is Target
+ Field type is java.lang.String
+ Access flags are 0x19
+  Constant test value is a constant string
+Field name is cantTouchThis
+ Declaring class is Target
+ Field type is int
+ Access flags are 0x11
+  cantTouchThis is 77
+  got expected set-final failure
+  cantTouchThis is now 77
+  cantTouchThis is now 88
+cons modifiers=1
+SuperTarget constructor ()V
+Target constructor (IF)V : ii=7 ff=3.3333
+myMethod (I)I
+ arg=17 anInt=7
+ReflectTest done!
+public method
+checkType invoking null
+checkType got expected exception
+got methods
+NoisyInitUser is initializing
+NoisyInit is initializing
+
+generic field: java.util.List<java.lang.String>
+generic method fancyMethod params='[1] java.util.ArrayList<java.lang.String>' ret='java.util.Map<java.lang.Integer, java.lang.String>'
+generic ctor Main params='[1] java.util.ArrayList<java.lang.Integer>'

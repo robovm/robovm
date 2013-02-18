@@ -1,0 +1,14 @@
+wimp: wahoo
+gc
+finalizer executed: wahoo
+wimp: null
+finalize
+wimp: null
+sleep
+reborn: wahoo
+wimp: null
+reset reborn
+gc + finalize
+sleep
+reborn: nothing
+wimp: null

@@ -1,0 +1,8 @@
+Class loaders allow code to "redefine" a given class, e.g. it's possible to
+have multiple classes called "com.android.Blah" loaded simultaneously.  The
+classes are distinct and must be treated as such.  This test exercises
+some situations in which a VM that only checks the UTF-8 signatures could
+mix things up.
+
+This also tests a couple of situations in which an IllegalAccessException
+is expected.

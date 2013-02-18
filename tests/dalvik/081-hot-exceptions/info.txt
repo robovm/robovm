@@ -1,0 +1,3 @@
+Make a hot exception-throwing path to stress test how the trace builder handles
+exceptions encountered during trace selection. The existence of exceptions will
+cause a control flow change to deviate from the current method.

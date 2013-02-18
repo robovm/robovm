@@ -1,0 +1,2 @@
+This tests what happens when class A extends abstract class B, but somebody
+turns B into an interface without rebuilding A.

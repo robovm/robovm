@@ -1,0 +1,74 @@
+(assertions are enabled)
+InstField assign...
+InstField check...
+InstField.nullCheck
+StaticField assign...
+StaticField check...
+IntMath.shiftTest1
+IntMath.shiftTest2
+IntMath.unsignedShiftTest
+IntMath.convTest
+IntMath.charSubTest
+IntMath.intOperTest
+IntMath.intOperCheck
+IntMath.longOperTest
+IntMath.longOperCheck
+IntMath.lit16Test
+IntMath.lit8Test
+IntMath.intShiftTest
+IntMath.intShiftCheck
+IntMath.longShiftTest
+IntMath.longShiftCheck
+IntMath.truncateTest
+IntMath.divideByZero
+IntMath.bigDivideOverflow
+IntMath.checkConsts
+IntMath.jlmTests
+FloatMath.convTest
+FloatMath.floatOperTest
+FloatMath.doubleOperTest
+FloatMath.checkConvI
+FloatMath.checkConvL
+FloatMath.checkConvF
+ 0: -2.0054409E9
+ 1: -8.613303E18
+ 2: -3.1415927
+-2.0054409E9, -8.6133031E18, -3.1415927
+FloatMath.checkConvD
+ 0: -2.005440939E9
+ 1: -8.613303245920329E18
+ 2: 123.45600128173828
+-2.005440939E9, -8.6133032459203287E18, 123.4560012817382
+FloatMath.checkConsts
+FloatMath.jlmTests
+IntMath.testIntCompare
+IntMath.testLongCompare
+IntMath.testFloatCompare
+IntMath.testDoubleCompare
+Monitor.run
+Switch.testSwitch
+Array check...
+Array.checkRange32
+Array.checkRange64
+Array.checkNegAlloc
+Classes.checkCast
+Classes.arrayInstance
+Goto.smallGoto
+Goto.smallGoto
+Goto.mediumGoto
+Goto.mediumGoto
+Goto.bigGoto
+Goto.bigGoto
+  MethodCallBase ctor
+  MethodCall ctor
+MethodCalls.manyArgs
+Throw.one
+Throw.twoA
+Throw.twoN
+Throw.rethrow
+UnresTest1...
+UnresTest1...
+UnresTest2...
+UnresTest2 done
+InternedString.run
+Done!

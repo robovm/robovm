@@ -1,0 +1,9 @@
+ReflectArrayTest.testSingleInt passed
+ReflectArrayTest.testSingleChar passed
+ReflectArrayTest.testSingleShort passed
+ReflectArrayTest.testSingleLong passed
+ReflectArrayTest.testSingle passed
+ReflectArrayTest.testMultiInt passed
+zero one two ++
+ReflectArrayTest.testMulti passed
+ReflectArrayTest passed

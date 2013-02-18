@@ -1,0 +1,30 @@
+instance begin
+x instanceof X (true): true
+x instanceof Y (false): false
+y instanceof X (true): true
+y instanceof Y (true): true
+xar instanceof Object (true): true
+xar instanceof X (false): false
+xar instanceof X[] (true): true
+xar instanceof Y[] (false): false
+xar instanceof Object[] (true): true
+xar instanceof X[][] (false): false
+yar instanceof X[] (true): true
+xararar instanceof Object (true): true
+xararar instanceof Object[] (true): true
+xararar instanceof X (false): false
+xararar instanceof X[] (false): false
+xararar instanceof X[][] (false): false
+xararar instanceof X[][][] (true): true
+xararar instanceof Object[][][] (true): true
+xararar instanceof Serializable (true): true
+xararar instanceof Serializable[] (true): true
+xararar instanceof Serializable[][] (true): true
+xararar instanceof Serializable[][][] (false): false
+yararar instanceof X[][][] (true): true
+iar instanceof Object (true): true
+iar instanceof Object[] (false): false
+iarar instanceof Object (true): true
+iarar instanceof Object[] (true): true
+iarar instanceof Object[][] (false): false
+instanceof end

@@ -1,0 +1,124 @@
+#!/bin/bash
+#
+# Copyright (C) 2007 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Set up prog to be the path of this script, including following symlinks,
+# and set up progdir to be the fully-qualified pathname of its directory.
+prog="$0"
+while [ -h "${prog}" ]; do
+    newProg=`/bin/ls -ld "${prog}"`
+    newProg=`expr "${newProg}" : ".* -> \(.*\)$"`
+    if expr "x${newProg}" : 'x/' >/dev/null; then
+        prog="${newProg}"
+    else
+        progdir=`dirname "${prog}"`
+        prog="${progdir}/${newProg}"
+    fi
+done
+oldwd=`pwd`
+progdir=`dirname "${prog}"`
+cd "${progdir}"
+progdir=`pwd`
+prog="${progdir}"/`basename "${prog}"`
+
+run_args=""
+usage="no"
+
+while true; do
+    if [ "x$1" = "x--host" ]; then
+        run_args="${run_args} --host"
+        shift
+    elif [ "x$1" = "x--reference" ]; then
+        run_args="${run_args} --reference"
+        shift
+    elif [ "x$1" = "x--jit" ]; then
+        run_args="${run_args} --jit"
+        shift
+    elif [ "x$1" = "x--fast" ]; then
+        run_args="${run_args} --fast"
+        shift
+    elif [ "x$1" = "x--portable" ]; then
+        run_args="${run_args} --portable"
+        shift
+    elif [ "x$1" = "x--debug" ]; then
+        run_args="${run_args} --debug"
+        shift
+    elif [ "x$1" = "x--zygote" ]; then
+        run_args="${run_args} --zygote"
+        shift
+    elif [ "x$1" = "x--no-verify" ]; then
+        run_args="${run_args} --no-verify"
+        shift
+    elif [ "x$1" = "x--no-optimize" ]; then
+        run_args="${run_args} --no-optimize"
+        shift
+    elif [ "x$1" = "x--valgrind" ]; then
+        run_args="${run_args} --valgrind"
+        shift
+    elif [ "x$1" = "x--dev" ]; then
+        run_args="${run_args} --dev"
+        shift
+    elif [ "x$1" = "x--update" ]; then
+        run_args="${run_args} --update"
+        shift
+    elif [ "x$1" = "x--help" ]; then
+        usage="yes"
+        shift
+    elif expr "x$1" : "x--" >/dev/null 2>&1; then
+        echo "unknown option: $1" 1>&2
+        usage="yes"
+        break
+    else
+        break
+    fi
+done
+
+if [ "$usage" = "yes" ]; then
+    prog=`basename $prog`
+    (
+        echo "usage:"
+        echo "  $prog --help     Print this message."
+        echo "  $prog [options]  Run all tests with the given options."
+        echo "  Options are all passed to run-test; refer to that for " \
+             "further documentation:"
+        echo "    --debug --dev --fast --host --no-optimize --no-verify" \
+             "--portable"
+        echo "    --reference --update --valgrind --zygote"
+    ) 1>&2
+    exit 1
+fi
+
+passed=0
+failed=0
+failNames=""
+
+for i in *; do
+    if [ -d "$i" -a -r "$i" -a -r "${i}/info.txt" ]; then
+        ./run-test ${run_args} "$i"
+        if [ "$?" = "0" ]; then
+            ((passed += 1))
+        else
+            ((failed += 1))
+            failNames="$failNames $i"
+        fi
+    fi
+done
+
+echo "passed: $passed test(s)"
+echo "failed: $failed test(s)"
+
+for i in $failNames; do
+    echo "failed: $i"
+done

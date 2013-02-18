@@ -1,0 +1,15 @@
+The finalizer for this class never finishes.  Dalvik is expected to detect
+this situation and abort the VM (so you will likely see a stacktrace like
+the following in the log output).
+
+java.util.concurrent.TimeoutException
+	at java.lang.VMThread.sleep(Native Method)
+	at java.lang.Thread.sleep(Thread.java:1031)
+	at java.lang.Thread.sleep(Thread.java:1013)
+	at BadFinalizer.snooze(BadFinalizer.java:9)
+	at BadFinalizer.finalize(BadFinalizer.java:29)
+	at java.lang.Daemons$FinalizerDaemon.doFinalize(Daemons.java:182)
+	at java.lang.Daemons$FinalizerDaemon.run(Daemons.java:168)
+	at java.lang.Thread.run(Thread.java:856)
+Calling exit(2)
+

@@ -1,0 +1,12 @@
+USA(GMT): Sunday, January 1, 2012
+USA: first=1, name=Sunday
+France(GMT): Monday, January 2, 2012
+France: first=2, name=lundi
+USA dfs: [AM, PM]
+en_US: USD $2
+jp_JP: JPY ¥0
+Normalizer passed
+loc: en_US
+ iso3=eng
+loc: eng_USA
+ iso3=eng

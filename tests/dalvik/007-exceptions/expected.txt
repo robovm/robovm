@@ -1,0 +1,9 @@
+Got an NPE: second throw
+java.lang.NullPointerException: second throw
+	at Main.catchAndRethrow(Main.java:36)
+	at Main.main(Main.java:23)
+	at dalvik.system.NativeStart.main(Native Method)
+Caused by: java.lang.NullPointerException: first throw
+	at Main.throwNullPointerException(Main.java:43)
+	at Main.catchAndRethrow(Main.java:33)
+	... 2 more

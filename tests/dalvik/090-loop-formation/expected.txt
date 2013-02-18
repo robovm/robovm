@@ -1,0 +1,5 @@
+counter1 is 0
+counter2 is 32767
+counter3 is 32767
+counter4 is 0
+counter5 is 65534

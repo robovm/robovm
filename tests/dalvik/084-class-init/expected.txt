@@ -1,0 +1,8 @@
+Got expected EIIE for FIELD0
+Got expected NCDFE for FIELD0
+Got expected NCDFE for FIELD1
+SlowInit static block pre-sleep
+SlowInit static block post-sleep
+MethodThread message
+Fields (child thread): 111222333444
+Fields (main thread): 111222333444

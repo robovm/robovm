@@ -1,0 +1,2 @@
+sum = 0
+exception = 1024

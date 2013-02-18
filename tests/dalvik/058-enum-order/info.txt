@@ -1,0 +1,1 @@
+Test that the ordering of enums is as expected.

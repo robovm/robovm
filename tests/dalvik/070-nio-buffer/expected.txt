@@ -1,0 +1,6 @@
+Direct byte buffer has array: true
+Got expected buffer overflow exception
+Got expected out-of-bounds exception
+Got expected buffer overflow exception
+00fbfb2ec03000001234567840490fd01122334455667788000000000000000100000000
+ccfb2efb30c0cccc78563412d00f494088776655443322110100000000000000cccccccc

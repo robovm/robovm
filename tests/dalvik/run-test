@@ -1,0 +1,254 @@
+#!/bin/bash
+#
+# Copyright (C) 2007 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Set up prog to be the path of this script, including following symlinks,
+# and set up progdir to be the fully-qualified pathname of its directory.
+prog="$0"
+while [ -h "${prog}" ]; do
+    newProg=`/bin/ls -ld "${prog}"`
+    newProg=`expr "${newProg}" : ".* -> \(.*\)$"`
+    if expr "x${newProg}" : 'x/' >/dev/null; then
+        prog="${newProg}"
+    else
+        progdir=`dirname "${prog}"`
+        prog="${progdir}/${newProg}"
+    fi
+done
+oldwd=`pwd`
+progdir=`dirname "${prog}"`
+cd "${progdir}"
+progdir=`pwd`
+prog="${progdir}"/`basename "${prog}"`
+
+export JAVA="java"
+export JAVAC="javac -target 1.5"
+export RUN="${progdir}/etc/push-and-run-test-jar"
+
+info="info.txt"
+build="build"
+run="run"
+expected="expected.txt"
+output="output.txt"
+build_output="build-output.txt"
+run_args="--quiet"
+
+dev_mode="no"
+update_mode="no"
+debug_mode="no"
+usage="no"
+
+while true; do
+    if [ "x$1" = "x--host" ]; then
+        RUN="${progdir}/etc/host-run-test-jar"
+        shift
+    elif [ "x$1" = "x--reference" ]; then
+        RUN="${progdir}/etc/reference-run-test-classes"
+        shift
+    elif [ "x$1" = "x--jit" ]; then
+        run_args="${run_args} --jit"
+        shift
+    elif [ "x$1" = "x--fast" ]; then
+        run_args="${run_args} --fast"
+        shift
+    elif [ "x$1" = "x--portable" ]; then
+        run_args="${run_args} --portable"
+        shift
+    elif [ "x$1" = "x--debug" ]; then
+        run_args="${run_args} --debug"
+        shift
+    elif [ "x$1" = "x--gdb" ]; then
+        run_args="${run_args} --gdb"
+        dev_mode="yes"
+        shift
+    elif [ "x$1" = "x--zygote" ]; then
+        run_args="${run_args} --zygote"
+        shift
+    elif [ "x$1" = "x--no-verify" ]; then
+        run_args="${run_args} --no-verify"
+        shift
+    elif [ "x$1" = "x--no-optimize" ]; then
+        run_args="${run_args} --no-optimize"
+        shift
+    elif [ "x$1" = "x--no-precise" ]; then
+        run_args="${run_args} --no-precise"
+        shift
+    elif [ "x$1" = "x--valgrind" ]; then
+        run_args="${run_args} --valgrind"
+        shift
+    elif [ "x$1" = "x--dev" ]; then
+        run_args="${run_args} --dev"
+        dev_mode="yes"
+        shift
+    elif [ "x$1" = "x--update" ]; then
+        update_mode="yes"
+        shift
+    elif [ "x$1" = "x--help" ]; then
+        usage="yes"
+        shift
+    elif expr "x$1" : "x--" >/dev/null 2>&1; then
+        echo "unknown option: $1" 1>&2
+        usage="yes"
+        break
+    else
+        break
+    fi
+done
+
+if [ "$dev_mode" = "yes" -a "$update_mode" = "yes" ]; then
+    echo "--dev and --update are mutually exclusive" 1>&2
+    usage="yes"
+fi
+
+if [ "$usage" = "no" ]; then
+    if [ "x$1" = "x" -o "x$1" = "x-" ]; then
+        test_dir=`basename "$oldwd"`
+    else
+        test_dir="$1"
+    fi
+
+    if [ '!' -d "$test_dir" ]; then
+        td2=`echo ${test_dir}-*`
+        if [ '!' -d "$td2" ]; then
+            echo "${test_dir}: no such test directory" 1>&2
+            usage="yes"
+        fi
+        test_dir="$td2"
+    fi
+
+    # Shift to get rid of the test name argument. The rest of the arguments
+    # will get passed to the test run.
+    shift
+fi
+
+if [ "$usage" = "yes" ]; then
+    prog=`basename $prog`
+    (
+        echo "usage:"
+        echo "  $prog --help                          Print this message."
+        echo "  $prog [options] [test-name]           Run test normally."
+        echo "  $prog --dev [options] [test-name]     Development mode" \
+             "(dumps to stdout)."
+        echo "  $prog --update [options] [test-name]  Update mode" \
+             "(replaces expected.txt)."
+        echo '  Omitting the test name or specifying "-" will use the' \
+             "current directory."
+        echo "  Runtime Options:"
+        echo "    --fast         Use the fast interpreter."
+        echo "    --jit          Use the jit (the default)."
+        echo "    --portable     Use the portable interpreter."
+        echo "    --debug        Wait for a debugger to attach."
+        #echo "    --gdb          Run under gdb; incompatible with some tests."
+        echo "    --no-verify    Turn off verification (on by default)."
+        echo "    --no-optimize  Turn off optimization (on by default)."
+        echo "    --no-precise   Turn off precise GC (on by default)."
+        echo "    --zygote       Spawn the process from the Zygote." \
+             "If used, then the"
+        echo "                   other runtime options are ignored."
+        echo "    --host         Use the host-mode virtual machine."
+        echo "    --valgrind     Use valgrind when running locally."
+        echo "    --reference    Use a host-local reference virtual machine."
+    ) 1>&2
+    exit 1
+fi
+
+cd "$test_dir"
+test_dir=`pwd`
+
+td_info="${test_dir}/${info}"
+td_expected="${test_dir}/${expected}"
+
+tmp_dir="/tmp/test-$$"
+
+if [ '!' '(' -r "$td_info" -a -r "$td_expected" ')' ]; then
+    echo "${test_dir}: missing files" 1>&2
+    exit 1
+fi
+
+# copy the test to a temp dir and run it
+
+echo "${test_dir}: running..." 1>&2
+
+rm -rf "$tmp_dir"
+cp -Rp "$test_dir" "$tmp_dir"
+cd "$tmp_dir"
+
+if [ '!' -r "$build" ]; then
+    cp "${progdir}/etc/default-build" build
+fi
+
+if [ '!' -r "$run" ]; then
+    cp "${progdir}/etc/default-run" run
+fi
+
+chmod 755 "$build"
+chmod 755 "$run"
+
+good="no"
+if [ "$dev_mode" = "yes" ]; then
+    "./${build}" 2>&1
+    echo "build exit status: $?" 1>&2
+    "./${run}" $run_args "$@" 2>&1
+    echo "run exit status: $?" 1>&2
+    good="yes"
+elif [ "$update_mode" = "yes" ]; then
+    "./${build}" >"$build_output" 2>&1
+    build_exit="$?"
+    if [ "$build_exit" = '0' ]; then
+        "./${run}" $run_args "$@" >"$output" 2>&1
+        sed -e 's/[[:cntrl:]]$//g' < "$output" >"${td_expected}"
+        good="yes"
+    else
+        cat "$build_output" 1>&2
+        echo "build exit status: $build_exit" 1>&2
+    fi
+else
+    "./${build}" >"$build_output" 2>&1
+    build_exit="$?"
+    if [ "$build_exit" = '0' ]; then
+        "./${run}" $run_args "$@" >"$output" 2>&1
+    else
+        cp "$build_output" "$output"
+        echo "build exit status: $build_exit" >>"$output"
+    fi
+    diff --strip-trailing-cr -q "$expected" "$output" >/dev/null
+    if [ "$?" = "0" ]; then
+        # output == expected
+        good="yes"
+        echo "${test_dir}: succeeded!" 1>&2
+    fi
+fi
+
+if [ "$good" = "yes" ]; then
+    cd "$oldwd"
+    rm -rf "$tmp_dir"
+    exit 0
+fi
+
+(
+    if [ "$update_mode" '!=' "yes" ]; then
+        echo "${test_dir}: FAILED!"
+        echo ' '
+        echo '#################### info'
+        cat "${td_info}" | sed 's/^/# /g'
+        echo '#################### diffs'
+        diff --strip-trailing-cr -u "$expected" "$output"
+        echo '####################'
+        echo ' '
+    fi
+    echo "files left in ${tmp_dir}"
+) 1>&2
+
+exit 1

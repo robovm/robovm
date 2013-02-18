@@ -1,0 +1,2 @@
+Tests a dalvik bug where we'd allow subclasses to override package-protected
+methods.

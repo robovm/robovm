@@ -1,0 +1,2 @@
+Array allocation failed
+Instance allocation failed

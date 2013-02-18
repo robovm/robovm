@@ -1,0 +1,11 @@
+d is 3.1415
+class: class [Ljava.lang.Object;
+0: null
+1: null
+2: null
+3: null
+4: null
+class: class [Ljava.lang.String;
+0: hey
+1: you
+2: there

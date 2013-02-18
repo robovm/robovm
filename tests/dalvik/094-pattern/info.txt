@@ -1,0 +1,4 @@
+A simple test to exercise pattern matching.
+
+The test may throw a StackOverflowError if the stack size is too small.  With
+some regex libs, -Xss65k is the minimum allowable size.

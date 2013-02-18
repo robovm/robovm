@@ -1,0 +1,3 @@
+Initializing...
+Starting the test
+Test OK

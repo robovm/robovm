@@ -1,0 +1,2 @@
+Test various forms of method overrides, including some not allowed by the
+compiler but possible with separate compilation.

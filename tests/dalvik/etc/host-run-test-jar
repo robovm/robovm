@@ -1,0 +1,159 @@
+#!/bin/sh
+#
+# Run the code in test.jar using the host-mode virtual machine. The jar should
+# contain a top-level class named Main to run.
+#
+# Options:
+#   --quiet       -- don't chatter
+#   --fast        -- use the fast interpreter (the default)
+#   --jit         -- use the jit
+#   --portable    -- use the portable interpreter
+#   --debug       -- wait for debugger to attach
+#   --valgrind    -- use valgrind
+#   --no-verify   -- turn off verification (on by default)
+#   --no-optimize -- turn off optimization (on by default)
+
+msg() {
+    if [ "$QUIET" = "n" ]; then
+        echo "$@"
+    fi
+}
+
+INTERP=""
+DEBUG="n"
+GDB="n"
+VERIFY="y"
+OPTIMIZE="y"
+VALGRIND="n"
+DEV_MODE="n"
+QUIET="n"
+PRECISE="y"
+
+while true; do
+    if [ "x$1" = "x--quiet" ]; then
+        QUIET="y"
+        shift
+    elif [ "x$1" = "x--jit" ]; then
+        INTERP="jit"
+        msg "Using jit"
+        shift
+    elif [ "x$1" = "x--fast" ]; then
+        INTERP="fast"
+        msg "Using fast interpreter"
+        shift
+    elif [ "x$1" = "x--portable" ]; then
+        INTERP="portable"
+        msg "Using portable interpreter"
+        shift
+    elif [ "x$1" = "x--debug" ]; then
+        DEBUG="y"
+        shift
+    elif [ "x$1" = "x--gdb" ]; then
+        GDB="y"
+        shift
+    elif [ "x$1" = "x--valgrind" ]; then
+        VALGRIND="y"
+        shift
+    elif [ "x$1" = "x--dev" ]; then
+        DEV_MODE="y"
+        shift
+    elif [ "x$1" = "x--no-verify" ]; then
+        VERIFY="n"
+        shift
+    elif [ "x$1" = "x--no-optimize" ]; then
+        OPTIMIZE="n"
+        shift
+    elif [ "x$1" = "x--no-precise" ]; then
+        PRECISE="n"
+        shift
+    elif [ "x$1" = "x--" ]; then
+        shift
+        break
+    elif expr "x$1" : "x--" >/dev/null 2>&1; then
+        echo "unknown option: $1" 1>&2
+        exit 1
+    else
+        break
+    fi
+done
+
+if [ "x$INTERP" = "x" ]; then
+    INTERP="jit"
+    msg "Using jit by default"
+fi
+
+if [ "$OPTIMIZE" = "y" ]; then
+    if [ "$VERIFY" = "y" ]; then
+        DEX_OPTIMIZE="-Xdexopt:verified"
+    else
+        DEX_OPTIMIZE="-Xdexopt:all"
+    fi
+    msg "Performing optimizations"
+else
+    DEX_OPTIMIZE="-Xdexopt:none"
+    msg "Skipping optimizations"
+fi
+
+if [ "$VERIFY" = "y" ]; then
+    DEX_VERIFY=""
+    msg "Performing verification"
+else
+    DEX_VERIFY="-Xverify:none"
+    msg "Skipping verification"
+fi
+
+if [ "$VALGRIND" = "y" ]; then
+    msg "Running with valgrind"
+    valgrind_cmd="valgrind"
+    #valgrind_cmd="valgrind --leak-check=full"
+else
+    valgrind_cmd=""
+fi
+
+if [ "$PRECISE" = "y" ]; then
+    GC_OPTS="-Xgc:precise -Xgenregmap"
+else
+    GC_OPTS="-Xgc:noprecise"
+fi
+
+msg "------------------------------"
+
+HOSTBASE="${ANDROID_BUILD_TOP}/out/host"
+BASE="$OUT" # from build environment
+DATA_DIR=/tmp
+DEBUG_OPTS="-Xcheck:jni -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
+
+if [ ! -d $DATA_DIR/dalvik-cache ]; then
+    mkdir -p $DATA_DIR/dalvik-cache
+    [[ $? -ne 0 ]] && exit
+fi
+
+export ANDROID_PRINTF_LOG=brief
+if [ "$DEV_MODE" = "y" ]; then
+    export ANDROID_LOG_TAGS='*:d'
+else
+    export ANDROID_LOG_TAGS='*:s'
+fi
+export ANDROID_DATA="$DATA_DIR"
+export ANDROID_ROOT="${HOSTBASE}/linux-x86"
+export LD_LIBRARY_PATH="${ANDROID_ROOT}/lib"
+export DYLD_LIBRARY_PATH="${ANDROID_ROOT}/lib"
+
+exe="${ANDROID_ROOT}/bin/dalvikvm"
+framework="${BASE}/system/framework"
+bpath="${framework}/core.jar:${framework}/ext.jar:${framework}/framework.jar"
+
+if [ "$DEBUG" = "y" ]; then
+    PORT=8000
+    msg "Waiting for debugger to connect on localhost:$PORT"
+    DEX_DEBUG="-agentlib:jdwp=transport=dt_socket,addres=$PORT,server=y,suspend=y"
+fi
+
+if [ "$GDB" = "y" ]; then
+    gdb=gdb
+    gdbargs="--args $exe"
+fi
+
+$valgrind_cmd $gdb $exe $gdbargs "-Xbootclasspath:${bpath}" \
+    $DEX_VERIFY $DEX_OPTIMIZE $DEX_DEBUG $GC_OPTS "-Xint:${INTERP}" -ea \
+    -cp test.jar Main "$@"

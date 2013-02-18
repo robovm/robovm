@@ -1,0 +1,8 @@
+This test causes a linkage error, which calls dvmFreeClassInnards on
+the unlinked Class.
+
+This is a regression test for a defect in Dalvik, which was assuming
+that dvmFreeClassInnards could be called twice on the same class.
+
+This test is a modified version of test 086.
+This test is not expected to work for the reference implementation.

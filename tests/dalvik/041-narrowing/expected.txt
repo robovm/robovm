@@ -1,0 +1,38 @@
+
+Double.POSITIVE_INFINITY = 7ff0000000000000
+Double.NEGATIVE_INFINITY = fff0000000000000
+Float.POSITIVE_INFINITY  = 7ff0000000000000
+Float.NEGATIVE_INFINITY  = fff0000000000000
+Double.NaN               = 7ff8000000000000
+Float.NaN                = 7ff8000000000000
+
+(byte) Double.NaN  =               00 expected:               00
+(short) Double.NaN =             0000 expected:             0000
+(int) Double.NaN   =         00000000 expected:         00000000
+(long) Double.NaN  = 0000000000000000 expected: 0000000000000000
+
+(byte) Float.NaN  =               00 expected:               00
+(short) Float.NaN =             0000 expected:             0000
+(int) Float.NaN   =         00000000 expected:         00000000
+(long) Float.NaN  = 0000000000000000 expected: 0000000000000000
+
+(byte) Double.POSITIVE_INFINITY  =               ff expected:               ff
+(short) Double.POSITIVE_INFINITY =             ffff expected:             ffff
+(int) Double.POSITIVE_INFINITY   =         7fffffff expected:         7fffffff
+(long) Double.POSITIVE_INFINITY  = 7fffffffffffffff expected: 7fffffffffffffff
+
+(byte) Double.NEGATIVE_INFINITY  =               00 expected:               00
+(short) Double.NEGATIVE_INFINITY =             0000 expected:             0000
+(int) Double.NEGATIVE_INFINITY   =         80000000 expected:         80000000
+(long) Double.NEGATIVE_INFINITY  = 8000000000000000 expected: 8000000000000000
+
+(byte) Float.POSITIVE_INFINITY   =               ff expected:               ff
+(short) Float.POSITIVE_INFINITY  =             ffff expected:             ffff
+(int) Float.POSITIVE_INFINITY    =         7fffffff expected:         7fffffff
+(long) Float.POSITIVE_INFINITY   = 7fffffffffffffff expected: 7fffffffffffffff
+
+(byte) Float.NEGATIVE_INFINITY   =               00 expected:               00
+(short) Float.NEGATIVE_INFINITY  =             0000 expected:             0000
+(int) Float.NEGATIVE_INFINITY    =         80000000 expected:         80000000
+(long) Float.NEGATIVE_INFINITY   = 8000000000000000 expected: 8000000000000000
+

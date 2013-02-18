@@ -1,0 +1,3 @@
+Test that Thread.sleep() operates reasonably. This test is actually
+mostly meant as an easy thing to modify in order to test other things
+in an ad-hoc way.

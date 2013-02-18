@@ -1,0 +1,2 @@
+Test that we print a reasonable message when the application exceeds more
+than 65536 methods.

@@ -1,0 +1,7 @@
+ClassLoader.loadClass() is expected to throw an exception, usually
+ClassNotFound, if it can't find the given Class, and not return null.
+
+This is a regression test for a defect in Dalvik, which was assuming
+that if there was no exception, the value returned would be non-null.
+
+This test is not expected to work for the reference implementation.

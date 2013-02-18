@@ -1,0 +1,4 @@
+This tests to see if the VM allows you to store a reference to an
+inappropriate object type in an instance field.  By compiling two
+versions of the field-holder class we can bypass the compiler's type
+safety.

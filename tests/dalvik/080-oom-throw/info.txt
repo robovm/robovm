@@ -1,0 +1,3 @@
+Inject memory allocation failures for NEW_ARRAY and NEW_INSTANCE and make sure
+the JIT'ed code handles OOM exception correctly since it cannot fall back to
+the interpreter and re-execute the bytecode.

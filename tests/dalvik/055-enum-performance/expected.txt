@@ -1,0 +1,12 @@
+FOUR
+ONE
+FOURTEEN
+NINE
+FIVE
+TWELVE
+SamePackagePublicEnum
+basis: performed 10000 iterations
+test1: performed 10000 iterations
+test2: performed 10000 iterations
+test3: performed 10000 iterations
+Timing is acceptable.

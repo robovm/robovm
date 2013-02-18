@@ -1,0 +1,6 @@
+calling abs.doStuff()
+In AbstractBase.doStuff (src2)
+Got expected exception from abs.doStuff().
+class modifiers=1025
+meth modifiers=1025
+Got expected failure

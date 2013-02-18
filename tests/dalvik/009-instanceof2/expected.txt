@@ -1,0 +1,5 @@
+instanceof Serializable = true
+instanceof Cloneable = true
+instanceof Runnable = false
+aaOkay (false) = false
+bbOkay (true) = true

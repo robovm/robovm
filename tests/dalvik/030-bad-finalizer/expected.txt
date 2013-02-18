@@ -1,0 +1,7 @@
+Constructed object.
+Nulled. Requestion gc.
+Finalizer started and spinning...
+Finalizer done spinning.
+Finalizer sleeping forever now.
+Requesting another GC.
+Requesting another GC.

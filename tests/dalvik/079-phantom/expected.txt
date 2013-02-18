@@ -1,0 +1,14 @@
+start
+Created Bitmap one: 10x10 (100)
+Created Bitmap two: 20x20 (101)
+Created Bitmap three/four: 20x20 (101)
+Drawing Bitmap two: 20x20 (101)
+nulling 1
+freeNativeStorage: 100
+nulling 2
+nulling 3
+nulling 4
+freeNativeStorage: 101
+intr
+Bitmap has shut down
+done

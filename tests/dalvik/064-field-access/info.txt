@@ -1,0 +1,10 @@
+The documentation lists exceptional conditions and the exceptions that
+should be thrown, but doesn't say which exception previals when two or
+more exceptional conditions exist at the same time.  For example,
+attempting to set a protected field from an unrelated class causes an
+IllegalAccessException, while passing in a data type that doesn't match
+the field causes an IllegalArgumentException.  If code does both at the
+same time, we can only throw one or the other.
+
+This exercises the various failure modes to ensure that behavior is
+equivalent, and not merely spec-compliant.

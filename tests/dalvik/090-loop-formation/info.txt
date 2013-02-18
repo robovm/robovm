@@ -1,0 +1,3 @@
+Test loop formation heuristics and code generation. Basically the problem to
+catch here is to make sure that some never-exercised code blocks are included
+in the loop region, and the JIT compiler won't choke on unresolved fields.

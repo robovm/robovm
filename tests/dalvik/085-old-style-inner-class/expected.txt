@@ -1,0 +1,8 @@
+Class: Main$1
+  getDeclaringClass(): (null)
+  getEnclosingClass(): (null)
+  getEnclosingMethod(): (null)
+Class: Main$2
+  getDeclaringClass(): (null)
+  getEnclosingClass(): (null)
+  getEnclosingMethod(): (null)

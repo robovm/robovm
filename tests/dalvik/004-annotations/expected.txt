@@ -1,0 +1,96 @@
+TestAnnotations...
+java.lang.String android.test.anno.TestAnnotations.thing1: @android.test.anno.AnnoArrayField(bb=[], cc=[a, b], dd=[0.987654321], ff=[3.1415927], ii=[], jj=[], ss=[], str=[], zz=[])
+java.lang.String android.test.anno.TestAnnotations.thing2: @android.test.anno.AnnoArrayField(bb=[-1, 0, 1], cc=[Q], dd=[0.3, 0.6, 0.9], ff=[1.1, 1.2, 1.3], ii=[1, 2, 3, 4], jj=[-5, 0, 5], ss=[12, 13, 14, 15, 16, 17], str=[hickory, dickory, dock], zz=[true, false, true])
+mapping is class [Landroid.test.anno.IntToString;
+  0='@android.test.anno.IntToString(from=0, to=NORMAL_FOCUS)'
+  1='@android.test.anno.IntToString(from=2, to=WEAK_FOCUS)'
+present(getFocusType, ExportedProperty): true
+present(getFocusType, AnnoSimpleType): false
+
+AnnoSimpleField true, SimplyNoted false
+annotations on TYPE class android.test.anno.SimplyNoted(2):
+  @android.test.anno.AnnoSimpleType()
+    interface android.test.anno.AnnoSimpleType
+  @android.test.anno.AnnoSimpleType2()
+    interface android.test.anno.AnnoSimpleType2
+
+  annotations on CTOR android.test.anno.SimplyNoted():
+    @android.test.anno.AnnoSimpleConstructor()
+      interface android.test.anno.AnnoSimpleConstructor
+    constructor parameter annotations:
+  annotations on CTOR android.test.anno.SimplyNoted(int):
+    @android.test.anno.AnnoSimpleConstructor()
+      interface android.test.anno.AnnoSimpleConstructor
+    constructor parameter annotations:
+      @android.test.anno.AnnoSimpleParameter()
+        interface android.test.anno.AnnoSimpleParameter
+  annotations on METH public int android.test.anno.SimplyNoted.foo():
+    @android.test.anno.AnnoSimpleMethod()
+      interface android.test.anno.AnnoSimpleMethod
+    method parameter annotations:
+  annotations on FIELD public static int android.test.anno.SimplyNoted.mOneFoo:
+    @android.test.anno.AnnoSimpleField()
+      interface android.test.anno.AnnoSimpleField
+  annotations on FIELD public int android.test.anno.SimplyNoted.mFoo:
+    @android.test.anno.AnnoSimpleField()
+      interface android.test.anno.AnnoSimpleField
+
+annotations on TYPE interface android.test.anno.INoted(1):
+  @android.test.anno.AnnoSimpleType2()
+    interface android.test.anno.AnnoSimpleType2
+
+  annotations on METH public abstract int android.test.anno.INoted.bar():
+    @android.test.anno.AnnoSimpleMethod()
+      interface android.test.anno.AnnoSimpleMethod
+    method parameter annotations:
+
+annotations on TYPE class android.test.anno.SubNoted(3):
+  @android.test.anno.AnnoFancyType(name=unknown, num=5)
+    interface android.test.anno.AnnoFancyType
+  @android.test.anno.AnnoSimpleType()
+    interface android.test.anno.AnnoSimpleType
+  @android.test.anno.AnnoSimpleType2()
+    interface android.test.anno.AnnoSimpleType2
+
+  annotations on CTOR public android.test.anno.SubNoted():
+    constructor parameter annotations:
+  annotations on METH public int android.test.anno.SubNoted.bar():
+    method parameter annotations:
+  annotations on FIELD int android.test.anno.SubNoted.mBar:
+
+annotations on TYPE class android.test.anno.FullyNoted(1):
+  @android.test.anno.AnnoFancyType(name=full, num=5)
+    interface android.test.anno.AnnoFancyType
+
+  annotations on CTOR android.test.anno.FullyNoted(int):
+    @android.test.anno.AnnoFancyConstructor(numArgs=1)
+      interface android.test.anno.AnnoFancyConstructor
+    constructor parameter annotations:
+      @android.test.anno.AnnoFancyParameter(factor=0.5)
+        interface android.test.anno.AnnoFancyParameter
+  annotations on METH public int android.test.anno.FullyNoted.bar(int,long) throws java.io.IOException,java.io.EOFException:
+    @android.test.anno.AnnoFancyMethod(biteMe=false, callMe=true, enumerated=FOO, someClass=class android.test.anno.SomeClass)
+      interface android.test.anno.AnnoFancyMethod
+    method parameter annotations:
+      @android.test.anno.AnnoSimpleParameter()
+        interface android.test.anno.AnnoSimpleParameter
+      @android.test.anno.AnnoFancyParameter(factor=3.7879912899761)
+        interface android.test.anno.AnnoFancyParameter
+  annotations on METH public int android.test.anno.FullyNoted.bar1(int,long) throws java.io.IOException:
+    @android.test.anno.AnnoFancyMethod(biteMe=true, callMe=false, enumerated=BAR, someClass=class android.test.anno.SomeClass)
+      interface android.test.anno.AnnoFancyMethod
+    method parameter annotations:
+      @android.test.anno.AnnoSimpleParameter()
+        interface android.test.anno.AnnoSimpleParameter
+      @android.test.anno.AnnoFancyParameter(factor=3.7879912899761)
+        interface android.test.anno.AnnoFancyParameter
+  annotations on METH public int android.test.anno.FullyNoted.notAnnotated():
+    method parameter annotations:
+  annotations on FIELD int android.test.anno.FullyNoted.mBar:
+    @android.test.anno.AnnoFancyField(nombre=fubar)
+      interface android.test.anno.AnnoFancyField
+    aff: @android.test.anno.AnnoFancyField(nombre=fubar) / class $Proxy13
+    --> nombre is 'fubar'
+
+SimplyNoted.get(AnnoSimpleType) = @android.test.anno.AnnoSimpleType()
+SubNoted.get(AnnoSimpleType) = @android.test.anno.AnnoSimpleType()

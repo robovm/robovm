@@ -1,0 +1,21 @@
+Test 1
+Uncaught exception DEFAULT!
+java.lang.NullPointerException: Hi diddly-ho, neighborino.
+	at Main.catchTheUncaught(Main.java:49)
+	at Main$Helper.run(Main.java:60)
+Test 2
+Uncaught exception THREAD!
+java.lang.NullPointerException: Hi diddly-ho, neighborino.
+	at Main.catchTheUncaught(Main.java:49)
+	at Main$Helper.run(Main.java:60)
+Test 3
+Uncaught exception THREAD!
+java.lang.NullPointerException: Hi diddly-ho, neighborino.
+	at Main.catchTheUncaught(Main.java:49)
+	at Main$Helper.run(Main.java:60)
+Test 1
+Uncaught exception DEFAULT!
+java.lang.NullPointerException: Hi diddly-ho, neighborino.
+	at Main.catchTheUncaught(Main.java:49)
+	at Main.main(Main.java:12)
+	at dalvik.system.NativeStart.main(Native Method)

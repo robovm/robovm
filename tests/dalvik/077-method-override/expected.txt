@@ -1,0 +1,15 @@
+declaredInBase: Base
+notDeclaredInBase: Derived
+wasOverridden: Derived
+overrideWithPublic: Derived
+overrideProtectedWithPublic: Derived
+overridePublicWithProtected: Derived
+overridePublicWithPrivate: Base
+overridePrivateWithPublic: Base
+overridePrivateWithPublic: Derived
+overrideVirtualWithStatic: Base
+overrideVirtualWithStatic: Derived
+overrideStaticWithVirtual: Base
+overrideStaticWithVirtual: Derived
+Got expected exception - ovws
+Got expected exception - oswv

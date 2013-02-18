@@ -1,0 +1,2 @@
+This is a test to verify that System.arraycopy works nice together with
+the concurrent gc.

@@ -1,0 +1,5 @@
+Test starting
+GC'ing
+Asking thread to park
+park() returned quickly
+Test succeeded!

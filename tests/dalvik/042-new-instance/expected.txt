@@ -1,0 +1,9 @@
+LocalClass succeeded
+Got expected PackageAccess complaint
+LocalClass3 succeeded
+Got expected InstantationError
+Cons LocalClass failed as expected
+Cons LocalClass2 succeeded
+Cons got expected PackageAccess complaint
+Cons got expected InstantationException
+Cons got expected PackageAccess2 complaint

@@ -1,0 +1,34 @@
+Sleep Test
+GOING
+GONE
+
+Count Test
+going: 1
+going: 1
+going: 1
+going: 1
+going: 1
+going: 1
+going: 1
+going: 1
+going: 1
+going: 1
+Final result: 10
+going: 2
+going: 2
+going: 2
+going: 2
+going: 2
+going: 2
+going: 2
+going: 2
+going: 2
+going: 2
+Final result: 20
+main: all done
+
+Interrupt Test
+SleepyThread.run starting
+SleepyThread.run starting
+interrupting other (isAlive=true)
+thread#0 interrupted, flag=false

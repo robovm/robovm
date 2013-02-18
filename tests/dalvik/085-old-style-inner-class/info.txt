@@ -1,0 +1,2 @@
+Test that the conversion of an old-style (pre-1.5) inner class results
+in a loss of inner class reflection information.

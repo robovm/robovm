@@ -1,0 +1,135 @@
+#!/bin/sh
+#
+# Run the code in test.jar on the device. The jar should contain a top-level
+# class named Main to run.
+#
+# Options:
+#   --quiet       -- don't chatter
+#   --fast        -- use the fast interpreter (the default)
+#   --jit         -- use the jit
+#   --portable    -- use the portable interpreter
+#   --debug       -- wait for debugger to attach
+#   --zygote      -- use the zygote (if so, all other options are ignored)
+#   --dev         -- development mode (print the vm invocation cmdline)
+#   --no-verify   -- turn off verification (on by default)
+#   --no-optimize -- turn off optimization (on by default)
+#   --no-precise  -- turn off precise GC (on by default)
+
+msg() {
+    if [ "$QUIET" = "n" ]; then
+        echo "$@"
+    fi
+}
+
+INTERP=""
+DEBUG="n"
+VERIFY="y"
+OPTIMIZE="y"
+ZYGOTE="n"
+QUIET="n"
+PRECISE="y"
+DEV_MODE="n"
+
+while true; do
+    if [ "x$1" = "x--quiet" ]; then
+        QUIET="y"
+        shift
+    elif [ "x$1" = "x--fast" ]; then
+        INTERP="fast"
+        msg "Using fast interpreter"
+        shift
+    elif [ "x$1" = "x--jit" ]; then
+        INTERP="jit"
+        msg "Using jit"
+        shift
+    elif [ "x$1" = "x--portable" ]; then
+        INTERP="portable"
+        msg "Using portable interpreter"
+        shift
+    elif [ "x$1" = "x--debug" ]; then
+        DEBUG="y"
+        shift
+    elif [ "x$1" = "x--zygote" ]; then
+        ZYGOTE="y"
+        msg "Spawning from zygote"
+        shift
+    elif [ "x$1" = "x--dev" ]; then
+        DEV_MODE="y"
+        shift
+    elif [ "x$1" = "x--no-verify" ]; then
+        VERIFY="n"
+        shift
+    elif [ "x$1" = "x--no-optimize" ]; then
+        OPTIMIZE="n"
+        shift
+    elif [ "x$1" = "x--no-precise" ]; then
+        PRECISE="n"
+        shift
+    elif [ "x$1" = "x--" ]; then
+        shift
+        break
+    elif expr "x$1" : "x--" >/dev/null 2>&1; then
+        echo "unknown option: $1" 1>&2
+        exit 1
+    else
+        break
+    fi
+done
+
+if [ "$ZYGOTE" = "n" ]; then
+    if [ "x$INTERP" = "x" ]; then
+        INTERP="jit"
+        msg "Using jit by default"
+    fi
+
+    if [ "$OPTIMIZE" = "y" ]; then
+        if [ "$VERIFY" = "y" ]; then
+            DEX_OPTIMIZE="-Xdexopt:verified"
+        else
+            DEX_OPTIMIZE="-Xdexopt:all"
+        fi
+        msg "Performing optimizations"
+    else
+        DEX_OPTIMIZE="-Xdexopt:none"
+        msg "Skipping optimizations"
+    fi
+
+    if [ "$VERIFY" = "y" ]; then
+        DEX_VERIFY=""
+        msg "Performing verification"
+    else
+        DEX_VERIFY="-Xverify:none"
+        msg "Skipping verification"
+    fi
+fi
+
+msg "------------------------------"
+
+if [ "$QUIET" = "n" ]; then
+    adb push test.jar /data
+    adb push test-ex.jar /data
+else
+    adb push test.jar /data >/dev/null 2>&1
+    adb push test-ex.jar /data >/dev/null 2>&1
+fi
+
+if [ "$DEBUG" = "y" ]; then
+    DEX_DEBUG="-agentlib:jdwp=transport=dt_android_adb,server=y,suspend=y"
+fi
+
+if [ "$PRECISE" = "y" ]; then
+    GC_OPTS="-Xgc:precise -Xgenregmap"
+else
+    GC_OPTS="-Xgc:noprecise"
+fi
+
+if [ "$ZYGOTE" = "y" ]; then
+    adb shell cd /data \; dvz -classpath test.jar Main "$@"
+else
+    cmdline="cd /data; dalvikvm $DEX_VERIFY $DEX_OPTIMIZE $DEX_DEBUG \
+        $GC_OPTS -cp test.jar -Xint:${INTERP} -ea Main"
+    if [ "$DEV_MODE" = "y" ]; then
+        echo $cmdline "$@"
+    fi
+    adb shell $cmdline "$@"
+fi

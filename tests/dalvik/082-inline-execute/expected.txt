@@ -1,0 +1,8 @@
+Length of  : 0
+Length of x : 1
+Length of 01234567890123456789012345678901234567890123456789012345678901234567890123456789 : 80
+Now is the time[0] = "N"
+Now is the time[1] = "o"
+Now is the time[10] = " "
+Now is the time[last] = "e"
+Num throws 2000

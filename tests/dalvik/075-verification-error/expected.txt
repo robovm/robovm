@@ -1,0 +1,12 @@
+Got expected InstantationError
+Got expected NoSuchFieldError
+Got expected NoSuchFieldError
+Got expected NoSuchMethodError
+Got expected NoSuchMethodError
+Got expected IllegalAccessError (ifield)
+Got expected IllegalAccessError (sfield)
+Got expected IllegalAccessError (method)
+Got expected IllegalAccessError (smethod)
+Got expected IllegalAccessError (meth-class)
+Got expected IllegalAccessError (field-class)
+Got expected IllegalAccessError (meth-meth)

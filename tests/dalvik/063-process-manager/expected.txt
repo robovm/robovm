@@ -1,0 +1,15 @@
+process manager: nonexistent
+
+spawning child #1
+spawning child
+process manager: RUNNABLE
+child died
+process manager: WAITING
+
+spawning child #2
+spawning child
+process manager: RUNNABLE
+child died
+process manager: WAITING
+
+done!

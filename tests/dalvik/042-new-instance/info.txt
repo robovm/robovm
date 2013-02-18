@@ -1,0 +1,2 @@
+Test various permutations of Class.newInstance and Constructor.newInstance,
+looking for correct handling of access rights and abstract classes.

@@ -1,0 +1,1 @@
+Tests the various ways that an OutOfMemoryError can be constructed and thrown.

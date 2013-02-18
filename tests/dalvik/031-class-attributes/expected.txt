@@ -1,0 +1,211 @@
+***** class ClassAttrs:
+  name: ClassAttrs
+  canonical: ClassAttrs
+  simple: ClassAttrs
+  genericSignature: null
+  super: class java.lang.Object
+  genericSuperclass: class java.lang.Object
+  declaring: null
+  enclosing: null
+  enclosingCon: null
+  enclosingMeth: null
+  modifiers: 1
+  package: null
+  declaredClasses: [2] class ClassAttrs$PublicMemberClass, class ClassAttrs$MemberClass
+  member classes: [1] class ClassAttrs$PublicMemberClass
+  isAnnotation: false
+  isAnonymous: false
+  isArray: false
+  isEnum: false
+  isInterface: false
+  isLocalClass: false
+  isMemberClass: false
+  isPrimitive: false
+  isSynthetic: false
+  genericInterfaces: [0]
+  typeParameters: [0]
+***** class OtherClass:
+  name: OtherClass
+  canonical: OtherClass
+  simple: OtherClass
+  genericSignature: null
+  super: class java.lang.Object
+  genericSuperclass: class java.lang.Object
+  declaring: null
+  enclosing: null
+  enclosingCon: null
+  enclosingMeth: null
+  modifiers: 0
+  package: null
+  declaredClasses: [0]
+  member classes: [0]
+  isAnnotation: false
+  isAnonymous: false
+  isArray: false
+  isEnum: false
+  isInterface: false
+  isLocalClass: false
+  isMemberClass: false
+  isPrimitive: false
+  isSynthetic: false
+  genericInterfaces: [0]
+  typeParameters: [0]
+***** class otherpackage.OtherPackageClass:
+  name: otherpackage.OtherPackageClass
+  canonical: otherpackage.OtherPackageClass
+  simple: OtherPackageClass
+  genericSignature: null
+  super: class java.lang.Object
+  genericSuperclass: class java.lang.Object
+  declaring: null
+  enclosing: null
+  enclosingCon: null
+  enclosingMeth: null
+  modifiers: 1
+  package: package otherpackage
+  declaredClasses: [0]
+  member classes: [0]
+  isAnnotation: false
+  isAnonymous: false
+  isArray: false
+  isEnum: false
+  isInterface: false
+  isLocalClass: false
+  isMemberClass: false
+  isPrimitive: false
+  isSynthetic: false
+  genericInterfaces: [0]
+  typeParameters: [0]
+***** class ClassAttrs$1InnerNamed:
+  name: ClassAttrs$1InnerNamed
+  canonical: null
+  simple: InnerNamed
+  genericSignature: null
+  super: class java.lang.Object
+  genericSuperclass: class java.lang.Object
+  declaring: null
+  enclosing: class ClassAttrs
+  enclosingCon: null
+  enclosingMeth: public static void ClassAttrs.main()
+  modifiers: 0
+  package: null
+  declaredClasses: [0]
+  member classes: [0]
+  isAnnotation: false
+  isAnonymous: false
+  isArray: false
+  isEnum: false
+  isInterface: false
+  isLocalClass: true
+  isMemberClass: false
+  isPrimitive: false
+  isSynthetic: false
+  genericInterfaces: [0]
+  typeParameters: [0]
+***** class ClassAttrs$1ConsInnerNamed:
+  name: ClassAttrs$1ConsInnerNamed
+  canonical: null
+  simple: ConsInnerNamed
+  genericSignature: null
+  super: class java.lang.Object
+  genericSuperclass: class java.lang.Object
+  declaring: null
+  enclosing: class ClassAttrs
+  enclosingCon: ClassAttrs()
+  enclosingMeth: null
+  modifiers: 0
+  package: null
+  declaredClasses: [0]
+  member classes: [0]
+  isAnnotation: false
+  isAnonymous: false
+  isArray: false
+  isEnum: false
+  isInterface: false
+  isLocalClass: true
+  isMemberClass: false
+  isPrimitive: false
+  isSynthetic: false
+  genericInterfaces: [0]
+  typeParameters: [0]
+***** class ClassAttrs$1:
+  name: ClassAttrs$1
+  canonical: null
+  simple: 
+  genericSignature: null
+  super: class OtherClass
+  genericSuperclass: class OtherClass
+  declaring: null
+  enclosing: class ClassAttrs
+  enclosingCon: null
+  enclosingMeth: public static void ClassAttrs.main()
+  modifiers: 8
+  package: null
+  declaredClasses: [0]
+  member classes: [0]
+  isAnnotation: false
+  isAnonymous: true
+  isArray: false
+  isEnum: false
+  isInterface: false
+  isLocalClass: false
+  isMemberClass: false
+  isPrimitive: false
+  isSynthetic: false
+  genericInterfaces: [0]
+  typeParameters: [0]
+***** class ClassAttrs$MemberClass:
+  name: ClassAttrs$MemberClass
+  canonical: ClassAttrs.MemberClass
+  simple: MemberClass
+  genericSignature: <XYZ:Ljava/lang/Object;>Ljava/lang/Object;
+  super: class java.lang.Object
+  genericSuperclass: class java.lang.Object
+  declaring: class ClassAttrs
+  enclosing: class ClassAttrs
+  enclosingCon: null
+  enclosingMeth: null
+  modifiers: 8
+  package: null
+  declaredClasses: [0]
+  member classes: [0]
+  isAnnotation: false
+  isAnonymous: false
+  isArray: false
+  isEnum: false
+  isInterface: false
+  isLocalClass: false
+  isMemberClass: true
+  isPrimitive: false
+  isSynthetic: false
+  genericInterfaces: [0]
+  typeParameters: [1] XYZ
+***** class FancyClass:
+  name: FancyClass
+  canonical: FancyClass
+  simple: FancyClass
+  genericSignature: <K:Ljava/lang/Object;V:Ljava/lang/Object;>Ljava/util/HashMap<TK;TV;>;Ljava/util/Map<TK;TV;>;
+  super: class java.util.HashMap
+  genericSuperclass: java.util.HashMap<K, V>
+  declaring: null
+  enclosing: null
+  enclosingCon: null
+  enclosingMeth: null
+  modifiers: 1
+  package: null
+  declaredClasses: [0]
+  member classes: [2] class java.util.AbstractMap$SimpleEntry, class java.util.AbstractMap$SimpleImmutableEntry
+  isAnnotation: false
+  isAnonymous: false
+  isArray: false
+  isEnum: false
+  isInterface: false
+  isLocalClass: false
+  isMemberClass: false
+  isPrimitive: false
+  isSynthetic: false
+  genericInterfaces: [1] java.util.Map<K, V>
+  typeParameters: [2] K, V
+constructor signature: (LClassAttrs$MemberClass<TXYZ;>;)V
+method signature: ()Ljava/lang/Class<TXYZ;>;
+field signature: LClassAttrs$MemberClass<TXYZ;>;

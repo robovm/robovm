@@ -1,0 +1,1 @@
+This thrashes the memory allocator and garbage collector for a brief period.

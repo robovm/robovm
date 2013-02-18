@@ -1,0 +1,2 @@
+Stress test predicted chaining for overloaded virtual callsite with 3 resolved
+calless invoked 10,000,000 times each in three threads.

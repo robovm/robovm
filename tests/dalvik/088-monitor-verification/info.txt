@@ -1,0 +1,2 @@
+Try different arrangements of "synchronized" to exercise the structured
+lock checks in the bytecode verifier.

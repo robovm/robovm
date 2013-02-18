@@ -1,0 +1,4 @@
+Test class loading for deep interface hierarchies. The problem was that in a deep interface
+hierarchy super-interfaces were recursively concatenated without looking for duplicates.
+In cases like this can quickly lead to excessive LinearAlloc consumption due to more than linear
+duplication of iftables.

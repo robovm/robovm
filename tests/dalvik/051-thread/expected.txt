@@ -1,0 +1,8 @@
+Initializing System.out...
+Thread count: 512
+Starting thread 'Thready'
+@ Thread running
+@ Got expected setDaemon exception
+@ Thread bailing
+Thread starter returning
+thread test done

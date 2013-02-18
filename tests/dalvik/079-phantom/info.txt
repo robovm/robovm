@@ -1,0 +1,1 @@
+Exercise phantom references.

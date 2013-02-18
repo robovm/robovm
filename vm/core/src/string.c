@@ -27,14 +27,65 @@ static InstanceField* stringCountField = NULL;
 // TODO: Restrict the number of bytes stored in the cache instead of the number of String objects.
 #define MAX_CACHE_SIZE 10000
 
-// TODO: Protect this with lock
 typedef struct CacheEntry {
     const char* key; // The string in modified UTF-8
     Object* string;  // The java.lang.String object.
     UT_hash_handle hh;
 } CacheEntry;
 static CacheEntry* internedStrings = NULL;
+static Mutex internedStringsLock;
 
+static inline void obtainInternedStringsLock() {
+    rvmLockMutex(&internedStringsLock);
+}
+
+static inline void releaseInternedStringsLock() {
+    rvmUnlockMutex(&internedStringsLock);
+}
+
+/**
+ * Finds an interned string in the interned strings key. If found the string
+ * will be "touched", i.e. marked as most recently used. The internedStringsLock
+ * MUST be held when calling this function.
+ */
+static Object* findInternedString(Env* env, const char* s) {
+    CacheEntry* cacheEntry;
+    HASH_FIND_STR(internedStrings, s, cacheEntry);
+    if (cacheEntry) {
+        // Touch the string
+        HASH_DELETE(hh, internedStrings, cacheEntry);
+        HASH_ADD_KEYPTR(hh, internedStrings, cacheEntry->key, strlen(cacheEntry->key), cacheEntry);
+        return cacheEntry->string;
+    }
+    return NULL;
+}
+
+/**
+ * Adds a string to the cache of interned string. The string must not already be
+ * interned.  The internedStringsLock MUST be held when calling this function.
+ */
+static jboolean addInternedString(Env* env, const char* s,  Object* string) {
+    CacheEntry* cacheEntry = rvmAllocateMemory(env, sizeof(CacheEntry));
+    if (!cacheEntry) {
+        return FALSE;
+    }
+
+    cacheEntry->key = s;
+    cacheEntry->string = string;
+    HASH_ADD_KEYPTR(hh, internedStrings, cacheEntry->key, strlen(cacheEntry->key), cacheEntry);
+
+    // prune the cache to MAX_CACHE_SIZE
+    if (HASH_COUNT(internedStrings) >= MAX_CACHE_SIZE) {
+        CacheEntry* tmpEntry;
+        HASH_ITER(hh, internedStrings, cacheEntry, tmpEntry) {
+            // prune the first entry (loop is based on insertion order so this deletes the oldest item)
+            HASH_DELETE(hh, internedStrings, cacheEntry);
+            break;
+        }
+    }
+
+    return TRUE;
+}
 
 // TODO: Return the same instance for strings of length == 0?
 
@@ -150,6 +201,10 @@ static inline Object* newString(Env* env, CharArray* value, jint offset, jint le
 }
 
 jboolean rvmInitStrings(Env* env) {
+    if (rvmInitMutex(&internedStringsLock) != 0) {
+        return FALSE;
+    }
+
     stringConstructor = rvmGetInstanceMethod(env, java_lang_String, "<init>", "(II[C)V");
     if (!stringConstructor) return FALSE;
     stringValueField = rvmGetInstanceField(env, java_lang_String, "value", "[C");
@@ -195,73 +250,49 @@ Object* rvmNewString(Env* env, const jchar* chars, jint length) {
 
 Object* rvmNewInternedStringUTF(Env* env, const char* s, jint length) {
     if (!s) return NULL;
+
+    obtainInternedStringsLock();
+
     // Check the cache first.
-    CacheEntry* cacheEntry;
-    HASH_FIND_STR(internedStrings, s, cacheEntry);
-    if (cacheEntry) {
-        // Touch the string
-        HASH_DELETE(hh, internedStrings, cacheEntry);
-        HASH_ADD_KEYPTR(hh, internedStrings, cacheEntry->key, strlen(cacheEntry->key), cacheEntry);
-        return cacheEntry->string;
+    Object* string = findInternedString(env, s);
+    if (!string) {
+        length = (length == -1) ? getUnicodeLengthOfUtf8(s) : length;
+        CharArray* value = rvmNewCharArray(env, length);
+        if (value) {
+            utf8ToUnicode(value->values, s);
+            Object* str = newString(env, value, 0, length);
+            if (str && addInternedString(env, s, str)) {
+                string = str;
+            }
+        }
     }
 
-    length = (length == -1) ? getUnicodeLengthOfUtf8(s) : length;
-    CharArray* value = rvmNewCharArray(env, length);
-    if (!value) return NULL;
-    utf8ToUnicode(value->values, s);
-    Object* string = newString(env, value, 0, length);
-    if (!string) return NULL;
-
-    cacheEntry = rvmAllocateMemory(env, sizeof(CacheEntry));
-    if (!cacheEntry) return NULL;
-    cacheEntry->key = s;
-    cacheEntry->string = string;
-    HASH_ADD_KEYPTR(hh, internedStrings, cacheEntry->key, strlen(cacheEntry->key), cacheEntry);
-    
-    // prune the cache to MAX_CACHE_SIZE
-    if (HASH_COUNT(internedStrings) >= MAX_CACHE_SIZE) {
-        CacheEntry* tmpEntry;
-        HASH_ITER(hh, internedStrings, cacheEntry, tmpEntry) {
-            // prune the first entry (loop is based on insertion order so this deletes the oldest item)
-            HASH_DELETE(hh, internedStrings, cacheEntry);
-            break;
-        }
-    } 
+    releaseInternedStringsLock();
 
     return string;
 }
 
 Object* rvmInternString(Env* env, Object* str) {
     if (!str) return NULL;
-    // Check the cache first.
+
+    obtainInternedStringsLock();
+
+    Object* string = NULL;
+
     char* s = rvmGetStringUTFChars(env, str);
-    if (!s) return NULL;
-    CacheEntry* cacheEntry;
-    HASH_FIND_STR(internedStrings, s, cacheEntry);
-    if (cacheEntry) {
-        // Touch the string
-        HASH_DELETE(hh, internedStrings, cacheEntry);
-        HASH_ADD_KEYPTR(hh, internedStrings, cacheEntry->key, strlen(cacheEntry->key), cacheEntry);
-        return cacheEntry->string;
+    if (s) {
+        // Check the cache first.
+        Object* string = findInternedString(env, s);
+        if (!string) {
+            if (addInternedString(env, s, str)) {
+                string = str;
+            }
+        }
     }
 
-    cacheEntry = rvmAllocateMemory(env, sizeof(CacheEntry));
-    if (!cacheEntry) return NULL;
-    cacheEntry->key = s;
-    cacheEntry->string = str;
-    HASH_ADD_KEYPTR(hh, internedStrings, cacheEntry->key, strlen(cacheEntry->key), cacheEntry);
-    
-    // prune the cache to MAX_CACHE_SIZE
-    if (HASH_COUNT(internedStrings) >= MAX_CACHE_SIZE) {
-        CacheEntry* tmpEntry;
-        HASH_ITER(hh, internedStrings, cacheEntry, tmpEntry) {
-            // prune the first entry (loop is based on insertion order so this deletes the oldest item)
-            HASH_DELETE(hh, internedStrings, cacheEntry);
-            break;
-        }
-    } 
+    releaseInternedStringsLock();
 
-    return str;
+    return string;
 }
 
 jint rvmGetStringLength(Env* env, Object* str) {

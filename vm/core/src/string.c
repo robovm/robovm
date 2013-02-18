@@ -282,7 +282,7 @@ Object* rvmInternString(Env* env, Object* str) {
     char* s = rvmGetStringUTFChars(env, str);
     if (s) {
         // Check the cache first.
-        Object* string = findInternedString(env, s);
+        string = findInternedString(env, s);
         if (!string) {
             if (addInternedString(env, s, str)) {
                 string = str;

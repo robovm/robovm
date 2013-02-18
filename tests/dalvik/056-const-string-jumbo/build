@@ -42,6 +42,6 @@ function writeFile(name, start, end) {
 mkdir classes
 ${JAVAC} -d classes src/*.java
 
-dx -JXmx500m --debug --dex --no-optimize --positions=none --no-locals \
-    --dump-to=classes.lst --output=classes.dex classes
-zip test.jar classes.dex
+# RoboVM note: Call robovm instead of dx
+$ROBOVM_DEV_ROOT/bin/robovm -tmp `pwd`/tmp -d `pwd` \
+    -o test.out -debug -use-debug-libs -verbose -cp classes Main > robovm.log 2>&1

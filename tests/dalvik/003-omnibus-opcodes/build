@@ -22,5 +22,6 @@ ${JAVAC} -d classes `find src -name '*.java'`
 rm classes/UnresClass.class
 ${JAVAC} -d classes `find src2 -name '*.java'`
 
-dx -JXmx256m --debug --dex --dump-to=classes.lst --output=classes.dex classes
-zip test.jar classes.dex
+# RoboVM note: Call robovm instead of dx
+$ROBOVM_DEV_ROOT/bin/robovm -tmp `pwd`/tmp -d `pwd` \
+    -o test.out -debug -use-debug-libs -verbose -cp classes Main > robovm.log 2>&1

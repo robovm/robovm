@@ -1,12 +1,85 @@
 package android.test.anno;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.TreeMap;
 
 public class TestAnnotations {
+
+    // RoboVM note: Reflection in Dalvik and RoboVM returns annotations, constructors, methods and 
+    // fields in different orders. This test has been changed so that the ordering is ignored.
+    
+    // Start RoboVM changes 
+    static private String annotationMemberToString(Annotation a, Method member) {
+        String name = member.getName();
+        Object value;
+        try {
+            value = member.invoke(a);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        if (member.getReturnType().isArray()) {
+            StringBuilder sb = new StringBuilder(80);
+            sb.append(name).append("=[");
+            int len = Array.getLength(value);
+            for (int i = 0; i < len; i++) {
+                if (i != 0) sb.append(", ");
+                sb.append(Array.get(value, i));
+            }
+            return sb.append("]").toString();
+        } else {
+            return name+ "=" +value;
+        }
+    }
+    
+    static private String annotationToString(Annotation a) {
+        StringBuilder result = new StringBuilder();
+        result.append('@');
+        result.append(a.annotationType().getName());
+        result.append('(');
+        TreeMap<String, Method> sorted =
+                new TreeMap<String, Method>();
+        for (Method method : a.annotationType().getDeclaredMethods()) {
+            String name = method.getName();
+            if (method.getParameterTypes().length == 0) {
+                if (!"toString".equals(name) && !"hashCode".equals(name)) {
+                    sorted.put(method.getName(), method);
+                }
+            }
+        }
+        Method[] methods = sorted.values().toArray(new Method[0]);
+        for (int i = 0; i < methods.length; ++i) {
+            if (i != 0) {
+                result.append(", ");
+            }
+            result.append(annotationMemberToString(a, methods[i]));
+        }
+        result.append(')');
+        return result.toString();
+    }
+    // End RoboVM changes 
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    static private List sortMembers(Object[] members) {
+        List l = new ArrayList(Arrays.asList(members));
+        Collections.sort(l, new Comparator<Member>() {
+            @Override
+            public int compare(Member m1, Member m2) {
+                return m1.toString().compareTo(m2.toString());
+            }
+        });
+        return l;
+    }
+    
     /**
      * Print the annotations in sorted order, so as to avoid
      * any (legitimate) non-determinism with regard to the iteration order.
@@ -20,7 +93,7 @@ public class TestAnnotations {
         }
 
         for (Annotation a : sorted.values()) {
-            System.out.println(prefix + "  " + a);
+            System.out.println(prefix + "  " + annotationToString(a));
             System.out.println(prefix + "    " + a.annotationType());
         }
     }
@@ -35,7 +108,7 @@ public class TestAnnotations {
         printAnnotationArray("", annos);
         System.out.println();
 
-        for (Constructor c: clazz.getDeclaredConstructors()) {
+        for (Constructor c: (List<Constructor>) sortMembers(clazz.getDeclaredConstructors())) {
             annos = c.getDeclaredAnnotations();
             System.out.println("  annotations on CTOR " + c + ":");
             printAnnotationArray("  ", annos);
@@ -46,7 +119,7 @@ public class TestAnnotations {
             }
         }
 
-        for (Method m: clazz.getDeclaredMethods()) {
+        for (Method m: (List<Method>) sortMembers(clazz.getDeclaredMethods())) {
             annos = m.getDeclaredAnnotations();
             System.out.println("  annotations on METH " + m + ":");
             printAnnotationArray("  ", annos);
@@ -57,7 +130,7 @@ public class TestAnnotations {
             }
         }
 
-        for (Field f: clazz.getDeclaredFields()) {
+        for (Field f: (List<Field>) sortMembers(clazz.getDeclaredFields())) {
             annos = f.getDeclaredAnnotations();
             System.out.println("  annotations on FIELD " + f + ":");
             printAnnotationArray("  ", annos);
@@ -106,11 +179,11 @@ public class TestAnnotations {
         try {
             field = TestAnnotations.class.getDeclaredField("thing1");
             annotations = field.getAnnotations();
-            System.out.println(field + ": " + annotations[0].toString());
+            System.out.println(field + ": " + annotationToString(annotations[0]));
 
             field = TestAnnotations.class.getDeclaredField("thing2");
             annotations = field.getAnnotations();
-            System.out.println(field + ": " + annotations[0].toString());
+            System.out.println(field + ": " + annotationToString(annotations[0]));
         } catch (NoSuchFieldException nsfe) {
             throw new RuntimeException(nsfe);
         }
@@ -131,7 +204,7 @@ public class TestAnnotations {
         mapping = property.mapping();
 
         System.out.println("mapping is " + mapping.getClass() +
-            "\n  0='" + mapping[0] + "'\n  1='" + mapping[1] + "'");
+            "\n  0='" + annotationToString(mapping[0]) + "'\n  1='" + annotationToString(mapping[1]) + "'");
 
         /* while we're here, check isAnnotationPresent on Method */
         System.out.println("present(getFocusType, ExportedProperty): " +

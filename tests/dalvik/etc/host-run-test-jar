@@ -77,83 +77,9 @@ while true; do
     fi
 done
 
-if [ "x$INTERP" = "x" ]; then
-    INTERP="jit"
-    msg "Using jit by default"
-fi
-
-if [ "$OPTIMIZE" = "y" ]; then
-    if [ "$VERIFY" = "y" ]; then
-        DEX_OPTIMIZE="-Xdexopt:verified"
-    else
-        DEX_OPTIMIZE="-Xdexopt:all"
-    fi
-    msg "Performing optimizations"
-else
-    DEX_OPTIMIZE="-Xdexopt:none"
-    msg "Skipping optimizations"
-fi
-
-if [ "$VERIFY" = "y" ]; then
-    DEX_VERIFY=""
-    msg "Performing verification"
-else
-    DEX_VERIFY="-Xverify:none"
-    msg "Skipping verification"
-fi
-
-if [ "$VALGRIND" = "y" ]; then
-    msg "Running with valgrind"
-    valgrind_cmd="valgrind"
-    #valgrind_cmd="valgrind --leak-check=full"
-else
-    valgrind_cmd=""
-fi
-
-if [ "$PRECISE" = "y" ]; then
-    GC_OPTS="-Xgc:precise -Xgenregmap"
-else
-    GC_OPTS="-Xgc:noprecise"
-fi
-
-msg "------------------------------"
-
-HOSTBASE="${ANDROID_BUILD_TOP}/out/host"
-BASE="$OUT" # from build environment
-DATA_DIR=/tmp
-DEBUG_OPTS="-Xcheck:jni -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
-
-if [ ! -d $DATA_DIR/dalvik-cache ]; then
-    mkdir -p $DATA_DIR/dalvik-cache
-    [[ $? -ne 0 ]] && exit
-fi
-
-export ANDROID_PRINTF_LOG=brief
-if [ "$DEV_MODE" = "y" ]; then
-    export ANDROID_LOG_TAGS='*:d'
-else
-    export ANDROID_LOG_TAGS='*:s'
-fi
-export ANDROID_DATA="$DATA_DIR"
-export ANDROID_ROOT="${HOSTBASE}/linux-x86"
-export LD_LIBRARY_PATH="${ANDROID_ROOT}/lib"
-export DYLD_LIBRARY_PATH="${ANDROID_ROOT}/lib"
-
-exe="${ANDROID_ROOT}/bin/dalvikvm"
-framework="${BASE}/system/framework"
-bpath="${framework}/core.jar:${framework}/ext.jar:${framework}/framework.jar"
-
-if [ "$DEBUG" = "y" ]; then
-    PORT=8000
-    msg "Waiting for debugger to connect on localhost:$PORT"
-    DEX_DEBUG="-agentlib:jdwp=transport=dt_socket,addres=$PORT,server=y,suspend=y"
-fi
-
-if [ "$GDB" = "y" ]; then
-    gdb=gdb
-    gdbargs="--args $exe"
-fi
-
-$valgrind_cmd $gdb $exe $gdbargs "-Xbootclasspath:${bpath}" \
-    $DEX_VERIFY $DEX_OPTIMIZE $DEX_DEBUG $GC_OPTS "-Xint:${INTERP}" -ea \
-    -cp test.jar Main "$@"
+exec ./test.out -rvm:log=silent -rvm:mx256M $@
+#cp=classes
+#if [ -r classes-ex ]; then
+#    cp=classes:classes-ex
+#fi
+#java -cp $cp Main

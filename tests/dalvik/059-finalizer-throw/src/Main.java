@@ -16,10 +16,17 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        createAndForget();
-
-        System.gc();
-        System.runFinalization();
+        // Start RoboVM changes. In RoboVM we need to repeat this a couple of times to cause
+        // GC+finalization
+        for (int i = 0; i < 10; i++) { 
+            createAndForget();
+            System.gc();
+            System.runFinalization();
+            if (didFinal) {
+                break;
+            }
+        }
+        // End RoboVM changes
 
         new Timer(true).schedule(new TimerTask() {
                 public void run() {
@@ -47,10 +54,13 @@ public class Main {
     }
 
     protected void finalize() throws Throwable {
-        System.out.println("In finalizer");
-
-        didFinal = true;
-
-        throw new InterruptedException("whee");
+        // RoboVM note: Only do this for the first finalized object
+        if (!didFinal) {
+            System.out.println("In finalizer");
+    
+            didFinal = true;
+    
+            throw new InterruptedException("whee");
+        }
     }
 }

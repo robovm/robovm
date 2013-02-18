@@ -45,10 +45,10 @@ Invoke public abstract void Shapes.upCheck() throws java.lang.InterruptedExcepti
  (no args)
 Got expected ie
 
-Proxy methods: [public native boolean $Proxy0.equals(java.lang.Object), public native int $Proxy0.hashCode(), public native java.lang.String $Proxy0.toString(), public native int $Proxy0.rectangle(int,int), public native int $Proxy0.square(int,int), public native int $Proxy0.trapezoid(int,double,int), public native java.lang.String $Proxy0.blob(), public native void $Proxy0.circle(int), public native void $Proxy0.upCheck(), public native void $Proxy0.upChuck(), public native double $Proxy0.blue(int), public native R0aa $Proxy0.checkMe(), public native int $Proxy0.green(double), public native int $Proxy0.mauve(java.lang.String), public native int $Proxy0.red(float)]
+Proxy methods: [public final int $Proxy0.red(float), public final int $Proxy0.green(double), public final double $Proxy0.blue(int), public final int $Proxy0.mauve(java.lang.String), public final void $Proxy0.circle(int), public final java.lang.String $Proxy0.blob(), public final void $Proxy0.upChuck(), public final void $Proxy0.upCheck() throws java.lang.InterruptedException, public final int $Proxy0.rectangle(int,int), public final int $Proxy0.square(int,int), public final int $Proxy0.trapezoid(int,double,int), public final R0aa $Proxy0.checkMe(), public final boolean $Proxy0.equals(java.lang.Object), public final int $Proxy0.hashCode(), public final java.lang.String $Proxy0.toString()]
 Decl annos: []
-Param annos (1) : [[]]
-Proxy fields: [private static java.lang.Throwable[][] $Proxy0.throws]
+Param annos (0) : []
+Proxy fields: []
 Dupe threw expected exception
 Clash threw expected exception
 Clash2 threw expected exception

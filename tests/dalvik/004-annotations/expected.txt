@@ -28,10 +28,10 @@ annotations on TYPE class android.test.anno.SimplyNoted(2):
     @android.test.anno.AnnoSimpleMethod()
       interface android.test.anno.AnnoSimpleMethod
     method parameter annotations:
-  annotations on FIELD public static int android.test.anno.SimplyNoted.mOneFoo:
+  annotations on FIELD public int android.test.anno.SimplyNoted.mFoo:
     @android.test.anno.AnnoSimpleField()
       interface android.test.anno.AnnoSimpleField
-  annotations on FIELD public int android.test.anno.SimplyNoted.mFoo:
+  annotations on FIELD public static int android.test.anno.SimplyNoted.mOneFoo:
     @android.test.anno.AnnoSimpleField()
       interface android.test.anno.AnnoSimpleField
 
@@ -89,7 +89,7 @@ annotations on TYPE class android.test.anno.FullyNoted(1):
   annotations on FIELD int android.test.anno.FullyNoted.mBar:
     @android.test.anno.AnnoFancyField(nombre=fubar)
       interface android.test.anno.AnnoFancyField
-    aff: @android.test.anno.AnnoFancyField(nombre=fubar) / class $Proxy13
+    aff: @android.test.anno.AnnoFancyField(nombre=fubar) / class $Proxy17
     --> nombre is 'fubar'
 
 SimplyNoted.get(AnnoSimpleType) = @android.test.anno.AnnoSimpleType()

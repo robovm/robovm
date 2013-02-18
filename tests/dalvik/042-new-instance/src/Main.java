@@ -20,7 +20,8 @@ import java.lang.reflect.Constructor;
  * Test instance creation.
  */
 public class Main {
-    private static boolean FULL_ACCESS_CHECKS = false;  // b/5861201
+    // RoboVM note: Enabled when testing RoboVM
+    private static boolean FULL_ACCESS_CHECKS = true;  // b/5861201
 
     public static void main(String[] args) {
         testClassNewInstance();

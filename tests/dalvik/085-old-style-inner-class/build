@@ -22,8 +22,6 @@ set -e
 mkdir classes
 ${JAVAC} -source 1.4 -target 1.4 -d classes `find src -name '*.java'`
 
-# Suppress stderr to keep the inner class warnings out of the expected output.
-dx --debug --dex --dump-to=classes.lst --output=classes.dex \
-    --dump-width=1000 classes 2>/dev/null
-
-zip test.jar classes.dex
+# RoboVM note: Call robovm instead of dx
+$ROBOVM_DEV_ROOT/bin/robovm -tmp `pwd`/tmp -d `pwd` \
+    -o test.out -debug -use-debug-libs -verbose -cp classes Main > robovm.log 2>&1

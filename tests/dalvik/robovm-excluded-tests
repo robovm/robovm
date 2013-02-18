@@ -1,0 +1,33 @@
+# The tests listed in this file will not be run when testing RoboVM. The reason
+# why a test has been excluded must be indicated below.
+
+# This has a test with an enormous amount of gotos which makes Soot freak out.
+003-omnibus-opcodes
+
+# Tests assert which RoboVM doesn't implement.
+029-assert
+
+# Uses a custom classloader which RoboVM doesn't allow.
+068-classloader
+
+# Tests DEX file stuff.
+071-dexfile
+
+# These are to specific to the GC used in Dalvik.
+072-precise-gc
+074-gc-thrash
+
+# TODO: Don't exclude these tests! Once proper virtual dispatch using vtables 
+# have been implemented (issue #3) these tests should succeed.
+077-method-override
+300-package-override
+
+# Tests Dalvik specific stuff
+080-oom-throw
+
+# Loads the dalvik.system.DexFile class which isn't included in RoboVM
+086-null-super
+087-gc-after-link
+
+# Tests dex file format limits
+089-many-methods

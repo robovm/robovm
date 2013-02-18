@@ -17,6 +17,11 @@
 # Stop if something fails.
 set -e
 
+if [ "x$ROBOVM_DEV_ROOT" == 'x' ]; then
+    echo "ROBOVM_DEV_ROOT not set"
+    exit 1
+fi
+
 mkdir classes
 ${JAVAC} -d classes `find src -name '*.java'`
 
@@ -24,20 +29,12 @@ if [ -r src2 ]; then
     ${JAVAC} -d classes `find src2 -name '*.java'`
 fi
 
-dx -JXmx256m --debug --dex --dump-to=classes.lst --output=classes.dex \
-    --dump-width=1000 classes
-zip test.jar classes.dex
-
+cp=classes
 if [ -r src-ex ]; then
     mkdir classes-ex
     ${JAVAC} -d classes-ex -cp classes `find src-ex -name '*.java'`
-    dx -JXmx256m --debug --dex --dump-to=classes-ex.lst \
-        --output=classes-ex.dex --dump-width=1000 classes-ex
-
-    # quick shuffle so that the stored name is "classes.dex"
-    mv classes.dex classes-1.dex
-    mv classes-ex.dex classes.dex
-    zip test-ex.jar classes.dex
-    mv classes.dex classes-ex.dex
-    mv classes-1.dex classes.dex
+    cp=classes:classes-ex
 fi
+
+$ROBOVM_DEV_ROOT/bin/robovm -tmp `pwd`/tmp -d `pwd` \
+    -o test.out -debug -use-debug-libs -verbose -roots '##.#' -cp "$cp" Main > robovm.log 2>&1

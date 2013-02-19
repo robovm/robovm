@@ -19,6 +19,7 @@
       <resource><directory>libcore/json/src/main/resources</directory></resource>
       <resource><directory>libcore/luni/src/main/resources</directory></resource>
       <resource><directory>libcore/xml/src/main/resources</directory></resource>
+      <resource><directory>external/bouncycastle/src/main/resources</directory></resource>
       <resource>
         <directory>robovm/src/filtered-java/</directory>
         <targetPath>${project.build.directory}/generated-sources/filtered-java</targetPath>
@@ -46,6 +47,7 @@
                 <source>libcore/json/src/main/java</source>
                 <source>libcore/luni/src/main/java</source>
                 <source>libcore/xml/src/main/java</source>
+                <source>external/bouncycastle/src/main/java</source>
               </sources>
             </configuration>
           </execution>
@@ -54,10 +56,40 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>org/bouncycastle/**/*</exclude>
+          </excludes>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <excludePackageNames>org.bouncycastle.*</excludePackageNames>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>1.5</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <relocations>
+                <relocation>
+                  <pattern>org.bouncycastle</pattern>
+                  <shadedPattern>com.android.org.bouncycastle</shadedPattern>
+                </relocation>
+              </relocations>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

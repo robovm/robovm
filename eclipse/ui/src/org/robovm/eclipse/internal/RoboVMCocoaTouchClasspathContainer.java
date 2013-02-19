@@ -27,6 +27,7 @@ import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.JavaCore;
+import org.robovm.compiler.Config;
 import org.robovm.eclipse.RoboVMPlugin;
 
 /**
@@ -39,9 +40,10 @@ public class RoboVMCocoaTouchClasspathContainer implements IClasspathContainer {
     public static final IPath PATH = new Path(ID);
     
     public IClasspathEntry[] getClasspathEntries() {
-        File f = RoboVMPlugin.getRoboVMHome().getRtPath();
+        Config.Home home = RoboVMPlugin.getRoboVMHome();
+        File f = home.getRtPath();
         List<IClasspathEntry> entries = new ArrayList<IClasspathEntry>();
-        if (f.isFile()) {
+        if (!home.isDev()) {
             // ROBOVM_DEV_ROOT not set (rtPath points to $ROBOVM_HOME/lib/robovm-rt.jar).
             File libDir = f.getParentFile();
             entries.add(JavaCore.newLibraryEntry(
@@ -53,7 +55,7 @@ public class RoboVMCocoaTouchClasspathContainer implements IClasspathContainer {
                     new Path(new File(libDir, "robovm-cocoatouch-sources.jar").getAbsolutePath()), 
                     new Path(""), new IAccessRule[] {}, new IClasspathAttribute[] {}, false));
         } else {
-            // ROBOVM_DEV_ROOT has been set (rtPath points to $ROBOVM_DEV_ROOT/rt/target/classes).
+            // ROBOVM_DEV_ROOT has been set (rtPath points to $ROBOVM_DEV_ROOT/rt/target/robovm-rt-<version>.jar).
             File rootDir = f.getParentFile().getParentFile().getParentFile();
             entries.add(JavaCore.newLibraryEntry(
                     new Path(new File(rootDir, "objc/target/classes").getAbsolutePath()), 

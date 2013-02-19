@@ -25,6 +25,7 @@ import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.JavaCore;
+import org.robovm.compiler.Config;
 import org.robovm.eclipse.RoboVMPlugin;
 
 /**
@@ -37,16 +38,16 @@ public class RoboVMClasspathContainer implements IClasspathContainer {
     public static final IPath PATH = new Path(ID);
     
     public IClasspathEntry[] getClasspathEntries() {
-        File f = RoboVMPlugin.getRoboVMHome().getRtPath();
+        Config.Home home = RoboVMPlugin.getRoboVMHome();
+        File f = home.getRtPath();
         IPath sourceAttachment = null;
-        if (f.isFile()) {
+        if (!home.isDev()) {
             // robovm-rt.jar. Use robovm-rt-sources.jar as source attachment.
             sourceAttachment = new Path(new File(f.getParentFile(), "robovm-rt-sources.jar").getAbsolutePath());
         } else {
-            // ROBOVM_DEV_ROOT has been set and rtPath is $ROBOVM_DEV_ROOT/rt/target/classes. Use
-            // $ROBOVM_DEV_ROOT/rt/src/main/java as source attachment.
-            sourceAttachment = new Path(new File(f.getParentFile().getParent(), 
-                    "src/main/java").getAbsolutePath());
+            // ROBOVM_DEV_ROOT has been set and rtPath is $ROBOVM_DEV_ROOT/rt/target/robovm-rt-<version>.jar. Use
+            // $ROBOVM_DEV_ROOT/rt/target/robovm-rt-<version>-sources.jar as source attachment.
+            sourceAttachment = new Path(f.getAbsolutePath().replaceAll("\\.jar$", "-sources.jar"));
         }
         return new IClasspathEntry[] {
             JavaCore.newLibraryEntry(new Path(f.getAbsolutePath()), sourceAttachment, new Path(""),

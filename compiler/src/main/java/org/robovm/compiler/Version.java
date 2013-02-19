@@ -27,6 +27,8 @@ import org.apache.commons.io.IOUtils;
  */
 public class Version {
 
+    private static String version = null;
+
     /**
      * Returns the version number of the compiler by reading the <code>version.properties</code>
      * file.
@@ -34,12 +36,16 @@ public class Version {
      * @return the version.
      */
     public static String getVersion() {
+        if (version != null) {
+            return version;
+        }
         InputStream is = null;
         try {
             is = Version.class.getResourceAsStream("/version.properties");
             Properties props = new Properties();
             props.load(is);
-            return props.getProperty("version");
+            version = props.getProperty("version");
+            return version;
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {

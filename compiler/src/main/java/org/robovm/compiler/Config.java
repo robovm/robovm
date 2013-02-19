@@ -339,6 +339,7 @@ public class Config {
         private File binDir = null;
         private File libVmDir = null;
         private File rtPath = null;
+        private boolean dev = false;
 
         public Home(File homeDir) {
             validate(homeDir);
@@ -351,6 +352,11 @@ public class Config {
             this.binDir = binDir;
             this.libVmDir = libVmDir;
             this.rtPath = rtPath;
+            this.dev = true;
+        }
+
+        public boolean isDev() {
+            return dev;
         }
 
         public File getBinDir() {
@@ -370,10 +376,7 @@ public class Config {
             // at the root of a complete RoboVM source tree.
             if (System.getenv("ROBOVM_DEV_ROOT") != null) {
                 File dir = new File(System.getenv("ROBOVM_DEV_ROOT"));
-                validateDevRootDir(dir);
-                return new Home(new File(dir, "bin"), 
-                                 new File(dir, "vm/target/binaries"), 
-                                 new File(dir, "rt/target/classes"));
+                return validateDevRootDir(dir);
             }
             
             if (System.getenv("ROBOVM_HOME") != null) {
@@ -449,7 +452,7 @@ public class Config {
             }
         }
 
-        private static void validateDevRootDir(File dir) {
+        private static Home validateDevRootDir(File dir) {
             String error = "Path " + dir + " is not a valid RoboVM source tree: ";
             // Check for required dirs.
             if (!dir.exists()) {
@@ -469,11 +472,14 @@ public class Config {
                 throw new IllegalArgumentException(error + "bin/ missing or invalid");
             }
 
-            File rtTargetClasses = new File(dir, "rt/target/classes");
-            if (!rtTargetClasses.exists() || !rtTargetClasses.isDirectory()) {
+            String rtJarName = "robovm-rt-" + Version.getVersion() + ".jar";
+            File rtJar = new File(dir, "rt/target/" + rtJarName);
+            if (!rtJar.exists() || rtJar.isDirectory()) {
                 throw new IllegalArgumentException(error 
-                        + "rt/target/classes/ missing or invalid");
+                        + "rt/target/" + rtJarName + " missing or invalid");
             }
+
+            return new Home(binDir, vmBinariesDir, rtJar);
         }
     }
     

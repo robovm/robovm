@@ -1309,6 +1309,12 @@ jboolean rvmUnboxInt(Env* env, Object* arg, jvalue* value) {
         return FALSE;
     }
     if (arg->clazz != java_lang_Integer) {
+        if (rvmUnboxChar(env, arg, value)) {
+            value->i = value->c;
+            return TRUE;
+        } else {
+            rvmExceptionClear(env);
+        }
         if (rvmUnboxShort(env, arg, value)) {
             value->i = value->s;
             return TRUE;
@@ -1410,7 +1416,7 @@ jboolean rvmUnbox(Env* env, Object* arg, Class* type, jvalue* value) {
         value->l = (jobject) arg;
         return TRUE;
     }
-    return !unboxFunc(env, arg, value);
+    return unboxFunc(env, arg, value);
 }
 
 Object* rvmCloneObject(Env* env, Object* obj) {

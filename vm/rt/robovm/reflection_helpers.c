@@ -44,16 +44,17 @@ jvalue* validateAndUnwrapArgs(Env* env, ObjectArray* parameterTypes, ObjectArray
                 return NULL;
             }
             if (!rvmUnbox(env, arg, type, &jvalueArgs[i])) {
-                if (rvmExceptionCheck(env) && rvmExceptionOccurred(env)->clazz == java_lang_ClassCastException) {
+                if (rvmExceptionOccurred(env)->clazz == java_lang_ClassCastException) {
                     rvmExceptionClear(env);
                     const char* argTypeName = rvmGetHumanReadableClassName(env, arg->clazz);
-                    if (argTypeName) {
+                    const char* typeName = argTypeName ? rvmGetHumanReadableClassName(env, type) : NULL;
+                    if (argTypeName && typeName) {
                         rvmThrowNewf(env, java_lang_IllegalArgumentException, 
-                            "argument of type %s is incompatible with primitive type parameter at index %d",
-                            argTypeName, i + 1);
+                            "argument of type %s is incompatible with parameter of type %s at index %d",
+                            argTypeName, typeName, i + 1);
                     }
-                    return NULL;
                 }
+                return NULL;
             }
         } else {
             if (arg && !rvmIsInstanceOf(env, arg, type)) {

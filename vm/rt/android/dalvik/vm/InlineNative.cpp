@@ -57,7 +57,7 @@ union Convert64 {
 /*
  * public static float abs(float)
  */
-extern "C" float Java_java_lang_Math_abs__float(JNIEnv*, jclass, float f)
+extern "C" float Java_java_lang_Math_abs__F(JNIEnv*, jclass, float f)
 {
     Convert32 convert;
     convert.ff = f;
@@ -69,7 +69,7 @@ extern "C" float Java_java_lang_Math_abs__float(JNIEnv*, jclass, float f)
 /*
  * public static double abs(double)
  */
-extern "C" double Java_java_lang_Math_abs__double(JNIEnv*, jclass, double d)
+extern "C" double Java_java_lang_Math_abs__D(JNIEnv*, jclass, double d)
 {
     Convert64 convert;
     convert.dd = d;

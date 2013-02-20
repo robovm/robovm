@@ -208,8 +208,22 @@ static Class* findClass(Env* env, const char* className, ClassLoader* classLoade
 
     if (className[0] == '[') {
         Class* componentType = findClassByDescriptor(env, &className[1], classLoader, loaderFunc);
+        if (componentType == prim_V) {
+            componentType = NULL;
+        }
         if (!componentType)  {
             releaseClassLock();
+            Object* exception = rvmExceptionOccurred(env);
+            if (exception && exception->clazz == java_lang_ClassNotFoundException) {
+                // Assume that the ClassNotFoundException was thrown because the component
+                // type could not be found. Throw a new ClassNotFoundException with className
+                // as message.
+                rvmExceptionClear(env);
+                rvmThrowClassNotFoundException(env, className);
+            } else if (!strcmp("[V", className)) {
+                // Array of void is not possible
+                rvmThrowClassNotFoundException(env, className);
+            }
             return NULL;
         }
         clazz = createArrayClass(env, componentType);
@@ -274,7 +288,7 @@ static Class* findClassByDescriptor(Env* env, const char* desc, ClassLoader* cla
     case '[':
         return findClass(env, desc, classLoader, loaderFunc);
     }
-    // desc[0] == 'L'
+    assert(desc[0] == 'L');
     jint length = strlen(desc);
     char* className = rvmAllocateMemoryAtomic(env, length - 2 + 1);
     if (!className) return NULL;
@@ -305,7 +319,7 @@ Class* rvmFindClassByDescriptor(Env* env, const char* desc, ClassLoader* classLo
     case '[':
         return rvmFindClassUsingLoader(env, desc, classLoader);
     }
-    // desc[0] == 'L'
+    assert(desc[0] == 'L');
     jint length = strlen(desc);
     char* className = rvmAllocateMemoryAtomic(env, length - 2 + 1);
     if (!className) return NULL;

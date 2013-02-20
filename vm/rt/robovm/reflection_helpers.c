@@ -41,21 +41,29 @@ jvalue* validateAndUnwrapArgs(Env* env, ObjectArray* parameterTypes, ObjectArray
             if (arg == NULL) {
                 rvmThrowNewf(env, java_lang_IllegalArgumentException, 
                     "null passed as value for primitive type parameter at index %d", i + 1);
-                return FALSE;
+                return NULL;
             }
             if (!rvmUnbox(env, arg, type, &jvalueArgs[i])) {
                 if (rvmExceptionCheck(env) && rvmExceptionOccurred(env)->clazz == java_lang_ClassCastException) {
                     rvmExceptionClear(env);
-                    rvmThrowNewf(env, java_lang_IllegalArgumentException, 
-                        "argument of type %s is incompatible with primitive type parameter at index %d",
-                        rvmFromBinaryClassName(env, arg->clazz->name), i + 1);
+                    const char* argTypeName = rvmGetHumanReadableClassName(env, arg->clazz);
+                    if (argTypeName) {
+                        rvmThrowNewf(env, java_lang_IllegalArgumentException, 
+                            "argument of type %s is incompatible with primitive type parameter at index %d",
+                            argTypeName, i + 1);
+                    }
+                    return NULL;
                 }
             }
         } else {
             if (arg && !rvmIsInstanceOf(env, arg, type)) {
-                rvmThrowNewf(env, java_lang_IllegalArgumentException, 
-                    "argument of type %s is incompatible with parameter of type %s at index %d",
-                    rvmFromBinaryClassName(env, arg->clazz->name), rvmFromBinaryClassName(env, type->name), i + 1);
+                const char* argTypeName = rvmGetHumanReadableClassName(env, arg->clazz);
+                const char* typeName = argTypeName ? rvmGetHumanReadableClassName(env, type) : NULL;
+                if (argTypeName && typeName) {
+                    rvmThrowNewf(env, java_lang_IllegalArgumentException, 
+                        "argument of type %s is incompatible with parameter of type %s at index %d",
+                        argTypeName, typeName, i + 1);
+                }
                 return NULL;
             }
             jvalueArgs[i].l = (jobject) arg;

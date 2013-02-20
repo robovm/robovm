@@ -37,7 +37,7 @@ extern jboolean rvmThrowIncompatibleClassChangeErrorClassField(Env* env, Class* 
 extern jboolean rvmThrowIncompatibleClassChangeErrorInstanceField(Env* env, Class* clazz, const char* name, const char* desc);
 extern jboolean rvmThrowIncompatibleClassChangeErrorMethod(Env* env, Class* clazz, const char* name, const char* desc);
 extern jboolean rvmThrowInstantiationError(Env* env, const char* message);
-extern jboolean rvmThrowClassCastException(Env* env, Class* expectedClass, Class* actualClass);
+extern jboolean rvmThrowClassCastException(Env* env, Class* expectedType, Class* actualType);
 extern jboolean rvmThrowNullPointerException(Env* env);
 extern jboolean rvmThrowAbstractMethodError(Env* env, const char* message);
 extern jboolean rvmThrowArrayIndexOutOfBoundsException(Env* env, jint length, jint index);

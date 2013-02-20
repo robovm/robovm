@@ -188,9 +188,12 @@ jboolean rvmThrowIncompatibleClassChangeErrorMethod(Env* env, Class* clazz, cons
     return rvmThrowNew(env, java_lang_IncompatibleClassChangeError, "");
 }
 
-jboolean rvmThrowClassCastException(Env* env, Class* expectedClass, Class* actualClass) {
-    // TODO: Message should look like "java.lang.ClassCastException: java.lang.Object cannot be cast to java.lang.String"
-    return rvmThrowNew(env, java_lang_ClassCastException, "");
+jboolean rvmThrowClassCastException(Env* env, Class* expectedType, Class* actualType) {
+    const char* expectedTypeName = rvmGetHumanReadableClassName(env, expectedType);
+    if (!expectedTypeName) return FALSE;
+    const char* actualTypeName = rvmGetHumanReadableClassName(env, actualType);
+    if (!actualTypeName) return FALSE;
+    return rvmThrowNewf(env, java_lang_ClassCastException, "%s cannot be cast to %s", actualTypeName, expectedTypeName);
 }
 
 jboolean rvmThrowNullPointerException(Env* env) {

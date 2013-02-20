@@ -143,12 +143,7 @@ public class Mangler {
     }
     
     public static String mangleString(String name) {
-        byte[] s;
-        try {
-            s = name.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+        byte[] s = Strings.stringToModifiedUtf8(name);
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < s.length; i++) {
             byte c = s[i];

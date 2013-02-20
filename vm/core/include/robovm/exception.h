@@ -41,7 +41,7 @@ extern jboolean rvmThrowClassCastException(Env* env, Class* expectedClass, Class
 extern jboolean rvmThrowNullPointerException(Env* env);
 extern jboolean rvmThrowAbstractMethodError(Env* env, const char* message);
 extern jboolean rvmThrowArrayIndexOutOfBoundsException(Env* env, jint length, jint index);
-extern jboolean rvmThrowArrayStoreException(Env* env);
+extern jboolean rvmThrowArrayStoreException(Env* env, Class* elemType, Class* arrayType);
 extern jboolean rvmThrowNegativeArraySizeException(Env* env);
 extern jboolean rvmThrowClassNotFoundException(Env* env, const char* className);
 extern jboolean rvmThrowUnsatisfiedLinkError(Env* env, const char* message);

@@ -643,7 +643,7 @@ void _bcSetObjectArrayElement(Env* env, ObjectArray* array, jint index, Object* 
     Class* componentType = array->object.clazz->componentType;
     jboolean assignable = rvmIsAssignableFrom(env, value->clazz, componentType);
     if (!rvmExceptionCheck(env) && !assignable) {
-        rvmThrowArrayStoreException(env);
+        rvmThrowArrayStoreException(env, value->clazz, array->object.clazz);
     }
     if (!rvmExceptionCheck(env)) array->values[index] = value;
     LEAVEV;

@@ -205,8 +205,13 @@ jboolean rvmThrowArrayIndexOutOfBoundsException(Env* env, jint length, jint inde
     return rvmThrowNewf(env, java_lang_ArrayIndexOutOfBoundsException, "length=%d; index=%d", length, index);
 }
 
-jboolean rvmThrowArrayStoreException(Env* env) {
-    return rvmThrowNew(env, java_lang_ArrayStoreException, "");
+jboolean rvmThrowArrayStoreException(Env* env, Class* elemType, Class* arrayType) {
+    const char* elemTypeName = rvmGetHumanReadableClassName(env, elemType);
+    if (!elemTypeName) return FALSE;
+    const char* arrayTypeName = rvmGetHumanReadableClassName(env, arrayType);
+    if (!arrayTypeName) return FALSE;
+    return rvmThrowNewf(env, java_lang_ArrayStoreException, 
+        "%s cannot be stored in an array of type %s", elemTypeName, arrayTypeName);
 }
 
 jboolean rvmThrowClassNotFoundException(Env* env, const char* className) {

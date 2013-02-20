@@ -178,6 +178,7 @@ extern Object* rvmCloneObject(Env* env, Object* obj);
 extern char* rvmToBinaryClassName(Env* env, const char* className);
 extern char* rvmFromBinaryClassName(Env* env, const char* binaryClassName);
 extern const char* rvmGetClassDescriptor(Env* env, Class* clazz);
+extern const char* rvmGetHumanReadableClassName(Env* env, Class* clazz);
 
 extern jboolean rvmIsSubClass(Class* superclass, Class* clazz);
 extern jboolean rvmIsSamePackage(Class* c1, Class* c2);

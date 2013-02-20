@@ -333,6 +333,59 @@ char* rvmFromBinaryClassName(Env* env, const char* binaryClassName) {
     return className;
 }
 
+const char* rvmGetHumanReadableClassName(Env* env, Class* clazz) {
+    // This code is a port of the dvmHumanReadableDescriptor() function in Android's Exception.cpp
+
+    // Count the number of '['s to get the dimensionality.
+    const char* c = clazz->name;
+    size_t dim = 0;
+    while (*c == '[') {
+        dim++;
+        c++;
+    }
+
+    // Reference or primitive?
+    if (dim > 0 && *c == 'L') {
+        // "[[La/b/C;" -> "a.b.C[][]".
+        c++; // Skip the 'L'.
+    } else if (dim > 0 || CLASS_IS_PRIMITIVE(clazz)) {
+        // "[[B" -> "byte[][]".
+        // To make life easier, we make primitives look like unqualified
+        // reference types.
+        switch (*c) {
+        case 'B': c = "byte;"; break;
+        case 'C': c = "char;"; break;
+        case 'D': c = "double;"; break;
+        case 'F': c = "float;"; break;
+        case 'I': c = "int;"; break;
+        case 'J': c = "long;"; break;
+        case 'S': c = "short;"; break;
+        case 'Z': c = "boolean;"; break;
+        default: return clazz->name;
+        }
+    }
+
+    // At this point, 'c' is a string of the form "fully/qualified/Type;"
+    // or "primitive;". Rewrite the type with '.' instead of '/':
+    char* result = rvmAllocateMemory(env, strlen(c) + dim * 2 + 1);
+    if (!result) return NULL;
+    const char* p = c;
+    jint index = 0;
+    while (*p != ';' && *p != '\0') {
+        char ch = *p++;
+        if (ch == '/') {
+            ch = '.';
+        }
+        result[index++] = ch;
+    }
+    // ...and replace the semicolon with 'dim' "[]" pairs:
+    while (dim--) {
+        result[index++] = '[';
+        result[index++] = ']';
+    }
+    return result;
+}
+
 const char* rvmGetClassDescriptor(Env* env, Class* clazz) {
     jint length = strlen(clazz->name);
     char* desc = NULL;

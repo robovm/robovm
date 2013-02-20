@@ -48,8 +48,6 @@
 
 package java.lang;
 
-import dalvik.system.VMRuntime;
-import dalvik.system.VMStack;
 import java.io.Console;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
@@ -66,12 +64,14 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.robovm.rt.VM;
-
 import libcore.icu.ICU;
 import libcore.io.Libcore;
 import libcore.io.StructUtsname;
-import libcore.util.ZoneInfoDB;
+
+import org.robovm.rt.VM;
+
+import dalvik.system.VMRuntime;
+import dalvik.system.VMStack;
 
 /**
  * Provides access to system-related information and resources including
@@ -186,13 +186,13 @@ public final class System {
         Class<?> componentType2 = type2.getComponentType();
         if (!componentType1.isPrimitive()) {
             if (componentType2.isPrimitive()) {
-                throw new ArrayStoreException(type1.getName() + " and " + type2.getName() 
+                throw new ArrayStoreException(type1.getCanonicalName() + " and " + type2.getCanonicalName() 
                         + " are incompatible array types");
             }
             arraycopy((Object[]) src, srcPos, (Object[]) dst, dstPos, length);
         } else {
             if (componentType2 != componentType1) {
-                throw new ArrayStoreException(type1.getName() + " and " + type2.getName() 
+                throw new ArrayStoreException(type1.getCanonicalName() + " and " + type2.getCanonicalName() 
                         + " are incompatible array types");
             }
             if (componentType1 == int.class) {
@@ -242,15 +242,26 @@ public final class System {
         arraycopyCheckBounds(src.length, srcPos, dst.length, dstPos, length);
         if (length > 0) {
             // TODO: Use arraycopyFast() if src.class and dst.class have same dimensionality and (src instanceof dst)
-            // Check if this is a forward or backwards arraycopy
-            if (src != dst || srcPos > dstPos || srcPos + length <= dstPos) {
-                for (int i = 0; i < length; ++i) {
-                    dst[dstPos + i] = src[srcPos + i];
+            int i = 0;
+            try {
+                // Check if this is a forward or backwards arraycopy
+                if (src != dst || srcPos > dstPos || srcPos + length <= dstPos) {
+                    for (i = 0; i < length; ++i) {
+                        dst[dstPos + i] = src[srcPos + i];
+                    }
+                } else {
+                    for (i = length - 1; i >= 0; --i) {
+                        dst[dstPos + i] = src[srcPos + i];
+                    }
                 }
-            } else {
-                for (int i = length - 1; i >= 0; --i) {
-                    dst[dstPos + i] = src[srcPos + i];
-                }
+            } catch (ArrayStoreException e) {
+                // Throw a new one with a more descriptive message.
+                Class<?> srcElemClass = src[i + srcPos].getClass();
+                String srcElemTypeName = srcElemClass.isArray() 
+                                        ? srcElemClass.getCanonicalName() : srcElemClass.getName();
+                throw new ArrayStoreException(String.format(
+                        "source[%d] of type %s cannot be stored in destination array of type %s",
+                        i + srcPos, srcElemTypeName, dst.getClass().getCanonicalName()));
             }
         }
     }

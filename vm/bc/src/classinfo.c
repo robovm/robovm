@@ -139,6 +139,7 @@ void readMethodInfo(void** p, MethodInfo* result) {
     if (flags & MI_NATIVE) access |= ACC_NATIVE;
     if (flags & MI_ABSTRACT) access |= ACC_ABSTRACT;
     if (flags & MI_STRICT) access |= ACC_STRICT;
+    if (flags & MI_SYNTHETIC) access |= ACC_SYNTHETIC;
 
     const char* desc = NULL;
     if (flags & MI_COMPACT_DESC) {

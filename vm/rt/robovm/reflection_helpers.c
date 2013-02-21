@@ -39,8 +39,11 @@ jvalue* validateAndUnwrapArgs(Env* env, ObjectArray* parameterTypes, ObjectArray
         Class* type = (Class*) parameterTypes->values[i];
         if (CLASS_IS_PRIMITIVE(type)) {
             if (arg == NULL) {
-                rvmThrowNewf(env, java_lang_IllegalArgumentException, 
-                    "null passed as value for primitive type parameter at index %d", i + 1);
+                const char* typeName = rvmGetHumanReadableClassName(env, type);
+                if (typeName) {
+                    rvmThrowNewf(env, java_lang_IllegalArgumentException, 
+                        "argument %d should have type %s, got null", i + 1, typeName);
+                }
                 return NULL;
             }
             if (!rvmUnbox(env, arg, type, &jvalueArgs[i])) {
@@ -50,8 +53,7 @@ jvalue* validateAndUnwrapArgs(Env* env, ObjectArray* parameterTypes, ObjectArray
                     const char* typeName = argTypeName ? rvmGetHumanReadableClassName(env, type) : NULL;
                     if (argTypeName && typeName) {
                         rvmThrowNewf(env, java_lang_IllegalArgumentException, 
-                            "argument of type %s is incompatible with parameter of type %s at index %d",
-                            argTypeName, typeName, i + 1);
+                            "argument %d should have type %s, got %s", i + 1, typeName, argTypeName);
                     }
                 }
                 return NULL;
@@ -62,8 +64,7 @@ jvalue* validateAndUnwrapArgs(Env* env, ObjectArray* parameterTypes, ObjectArray
                 const char* typeName = argTypeName ? rvmGetHumanReadableClassName(env, type) : NULL;
                 if (argTypeName && typeName) {
                     rvmThrowNewf(env, java_lang_IllegalArgumentException, 
-                        "argument of type %s is incompatible with parameter of type %s at index %d",
-                        argTypeName, typeName, i + 1);
+                        "argument %d should have type %s, got %s", i + 1, typeName, argTypeName);
                 }
                 return NULL;
             }

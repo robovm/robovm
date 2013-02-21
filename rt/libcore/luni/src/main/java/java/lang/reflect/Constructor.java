@@ -423,7 +423,8 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
 
         Class<?>[] pTypes = getParameterTypes(false);
         if (args.length != pTypes.length) {
-            throw new IllegalArgumentException("wrong number of arguments");
+            throw new IllegalArgumentException("wrong number of arguments; " 
+                    + "expected " + pTypes.length + ", got " + args.length);
         }
         
         if (!flag) {

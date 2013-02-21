@@ -528,12 +528,21 @@ public final class Method extends AccessibleObject implements GenericDeclaration
             throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
         if (!Modifier.isStatic(getModifiers())) {
+            Class<?> expectedClass = getDeclaringClass();
             if (receiver == null) {
-                throw new NullPointerException();
+                StringBuilder sb = new StringBuilder();
+                sb.append("expected receiver of type ");
+                appendTypeName(sb, expectedClass);
+                sb.append(", but got null");
+                throw new NullPointerException(sb.toString());
             }
             if (!getDeclaringClass().isInstance(receiver)) {
-                throw new IllegalArgumentException("receiver is not an instance " 
-                        + "of this method's declaring class");
+                StringBuilder sb = new StringBuilder();
+                sb.append("expected receiver of type ");
+                appendTypeName(sb, expectedClass);
+                sb.append(", but got ");
+                appendTypeName(sb, receiver.getClass());
+                throw new IllegalArgumentException(sb.toString());
             }
         }
         
@@ -543,7 +552,8 @@ public final class Method extends AccessibleObject implements GenericDeclaration
         
         Class<?>[] pTypes = getParameterTypes(false);
         if (args.length != pTypes.length) {
-            throw new IllegalArgumentException("wrong number of arguments");
+            throw new IllegalArgumentException("wrong number of arguments; " 
+                        + "expected " + pTypes.length + ", got " + args.length);
         }
         
         if (!flag) {

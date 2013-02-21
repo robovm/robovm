@@ -82,6 +82,7 @@ extern Class* java_lang_LinkageError;
 extern Class* java_lang_InstantiationError;
 extern Class* java_lang_StackOverflowError;
 extern Class* java_lang_InternalError;
+extern Class* java_lang_ExceptionInInitializerError;
 
 extern Class* java_lang_RuntimeException;
 extern Class* java_lang_ClassCastException;

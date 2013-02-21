@@ -30,7 +30,10 @@ Object* Java_java_lang_reflect_Constructor_internalNewInstance(Env* env, Class* 
 
     Object* o = rvmNewObjectA(env, method->clazz, method, jvalueArgs);
     if (!o) {
-        throwInvocationTargetException(env, rvmExceptionOccurred(env));
+        Object* exception = rvmExceptionOccurred(env);
+        if (exception->clazz != java_lang_ExceptionInInitializerError) {
+            throwInvocationTargetException(env, rvmExceptionOccurred(env));
+        }
         return NULL;
     }
     return o;

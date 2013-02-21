@@ -195,7 +195,7 @@ public final class Method extends AccessibleObject implements GenericDeclaration
             for (int i = 0; i < formalTypeParameters.length; i++) {
                 appendGenericType(sb, formalTypeParameters[i]);
                 if (i < formalTypeParameters.length - 1) {
-                    sb.append(", ");
+                    sb.append(",");
                 }
             }
             sb.append("> ");

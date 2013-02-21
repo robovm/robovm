@@ -154,7 +154,7 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
             for (int i = 0; i < formalTypeParameters.length; i++) {
                 appendGenericType(sb, formalTypeParameters[i]);
                 if (i < formalTypeParameters.length - 1) {
-                    sb.append(", ");
+                    sb.append(",");
                 }
             }
             sb.append("> ");

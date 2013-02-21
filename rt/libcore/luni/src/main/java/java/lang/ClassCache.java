@@ -335,14 +335,29 @@ class ClassCache<T> {
         throw new NoSuchFieldException(name);
     }
     
+    private static void appendTypeName(StringBuilder out, Class<?> c) {
+        if (c == null) {
+            out.append("null");
+        } else {
+            int dimensions = 0;
+            while (c.isArray()) {
+                c = c.getComponentType();
+                dimensions++;
+            }
+            out.append(c.getName());
+            for (int d = 0; d < dimensions; d++) {
+                out.append("[]");
+            }
+        }
+    }
+
     private static String parameterTypesToString(Class<?>[] parameterTypes) {
         if (parameterTypes != null && parameterTypes.length > 0) {
             StringBuilder sb = new StringBuilder();
-            sb.append(parameterTypes[0].getCanonicalName());
+            appendTypeName(sb, parameterTypes[0]);
             for (int i = 1; i < parameterTypes.length; i++) {
                 sb.append(',');
-                sb.append(parameterTypes[i] == null ? "null" 
-                        : parameterTypes[i].getCanonicalName());
+                appendTypeName(sb, parameterTypes[i]);
             }
             return sb.toString();
         }

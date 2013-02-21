@@ -356,6 +356,10 @@ public class Runtime {
      * Loads and links a library without security checks.
      */
     void loadLibrary(String libraryName, ClassLoader loader) {
+        if (libraryName == null) {
+            throw new NullPointerException("libraryName");
+        }
+
         if (loader != null) {
             String filename = loader.findLibrary(libraryName);
             if (filename == null) {

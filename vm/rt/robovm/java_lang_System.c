@@ -59,7 +59,7 @@ jlong Java_java_lang_System_nanoTime(JNIEnv* env, jclass clazz) {
 #endif
 }
 
-Object* Java_java_lang_System_mapLibraryName(Env* env, Class* c, Object* userLibName) {
+Object* Java_java_lang_System_mapLibraryName0(Env* env, Class* c, Object* userLibName) {
     if (!userLibName) return NULL;
     char* libName = rvmGetStringUTFChars(env, userLibName);
     if (!libName) return NULL;

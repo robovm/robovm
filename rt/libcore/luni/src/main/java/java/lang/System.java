@@ -787,7 +787,14 @@ public final class System {
      *            the name of the library to look up.
      * @return the platform specific filename for the library.
      */
-    public static native String mapLibraryName(String userLibName);
+    public static String mapLibraryName(String userLibName) {
+        if (userLibName == null) {
+            throw new NullPointerException(userLibName);
+        }
+        return mapLibraryName0(userLibName);
+    }
+
+    private static native String mapLibraryName0(String userLibName);
 
     /**
      * Sets the value of the named static field in the receiver to the passed in

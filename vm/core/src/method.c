@@ -1376,10 +1376,7 @@ jboolean rvmLoadNativeLibrary(Env* env, const char* path, ClassLoader* classLoad
         nativeLibs = &mainNativeLibs;
     } else {
         // Unknown classloader
-        if (bootNativeLibs) {
-            // if bootNativeLibs is NULL we're being called from rvmStartup() and we cannot throw exceptions.
-            rvmThrowUnsatisfiedLinkError(env, "Unknown classloader");
-        }
+        rvmThrowUnsatisfiedLinkError(env, "Unknown classloader");
         return FALSE;
     }
 
@@ -1387,10 +1384,7 @@ jboolean rvmLoadNativeLibrary(Env* env, const char* path, ClassLoader* classLoad
     DynamicLib* lib = rvmOpenDynamicLib(env, path, &errorMsg);
     if (!lib) {
         if (!rvmExceptionOccurred(env)) {
-            if (bootNativeLibs) {
-                // if bootNativeLibs is NULL we're being called from rvmStartup() and we cannot throw exceptions.
-                rvmThrowUnsatisfiedLinkError(env, errorMsg);
-            }
+            rvmThrowUnsatisfiedLinkError(env, errorMsg);
         }
         return FALSE;
     }

@@ -317,13 +317,40 @@ class ClassCache<T> {
     private Method findMethod(Method[] candidates, String name, Class<?>... parameterTypes)
             throws NoSuchMethodException {
         
+        Method firstMatch = null;
+        List<Method> allMatches = null;
         for (Method m : candidates) {
             if (name.equals(m.getName()) && R.matchParameterTypes(m, parameterTypes)) {
-                return m;
+                if (firstMatch == null) {
+                    firstMatch = m;
+                } else {
+                    if (allMatches == null) {
+                        allMatches = new ArrayList<Method>();
+                        allMatches.add(firstMatch);
+                    }
+                    allMatches.add(m);
+                }
             }
         }
-        throw new NoSuchMethodException(clazz.getName() + "." + name + '(' 
-                + parameterTypesToString(parameterTypes) + ')');
+        if (firstMatch == null) {
+            throw new NoSuchMethodException(clazz.getName() + "." + name + '(' 
+                    + parameterTypesToString(parameterTypes) + ')');
+        }
+        if (allMatches == null) {
+            return firstMatch;
+        }
+        // There are multiple methods with the same name and parameter types. The RI's docs says
+        // pick the method with the most specific return type or pick an arbitrary if there are
+        // no such methods. Dalvik just filters out synthetic methods and then picks an arbitrary 
+        // one (if the source language is Java there should only be one non-synthetic match).
+        Method result = null;
+        for (Method m : allMatches) {
+            if (!m.isSynthetic()) {
+                return m;
+            }
+            result = m;
+        }
+        return result;
     }
 
     private Field findField(Field[] candidates, String name) throws NoSuchFieldException {

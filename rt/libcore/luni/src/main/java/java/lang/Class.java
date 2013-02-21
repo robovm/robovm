@@ -1129,10 +1129,8 @@ public final class Class<T> implements Serializable, AnnotatedElement, GenericDe
             Constructor<T> constructor = getDeclaredConstructor();
             return constructor.newInstance();
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
             throw new InstantiationException(e.getMessage());
         } catch (InvocationTargetException e) {
-            e.printStackTrace();
             throw new InstantiationException(e.getMessage());
         }
     }

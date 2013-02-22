@@ -20,6 +20,7 @@
       <resource><directory>libcore/luni/src/main/resources</directory></resource>
       <resource><directory>libcore/xml/src/main/resources</directory></resource>
       <resource><directory>external/bouncycastle/src/main/resources</directory></resource>
+      <resource><directory>external/javasqlite/src/main/resources</directory></resource>
       <resource>
         <directory>robovm/src/filtered-java/</directory>
         <targetPath>${project.build.directory}/generated-sources/filtered-java</targetPath>
@@ -48,6 +49,7 @@
                 <source>libcore/luni/src/main/java</source>
                 <source>libcore/xml/src/main/java</source>
                 <source>external/bouncycastle/src/main/java</source>
+                <source>external/javasqlite/src/main/java</source>
               </sources>
             </configuration>
           </execution>

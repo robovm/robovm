@@ -37,3 +37,7 @@ released under the W3C License. http://www.w3.org
 The RoboVM Runtime Library includes the Bouncy Castle Crypto APIs which is
 copyright 2000-2010 The Legion Of The Bouncy Castle and released under an
 adaptation of the MIT X11 License. http://www.bouncycastle.org
+
+The RoboVM Runtime Library includes the SQLite JDBC driver which is copyright
+Christian Werner <chw@ch-werner.de> and others and released under a BSD like
+license.

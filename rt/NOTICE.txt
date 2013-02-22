@@ -33,3 +33,7 @@ The RoboVM Runtime Library includes software developed by W3C which is copyright
 2000 World Wide Web Consortium, (Massachusetts Institute of Technology, Institut
 National de Recherche en Informatique et en Automatique, Keio University) and
 released under the W3C License. http://www.w3.org
+
+The RoboVM Runtime Library includes the Bouncy Castle Crypto APIs which is
+copyright 2000-2010 The Legion Of The Bouncy Castle and released under an
+adaptation of the MIT X11 License. http://www.bouncycastle.org

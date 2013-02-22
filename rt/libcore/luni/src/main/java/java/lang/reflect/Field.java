@@ -747,6 +747,18 @@ public final class Field extends AccessibleObject implements Member {
     }
 
     /**
+     * Returns the constructor's signature in non-printable form. This is called
+     * (only) from IO native code and needed for deriving the serialVersionUID
+     * of the class
+     *
+     * @return the constructor's signature.
+     */
+    @SuppressWarnings("unused")
+    private String getSignature() {
+        return getSignature(type);
+    }
+
+    /**
      * Return the {@link Class} associated with the type of this field.
      *
      * @return the type of this field

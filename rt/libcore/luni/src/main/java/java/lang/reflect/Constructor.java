@@ -348,6 +348,27 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
     }
 
     /**
+     * Returns the constructor's signature in non-printable form. This is called
+     * (only) from IO native code and needed for deriving the serialVersionUID
+     * of the class
+     *
+     * @return the constructor's signature
+     */
+    @SuppressWarnings("unused")
+    private String getSignature() {
+        Class<?>[] parameterTypes = getParameterTypes(false);
+        StringBuilder result = new StringBuilder();
+
+        result.append('(');
+        for (int i = 0; i < parameterTypes.length; i++) {
+            result.append(getSignature(parameterTypes[i]));
+        }
+        result.append(")V");
+
+        return result.toString();
+    }
+
+    /**
      * Returns an integer hash code for this constructor. Constructors which are
      * equal return the same value for this method. The hash code for a
      * Constructor is the hash code of the name of the declaring class.

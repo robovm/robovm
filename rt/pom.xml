@@ -22,6 +22,12 @@
       <resource><directory>external/bouncycastle/src/main/resources</directory></resource>
       <resource><directory>external/javasqlite/src/main/resources</directory></resource>
       <resource>
+        <directory>libcore/luni/src/main/java</directory>
+        <includes>
+          <include>**/*.properties</include>
+        </includes>
+      </resource>
+      <resource>
         <directory>robovm/src/filtered-java/</directory>
         <targetPath>${project.build.directory}/generated-sources/filtered-java</targetPath>
         <filtering>true</filtering>

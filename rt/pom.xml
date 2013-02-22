@@ -33,6 +33,16 @@
     
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <excludes>
+            <exclude>org/bouncycastle/**</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
         <version>1.7</version>
@@ -74,26 +84,81 @@
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>1.5</version>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.7</version>
         <executions>
           <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
+            <phase>process-classes</phase>
             <configuration>
-              <relocations>
-                <relocation>
-                  <pattern>org.bouncycastle</pattern>
-                  <shadedPattern>com.android.org.bouncycastle</shadedPattern>
-                </relocation>
-              </relocations>
+              <target>
+                <taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpathref="maven.plugin.classpath"/>
+
+                <!-- Use jarjar to change the package name org.bouncycastle to com.android.org.bouncycastle and save
+                     the result to target/bouncycastle.jarjar.jar -->
+                <jarjar jarfile="${project.build.directory}/bouncycastle.jarjar.jar">
+                  <fileset dir="${project.build.outputDirectory}">
+                    <include name="org/bouncycastle/**"/>
+                  </fileset>
+                  <rule pattern="org.bouncycastle.**" result="com.android.@0"/>
+                </jarjar>
+
+                <!-- Explode the jarjar jar to target/classes -->
+                <unzip src="${project.build.directory}/bouncycastle.jarjar.jar"
+                       dest="${project.build.directory}/classes">
+                  <patternset>
+                    <exclude name="META-INF/**"/>
+                    <exclude name="org/bouncycastle/**"/>
+                  </patternset>
+                </unzip>
+
+              </target>
             </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
           </execution>
         </executions>
+        <dependencies>
+          <dependency>
+            <groupId>com.googlecode.jarjar</groupId>
+            <artifactId>jarjar</artifactId>
+            <version>1.3</version>
+          </dependency>
+        </dependencies>
       </plugin>
+
     </plugins>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+         <groupId>org.eclipse.m2e</groupId>
+         <artifactId>lifecycle-mapping</artifactId>
+         <version>1.0.0</version>
+         <configuration>
+           <lifecycleMappingMetadata>
+             <pluginExecutions>
+               <pluginExecution>
+                 <pluginExecutionFilter>
+                   <groupId>org.apache.maven.plugins</groupId>
+                   <artifactId>maven-antrun-plugin</artifactId>
+                   <versionRange>[1.0.0,)</versionRange>
+                   <goals>
+                     <goal>run</goal>
+                   </goals>
+                 </pluginExecutionFilter>
+                 <action>
+                   <execute>
+                     <runOnIncremental>false</runOnIncremental>
+                   </execute>
+                 </action>
+               </pluginExecution>
+             </pluginExecutions>
+           </lifecycleMappingMetadata>
+         </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
-  
+
 </project>

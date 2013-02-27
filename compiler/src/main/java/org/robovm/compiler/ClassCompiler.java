@@ -1058,6 +1058,11 @@ public class ClassCompiler {
             // On ARM volatile longs must be 8 byte aligned
             return 8;
         }
+        if (LongType.v().equals(t) && !f.isStatic() && Modifier.isFinal(f.getModifiers())) {
+            // The Java Memory Model requires final instance fields to be written to using
+            // volatile semantics. Because of ARM's alignment requirements we return 8 here too.
+            return 8;
+        }
         if (LongType.v().equals(t) || DoubleType.v().equals(t)) {
             return 4;
         }

@@ -2,6 +2,6 @@
 %BcTrycatchContext = type {%TrycatchContext, i8*}
 
 define private void @checkso() alwaysinline {
-  tail call void asm sideeffect "mvns r4, #0; lsls r4, r4, #16; ldr r4, [sp, r4]", "~{r4},~{dirflag},~{fpsr},~{flags}"() nounwind
+  tail call void asm sideeffect "mvns r4, #0; lsls r4, r4, #16; ldr r4, [sp, r4]", "~{r4},~{dirflag},~{fpsr},~{flags},~{cc}"() nounwind
   ret void
 }

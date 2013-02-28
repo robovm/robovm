@@ -80,8 +80,8 @@ public abstract class AbstractIOSTarget extends AbstractTarget {
     
     @Override
     protected void doInstall(File installDir, String executable) throws IOException {
-        prepareInstall(installDir);
         super.doInstall(installDir, getExecutable());
+        prepareInstall(installDir);
     }
     
     @Override

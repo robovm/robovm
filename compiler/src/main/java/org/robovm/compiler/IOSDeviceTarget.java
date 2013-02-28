@@ -90,17 +90,19 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
         }
         
         List<Object> args = new ArrayList<Object>();
-        args.add("-u");
-        args.add("-d");
-        args.add("-g");
+        args.add("--verbose");
+        args.add("--unbuffered");
+        args.add("--debug");
+        args.add("--gdbargs");
         args.add("-i mi -q");
+        args.add("--nostart");
         
         if (!launchParameters.getArguments().isEmpty()) {
             args.add("--args");
             args.add(joinArgs(launchParameters.getArguments()));
         }
 
-        args.add("-b");
+        args.add("--bundle");
         args.add(dir.getAbsolutePath());
         
         return CompilerUtil.createCommandLine(fruitstrapPath, args);

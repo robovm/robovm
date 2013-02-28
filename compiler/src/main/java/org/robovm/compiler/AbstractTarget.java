@@ -104,6 +104,13 @@ public abstract class AbstractTarget implements Target {
             ccArgs.add("-Wl,-dead_strip");
         }
         
+        if (config.getOs().getFamily() == OS.Family.darwin && !config.getFrameworks().isEmpty()) {
+            for (String p : config.getFrameworks()) {
+            	libs.add("-framework");
+            	libs.add(p);
+            }
+        }
+        
         if (!config.getLibs().isEmpty()) {
             objectFiles = new ArrayList<File>(objectFiles);
             for (String p : config.getLibs()) {

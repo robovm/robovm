@@ -304,6 +304,10 @@ public class AppCompiler {
                     for (String p : args[++i].split(":")) {
                         builder.addLib(p);
                     }
+                } else if ("-frameworks".equals(args[i])) {
+                    for (String p : args[++i].split(":")) {
+                        builder.addFramework(p);
+                    }
                 } else if (args[i].startsWith("-D")) {
                 } else if (args[i].startsWith("-X")) {
                 } else if (args[i].startsWith("-rvm:")) {
@@ -452,6 +456,8 @@ public class AppCompiler {
                          + "                        JNI is supported and this option is ignored.");
         System.err.println("  -libs <list>          : separated list of static library files (.a), object\n"
                          + "                        files (.o) and system libraries that should be included\n" 
+                         + "                        when linking the final executable.");
+        System.err.println("  -frameworks <list>    : separated list of frameworks that should be included\n" 
                          + "                        when linking the final executable.");
         System.err.println("  -skiprt               Do not add default robovm-rt.jar to bootclasspath");
         System.err.println("  -verbose              Output messages about what the compiler is doing");

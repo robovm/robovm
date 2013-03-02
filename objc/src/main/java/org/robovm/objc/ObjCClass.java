@@ -253,7 +253,9 @@ public final class ObjCClass extends ObjCObject {
             // static methods and callbacks must be static.
             classes.add(type);
         }
-        classes.addAll(Arrays.asList(type.getDeclaredClasses()));
+        try {
+            classes.add(Class.forName(type.getName() + "$Callbacks", true, type.getClassLoader()));
+        } catch (ClassNotFoundException ignored) {}
         for (Class<?> c : classes) {
             for (Method m : c.getDeclaredMethods()) {
                 if (m.getAnnotation(Callback.class) != null) {

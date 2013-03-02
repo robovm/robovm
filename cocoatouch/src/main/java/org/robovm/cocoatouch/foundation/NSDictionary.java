@@ -212,22 +212,22 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector dictionaryWithContentsOfFile$ = Selector.register("dictionaryWithContentsOfFile:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_fromFile(ObjCClass __self__, Selector __cmd__, String path);
+    @Bridge(symbol = "objc_msgSend") private native static NSDictionary objc_fromFile(ObjCClass __self__, Selector __cmd__, String path);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/clm/NSDictionary/dictionaryWithContentsOfFile:">+ (id)dictionaryWithContentsOfFile:(NSString *)path</a>
      * @since Available in iOS 2.0 and later.
      */
-    public static NSObject fromFile(String path) {
+    public static NSDictionary fromFile(String path) {
         return objc_fromFile(objCClass, dictionaryWithContentsOfFile$, path);
     }
     
     private static final Selector dictionaryWithContentsOfURL$ = Selector.register("dictionaryWithContentsOfURL:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_fromUrl(ObjCClass __self__, Selector __cmd__, NSURL aURL);
+    @Bridge(symbol = "objc_msgSend") private native static NSDictionary objc_fromUrl(ObjCClass __self__, Selector __cmd__, NSURL aURL);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/clm/NSDictionary/dictionaryWithContentsOfURL:">+ (id)dictionaryWithContentsOfURL:(NSURL *)aURL</a>
      * @since Available in iOS 2.0 and later.
      */
-    public static NSObject fromUrl(NSURL aURL) {
+    public static NSDictionary fromUrl(NSURL aURL) {
         return objc_fromUrl(objCClass, dictionaryWithContentsOfURL$, aURL);
     }
     
@@ -296,6 +296,17 @@ import org.robovm.rt.bro.ptr.*;
     protected NSObject objectForKey(NSObject aKey) {
         if (customClass) { return objc_objectForKeySuper(getSuper(), objectForKey$, aKey); } else { return objc_objectForKey(this, objectForKey$, aKey); }
     }
+    
+    private static final Selector writeToFile$atomically$ = Selector.register("writeToFile:atomically:");
+    @Bridge(symbol = "objc_msgSend") private native static boolean objc_writeToFile(NSDictionary __self__, Selector __cmd__, String path, boolean flag);
+    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_writeToFileSuper(ObjCSuper __super__, Selector __cmd__, String path, boolean flag);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/instm/NSDictionary/writeToFile:atomically:">- (BOOL)writeToFile:(NSString *)path atomically:(BOOL)flag</a>
+     * @since Available in iOS 2.0 and later.
+     */
+    public boolean writeToFile(String path, boolean flag) {
+        if (customClass) { return objc_writeToFileSuper(getSuper(), writeToFile$atomically$, path, flag); } else { return objc_writeToFile(this, writeToFile$atomically$, path, flag); }
+    }
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
@@ -305,6 +316,7 @@ import org.robovm.rt.bro.ptr.*;
         @Callback @BindSelector("initWithDictionary:") public static @Pointer long initWithDictionary(NSDictionary __self__, Selector __cmd__, NSDictionary otherDictionary) { return __self__.initWithDictionary(otherDictionary); }
         @Callback @BindSelector("initWithObjects:forKeys:") public static @Pointer long initWithObjects(NSDictionary __self__, Selector __cmd__, NSArray objects, NSArray keys) { return __self__.initWithObjects(objects, keys); }
         @Callback @BindSelector("objectForKey:") public static NSObject objectForKey(NSDictionary __self__, Selector __cmd__, NSObject aKey) { return __self__.objectForKey(aKey); }
+        @Callback @BindSelector("writeToFile:atomically:") public static boolean writeToFile(NSDictionary __self__, Selector __cmd__, String path, boolean flag) { return __self__.writeToFile(path, flag); }
     }
     /*</callbacks>*/
 

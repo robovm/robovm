@@ -111,8 +111,12 @@ classes:
         methods:
             "+dictionaryWithContentsOfFile:":
                 name: fromFile
+                return_type:
+                    NSDictionary
             "+dictionaryWithContentsOfURL:":
                 name: fromUrl
+                return_type:
+                    NSDictionary
             "-initWithDictionary:":
                 visibility: protected
                 constructor: false
@@ -129,6 +133,8 @@ classes:
                 visibility: protected
             "-objectForKey:":
                 visibility: protected
+            "-writeToFile:atomically:":
+                name: writeToFile
             "+*":
                 exclude: true
             "-*":
@@ -146,6 +152,11 @@ classes:
         url: ../Classes/NSMutableDictionary_Class/Reference/Reference.html
         protocols: []
         methods:
+            "-setObject:forKey:":
+                visibility: protected
+                parameters:
+                    aKey:
+                        type: NSObject
             "+*":
                 exclude: true
             "-*":
@@ -353,6 +364,7 @@ classes:
         url: ../Classes/NSURL_Class/Reference/Reference.html
         protocols: []
         methods:
+            "-initWithString:":
             "+*":
                 exclude: true
             "-*":

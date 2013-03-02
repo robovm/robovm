@@ -33,8 +33,8 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("Foundation")/*</library>*/
-@NativeClass public class /*<name>*/ NSMutableDictionary /*</name>*/ 
-    extends /*<extends>*/ NSDictionary /*</extends>*/ 
+@NativeClass public class /*<name>*/ NSMutableDictionary /*</name>*/ <K extends NSObject, V extends NSObject>
+    extends /*<extends>*/ NSDictionary /*</extends>*/ <K, V>
     /*<implements>*/ /*</implements>*/ {
 
     static {
@@ -52,10 +52,34 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     /*</properties>*/
+    
+    private static final Selector dictionaryWithContentsOfFile$ = Selector.register("dictionaryWithContentsOfFile:");
+    @Bridge(symbol = "objc_msgSend") private native static NSMutableDictionary objc_fromFile(ObjCClass __self__, Selector __cmd__, String path);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/clm/NSDictionary/dictionaryWithContentsOfFile:">+ (id)dictionaryWithContentsOfFile:(NSString *)path</a>
+     * @since Available in iOS 2.0 and later.
+     */
+    public static NSMutableDictionary fromFile(String path) {
+        return objc_fromFile(objCClass, dictionaryWithContentsOfFile$, path);
+    }
+    
     /*<methods>*/
     
+    private static final Selector setObject$forKey$ = Selector.register("setObject:forKey:");
+    @Bridge(symbol = "objc_msgSend") private native static void objc_setObject(NSMutableDictionary __self__, Selector __cmd__, NSObject anObject, NSObject aKey);
+    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setObjectSuper(ObjCSuper __super__, Selector __cmd__, NSObject anObject, NSObject aKey);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSMutableDictionary_Class/Reference/Reference.html#//apple_ref/occ/instm/NSMutableDictionary/setObject:forKey:">- (void)setObject:(id)anObject forKey:(id &amp;lt; NSCopying &amp;gt;)aKey</a>
+     * @since Available in iOS 2.0 and later.
+     */
+    protected void setObject(NSObject anObject, NSObject aKey) {
+        if (customClass) { objc_setObjectSuper(getSuper(), setObject$forKey$, anObject, aKey); } else { objc_setObject(this, setObject$forKey$, anObject, aKey); }
+    }
     /*</methods>*/
     /*<callbacks>*/
+    static class Callbacks {
+        @Callback @BindSelector("setObject:forKey:") public static void setObject(NSMutableDictionary __self__, Selector __cmd__, NSObject anObject, NSObject aKey) { __self__.setObject(anObject, aKey); }
+    }
     /*</callbacks>*/
 
 }

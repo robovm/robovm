@@ -1144,7 +1144,7 @@ import org.robovm.rt.bro.ptr.*;
         @Callback @BindSelector("viewDidAppear:") public static void viewDidAppear(UIViewController __self__, Selector __cmd__, boolean animated) { __self__.viewDidAppear(animated); }
         @Callback @BindSelector("viewDidDisappear:") public static void viewDidDisappear(UIViewController __self__, Selector __cmd__, boolean animated) { __self__.viewDidDisappear(animated); }
         @Callback @BindSelector("viewDidLayoutSubviews") public static void viewDidLayoutSubviews(UIViewController __self__, Selector __cmd__) { __self__.viewDidLayoutSubviews(); }
-        @Callback @BindSelector("viewDidLoad") public static void viewDidLoad(UIViewController __self__, Selector __cmd__) { __self__.viewDidLoad(); }
+        @Callback @BindSelector("viewDidLoad") public static void viewDidLoad(UIViewController __self__, Selector __cmd__) { System.err.println("viewDidLoad: self = " + __self__); __self__.viewDidLoad(); }
         @Callback @BindSelector("viewWillAppear:") public static void viewWillAppear(UIViewController __self__, Selector __cmd__, boolean animated) { __self__.viewWillAppear(animated); }
         @Callback @BindSelector("viewWillDisappear:") public static void viewWillDisappear(UIViewController __self__, Selector __cmd__, boolean animated) { __self__.viewWillDisappear(animated); }
         @Callback @BindSelector("viewWillLayoutSubviews") public static void viewWillLayoutSubviews(UIViewController __self__, Selector __cmd__) { __self__.viewWillLayoutSubviews(); }

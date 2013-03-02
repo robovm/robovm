@@ -48,6 +48,9 @@ import org.robovm.rt.bro.ptr.*;
     private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ GLKView /*</name>*/.class);
 
+    public GLKView(CGRect aRect) {
+        super(aRect);
+    }
     /*<constructors>*/
     protected GLKView(SkipInit skipInit) { super(skipInit); }
     public GLKView() {}

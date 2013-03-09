@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <dlfcn.h>
+#include <signal.h>
 #include "private.h"
 #include "utlist.h"
 
@@ -43,6 +44,19 @@ static char* absolutize(char* basePath, char* rel, char* dest) {
         strcat(dest, rel);
     }
     return dest;
+}
+
+/**
+ * Block SIGPIPE signals.
+ */
+static jboolean blockSigPipe() {
+    sigset_t set;
+    sigemptyset(&set);
+    sigaddset(&set, SIGPIPE);
+    if (sigprocmask(SIG_BLOCK, &set, NULL) != 0) {
+        return FALSE;
+    }
+    return TRUE;
 }
 
 static jboolean initClasspathEntries(Env* env, char* basePath, char** raw, ClasspathEntry** first) {
@@ -168,6 +182,10 @@ Env* rvmStartup(Options* options) {
 
     TRACE("Initializing GC");
     if (!initGC(options)) return NULL;
+
+    // Block SIGPIPE signals. SIGPIPE interrupts write() calls which we don't
+    // want. Dalvik does this too in dalvikvm/Main.cpp.
+    if (!blockSigPipe()) return NULL;
 
     VM* vm = rvmCreateVM(options);
     if (!vm) return NULL;

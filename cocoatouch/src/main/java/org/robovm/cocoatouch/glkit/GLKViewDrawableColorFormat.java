@@ -17,7 +17,9 @@ package org.robovm.cocoatouch.glkit;
 
 import java.util.*;
 
-public enum GLKViewDrawableColorFormat {
+import org.robovm.rt.bro.ValuedEnum;
+
+public enum GLKViewDrawableColorFormat implements ValuedEnum {
     RGBA8888(0),
     RGB565(1);
 

@@ -17,7 +17,9 @@ package org.robovm.cocoatouch.glkit;
 
 import java.util.*;
 
-public enum GLKViewDrawableMultisample {
+import org.robovm.rt.bro.ValuedEnum;
+
+public enum GLKViewDrawableMultisample implements ValuedEnum {
     None(0),
     Sample4X(1);
 

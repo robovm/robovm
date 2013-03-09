@@ -17,7 +17,9 @@ package org.robovm.cocoatouch.glkit;
 
 import java.util.*;
 
-public enum GLKViewDrawableStencilFormat {
+import org.robovm.rt.bro.ValuedEnum;
+
+public enum GLKViewDrawableStencilFormat implements ValuedEnum {
     None(0),
     Format8(1);
 

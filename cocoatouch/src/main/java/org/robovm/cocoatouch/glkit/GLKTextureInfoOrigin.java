@@ -17,7 +17,9 @@ package org.robovm.cocoatouch.glkit;
 
 import java.util.*;
 
-public enum GLKTextureInfoOrigin {
+import org.robovm.rt.bro.ValuedEnum;
+
+public enum GLKTextureInfoOrigin implements ValuedEnum {
     Unknown(0),
     TopLeft(1),
     BottomLeft(2);

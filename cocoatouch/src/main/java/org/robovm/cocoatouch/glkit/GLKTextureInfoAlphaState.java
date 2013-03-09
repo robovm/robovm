@@ -17,7 +17,9 @@ package org.robovm.cocoatouch.glkit;
 
 import java.util.*;
 
-public enum GLKTextureInfoAlphaState {
+import org.robovm.rt.bro.ValuedEnum;
+
+public enum GLKTextureInfoAlphaState implements ValuedEnum {
     None(0),
     NonPremultiplied(1),
     Premultiplied(2);

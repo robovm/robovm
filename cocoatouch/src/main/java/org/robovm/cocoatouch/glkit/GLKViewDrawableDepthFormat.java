@@ -17,7 +17,9 @@ package org.robovm.cocoatouch.glkit;
 
 import java.util.*;
 
-public enum GLKViewDrawableDepthFormat {
+import org.robovm.rt.bro.ValuedEnum;
+
+public enum GLKViewDrawableDepthFormat implements ValuedEnum {
     None(0),
     Format16(1),
     Format24(2);

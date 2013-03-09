@@ -15,9 +15,9 @@
  */
 package org.robovm.cocoatouch.opengles;
 
-import java.util.*;
+import org.robovm.rt.bro.ValuedEnum;
 
-public enum EAGLRenderingAPI {
+public enum EAGLRenderingAPI implements ValuedEnum {
     OpenGLES1(1),
     OpenGLES2(2);
 

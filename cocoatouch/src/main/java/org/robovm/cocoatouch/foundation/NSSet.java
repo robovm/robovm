@@ -60,25 +60,7 @@ import org.robovm.rt.bro.ptr.*;
 
         @Override
         public Iterator<U> iterator() {
-            final Iterator<U> it = new HashSet<U>(set).iterator();
-            return new Iterator<U>() {
-
-                @Override
-                public boolean hasNext() {
-                    return it.hasNext();
-                }
-
-                @Override
-                public U next() {
-                    return it.next();
-                }
-
-                @Override
-                public void remove() {
-                    throw new UnsupportedOperationException();
-                }
-                
-            };
+            return new NSEnumerator.Iterator<U>(set.objectEnumerator());
         }
 
         @Override
@@ -237,6 +219,17 @@ import org.robovm.rt.bro.ptr.*;
     protected NSObject member(NSObject object) {
         if (customClass) { return objc_memberSuper(getSuper(), member$, object); } else { return objc_member(this, member$, object); }
     }
+    
+    private static final Selector objectEnumerator = Selector.register("objectEnumerator");
+    @Bridge(symbol = "objc_msgSend") private native static NSEnumerator objc_objectEnumerator(NSSet __self__, Selector __cmd__);
+    @Bridge(symbol = "objc_msgSendSuper") private native static NSEnumerator objc_objectEnumeratorSuper(ObjCSuper __super__, Selector __cmd__);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSSet_Class/Reference/Reference.html#//apple_ref/occ/instm/NSSet/objectEnumerator">- (NSEnumerator *)objectEnumerator</a>
+     * @since Available in iOS 2.0 and later.
+     */
+    protected NSEnumerator objectEnumerator() {
+        if (customClass) { return objc_objectEnumeratorSuper(getSuper(), objectEnumerator); } else { return objc_objectEnumerator(this, objectEnumerator); }
+    }
     /*</methods>*/
     /*<callbacks>*/
     static class Callbacks {
@@ -245,6 +238,7 @@ import org.robovm.rt.bro.ptr.*;
         @Callback @BindSelector("initWithObjects:count:") public static @Pointer long initWithObjects(NSSet __self__, Selector __cmd__, @Pointer long objects, int cnt) { return __self__.initWithObjects(objects, cnt); }
         @Callback @BindSelector("initWithSet:") public static @Pointer long initWithSet(NSSet __self__, Selector __cmd__, NSSet set) { return __self__.initWithSet(set); }
         @Callback @BindSelector("member:") public static NSObject member(NSSet __self__, Selector __cmd__, NSObject object) { return __self__.member(object); }
+        @Callback @BindSelector("objectEnumerator") public static NSEnumerator objectEnumerator(NSSet __self__, Selector __cmd__) { return __self__.objectEnumerator(); }
     }
     /*</callbacks>*/
 

@@ -69,6 +69,12 @@ classes:
         url: ../Classes/NSBundle_Class/Reference/Reference.html
         protocols: []
         methods:
+            "+mainBundle":
+                name: getMainBundle
+            "-bundlePath":
+                name: getBundlePath
+            "-resourcePath":
+                name: getResourcePath
             "+*":
                 exclude: true
             "-*":
@@ -311,6 +317,8 @@ classes:
             "-count":
                 visibility: protected
             "-member:":
+                visibility: protected
+            "-objectEnumerator":
                 visibility: protected
             "+*":
                 exclude: true

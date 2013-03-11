@@ -17,7 +17,6 @@
 package org.robovm.compiler.clazz;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -79,7 +78,8 @@ public class Clazzes {
     private void addPaths(List<File> files, List<Path> cp, Set<File> seen) throws IOException {
         for (File file : files) {
             if (!file.exists()) {
-                throw new FileNotFoundException(file.getAbsolutePath());
+                config.getLogger().warn("Classpath entry %s does not exist", file);
+                continue;
             }
             if (file.isFile() && !isArchive(file)) {
                 throw new IOException("File is not an archive file: " + file.getAbsolutePath());

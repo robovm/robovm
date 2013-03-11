@@ -57,6 +57,7 @@ public class Config {
     private List<String> roots = new ArrayList<String>();
     private List<String> libs = new ArrayList<String>();
     private List<String> frameworks = new ArrayList<String>();
+    private List<String> resources = new ArrayList<String>();
     
     private File osArchDepLibDir;
     private List<File> bootclasspath = new ArrayList<File>();
@@ -161,6 +162,10 @@ public class Config {
     
     public List<String> getFrameworks() {
 		return frameworks;
+	}
+    
+    public List<String> getResources() {
+		return resources;
 	}
     
     public File getLlvmHomeDir() {
@@ -616,6 +621,11 @@ public class Config {
         
         public Builder addFramework(String path) {
             config.frameworks.add(path);
+            return this;
+        }
+        
+        public Builder addResource(String path) {
+            config.resources.add(path);
             return this;
         }
         

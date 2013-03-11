@@ -140,6 +140,21 @@ public abstract class AbstractTarget implements Target {
         CompilerUtil.link(config, ccArgs, objectFiles, libs, outFile);        
     }
     
+    protected void copyResources(File destDir) throws IOException {
+    	for (String r : config.getResources()) {
+    		File f = new File(r);
+    		if (!f.exists()) {
+    	        config.getLogger().warn("Resource %s not found", r);
+    		} else if (f.isDirectory()) {
+    	        config.getLogger().debug("Copying resource dir %s to %s", f, destDir);
+    			FileUtils.copyDirectory(f, new File(destDir, f.getName()));
+    		} else {
+    	        config.getLogger().debug("Copying resource %s to %s", f, destDir);
+    			FileUtils.copyFileToDirectory(f, destDir, true);
+    		}
+    	}
+    }
+    
     public void install() throws IOException {
         config.getLogger().debug("Installing executable to %s", config.getInstallDir());
         config.getInstallDir().mkdirs();
@@ -158,6 +173,7 @@ public abstract class AbstractTarget implements Target {
             }
         }
         stripArchives(installDir);
+        copyResources(installDir);
     }
 
     public Process launch(LaunchParameters launchParameters) throws IOException {

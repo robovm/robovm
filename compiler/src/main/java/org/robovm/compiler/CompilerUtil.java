@@ -16,6 +16,7 @@
  */
 package org.robovm.compiler;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import java.util.Map;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteException;
+import org.apache.commons.exec.ExecuteStreamHandler;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.exec.environment.EnvironmentUtils;
@@ -37,7 +39,23 @@ import org.apache.commons.io.FileUtils;
  *
  */
 public class CompilerUtil {
+    private static String IOS_DEV_CLANG; 
+    private static String IOS_SIM_CLANG; 
 
+    private static String getIOSDevClang() throws IOException {
+        if (IOS_DEV_CLANG == null) {
+            IOS_DEV_CLANG = execCaptureOutput("xcrun", "-sdk", "iphoneos", "-f", "clang").trim();
+        }
+        return IOS_DEV_CLANG;
+    }
+    
+    private static String getIOSSimClang() throws IOException {
+        if (IOS_SIM_CLANG == null) {
+            IOS_SIM_CLANG = execCaptureOutput("xcrun", "-sdk", "iphonesimulator", "-f", "clang").trim();
+        }
+        return IOS_SIM_CLANG;
+    }
+    
     public static void opt(Config config, File inFile, File outFile, String ... options) throws IOException {
         String optPath = "opt";
         if (config.getLlvmBinDir() != null) {
@@ -78,6 +96,12 @@ public class CompilerUtil {
         String ccPath = config.getOs().getFamily() == OS.Family.darwin ? "clang" : "gcc";
         if (config.getCcBinPath() != null) {
             ccPath = config.getCcBinPath().getAbsolutePath();
+        } else if (config.getOs() == OS.ios) {
+            if (config.getArch() == Arch.x86) {
+                ccPath = getIOSSimClang();
+            } else {
+                ccPath = getIOSDevClang();
+            }
         }
 
         List<String> opts = new ArrayList<String>();
@@ -99,6 +123,12 @@ public class CompilerUtil {
         String ccPath = config.getOs().getFamily() == OS.Family.darwin ? "clang" : "gcc";
         if (config.getCcBinPath() != null) {
             ccPath = config.getCcBinPath().getAbsolutePath();
+        } else if (config.getOs() == OS.ios) {
+            if (config.getArch() == Arch.x86) {
+                ccPath = getIOSSimClang();
+            } else {
+                ccPath = getIOSDevClang();
+            }
         }
 
         File objectsFile = new File(config.getTmpDir(), "objects");
@@ -158,6 +188,17 @@ public class CompilerUtil {
         }
     }
 
+    public static String execCaptureOutput(String cmd, Object ... args) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ExecuteStreamHandler streamHandler = new PumpStreamHandler(baos);
+        Executor executor = new DefaultExecutor();
+        executor.setStreamHandler(streamHandler);
+        CommandLine command = createCommandLine(cmd, args);
+        executor.setExitValues(new int[] {0, 1});
+        executor.execute(command, EnvironmentUtils.getProcEnvironment());
+        return new String(baos.toByteArray());
+    }
+    
     static void debug(Logger logger, CommandLine commandLine) {
         String[] args = commandLine.getArguments();
         if (args.length == 0) {

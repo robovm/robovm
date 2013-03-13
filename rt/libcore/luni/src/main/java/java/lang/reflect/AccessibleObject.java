@@ -346,10 +346,17 @@ public class AccessibleObject implements AnnotatedElement {
         }
         return n1.substring(0, dot1).equals(n2.substring(0, dot2));
     }
-    
+
+    /**
+     * Returns the access flags for the specified {@link Class} without checking the InnerClasses
+     * attribute for inner classes. This is described in this bug report:
+     * http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4471811
+     */
+    static native int getAccessFlags(Class<?> cls);
+
     static boolean checkAccessibleFast(Member member) {
         int access = member.getModifiers();
-        return (member.getDeclaringClass().getModifiers() & access & Modifier.PUBLIC) > 0;
+        return (getAccessFlags(member.getDeclaringClass()) & access & Modifier.PUBLIC) > 0;
     }
     
     static boolean checkAccessible(Class<?> caller, Member member) {
@@ -361,7 +368,7 @@ public class AccessibleObject implements AnnotatedElement {
         boolean samePackage = false;
         
         // Check if callee class is accessible
-        if ((callee.getModifiers() & Modifier.PUBLIC) == 0) {
+        if ((getAccessFlags(callee) & Modifier.PUBLIC) == 0) {
             samePackage = isSamePackage(caller, callee);
             if (!samePackage) {
                 return false;

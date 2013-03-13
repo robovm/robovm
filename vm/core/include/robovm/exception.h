@@ -50,15 +50,15 @@ extern jboolean rvmThrowInterruptedException(Env* env);
 extern jboolean rvmThrowIllegalStateException(Env* env, const char* message);
 extern void rvmRaiseException(Env* env, Object* e);
 
-extern inline jboolean rvmExceptionCheck(Env* env) {
+static inline jboolean rvmExceptionCheck(Env* env) {
     return env->throwable ? TRUE : FALSE;
 }
 
-extern inline Object* rvmExceptionOccurred(Env* env) {
+static inline Object* rvmExceptionOccurred(Env* env) {
     return env->throwable;
 }
 
-extern inline Object* rvmExceptionClear(Env* env) {
+static inline Object* rvmExceptionClear(Env* env) {
     Object* e = env->throwable;
     env->throwable = NULL;
     return e;

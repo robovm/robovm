@@ -37,6 +37,16 @@ public final class VM {
     public static native String classPath();
 
     /**
+     * Returns the path to the executable currently running.
+     */
+    public static native String executablePath();
+    
+    /**
+     * Returns the parent directory of the path to the executable currently running.
+     */
+    public static native String basePath();
+    
+    /**
      * Returns the VM's version.
      */
     public static String vmVersion() {

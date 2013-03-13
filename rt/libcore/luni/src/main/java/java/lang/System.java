@@ -431,7 +431,8 @@ public final class System {
         p.put("java.ext.dirs", "");
         p.put("java.version", "0");
 
-        p.put("java.home", getenv("JAVA_HOME", "/system"));
+        // RoboVM note: Android uses getenv("JAVA_HOME") here with "/system" as fallback.
+        p.put("java.home", VM.basePath());
 
         p.put("java.io.tmpdir", "/tmp");
         p.put("java.library.path", getenv("LD_LIBRARY_PATH", ""));

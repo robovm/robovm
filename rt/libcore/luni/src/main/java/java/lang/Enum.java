@@ -34,15 +34,20 @@ public abstract class Enum<E extends Enum<E>> implements Serializable, Comparabl
     private static final BasicLruCache<Class<? extends Enum>, Object[]> sharedConstantsCache
             = new BasicLruCache<Class<? extends Enum>, Object[]>(64) {
         @Override protected Object[] create(Class<? extends Enum> enumType) {
+            // RoboVM note: The code to lookup the values() method below emulates the behavior of 
+            // Android's Class.getDeclaredConstructorOrMethod() (i.e. make the method accessible 
+            // and return null if not found).
+            Method method = null;
             try {
-                Method method = enumType.getDeclaredMethod("values", EmptyArray.CLASS);
-                method.setAccessible(true); // RoboVM note: Required on RoboVM
+                method = enumType.getDeclaredMethod("values", EmptyArray.CLASS);
+                method.setAccessible(true);
+            } catch (NoSuchMethodException e) {}
+
+            try {
                 return (Object[]) method.invoke((Object[]) null);
             } catch (IllegalAccessException impossible) {
                 throw new AssertionError();
             } catch (InvocationTargetException impossible) {
-                throw new AssertionError();
-            } catch (java.lang.NoSuchMethodException impossible) {
                 throw new AssertionError();
             }
         }

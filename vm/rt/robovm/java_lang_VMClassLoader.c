@@ -16,6 +16,10 @@
 #include <robovm.h>
 
 char* toBinaryName(Env* env, Object* className) {
+    if (!className) {
+        rvmThrowNew(env, java_lang_NullPointerException, "className");
+        return NULL;
+    }
     char* classNameUTF = rvmGetStringUTFChars(env, className);
     if (!classNameUTF) return NULL;
     jint i;

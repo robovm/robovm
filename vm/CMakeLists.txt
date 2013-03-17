@@ -225,6 +225,7 @@ if(DARWIN)
 endif()
 set(EXTGC_PARAMS  "--enable-shared=no")
 if (CMAKE_BUILD_TYPE STREQUAL "debug")
+  set(EXTGC_C_FLAGS "${EXTGC_C_FLAGS} -g")
   set(EXTGC_PARAMS "${EXTGC_PARAMS} --enable-gc-debug=yes")
 endif()
 ExternalProject_Add(extgc 

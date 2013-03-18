@@ -549,13 +549,22 @@ Object* rvmAllocateMemoryForObject(Env* env, Class* clazz) {
     return m;
 }
 
-Array* rvmAllocateMemoryForArray(Env* env, jint length, jint elementSize) {
+Array* rvmAllocateMemoryForArray(Env* env, Class* arrayClass, jint length) {
+    jint elementSize = rvmGetArrayElementSize(env, arrayClass);
+    if (elementSize == 0) {
+        return NULL;
+    }
     jlong size = (jlong) sizeof(Array) + (jlong) length * (jlong) elementSize;
     if (size > (jlong) (size_t) -1) {
         rvmThrowOutOfMemoryError(env);
         return NULL;
     }
-    Array* m = (Array*) gcAllocateKind((size_t) size, object_gc_kind);
+    Array* m = NULL;
+    if (CLASS_IS_PRIMITIVE(arrayClass->componentType)) {
+        m = (Array*) gcAllocateKind((size_t) size, object_gc_kind);
+    } else {
+        m = (Array*) gcAllocate((size_t) size);
+    }
     if (!m) {
         rvmThrowOutOfMemoryError(env);
         return NULL;

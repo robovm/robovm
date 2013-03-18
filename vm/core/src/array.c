@@ -16,40 +16,44 @@
 #include <robovm.h>
 #include <string.h>
 
-static jint getElementSize(const char* typeName) {
-    // TODO: Use lookup table instead?
-    if (typeName[1] != '\0') {
+static inline jint getElementSize(Env* env, Class* arrayType) {
+    assert(arrayType != NULL);
+    assert(CLASS_IS_ARRAY(arrayType));
+    assert(arrayType->componentType != NULL);
+    if (CLASS_IS_PRIMITIVE(arrayType->componentType)) {
+        // Array of primitives
+        switch (arrayType->componentType->name[0]) {
+        case 'Z':
+            return sizeof(jboolean);
+        case 'B':
+            return sizeof(jbyte);
+        case 'C':
+            return sizeof(jchar);
+        case 'S':
+            return sizeof(jshort);
+        case 'I':
+            return sizeof(jint);
+        case 'J':
+            return sizeof(jlong);
+        case 'F':
+            return sizeof(jfloat);
+        case 'D':
+            return sizeof(jdouble);
+        }
+    } else {
         return sizeof(Object*);
     }
-    switch (typeName[0]) {
-    case 'Z':
-        return sizeof(jboolean);
-    case 'B':
-        return sizeof(jbyte);
-    case 'C':
-        return sizeof(jchar);
-    case 'S':
-        return sizeof(jshort);
-    case 'I':
-        return sizeof(jint);
-    case 'J':
-        return sizeof(jlong);
-    case 'F':
-        return sizeof(jfloat);
-    case 'D':
-        return sizeof(jdouble);
-    }
-    return sizeof(Object*);
+    return 0;
 }
 
-static Array* newArray(Env* env, Class* arrayType, jint elementSize, jint dims, jint* lengths) {
+static Array* newArray(Env* env, Class* arrayType, jint dims, jint* lengths) {
     jint length = lengths[0];
     if (length < 0) {
         rvmThrowNegativeArraySizeException(env);
         return NULL;
     }
 
-    Array* array = rvmAllocateMemoryForArray(env, length, elementSize);
+    Array* array = rvmAllocateMemoryForArray(env, arrayType, length);
     if (!array) return NULL;
 
     ((Object*) array)->clazz = arrayType;
@@ -57,11 +61,9 @@ static Array* newArray(Env* env, Class* arrayType, jint elementSize, jint dims, 
 
     if (length > 0 && dims > 1) {
         int i;
-        Class* subArrayType = arrayType->componentType;
-        jint subElementSize = getElementSize(subArrayType->name);
         Object** values = ((ObjectArray*) array)->values;
         for (i = 0; i < length; i++) {
-            Object* o = (Object*) newArray(env, subArrayType, subElementSize, dims - 1, &lengths[1]);
+            Object* o = (Object*) newArray(env, arrayType->componentType, dims - 1, &lengths[1]);
             if (!o) return NULL;
             values[i] = o;
         }
@@ -71,40 +73,39 @@ static Array* newArray(Env* env, Class* arrayType, jint elementSize, jint dims, 
 }
 
 jint rvmGetArrayElementSize(Env* env, Class* arrayClass) {
-    assert(CLASS_IS_ARRAY(arrayClass));
-    return getElementSize(arrayClass->componentType->name);
+    return getElementSize(env, arrayClass);
 }
 
 BooleanArray* rvmNewBooleanArray(Env* env, jint length) {
-    return (BooleanArray*) newArray(env, array_Z, sizeof(jboolean), 1, &length);
+    return (BooleanArray*) newArray(env, array_Z, 1, &length);
 }
 
 ByteArray* rvmNewByteArray(Env* env, jint length) {
-    return (ByteArray*) newArray(env, array_B, sizeof(jbyte), 1, &length);
+    return (ByteArray*) newArray(env, array_B, 1, &length);
 }
 
 CharArray* rvmNewCharArray(Env* env, jint length) {
-    return (CharArray*) newArray(env, array_C, sizeof(jchar), 1, &length);
+    return (CharArray*) newArray(env, array_C, 1, &length);
 }
 
 ShortArray* rvmNewShortArray(Env* env, jint length) {
-    return (ShortArray*) newArray(env, array_S, sizeof(jshort), 1, &length);
+    return (ShortArray*) newArray(env, array_S, 1, &length);
 }
 
 IntArray* rvmNewIntArray(Env* env, jint length) {
-    return (IntArray*) newArray(env, array_I, sizeof(jint), 1, &length);
+    return (IntArray*) newArray(env, array_I, 1, &length);
 }
 
 LongArray* rvmNewLongArray(Env* env, jint length) {
-    return (LongArray*) newArray(env, array_J, sizeof(jlong), 1, &length);
+    return (LongArray*) newArray(env, array_J, 1, &length);
 }
 
 FloatArray* rvmNewFloatArray(Env* env, jint length) {
-    return (FloatArray*) newArray(env, array_F, sizeof(jfloat), 1, &length);
+    return (FloatArray*) newArray(env, array_F, 1, &length);
 }
 
 DoubleArray* rvmNewDoubleArray(Env* env, jint length) {
-    return (DoubleArray*) newArray(env, array_D, sizeof(jdouble), 1, &length);
+    return (DoubleArray*) newArray(env, array_D, 1, &length);
 }
 
 ObjectArray* rvmNewObjectArray(Env* env, jint length, Class* elementClass, Class* arrayClass, Object* init) {
@@ -126,7 +127,7 @@ ObjectArray* rvmNewObjectArray(Env* env, jint length, Class* elementClass, Class
         if (!arrayClass) return NULL;
     }
 
-    ObjectArray *array = (ObjectArray*) newArray(env, arrayClass, sizeof(Object*), 1, &length);
+    ObjectArray *array = (ObjectArray*) newArray(env, arrayClass, 1, &length);
     if (init) {
         jint i;
         for (i = 0; i < length; i++) {
@@ -137,12 +138,12 @@ ObjectArray* rvmNewObjectArray(Env* env, jint length, Class* elementClass, Class
 }
 
 Array* rvmNewMultiArray(Env* env, jint dims, jint* lengths, Class* clazz) {
-    return newArray(env, clazz, sizeof(Object*), dims, lengths);
+    return newArray(env, clazz, dims, lengths);
 }
 
 Array* rvmCloneArray(Env* env, Array* array) {
-    jint elementSize = getElementSize(array->object.clazz->componentType->name);
-    Array* copy = rvmAllocateMemoryForArray(env, array->length, elementSize);
+    jint elementSize = getElementSize(env, array->object.clazz);
+    Array* copy = rvmAllocateMemoryForArray(env, array->object.clazz, array->length);
     if (!copy) return NULL;
     jlong size = (jlong) sizeof(Array) + (jlong) array->length * (jlong) elementSize;
     memcpy(copy, array, (size_t) size);

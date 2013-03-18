@@ -24,7 +24,7 @@ extern void rvmRegisterFinalizer(Env* env, Object* obj);
 extern void rvmRegisterReference(Env* env, Object* reference, Object* referent);
 extern void rvmRegisterDisappearingLink(Env* env, void** address, Object* obj);
 extern void rvmUnregisterDisappearingLink(Env* env, void** address);
-extern Array* rvmAllocateMemoryForArray(Env* env, jint length, jint elementSize);
+extern Array* rvmAllocateMemoryForArray(Env* env, Class* arrayClass, jint length);
 extern void* rvmAllocateMemory(Env* env, size_t size);
 extern void* rvmAllocateMemoryUncollectable(Env* env, size_t size);
 extern void* rvmAllocateMemoryAtomic(Env* env, size_t size);

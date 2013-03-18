@@ -429,3 +429,17 @@ void rvmThreadNameChanged(Env* env, Thread* thread) {
     pthread_cond_broadcast(&threadsChangedCond);
     rvmUnlockThreadsList();
 }
+
+Thread* rvmGetThreadByThreadId(Env* env, uint32_t threadId) {
+    rvmLockThreadsList();
+    Thread* result = NULL;
+    Thread* thread = NULL;
+    DL_FOREACH(threads, thread) {
+        if (thread->threadId == threadId) {
+            result = thread;
+            break;
+        }
+    }
+    rvmUnlockThreadsList();
+    return result;
+}

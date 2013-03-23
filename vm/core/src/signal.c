@@ -184,12 +184,15 @@ static void signalHandler_npe_so(int signum, siginfo_t* info, void* context) {
         void* faultAddr = info->si_addr;
         void* stackAddr = env->currentThread->stackAddr;
         Class* exClass = NULL;
-        if (!faultAddr) {
-            // NullPointerException
-            exClass = java_lang_NullPointerException;
-        } else if (faultAddr < stackAddr && faultAddr >= (void*) (stackAddr - THREAD_STACK_GUARD_SIZE)) {
+        if (faultAddr < stackAddr && faultAddr >= (void*) (stackAddr - THREAD_STACK_GUARD_SIZE)) {
             // StackOverflowError
             exClass = java_lang_StackOverflowError;
+        } else {
+            // At least on Linux x86 it seems like si_addr isn't always 0x0 even
+            // if a read of address 0x0 triggered SIGSEGV so we assume 
+            // everything that isn't a stack overflow is a read of address 0x0
+            // and throw NullPointerException.
+            exClass = java_lang_NullPointerException;
         }
 
         if (exClass) {

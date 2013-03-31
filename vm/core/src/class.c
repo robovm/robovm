@@ -72,8 +72,9 @@ Class* java_lang_IllegalMonitorStateException;
 Class* java_lang_InstantiationException;
 Class* java_lang_InterruptedException;
 Class* java_lang_IllegalStateException;
-
 Class* java_lang_InterruptedException;
+
+Class* java_lang_ref_Reference;
 
 Class* prim_Z;
 Class* prim_B;
@@ -138,7 +139,10 @@ static Class* getLoadedClass(Env* env, const char* className) {
 }
 
 static jboolean addLoadedClass(Env* env, Class* clazz) {
-    LoadedClassEntry* entry = rvmAllocateMemory(env, sizeof(LoadedClassEntry));
+    // LoadedClassEntrys are allocated atomically. Classes are always GC roots 
+    // which means that the class and it's name will be reachable regardless of 
+    // whether this is allocated atomically or not.
+    LoadedClassEntry* entry = rvmAllocateMemoryAtomicUncollectable(env, sizeof(LoadedClassEntry));
     if (!entry) return FALSE;
     entry->key = clazz->name;
     entry->clazz = clazz;
@@ -162,6 +166,7 @@ static Class* createPrimitiveClass(Env* env, const char* desc) {
     clazz->_interfaces = NULL;
     clazz->_fields = NULL;
     clazz->_methods = NULL;
+    if (!rvmAddObjectGCRoot(env, (Object*) clazz)) return NULL;
     return clazz;
 }
 
@@ -381,7 +386,7 @@ const char* rvmGetHumanReadableClassName(Env* env, Class* clazz) {
 
     // At this point, 'c' is a string of the form "fully/qualified/Type;"
     // or "primitive;". Rewrite the type with '.' instead of '/':
-    char* result = rvmAllocateMemory(env, strlen(c) + dim * 2 + 1);
+    char* result = rvmAllocateMemoryAtomic(env, strlen(c) + dim * 2 + 1);
     if (!result) return NULL;
     const char* p = c;
     jint index = 0;
@@ -504,6 +509,8 @@ jboolean rvmInitClasses(Env* env) {
         return FALSE;
     }
 
+    gcAddRoot(&loadedClasses);
+
     // Cache important classes in java.lang.
     java_lang_Object = findBootClass(env, "java/lang/Object");
     if (!java_lang_Object) return FALSE;
@@ -607,6 +614,9 @@ jboolean rvmInitClasses(Env* env) {
     if (!java_lang_InterruptedException) return FALSE;
     java_lang_IllegalStateException = findBootClass(env, "java/lang/IllegalStateException");
     if (!java_lang_IllegalStateException) return FALSE;
+
+    java_lang_ref_Reference = findBootClass(env, "java/lang/ref/Reference");
+    if (!java_lang_ref_Reference) return FALSE;
 
     prim_Z = createPrimitiveClass(env, "Z");
     if (!prim_Z) return FALSE;
@@ -796,6 +806,15 @@ Class* rvmAllocateClass(Env* env, const char* className, Class* superclass, Clas
     // Inherit the CLASS_FLAG_FINALIZABLE flag from the superclass
     if (superclass && !CLASS_IS_FINALIZABLE(clazz) && CLASS_IS_FINALIZABLE(superclass)) {
         clazz->flags |= CLASS_FLAG_FINALIZABLE;
+    }
+    // Inherit the CLASS_FLAG_REFERENCE flag from the superclass
+    if (superclass && (superclass == java_lang_ref_Reference || CLASS_IS_REFERENCE(superclass))) {
+        clazz->flags |= CLASS_FLAG_REFERENCE;
+    }
+    // Set CLASS_FLAG_REF_FREE if the superclass has this flag set and this class has 0
+    // instance reference fields
+    if ((!superclass || CLASS_IS_REF_FREE(superclass)) && instanceRefCount == 0) {
+        clazz->flags |= CLASS_FLAG_REF_FREE;
     }
 
     return clazz;
@@ -994,6 +1013,11 @@ jboolean rvmRegisterClass(Env* env, Class* clazz) {
 
     obtainClassLock();
     if (!addLoadedClass(env, clazz)) {
+        releaseClassLock();
+        return FALSE;
+    }
+
+    if (!rvmAddObjectGCRoot(env, (Object*) clazz)) {
         releaseClassLock();
         return FALSE;
     }

@@ -210,19 +210,19 @@ struct JavaThread {
 };
 
 struct Thread {
-  pthread_t pThread;
   JavaThread* threadObj;
-  jint threadId;
-  void* stackAddr;
-  sigset_t signalMask;
-  jboolean interrupted;
-  Monitor* waitMonitor;
-  Mutex waitMutex;
-  jint status;
-  pthread_cond_t waitCond;
   struct Thread* waitNext;
   struct Thread* prev;
   struct Thread* next;
+  Monitor* waitMonitor;
+  pthread_t pThread;
+  jint threadId;
+  void* stackAddr;
+  jboolean interrupted;
+  Mutex waitMutex;
+  jint status;
+  pthread_cond_t waitCond;
+  sigset_t signalMask;
 };
 
 struct Array {

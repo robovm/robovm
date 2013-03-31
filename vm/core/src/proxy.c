@@ -21,6 +21,15 @@
 
 #define ALLOC_PROXY_FRAMES_SIZE 2
 
+// GC descriptor specifying which words in a LookupEntry that should be scanned 
+// for heap pointers. The hh.hashv value in particular must not be scanned since
+// it often can be mistaken for a pointer. We only need to scan the hh.next 
+// field. The key always refers to the ProxyMethod's name and desc and the 
+// ProxyMethod is referenced by a Class which is a static GC root. 
+#define LOOKUP_ENTRY_GC_BITMAP (MAKE_GC_BITMAP(offsetof(LookupEntry, hh.next)))
+
+static uint32_t lookupEntryGCKind;
+
 typedef struct {
     const char* name;
     const char* desc;
@@ -145,7 +154,7 @@ static jboolean tryAddProxyMethod(Env* env, Class* proxyClass, Method* method, j
         }
     }
     // Record the lookup function in proxyClassData
-    LookupEntry* entry = rvmAllocateMemory(env, sizeof(LookupEntry));
+    LookupEntry* entry = allocateMemoryOfKind(env, sizeof(LookupEntry), lookupEntryGCKind);
     if (!entry) return FALSE;
     entry->key.name = method->name;
     entry->key.desc = method->desc;
@@ -207,6 +216,11 @@ static jboolean implementAbstractInterfaceMethods(Env* env, Class* proxyClass, I
     // Now proceed with the next interface
     if (!implementAbstractInterfaceMethods(env, proxyClass, interface->next, proxyClassData)) return FALSE;
 
+    return TRUE;
+}
+
+jboolean rvmInitProxy(Env* env) {
+    lookupEntryGCKind = gcNewDirectBitmapKind(LOOKUP_ENTRY_GC_BITMAP);
     return TRUE;
 }
 

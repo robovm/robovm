@@ -62,7 +62,7 @@ static jboolean blockSigPipe() {
 static jboolean initClasspathEntries(Env* env, char* basePath, char** raw, ClasspathEntry** first) {
     jint i = 0;
     while (raw[i]) {
-        ClasspathEntry* entry = rvmAllocateMemory(env, sizeof(ClasspathEntry));
+        ClasspathEntry* entry = rvmAllocateMemoryAtomicUncollectable(env, sizeof(ClasspathEntry));
         if (!entry) return FALSE;
         absolutize(basePath, raw[i], entry->jarPath);
         LL_APPEND(*first, entry);
@@ -202,12 +202,16 @@ Env* rvmStartup(Options* options) {
     if (!rvmInitLog(env)) return NULL;
     TRACE("Initializing classes");
     if (!rvmInitClasses(env)) return NULL;
+    TRACE("Initializing memory");
+    if (!rvmInitMemory(env)) return NULL;
     TRACE("Initializing methods");
     if (!rvmInitMethods(env)) return NULL;
     TRACE("Initializing strings");
     if (!rvmInitStrings(env)) return NULL;
     TRACE("Initializing monitors");
     if (!rvmInitMonitors(env)) return NULL;
+    TRACE("Initializing proxy");
+    if (!rvmInitProxy(env)) return NULL;
     TRACE("Initializing threads");
     if (!rvmInitThreads(env)) return NULL;
     TRACE("Initializing attributes");
@@ -218,8 +222,6 @@ Env* rvmStartup(Options* options) {
     if (!rvmInitExceptions(env)) return NULL;
     TRACE("Initializing signals");
     if (!rvmInitSignals(env)) return NULL;
-    TRACE("Initializing memory");
-    if (!rvmInitMemory(env)) return NULL;
 
     // Initialize the RoboVM rt JNI code
 //    RT_JNI_OnLoad(&vm->javaVM, NULL);
@@ -316,7 +318,7 @@ DynamicLib* rvmOpenDynamicLib(Env* env, const char* file, char** errorMsg) {
 
     TRACEF("Opening dynamic library '%s'", file);
 
-    dlib = rvmAllocateMemory(env, sizeof(DynamicLib));
+    dlib = rvmAllocateMemoryAtomicUncollectable(env, sizeof(DynamicLib));
     if (!dlib) {
         dlclose(handle);
         return NULL;
@@ -329,6 +331,7 @@ DynamicLib* rvmOpenDynamicLib(Env* env, const char* file, char** errorMsg) {
 
 void rvmCloseDynamicLib(Env* env, DynamicLib* lib) {
     dlclose(lib->handle);
+    rvmFreeMemoryUncollectable(env, lib);
 }
 
 jboolean rvmHasDynamicLib(Env* env, DynamicLib* lib, DynamicLib* libs) {
@@ -343,10 +346,6 @@ jboolean rvmHasDynamicLib(Env* env, DynamicLib* lib, DynamicLib* libs) {
 
 void rvmAddDynamicLib(Env* env, DynamicLib* lib, DynamicLib** libs) {
     LL_APPEND(*libs, lib);
-}
-
-void rvmRemoveDynamicLib(Env* env, DynamicLib* lib, DynamicLib* libs) {
-    LL_DELETE(libs, lib);
 }
 
 void* rvmFindDynamicLibSymbol(Env* env, DynamicLib* libs, const char* symbol, jboolean searchAll) {

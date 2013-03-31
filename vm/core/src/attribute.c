@@ -748,9 +748,11 @@ jboolean rvmInitAttributes(Env* env) {
     if (!array_java_lang_Class) return FALSE;
     emptyExceptionTypes = rvmNewObjectArray(env, 0, NULL, array_java_lang_Class, NULL);
     if (!emptyExceptionTypes) return FALSE;
+    if (!rvmAddObjectGCRoot(env, (Object*) emptyExceptionTypes)) return FALSE;
 
     emptyAnnotations = rvmNewObjectArray(env, 0, NULL, array_of_java_lang_annotation_Annotation, NULL);
     if (!emptyAnnotations) return FALSE;
+    if (!rvmAddObjectGCRoot(env, (Object*) emptyAnnotations)) return FALSE;
 
     return TRUE;
 }

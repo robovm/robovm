@@ -15,6 +15,8 @@
  */
 #include <robovm.h>
 #include <string.h>
+#include <stddef.h>
+#include "private.h"
 #include "uthash.h"
 
 #define LOG_TAG "core.string"
@@ -23,9 +25,17 @@ static Method* stringConstructor = NULL;
 static InstanceField* stringValueField = NULL;
 static InstanceField* stringOffsetField = NULL;
 static InstanceField* stringCountField = NULL;
+static uint32_t cacheEntryGCKind;
 
 // TODO: Restrict the number of bytes stored in the cache instead of the number of String objects.
 #define MAX_CACHE_SIZE 10000
+
+// GC descriptor specifying which words in a CacheEntry that should be scanned 
+// for heap pointers. The hh.hashv value in particular must not be scanned since
+// it often can be mistaken for a pointer.
+#define CACHE_ENTRY_GC_BITMAP (MAKE_GC_BITMAP(offsetof(CacheEntry, key)) \
+                              |MAKE_GC_BITMAP(offsetof(CacheEntry, string)) \
+                              |MAKE_GC_BITMAP(offsetof(CacheEntry, hh.next)))
 
 typedef struct CacheEntry {
     const char* key; // The string in modified UTF-8
@@ -65,7 +75,7 @@ static Object* findInternedString(Env* env, const char* s) {
  * interned.  The internedStringsLock MUST be held when calling this function.
  */
 static jboolean addInternedString(Env* env, const char* s,  Object* string) {
-    CacheEntry* cacheEntry = rvmAllocateMemory(env, sizeof(CacheEntry));
+    CacheEntry* cacheEntry = allocateMemoryOfKind(env, sizeof(CacheEntry), cacheEntryGCKind);
     if (!cacheEntry) {
         return FALSE;
     }
@@ -204,6 +214,9 @@ jboolean rvmInitStrings(Env* env) {
     if (rvmInitMutex(&internedStringsLock) != 0) {
         return FALSE;
     }
+
+    gcAddRoot(&internedStrings);
+    cacheEntryGCKind = gcNewDirectBitmapKind(CACHE_ENTRY_GC_BITMAP);
 
     stringConstructor = rvmGetInstanceMethod(env, java_lang_String, "<init>", "(II[C)V");
     if (!stringConstructor) return FALSE;

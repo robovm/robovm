@@ -116,6 +116,9 @@ jboolean rvmInitMethods(Env* env) {
     if (!empty_java_lang_StackTraceElement_array) {
         return FALSE;
     }
+    if (!rvmAddObjectGCRoot(env, (Object*) empty_java_lang_StackTraceElement_array)) {
+        return FALSE;
+    }
 
     return TRUE;
 }
@@ -222,7 +225,7 @@ jint countCallStackFrames(Env* env, Frame* fp) {
 }
 
 CallStack* allocateCallStackFrames(Env* env, jint maxLength) {
-    return rvmAllocateMemory(env, sizeof(CallStack) + sizeof(CallStackFrame) * maxLength);
+    return rvmAllocateMemoryAtomic(env, sizeof(CallStack) + sizeof(CallStackFrame) * maxLength);
 }
 
 void captureCallStack(Env* env, Frame* fp, CallStack* data, jint maxLength) {

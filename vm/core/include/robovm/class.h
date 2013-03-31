@@ -24,6 +24,8 @@
 #define CLASS_STATE_INITIALIZED  0x00030000
 #define CLASS_STATE_ERROR        0x00040000
 #define CLASS_FLAG_FINALIZABLE   0x00100000
+#define CLASS_FLAG_REFERENCE     0x00200000
+#define CLASS_FLAG_REF_FREE      0x00400000
 #define CLASS_TYPE_MASK          0x30000000
 #define CLASS_TYPE_NORMAL        0x00000000
 #define CLASS_TYPE_PRIMITIVE     0x10000000
@@ -42,6 +44,8 @@
 #define CLASS_IS_ENUM(c) (IS_ENUM((c)->flags))
 #define CLASS_IS_ANNOTATION(c) (IS_ANNOTATION((c)->flags))
 #define CLASS_IS_FINALIZABLE(c) ((c)->flags & CLASS_FLAG_FINALIZABLE)
+#define CLASS_IS_REFERENCE(c) ((c)->flags & CLASS_FLAG_REFERENCE)
+#define CLASS_IS_REF_FREE(c) ((c)->flags & CLASS_FLAG_REF_FREE)
 
 #define CLASS_IS_STATE_ALLOCATED(c) (((c)->flags & CLASS_STATE_MASK) == CLASS_STATE_ALLOCATED)
 #define CLASS_IS_STATE_LOADED(c) (((c)->flags & CLASS_STATE_MASK) == CLASS_STATE_LOADED)
@@ -98,6 +102,8 @@ extern Class* java_lang_IllegalMonitorStateException;
 extern Class* java_lang_InstantiationException;
 extern Class* java_lang_InterruptedException;
 extern Class* java_lang_IllegalStateException;
+
+extern Class* java_lang_ref_Reference;
 
 extern Class* prim_Z;
 extern Class* prim_B;

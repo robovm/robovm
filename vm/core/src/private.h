@@ -20,10 +20,17 @@
 #include <robovm.h>
 
 /* memory.c */
+#define MAKE_GC_BITMAP(offset) ((offset>>2) > 30 ? -1 : (1 << (31 - (offset>>2))))
+
+typedef void (*CleanupHandler)(Env*, Object*);
+
 extern jboolean initGC(Options* options);
+extern void gcAddRoot(void* ptr);
+extern void gcAddRoots(void* start, void* end);
+extern uint32_t gcNewDirectBitmapKind(uint32_t bitmap);
 extern void* gcAllocate(size_t size);
-extern void* gcAllocateUncollectable(size_t size);
-extern void* gcAllocateAtomic(size_t size);
+extern void* allocateMemoryOfKind(Env* env, size_t size, uint32_t kind);
+extern void registerCleanupHandler(Env* env, Object* object, CleanupHandler handler);
 
 /* unwind.c */
 typedef struct Frame {

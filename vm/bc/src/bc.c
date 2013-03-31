@@ -341,7 +341,7 @@ static AddressClassLookup* getAddressClassLookups(Env* env) {
         jint count = 0;
         iterateClassInfos(env, countClassesWithConcreteMethodsCallback, _bcBootClassesHash, &count);
         iterateClassInfos(env, countClassesWithConcreteMethodsCallback, _bcClassesHash, &count);
-        AddressClassLookup* lookups = rvmAllocateMemory(env, sizeof(AddressClassLookup) * count);
+        AddressClassLookup* lookups = rvmAllocateMemoryAtomicUncollectable(env, sizeof(AddressClassLookup) * count);
         if (!lookups) return NULL;
         AddressClassLookup* _lookups = lookups;
         iterateClassInfos(env, initAddressClassLookupsCallback, _bcBootClassesHash, &_lookups);

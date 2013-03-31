@@ -30,7 +30,6 @@ extern DynamicLib* rvmOpenDynamicLib(Env* env, const char* file, char** errorMsg
 extern void rvmCloseDynamicLib(Env* env, DynamicLib* lib);
 extern jboolean rvmHasDynamicLib(Env* env, DynamicLib* lib, DynamicLib* libs);
 extern void rvmAddDynamicLib(Env* env, DynamicLib* lib, DynamicLib** libs);
-extern void rvmRemoveDynamicLib(Env* env, DynamicLib* lib, DynamicLib* libs);
 extern void* rvmFindDynamicLibSymbol(Env* env, DynamicLib* first, const char* symbol, jboolean searchAll);
 
 #endif

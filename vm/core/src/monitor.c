@@ -193,7 +193,7 @@ static inline int android_atomic_release_cas(int32_t old_value, int32_t new_valu
  */
 
 static Monitor* threadSleepMonitor;
-static Monitor* monitors = NULL;
+static void freeMonitorCleanupHandler(Env* env, Object* object);
 
 jboolean rvmInitMonitors(Env* env) {
     threadSleepMonitor = rvmCreateMonitor(env, NULL);
@@ -206,7 +206,7 @@ jboolean rvmInitMonitors(Env* env) {
 Monitor* rvmCreateMonitor(Env* env, Object* obj) {
     Monitor* mon;
 
-    mon = (Monitor*) rvmAllocateMemory(env, sizeof(Monitor));
+    mon = (Monitor*) rvmAllocateMemoryAtomicUncollectable(env, sizeof(Monitor));
     if (mon == NULL) {
         rvmAbort("Unable to allocate monitor");
     }
@@ -216,11 +216,9 @@ Monitor* rvmCreateMonitor(Env* env, Object* obj) {
     mon->obj = obj;
     rvmInitMutex(&mon->lock);
 
-    /* replace the head of the list with the new monitor */
-    do {
-        mon->next = monitors;
-    } while (android_atomic_release_cas((int32_t)mon->next, (int32_t)mon,
-            (int32_t*)(void*)&monitors) != 0);
+    if (obj) {
+        registerCleanupHandler(env, obj, freeMonitorCleanupHandler);
+    }
 
     return mon;
 }
@@ -301,6 +299,15 @@ static void freeMonitor(Monitor *mon) {
     assert(rvmTryLockMutex(&mon->lock) == 0);
     assert(rvmUnlockMutex(&mon->lock) == 0);
     rvmDestroyMutex(&mon->lock);
+}
+
+static void freeMonitorCleanupHandler(Env* env, Object* object) {
+    if (LW_SHAPE(object->lock) == LW_SHAPE_FAT) {
+        Monitor* mon = LW_MONITOR(object->lock);
+        freeMonitor(mon);
+        object->lock = 0;
+        rvmFreeMemoryUncollectable(env, mon);
+    }
 }
 
 /*

@@ -16,11 +16,18 @@
 #define _GNU_SOURCE
 #include <pthread.h>
 #include <robovm.h>
+#include "private.h"
 #include "utlist.h"
 
 /*
  * This code has been heavily inspired by Android's dalvik/vm/Thread.cpp code.
  */
+
+// GC descriptor specifying which words in a Thread that should be scanned 
+// for heap pointers.
+#define THREAD_GC_BITMAP (MAKE_GC_BITMAP(offsetof(Thread, threadObj)) \
+                         |MAKE_GC_BITMAP(offsetof(Thread, waitMonitor)) \
+                         |MAKE_GC_BITMAP(offsetof(Thread, next)))
 
 static Mutex threadsLock;
 static pthread_cond_t threadStartCond;
@@ -31,6 +38,7 @@ static jint nextThreadId = 1;
 static Method* getUncaughtExceptionHandlerMethod;
 static Method* uncaughtExceptionMethod;
 static Method* removeThreadMethod;
+static uint32_t threadGCKind;
 
 
 inline void rvmLockThreadsList() {
@@ -69,7 +77,7 @@ static void* getStackAddress(void) {
 }
 
 static Thread* allocThread(Env* env) {
-    Thread* thread = (Thread*) rvmAllocateMemory(env, sizeof(Thread));
+    Thread* thread = (Thread*) allocateMemoryOfKind(env, sizeof(Thread), threadGCKind);
     if (!thread) return NULL;
     thread->status = THREAD_INITIALIZING;
     return thread;
@@ -239,6 +247,9 @@ static jint detachThread(Env* env, jboolean ignoreAttachCount) {
 }
 
 jboolean rvmInitThreads(Env* env) {
+    gcAddRoot(&threads);
+    threadGCKind = gcNewDirectBitmapKind(THREAD_GC_BITMAP);
+
     if (rvmInitMutex(&threadsLock) != 0) return FALSE;
     if (pthread_key_create(&tlsEnvKey, NULL) != 0) return FALSE;
     if (pthread_cond_init(&threadStartCond, NULL) != 0) return FALSE;

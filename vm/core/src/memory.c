@@ -15,6 +15,7 @@
  */
 #include <robovm.h>
 #include <string.h>
+#include <stdint.h>
 #include <gc/gc_mark.h>
 #include "private.h"
 #include "uthash.h"
@@ -22,11 +23,13 @@
 
 #define LOG_TAG "core.memory"
 
+#define OBJECTS_GC_ROOTS_INITIAL_SIZE 2048
+#define INTERNAL_GC_ROOTS_INITIAL_SIZE 1024
+
 static Class* java_nio_ReadWriteDirectByteBuffer = NULL;
 static Method* java_nio_ReadWriteDirectByteBuffer_init = NULL;
 static InstanceField* java_nio_Buffer_effectiveDirectAddress = NULL;
 static InstanceField* java_nio_Buffer_capacity = NULL;
-static Class* java_lang_ref_Reference = NULL;
 static InstanceField* java_lang_ref_Reference_referent = NULL;
 static InstanceField* java_lang_ref_Reference_pendingNext = NULL;
 static InstanceField* java_lang_ref_Reference_queue = NULL;
@@ -51,6 +54,17 @@ static VM* vm = NULL;
 // OutOfMemoryError.
 static Object* criticalOutOfMemoryError = NULL;
 
+// GC descriptor specifying which words in a ReferentEntry that should be scanned 
+// for heap pointers. The hh.hashv value in particular must not be scanned since
+// it often can be mistaken for a pointer.
+#define REFERENT_ENTRY_GC_BITMAP (MAKE_GC_BITMAP(offsetof(ReferentEntry, references)) \
+                                 |MAKE_GC_BITMAP(offsetof(ReferentEntry, cleanupHandlers)) \
+                                 |MAKE_GC_BITMAP(offsetof(ReferentEntry, hh.next)))
+
+typedef struct CleanupHandlerList {
+    struct CleanupHandlerList* next;
+    CleanupHandler handler;
+} CleanupHandlerList;
 typedef struct ReferenceList {
     struct ReferenceList* next;
     Object* reference;
@@ -58,14 +72,21 @@ typedef struct ReferenceList {
 typedef struct ReferentEntry {
     void* key;
     ReferenceList* references;
+    CleanupHandlerList* cleanupHandlers;
     UT_hash_handle hh;
 } ReferentEntry;
 static ReferentEntry* referents = NULL;
+static uint32_t referentEntryGCKind;
+
+static Object** objectGCRoots = NULL;
+static jint objectGCRootsCount = -1;
+static jint objectGCRootsSize = 0;
 
 static Mutex referentsLock;
+static Mutex gcRootsLock;
 
-// The GC kind used when allocating Objects (and arrays and Classes which are also Objects)
-static int object_gc_kind;
+// The GC kind used when allocating Objects (and Classes which are also Objects)
+static uint32_t object_gc_kind;
 
 static inline struct GC_ms_entry* markRegion(void** start, void** end, struct GC_ms_entry* mark_stack_ptr, struct GC_ms_entry* mark_stack_limit) {
     void** p = start;
@@ -103,13 +124,11 @@ static struct GC_ms_entry* markObject(GC_word* addr, struct GC_ms_entry* mark_st
         void** end = (void**) (((char*) start) + clazz->classRefCount * sizeof(Object*));
         mark_stack_ptr = markRegion(start, end, mark_stack_ptr, mark_stack_limit);
     } else if (CLASS_IS_ARRAY(obj->clazz)) {
-        if (!CLASS_IS_PRIMITIVE(obj->clazz->componentType)) {
-            // Array of objects. Mark all values in the array.
-            ObjectArray* array = (ObjectArray*) obj;
-            void** start = (void**) (((char*) array) + offsetof(ObjectArray, values));
-            void** end = (void**) (((char*) start) + sizeof(Object*) * array->length);
-            mark_stack_ptr = markRegion(start, end, mark_stack_ptr, mark_stack_limit);
-        }
+        // Only small arrays of objects are allocated using this mark proc. Mark all values in the array.
+        ObjectArray* array = (ObjectArray*) obj;
+        void** start = (void**) (((char*) array) + offsetof(ObjectArray, values));
+        void** end = (void**) (((char*) start) + sizeof(Object*) * array->length);
+        mark_stack_ptr = markRegion(start, end, mark_stack_ptr, mark_stack_limit);
     } else {
         // Object* - for each Class in the hierarchy of obj's Class we mark the first instanceRefCount*sizeof(Object*) bytes
         Class* clazz = obj->clazz;
@@ -165,8 +184,9 @@ static void gcWarnProc(char* msg, GC_word arg) {
 }
 
 jboolean initGC(Options* options) {
-    GC_INIT();
+    GC_set_no_dls(1);
     GC_set_java_finalization(1);
+    GC_INIT();
     if (options->maxHeapSize > 0) {
         GC_set_max_heap_size(options->maxHeapSize);
     }
@@ -178,8 +198,12 @@ jboolean initGC(Options* options) {
     }
 
     object_gc_kind = GC_new_kind(GC_new_free_list(), GC_MAKE_PROC(GC_new_proc(markObject), 0), 0, 1);
+    referentEntryGCKind = gcNewDirectBitmapKind(REFERENT_ENTRY_GC_BITMAP);
 
     if (rvmInitMutex(&referentsLock) != 0) {
+        return FALSE;
+    }
+    if (rvmInitMutex(&gcRootsLock) != 0) {
         return FALSE;
     }
 
@@ -188,7 +212,16 @@ jboolean initGC(Options* options) {
     return TRUE;
 }
 
-static void* gcAllocateKind(size_t size, jint kind) {
+void gcAddRoot(void* ptr) {
+    GC_add_roots(ptr, ptr + sizeof(void*));
+}
+
+uint32_t gcNewDirectBitmapKind(uint32_t bitmap) {
+    assert((bitmap & GC_DS_TAGS) == 0);
+    return GC_new_kind(GC_new_free_list(), bitmap | GC_DS_BITMAP, 0, 1);
+}
+
+static void* gcAllocateKind(size_t size, uint32_t kind) {
     void* m = GC_generic_malloc(size, kind);
     if (!m) {
         // Force GC and try again
@@ -221,6 +254,18 @@ void* gcAllocateAtomic(size_t size) {
         // Force GC and try again
         GC_gcollect();
         m = GC_MALLOC_ATOMIC(size);
+    }
+    if (m) {
+        memset(m, 0, size);
+    }
+    return m;
+}
+void* gcAllocateAtomicUncollectable(size_t size) {
+    void* m = GC_MALLOC_ATOMIC_UNCOLLECTABLE(size);
+    if (!m) {
+        // Force GC and try again
+        GC_gcollect();
+        m = GC_MALLOC_ATOMIC_UNCOLLECTABLE(size);
     }
     if (m) {
         memset(m, 0, size);
@@ -364,6 +409,14 @@ static void finalizeObject(Env* env, Object* obj) {
         // The object is not referenced by any type of reference and can never be resurrected.
         HASH_DEL(referents, referentEntry);
         rvmUnlockMutex(&referentsLock);
+        // Run all cleanup handlers registered for the object
+        CleanupHandlerList* l = referentEntry->cleanupHandlers;
+        while (l) {
+            l->handler(env, obj);
+            // Discard any exception thrown by the cleanup handler
+            rvmExceptionClear(env);
+            l = l->next;
+        }
         return;
     }
 
@@ -422,6 +475,40 @@ void rvmRegisterFinalizer(Env* env, Object* obj) {
     rvmCallVoidClassMethod(env, java_lang_ref_FinalizerReference, java_lang_ref_FinalizerReference_add, obj);
 }
 
+/**
+ * Returns the ReferentEntry for the specified object or creates one and adds
+ * it to the referents hash if none exists. referentsLock MUST be held.
+ */
+static ReferentEntry* getReferentEntryForObject(Env* env, Object* o) {
+    void* key = (void*) GC_HIDE_POINTER(o); // Hide the pointer from the GC so that the key doesn't prevent the object from being GCed.
+    ReferentEntry* referentEntry;
+    HASH_FIND_PTR(referents, &key, referentEntry);
+    if (!referentEntry) {
+        // Object is not in the hashtable. Add it.
+        referentEntry = allocateMemoryOfKind(env, sizeof(ReferentEntry), referentEntryGCKind);
+        if (!referentEntry) return NULL; // OOM thrown
+        referentEntry->key = key;
+        HASH_ADD_PTR(referents, key, referentEntry);
+    }
+    return referentEntry;
+}
+
+void registerCleanupHandler(Env* env, Object* object, CleanupHandler handler) {
+    rvmLockMutex(&referentsLock);
+    CleanupHandlerList* l = rvmAllocateMemory(env, sizeof(CleanupHandlerList));
+    if (!l) goto done; // OOM thrown
+    l->handler = handler;
+    ReferentEntry* referentEntry = getReferentEntryForObject(env, object);
+    if (!referentEntry) goto done;
+    // Add the handler to the object's list of cleanup handlers
+    LL_PREPEND(referentEntry->cleanupHandlers, l);
+    // Register the referent for finalization
+    GC_REGISTER_FINALIZER_NO_ORDER(object, _finalizeObject, NULL, NULL, NULL);
+
+done:
+    rvmUnlockMutex(&referentsLock);
+}
+
 void rvmRegisterReference(Env* env, Object* reference, Object* referent) {
     if (referent) {
         // Add 'reference' to the references list for 'referent' in the referents hashtable
@@ -430,21 +517,10 @@ void rvmRegisterReference(Env* env, Object* reference, Object* referent) {
         ReferenceList* l = rvmAllocateMemory(env, sizeof(ReferenceList));
         if (!l) goto done; // OOM thrown
         l->reference = reference;
-
-        void* key = (void*) GC_HIDE_POINTER(referent); // Hide the pointer from the GC so that it doesn't prevent the referent from being GCed.
-        ReferentEntry* referentEntry;
-        HASH_FIND_PTR(referents, &key, referentEntry);
-        if (!referentEntry) {
-            // referent is not in the hashtable. Add it.
-            referentEntry = rvmAllocateMemory(env, sizeof(ReferentEntry));
-            if (!referentEntry) goto done; // OOM thrown
-            referentEntry->key = key;
-            HASH_ADD_PTR(referents, key, referentEntry);
-        }
-
+        ReferentEntry* referentEntry = getReferentEntryForObject(env, referent);
+        if (!referentEntry) goto done;
         // Add the reference to the referent's list of references
         LL_PREPEND(referentEntry->references, l);
-
         // Register the referent for finalization
         GC_REGISTER_FINALIZER_NO_ORDER(referent, _finalizeObject, NULL, NULL, NULL);
 
@@ -463,8 +539,9 @@ void rvmUnregisterDisappearingLink(Env* env, void** address) {
 
 jboolean rvmInitMemory(Env* env) {
     vm = env->vm;
-    java_lang_ref_Reference = rvmFindClassUsingLoader(env, "java/lang/ref/Reference", NULL);
-    if (!java_lang_ref_Reference) return FALSE;
+
+    gcAddRoot(&referents);
+
     java_lang_ref_Reference_referent = rvmGetInstanceField(env, java_lang_ref_Reference, "referent", "Ljava/lang/Object;");
     if (!java_lang_ref_Reference_referent) return FALSE;
     java_lang_ref_Reference_pendingNext = rvmGetInstanceField(env, java_lang_ref_Reference, "pendingNext", "Ljava/lang/ref/Reference;");
@@ -514,13 +591,10 @@ jboolean rvmInitMemory(Env* env) {
     java_nio_MemoryBlock_address = rvmGetInstanceField(env, java_nio_MemoryBlock, "address", "I");
     if (!java_nio_MemoryBlock_address) return FALSE;
 
-    criticalOutOfMemoryError = rvmAllocateObject(env, java_lang_OutOfMemoryError);
+    criticalOutOfMemoryError = rvmAllocateMemoryForObject(env, java_lang_OutOfMemoryError);
     if (!criticalOutOfMemoryError) return FALSE;
-
-    // Make sure that java.lang.ReferenceQueue is initialized now to prevent deadlocks during finalization
-    // when both holding the referentsLock and the classLock.
-    rvmInitialize(env, java_lang_ref_ReferenceQueue);
-    if (rvmExceptionOccurred(env)) return FALSE;
+    criticalOutOfMemoryError->clazz = java_lang_OutOfMemoryError;
+    if (!rvmAddObjectGCRoot(env, criticalOutOfMemoryError)) return FALSE;
 
     return TRUE;
 }
@@ -535,7 +609,27 @@ Class* rvmAllocateMemoryForClass(Env* env, jint classDataSize) {
 }
 
 Object* rvmAllocateMemoryForObject(Env* env, Class* clazz) {
-    Object* m = (Object*) gcAllocateKind(clazz->instanceDataSize, object_gc_kind);
+    Object* m = NULL;
+    if (CLASS_IS_FINALIZABLE(clazz) || CLASS_IS_REFERENCE(clazz) 
+        || (clazz->superclass && clazz->superclass == org_robovm_rt_bro_Struct)
+        || (clazz->superclass && clazz->superclass == java_nio_MemoryBlock)
+        || (clazz == java_nio_MemoryBlock)) {
+
+        // These types of objects must be marked specially. We could probably
+        // do this using GC bitmap descriptors instead. Also instances of
+        // java.lang.Throwable must be marked specially but it has at least 1
+        // reference field and will thus not be allocated atomically.
+
+        m = (Object*) gcAllocateKind(clazz->instanceDataSize, object_gc_kind);
+    } else if (CLASS_IS_REF_FREE(clazz)) {
+        // Objects with 0 instance reference fields contain no pointers except for the Class
+        // pointer and possibly a fat monitor. Those are allocated uncollectably
+        // and will be reachable even if we alocate this atomically.
+        m = (Object*) gcAllocateAtomic(clazz->instanceDataSize);
+    } else {
+        // TODO: Use GC bitmap descriptors for small Objects.
+        m = (Object*) gcAllocateKind(clazz->instanceDataSize, object_gc_kind);
+    }
     if (!m) {
         if (clazz == java_lang_OutOfMemoryError) {
             // We can't even allocate an OutOfMemoryError object. Prevent
@@ -561,10 +655,28 @@ Array* rvmAllocateMemoryForArray(Env* env, Class* arrayClass, jint length) {
     }
     Array* m = NULL;
     if (CLASS_IS_PRIMITIVE(arrayClass->componentType)) {
+        // Primitive array objects contain no pointers except for the Class
+        // pointer and possibly a fat monitor. Those are allocated uncollectably
+        // and will be reachable even if we alocate this atomically.
+        m = (Array*) gcAllocateAtomic((size_t) size);
+    } else if (length < 30) {
+        // TODO: Use GC bitmap descriptor for small Object arrays.
         m = (Array*) gcAllocateKind((size_t) size, object_gc_kind);
     } else {
+        // Large Object array. Conservatively scanned. Only the lock (if thin) 
+        // and the length fields could become a problem if they look like 
+        // pointers into the heap.
         m = (Array*) gcAllocate((size_t) size);
     }
+    if (!m) {
+        rvmThrowOutOfMemoryError(env);
+        return NULL;
+    }
+    return m;
+}
+
+void* allocateMemoryOfKind(Env* env, size_t size, uint32_t kind) {
+    void* m = gcAllocateKind(size, kind);
     if (!m) {
         rvmThrowOutOfMemoryError(env);
         return NULL;
@@ -597,6 +709,47 @@ void* rvmAllocateMemoryAtomic(Env* env, size_t size) {
         return NULL;
     }
     return m;
+}
+
+void* rvmAllocateMemoryAtomicUncollectable(Env* env, size_t size) {
+    void* m = gcAllocateAtomicUncollectable(size);
+    if (!m) {
+        rvmThrowOutOfMemoryError(env);
+        return NULL;
+    }
+    return m;
+}
+
+static jboolean addObjectGCRoot(Env* env, void* ptr, void*** roots, jint* count, jint* size, 
+        jint initialSize) {
+
+    jint index = *count + 1;
+    if (index >= *size) {
+        jint newSize = *size > 0 ? (*size << 1) : initialSize;
+        void** tmp = rvmAllocateMemoryUncollectable(env, newSize * sizeof(void*));
+        if (!tmp) {
+            return FALSE;
+        }
+        TRACEF("Object GC roots grown from %d to %d total entries", *size, newSize);
+        if (*roots) {
+            memcpy(tmp, *roots, *size * sizeof(void*));
+            rvmFreeMemoryUncollectable(env, *roots);
+        }
+        *roots = tmp;
+        *size = newSize;
+    }
+    (*roots)[index] = ptr;
+    *count = index;
+
+    return TRUE;
+}
+
+jboolean rvmAddObjectGCRoot(Env* env, Object* object) {
+    rvmLockMutex(&gcRootsLock);
+    jboolean r = addObjectGCRoot(env, object, (void***) &objectGCRoots, &objectGCRootsCount, 
+                    &objectGCRootsSize, OBJECTS_GC_ROOTS_INITIAL_SIZE);
+    rvmUnlockMutex(&gcRootsLock);
+    return r;
 }
 
 jboolean rvmIsCriticalOutOfMemoryError(Env* env, Object* throwable) {

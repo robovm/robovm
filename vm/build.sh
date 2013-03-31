@@ -79,7 +79,9 @@ done
 mkdir -p "$BASE/target/build"
 if [ "$CLEAN" = '1' ]; then
   for T in $TARGETS; do
-    rm -rf "$BASE/target/build/$T"
+    for B in $BUILDS; do
+      rm -rf "$BASE/target/build/$T-$B"
+    done
   done
 fi
 

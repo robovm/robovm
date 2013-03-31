@@ -228,10 +228,23 @@ if (CMAKE_BUILD_TYPE STREQUAL "debug")
   set(EXTGC_C_FLAGS "${EXTGC_C_FLAGS} -g")
   set(EXTGC_PARAMS "${EXTGC_PARAMS} --enable-gc-debug=yes")
 endif()
+ExternalProject_Add(libatomic_ops 
+  GIT_REPOSITORY git://github.com/ivmai/libatomic_ops.git
+  GIT_TAG f5f47f7b9c70df2e0d371dd2f303a0dec1a37223
+  UPDATE_COMMAND ""
+  CONFIGURE_COMMAND ""
+  BUILD_COMMAND ""
+  INSTALL_COMMAND ""
+  BUILD_IN_SOURCE 1
+)
 ExternalProject_Add(extgc 
-  URL ${CMAKE_SOURCE_DIR}/dependencies/bdwgc-20120327.tar.gz
-  PATCH_COMMAND patch -d ../extgc -p1 < ${CMAKE_SOURCE_DIR}/dependencies/bdwgc.patch
-  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTGC_C_FLAGS}' LDFLAGS='${EXTGC_LD_FLAGS}' ../extgc/configure ${EXT_HOST} ${EXTGC_PARAMS} --prefix=${CMAKE_BINARY_DIR}/gc"
+  DEPENDS libatomic_ops
+  GIT_REPOSITORY git://github.com/robovm/bdwgc.git
+  GIT_TAG 47b2b304d2679fbe4eff835e3f417d9dec6175bf
+  UPDATE_COMMAND ""
+  PATCH_COMMAND bash -c "rm -f libatomic_ops && ln -s ../../../libatomic_ops-prefix/src/libatomic_ops libatomic_ops"
+  CONFIGURE_COMMAND bash -c "./autogen.sh && CC=${CMAKE_C_COMPILER} CFLAGS='${EXTGC_C_FLAGS}' LDFLAGS='${EXTGC_LD_FLAGS}' ./configure ${EXT_HOST} ${EXTGC_PARAMS} --prefix=${CMAKE_BINARY_DIR}/gc"
+  BUILD_IN_SOURCE 1
 )
 install(FILES ${CMAKE_BINARY_DIR}/gc/lib/libgc.a DESTINATION ${INSTALL_DIR} RENAME libgc${LIB_SUFFIX})
 

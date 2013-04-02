@@ -31,6 +31,11 @@ static Class* java_lang_StackTraceElement = NULL;
 static Method* java_lang_StackTraceElement_constructor = NULL;
 static ObjectArray* empty_java_lang_StackTraceElement_array = NULL;
 
+
+// A shared CallStack struct used by rvmCaptureCallStackForThread() that can store at most MAX_CALL_STACK_LENGTH 
+// frames. dumpThreadStackTrace() assumes MAX_CALL_STACK_LENGTH.
+static CallStack* shared_callStack = NULL;
+
 static inline void obtainNativeLibsLock() {
     rvmLockMutex(&nativeLibsLock);
 }
@@ -255,32 +260,28 @@ CallStack* rvmCaptureCallStackForThread(Env* env, Thread* thread) {
     // dumpThreadStackTrace() must not be called concurrently
     obtainThreadStackTraceLock();
     
-    // Use a shared CallStack struct that can store at most 
-    // MAX_CALL_STACK_LENGTH frames. dumpThreadStackTrace() assumes 
-    // MAX_CALL_STACK_LENGTH.
-    static CallStack* callStack = NULL;
-    if (!callStack) {
-        callStack = allocateCallStackFrames(env, MAX_CALL_STACK_LENGTH);
-        if (!callStack) {
+    if (!shared_callStack) {
+        shared_callStack = rvmAllocateMemoryAtomicUncollectable(env, sizeof(CallStack) + sizeof(CallStackFrame) * MAX_CALL_STACK_LENGTH);
+        if (!shared_callStack) {
             releaseThreadStackTraceLock();
             return NULL;
         }
     }
 
-    memset(callStack, 0, sizeof(CallStack) + sizeof(CallStackFrame) * MAX_CALL_STACK_LENGTH);
-    dumpThreadStackTrace(env, thread, callStack);
+    memset(shared_callStack, 0, sizeof(CallStack) + sizeof(CallStackFrame) * MAX_CALL_STACK_LENGTH);
+    dumpThreadStackTrace(env, thread, shared_callStack);
     if (rvmExceptionOccurred(env)) {
         releaseThreadStackTraceLock();
         return NULL;
     }
 
     // Make a copy of the CallStack that is just big enough
-    CallStack* copy = allocateCallStackFrames(env, callStack->length);
+    CallStack* copy = allocateCallStackFrames(env, shared_callStack->length);
     if (!copy) {
         releaseThreadStackTraceLock();
         return NULL;
     }
-    memcpy(copy, callStack, sizeof(CallStack) + sizeof(CallStackFrame) * callStack->length);
+    memcpy(copy, shared_callStack, sizeof(CallStack) + sizeof(CallStackFrame) * shared_callStack->length);
 
     releaseThreadStackTraceLock();
 

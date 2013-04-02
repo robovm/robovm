@@ -41,3 +41,6 @@ adaptation of the MIT X11 License. http://www.bouncycastle.org
 The RoboVM Runtime Library includes the SQLite JDBC driver which is copyright
 Christian Werner <chw@ch-werner.de> and others and released under a BSD like
 license.
+
+The RoboVM Runtime Library includes the Apache Xalan and Apache Xerces projects.
+For copyright and license information see the file external/apache-xml/NOTICE.

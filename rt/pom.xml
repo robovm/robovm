@@ -19,10 +19,17 @@
       <resource><directory>libcore/json/src/main/resources</directory></resource>
       <resource><directory>libcore/luni/src/main/resources</directory></resource>
       <resource><directory>libcore/xml/src/main/resources</directory></resource>
+      <resource><directory>external/apache-xml/src/main/resources</directory></resource>
       <resource><directory>external/bouncycastle/src/main/resources</directory></resource>
       <resource><directory>external/javasqlite/src/main/resources</directory></resource>
       <resource>
         <directory>libcore/luni/src/main/java</directory>
+        <includes>
+          <include>**/*.properties</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>external/apache-xml/src/main/java</directory>
         <includes>
           <include>**/*.properties</include>
         </includes>
@@ -64,6 +71,7 @@
                 <source>libcore/json/src/main/java</source>
                 <source>libcore/luni/src/main/java</source>
                 <source>libcore/xml/src/main/java</source>
+                <source>external/apache-xml/src/main/java</source>
                 <source>external/bouncycastle/src/main/java</source>
                 <source>external/javasqlite/src/main/java</source>
               </sources>

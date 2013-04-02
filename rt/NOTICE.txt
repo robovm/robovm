@@ -42,5 +42,14 @@ The RoboVM Runtime Library includes the SQLite JDBC driver which is copyright
 Christian Werner <chw@ch-werner.de> and others and released under a BSD like
 license.
 
-The RoboVM Runtime Library includes the Apache Xalan and Apache Xerces projects.
-For copyright and license information see the file external/apache-xml/NOTICE.
+The RoboVM Runtime Library includes the Apache Xalan project which is copyright
+1999-2006 The Apache Software Foundation and released under the Apache License
+2.0. http://xalan.apache.org/xalan-j/
+
+The RoboVM Runtime Library includes the Apache Xerces project which is copyright
+1999-2006 The Apache Software Foundation and released under the Apache License
+2.0. http://xerces.apache.org/xerces2-j/
+
+The RoboVM Runtime Library includes the Apache XML Commons project which is
+copyright 2001-2003,2006 The Apache Software Foundation and released under the
+Apache License 2.0. http://xerces.apache.org/xml-commons/

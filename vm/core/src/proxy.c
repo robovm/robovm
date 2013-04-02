@@ -108,7 +108,7 @@ static jboolean tryAddProxyMethod(Env* env, Class* proxyClass, Method* method, j
         if (!exceptionTypes) return FALSE;
         jint i;
         for (i = exceptionTypes->length - 1; i >= 0; i--) {
-            ProxyMethodException* pme = rvmAllocateMemory(env, sizeof(ProxyMethodException));
+            ProxyMethodException* pme = rvmAllocateMemoryAtomicUncollectable(env, sizeof(ProxyMethodException));
             if (!pme) {
                 return FALSE;
             }
@@ -150,6 +150,7 @@ static jboolean tryAddProxyMethod(Env* env, Class* proxyClass, Method* method, j
                 pme->clazz = matchExClazz;
             } else {
                 LL_DELETE(proxyMethod->allowedExceptions, pme);
+                rvmFreeMemoryUncollectable(env, pme);
             }
         }
     }

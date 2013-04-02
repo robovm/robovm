@@ -43,7 +43,7 @@ static Class* findType(Env* env, const char* classDesc, ClassLoader* loader) {
     if (!c) {
         if (rvmExceptionOccurred(env)->clazz == java_lang_ClassNotFoundException) {
             rvmExceptionClear(env);
-            char* className = rvmCopyMemoryZ(env, classDesc);
+            char* className = rvmCopyMemoryAtomicZ(env, classDesc);
             className[strlen(className)] = 0;
             rvmThrowNew(env, java_lang_TypeNotPresentException, rvmFromBinaryClassName(env, &className[1]));
         }

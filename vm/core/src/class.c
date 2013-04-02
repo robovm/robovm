@@ -333,7 +333,7 @@ Class* rvmFindClassByDescriptor(Env* env, const char* desc, ClassLoader* classLo
 }
 
 char* rvmToBinaryClassName(Env* env, const char* className) {
-    char* binName = rvmCopyMemoryZ(env, className);
+    char* binName = rvmCopyMemoryAtomicZ(env, className);
     if (!binName) return NULL;
     jint i = 0;
     for (i = 0; binName[i] != '\0'; i++) {
@@ -343,7 +343,7 @@ char* rvmToBinaryClassName(Env* env, const char* className) {
 }
 
 char* rvmFromBinaryClassName(Env* env, const char* binaryClassName) {
-    char* className = rvmCopyMemoryZ(env, binaryClassName);
+    char* className = rvmCopyMemoryAtomicZ(env, binaryClassName);
     if (!className) return NULL;
     jint i = 0;
     for (i = 0; className[i] != '\0'; i++) {
@@ -826,7 +826,7 @@ jboolean rvmAddInterface(Env* env, Class* clazz, Class* interf) {
         rvmThrowIncompatibleClassChangeError(env, "");
         return FALSE;
     }
-    Interface* interface = rvmAllocateMemory(env, sizeof(Interface));
+    Interface* interface = rvmAllocateMemoryAtomicUncollectable(env, sizeof(Interface));
     if (!interface) return FALSE;
     interface->interface = interf;
     if (clazz->_interfaces == &INTERFACES_NOT_LOADED) {
@@ -837,7 +837,7 @@ jboolean rvmAddInterface(Env* env, Class* clazz, Class* interf) {
 }
 
 Method* rvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, void* synchronizedImpl, void* attributes) {
-    Method* method = rvmAllocateMemory(env, IS_NATIVE(access) ? sizeof(NativeMethod) : sizeof(Method));
+    Method* method = rvmAllocateMemoryAtomicUncollectable(env, IS_NATIVE(access) ? sizeof(NativeMethod) : sizeof(Method));
     if (!method) return NULL;
     method->clazz = clazz;
     method->name = name;
@@ -859,7 +859,7 @@ Method* rvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc,
 }
 
 ProxyMethod* addProxyMethod(Env* env, Class* clazz, Method* proxiedMethod, jint access, void* impl) {
-    ProxyMethod* method = rvmAllocateMemory(env, sizeof(ProxyMethod));
+    ProxyMethod* method = rvmAllocateMemoryAtomicUncollectable(env, sizeof(ProxyMethod));
     if (!method) return NULL;
     method->method.clazz = clazz;
     method->method.name = proxiedMethod->name;
@@ -882,7 +882,7 @@ ProxyMethod* addProxyMethod(Env* env, Class* clazz, Method* proxiedMethod, jint 
 BridgeMethod* rvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, 
         void* synchronizedImpl, void** targetFnPtr, void* attributes) {
     
-    BridgeMethod* method = rvmAllocateMemory(env, sizeof(BridgeMethod));
+    BridgeMethod* method = rvmAllocateMemoryAtomicUncollectable(env, sizeof(BridgeMethod));
     if (!method) return NULL;
     method->method.clazz = clazz;
     method->method.name = name;
@@ -907,7 +907,7 @@ BridgeMethod* rvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const
 CallbackMethod* rvmAddCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, 
         void* synchronizedImpl, void* callbackImpl, void* attributes) {
     
-    CallbackMethod* method = rvmAllocateMemory(env, sizeof(CallbackMethod));
+    CallbackMethod* method = rvmAllocateMemoryAtomicUncollectable(env, sizeof(CallbackMethod));
     if (!method) return NULL;
     method->method.clazz = clazz;
     method->method.name = name;
@@ -930,7 +930,7 @@ CallbackMethod* rvmAddCallbackMethod(Env* env, Class* clazz, const char* name, c
 }
 
 Field* rvmAddField(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint offset, void* attributes) {
-    Field* field = rvmAllocateMemory(env, IS_STATIC(access) ? sizeof(ClassField) : sizeof(InstanceField));
+    Field* field = rvmAllocateMemoryAtomicUncollectable(env, IS_STATIC(access) ? sizeof(ClassField) : sizeof(InstanceField));
     if (!field) return NULL;
     field->clazz = clazz;
     field->name = name;

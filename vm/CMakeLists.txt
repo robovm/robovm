@@ -240,7 +240,7 @@ ExternalProject_Add(libatomic_ops
 ExternalProject_Add(extgc 
   DEPENDS libatomic_ops
   GIT_REPOSITORY git://github.com/robovm/bdwgc.git
-  GIT_TAG 47b2b304d2679fbe4eff835e3f417d9dec6175bf
+  GIT_TAG 35d810d59a9950a9685eea6c50639ec1fef26a9b
   UPDATE_COMMAND ""
   PATCH_COMMAND bash -c "rm -f libatomic_ops && ln -s ../../../libatomic_ops-prefix/src/libatomic_ops libatomic_ops"
   CONFIGURE_COMMAND bash -c "./autogen.sh && CC=${CMAKE_C_COMPILER} CFLAGS='${EXTGC_C_FLAGS}' LDFLAGS='${EXTGC_LD_FLAGS}' ./configure ${EXT_HOST} ${EXTGC_PARAMS} --prefix=${CMAKE_BINARY_DIR}/gc"

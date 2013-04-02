@@ -34,6 +34,7 @@ set_target_properties(robovm-core PROPERTIES SUFFIX "${LIB_SUFFIX}")
 install(TARGETS robovm-core DESTINATION ${INSTALL_DIR})
 
 add_executable(test_call0 test/test_call0.c test/CuTest.c call0-${OS_FAMILY}-${ARCH}.s unwind.c)
+set_property(SOURCE test/test_call0.c PROPERTY COMPILE_FLAGS "-O0") # Disable optimizations
 add_test(testCall0ReturnByte test_call0 "testCall0ReturnByte")
 add_test(testCall0ReturnInt test_call0 "testCall0ReturnInt")
 add_test(testCall0ReturnPtr test_call0 "testCall0ReturnPtr")
@@ -58,6 +59,7 @@ add_test(testProxy0Unwind test_proxy0 "testProxy0Unwind")
 add_test(testProxy0ReturnAddress test_proxy0 "testProxy0ReturnAddress")
 
 add_executable(test_trycatch test/test_trycatch.c test/CuTest.c trycatch-${OS_FAMILY}-${ARCH}.s)
+set_property(SOURCE test/test_trycatch.c PROPERTY COMPILE_FLAGS "-O0") # Disable optimizations
 add_test(testTrycatchEnterLeaveOnce test_trycatch "testTrycatchEnterLeaveOnce")
 add_test(testTrycatchEnterLeaveMultiple test_trycatch "testTrycatchEnterLeaveMultiple")
 add_test(testTrycatchJumpOnce test_trycatch "testTrycatchJumpOnce")

@@ -41,9 +41,17 @@ The code in rt/android/external/icu4c is licensed under a BSD like license.
 Please see the NOTICE file in this directory for copyright and license
 information. http://site.icu-project.org
 
+The code in rt/android/external/javasqlite is licensed under a BSD like license.
+Please see the NOTICE file in this directory for copyright and license
+information. http://www.ch-werner.de/javasqlite/
+
 The code in rt/android/external/openssl is licensed under a BSD like license.
 Please see the NOTICE file in this directory for copyright and license
 information. http://www.openssl.org
+
+The code in rt/android/external/sqlite has been placed in the public domain.
+Please see the NOTICE file in the dist/ sub-directory for further information.
+http://www.sqlite.org/
 
 The code in rt/android/external/zlib is licensed under a BSD like license.
 Please see the NOTICE file in this directory for copyright and license

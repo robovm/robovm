@@ -1,0 +1,134 @@
+diff -r -u -d orig/shell.c ./shell.c
+--- orig/shell.c	2012-04-19 19:18:38.000000000 -0700
++++ ./shell.c	2012-04-19 19:26:02.000000000 -0700
+@@ -35,6 +35,11 @@
+ #include "sqlite3.h"
+ #include <ctype.h>
+ #include <stdarg.h>
++// Begin Android Add
++#ifndef NO_ANDROID_FUNCS
++#include <sqlite3_android.h>
++#endif
++// End Android Add
+ 
+ #if !defined(_WIN32) && !defined(WIN32) && !defined(__OS2__)
+ # include <signal.h>
+@@ -1463,6 +1468,20 @@
+ #ifndef SQLITE_OMIT_LOAD_EXTENSION
+     sqlite3_enable_load_extension(p->db, 1);
+ #endif
++    // Begin Android Add
++    #ifndef NO_ANDROID_FUNCS
++        int err = register_localized_collators(db, "en_US", 0);
++        if (err != SQLITE_OK) {
++          fprintf(stderr, "register_localized_collators() failed\n");
++          exit(1);
++        }
++        err = register_android_functions(db, 0);
++        if (err != SQLITE_OK) {
++          fprintf(stderr, "register_android_functions() failed\n");
++          exit(1);
++        }
++    #endif
++    // End Android Add
+   }
+ }
+ 
+diff -r -u -d orig/sqlite3.c ./sqlite3.c
+--- orig/sqlite3.c	2012-04-19 19:18:38.000000000 -0700
++++ ./sqlite3.c	2012-04-19 19:26:02.000000000 -0700
+@@ -25387,7 +25387,12 @@
+ #else
+   { "pread64",      (sqlite3_syscall_ptr)0,          0  },
+ #endif
++#ifdef ANDROID
++// Bionic defines pread64 using off64_t rather than off_t.
++#define osPread64   ((ssize_t(*)(int,void*,size_t,off64_t))aSyscall[10].pCurrent)
++#else
+ #define osPread64   ((ssize_t(*)(int,void*,size_t,off_t))aSyscall[10].pCurrent)
++#endif
+ 
+   { "write",        (sqlite3_syscall_ptr)write,      0  },
+ #define osWrite     ((ssize_t(*)(int,const void*,size_t))aSyscall[11].pCurrent)
+@@ -25405,8 +25410,14 @@
+ #else
+   { "pwrite64",     (sqlite3_syscall_ptr)0,          0  },
+ #endif
++#ifdef ANDROID
++// Bionic defines pwrite64 using off64_t rather than off_t.
++#define osPwrite64  ((ssize_t(*)(int,const void*,size_t,off64_t))\
++                    aSyscall[13].pCurrent)
++#else
+ #define osPwrite64  ((ssize_t(*)(int,const void*,size_t,off_t))\
+                     aSyscall[13].pCurrent)
++#endif
+ 
+ #if SQLITE_ENABLE_LOCKING_STYLE
+   { "fchmod",       (sqlite3_syscall_ptr)fchmod,     0  },
+@@ -93937,7 +93948,7 @@
+   }
+   if( pDb->pSchema->file_format>SQLITE_MAX_FILE_FORMAT ){
+     sqlite3SetString(pzErrMsg, db, "unsupported file format");
+-    rc = SQLITE_ERROR;
++    rc = SQLITE_CORRUPT_BKPT; // Android Change from "rc = SQLITE_ERROR;"
+     goto initone_error_out;
+   }
+ 
+@@ -112387,7 +112398,7 @@
+ extern "C" {
+ #endif  /* __cplusplus */
+ 
+-SQLITE_PRIVATE int sqlite3Fts3Init(sqlite3 *db);
++SQLITE_PRIVATE int sqlite3Fts3Init(sqlite3 *db, const char* registerAs); // Android Change
+ 
+ #if 0
+ }  /* extern "C" */
+@@ -114717,9 +114728,24 @@
+ #endif
+ 
+ #ifdef SQLITE_ENABLE_FTS3
+-  if( !db->mallocFailed && rc==SQLITE_OK ){
+-    rc = sqlite3Fts3Init(db);
+-  }
++  // Begin Android change
++  #ifdef SQLITE_ENABLE_FTS3_BACKWARDS
++    /* Also register as fts1 and fts2, for backwards compatability on
++    ** systems known to have never seen a pre-fts3 database.
++    */
++    if( !db->mallocFailed && rc==SQLITE_OK ){
++      rc = sqlite3Fts3Init(db, "fts1");
++    }
++
++    if( !db->mallocFailed && rc==SQLITE_OK ){
++      rc = sqlite3Fts3Init(db, "fts2");
++    }
++  #endif
++
++    if( !db->mallocFailed && rc==SQLITE_OK ){
++      rc = sqlite3Fts3Init(db, "fts3");
++    }
++  // End Android change
+ #endif
+ 
+ #ifdef SQLITE_ENABLE_ICU
+@@ -120143,7 +120169,7 @@
+ ** SQLite. If fts3 is built as a dynamically loadable extension, this
+ ** function is called by the sqlite3_extension_init() entry point.
+ */
+-SQLITE_PRIVATE int sqlite3Fts3Init(sqlite3 *db){
++SQLITE_PRIVATE int sqlite3Fts3Init(sqlite3 *db, const char* registerAs){ // Android Change
+   int rc = SQLITE_OK;
+   Fts3Hash *pHash = 0;
+   const sqlite3_tokenizer_module *pSimple = 0;
+@@ -120204,7 +120230,10 @@
+    && SQLITE_OK==(rc = sqlite3_overload_function(db, "optimize", 1))
+   ){
+     rc = sqlite3_create_module_v2(
+-        db, "fts3", &fts3Module, (void *)pHash, hashDestroy
++        // Begin Android change
++        // Also register as fts1 and fts2
++        db, registerAs, &fts3Module, (void *)pHash, hashDestroy
++        // End Android change
+     );
+     if( rc==SQLITE_OK ){
+       rc = sqlite3_create_module_v2(

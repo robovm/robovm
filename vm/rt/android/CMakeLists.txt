@@ -21,7 +21,9 @@ add_subdirectory(libnativehelper)
 add_subdirectory(external/expat)
 add_subdirectory(external/fdlibm)
 add_subdirectory(external/icu4c)
+add_subdirectory(external/javasqlite)
 add_subdirectory(external/openssl)
+add_subdirectory(external/sqlite)
 add_subdirectory(external/zlib)
 set(ANDROID_OBJECTS
   ${DALVIK_OBJECTS} 
@@ -30,7 +32,9 @@ set(ANDROID_OBJECTS
   ${EXTERNAL_EXPAT_OBJECTS} 
   ${EXTERNAL_FDLIBM_OBJECTS}
   ${EXTERNAL_ICU4C_OBJECTS}
+  ${EXTERNAL_JAVASQLITE_OBJECTS}
   ${EXTERNAL_OPENSSL_OBJECTS}
+  ${EXTERNAL_SQLITE_OBJECTS}
   ${EXTERNAL_ZLIB_OBJECTS}
   PARENT_SCOPE
 )

@@ -23,7 +23,10 @@ add_subdirectory(external/fdlibm)
 add_subdirectory(external/icu4c)
 add_subdirectory(external/javasqlite)
 add_subdirectory(external/openssl)
-add_subdirectory(external/sqlite)
+if(NOT DARWIN)
+  # Mac OS X and iOS ships with sqlite so we'll just use that
+  add_subdirectory(external/sqlite)
+endif()
 add_subdirectory(external/zlib)
 set(ANDROID_OBJECTS
   ${DALVIK_OBJECTS} 

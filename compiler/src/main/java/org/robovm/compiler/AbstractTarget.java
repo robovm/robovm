@@ -86,6 +86,7 @@ public abstract class AbstractTarget implements Target {
         }
         if (config.getOs().getFamily() == OS.Family.darwin) {
             libs.add("-liconv");
+            libs.add("-lsqlite3");
         }
         
         ccArgs.add("-L");

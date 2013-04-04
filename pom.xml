@@ -120,6 +120,7 @@
   <modules>
     <module>compiler</module>
     <module>rt</module>
+    <module>cacerts</module>
     <module>objc</module>
     <module>cocoatouch</module>
     <module>eclipse</module>

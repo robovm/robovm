@@ -39,6 +39,7 @@ import org.robovm.compiler.clazz.Path;
  * @version $Id$
  */
 public class AppCompiler {
+
     /**
      * {@link Pattern} used to convert an ANT-style pattern into a regular expression.
      */
@@ -90,6 +91,9 @@ public class AppCompiler {
         "libcore/util/MutableInt",
         "libcore/util/MutableLong"
     };
+
+    private static final String TRUSTED_CERTIFICATION_STORE_CLASS = 
+            "org/apache/harmony/xnet/provider/jsse/TrustedCertificateStore";
     
     private final Config config;
     private final ClassCompiler classCompiler;
@@ -222,6 +226,13 @@ public class AppCompiler {
             }
         }
         
+        if (linkClasses.contains(config.getClazzes().load(TRUSTED_CERTIFICATION_STORE_CLASS))) {
+            if (config.getCacerts() != null) {
+                config.addResourcesPath(config.getClazzes().createResourcesBootclasspathPath(
+                        config.getHome().getCacertsPath(config.getCacerts())));
+            }
+        }
+        
         linker.link(linkClasses);
     }
         
@@ -312,6 +323,17 @@ public class AppCompiler {
                     for (String p : args[++i].split(":")) {
                         builder.addResource(p);
                     }
+                } else if ("-cacerts".equals(args[i])) {
+                    String name = args[++i];
+                    Config.Cacerts cacerts = null;
+                    if (!"none".equals(name)) {
+                        try {
+                            cacerts = Config.Cacerts.valueOf(name);
+                        } catch (IllegalArgumentException e) {
+                            throw new IllegalArgumentException("Illegal -cacerts value: " + name);
+                        }
+                    }
+                    builder.cacerts(cacerts);
                 } else if (args[i].startsWith("-D")) {
                 } else if (args[i].startsWith("-X")) {
                 } else if (args[i].startsWith("-rvm:")) {
@@ -465,6 +487,9 @@ public class AppCompiler {
                          + "                        when linking the final executable.");
         System.err.println("  -resources <list>     : separated list of files and directories that should be\n"
                          + "                        copied to the install dir.");
+        System.err.println("  -cacerts              Use the specified cacerts file. Allowed value are 'none',\n" 
+                         + "                        'full'. Default is 'full' but no cacerts will be included\n" 
+                         + "                        unless the code actually needs them.");
         System.err.println("  -skiprt               Do not add default robovm-rt.jar to bootclasspath");
         System.err.println("  -verbose              Output messages about what the compiler is doing");
         System.err.println("  -version              Print the version of the compiler version and exit");

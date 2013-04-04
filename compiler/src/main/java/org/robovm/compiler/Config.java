@@ -34,6 +34,9 @@ import org.robovm.compiler.clazz.Path;
  *
  */
 public class Config {
+    
+    public enum Cacerts { full };
+    
     private File installDir = null;
     private String executable = null;
     private Home home = null;
@@ -58,6 +61,8 @@ public class Config {
     private List<String> libs = new ArrayList<String>();
     private List<String> frameworks = new ArrayList<String>();
     private List<String> resources = new ArrayList<String>();
+    private Cacerts cacerts = Cacerts.full;
+    private List<Path> resourcesPaths = new ArrayList<Path>();
     
     private File osArchDepLibDir;
     private List<File> bootclasspath = new ArrayList<File>();
@@ -139,6 +144,18 @@ public class Config {
         return mainClass;
     }
 
+    public Cacerts getCacerts() {
+        return cacerts;
+    }
+    
+    public List<Path> getResourcesPaths() {
+        return resourcesPaths;
+    }
+    
+    public void addResourcesPath(Path path) {
+        resourcesPaths.add(path);
+    }
+    
     public File getTmpDir() {
         if (tmpDir == null) {
             try {
@@ -349,19 +366,25 @@ public class Config {
         private File binDir = null;
         private File libVmDir = null;
         private File rtPath = null;
+        private Map<Cacerts, File> cacertsPath = null;
         private boolean dev = false;
 
         public Home(File homeDir) {
             validate(homeDir);
             binDir = new File(homeDir, "bin");
             libVmDir = new File(homeDir, "lib/vm");
-            rtPath = new File(homeDir, "lib/robovm-rt.jar");        
+            rtPath = new File(homeDir, "lib/robovm-rt.jar");
+            cacertsPath = new HashMap<Cacerts, File>();
+            cacertsPath.put(Cacerts.full, new File(homeDir, "lib/robovm-cacerts-full.jar"));
         }
         
-        private Home(File binDir, File libVmDir, File rtPath) {
+        private Home(File devDir, File binDir, File libVmDir, File rtPath) {
             this.binDir = binDir;
             this.libVmDir = libVmDir;
             this.rtPath = rtPath;
+            cacertsPath = new HashMap<Cacerts, File>();
+            cacertsPath.put(Cacerts.full, new File(devDir, 
+                    "cacerts/full/target/robovm-cacerts-full-" + Version.getVersion() + ".jar"));
             this.dev = true;
         }
 
@@ -379,6 +402,10 @@ public class Config {
         
         public File getRtPath() {
             return rtPath;
+        }
+        
+        public File getCacertsPath(Cacerts cacerts) {
+            return cacertsPath.get(cacerts);
         }
         
         public static Home find() {
@@ -489,7 +516,7 @@ public class Config {
                         + "rt/target/" + rtJarName + " missing or invalid");
             }
 
-            return new Home(binDir, vmBinariesDir, rtJar);
+            return new Home(dir, binDir, vmBinariesDir, rtJar);
         }
     }
     
@@ -631,6 +658,11 @@ public class Config {
         
         public Builder targetBuilder(Target.Builder targetBuilder) {
             config.targetBuilder = targetBuilder;
+            return this;
+        }
+        
+        public Builder cacerts(Cacerts cacerts) {
+            config.cacerts = cacerts;
             return this;
         }
         

@@ -55,8 +55,8 @@ public class Clazzes {
     public Clazzes(Config config, List<File> bootclasspath, List<File> classpath) throws IOException {
         this.config = config;
         Set<File> seen = new HashSet<File>();
-        addPaths(bootclasspath, bootclasspathPaths, seen);
-        addPaths(classpath, classpathPaths, seen);
+        addPaths(bootclasspath, bootclasspathPaths, seen, true);
+        addPaths(classpath, classpathPaths, seen, false);
         paths.addAll(bootclasspathPaths);
         paths.addAll(classpathPaths);
         populateCache();
@@ -66,16 +66,12 @@ public class Clazzes {
         return config;
     }
     
-    boolean isInBootClasspath(Path path) {
-        return bootclasspathPaths.contains(path);
-    }
-    
     private static boolean isArchive(File f) {
         String name = f.getName().toLowerCase();
         return name.endsWith(".zip") || name.endsWith(".jar");
     }
     
-    private void addPaths(List<File> files, List<Path> cp, Set<File> seen) throws IOException {
+    private void addPaths(List<File> files, List<Path> cp, Set<File> seen, boolean inBootclasspath) throws IOException {
         for (File file : files) {
             if (!file.exists()) {
                 config.getLogger().warn("Classpath entry %s does not exist", file);
@@ -88,12 +84,26 @@ public class Clazzes {
                 continue;
             }
             if (!seen.contains(file)) {
-                Path p = file.isDirectory() ? new DirectoryPath(file, this, cp.size()) : new ZipFilePath(file, this, cp.size());
+                Path p = createPath(file, cp, inBootclasspath);
                 cp.add(p);
                 seen.add(file);
             }
         }
 
+    }
+    
+    private Path createPath(File file, List<Path> cp, boolean inBootclasspath) throws IOException {
+        return file.isDirectory() 
+                ? new DirectoryPath(file, this, cp.size(), inBootclasspath) 
+                : new ZipFilePath(file, this, cp.size(), inBootclasspath);
+    }
+    
+    public Path createResourcesBootclasspathPath(File file) throws IOException {
+        return createPath(file, bootclasspathPaths, true);
+    }
+
+    public Path createResourcesClasspathPath(File file) throws IOException {
+        return createPath(file, classpathPaths, false);
     }
     
     private boolean isEmpty(File dir) {

@@ -225,7 +225,10 @@ public abstract class AbstractTarget implements Target {
     }
     
     protected void stripArchives(File installDir) throws IOException {
-        for (Path path : config.getClazzes().getPaths()) {
+        List<Path> allPaths = new ArrayList<Path>();
+        allPaths.addAll(config.getClazzes().getPaths());
+        allPaths.addAll(config.getResourcesPaths());
+        for (Path path : allPaths) {
             File destJar = new File(installDir, getInstallRelativeArchivePath(path));
             if (!destJar.getParentFile().exists()) {
                 destJar.getParentFile().mkdirs();

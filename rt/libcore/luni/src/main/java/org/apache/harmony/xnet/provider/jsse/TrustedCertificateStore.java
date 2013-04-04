@@ -13,6 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/*
+ * Copyright (C) 2013 Trillian AB
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package org.apache.harmony.xnet.provider.jsse;
 
@@ -23,18 +38,24 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.security.KeyStoreSpi;
-import java.security.PublicKey;
-import java.security.cert.CertSelector;
+import java.net.JarURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+
 import javax.security.auth.x500.X500Principal;
+
 import libcore.io.IoUtils;
 
 /**
@@ -82,6 +103,15 @@ import libcore.io.IoUtils;
  */
 public final class TrustedCertificateStore {
 
+    /*
+     * RoboVM note: This class has been changed to use URIs instead of Files for the certs dirs.
+     * If the ANDROID_ROOT and ANDROID_DATA environment variables have been set it will behave
+     * as the old version (reading system certs from $ANDROID_ROOT/etc/security/cacerts). If
+     * these have not been set system certs will be read from the /cacerts/ folder in the classpath.
+     * User certs will be read from ${user.home}/keychain/cacerts-added and removed certs will be
+     * stored in ${user.home}/keychain/cacerts-removed.
+     */
+    
     private static final String PREFIX_SYSTEM = "system:";
     private static final String PREFIX_USER = "user:";
 
@@ -92,16 +122,27 @@ public final class TrustedCertificateStore {
         return alias.startsWith(PREFIX_USER);
     }
 
-    private static final File CA_CERTS_DIR_SYSTEM;
-    private static final File CA_CERTS_DIR_ADDED;
-    private static final File CA_CERTS_DIR_DELETED;
+    private static final URI CA_CERTS_DIR_SYSTEM;
+    private static final URI CA_CERTS_DIR_ADDED;
+    private static final URI CA_CERTS_DIR_DELETED;
     private static final CertificateFactory CERT_FACTORY;
     static {
         String ANDROID_ROOT = System.getenv("ANDROID_ROOT");
         String ANDROID_DATA = System.getenv("ANDROID_DATA");
-        CA_CERTS_DIR_SYSTEM = new File(ANDROID_ROOT + "/etc/security/cacerts");
-        CA_CERTS_DIR_ADDED = new File(ANDROID_DATA + "/misc/keychain/cacerts-added");
-        CA_CERTS_DIR_DELETED = new File(ANDROID_DATA + "/misc/keychain/cacerts-removed");
+        if (ANDROID_ROOT != null && ANDROID_DATA != null) {
+            CA_CERTS_DIR_SYSTEM = new File(ANDROID_ROOT + "/etc/security/cacerts").toURI();
+            CA_CERTS_DIR_ADDED = new File(ANDROID_DATA + "/misc/keychain/cacerts-added").toURI();
+            CA_CERTS_DIR_DELETED = new File(ANDROID_DATA + "/misc/keychain/cacerts-removed").toURI();
+        } else {
+            try {
+                CA_CERTS_DIR_SYSTEM = TrustedCertificateStore.class.getResource("/cacerts/").toURI();
+            } catch (URISyntaxException e) {
+                throw new AssertionError(e);
+            }
+            String userHome = System.getProperty("user.home");
+            CA_CERTS_DIR_ADDED = new File(userHome + "/keychain/cacerts-added").toURI();
+            CA_CERTS_DIR_DELETED = new File(userHome + "/keychain/cacerts-removed").toURI();
+        }
 
         try {
             CERT_FACTORY = CertificateFactory.getInstance("X509");
@@ -110,15 +151,21 @@ public final class TrustedCertificateStore {
         }
     }
 
-    private final File systemDir;
-    private final File addedDir;
-    private final File deletedDir;
+    private final URI systemDir;
+    private final URI addedDir;
+    private final URI deletedDir;
 
     public TrustedCertificateStore() {
         this(CA_CERTS_DIR_SYSTEM, CA_CERTS_DIR_ADDED, CA_CERTS_DIR_DELETED);
     }
 
     public TrustedCertificateStore(File systemDir, File addedDir, File deletedDir) {
+        this.systemDir = systemDir.toURI();
+        this.addedDir = addedDir.toURI();
+        this.deletedDir = deletedDir.toURI();
+    }
+    
+    public TrustedCertificateStore(URI systemDir, URI addedDir, URI deletedDir) {
         this.systemDir = systemDir;
         this.addedDir = addedDir;
         this.deletedDir = deletedDir;
@@ -130,7 +177,7 @@ public final class TrustedCertificateStore {
 
     public Certificate getCertificate(String alias, boolean includeDeletedSystem) {
 
-        File file = fileForAlias(alias);
+        URI file = fileForAlias(alias);
         if (file == null || (isUser(alias) && isTombstone(file))) {
             return null;
         }
@@ -144,36 +191,135 @@ public final class TrustedCertificateStore {
         return cert;
     }
 
-    private File fileForAlias(String alias) {
+    private URI fileForAlias(String alias) {
         if (alias == null) {
             throw new NullPointerException("alias == null");
         }
-        File file;
+        URI file;
         if (isSystem(alias)) {
-            file = new File(systemDir, alias.substring(PREFIX_SYSTEM.length()));
+            file = makeURI(systemDir, alias.substring(PREFIX_SYSTEM.length()));
         } else if (isUser(alias)) {
-            file = new File(addedDir, alias.substring(PREFIX_USER.length()));
+            file = makeURI(addedDir, alias.substring(PREFIX_USER.length()));
         } else {
             return null;
         }
-        if (!file.exists() || isTombstone(file)) {
+        if (!exists(file) || isTombstone(file)) {
             // silently elide tombstones
             return null;
         }
         return file;
     }
 
-    private boolean isTombstone(File file) {
-        return file.length() == 0;
+    private boolean isTombstone(URI file) {
+        if ("file".equals(file.getScheme())) {
+            return new File(file).length() == 0;
+        }
+        InputStream in = null;
+        try {
+            in = file.toURL().openStream();
+            return in.read() == -1;
+        } catch (IOException e) {
+        } finally {
+            IoUtils.closeQuietly(in);
+        }
+        return false;
     }
 
-    private X509Certificate readCertificate(File file) {
-        if (!file.isFile()) {
+    private boolean isFile(URI file) {
+        if ("file".equals(file.getScheme())) {
+            return new File(file).isFile();
+        }
+        if ("jar".equals(file.getScheme())) {
+            try {
+                JarURLConnection conn = (JarURLConnection) file.toURL().openConnection();
+                return conn.getJarEntry() != null && !conn.getJarEntry().getName().endsWith("/");
+            } catch (IOException e) {}
+        }
+        return false;
+    }
+    
+    private boolean exists(URI file) {
+        if ("file".equals(file.getScheme())) {
+            return new File(file).exists();
+        }
+        if ("jar".equals(file.getScheme())) {
+            try {
+                JarURLConnection conn = (JarURLConnection) file.toURL().openConnection();
+                return conn.getJarEntry() != null;
+            } catch (IOException e) {}
+        }
+        return false;
+    }
+    
+    private String getName(URI file) {
+        if ("jar".equals(file.getScheme())) {
+            // For jar: URIs getPath() returns null
+            String uriStr = file.getSchemeSpecificPart();
+            return uriStr.substring(uriStr.lastIndexOf('/') + 1);
+        }
+        return file.getPath().substring(file.getPath().lastIndexOf('/') + 1);
+    }
+    
+    private String[] list(URI file) {
+        if ("file".equals(file.getScheme())) {
+            return new File(file).list();
+        }
+        if ("jar".equals(file.getScheme())) {
+            try {
+                JarURLConnection conn = (JarURLConnection) file.toURL().openConnection();
+                JarFile jarFile = conn.getJarFile();
+                String uriStr = file.toString();
+                if (!uriStr.endsWith("/")) {
+                    uriStr += "/";
+                }
+                String path = uriStr.substring(uriStr.lastIndexOf('!') + 1);
+                if (path.startsWith("/")) {
+                    path = path.substring(1);
+                }
+                Enumeration<JarEntry> en = jarFile.entries();
+                List<String> result = new ArrayList<String>();
+                while (en.hasMoreElements()) {
+                    JarEntry entry = en.nextElement();
+                    String name = entry.getName();
+                    if (name.startsWith(path) && !name.endsWith("/")) {
+                        int lastSlash = name.lastIndexOf('/');
+                        if (lastSlash == path.length() - 1) {
+                            result.add(name.substring(lastSlash + 1));
+                        }
+                    }
+                }
+                return result.toArray(new String[result.size()]);
+            } catch (IOException e) {
+            }
+        }
+        return null;
+    }
+    
+    private long lastModified(URI file) {
+        if ("file".equals(file.getScheme())) {
+            return new File(file).lastModified();
+        }
+        if ("jar".equals(file.getScheme())) {
+            try {
+                JarURLConnection conn = (JarURLConnection) file.toURL().openConnection();
+                return conn.getJarEntry().getTime();
+            } catch (IOException e) {
+            }
+        }
+        return 0L;
+    }
+    
+    private X509Certificate readCertificate(URI file) {
+        if (!isFile(file)) {
             return null;
         }
         InputStream is = null;
         try {
-            is = new BufferedInputStream(new FileInputStream(file));
+            if ("file".equals(file.getScheme())) {
+                is = new BufferedInputStream(new FileInputStream(new File(file)));
+            } else {
+                is = file.toURL().openStream();
+            }
             return (X509Certificate) CERT_FACTORY.generateCertificate(is);
         } catch (IOException e) {
             return null;
@@ -186,8 +332,9 @@ public final class TrustedCertificateStore {
         }
     }
 
-    private void writeCertificate(File file, X509Certificate cert)
+    private void writeCertificate(URI uri, X509Certificate cert)
             throws IOException, CertificateException {
+        File file = new File(uri);
         File dir = file.getParentFile();
         dir.mkdirs();
         dir.setReadable(true, false);
@@ -203,7 +350,7 @@ public final class TrustedCertificateStore {
     }
 
     private boolean isDeletedSystemCertificate(X509Certificate x) {
-        return getCertificateFile(deletedDir, x).exists();
+        return exists(getCertificateFile(deletedDir, x));
     }
 
     public Date getCreationDate(String alias) {
@@ -212,11 +359,11 @@ public final class TrustedCertificateStore {
         if (!containsAlias(alias)) {
             return null;
         }
-        File file = fileForAlias(alias);
+        URI file = fileForAlias(alias);
         if (file == null) {
             return null;
         }
-        long time = file.lastModified();
+        long time = lastModified(file);
         if (time == 0) {
             return null;
         }
@@ -236,8 +383,8 @@ public final class TrustedCertificateStore {
         return result;
     }
 
-    private void addAliases(Set<String> result, String prefix, File dir) {
-        String[] files = dir.list();
+    private void addAliases(Set<String> result, String prefix, URI dir) {
+        String[] files = list(dir);
         if (files == null) {
             return;
         }
@@ -251,7 +398,7 @@ public final class TrustedCertificateStore {
 
     public Set<String> allSystemAliases() {
         Set<String> result = new HashSet<String>();
-        String[] files = systemDir.list();
+        String[] files = list(systemDir);
         if (files == null) {
             return result;
         }
@@ -277,16 +424,16 @@ public final class TrustedCertificateStore {
             return null;
         }
         X509Certificate x = (X509Certificate) c;
-        File user = getCertificateFile(addedDir, x);
-        if (user.exists()) {
-            return PREFIX_USER + user.getName();
+        URI user = getCertificateFile(addedDir, x);
+        if (exists(user)) {
+            return PREFIX_USER + getName(user);
         }
         if (isDeletedSystemCertificate(x)) {
             return null;
         }
-        File system = getCertificateFile(systemDir, x);
-        if (system.exists()) {
-            return PREFIX_SYSTEM + system.getName();
+        URI system = getCertificateFile(systemDir, x);
+        if (exists(system)) {
+            return PREFIX_SYSTEM + getName(system);
         }
         return null;
     }
@@ -297,14 +444,14 @@ public final class TrustedCertificateStore {
      * caller can disambiguate these cases by calling {@code
      * File.exists()} on the result.
      */
-    private File getCertificateFile(File dir, final X509Certificate x) {
+    private URI getCertificateFile(URI dir, final X509Certificate x) {
         // compare X509Certificate.getEncoded values
         CertSelector selector = new CertSelector() {
             @Override public boolean match(X509Certificate cert) {
                 return cert.equals(x);
             }
         };
-        return findCert(dir, x.getSubjectX500Principal(), selector, File.class);
+        return findCert(dir, x.getSubjectX500Principal(), selector, URI.class);
     }
 
     /**
@@ -372,17 +519,17 @@ public final class TrustedCertificateStore {
     }
 
     private <T> T findCert(
-            File dir, X500Principal subject, CertSelector selector, Class<T> desiredReturnType) {
+            URI dir, X500Principal subject, CertSelector selector, Class<T> desiredReturnType) {
 
         String hash = hash(subject);
         for (int index = 0; true; index++) {
-            File file = file(dir, hash, index);
-            if (!file.isFile()) {
+            URI file = file(dir, hash, index);
+            if (!isFile(file)) {
                 // could not find a match, no file exists, bail
                 if (desiredReturnType == Boolean.class) {
                     return (T) Boolean.FALSE;
                 }
-                if (desiredReturnType == File.class) {
+                if (desiredReturnType == URI.class) {
                     // we return file so that caller that wants to
                     // write knows what the next available has
                     // location is
@@ -405,7 +552,7 @@ public final class TrustedCertificateStore {
                 if (desiredReturnType == Boolean.class) {
                     return (T) Boolean.TRUE;
                 }
-                if (desiredReturnType == File.class) {
+                if (desiredReturnType == URI.class) {
                     return (T) file;
                 }
                 throw new AssertionError();
@@ -418,8 +565,21 @@ public final class TrustedCertificateStore {
         return IntegralToString.intToHexString(hash, false, 8);
     }
 
-    private File file(File dir, String hash, int index) {
-        return new File(dir, hash + '.' + index);
+    private URI makeURI(URI base, String file) {
+        StringBuilder sb = new StringBuilder(base.toString());
+        if (sb.charAt(sb.length() - 1) != '/') {
+            sb.append('/');
+        }
+        sb.append(file);
+        try {
+            return new URI(sb.toString());
+        } catch (URISyntaxException e) {
+            throw new AssertionError(e);
+        }
+    }
+    
+    private URI file(URI dir, String hash, int index) {
+        return makeURI(dir, hash + "." + index);
     }
 
     /**
@@ -432,13 +592,13 @@ public final class TrustedCertificateStore {
         if (cert == null) {
             throw new NullPointerException("cert == null");
         }
-        File system = getCertificateFile(systemDir, cert);
-        if (system.exists()) {
-            File deleted = getCertificateFile(deletedDir, cert);
-            if (deleted.exists()) {
+        URI system = getCertificateFile(systemDir, cert);
+        if (exists(system)) {
+            URI deleted = getCertificateFile(deletedDir, cert);
+            if (exists(deleted)) {
                 // we have a system cert that was marked deleted.
                 // remove the deleted marker to expose the original
-                if (!deleted.delete()) {
+                if (!"file".equals(deleted.getScheme()) || !new File(deleted).delete()) {
                     throw new IOException("Could not remove " + deleted);
                 }
                 return;
@@ -447,8 +607,8 @@ public final class TrustedCertificateStore {
             // return taking no further action.
             return;
         }
-        File user = getCertificateFile(addedDir, cert);
-        if (user.exists()) {
+        URI user = getCertificateFile(addedDir, cert);
+        if (exists(user)) {
             // we have an already installed user cert, bail.
             return;
         }
@@ -467,7 +627,7 @@ public final class TrustedCertificateStore {
         if (alias == null) {
             return;
         }
-        File file = fileForAlias(alias);
+        URI file = fileForAlias(alias);
         if (file == null) {
             return;
         }
@@ -477,8 +637,8 @@ public final class TrustedCertificateStore {
                 // skip problem certificates
                 return;
             }
-            File deleted = getCertificateFile(deletedDir, cert);
-            if (deleted.exists()) {
+            URI deleted = getCertificateFile(deletedDir, cert);
+            if (exists(deleted)) {
                 // already deleted system certificate
                 return;
             }
@@ -489,7 +649,7 @@ public final class TrustedCertificateStore {
         if (isUser(alias)) {
             // truncate the file to make a tombstone by opening and closing.
             // we need ensure that we don't leave a gap before a valid cert.
-            new FileOutputStream(file).close();
+            new FileOutputStream(new File(file)).close();
             removeUnnecessaryTombstones(alias);
             return;
         }
@@ -508,15 +668,15 @@ public final class TrustedCertificateStore {
         String hash = alias.substring(PREFIX_USER.length(), dotIndex);
         int lastTombstoneIndex = Integer.parseInt(alias.substring(dotIndex + 1));
 
-        if (file(addedDir, hash, lastTombstoneIndex + 1).exists()) {
+        if (exists(file(addedDir, hash, lastTombstoneIndex + 1))) {
             return;
         }
         while (lastTombstoneIndex >= 0) {
-            File file = file(addedDir, hash, lastTombstoneIndex);
+            URI file = file(addedDir, hash, lastTombstoneIndex);
             if (!isTombstone(file)) {
                 break;
             }
-            if (!file.delete()) {
+            if (!"file".equals(file.getScheme()) || !new File(file).delete()) {
                 throw new IOException("Could not remove " + file);
             }
             lastTombstoneIndex--;

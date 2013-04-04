@@ -30,15 +30,17 @@ public abstract class AbstractPath implements Path {
     protected final int index;
     protected Set<Clazz> clazzSet = null;
     protected Set<Package> packageSet = null;
+    protected boolean inBootclasspath = false;
     
-    AbstractPath(File file, Clazzes clazzes, int index) {
+    AbstractPath(File file, Clazzes clazzes, int index, boolean inBootclasspath) {
         this.file = file.getAbsoluteFile();
         this.clazzes = clazzes;
         this.index = index;
+        this.inBootclasspath = inBootclasspath;
     }
 
     public boolean isInBootClasspath() {
-        return clazzes.isInBootClasspath(this);
+        return inBootclasspath;
     }
     
     public int getIndex() {

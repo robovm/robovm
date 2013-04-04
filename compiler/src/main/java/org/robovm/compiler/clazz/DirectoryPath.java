@@ -33,8 +33,8 @@ import org.apache.commons.io.FileUtils;
  */
 public class DirectoryPath extends AbstractPath {
     
-    DirectoryPath(File dir, Clazzes clazzes, int index) {
-        super(dir, clazzes, index);
+    DirectoryPath(File dir, Clazzes clazzes, int index, boolean inBootclasspath) {
+        super(dir, clazzes, index, inBootclasspath);
     }
 
     @Override

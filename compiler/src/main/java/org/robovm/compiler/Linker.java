@@ -74,7 +74,10 @@ public class Linker {
         
         ArrayConstantBuilder bootClasspathValues = new ArrayConstantBuilder(I8_PTR);
         ArrayConstantBuilder classpathValues = new ArrayConstantBuilder(I8_PTR);
-        for (Path path : config.getClazzes().getPaths()) {
+        List<Path> allPaths = new ArrayList<Path>();
+        allPaths.addAll(config.getClazzes().getPaths());
+        allPaths.addAll(config.getResourcesPaths());
+        for (Path path : allPaths) {
             String entryName = null;
             if (config.isSkipInstall() && config.getTarget().canLaunchInPlace()) {
                 entryName = path.getFile().getAbsolutePath();

@@ -34,8 +34,8 @@ import org.apache.commons.io.IOUtils;
 public class ZipFilePath extends AbstractPath {
     private final ZipFile zipFile;
     
-    ZipFilePath(File f, Clazzes clazzes, int index) throws IOException {
-        super(f, clazzes, index);
+    ZipFilePath(File f, Clazzes clazzes, int index, boolean inBootclasspath) throws IOException {
+        super(f, clazzes, index, inBootclasspath);
         this.zipFile = new ZipFile(f);
     }
     

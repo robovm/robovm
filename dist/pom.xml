@@ -51,6 +51,11 @@
       <version>${project.version}</version>
       <classifier>sources</classifier>
     </dependency>
+    <dependency>
+      <groupId>org.robovm</groupId>
+      <artifactId>robovm-cacerts-full</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
 
   <build>

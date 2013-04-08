@@ -224,16 +224,20 @@ public final class System {
         }
     }
     
-    private static void arraycopyFast(Object src, int srcPos, Object dst, int dstPos, int length, int elemSizeShift) {
+    private static void arraycopyFast(Object src, int srcPos, Object dst, int dstPos, int length, int logElemSize) {
         if (length > 0) {
-            long srcAddr = VM.getArrayValuesAddress(src) + (srcPos << elemSizeShift);
-            long dstAddr = VM.getArrayValuesAddress(dst) + (dstPos << elemSizeShift);
-            long byteCount = length << elemSizeShift;
-            // Overlapping copy needs to use memmove
-            if (src != dst || srcPos > dstPos || srcPos + length <= dstPos) {
-                VM.memcpy(dstAddr, srcAddr, byteCount);
+            long srcAddr = VM.getArrayValuesAddress(src) + (srcPos << logElemSize);
+            long dstAddr = VM.getArrayValuesAddress(dst) + (dstPos << logElemSize);
+            if (logElemSize == 0) {
+                VM.memmove8(dstAddr, srcAddr, length);
+            } else if (logElemSize == 1) {
+                VM.memmove16(dstAddr, srcAddr, length);
+            } else if (logElemSize == 2) {
+                VM.memmove32(dstAddr, srcAddr, length);
+            } else if (logElemSize == 3) {
+                VM.memmove64(dstAddr, srcAddr, length);
             } else {
-                VM.memmove(dstAddr, srcAddr, byteCount);
+                throw new AssertionError();
             }
         }
     }

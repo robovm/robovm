@@ -350,7 +350,7 @@ void rvmGetStringRegion(Env* env, Object* str, jint start, jint len, jchar* buf)
     CharArray* value = (CharArray*) rvmGetObjectInstanceFieldValue(env, str, stringValueField);
     jint offset = rvmGetIntInstanceFieldValue(env, str, stringOffsetField);
     //jint count = rvmGetIntInstanceFieldValue(env, str, stringCountField);
-    memcpy(buf, value->values + offset + start, len);
+    memcpy(buf, value->values + offset + start, sizeof(jchar) * len);
 }
 
 void rvmGetStringUTFRegion(Env *env, Object* str, jint start, jint len, char* buf) {

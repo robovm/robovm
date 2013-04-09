@@ -1,0 +1,7 @@
+- @TestTargetClass(CertPath.class) in CertPathCertPathRepTest should be
+  CertPath.CertPathRep.class, but this class is protected and thus not visible
+  
+- same for Certificate.CertificateRep
+
+
+- ? for SignatureSPI.engineGetParameters(): see source code comments

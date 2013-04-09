@@ -1,0 +1,920 @@
+/*
+ * This file contains expectations for tests that we'd like to eventually fix, but aren't urgent.
+ */
+[
+{
+  description: "libcore.java.io.OldFileTest#test_deleteOnExit fails on IRM05 mysid-user",
+  name: "libcore.java.io.OldFileTest#test_deleteOnExit",
+  bug: 5834665
+},
+{
+  description: "libcore.java.net.URLConnectionTest#testServerShutdownInput fails on ICL27 mysid-userdebug",
+  name: "libcore.java.net.URLConnectionTest#testServerShutdownInput",
+  bug: 5534202
+},
+{
+  description: "libcore.java.security.KeyPairGeneratorTest long test is too long",
+  name: "libcore.java.security.KeyPairGeneratorTest#test_getInstance",
+  bug: 5513723
+},
+{
+  description: "Support digest authentication in HttpURLConnection",
+  name: "libcore.net.http.ParsedHeadersTest#testParseChallengesWithManyParameters",
+  bug: 6156454
+},
+{
+  description: "Without no security manager, we don't care if checkPermission's argument is null",
+  name: "org.apache.harmony.security.tests.java.security.AccessController2Test#test_checkPermission_NullParameter",
+  result: EXEC_FAILED
+},
+{
+  description: "This test and testGetKeepAlive have been failing in our continuous build recently.",
+  names: [
+    "libcore.java.net.URLConnectionTest#testConnectTimeouts",
+    "libcore.java.net.URLConnectionTest#testGetKeepAlive"
+  ],
+  bug: 3441111
+},
+{
+  description: "on the RI, writing the two halves of the surrogate pair in separate writes
+          is an error because the CharsetEncoder doesn't remember it's half-way through a
+          surrogate pair across the two calls!",
+  result: EXEC_FAILED,
+  names: [
+    "libcore.java.nio.charset.CharsetEncoderTest#testCharsetEncoderSurrogatesBrokenByDesign_IGNORE_RI",
+    "libcore.java.nio.charset.CharsetEncoderTest#testCharsetEncoderSurrogatesBrokenByDesign_REPLACE_RI",
+    "libcore.java.nio.charset.CharsetEncoderTest#testCharsetEncoderSurrogatesBrokenByDesign_REPORT_RI"
+  ]
+},
+{
+  description: "We're retiring the security manager. Unfortunately, tests all over the place
+                need to check that they're secure, so they all fail when we refuse to install
+                a security manager. This suppresses all of these failures.",
+  result: EXEC_FAILED,
+  failure: "disable securityManager",
+  pattern: ".*java.lang.SecurityException\\s+at java.lang.System.setSecurityManager.*",
+  bug: 2585285
+},
+{
+  description: "ignore compilation errors due to different available APIs",
+  result: COMPILE_FAILED,
+  failure: "ignore compilation errors",
+  pattern: ".*\\.java:\\d+: cannot find symbol.*"
+},
+{
+  description: "These tests assert the exact bytes of the compressed form. Since we use a
+                different zlib configuration, we get a different (but valid) compressed form.",
+  result: EXEC_FAILED,
+  names: [
+    "org.apache.harmony.archive.tests.java.util.zip.DeflaterInputStreamTest#testAvailable",
+    "org.apache.harmony.archive.tests.java.util.zip.DeflaterInputStreamTest#testRead",
+    "org.apache.harmony.archive.tests.java.util.zip.DeflaterInputStreamTest#testReadByteArrayIntInt",
+    "org.apache.harmony.archive.tests.java.util.zip.DeflaterTest#test_deflate_beforeSetInput"
+  ]
+},
+{
+  description: "The RI avoids blocking calls when '\\r' is the last character. We don't
+                bother since that adds complexity to every other read call, and '\\r' as the
+                last character will be diminishingly rare anyway.",
+  result: EXEC_FAILED,
+  name: "java.io.BufferedReader.ReadLine",
+  substring: "java.lang.RuntimeException: Read past limit"
+},
+{
+  description: "The RI avoids blocking calls when '\\r' is the last character. We don't
+                bother since that adds complexity to every other read call, and '\\r' as the
+                last character will be diminishingly rare anyway.",
+  result: EXEC_FAILED,
+  name: "java.io.BufferedReader.Ready",
+  substring: "Hit infinite wait condition"
+},
+{
+  description: "The test is checking that the implementation doesn't read any characters
+                earlier than it absolutely needs to. This is a bogus requirement; streams
+                are allowed to buffer input as necessary.",
+  result: EXEC_FAILED,
+  name: "java.io.StreamTokenizer.Reset",
+  substring: "Test failed: should get token [, but get -1"
+},
+{
+  description: "These tests only pass if the root logger hasn't yet been initialized. They
+                incorrectly assume that resetting the LogManager will clear the root logger's
+                resource bundle; this isn't the case.",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.logging.tests.java.util.logging.OldLoggerTest#testGetLoggerWithRes_InvalidResourceBundle",
+  substring: "java.lang.IllegalArgumentException: Resource bundle name 'impossible_not_existing' is inconsistent"
+},
+{
+  description: "These tests only pass if the root logger hasn't yet been initialized. They
+                incorrectly assume that resetting the LogManager will clear the root logger's
+                resource bundle; this isn't the case.",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.logging.tests.java.util.logging.LoggerTest#testGetLogger_Empty",
+  substring: "junit.framework.AssertionFailedError"
+},
+{
+  description: "This tests implementation details",
+  result: UNSUPPORTED,
+  name: "java.util.EnumSet.OneUniverse"
+},
+{
+  description: "Dalvik doesn't include the SunJCE crypto provider",
+  result: EXEC_FAILED,
+  names: [
+    "com.sun.crypto.provider.Cipher.AES.Test4513830",
+    "com.sun.crypto.provider.Cipher.AES.Test4512704",
+    "com.sun.crypto.provider.Cipher.AES.Test4512524",
+    "com.sun.crypto.provider.Cipher.AES.Test4511676",
+    "com.sun.crypto.provider.Cipher.AES.Test4517355"
+  ],
+  substring: "NoClassDefFoundError: com.sun.crypto.provider.SunJCE"
+},
+{
+  description: "Dalvik doesn't include the SunJCE crypto provider",
+  result: EXEC_FAILED,
+  name: "com.sun.crypto.provider.Cipher.AES.TestISO10126Padding",
+  substring: " java.security.NoSuchProviderException: SunJCE"
+},
+{
+  description: "Dalvik doesn't include the SunJCE crypto provider",
+  result: EXEC_FAILED,
+  name: "com.sun.crypto.provider.Cipher.AES.Test4626070",
+  substring: "NoClassDefFoundError: com.sun.crypto.provider.SunJCE"
+},
+{
+  description: "Dalvik doesn't include the SunJCE crypto provider",
+  result: EXEC_FAILED,
+  names: [
+    "com.sun.crypto.provider.Cipher.AES.TestShortBuffer",
+    "com.sun.crypto.provider.Cipher.CTS.CTSMode"
+  ],
+  substring: "Provider SunJCE is not available"
+},
+{
+  description: "Dalvik doesn't include the SunJCE crypto provider",
+  result: EXEC_FAILED,
+  names: [
+    "com.sun.crypto.provider.Cipher.DES.DesAPITest",
+    "com.sun.crypto.provider.Cipher.DES.DoFinalReturnLen",
+    "com.sun.crypto.provider.Cipher.DES.FlushBug"
+  ],
+  substring: "java.lang.NoClassDefFoundError: com.sun.crypto.provider.SunJCE"
+},
+{
+  description: "Dalvik doesn't include the SunJCE crypto provider",
+  result: EXEC_FAILED,
+  name: "com.sun.crypto.provider.Cipher.DES.KeyWrapping",
+  substring: "Provider SunJCE is not available"
+},
+{
+  description: "Dalvik doesn't include the SunJCE crypto provider",
+  result: EXEC_FAILED,
+  names: [
+    "com.sun.crypto.provider.Cipher.DES.PaddingTest",
+    "com.sun.crypto.provider.Cipher.DES.Sealtest",
+    "com.sun.crypto.provider.Cipher.DES.PerformanceTest"
+  ],
+  substring: "java.lang.NoClassDefFoundError: com.sun.crypto.provider.SunJCE"
+},
+{
+  description: "Dalvik doesn't include the SunJCE crypto provider",
+  result: EXEC_FAILED,
+  names: [
+    "com.sun.crypto.provider.Cipher.PBE.DecryptWithoutParameters",
+    "com.sun.crypto.provider.Cipher.PBE.PBEInvalidParamsTest"
+  ],
+  substring: "Provider SunJCE is not available"
+},
+{
+  description: "Dalvik doesn't include the SunJCE crypto provider",
+  result: EXEC_FAILED,
+  name: "com.sun.crypto.provider.Cipher.PBE.PBEKeysAlgorithmNames",
+  substring: "java.security.NoSuchProviderException: SunJCE"
+},
+{
+  description: "Dalvik doesn't include the SunJCE crypto provider",
+  result: EXEC_FAILED,
+  names: [
+    "com.sun.crypto.provider.Cipher.PBE.PBEParametersTest",
+    "com.sun.crypto.provider.Cipher.PBE.PKCS12Oid",
+    "com.sun.crypto.provider.Cipher.UTIL.StrongOrUnlimited",
+    "com.sun.crypto.provider.Cipher.KeyWrap.NISTWrapKAT"
+  ],
+  substring: "Provider SunJCE is not available"
+},
+{
+  description: "Dalvik doesn't include the SunJCE crypto provider",
+  result: EXEC_FAILED,
+  name: "com.sun.crypto.provider.KeyAgreement.DHGenSecretKey",
+  substring: "java.security.NoSuchProviderException: SunJCE"
+},
+{
+  description: "Dalvik doesn't include the SunJCE crypto provider",
+  result: EXEC_FAILED,
+  names: [
+    "com.sun.crypto.provider.KeyAgreement.DHGenSharedSecret",
+    "com.sun.crypto.provider.KeyAgreement.DHKeyAgreement3",
+    "com.sun.crypto.provider.KeyAgreement.DHKeyFactory",
+    "com.sun.crypto.provider.KeyAgreement.DHKeyGenSpeed"
+  ],
+  substring: "java.lang.NoClassDefFoundError: com.sun.crypto.provider.SunJCE"
+},
+{
+  description: "Dalvik doesn't include the SunJCE crypto provider",
+  result: EXEC_FAILED,
+  names: [
+    "com.sun.crypto.provider.KeyAgreement.TestExponentSize",
+    "com.sun.crypto.provider.KeyFactory.TestProviderLeak",
+    "com.sun.crypto.provider.KeyFactory.PBKDF2HmacSHA1FactoryTest"
+  ],
+  substring: "java.security.NoSuchProviderException: SunJCE"
+},
+{
+  description: "Dalvik doesn't include the SunJCE crypto provider",
+  result: EXEC_FAILED,
+  names: [
+    "com.sun.crypto.provider.KeyGenerator.Test4628062",
+    "com.sun.crypto.provider.KeyGenerator.TestExplicitKeyLength"
+  ],
+  substring: "java.lang.NoClassDefFoundError: com.sun.crypto.provider.SunJCE"
+},
+{
+  description: "Dalvik doesn't include the SunJCE crypto provider",
+  result: EXEC_FAILED,
+  name: "com.sun.crypto.provider.Mac.HmacPBESHA1",
+  substring: "java.security.NoSuchProviderException: SunJCE"
+},
+{
+  description: "Dalvik doesn't include the SunJCE crypto provider",
+  result: EXEC_FAILED,
+  name: "com.sun.crypto.provider.Mac.HmacMD5",
+  substring: "java.lang.NoClassDefFoundError: com.sun.crypto.provider.SunJCE"
+},
+{
+  description: "Dalvik doesn't include the SunJCE crypto provider",
+  result: EXEC_FAILED,
+  name: "com.sun.crypto.provider.Mac.MacClone",
+  substring: "java.security.NoSuchProviderException: SunJCE"
+},
+{
+  description: "Dalvik doesn't include the SunJCE crypto provider",
+  result: EXEC_FAILED,
+  failure: "JKS keystore not found",
+  substring: "KeyStore JKS implementation not found"
+},
+{
+  description: "These NPEs all happen while calling Provider#getName on the result of
+                Security#getProvider(). Unfortunately, that method is permitted to return
+                null if the system has no provider with the requested name. And since we don't
+                have the SunJCE provider, tests fail",
+  result: EXEC_FAILED,
+  name: "com.sun.crypto.provider.Cipher.PBE.PKCS12Cipher",
+  pattern: ".*PKCS12Cipher.java\\:87\\).*NullPointerException.*"
+},
+{
+  description: "These NPEs all happen while calling Provider#getName on the result of
+                Security#getProvider(). Unfortunately, that method is permitted to return
+                null if the system has no provider with the requested name. And since we don't
+                have the SunJCE provider, tests fail",
+  result: EXEC_FAILED,
+  name: "com.sun.crypto.provider.Cipher.PBE.PKCS12CipherKAT",
+  pattern: ".*NullPointerException.*PKCS12CipherKAT.java\\:183\\).*"
+},
+{
+  description: "These NPEs all happen while calling Provider#getName on the result of
+                Security#getProvider(). Unfortunately, that method is permitted to return
+                null if the system has no provider with the requested name. And since we don't
+                have the SunJCE provider, tests fail",
+  result: EXEC_FAILED,
+  name: "com.sun.crypto.provider.Cipher.RC2ArcFour.CipherKAT",
+  pattern: ".*NullPointerException.*CipherKAT.java\\:205\\).*"
+},
+{
+  description: "These NPEs all happen while calling Provider#getName on the result of
+                Security#getProvider(). Unfortunately, that method is permitted to return
+                null if the system has no provider with the requested name. And since we don't
+                have the SunJCE provider, tests fail",
+  result: EXEC_FAILED,
+  name: "com.sun.crypto.provider.Cipher.RSA.TestOAEP_KAT",
+  pattern: ".*TestOAEP_KAT.java\\:62\\).*NullPointerException.*"
+},
+{
+  description: "These NPEs all happen while calling Provider#getName on the result of
+                Security#getProvider(). Unfortunately, that method is permitted to return
+                null if the system has no provider with the requested name. And since we don't
+                have the SunJCE provider, tests fail",
+  result: EXEC_FAILED,
+  name: "com.sun.crypto.provider.Cipher.RSA.TestOAEP",
+  pattern: ".*TestOAEP.java\\:50\\).*NullPointerException.*"
+},
+{
+  description: "These NPEs all happen while calling Provider#getName on the result of
+                Security#getProvider(). Unfortunately, that method is permitted to return
+                null if the system has no provider with the requested name. And since we don't
+                have the SunJCE provider, tests fail",
+  result: EXEC_FAILED,
+  name: "com.sun.crypto.provider.Cipher.RSA.TestOAEPParameterSpec",
+  pattern: ".*TestOAEPParameterSpec.java\\:124\\).*NullPointerException.*"
+},
+{
+  description: "These NPEs all happen while calling Provider#getName on the result of
+                Security#getProvider(). Unfortunately, that method is permitted to return
+                null if the system has no provider with the requested name. And since we don't
+                have the SunJCE provider, tests fail",
+  result: EXEC_FAILED,
+  name: "com.sun.crypto.provider.Cipher.RSA.TestOAEPWithParams",
+  pattern: ".*TestOAEPWithParams.java\\:58\\).*NullPointerException.*"
+},
+{
+  description: "These NPEs all happen while calling Provider#getName on the result of
+                Security#getProvider(). Unfortunately, that method is permitted to return
+                null if the system has no provider with the requested name. And since we don't
+                have the SunJCE provider, tests fail",
+  result: EXEC_FAILED,
+  name: "com.sun.crypto.provider.Cipher.RSA.TestRSA",
+  pattern: ".*TestRSA.java\\:171\\).*NullPointerException.*"
+},
+{
+  description: "These NPEs all happen while calling Provider#getName on the result of
+                Security#getProvider(). Unfortunately, that method is permitted to return
+                null if the system has no provider with the requested name. And since we don't
+                have the SunJCE provider, tests fail",
+  result: EXEC_FAILED,
+  name: "com.sun.crypto.provider.Mac.HmacSaltLengths",
+  pattern: ".*HmacSaltLengths.java\\:83\\).*java.lang.NullPointerException.*"
+},
+{
+  description: "These NPEs all happen while calling Provider#getName on the result of
+                Security#getProvider(). Unfortunately, that method is permitted to return
+                null if the system has no provider with the requested name. And since we don't
+                have the SunJCE provider, tests fail",
+  result: EXEC_FAILED,
+  name: "com.sun.crypto.provider.Mac.MacKAT",
+  pattern: ".*MacKAT.java\\:228\\).*java.lang.NullPointerException.*"
+},
+{
+  description: "These tests call into misc Sun classes that we don't have",
+  result: COMPILE_FAILED,
+  name: "com.sun.crypto.provider.KeyAgreement.DHKeyAgreement2",
+  pattern: ".*cannot find symbol.*sun.misc.HexDumpEncoder.*"
+},
+{
+  description: "These tests call into misc Sun classes that we don't have",
+  result: COMPILE_FAILED,
+  name: "com.sun.crypto.provider.Cipher.KeyWrap.XMLEncKAT",
+  pattern: ".*cannot find symbol.*sun.misc.BASE64Decoder.*"
+},
+{
+  description: "These tests call into misc Sun classes that we don't have",
+  result: COMPILE_FAILED,
+  names: [
+    "com.sun.crypto.provider.TLS.TestKeyMaterial",
+    "com.sun.crypto.provider.TLS.TestMasterSecret",
+    "com.sun.crypto.provider.TLS.TestPremaster",
+    "com.sun.crypto.provider.TLS.TestPRF"
+  ],
+  substring: "package sun.security.internal.spec does not exist"
+},
+{
+  description: "We don't have most com.sun packages.",
+  result: COMPILE_FAILED,
+  failure: "Dalvik doesn't include Sun packages",
+  pattern: ".*package (com\\.)?sun\\.[\\w\\.]+ does not exist.*"
+},
+{
+  description: "We don't have several Java packages either.",
+  result: COMPILE_FAILED,
+  failure: "Dalvik doesn't include applets",
+  substring: "package java.applet does not exist"
+},
+{
+  description: "We don't have several Java packages either.",
+  result: COMPILE_FAILED,
+  failure: "Dalvik doesn't include AWT (bug it has java.awt.font)",
+  pattern: ".*package java.awt(\\.image)? does not exist.*"
+},
+{
+  description: "We don't have several Java packages either.",
+  result: "COMPILE_FAILED",
+  failure: "Dalvik doesn't include NIO.2",
+  substring: "package java.nio.file does not exist"
+},
+{
+  description: "We don't have several Java packages either.",
+  result: "COMPILE_FAILED",
+  failure: "Dalvik doesn't include RMI",
+  substring: "package java.rmi does not exist"
+},
+{
+  description: "We don't have several Java packages either.",
+  result: "COMPILE_FAILED",
+  failure: "Dalvik doesn't include JNDI",
+  substring: "package javax.naming does not exist"
+},
+{
+  description: "We don't have several Java packages either.",
+  result: "COMPILE_FAILED",
+  failure: "Dalvik doesn't include JMX",
+  substring: "package java.lang.management does not exist"
+},
+{
+  description: "We don't have several Java packages either.",
+  result: "COMPILE_FAILED",
+  failure: "Dalvik doesn't include Swing",
+  substring: "package javax.swing.tree does not exist"
+},
+{
+  description: "We don't have several Java packages either.",
+  result: "COMPILE_FAILED",
+  failure: "Dalvik doesn't include javax.crypto",
+  substring: "package javax.xml.crypto does not exist"
+},
+{
+  description: "Dalvik doesn't include a com.sun.net HTTP server",
+  result: UNSUPPORTED,
+  names: [
+    "com.sun.net.httpserver",
+    "sun.net.www"
+  ]
+},
+{
+  description: "Dalvik doesn't include AWT except the font package",
+  result: UNSUPPORTED,
+  name: "java.awt"
+},
+{
+  description: "Dalvik doesn't include AWT except the font package",
+  result: "SUCCESS",
+  names: [
+    "java.awt.FontClass",
+    "java.awt.font"
+  ]
+},
+{
+  description: "Dalvik doesn't include java.beans except for property listeners",
+  result: UNSUPPORTED,
+  name: "java.beans"
+},
+{
+  description: "Dalvik doesn't include java.beans except for property listeners",
+  result: "SUCCESS",
+  name: "java.beans.PropertyChangeSupport"
+},
+{
+  description: "Dalvik doesn't include java.lang.instrument",
+  result: UNSUPPORTED,
+  name: "java.lang.instrument"
+},
+{
+  description: "Dalvik doesn't include java.lang.management",
+  result: UNSUPPORTED,
+  name: "java.lang.management"
+},
+{
+  description: "Dalvik doesn't include RMI",
+  result: UNSUPPORTED,
+  names: [
+    "java.rmi",
+    "sun.rmi"
+  ]
+},
+{
+  description: "Dalvik doesn't include javax.imageio",
+  result: UNSUPPORTED,
+  name: "javax.imageio"
+},
+{
+  description: "Dalvik doesn't include javax.management",
+  result: UNSUPPORTED,
+  name: "javax.management"
+},
+{
+  description: "Dalvik doesn't include javax.naming",
+  result: UNSUPPORTED,
+  name: "javax.naming"
+},
+{
+  description: "Dalvik doesn't include javax.print",
+  result: UNSUPPORTED,
+  name: "javax.print"
+},
+{
+  description: "Dalvik doesn't include javax.script",
+  result: UNSUPPORTED,
+  name: "javax.script"
+},
+{
+  description: "Dalvik doesn't include javax.sound",
+  result: UNSUPPORTED,
+  name: "javax.sound"
+},
+{
+  description: "Dalvik doesn't include javax.swing",
+  result: UNSUPPORTED,
+  name: "javax.swing"
+},
+{
+  description: "Dalvik doesn't include sun.management",
+  result: UNSUPPORTED,
+  name: "sun.management"
+},
+{
+  description: "Dalvik doesn't include javax.smartcardio",
+  result: UNSUPPORTED,
+  name: "sun.security.smartcardio"
+},
+{
+  description: "Our exception messages don't match the RIs",
+  result: EXEC_FAILED,
+  names: [
+    "java.lang.StringBuilder.Exceptions",
+    "java.lang.StringBuffer.Exceptions"
+  ],
+  substring: "got java.lang.StringIndexOutOfBoundsException: null - FAILED"
+},
+{
+  description: "ICU doesn't like 3-letter names like CST because they're ambiguous.
+                Harmony prefers them because they're more human readable. We'll be
+                consistent with ICU, since that seems least fragile.
+                See https://issues.apache.org/jira/browse/HARMONY-5468
+                and http://bugs.icu-project.org/trac/ticket/6174",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.util.DateTest#test_toString",
+  substring: "GMT-07:00"
+},
+{
+  description: "These harmony tests are broken. The RI doesn't ship with es__TRADITIONAL, so
+                they have incorrect expectations.
+                http://b/2608750",
+  result: EXEC_FAILED,
+  names: [
+    "org.apache.harmony.text.tests.java.text.RuleBasedCollatorTest#testGetCollationElementIteratorCharacterIterator",
+    "org.apache.harmony.text.tests.java.text.RuleBasedCollatorTest#testGetCollationElementIteratorString"
+  ],
+  substring: "expected:<1> but was:<2>"
+},
+{
+  description: "This test fails because on Android, RuleBasedCollators default to
+                CANONICAL_DECOMPOSITION, not NO_DECOMPOSITION.",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.text.tests.java.text.RuleBasedCollatorTest#testEqualsObject",
+  substring: "expected:<0> but was:<1>"
+},
+{
+  description: "These Harmony tests are enforcing a buggy behaviour in TreeMap, presumably to be bug-compatible
+                with the RI. Our implementation is more conservative and throws on the bogus inputs.",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.util.TreeMapExtendTest#test_AscendingSubMapKeySet_headSet",
+  substring: "java.lang.IllegalArgumentException: 100 not in range (100..109]"
+},
+{
+  description: "These Harmony tests are enforcing a buggy behaviour in TreeMap, presumably to be bug-compatible
+                with the RI. Our implementation is more conservative and throws on the bogus inputs.",
+  result: EXEC_FAILED,
+  names: [
+    "org.apache.harmony.luni.tests.java.util.TreeMapExtendTest#test_AscendingSubMapKeySet_tailSet",
+    "org.apache.harmony.luni.tests.java.util.TreeMapExtendTest#test_DescendingSubMapKeySet_headSet"
+  ],
+  substring: "java.lang.IllegalArgumentException: null not in range [100..109)"
+},
+{
+  description: "These Harmony tests are enforcing a buggy behaviour in TreeMap, presumably to be bug-compatible
+                with the RI. Our implementation is more conservative and throws on the bogus inputs.",
+  result: EXEC_FAILED,
+  names: [
+    "org.apache.harmony.luni.tests.java.util.TreeMapExtendTest#test_DescendingSubMap_tailMap",
+    "org.apache.harmony.luni.tests.java.util.TreeMapExtendTest#test_DescendingSubMapKeySet_tailSet",
+    "org.apache.harmony.luni.tests.java.util.TreeMapExtendTest#test_SubMap_headMap"
+  ],
+  substring: "java.lang.IllegalArgumentException: 100 not in range (100..109]"
+},
+{
+  description: "why are they using reflection to test implementation details?",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.util.ArraysTest#test_swap_I_I_$Ljava_lang_Object",
+  substring: "java.lang.NoSuchMethodException"
+},
+{
+  description: "all these tests rely on a Harmony bug where TreeMaps may have a singleton null, which we choose
+                to disallow.",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.util.SimpleImmutableEntryTest#test_SimpleImmutableEntry_Constructor_LEntry",
+  pattern: ".*java.lang.NullPointerException.*at java.util.TreeMap.find.*"
+},
+{
+  description: "all these tests rely on a Harmony bug where TreeMaps may have a singleton null, which we choose
+                to disallow.",
+  result: EXEC_FAILED,
+  names: [
+    "org.apache.harmony.luni.tests.java.util.TreeMapTest#test_ceilingEntry",
+    "org.apache.harmony.luni.tests.java.util.TreeMapTest#test_ceilingKey",
+    "org.apache.harmony.luni.tests.java.util.TreeMapTest#test_floorEntry",
+    "org.apache.harmony.luni.tests.java.util.TreeMapTest#test_floorKey",
+    "org.apache.harmony.luni.tests.java.util.TreeMapTest#test_higherEntry",
+    "org.apache.harmony.luni.tests.java.util.TreeMapTest#test_higherKey",
+    "org.apache.harmony.luni.tests.java.util.TreeMapTest#test_lowerEntry",
+    "org.apache.harmony.luni.tests.java.util.TreeMapTest#test_lowerKey"
+  ],
+  substring: "java.lang.NullPointerException"
+},
+{
+  description: "all these tests rely on a Harmony bug where TreeMaps may have a singleton null, which we choose
+                to disallow.",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.util.TreeMapTest#test_illegalFirstNullKey",
+  pattern: ".*java.lang.NullPointerException.*at java.util.TreeMap.find.*"
+},
+{
+  description: "this is testing exception priorities",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.util.TreeMapTest#test_subMapLjava_lang_ObjectLjava_lang_Object",
+  substring: "java.lang.ClassCastException: java.lang.Object"
+},
+{
+  description: "the null-friendly comparator isn't symmetric",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.util.TreeMapTest#test_subMapLjava_lang_ObjectZLjava_lang_ObjectZ",
+  substring: "java.lang.NullPointerException"
+},
+{
+  description: "we fail fast on not-comparable objects",
+  result: EXEC_FAILED,
+  names: [
+    "org.apache.harmony.luni.tests.java.util.TreeMapTest#test_equals",
+    "org.apache.harmony.luni.tests.java.util.TreeMapTest#test_putLjava_lang_ObjectLjava_lang_Object"
+  ],
+  substring: "java.lang.ClassCastException: java.lang.Object"
+},
+{
+  description: "tests that depend on the iteration order of a hash",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.util.CollectionsTest#test_unmodifiable_toString_methods",
+  substring: "expected:<...one=1, two=2...> but was:<...two=2, one=1...>"
+},
+{
+  description: "tests that depend on the iteration order of a hash",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.util.HashtableTest#test_keySet_subtest1",
+  pattern: ".*java.lang.IllegalStateException.*at java.util.Hashtable.*"
+},
+{
+  description: "tests that depend on the iteration order of a hash",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.util.HashtableTest#test_elements_subtest0",
+  substring: "junit.framework.AssertionFailedError: unexpected: b"
+},
+{
+  description: "tests that depend on the iteration order of a hash",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.util.HashMapTest#test_rehash",
+  substring: "junit.framework.AssertionFailedError: expected same"
+},
+{
+  description: "tests that depend on the iteration order of a hash",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.util.PropertiesTest#test_SequentialpropertyNames",
+  substring: "expected:<current.b.key> but was:<current.a.key>"
+},
+{
+  description: "tests that depend on the iteration order of a hash",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.util.PropertiesTest#test_SequentialstringPropertyNames",
+  substring: "junit.framework.ComparisonFailure"
+},
+{
+  description: "tests that depend on the iteration order of a hash",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.util.PropertiesTest#test_propertyNames_sequence",
+  substring: "junit.framework.AssertionFailedError: expected:<current.b.key> but was:<current.a.key>"
+},
+{
+  description: "tests that use secret type information to reason about behavior",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.util.HashtableTest#test_keySet",
+  substring: "junit.framework.ComparisonFailure: Not synchronized expected:<...Collections$Synchronized...> but was:<...Hashtable$Key...>"
+},
+{
+  description: "tests that use secret type information to reason about behavior",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.util.HashtableTest#test_entrySet",
+  substring: "junit.framework.ComparisonFailure: Not synchronized expected:<...Collections$Synchronized...> but was:<...Hashtable$Entry...>"
+},
+{
+  description: "tests that use secret type information to reason about behavior",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.util.HashtableTest#test_values",
+  substring: "junit.framework.ComparisonFailure: Not synchronized expected:<...Collections$SynchronizedCollection> but was:<...Hashtable$Values>"
+},
+{
+  description: "this test is invalid, proxy.equals isn't symmetric",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.util.HashMapTest#test_proxies"
+},
+{
+  description: "this test is invalid, the mock map's entry set isn't to spec",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.util.HashMapTest#test_putAllLjava_util_Map",
+  substring: "java.lang.NullPointerException"
+},
+{
+  description: "this test assumes remove acts on equals() equality, not comparator equality",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.util.PriorityQueueTest#test_remove_Ljava_lang_Object_using_comparator",
+  substring: "junit.framework.AssertionFailedError"
+},
+{
+  description: "tests that violate the API and then guess about the outcomes",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.util.HashtableTest#test_getLjava_lang_Object",
+  substring: "junit.framework.AssertionFailedError"
+},
+{
+  description: "this test assumes Integer.toString() always returns a new instance",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.util.IdentityHashMap2Test#test_containsKeyLjava_lang_Object",
+  substring: "junit.framework.AssertionFailedError: Returned true for copy of valid key"
+},
+{
+  description: "tests that cast to Harmony-specific types",
+  result: EXEC_FAILED,
+  failure: "bogus cast to harmony Hashtable$KeyEnumeration",
+  substring: "java.util.Hashtable$KeyEnumeration"
+},
+{
+  description: "tests that cast to Harmony-specific types",
+  result: EXEC_FAILED,
+  failure: "bogus cast to Hashtable$ValueEnumeration",
+  substring: "java.util.Hashtable$ValueEnumeration"
+},
+{
+  description: "test doesn't expect it, but the spec permits the exception. RI also throws here.",
+  result: EXEC_FAILED,
+  names: [
+    "org.apache.harmony.luni.tests.java.util.PriorityQueueTest#test_remove_Ljava_lang_Object_not_Compatible",
+    "org.apache.harmony.luni.tests.java.util.PriorityQueueTest#test_remove_Ljava_lang_Object_not_exists"
+  ],
+  substring: "java.lang.ClassCastException"
+},
+{
+  description: "localization tests where our data disagree",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.util.LocaleTest#test_getAvailableLocales",
+  substring: "Wrong number of locales"
+},
+{
+  description: "test that enforce redundant implements clauses",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.util.LinkedHashMapTest#test_getInterfaces",
+  substring: "junit.framework.AssertionFailedError: expected:<3> but was:<2>"
+},
+{
+  description: "this is testing exception priorities",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.nio.tests.java.nio.channels.DatagramChannelTest#testReadByteBuffer_readOnlyBuf",
+  substring: "java.lang.IllegalArgumentException: read-only buffer"
+},
+{
+  description: "ICU doesn't provide localized pattern characters, and these tests assume the locale they're using has them.",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.text.tests.java.text.SimpleDateFormatTest#test_applyLocalizedPatternLjava_lang_String",
+  substring: "java.lang.IllegalArgumentException: Invalid pattern character 'u' in 'GuMtkHmsSEDFwWahKz'"
+},
+{
+  description: "ICU doesn't provide localized pattern characters, and these tests assume the locale they're using has them.",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.text.tests.java.text.SimpleDateFormatTest#test_toLocalizedPattern",
+  substring: "junit.framework.AssertionFailedError: Wrong pattern: GyMdkHmsSEDFwWahKz"
+},
+{
+  description: "ICU doesn't provide localized pattern characters, and these tests assume the locale they're using has them.",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.text.tests.java.text.DateFormatSymbolsTest#test_getLocalPatternChars",
+  substring: "junit.framework.ComparisonFailure: Returned incorrect pattern string expected:<...YeugAZvcLQqV> but was:<...Z>"
+},
+{
+  description: "we don't support the CharsetProvider spi, so we don't have \"mockCharset00\".",
+  result: EXEC_FAILED,
+  name: "tests.api.java.nio.charset.CharsetTest#test_availableCharsets",
+  substring: "junit.framework.AssertionFailedError"
+},
+{
+  description: "we don't support the CharsetProvider spi, so we don't have \"mockCharset00\".",
+  result: EXEC_FAILED,
+  name: "tests.api.java.nio.charset.CharsetTest#test_forNameLString",
+  substring: "java.nio.charset.UnsupportedCharsetException: mockCharset00"
+},
+{
+  description: "the average length of possible UTF-8 sequences is 2 bytes.",
+  result: EXEC_FAILED,
+  name: "tests.api.java.nio.charset.UTFCharsetEncoderTest#testSpecificDefaultValue",
+  substring: "junit.framework.AssertionFailedError: expected:<1.1> but was:<2.0>"
+},
+{
+  description: "We don't permit runtime switching of the default charset (and neither does the RI)",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.nio_char.tests.java.nio.charset.CharsetTest#test_defaultCharset",
+  substring: "expected:<ISO-8859-1> but was:<UTF-8>"
+},
+{
+  description: "this test needs external interaction",
+  result: UNSUPPORTED,
+  names: [
+    "com.sun.tools.attach.Application",
+    "java.io.SystemInAvailable",
+    "sun.jvmstat.testlibrary.Sleeper"
+  ]
+},
+{
+  description: "these benchmarks take a long time and don't demonstrate correctness",
+  result: UNSUPPORTED,
+  names: [
+    "java.lang.Class.TypeCheckMicroBenchmark",
+    "java.nio.Buffer.SwapMicroBenchmark",
+    "java.util.ArrayList.RangeCheckMicroBenchmark",
+    "java.util.ArrayList.IteratorMicroBenchmark"
+  ]
+},
+{
+  description: "The RI is still on Unicode 4.0, we're on 5.2, and Harmony is inconsistent
+                between its test for isJavaIdentifierPart(char) and isJavaIdentifierPart(int).",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.lang.CharacterTest#test_isJavaIdentifierPartC"
+},
+{
+  description: "We removed this: we don't support Pack200.",
+  result: UNSUPPORTED,
+  name: "org.apache.harmony.archive.tests.java.util.jar.Pack200Test"
+},
+{
+  description: "We removed this: we don't cache canonical paths.",
+  result: UNSUPPORTED,
+  name: "org.apache.harmony.luni.tests.java.io.FileCanonPathCacheTest"
+},
+{
+  description: "We removed this: we don't throw NotYetImplementedException.",
+  result: UNSUPPORTED,
+  name: "org.apache.harmony.luni.tests.util.NYITest"
+},
+{
+  description: "We removed this: we don't support localized exceptions.",
+  result: UNSUPPORTED,
+  name: "org.apache.harmony.luni.tests.internal.nls.MessagesTest"
+},
+{
+  description: "These test implementation details we don't share.",
+  result: EXEC_FAILED,
+  names: [
+    "org.apache.harmony.text.tests.java.text.BreakIteratorTest#test_getInt",
+    "org.apache.harmony.text.tests.java.text.BreakIteratorTest#test_getLong",
+    "org.apache.harmony.text.tests.java.text.BreakIteratorTest#test_getShort"
+  ]
+},
+{
+  description: "These format specifiers are documented to not take flags, but the RI accepts and ignores them.",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.util.FormatterTest#test_formatLjava_lang_String$Ljava_lang_Object_LineSeparator",
+  substring: "java.util.IllegalFormatFlagsException: %n doesn't take an argument"
+},
+{
+  description: "These format specifiers are documented to not take flags, but the RI accepts and ignores them.",
+  result: EXEC_FAILED,
+  names: [
+    "org.apache.harmony.luni.tests.java.util.FormatterTest#test_formatLjava_lang_String$Ljava_lang_Object_Percent",
+    "org.apache.harmony.luni.tests.java.util.FormatterTest#test_formatLjava_lang_String$Ljava_lang_Object_Width"
+  ],
+  substring: "java.util.IllegalFormatFlagsException: %% doesn't take an argument"
+},
+{
+  description: "These tests expect to be able to load resources from the file system",
+  result: EXEC_FAILED,
+  names: [
+    "libcore.java.lang.OldClassTest#test_getResourceAsStreamLjava_lang_String",
+    "libcore.java.lang.OldClassTest#test_getResourceAsStream_withSharpChar",
+    "libcore.java.lang.OldClassTest#test_getResourceLjava_lang_String"
+  ]
+},
+{
+  description: "Some tests (ExcludedProxyTest) connect to a public webserver to check that the HTTP client works",
+  result: EXEC_FAILED,
+  failure: "connect to the Internet",
+  pattern: ".*java.net.UnknownHostException:.*jcltest.apache.org.*"
+},
+{
+  description: "These tests violate visibility rules when trying to unit test internal classes",
+  result: EXEC_FAILED,
+  name: "javax.net.ssl.DefaultSSLSocketFactoryTest",
+  substring: "java.lang.IllegalAccessError: tried to access class javax.net.ssl.DefaultSSLSocketFactory from class javax.net.ssl.DefaultSSLSocketFactoryTest"
+},
+{
+  description: "These tests expect to be called with commandline arguments",
+  result: EXEC_FAILED,
+  name: "java.io.FileOutputStream.FileOpenNeg",
+  substring: "java.lang.ArrayIndexOutOfBoundsException"
+},
+{
+  description: "",
+  result: EXEC_FAILED,
+  name: "java.io.FileOutputStream.FileOpenPos",
+  substring: "java.lang.ArrayIndexOutOfBoundsException"
+}
+]

@@ -1,0 +1,408 @@
+# Known to sometimes hang on RoboVM in Linux. See issue #47.
+libcore.java.io.InterruptedStreamTest#testInterruptWritablePipeChannel
+libcore.java.io.InterruptedStreamTest#testInterruptReadablePipeChannel
+
+# BUG? Hangs on RoboVM sometimes. Why?
+libcore.java.net.URLConnectionTest#testConnectViaHttpProxyToHttpsUsingBadProxyAndHttpResponseCache
+
+# Executes java to test deleteOnExit. We need to test this in some other way.
+libcore.java.io.OldFileTest#test_deleteOnExit
+
+# Takes too long or hangs
+libcore.java.io.RandomAccessFileTest#testRandomAccessFileHasCleanupFinalizer
+
+# These try to test finalization by triggering OOM. Hangs or take a very long time on RoboVM.
+# Probably too specific to Android's GC.
+libcore.java.lang.ThreadTest#testLeakingStartedThreads
+libcore.java.lang.ThreadTest#testLeakingUnstartedThreads
+
+# The backlog value in StuckServer used by these tests doesn't seem to be honored 
+# or work as expected so these tests fail.
+libcore.java.net.ConcurrentCloseTest#test_connect
+libcore.java.net.ConcurrentCloseTest#test_connect_nonBlocking
+libcore.java.net.ConcurrentCloseTest#test_connect_timeout
+
+# Sends SIGQUIT to the current process to trigger Selector.select() to interrupt.
+# We don't handle SIGQUIT at the moment so this will be handled by the OS which
+# produces a core dump and terminates the process.
+libcore.java.nio.channels.SelectorTest#testEINTR
+
+# Bug? Hangs on RoboVM.
+org.apache.harmony.luni.tests.java.net.URLConnectionTest#testHttpPostHeaders
+
+# Triggers OutOfMemoryError to test finalizers but fails with OutOfMemoryError later on
+# probably because the data used to trigger OOM is still referenced by some register
+# or the stack.
+org.apache.harmony.crypto.tests.javax.crypto.ExemptionMechanismTest#test_finalize
+
+# Triggers OutOfMemoryError to test SoftReferences. Seems like the RoboVM GC doesn't
+# behave the same as Android's here. Maybe because the data used to trigger OOM is still 
+# referenced by some register or the stack. The test ultimately core dumps with a GC error
+# message.
+tests.api.java.lang.ref.SoftReferenceTest#test_get_SoftReference
+
+# Succeeds but takes too long (about 2 mins). Also in expectations/knownfailures.txt.
+libcore.java.security.KeyPairGeneratorTest#test_getInstance
+# Succeeds but takes too long (about 5 mins)
+libcore.java.security.MessageDigestTest#test_getInstance
+# Succeeds but takes too long (about 5 mins)
+libcore.java.security.OldDHTest#testDHGen
+# Succeeds but takes too long (about 8 mins)
+libcore.java.security.OldKeyPairGeneratorTestDH#testKeyPairGenerator
+# Succeeds but takes too long (about 30 secs)
+libcore.java.security.SignatureTest#test_getInstance
+# Succeeds but takes too long (about 5 mins)
+libcore.javax.crypto.spec.AlgorithmParameterGeneratorTestDH#testAlgorithmParameterGenerator
+# Succeeds but takes too long (about 40 secs)
+libcore.javax.crypto.spec.AlgorithmParametersTestDH#testAlgorithmParameters
+# Succeeds but takes too long (about 3 mins)
+libcore.javax.crypto.spec.KeyPairGeneratorTestDH#testKeyPairGenerator
+# Succeeds but takes too long (about 10 mins). Also in expectations/knownfailures.txt.
+org.apache.harmony.crypto.tests.javax.crypto.func.KeyAgreementFunctionalTest#test_KeyAgreement
+# Succeeds but takes too long (about 15 mins). Also in expectations/knownfailures.txt.
+org.apache.harmony.crypto.tests.javax.crypto.interfaces.DHPrivateKeyTest#test_getParams
+# Succeeds but takes too long (about 5 mins). Tagged with @BrokenTest("Too slow - disabling for now").
+org.apache.harmony.crypto.tests.javax.crypto.interfaces.DHPublicKeyTest#test_getParams
+
+# POSTs to http://onearth.jpl.nasa.gov/landsat.cgi which doesn't seem to exist anymore (404)
+org.apache.harmony.luni.tests.java.net.URLConnectionTest#test_getAllowUserInteraction
+
+# Uses custom class loader which isn't supported on RoboVM
+libcore.java.lang.OldClassTest#test_forNameLjava_lang_StringLbooleanLClassLoader_AndroidOnly
+
+# Dalvik specific tests which launches a second Dalvik process.
+libcore.java.util.jar.DalvikExecTest#test_execCreatedJar
+libcore.java.util.jar.DalvikExecTest#test_execCreatedJarWithManifest
+libcore.java.util.jar.DalvikExecTest#test_execExistingJar
+
+# Hangs on RI and on RoboVM. Also in expectations/brokentests.txt.
+libcore.java.net.URLConnectionTest#testConnectTimeouts
+libcore.java.net.URLConnectionTest#testGetKeepAlive
+
+# expectations/knownfailures.txt
+libcore.java.io.SerializationTest#testSerializeFieldMadeTransient
+
+# expectations/knownfailures.txt
+libcore.java.lang.DoubleTest#testParseLargestSubnormalDoublePrecision
+
+# expectations/knownfailures.txt
+libcore.java.lang.StringTest#testCaseMapping_en_US
+
+# expectations/knownfailures.txt
+libcore.java.sql.OldConnectionTest#testClearWarnings
+libcore.java.sql.OldConnectionTest#testCreateStatement_int_int
+libcore.java.sql.OldConnectionTest#testCreateStatementIntIntIntNotSupported
+libcore.java.sql.OldConnectionTest#testGetCatalog
+libcore.java.sql.OldConnectionTest#testGetHoldability
+libcore.java.sql.OldConnectionTest#testGetMetaData
+libcore.java.sql.OldConnectionTest#testGetTransactionIsolation
+libcore.java.sql.OldConnectionTest#testGetWarnings
+libcore.java.sql.OldConnectionTest#testIsReadOnly
+libcore.java.sql.OldConnectionTest#testPrepareStatement_String_int
+libcore.java.sql.OldConnectionTest#testPrepareStatementNotSupported
+libcore.java.sql.OldConnectionTest#testSetAutoCommit
+libcore.java.sql.OldConnectionTest#testSetHoldability
+libcore.java.sql.OldConnectionTest#testSetReadOnly
+
+# expectations/knownfailures.txt
+libcore.java.sql.OldPreparedStatementTest#testClearParameters
+libcore.java.sql.OldPreparedStatementTest#testExecute
+libcore.java.sql.OldPreparedStatementTest#testGetMetaData
+libcore.java.sql.OldPreparedStatementTest#testSetBigDecimal
+libcore.java.sql.OldPreparedStatementTest#testSetBoolean
+libcore.java.sql.OldPreparedStatementTest#testSetByte
+libcore.java.sql.OldPreparedStatementTest#testSetBytes
+libcore.java.sql.OldPreparedStatementTest#testSetDate_int_Date
+libcore.java.sql.OldPreparedStatementTest#testSetDate_int_Date_Calendar
+libcore.java.sql.OldPreparedStatementTest#testSetDouble
+libcore.java.sql.OldPreparedStatementTest#testSetFloat
+libcore.java.sql.OldPreparedStatementTest#testSetInt
+libcore.java.sql.OldPreparedStatementTest#testSetLong
+libcore.java.sql.OldPreparedStatementTest#testSetObject_int_Object
+libcore.java.sql.OldPreparedStatementTest#testSetObject_int_Object_int
+libcore.java.sql.OldPreparedStatementTest#testSetObject_int_Object_int_int
+libcore.java.sql.OldPreparedStatementTest#testSetShort
+libcore.java.sql.OldPreparedStatementTest#testSetString_charField
+libcore.java.sql.OldPreparedStatementTest#testSetString_longTextField
+libcore.java.sql.OldPreparedStatementTest#testSetString_tinyTextField
+libcore.java.sql.OldPreparedStatementTest#testSetTime_int_Time_Calendar
+libcore.java.sql.OldPreparedStatementTest#testSetTimeint_Time
+libcore.java.sql.OldPreparedStatementTest#testSetTimestamp_int_Timestamp
+libcore.java.sql.OldPreparedStatementTest#testSetTimestampIntTimestampCalendar
+
+# expectations/knownfailures.txt
+libcore.java.sql.OldResultSetGetterTests#testGetBytesStringBinary
+libcore.java.sql.OldResultSetGetterTests#testGetBytesStringVarbinary
+libcore.java.sql.OldResultSetGetterTests#testGetMetaData
+libcore.java.sql.OldResultSetGetterTests#testGetObjectInt
+libcore.java.sql.OldResultSetGetterTests#testGetObjectString
+libcore.java.sql.OldResultSetGetterTests#testGetRow
+libcore.java.sql.OldResultSetGetterTests#testGetStatement
+libcore.java.sql.OldResultSetGetterTests#testGetTimeInt
+libcore.java.sql.OldResultSetGetterTests#testGetTimeIntCalendar
+libcore.java.sql.OldResultSetGetterTests#testGetTimeString
+libcore.java.sql.OldResultSetGetterTests#testGetTimeStringCalendar
+libcore.java.sql.OldResultSetGetterTests#testGetType
+
+# expectations/knownfailures.txt
+libcore.java.sql.OldResultSetTest#testAfterLast
+libcore.java.sql.OldResultSetTest#testBeforeFirst
+libcore.java.sql.OldResultSetTest#testClose1
+libcore.java.sql.OldResultSetTest#testNext
+libcore.java.sql.OldResultSetTest#testRelative
+libcore.java.sql.OldResultSetTest#testRelativeScrollableResultSet
+libcore.java.sql.OldResultSetTest#testtestFirst
+libcore.java.sql.OldResultSetTest#testtestIsAfterLast
+libcore.java.sql.OldResultSetTest#testtestIsBeforeFirst
+libcore.java.sql.OldResultSetTest#testtestIsFirst
+libcore.java.sql.OldResultSetTest#testtestIsLast
+libcore.java.sql.OldResultSetTest#testtestLast
+libcore.java.sql.OldResultSetTest#testUpdateObjectStringObject
+libcore.java.sql.OldResultSetTest#testUpdateStringStringString
+libcore.java.sql.OldResultSetTest#testWasNull
+
+# expectations/knownfailures.txt
+libcore.java.sql.OldStatementTest#testCancel
+libcore.java.sql.OldStatementTest#testClose
+libcore.java.sql.OldStatementTest#testExecute
+libcore.java.sql.OldStatementTest#testExecuteBatch
+libcore.java.sql.OldStatementTest#testExecuteQuery_String
+libcore.java.sql.OldStatementTest#testExecuteUpdate_String
+libcore.java.sql.OldStatementTest#testGetConnection
+libcore.java.sql.OldStatementTest#testGetFetchDirection
+libcore.java.sql.OldStatementTest#testGetFetchSize
+libcore.java.sql.OldStatementTest#testGetMoreResults
+libcore.java.sql.OldStatementTest#testGetQueryTimeout
+libcore.java.sql.OldStatementTest#testGetResultSet
+libcore.java.sql.OldStatementTest#testGetResultSetConcurrency
+libcore.java.sql.OldStatementTest#testGetResultSetHoldability
+libcore.java.sql.OldStatementTest#testGetResultSetType
+libcore.java.sql.OldStatementTest#testGetUpdateCount
+
+# expectations/knownfailures.txt
+libcore.java.sql.OldResultSetMetaDataTest#testGetCatalogName
+libcore.java.sql.OldResultSetMetaDataTest#testGetColumnCount
+libcore.java.sql.OldResultSetMetaDataTest#testGetColumnDisplaySize
+libcore.java.sql.OldResultSetMetaDataTest#testGetColumnLabel
+libcore.java.sql.OldResultSetMetaDataTest#testGetColumnName
+libcore.java.sql.OldResultSetMetaDataTest#testGetPrecision
+libcore.java.sql.OldResultSetMetaDataTest#testGetScale
+libcore.java.sql.OldResultSetMetaDataTest#testGetSchema
+libcore.java.sql.OldResultSetMetaDataTest#testGetTableName
+libcore.java.sql.OldResultSetMetaDataTest#testisAutoIncrement
+libcore.java.sql.OldResultSetMetaDataTest#testIsCaseSensitive
+libcore.java.sql.OldResultSetMetaDataTest#testIsCurrency
+libcore.java.sql.OldResultSetMetaDataTest#testIsDefinitlyWritable
+libcore.java.sql.OldResultSetMetaDataTest#testIsNullable
+libcore.java.sql.OldResultSetMetaDataTest#testIsReadOnly
+libcore.java.sql.OldResultSetMetaDataTest#testIsSearchable
+libcore.java.sql.OldResultSetMetaDataTest#testIsSigned
+libcore.java.sql.OldResultSetMetaDataTest#testIsWritable
+
+# expectations/knownfailures.txt
+libcore.java.nio.charset.CharsetTest#test_UTF_16
+libcore.java.nio.charset.CharsetTest#test_UTF_32
+libcore.java.nio.charset.CharsetTest#test_UTF_16BE
+libcore.java.nio.charset.CharsetTest#test_UTF_16LE
+libcore.java.nio.charset.CharsetTest#test_UTF_32BE
+libcore.java.nio.charset.CharsetTest#test_UTF_32LE
+libcore.java.nio.charset.CharsetTest#test_x_UTF_16LE_BOM
+libcore.java.nio.charset.CharsetTest#test_X_UTF_32BE_BOM
+libcore.java.nio.charset.CharsetTest#test_X_UTF_32LE_BOM
+libcore.java.nio.charset.OldCharset_MultiByte_UTF_16#test_Encode
+libcore.java.nio.charset.CharsetTest#test_preNioAliases
+libcore.java.nio.charset.OldCharset_MultiByte_Big5#test_Decode
+libcore.java.nio.charset.OldCharset_MultiByte_Big5#test_Encode
+libcore.java.nio.charset.OldCharset_MultiByte_EUC_JP#test_CodecDynamic
+libcore.java.nio.charset.OldCharset_MultiByte_EUC_JP#test_Decode
+libcore.java.nio.charset.OldCharset_MultiByte_EUC_JP#test_Encode
+libcore.java.nio.charset.OldCharset_MultiByte_GBK#test_Decode
+libcore.java.nio.charset.OldCharset_MultiByte_GBK#test_Encode
+libcore.java.nio.charset.OldCharset_MultiByte_ISO_2022_JP#test_Decode
+libcore.java.nio.charset.OldCharset_MultiByte_ISO_2022_JP#test_Encode
+libcore.java.nio.charset.OldCharset_MultiByte_x_windows_950#test_Encode
+libcore.java.nio.charset.OldCharset_MultiByte_x_windows_950#test_nameMatch
+libcore.java.nio.charset.OldCharset_MultiByte_UTF_16#test_Encode
+libcore.java.nio.charset.CharsetEncoderTest#testCharsetEncoderSurrogatesBrokenByDesign_IGNORE_RI
+libcore.java.nio.charset.CharsetEncoderTest#testCharsetEncoderSurrogatesBrokenByDesign_REPLACE_RI
+libcore.java.nio.charset.CharsetEncoderTest#testCharsetEncoderSurrogatesBrokenByDesign_REPORT_RI
+libcore.java.nio.charset.CharsetEncoderTest#test_defaultReplacementBytesUtf_16
+
+# expectations/knownfailures.txt
+libcore.sqlite.OldBlobTest#testBlob
+libcore.sqlite.OldDatabaseTest#testBusy_handler
+libcore.sqlite.OldDatabaseTest#testBusy_timeout
+libcore.sqlite.OldDatabaseTest#testChanges
+libcore.sqlite.OldDatabaseTest#testCreate_aggregate
+libcore.sqlite.OldDatabaseTest#testGet_tableString
+libcore.sqlite.OldDatabaseTest#testGet_tableStringStringArrayTableResult
+libcore.sqlite.OldDatabaseTest#testInterrupt
+libcore.sqlite.OldDatabaseTest#testOpen_blob
+libcore.sqlite.OldDatabaseTest#testSet_authorizer
+libcore.sqlite.OldDatabaseTest#testSet_encoding
+libcore.sqlite.OldFunctionContextTest#testSet_result_zeroblob
+libcore.sqlite.OldStmtTest#testColumn_count
+libcore.sqlite.OldStmtTest#testColumn_type
+
+# expectations/icebox.txt
+libcore.sqlite.QueryTimeoutTest#testExecuteUpdate
+libcore.sqlite.QueryTimeoutTest#testPreparedStatementFetch
+libcore.sqlite.QueryTimeoutTest#testPreparedStatementUpdate
+libcore.sqlite.QueryTimeoutTest#testTimeoutAndStatementReuse
+
+# expectations/knownfailures.txt
+libcore.javax.net.ssl.SSLEngineTest#test_SSLEngine_beginHandshake_noKeyStore
+libcore.javax.net.ssl.SSLEngineTest#test_SSLEngine_setUseClientMode
+libcore.javax.net.ssl.SSLEngineTest#test_SSLEngine_setEnableSessionCreation_client
+libcore.javax.net.ssl.SSLEngineTest#test_SSLEngine_setEnableSessionCreation_server
+
+# expectations/brokentests.txt
+libcore.net.http.ParsedHeadersTest#testParseChallengesWithManyParameters
+
+# expectations/icebox.txt
+libcore.xml.DeclarationTest#testGetXmlEncoding
+libcore.xml.DeclarationTest#testGetXmlStandalone
+libcore.xml.DeclarationTest#testGetXmlVersion
+
+# expectations/icebox.txt
+libcore.xml.DomTest#testAttributeNamedIdIsNotAnIdByDefault
+libcore.xml.DomTest#testDocumentAddChild
+libcore.xml.DomTest#testElementTraversalFeature
+libcore.xml.DomTest#testEntityDeclarations
+libcore.xml.DomTest#testExpandingEntityReferencesOff
+libcore.xml.DomTest#testExpandingEntityReferencesOn
+libcore.xml.DomTest#testGetWholeTextWithEntityReference
+libcore.xml.DomTest#testIsElementContentWhitespaceWithDeclaration
+libcore.xml.DomTest#testLoadSaveFeature
+libcore.xml.DomTest#testNotations
+
+# expectations/icebox.txt
+libcore.xml.NormalizeTest#testSchemaTypeDtd
+
+# expectations/icebox.txt
+libcore.xml.SaxTest#testYesPrefixesYesNamespaces
+
+# expectations/knownfailures.txt
+libcore.xml.KxmlPullParserDtdTest#testDoctypeAfterDocumentElement
+libcore.xml.KxmlPullParserDtdTest#testDoctypeInDocumentElement
+
+# expectations/icebox.txt
+org.apache.harmony.crypto.tests.javax.crypto.KeyAgreementTest#test_generateSecretLjava_lang_String
+
+# expectations/knownfailures.txt
+org.apache.harmony.security.tests.java.security.SignatureTest#testUpdatebyteArrayintint2
+
+# expectations/knownfailures.txt
+tests.api.java.util.ResourceBundleTest#test_getBundleLjava_lang_StringLjava_util_LocaleLjava_lang_ClassLoader
+
+# expectations/icebox.txt
+tests.api.java.math.BigIntegerTest#test_ConstructorIILjava_util_Random
+
+# expectations/icebox.txt
+tests.api.javax.xml.parsers.DocumentBuilderFactoryTest#test_isSetXIncludeAware
+tests.api.javax.xml.parsers.DocumentBuilderTest#testIsXIncludeAware
+tests.api.javax.xml.parsers.DocumentBuilderTest#testSetEntityResolver
+tests.api.javax.xml.parsers.SAXParserFactoryTest#test_newInstance
+tests.api.javax.xml.parsers.SAXParserFactoryTest#test_setIsXIncludeAware
+tests.api.javax.xml.parsers.SAXParserTest#test_parseLjava_io_InputStreamLorg_xml_sax_helpers_DefaultHandlerLjava_lang_String
+tests.api.javax.xml.parsers.SAXParserTest#testIsXIncludeAware
+
+# expectations/knownfailures.txt
+tests.api.javax.net.ssl.SSLEngineTest#test_getDelegatedTask
+tests.api.javax.net.ssl.SSLEngineTest#test_unwrap_02
+tests.api.javax.net.ssl.SSLEngineTest#test_unwrap_03
+tests.api.javax.net.ssl.SSLEngineTest#test_unwrap_04
+tests.api.javax.net.ssl.SSLEngineTest#test_unwrap_ByteBuffer$ByteBuffer_02
+tests.api.javax.net.ssl.SSLEngineTest#test_unwrap_ByteBuffer$ByteBuffer_03
+tests.api.javax.net.ssl.SSLEngineTest#test_unwrap_ByteBuffer_ByteBuffer_02
+tests.api.javax.net.ssl.SSLEngineTest#test_unwrap_ByteBuffer_ByteBuffer_03
+tests.api.javax.net.ssl.SSLEngineTest#test_wrap_02
+tests.api.javax.net.ssl.SSLEngineTest#test_wrap_04
+tests.api.javax.net.ssl.SSLEngineTest#test_wrap_ByteBuffer$ByteBuffer_03
+tests.api.javax.net.ssl.SSLEngineTest#test_wrap_ByteBuffer_ByteBuffer_03
+tests.api.javax.net.ssl.SSLEngineTest#testHandshake
+
+# expectations/knownfailures.txt
+tests.api.javax.net.ssl.TrustManagerFactory1Test#test_initLjavax_net_ssl_ManagerFactoryParameters
+
+# expectations/knownfailures.txt
+tests.java.security.SecureClassLoaderTest#testSecureClassLoaderClassLoader
+
+# expectations/knownfailures.txt
+tests.java.sql.DatabaseMetaDataNotSupportedTest#test_allTablesAreSelectable
+tests.java.sql.DatabaseMetaDataNotSupportedTest#test_doesMaxRowSizeIncludeBlobs
+tests.java.sql.DatabaseMetaDataNotSupportedTest#test_getColumnPrivilegesLjava_lang_StringLjava_lang_StringLjava_lang_StringLjava_lang_String
+tests.java.sql.DatabaseMetaDataNotSupportedTest#test_getExportedKeysLjava_lang_StringLjava_lang_StringLjava_lang_String
+tests.java.sql.DatabaseMetaDataNotSupportedTest#test_getIndexInfoLjava_lang_StringLjava_lang_StringLjava_lang_StringZZ
+tests.java.sql.DatabaseMetaDataNotSupportedTest#test_getMaxTableNameLength
+tests.java.sql.DatabaseMetaDataNotSupportedTest#test_getMaxTablesInSelect
+tests.java.sql.DatabaseMetaDataNotSupportedTest#test_getMaxUserNameLength
+tests.java.sql.DatabaseMetaDataNotSupportedTest#test_getProcedureTerm
+tests.java.sql.DatabaseMetaDataNotSupportedTest#test_getSchemaTerm
+tests.java.sql.DatabaseMetaDataNotSupportedTest#test_getTablePrivilegesLjava_lang_StringLjava_lang_StringLjava_lang_String
+tests.java.sql.DatabaseMetaDataNotSupportedTest#test_getVersionColumnsLjava_lang_StringLjava_lang_StringLjava_lang_String
+tests.java.sql.DatabaseMetaDataNotSupportedTest#test_isCatalogAtStart
+tests.java.sql.DatabaseMetaDataNotSupportedTest#test_locatorsUpdateCopy
+tests.java.sql.DatabaseMetaDataNotSupportedTest#test_supportsANSI92EntryLevelSQL
+tests.java.sql.DatabaseMetaDataNotSupportedTest#test_supportsDataDefinitionAndDataManipulationTransactions
+tests.java.sql.DatabaseMetaDataNotSupportedTest#test_supportsMinimumSQLGrammar
+tests.java.sql.DatabaseMetaDataNotSupportedTest#test_supportsResultSetTypeI
+tests.java.sql.DatabaseMetaDataNotSupportedTest#test_supportsSubqueriesInComparisons
+tests.java.sql.DatabaseMetaDataNotSupportedTest#test_supportsSubqueriesInIns
+tests.java.sql.DatabaseMetaDataNotSupportedTest#test_supportsTransactions
+tests.java.sql.DatabaseMetaDataNotSupportedTest#test_usesLocalFiles
+tests.java.sql.DatabaseMetaDataTest#test_getColumnsArbitrary
+tests.java.sql.DatabaseMetaDataTest#test_getColumnsSpecific
+tests.java.sql.DatabaseMetaDataTest#test_getColumnsTableWithNoCatalogSchema
+tests.java.sql.DatabaseMetaDataTest#test_getCrossReferenceLjava_lang_StringLjava_lang_StringLjava_lang_StringLjava_lang_StringLjava_lang_StringLjava_lang_String
+tests.java.sql.DatabaseMetaDataTest#test_getDatabaseMajorVersion
+tests.java.sql.DatabaseMetaDataTest#test_getDatabaseMinorVersion
+tests.java.sql.DatabaseMetaDataTest#test_getDatabaseProductName
+tests.java.sql.DatabaseMetaDataTest#test_getDatabaseProductVersion
+tests.java.sql.DatabaseMetaDataTest#test_getDefaultTransactionIsolation
+tests.java.sql.DatabaseMetaDataTest#test_getDriverName
+tests.java.sql.DatabaseMetaDataTest#test_getDriverVersion
+tests.java.sql.DatabaseMetaDataTest#test_getImportedKeysLjava_lang_StringLjava_lang_StringLjava_lang_String
+tests.java.sql.DatabaseMetaDataTest#test_getJDBCMajorVersion
+tests.java.sql.DatabaseMetaDataTest#test_getJDBCMinorVersion
+tests.java.sql.DatabaseMetaDataTest#test_getNumericFunctions
+tests.java.sql.DatabaseMetaDataTest#test_getPrimaryKeysLjava_lang_StringLjava_lang_StringLjava_lang_String
+tests.java.sql.DatabaseMetaDataTest#test_getResultSetHoldability
+tests.java.sql.DatabaseMetaDataTest#test_getSchemas
+tests.java.sql.DatabaseMetaDataTest#test_getSearchStringEscape
+tests.java.sql.DatabaseMetaDataTest#test_getSQLKeywords
+tests.java.sql.DatabaseMetaDataTest#test_getSQLStateType
+tests.java.sql.DatabaseMetaDataTest#test_getStringFunctions
+tests.java.sql.DatabaseMetaDataTest#test_getSystemFunctions
+tests.java.sql.DatabaseMetaDataTest#test_getTablesLjava_lang_StringLjava_lang_StringLjava_lang_String$Ljava_lang_String
+tests.java.sql.DatabaseMetaDataTest#test_getTableTypes
+tests.java.sql.DatabaseMetaDataTest#test_getTimeDateFunctions
+tests.java.sql.DatabaseMetaDataTest#test_getTypeInfo
+tests.java.sql.DatabaseMetaDataTest#test_getURL
+tests.java.sql.DatabaseMetaDataTest#test_insertsAreDetectedI
+tests.java.sql.DatabaseMetaDataTest#test_isReadOnly
+tests.java.sql.DatabaseMetaDataTest#test_othersDeletesAreVisibleI
+tests.java.sql.DatabaseMetaDataTest#test_othersInsertsAreVisibleI
+tests.java.sql.DatabaseMetaDataTest#test_othersUpdatesAreVisibleI
+tests.java.sql.DatabaseMetaDataTest#test_supportsColumnAliasing
+tests.java.sql.DatabaseMetaDataTest#test_supportsExpressionsInOrderBy
+tests.java.sql.DatabaseMetaDataTest#test_supportsGroupBy
+tests.java.sql.DatabaseMetaDataTest#test_supportsGroupByUnrelated
+tests.java.sql.DatabaseMetaDataTest#test_supportsNonNullableColumns
+tests.java.sql.DatabaseMetaDataTest#test_supportsOrderByUnrelated
+tests.java.sql.DatabaseMetaDataTest#test_supportsSelectForUpdate
+tests.java.sql.DatabaseMetaDataTest#test_supportsSubqueriesInExists
+tests.java.sql.DatabaseMetaDataTest#test_supportsTableCorrelationNames
+tests.java.sql.DeleteFunctionalityTest#testDelete6
+tests.java.sql.SelectFunctionalityTest#test_SelectRightOuterJoin
+tests.java.sql.UpdateFunctionalityTest2#testUpdate2
+tests.java.sql.UpdateFunctionalityTest2#testUpdate4
+tests.java.sql.UpdateFunctionalityTest2#testUpdate6
+tests.java.sql.UpdateFunctionalityTest2#testUpdate7
+
+# expectations/icebox.txt
+tests.org.w3c.dom.HCNotationsRemoveNamedItemNS#testRemoveNamedItemNS
+tests.org.w3c.dom.HCNotationsSetNamedItemNS#testNotationsSetNamedItemNS
+
+# expectations/icebox.txt
+org.json.ParsingTest#test64BitHexValues

@@ -6,5 +6,6 @@ a.out
 target/
 /tests/bin/robovm-vts.env
 /tests/drlvm-vts-bundle/
+/tests/libcore/sqliteTest*.db
 /eclipse/ui/lib/
 /tmp/

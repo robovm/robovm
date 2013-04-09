@@ -1,0 +1,159 @@
+<project name="tests-libcore" default="run" basedir="." xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+  <condition property="arch" value="auto">
+    <not><isset property="arch"/></not>
+  </condition>
+  <condition property="os" value="auto">
+    <not><isset property="os"/></not>
+  </condition>
+
+  <xmlproperty file="../../pom.xml"/>
+  <property name="pom.version" value="${project.version}"/>
+  <property name="support.src" location="support/src/test/java"/>
+  <property name="luni.src" location="luni/src/test/java"/>
+  <property name="luni.resources" location="luni/src/test/resources"/>
+  <property name="dom.src" location="dom/src/test/java"/>
+  <property name="dom.resources" location="dom/src/test/resources"/>
+  <property name="json.src" location="json/src/test/java"/>
+  <property name="json.resources" location="json/src/test/resources"/>
+  <property name="xml.src" location="xml/src/test/java"/>
+  <property name="xml.resources" location="xml/src/test/resources"/>
+  <property name="expectations" location="expectations"/>
+  <property name="build" location="target/classes"/>
+  <property name="reports" location="target/reports"/>
+  <property name="tmp" location="${java.io.tmpdir}/robovm.tests.libcore.${os}-${arch}.tmp"/>
+  <property name="install" location="${java.io.tmpdir}/robovm.tests.libcore.${os}-${arch}"/>
+
+  <property name="maven-ant-tasks.version" value="2.1.3" />
+  <path id="maven-ant-tasks.classpath" 
+        path="${basedir}/maven-ant-tasks-${maven-ant-tasks.version}.jar" />
+  <typedef resource="org/apache/maven/artifact/ant/antlib.xml"
+           uri="antlib:org.apache.maven.artifact.ant"
+           classpathref="maven-ant-tasks.classpath" />
+
+  <artifact:dependencies pathId="deps.classpath">
+    <dependency groupId="junit" artifactId="junit" version="4.11" scope="test"/>
+    <dependency groupId="com.google.mockwebserver" artifactId="mockwebserver" version="20130201" scope="test"/>
+  </artifact:dependencies>
+
+  <path id="rt.classpath" path="${basedir}/../../rt/target/robovm-rt-${pom.version}.jar"/>
+
+  <target name="init">
+    <mkdir dir="${build}"/>
+    <mkdir dir="${reports}"/>
+  </target>
+
+  <target name="compile" depends="init">
+    <javac sourcepath="" destdir="${build}" bootclasspathref="rt.classpath" debug="true">
+      <classpath>
+        <path refid="deps.classpath"/>
+      </classpath>
+      <src path="${support.src}"/>
+      <src path="${luni.src}"/>
+      <src path="${dom.src}"/>
+      <src path="${json.src}"/>
+      <src path="${xml.src}"/>
+      <exclude name="tests/support/Support_ClassLoader.java"/>
+      <exclude name="dalvik/system/DexClassLoaderTest.java"/>
+      <exclude name="dalvik/system/PathClassLoaderTest.java"/>
+      <exclude name="libcore/dalvik/system/PathClassLoaderTest.java"/>
+      <exclude name="libcore/java/lang/reflect/ClassLoaderReflectionTest.java"/>
+      <exclude name="libcore/java/lang/reflect/MissingClassesTest.java"/>
+      <exclude name="libcore/java/lang/reflect/ProxyTest.java"/>
+    </javac>
+    <copy todir="${build}">
+      <fileset dir="${luni.resources}">
+        <include name="**/*"/>
+      </fileset>
+      <fileset dir="${luni.src}">
+        <include name="**/*"/>
+        <exclude name="**/*.java"/>
+      </fileset>
+      <fileset dir="${support.src}">
+        <include name="**/*"/>
+        <exclude name="**/*.java"/>
+      </fileset>
+      <fileset dir="${dom.resources}">
+        <include name="**/*"/>
+      </fileset>
+      <fileset dir="${dom.src}">
+        <include name="**/*"/>
+        <exclude name="**/*.java"/>
+      </fileset>
+      <fileset dir="${json.src}">
+        <include name="**/*"/>
+        <exclude name="**/*.java"/>
+      </fileset>
+      <fileset dir="${xml.src}">
+        <include name="**/*"/>
+        <exclude name="**/*.java"/>
+      </fileset>
+    </copy>
+    <copy todir="${build}" file="${basedir}/robovm-excluded-tests"/>
+    <pathconvert property="all-classes" dirsep="." pathsep="${line.separator}">
+      <path>
+        <fileset dir="${build}">
+          <include name="**/*.class"/>
+          <exclude name="**/*$*.class"/>
+        </fileset>
+      </path>
+      <map from="${build}${file.separator}" to=""/>
+      <mapper type="glob" from="*.class" to="*"/>
+    </pathconvert>
+    <echo message="${all-classes}" file="${build}/all-classes.txt"/>
+    <property name="all-classes" value=""/>
+  </target>
+
+  <target name="run" depends="compile">
+    <path id="cp">
+      <path refid="deps.classpath"/>
+      <pathelement location="${build}"/>
+    </path>
+
+    <tstamp>
+      <format property="newtimestamp" pattern="yyyyMMddHHmmss"/>
+    </tstamp>
+    <condition property="timestamp" value="${newtimestamp}">
+      <not><isset property="timestamp"/></not>
+    </condition>
+
+    <condition property="include" value=".*">
+      <not><isset property="include"/></not>
+    </condition>
+    <condition property="exclude" value=" ">
+      <not><isset property="exclude"/></not>
+    </condition>
+    <condition property="run-excluded" value="false">
+      <not><isset property="tests"/></not>
+    </condition>
+
+    <echo message="Running tests matching '${include}' and not matching '${exclude}'"/>
+
+    <junit fork="true" jvm="${basedir}/robovm-ant-junit-runner" printsummary="true" showoutput="true">
+      <env key="ROBOVM_TESTS_INCLUDE_PATTERN" value="${include}"/>
+      <env key="ROBOVM_TESTS_EXCLUDE_PATTERN" value="${exclude}"/>
+      <env key="ROBOVM_TESTS_RUN_EXCLUDED" value="${run-excluded}"/>
+      <classpath>
+        <path refid="cp"/>
+      </classpath>
+      <jvmarg line="-os ${os}"/>
+      <jvmarg line="-arch ${arch}"/>
+      <jvmarg line="-timestamp ${timestamp}"/>
+      <formatter type="xml"/>
+      <test name="RoboVMAllTests" todir="${reports}"/>
+    </junit>
+
+    <junitreport todir="${reports}">
+      <fileset dir="${reports}">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report format="frames" styledir="${basedir}" todir="${reports}/html"/>
+    </junitreport>    
+  </target>
+
+  <target name="clean">
+    <delete dir="${build}"/>
+    <delete dir="${reports}"/>
+  </target>
+
+</project>

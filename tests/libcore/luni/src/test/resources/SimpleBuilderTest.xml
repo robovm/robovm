@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<!-- Fragile! -->
+
+<!-- Handle me with care! -->
+
+<?cmd The quick brown fox ?>
+
+<t:stuff xmlns:t="http://www.foo.bar" xmlns:u="http://www.bar.foo">
+
+	<nestedStuff one="eins">This space intentionally left blank.</nestedStuff>
+
+	<nestedStuff two="zwei">Nothing to see here - please get along!</nestedStuff>
+
+	<nestedStuff three="drei" title="">Rent this space!</nestedStuff>
+
+	<nestedStuff t:four="vier"/>
+
+</t:stuff>
+
+<?cmd jumps over the lazy dog.?>

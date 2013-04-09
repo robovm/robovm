@@ -1,0 +1,61 @@
+#!/bin/bash
+
+SELF=$(basename $0)
+BASE=$(cd $(dirname $0)/../..; pwd -P)
+
+CP=
+ARCH=auto
+OS=auto
+TIMESTAMP=
+
+if [ -f "$BASE/tests/libcore/$SELF.env" ]; then
+  . $BASE/tests/libcore/$SELF.env
+fi
+
+# Record -classpath, -arch, -os and -timestamp and remove them from $@
+# The rest of the args should be the main class (org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner)
+# and its args
+while [ ${1:0:1} = '-' ]; do
+  if [ "$1" = '-cp' -o "$1" = '-classpath' ]; then
+    shift
+    CP=$1
+  elif [ "$1" = '-arch' ]; then
+    shift
+    ARCH=$1
+  elif [ "$1" = '-os' ]; then
+    shift
+    OS=$1
+  elif [ "$1" = '-timestamp' ]; then
+    shift
+    TIMESTAMP=$1
+  fi
+  shift
+done
+
+MAINCLASS=$1
+shift
+
+TMP=/tmp/robovm-libcore.tmp.$ARCH.$OS.$TIMESTAMP
+TARGET=/tmp/robovm-libcore.$ARCH.$OS.$TIMESTAMP
+
+if [ ! -x $TARGET/test ]; then
+  export ROBOVM_DEV_ROOT=$BASE
+  $ROBOVM_DEV_ROOT/bin/robovm \
+    -tmp $TMP \
+    -d $TARGET \
+    -arch $ARCH \
+    -os $OS \
+    -o test \
+    -verbose \
+    -roots '##.#' \
+    -use-debug-libs \
+    -cp $CP
+  result=$?
+  if [ $result -ne 0 ]; then
+    exit $result
+  fi
+fi
+
+$TARGET/test -rvm:mx256M -rvm:MainClass=$MAINCLASS $@
+result=$?
+exit $result

@@ -1,0 +1,10 @@
+all classes under org.w3c.domts are from the official w3c test suite.
+Level 1 Core tests and Level 2 Core tests from
+http://www.w3.org/DOM/Test/
+
+additions made:
+all additions under org.w3c.dom.* and org.w3c.dom.events.*
+
+
+removals:
+org/w3c/domts/JUnitRunner.java

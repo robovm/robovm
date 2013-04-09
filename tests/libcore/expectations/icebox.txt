@@ -1,0 +1,214 @@
+/*
+ * This file contains expectations for tests that we'd like to eventually fix, but aren't urgent.
+ */
+[
+{
+ description: "javasqlite doesn't honor query timeouts",
+ bug: 5213614,
+ names: [
+   "libcore.sqlite.QueryTimeoutTest#testExecuteUpdate",
+   "libcore.sqlite.QueryTimeoutTest#testPreparedStatementFetch",
+   "libcore.sqlite.QueryTimeoutTest#testPreparedStatementUpdate",
+   "libcore.sqlite.QueryTimeoutTest#testTimeoutAndStatementReuse"
+  ]
+},
+{
+  description: "Dalvik doesn't support XML Schemas, DTDs or validation",
+  bug: 3268630,
+  name: "libcore.xml.DomTest#testEntityDeclarations",
+  substring: "This implementation does not parse entity declarations"
+},
+{
+  description: "Dalvik doesn't support XML Schemas, DTDs or validation",
+  bug: 3268630,
+  name: "libcore.xml.DomTest#testGetWholeTextWithEntityReference",
+  substring: "This implementation doesn't resolve entity references in getWholeText"
+},
+{
+  description: "Dalvik doesn't support XML Schemas, DTDs or validation",
+  name: "libcore.xml.DomTest#testExpandingEntityReferencesOff",
+  bug: 3268630,
+  substring: "This implementation doesn't include children in entity references"
+},
+{
+  description: "Dalvik doesn't support XML Schemas, DTDs or validation",
+  name: "libcore.xml.DomTest#testExpandingEntityReferencesOn",
+  bug: 3268630,
+  substring: "This implementation doesn't expand entity references"
+},
+{
+  description: "Dalvik doesn't support XML Schemas, DTDs or validation",
+  bug: 3268630,
+  name: "libcore.xml.DomTest#testIsElementContentWhitespaceWithDeclaration",
+  substring: "This implementation does not recognize element content whitespace"
+},
+{
+  description: "Dalvik doesn't support XML Schemas, DTDs or validation",
+  bug: 3268630,
+  name: "libcore.xml.DomTest#testNotations",
+  substring: "This implementation does not parse notations"
+},
+{
+  description: "Dalvik doesn't support XML Schemas, DTDs or validation",
+  bug: 3268630,
+  names: [
+    "tests.org.w3c.dom.HCNotationsRemoveNamedItemNS#testRemoveNamedItemNS",
+    "tests.org.w3c.dom.HCNotationsSetNamedItemNS#testNotationsSetNamedItemNS"
+  ]
+},
+{
+  description: "Dalvik doesn't support XML Schemas, DTDs or validation",
+  bug: 3268630,
+  name: "libcore.xml.DeclarationTest#testGetXmlEncoding",
+  substring: "This implementation doesn't parse the encoding from the XML declaration"
+},
+{
+  description: "Dalvik doesn't support XML Schemas, DTDs or validation",
+  bug: 3268630,
+  name: "libcore.xml.DeclarationTest#testGetXmlStandalone",
+  substring: "This implementation doesn't parse standalone from the XML declaration"
+},
+{
+  description: "Dalvik doesn't support XML Schemas, DTDs or validation",
+  bug: 3268630,
+  name: "libcore.xml.DeclarationTest#testGetXmlVersion",
+  substring: "This implementation doesn't parse the version from the XML declaration"
+},
+{
+  description: "Dalvik doesn't support XML Schemas, DTDs or validation",
+  bug: 3268630,
+  name: "libcore.xml.NormalizeTest#testSchemaTypeDtd",
+  substring: "This implementation's setParameter() supports an unexpected value: schema-type=http://www.w3.org/TR/REC-xml"
+},
+{
+  description: "Dalvik doesn't support XML Schemas, DTDs or validation",
+  bug: 3268630,
+  name: "tests.api.javax.xml.parsers.DocumentBuilderTest#testSetEntityResolver",
+  substring: "java.lang.ClassCastException: org.apache.harmony.xml.dom.EntityReferenceImpl"
+},
+{
+  description: "Dalvik doesn't support XML Schemas, DTDs or validation",
+  bug: 3268630,
+  name: "libcore.xml.DeclarationTest.testGetXmlVersion",
+  substring: "This implementation doesn't parse the version from the XML declaration"
+},
+{
+  description: "the lack of schema parsing also extends to XML parsing in prefs",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.prefs.tests.java.util.prefs.PreferencesTest#testImportPreferences",
+  substring: "junit.framework.AssertionFailedError: should throw InvalidPreferencesFormatException"
+},
+{
+  description: "many tests attempt to fork a Java executable, but fork the wrong one",
+  result: "EXEC_FAILED",
+  failure: "should fork a dalvikvm, not a JVM",
+  substring: "/system/bin.*IOException"
+},
+{
+  description: "a low impact bug, we can't produce tiny random, probable prime big integers",
+  result: EXEC_FAILED,
+  name: "tests.api.java.math.BigIntegerTest#test_ConstructorIILjava_util_Random",
+  substring: "junit.framework.AssertionFailedError: Random number one is too big"
+},
+{
+  description: "we don't support CANON_EQ in regex
+                http://code.google.com/p/android/issues/detail?id=8592",
+  result: EXEC_FAILED,
+  names: [
+    "org.apache.harmony.tests.java.util.regex.PatternTest#testCanonEqFlagWithSupplementaryCharacters",
+    "org.apache.harmony.tests.java.util.regex.PatternTest#testCanonEqFlag",
+    "org.apache.harmony.tests.java.util.regex.PatternErrorTest#testCompileErrors",
+    "org.apache.harmony.tests.java.util.regex.PatternTest#testCompileNonCaptGroup",
+    "org.apache.harmony.tests.java.util.regex.PatternTest#testIndexesCanonicalEq"
+  ],
+  substring: "UnsupportedOperationException: CANON_EQ flag not supported"
+},
+{
+  description: "low-impact XML bugs:",
+  result: EXEC_FAILED,
+  name: "libcore.xml.DomTest#testAttributeNamedIdIsNotAnIdByDefault",
+  substring: "This implementation incorrectly interprets the \"id\" attribute as an identifier by default"
+},
+{
+  description: "low-impact XML bugs:",
+  result: EXEC_FAILED,
+  name: "libcore.xml.DomTest#testDocumentAddChild",
+  substring: "Document nodes shouldn't accept child nodes"
+},
+{
+  description: "low-impact XML bugs:",
+  result: EXEC_FAILED,
+  name: "libcore.xml.DomTest#testElementTraversalFeature",
+  substring: "This implementation is expected to support ElementTraversal v. 1.0 but does not."
+},
+{
+  description: "low-impact XML bugs:",
+  result: EXEC_FAILED,
+  name: "libcore.xml.DomTest#testLoadSaveFeature",
+  substring: "This implementation is expected to support LS v. 3.0 but does not."
+},
+{
+  description: "low-impact XML bugs:",
+  result: EXEC_FAILED,
+  name: "libcore.xml.SaxTest#testYesPrefixesYesNamespaces",
+  substring: "The 'namespace-prefix' feature is not supported while the 'namespaces' feature is enabled."
+},
+{
+  description: "low-impact XML bugs:",
+  result: EXEC_FAILED,
+  name: "tests.api.javax.xml.parsers.SAXParserFactoryTest#test_newInstance",
+  substring: "Expected FactoryConfigurationError was not thrown"
+},
+{
+  description: "low-impact XML bugs:",
+  result: EXEC_FAILED,
+  names: [
+    "tests.api.javax.xml.parsers.DocumentBuilderFactoryTest#test_isSetXIncludeAware",
+    "tests.api.javax.xml.parsers.DocumentBuilderTest#testIsXIncludeAware",
+    "tests.api.javax.xml.parsers.SAXParserFactoryTest#test_setIsXIncludeAware",
+    "tests.api.javax.xml.parsers.SAXParserTest#testIsXIncludeAware"
+  ],
+  substring: "java.lang.UnsupportedOperationException: This parser does not support specification \"Unknown\" version \"0.0\""
+},
+{
+  description: "a low-impact bug: \"Shared FileDescriptors get closed too early\"
+                  http://code.google.com/p/android/issues/detail?id=5923",
+  result: EXEC_FAILED,
+  name: "java.io.FileDescriptor.Finalize",
+  pattern: ".*java.io.IOException.*openCheck.*"
+},
+{
+  description: "a low-impact bug, also present in Crockford's implementation of org.json",
+  result: EXEC_FAILED,
+  name: "org.json.ParsingTest#test64BitHexValues",
+  substring: "Large hex longs shouldn't be yield ints or strings expected:<-1> but was:<0xFFFFFFFFFFFFFFFF>"
+},
+{
+  description: "this test needs to be fixed. We supply optional qnames, but this test doesn't expect them",
+  result: EXEC_FAILED,
+  name: "tests.api.javax.xml.parsers.SAXParserTest#test_parseLjava_io_InputStreamLorg_xml_sax_helpers_DefaultHandlerLjava_lang_String"
+},
+{
+  description: "these enforce a bug where an exception is incorrectly unthrown, but should maybe be fixed for
+                compatibility.",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.luni.tests.java.util.TreeMapTest#test_headMapLjava_lang_ObjectZL",
+  substring: "java.lang.IllegalArgumentException: null not in range ...5)"
+},
+{
+  description: "these enforce a bug where an exception is incorrectly unthrown, but should maybe be fixed for
+                compatibility.",
+  result: EXEC_FAILED,
+  names: [
+    "org.apache.harmony.luni.tests.java.util.TreeMapTest#test_tailMapLjava_lang_ObjectZL",
+    "org.apache.harmony.luni.tests.java.util.TreeMapTest#test_descendingMap_subMap"
+  ],
+  substring: "java.lang.IllegalArgumentException: 5 not in range (5..."
+},
+{
+  description: "BouncyCastle allows unrecognized algorithms, but RI does not, not clear if this is a bug",
+  result: EXEC_FAILED,
+  name: "org.apache.harmony.crypto.tests.javax.crypto.KeyAgreementTest#test_generateSecretLjava_lang_String",
+  substring: "junit.framework.AssertionFailedError: NoSuchAlgorithmException expected"
+}
+]

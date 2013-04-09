@@ -1,0 +1,16 @@
+Manifest-Version: 2.0
+Class-Path:  dom3-xml-apis.jar dom3-xercesImpl.jar xmlParserAPIs.jar x
+ ercesImpl.jar xerces.jar xml4j.jar xmlparserv2.jar crimson.jar parser
+ .jar jaxp.jar xml-apis.jar gnujaxp.jar dom4j-full.jar batik-svg-dom.j
+ ar crimson-parser.jar avalon-run.jar
+Created-By: 1.4.2_04 (Sun Microsystems Inc.)
+Main-Class: org.w3c.domts.level2.core.alltests
+
+Name: org/w3c/domts/level2/core
+Implementation-Title: W3C/NIST Test Suite for DOM Level 2 Core
+Specification-Title: W3C/NIST Test Suite for DOM Level 2 Core
+Specification-Version: 0.0.1
+Specification-Vendor: World Wide Web Consortium
+Implementation-Version: 0.0.1
+Implementation-Vendor: World Wide Web Consortium 
+

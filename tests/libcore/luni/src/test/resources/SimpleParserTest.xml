@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!-- This space intentionally left blank. -->
+
+<?The quick?>
+
+<t:stuff xmlns:t="http://www.foobar.org">
+
+	<nestedStuff one="eins">   Some text here   </nestedStuff>
+
+	<nestedStuff two="zwei"></nestedStuff>
+
+    some more here...
+
+	<nestedStuff three="drei" />
+
+</t:stuff>
+
+<?brown fox?>

@@ -1,0 +1,45 @@
+/*
+ * This file contains expectations for tests that require support from the test runner to complete
+ * successfully.
+ */
+[
+{
+  description: "large tests",
+  result: SUCCESS,
+  names: [
+    "java.util.EnumSet.EnumSetBash",
+    "org.apache.harmony.tests.java.util.regex.MatcherTest#testAllCodePoints",
+    "libcore.javax.net.ssl.SSLSocketTest",
+    "org.apache.harmony.crypto.tests.javax.crypto.func.KeyAgreementFunctionalTest",
+    "org.apache.harmony.crypto.tests.javax.crypto.interfaces.DHPrivateKeyTest",
+    "org.apache.harmony.crypto.tests.javax.crypto.interfaces.DHPublicKeyTest",
+    "java.io.PipedInputStream.CloseAndAvailableRC",
+    "java.io.PrintStream.OversynchronizedTest",
+    "java.io.PrintWriter.OversynchronizedTest",
+    "java.lang.String.Split",
+    "java.lang.ref.SoftReference.Pin",
+    "java.math.BigInteger.BigIntegerTest",
+    "java.net.MulticastSocket.Test",
+    "java.net.Socket.InheritTimeout",
+    "java.net.Socket.reset.Test",
+    "java.net.URLConnection.TimeoutTest",
+    "java.nio.channels.DatagramChannel.ConnectedSend",
+    "java.nio.channels.FileChannel.ExpandingMap",
+    "java.nio.channels.FileChannel.Transfers",
+    "java.nio.channels.SocketChannel.Open",
+    "java.text.Bidi.Bug6665028",
+    "java.util.Collections.FindSubList",
+    "java.util.Locale.Bug4518797",
+    "java.util.ResourceBundle.Control.StressTest",
+    "java.util.WeakHashMap.GCDuringIteration",
+    "java.util.concurrent.FutureTask.Throw",
+    "java.util.concurrent.locks.ReentrantReadWriteLock.MapLoops",
+    "java.util.zip.LargeZip",
+    "java.util.zip.ZipFile.LargeZipFile",
+    "java.util.zip.ZipFile.ManyEntries",
+    "sun.nio.cs.FindOneCharEncoderBugs",
+    "sun.nio.cs.SurrogateGB18030Test"
+  ],
+  "tags": [ "large" ]
+}
+]

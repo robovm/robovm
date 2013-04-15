@@ -19,8 +19,8 @@ JavaThread* Java_java_lang_Thread_currentThread(Env* env, Class* cls) {
     return env->currentThread->threadObj;
 }
 
-jlong Java_java_lang_Thread_internalStart(Env* env, Class* cls, JavaThread* t) {
-    return rvmStartThread(env, t);
+void Java_java_lang_Thread_internalStart(Env* env, Class* cls, JavaThread* t) {
+    rvmStartThread(env, t);
 }
 
 void Java_java_lang_Thread_internalSleep(Env* env, Class* cls, jlong millis, jint nanos) {

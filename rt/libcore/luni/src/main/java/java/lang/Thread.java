@@ -1039,10 +1039,10 @@ public class Thread implements Runnable {
             throw new IllegalThreadStateException("Thread already started."); // TODO Externalize?
         }
 
-        threadPtr = internalStart(this);
+        internalStart(this);
         started = true;
     }
-    private static native long internalStart(Thread t);
+    private static native void internalStart(Thread t);
 
     /**
      * Requests the receiver Thread to stop and throw ThreadDeath. The Thread is

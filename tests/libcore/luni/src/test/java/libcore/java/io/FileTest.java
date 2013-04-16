@@ -26,6 +26,11 @@ import java.util.UUID;
 import libcore.io.Libcore;
 
 public class FileTest extends junit.framework.TestCase {
+    
+    // RoboVM note: Darwin has a path length limit of 1024 characters while 
+    // Ubuntu allows as many as 4096.
+    public static final int PATH_MAX = (System.getProperty("os.name").contains("Darwin") ? 1024 : 4096);
+    
     private static File createTemporaryDirectory() throws Exception {
         String base = System.getProperty("java.io.tmpdir");
         File directory = new File(base, UUID.randomUUID().toString());
@@ -48,8 +53,9 @@ public class FileTest extends junit.framework.TestCase {
         // Keep creating subdirectories until the path length is greater than 1KiB.
         // Ubuntu 8.04's kernel is happy up to about 4KiB.
         File f = base;
-        for (int i = 0; f.toString().length() <= 1024; ++i) {
+        for (int i = 0; f.toString().length() <= PATH_MAX - 256; ++i) {
             f = new File(f, longString);
+            System.err.println(f.getAbsolutePath());
             assertTrue(f.mkdir());
         }
         return f;
@@ -69,7 +75,7 @@ public class FileTest extends junit.framework.TestCase {
         File source = new File(base, "source");
         assertFalse(source.exists());
         assertTrue(target.exists());
-        assertTrue(target.getCanonicalPath().length() > 1024);
+        assertTrue(target.getCanonicalPath().length() > PATH_MAX - 256);
         ln_s(target, source);
         assertTrue(source.exists());
         assertEquals(target.getCanonicalPath(), source.getCanonicalPath());

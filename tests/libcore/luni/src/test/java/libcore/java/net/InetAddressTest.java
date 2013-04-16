@@ -56,7 +56,8 @@ public class InetAddressTest extends junit.framework.TestCase {
         "7f.0.0.1",
 
         // Octal.
-        "0177.00.00.01", // Historically, this would have been interpreted as 127.0.0.1.
+        // RoboVM note: getaddrinfo() in Mac OS X 10.8 happily parses this one
+        //"0177.00.00.01", // Historically, this would have been interpreted as 127.0.0.1.
 
         // Negative numbers.
         "-1.0.0.1",

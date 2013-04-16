@@ -36,6 +36,12 @@ public final class RandomAccessFileTest extends TestCase {
     }
 
     public void testSeekTooLarge() throws Exception {
+        // RoboVM note: On Darwin this test fails on both RoboVM and the RI since
+        // lseek doesn't fail even if Long.MAX_VALUE is passed to it.
+        if (System.getProperty("os.name").contains("Darwin") || System.getProperty("os.name").contains("Mac")) {
+            return;
+        }
+        
         RandomAccessFile raf = new RandomAccessFile(file, "rw");
         try {
             raf.seek(Long.MAX_VALUE);

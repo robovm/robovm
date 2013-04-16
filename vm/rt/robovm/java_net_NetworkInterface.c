@@ -197,7 +197,7 @@ ByteArray* Java_java_net_NetworkInterface_getHardwareAddress(Env* env, Class* cl
 
 static jboolean countIpv6AddressesIterator(Env* env, struct ifaddrs *ia, void* data) {
     jint* count = (jint*) data;
-    if (ia->ifa_addr->sa_family == AF_INET6) {
+    if (ia->ifa_addr && ia->ifa_addr->sa_family == AF_INET6) {
         (*count)++;
     }
     return TRUE;
@@ -208,7 +208,7 @@ typedef struct {
 } GetIpv6AddressesData;
 static jboolean getIpv6AddressesIterator(Env* env, struct ifaddrs *ia, void* _data) {
     GetIpv6AddressesData* data = (GetIpv6AddressesData*) _data;
-    if (ia->ifa_addr->sa_family == AF_INET6) {
+    if (ia->ifa_addr && ia->ifa_addr->sa_family == AF_INET6) {
         struct sockaddr_in6* addr = (struct sockaddr_in6*) ia->ifa_addr;
         struct sockaddr_in6* netmask = (struct sockaddr_in6*) ia->ifa_netmask;
         memcpy(data->result->values + (16 * 2 * data->index), addr->sin6_addr.s6_addr, 16);

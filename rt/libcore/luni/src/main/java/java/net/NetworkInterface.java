@@ -34,9 +34,7 @@ package java.net;
 
 import static libcore.io.OsConstants.*;
 
-import java.io.BufferedReader;
 import java.io.FileDescriptor;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -57,8 +55,8 @@ import libcore.io.Libcore;
 public final class NetworkInterface extends Object {
     /*
      * RoboVM note: This class has been changed heavily to work on Darwin.
-     * The original class reads all required info from /sys/class/net
-     * and /proc/net/if_inet6 and uses no native code. Neither of those are 
+     * The original class read all required info from /sys/class/net
+     * and /proc/net/if_inet6 and used no native code. Neither of those are 
      * available on Darwin so we need to call native code instead. 
      */
     
@@ -179,12 +177,11 @@ public final class NetworkInterface extends Object {
         return prefixLength;
     }
     
-    private static void collectIpv6AddressesDarwin(String interfaceName, int interfaceIndex,
+    private static void collectIpv6Addresses(String interfaceName, int interfaceIndex,
             List<InetAddress> addresses, List<InterfaceAddress> interfaceAddresses) throws SocketException {
         
-        // RoboVM note: Darwin doesn't have /proc/net/if_inet6. But unlike 
-        // Linux ioctl(SIOCGIFCONF) on Darwin also returns IPv6 addresses
-        // so we can use that here.
+        // RoboVM note: This method used to read from /proc/net/if_inet6 which isn't available on 
+        // Darwin.
         byte[] bytes = getIpv6Addresses(interfaceName);
         if (bytes != null) {
             for (int i = 0; i < bytes.length; i += 32) {
@@ -197,48 +194,6 @@ public final class NetworkInterface extends Object {
                 interfaceAddresses.add(new InterfaceAddress(inet6Address, 
                         (short) ipv6NetmaskToPrefixLength(netmaskBytes)));
             }
-        }
-    }
-    
-    private static void collectIpv6Addresses(String interfaceName, int interfaceIndex,
-            List<InetAddress> addresses, List<InterfaceAddress> interfaceAddresses) throws SocketException {
-        
-        if (DARWIN) {
-            collectIpv6AddressesDarwin(interfaceName, interfaceIndex, addresses, interfaceAddresses);
-            return;
-        }
-        
-        // Format of /proc/net/if_inet6 (all numeric fields are implicit hex).
-        // 1. IPv6 address
-        // 2. interface index
-        // 3. prefix length
-        // 4. scope
-        // 5. flags
-        // 6. interface name
-        // "00000000000000000000000000000001 01 80 10 80       lo"
-        BufferedReader in = null;
-        try {
-            in = new BufferedReader(new FileReader("/proc/net/if_inet6"));
-            String suffix = " " + interfaceName;
-            String line;
-            while ((line = in.readLine()) != null) {
-                if (!line.endsWith(suffix)) {
-                    continue;
-                }
-                byte[] addressBytes = new byte[16];
-                for (int i = 0; i < addressBytes.length; ++i) {
-                    addressBytes[i] = (byte) Integer.parseInt(line.substring(2*i, 2*i + 2), 16);
-                }
-                short prefixLength = Short.parseShort(line.substring(36, 38), 16);
-                Inet6Address inet6Address = new Inet6Address(addressBytes, null, interfaceIndex);
-
-                addresses.add(inet6Address);
-                interfaceAddresses.add(new InterfaceAddress(inet6Address, prefixLength));
-            }
-        } catch (Exception ex) {
-            throw rethrowAsSocketException(ex);
-        } finally {
-            IoUtils.closeQuietly(in);
         }
     }
 

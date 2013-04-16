@@ -55,22 +55,22 @@ import libcore.io.Libcore;
  * system or to identify the local interface of a joined multicast group.
  */
 public final class NetworkInterface extends Object {
-	/*
-	 * RoboVM note: This class has been changed heavily to work on Darwin.
-	 * The original class reads all required info from /sys/class/net
-	 * and /proc/net/if_inet6 and uses no native code. Neither of those are 
-	 * available on Darwin so we need to call native code instead. 
-	 */
-	
-	// RoboVM note: We need this to do things differently on DARWIN which
-	// has neither /sys/class/net nor /proc/net/if_inet6.
-	private static final boolean DARWIN;
-	
-	static {
-		String osName = System.getProperty("os.name");
-		DARWIN = osName.contains("Darwin") || osName.contains("Mac");
-	}
-	
+    /*
+     * RoboVM note: This class has been changed heavily to work on Darwin.
+     * The original class reads all required info from /sys/class/net
+     * and /proc/net/if_inet6 and uses no native code. Neither of those are 
+     * available on Darwin so we need to call native code instead. 
+     */
+    
+    // RoboVM note: We need this to do things differently on DARWIN which
+    // has neither /sys/class/net nor /proc/net/if_inet6.
+    private static final boolean DARWIN;
+    
+    static {
+        String osName = System.getProperty("os.name");
+        DARWIN = osName.contains("Darwin") || osName.contains("Mac");
+    }
+    
     private final String name;
     private final int interfaceIndex;
     private final List<InterfaceAddress> interfaceAddresses;
@@ -140,7 +140,7 @@ public final class NetworkInterface extends Object {
 
         int interfaceIndex = getInterfaceIndex(interfaceName);
         if (interfaceIndex <= 0) {
-        	return null;
+            return null;
         }
         List<InetAddress> addresses = new ArrayList<InetAddress>();
         List<InterfaceAddress> interfaceAddresses = new ArrayList<InterfaceAddress>();
@@ -151,63 +151,63 @@ public final class NetworkInterface extends Object {
     }
 
     private static int ipv6NetmaskToPrefixLength(byte[] netmask) {
-    	int prefixLength = 0;
-    	int index = 0;
-    	
-    	// Find the first byte != 0xff
-    	while (index < netmask.length) {
-    		int b = netmask[index++] & 0xff;
-    		if (b != 0xff) {
-    			break;
-    		}
-    		prefixLength += 8;
-    	}
-    	
-    	if (index == netmask.length) {
-    		return prefixLength;
-    	}
+        int prefixLength = 0;
+        int index = 0;
+        
+        // Find the first byte != 0xff
+        while (index < netmask.length) {
+            int b = netmask[index++] & 0xff;
+            if (b != 0xff) {
+                break;
+            }
+            prefixLength += 8;
+        }
+        
+        if (index == netmask.length) {
+            return prefixLength;
+        }
 
-    	byte b = netmask[index];
-    	// Find the first bit != 1 in b
-    	for (int bit = 7; bit != 0; bit--) {
-    		if ((b & (1 << bit)) == 0) {
-    			break;
-    		}
-    		prefixLength++;
-    	}
-    	
-    	return prefixLength;
+        byte b = netmask[index];
+        // Find the first bit != 1 in b
+        for (int bit = 7; bit != 0; bit--) {
+            if ((b & (1 << bit)) == 0) {
+                break;
+            }
+            prefixLength++;
+        }
+        
+        return prefixLength;
     }
     
     private static void collectIpv6AddressesDarwin(String interfaceName, int interfaceIndex,
             List<InetAddress> addresses, List<InterfaceAddress> interfaceAddresses) throws SocketException {
-    	
-		// RoboVM note: Darwin doesn't have /proc/net/if_inet6. But unlike 
-		// Linux ioctl(SIOCGIFCONF) on Darwin also returns IPv6 addresses
-		// so we can use that here.
-		byte[] bytes = getIpv6Addresses(interfaceName);
-		if (bytes != null) {
-			for (int i = 0; i < bytes.length; i += 32) {
-				byte[] addressBytes = new byte[16];
-				byte[] netmaskBytes = new byte[16];
-				System.arraycopy(bytes, i, addressBytes, 0, 16);
-				System.arraycopy(bytes, i + 16, netmaskBytes, 0, 16);
-    			Inet6Address inet6Address = new Inet6Address(addressBytes, null, interfaceIndex);
-    			addresses.add(inet6Address);
-    			interfaceAddresses.add(new InterfaceAddress(inet6Address, 
-    					(short) ipv6NetmaskToPrefixLength(netmaskBytes)));
-			}
-		}
+        
+        // RoboVM note: Darwin doesn't have /proc/net/if_inet6. But unlike 
+        // Linux ioctl(SIOCGIFCONF) on Darwin also returns IPv6 addresses
+        // so we can use that here.
+        byte[] bytes = getIpv6Addresses(interfaceName);
+        if (bytes != null) {
+            for (int i = 0; i < bytes.length; i += 32) {
+                byte[] addressBytes = new byte[16];
+                byte[] netmaskBytes = new byte[16];
+                System.arraycopy(bytes, i, addressBytes, 0, 16);
+                System.arraycopy(bytes, i + 16, netmaskBytes, 0, 16);
+                Inet6Address inet6Address = new Inet6Address(addressBytes, null, interfaceIndex);
+                addresses.add(inet6Address);
+                interfaceAddresses.add(new InterfaceAddress(inet6Address, 
+                        (short) ipv6NetmaskToPrefixLength(netmaskBytes)));
+            }
+        }
     }
     
     private static void collectIpv6Addresses(String interfaceName, int interfaceIndex,
             List<InetAddress> addresses, List<InterfaceAddress> interfaceAddresses) throws SocketException {
-    	
-    	if (DARWIN) {
-    		collectIpv6AddressesDarwin(interfaceName, interfaceIndex, addresses, interfaceAddresses);
-    		return;
-    	}
-    	
+        
+        if (DARWIN) {
+            collectIpv6AddressesDarwin(interfaceName, interfaceIndex, addresses, interfaceAddresses);
+            return;
+        }
+        
         // Format of /proc/net/if_inet6 (all numeric fields are implicit hex).
         // 1. IPv6 address
         // 2. interface index
@@ -250,12 +250,12 @@ public final class NetworkInterface extends Object {
             InetAddress address = Libcore.os.ioctlInetAddress(fd, SIOCGIFADDR, interfaceName);
             InetAddress broadcast = Inet4Address.ANY;
             try {
-            	broadcast = Libcore.os.ioctlInetAddress(fd, SIOCGIFBRDADDR, interfaceName);
+                broadcast = Libcore.os.ioctlInetAddress(fd, SIOCGIFBRDADDR, interfaceName);
             } catch (ErrnoException e) {
-            	// RoboVM note: On Darwin ioctl(SIOCGIFBRDADDR) returns EINVAL for lo0
-            	if (!DARWIN || e.errno != EINVAL) {
-            		throw e;
-            	}
+                // RoboVM note: On Darwin ioctl(SIOCGIFBRDADDR) returns EINVAL for lo0
+                if (!DARWIN || e.errno != EINVAL) {
+                    throw e;
+                }
             }
             InetAddress netmask = Libcore.os.ioctlInetAddress(fd, SIOCGIFNETMASK, interfaceName);
             if (broadcast.equals(Inet4Address.ANY)) {
@@ -540,7 +540,7 @@ public final class NetworkInterface extends Object {
     }
 
     private boolean hasFlag(int mask) throws SocketException {
-    	// RoboVM note: Changed to call native code instead of reading from /sys/class/net
+        // RoboVM note: Changed to call native code instead of reading from /sys/class/net
         int flags = getFlags(name);
         return (flags & mask) != 0;
     }
@@ -552,8 +552,8 @@ public final class NetworkInterface extends Object {
      * @since 1.6
      */
     public byte[] getHardwareAddress() throws SocketException {
-    	// RoboVM note: Changed to call native code instead of reading from /sys/class/net
-    	return getHardwareAddress(name);
+        // RoboVM note: Changed to call native code instead of reading from /sys/class/net
+        return getHardwareAddress(name);
     }
 
     /**
@@ -564,8 +564,8 @@ public final class NetworkInterface extends Object {
      * @since 1.6
      */
     public int getMTU() throws SocketException {
-    	// RoboVM note: Changed to call native code instead of reading from /sys/class/net
-    	return getMTU(name);
+        // RoboVM note: Changed to call native code instead of reading from /sys/class/net
+        return getMTU(name);
     }
 
     /**

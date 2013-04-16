@@ -24,22 +24,22 @@ import java.util.Set;
 import junit.framework.TestCase;
 
 public class NetworkInterfaceTest extends TestCase {
-	
-	// RoboVM note: 'lo' is called 'lo0' on Darwin and 'eth0' is 'en0'.
-	private static final String LO;
-	private static final String ETH0;
-	
-	static {
-		String osName = System.getProperty("os.name");
-		if (osName.contains("Darwin") || osName.contains("Mac")) {
-			LO = "lo0";
-			ETH0 = "en0";
-		} else {
-			LO = "lo";
-			ETH0 = "eth0";
-		}
-	}
-	
+    
+    // RoboVM note: 'lo' is called 'lo0' on Darwin and 'eth0' is 'en0'.
+    private static final String LO;
+    private static final String ETH0;
+    
+    static {
+        String osName = System.getProperty("os.name");
+        if (osName.contains("Darwin") || osName.contains("Mac")) {
+            LO = "lo0";
+            ETH0 = "en0";
+        } else {
+            LO = "lo";
+            ETH0 = "eth0";
+        }
+    }
+    
     // http://code.google.com/p/android/issues/detail?id=13784
     public void testIPv6() throws Exception {
         NetworkInterface lo = NetworkInterface.getByName(LO);

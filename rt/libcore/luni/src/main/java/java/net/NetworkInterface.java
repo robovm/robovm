@@ -14,25 +14,39 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+/*
+ * Copyright (C) 2013 Trillian AB
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package java.net;
 
+import static libcore.io.OsConstants.*;
+
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
+
 import libcore.io.ErrnoException;
 import libcore.io.IoUtils;
 import libcore.io.Libcore;
-import static libcore.io.OsConstants.*;
 
 /**
  * This class is used to represent a network interface of the local device. An
@@ -41,6 +55,22 @@ import static libcore.io.OsConstants.*;
  * system or to identify the local interface of a joined multicast group.
  */
 public final class NetworkInterface extends Object {
+	/*
+	 * RoboVM note: This class has been changed heavily to work on Darwin.
+	 * The original class reads all required info from /sys/class/net
+	 * and /proc/net/if_inet6 and uses no native code. Neither of those are 
+	 * available on Darwin so we need to call native code instead. 
+	 */
+	
+	// RoboVM note: We need this to do things differently on DARWIN which
+	// has neither /sys/class/net nor /proc/net/if_inet6.
+	private static final boolean DARWIN;
+	
+	static {
+		String osName = System.getProperty("os.name");
+		DARWIN = osName.contains("Darwin") || osName.contains("Mac");
+	}
+	
     private final String name;
     private final int interfaceIndex;
     private final List<InterfaceAddress> interfaceAddresses;
@@ -107,11 +137,11 @@ public final class NetworkInterface extends Object {
         if (interfaceName == null) {
             throw new NullPointerException("interfaceName == null");
         }
-        if (!isValidInterfaceName(interfaceName)) {
-            return null;
-        }
 
-        int interfaceIndex = readIntFile("/sys/class/net/" + interfaceName + "/ifindex");
+        int interfaceIndex = getInterfaceIndex(interfaceName);
+        if (interfaceIndex <= 0) {
+        	return null;
+        }
         List<InetAddress> addresses = new ArrayList<InetAddress>();
         List<InterfaceAddress> interfaceAddresses = new ArrayList<InterfaceAddress>();
         collectIpv6Addresses(interfaceName, interfaceIndex, addresses, interfaceAddresses);
@@ -120,8 +150,64 @@ public final class NetworkInterface extends Object {
         return new NetworkInterface(interfaceName, interfaceIndex, addresses, interfaceAddresses);
     }
 
+    private static int ipv6NetmaskToPrefixLength(byte[] netmask) {
+    	int prefixLength = 0;
+    	int index = 0;
+    	
+    	// Find the first byte != 0xff
+    	while (index < netmask.length) {
+    		int b = netmask[index++] & 0xff;
+    		if (b != 0xff) {
+    			break;
+    		}
+    		prefixLength += 8;
+    	}
+    	
+    	if (index == netmask.length) {
+    		return prefixLength;
+    	}
+
+    	byte b = netmask[index];
+    	// Find the first bit != 1 in b
+    	for (int bit = 7; bit != 0; bit--) {
+    		if ((b & (1 << bit)) == 0) {
+    			break;
+    		}
+    		prefixLength++;
+    	}
+    	
+    	return prefixLength;
+    }
+    
+    private static void collectIpv6AddressesDarwin(String interfaceName, int interfaceIndex,
+            List<InetAddress> addresses, List<InterfaceAddress> interfaceAddresses) throws SocketException {
+    	
+		// RoboVM note: Darwin doesn't have /proc/net/if_inet6. But unlike 
+		// Linux ioctl(SIOCGIFCONF) on Darwin also returns IPv6 addresses
+		// so we can use that here.
+		byte[] bytes = getIpv6Addresses(interfaceName);
+		if (bytes != null) {
+			for (int i = 0; i < bytes.length; i += 32) {
+				byte[] addressBytes = new byte[16];
+				byte[] netmaskBytes = new byte[16];
+				System.arraycopy(bytes, i, addressBytes, 0, 16);
+				System.arraycopy(bytes, i + 16, netmaskBytes, 0, 16);
+    			Inet6Address inet6Address = new Inet6Address(addressBytes, null, interfaceIndex);
+    			addresses.add(inet6Address);
+    			interfaceAddresses.add(new InterfaceAddress(inet6Address, 
+    					(short) ipv6NetmaskToPrefixLength(netmaskBytes)));
+			}
+		}
+    }
+    
     private static void collectIpv6Addresses(String interfaceName, int interfaceIndex,
             List<InetAddress> addresses, List<InterfaceAddress> interfaceAddresses) throws SocketException {
+    	
+    	if (DARWIN) {
+    		collectIpv6AddressesDarwin(interfaceName, interfaceIndex, addresses, interfaceAddresses);
+    		return;
+    	}
+    	
         // Format of /proc/net/if_inet6 (all numeric fields are implicit hex).
         // 1. IPv6 address
         // 2. interface index
@@ -162,7 +248,15 @@ public final class NetworkInterface extends Object {
         try {
             fd = Libcore.os.socket(AF_INET, SOCK_DGRAM, 0);
             InetAddress address = Libcore.os.ioctlInetAddress(fd, SIOCGIFADDR, interfaceName);
-            InetAddress broadcast = Libcore.os.ioctlInetAddress(fd, SIOCGIFBRDADDR, interfaceName);
+            InetAddress broadcast = Inet4Address.ANY;
+            try {
+            	broadcast = Libcore.os.ioctlInetAddress(fd, SIOCGIFBRDADDR, interfaceName);
+            } catch (ErrnoException e) {
+            	// RoboVM note: On Darwin ioctl(SIOCGIFBRDADDR) returns EINVAL for lo0
+            	if (!DARWIN || e.errno != EINVAL) {
+            		throw e;
+            	}
+            }
             InetAddress netmask = Libcore.os.ioctlInetAddress(fd, SIOCGIFNETMASK, interfaceName);
             if (broadcast.equals(Inet4Address.ANY)) {
                 broadcast = null;
@@ -181,30 +275,6 @@ public final class NetworkInterface extends Object {
             throw rethrowAsSocketException(ex);
         } finally {
             IoUtils.closeQuietly(fd);
-        }
-    }
-
-    @FindBugsSuppressWarnings("DMI_HARDCODED_ABSOLUTE_FILENAME")
-    private static boolean isValidInterfaceName(String interfaceName) {
-        // Don't just stat because a crafty user might have / or .. in the supposed interface name.
-        for (String validName : new File("/sys/class/net").list()) {
-            if (interfaceName.equals(validName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static int readIntFile(String path) throws SocketException {
-        try {
-            String s = IoUtils.readFileAsString(path).trim();
-            if (s.startsWith("0x")) {
-                return Integer.parseInt(s.substring(2), 16);
-            } else {
-                return Integer.parseInt(s);
-            }
-        } catch (Exception ex) {
-            throw rethrowAsSocketException(ex);
         }
     }
 
@@ -262,9 +332,45 @@ public final class NetworkInterface extends Object {
         return Collections.enumeration(getNetworkInterfacesList());
     }
 
+    /**
+     * Returns an array of all available interface names.
+     * Added in RoboVM. 
+     */
+    private static native String[] getInterfaceNames();
+    /**
+     * Returns the index of the interface with specified name or 0 if not found. 
+     * Added in RoboVM. 
+     */
+    private static native int getInterfaceIndex(String interfaceName);
+    /**
+     * Uses getifaddrs() to retrieve the IPv6 addresses of the interface with
+     * the specified name. Returns <code>null</code> if the interface has no
+     * IPv6 addresses. Otherwise a byte array is returned with address 1 at 
+     * index 0 and its netmask at index 16, address 2 at index 32 and its 
+     * netmask at index 48, etc.
+     * Added in RoboVM.
+     */
+    private static native byte[] getIpv6Addresses(String interfaceName);
+    /**
+     * Uses getifaddrs() to retrieve the MAC address of the interface with the
+     * specified name.
+     * Added in RoboVM.
+     */
+    private static native byte[] getHardwareAddress(String interfaceName);
+    /**
+     * Returns the flags of the specified interface using ioctl(SIOCGIFFLAGS).
+     * Added in RoboVM.
+     */
+    private static native int getFlags(String interfaceName);
+    /**
+     * Returns the MTU of the specified interface using ioctl(SIOCGIFMTU).
+     * Added in RoboVM.
+     */
+    private static native int getMTU(String interfaceName);
+    
     @FindBugsSuppressWarnings("DMI_HARDCODED_ABSOLUTE_FILENAME")
     private static List<NetworkInterface> getNetworkInterfacesList() throws SocketException {
-        String[] interfaceNames = new File("/sys/class/net").list();
+        String[] interfaceNames = getInterfaceNames();
         NetworkInterface[] interfaces = new NetworkInterface[interfaceNames.length];
         boolean[] done = new boolean[interfaces.length];
         for (int i = 0; i < interfaceNames.length; ++i) {
@@ -434,7 +540,8 @@ public final class NetworkInterface extends Object {
     }
 
     private boolean hasFlag(int mask) throws SocketException {
-        int flags = readIntFile("/sys/class/net/" + name + "/flags");
+    	// RoboVM note: Changed to call native code instead of reading from /sys/class/net
+        int flags = getFlags(name);
         return (flags & mask) != 0;
     }
 
@@ -445,23 +552,8 @@ public final class NetworkInterface extends Object {
      * @since 1.6
      */
     public byte[] getHardwareAddress() throws SocketException {
-        try {
-            // Parse colon-separated bytes with a trailing newline: "aa:bb:cc:dd:ee:ff\n".
-            String s = IoUtils.readFileAsString("/sys/class/net/" + name + "/address");
-            byte[] result = new byte[s.length()/3];
-            for (int i = 0; i < result.length; ++i) {
-                result[i] = (byte) Integer.parseInt(s.substring(3*i, 3*i + 2), 16);
-            }
-            // We only want to return non-zero hardware addresses.
-            for (int i = 0; i < result.length; ++i) {
-                if (result[i] != 0) {
-                    return result;
-                }
-            }
-            return null;
-        } catch (Exception ex) {
-            throw rethrowAsSocketException(ex);
-        }
+    	// RoboVM note: Changed to call native code instead of reading from /sys/class/net
+    	return getHardwareAddress(name);
     }
 
     /**
@@ -472,7 +564,8 @@ public final class NetworkInterface extends Object {
      * @since 1.6
      */
     public int getMTU() throws SocketException {
-        return readIntFile("/sys/class/net/" + name + "/mtu");
+    	// RoboVM note: Changed to call native code instead of reading from /sys/class/net
+    	return getMTU(name);
     }
 
     /**

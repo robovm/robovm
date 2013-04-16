@@ -24,28 +24,44 @@ import java.util.Set;
 import junit.framework.TestCase;
 
 public class NetworkInterfaceTest extends TestCase {
+	
+	// RoboVM note: 'lo' is called 'lo0' on Darwin and 'eth0' is 'en0'.
+	private static final String LO;
+	private static final String ETH0;
+	
+	static {
+		String osName = System.getProperty("os.name");
+		if (osName.contains("Darwin") || osName.contains("Mac")) {
+			LO = "lo0";
+			ETH0 = "en0";
+		} else {
+			LO = "lo";
+			ETH0 = "eth0";
+		}
+	}
+	
     // http://code.google.com/p/android/issues/detail?id=13784
     public void testIPv6() throws Exception {
-        NetworkInterface lo = NetworkInterface.getByName("lo");
+        NetworkInterface lo = NetworkInterface.getByName(LO);
         Set<InetAddress> actual = new HashSet<InetAddress>(Collections.list(lo.getInetAddresses()));
 
-        Set<InetAddress> expected = new HashSet<InetAddress>();
-        expected.add(Inet4Address.LOOPBACK);
-        expected.add(Inet6Address.getByAddress("localhost", new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 }, null));
-
-        assertEquals(expected, actual);
+        // RoboVM note: The original test checks that lo has exactly 2 addresses
+        // (127.0.0.1 and ::1) but on Darwin we get an extra one (fe80::1) so
+        // we now check for those 2 and ignore everything else.
+        assertTrue(actual.contains(Inet4Address.LOOPBACK));
+        assertTrue(actual.contains(Inet6Address.getByAddress("localhost", new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 }, null)));
     }
 
     public void testLoopback() throws Exception {
         // We know lo shouldn't have a hardware address or an IPv4 broadcast address.
-        NetworkInterface lo = NetworkInterface.getByName("lo");
+        NetworkInterface lo = NetworkInterface.getByName(LO);
         assertNull(lo.getHardwareAddress());
         for (InterfaceAddress ia : lo.getInterfaceAddresses()) {
             assertNull(ia.getBroadcast());
         }
 
         // But eth0, if it exists, should...
-        NetworkInterface eth0 = NetworkInterface.getByName("eth0");
+        NetworkInterface eth0 = NetworkInterface.getByName(ETH0);
         if (eth0 != null) {
             assertEquals(6, eth0.getHardwareAddress().length);
             for (InterfaceAddress ia : eth0.getInterfaceAddresses()) {

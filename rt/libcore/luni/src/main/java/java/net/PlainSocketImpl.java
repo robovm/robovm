@@ -38,6 +38,7 @@ import libcore.io.IoBridge;
 import libcore.io.Libcore;
 import libcore.io.Memory;
 import libcore.io.Streams;
+import libcore.io.StructPollfd;
 import static libcore.io.OsConstants.*;
 
 /**
@@ -94,6 +95,32 @@ public class PlainSocketImpl extends SocketImpl {
         }
 
         try {
+            // RovmVM note: accept() on Darwin does not honor the SO_RCVTIMEO
+            // set using setSoTimeout(). As a work around we do poll() if a 
+            // timeout has been set followed by an accept().
+            int timeout = (Integer) getOption(SO_RCVTIMEO);
+            if (timeout > 0) {
+                StructPollfd pfd = new StructPollfd();
+                pfd.fd = fd;
+                pfd.events = (short) (POLLIN | POLLERR);
+                StructPollfd[] pfds = new StructPollfd[] {pfd};
+                while (true) {
+                    long start = System.currentTimeMillis();
+                    try {
+                        if (timeout <= 0 || Libcore.os.poll(pfds, timeout) == 0) {
+                            throw new SocketTimeoutException("accept() timed out");
+                        }
+                    } catch (ErrnoException e) {
+                        if (e.errno == EINTR) {
+                            long duration = System.currentTimeMillis() - start;
+                            timeout -= duration;
+                        } else {
+                            throw e;
+                        }
+                    }
+                }
+            }
+            
             InetSocketAddress peerAddress = new InetSocketAddress();
             FileDescriptor clientFd = Libcore.os.accept(fd, peerAddress);
 

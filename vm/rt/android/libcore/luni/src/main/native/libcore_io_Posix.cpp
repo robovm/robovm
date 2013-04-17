@@ -484,6 +484,9 @@ extern "C" void Java_libcore_io_Posix_connect(JNIEnv* env, jobject, jobject java
         return;
     }
 #if defined(__APPLE__)
+    // RoboVM note: On Linux we can just call connect() with an AF_UNSPEC address to "disconnect" a datagram socket.
+    // On Darwin this is supposed to work to but fails with EINVAL probably because address_len in the connect() call
+    // below is incorrect. The docs also says that another option is to use an invalid address so that's what we do.
     bool disconnect = false;
     if (ss.ss_family == AF_UNSPEC) {
         disconnect = true;
@@ -495,6 +498,7 @@ extern "C" void Java_libcore_io_Posix_connect(JNIEnv* env, jobject, jobject java
     // RoboVM note: connect() on Darwin is picky about the the length specified. It has to match the family type.
     int rc = NET_FAILURE_RETRY("connect", connect(fd, sa, (sa->sa_family == AF_INET6) ? sizeof(sockaddr_in6) : sizeof(sockaddr_in)));
 #if defined(__APPLE__)
+    // RoboVM note: If this was a "disconnect" EADDRNOTAVAIL will be set and we need to ignore the thrown exception.
     if (rc == -1 && disconnect && errno == EADDRNOTAVAIL) {
         env->ExceptionClear();
         errno = 0;

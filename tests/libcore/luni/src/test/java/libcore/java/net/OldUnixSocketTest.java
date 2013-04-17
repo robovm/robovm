@@ -31,6 +31,12 @@ import junit.framework.TestCase;
 public class OldUnixSocketTest extends TestCase {
 
     public void test_getInputStream() throws IOException {
+        // RoboVM note: On Darwin this test fails on both RoboVM and the RI with
+        // the same error (Should throw SocketException; got i=-1).
+        if (System.getProperty("os.name").contains("Darwin") || System.getProperty("os.name").contains("Mac")) {
+            return;
+        }
+        
         // Simple read/write test over the IO streams
         final ServerSocket pingServer = new ServerSocket(0);
         Socket pingClient = new Socket();

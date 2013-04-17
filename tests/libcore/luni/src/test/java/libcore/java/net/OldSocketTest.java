@@ -1627,7 +1627,7 @@ public class OldSocketTest extends OldSocketTestCase {
                     theSocket2.setReuseAddress(false);
                     theSocket2.bind(theOtherLocalAddress);
 
-                    if ((!platform.startsWith("Linux"))
+                    if ((!platform.startsWith("Linux") && !platform.contains("Darwin") && !platform.contains("Mac"))
                             && ((!platform.startsWith("Windows")) ||
                             // for windows we don't get an exception with
                             // setreuse set to false unless one of the
@@ -1688,7 +1688,7 @@ public class OldSocketTest extends OldSocketTestCase {
                     theSocket2 = new Socket();
                     theSocket2.bind(theOtherLocalAddress);
                     theSocket2.close();
-                    if ((!platform.startsWith("Linux"))
+                    if ((!platform.startsWith("Linux") && !platform.contains("Darwin") && !platform.contains("Mac"))
                             && ((!platform.startsWith("Windows")) || !((((InetAddress) allAddresses[0]) instanceof Inet4Address) && (((InetAddress) allAddresses[1]) instanceof Inet4Address)))) {
                         fail("No exception when setReuseAddress is default and we bind:"
                                 + theLocalAddress.toString()
@@ -1696,7 +1696,7 @@ public class OldSocketTest extends OldSocketTestCase {
                                 + theOtherLocalAddress.toString());
                     }
                 } catch (IOException ex) {
-                    if ((platform.startsWith("Linux"))
+                    if ((platform.startsWith("Linux") || platform.contains("Darwin") || platform.contains("Mac"))
                             || ((platform.startsWith("Windows")) && ((((InetAddress) allAddresses[0]) instanceof Inet4Address) && (((InetAddress) allAddresses[1]) instanceof Inet4Address)))) {
                         fail("Got unexpected exception when binding with setReuseAddress default on windows platform:"
                                 + theAddress.toString() + ":" + ex.toString());

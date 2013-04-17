@@ -483,10 +483,23 @@ extern "C" void Java_libcore_io_Posix_connect(JNIEnv* env, jobject, jobject java
     if (!inetAddressToSockaddr(env, javaAddress, port, &ss)) {
         return;
     }
+#if defined(__APPLE__)
+    bool disconnect = false;
+    if (ss.ss_family == AF_UNSPEC) {
+        disconnect = true;
+        ss.ss_family = AF_INET6;
+    }
+#endif
     int fd;
     const sockaddr* sa = reinterpret_cast<const sockaddr*>(&ss);
     // RoboVM note: connect() on Darwin is picky about the the length specified. It has to match the family type.
-    NET_FAILURE_RETRY("connect", connect(fd, sa, (sa->sa_family == AF_INET6) ? sizeof(sockaddr_in6) : sizeof(sockaddr_in)));
+    int rc = NET_FAILURE_RETRY("connect", connect(fd, sa, (sa->sa_family == AF_INET6) ? sizeof(sockaddr_in6) : sizeof(sockaddr_in)));
+#if defined(__APPLE__)
+    if (rc == -1 && disconnect && errno == EADDRNOTAVAIL) {
+        env->ExceptionClear();
+        errno = 0;
+    }
+#endif
 }
 
 extern "C" jobject Java_libcore_io_Posix_dup(JNIEnv* env, jobject, jobject javaOldFd) {

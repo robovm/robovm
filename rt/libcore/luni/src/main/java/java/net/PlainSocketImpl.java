@@ -512,7 +512,14 @@ public class PlainSocketImpl extends SocketImpl {
             // Unlike writes to a streaming socket, writes to a datagram
             // socket are all-or-nothing, so we don't need a loop here.
             // http://code.google.com/p/android/issues/detail?id=15304
-            IoBridge.sendto(fd, buffer, offset, byteCount, 0, address, port);
+
+            // RoboVM note: The original code passed this.address here as 
+            // destination address. However, on Darwin sendto() fails with 
+            // EINVAL if called with a non-null destination address for an 
+            // already connected socket (see issue #76). Non-streaming Sockets 
+            // are always connected in the constructor so it should be safe to 
+            // pass null here instead.
+            IoBridge.sendto(fd, buffer, offset, byteCount, 0, null, port);
         }
     }
 }

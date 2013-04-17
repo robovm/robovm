@@ -1142,6 +1142,14 @@ extern "C" void Java_libcore_io_Posix_setsockoptIfreq(JNIEnv* env, jobject, jobj
 }
 
 extern "C" void Java_libcore_io_Posix_setsockoptInt(JNIEnv* env, jobject, jobject javaFd, jint level, jint option, jint value) {
+#if defined(__APPLE__)
+    // RoboVM note: Socket.setTrafficClass() ultimately calls setsockoptInt(fd, IPPROTO_IP, IP_TOS) followed by
+    // setsockoptInt(fd, IPPROTO_IPV6, IPV6_TCLASS) (see libcore.io.IoBridge.setSocketOptionErrno()). Our sockets
+    // are always IPv6 and that first call (IP_TOS is for IPv4 sockets) fails on Darwin when called for IPv6 sockets.
+    if (level == IPPROTO_IP && option == IP_TOS) {
+        return;
+    }
+#endif
     int fd = jniGetFDFromFileDescriptor(env, javaFd);
     throwIfMinusOne(env, "setsockopt", TEMP_FAILURE_RETRY(setsockopt(fd, level, option, &value, sizeof(value))));
 }

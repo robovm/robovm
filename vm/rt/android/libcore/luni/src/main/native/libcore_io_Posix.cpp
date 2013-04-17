@@ -1092,7 +1092,8 @@ extern "C" jint Java_libcore_io_Posix_sendtoBytes(JNIEnv* env, jobject, jobject 
     }
     int fd;
     const sockaddr* to = (javaInetAddress != NULL) ? reinterpret_cast<const sockaddr*>(&ss) : NULL;
-    socklen_t toLength = (javaInetAddress != NULL) ? sizeof(ss) : 0;
+    // RoboVM note: sendto() on Darwin is picky about the the length specified. It has to match the family type.
+    socklen_t toLength = (javaInetAddress != NULL) ? ((to->sa_family == AF_INET6) ? sizeof(sockaddr_in6) : sizeof(sockaddr_in)) : 0;
     return NET_FAILURE_RETRY("sendto", sendto(fd, bytes.get() + byteOffset, byteCount, flags, to, toLength));
 }
 

@@ -4,7 +4,7 @@ include_directories(. ../common)
 
 add_definitions(-D_REENTRANT)
 add_definitions(-DU_I18N_IMPLEMENTATION)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-but-set-variable -Wno-parentheses -Wno-unused-function -Wno-deprecated-declarations")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-parentheses -Wno-unused-function -Wno-deprecated-declarations")
 
 set(SRC
   ucln_in.c  decContext.c

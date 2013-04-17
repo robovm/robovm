@@ -7,7 +7,6 @@ include_directories(
   ../../../../../external/openssl/include
   ../../../../../external/zlib
 )
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-but-set-variable")
 
 set(SRC
   AsynchronousSocketCloseMonitor.cpp

@@ -4,8 +4,8 @@ include_directories(. ../i18n)
 
 add_definitions(-D_REENTRANT)
 add_definitions(-DU_COMMON_IMPLEMENTATION)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-but-set-variable -Wno-switch -Wno-enum-compare")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-but-set-variable -Wno-parentheses -Wno-unused-function -Wno-deprecated-declarations")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-switch -Wno-enum-compare")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-parentheses -Wno-unused-function -Wno-deprecated-declarations")
 
 set(SRC
   cmemory.c          cstring.c

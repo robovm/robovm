@@ -55,7 +55,6 @@ public class FileTest extends junit.framework.TestCase {
         File f = base;
         for (int i = 0; f.toString().length() <= PATH_MAX - 256; ++i) {
             f = new File(f, longString);
-            System.err.println(f.getAbsolutePath());
             assertTrue(f.mkdir());
         }
         return f;

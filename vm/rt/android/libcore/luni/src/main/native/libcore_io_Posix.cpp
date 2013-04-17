@@ -1151,6 +1151,24 @@ extern "C" void Java_libcore_io_Posix_setsockoptInt(JNIEnv* env, jobject, jobjec
     }
 #endif
     int fd = jniGetFDFromFileDescriptor(env, javaFd);
+#if defined(__APPLE__)
+    // RoboVM note: On Darwin not only SO_REUSEADDR has to be set for datagram sockets but also SO_REUSEPORT to get 
+    // the desired behavior.
+    if (level == SOL_SOCKET && option == SO_REUSEADDR) {
+        int type = 0;
+        socklen_t size = sizeof(type);
+        int rc = throwIfMinusOne(env, "getsockopt", TEMP_FAILURE_RETRY(getsockopt(fd, SOL_SOCKET, SO_TYPE, &type, &size)));
+        if (rc == -1) {
+            return;
+        }
+        if (type == SOCK_DGRAM) {
+            rc = throwIfMinusOne(env, "setsockopt", TEMP_FAILURE_RETRY(setsockopt(fd, SOL_SOCKET, SO_REUSEPORT, &value, sizeof(value))));
+            if (rc == -1) {
+                return;
+            }
+        }
+    }
+#endif
     throwIfMinusOne(env, "setsockopt", TEMP_FAILURE_RETRY(setsockopt(fd, level, option, &value, sizeof(value))));
 }
 

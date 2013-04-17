@@ -180,6 +180,12 @@ public class ProcessManagerTest extends TestCase {
 
     public void testCloseNonStandardFds()
             throws IOException, InterruptedException {
+        
+        // RoboVM note: This test is Linux specific
+        if (System.getProperty("os.name").contains("Darwin") || System.getProperty("os.name").contains("Mac")) {
+            return;
+        }
+        
         String[] commands = { "ls", "/proc/self/fd" };
 
         Process process = Runtime.getRuntime().exec(commands, null, null);

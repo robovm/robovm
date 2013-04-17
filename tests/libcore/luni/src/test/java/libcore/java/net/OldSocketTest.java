@@ -2304,6 +2304,12 @@ public class OldSocketTest extends OldSocketTestCase {
     }
 
     public void test_shutdownInputOutput_twice() throws Exception {
+        // RoboVM note: On Darwin this test fails on both RoboVM and the RI with
+        // a "Can't assign requested address" error.
+        if (System.getProperty("os.name").contains("Darwin") || System.getProperty("os.name").contains("Mac")) {
+            return;
+        }
+        
         // regression test for Harmony-2944
         Socket s = new Socket("0.0.0.0", 0, false);
         s.shutdownInput();

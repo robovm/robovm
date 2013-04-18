@@ -246,7 +246,7 @@ static Interface* loadInterfaces(Env* env, Class* clazz) {
         if (!interfaceClass) goto error;
         Interface* interf = rvmAllocateInterface(env, interfaceClass);
         if (!interf) goto error;
-        LL_PREPEND(first, interf);
+        LL_APPEND(first, interf); // Interfaces has to be in the correct order so we need to use the slower LL_APPEND
     }
     return first;
 error:

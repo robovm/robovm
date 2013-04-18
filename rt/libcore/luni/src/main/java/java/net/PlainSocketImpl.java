@@ -104,16 +104,18 @@ public class PlainSocketImpl extends SocketImpl {
                 pfd.fd = fd;
                 pfd.events = (short) (POLLIN | POLLERR);
                 StructPollfd[] pfds = new StructPollfd[] {pfd};
+                long start = System.currentTimeMillis();
+                long deadline = start + timeout;
                 while (true) {
-                    long start = System.currentTimeMillis();
                     try {
                         if (timeout <= 0 || Libcore.os.poll(pfds, timeout) == 0) {
                             throw new SocketTimeoutException("accept() timed out");
                         }
+                        break;
                     } catch (ErrnoException e) {
                         if (e.errno == EINTR) {
-                            long duration = System.currentTimeMillis() - start;
-                            timeout -= duration;
+                            long now = System.currentTimeMillis();
+                            timeout = (int) (deadline - now);
                         } else {
                             throw e;
                         }

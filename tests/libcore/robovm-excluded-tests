@@ -38,6 +38,11 @@ org.apache.harmony.crypto.tests.javax.crypto.ExemptionMechanismTest#test_finaliz
 # message.
 tests.api.java.lang.ref.SoftReferenceTest#test_get_SoftReference
 
+# This test succeeds but it has undesired side effects that make the
+# org.apache.harmony.luni.tests.java.net.URLConnectionTest#testHttpPostHeaders
+# test hang.
+libcore.java.net.OldURLClassLoaderTest#test_findResourceLjava_lang_String
+
 # Succeeds but takes too long (about 2 mins). Also in expectations/knownfailures.txt.
 libcore.java.security.KeyPairGeneratorTest#test_getInstance
 # Succeeds but takes too long (about 5 mins)

@@ -98,7 +98,7 @@ public class PlainSocketImpl extends SocketImpl {
             // RovmVM note: accept() on Darwin does not honor the SO_RCVTIMEO
             // set using setSoTimeout(). As a work around we do poll() if a 
             // timeout has been set followed by an accept().
-            int timeout = (Integer) getOption(SO_RCVTIMEO);
+            int timeout = (Integer) getOption(SO_TIMEOUT);
             if (timeout > 0) {
                 StructPollfd pfd = new StructPollfd();
                 pfd.fd = fd;

@@ -47,9 +47,9 @@ extern void* _bcClassesHash;
 static Class* loadBootClass(Env*, const char*, ClassLoader*);
 static Class* loadUserClass(Env*, const char*, ClassLoader*);
 static void classInitialized(Env*, Class*);
-static void loadInterfaces(Env*, Class*);
-static void loadFields(Env*, Class*);
-static void loadMethods(Env*, Class*);
+static Interface* loadInterfaces(Env*, Class*);
+static Field* loadFields(Env*, Class*);
+static Method* loadMethods(Env*, Class*);
 static Class* findClassAt(Env*, void*);
 static Class* createClass(Env*, ClassInfoHeader*, ClassLoader*);
 static jboolean exceptionMatch(Env* env, TrycatchContext*);
@@ -229,29 +229,39 @@ static void classInitialized(Env* env, Class* clazz) {
     rvmAtomicStoreInt(&header->flags, header->flags | CI_INITIALIZED);
 }
 
-static void loadInterfaces(Env* env, Class* clazz) {
+static Interface* loadInterfaces(Env* env, Class* clazz) {
     ClassInfoHeader* header = lookupClassInfo(env, clazz->name, 
         !clazz->classLoader || !clazz->classLoader->parent ? _bcBootClassesHash : _bcClassesHash);
-    if (!header) return;
+    if (!header) return NULL;
 
     ClassInfo ci;
     jint i;
     void* p = header;
     readClassInfo(&p, &ci);
 
+    Interface* first = NULL;
     for (i = 0; i < ci.interfaceCount; i++) {
         const char* interfaceName = readInterfaceName(&p);
-        Class* interface = rvmFindClassUsingLoader(env, interfaceName, clazz->classLoader);
-        if (!interface) return;
-        rvmAddInterface(env, clazz, interface);
-        if (rvmExceptionCheck(env)) return;
+        Class* interfaceClass = rvmFindClassUsingLoader(env, interfaceName, clazz->classLoader);
+        if (!interfaceClass) goto error;
+        Interface* interf = rvmAllocateInterface(env, interfaceClass);
+        if (!interf) goto error;
+        LL_PREPEND(first, interf);
     }
+    return first;
+error:
+    while (first) {
+        Interface* next = first->next;
+        rvmFreeMemoryUncollectable(env, first);
+        first = next;
+    }
+    return NULL;
 }
 
-static void loadFields(Env* env, Class* clazz) {
+static Field* loadFields(Env* env, Class* clazz) {
     ClassInfoHeader* header = lookupClassInfo(env, clazz->name, 
         !clazz->classLoader || !clazz->classLoader->parent ? _bcBootClassesHash : _bcClassesHash);
-    if (!header) return;
+    if (!header) return NULL;
 
     ClassInfo ci;
     jint i;
@@ -260,17 +270,28 @@ static void loadFields(Env* env, Class* clazz) {
 
     skipInterfaceNames(&p, &ci);
 
+    Field* first = NULL;
     for (i = 0; i < ci.fieldCount; i++) {
         FieldInfo fi;
         readFieldInfo(&p, &fi);
-        if (!rvmAddField(env, clazz, fi.name, fi.desc, fi.access, fi.offset, fi.attributes)) return;
+        Field* f = rvmAllocateField(env, clazz, fi.name, fi.desc, fi.access, fi.offset, fi.attributes);
+        if (!f) goto error;
+        LL_PREPEND(first, f);
     }
+    return first;
+error:
+    while (first) {
+        Field* next = first->next;
+        rvmFreeMemoryUncollectable(env, first);
+        first = next;
+    }
+    return NULL;
 }
 
-static void loadMethods(Env* env, Class* clazz) {
+static Method* loadMethods(Env* env, Class* clazz) {
     ClassInfoHeader* header = lookupClassInfo(env, clazz->name, 
         !clazz->classLoader || !clazz->classLoader->parent ? _bcBootClassesHash : _bcClassesHash);
-    if (!header) return;
+    if (!header) return NULL;
 
     ClassInfo ci;
     jint i;
@@ -280,17 +301,29 @@ static void loadMethods(Env* env, Class* clazz) {
     skipInterfaceNames(&p, &ci);
     skipFieldInfos(&p, &ci);
 
+    Method* first = NULL;
     for (i = 0; i < ci.methodCount; i++) {
         MethodInfo mi;
         readMethodInfo(&p, &mi);
+        Method* m = NULL;
         if (mi.targetFnPtr) {
-            if (!rvmAddBridgeMethod(env, clazz, mi.name, mi.desc, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.targetFnPtr, mi.attributes)) return;
+            m = (Method*) rvmAllocateBridgeMethod(env, clazz, mi.name, mi.desc, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.targetFnPtr, mi.attributes);
         } else if (mi.callbackImpl) {
-            if (!rvmAddCallbackMethod(env, clazz, mi.name, mi.desc, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.callbackImpl, mi.attributes)) return;
+            m = (Method*) rvmAllocateCallbackMethod(env, clazz, mi.name, mi.desc, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.callbackImpl, mi.attributes);
         } else {
-            if (!rvmAddMethod(env, clazz, mi.name, mi.desc, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.attributes)) return;
+            m = rvmAllocateMethod(env, clazz, mi.name, mi.desc, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.attributes);
         }
+        if (!m) goto error;
+        LL_PREPEND(first, m);
     }
+    return first;
+error:
+    while (first) {
+        Method* next = first->next;
+        rvmFreeMemoryUncollectable(env, first);
+        first = next;
+    }
+    return NULL;
 }
 
 static jboolean countClassesWithConcreteMethodsCallback(Env* env, ClassInfoHeader* header, MethodInfo* mi, void* d) {

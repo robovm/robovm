@@ -322,9 +322,9 @@ typedef struct Options {
     Class* (*loadBootClass)(Env*, const char*, ClassLoader*);
     Class* (*loadUserClass)(Env*, const char*, ClassLoader*);
     void (*classInitialized)(Env*, Class*);
-    void (*loadInterfaces)(Env*, Class*);
-    void (*loadFields)(Env*, Class*);
-    void (*loadMethods)(Env*, Class*);
+    Interface* (*loadInterfaces)(Env*, Class*);
+    Field* (*loadFields)(Env*, Class*);
+    Method* (*loadMethods)(Env*, Class*);
     Class* (*findClassAt)(Env*, void*);
     jboolean (*exceptionMatch)(Env*, TrycatchContext*);
 } Options;

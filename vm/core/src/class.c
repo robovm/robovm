@@ -160,13 +160,14 @@ static inline void releaseClassLock() {
 
 static Class* createPrimitiveClass(Env* env, const char* desc) {
     Class* clazz = rvmAllocateClass(env, desc, NULL, NULL, 
-        CLASS_TYPE_PRIMITIVE | CLASS_STATE_INITIALIZED | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, 
+        CLASS_TYPE_PRIMITIVE | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, 
         sizeof(Class), sizeof(Object), sizeof(Object), 0, 0, NULL, NULL);
     if (!clazz) return NULL;
     clazz->_interfaces = NULL;
     clazz->_fields = NULL;
     clazz->_methods = NULL;
     if (!rvmAddObjectGCRoot(env, (Object*) clazz)) return NULL;
+    clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_INITIALIZED;
     return clazz;
 }
 
@@ -190,7 +191,7 @@ static Class* createArrayClass(Env* env, Class* componentType) {
 
     // TODO: Add clone() method.
     Class* clazz = rvmAllocateClass(env, desc, java_lang_Object, componentType->classLoader, 
-        CLASS_TYPE_ARRAY | CLASS_STATE_INITIALIZED | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, 
+        CLASS_TYPE_ARRAY | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, 
         sizeof(Class), sizeof(Object), sizeof(Object), 0, 0, NULL, NULL);
     if (!clazz) return NULL;
     clazz->componentType = componentType;
@@ -199,6 +200,8 @@ static Class* createArrayClass(Env* env, Class* componentType) {
     if (!rvmAddInterface(env, clazz, java_lang_Cloneable)) return NULL;
     if (!rvmAddInterface(env, clazz, java_io_Serializable)) return NULL;
     if (!rvmRegisterClass(env, clazz)) return NULL;
+
+    clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_INITIALIZED;
 
     return clazz;
 }
@@ -771,6 +774,8 @@ Class* rvmAllocateClass(Env* env, const char* className, Class* superclass, Clas
         jint classDataSize, jint instanceDataSize, jint instanceDataOffset, unsigned short classRefCount, 
         unsigned short instanceRefCount, void* attributes, void* initializer) {
 
+    assert((flags & CLASS_STATE_MASK) == 0);
+
     if (superclass && CLASS_IS_INTERFACE(superclass)) {
         // TODO: Message should look like ?
         rvmThrowIncompatibleClassChangeError(env, "");
@@ -803,6 +808,8 @@ Class* rvmAllocateClass(Env* env, const char* className, Class* superclass, Clas
     clazz->attributes = attributes;
     clazz->initializer = initializer;
 
+    clazz->flags = (clazz->flags & (~CLASS_STATE_MASK)) | CLASS_STATE_ALLOCATED;
+
     // Inherit the CLASS_FLAG_FINALIZABLE flag from the superclass
     if (superclass && !CLASS_IS_FINALIZABLE(clazz) && CLASS_IS_FINALIZABLE(superclass)) {
         clazz->flags |= CLASS_FLAG_FINALIZABLE;
@@ -820,15 +827,22 @@ Class* rvmAllocateClass(Env* env, const char* className, Class* superclass, Clas
     return clazz;
 }
 
+Interface* rvmAllocateInterface(Env* env, Class* interf) {
+    Interface* interface = rvmAllocateMemoryAtomicUncollectable(env, sizeof(Interface));
+    if (!interface) return NULL;
+    interface->interface = interf;
+    return interface;
+}
+
 jboolean rvmAddInterface(Env* env, Class* clazz, Class* interf) {
+    assert(CLASS_IS_STATE_ALLOCATED(clazz));
     if (!CLASS_IS_INTERFACE(interf)) {
         // TODO: Message should look like ?
         rvmThrowIncompatibleClassChangeError(env, "");
         return FALSE;
     }
-    Interface* interface = rvmAllocateMemoryAtomicUncollectable(env, sizeof(Interface));
+    Interface* interface = rvmAllocateInterface(env, interf);
     if (!interface) return FALSE;
-    interface->interface = interf;
     if (clazz->_interfaces == &INTERFACES_NOT_LOADED) {
         clazz->_interfaces = NULL;
     }
@@ -836,7 +850,7 @@ jboolean rvmAddInterface(Env* env, Class* clazz, Class* interf) {
     return TRUE;
 }
 
-Method* rvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, void* synchronizedImpl, void* attributes) {
+Method* rvmAllocateMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, void* synchronizedImpl, void* attributes) {
     Method* method = rvmAllocateMemoryAtomicUncollectable(env, IS_NATIVE(access) ? sizeof(NativeMethod) : sizeof(Method));
     if (!method) return NULL;
     method->clazz = clazz;
@@ -847,6 +861,13 @@ Method* rvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc,
     method->impl = impl;
     method->synchronizedImpl = synchronizedImpl;
     method->attributes = attributes;
+    return method;
+}
+
+Method* rvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, void* synchronizedImpl, void* attributes) {
+    assert(CLASS_IS_STATE_ALLOCATED(clazz));
+    Method* method = rvmAllocateMethod(env, clazz, name, desc, access, size, impl, synchronizedImpl, attributes);
+    if (!method) return NULL;
 
     if (clazz->_methods == &METHODS_NOT_LOADED) {
         clazz->_methods = NULL;
@@ -859,6 +880,7 @@ Method* rvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc,
 }
 
 ProxyMethod* addProxyMethod(Env* env, Class* clazz, Method* proxiedMethod, jint access, void* impl) {
+    assert(CLASS_IS_STATE_ALLOCATED(clazz));
     ProxyMethod* method = rvmAllocateMemoryAtomicUncollectable(env, sizeof(ProxyMethod));
     if (!method) return NULL;
     method->method.clazz = clazz;
@@ -879,9 +901,9 @@ ProxyMethod* addProxyMethod(Env* env, Class* clazz, Method* proxiedMethod, jint 
     return method;
 }
 
-BridgeMethod* rvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, 
+BridgeMethod* rvmAllocateBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, 
         void* synchronizedImpl, void** targetFnPtr, void* attributes) {
-    
+
     BridgeMethod* method = rvmAllocateMemoryAtomicUncollectable(env, sizeof(BridgeMethod));
     if (!method) return NULL;
     method->method.clazz = clazz;
@@ -893,6 +915,15 @@ BridgeMethod* rvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const
     method->method.synchronizedImpl = synchronizedImpl;
     method->method.attributes = attributes;
     method->targetFnPtr = targetFnPtr;
+    return method;
+}
+
+BridgeMethod* rvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, 
+        void* synchronizedImpl, void** targetFnPtr, void* attributes) {
+    
+    assert(CLASS_IS_STATE_ALLOCATED(clazz));
+    BridgeMethod* method = rvmAllocateBridgeMethod(env, clazz, name, desc, access, size, impl, synchronizedImpl, targetFnPtr, attributes);
+    if (!method) return NULL;
 
     if (clazz->_methods == &METHODS_NOT_LOADED) {
         clazz->_methods = NULL;
@@ -904,9 +935,9 @@ BridgeMethod* rvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const
     return method;
 }
 
-CallbackMethod* rvmAddCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, 
+CallbackMethod* rvmAllocateCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, 
         void* synchronizedImpl, void* callbackImpl, void* attributes) {
-    
+
     CallbackMethod* method = rvmAllocateMemoryAtomicUncollectable(env, sizeof(CallbackMethod));
     if (!method) return NULL;
     method->method.clazz = clazz;
@@ -918,6 +949,15 @@ CallbackMethod* rvmAddCallbackMethod(Env* env, Class* clazz, const char* name, c
     method->method.synchronizedImpl = synchronizedImpl;
     method->method.attributes = attributes;
     method->callbackImpl = callbackImpl;
+    return method;
+}
+
+CallbackMethod* rvmAddCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, 
+        void* synchronizedImpl, void* callbackImpl, void* attributes) {
+    
+    assert(CLASS_IS_STATE_ALLOCATED(clazz));
+    CallbackMethod* method = rvmAllocateCallbackMethod(env, clazz, name, desc, access, size, impl, synchronizedImpl, callbackImpl, attributes);
+    if (!method) return NULL;
 
     if (clazz->_methods == &METHODS_NOT_LOADED) {
         clazz->_methods = NULL;
@@ -929,7 +969,7 @@ CallbackMethod* rvmAddCallbackMethod(Env* env, Class* clazz, const char* name, c
     return method;
 }
 
-Field* rvmAddField(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint offset, void* attributes) {
+Field* rvmAllocateField(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint offset, void* attributes) {
     Field* field = rvmAllocateMemoryAtomicUncollectable(env, IS_STATIC(access) ? sizeof(ClassField) : sizeof(InstanceField));
     if (!field) return NULL;
     field->clazz = clazz;
@@ -937,6 +977,18 @@ Field* rvmAddField(Env* env, Class* clazz, const char* name, const char* desc, j
     field->desc = desc;
     field->access = access;
     field->attributes = attributes;
+    if (IS_STATIC(access)) {
+        ((ClassField*) field)->address = ((jbyte*) clazz) + offset;
+    } else {
+        ((InstanceField*) field)->offset = offset;
+    }
+    return field;
+}
+
+Field* rvmAddField(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint offset, void* attributes) {
+    assert(CLASS_IS_STATE_ALLOCATED(clazz));
+    Field* field = rvmAllocateField(env, clazz, name, desc, access, offset, attributes);
+    if (!field) return NULL;
 
     if (clazz->_fields == &FIELDS_NOT_LOADED) {
         clazz->_fields = NULL;
@@ -945,27 +997,19 @@ Field* rvmAddField(Env* env, Class* clazz, const char* name, const char* desc, j
     field->next = clazz->_fields;
     clazz->_fields = field;
 
-    if (access & ACC_STATIC) {
-        ((ClassField*) field)->address = ((jbyte*) clazz) + offset;
-    } else {
-        ((InstanceField*) field)->offset = offset;
-    }
     return field;
 }
 
 Interface* rvmGetInterfaces(Env* env, Class* clazz) {
     if (clazz->_interfaces != &INTERFACES_NOT_LOADED) return clazz->_interfaces;
 
-    // TODO: Double checked locking
     obtainClassLock();
     if (clazz->_interfaces == &INTERFACES_NOT_LOADED) {
-        env->vm->options->loadInterfaces(env, clazz);
-        if (clazz->_interfaces == &INTERFACES_NOT_LOADED) {
-            // The class has no interfaces
-            clazz->_interfaces = NULL;
+        Interface* interfaces = env->vm->options->loadInterfaces(env, clazz);
+        if (!rvmExceptionCheck(env)) {
+            rvmAtomicStorePtr((void**) &clazz->_interfaces, interfaces);
         }
     }
-    if (rvmExceptionCheck(env)) clazz->_interfaces = &INTERFACES_NOT_LOADED;
     releaseClassLock();
     if (rvmExceptionCheck(env)) return NULL;
     return clazz->_interfaces;
@@ -974,16 +1018,13 @@ Interface* rvmGetInterfaces(Env* env, Class* clazz) {
 Field* rvmGetFields(Env* env, Class* clazz) {
     if (clazz->_fields != &FIELDS_NOT_LOADED) return clazz->_fields;
 
-    // TODO: Double checked locking
     obtainClassLock();
     if (clazz->_fields == &FIELDS_NOT_LOADED) {
-        env->vm->options->loadFields(env, clazz);
-        if (clazz->_fields == &FIELDS_NOT_LOADED) {
-            // The class has no fields
-            clazz->_fields = NULL;
+        Field* fields = env->vm->options->loadFields(env, clazz);
+        if (!rvmExceptionCheck(env)) {
+            rvmAtomicStorePtr((void**) &clazz->_fields, fields);
         }
     }
-    if (rvmExceptionCheck(env)) clazz->_fields = &FIELDS_NOT_LOADED;
     releaseClassLock();
     if (rvmExceptionCheck(env)) return NULL;
     return clazz->_fields;
@@ -992,22 +1033,21 @@ Field* rvmGetFields(Env* env, Class* clazz) {
 Method* rvmGetMethods(Env* env, Class* clazz) {
     if (clazz->_methods != &METHODS_NOT_LOADED) return clazz->_methods;
 
-    // TODO: Double checked locking
     obtainClassLock();
     if (clazz->_methods == &METHODS_NOT_LOADED) {
-        env->vm->options->loadMethods(env, clazz);
-        if (clazz->_methods == &METHODS_NOT_LOADED) {
-            // The class has no methods
-            clazz->_methods = NULL;
+        Method* methods = env->vm->options->loadMethods(env, clazz);
+        if (!rvmExceptionCheck(env)) {
+            rvmAtomicStorePtr((void**) &clazz->_methods, methods);
         }
     }
-    if (rvmExceptionCheck(env)) clazz->_methods = &METHODS_NOT_LOADED;
     releaseClassLock();
     if (rvmExceptionCheck(env)) return NULL;
     return clazz->_methods;
 }
 
 jboolean rvmRegisterClass(Env* env, Class* clazz) {
+    assert(CLASS_IS_STATE_ALLOCATED(clazz));
+
     // TODO: Check that the superclass and all interfaces are accessible to the new class
     // TODO: Verify the class hierarchy (class doesn't override final methods, changes public -> private, etc)
 

@@ -35,7 +35,12 @@ public final class StuckServer {
         // 4.5 "listen function", Linux adds 3 to the specified
         // backlog, so we need to connect 4 times before it will hang.
         serverSocket = new ServerSocket(0, 1);
-        for (int i = 0; i < 4; i++) {
+        int clientCount = 4;
+        if (System.getProperty("os.name").contains("Darwin") || System.getProperty("os.name").contains("Mac")) {
+            // RoboVM note: On Darwin the exact backlog is honored.
+            clientCount = 1;
+        }
+        for (int i = 0; i < clientCount; i++) {
             clients.add(new Socket(serverSocket.getInetAddress(), serverSocket.getLocalPort()));
         }
     }

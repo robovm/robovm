@@ -16,8 +16,8 @@ libcore.java.io.RandomAccessFileTest#testRandomAccessFileHasCleanupFinalizer
 libcore.java.lang.ThreadTest#testLeakingStartedThreads
 libcore.java.lang.ThreadTest#testLeakingUnstartedThreads
 
-# The backlog value in StuckServer used by these tests doesn't seem to be honored 
-# or work as expected so these tests fail.
+# On Linux the backlog value in StuckServer used by these tests doesn't seem to be honored 
+# or work as expected so these tests fail. Succeed on Mac OS X.
 libcore.java.net.ConcurrentCloseTest#test_connect
 libcore.java.net.ConcurrentCloseTest#test_connect_nonBlocking
 libcore.java.net.ConcurrentCloseTest#test_connect_timeout
@@ -26,9 +26,6 @@ libcore.java.net.ConcurrentCloseTest#test_connect_timeout
 # We don't handle SIGQUIT at the moment so this will be handled by the OS which
 # produces a core dump and terminates the process.
 libcore.java.nio.channels.SelectorTest#testEINTR
-
-# Bug? Hangs on RoboVM.
-org.apache.harmony.luni.tests.java.net.URLConnectionTest#testHttpPostHeaders
 
 # Triggers OutOfMemoryError to test finalizers but fails with OutOfMemoryError later on
 # probably because the data used to trigger OOM is still referenced by some register

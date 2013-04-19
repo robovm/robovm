@@ -46,7 +46,7 @@ add_test(testCall0ManyArgsOfEach test_call0 "testCall0ManyArgsOfEach")
 add_test(testCall0Unwind test_call0 "testCall0Unwind")
 
 add_executable(test_proxy0 test/test_proxy0.c test/CuTest.c proxy0-${OS_FAMILY}-${ARCH}.s unwind.c)
-set_property(SOURCE test/test_proxy0.c PROPERTY COMPILE_FLAGS "-fno-optimize-sibling-calls") # Disable tail calls
+set_property(SOURCE test/test_proxy0.c PROPERTY COMPILE_FLAGS "-O0") # Disable optimizations
 add_test(testProxy0ReturnByte test_proxy0 "testProxy0ReturnByte")
 add_test(testProxy0ReturnInt test_proxy0 "testProxy0ReturnInt")
 add_test(testProxy0ReturnPtr test_proxy0 "testProxy0ReturnPtr")

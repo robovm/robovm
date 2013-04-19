@@ -1039,8 +1039,8 @@ public class Thread implements Runnable {
             throw new IllegalThreadStateException("Thread already started."); // TODO Externalize?
         }
 
-        internalStart(this);
         started = true;
+        internalStart(this);
     }
     private static native void internalStart(Thread t);
 

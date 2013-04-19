@@ -31,7 +31,8 @@ void* unwindGetIP(UnwindContext* context) {
 void unwindBacktrace(void* fp, jboolean (*it)(UnwindContext*, void*), void* data) {
     // NOTE: This function must be async-signal-safe
     UnwindContext context = {0};
-    context.fp = (Frame*) (fp ? fp : __builtin_frame_address(0));
+    Frame* currFp = __builtin_frame_address(0);
+    context.fp = (Frame*) (fp ? fp : currFp);
     context.pc = context.fp->returnAddress;
     context.fp = context.fp->prev;
     // fp now points to the frame of the caller of unwindBacktrace

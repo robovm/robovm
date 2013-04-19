@@ -18,6 +18,12 @@
 
 #include <robovm.h>
 
+typedef union {
+    jshort s;
+    jint i;
+    void* p;
+} unaligned __attribute__ ((aligned (1)));
+
 static inline jbyte readByte(void** p) {
     jbyte v = *(jbyte*) *p;
     *p += sizeof(jbyte);
@@ -31,32 +37,14 @@ static inline jchar readChar(void** p) {
 }
 
 static inline jshort readShort(void** p) {
-    jshort v = *(jshort*) *p;
+    jshort v = ((unaligned*) *p)->s;
     *p += sizeof(jshort);
     return v;
 }
 
 static inline jint readInt(void** p) {
-    jint v = *(jint*) *p;
+    jint v = ((unaligned*) *p)->i;
     *p += sizeof(jint);
-    return v;
-}
-
-static inline jlong readLong(void** p) {
-    jlong v = *(jlong*) *p;
-    *p += sizeof(jlong);
-    return v;
-}
-
-static inline jfloat readFloat(void** p) {
-    jfloat v = *(jfloat*) *p;
-    *p += sizeof(jfloat);
-    return v;
-}
-
-static inline jdouble readDouble(void** p) {
-    jdouble v = *(jdouble*) *p;
-    *p += sizeof(jdouble);
     return v;
 }
 
@@ -67,7 +55,7 @@ static inline char* readString(void** p) {
 }
 
 static inline void* readPtr(void** p) {
-    void* v = *(void**) *p;
+    void* v = ((unaligned*) *p)->p;
     *p += sizeof(void*);
     return v;
 }

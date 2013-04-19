@@ -25,6 +25,15 @@
 #define RUNTIME_VISIBLE_PARAMETER_ANNOTATIONS 7
 #define ANNOTATION_DEFAULT 8
 
+typedef union {
+    jshort s;
+    jint i;
+    jlong j;
+    jfloat f;
+    jdouble d;
+    void* p;
+} unaligned __attribute__ ((aligned (1)));
+
 static Class* java_lang_TypeNotPresentException = NULL;
 static Class* java_lang_annotation_AnnotationFormatError = NULL;
 static Class* java_lang_reflect_Method = NULL;
@@ -71,31 +80,31 @@ static inline jchar getChar(void** attributes) {
 }
 
 static inline jint getInt(void** attributes) {
-    jint v = *(jint*) *attributes;
+    jint v = ((unaligned*) *attributes)->i;
     *attributes += sizeof(jint);
     return v;
 }
 
 static inline jlong getLong(void** attributes) {
-    jlong v = *(jlong*) *attributes;
+    jlong v = ((unaligned*) *attributes)->j;
     *attributes += sizeof(jlong);
     return v;
 }
 
 static inline jfloat getFloat(void** attributes) {
-    jfloat v = *(jfloat*) *attributes;
+    jfloat v = ((unaligned*) *attributes)->f;
     *attributes += sizeof(jfloat);
     return v;
 }
 
 static inline jdouble getDouble(void** attributes) {
-    jdouble v = *(jdouble*) *attributes;
+    jdouble v = ((unaligned*) *attributes)->d;
     *attributes += sizeof(jdouble);
     return v;
 }
 
 static inline char* getString(void** attributes) {
-    char* v = *(char**) *attributes;
+    char* v = (char*) ((unaligned*) *attributes)->p;
     *attributes += sizeof(char*);
     return v;
 }

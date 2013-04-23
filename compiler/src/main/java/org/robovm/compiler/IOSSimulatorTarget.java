@@ -48,6 +48,11 @@ public class IOSSimulatorTarget extends AbstractIOSTarget {
     }
  
     @Override
+    public boolean canLaunchInPlace() {
+        return false;
+    }
+
+    @Override
     protected List<SDK> getSDKs() {
         return listSDKs(iosSimBinPath != null ? iosSimBinPath : new File(config.getHome().getBinDir(), "ios-sim"));
     }

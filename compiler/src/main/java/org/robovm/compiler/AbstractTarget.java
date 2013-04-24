@@ -87,6 +87,8 @@ public abstract class AbstractTarget implements Target {
         if (config.getOs().getFamily() == OS.Family.darwin) {
             libs.add("-liconv");
             libs.add("-lsqlite3");
+            libs.add("-framework");
+            libs.add("Foundation");
         }
         
         ccArgs.add("-L");
@@ -107,8 +109,8 @@ public abstract class AbstractTarget implements Target {
         
         if (config.getOs().getFamily() == OS.Family.darwin && !config.getFrameworks().isEmpty()) {
             for (String p : config.getFrameworks()) {
-            	libs.add("-framework");
-            	libs.add(p);
+                libs.add("-framework");
+                libs.add(p);
             }
         }
         

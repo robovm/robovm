@@ -33,6 +33,10 @@
     #define DSO_EXT ".dylib"
 #endif
 
+#if defined(DARWIN)
+    void readDarwinOSVersionFromSystemVersionPList(char* buffer);
+#endif
+
 jint Java_java_lang_System_identityHashCode(Env* env, Class* c, Object* o) {
     return (jint) PTR_TO_LONG(o);
 }
@@ -71,3 +75,45 @@ Object* Java_java_lang_System_mapLibraryName0(Env* env, Class* c, Object* userLi
     return rvmNewStringUTF(env, result, -1);
 }
 
+ObjectArray* Java_java_lang_System_robovmSpecialProperties(Env* env, Class* c) {
+    char* osArch = NULL;
+#if defined(RVM_X86)
+    osArch = "os.arch=x86";
+#elif defined(RVM_ARMV6) || defined(RVM_ARMV7) || defined(RVM_THUMBV6) || defined(RVM_THUMBV7)
+    osArch = "os.arch=arm";
+#endif
+
+#if defined(DARWIN)
+    char* osName = NULL;
+#   if defined(IOS) && defined(RVM_X86)
+    osName = "os.name=iOS Simulator";
+#   elif defined(IOS)
+    osName = "os.name=iOS";
+#   elif defined(MACOSX)
+    osName = "os.name=Mac OS X";
+#   endif
+
+    char osVersion[64];
+    memset(osVersion, 0, sizeof(osVersion));
+    strcat(osVersion, "os.version=");
+    readDarwinOSVersionFromSystemVersionPList(osVersion);
+
+    ObjectArray* result = rvmNewObjectArray(env, 3, java_lang_String, NULL, NULL);
+    if (!result) return NULL;
+
+    result->values[0] = rvmNewStringUTF(env, osName, -1);
+    if (!result->values[0]) return NULL;
+    result->values[1] = rvmNewStringUTF(env, osVersion, -1);
+    if (!result->values[1]) return NULL;
+    result->values[2] = rvmNewStringUTF(env, osArch, -1);
+    if (!result->values[2]) return NULL;
+
+    return result;
+#else
+    ObjectArray* result = rvmNewObjectArray(env, 1, java_lang_String, NULL, NULL);
+    if (!result) return NULL;
+    result->values[0] = rvmNewStringUTF(env, osArch, -1);
+    if (!result->values[0]) return NULL;
+    return result;
+#endif
+}

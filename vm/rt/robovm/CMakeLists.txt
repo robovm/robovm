@@ -26,6 +26,12 @@ set(SRC
   sun_misc_Unsafe.c 
 )
 
+if(DARWIN)
+  set(SRC ${SRC} darwin_os_version.m)
+  set_property(SOURCE darwin_os_version.m PROPERTY LANGUAGE C)
+  set_property(SOURCE darwin_os_version.m PROPERTY COMPILE_FLAGS "-x objective-c -fobjc-abi-version=2")
+endif()
+
 add_library(robovm-rt-core OBJECT ${SRC})
 set(ROBOVM_RT_CORE_OBJECTS $<TARGET_OBJECTS:robovm-rt-core> PARENT_SCOPE)
 

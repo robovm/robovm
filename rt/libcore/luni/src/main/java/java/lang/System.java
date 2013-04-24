@@ -481,6 +481,8 @@ public final class System {
         // p.put("android.tzdata.version", ZoneInfoDB.getVersion());
         parsePropertyAssignments(p, specialProperties());
 
+        parsePropertyAssignments(p, robovmSpecialProperties());
+        
         // Override built-in properties with settings from the command line.
         parsePropertyAssignments(p, runtime.properties());
 
@@ -493,6 +495,8 @@ public final class System {
      */
     private static native String[] specialProperties();
 
+    private static native String[] robovmSpecialProperties();
+    
     /**
      * Adds each element of 'assignments' to 'p', treating each element as an
      * assignment in the form "key=value".

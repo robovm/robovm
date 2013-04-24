@@ -135,7 +135,7 @@ public final class TrustedCertificateStore {
             CA_CERTS_DIR_DELETED = new File(ANDROID_DATA + "/misc/keychain/cacerts-removed").toURI();
         } else {
             try {
-                CA_CERTS_DIR_SYSTEM = TrustedCertificateStore.class.getResource("/cacerts/").toURI();
+                CA_CERTS_DIR_SYSTEM = TrustedCertificateStore.class.getResource("/cacerts/").toURILenient();
             } catch (URISyntaxException e) {
                 throw new AssertionError(e);
             }

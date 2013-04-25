@@ -1627,7 +1627,7 @@ public class OldSocketTest extends OldSocketTestCase {
                     theSocket2.setReuseAddress(false);
                     theSocket2.bind(theOtherLocalAddress);
 
-                    if ((!platform.startsWith("Linux") && !platform.contains("Darwin") && !platform.contains("Mac"))
+                    if ((!platform.startsWith("Linux") && !platform.contains("iOS") && !platform.contains("Mac"))
                             && ((!platform.startsWith("Windows")) ||
                             // for windows we don't get an exception with
                             // setreuse set to false unless one of the
@@ -1688,7 +1688,7 @@ public class OldSocketTest extends OldSocketTestCase {
                     theSocket2 = new Socket();
                     theSocket2.bind(theOtherLocalAddress);
                     theSocket2.close();
-                    if ((!platform.startsWith("Linux") && !platform.contains("Darwin") && !platform.contains("Mac"))
+                    if ((!platform.startsWith("Linux") && !platform.contains("iOS") && !platform.contains("Mac"))
                             && ((!platform.startsWith("Windows")) || !((((InetAddress) allAddresses[0]) instanceof Inet4Address) && (((InetAddress) allAddresses[1]) instanceof Inet4Address)))) {
                         fail("No exception when setReuseAddress is default and we bind:"
                                 + theLocalAddress.toString()
@@ -1696,7 +1696,7 @@ public class OldSocketTest extends OldSocketTestCase {
                                 + theOtherLocalAddress.toString());
                     }
                 } catch (IOException ex) {
-                    if ((platform.startsWith("Linux") || platform.contains("Darwin") || platform.contains("Mac"))
+                    if ((platform.startsWith("Linux") || platform.contains("iOS") || platform.contains("Mac"))
                             || ((platform.startsWith("Windows")) && ((((InetAddress) allAddresses[0]) instanceof Inet4Address) && (((InetAddress) allAddresses[1]) instanceof Inet4Address)))) {
                         fail("Got unexpected exception when binding with setReuseAddress default on windows platform:"
                                 + theAddress.toString() + ":" + ex.toString());
@@ -2306,7 +2306,7 @@ public class OldSocketTest extends OldSocketTestCase {
     public void test_shutdownInputOutput_twice() throws Exception {
         // RoboVM note: On Darwin this test fails on both RoboVM and the RI with
         // a "Can't assign requested address" error.
-        if (System.getProperty("os.name").contains("Darwin") || System.getProperty("os.name").contains("Mac")) {
+        if (System.getProperty("os.name").contains("iOS") || System.getProperty("os.name").contains("Mac")) {
             return;
         }
         

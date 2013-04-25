@@ -66,7 +66,7 @@ public final class NetworkInterface extends Object {
     
     static {
         String osName = System.getProperty("os.name");
-        DARWIN = osName.contains("Darwin") || osName.contains("Mac");
+        DARWIN = osName.contains("iOS") || osName.contains("Mac");
     }
     
     private final String name;

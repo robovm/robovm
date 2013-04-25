@@ -32,14 +32,11 @@ public class Bro {
     public static final boolean IS_ARM;
 
     static {
-    	// TODO: os.arch doesn't necessarily give the arch of the executable.
-    	// E.g. on Mac OS X and in the iOS simulator os.arch can be x86_64
-    	// even if the executable has been built for i386.
         String os = System.getProperty("os.name", "").toLowerCase();
         String arch = System.getProperty("os.arch", "").toLowerCase();
-        IS_DARWIN = os.contains("mac") || os.contains("darwin");
+        IS_DARWIN = os.contains("mac") || os.contains("ios");
         IS_LINUX = !IS_DARWIN && os.contains("linux");
-        IS_X86 = arch.contains("i386") || arch.contains("x86");
+        IS_X86 = arch.contains("x86");
         IS_ARM = !IS_X86 && arch.contains("arm");
     }
     

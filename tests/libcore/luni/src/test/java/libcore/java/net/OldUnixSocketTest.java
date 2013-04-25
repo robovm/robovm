@@ -33,7 +33,7 @@ public class OldUnixSocketTest extends TestCase {
     public void test_getInputStream() throws IOException {
         // RoboVM note: On Darwin this test fails on both RoboVM and the RI with
         // the same error (Should throw SocketException; got i=-1).
-        if (System.getProperty("os.name").contains("Darwin") || System.getProperty("os.name").contains("Mac")) {
+        if (System.getProperty("os.name").contains("iOS") || System.getProperty("os.name").contains("Mac")) {
             return;
         }
         

@@ -31,7 +31,7 @@ public class NetworkInterfaceTest extends TestCase {
     
     static {
         String osName = System.getProperty("os.name");
-        if (osName.contains("Darwin") || osName.contains("Mac")) {
+        if (osName.contains("iOS") || osName.contains("Mac")) {
             LO = "lo0";
             ETH0 = "en0";
         } else {

@@ -36,7 +36,7 @@ public final class StuckServer {
         // backlog, so we need to connect 4 times before it will hang.
         serverSocket = new ServerSocket(0, 1);
         int clientCount = 4;
-        if (System.getProperty("os.name").contains("Darwin") || System.getProperty("os.name").contains("Mac")) {
+        if (System.getProperty("os.name").contains("iOS") || System.getProperty("os.name").contains("Mac")) {
             // RoboVM note: On Darwin the exact backlog is honored.
             clientCount = 1;
         }

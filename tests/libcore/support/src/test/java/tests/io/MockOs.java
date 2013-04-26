@@ -20,10 +20,12 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.net.SocketException;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
+
 import libcore.io.ErrnoException;
 import libcore.io.Libcore;
 import libcore.io.Os;
@@ -59,7 +61,30 @@ public final class MockOs {
             if (handler == null) {
                 handler = delegateHandler;
             }
-            return handler.invoke(proxy, method, args);
+            try {
+                return handler.invoke(proxy, method, args);
+            } catch (SocketException e) {
+                // RoboVM note: The native methods in libcore.io.Posix which are
+                // used by the socket code sometimes throw SocketException even
+                // though the Os interface doesn't declare that this exception 
+                // can be thrown. When an undeclared checked exception is thrown 
+                // RoboVM's proxy implementation does the right thing and wraps
+                // the exception in an UndeclaredThrowableException as required
+                // by the InvokeHandler Javadocs. MockWebServer expects 
+                // SocketExceptions and will leak connections if it gets an
+                // UndeclaredThrowableException.
+                // What we do here is to wrap the SocketException in an
+                // ErrnoException which all methods in Os declares so that
+                // UndeclaredThrowableException never gets thrown. The socket 
+                // code will wrap the ErrnoException in a SocketException and 
+                // throw that out to the MockWebServer.
+                for (Class<?> exClass : method.getExceptionTypes()) {
+                    if (exClass.isAssignableFrom(e.getClass())) {
+                        throw e;
+                    }
+                }
+                throw new ErrnoException("Fake ErrnoException", OsConstants.EIO, e);
+            }
         }
     };
 

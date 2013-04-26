@@ -3,11 +3,19 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import junit.framework.Assert;
@@ -17,6 +25,8 @@ import junit.framework.TestCase;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 import junit.runner.Version;
+import libcore.io.Libcore;
+import libcore.util.BasicLruCache;
 
 import org.junit.internal.TextListener;
 import org.junit.runner.Description;
@@ -25,6 +35,7 @@ import org.junit.runner.RunWith;
 import org.junit.runner.notification.Failure;
 import org.junit.runners.AllTests;
 import org.junit.runners.model.TestClass;
+import org.robovm.rt.VM;
 
 /**
  * Builds a JUnit {@link TestSuite} from the libcore tests. Tests listed in the 
@@ -50,8 +61,81 @@ public class RoboVMAllTests {
             }
         }
 
+        // Many tests call InetAddress.getLocalHost() but it may fail if the
+        // hostname doesn't resolve to an IP address. This will install a fake
+        // InetAddress for the hostname if needed.
+        try {
+            InetAddress.getLocalHost();
+        } catch (UnknownHostException uhe) {
+            try {
+                installFakeLocalHostAddressCacheEntry();
+            } catch (Throwable e) {
+                throw new Error(e);
+            }
+        }
+
+        // user.dir is supposed to be the current working dir. On iOS user.dir 
+        // gets set to /. Some tests write files to this dir and when it's /
+        // those tests fail with a "permission denied" error.
+        if (System.getProperty("os.name").contains("iOS") && "/".equals(System.getProperty("user.dir"))) {
+            System.setProperty("user.dir", VM.basePath() + "/../Library");
+        }
     }
 
+    private static Field field(Class<?> cls, String name) throws Throwable {
+        Field f = cls.getDeclaredField(name);
+        f.setAccessible(true);
+        return f;
+    }
+    
+    private static InetAddress getFakeLocalHost() throws Throwable {
+        Constructor<?> inet4AddressConstructor = Inet4Address.class.getDeclaredConstructor(byte[].class, String.class);
+        inet4AddressConstructor.setAccessible(true);
+        String[] candidates = new String[] {"eth0", "eth1", "wlan0", "wlan1", "en0", "en1", "lo", "lo0"};
+        String hostname = Libcore.os.uname().nodename;
+        for (int i = 0; i < candidates.length; i++) {
+            NetworkInterface ni = NetworkInterface.getByName(candidates[i]);
+            if (ni != null && !ni.isLoopback()) {
+                Enumeration<InetAddress> addrEn = ni.getInetAddresses();
+                while (addrEn.hasMoreElements()) {
+                    InetAddress addr = addrEn.nextElement();
+                    if (addr instanceof Inet4Address) {
+                        return (InetAddress) inet4AddressConstructor.newInstance(addr.getAddress(), hostname);
+                    }
+                }
+            }
+        }
+        return (InetAddress) inet4AddressConstructor.newInstance(new byte[] {127, 0, 0, 1}, hostname);
+    }
+    
+    private static void installFakeLocalHostAddressCacheEntry() throws Throwable {
+        Class<?> addressCacheClass = Class.forName("java.net.AddressCache");
+        Class<?> addressCacheEntryClass = Class.forName("java.net.AddressCache$AddressCacheEntry");
+        Constructor<?> entryConstructor = addressCacheEntryClass.getDeclaredConstructor(Object.class);
+        entryConstructor.setAccessible(true);
+        InetAddress[] addresses = new InetAddress[] { getFakeLocalHost() };
+        Object entry = entryConstructor.newInstance(new Object[] {addresses});
+        field(addressCacheEntryClass, "expiryNanos").set(entry, Long.MAX_VALUE);
+        BasicLruCache<Object, Object> cache = new BasicLruCache<Object, Object>(64);
+        cache.put(Libcore.os.uname().nodename, entry);
+        field(addressCacheClass, "cache").set(field(InetAddress.class, "addressCache").get(null), cache);
+    }
+    
+    @SuppressWarnings("unchecked")
+    private static void cleanupHttpConnectionPool() throws Throwable {
+        Class<?> poolClass = Class.forName("libcore.net.http.HttpConnectionPool");
+        Map<Object, List<Object>> connections = 
+                (Map<Object, List<Object>>) field(poolClass, "connectionPool").get(field(poolClass, "INSTANCE").get(null));
+        Method closeSocketAndStreamsMethod = Class.forName("libcore.net.http.HttpConnection").getDeclaredMethod("closeSocketAndStreams");
+        closeSocketAndStreamsMethod.setAccessible(true);
+        for (List<Object> l : connections.values()) {
+            for (Object connection : l) {
+                closeSocketAndStreamsMethod.invoke(connection);
+            }
+        }
+        connections.clear();
+    }
+    
     /**
      * Wraps a {@link Test} and "forgets" it after it's been run in order to make it reclaimable
      * by the GC (unless it's reachable from somewhere other than JUnit).
@@ -84,6 +168,15 @@ public class RoboVMAllTests {
             } finally {
                 t = null;
                 Locale.setDefault(defLoc);
+                try {
+                    // Close any connections created by the test and now pooled by 
+                    // libcore.net.http.HttpConnectionPool. If we don't do this
+                    // we'll end up with "Too many open files" errors on iOS when 
+                    // running the tests.
+                    cleanupHttpConnectionPool();
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

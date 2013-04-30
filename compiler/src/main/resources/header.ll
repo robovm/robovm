@@ -383,6 +383,11 @@ zero:
     unreachable
 }
 
+define linkonce_odr double @drem(%Env* %env, double %op1, double %op2) alwaysinline {
+    %result = frem double %op1, %op2
+    ret double %result
+}
+
 define linkonce_odr i32 @fcmpl(float %op1, float %op2) alwaysinline {
     %1 = fcmp ogt float %op1, %op2 ; 1 if op1 > op2
     %2 = fcmp ult float %op1, %op2 ; 1 if op1 < op2 or either is NaN

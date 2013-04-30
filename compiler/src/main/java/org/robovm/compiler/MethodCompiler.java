@@ -52,7 +52,6 @@ import org.robovm.compiler.llvm.FloatingPointType;
 import org.robovm.compiler.llvm.Fmul;
 import org.robovm.compiler.llvm.Fpext;
 import org.robovm.compiler.llvm.Fptrunc;
-import org.robovm.compiler.llvm.Frem;
 import org.robovm.compiler.llvm.Fsub;
 import org.robovm.compiler.llvm.Function;
 import org.robovm.compiler.llvm.FunctionRef;
@@ -889,8 +888,8 @@ public class MethodCompiler extends AbstractMethodCompiler {
                         FunctionRef f = rightType == I64 ? LREM : IREM;
                         result = call(f, env, op1, op2);
                     } else {
-                        // float or double
-                        function.add(new Frem(resultVar, op1, op2));
+                        FunctionRef f = rightType == DOUBLE ? DREM : FREM;
+                        result = call(f, env, op1, op2);
                     }
                 } else if (rightOp instanceof ShlExpr || rightOp instanceof ShrExpr || rightOp instanceof UshrExpr) {
                     IntegerType type = (IntegerType) op1.getType();

@@ -125,6 +125,8 @@ public class Functions {
     public static final FunctionRef LDIV = new FunctionRef("ldiv", new FunctionType(I64, ENV_PTR, I64, I64));
     public static final FunctionRef IREM = new FunctionRef("irem", new FunctionType(I32, ENV_PTR, I32, I32));
     public static final FunctionRef LREM = new FunctionRef("lrem", new FunctionType(I64, ENV_PTR, I64, I64));
+    public static final FunctionRef FREM = new FunctionRef("frem", new FunctionType(FLOAT, ENV_PTR, FLOAT, FLOAT));
+    public static final FunctionRef DREM = new FunctionRef("drem", new FunctionType(DOUBLE, ENV_PTR, DOUBLE, DOUBLE));
     public static final FunctionRef FCMPL = new FunctionRef("fcmpl", new FunctionType(I32, FLOAT, FLOAT));
     public static final FunctionRef FCMPG = new FunctionRef("fcmpg", new FunctionType(I32, FLOAT, FLOAT));
     public static final FunctionRef DCMPL = new FunctionRef("dcmpl", new FunctionType(I32, DOUBLE, DOUBLE));

@@ -19,6 +19,9 @@
 #include <stdarg.h>
 #include <dlfcn.h>
 #include <signal.h>
+#if defined(IOS) && (defined(RVM_ARMV7) || defined(RVM_THUMBV7))
+#   include <fenv.h>
+#endif
 #include "private.h"
 #include "utlist.h"
 
@@ -176,6 +179,16 @@ Env* rvmCreateEnv(VM* vm) {
 
 Env* rvmStartup(Options* options) {
     // TODO: Error handling
+
+#if defined(IOS) && (defined(RVM_ARMV7) || defined(RVM_THUMBV7))
+    // Enable IEEE-754 denormal support.
+    // Without this the VFP treats numbers that are close to zero as zero itself.
+    // See http://developer.apple.com/library/ios/#technotes/tn2293/_index.html.
+    fenv_t fenv;
+    fegetenv(&fenv);
+    fenv.__fpscr &= ~__fpscr_flush_to_zero;
+    fesetenv(&fenv);
+#endif
 
     TRACE("Initializing GC");
     if (!initGC(options)) return NULL;

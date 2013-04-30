@@ -128,7 +128,8 @@ public abstract class AbstractIOSTarget extends AbstractTarget {
             dict.put("CFBundleName", new NSString(config.getExecutable()));
         }
         if (!dict.containsKey("CFBundleIdentifier")) {
-            dict.put("CFBundleIdentifier", new NSString(config.getMainClass()));
+            String value = config.getMainClass() != null ? config.getMainClass() : config.getExecutable();
+            dict.put("CFBundleIdentifier", new NSString(value));
         }
         customizeInfoPList(dict);
 

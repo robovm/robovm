@@ -11,6 +11,12 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_LIB_VERSION_TYPE=\"const enum _IEEE_\"")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-strict-aliasing")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ffloat-store")
 
+# fdlibm expects __LITTLE_ENDIAN to be defined for little endian targets but
+# clang defines __LITTLE_ENDIAN__.
+if(DARWIN)
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D__LITTLE_ENDIAN=__LITTLE_ENDIAN__")
+endif()
+
 set(SRC
   k_standard.c k_rem_pio2.c
   k_cos.c k_sin.c k_tan.c

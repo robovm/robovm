@@ -68,6 +68,11 @@ if [ "x$DYLD_LIBRARY_PATH" != 'x' ]; then
   LIBPATH=$LIBPATH:$DYLD_LIBRARY_PATH
 fi
 
-LD_LIBRARY_PATH=$LIBPATH DYLD_LIBRARY_PATH=$LIBPATH $TARGET/vts -rvm:MainClass=$MAINCLASS $RUNARGS
+if [ "x$SSH_HOST" != 'x' ]; then
+  rsync -a --delete $TARGET/ $SSH_HOST:$TARGET/ > /dev/null
+  ssh $SSH_HOST $TARGET/vts -rvm:MainClass=$MAINCLASS $RUNARGS
+else
+  LD_LIBRARY_PATH=$LIBPATH DYLD_LIBRARY_PATH=$LIBPATH $TARGET/vts -rvm:MainClass=$MAINCLASS $RUNARGS
+fi
 CODE=$?
 exit $CODE

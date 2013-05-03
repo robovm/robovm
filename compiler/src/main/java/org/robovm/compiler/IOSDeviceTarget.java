@@ -28,18 +28,6 @@ import java.io.SequenceInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import net.sf.plist.NSArray;
-import net.sf.plist.NSBoolean;
-import net.sf.plist.NSDictionary;
-import net.sf.plist.NSObject;
-import net.sf.plist.NSString;
-import net.sf.plist.io.PropertyListException;
-import net.sf.plist.io.PropertyListParser;
-import net.sf.plist.io.PropertyListWriter;
 
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.ExecuteStreamHandler;
@@ -52,6 +40,12 @@ import org.netbeans.modules.cnd.debugger.gdb2.mi.MIProxy;
 import org.netbeans.modules.cnd.debugger.gdb2.mi.MIRecord;
 import org.netbeans.modules.cnd.debugger.gdb2.mi.MIUserInteraction;
 import org.robovm.compiler.io.OpenOnWriteFileOutputStream;
+
+import com.dd.plist.NSArray;
+import com.dd.plist.NSDictionary;
+import com.dd.plist.NSObject;
+import com.dd.plist.NSString;
+import com.dd.plist.PropertyListParser;
 
 
 /**
@@ -79,10 +73,10 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
     }
     
     @Override
-    protected void customizeInfoPList(Map<String, NSObject> dict) {
-        dict.put("CFBundleSupportedPlatforms", new NSArray(Arrays.asList((NSObject) new NSString("iPhoneOS"))));
-        dict.put("CFBundleResourceSpecification", new NSString("ResourceRules.plist"));
-        dict.put("LSRequiresIPhoneOS", NSBoolean.TRUE);
+    protected void customizeInfoPList(NSDictionary dict) {
+        dict.put("CFBundleSupportedPlatforms", new NSArray(new NSString("iPhoneOS")));
+        dict.put("CFBundleResourceSpecification", "ResourceRules.plist");
+        dict.put("LSRequiresIPhoneOS", true);
     }
 
     @Override
@@ -188,15 +182,15 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
             File destFile = new File(config.getTmpDir(), "Entitlements.plist");
             if (entitlementsPList != null) {
                 NSDictionary dict = (NSDictionary) PropertyListParser.parse(entitlementsPList);
-                dict.getValue().put("get-task-allow", NSBoolean.TRUE);
-                PropertyListWriter.write(dict, destFile);
+                dict.put("get-task-allow", true);
+                PropertyListParser.saveAsXML(dict, destFile);
             } else {
                 FileUtils.copyURLToFile(getClass().getResource("/Entitlements.plist"), destFile);
             }
             return destFile;
-        } catch (PropertyListException e) {
-            throw new RuntimeException(e);
-        } catch (ParserConfigurationException e) {
+        } catch (IOException e) {
+            throw e;
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -214,8 +208,8 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
                         File settingsFile = new File(root, "SDKSettings.plist");
                         if (settingsFile.exists()) {
                             NSDictionary settings = (NSDictionary) PropertyListParser.parse(settingsFile);
-                            NSObject displayName = settings.get("DisplayName");
-                            NSObject version = settings.get("Version");
+                            NSObject displayName = settings.objectForKey("DisplayName");
+                            NSObject version = settings.objectForKey("Version");
                             if (displayName != null && version != null) {
                                 sdks.add(new SDK(displayName.toString(), version.toString(), root));
                             }

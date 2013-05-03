@@ -19,22 +19,14 @@ package org.robovm.compiler;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import net.sf.plist.NSDictionary;
-import net.sf.plist.NSObject;
-import net.sf.plist.NSString;
-import net.sf.plist.io.PropertyListException;
-import net.sf.plist.io.PropertyListParser;
-import net.sf.plist.io.PropertyListWriter;
-import net.sf.plist.io.PropertyListWriter.Format;
 
 import org.apache.commons.exec.util.StringUtils;
 import org.apache.commons.io.FileUtils;
+
+import com.dd.plist.NSDictionary;
+import com.dd.plist.NSObject;
+import com.dd.plist.PropertyListParser;
 
 
 /**
@@ -103,7 +95,7 @@ public abstract class AbstractIOSTarget extends AbstractTarget {
     
     protected String getExecutable() {
         if (infoPListDict != null) {
-            NSObject bundleExecutable = infoPListDict.get("CFBundleExecutable");
+            NSObject bundleExecutable = infoPListDict.objectForKey("CFBundleExecutable");
             if (bundleExecutable != null) {
                 return bundleExecutable.toString();
             }
@@ -111,40 +103,30 @@ public abstract class AbstractIOSTarget extends AbstractTarget {
         return config.getExecutable();
     }
 
-    protected void customizeInfoPList(Map<String, NSObject> dict) {
+    protected void customizeInfoPList(NSDictionary dict) {
     }
     
     protected void createInfoPList(File dir) throws IOException {
-        Map<String, NSObject> dict = null;
+        NSDictionary dict = new NSDictionary();
         if (infoPListDict != null) {
-            dict = new HashMap<String, NSObject>(infoPListDict.getValue());
-        } else {
-            dict = new HashMap<String, NSObject>();
+            for (String key : infoPListDict.allKeys()) {
+                dict.put(key, infoPListDict.objectForKey(key));
+            }
         }
-        if (!dict.containsKey("CFBundleExecutable")) {
-            dict.put("CFBundleExecutable", new NSString(config.getExecutable()));
+        if (dict.objectForKey("CFBundleExecutable") == null) {
+            dict.put("CFBundleExecutable", config.getExecutable());
         }
-        if (!dict.containsKey("CFBundleName")) {
-            dict.put("CFBundleName", new NSString(config.getExecutable()));
+        if (dict.objectForKey("CFBundleName") == null) {
+            dict.put("CFBundleName", config.getExecutable());
         }
-        if (!dict.containsKey("CFBundleIdentifier")) {
+        if (dict.objectForKey("CFBundleIdentifier") == null) {
             String value = config.getMainClass() != null ? config.getMainClass() : config.getExecutable();
-            dict.put("CFBundleIdentifier", new NSString(value));
+            dict.put("CFBundleIdentifier", value);
         }
         customizeInfoPList(dict);
 
-        // plist library doesn't support writing binary plist files yet. Write xml and convert using plutil.
-        File tmpInfoPlistXml = new File(config.getTmpDir(), "Info.plist.xml");
         File tmpInfoPlist = new File(config.getTmpDir(), "Info.plist");
-        try {
-            PropertyListWriter.write(new NSDictionary(dict), tmpInfoPlistXml, Format.XML);
-        } catch (PropertyListException e) {
-            throw new CompilerException(e);
-        } catch (ParserConfigurationException e) {
-            throw new CompilerException(e);
-        }
-        
-        CompilerUtil.exec(config, "plutil", "-convert", "binary1", "-o", tmpInfoPlist, tmpInfoPlistXml);
+        PropertyListParser.saveAsBinary(dict, tmpInfoPlist);
         
         config.getLogger().debug("Installing Info.plist to %s", dir);
         FileUtils.copyFile(tmpInfoPlist, new File(dir, tmpInfoPlist.getName()));

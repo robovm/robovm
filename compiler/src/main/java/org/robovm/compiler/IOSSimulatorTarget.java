@@ -19,13 +19,8 @@ package org.robovm.compiler;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
-import net.sf.plist.NSArray;
-import net.sf.plist.NSObject;
-import net.sf.plist.NSString;
 
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
@@ -33,6 +28,10 @@ import org.apache.commons.exec.ExecuteStreamHandler;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.exec.environment.EnvironmentUtils;
+
+import com.dd.plist.NSArray;
+import com.dd.plist.NSDictionary;
+import com.dd.plist.NSString;
 
 
 /**
@@ -58,10 +57,10 @@ public class IOSSimulatorTarget extends AbstractIOSTarget {
     }
     
     @Override
-    protected void customizeInfoPList(Map<String, NSObject> dict) {
-        dict.put("CFBundlePackageType", new NSString("APPL"));
-        dict.put("CFBundleSupportedPlatforms", new NSArray(Arrays.asList((NSObject) new NSString("iPhoneSimulator"))));
-        dict.put("DTPlatformName", new NSString("iphonesimulator"));
+    protected void customizeInfoPList(NSDictionary dict) {
+        dict.put("CFBundlePackageType", "APPL");
+        dict.put("CFBundleSupportedPlatforms", new NSArray(new NSString("iPhoneSimulator")));
+        dict.put("DTPlatformName", "iphonesimulator");
     }
     
     @Override

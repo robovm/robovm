@@ -16,12 +16,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>
 Third party libraries
 ---------------------
 
-The RoboVM compiler includes the "Property List Library". This  library is
-copyright 2011, Yørn de Jong and released under the LGPL 2.1 license.
-http://plist.sf.net/
-
-The "Property List Library" depends on the util.Base64 class which is copyright
-2004, Mikael Grev and released under the BSD license.
+The RoboVM compiler includes the com.dd.plist library. This library is
+copyright 2011, Daniel Dreibrodt and released under the MIT license.
+https://code.google.com/p/plist/
 
 The MurmurHash3 algorithm in MurmurHash3.java was created by Austin Appleby and
 ported to Java by Yonik Seeley. The original C code and the Java port are placed

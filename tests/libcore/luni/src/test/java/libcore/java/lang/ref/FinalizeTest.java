@@ -20,6 +20,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import junit.framework.TestCase;
 
 public final class FinalizeTest extends TestCase {
@@ -109,13 +110,8 @@ public final class FinalizeTest extends TestCase {
         AtomicInteger count = new AtomicInteger();
         AtomicBoolean keepGoing = new AtomicBoolean(true);
         createChainedFinalizer(count, keepGoing);
-        FinalizationTester.induceFinalization();
-        // RoboVM note: This for-loop was added since we need to try harder to get these objects finalized with the RoboVM GC.
-        for (int i = 0; i < 10; i++) {
-            if (count.get() > 0) {
-                break;
-            }
-            createChainedFinalizer(count, keepGoing);
+        while (count.get() == 0) { // RoboVM note: Repeat until count > 0
+            Thread.sleep(500); // RoboVM note: Without this short delay this test occasionally hangs.
             FinalizationTester.induceFinalization();
         }
         keepGoing.set(false);

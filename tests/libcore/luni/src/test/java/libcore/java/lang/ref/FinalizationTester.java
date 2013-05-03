@@ -26,19 +26,9 @@ public final class FinalizationTester {
     private FinalizationTester() {}
 
     public static void induceFinalization() {
-        for (int i = 0; i < 10; i++) { // RoboVM note: Try many times
-            createGarbage(); // RoboVM note: Create some garbage to trigger GC and finalization
-            System.gc();
-            enqueueReferences();
-            System.runFinalization();
-        }
-    }
-
-    private static void createGarbage() {
-        for (int i = 0; i < 1024; i++) {
-            byte[] b = new byte[16 * 1024];
-            b.hashCode();
-        }
+        System.gc();
+        enqueueReferences();
+        System.runFinalization();
     }
 
     public static void enqueueReferences() {

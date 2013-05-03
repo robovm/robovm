@@ -20,7 +20,7 @@
   <property name="xml.resources" location="xml/src/test/resources"/>
   <property name="expectations" location="expectations"/>
   <property name="build" location="target/classes"/>
-  <property name="reports" location="target/reports"/>
+  <property name="reports.base" location="target/reports"/>
   <property name="tmp" location="${java.io.tmpdir}/robovm.tests.libcore.${os}-${arch}.tmp"/>
   <property name="install" location="${java.io.tmpdir}/robovm.tests.libcore.${os}-${arch}"/>
 
@@ -40,7 +40,7 @@
 
   <target name="init">
     <mkdir dir="${build}"/>
-    <mkdir dir="${reports}"/>
+    <mkdir dir="${reports.base}"/>
   </target>
 
   <target name="compile" depends="init">
@@ -116,6 +116,9 @@
     <condition property="timestamp" value="${newtimestamp}">
       <not><isset property="timestamp"/></not>
     </condition>
+    <condition property="host" value="localhost">
+      <not><isset property="host"/></not>
+    </condition>
 
     <condition property="include" value=".*">
       <not><isset property="include"/></not>
@@ -129,7 +132,14 @@
 
     <echo message="Running tests matching '${include}' and not matching '${exclude}'"/>
 
-    <junit fork="true" jvm="${basedir}/robovm-ant-junit-runner" printsummary="true" showoutput="true">
+    <property name="work" location="/tmp/robovm-libcore.${os}.${arch}.${timestamp}/work"/>
+    <mkdir dir="${work}"/>
+    <property name="reports.tmp" location="${work}/reports"/>
+    <mkdir dir="${reports.tmp}"/>
+    <property name="reports" location="${reports.base}.${os}.${arch}.${timestamp}"/>
+    <mkdir dir="${reports}"/>
+
+    <junit fork="true" jvm="${basedir}/robovm-ant-junit-runner" printsummary="true" showoutput="true" tempdir="${work}">
       <env key="ROBOVM_TESTS_INCLUDE_PATTERN" value="${include}"/>
       <env key="ROBOVM_TESTS_EXCLUDE_PATTERN" value="${exclude}"/>
       <env key="ROBOVM_TESTS_RUN_EXCLUDED" value="${run-excluded}"/>
@@ -139,9 +149,14 @@
       <jvmarg line="-os ${os}"/>
       <jvmarg line="-arch ${arch}"/>
       <jvmarg line="-timestamp ${timestamp}"/>
+      <jvmarg line="-host ${host}"/>
       <formatter type="xml"/>
-      <test name="RoboVMAllTests" todir="${reports}"/>
+      <test name="RoboVMAllTests" todir="${reports.tmp}"/>
     </junit>
+
+    <copy todir="${reports}">
+      <fileset dir="${reports.tmp}"/>
+    </copy>
 
     <junitreport todir="${reports}">
       <fileset dir="${reports}">
@@ -153,7 +168,6 @@
 
   <target name="clean">
     <delete dir="${build}"/>
-    <delete dir="${reports}"/>
   </target>
 
 </project>

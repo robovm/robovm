@@ -7,6 +7,7 @@ CP=
 ARCH=auto
 OS=auto
 TIMESTAMP=
+SSH_HOST=
 
 if [ -f "$BASE/tests/libcore/$SELF.env" ]; then
   . $BASE/tests/libcore/$SELF.env
@@ -28,6 +29,9 @@ while [ ${1:0:1} = '-' ]; do
   elif [ "$1" = '-timestamp' ]; then
     shift
     TIMESTAMP=$1
+  elif [ "$1" = '-host' ]; then
+    shift
+    SSH_HOST=$1
   fi
   shift
 done
@@ -35,8 +39,8 @@ done
 MAINCLASS=$1
 shift
 
-TMP=/tmp/robovm-libcore.tmp.$ARCH.$OS.$TIMESTAMP
-TARGET=/tmp/robovm-libcore.$ARCH.$OS.$TIMESTAMP
+TMP=/tmp/robovm-libcore.tmp.$OS.$ARCH.$TIMESTAMP
+TARGET=/tmp/robovm-libcore.$OS.$ARCH.$TIMESTAMP
 
 if [ ! -x $TARGET/test ]; then
   export ROBOVM_DEV_ROOT=$BASE
@@ -54,8 +58,17 @@ if [ ! -x $TARGET/test ]; then
   if [ $result -ne 0 ]; then
     exit $result
   fi
+  mkdir -p $TARGET/work
 fi
 
-$TARGET/test -rvm:mx256M -rvm:MainClass=$MAINCLASS $@
-result=$?
+if [ "x$SSH_HOST" != 'x' -o "x$SSH_HOST" != 'xlocalhost' ]; then
+  rsync -a --delete $TARGET/ $SSH_HOST:$TARGET/
+  echo ssh $SSH_HOST ROBOVM_TESTS_INCLUDE_PATTERN="'$ROBOVM_TESTS_INCLUDE_PATTERN'" ROBOVM_TESTS_EXCLUDE_PATTERN="'$ROBOVM_TESTS_EXCLUDE_PATTERN'" ROBOVM_TESTS_RUN_EXCLUDED="'$ROBOVM_TESTS_RUN_EXCLUDED'" $TARGET/test -rvm:mx256M -rvm:MainClass=$MAINCLASS $@
+  ssh $SSH_HOST ROBOVM_TESTS_INCLUDE_PATTERN="'$ROBOVM_TESTS_INCLUDE_PATTERN'" ROBOVM_TESTS_EXCLUDE_PATTERN="'$ROBOVM_TESTS_EXCLUDE_PATTERN'" ROBOVM_TESTS_RUN_EXCLUDED="'$ROBOVM_TESTS_RUN_EXCLUDED'" $TARGET/test -rvm:mx256M -rvm:MainClass=$MAINCLASS $@
+  result=$?
+  rsync -a $SSH_HOST:$TARGET/work/ $TARGET/work/
+else
+  $TARGET/test -rvm:mx256M -rvm:MainClass=$MAINCLASS $@
+  result=$?
+fi
 exit $result

@@ -27,10 +27,13 @@ import java.io.PrintStream;
 import java.io.SequenceInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.ExecuteStreamHandler;
+import org.apache.commons.exec.environment.EnvironmentUtils;
 import org.apache.commons.exec.util.StringUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -165,7 +168,10 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
             args.add(entitlementsPList);
         }
         args.add(appDir);
-        CompilerUtil.exec(config, "codesign", args);        
+        @SuppressWarnings("unchecked")
+        Map<String, String> env = new HashMap<String, String>(EnvironmentUtils.getProcEnvironment());
+        env.put("CODESIGN_ALLOCATE", CompilerUtil.execCaptureOutput("xcrun", "-sdk", "iphoneos", "-f", "codesign_allocate").trim());
+        CompilerUtil.execWithEnv(config, null, env, "codesign", args);        
     }
     
     private void copyResourcesPList(File destDir) throws IOException {

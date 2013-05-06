@@ -26,7 +26,6 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.SequenceInputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +45,6 @@ import org.robovm.compiler.io.OpenOnWriteFileOutputStream;
 
 import com.dd.plist.NSArray;
 import com.dd.plist.NSDictionary;
-import com.dd.plist.NSObject;
 import com.dd.plist.NSString;
 import com.dd.plist.PropertyListParser;
 
@@ -77,9 +75,8 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
     
     @Override
     protected void customizeInfoPList(NSDictionary dict) {
-        dict.put("CFBundleSupportedPlatforms", new NSArray(new NSString("iPhoneOS")));
         dict.put("CFBundleResourceSpecification", "ResourceRules.plist");
-        dict.put("LSRequiresIPhoneOS", true);
+        dict.put("CFBundleSupportedPlatforms", new NSArray(new NSString("iPhoneOS")));
     }
 
     @Override
@@ -202,32 +199,7 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
     }
     
     public static List<SDK> listSDKs() {
-        try {
-            // TODO: Use xcode-select to determine the path to Xcode
-            List<SDK> sdks = new ArrayList<SDK>();
-            List<File> sdksDirs = Arrays.asList(
-                    new File("/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs"),
-                    new File("/Developer/Platforms/iPhoneOS.platform/Developer/SDKs"));
-            for (File sdksDir : sdksDirs) {
-                if (sdksDir.exists() && sdksDir.isDirectory()) {
-                    for (File root : sdksDir.listFiles()) {
-                        File settingsFile = new File(root, "SDKSettings.plist");
-                        if (settingsFile.exists()) {
-                            NSDictionary settings = (NSDictionary) PropertyListParser.parse(settingsFile);
-                            NSObject displayName = settings.objectForKey("DisplayName");
-                            NSObject version = settings.objectForKey("Version");
-                            if (displayName != null && version != null) {
-                                sdks.add(new SDK(displayName.toString(), version.toString(), root));
-                            }
-                        }
-                    }
-                }
-            }
-            
-            return sdks;
-        } catch (Throwable t) {
-            throw new RuntimeException(t);
-        }
+        return SDK.listSDKs("iPhoneOS");
     }
     
     public static class Builder extends AbstractIOSTarget.Builder {

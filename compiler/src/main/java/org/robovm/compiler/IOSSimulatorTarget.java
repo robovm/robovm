@@ -16,18 +16,11 @@
  */
 package org.robovm.compiler;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.DefaultExecutor;
-import org.apache.commons.exec.ExecuteStreamHandler;
-import org.apache.commons.exec.Executor;
-import org.apache.commons.exec.PumpStreamHandler;
-import org.apache.commons.exec.environment.EnvironmentUtils;
 
 import com.dd.plist.NSArray;
 import com.dd.plist.NSDictionary;
@@ -53,14 +46,12 @@ public class IOSSimulatorTarget extends AbstractIOSTarget {
 
     @Override
     protected List<SDK> getSDKs() {
-        return listSDKs(iosSimBinPath != null ? iosSimBinPath : new File(config.getHome().getBinDir(), "ios-sim"));
+        return listSDKs();
     }
     
     @Override
     protected void customizeInfoPList(NSDictionary dict) {
-        dict.put("CFBundlePackageType", "APPL");
         dict.put("CFBundleSupportedPlatforms", new NSArray(new NSString("iPhoneSimulator")));
-        dict.put("DTPlatformName", "iphonesimulator");
     }
     
     @Override
@@ -98,41 +89,8 @@ public class IOSSimulatorTarget extends AbstractIOSTarget {
         return CompilerUtil.createCommandLine(iosSimPath, args);
     }
     
-    public static List<SDK> listSDKs(File iosSimBinPath) {
-        String iosSimPath = "ios-sim";
-        if (iosSimBinPath != null) {
-            iosSimPath = iosSimBinPath.getAbsolutePath();
-        }
-    
-        List<SDK> sdks = new ArrayList<SDK>();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ExecuteStreamHandler streamHandler = new PumpStreamHandler(baos);
-        Executor executor = new DefaultExecutor();
-        executor.setStreamHandler(streamHandler);
-        CommandLine command = new CommandLine(iosSimPath).addArgument("showsdks");
-        try {
-            @SuppressWarnings("rawtypes")
-            Map env = EnvironmentUtils.getProcEnvironment();
-            executor.setExitValues(new int[] {0, 1});
-            executor.execute(command, env);
-            String output = new String(baos.toByteArray());
-            String[] lines = output.split("\n");
-            for (int i = 1; i < lines.length; i += 2) {
-                String nameVersion = lines[i];
-                if (nameVersion.startsWith("[DEBUG]")) {
-                    nameVersion = nameVersion.substring(7);
-                }
-                nameVersion = nameVersion.trim();
-                String name = nameVersion.replaceAll(".*'([^']*)'.*", "$1");
-                String version = nameVersion.replaceAll(".*\\(([^)]*)\\).*", "$1");
-                String root = lines[i + 1].trim();
-                sdks.add(new SDK(name, version , new File(root)));
-            }
-        } catch (Throwable t) {
-            throw new RuntimeException(t);
-        }
-        
-        return sdks;
+    public static List<SDK> listSDKs() {
+        return SDK.listSDKs("iPhoneSimulator");
     }
     
     public static enum Family {iPhone, iPad}
@@ -147,11 +105,6 @@ public class IOSSimulatorTarget extends AbstractIOSTarget {
         
         public Builder iosSimBinPath(File iosSimBinPath) {
             target.iosSimBinPath = iosSimBinPath;
-            return this;
-        }
-        
-        public Builder sdk(SDK sdk) {
-            target.sdk = sdk;
             return this;
         }
         

@@ -30,6 +30,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.exec.ExecuteException;
+import org.robovm.compiler.AbstractIOSTarget.SDK;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.Dependency;
 import org.robovm.compiler.clazz.Path;
@@ -249,6 +250,7 @@ public class AppCompiler {
             Arch arch = null;
             
             int i = 0;
+            List<String> targetArgs = new ArrayList<String>();
             while (i < args.length) {
                 if ("-cp".equals(args[i]) || "-classpath".equals(args[i])) {
                     for (String p : args[++i].split(File.pathSeparator)) {
@@ -334,6 +336,21 @@ public class AppCompiler {
                         }
                     }
                     builder.cacerts(cacerts);
+                } else if ("-plist".equals(args[i])) {
+                    targetArgs.add(args[i++]);
+                    targetArgs.add(args[i]);
+                } else if ("-entitlements".equals(args[i])) {
+                    targetArgs.add(args[i++]);
+                    targetArgs.add(args[i]);
+                } else if ("-resourcerules".equals(args[i])) {
+                    targetArgs.add(args[i++]);
+                    targetArgs.add(args[i]);
+                } else if ("-signidentity".equals(args[i])) {
+                    targetArgs.add(args[i++]);
+                    targetArgs.add(args[i]);
+                } else if ("-sdk".equals(args[i])) {
+                    targetArgs.add(args[i++]);
+                    targetArgs.add(args[i]);
                 } else if (args[i].startsWith("-D")) {
                 } else if (args[i].startsWith("-X")) {
                 } else if (args[i].startsWith("-rvm:")) {
@@ -374,18 +391,82 @@ public class AppCompiler {
             
             builder.skipInstall(run);
 
+            Target.Builder targetBuilder = null;
             if (os == OS.ios) {
                 if (arch != null && arch.isArm()) {
-                    builder.targetBuilder(new IOSDeviceTarget.Builder());
+                    targetBuilder = new IOSDeviceTarget.Builder();
                 } else {
-                    builder.targetBuilder(new IOSSimulatorTarget.Builder());
+                    targetBuilder = new IOSSimulatorTarget.Builder();
                 }
             }
+            
+            i = 0;
+            while (i < targetArgs.size()) {
+                String arg = targetArgs.get(i++);
+                if (arg.equals("-plist")) {
+                    if (targetBuilder instanceof AbstractIOSTarget.Builder) {
+                        ((AbstractIOSTarget.Builder) targetBuilder).infoPList(new File(targetArgs.get(i++)));
+                        continue;
+                    }
+                }
+                if (arg.equals("-entitlements")) {
+                    if (targetBuilder instanceof IOSDeviceTarget.Builder) {
+                        ((IOSDeviceTarget.Builder) targetBuilder).entitlementsPList(new File(targetArgs.get(i++)));
+                        continue;
+                    }
+                }
+                if (arg.equals("-resourcerules")) {
+                    if (targetBuilder instanceof IOSDeviceTarget.Builder) {
+                        ((IOSDeviceTarget.Builder) targetBuilder).resourceRulesPList(new File(targetArgs.get(i++)));
+                        continue;
+                    }
+                }
+                if (arg.equals("-signidentity")) {
+                    if (targetBuilder instanceof IOSDeviceTarget.Builder) {
+                        ((IOSDeviceTarget.Builder) targetBuilder).signingIdentity(targetArgs.get(i++));
+                        continue;
+                    }
+                }
+                if (arg.equals("-sdk")) {
+                    if (targetBuilder instanceof AbstractIOSTarget.Builder) {
+                        String value = targetArgs.get(i++);
+                        SDK matchSdk = null;
+                        if (value.matches("\\d+\\.\\d+(\\.\\d+)?")) {
+                            // Version string
+                            List<SDK> sdks = null;
+                            if (targetBuilder instanceof IOSDeviceTarget.Builder) {
+                                sdks = IOSDeviceTarget.listSDKs();
+                            } else {
+                                sdks = IOSSimulatorTarget.listSDKs();
+                            }
+                            for (SDK sdk : sdks) {
+                                if (sdk.getVersion().equals(value)) {
+                                    matchSdk = sdk;
+                                    break;
+                                }
+                            }
+                            if (matchSdk == null) {
+                                throw new IllegalArgumentException("No SDK found matching version string " + value);
+                            }
+                        } else {
+                            // Path
+                            matchSdk = SDK.create(new File(value));
+                        }
+                        ((AbstractIOSTarget.Builder) targetBuilder).sdk(matchSdk);
+                        continue;
+                    }
+                }
+                throw new IllegalArgumentException("Unsupported argument for the specified target: " + arg);
+            }
+            builder.targetBuilder(targetBuilder);
             
             compiler = new AppCompiler(builder.build());
         } catch (Throwable t) {
             String message = t.getMessage();
-            if (t instanceof StringIndexOutOfBoundsException) {
+            if (t instanceof ArrayIndexOutOfBoundsException) {
+                message = "Missing argument";
+            }
+            if (t instanceof IndexOutOfBoundsException) {
                 message = "Missing argument";
             }
             if (verbose && !(t instanceof StringIndexOutOfBoundsException) && !(t instanceof IllegalArgumentException)) {
@@ -492,8 +573,20 @@ public class AppCompiler {
                          + "                        unless the code actually needs them.");
         System.err.println("  -skiprt               Do not add default robovm-rt.jar to bootclasspath");
         System.err.println("  -verbose              Output messages about what the compiler is doing");
-        System.err.println("  -version              Print the version of the compiler version and exit");
+        System.err.println("  -version              Print the version of the compiler and exit");
         System.err.println("  -help, -?             Display this information");
+        System.err.println("Target specific options:");
+        System.err.println("  -plist                (iOS) Info.plist file to be used by the app. If not specified\n"
+                         + "                        a simple Info.plist will be generated with a CFBundleIdentifier\n" 
+                         + "                        based on the main class name or executable file name.");
+        System.err.println("  -entitlements         (iOS) Property list (.plist) file containing entitlements\n" 
+                         + "                        passed to codesign when signing the app.");
+        System.err.println("  -resourcerules        (iOS) Property list (.plist) file containing resource rules\n" 
+                         + "                        passed to codesign when signing the app.");
+        System.err.println("  -signidentity         (iOS) Sign using this identity. Default is 'iPhone Developer'.");
+        System.err.println("  -sdk                  (iOS) SDK to build against. Either a full path or version\n" 
+                         + "                        number. If not specified the latest SDK that can be found will\n" 
+                         + "                        be used.");
         
         System.exit(errorMessage != null ? 1 : 0);
     }

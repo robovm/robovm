@@ -18,14 +18,19 @@ package org.robovm.compiler;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.exec.util.StringUtils;
 import org.apache.commons.io.FileUtils;
 
+import com.dd.plist.NSArray;
 import com.dd.plist.NSDictionary;
+import com.dd.plist.NSNumber;
 import com.dd.plist.NSObject;
+import com.dd.plist.NSString;
 import com.dd.plist.PropertyListParser;
 
 
@@ -51,13 +56,7 @@ public abstract class AbstractIOSTarget extends AbstractTarget {
 
         ccArgs.add("-miphoneos-version-min=3.0");
         ccArgs.add("-isysroot");
-        if (sdk != null) {
-            ccArgs.add(sdk.getRoot().getAbsolutePath());
-        } else {
-            List<SDK> sdks = getSDKs();
-            Collections.sort(sdks);
-            ccArgs.add(sdks.get(sdks.size() - 1).getRoot().getAbsolutePath());
-        }
+        ccArgs.add(sdk.getRoot().getAbsolutePath());
         super.doBuild(outFile, ccArgs, objectFiles, libArgs);
     }
 
@@ -112,17 +111,42 @@ public abstract class AbstractIOSTarget extends AbstractTarget {
             for (String key : infoPListDict.allKeys()) {
                 dict.put(key, infoPListDict.objectForKey(key));
             }
-        }
-        if (dict.objectForKey("CFBundleExecutable") == null) {
+        } else {
             dict.put("CFBundleExecutable", config.getExecutable());
-        }
-        if (dict.objectForKey("CFBundleName") == null) {
             dict.put("CFBundleName", config.getExecutable());
+            String identifier = config.getMainClass() != null ? config.getMainClass() : config.getExecutable();
+            dict.put("CFBundleIdentifier", identifier);
+            dict.put("CFBundlePackageType", "APPL");
+            dict.put("LSRequiresIPhoneOS", true);
+            if (sdk.getDefaultProperty("SUPPORTED_DEVICE_FAMILIES") != null) {
+                // Values in SUPPORTED_DEVICE_FAMILIES are NSStrings while UIDeviceFamily
+                // values should be NSNumbers.
+                NSArray defFamilies = (NSArray) sdk.getDefaultProperty("SUPPORTED_DEVICE_FAMILIES");
+                NSArray families = new NSArray(defFamilies.count());
+                for (int i = 0; i < families.count(); i++) {
+                    families.setValue(i, new NSNumber(defFamilies.objectAtIndex(i).toString()));
+                }
+                dict.put("UIDeviceFamily", families);
+            }
+            dict.put("UISupportedInterfaceOrientations", new NSArray(
+                    new NSString("UIInterfaceOrientationPortrait"),
+                    new NSString("UIInterfaceOrientationLandscapeLeft"),
+                    new NSString("UIInterfaceOrientationLandscapeRight"),
+                    new NSString("UIInterfaceOrientationPortraitUpsideDown")
+            ));
+            dict.put("UISupportedInterfaceOrientations~ipad", new NSArray(
+                    new NSString("UIInterfaceOrientationPortrait"),
+                    new NSString("UIInterfaceOrientationLandscapeLeft"),
+                    new NSString("UIInterfaceOrientationLandscapeRight"),
+                    new NSString("UIInterfaceOrientationPortraitUpsideDown")
+            ));
+            dict.put("UIRequiredDeviceCapabilities", new NSArray(new NSString("armv7")));
         }
-        if (dict.objectForKey("CFBundleIdentifier") == null) {
-            String value = config.getMainClass() != null ? config.getMainClass() : config.getExecutable();
-            dict.put("CFBundleIdentifier", value);
-        }
+
+        dict.put("DTPlatformName", sdk.getDefaultProperty("PLATFORM_NAME"));
+        dict.put("DTPlatformVersion", sdk.getVersion());
+        dict.put("DTSDKName", sdk.getCanonicalName());
+        
         customizeInfoPList(dict);
 
         File tmpInfoPlist = new File(config.getTmpDir(), "Info.plist");
@@ -162,23 +186,78 @@ public abstract class AbstractIOSTarget extends AbstractTarget {
                     throw new IllegalArgumentException(t);
                 }
             }
+            if (target.sdk == null) {
+                List<SDK> sdks = target.getSDKs();
+                Collections.sort(sdks);
+                target.sdk = sdks.get(sdks.size() - 1);
+            }
             return target.build(config);
         }
     }
     
     public static class SDK implements Comparable<SDK> {
-        private final String name;
+        private final String displayName;
+        private final String minimalDisplayName;
+        private final String canonicalName;
         private final String version;
         private final File root;
+        private final NSDictionary defaultProperties;
         private final int major;
         private final int minor;
         private final int revision;
         
-        SDK(String name, String version, File root) {
+        public static SDK create(File root) throws Exception {
+            File settingsFile = new File(root, "SDKSettings.plist");
+            if (settingsFile.exists()) {
+                NSDictionary settings = (NSDictionary) PropertyListParser.parse(settingsFile);
+                NSObject displayName = settings.objectForKey("DisplayName");
+                NSObject minimalDisplayName = settings.objectForKey("MinimalDisplayName");
+                NSObject canonicalName = settings.objectForKey("CanonicalName");
+                NSObject version = settings.objectForKey("Version");
+                NSDictionary defaultProperties = (NSDictionary) settings.objectForKey("DefaultProperties");
+                if (displayName != null && version != null) {
+                    return new SDK(displayName.toString(), minimalDisplayName.toString(), 
+                            canonicalName.toString(), version.toString(), root, defaultProperties);
+                }
+            }
+            throw new IllegalArgumentException(root.getAbsolutePath() + " is not an SDK root path");
+        }
+        
+        public static List<SDK> listSDKs(String platform) {
+            try {
+                List<SDK> sdks = new ArrayList<SDK>();
+                List<File> sdksDirs = Arrays.asList(
+                        new File(CompilerUtil.execCaptureOutput("xcode-select", "--print-path") + "/Platforms/" + platform + ".platform/Developer/SDKs"),
+                        new File("/Applications/Xcode.app/Contents/Developer/Platforms/" + platform + ".platform/Developer/SDKs"),
+                        new File("/Developer/Platforms/" + platform + ".platform/Developer/SDKs"));
+                for (File sdksDir : sdksDirs) {
+                    if (sdksDir.exists() && sdksDir.isDirectory()) {
+                        for (File root : sdksDir.listFiles()) {
+                            try {
+                                sdks.add(SDK.create(root));
+                            } catch (Exception e) {
+                            }
+                        }
+                        if (!sdks.isEmpty()) {
+                            return sdks;
+                        }
+                    }
+                }
+                
+                return sdks;
+            } catch (Throwable t) {
+                throw new RuntimeException(t);
+            }
+        }
+        
+        private SDK(String displayName, String minimalDisplayName, String canonicalName, String version, File root, NSDictionary defaultProperties) {
             super();
-            this.name = name;
+            this.displayName = displayName;
+            this.minimalDisplayName = minimalDisplayName;
+            this.canonicalName = canonicalName;
             this.version = version;
             this.root = root;
+            this.defaultProperties = defaultProperties;
             
             String[] parts = StringUtils.split(version, ".");
             this.major = Integer.parseInt(parts[0]);
@@ -186,16 +265,32 @@ public abstract class AbstractIOSTarget extends AbstractTarget {
             this.revision = parts.length >= 3 ? Integer.parseInt(parts[2]) : 0;
         }
 
-        public String getName() {
-            return name;
+        public String getDisplayName() {
+            return displayName;
         }
 
+        public String getMinimalDisplayName() {
+            return minimalDisplayName;
+        }
+        
+        public String getCanonicalName() {
+            return canonicalName;
+        }
+        
         public String getVersion() {
             return version;
         }
 
         public File getRoot() {
             return root;
+        }
+
+        public NSDictionary getDefaultProperties() {
+            return defaultProperties;
+        }
+        
+        public NSObject getDefaultProperty(String key) {
+            return defaultProperties.objectForKey(key);
         }
         
         public int getMajor() {

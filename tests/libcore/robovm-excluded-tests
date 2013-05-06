@@ -76,6 +76,7 @@ libcore.java.lang.OldClassTest#test_forNameLjava_lang_StringLbooleanLClassLoader
 libcore.java.util.jar.DalvikExecTest#test_execCreatedJar
 libcore.java.util.jar.DalvikExecTest#test_execCreatedJarWithManifest
 libcore.java.util.jar.DalvikExecTest#test_execExistingJar
+tests.api.java.lang.Process2Test#test_streams
 
 # Hangs on RI and on RoboVM. Also in expectations/brokentests.txt.
 libcore.java.net.URLConnectionTest#testConnectTimeouts

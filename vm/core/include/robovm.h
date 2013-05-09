@@ -27,6 +27,14 @@
 #include <stdarg.h>
 #include <assert.h>
 
+// Keep assert() even in release builds but just abort.
+#ifdef NDEBUG
+#   ifdef assert
+#      undef assert
+#   endif
+#   define assert(e) ((void) ((e) ? 0 : rvmAbort(NULL)))
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif

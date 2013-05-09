@@ -399,6 +399,9 @@ public class AppCompiler {
                     targetBuilder = new IOSSimulatorTarget.Builder();
                 }
             }
+            if (targetBuilder == null) {
+                targetBuilder = new ConsoleTarget.Builder();
+            }
             
             i = 0;
             while (i < targetArgs.size()) {

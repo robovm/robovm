@@ -62,13 +62,21 @@ public abstract class AbstractIOSTarget extends AbstractTarget {
 
     protected void prepareInstall(File installDir) throws IOException {
         createInfoPList(installDir);
+        generateDsym(installDir, getExecutable());
     }
     
     protected void prepareLaunch(File appDir) throws IOException {
         super.doInstall(appDir, getExecutable());
         createInfoPList(appDir);
+        generateDsym(appDir, getExecutable());
     }
     
+    private void generateDsym(File dir, String executable) throws IOException {
+        File dsymDir = new File(dir.getParentFile(), dir.getName() + ".dSYM");
+        FileUtils.deleteDirectory(dsymDir);
+        CompilerUtil.exec(config, "xcrun", "dsymutil", "-o", dsymDir, new File(dir, executable));
+    }
+
     @Override
     protected void doInstall(File installDir, String executable) throws IOException {
         super.doInstall(installDir, getExecutable());

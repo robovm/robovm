@@ -99,10 +99,10 @@ public abstract class AbstractTarget implements Target {
             ccArgs.add("-Wl,--gc-sections");
 //            ccArgs.add("-Wl,--print-gc-sections");
         } else if (config.getOs().getFamily() == OS.Family.darwin) {
-            File unexportedSymbolsFile = new File(config.getTmpDir(), "unexported_symbols");
-            FileUtils.writeStringToFile(unexportedSymbolsFile, "*\n", "ASCII");
-            ccArgs.add("-unexported_symbols_list");
-            ccArgs.add(unexportedSymbolsFile.getAbsolutePath());
+            File exportedSymbolsFile = new File(config.getTmpDir(), "exported_symbols");
+            FileUtils.writeStringToFile(exportedSymbolsFile, "_catch_exception_raise\n", "ASCII");
+            ccArgs.add("-exported_symbols_list");
+            ccArgs.add(exportedSymbolsFile.getAbsolutePath());
             ccArgs.add("-Wl,-no_implicit_dylibs");
             ccArgs.add("-Wl,-dead_strip");
         }

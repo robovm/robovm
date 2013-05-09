@@ -218,7 +218,7 @@ if(DARWIN)
   endif()
 endif()
 
-set(EXTGC_C_FLAGS "${EXT_C_FLAGS}")
+set(EXTGC_C_FLAGS "${EXT_C_FLAGS} -DGC_DISABLE_INCREMENTAL")
 set(EXTGC_LD_FLAGS "${EXT_LD_FLAGS}")
 if(DARWIN)
   set(EXTGC_C_FLAGS "${EXTGC_C_FLAGS} -DNO_DYLD_BIND_FULLY_IMAGE")
@@ -232,7 +232,7 @@ ExternalProject_Add(libatomic_ops
   GIT_REPOSITORY git://github.com/ivmai/libatomic_ops.git
   GIT_TAG f5f47f7b9c70df2e0d371dd2f303a0dec1a37223
   UPDATE_COMMAND ""
-  CONFIGURE_COMMAND ""
+  CONFIGURE_COMMAND "" 
   BUILD_COMMAND ""
   INSTALL_COMMAND ""
   BUILD_IN_SOURCE 1
@@ -240,7 +240,7 @@ ExternalProject_Add(libatomic_ops
 ExternalProject_Add(extgc 
   DEPENDS libatomic_ops
   GIT_REPOSITORY git://github.com/robovm/bdwgc.git
-  GIT_TAG e3aa8b63e49b4b5f4185d9a3f173eff24a8694f3
+  GIT_TAG 40ed2d5272191a169598e60697221c88de71027b
   UPDATE_COMMAND ""
   PATCH_COMMAND bash -c "rm -f libatomic_ops && ln -s ../../../libatomic_ops-prefix/src/libatomic_ops libatomic_ops"
   CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTGC_C_FLAGS}' LDFLAGS='${EXTGC_LD_FLAGS}' ./configure ${EXT_HOST} ${EXTGC_PARAMS} --prefix=${CMAKE_BINARY_DIR}/gc"

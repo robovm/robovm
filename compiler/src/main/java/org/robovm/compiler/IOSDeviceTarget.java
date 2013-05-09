@@ -339,12 +339,16 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
                 protected void prompt() {
                     if (!started) {
                         started = true;
-                        send(new SimpleMICommand(0, "-exec-continue") {
-                            @Override
-                            protected void onStopped(MIRecord record) {
-                                send(new SimpleMICommand(0, "-gdb-exit"));
+                        send(new SimpleMICommand(0, "-interpreter-exec console \"handle all nostop noprint\"") {
+                            protected void onDone(MIRecord record) {
+                                send(new SimpleMICommand(0, "-exec-continue") {
+                                    @Override
+                                    protected void onStopped(MIRecord record) {
+                                        send(new SimpleMICommand(0, "-gdb-exit"));
+                                    }
+                                });
                             }
-                        });                        
+                        });
                     }
                 }
             };

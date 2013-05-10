@@ -40,6 +40,7 @@ typedef struct {
 } BcTrycatchContext;
 
 const char* __attribute__ ((weak)) _bcMainClass = NULL;
+extern jboolean _bcDynamicJNI;
 extern char** _bcBootclasspath;
 extern char** _bcClasspath;
 extern void* _bcBootClassesHash;
@@ -70,6 +71,7 @@ int main(int argc, char* argv[]) {
     options.loadMethods = loadMethods;
     options.findClassAt = findClassAt;
     options.exceptionMatch = exceptionMatch;
+    options.dynamicJNI = _bcDynamicJNI;
     if (!rvmInitOptions(argc, argv, &options, FALSE)) {
         fprintf(stderr, "rvmInitOptions(...) failed!\n");
         return 1;

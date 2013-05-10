@@ -37,6 +37,7 @@ import org.robovm.compiler.llvm.Constant;
 import org.robovm.compiler.llvm.ConstantBitcast;
 import org.robovm.compiler.llvm.ConstantGetelementptr;
 import org.robovm.compiler.llvm.Global;
+import org.robovm.compiler.llvm.IntegerConstant;
 import org.robovm.compiler.llvm.NullConstant;
 import org.robovm.compiler.llvm.Type;
 
@@ -57,7 +58,9 @@ public class Linker {
         ModuleBuilder mb = new ModuleBuilder();
         mb.addInclude(getClass().getClassLoader().getResource(String.format("header-%s-%s.ll", config.getOs().getFamily(), config.getArch())));
         mb.addInclude(getClass().getClassLoader().getResource("header.ll"));
-        
+
+        mb.addGlobal(new Global("_bcDynamicJNI", new IntegerConstant(config.isDynamicJNI() ? (byte) 1 : (byte) 0)));
+
         HashTableGenerator<String, Constant> bcpHashGen = new HashTableGenerator<String, Constant>(new ModifiedUtf8HashFunction());
         HashTableGenerator<String, Constant> cpHashGen = new HashTableGenerator<String, Constant>(new ModifiedUtf8HashFunction());
         for (Clazz clazz : linkClasses) {

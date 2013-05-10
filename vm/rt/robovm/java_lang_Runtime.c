@@ -21,6 +21,10 @@ void Java_java_lang_Runtime_nativeExit(Env* env, Class* clazz, jint code) {
 }
 
 void Java_java_lang_Runtime_nativeLoad(Env* env, Class* clazz, Object* filename, ClassLoader* classLoader) {
+    if (!env->vm->options->dynamicJNI) {
+        // Static JNI. Just return. If the library is available it has already been linked in statically.
+        return;
+    }
     char* path = rvmGetStringUTFChars(env, filename);
     if (!path) return;
     rvmLoadNativeLibrary(env, path, classLoader);

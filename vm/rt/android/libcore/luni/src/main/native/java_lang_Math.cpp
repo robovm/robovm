@@ -100,6 +100,10 @@ extern "C" jdouble Java_java_lang_Math_hypot(JNIEnv*, jclass, jdouble a, jdouble
 }
 
 extern "C" jdouble Java_java_lang_Math_log1p(JNIEnv*, jclass, jdouble a) {
+// RoboVM note: log1p(-0.0) on Darwin x86 returns +0.0 even though the Apple docs say -0.0.
+#if defined(__APPLE__) && defined(__i386__)
+    if (*((jlong*) &a) == 0x8000000000000000) return -0.0;
+#endif
     return log1p(a);
 }
 

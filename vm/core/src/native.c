@@ -109,8 +109,8 @@ static void DeleteWeakGlobalRef(JNIEnv* env, jweak obj) {
 }
 
 static jint GetJavaVM(JNIEnv* env, JavaVM** vm) {
-    throwUnsupportedOperationException((Env*) env, "GetJavaVM");
-    return -1;
+    *vm = (JavaVM*) ((Env*) env)->vm;
+    return 0;
 }
 
 static jint RegisterNatives(JNIEnv* env, jclass clazz, const JNINativeMethod* methods, jint nMethods) {

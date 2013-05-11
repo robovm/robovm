@@ -252,7 +252,8 @@ Env* rvmStartup(Options* options) {
     env->currentThread->threadObj->contextClassLoader = systemClassLoader;
 
     TRACE("Initialization done");
-
+    env->vm->initialized = TRUE;
+    
     // Start Daemons
     TRACE("Starting Daemons");
     java_lang_Daemons = rvmFindClassUsingLoader(env, "java/lang/Daemons", NULL);

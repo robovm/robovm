@@ -333,6 +333,7 @@ typedef struct Options {
 typedef struct VM {
     JavaVM javaVM;
     Options* options;
+    jboolean initialized;
 } VM;
 
 typedef struct GatewayFrame {

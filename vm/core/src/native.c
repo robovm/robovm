@@ -81,7 +81,17 @@ static jclass DefineClass(JNIEnv* env, const char* name, jobject loader, const j
 }
 
 static jclass FindClass(JNIEnv* env, const char* name) {
-    return (jclass) rvmFindClass((Env*) env, (char*) name);
+    Class* clazz = rvmFindClass((Env*) env, (char*) name);
+    if (!clazz) {
+        return NULL;
+    }
+    if (((Env*) env)->vm->initialized) {
+        rvmInitialize((Env*) env, clazz);
+        if (rvmExceptionOccurred((Env*) env)) {
+            return NULL;
+        }
+    }
+    return (jclass) clazz;
 }
 
 static jmethodID FromReflectedMethod(JNIEnv* env, jobject method) {

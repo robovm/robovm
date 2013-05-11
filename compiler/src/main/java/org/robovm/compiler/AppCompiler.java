@@ -604,7 +604,7 @@ public class AppCompiler {
                          + "                        when linking the final executable.");
         System.err.println("  -resources <list>     : separated list of files and directories that should be\n"
                          + "                        copied to the install dir.");
-        System.err.println("  -cacerts              Use the specified cacerts file. Allowed value are 'none',\n" 
+        System.err.println("  -cacerts <value>      Use the specified cacerts file. Allowed value are 'none',\n" 
                          + "                        'full'. Default is 'full' but no cacerts will be included\n" 
                          + "                        unless the code actually needs them.");
         System.err.println("  -skiprt               Do not add default robovm-rt.jar to bootclasspath");
@@ -612,15 +612,15 @@ public class AppCompiler {
         System.err.println("  -version              Print the version of the compiler and exit");
         System.err.println("  -help, -?             Display this information");
         System.err.println("Target specific options:");
-        System.err.println("  -plist                (iOS) Info.plist file to be used by the app. If not specified\n"
+        System.err.println("  -plist <file>         (iOS) Info.plist file to be used by the app. If not specified\n"
                          + "                        a simple Info.plist will be generated with a CFBundleIdentifier\n" 
                          + "                        based on the main class name or executable file name.");
-        System.err.println("  -entitlements         (iOS) Property list (.plist) file containing entitlements\n" 
+        System.err.println("  -entitlements <file>  (iOS) Property list (.plist) file containing entitlements\n" 
                          + "                        passed to codesign when signing the app.");
-        System.err.println("  -resourcerules        (iOS) Property list (.plist) file containing resource rules\n" 
+        System.err.println("  -resourcerules <file> (iOS) Property list (.plist) file containing resource rules\n" 
                          + "                        passed to codesign when signing the app.");
-        System.err.println("  -signidentity         (iOS) Sign using this identity. Default is 'iPhone Developer'.");
-        System.err.println("  -sdk                  (iOS) SDK to build against. Either a full path or version\n" 
+        System.err.println("  -signidentity <id>    (iOS) Sign using this identity. Default is 'iPhone Developer'.");
+        System.err.println("  -sdk <dir|version>    (iOS) SDK to build against. Either a full path or version\n" 
                          + "                        number. If not specified the latest SDK that can be found will\n" 
                          + "                        be used.");
         System.err.println("iOS simulator launch options:");

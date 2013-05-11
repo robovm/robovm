@@ -156,9 +156,35 @@
       </contextualLaunch>
     </shortcut>
     <shortcut
-        class="org.robovm.eclipse.internal.IOSSimulatorLaunchShortcut"
-        id="org.robovm.eclipse.IOSSimulatorLaunchShortcut"
-        label="iOS Simulator App"
+        class="org.robovm.eclipse.internal.IPhoneSimulatorLaunchShortcut"
+        id="org.robovm.eclipse.IPhoneSimulatorLaunchShortcut"
+        label="iOS Simulator App (iPhone)"
+        modes="run, debug">
+      <contextualLaunch>
+        <enablement>
+          <with variable="selection">
+            <count value="1"/>
+            <iterate>
+              <and>
+                <adapt type="org.eclipse.jdt.core.IJavaElement">
+                  <test property="org.eclipse.jdt.core.isInJavaProject"/>
+                </adapt>
+                <or>
+                  <test property="org.eclipse.jdt.launching.hasMain"/>
+                  <test property="org.eclipse.jdt.launching.isContainer"/>
+                  <test property="org.eclipse.jdt.launching.isPackageFragment"/>
+                  <test property="org.eclipse.jdt.launching.isPackageFragmentRoot"/>
+                </or>
+              </and>
+            </iterate>
+          </with>
+        </enablement>
+      </contextualLaunch>
+    </shortcut>
+    <shortcut
+        class="org.robovm.eclipse.internal.IPadSimulatorLaunchShortcut"
+        id="org.robovm.eclipse.IPadSimulatorLaunchShortcut"
+        label="iOS Simulator App (iPad)"
         modes="run, debug">
       <contextualLaunch>
         <enablement>

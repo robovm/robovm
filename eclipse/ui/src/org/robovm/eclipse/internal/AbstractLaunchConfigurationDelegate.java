@@ -55,9 +55,9 @@ public abstract class AbstractLaunchConfigurationDelegate extends AbstractJavaLa
 
     protected abstract Arch getArch(ILaunchConfiguration configuration, String mode);
     protected abstract OS getOS(ILaunchConfiguration configuration, String mode);
-    protected abstract Config configure(Config.Builder configBuilder, ILaunchConfiguration configuration, String mode) throws IOException;
+    protected abstract Config configure(Config.Builder configBuilder, ILaunchConfiguration configuration, String mode) throws IOException, CoreException;
     
-    protected void customizeLaunchParameters(LaunchParameters launchParameters) throws IOException {
+    protected void customizeLaunchParameters(LaunchParameters launchParameters, ILaunchConfiguration configuration, String mode) throws IOException, CoreException {
         launchParameters.setStdoutFifo(mkfifo("stdout"));
         launchParameters.setStderrFifo(mkfifo("stderr"));
     }
@@ -168,7 +168,7 @@ public abstract class AbstractLaunchConfigurationDelegate extends AbstractJavaLa
                 launchParameters.setArguments(runArgs);
                 launchParameters.setWorkingDirectory(workingDir);
                 launchParameters.setEnvironment(envToMap(envp));
-                customizeLaunchParameters(launchParameters);
+                customizeLaunchParameters(launchParameters, configuration, mode);
                 String label = String.format("%s (%s)", mainTypeName, 
                         DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(new Date()));
                 

@@ -18,11 +18,16 @@ package org.robovm.eclipse.internal;
 
 import java.io.IOException;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.robovm.compiler.Arch;
 import org.robovm.compiler.Config;
+import org.robovm.compiler.IOSSimulatorLaunchParameters;
+import org.robovm.compiler.IOSSimulatorLaunchParameters.Family;
 import org.robovm.compiler.IOSSimulatorTarget;
+import org.robovm.compiler.LaunchParameters;
 import org.robovm.compiler.OS;
+import org.robovm.eclipse.RoboVMPlugin;
 
 /**
  * @author niklas
@@ -32,6 +37,8 @@ public class IOSSimulatorLaunchConfigurationDelegate extends AbstractLaunchConfi
 
     public static final String TYPE_ID = "org.robovm.eclipse.IOSSimulatorLaunchConfigurationType";
     public static final String TYPE_NAME = "iOS Simulator App";
+    public static final String ATTR_IOS_SIM_FAMILY = RoboVMPlugin.PLUGIN_ID + ".IOS_SIM_FAMILY";
+    public static final String ATTR_IOS_SIM_SDK = RoboVMPlugin.PLUGIN_ID + ".IOS_SIM_SDK";
 
     @Override
     protected Arch getArch(ILaunchConfiguration configuration, String mode) {
@@ -51,5 +58,22 @@ public class IOSSimulatorLaunchConfigurationDelegate extends AbstractLaunchConfi
         configBuilder.targetBuilder(targetBuilder);
         
         return configBuilder.build();
+    }
+    
+    @Override
+    protected void customizeLaunchParameters(LaunchParameters launchParameters,
+            ILaunchConfiguration configuration, String mode) throws IOException, CoreException {
+
+        super.customizeLaunchParameters(launchParameters, configuration, mode);
+        
+        IOSSimulatorLaunchParameters lp = (IOSSimulatorLaunchParameters) launchParameters;
+        String family = configuration.getAttribute(ATTR_IOS_SIM_FAMILY, (String) null);
+        if (family != null) {
+            lp.setFamily(Family.valueOf(family));
+        }
+        String sdk = configuration.getAttribute(ATTR_IOS_SIM_SDK, "latest");
+        if (!"latest".equals(sdk)) {
+            lp.setSdk(sdk);
+        }
     }
 }

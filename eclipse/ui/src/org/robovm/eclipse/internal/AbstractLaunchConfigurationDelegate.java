@@ -164,7 +164,7 @@ public abstract class AbstractLaunchConfigurationDelegate extends AbstractJavaLa
                 List<String> runArgs = new ArrayList<String>();
                 runArgs.addAll(splitArgs(vmArgs));
                 runArgs.addAll(splitArgs(pgmArgs));
-                LaunchParameters launchParameters = new LaunchParameters();
+                LaunchParameters launchParameters = target.createLaunchParameters();
                 launchParameters.setArguments(runArgs);
                 launchParameters.setWorkingDirectory(workingDir);
                 launchParameters.setEnvironment(envToMap(envp));

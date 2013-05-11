@@ -50,6 +50,11 @@ public abstract class AbstractTarget implements Target {
     protected AbstractTarget() {
     }
     
+    @Override
+    public LaunchParameters createLaunchParameters() {
+        return new LaunchParameters();
+    }
+    
     public String getInstallRelativeArchivePath(Path path) {
         String name = config.getArchiveName(path);
         if (path.isInBootClasspath()) {

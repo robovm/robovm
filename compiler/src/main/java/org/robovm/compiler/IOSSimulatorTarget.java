@@ -33,12 +33,14 @@ import com.dd.plist.NSString;
  */
 public class IOSSimulatorTarget extends AbstractIOSTarget {
 
-    private File iosSimBinPath;
-    private Family family = Family.iPhone;
-    
     IOSSimulatorTarget() {
     }
  
+    @Override
+    public LaunchParameters createLaunchParameters() {
+        return new IOSSimulatorLaunchParameters();
+    }
+    
     @Override
     public boolean canLaunchInPlace() {
         return false;
@@ -59,20 +61,17 @@ public class IOSSimulatorTarget extends AbstractIOSTarget {
         File dir = getAppDir();
         
         String iosSimPath = new File(config.getHome().getBinDir(), "ios-sim").getAbsolutePath();
-        if (iosSimBinPath != null) {
-            iosSimPath = iosSimBinPath.getAbsolutePath();
-        }
         
         List<Object> args = new ArrayList<Object>();
         args.add("launch");
         args.add(dir.getAbsolutePath());
         args.add("--unbuffered");
-        if (sdk != null) {
+        if (((IOSSimulatorLaunchParameters) launchParameters).getSdk() != null) {
             args.add("--sdk");
-            args.add(sdk.getVersion());
+            args.add(((IOSSimulatorLaunchParameters) launchParameters).getSdk());
         }
         args.add("--family");
-        args.add(family.toString().toLowerCase());
+        args.add(((IOSSimulatorLaunchParameters) launchParameters).getFamily().toString().toLowerCase());
         if (launchParameters.getStdoutFifo() != null) {
             args.add("--stdout");
             args.add(launchParameters.getStdoutFifo());
@@ -93,24 +92,10 @@ public class IOSSimulatorTarget extends AbstractIOSTarget {
         return SDK.listSDKs("iPhoneSimulator");
     }
     
-    public static enum Family {iPhone, iPad}
     
     public static class Builder extends AbstractIOSTarget.Builder {
-        private final IOSSimulatorTarget target;
-
         public Builder() {
             super(new IOSSimulatorTarget());
-            this.target = (IOSSimulatorTarget) super.target;
-        }
-        
-        public Builder iosSimBinPath(File iosSimBinPath) {
-            target.iosSimBinPath = iosSimBinPath;
-            return this;
-        }
-        
-        public Builder family(Family family) {
-            target.family = family;
-            return this;
         }
         
         public void setup(Config.Builder configBuilder) {

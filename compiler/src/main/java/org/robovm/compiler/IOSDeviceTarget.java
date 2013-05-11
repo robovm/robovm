@@ -55,7 +55,6 @@ import com.dd.plist.PropertyListParser;
  */
 public class IOSDeviceTarget extends AbstractIOSTarget {
 
-    private File fruitstrapBinPath;
     private File resourceRulesPList;
     private File entitlementsPList;
     private String signingIdentity = "iPhone Developer";
@@ -84,9 +83,6 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
         File dir = getAppDir();
         
         String fruitstrapPath = new File(config.getHome().getBinDir(), "fruitstrap").getAbsolutePath();
-        if (fruitstrapBinPath != null) {
-            fruitstrapPath = fruitstrapBinPath.getAbsolutePath();
-        }
         
         List<Object> args = new ArrayList<Object>();
         args.add("--verbose");
@@ -208,11 +204,6 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
         public Builder() {
             super(new IOSDeviceTarget());
             this.target = (IOSDeviceTarget) super.target;
-        }
-        
-        public Builder fruitstrapBinPath(File fruitstrapBinPath) {
-            target.fruitstrapBinPath = fruitstrapBinPath;
-            return this;
         }
 
         public Builder resourceRulesPList(File resourceRulesPList) {

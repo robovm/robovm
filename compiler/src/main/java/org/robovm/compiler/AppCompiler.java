@@ -31,6 +31,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.exec.ExecuteException;
 import org.robovm.compiler.AbstractIOSTarget.SDK;
+import org.robovm.compiler.IOSSimulatorLaunchParameters.Family;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.Dependency;
 import org.robovm.compiler.clazz.Path;
@@ -244,6 +245,7 @@ public class AppCompiler {
         boolean verbose = false;
         boolean run = false;
         List<String> runArgs = new ArrayList<String>();
+        List<String> launchArgs = new ArrayList<String>();
         try {
             Config.Builder builder = new Config.Builder();
             OS os = null;
@@ -351,6 +353,12 @@ public class AppCompiler {
                 } else if ("-sdk".equals(args[i])) {
                     targetArgs.add(args[i++]);
                     targetArgs.add(args[i]);
+                } else if ("-ios-sim-family".equals(args[i])) {
+                    launchArgs.add(args[i++]);
+                    launchArgs.add(args[i]);
+                } else if ("-ios-sim-sdk".equals(args[i])) {
+                    launchArgs.add(args[i++]);
+                    launchArgs.add(args[i]);
                 } else if (args[i].startsWith("-D")) {
                 } else if (args[i].startsWith("-X")) {
                 } else if (args[i].startsWith("-rvm:")) {
@@ -481,7 +489,32 @@ public class AppCompiler {
         try {
             compiler.compile();
             if (run) {
-                LaunchParameters launchParameters = new LaunchParameters();
+                LaunchParameters launchParameters = compiler.config.getTarget().createLaunchParameters();
+                for (int i = 0; i < launchArgs.size(); i++) {
+                    String arg = launchArgs.get(i++);
+                    if (arg.equals("-ios-sim-family")) {
+                        if (launchParameters instanceof IOSSimulatorLaunchParameters) {
+                            String name = launchArgs.get(i++);
+                            try {
+                                ((IOSSimulatorLaunchParameters) launchParameters).setFamily(Family.valueOf(name));
+                            } catch (IllegalArgumentException e) {
+                                throw new IllegalArgumentException("Illegal -ios-sim-family value: " + name);
+                            }
+                            continue;
+                        }
+                    }
+                    if (arg.equals("-ios-sim-sdk")) {
+                        if (launchParameters instanceof IOSSimulatorLaunchParameters) {
+                            String value = launchArgs.get(i++);
+                            if (!value.matches("\\d+\\.\\d+(\\.\\d+)")) {
+                                throw new IllegalArgumentException("Illegal -ios-sim-sdk value: " + value);
+                            }
+                            ((IOSSimulatorLaunchParameters) launchParameters).setSdk(value);
+                            continue;
+                        }
+                    }
+                    throw new IllegalArgumentException("Unsupported launch argument for the specified target: " + arg);
+                }
                 launchParameters.setArguments(runArgs);
                 Process process = compiler.config.getTarget().launch(launchParameters);
                 process.waitFor();
@@ -590,6 +623,11 @@ public class AppCompiler {
         System.err.println("  -sdk                  (iOS) SDK to build against. Either a full path or version\n" 
                          + "                        number. If not specified the latest SDK that can be found will\n" 
                          + "                        be used.");
+        System.err.println("iOS simulator launch options:");
+        System.err.println("  -ios-sim-family <fam> The device type that should be simulated. Valid values are\n" 
+                         + "                        'iphone' (default) and 'ipad'.");
+        System.err.println("  -ios-sim-sdk <sdk>    The iOS SDK version to run the application on (defaults to\n" 
+                         + "                        the latest).");
         
         System.exit(errorMessage != null ? 1 : 0);
     }

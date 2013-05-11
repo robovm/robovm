@@ -34,6 +34,8 @@ public interface Target {
 
     Process launch(LaunchParameters launchParameters) throws IOException;
 
+    LaunchParameters createLaunchParameters();
+    
     public interface Builder {
         void setup(Config.Builder configBuilder);
         Target build(Config config);

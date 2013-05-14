@@ -22,11 +22,15 @@ import java.util.Date;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IPreferencesService;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jdt.debug.ui.IJavaDebugUIConstants;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -96,6 +100,18 @@ public class RoboVMPlugin extends AbstractUIPlugin {
             RoboVMPlugin.consoleDebug(format, args);
         }
     };
+    
+    public static void log(IStatus status) {
+        getDefault().getLog().log(status);
+    }
+    
+    public static void log(Throwable e) {
+        if (e instanceof CoreException) {
+            log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.ERROR, e.getMessage(), e.getCause()));
+        } else {
+            log(new Status(IStatus.ERROR, PLUGIN_ID, 999, "Internal Error", e));
+        }
+    }
     
     public void start(BundleContext context) throws Exception {
         super.start(context);

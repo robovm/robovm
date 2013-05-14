@@ -118,7 +118,7 @@
         id="org.robovm.eclipse.ConsoleLaunchConfigurationTabGroup"
         type="org.robovm.eclipse.ConsoleLaunchConfigurationType" />
     <launchConfigurationTabGroup
-        class="org.robovm.eclipse.internal.RoboVMLaunchConfigurationTabGroup"
+        class="org.robovm.eclipse.internal.IOSSimulatorLaunchConfigurationTabGroup"
         description="iOS Simulator App"
         id="org.robovm.eclipse.IOSSimulatorLaunchConfigurationTabGroup"
         type="org.robovm.eclipse.IOSSimulatorLaunchConfigurationType" />

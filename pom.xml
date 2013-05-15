@@ -20,8 +20,10 @@
     No interpreter or virtual machine involved.
   </description>
   <inceptionYear>2012</inceptionYear>
+
   <organization>
     <name>Trillian AB</name>
+    <url>http://www.robovm.org</url>
   </organization>
 
   <developers>

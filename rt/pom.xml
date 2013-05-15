@@ -12,6 +12,14 @@
   <name>RoboVM Runtime Library</name>
   <packaging>jar</packaging>
 
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
   <build>
     <resources>
       <resource><directory>robovm/src/main/resources</directory></resource>

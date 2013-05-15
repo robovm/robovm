@@ -12,6 +12,14 @@
   <name>RoboVM Compiler</name>
   <packaging>jar</packaging>
 
+  <licenses>
+    <license>
+      <name>GNU General Public License, version 2</name>
+      <url>http://www.gnu.org/licenses/gpl-2.0.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
   <dependencies>
     <dependency>
       <groupId>commons-io</groupId>

@@ -16,6 +16,14 @@
   <name>RoboVM for Eclipse</name>
   <packaging>pom</packaging>
 
+  <licenses>
+    <license>
+      <name>GNU General Public License, version 2</name>
+      <url>http://www.gnu.org/licenses/gpl-2.0.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
   <properties>
     <tycho.version>0.16.0</tycho.version>
     <tycho-extras.version>0.16.0</tycho-extras.version>

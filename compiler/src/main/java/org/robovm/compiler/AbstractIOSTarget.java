@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.commons.exec.util.StringUtils;
 import org.apache.commons.io.FileUtils;
+import org.simpleframework.xml.Transient;
 
 import com.dd.plist.NSArray;
 import com.dd.plist.NSDictionary;
@@ -42,6 +43,7 @@ public abstract class AbstractIOSTarget extends AbstractTarget {
 
     protected SDK sdk;
     protected File infoPList = null;
+    @Transient
     protected NSDictionary infoPListDict = null;
     
     AbstractIOSTarget() {
@@ -107,7 +109,7 @@ public abstract class AbstractIOSTarget extends AbstractTarget {
                 return bundleExecutable.toString();
             }
         }
-        return config.getExecutable();
+        return config.getExecutableName();
     }
 
     protected void customizeInfoPList(NSDictionary dict) {
@@ -120,9 +122,9 @@ public abstract class AbstractIOSTarget extends AbstractTarget {
                 dict.put(key, infoPListDict.objectForKey(key));
             }
         } else {
-            dict.put("CFBundleExecutable", config.getExecutable());
-            dict.put("CFBundleName", config.getExecutable());
-            String identifier = config.getMainClass() != null ? config.getMainClass() : config.getExecutable();
+            dict.put("CFBundleExecutable", config.getExecutableName());
+            dict.put("CFBundleName", config.getExecutableName());
+            String identifier = config.getMainClass() != null ? config.getMainClass() : config.getExecutableName();
             dict.put("CFBundleIdentifier", identifier);
             dict.put("CFBundlePackageType", "APPL");
             dict.put("LSRequiresIPhoneOS", true);
@@ -164,42 +166,27 @@ public abstract class AbstractIOSTarget extends AbstractTarget {
         FileUtils.copyFile(tmpInfoPlist, new File(dir, tmpInfoPlist.getName()));
     }
     
-    public static class Builder implements Target.Builder {
-        protected final AbstractIOSTarget target;
-        
-        protected Builder(AbstractIOSTarget target) {
-            this.target = target;
-        }
+    public void setSDK(SDK sdk) {
+        this.sdk = sdk;
+    }
 
-        public Builder sdk(SDK sdk) {
-            target.sdk = sdk;
-            return this;
-        }
-
-        public Builder infoPList(File infoPList) {
-            target.infoPList = infoPList;
-            return this;
-        }
-        
-        public void setup(Config.Builder configBuilder) {
-            configBuilder.os(OS.ios);
-        }
-        
-        public Target build(Config config) {
-            target.config = config;
-            if (target.infoPList != null) {
-                try {
-                    target.infoPListDict = (NSDictionary) PropertyListParser.parse(target.infoPList);
-                } catch (Throwable t) {
-                    throw new IllegalArgumentException(t);
-                }
+    public void setInfoPList(File infoPList) {
+        this.infoPList = infoPList;
+    }
+    
+    public void init(Config config) {
+        super.init(config);
+        if (this.infoPList != null) {
+            try {
+                this.infoPListDict = (NSDictionary) PropertyListParser.parse(this.infoPList);
+            } catch (Throwable t) {
+                throw new IllegalArgumentException(t);
             }
-            if (target.sdk == null) {
-                List<SDK> sdks = target.getSDKs();
-                Collections.sort(sdks);
-                target.sdk = sdks.get(sdks.size() - 1);
-            }
-            return target.build(config);
+        }
+        if (this.sdk == null) {
+            List<SDK> sdks = getSDKs();
+            Collections.sort(sdks);
+            this.sdk = sdks.get(sdks.size() - 1);
         }
     }
     

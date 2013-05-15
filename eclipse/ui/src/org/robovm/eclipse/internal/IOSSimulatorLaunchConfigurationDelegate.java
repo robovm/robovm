@@ -54,8 +54,8 @@ public class IOSSimulatorLaunchConfigurationDelegate extends AbstractLaunchConfi
     protected Config configure(Config.Builder configBuilder,
             ILaunchConfiguration configuration, String mode) throws IOException {
         
-        IOSSimulatorTarget.Builder targetBuilder = new IOSSimulatorTarget.Builder();
-        configBuilder.targetBuilder(targetBuilder);
+        IOSSimulatorTarget target = new IOSSimulatorTarget();
+        configBuilder.target(target);
         
         return configBuilder.build();
     }

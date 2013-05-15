@@ -110,8 +110,6 @@ public abstract class AbstractLaunchConfigurationDelegate extends AbstractJavaLa
             tmpDir = new File(new File(tmpDir, os.toString()), arch.toString());
             tmpDir = new File(tmpDir, mainTypeName);
             
-            configBuilder.arch(arch);
-            configBuilder.os(os);
             configBuilder.debug(true);
             configBuilder.skipInstall(false);
             configBuilder.home(RoboVMPlugin.getRoboVMHome());

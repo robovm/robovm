@@ -94,7 +94,7 @@ public class AppCompiler {
         "libcore/util/MutableLong"
     };
 
-    private static final String TRUSTED_CERTIFICATION_STORE_CLASS = 
+    private static final String TRUSTED_CERTIFICATE_STORE_CLASS = 
             "org/apache/harmony/xnet/provider/jsse/TrustedCertificateStore";
     
     private final Config config;
@@ -228,7 +228,7 @@ public class AppCompiler {
             }
         }
         
-        if (linkClasses.contains(config.getClazzes().load(TRUSTED_CERTIFICATION_STORE_CLASS))) {
+        if (linkClasses.contains(config.getClazzes().load(TRUSTED_CERTIFICATE_STORE_CLASS))) {
             if (config.getCacerts() != null) {
                 config.addResourcesPath(config.getClazzes().createResourcesBootclasspathPath(
                         config.getHome().getCacertsPath(config.getCacerts())));
@@ -244,6 +244,7 @@ public class AppCompiler {
         
         boolean verbose = false;
         boolean run = false;
+        boolean dumpConfig = false;
         List<String> runArgs = new ArrayList<String>();
         List<String> launchArgs = new ArrayList<String>();
         try {
@@ -265,7 +266,7 @@ public class AppCompiler {
                 } else if ("-jar".equals(args[i])) {
                     builder.mainJar(new File(args[++i]));
                 } else if ("-o".equals(args[i])) {
-                    builder.executable(args[++i]);
+                    builder.executableName(args[++i]);
                 } else if ("-d".equals(args[i])) {
                     builder.installDir(new File(args[++i]));
                 } else if ("-cache".equals(args[i])) {
@@ -278,12 +279,14 @@ public class AppCompiler {
                     run = true;
                 } else if ("-verbose".equals(args[i])) {
                     verbose = true;
+                } else if ("-dumpconfig".equals(args[i])) {
+                    dumpConfig = true;
                 } else if ("-debug".equals(args[i])) {
                     builder.debug(true);
                 } else if ("-use-debug-libs".equals(args[i])) {
                     builder.useDebugLibs(true);
                 } else if ("-dynamic-jni".equals(args[i])) {
-                    builder.dynamicJNI(true);
+                    builder.useDynamicJni(true);
                 } else if ("-skiprt".equals(args[i])) {
                     builder.skipRuntimeLib(true);
                 } else if ("-clean".equals(args[i])) {
@@ -300,16 +303,14 @@ public class AppCompiler {
                     String s = args[++i];
                     if (!"auto".equals(s)) {
                         os = OS.valueOf(s);
-                        builder.os(os);
                     }
                 } else if ("-arch".equals(args[i])) {
                     String s = args[++i];
                     if (!"auto".equals(s)) {
                         arch = Arch.valueOf(s);
-                        builder.arch(arch);
                     }
-                } else if ("-cpu".equals(args[i])) {
-                    builder.cpu(args[++i]);
+//                } else if ("-cpu".equals(args[i])) {
+//                    builder.cpu(args[++i]);
                 } else if ("-roots".equals(args[i])) {
                     for (String p : args[++i].split(":")) {
                         p = p.replace('#', '*');
@@ -399,58 +400,54 @@ public class AppCompiler {
             
             builder.skipInstall(run);
 
-            Target.Builder targetBuilder = null;
+            Target target = null;
             if (os == OS.ios) {
-                if (arch != null && arch.isArm()) {
-                    targetBuilder = new IOSDeviceTarget.Builder();
+                if (arch == null || arch.isArm() || dumpConfig) {
+                    target = new IOSDeviceTarget();
                 } else {
-                    targetBuilder = new IOSSimulatorTarget.Builder();
+                    target = new IOSSimulatorTarget();
                 }
             }
-            if (targetBuilder == null) {
-                targetBuilder = new ConsoleTarget.Builder();
+            if (target == null) {
+                target = new ConsoleTarget();
+                ((ConsoleTarget) target).setOS(os);
+                ((ConsoleTarget) target).setArch(arch);
             }
             
             i = 0;
             while (i < targetArgs.size()) {
                 String arg = targetArgs.get(i++);
                 if (arg.equals("-plist")) {
-                    if (targetBuilder instanceof AbstractIOSTarget.Builder) {
-                        ((AbstractIOSTarget.Builder) targetBuilder).infoPList(new File(targetArgs.get(i++)));
+                    if (target instanceof AbstractIOSTarget) {
+                        ((AbstractIOSTarget) target).setInfoPList(new File(targetArgs.get(i++)));
                         continue;
                     }
                 }
                 if (arg.equals("-entitlements")) {
-                    if (targetBuilder instanceof IOSDeviceTarget.Builder) {
-                        ((IOSDeviceTarget.Builder) targetBuilder).entitlementsPList(new File(targetArgs.get(i++)));
+                    if (target instanceof IOSDeviceTarget) {
+                        ((IOSDeviceTarget) target).setEntitlementsPList(new File(targetArgs.get(i++)));
                         continue;
                     }
                 }
                 if (arg.equals("-resourcerules")) {
-                    if (targetBuilder instanceof IOSDeviceTarget.Builder) {
-                        ((IOSDeviceTarget.Builder) targetBuilder).resourceRulesPList(new File(targetArgs.get(i++)));
+                    if (target instanceof IOSDeviceTarget) {
+                        ((IOSDeviceTarget) target).setResourceRulesPList(new File(targetArgs.get(i++)));
                         continue;
                     }
                 }
                 if (arg.equals("-signidentity")) {
-                    if (targetBuilder instanceof IOSDeviceTarget.Builder) {
-                        ((IOSDeviceTarget.Builder) targetBuilder).signingIdentity(targetArgs.get(i++));
+                    if (target instanceof IOSDeviceTarget) {
+                        ((IOSDeviceTarget) target).setSigningIdentity(targetArgs.get(i++));
                         continue;
                     }
                 }
                 if (arg.equals("-sdk")) {
-                    if (targetBuilder instanceof AbstractIOSTarget.Builder) {
+                    if (target instanceof AbstractIOSTarget) {
                         String value = targetArgs.get(i++);
                         SDK matchSdk = null;
                         if (value.matches("\\d+\\.\\d+(\\.\\d+)?")) {
                             // Version string
-                            List<SDK> sdks = null;
-                            if (targetBuilder instanceof IOSDeviceTarget.Builder) {
-                                sdks = IOSDeviceTarget.listSDKs();
-                            } else {
-                                sdks = IOSSimulatorTarget.listSDKs();
-                            }
-                            for (SDK sdk : sdks) {
+                            for (SDK sdk : ((AbstractIOSTarget) target).getSDKs()) {
                                 if (sdk.getVersion().equals(value)) {
                                     matchSdk = sdk;
                                     break;
@@ -463,13 +460,23 @@ public class AppCompiler {
                             // Path
                             matchSdk = SDK.create(new File(value));
                         }
-                        ((AbstractIOSTarget.Builder) targetBuilder).sdk(matchSdk);
+                        ((AbstractIOSTarget) target).setSDK(matchSdk);
                         continue;
                     }
                 }
                 throw new IllegalArgumentException("Unsupported argument for the specified target: " + arg);
             }
-            builder.targetBuilder(targetBuilder);
+            builder.target(target);
+            
+            if (dumpConfig) {
+                File file = new File("robovm.xml");
+                if (file.exists()) {
+                    throw new IllegalArgumentException("Cannot dump config to " + file.getAbsolutePath() 
+                            + ". The file already exists.");
+                }
+                builder.write(file);
+                return;
+            }
             
             compiler = new AppCompiler(builder.build());
         } catch (Throwable t) {
@@ -608,6 +615,8 @@ public class AppCompiler {
                          + "                        'full'. Default is 'full' but no cacerts will be included\n" 
                          + "                        unless the code actually needs them.");
         System.err.println("  -skiprt               Do not add default robovm-rt.jar to bootclasspath");
+        System.err.println("  -dumpconfig           Dumps a configuration XML file to robovm.xml in the current\n" 
+                         + "                        directory and exits.");
         System.err.println("  -verbose              Output messages about what the compiler is doing");
         System.err.println("  -version              Print the version of the compiler and exit");
         System.err.println("  -help, -?             Display this information");

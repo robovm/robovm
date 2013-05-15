@@ -33,9 +33,19 @@ import com.dd.plist.NSString;
  */
 public class IOSSimulatorTarget extends AbstractIOSTarget {
 
-    IOSSimulatorTarget() {
+    public IOSSimulatorTarget() {
     }
  
+    @Override
+    public OS getOS() {
+        return OS.ios;
+    }
+
+    @Override
+    public Arch getArch() {
+        return Arch.x86;
+    }
+
     @Override
     public LaunchParameters createLaunchParameters() {
         return new IOSSimulatorLaunchParameters();
@@ -90,18 +100,5 @@ public class IOSSimulatorTarget extends AbstractIOSTarget {
     
     public static List<SDK> listSDKs() {
         return SDK.listSDKs("iPhoneSimulator");
-    }
-    
-    
-    public static class Builder extends AbstractIOSTarget.Builder {
-        public Builder() {
-            super(new IOSSimulatorTarget());
-        }
-        
-        public void setup(Config.Builder configBuilder) {
-            configBuilder.arch(Arch.x86);
-            super.setup(configBuilder);
-        }
-        
     }
 }

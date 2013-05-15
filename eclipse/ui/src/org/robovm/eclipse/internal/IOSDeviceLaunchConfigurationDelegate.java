@@ -47,8 +47,8 @@ public class IOSDeviceLaunchConfigurationDelegate extends AbstractLaunchConfigur
     protected Config configure(Config.Builder configBuilder,
             ILaunchConfiguration configuration, String mode) throws IOException {
         
-        IOSDeviceTarget.Builder targetBuilder = new IOSDeviceTarget.Builder();
-        configBuilder.targetBuilder(targetBuilder);
+        IOSDeviceTarget target = new IOSDeviceTarget();
+        configBuilder.target(target);
         
         return configBuilder.build();
     }

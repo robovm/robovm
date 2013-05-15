@@ -206,7 +206,7 @@ public class TrampolineCompiler {
             NativeCall nc = (NativeCall) t;
             String shortName = mangleNativeMethod(target.getInternalName(), nc.getMethodName());
             String longName = mangleNativeMethod(target.getInternalName(), nc.getMethodName(), nc.getMethodDesc());
-            if (target.isInBootClasspath() || !config.isDynamicJNI() || config.getOs() == OS.ios) {
+            if (target.isInBootClasspath() || !config.isUseDynamicJni() || config.getOs() == OS.ios) {
                 Function fnLong = new FunctionBuilder(longName, nc.getFunctionType()).linkage(weak).build();
                 // The NativeCall caller pushed a GatewayFrame and will only pop it 
                 // if the native method exists. So we need to pop it here.

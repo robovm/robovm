@@ -48,10 +48,8 @@ public class ConsoleLaunchConfigurationDelegate extends AbstractLaunchConfigurat
     protected Config configure(Config.Builder configBuilder,
             ILaunchConfiguration configuration, String mode) throws IOException {
         
-        configBuilder.arch(RoboVMPlugin.getDefaultArch());
-        configBuilder.os(RoboVMPlugin.getDefaultOS());
-        ConsoleTarget.Builder targetBuilder = new ConsoleTarget.Builder();
-        configBuilder.targetBuilder(targetBuilder);
+        ConsoleTarget target = new ConsoleTarget();
+        configBuilder.target(target);
         
         return configBuilder.build();
     }

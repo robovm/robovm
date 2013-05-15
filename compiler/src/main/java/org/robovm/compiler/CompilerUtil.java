@@ -77,9 +77,6 @@ public class CompilerUtil {
         
         ArrayList<String> opts = new ArrayList<String>();
         opts.add("-mtriple=" + arch.getLlvmName() + "-unknown-" + os);
-        if (config.getCpu() != null) {
-            opts.add("-mcpu=" + config.getCpu());
-        }
         if (os.getFamily() == OS.Family.darwin && arch.isArm()) {
             // clang uses gas to assemble files on macosx and the XCode gas doesn't handle cfi directives
             opts.add("-disable-cfi");

@@ -59,9 +59,19 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
     private File entitlementsPList;
     private String signingIdentity = "iPhone Developer";
     
-    IOSDeviceTarget() {
+    public IOSDeviceTarget() {
     }
  
+    @Override
+    public OS getOS() {
+        return OS.ios;
+    }
+
+    @Override
+    public Arch getArch() {
+        return Arch.thumbv7;
+    }
+
     @Override
     public boolean canLaunchInPlace() {
         return false;
@@ -198,33 +208,16 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
         return SDK.listSDKs("iPhoneOS");
     }
     
-    public static class Builder extends AbstractIOSTarget.Builder {
-        private final IOSDeviceTarget target;
-
-        public Builder() {
-            super(new IOSDeviceTarget());
-            this.target = (IOSDeviceTarget) super.target;
-        }
-
-        public Builder resourceRulesPList(File resourceRulesPList) {
-            target.resourceRulesPList = resourceRulesPList;
-            return this;
-        }
+    public void setResourceRulesPList(File resourceRulesPList) {
+        this.resourceRulesPList = resourceRulesPList;
+    }
         
-        public Builder entitlementsPList(File entitlementsPList) {
-            target.entitlementsPList = entitlementsPList;
-            return this;
-        }
+    public void setEntitlementsPList(File entitlementsPList) {
+        this.entitlementsPList = entitlementsPList;
+    }
         
-        public Builder signingIdentity(String signingIdentity) {
-            target.signingIdentity = signingIdentity;
-            return this;
-        }
-        
-        public void setup(Config.Builder configBuilder) {
-            super.setup(configBuilder);
-        }
-        
+    public void setSigningIdentity(String signingIdentity) {
+        this.signingIdentity = signingIdentity;
     }
     
     private static class FruitstrapStreamHandler implements ExecuteStreamHandler {

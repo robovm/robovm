@@ -29,8 +29,26 @@ import org.robovm.compiler.io.OpenOnWriteFileOutputStream;
  *
  */
 public class ConsoleTarget extends AbstractTarget {
+    private OS os;
+    private Arch arch;
 
-    ConsoleTarget() {
+    public ConsoleTarget() {
+    }
+    
+    public OS getOS() {
+        return os;
+    }
+
+    public Arch getArch() {
+        return arch;
+    }
+
+    public void setOS(OS os) {
+        this.os = os;
+    }
+    
+    public void setArch(Arch arch) {
+        this.arch = arch;
     }
     
     protected void initStreams(AsyncExecutor executor, LaunchParameters launchParameters) throws IOException {
@@ -55,17 +73,14 @@ public class ConsoleTarget extends AbstractTarget {
             }
         });
     }
-    
-    public static class Builder implements Target.Builder {
-        private ConsoleTarget target = new ConsoleTarget();
 
-        public void setup(Config.Builder configBuilder) {
+    public void init(Config config) {
+        super.init(config);
+        if (os == null) {
+            os = OS.getDefaultOS(config.getLlvmHomeDir());
         }
-        
-        public Target build(Config config) {
-            target.config = config;
-            return target.build(config);
+        if (arch == null) {
+            arch = Arch.getDefaultArch(config.getLlvmHomeDir());
         }
-        
     }
 }

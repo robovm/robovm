@@ -17,7 +17,10 @@
 package org.robovm.compiler;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,53 +28,80 @@ import java.util.Map;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 
+import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.Clazzes;
 import org.robovm.compiler.clazz.Path;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.ElementUnion;
+import org.simpleframework.xml.Root;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.convert.Converter;
+import org.simpleframework.xml.convert.Registry;
+import org.simpleframework.xml.convert.RegistryStrategy;
+import org.simpleframework.xml.core.Persister;
+import org.simpleframework.xml.stream.InputNode;
+import org.simpleframework.xml.stream.OutputNode;
 
 /**
  * @author niklas
  *
  */
+@Root
 public class Config {
     
     public enum Cacerts { full };
     
+    @Element(required = false)
     private File installDir = null;
-    private String executable = null;
+    @Element(required = false)
+    private String executableName = null;
+    @Element(required = false)
+    private boolean useDynamicJni = false;
+    @Element(required = false)
+    private boolean skipRuntimeLib = false;
+    @Element(required = false)
+    private File mainJar;
+    @Element(required = false)
+    private String mainClass;
+    @Element(required = false)
+    private Cacerts cacerts = Cacerts.full;
+    @ElementList(required = false, entry = "root")
+    private ArrayList<String> roots = new ArrayList<String>();
+    @ElementList(required = false, entry = "lib")
+    private ArrayList<Lib> libs = new ArrayList<Lib>();
+    @ElementList(required = false, entry = "framework")
+    private ArrayList<String> frameworks = new ArrayList<String>();
+    @ElementList(required = false, entry = "resource")
+    private ArrayList<String> resources = new ArrayList<String>();
+    @ElementList(required = false, entry = "classpathentry")
+    private ArrayList<File> bootclasspath = new ArrayList<File>();
+    @ElementList(required = false, entry = "classpathentry")
+    private ArrayList<File> classpath = new ArrayList<File>();
+    @org.simpleframework.xml.Path("target")
+    @ElementUnion({
+        @Element(name = "console", type = ConsoleTarget.class),
+        @Element(name = "ios", type = IOSDeviceTarget.class)
+    })
+    private Target target = null;
+    
     private Home home = null;
     private File cacheDir = new File(System.getProperty("user.home"), ".robovm/cache");
     private File llvmHomeDir = null;
     private File ccBinPath = null;
     
-    private OS os = null;
-    private Arch arch = null;
-    private String cpu = null;
-    
     private boolean clean = false;
     private boolean debug = true;
     private boolean useDebugLibs = false;
-    private boolean skipRuntimeLib = false;
     private boolean skipLinking = false;
     private boolean skipInstall = false;
-    private boolean dynamicJNI = false;
-    private File mainJar;
-    private String mainClass;
-    private List<String> roots = new ArrayList<String>();
-    private List<String> libs = new ArrayList<String>();
-    private List<String> frameworks = new ArrayList<String>();
-    private List<String> resources = new ArrayList<String>();
-    private Cacerts cacerts = Cacerts.full;
-    private List<Path> resourcesPaths = new ArrayList<Path>();
     
     private File osArchDepLibDir;
-    private List<File> bootclasspath = new ArrayList<File>();
-    private List<File> classpath = new ArrayList<File>();
     private File tmpDir;
     private Clazzes clazzes;
     private Logger logger = Logger.NULL_LOGGER;
-    private Target.Builder targetBuilder = new ConsoleTarget.Builder();
-    private Target target = null;
+    private List<Path> resourcesPaths = new ArrayList<Path>();
 
     Config() {
     }
@@ -84,8 +114,8 @@ public class Config {
         return installDir;
     }
 
-    public String getExecutable() {
-        return executable;
+    public String getExecutableName() {
+        return executableName;
     }
 
     public File getCacheDir() {
@@ -97,15 +127,11 @@ public class Config {
     }
 
     public OS getOs() {
-        return os;
+        return target.getOS();
     }
 
     public Arch getArch() {
-        return arch;
-    }
-
-    public String getCpu() {
-        return cpu;
+        return target.getArch();
     }
 
     public boolean isClean() {
@@ -132,8 +158,8 @@ public class Config {
         return skipInstall;
     }
     
-    public boolean isDynamicJNI() {
-        return dynamicJNI;
+    public boolean isUseDynamicJni() {
+        return useDynamicJni;
     }
     
     public File getMainJar() {
@@ -174,7 +200,11 @@ public class Config {
     }
     
     public List<String> getLibs() {
-        return libs;
+        List<String> result = new ArrayList<String>();
+        for (Lib lib : libs) {
+            result.add(lib.getValue());
+        }
+        return result;
     }
     
     public List<String> getFrameworks() {
@@ -291,7 +321,7 @@ public class Config {
             classpath.add(mainJar);
         }
         
-        if (!skipLinking && executable == null && mainClass == null) {
+        if (!skipLinking && executableName == null && mainClass == null) {
             throw new IllegalArgumentException("No target and no main class specified");
         }
 
@@ -299,44 +329,44 @@ public class Config {
             throw new IllegalArgumentException("No classpath specified");
         }
         
-        if (os == null) {
-            os = OS.getDefaultOS(llvmHomeDir);
-        }
-        
-        if (arch == null) {
-            arch = Arch.getDefaultArch(llvmHomeDir);
-        }
-        
         if (skipLinking) {
             skipInstall = true;
         }
+        
+        if (executableName == null) {
+            executableName = mainClass;
+        }
+
+        List<File> realBootclasspath = bootclasspath;
+        if (!skipRuntimeLib) {
+            realBootclasspath = new ArrayList<File>(bootclasspath);
+            realBootclasspath.add(0, home.rtPath);
+        }
+
+        this.clazzes = new Clazzes(this, realBootclasspath, classpath);
+        
+        if (!skipInstall) {
+            if (installDir == null) {
+                installDir = new File(".", executableName);
+            }
+            installDir.mkdirs();
+        }
+
+        if (target == null) {
+            target = new ConsoleTarget();
+        }
+        target.init(this);
+        
+        OS os = target.getOS();
+        Arch arch = target.getArch();
         
         osArchDepLibDir = new File(new File(home.libVmDir, os.toString()), 
                 arch.toString());
         
         File osDir = new File(cacheDir, os.toString());
         File archDir = new File(osDir, arch.toString());
-        cacheDir = new File(archDir, cpu == null ? "default" : cpu);
+        cacheDir = new File(archDir, "default");
         cacheDir.mkdirs();
-
-        if (executable == null) {
-            executable = mainClass;
-        }
-        
-        if (!skipRuntimeLib) {
-            bootclasspath.add(0, home.rtPath);
-        }
-
-        this.clazzes = new Clazzes(this, bootclasspath, classpath);
-        
-        if (!skipInstall) {
-            if (installDir == null) {
-                installDir = new File(".", executable);
-            }
-            installDir.mkdirs();
-        }
-
-        target = targetBuilder.build(this);
         
         return this;
     }
@@ -546,8 +576,8 @@ public class Config {
             return this;
         }
 
-        public Builder executable(String executable) {
-            config.executable = executable;
+        public Builder executableName(String executableName) {
+            config.executableName = executableName;
             return this;
         }
 
@@ -576,21 +606,6 @@ public class Config {
             return this;
         }
 
-        public Builder os(OS os) {
-            config.os = os;
-            return this;
-        }
-
-        public Builder arch(Arch arch) {
-            config.arch = arch;
-            return this;
-        }
-
-        public Builder cpu(String cpu) {
-            config.cpu = cpu;
-            return this;
-        }
-
         public Builder debug(boolean b) {
             config.debug = b;
             return this;
@@ -616,8 +631,8 @@ public class Config {
             return this;
         }
         
-        public Builder dynamicJNI(boolean b) {
-            config.dynamicJNI = b;
+        public Builder useDynamicJni(boolean b) {
+            config.useDynamicJni = b;
             return this;
         }
         
@@ -642,7 +657,7 @@ public class Config {
         }
 
         public Builder addLib(String path) {
-            config.libs.add(path);
+            config.libs.add(new Lib(path));
             return this;
         }
         
@@ -656,8 +671,8 @@ public class Config {
             return this;
         }
         
-        public Builder targetBuilder(Target.Builder targetBuilder) {
-            config.targetBuilder = targetBuilder;
+        public Builder target(Target target) {
+            config.target = target;
             return this;
         }
         
@@ -667,8 +682,91 @@ public class Config {
         }
         
         public Config build() throws IOException {
-            config.targetBuilder.setup(this);
             return config.build();
         }
+        
+        public void write(File file) throws Exception {
+            Writer writer = null;
+            try {
+                writer = new OutputStreamWriter(new FileOutputStream(file), "utf-8");
+                write(writer, file.getAbsoluteFile().getParentFile());
+            } finally {
+                IOUtils.closeQuietly(writer);
+            }
+        }
+        
+        public void write(Writer writer, File wd) throws Exception {
+            Registry registry = new Registry();
+            RelativeFileConverter fileConverter = new RelativeFileConverter(wd);
+            registry.bind(File.class, fileConverter);
+            registry.bind(Lib.class, new RelativeLibConverter(fileConverter));
+            Serializer serializer = new Persister(new RegistryStrategy(registry));
+            serializer.write(config, writer);
+        }
     }
+
+    private static final class Lib {
+        private final String value;
+
+        public Lib(String value) {
+            this.value = value;
+        }
+        
+        public String getValue() {
+            return value;
+        }
+    }
+    
+    private static final class RelativeLibConverter implements Converter<Lib> {
+        private final RelativeFileConverter fileConverter;
+
+        public RelativeLibConverter(RelativeFileConverter fileConverter) {
+            this.fileConverter = fileConverter;
+        }
+
+        @Override
+        public Lib read(InputNode node) throws Exception {
+            return null;
+        }
+
+        @Override
+        public void write(OutputNode node, Lib lib) throws Exception {
+            String value = lib.getValue();
+            if (value.endsWith(".a") || value.endsWith(".o")) {
+                fileConverter.write(node, new File(value));
+            } else {
+                node.setValue(value);
+            }
+        }
+    }
+    
+    private static final class RelativeFileConverter implements Converter<File> {
+        private final String wdPrefix;
+        
+        public RelativeFileConverter(File wd) {
+            if (wd.isFile()) {
+                wd = wd.getParentFile();
+            }
+            String prefix = wd.getAbsolutePath();
+            if (!prefix.endsWith(File.separator)) {
+                prefix = prefix + File.separator;
+            }
+            wdPrefix = prefix;
+        }
+        
+        @Override
+        public File read(InputNode node) throws Exception {
+            return null;
+        }
+
+        @Override
+        public void write(OutputNode node, File value) throws Exception {
+            String path = value.getAbsolutePath();
+            if (path.startsWith(wdPrefix)) {
+                node.setValue(path.substring(wdPrefix.length()));
+            } else {
+                node.setValue(path);
+            }
+        }
+    }    
 }

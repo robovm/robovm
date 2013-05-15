@@ -24,6 +24,9 @@ import org.robovm.compiler.clazz.Path;
 
 public interface Target {
 
+    OS getOS();
+    Arch getArch();
+    
     String getInstallRelativeArchivePath(Path path);
 
     boolean canLaunchInPlace();
@@ -36,8 +39,5 @@ public interface Target {
 
     LaunchParameters createLaunchParameters();
     
-    public interface Builder {
-        void setup(Config.Builder configBuilder);
-        Target build(Config config);
-    }
+    void init(Config config);
 }

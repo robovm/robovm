@@ -39,15 +39,22 @@ import org.apache.commons.exec.environment.EnvironmentUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.clazz.Path;
+import org.simpleframework.xml.Transient;
 
 /**
  * @author niklas
  *
  */
 public abstract class AbstractTarget implements Target {
+    @Transient
     protected Config config;
 
     protected AbstractTarget() {
+    }
+    
+    @Override
+    public void init(Config config) {
+        this.config = config;
     }
     
     @Override
@@ -68,7 +75,7 @@ public abstract class AbstractTarget implements Target {
     }
     
     public void build(List<File> objectFiles) throws IOException {
-        File outFile = new File(config.getTmpDir(), config.getExecutable());
+        File outFile = new File(config.getTmpDir(), config.getExecutableName());
         
         config.getLogger().debug("Building executable %s", outFile);
         
@@ -166,13 +173,13 @@ public abstract class AbstractTarget implements Target {
     public void install() throws IOException {
         config.getLogger().debug("Installing executable to %s", config.getInstallDir());
         config.getInstallDir().mkdirs();
-        doInstall(config.getInstallDir(), config.getExecutable());
+        doInstall(config.getInstallDir(), config.getExecutableName());
     }
     
     protected void doInstall(File installDir, String executable) throws IOException {
-        if (!config.getTmpDir().equals(installDir) || !executable.equals(config.getExecutable())) {
+        if (!config.getTmpDir().equals(installDir) || !executable.equals(config.getExecutableName())) {
             File destFile = new File(installDir, executable);
-            FileUtils.copyFile(new File(config.getTmpDir(), config.getExecutable()), destFile);
+            FileUtils.copyFile(new File(config.getTmpDir(), config.getExecutableName()), destFile);
             destFile.setExecutable(true, false);
         }
         for (File f : config.getOsArchDepLibDir().listFiles()) {
@@ -198,7 +205,7 @@ public abstract class AbstractTarget implements Target {
             dir = config.getInstallDir();
         }
         return CompilerUtil.createCommandLine(
-                new File(dir, config.getExecutable()).getAbsolutePath(), 
+                new File(dir, config.getExecutableName()).getAbsolutePath(), 
                 launchParameters.getArguments());
     }
     

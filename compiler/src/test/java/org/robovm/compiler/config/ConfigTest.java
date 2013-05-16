@@ -19,7 +19,9 @@ package org.robovm.compiler.config;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.InputStreamReader;
 import java.io.StringWriter;
+import java.util.Arrays;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
@@ -50,7 +52,23 @@ public class ConfigTest {
     }
     
     @Test
-    public void testWrite() throws Exception {
+    public void testReadConsole() throws Exception {
+        Config.Builder builder = new Config.Builder();
+        builder.read(new InputStreamReader(getClass().getResourceAsStream("ConfigTest.console.xml"), "utf-8"), wd);
+        Config config = builder.config;
+        assertEquals(Arrays.asList(new File(wd, "foo1.jar"), new File(tmp, "foo2.jar")), config.getClasspath());
+        assertEquals(Arrays.asList("Foundation", "AppKit"), config.getFrameworks());
+        assertEquals(Arrays.asList("dl", "/tmp/wd/libs/libmy.a", "/tmp/wd/libs/foo.o", "/usr/lib/libbar.a"), config.getLibs());
+        assertEquals(Arrays.asList(new File("/tmp/wd/resources"), new File("/usr/share/resources")), config.getResources());
+        assertEquals(Arrays.asList("javax.**.*"), config.getRoots());
+        assertTrue(config.getTarget() instanceof ConsoleTarget);
+        ConsoleTarget target = (ConsoleTarget) config.getTarget();
+        assertEquals(OS.macosx, target.getOS());
+        assertEquals(Arch.x86, target.getArch());
+    }
+    
+    @Test
+    public void testWriteConsole() throws Exception {
         Config.Builder builder = new Config.Builder();
         builder.addClasspathEntry(new File("foo1.jar"));
         builder.addClasspathEntry(new File(tmp, "foo2.jar"));
@@ -63,7 +81,10 @@ public class ConfigTest {
         builder.addResource(new File("resources"));
         builder.addResource(new File("/usr/share/resources"));
         builder.addRoot("javax.**.*");
-        builder.target(new ConsoleTarget());
+        ConsoleTarget target = new ConsoleTarget();
+        target.setOS(OS.macosx);
+        target.setArch(Arch.x86);
+        builder.target(target);
         
         StringWriter out = new StringWriter();
         builder.write(out, wd);
@@ -71,10 +92,28 @@ public class ConfigTest {
     }
 
     @Test
-    public void testWriteIOSTarget() throws Exception {
+    public void testReadIOS() throws Exception {
+        Config.Builder builder = new Config.Builder();
+        builder.read(new InputStreamReader(getClass().getResourceAsStream("ConfigTest.ios.xml"), "utf-8"), wd);
+        Config config = builder.config;
+        assertTrue(config.getTarget() instanceof IOSTarget);
+        IOSTarget target = (IOSTarget) config.getTarget();
+        assertEquals("6.1", target.getSdkVersion());
+        assertEquals("FooBar", target.getSignIdentity());
+        assertEquals(new File(wd, "Info.plist"), target.getInfoPList());
+        assertEquals(new File(wd, "entitlements.plist"), target.getEntitlementsPList());
+        assertEquals(new File(tmp, "resourcerules.plist"), target.getResourceRulesPList());
+    }
+    
+    @Test
+    public void testWriteIOS() throws Exception {
         Config.Builder builder = new Config.Builder();
         IOSTarget target = new IOSTarget();
         target.setSdkVersion("6.1");
+        target.setInfoPList(new File("Info.plist"));
+        target.setEntitlementsPList(new File("entitlements.plist"));
+        target.setResourceRulesPList(new File(tmp, "resourcerules.plist"));
+        target.setSignIdentity("FooBar");
         builder.target(target);
         
         StringWriter out = new StringWriter();

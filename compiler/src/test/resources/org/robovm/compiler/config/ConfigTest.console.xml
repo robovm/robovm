@@ -25,6 +25,9 @@
       <classpathentry>/tmp/foo2.jar</classpathentry>
    </classpath>
    <target>
-      <console/>
+      <console>
+         <os>macosx</os>
+         <arch>x86</arch>
+      </console>
    </target>
 </config>

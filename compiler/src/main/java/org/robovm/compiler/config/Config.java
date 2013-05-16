@@ -17,9 +17,12 @@
 package org.robovm.compiler.config;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -236,6 +239,14 @@ public class Config {
         return clazzes;
     }
 
+    public List<File> getBootclasspath() {
+        return bootclasspath;
+    }
+    
+    public List<File> getClasspath() {
+        return classpath;
+    }
+    
     public Logger getLogger() {
         return logger;
     }
@@ -556,7 +567,7 @@ public class Config {
     }
     
     public static class Builder {
-        private final Config config;
+        final Config config;
         public Builder() {
             this.config = new Config();
         }
@@ -690,6 +701,21 @@ public class Config {
             return config.build();
         }
         
+        public void read(File file) throws Exception {
+            Reader reader = null;
+            try {
+                reader = new InputStreamReader(new FileInputStream(file), "utf-8");
+                read(reader, file.getAbsoluteFile().getParentFile());
+            } finally {
+                IOUtils.closeQuietly(reader);
+            }
+        }
+        
+        public void read(Reader reader, File wd) throws Exception {
+            Serializer serializer = createSerializer(wd);
+            serializer.read(config, reader);            
+        }
+        
         public void write(File file) throws Exception {
             Writer writer = null;
             try {
@@ -701,12 +727,17 @@ public class Config {
         }
         
         public void write(Writer writer, File wd) throws Exception {
+            Serializer serializer = createSerializer(wd);
+            serializer.write(config, writer);
+        }
+
+        private Serializer createSerializer(File wd) throws Exception {
             Registry registry = new Registry();
             RelativeFileConverter fileConverter = new RelativeFileConverter(wd);
             registry.bind(File.class, fileConverter);
             registry.bind(Lib.class, new RelativeLibConverter(fileConverter));
             Serializer serializer = new Persister(new RegistryStrategy(registry));
-            serializer.write(config, writer);
+            return serializer;
         }
     }
 
@@ -731,7 +762,15 @@ public class Config {
 
         @Override
         public Lib read(InputNode node) throws Exception {
-            return null;
+            String value = node.getValue();
+            if (value == null) {
+                return null;
+            }
+            if (value.endsWith(".a") || value.endsWith(".o")) {
+                return new Lib(fileConverter.read(value).getAbsolutePath());
+            } else {
+                return new Lib(value);
+            }
         }
 
         @Override
@@ -759,9 +798,20 @@ public class Config {
             wdPrefix = prefix;
         }
         
+        File read(String value) {
+            if (value == null) {
+                return null;
+            }
+            File file = new File(value);
+            if (!file.isAbsolute()) {
+                file = new File(wdPrefix, value);
+            }
+            return file;
+        }
+        
         @Override
         public File read(InputNode node) throws Exception {
-            return null;
+            return read(node.getValue());
         }
 
         @Override

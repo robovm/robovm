@@ -222,7 +222,7 @@ public class IOSTarget extends AbstractTarget {
         generateDsym(appDir, getExecutable());
         if (arch == Arch.thumbv7) {
             copyResourcesPList(appDir);
-            codesign(signIdentity, getEntitlementsPList(), appDir);
+            codesign(signIdentity, getOrCreateEntitlementsPList(), appDir);
         }
     }
     
@@ -254,7 +254,7 @@ public class IOSTarget extends AbstractTarget {
         }
     }
     
-    private File getEntitlementsPList() throws IOException {
+    private File getOrCreateEntitlementsPList() throws IOException {
         try {
             File destFile = new File(config.getTmpDir(), "Entitlements.plist");
             if (entitlementsPList != null) {
@@ -373,8 +373,16 @@ public class IOSTarget extends AbstractTarget {
         FileUtils.copyFile(tmpInfoPlist, new File(dir, tmpInfoPlist.getName()));
     }
     
+    public String getSdkVersion() {
+        return sdkVersion;
+    }
+    
     public void setSdkVersion(String sdkVersion) {
         this.sdkVersion = sdkVersion;
+    }
+    
+    public File getInfoPList() {
+        return infoPList;
     }
     
     public void setInfoPList(File infoPList) {
@@ -420,14 +428,26 @@ public class IOSTarget extends AbstractTarget {
         return false;
     }
 
+    public File getResourceRulesPList() {
+        return resourceRulesPList;
+    }
+    
     public void setResourceRulesPList(File resourceRulesPList) {
         this.resourceRulesPList = resourceRulesPList;
     }
 
+    public File getEntitlementsPList() {
+        return entitlementsPList;
+    }
+    
     public void setEntitlementsPList(File entitlementsPList) {
         this.entitlementsPList = entitlementsPList;
     }
 
+    public String getSignIdentity() {
+        return signIdentity;
+    }
+    
     public void setSignIdentity(String signIdentity) {
         this.signIdentity = signIdentity;
     }

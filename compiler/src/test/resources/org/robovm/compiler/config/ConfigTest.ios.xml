@@ -11,7 +11,10 @@
    <target>
       <ios>
          <sdk>6.1</sdk>
-         <signIdentity>iPhone Developer</signIdentity>
+         <infoPList>Info.plist</infoPList>
+         <resourceRulesPList>/tmp/resourcerules.plist</resourceRulesPList>
+         <entitlementsPList>entitlements.plist</entitlementsPList>
+         <signIdentity>FooBar</signIdentity>
       </ios>
    </target>
 </config>

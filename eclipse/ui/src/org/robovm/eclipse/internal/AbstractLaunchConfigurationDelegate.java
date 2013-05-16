@@ -39,12 +39,12 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.launching.AbstractJavaLaunchConfigurationDelegate;
 import org.robovm.compiler.AppCompiler;
-import org.robovm.compiler.Arch;
-import org.robovm.compiler.Config;
-import org.robovm.compiler.LaunchParameters;
-import org.robovm.compiler.OS;
-import org.robovm.compiler.Target;
-import org.robovm.compiler.io.OpenOnReadFileInputStream;
+import org.robovm.compiler.config.Arch;
+import org.robovm.compiler.config.Config;
+import org.robovm.compiler.config.OS;
+import org.robovm.compiler.target.LaunchParameters;
+import org.robovm.compiler.target.Target;
+import org.robovm.compiler.util.io.OpenOnReadFileInputStream;
 import org.robovm.eclipse.RoboVMPlugin;
 
 /**

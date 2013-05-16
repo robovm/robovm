@@ -32,9 +32,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.robovm.compiler.Arch;
-import org.robovm.compiler.Config;
-import org.robovm.compiler.OS;
+import org.robovm.compiler.config.Arch;
+import org.robovm.compiler.config.Config;
+import org.robovm.compiler.config.OS;
 import org.robovm.eclipse.RoboVMPlugin;
 
 /**

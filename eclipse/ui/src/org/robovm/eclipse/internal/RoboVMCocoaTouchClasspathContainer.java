@@ -27,7 +27,7 @@ import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.JavaCore;
-import org.robovm.compiler.Config;
+import org.robovm.compiler.config.Config;
 import org.robovm.eclipse.RoboVMPlugin;
 
 /**

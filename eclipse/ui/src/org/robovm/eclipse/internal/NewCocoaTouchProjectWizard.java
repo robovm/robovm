@@ -21,8 +21,8 @@ import java.util.List;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.JavaCore;
-import org.robovm.compiler.Arch;
-import org.robovm.compiler.OS;
+import org.robovm.compiler.config.Arch;
+import org.robovm.compiler.config.OS;
 
 /**
  * 

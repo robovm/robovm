@@ -26,7 +26,7 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.jdt.core.IType;
-import org.robovm.compiler.IOSSimulatorLaunchParameters.Family;
+import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters.Family;
 import org.robovm.eclipse.RoboVMPlugin;
 
 

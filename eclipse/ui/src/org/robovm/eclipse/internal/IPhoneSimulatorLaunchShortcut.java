@@ -16,7 +16,7 @@
  */
 package org.robovm.eclipse.internal;
 
-import org.robovm.compiler.IOSSimulatorLaunchParameters.Family;
+import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters.Family;
 
 /**
  * @author niklas

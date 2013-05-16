@@ -36,15 +36,13 @@ import org.eclipse.jdt.debug.ui.launchConfigurations.JavaSourceLookupTab;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.robovm.compiler.AbstractIOSTarget.SDK;
-import org.robovm.compiler.IOSSimulatorLaunchParameters.Family;
-import org.robovm.compiler.IOSSimulatorTarget;
+import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters.Family;
+import org.robovm.compiler.target.ios.SDK;
 import org.robovm.eclipse.RoboVMPlugin;
 
 /**
@@ -67,7 +65,7 @@ public class IOSSimulatorLaunchConfigurationTabGroup extends AbstractLaunchConfi
     }
 
     private static List<SDK> listSDKs() {
-        List<SDK> sdks = IOSSimulatorTarget.listSDKs();
+        List<SDK> sdks = SDK.listSimulatorSDKs();
         Collections.sort(sdks, Collections.reverseOrder());
         return sdks;
     }

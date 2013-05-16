@@ -37,9 +37,9 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.robovm.compiler.ClassCompiler;
-import org.robovm.compiler.Config;
-import org.robovm.compiler.ConsoleTarget;
 import org.robovm.compiler.clazz.Clazz;
+import org.robovm.compiler.config.Config;
+import org.robovm.compiler.target.ConsoleTarget;
 import org.robovm.eclipse.RoboVMPlugin;
 
 /**

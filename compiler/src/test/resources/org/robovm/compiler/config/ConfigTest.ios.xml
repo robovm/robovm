@@ -1,20 +1,11 @@
 <config>
-   <useDynamicJni>false</useDynamicJni>
-   <skipRuntimeLib>false</skipRuntimeLib>
-   <cacerts>full</cacerts>
-   <roots/>
-   <libs/>
-   <frameworks/>
-   <resources/>
-   <bootclasspath/>
-   <classpath/>
-   <target>
-      <ios>
-         <sdk>6.1</sdk>
-         <infoPList>Info.plist</infoPList>
-         <resourceRulesPList>/tmp/resourcerules.plist</resourceRulesPList>
-         <entitlementsPList>entitlements.plist</entitlementsPList>
-         <signIdentity>FooBar</signIdentity>
-      </ios>
-   </target>
+  <target>
+    <ios>
+      <sdkVersion>6.1</sdkVersion>
+      <infoPList>Info.plist</infoPList>
+      <resourceRulesPList>/tmp/resourcerules.plist</resourceRulesPList>
+      <entitlementsPList>entitlements.plist</entitlementsPList>
+      <signIdentity>FooBar</signIdentity>
+    </ios>
+  </target>
 </config>

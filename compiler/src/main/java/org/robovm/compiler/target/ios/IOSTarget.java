@@ -55,7 +55,7 @@ public class IOSTarget extends AbstractTarget {
     private Arch arch;
     @Transient
     private SDK sdk;
-    @Element(name = "sdk")
+    @Element(name = "sdkVersion")
     private String sdkVersion;
     @Element(required = false)
     private File infoPList = null;
@@ -66,7 +66,7 @@ public class IOSTarget extends AbstractTarget {
     @Element(required = false)
     private File entitlementsPList;
     @Element(required = false)
-    private String signIdentity = "iPhone Developer";
+    private String signIdentity;
     
     public IOSTarget() {
     }
@@ -393,6 +393,9 @@ public class IOSTarget extends AbstractTarget {
         super.init(config);
         if (arch == null) {
             arch = Arch.thumbv7;
+        }
+        if (signIdentity == null) {
+            signIdentity = "iPhone Developer";
         }
         if (this.infoPList != null) {
             try {

@@ -25,6 +25,7 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +50,7 @@ import org.simpleframework.xml.convert.Converter;
 import org.simpleframework.xml.convert.Registry;
 import org.simpleframework.xml.convert.RegistryStrategy;
 import org.simpleframework.xml.core.Persister;
+import org.simpleframework.xml.stream.Format;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
 
@@ -66,27 +68,27 @@ public class Config {
     @Element(required = false)
     private String executableName = null;
     @Element(required = false)
-    private boolean useDynamicJni = false;
+    private Boolean useDynamicJni = null;
     @Element(required = false)
-    private boolean skipRuntimeLib = false;
+    private Boolean skipRuntimeLib = null;
     @Element(required = false)
     private File mainJar;
     @Element(required = false)
     private String mainClass;
     @Element(required = false)
-    private Cacerts cacerts = Cacerts.full;
+    private Cacerts cacerts = null;
     @ElementList(required = false, entry = "root")
-    private ArrayList<String> roots = new ArrayList<String>();
+    private ArrayList<String> roots;
     @ElementList(required = false, entry = "lib")
-    private ArrayList<Lib> libs = new ArrayList<Lib>();
+    private ArrayList<Lib> libs;
     @ElementList(required = false, entry = "framework")
-    private ArrayList<String> frameworks = new ArrayList<String>();
+    private ArrayList<String> frameworks;
     @ElementList(required = false, entry = "resource")
-    private ArrayList<File> resources = new ArrayList<File>();
+    private ArrayList<File> resources;
     @ElementList(required = false, entry = "classpathentry")
-    private ArrayList<File> bootclasspath = new ArrayList<File>();
+    private ArrayList<File> bootclasspath;
     @ElementList(required = false, entry = "classpathentry")
-    private ArrayList<File> classpath = new ArrayList<File>();
+    private ArrayList<File> classpath;
     @org.simpleframework.xml.Path("target")
     @ElementUnion({
         @Element(name = "console", type = ConsoleTarget.class),
@@ -155,7 +157,7 @@ public class Config {
     }
     
     public boolean isSkipRuntimeLib() {
-        return skipRuntimeLib;
+        return skipRuntimeLib != null && skipRuntimeLib.booleanValue();
     }
 
     public boolean isSkipLinking() {
@@ -167,7 +169,7 @@ public class Config {
     }
     
     public boolean isUseDynamicJni() {
-        return useDynamicJni;
+        return useDynamicJni != null && useDynamicJni.booleanValue();
     }
     
     public File getMainJar() {
@@ -179,7 +181,7 @@ public class Config {
     }
 
     public Cacerts getCacerts() {
-        return cacerts;
+        return cacerts == null ? Cacerts.full : cacerts;
     }
     
     public List<Path> getResourcesPaths() {
@@ -204,23 +206,28 @@ public class Config {
     }
 
     public List<String> getRoots() {
-        return roots;
+        return roots == null ? Collections.<String>emptyList() 
+                : Collections.unmodifiableList(roots);
     }
     
     public List<String> getLibs() {
         List<String> result = new ArrayList<String>();
-        for (Lib lib : libs) {
-            result.add(lib.getValue());
+        if (libs != null) {
+            for (Lib lib : libs) {
+                result.add(lib.getValue());
+            }
         }
-        return result;
+        return Collections.unmodifiableList(result);
     }
     
     public List<String> getFrameworks() {
-        return frameworks;
+        return frameworks == null ? Collections.<String>emptyList() 
+                : Collections.unmodifiableList(frameworks);
     }
     
     public List<File> getResources() {
-        return resources;
+        return resources == null ? Collections.<File>emptyList() 
+                : Collections.unmodifiableList(resources);
     }
     
     public File getLlvmHomeDir() {
@@ -332,6 +339,13 @@ public class Config {
             llvmHomeDir = findLlvmHomeDir();
         }
         
+        if (bootclasspath == null) {
+            bootclasspath = new ArrayList<File>();
+        }
+        if (classpath == null) {
+            classpath = new ArrayList<File>();
+        }
+        
         if (mainJar != null) {
             mainClass = getMainClass(mainJar);
             classpath.add(mainJar);
@@ -353,8 +367,8 @@ public class Config {
             executableName = mainClass;
         }
 
-        List<File> realBootclasspath = bootclasspath;
-        if (!skipRuntimeLib) {
+        List<File> realBootclasspath = bootclasspath == null ? new ArrayList<File>() : bootclasspath;
+        if (!isSkipRuntimeLib()) {
             realBootclasspath = new ArrayList<File>(bootclasspath);
             realBootclasspath.add(0, home.rtPath);
         }
@@ -573,11 +587,17 @@ public class Config {
         }
         
         public Builder addClasspathEntry(File f) {
+            if (config.classpath == null) {
+                config.classpath = new ArrayList<File>();
+            }
             config.classpath.add(f);
             return this;
         }
         
         public Builder addBootClasspathEntry(File f) {
+            if (config.bootclasspath == null) {
+                config.bootclasspath = new ArrayList<File>();
+            }
             config.bootclasspath.add(f);
             return this;
         }
@@ -668,21 +688,33 @@ public class Config {
         }
 
         public Builder addRoot(String pattern) {
+            if (config.roots == null) {
+                config.roots = new ArrayList<String>();
+            }
             config.roots.add(pattern);
             return this;
         }
 
         public Builder addLib(String lib) {
+            if (config.libs == null) {
+                config.libs = new ArrayList<Lib>();
+            }
             config.libs.add(new Lib(lib));
             return this;
         }
         
         public Builder addFramework(String framework) {
+            if (config.frameworks == null) {
+                config.frameworks = new ArrayList<String>();
+            }
             config.frameworks.add(framework);
             return this;
         }
         
         public Builder addResource(File path) {
+            if (config.resources == null) {
+                config.resources = new ArrayList<File>();
+            }
             config.resources.add(path);
             return this;
         }
@@ -736,7 +768,7 @@ public class Config {
             RelativeFileConverter fileConverter = new RelativeFileConverter(wd);
             registry.bind(File.class, fileConverter);
             registry.bind(Lib.class, new RelativeLibConverter(fileConverter));
-            Serializer serializer = new Persister(new RegistryStrategy(registry));
+            Serializer serializer = new Persister(new RegistryStrategy(registry), new Format(2));
             return serializer;
         }
     }

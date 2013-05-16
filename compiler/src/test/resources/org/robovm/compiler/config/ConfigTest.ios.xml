@@ -1,0 +1,17 @@
+<config>
+   <useDynamicJni>false</useDynamicJni>
+   <skipRuntimeLib>false</skipRuntimeLib>
+   <cacerts>full</cacerts>
+   <roots/>
+   <libs/>
+   <frameworks/>
+   <resources/>
+   <bootclasspath/>
+   <classpath/>
+   <target>
+      <ios>
+         <sdk>6.1</sdk>
+         <signIdentity>iPhone Developer</signIdentity>
+      </ios>
+   </target>
+</config>

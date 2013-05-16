@@ -38,12 +38,11 @@ import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.log.ConsoleLogger;
 import org.robovm.compiler.target.ConsoleTarget;
-import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters;
-import org.robovm.compiler.target.ios.IOSTarget;
-import org.robovm.compiler.target.ios.SDK;
-import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters.Family;
 import org.robovm.compiler.target.LaunchParameters;
 import org.robovm.compiler.target.Target;
+import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters;
+import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters.Family;
+import org.robovm.compiler.target.ios.IOSTarget;
 
 /**
  *
@@ -423,30 +422,14 @@ public class AppCompiler {
                 }
                 if (arg.equals("-signidentity")) {
                     if (target instanceof IOSTarget) {
-                        ((IOSTarget) target).setSigningIdentity(targetArgs.get(i++));
+                        ((IOSTarget) target).setSignIdentity(targetArgs.get(i++));
                         continue;
                     }
                 }
                 if (arg.equals("-sdk")) {
                     if (target instanceof IOSTarget) {
                         String value = targetArgs.get(i++);
-                        SDK matchSdk = null;
-                        if (value.matches("\\d+\\.\\d+(\\.\\d+)?")) {
-                            // Version string
-                            for (SDK sdk : ((IOSTarget) target).getSDKs()) {
-                                if (sdk.getVersion().equals(value)) {
-                                    matchSdk = sdk;
-                                    break;
-                                }
-                            }
-                            if (matchSdk == null) {
-                                throw new IllegalArgumentException("No SDK found matching version string " + value);
-                            }
-                        } else {
-                            // Path
-                            matchSdk = SDK.create(new File(value));
-                        }
-                        ((IOSTarget) target).setSDK(matchSdk);
+                        ((IOSTarget) target).setSdkVersion(value);
                         continue;
                     }
                 }
@@ -615,9 +598,8 @@ public class AppCompiler {
         System.err.println("  -resourcerules <file> (iOS) Property list (.plist) file containing resource rules\n" 
                          + "                        passed to codesign when signing the app.");
         System.err.println("  -signidentity <id>    (iOS) Sign using this identity. Default is 'iPhone Developer'.");
-        System.err.println("  -sdk <dir|version>    (iOS) SDK to build against. Either a full path or version\n" 
-                         + "                        number. If not specified the latest SDK that can be found will\n" 
-                         + "                        be used.");
+        System.err.println("  -sdk <version>        (iOS) Version number of the iOS SDK to build against. If not\n" 
+                         + "                        specified the latest SDK that can be found will be used.");
         System.err.println("iOS simulator launch options:");
         System.err.println("  -ios-sim-family <fam> The device type that should be simulated. Valid values are\n" 
                          + "                        'iphone' (default) and 'ipad'.");

@@ -27,7 +27,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.robovm.compiler.target.ConsoleTarget;
 import org.robovm.compiler.target.ios.IOSTarget;
-import org.robovm.compiler.target.ios.SDK;
 
 /**
  * Tests {@link Config}.
@@ -68,20 +67,18 @@ public class ConfigTest {
         
         StringWriter out = new StringWriter();
         builder.write(out, wd);
-        System.out.println(out.toString());
-        assertEquals(IOUtils.toString(getClass().getResourceAsStream("ConfigTest.write.xml")), out.toString());
+        assertEquals(IOUtils.toString(getClass().getResourceAsStream("ConfigTest.console.xml")), out.toString());
     }
 
     @Test
     public void testWriteIOSTarget() throws Exception {
         Config.Builder builder = new Config.Builder();
         IOSTarget target = new IOSTarget();
-        target.setSDK(new SDK("", "", "", "6.1", new File(tmp, "sdk"), null));
+        target.setSdkVersion("6.1");
         builder.target(target);
         
         StringWriter out = new StringWriter();
         builder.write(out, wd);
-        System.out.println(out.toString());
-        assertEquals(IOUtils.toString(getClass().getResourceAsStream("ConfigTest.write.xml")), out.toString());
+        assertEquals(IOUtils.toString(getClass().getResourceAsStream("ConfigTest.ios.xml")), out.toString());
     }
 }

@@ -34,6 +34,7 @@ import org.robovm.compiler.target.AbstractTarget;
 import org.robovm.compiler.target.LaunchParameters;
 import org.robovm.compiler.util.Executor;
 import org.robovm.compiler.util.io.OpenOnWriteFileOutputStream;
+import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Transient;
 
 import com.dd.plist.NSArray;
@@ -50,14 +51,22 @@ import com.dd.plist.PropertyListParser;
  */
 public class IOSTarget extends AbstractTarget {
 
-    private Arch arch = Arch.thumbv7;
+    @Element(required = false)
+    private Arch arch;
+    @Transient
     private SDK sdk;
+    @Element(name = "sdk")
+    private String sdkVersion;
+    @Element(required = false)
     private File infoPList = null;
     @Transient
     private NSDictionary infoPListDict = null;
+    @Element(required = false)
     private File resourceRulesPList;
+    @Element(required = false)
     private File entitlementsPList;
-    private String signingIdentity = "iPhone Developer";
+    @Element(required = false)
+    private String signIdentity = "iPhone Developer";
     
     public IOSTarget() {
     }
@@ -203,7 +212,7 @@ public class IOSTarget extends AbstractTarget {
         generateDsym(installDir, getExecutable());
         if (arch == Arch.thumbv7) {
             copyResourcesPList(installDir);
-            codesign(signingIdentity, entitlementsPList, installDir);
+            codesign(signIdentity, entitlementsPList, installDir);
         }
     }
     
@@ -213,7 +222,7 @@ public class IOSTarget extends AbstractTarget {
         generateDsym(appDir, getExecutable());
         if (arch == Arch.thumbv7) {
             copyResourcesPList(appDir);
-            codesign(signingIdentity, getEntitlementsPList(), appDir);
+            codesign(signIdentity, getEntitlementsPList(), appDir);
         }
     }
     
@@ -364,16 +373,19 @@ public class IOSTarget extends AbstractTarget {
         FileUtils.copyFile(tmpInfoPlist, new File(dir, tmpInfoPlist.getName()));
     }
     
-    public void setSDK(SDK sdk) {
-        this.sdk = sdk;
+    public void setSdkVersion(String sdkVersion) {
+        this.sdkVersion = sdkVersion;
     }
-
+    
     public void setInfoPList(File infoPList) {
         this.infoPList = infoPList;
     }
     
     public void init(Config config) {
         super.init(config);
+        if (arch == null) {
+            arch = Arch.thumbv7;
+        }
         if (this.infoPList != null) {
             try {
                 this.infoPListDict = (NSDictionary) PropertyListParser.parse(this.infoPList);
@@ -381,10 +393,20 @@ public class IOSTarget extends AbstractTarget {
                 throw new IllegalArgumentException(t);
             }
         }
-        if (this.sdk == null) {
-            List<SDK> sdks = getSDKs();
+        List<SDK> sdks = getSDKs();
+        if (this.sdkVersion == null) {
             Collections.sort(sdks);
             this.sdk = sdks.get(sdks.size() - 1);
+        } else {
+            for (SDK sdk : sdks) {
+                if (sdk.getVersion().equals(sdkVersion)) {
+                    this.sdk = sdk;
+                    break;
+                }
+            }
+            if (sdk == null) {
+                throw new IllegalArgumentException("No SDK found matching version string " + sdkVersion);
+            }
         }
     }
 
@@ -406,7 +428,7 @@ public class IOSTarget extends AbstractTarget {
         this.entitlementsPList = entitlementsPList;
     }
 
-    public void setSigningIdentity(String signingIdentity) {
-        this.signingIdentity = signingIdentity;
+    public void setSignIdentity(String signIdentity) {
+        this.signIdentity = signIdentity;
     }
 }

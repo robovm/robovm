@@ -14,7 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
  */
-package org.robovm.compiler.target;
+package org.robovm.compiler.target.ios;
+
+import org.robovm.compiler.target.LaunchParameters;
 
 /**
  * {@link LaunchParameters} implementation used by {@link IOSSimulatorTarget}.

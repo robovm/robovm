@@ -25,11 +25,9 @@ import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.robovm.compiler.config.Config;
-import org.robovm.compiler.target.AbstractIOSTarget;
 import org.robovm.compiler.target.ConsoleTarget;
-import org.robovm.compiler.target.IOSDeviceTarget;
-import org.robovm.compiler.target.AbstractIOSTarget.SDK;
+import org.robovm.compiler.target.ios.IOSTarget;
+import org.robovm.compiler.target.ios.SDK;
 
 /**
  * Tests {@link Config}.
@@ -77,8 +75,8 @@ public class ConfigTest {
     @Test
     public void testWriteIOSTarget() throws Exception {
         Config.Builder builder = new Config.Builder();
-        IOSDeviceTarget target = new IOSDeviceTarget();
-        target.setSDK(new AbstractIOSTarget.SDK("", "", "", "6.1", new File(tmp, "sdk"), null));
+        IOSTarget target = new IOSTarget();
+        target.setSDK(new SDK("", "", "", "6.1", new File(tmp, "sdk"), null));
         builder.target(target);
         
         StringWriter out = new StringWriter();

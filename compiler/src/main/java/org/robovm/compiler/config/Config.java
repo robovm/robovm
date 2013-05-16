@@ -35,8 +35,8 @@ import org.robovm.compiler.clazz.Clazzes;
 import org.robovm.compiler.clazz.Path;
 import org.robovm.compiler.log.Logger;
 import org.robovm.compiler.target.ConsoleTarget;
-import org.robovm.compiler.target.IOSDeviceTarget;
 import org.robovm.compiler.target.Target;
+import org.robovm.compiler.target.ios.IOSTarget;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementUnion;
@@ -87,7 +87,7 @@ public class Config {
     @org.simpleframework.xml.Path("target")
     @ElementUnion({
         @Element(name = "console", type = ConsoleTarget.class),
-        @Element(name = "ios", type = IOSDeviceTarget.class)
+        @Element(name = "ios", type = IOSTarget.class)
     })
     private Target target = null;
     

@@ -37,15 +37,13 @@ import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.log.ConsoleLogger;
-import org.robovm.compiler.target.AbstractIOSTarget;
 import org.robovm.compiler.target.ConsoleTarget;
-import org.robovm.compiler.target.IOSDeviceTarget;
-import org.robovm.compiler.target.IOSSimulatorLaunchParameters;
-import org.robovm.compiler.target.IOSSimulatorTarget;
+import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters;
+import org.robovm.compiler.target.ios.IOSTarget;
+import org.robovm.compiler.target.ios.SDK;
+import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters.Family;
 import org.robovm.compiler.target.LaunchParameters;
 import org.robovm.compiler.target.Target;
-import org.robovm.compiler.target.AbstractIOSTarget.SDK;
-import org.robovm.compiler.target.IOSSimulatorLaunchParameters.Family;
 
 /**
  *
@@ -393,11 +391,8 @@ public class AppCompiler {
 
             Target target = null;
             if (os == OS.ios) {
-                if (arch == null || arch.isArm() || dumpConfig) {
-                    target = new IOSDeviceTarget();
-                } else {
-                    target = new IOSSimulatorTarget();
-                }
+                target = new IOSTarget();
+                ((IOSTarget) target).setArch(arch);
             }
             if (target == null) {
                 target = new ConsoleTarget();
@@ -409,36 +404,36 @@ public class AppCompiler {
             while (i < targetArgs.size()) {
                 String arg = targetArgs.get(i++);
                 if (arg.equals("-plist")) {
-                    if (target instanceof AbstractIOSTarget) {
-                        ((AbstractIOSTarget) target).setInfoPList(new File(targetArgs.get(i++)));
+                    if (target instanceof IOSTarget) {
+                        ((IOSTarget) target).setInfoPList(new File(targetArgs.get(i++)));
                         continue;
                     }
                 }
                 if (arg.equals("-entitlements")) {
-                    if (target instanceof IOSDeviceTarget) {
-                        ((IOSDeviceTarget) target).setEntitlementsPList(new File(targetArgs.get(i++)));
+                    if (target instanceof IOSTarget) {
+                        ((IOSTarget) target).setEntitlementsPList(new File(targetArgs.get(i++)));
                         continue;
                     }
                 }
                 if (arg.equals("-resourcerules")) {
-                    if (target instanceof IOSDeviceTarget) {
-                        ((IOSDeviceTarget) target).setResourceRulesPList(new File(targetArgs.get(i++)));
+                    if (target instanceof IOSTarget) {
+                        ((IOSTarget) target).setResourceRulesPList(new File(targetArgs.get(i++)));
                         continue;
                     }
                 }
                 if (arg.equals("-signidentity")) {
-                    if (target instanceof IOSDeviceTarget) {
-                        ((IOSDeviceTarget) target).setSigningIdentity(targetArgs.get(i++));
+                    if (target instanceof IOSTarget) {
+                        ((IOSTarget) target).setSigningIdentity(targetArgs.get(i++));
                         continue;
                     }
                 }
                 if (arg.equals("-sdk")) {
-                    if (target instanceof AbstractIOSTarget) {
+                    if (target instanceof IOSTarget) {
                         String value = targetArgs.get(i++);
                         SDK matchSdk = null;
                         if (value.matches("\\d+\\.\\d+(\\.\\d+)?")) {
                             // Version string
-                            for (SDK sdk : ((AbstractIOSTarget) target).getSDKs()) {
+                            for (SDK sdk : ((IOSTarget) target).getSDKs()) {
                                 if (sdk.getVersion().equals(value)) {
                                     matchSdk = sdk;
                                     break;
@@ -451,7 +446,7 @@ public class AppCompiler {
                             // Path
                             matchSdk = SDK.create(new File(value));
                         }
-                        ((AbstractIOSTarget) target).setSDK(matchSdk);
+                        ((IOSTarget) target).setSDK(matchSdk);
                         continue;
                     }
                 }

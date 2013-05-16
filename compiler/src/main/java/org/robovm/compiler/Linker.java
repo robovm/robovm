@@ -41,6 +41,7 @@ import org.robovm.compiler.llvm.Global;
 import org.robovm.compiler.llvm.IntegerConstant;
 import org.robovm.compiler.llvm.NullConstant;
 import org.robovm.compiler.llvm.Type;
+import org.robovm.compiler.util.ToolchainUtil;
 
 /**
  *
@@ -106,11 +107,11 @@ public class Linker {
         File linkerLl = new File(config.getTmpDir(), "linker.ll");
         FileUtils.writeStringToFile(linkerLl, mb.build().toString(), "UTF-8");
         File linkerBc = new File(config.getTmpDir(), "linker.bc");
-        CompilerUtil.opt(config, linkerLl, linkerBc, "-mem2reg", "-always-inline");
+        ToolchainUtil.opt(config, linkerLl, linkerBc, "-mem2reg", "-always-inline");
         File linkerS = new File(config.getTmpDir(), "linker.s");
-        CompilerUtil.llc(config, linkerBc, linkerS);
+        ToolchainUtil.llc(config, linkerBc, linkerS);
         File linkerO = new File(config.getTmpDir(), "linker.o");
-        CompilerUtil.assemble(config, linkerS, linkerO);
+        ToolchainUtil.assemble(config, linkerS, linkerO);
 
         List<File> objectFiles = new ArrayList<File>();
         objectFiles.add(linkerO);

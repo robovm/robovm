@@ -79,6 +79,7 @@ import org.robovm.compiler.trampoline.FieldAccessor;
 import org.robovm.compiler.trampoline.Invoke;
 import org.robovm.compiler.trampoline.LdcString;
 import org.robovm.compiler.trampoline.Trampoline;
+import org.robovm.compiler.util.ToolchainUtil;
 
 import soot.BooleanType;
 import soot.ByteType;
@@ -271,15 +272,15 @@ public class ClassCompiler {
         }
 
         config.getLogger().debug("Optimizing %s", clazz);
-        CompilerUtil.opt(config, llFile, bcFile, "-mem2reg", "-always-inline");
+        ToolchainUtil.opt(config, llFile, bcFile, "-mem2reg", "-always-inline");
 
         config.getLogger().debug("Generating %s assembly for %s", config.getArch(), clazz);
-        CompilerUtil.llc(config, bcFile, sFile);
+        ToolchainUtil.llc(config, bcFile, sFile);
 
         patchAsmWithFunctionSizes(clazz, sFile);
         
         config.getLogger().debug("Assembling %s", clazz);
-        CompilerUtil.assemble(config, sFile, oFile);
+        ToolchainUtil.assemble(config, sFile, oFile);
     }
     
     private void patchAsmWithFunctionSizes(Clazz clazz, File sFile) throws IOException {

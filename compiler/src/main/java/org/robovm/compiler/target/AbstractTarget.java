@@ -36,11 +36,11 @@ import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.robovm.compiler.CompilerUtil;
 import org.robovm.compiler.clazz.Path;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.util.Executor;
+import org.robovm.compiler.util.ToolchainUtil;
 import org.simpleframework.xml.Transient;
 
 /**
@@ -154,7 +154,7 @@ public abstract class AbstractTarget implements Target {
     protected void doBuild(File outFile, List<String> ccArgs, List<File> objectFiles, 
             List<String> libs) throws IOException {
         
-        CompilerUtil.link(config, ccArgs, objectFiles, libs, outFile);        
+        ToolchainUtil.link(config, ccArgs, objectFiles, libs, outFile);        
     }
     
     protected void copyResources(File destDir) throws IOException {

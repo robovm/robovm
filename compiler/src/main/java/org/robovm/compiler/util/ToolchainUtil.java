@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
  */
-package org.robovm.compiler;
+package org.robovm.compiler.util;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,13 +26,12 @@ import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.log.Logger;
-import org.robovm.compiler.util.Executor;
 
 /**
  * @author niklas
  *
  */
-public class CompilerUtil {
+public class ToolchainUtil {
     private static String IOS_DEV_CLANG; 
     private static String IOS_SIM_CLANG; 
 

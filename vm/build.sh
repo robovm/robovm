@@ -85,11 +85,20 @@ if [ "$CLEAN" = '1' ]; then
   done
 fi
 
-CC=$(which gcc)
-CXX=$(which g++)
 if [ $(uname) = 'Darwin' ]; then
-  CC=$(which clang)
-  CXX=$(which clang++)
+  if xcrun -f clang &> /dev/null; then
+    CC=$(xcrun -f clang)
+  else
+    CC=$(which clang)
+  fi
+  if xcrun -f clang++ &> /dev/null; then
+    CXX=$(xcrun -f clang++)
+  else
+    CXX=$(which clang++)
+  fi
+else
+  CC=$(which gcc)
+  CXX=$(which g++)
 fi
 
 for T in $TARGETS; do

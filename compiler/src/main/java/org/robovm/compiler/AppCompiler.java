@@ -326,7 +326,7 @@ public class AppCompiler {
                     }
                 } else if ("-resources".equals(args[i])) {
                     for (String p : args[++i].split(":")) {
-                        builder.addResource(p);
+                        builder.addResource(new File(p));
                     }
                 } else if ("-cacerts".equals(args[i])) {
                     String name = args[++i];

@@ -74,7 +74,7 @@ public class Config {
     @ElementList(required = false, entry = "framework")
     private ArrayList<String> frameworks = new ArrayList<String>();
     @ElementList(required = false, entry = "resource")
-    private ArrayList<String> resources = new ArrayList<String>();
+    private ArrayList<File> resources = new ArrayList<File>();
     @ElementList(required = false, entry = "classpathentry")
     private ArrayList<File> bootclasspath = new ArrayList<File>();
     @ElementList(required = false, entry = "classpathentry")
@@ -208,12 +208,12 @@ public class Config {
     }
     
     public List<String> getFrameworks() {
-		return frameworks;
-	}
+        return frameworks;
+    }
     
-    public List<String> getResources() {
-		return resources;
-	}
+    public List<File> getResources() {
+        return resources;
+    }
     
     public File getLlvmHomeDir() {
         return llvmHomeDir;
@@ -656,17 +656,17 @@ public class Config {
             return this;
         }
 
-        public Builder addLib(String path) {
-            config.libs.add(new Lib(path));
+        public Builder addLib(String lib) {
+            config.libs.add(new Lib(lib));
             return this;
         }
         
-        public Builder addFramework(String path) {
-            config.frameworks.add(path);
+        public Builder addFramework(String framework) {
+            config.frameworks.add(framework);
             return this;
         }
         
-        public Builder addResource(String path) {
+        public Builder addResource(File path) {
             config.resources.add(path);
             return this;
         }
@@ -768,5 +768,5 @@ public class Config {
                 node.setValue(path);
             }
         }
-    }    
+    }
 }

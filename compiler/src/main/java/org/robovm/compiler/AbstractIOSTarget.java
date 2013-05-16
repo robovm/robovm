@@ -245,7 +245,7 @@ public abstract class AbstractIOSTarget extends AbstractTarget {
             }
         }
         
-        private SDK(String displayName, String minimalDisplayName, String canonicalName, String version, File root, NSDictionary defaultProperties) {
+        SDK(String displayName, String minimalDisplayName, String canonicalName, String version, File root, NSDictionary defaultProperties) {
             super();
             this.displayName = displayName;
             this.minimalDisplayName = minimalDisplayName;

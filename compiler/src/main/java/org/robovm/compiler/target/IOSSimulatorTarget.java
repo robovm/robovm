@@ -17,13 +17,13 @@
 package org.robovm.compiler.target;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.exec.CommandLine;
-import org.robovm.compiler.CompilerUtil;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.OS;
+import org.robovm.compiler.util.Executor;
 
 import com.dd.plist.NSArray;
 import com.dd.plist.NSDictionary;
@@ -70,14 +70,16 @@ public class IOSSimulatorTarget extends AbstractIOSTarget {
     }
     
     @Override
-    protected CommandLine doGenerateCommandLine(LaunchParameters launchParameters) {
+    protected Executor createExecutor(LaunchParameters launchParameters)
+            throws IOException {
+
         File dir = getAppDir();
         
         String iosSimPath = new File(config.getHome().getBinDir(), "ios-sim").getAbsolutePath();
         
         List<Object> args = new ArrayList<Object>();
         args.add("launch");
-        args.add(dir.getAbsolutePath());
+        args.add(dir);
         args.add("--unbuffered");
         if (((IOSSimulatorLaunchParameters) launchParameters).getSdk() != null) {
             args.add("--sdk");
@@ -98,7 +100,7 @@ public class IOSSimulatorTarget extends AbstractIOSTarget {
             args.addAll(launchParameters.getArguments());
         }
         
-        return CompilerUtil.createCommandLine(iosSimPath, args);
+        return super.createExecutor(launchParameters, iosSimPath).args(args);
     }
     
     public static List<SDK> listSDKs() {

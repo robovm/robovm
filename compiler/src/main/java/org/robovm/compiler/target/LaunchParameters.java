@@ -29,7 +29,6 @@ public class LaunchParameters {
     private List<String> arguments = Collections.emptyList();
     private Map<String, String> environment = null;
     private File workingDirectory = new File(".");
-    private boolean redirectStreamsToLogger = false;
     private File stdoutFifo = null;
     private File stderrFifo = null;
     
@@ -55,14 +54,6 @@ public class LaunchParameters {
     
     public void setWorkingDirectory(File workingDirectory) {
         this.workingDirectory = workingDirectory;
-    }
-    
-    public boolean isRedirectStreamsToLogger() {
-        return redirectStreamsToLogger;
-    }
-    
-    public void setRedirectStreamsToLogger(boolean redirectStreamsToLogger) {
-        this.redirectStreamsToLogger = redirectStreamsToLogger;
     }
     
     public File getStdoutFifo() {

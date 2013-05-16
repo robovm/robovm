@@ -24,7 +24,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.robovm.compiler.CompilerException;
-import org.robovm.compiler.CompilerUtil;
+import org.robovm.compiler.log.Logger;
+import org.robovm.compiler.util.Executor;
 
 /**
  * @author niklas
@@ -65,7 +66,7 @@ public enum OS {
             llcPath = new File(new File(llvmHomeDir, "bin"), "llc").getAbsolutePath();
         }
         try {
-            String output = CompilerUtil.execCaptureOutput(llcPath, "--version");
+            String output = new Executor(Logger.NULL_LOGGER, llcPath).args("--version").execCapture();
             Matcher m = Pattern.compile("(?m)(?:Host|Default target):\\s*(.*)$").matcher(output);
             if (m.find()) {
                 llvmHostString = m.group(1).trim();

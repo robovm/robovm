@@ -26,13 +26,9 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.SequenceInputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.ExecuteStreamHandler;
-import org.apache.commons.exec.environment.EnvironmentUtils;
 import org.apache.commons.exec.util.StringUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -41,12 +37,11 @@ import org.netbeans.modules.cnd.debugger.gdb2.mi.MICommandInjector;
 import org.netbeans.modules.cnd.debugger.gdb2.mi.MIProxy;
 import org.netbeans.modules.cnd.debugger.gdb2.mi.MIRecord;
 import org.netbeans.modules.cnd.debugger.gdb2.mi.MIUserInteraction;
-import org.robovm.compiler.CompilerUtil;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.log.DebugOutputStream;
 import org.robovm.compiler.log.ErrorOutputStream;
-import org.robovm.compiler.util.AsyncExecutor;
+import org.robovm.compiler.util.Executor;
 import org.robovm.compiler.util.io.OpenOnWriteFileOutputStream;
 
 import com.dd.plist.NSArray;
@@ -94,8 +89,11 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
         dict.put("CFBundleSupportedPlatforms", new NSArray(new NSString("iPhoneOS")));
     }
 
+    @SuppressWarnings("resource")
     @Override
-    protected CommandLine doGenerateCommandLine(LaunchParameters launchParameters) {
+    protected Executor createExecutor(LaunchParameters launchParameters)
+            throws IOException {
+
         File dir = getAppDir();
         
         String fruitstrapPath = new File(config.getHome().getBinDir(), "fruitstrap").getAbsolutePath();
@@ -116,33 +114,24 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
         args.add("--bundle");
         args.add(dir.getAbsolutePath());
         
-        return CompilerUtil.createCommandLine(fruitstrapPath, args);
-    }
-    
-    @Override
-    protected void initStreams(AsyncExecutor executor,
-            LaunchParameters launchParameters) throws IOException {
-        
         OutputStream fruitstrapOut = new DebugOutputStream(config.getLogger());
         OutputStream fruitstrapErr = new ErrorOutputStream(config.getLogger());
         OutputStream out = null;
         OutputStream err = null;
         if (launchParameters.getStdoutFifo() != null) {
             out = new OpenOnWriteFileOutputStream(launchParameters.getStdoutFifo());
-        } else if (launchParameters.isRedirectStreamsToLogger()) {
-            out = fruitstrapOut;
         } else {
             out = System.out;
         }
         if (launchParameters.getStderrFifo() != null) {
             err = new OpenOnWriteFileOutputStream(launchParameters.getStderrFifo());
-        } else if (launchParameters.isRedirectStreamsToLogger()) {
-            err = fruitstrapErr;
         } else {
             err = System.err;
         }
         
-        executor.setStreamHandler(new FruitstrapStreamHandler(out, err, fruitstrapOut, fruitstrapErr));
+        return super.createExecutor(launchParameters, fruitstrapPath)
+                .args(args)
+                .streamHandler(new FruitstrapStreamHandler(out, err, fruitstrapOut, fruitstrapErr));
     }
     
     private String joinArgs(List<String> args) {
@@ -177,10 +166,13 @@ public class IOSDeviceTarget extends AbstractIOSTarget {
             args.add(entitlementsPList);
         }
         args.add(appDir);
-        @SuppressWarnings("unchecked")
-        Map<String, String> env = new HashMap<String, String>(EnvironmentUtils.getProcEnvironment());
-        env.put("CODESIGN_ALLOCATE", CompilerUtil.execCaptureOutput("xcrun", "-sdk", "iphoneos", "-f", "codesign_allocate").trim());
-        CompilerUtil.execWithEnv(config, null, env, "codesign", args);        
+        new Executor(config.getLogger(), "codesign")
+            .addEnv("CODESIGN_ALLOCATE", 
+                new Executor(config.getLogger(), "xcrun")
+                    .args("-sdk", "iphoneos", "-f", "codesign_allocate")
+                    .execCapture())
+            .args(args)
+            .exec();
     }
     
     private void copyResourcesPList(File destDir) throws IOException {

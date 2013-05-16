@@ -17,22 +17,17 @@
 package org.robovm.compiler.target;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.apache.commons.exec.PumpStreamHandler;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
-import org.robovm.compiler.log.DebugOutputStream;
-import org.robovm.compiler.log.ErrorOutputStream;
-import org.robovm.compiler.util.AsyncExecutor;
+import org.robovm.compiler.util.Executor;
 import org.robovm.compiler.util.io.OpenOnWriteFileOutputStream;
 
 
 /**
- * @author niklas
- *
+ * Console {@link Target} implementation.
  */
 public class ConsoleTarget extends AbstractTarget {
     private OS os;
@@ -57,27 +52,19 @@ public class ConsoleTarget extends AbstractTarget {
         this.arch = arch;
     }
     
-    protected void initStreams(AsyncExecutor executor, LaunchParameters launchParameters) throws IOException {
+    @Override
+    protected Executor createExecutor(LaunchParameters launchParameters)
+            throws IOException {
+
         OutputStream out = System.out;
         OutputStream err = System.err;
-        if (launchParameters.isRedirectStreamsToLogger()) {
-            out = new DebugOutputStream(config.getLogger()); 
-            err = new ErrorOutputStream(config.getLogger());
-        } else {
-            if (launchParameters.getStdoutFifo() != null) {
-                out = new OpenOnWriteFileOutputStream(launchParameters.getStdoutFifo());
-            }
-            if (launchParameters.getStderrFifo() != null) {
-                err = new OpenOnWriteFileOutputStream(launchParameters.getStderrFifo());
-            }
+        if (launchParameters.getStdoutFifo() != null) {
+            out = new OpenOnWriteFileOutputStream(launchParameters.getStdoutFifo());
         }
-        executor.setStreamHandler(new PumpStreamHandler(out, err) {
-            @Override
-            protected Thread createPump(InputStream is, OutputStream os,
-                    boolean closeWhenExhausted) {
-                return super.createPump(is, os, true);
-            }
-        });
+        if (launchParameters.getStderrFifo() != null) {
+            err = new OpenOnWriteFileOutputStream(launchParameters.getStderrFifo());
+        }
+        return super.createExecutor(launchParameters).out(out).err(err).closeOutputStreams(true);
     }
 
     public void init(Config config) {

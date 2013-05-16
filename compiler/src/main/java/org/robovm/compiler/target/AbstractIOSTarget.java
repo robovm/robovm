@@ -25,8 +25,9 @@ import java.util.List;
 
 import org.apache.commons.exec.util.StringUtils;
 import org.apache.commons.io.FileUtils;
-import org.robovm.compiler.CompilerUtil;
 import org.robovm.compiler.config.Config;
+import org.robovm.compiler.log.Logger;
+import org.robovm.compiler.util.Executor;
 import org.simpleframework.xml.Transient;
 
 import com.dd.plist.NSArray;
@@ -78,7 +79,9 @@ public abstract class AbstractIOSTarget extends AbstractTarget {
     private void generateDsym(File dir, String executable) throws IOException {
         File dsymDir = new File(dir.getParentFile(), dir.getName() + ".dSYM");
         FileUtils.deleteDirectory(dsymDir);
-        CompilerUtil.exec(config, "xcrun", "dsymutil", "-o", dsymDir, new File(dir, executable));
+        new Executor(config.getLogger(), "xcrun")
+            .args("dsymutil", "-o", dsymDir, new File(dir, executable))
+            .exec();
     }
 
     @Override
@@ -224,7 +227,7 @@ public abstract class AbstractIOSTarget extends AbstractTarget {
             try {
                 List<SDK> sdks = new ArrayList<SDK>();
                 List<File> sdksDirs = Arrays.asList(
-                        new File(CompilerUtil.execCaptureOutput("xcode-select", "--print-path") + "/Platforms/" + platform + ".platform/Developer/SDKs"),
+                        new File(new Executor(Logger.NULL_LOGGER, "xcode-select").args("--print-path").execCapture() + "/Platforms/" + platform + ".platform/Developer/SDKs"),
                         new File("/Applications/Xcode.app/Contents/Developer/Platforms/" + platform + ".platform/Developer/SDKs"),
                         new File("/Developer/Platforms/" + platform + ".platform/Developer/SDKs"));
                 for (File sdksDir : sdksDirs) {

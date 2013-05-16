@@ -52,7 +52,7 @@ import org.apache.commons.exec.launcher.CommandLauncherFactory;
  * int exitvalue = exec.execute(cl);
  * </pre>
  */
-public class AsyncExecutor {
+class AsyncExecutor implements Executor {
 
     private static final AtomicInteger threadCounter = new AtomicInteger();
     
@@ -170,8 +170,8 @@ public class AsyncExecutor {
      * @return the launched {@link Process}
      * @throws ExecuteException execution of subprocess failed
      */
-    public Process execute(final CommandLine command) throws IOException {
-        return execute(command, (Map<String, String>) null);
+    public Process executeAsync(final CommandLine command) throws IOException {
+        return executeAsync(command, (Map<String, String>) null);
     }
 
     /**
@@ -183,7 +183,7 @@ public class AsyncExecutor {
      * @return the launched {@link Process}
      * @throws ExecuteException execution of subprocess failed
      */
-    public Process execute(final CommandLine command, Map<String, String> environment)
+    public Process executeAsync(final CommandLine command, Map<String, String> environment)
             throws IOException {
 
         if (workingDirectory != null && !workingDirectory.exists()) {
@@ -203,9 +203,9 @@ public class AsyncExecutor {
      * @return the launched {@link Process}
      * @throws ExecuteException execution of subprocess failed
      */
-    public Process execute(final CommandLine command, ExecuteResultHandler handler)
+    public Process executeAsync(final CommandLine command, ExecuteResultHandler handler)
             throws IOException {
-        return execute(command, null, handler);
+        return executeAsync(command, null, handler);
     }
 
     /**
@@ -220,7 +220,7 @@ public class AsyncExecutor {
      * @return the launched {@link Process}
      * @throws ExecuteException execution of subprocess failed     
      */
-    public Process execute(final CommandLine command, final Map<String, String> environment,
+    public Process executeAsync(final CommandLine command, final Map<String, String> environment,
             final ExecuteResultHandler handler) throws IOException {
 
         if (workingDirectory != null && !workingDirectory.exists()) {
@@ -436,5 +436,29 @@ public class AsyncExecutor {
         waitForThread.start();
 
         return process;
+    }
+
+    @Override
+    public int execute(CommandLine command) throws ExecuteException,
+            IOException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public int execute(CommandLine command, Map environment)
+            throws ExecuteException, IOException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void execute(CommandLine command, ExecuteResultHandler handler)
+            throws ExecuteException, IOException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void execute(CommandLine command, Map environment,
+            ExecuteResultHandler handler) throws ExecuteException, IOException {
+        throw new UnsupportedOperationException();
     }
 }

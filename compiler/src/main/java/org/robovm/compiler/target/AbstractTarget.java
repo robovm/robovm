@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,19 +34,13 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.PumpStreamHandler;
-import org.apache.commons.exec.environment.EnvironmentUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.CompilerUtil;
 import org.robovm.compiler.clazz.Path;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
-import org.robovm.compiler.config.OS.Family;
-import org.robovm.compiler.log.DebugOutputStream;
-import org.robovm.compiler.log.ErrorOutputStream;
-import org.robovm.compiler.util.AsyncExecutor;
+import org.robovm.compiler.util.Executor;
 import org.simpleframework.xml.Transient;
 
 /**
@@ -205,40 +200,25 @@ public abstract class AbstractTarget implements Target {
         return doLaunch(launchParameters);
     }
     
-    protected CommandLine doGenerateCommandLine(LaunchParameters launchParameters) throws IOException {
+    protected Process doLaunch(LaunchParameters launchParameters) throws IOException {
+        return createExecutor(launchParameters).execAsync();
+    }
+    
+    protected Executor createExecutor(LaunchParameters launchParameters) throws IOException {
         File dir = config.getTmpDir();
         if (!config.isSkipInstall()) {
             dir = config.getInstallDir();
         }
-        return CompilerUtil.createCommandLine(
-                new File(dir, config.getExecutableName()).getAbsolutePath(), 
-                launchParameters.getArguments());
+        return createExecutor(launchParameters, new File(dir, config.getExecutableName()).getAbsolutePath());
     }
     
-    @SuppressWarnings("unchecked")
-    protected Process doLaunch(LaunchParameters launchParameters) throws IOException {
-        CommandLine commandLine = doGenerateCommandLine(launchParameters);
-        
-        CompilerUtil.debug(config.getLogger(), commandLine);
-            
-        AsyncExecutor executor = new AsyncExecutor();
-        executor.setWorkingDirectory(launchParameters.getWorkingDirectory());
-        executor.setExitValue(0);
-        initStreams(executor, launchParameters);
+    protected Executor createExecutor(LaunchParameters launchParameters, String cmd) throws IOException {
         Map<String, String> env = launchParameters.getEnvironment();
-        if (env == null) {
-            env = EnvironmentUtils.getProcEnvironment();
-        }
-        return executor.execute(commandLine, env);
-    }
-    
-    protected void initStreams(AsyncExecutor executor, LaunchParameters launchParameters) throws IOException {
-        if (launchParameters.isRedirectStreamsToLogger()) {
-            executor.setStreamHandler(
-                new PumpStreamHandler(
-                    new DebugOutputStream(config.getLogger()), 
-                    new ErrorOutputStream(config.getLogger())));
-        }        
+        return new Executor(config.getLogger(), cmd)
+            .args(launchParameters.getArguments())
+            .wd(launchParameters.getWorkingDirectory())
+            .inheritEnv(env == null)
+            .env(env == null ? Collections.<String, String>emptyMap() : env);
     }
     
     protected Target build(Config config) {

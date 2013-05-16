@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
  */
-package org.robovm.compiler;
+package org.robovm.compiler.config;
 
 import static org.junit.Assert.*;
 
@@ -25,7 +25,11 @@ import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.robovm.compiler.AbstractIOSTarget.SDK;
+import org.robovm.compiler.config.Config;
+import org.robovm.compiler.target.AbstractIOSTarget;
+import org.robovm.compiler.target.ConsoleTarget;
+import org.robovm.compiler.target.IOSDeviceTarget;
+import org.robovm.compiler.target.AbstractIOSTarget.SDK;
 
 /**
  * Tests {@link Config}.

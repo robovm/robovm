@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.robovm.compiler.Config;
+import org.robovm.compiler.config.Config;
 
 import soot.Body;
 import soot.BodyTransformer;

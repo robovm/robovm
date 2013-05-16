@@ -30,6 +30,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.robovm.compiler.clazz.Clazz;
+import org.robovm.compiler.config.Config;
+import org.robovm.compiler.config.OS;
 import org.robovm.compiler.llvm.Bitcast;
 import org.robovm.compiler.llvm.Br;
 import org.robovm.compiler.llvm.FloatingPointConstant;

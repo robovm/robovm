@@ -30,6 +30,7 @@ import java.util.TreeSet;
 import org.apache.commons.io.FileUtils;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.Path;
+import org.robovm.compiler.config.Config;
 import org.robovm.compiler.hash.HashTableGenerator;
 import org.robovm.compiler.hash.ModifiedUtf8HashFunction;
 import org.robovm.compiler.llvm.ArrayConstantBuilder;

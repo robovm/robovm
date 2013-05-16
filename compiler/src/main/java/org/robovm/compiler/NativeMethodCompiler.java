@@ -22,6 +22,7 @@ import static org.robovm.compiler.Types.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.robovm.compiler.config.Config;
 import org.robovm.compiler.llvm.Function;
 import org.robovm.compiler.llvm.FunctionRef;
 import org.robovm.compiler.llvm.Ret;

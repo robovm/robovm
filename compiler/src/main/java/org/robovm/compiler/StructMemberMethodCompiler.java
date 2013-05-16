@@ -24,6 +24,7 @@ import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Type.*;
 
 import org.robovm.compiler.Bro.StructMemberPair;
+import org.robovm.compiler.config.Config;
 import org.robovm.compiler.llvm.Function;
 import org.robovm.compiler.llvm.Getelementptr;
 import org.robovm.compiler.llvm.Inttoptr;

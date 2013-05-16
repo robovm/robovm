@@ -14,53 +14,58 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
  */
-package org.robovm.compiler.io;
+package org.robovm.compiler.util.io;
 
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.InputStream;
 
 /**
- * {@link OutputStream} which writes to a {@link FileOutputStream} but
- * defers opening the {@link FileOutputStream} until the first write.
+ * {@link InputStream} which writes to a {@link FileInputStream} but
+ * defers opening the {@link FileInputStream} until the first write.
  */
-public class OpenOnWriteFileOutputStream extends OutputStream {
+public class OpenOnReadFileInputStream extends InputStream {
     private final File file;
-    private OutputStream out;
+    private InputStream in;
     
-    public OpenOnWriteFileOutputStream(File file) {
+    public OpenOnReadFileInputStream(File file) {
         this.file = file;
     }
     
     private void ensureOpen() throws IOException {
-        if (out == null) {
-            out = new FileOutputStream(file);
+        if (in == null) {
+            in = new FileInputStream(file);
         }
     }
     
     public void close() throws IOException {
         ensureOpen();
-        out.close();
+        in.close();
     }
 
-    public void flush() throws IOException {
+    public int available() throws IOException {
         ensureOpen();
-        out.flush();
+        return in.available();
     }
 
-    public void write(int b) throws IOException {
+    public int read() throws IOException {
         ensureOpen();
-        out.write(b);
+        return in.read();
     }
-    
-    public void write(byte[] b) throws IOException {
+
+    public int read(byte[] b, int off, int len) throws IOException {
         ensureOpen();
-        out.write(b);
+        return in.read(b, off, len);
     }
-    
-    public void write(byte[] b, int off, int len) throws IOException {
+
+    public int read(byte[] b) throws IOException {
         ensureOpen();
-        out.write(b, off, len);
+        return in.read(b);
+    }
+
+    public long skip(long n) throws IOException {
+        ensureOpen();
+        return in.skip(n);
     }
 }

@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.robovm.compiler.config.Config;
 import org.robovm.compiler.llvm.Alloca;
 import org.robovm.compiler.llvm.BasicBlockRef;
 import org.robovm.compiler.llvm.Function;

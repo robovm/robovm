@@ -30,11 +30,22 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.exec.ExecuteException;
-import org.robovm.compiler.AbstractIOSTarget.SDK;
-import org.robovm.compiler.IOSSimulatorLaunchParameters.Family;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.Dependency;
 import org.robovm.compiler.clazz.Path;
+import org.robovm.compiler.config.Arch;
+import org.robovm.compiler.config.Config;
+import org.robovm.compiler.config.OS;
+import org.robovm.compiler.log.ConsoleLogger;
+import org.robovm.compiler.target.AbstractIOSTarget;
+import org.robovm.compiler.target.ConsoleTarget;
+import org.robovm.compiler.target.IOSDeviceTarget;
+import org.robovm.compiler.target.IOSSimulatorLaunchParameters;
+import org.robovm.compiler.target.IOSSimulatorTarget;
+import org.robovm.compiler.target.LaunchParameters;
+import org.robovm.compiler.target.Target;
+import org.robovm.compiler.target.AbstractIOSTarget.SDK;
+import org.robovm.compiler.target.IOSSimulatorLaunchParameters.Family;
 
 /**
  *
@@ -377,27 +388,7 @@ public class AppCompiler {
                 runArgs.add(args[i++]);
             }
             
-            if (verbose) {
-                builder.logger(new Logger() {
-                    public void info(String format, Object... args) {
-                        System.out.format(format, args);
-                        System.out.println();
-                    }
-                    public void error(String format, Object... args) {
-                        System.err.format(format, args);
-                        System.err.println();
-                    }
-                    public void warn(String format, Object... args) {
-                        System.out.format(format, args);
-                        System.out.println();
-                    }
-                    public void debug(String format, Object... args) {
-                        System.out.format(format, args);
-                        System.out.println();
-                    }
-                });
-            }
-            
+            builder.logger(new ConsoleLogger(verbose));
             builder.skipInstall(run);
 
             Target target = null;

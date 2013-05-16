@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
  */
-package org.robovm.compiler;
+package org.robovm.compiler.log;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -23,13 +23,13 @@ import java.io.OutputStream;
  * @author niklas
  *
  */
-abstract class LoggerOutputStream extends OutputStream {
+public abstract class LoggerOutputStream extends OutputStream {
     protected final Logger logger;
     private byte[] buffer = new byte[1024];
     private int start = 0;
     private int end = 0;
 
-    LoggerOutputStream(Logger logger) {
+    public LoggerOutputStream(Logger logger) {
         this.logger = logger;
     }
     

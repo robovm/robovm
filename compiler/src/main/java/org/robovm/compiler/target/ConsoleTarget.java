@@ -14,14 +14,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
  */
-package org.robovm.compiler;
+package org.robovm.compiler.target;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.apache.commons.exec.PumpStreamHandler;
-import org.robovm.compiler.io.OpenOnWriteFileOutputStream;
+import org.robovm.compiler.config.Arch;
+import org.robovm.compiler.config.Config;
+import org.robovm.compiler.config.OS;
+import org.robovm.compiler.log.DebugOutputStream;
+import org.robovm.compiler.log.ErrorOutputStream;
+import org.robovm.compiler.util.AsyncExecutor;
+import org.robovm.compiler.util.io.OpenOnWriteFileOutputStream;
 
 
 /**

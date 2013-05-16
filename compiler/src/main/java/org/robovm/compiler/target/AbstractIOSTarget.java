@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
  */
-package org.robovm.compiler;
+package org.robovm.compiler.target;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +25,8 @@ import java.util.List;
 
 import org.apache.commons.exec.util.StringUtils;
 import org.apache.commons.io.FileUtils;
+import org.robovm.compiler.CompilerUtil;
+import org.robovm.compiler.config.Config;
 import org.simpleframework.xml.Transient;
 
 import com.dd.plist.NSArray;
@@ -49,7 +51,7 @@ public abstract class AbstractIOSTarget extends AbstractTarget {
     AbstractIOSTarget() {
     }
     
-    protected abstract List<SDK> getSDKs();
+    public abstract List<SDK> getSDKs();
 
     @Override
     protected void doBuild(File outFile, List<String> ccArgs,
@@ -245,7 +247,7 @@ public abstract class AbstractIOSTarget extends AbstractTarget {
             }
         }
         
-        SDK(String displayName, String minimalDisplayName, String canonicalName, String version, File root, NSDictionary defaultProperties) {
+        public SDK(String displayName, String minimalDisplayName, String canonicalName, String version, File root, NSDictionary defaultProperties) {
             super();
             this.displayName = displayName;
             this.minimalDisplayName = minimalDisplayName;

@@ -28,6 +28,7 @@ import static org.robovm.compiler.llvm.Type.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.robovm.compiler.config.Config;
 import org.robovm.compiler.llvm.Argument;
 import org.robovm.compiler.llvm.BasicBlockRef;
 import org.robovm.compiler.llvm.Br;

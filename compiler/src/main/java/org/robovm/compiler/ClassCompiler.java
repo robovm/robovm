@@ -45,6 +45,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.Dependency;
+import org.robovm.compiler.config.Config;
+import org.robovm.compiler.config.OS;
 import org.robovm.compiler.llvm.And;
 import org.robovm.compiler.llvm.Bitcast;
 import org.robovm.compiler.llvm.Br;

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
  */
-package org.robovm.compiler;
+package org.robovm.compiler.target;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -38,7 +38,14 @@ import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.exec.environment.EnvironmentUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.robovm.compiler.CompilerUtil;
 import org.robovm.compiler.clazz.Path;
+import org.robovm.compiler.config.Config;
+import org.robovm.compiler.config.OS;
+import org.robovm.compiler.config.OS.Family;
+import org.robovm.compiler.log.DebugOutputStream;
+import org.robovm.compiler.log.ErrorOutputStream;
+import org.robovm.compiler.util.AsyncExecutor;
 import org.simpleframework.xml.Transient;
 
 /**

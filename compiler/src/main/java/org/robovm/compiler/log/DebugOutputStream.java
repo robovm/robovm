@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Trillian AB
+ * Copyright (C) 2012 Trillian AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,28 +14,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
  */
-package org.robovm.compiler;
+package org.robovm.compiler.log;
 
 /**
- * {@link LaunchParameters} implementation used by {@link IOSSimulatorTarget}.
+ * @author niklas
+ *
  */
-public class IOSSimulatorLaunchParameters extends LaunchParameters {
-
-    public static enum Family {iphone, ipad}
-    
-    private Family family = Family.iphone;
-    private String sdk = null;
-    
-    public Family getFamily() {
-        return family;
+public class DebugOutputStream extends LoggerOutputStream {
+    public DebugOutputStream(Logger logger) {
+        super(logger);
     }
-    public void setFamily(Family family) {
-        this.family = family;
-    }
-    public String getSdk() {
-        return sdk;
-    }
-    public void setSdk(String sdk) {
-        this.sdk = sdk;
+    @Override
+    protected void log(byte[] message, int off, int length) {
+        logger.debug(new String(message, off, length).replace("%", "%%"));
     }
 }

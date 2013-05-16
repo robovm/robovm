@@ -33,6 +33,12 @@ import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.exec.environment.EnvironmentUtils;
 import org.apache.commons.exec.util.StringUtils;
 import org.apache.commons.io.FileUtils;
+import org.robovm.compiler.config.Arch;
+import org.robovm.compiler.config.Config;
+import org.robovm.compiler.config.OS;
+import org.robovm.compiler.log.DebugOutputStream;
+import org.robovm.compiler.log.ErrorOutputStream;
+import org.robovm.compiler.log.Logger;
 
 /**
  * @author niklas
@@ -196,7 +202,7 @@ public class CompilerUtil {
         return new String(baos.toByteArray());
     }
     
-    static void debug(Logger logger, CommandLine commandLine) {
+    public static void debug(Logger logger, CommandLine commandLine) {
         String[] args = commandLine.getArguments();
         if (args.length == 0) {
             logger.debug(commandLine.toString());

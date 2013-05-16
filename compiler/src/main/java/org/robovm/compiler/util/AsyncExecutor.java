@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.compiler;
+package org.robovm.compiler.util;
 
 import java.io.File;
 import java.io.IOException;

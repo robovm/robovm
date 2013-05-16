@@ -16,6 +16,8 @@
  */
 package org.robovm.compiler;
 
+import org.robovm.compiler.config.Config;
+
 
 /**
  * 

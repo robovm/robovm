@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
  */
-package org.robovm.compiler;
+package org.robovm.compiler.config;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -29,9 +29,14 @@ import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 
 import org.apache.commons.io.IOUtils;
+import org.robovm.compiler.Version;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.Clazzes;
 import org.robovm.compiler.clazz.Path;
+import org.robovm.compiler.log.Logger;
+import org.robovm.compiler.target.ConsoleTarget;
+import org.robovm.compiler.target.IOSDeviceTarget;
+import org.robovm.compiler.target.Target;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.ElementUnion;

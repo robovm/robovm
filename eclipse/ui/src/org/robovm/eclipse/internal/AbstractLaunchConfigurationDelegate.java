@@ -30,6 +30,7 @@ import java.util.Map;
 
 import org.apache.commons.exec.CommandLine;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -37,6 +38,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.launching.AbstractJavaLaunchConfigurationDelegate;
 import org.robovm.compiler.AppCompiler;
 import org.robovm.compiler.config.Arch;
@@ -102,6 +104,8 @@ public abstract class AbstractLaunchConfigurationDelegate extends AbstractJavaLa
             monitor.subTask("Creating build configuration");
             Config.Builder configBuilder = new Config.Builder();
             
+            File projectRoot = getJavaProject(configuration).getProject().getLocation().toFile();
+            
             Arch arch = getArch(configuration, mode);
             OS os = getOS(configuration, mode);
             
@@ -114,7 +118,6 @@ public abstract class AbstractLaunchConfigurationDelegate extends AbstractJavaLa
             tmpDir = new File(tmpDir, mainTypeName);
             
             configBuilder.debug(true);
-            configBuilder.skipInstall(false);
             configBuilder.home(RoboVMPlugin.getRoboVMHome());
             if (!RoboVMPlugin.useSystemLlvm()) {
                 configBuilder.llvmHomeDir(RoboVMPlugin.getLlvmHomeDir());

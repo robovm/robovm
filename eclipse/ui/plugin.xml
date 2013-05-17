@@ -113,7 +113,7 @@
   </extension>
   <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
     <launchConfigurationTabGroup
-        class="org.robovm.eclipse.internal.RoboVMLaunchConfigurationTabGroup"
+        class="org.robovm.eclipse.internal.ConsoleLaunchConfigurationTabGroup"
         description="Console Application"
         id="org.robovm.eclipse.ConsoleLaunchConfigurationTabGroup"
         type="org.robovm.eclipse.ConsoleLaunchConfigurationType" />
@@ -123,7 +123,7 @@
         id="org.robovm.eclipse.IOSSimulatorLaunchConfigurationTabGroup"
         type="org.robovm.eclipse.IOSSimulatorLaunchConfigurationType" />
     <launchConfigurationTabGroup
-        class="org.robovm.eclipse.internal.RoboVMLaunchConfigurationTabGroup"
+        class="org.robovm.eclipse.internal.IOSDeviceLaunchConfigurationTabGroup"
         description="iOS Device App"
         id="org.robovm.eclipse.IOSDeviceLaunchConfigurationTabGroup"
         type="org.robovm.eclipse.IOSDeviceLaunchConfigurationType" />
@@ -166,14 +166,11 @@
             <count value="1"/>
             <iterate>
               <and>
-                <adapt type="org.eclipse.jdt.core.IJavaElement">
-                  <test property="org.eclipse.jdt.core.isInJavaProject"/>
-                </adapt>
+                <test property="org.eclipse.jdt.launching.isContainer"/>
+                <test property="org.eclipse.jdt.launching.hasProjectNature" args="org.robovm.eclipse.RoboVMNature"/>
                 <or>
-                  <test property="org.eclipse.jdt.launching.hasMain"/>
-                  <test property="org.eclipse.jdt.launching.isContainer"/>
-                  <test property="org.eclipse.jdt.launching.isPackageFragment"/>
-                  <test property="org.eclipse.jdt.launching.isPackageFragmentRoot"/>
+                  <instanceof value="org.eclipse.jdt.core.IJavaProject"/>
+                  <instanceof value="org.eclipse.core.resources.IProject"/>
                 </or>
               </and>
             </iterate>
@@ -192,14 +189,11 @@
             <count value="1"/>
             <iterate>
               <and>
-                <adapt type="org.eclipse.jdt.core.IJavaElement">
-                  <test property="org.eclipse.jdt.core.isInJavaProject"/>
-                </adapt>
+                <test property="org.eclipse.jdt.launching.isContainer"/>
+                <test property="org.eclipse.jdt.launching.hasProjectNature" args="org.robovm.eclipse.RoboVMNature"/>
                 <or>
-                  <test property="org.eclipse.jdt.launching.hasMain"/>
-                  <test property="org.eclipse.jdt.launching.isContainer"/>
-                  <test property="org.eclipse.jdt.launching.isPackageFragment"/>
-                  <test property="org.eclipse.jdt.launching.isPackageFragmentRoot"/>
+                  <instanceof value="org.eclipse.jdt.core.IJavaProject"/>
+                  <instanceof value="org.eclipse.core.resources.IProject"/>
                 </or>
               </and>
             </iterate>
@@ -218,14 +212,11 @@
             <count value="1"/>
             <iterate>
               <and>
-                <adapt type="org.eclipse.jdt.core.IJavaElement">
-                  <test property="org.eclipse.jdt.core.isInJavaProject"/>
-                </adapt>
+                <test property="org.eclipse.jdt.launching.isContainer"/>
+                <test property="org.eclipse.jdt.launching.hasProjectNature" args="org.robovm.eclipse.RoboVMNature"/>
                 <or>
-                  <test property="org.eclipse.jdt.launching.hasMain"/>
-                  <test property="org.eclipse.jdt.launching.isContainer"/>
-                  <test property="org.eclipse.jdt.launching.isPackageFragment"/>
-                  <test property="org.eclipse.jdt.launching.isPackageFragmentRoot"/>
+                  <instanceof value="org.eclipse.jdt.core.IJavaProject"/>
+                  <instanceof value="org.eclipse.core.resources.IProject"/>
                 </or>
               </and>
             </iterate>

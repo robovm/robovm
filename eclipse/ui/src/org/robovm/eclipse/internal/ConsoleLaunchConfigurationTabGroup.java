@@ -30,7 +30,7 @@ import org.eclipse.jdt.debug.ui.launchConfigurations.JavaSourceLookupTab;
  * @author niklas
  *
  */
-public class RoboVMLaunchConfigurationTabGroup extends AbstractLaunchConfigurationTabGroup {
+public class ConsoleLaunchConfigurationTabGroup extends AbstractLaunchConfigurationTabGroup {
 
     @Override
     public void createTabs(ILaunchConfigurationDialog dialog, String mode) {

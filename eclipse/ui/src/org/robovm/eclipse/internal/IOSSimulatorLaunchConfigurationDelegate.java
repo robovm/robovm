@@ -22,10 +22,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
+import org.robovm.compiler.config.Config.TargetType;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.target.LaunchParameters;
 import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters;
-import org.robovm.compiler.target.ios.IOSTarget;
 import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters.Family;
 import org.robovm.eclipse.RoboVMPlugin;
 
@@ -54,9 +54,7 @@ public class IOSSimulatorLaunchConfigurationDelegate extends AbstractLaunchConfi
     protected Config configure(Config.Builder configBuilder,
             ILaunchConfiguration configuration, String mode) throws IOException {
         
-        IOSTarget target = new IOSTarget();
-        target.setArch(Arch.x86);
-        configBuilder.target(target);
+        configBuilder.targetType(TargetType.ios);
         
         return configBuilder.build();
     }

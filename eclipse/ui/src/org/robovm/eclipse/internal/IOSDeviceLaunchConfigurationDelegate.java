@@ -21,8 +21,8 @@ import java.io.IOException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
+import org.robovm.compiler.config.Config.TargetType;
 import org.robovm.compiler.config.OS;
-import org.robovm.compiler.target.ios.IOSTarget;
 
 /**
  * @author niklas
@@ -47,9 +47,7 @@ public class IOSDeviceLaunchConfigurationDelegate extends AbstractLaunchConfigur
     protected Config configure(Config.Builder configBuilder,
             ILaunchConfiguration configuration, String mode) throws IOException {
         
-        IOSTarget target = new IOSTarget();
-        target.setArch(Arch.thumbv7);
-        configBuilder.target(target);
+        configBuilder.targetType(TargetType.ios);
         
         return configBuilder.build();
     }

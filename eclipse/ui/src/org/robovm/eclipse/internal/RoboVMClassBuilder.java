@@ -39,7 +39,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.robovm.compiler.ClassCompiler;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.config.Config;
-import org.robovm.compiler.target.ConsoleTarget;
+import org.robovm.compiler.config.Config.TargetType;
 import org.robovm.eclipse.RoboVMPlugin;
 
 /**
@@ -91,11 +91,10 @@ public class RoboVMClassBuilder extends IncrementalProjectBuilder {
         configBuilder.skipRuntimeLib(true);
         configBuilder.debug(true);
         
-        // Use ConsoleTarget always since we're only going to compile anyway and not link.
-        ConsoleTarget target = new ConsoleTarget();
-        target.setOS(RoboVMPlugin.getOS(getProject()));
-        target.setArch(RoboVMPlugin.getArch(getProject()));
-        configBuilder.target(target);
+        // Use console target always since we're only going to compile anyway and not link.
+        configBuilder.targetType(TargetType.console);
+        configBuilder.os(RoboVMPlugin.getOS(getProject()));
+        configBuilder.arch(RoboVMPlugin.getArch(getProject()));
         
         configBuilder.home(RoboVMPlugin.getRoboVMHome());
         if (!RoboVMPlugin.useSystemLlvm()) {

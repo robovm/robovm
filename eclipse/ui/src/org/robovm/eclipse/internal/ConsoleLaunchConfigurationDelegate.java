@@ -21,8 +21,8 @@ import java.io.IOException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
+import org.robovm.compiler.config.Config.TargetType;
 import org.robovm.compiler.config.OS;
-import org.robovm.compiler.target.ConsoleTarget;
 import org.robovm.eclipse.RoboVMPlugin;
 
 /**
@@ -48,8 +48,7 @@ public class ConsoleLaunchConfigurationDelegate extends AbstractLaunchConfigurat
     protected Config configure(Config.Builder configBuilder,
             ILaunchConfiguration configuration, String mode) throws IOException {
         
-        ConsoleTarget target = new ConsoleTarget();
-        configBuilder.target(target);
+        configBuilder.targetType(TargetType.console);
         
         return configBuilder.build();
     }

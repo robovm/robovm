@@ -105,6 +105,9 @@ public abstract class AbstractLaunchConfigurationDelegate extends AbstractJavaLa
             Arch arch = getArch(configuration, mode);
             OS os = getOS(configuration, mode);
             
+            configBuilder.os(os);
+            configBuilder.arch(arch);
+            
             File tmpDir = new File(RoboVMPlugin.getMetadataDir(), getJavaProjectName(configuration));
             tmpDir = new File(tmpDir, configuration.getName());
             tmpDir = new File(new File(tmpDir, os.toString()), arch.toString());

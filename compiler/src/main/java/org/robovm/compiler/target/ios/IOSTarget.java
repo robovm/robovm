@@ -19,9 +19,15 @@ package org.robovm.compiler.target.ios;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.commons.exec.util.StringUtils;
 import org.apache.commons.io.FileUtils;
@@ -34,6 +40,10 @@ import org.robovm.compiler.target.AbstractTarget;
 import org.robovm.compiler.target.LaunchParameters;
 import org.robovm.compiler.util.Executor;
 import org.robovm.compiler.util.io.OpenOnWriteFileOutputStream;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 import com.dd.plist.NSArray;
 import com.dd.plist.NSDictionary;
@@ -41,6 +51,7 @@ import com.dd.plist.NSNumber;
 import com.dd.plist.NSObject;
 import com.dd.plist.NSString;
 import com.dd.plist.PropertyListParser;
+import com.dd.plist.XMLPropertyListParser;
 
 
 /**
@@ -376,7 +387,7 @@ public class IOSTarget extends AbstractTarget {
         infoPList = config.getIosInfoPList();
         if (infoPList != null) {
             try {
-                infoPListDict = (NSDictionary) PropertyListParser.parse(infoPList);
+                infoPListDict = (NSDictionary) parsePropertyList(infoPList, new Properties());
             } catch (Throwable t) {
                 throw new IllegalArgumentException(t);
             }
@@ -408,5 +419,49 @@ public class IOSTarget extends AbstractTarget {
     @Override
     public boolean canLaunchInPlace() {
         return false;
+    }
+    
+    private final static Pattern VARIABLE_PATTERN = Pattern.compile("\\$\\{([^}]+)\\}");
+    
+    static void replacePropertyRefs(Node node, Properties props) {
+        if (node instanceof Text) {
+            Text el = (Text) node;
+            String value = el.getNodeValue();
+            if (value != null && value.trim().length() > 0) {
+                Matcher matcher = VARIABLE_PATTERN.matcher(value);
+                StringBuilder sb = new StringBuilder();
+                int pos = 0;
+                while (matcher.find()) {
+                    if (pos < matcher.start()) {
+                        sb.append(value.substring(pos, matcher.start()));
+                    }
+                    String key = matcher.group(1);
+                    sb.append(props.getProperty(key, matcher.group()));
+                    pos = matcher.end();
+                }
+                if (pos < value.length()) {
+                    sb.append(value.substring(pos));
+                }
+                el.setNodeValue(sb.toString());
+            }
+        }
+        NodeList children = node.getChildNodes();
+        for (int i = 0; i < children.getLength(); i++) {
+            replacePropertyRefs(children.item(i), props);
+        }
+    }
+    
+    static NSObject parsePropertyList(File file, Properties props) throws Exception {
+        Properties allProps = new Properties(System.getProperties());
+        allProps.putAll(props);
+        
+        Method getDocBuilder = XMLPropertyListParser.class.getDeclaredMethod("getDocBuilder");
+        getDocBuilder.setAccessible(true);
+        Method parseDocument = XMLPropertyListParser.class.getDeclaredMethod("parseDocument", Document.class);
+        parseDocument.setAccessible(true);
+        DocumentBuilder docBuilder = (DocumentBuilder) getDocBuilder.invoke(null);
+        Document doc = docBuilder.parse(file);
+        replacePropertyRefs(doc, allProps);
+        return (NSObject) parseDocument.invoke(null, doc);
     }
 }

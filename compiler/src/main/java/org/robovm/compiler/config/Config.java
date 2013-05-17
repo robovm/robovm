@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 
@@ -49,6 +50,7 @@ import org.simpleframework.xml.convert.Converter;
 import org.simpleframework.xml.convert.Registry;
 import org.simpleframework.xml.convert.RegistryStrategy;
 import org.simpleframework.xml.core.Persister;
+import org.simpleframework.xml.filter.PlatformFilter;
 import org.simpleframework.xml.stream.Format;
 import org.simpleframework.xml.stream.InputNode;
 import org.simpleframework.xml.stream.OutputNode;
@@ -108,6 +110,7 @@ public class Config {
     private String iosSignIdentity;
     
     private Target target = null;
+    private Properties properties = new Properties();
     
     private Home home = null;
     private File cacheDir = new File(System.getProperty("user.home"), ".robovm/cache");
@@ -624,6 +627,7 @@ public class Config {
     
     public static class Builder {
         final Config config;
+        
         public Builder() {
             this.config = new Config();
         }
@@ -632,10 +636,19 @@ public class Config {
             config.os = os;
             return this;
         }
+        
         public Builder arch(Arch arch) {
             config.arch = arch;
             return this;
         }
+        
+        public Builder clearClasspathEntries() {
+            if (config.classpath != null) {
+                config.classpath.clear();
+            }
+            return this;
+        }
+
         public Builder addClasspathEntry(File f) {
             if (config.classpath == null) {
                 config.classpath = new ArrayList<File>();
@@ -644,6 +657,13 @@ public class Config {
             return this;
         }
         
+        public Builder clearBootClasspathEntries() {
+            if (config.bootclasspath != null) {
+                config.bootclasspath.clear();
+            }
+            return this;
+        }
+
         public Builder addBootClasspathEntry(File f) {
             if (config.bootclasspath == null) {
                 config.bootclasspath = new ArrayList<File>();
@@ -737,11 +757,25 @@ public class Config {
             return this;
         }
 
+        public Builder clearRoots() {
+            if (config.roots != null) {
+                config.roots.clear();
+            }
+            return this;
+        }
+
         public Builder addRoot(String pattern) {
             if (config.roots == null) {
                 config.roots = new ArrayList<String>();
             }
             config.roots.add(pattern);
+            return this;
+        }
+
+        public Builder clearLibs() {
+            if (config.libs != null) {
+                config.libs.clear();
+            }
             return this;
         }
 
@@ -753,11 +787,25 @@ public class Config {
             return this;
         }
         
+        public Builder clearFrameworks() {
+            if (config.frameworks != null) {
+                config.frameworks.clear();
+            }
+            return this;
+        }
+        
         public Builder addFramework(String framework) {
             if (config.frameworks == null) {
                 config.frameworks = new ArrayList<String>();
             }
             config.frameworks.add(framework);
+            return this;
+        }
+        
+        public Builder clearResources() {
+            if (config.resources != null) {
+                config.resources.clear();
+            }
             return this;
         }
         
@@ -768,14 +816,25 @@ public class Config {
             config.resources.add(path);
             return this;
         }
-        
+
         public Builder targetType(TargetType targetType) {
             config.targetType = targetType;
             return this;
         }
         
-        public Target getTarget() {
-            return config.target;
+        public Builder clearProperties() {
+            config.properties.clear();
+            return this;
+        }
+        
+        public Builder addProperties(Properties properties) {
+            config.properties.putAll(properties);
+            return this;
+        }
+        
+        public Builder addProperty(String name, String value) {
+            config.properties.put(name, value);
+            return this;
         }
         
         public Builder cacerts(Cacerts cacerts) {
@@ -847,7 +906,8 @@ public class Config {
             RelativeFileConverter fileConverter = new RelativeFileConverter(wd);
             registry.bind(File.class, fileConverter);
             registry.bind(Lib.class, new RelativeLibConverter(fileConverter));
-            Serializer serializer = new Persister(new RegistryStrategy(registry), new Format(2));
+            Serializer serializer = new Persister(new RegistryStrategy(registry), 
+                    new PlatformFilter(config.properties), new Format(2));
             return serializer;
         }
     }

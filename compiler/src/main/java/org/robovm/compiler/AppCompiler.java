@@ -17,20 +17,25 @@
 package org.robovm.compiler;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.exec.ExecuteException;
+import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.Dependency;
 import org.robovm.compiler.clazz.Path;
@@ -287,6 +292,24 @@ public class AppCompiler {
                     builder.read(new File(args[++i]));
                 } else if ("-dumpconfig".equals(args[i])) {
                     dumpConfigFile = args[++i];
+                } else if ("-properties".equals(args[i])) {
+                    Properties props = new Properties();
+                    Reader reader = null;
+                    try {
+                        reader = new InputStreamReader(new FileInputStream(args[++i]), "utf-8");
+                        props.load(reader);
+                        builder.addProperties(props);
+                    } finally {
+                        IOUtils.closeQuietly(reader);
+                    }
+                } else if (args[i].startsWith("-P")) {
+                    int index = args[i].indexOf('=');
+                    if (index <= 0) {
+                        throw new IllegalArgumentException("Malformed property: " + args[i]);
+                    }
+                    String name = args[i].substring(0, index);
+                    String value = args[i].substring(index + 1);
+                    builder.addProperty(name, value);
                 } else if ("-debug".equals(args[i])) {
                     builder.debug(true);
                 } else if ("-use-debug-libs".equals(args[i])) {
@@ -539,6 +562,10 @@ public class AppCompiler {
                          + "                        Can be specified multiple times to read multiple config files.");
         System.err.println("  -dumpconfig <file>    Dumps a configuration XML file to the specified file. Specify\n" 
                          + "                        '-' to dump the config to stdout.");
+        System.err.println("  -properties <file>    Reads a Java properties file which will be used when resolving\n" 
+                         + "                        variables (enclosed in ${...}) in config XML files and\n" 
+                         + "                        Info.plist files. Can be specified multiple times.");
+        System.err.println("  -Pname=value          Sets a property value. See the -properties option.");
         System.err.println("  -verbose              Output messages about what the compiler is doing");
         System.err.println("  -version              Print the version of the compiler and exit");
         System.err.println("  -help, -?             Display this information");

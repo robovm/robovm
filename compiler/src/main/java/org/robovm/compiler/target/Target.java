@@ -27,7 +27,8 @@ import org.robovm.compiler.config.OS;
 
 public interface Target {
 
-    OS getOS();
+    OS getOs();
+    
     Arch getArch();
     
     String getInstallRelativeArchivePath(Path path);

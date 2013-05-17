@@ -43,7 +43,6 @@ import org.robovm.compiler.target.Target;
 import org.robovm.compiler.target.ios.IOSTarget;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.ElementUnion;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.convert.Converter;
@@ -62,6 +61,7 @@ import org.simpleframework.xml.stream.OutputNode;
 public class Config {
     
     public enum Cacerts { full };
+    public enum TargetType { console, ios };
     
     @Element(required = false)
     private File installDir = null;
@@ -77,6 +77,10 @@ public class Config {
     private String mainClass;
     @Element(required = false)
     private Cacerts cacerts = null;
+    @Element(required = false)
+    private OS os = null;
+    @Element(required = false)
+    private Arch arch = null;
     @ElementList(required = false, entry = "root")
     private ArrayList<String> roots;
     @ElementList(required = false, entry = "lib")
@@ -89,11 +93,20 @@ public class Config {
     private ArrayList<File> bootclasspath;
     @ElementList(required = false, entry = "classpathentry")
     private ArrayList<File> classpath;
-    @org.simpleframework.xml.Path("target")
-    @ElementUnion({
-        @Element(name = "console", type = ConsoleTarget.class),
-        @Element(name = "ios", type = IOSTarget.class)
-    })
+    @Element(required = false, name = "target")
+    private TargetType targetType;
+    
+    @Element(required = false)
+    private String iosSdkVersion;
+    @Element(required = false)
+    private File iosInfoPList = null;
+    @Element(required = false)
+    private File iosResourceRulesPList;
+    @Element(required = false)
+    private File iosEntitlementsPList;
+    @Element(required = false)
+    private String iosSignIdentity;
+    
     private Target target = null;
     
     private Home home = null;
@@ -137,11 +150,11 @@ public class Config {
     }
 
     public OS getOs() {
-        return target.getOS();
+        return os;
     }
 
     public Arch getArch() {
-        return target.getArch();
+        return arch;
     }
 
     public boolean isClean() {
@@ -262,6 +275,26 @@ public class Config {
         return target;
     }
     
+    public String getIosSdkVersion() {
+        return iosSdkVersion;
+    }
+
+    public File getIosInfoPList() {
+        return iosInfoPList;
+    }
+
+    public File getIosResourceRulesPList() {
+        return iosResourceRulesPList;
+    }
+
+    public File getIosEntitlementsPList() {
+        return iosEntitlementsPList;
+    }
+
+    public String getIosSignIdentity() {
+        return iosSignIdentity;
+    }
+
     private static File makeFileRelativeTo(File dir, File f) {
         if (f.getParentFile() == null) {
             return dir;
@@ -382,13 +415,22 @@ public class Config {
             installDir.mkdirs();
         }
 
-        if (target == null) {
+        if (targetType == TargetType.console) {
             target = new ConsoleTarget();
+        } else if (targetType == TargetType.ios) {
+            target = new IOSTarget();
+        } else {
+            // Auto
+            if (os == OS.ios) {
+                target = new IOSTarget();
+            } else {
+                target = new ConsoleTarget();
+            }
         }
         target.init(this);
         
-        OS os = target.getOS();
-        Arch arch = target.getArch();
+        os = target.getOs();
+        arch = target.getArch();
         
         osArchDepLibDir = new File(new File(home.libVmDir, os.toString()), 
                 arch.toString());
@@ -586,6 +628,14 @@ public class Config {
             this.config = new Config();
         }
         
+        public Builder os(OS os) {
+            config.os = os;
+            return this;
+        }
+        public Builder arch(Arch arch) {
+            config.arch = arch;
+            return this;
+        }
         public Builder addClasspathEntry(File f) {
             if (config.classpath == null) {
                 config.classpath = new ArrayList<File>();
@@ -719,13 +769,42 @@ public class Config {
             return this;
         }
         
-        public Builder target(Target target) {
-            config.target = target;
+        public Builder targetType(TargetType targetType) {
+            config.targetType = targetType;
             return this;
+        }
+        
+        public Target getTarget() {
+            return config.target;
         }
         
         public Builder cacerts(Cacerts cacerts) {
             config.cacerts = cacerts;
+            return this;
+        }
+        
+        public Builder iosSdkVersion(String sdkVersion) {
+            config.iosSdkVersion = sdkVersion;
+            return this;
+        }
+        
+        public Builder iosInfoPList(File infoPList) {
+            config.iosInfoPList = infoPList;
+            return this;
+        }
+        
+        public Builder iosEntitlementsPList(File entitlementsPList) {
+            config.iosEntitlementsPList = entitlementsPList;
+            return this;
+        }
+
+        public Builder iosResourceRulesPList(File resourceRulesPList) {
+            config.iosResourceRulesPList = resourceRulesPList;
+            return this;
+        }
+        
+        public Builder iosSignIdentity(String signIdentity) {
+            config.iosSignIdentity = signIdentity;
             return this;
         }
         

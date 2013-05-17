@@ -1,11 +1,8 @@
 <config>
-  <target>
-    <ios>
-      <sdkVersion>6.1</sdkVersion>
-      <infoPList>Info.plist</infoPList>
-      <resourceRulesPList>/tmp/resourcerules.plist</resourceRulesPList>
-      <entitlementsPList>entitlements.plist</entitlementsPList>
-      <signIdentity>FooBar</signIdentity>
-    </ios>
-  </target>
+  <target>ios</target>
+  <iosSdkVersion>6.1</iosSdkVersion>
+  <iosInfoPList>Info.plist</iosInfoPList>
+  <iosResourceRulesPList>/tmp/resourcerules.plist</iosResourceRulesPList>
+  <iosEntitlementsPList>entitlements.plist</iosEntitlementsPList>
+  <iosSignIdentity>FooBar</iosSignIdentity>
 </config>

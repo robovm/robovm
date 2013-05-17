@@ -18,6 +18,7 @@ package org.robovm.compiler;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -35,14 +36,12 @@ import org.robovm.compiler.clazz.Dependency;
 import org.robovm.compiler.clazz.Path;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
+import org.robovm.compiler.config.Config.TargetType;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.log.ConsoleLogger;
-import org.robovm.compiler.target.ConsoleTarget;
 import org.robovm.compiler.target.LaunchParameters;
-import org.robovm.compiler.target.Target;
 import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters;
 import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters.Family;
-import org.robovm.compiler.target.ios.IOSTarget;
 
 /**
  *
@@ -252,16 +251,13 @@ public class AppCompiler {
         
         boolean verbose = false;
         boolean run = false;
-        boolean dumpConfig = false;
+        String dumpConfigFile = null;
         List<String> runArgs = new ArrayList<String>();
         List<String> launchArgs = new ArrayList<String>();
         try {
             Config.Builder builder = new Config.Builder();
-            OS os = null;
-            Arch arch = null;
             
             int i = 0;
-            List<String> targetArgs = new ArrayList<String>();
             while (i < args.length) {
                 if ("-cp".equals(args[i]) || "-classpath".equals(args[i])) {
                     for (String p : args[++i].split(File.pathSeparator)) {
@@ -287,8 +283,10 @@ public class AppCompiler {
                     run = true;
                 } else if ("-verbose".equals(args[i])) {
                     verbose = true;
+                } else if ("-config".equals(args[i])) {
+                    builder.read(new File(args[++i]));
                 } else if ("-dumpconfig".equals(args[i])) {
-                    dumpConfig = true;
+                    dumpConfigFile = args[++i];
                 } else if ("-debug".equals(args[i])) {
                     builder.debug(true);
                 } else if ("-use-debug-libs".equals(args[i])) {
@@ -309,16 +307,15 @@ public class AppCompiler {
                     builder.llvmHomeDir(new File(args[++i]));
                 } else if ("-os".equals(args[i])) {
                     String s = args[++i];
-                    if (!"auto".equals(s)) {
-                        os = OS.valueOf(s);
-                    }
+                    builder.os("auto".equals(s) ? null : OS.valueOf(s));
                 } else if ("-arch".equals(args[i])) {
                     String s = args[++i];
-                    if (!"auto".equals(s)) {
-                        arch = Arch.valueOf(s);
-                    }
+                    builder.arch("auto".equals(s) ? null : Arch.valueOf(s));
 //                } else if ("-cpu".equals(args[i])) {
 //                    builder.cpu(args[++i]);
+                } else if ("-target".equals(args[i])) {
+                    String s = args[++i];
+                    builder.targetType("auto".equals(s) ? null : TargetType.valueOf(s));
                 } else if ("-roots".equals(args[i])) {
                     for (String p : args[++i].split(":")) {
                         p = p.replace('#', '*');
@@ -348,20 +345,15 @@ public class AppCompiler {
                     }
                     builder.cacerts(cacerts);
                 } else if ("-plist".equals(args[i])) {
-                    targetArgs.add(args[i++]);
-                    targetArgs.add(args[i]);
+                    builder.iosInfoPList(new File(args[++i]));
                 } else if ("-entitlements".equals(args[i])) {
-                    targetArgs.add(args[i++]);
-                    targetArgs.add(args[i]);
+                    builder.iosEntitlementsPList(new File(args[++i]));
                 } else if ("-resourcerules".equals(args[i])) {
-                    targetArgs.add(args[i++]);
-                    targetArgs.add(args[i]);
+                    builder.iosResourceRulesPList(new File(args[++i]));
                 } else if ("-signidentity".equals(args[i])) {
-                    targetArgs.add(args[i++]);
-                    targetArgs.add(args[i]);
+                    builder.iosSignIdentity(args[++i]);
                 } else if ("-sdk".equals(args[i])) {
-                    targetArgs.add(args[i++]);
-                    targetArgs.add(args[i]);
+                    builder.iosSdkVersion(args[++i]);
                 } else if ("-ios-sim-family".equals(args[i])) {
                     launchArgs.add(args[i++]);
                     launchArgs.add(args[i]);
@@ -388,62 +380,17 @@ public class AppCompiler {
             builder.logger(new ConsoleLogger(verbose));
             builder.skipInstall(run);
 
-            Target target = null;
-            if (os == OS.ios) {
-                target = new IOSTarget();
-                ((IOSTarget) target).setArch(arch);
-            }
-            if (target == null) {
-                target = new ConsoleTarget();
-                ((ConsoleTarget) target).setOS(os);
-                ((ConsoleTarget) target).setArch(arch);
-            }
-            
-            i = 0;
-            while (i < targetArgs.size()) {
-                String arg = targetArgs.get(i++);
-                if (arg.equals("-plist")) {
-                    if (target instanceof IOSTarget) {
-                        ((IOSTarget) target).setInfoPList(new File(targetArgs.get(i++)));
-                        continue;
+            if (dumpConfigFile != null) {
+                if (dumpConfigFile.equals("-")) {
+                    builder.write(new OutputStreamWriter(System.out), new File("."));
+                } else {
+                    File file = new File(dumpConfigFile);
+                    if (file.exists()) {
+                        throw new IllegalArgumentException("Cannot dump config to " + file.getAbsolutePath() 
+                                + ". The file already exists.");
                     }
+                    builder.write(file);
                 }
-                if (arg.equals("-entitlements")) {
-                    if (target instanceof IOSTarget) {
-                        ((IOSTarget) target).setEntitlementsPList(new File(targetArgs.get(i++)));
-                        continue;
-                    }
-                }
-                if (arg.equals("-resourcerules")) {
-                    if (target instanceof IOSTarget) {
-                        ((IOSTarget) target).setResourceRulesPList(new File(targetArgs.get(i++)));
-                        continue;
-                    }
-                }
-                if (arg.equals("-signidentity")) {
-                    if (target instanceof IOSTarget) {
-                        ((IOSTarget) target).setSignIdentity(targetArgs.get(i++));
-                        continue;
-                    }
-                }
-                if (arg.equals("-sdk")) {
-                    if (target instanceof IOSTarget) {
-                        String value = targetArgs.get(i++);
-                        ((IOSTarget) target).setSdkVersion(value);
-                        continue;
-                    }
-                }
-                throw new IllegalArgumentException("Unsupported argument for the specified target: " + arg);
-            }
-            builder.target(target);
-            
-            if (dumpConfig) {
-                File file = new File("robovm.xml");
-                if (file.exists()) {
-                    throw new IllegalArgumentException("Cannot dump config to " + file.getAbsolutePath() 
-                            + ". The file already exists.");
-                }
-                builder.write(file);
                 return;
             }
             
@@ -557,6 +504,8 @@ public class AppCompiler {
                          + "                        use the LLVM default.");
         System.err.println("  -cpu <name>           The name of the LLVM cpu to compile for. The LLVM default\n" 
                          + "                        is used if not specified. Use llc to determine allowed values.");
+        System.err.println("  -target <name>        The target to build for. Either 'auto', 'console' or 'ios'.\n" 
+                         + "                        The default is 'auto' which means use -os to decide.");
         System.err.println("  -roots <list>         : separated list of class patterns matching\n" 
                          + "                        classes that must be included when determinig the required\n" 
                          + "                        classes. If a main class is specified it will automatically\n" 
@@ -584,8 +533,12 @@ public class AppCompiler {
                          + "                        'full'. Default is 'full' but no cacerts will be included\n" 
                          + "                        unless the code actually needs them.");
         System.err.println("  -skiprt               Do not add default robovm-rt.jar to bootclasspath");
-        System.err.println("  -dumpconfig           Dumps a configuration XML file to robovm.xml in the current\n" 
-                         + "                        directory and exits.");
+        System.err.println("  -config <file>        Reads the specified configuration XML file. Values set in\n" 
+                         + "                        the file will override values set earlier in the command\n" 
+                         + "                        line. Later options will override values set in the XML file.\n" 
+                         + "                        Can be specified multiple times to read multiple config files.");
+        System.err.println("  -dumpconfig <file>    Dumps a configuration XML file to the specified file. Specify\n" 
+                         + "                        '-' to dump the config to stdout.");
         System.err.println("  -verbose              Output messages about what the compiler is doing");
         System.err.println("  -version              Print the version of the compiler and exit");
         System.err.println("  -help, -?             Display this information");

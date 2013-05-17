@@ -27,8 +27,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.robovm.compiler.target.ConsoleTarget;
-import org.robovm.compiler.target.ios.IOSTarget;
+import org.robovm.compiler.config.Config.TargetType;
 
 /**
  * Tests {@link Config}.
@@ -61,10 +60,8 @@ public class ConfigTest {
         assertEquals(Arrays.asList("dl", "/tmp/wd/libs/libmy.a", "/tmp/wd/libs/foo.o", "/usr/lib/libbar.a"), config.getLibs());
         assertEquals(Arrays.asList(new File("/tmp/wd/resources"), new File("/usr/share/resources")), config.getResources());
         assertEquals(Arrays.asList("javax.**.*"), config.getRoots());
-        assertTrue(config.getTarget() instanceof ConsoleTarget);
-        ConsoleTarget target = (ConsoleTarget) config.getTarget();
-        assertEquals(OS.macosx, target.getOS());
-        assertEquals(Arch.x86, target.getArch());
+        assertEquals(OS.macosx, config.getOs());
+        assertEquals(Arch.x86, config.getArch());
     }
     
     @Test
@@ -81,10 +78,8 @@ public class ConfigTest {
         builder.addResource(new File("resources"));
         builder.addResource(new File("/usr/share/resources"));
         builder.addRoot("javax.**.*");
-        ConsoleTarget target = new ConsoleTarget();
-        target.setOS(OS.macosx);
-        target.setArch(Arch.x86);
-        builder.target(target);
+        builder.os(OS.macosx);
+        builder.arch(Arch.x86);
         
         StringWriter out = new StringWriter();
         builder.write(out, wd);
@@ -96,25 +91,22 @@ public class ConfigTest {
         Config.Builder builder = new Config.Builder();
         builder.read(new InputStreamReader(getClass().getResourceAsStream("ConfigTest.ios.xml"), "utf-8"), wd);
         Config config = builder.config;
-        assertTrue(config.getTarget() instanceof IOSTarget);
-        IOSTarget target = (IOSTarget) config.getTarget();
-        assertEquals("6.1", target.getSdkVersion());
-        assertEquals("FooBar", target.getSignIdentity());
-        assertEquals(new File(wd, "Info.plist"), target.getInfoPList());
-        assertEquals(new File(wd, "entitlements.plist"), target.getEntitlementsPList());
-        assertEquals(new File(tmp, "resourcerules.plist"), target.getResourceRulesPList());
+        assertEquals("6.1", config.getIosSdkVersion());
+        assertEquals("FooBar", config.getIosSignIdentity());
+        assertEquals(new File(wd, "Info.plist"), config.getIosInfoPList());
+        assertEquals(new File(wd, "entitlements.plist"), config.getIosEntitlementsPList());
+        assertEquals(new File(tmp, "resourcerules.plist"), config.getIosResourceRulesPList());
     }
     
     @Test
     public void testWriteIOS() throws Exception {
         Config.Builder builder = new Config.Builder();
-        IOSTarget target = new IOSTarget();
-        target.setSdkVersion("6.1");
-        target.setInfoPList(new File("Info.plist"));
-        target.setEntitlementsPList(new File("entitlements.plist"));
-        target.setResourceRulesPList(new File(tmp, "resourcerules.plist"));
-        target.setSignIdentity("FooBar");
-        builder.target(target);
+        builder.iosSdkVersion("6.1");
+        builder.iosInfoPList(new File("Info.plist"));
+        builder.iosEntitlementsPList(new File("entitlements.plist"));
+        builder.iosResourceRulesPList(new File(tmp, "resourcerules.plist"));
+        builder.iosSignIdentity("FooBar");
+        builder.targetType(TargetType.ios);
         
         StringWriter out = new StringWriter();
         builder.write(out, wd);

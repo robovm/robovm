@@ -36,20 +36,12 @@ public class ConsoleTarget extends AbstractTarget {
     public ConsoleTarget() {
     }
     
-    public OS getOS() {
+    public OS getOs() {
         return os;
     }
 
     public Arch getArch() {
         return arch;
-    }
-
-    public void setOS(OS os) {
-        this.os = os;
-    }
-    
-    public void setArch(Arch arch) {
-        this.arch = arch;
     }
     
     @Override
@@ -69,9 +61,11 @@ public class ConsoleTarget extends AbstractTarget {
 
     public void init(Config config) {
         super.init(config);
+        os = config.getOs();
         if (os == null) {
             os = OS.getDefaultOS(config.getLlvmHomeDir());
         }
+        arch = config.getArch();
         if (arch == null) {
             arch = Arch.getDefaultArch(config.getLlvmHomeDir());
         }

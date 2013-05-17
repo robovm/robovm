@@ -1,4 +1,6 @@
 <config>
+  <os>macosx</os>
+  <arch>x86</arch>
   <roots>
     <root>javax.**.*</root>
   </roots>
@@ -20,10 +22,4 @@
     <classpathentry>foo1.jar</classpathentry>
     <classpathentry>/tmp/foo2.jar</classpathentry>
   </classpath>
-  <target>
-    <console>
-      <os>macosx</os>
-      <arch>x86</arch>
-    </console>
-  </target>
 </config>

@@ -34,8 +34,6 @@ import org.robovm.compiler.target.AbstractTarget;
 import org.robovm.compiler.target.LaunchParameters;
 import org.robovm.compiler.util.Executor;
 import org.robovm.compiler.util.io.OpenOnWriteFileOutputStream;
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.Transient;
 
 import com.dd.plist.NSArray;
 import com.dd.plist.NSDictionary;
@@ -51,21 +49,12 @@ import com.dd.plist.PropertyListParser;
  */
 public class IOSTarget extends AbstractTarget {
 
-    @Element(required = false)
     private Arch arch;
-    @Transient
     private SDK sdk;
-    @Element(name = "sdkVersion")
-    private String sdkVersion;
-    @Element(required = false)
     private File infoPList = null;
-    @Transient
     private NSDictionary infoPListDict = null;
-    @Element(required = false)
     private File resourceRulesPList;
-    @Element(required = false)
     private File entitlementsPList;
-    @Element(required = false)
     private String signIdentity;
     
     public IOSTarget() {
@@ -74,13 +63,6 @@ public class IOSTarget extends AbstractTarget {
     @Override
     public Arch getArch() {
         return arch;
-    }
-    
-    public void setArch(Arch arch) {
-        if (arch != Arch.x86 && arch != Arch.thumbv7) {
-            throw new IllegalArgumentException("Arch '" + arch + "' is unsupported for iOS target");
-        }
-        this.arch = arch;
     }
     
     @Override
@@ -373,39 +355,36 @@ public class IOSTarget extends AbstractTarget {
         FileUtils.copyFile(tmpInfoPlist, new File(dir, tmpInfoPlist.getName()));
     }
     
-    public String getSdkVersion() {
-        return sdkVersion;
-    }
-    
-    public void setSdkVersion(String sdkVersion) {
-        this.sdkVersion = sdkVersion;
-    }
-    
-    public File getInfoPList() {
-        return infoPList;
-    }
-    
-    public void setInfoPList(File infoPList) {
-        this.infoPList = infoPList;
-    }
-    
     public void init(Config config) {
         super.init(config);
-        if (arch == null) {
+        
+        if (config.getArch() == null) {
             arch = Arch.thumbv7;
+        } else {
+            if (config.getArch() != Arch.x86 && config.getArch() != Arch.thumbv7) {
+                throw new IllegalArgumentException("Arch '" + config.getArch() 
+                        + "' is unsupported for iOS target");
+            }
+            arch = config.getArch();
         }
+
+        signIdentity = config.getIosSignIdentity();
         if (signIdentity == null) {
             signIdentity = "iPhone Developer";
         }
-        if (this.infoPList != null) {
+        
+        infoPList = config.getIosInfoPList();
+        if (infoPList != null) {
             try {
-                this.infoPListDict = (NSDictionary) PropertyListParser.parse(this.infoPList);
+                infoPListDict = (NSDictionary) PropertyListParser.parse(infoPList);
             } catch (Throwable t) {
                 throw new IllegalArgumentException(t);
             }
         }
+        
+        String sdkVersion = config.getIosSdkVersion();
         List<SDK> sdks = getSDKs();
-        if (this.sdkVersion == null) {
+        if (sdkVersion == null) {
             Collections.sort(sdks);
             this.sdk = sdks.get(sdks.size() - 1);
         } else {
@@ -422,36 +401,12 @@ public class IOSTarget extends AbstractTarget {
     }
 
     @Override
-    public OS getOS() {
+    public OS getOs() {
         return OS.ios;
     }
 
     @Override
     public boolean canLaunchInPlace() {
         return false;
-    }
-
-    public File getResourceRulesPList() {
-        return resourceRulesPList;
-    }
-    
-    public void setResourceRulesPList(File resourceRulesPList) {
-        this.resourceRulesPList = resourceRulesPList;
-    }
-
-    public File getEntitlementsPList() {
-        return entitlementsPList;
-    }
-    
-    public void setEntitlementsPList(File entitlementsPList) {
-        this.entitlementsPList = entitlementsPList;
-    }
-
-    public String getSignIdentity() {
-        return signIdentity;
-    }
-    
-    public void setSignIdentity(String signIdentity) {
-        this.signIdentity = signIdentity;
     }
 }

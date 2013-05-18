@@ -54,7 +54,7 @@ public class NewProjectWizard extends Wizard implements INewWizard {
     @Override
     public void addPages() {
         if (page1 == null) {
-            page1 = new RoboVMPageOne(getDefaultArch(), getDefaultOs());
+            page1 = createPageOne();
             page1.setTitle(page1.getTitle().replace("Java", "RoboVM"));
         }
         addPage(page1);
@@ -68,6 +68,10 @@ public class NewProjectWizard extends Wizard implements INewWizard {
         setHelpAvailable(false);
     }
 
+    protected RoboVMPageOne createPageOne() {
+        return new RoboVMPageOne(getDefaultArch(), getDefaultOs());
+    }
+    
     protected String getDefaultArch() {
         return RoboVMPlugin.ARCH_AUTO;
     }
@@ -112,7 +116,7 @@ public class NewProjectWizard extends Wizard implements INewWizard {
         return true;
     }
     
-    private static class RoboVMPageOne extends NewJavaProjectWizardPageOne {
+    public static class RoboVMPageOne extends NewJavaProjectWizardPageOne {
         
         private final String defaultArch;
         private final String defaultOs;

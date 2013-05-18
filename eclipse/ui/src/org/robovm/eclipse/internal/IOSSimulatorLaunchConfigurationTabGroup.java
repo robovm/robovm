@@ -23,16 +23,10 @@ import java.util.List;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTabGroup;
 import org.eclipse.debug.ui.CommonTab;
-import org.eclipse.debug.ui.EnvironmentTab;
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
-import org.eclipse.jdt.debug.ui.launchConfigurations.JavaArgumentsTab;
-import org.eclipse.jdt.debug.ui.launchConfigurations.JavaClasspathTab;
-import org.eclipse.jdt.debug.ui.launchConfigurations.JavaMainTab;
-import org.eclipse.jdt.debug.ui.launchConfigurations.JavaSourceLookupTab;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -40,6 +34,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters.Family;
 import org.robovm.compiler.target.ios.SDK;
@@ -54,12 +49,7 @@ public class IOSSimulatorLaunchConfigurationTabGroup extends AbstractLaunchConfi
     @Override
     public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
         setTabs(new ILaunchConfigurationTab[] {
-                new JavaMainTab(),
                 new SimulatorTab(),
-                new JavaArgumentsTab(),
-                new JavaClasspathTab(),
-                new JavaSourceLookupTab(),
-                new EnvironmentTab(),
                 new CommonTab()
         });
     }
@@ -70,26 +60,34 @@ public class IOSSimulatorLaunchConfigurationTabGroup extends AbstractLaunchConfi
         return sdks;
     }
     
-    public static class SimulatorTab extends AbstractLaunchConfigurationTab {
+    public static class SimulatorTab extends RoboVMTab {
 
         private Combo familyCombo;
         private Combo sdkCombo;
         
         @Override
         public void createControl(Composite parent) {
-            Composite root = new Composite(parent, SWT.NONE);
-            root.setFont(parent.getFont());
-            root.setLayout(new GridLayout(1, false));
-            root.setLayoutData(new GridData(GridData.FILL_BOTH));
-            ((GridData) root.getLayoutData()).horizontalSpan = 1;
-            ((GridLayout) root.getLayout()).verticalSpacing = 0;
+            Composite root = createRoot(parent);
+            createProjectEditor(root);
+            createSimulatorEditor(root);
+            setControl(root);
+        }
+        
+        protected void createSimulatorEditor(Composite parent) {
+            Group group = new Group(parent, SWT.NONE);
+            group.setText("iOS Simulator:");
+            group.setFont(group.getFont());
+            group.setLayout(new GridLayout(2, false));
+            group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+            ((GridData) group.getLayoutData()).horizontalSpan = 1;
+            ((GridLayout) group.getLayout()).verticalSpacing = 0;
             
-            Label familyLabel = new Label(root, SWT.NONE);
-            familyLabel.setFont(parent.getFont());
+            Label familyLabel = new Label(group, SWT.NONE);
+            familyLabel.setFont(group.getFont());
             familyLabel.setText("Device family:");
             familyLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
 
-            familyCombo = new Combo(root, SWT.READ_ONLY | SWT.BORDER);
+            familyCombo = new Combo(group, SWT.READ_ONLY | SWT.BORDER);
             familyCombo.setItems(new String[] {
                     "iPhone", 
                     "iPad"
@@ -103,12 +101,12 @@ public class IOSSimulatorLaunchConfigurationTabGroup extends AbstractLaunchConfi
                 }
             });
 
-            Label sdkLabel = new Label(root, SWT.NONE);
-            sdkLabel.setFont(parent.getFont());
+            Label sdkLabel = new Label(group, SWT.NONE);
+            sdkLabel.setFont(group.getFont());
             sdkLabel.setText("SDK version:");
             sdkLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
 
-            sdkCombo = new Combo(root, SWT.READ_ONLY | SWT.BORDER);
+            sdkCombo = new Combo(group, SWT.READ_ONLY | SWT.BORDER);
             ArrayList<String> sdks = new ArrayList<String>();
             sdks.add("Latest");
             for (SDK sdk : listSDKs()) {
@@ -124,16 +122,12 @@ public class IOSSimulatorLaunchConfigurationTabGroup extends AbstractLaunchConfi
                 }
             });
 
-            setControl(root);
-        }
-
-        @Override
-        public String getName() {
-            return "iOS Simulator";
+            setControl(group);
         }
 
         @Override
         public void initializeFrom(ILaunchConfiguration config) {
+            super.initializeFrom(config);
             try {
                 String v = config.getAttribute(IOSSimulatorLaunchConfigurationDelegate.ATTR_IOS_SIM_FAMILY, Family.iphone.toString());
                 String[] items = familyCombo.getItems();
@@ -163,6 +157,7 @@ public class IOSSimulatorLaunchConfigurationTabGroup extends AbstractLaunchConfi
 
         @Override
         public void performApply(ILaunchConfigurationWorkingCopy wc) {
+            super.performApply(wc);
             wc.setAttribute(IOSSimulatorLaunchConfigurationDelegate.ATTR_IOS_SIM_FAMILY, 
                     familyCombo.getItem(familyCombo.getSelectionIndex()).toLowerCase());
             int sdkIndex = sdkCombo.getSelectionIndex();
@@ -172,6 +167,7 @@ public class IOSSimulatorLaunchConfigurationTabGroup extends AbstractLaunchConfi
 
         @Override
         public void setDefaults(ILaunchConfigurationWorkingCopy wc) {
+            super.setDefaults(wc);
             wc.setAttribute(IOSSimulatorLaunchConfigurationDelegate.ATTR_IOS_SIM_FAMILY, Family.iphone.toString());
             wc.setAttribute(IOSSimulatorLaunchConfigurationDelegate.ATTR_IOS_SIM_SDK, (String) null);
         }

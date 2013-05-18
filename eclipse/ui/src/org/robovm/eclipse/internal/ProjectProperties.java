@@ -64,7 +64,7 @@ public class ProjectProperties {
             group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
             group.setFont(parent.getFont());
             group.setLayout(initGridLayout(new GridLayout(2, false), true));
-            group.setText("RoboVM settings");
+            group.setText("Incremental build settings");
             composite = group;
         } else {
             composite = new Composite(parent, SWT.NONE);
@@ -114,7 +114,7 @@ public class ProjectProperties {
     protected void createControls(Composite parent) {
         Label archLabel = new Label(parent, SWT.NONE);
         archLabel.setFont(parent.getFont());
-        archLabel.setText("Arch for incremental builds:");
+        archLabel.setText("Arch:");
         archLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
         
         archCombo = new Combo(parent, SWT.READ_ONLY | SWT.BORDER);
@@ -142,7 +142,7 @@ public class ProjectProperties {
 
         Label osLabel = new Label(parent, SWT.NONE);
         osLabel.setFont(parent.getFont());
-        osLabel.setText("OS for incremental builds:");
+        osLabel.setText("OS:");
         osLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
         
         osCombo = new Combo(parent, SWT.READ_ONLY | SWT.BORDER);

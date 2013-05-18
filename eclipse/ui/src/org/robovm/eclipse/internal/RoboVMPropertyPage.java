@@ -37,7 +37,7 @@ public class RoboVMPropertyPage extends PropertyPage {
     @Override
     protected Control createContents(Composite parent) {
         project = (IProject) getElement().getAdapter(IProject.class);
-        projectProperties = new ProjectProperties(parent, false);
+        projectProperties = new ProjectProperties(parent, true);
         projectProperties.loadPreferences(project);
         return projectProperties.getComposite();
     }

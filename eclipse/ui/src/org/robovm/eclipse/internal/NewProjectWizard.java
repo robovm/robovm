@@ -16,10 +16,17 @@
  */
 package org.robovm.eclipse.internal;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
+import org.apache.commons.io.IOUtils;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -36,6 +43,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.osgi.service.prefs.BackingStoreException;
+import org.robovm.compiler.config.Config;
 import org.robovm.eclipse.RoboVMPlugin;
 
 /**
@@ -44,8 +52,8 @@ import org.robovm.eclipse.RoboVMPlugin;
  */
 public class NewProjectWizard extends Wizard implements INewWizard {
 
-    private RoboVMPageOne page1;
-    private NewJavaProjectWizardPageTwo page2;
+    protected RoboVMPageOne page1;
+    protected NewJavaProjectWizardPageTwo page2;
     
     public NewProjectWizard() {
         setWindowTitle("New RoboVM Project");
@@ -84,6 +92,10 @@ public class NewProjectWizard extends Wizard implements INewWizard {
         return classpath;
     }
     
+    protected void customizeConfig(Config.Builder configBuilder, Properties props) throws Exception {
+        
+    }
+    
     @Override
     public boolean performFinish() {
         try {
@@ -107,8 +119,30 @@ public class NewProjectWizard extends Wizard implements INewWizard {
                     new IClasspathEntry[newClasspath.size()]), 
                     new NullProgressMonitor());
             RoboVMNature.configureNatures(project, new NullProgressMonitor());
+
+            File projectRoot = project.getLocation().toFile();
+            File propsFile = new File(projectRoot, "robovm.properties");
+            File configFile = new File(projectRoot, "robovm.xml");
+
+            if (!propsFile.exists() && !configFile.exists()) {
+                Properties props = new Properties();
+                Config.Builder configBuilder = new Config.Builder();
+                customizeConfig(configBuilder, props);
+                configBuilder.write(configFile);
+                
+                Writer writer = null;
+                try {
+                    writer = new OutputStreamWriter(new FileOutputStream(propsFile));
+                    props.store(writer, "");
+                } finally {
+                    IOUtils.closeQuietly(writer);
+                }
+                
+                project.refreshLocal(IResource.DEPTH_ONE, null);
+            }
+            
         } catch (Exception e) {
-            e.printStackTrace();
+            RoboVMPlugin.log(e);
             return false;
         }
         OpenJavaPerspectiveAction action = new OpenJavaPerspectiveAction();

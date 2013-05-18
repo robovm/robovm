@@ -387,7 +387,7 @@ public class IOSTarget extends AbstractTarget {
         infoPList = config.getIosInfoPList();
         if (infoPList != null) {
             try {
-                infoPListDict = (NSDictionary) parsePropertyList(infoPList, new Properties());
+                infoPListDict = (NSDictionary) parsePropertyList(infoPList, config.getProperties());
             } catch (Throwable t) {
                 throw new IllegalArgumentException(t);
             }

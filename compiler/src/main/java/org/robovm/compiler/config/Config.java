@@ -270,6 +270,10 @@ public class Config {
         return classpath;
     }
     
+    public Properties getProperties() {
+        return properties;
+    }
+    
     public Logger getLogger() {
         return logger;
     }

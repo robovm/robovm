@@ -17,9 +17,12 @@
 package org.robovm.eclipse.internal;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,10 +30,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.commons.exec.CommandLine;
+import org.apache.commons.io.IOUtils;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -38,7 +42,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.launching.AbstractJavaLaunchConfigurationDelegate;
 import org.robovm.compiler.AppCompiler;
 import org.robovm.compiler.config.Arch;
@@ -80,8 +83,8 @@ public abstract class AbstractLaunchConfigurationDelegate extends AbstractJavaLa
         try {
             monitor.subTask("Verifying launch attributes"); 
             
-            String mainTypeName = verifyMainTypeName(configuration);
-            File workingDir = verifyWorkingDirectory(configuration);
+            String mainTypeName = getMainTypeName(configuration);
+            File workingDir = getWorkingDirectory(configuration);
             String[] envp = getEnvironment(configuration);
             String pgmArgs = getProgramArguments(configuration);
             String vmArgs = getVMArguments(configuration);
@@ -105,6 +108,33 @@ public abstract class AbstractLaunchConfigurationDelegate extends AbstractJavaLa
             Config.Builder configBuilder = new Config.Builder();
             
             File projectRoot = getJavaProject(configuration).getProject().getLocation().toFile();
+            File propsFile = new File(projectRoot, "robovm.properties");
+            File configFile = new File(projectRoot, "robovm.xml");
+            if (configFile.exists()) {
+                Properties props = new Properties();
+                if (propsFile.exists()) {
+                    Reader reader = null;
+                    try {
+                        reader = new InputStreamReader(new FileInputStream(propsFile), "utf-8");
+                        props.load(reader);
+                        configBuilder.addProperties(props);
+                    } catch (IOException e) {
+                        RoboVMPlugin.log(e);
+                        throw new RuntimeException(e);
+                    } finally {
+                        IOUtils.closeQuietly(reader);
+                    }
+                }
+                try {
+                    configBuilder.read(configFile);
+                } catch (Exception e) {
+                    RoboVMPlugin.log(e);
+                    throw new RuntimeException(e);
+                }
+                // Ignore classpath entries in config XML file.
+                configBuilder.clearBootClasspathEntries();
+                configBuilder.clearClasspathEntries();
+            }
             
             Arch arch = getArch(configuration, mode);
             OS os = getOS(configuration, mode);
@@ -115,7 +145,9 @@ public abstract class AbstractLaunchConfigurationDelegate extends AbstractJavaLa
             File tmpDir = new File(RoboVMPlugin.getMetadataDir(), getJavaProjectName(configuration));
             tmpDir = new File(tmpDir, configuration.getName());
             tmpDir = new File(new File(tmpDir, os.toString()), arch.toString());
-            tmpDir = new File(tmpDir, mainTypeName);
+            if (mainTypeName != null) {
+                tmpDir = new File(tmpDir, mainTypeName);
+            }
             
             configBuilder.debug(true);
             configBuilder.home(RoboVMPlugin.getRoboVMHome());
@@ -132,7 +164,9 @@ public abstract class AbstractLaunchConfigurationDelegate extends AbstractJavaLa
             for (String p : classpath) {
                 configBuilder.addClasspathEntry(new File(p));
             }
-            configBuilder.mainClass(mainTypeName);
+            if (mainTypeName != null) {
+                configBuilder.mainClass(mainTypeName);
+            }
             configBuilder.tmpDir(tmpDir);
             configBuilder.skipInstall(true);
             

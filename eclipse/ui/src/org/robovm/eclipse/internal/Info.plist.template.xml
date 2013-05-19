@@ -24,6 +24,11 @@
     <string>${app.build}</string>
     <key>LSRequiresIPhoneOS</key>
     <true/>
+    <key>UIDeviceFamily</key>
+    <array>
+        <integer>1</integer>
+        <integer>2</integer>
+    </array>
     <key>UIRequiredDeviceCapabilities</key>
     <array>
         <string>armv7</string>

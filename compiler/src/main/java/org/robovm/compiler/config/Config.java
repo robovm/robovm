@@ -836,6 +836,19 @@ public class Config {
             return this;
         }
         
+        public Builder addProperties(File file) throws IOException {
+            Properties props = new Properties();
+            Reader reader = null;
+            try {
+                reader = new InputStreamReader(new FileInputStream(file), "utf-8");
+                props.load(reader);
+                addProperties(props);
+            } finally {
+                IOUtils.closeQuietly(reader);
+            }
+            return this;
+        }
+        
         public Builder addProperty(String name, String value) {
             config.properties.put(name, value);
             return this;

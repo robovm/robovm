@@ -17,25 +17,20 @@
 package org.robovm.compiler;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.exec.ExecuteException;
-import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.Dependency;
 import org.robovm.compiler.clazz.Path;
@@ -293,15 +288,7 @@ public class AppCompiler {
                 } else if ("-dumpconfig".equals(args[i])) {
                     dumpConfigFile = args[++i];
                 } else if ("-properties".equals(args[i])) {
-                    Properties props = new Properties();
-                    Reader reader = null;
-                    try {
-                        reader = new InputStreamReader(new FileInputStream(args[++i]), "utf-8");
-                        props.load(reader);
-                        builder.addProperties(props);
-                    } finally {
-                        IOUtils.closeQuietly(reader);
-                    }
+                    builder.addProperties(new File(args[++i]));
                 } else if (args[i].startsWith("-P")) {
                     int index = args[i].indexOf('=');
                     if (index <= 0) {

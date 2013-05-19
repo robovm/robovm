@@ -109,20 +109,23 @@ public abstract class AbstractLaunchConfigurationDelegate extends AbstractJavaLa
             
             File projectRoot = getJavaProject(configuration).getProject().getLocation().toFile();
             File propsFile = new File(projectRoot, "robovm.properties");
+            File localPropsFile = new File(projectRoot, "robovm.local.properties");
             File configFile = new File(projectRoot, "robovm.xml");
             if (configFile.exists()) {
-                Properties props = new Properties();
                 if (propsFile.exists()) {
-                    Reader reader = null;
                     try {
-                        reader = new InputStreamReader(new FileInputStream(propsFile), "utf-8");
-                        props.load(reader);
-                        configBuilder.addProperties(props);
+                        configBuilder.addProperties(propsFile);
                     } catch (IOException e) {
                         RoboVMPlugin.log(e);
                         throw new RuntimeException(e);
-                    } finally {
-                        IOUtils.closeQuietly(reader);
+                    }
+                }
+                if (localPropsFile.exists()) {
+                    try {
+                        configBuilder.addProperties(localPropsFile);
+                    } catch (IOException e) {
+                        RoboVMPlugin.log(e);
+                        throw new RuntimeException(e);
                     }
                 }
                 try {

@@ -56,6 +56,7 @@
       <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
       <fileMode>644</fileMode>
       <useProjectArtifact>false</useProjectArtifact>
+      <useTransitiveDependencies>false</useTransitiveDependencies>
     </dependencySet>
     <dependencySet>
       <includes>
@@ -66,6 +67,7 @@
       <outputFileNameMapping>${artifact.artifactId}-${artifact.classifier}.${artifact.extension}</outputFileNameMapping>
       <fileMode>644</fileMode>
       <useProjectArtifact>false</useProjectArtifact>
+      <useTransitiveDependencies>false</useTransitiveDependencies>
     </dependencySet>
   </dependencySets>
 </assembly>

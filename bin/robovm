@@ -6,7 +6,7 @@ if [ -f $COMPILER_JAR ]; then
     export ROBOVM_HOME=$BASE
 else
     if [ "x$ROBOVM_DEV_ROOT" != 'x' ]; then
-        COMPILER_JAR=$(ls "$ROBOVM_DEV_ROOT"/compiler/target/robovm-compiler-*.jar 2> /dev/null)
+        COMPILER_JAR=$(ls "$ROBOVM_DEV_ROOT"/compiler/target/robovm-compiler-*-all.jar 2> /dev/null)
     fi
 fi
 if [ ! -f $COMPILER_JAR ]; then

@@ -29,19 +29,43 @@
       <outputDirectory>bin</outputDirectory>
     </fileSet>
     <fileSet>
-      <directory>${basedir}/..</directory>
-      <outputDirectory>license</outputDirectory>
+      <directory>${basedir}/../compiler</directory>
+      <outputDirectory>license/compiler</outputDirectory>
       <includes>
-        <include>compiler/LICENSE.txt</include>
-        <include>compiler/NOTICE.txt</include>
-        <include>cocoatouch/LICENSE.txt</include>
-        <include>cocoatouch/NOTICE.txt</include>
-        <include>objc/LICENSE.txt</include>
-        <include>objc/NOTICE.txt</include>
-        <include>rt/LICENSE.txt</include>
-        <include>rt/NOTICE.txt</include>
-        <include>vm/LICENSE.txt</include>
-        <include>vm/NOTICE.txt</include>
+        <include>LICENSE.txt</include>
+        <include>NOTICE.txt</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${basedir}/../cocoatouch</directory>
+      <outputDirectory>license/cocoatouch</outputDirectory>
+      <includes>
+        <include>LICENSE.txt</include>
+        <include>NOTICE.txt</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${basedir}/../objc</directory>
+      <outputDirectory>license/objc</outputDirectory>
+      <includes>
+        <include>LICENSE.txt</include>
+        <include>NOTICE.txt</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${basedir}/../rt</directory>
+      <outputDirectory>license/rt</outputDirectory>
+      <includes>
+        <include>LICENSE.txt</include>
+        <include>NOTICE.txt</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${basedir}/../vm</directory>
+      <outputDirectory>license/vm</outputDirectory>
+      <includes>
+        <include>LICENSE.txt</include>
+        <include>NOTICE.txt</include>
       </includes>
     </fileSet>
   </fileSets>

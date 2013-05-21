@@ -152,7 +152,6 @@
     <module>cacerts</module>
     <module>objc</module>
     <module>cocoatouch</module>
-    <module>eclipse</module>
     <module>dist</module>
   </modules>
 </project>

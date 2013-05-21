@@ -101,6 +101,7 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
           <excludePackageNames>org.bouncycastle.*</excludePackageNames>
+          <maxmemory>2g</maxmemory>
         </configuration>
       </plugin>
 

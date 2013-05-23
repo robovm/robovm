@@ -23,7 +23,7 @@ import java.io.Serializable;
  * the path where <code>A</code> was located when <code>B</code> was built.
  */
 public class Dependency implements Serializable {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
     
     private final String className;
     private final String path;

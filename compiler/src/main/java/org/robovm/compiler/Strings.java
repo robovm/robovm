@@ -25,10 +25,6 @@ import java.util.List;
  */
 public class Strings {
 
-    public static String getStringVarName(String name) {
-        return getStringVarName(stringToModifiedUtf8(name));
-    }
-    
     public static String getStringVarName(byte[] bytes) {
         StringBuilder sb = new StringBuilder("str_");
         for (int i = 0; i < bytes.length; i++) {
@@ -43,6 +39,14 @@ public class Strings {
     }
     
     public static byte[] stringToModifiedUtf8(String unicode) {
+        return stringToModifiedUtf8(unicode, false);
+    }
+    
+    public static byte[] stringToModifiedUtf8Z(String unicode) {
+        return stringToModifiedUtf8(unicode, true);
+    }
+    
+    private static byte[] stringToModifiedUtf8(String unicode, boolean zeroTerminate) {
         List<Byte> s = new ArrayList<Byte>();
         for (int i = 0; i < unicode.length(); i++) {
             int ch = unicode.charAt(i);
@@ -65,7 +69,9 @@ public class Strings {
                 s.add((byte) (0x80 | b5_0));
             }
         }
-        s.add((byte) 0);
+        if (zeroTerminate) {
+            s.add((byte) 0);
+        }
         byte[] result = new byte[s.size()];
         for (int i = 0; i < result.length; i++) {
             result[i] = s.get(i);

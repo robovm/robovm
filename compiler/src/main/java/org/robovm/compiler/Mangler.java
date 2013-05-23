@@ -18,7 +18,6 @@ package org.robovm.compiler;
 
 import static org.robovm.compiler.Types.*;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import soot.SootClass;
@@ -143,7 +142,10 @@ public class Mangler {
     }
     
     public static String mangleString(String name) {
-        byte[] s = Strings.stringToModifiedUtf8(name);
+        return mangleModifiedUtf8(Strings.stringToModifiedUtf8(name));
+    }
+    
+    public static String mangleModifiedUtf8(byte[] s) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < s.length; i++) {
             byte c = s[i];

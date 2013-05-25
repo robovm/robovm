@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.robovm</groupId>
     <artifactId>robovm-parent</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.2</version>
   </parent>
 
   <artifactId>robovm-rt</artifactId>
@@ -114,23 +114,22 @@
             <phase>process-classes</phase>
             <configuration>
               <target>
-                <taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpathref="maven.plugin.classpath"/>
+                <taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpathref="maven.plugin.classpath" />
 
                 <!-- Use jarjar to change the package name org.bouncycastle to com.android.org.bouncycastle and save
                      the result to target/bouncycastle.jarjar.jar -->
                 <jarjar jarfile="${project.build.directory}/bouncycastle.jarjar.jar">
                   <fileset dir="${project.build.outputDirectory}">
-                    <include name="org/bouncycastle/**"/>
+                    <include name="org/bouncycastle/**" />
                   </fileset>
-                  <rule pattern="org.bouncycastle.**" result="com.android.@0"/>
+                  <rule pattern="org.bouncycastle.**" result="com.android.@0" />
                 </jarjar>
 
                 <!-- Explode the jarjar jar to target/classes -->
-                <unzip src="${project.build.directory}/bouncycastle.jarjar.jar"
-                       dest="${project.build.directory}/classes">
+                <unzip src="${project.build.directory}/bouncycastle.jarjar.jar" dest="${project.build.directory}/classes">
                   <patternset>
-                    <exclude name="META-INF/**"/>
-                    <exclude name="org/bouncycastle/**"/>
+                    <exclude name="META-INF/**" />
+                    <exclude name="org/bouncycastle/**" />
                   </patternset>
                 </unzip>
 

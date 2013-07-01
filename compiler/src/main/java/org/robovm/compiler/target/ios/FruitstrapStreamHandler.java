@@ -33,7 +33,7 @@ import org.netbeans.modules.cnd.debugger.gdb2.mi.MIProxy;
 import org.netbeans.modules.cnd.debugger.gdb2.mi.MIRecord;
 import org.netbeans.modules.cnd.debugger.gdb2.mi.MIUserInteraction;
 
-class FruitstrapStreamHandler implements ExecuteStreamHandler {
+public class FruitstrapStreamHandler implements ExecuteStreamHandler {
     private PrintStream processIn;
     private InputStream processErr;
     private InputStream processOut;

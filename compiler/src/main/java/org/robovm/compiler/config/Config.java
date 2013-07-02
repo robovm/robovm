@@ -114,7 +114,6 @@ public class Config {
     
     private Home home = null;
     private File cacheDir = new File(System.getProperty("user.home"), ".robovm/cache");
-    private File llvmHomeDir = null;
     private File ccBinPath = null;
     
     private boolean clean = false;
@@ -246,14 +245,6 @@ public class Config {
                 : Collections.unmodifiableList(resources);
     }
     
-    public File getLlvmHomeDir() {
-        return llvmHomeDir;
-    }
-
-    public File getLlvmBinDir() {
-        return llvmHomeDir == null ? null : new File(llvmHomeDir, "bin");
-    }
-    
     public File getOsArchDepLibDir() {
         return osArchDepLibDir;
     }
@@ -375,10 +366,6 @@ public class Config {
             home = Home.find();
         }
         
-        if (llvmHomeDir == null) {
-            llvmHomeDir = findLlvmHomeDir();
-        }
-        
         if (bootclasspath == null) {
             bootclasspath = new ArrayList<File>();
         }
@@ -450,27 +437,6 @@ public class Config {
         return this;
     }
 
-    static File findLlvmHomeDir() {
-        // Look for llc in the paths in the PATH environment variable
-        String path = System.getenv("PATH");
-        boolean found = false;
-        if (path != null) {
-            for (String part : path.split(File.pathSeparator)) {
-                if (new File(part, "llc").exists()) {
-                    return new File(part).getParentFile();
-                }
-            }
-        }
-        if (!found) {
-            if (new File("/opt/llvm/bin/llc").exists()) {
-                return new File("/opt/llvm");
-            } else if (new File("/usr/local/llvm/bin/llc").exists()) {
-                return new File("/usr/local/llvm");
-            }
-        }
-        return null;
-    }
-    
     public static class Home {
         private File binDir = null;
         private File libVmDir = null;
@@ -703,11 +669,6 @@ public class Config {
 
         public Builder clean(boolean b) {
             config.clean = b;
-            return this;
-        }
-
-        public Builder llvmHomeDir(File llvmHomeDir) {
-            config.llvmHomeDir = llvmHomeDir;
             return this;
         }
 

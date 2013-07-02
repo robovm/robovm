@@ -6,6 +6,7 @@ a.out
 /target/
 /vm/target/
 /compiler/target/
+/llvm/target/
 /rt/target/
 /cacerts/target/
 /cacerts/full/target/

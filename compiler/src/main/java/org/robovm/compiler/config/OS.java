@@ -16,16 +16,7 @@
  */
 package org.robovm.compiler.config;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.robovm.compiler.CompilerException;
-import org.robovm.compiler.log.Logger;
-import org.robovm.compiler.util.Executor;
+import org.robovm.llvm.Target;
 
 /**
  * @author niklas
@@ -36,53 +27,18 @@ public enum OS {
     
     public enum Family {linux, darwin}
     
-    private static Map<File, String> llvmHostStrings = new HashMap<File, String>();
-    
     public Family getFamily() {
         return this == linux ? Family.linux : Family.darwin;
     }
     
-    public static OS getDefaultOS(File llvmHomeDir) {
-        String host = getHost(llvmHomeDir);
-        if (host.contains("linux")) {
+    public static OS getDefaultOS() {
+        String hostTriple = Target.getHostTriple();
+        if (hostTriple.contains("linux")) {
             return OS.linux;
         }
-        if (host.contains("darwin") || host.contains("apple")) {
+        if (hostTriple.contains("darwin") || hostTriple.contains("apple")) {
             return OS.macosx;
         }
-        throw new IllegalArgumentException("Unrecognized OS in Host string: " + host);
-    }
-    
-    static String getHost(File llvmHomeDir) {
-        if (llvmHomeDir == null) {
-            llvmHomeDir = Config.findLlvmHomeDir();
-        }
-        String llvmHostString = llvmHostStrings.get(llvmHomeDir);
-        if (llvmHostString != null) {
-            return llvmHostString;
-        }
-        String llcPath = "llc";
-        if (llvmHomeDir != null) {
-            llcPath = new File(new File(llvmHomeDir, "bin"), "llc").getAbsolutePath();
-        }
-        try {
-            String output = new Executor(Logger.NULL_LOGGER, llcPath).args("--version").execCapture();
-            Matcher m = Pattern.compile("(?m)(?:Host|Default target):\\s*(.*)$").matcher(output);
-            if (m.find()) {
-                llvmHostString = m.group(1).trim();
-                llvmHostStrings.put(llvmHomeDir, llvmHostString);
-                return llvmHostString;
-            }
-        } catch (IOException e) {}
-
-        String msg = "Failed to determine OS and CPU architecture of current host system using ";
-        if (llvmHomeDir != null) {
-            msg += "LLVM in dir " + llvmHomeDir + ".";
-        } else {
-            msg += "system provided LLVM. Make sure the path of the LLVM binaries "
-                 + "has been added to the $PATH environment variable or install LLVM " 
-                 + "to /opt/llvm/.";
-        }
-        throw new CompilerException(msg);
+        throw new IllegalArgumentException("Unrecognized OS in host triple: " + hostTriple);
     }
 }

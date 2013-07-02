@@ -23,12 +23,15 @@ import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Type.*;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -41,10 +44,10 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.Dependency;
+import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.llvm.And;
@@ -79,7 +82,12 @@ import org.robovm.compiler.trampoline.FieldAccessor;
 import org.robovm.compiler.trampoline.Invoke;
 import org.robovm.compiler.trampoline.LdcString;
 import org.robovm.compiler.trampoline.Trampoline;
-import org.robovm.compiler.util.ToolchainUtil;
+import org.robovm.llvm.Context;
+import org.robovm.llvm.Module;
+import org.robovm.llvm.PassManager;
+import org.robovm.llvm.Target;
+import org.robovm.llvm.TargetMachine;
+import org.robovm.llvm.binding.CodeGenFileType;
 
 import soot.BooleanType;
 import soot.ByteType;
@@ -190,6 +198,8 @@ public class ClassCompiler {
     private final AttributesEncoder attributesEncoder;
     private final TrampolineCompiler trampolineResolver;
     
+    private final ByteArrayOutputStream output = new ByteArrayOutputStream(256 * 1024);
+    
     public ClassCompiler(Config config) {
         this.config = config;
         this.methodCompiler = new MethodCompiler(config);
@@ -244,22 +254,24 @@ public class ClassCompiler {
     public void compile(Clazz clazz) throws IOException {
         reset();        
         
-        File llFile = config.getLlFile(clazz);
-        File bcFile = config.getBcFile(clazz);
-        File sFile = config.getSFile(clazz);
+//        File llFile = config.getLlFile(clazz);
+//        File bcFile = config.getBcFile(clazz);
+//        File sFile = config.getSFile(clazz);
         File oFile = config.getOFile(clazz);
-        llFile.getParentFile().mkdirs();
-        bcFile.getParentFile().mkdirs();
-        sFile.getParentFile().mkdirs();
+//        llFile.getParentFile().mkdirs();
+//        bcFile.getParentFile().mkdirs();
+//        sFile.getParentFile().mkdirs();
         oFile.getParentFile().mkdirs();
-        
-        OutputStream out = null;
+
+        Arch arch = config.getArch();
+        OS os = config.getOs();
+
         try {
-            config.getLogger().debug("Compiling %s", clazz);
-            out = new FileOutputStream(llFile);
-            compile(clazz, out);
+            config.getLogger().debug("Compiling %s (%s)", clazz, arch);
+            output.reset();
+            compile(clazz, output);
         } catch (Throwable t) {
-            FileUtils.deleteQuietly(llFile);
+//            FileUtils.deleteQuietly(llFile);
             if (t instanceof IOException) {
                 throw (IOException) t;
             }
@@ -267,23 +279,42 @@ public class ClassCompiler {
                 throw (RuntimeException) t;
             }
             throw new RuntimeException(t);
-        } finally {
-            IOUtils.closeQuietly(out);
         }
 
-        config.getLogger().debug("Optimizing %s", clazz);
-        ToolchainUtil.opt(config, llFile, bcFile, "-mem2reg", "-always-inline");
+        Context context = new Context();
+        Module module = Module.parseIR(context, output.toByteArray(), clazz.getClassName());
+        PassManager passManager = new PassManager();
+        passManager.addAlwaysInlinerPass();
+        passManager.addPromoteMemoryToRegisterPass();
+        passManager.run(module);
+        passManager.dispose();
 
-        config.getLogger().debug("Generating %s assembly for %s", config.getArch(), clazz);
-        ToolchainUtil.llc(config, bcFile, sFile);
-
-        patchAsmWithFunctionSizes(clazz, sFile);
+        String triple = arch.getLlvmName() + "-unknown-" + os;
+        Target target = Target.lookupTarget(triple);
+        TargetMachine targetMachine = target.createTargetMachine(triple);
+        targetMachine.setAsmVerbosityDefault(true);
+        targetMachine.setFunctionSections(true);
+        targetMachine.setDataSections(true);
+        targetMachine.getOptions().setNoFramePointerElim(true);
+        output.reset();
+        targetMachine.emit(module, output, CodeGenFileType.AssemblyFile);
         
-        config.getLogger().debug("Assembling %s", clazz);
-        ToolchainUtil.assemble(config, sFile, oFile);
+        module.dispose();
+        context.dispose();
+        
+        byte[] asm = output.toByteArray();
+        output.reset();
+        patchAsmWithFunctionSizes(clazz, new ByteArrayInputStream(asm), output);
+        asm = output.toByteArray();
+        
+        BufferedOutputStream oOut = new BufferedOutputStream(new FileOutputStream(oFile));
+        targetMachine.assemble(asm, clazz.getClassName(), oOut);
+        oOut.close();
+        
+        targetMachine.dispose();
     }
     
-    private void patchAsmWithFunctionSizes(Clazz clazz, File sFile) throws IOException {
+    private void patchAsmWithFunctionSizes(Clazz clazz, InputStream inStream, OutputStream outStream) throws IOException {
         Set<String> functionNames = new HashSet<String>();
         for (SootMethod method : clazz.getSootClass().getMethods()) {
             if (!method.isAbstract()) {
@@ -304,13 +335,11 @@ public class ClassCompiler {
         String infoStructLabel = prefix + "_info_struct";
         Pattern methodImplPattern = Pattern.compile("\\s*\\.(?:quad|long)\\s+(" + Pattern.quote(prefix) + "[^\\s]+).*");
         
-        File outFile = new File(sFile.getParentFile(), sFile.getName() + ".tmp");
-        
         BufferedReader in = null;
         BufferedWriter out = null;
         try {
-            in = new BufferedReader(new InputStreamReader(new FileInputStream(sFile), "UTF-8"));
-            out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile), "UTF-8"));
+            in = new BufferedReader(new InputStreamReader(inStream, "UTF-8"));
+            out = new BufferedWriter(new OutputStreamWriter(outStream, "UTF-8"));
             String line = null;
             String currentFunction = null;
             while ((line = in.readLine()) != null) {
@@ -367,12 +396,10 @@ public class ClassCompiler {
             IOUtils.closeQuietly(in);
             IOUtils.closeQuietly(out);
         }
-        
-        sFile.renameTo(new File(sFile.getParentFile(), sFile.getName() + ".orig"));
-        outFile.renameTo(sFile);
     }
     
     private void reset() {
+        output.reset();
         sootClass = null;
         mb = null;
         trampolines = null;

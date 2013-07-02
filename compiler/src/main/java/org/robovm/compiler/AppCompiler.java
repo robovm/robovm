@@ -313,8 +313,6 @@ public class AppCompiler {
                     printVersionAndExit();
                 } else if ("-cc".equals(args[i])) {
                     builder.ccBinPath(new File(args[++i]));
-                } else if ("-llvm-home".equals(args[i])) {
-                    builder.llvmHomeDir(new File(args[++i]));
                 } else if ("-os".equals(args[i])) {
                     String s = args[++i];
                     builder.os("auto".equals(s) ? null : OS.valueOf(s));
@@ -501,10 +499,6 @@ public class AppCompiler {
                          + "                        ${java.io.tmpdir}.");
         System.err.println("  -jar <path>           Use main class as specified by the manifest in this JAR \n" 
                          + "                        archive.");
-        System.err.println("  -llvm-home <path>     Path where LLVM has been installed. If not set the LLVM\n" 
-                         + "                        tools will be searched for in the paths in your $PATH\n" 
-                         + "                        environment variable. If not found in $PATH /opt/llvm and\n" 
-                         + "                        /usr/local/llvm will be searched.");
         System.err.println("  -o <name>             The name of the target executable");
         System.err.println("  -os <name>            The name of the OS to build for. Allowed values are \n" 
                          + "                        'auto', 'linux', 'macosx' and 'ios'. Default is 'auto' which\n" 

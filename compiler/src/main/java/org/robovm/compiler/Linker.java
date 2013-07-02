@@ -20,17 +20,22 @@ import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.llvm.Linkage.*;
 import static org.robovm.compiler.llvm.Type.*;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.Path;
+import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
+import org.robovm.compiler.config.OS;
 import org.robovm.compiler.hash.HashTableGenerator;
 import org.robovm.compiler.hash.ModifiedUtf8HashFunction;
 import org.robovm.compiler.llvm.ArrayConstantBuilder;
@@ -41,7 +46,12 @@ import org.robovm.compiler.llvm.Global;
 import org.robovm.compiler.llvm.IntegerConstant;
 import org.robovm.compiler.llvm.NullConstant;
 import org.robovm.compiler.llvm.Type;
-import org.robovm.compiler.util.ToolchainUtil;
+import org.robovm.llvm.Context;
+import org.robovm.llvm.Module;
+import org.robovm.llvm.PassManager;
+import org.robovm.llvm.Target;
+import org.robovm.llvm.TargetMachine;
+import org.robovm.llvm.binding.CodeGenFileType;
 
 /**
  *
@@ -104,15 +114,37 @@ public class Linker {
             mb.addGlobal(new Global("_bcMainClass", mb.getString(config.getMainClass())));
         }        
         
-        File linkerLl = new File(config.getTmpDir(), "linker.ll");
-        FileUtils.writeStringToFile(linkerLl, mb.build().toString(), "UTF-8");
-        File linkerBc = new File(config.getTmpDir(), "linker.bc");
-        ToolchainUtil.opt(config, linkerLl, linkerBc, "-mem2reg", "-always-inline");
-        File linkerS = new File(config.getTmpDir(), "linker.s");
-        ToolchainUtil.llc(config, linkerBc, linkerS);
-        File linkerO = new File(config.getTmpDir(), "linker.o");
-        ToolchainUtil.assemble(config, linkerS, linkerO);
+        Arch arch = config.getArch();
+        OS os = config.getOs();
 
+        Context context = new Context();
+        Module module = Module.parseIR(context, mb.build().toString(), "linker.ll");
+        PassManager passManager = new PassManager();
+        passManager.addAlwaysInlinerPass();
+        passManager.addPromoteMemoryToRegisterPass();
+        passManager.run(module);
+        passManager.dispose();
+
+        String triple = arch.getLlvmName() + "-unknown-" + os;
+        Target target = Target.lookupTarget(triple);
+        TargetMachine targetMachine = target.createTargetMachine(triple);
+        targetMachine.setAsmVerbosityDefault(true);
+        targetMachine.setFunctionSections(true);
+        targetMachine.setDataSections(true);
+        targetMachine.getOptions().setNoFramePointerElim(true);
+        File linkerO = new File(config.getTmpDir(), "linker.o");
+        linkerO.getParentFile().mkdirs();
+        OutputStream outO = null;
+        try {
+            outO = new BufferedOutputStream(new FileOutputStream(linkerO));
+            targetMachine.emit(module, outO, CodeGenFileType.ObjectFile);
+        } finally {
+            IOUtils.closeQuietly(outO);
+        }
+        
+        module.dispose();
+        context.dispose();
+        
         List<File> objectFiles = new ArrayList<File>();
         objectFiles.add(linkerO);
         

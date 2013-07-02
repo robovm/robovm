@@ -147,6 +147,7 @@
   </pluginRepositories>
   
   <modules>
+    <module>llvm</module>
     <module>compiler</module>
     <module>rt</module>
     <module>cacerts</module>

@@ -49,61 +49,6 @@ public class ToolchainUtil {
         return IOS_SIM_CLANG;
     }
     
-    public static void opt(Config config, File inFile, File outFile, String ... options) throws IOException {
-        String optPath = "opt";
-        if (config.getLlvmBinDir() != null) {
-            optPath = new File(config.getLlvmBinDir(), "opt").getAbsolutePath();
-        }
-
-        outFile.getParentFile().mkdirs();
-        new Executor(config.getLogger(), optPath)
-            .args(options, "-o=" + outFile.toString(), inFile)
-            .exec();
-    }
-    
-    public static void llc(Config config, File inFile, File outFile) throws IOException {
-        String llcPath = "llc";
-        if (config.getLlvmBinDir() != null) {
-            llcPath = new File(config.getLlvmBinDir(), "llc").getAbsolutePath();
-        }
-  
-        Arch arch = config.getArch();
-        OS os = config.getOs();
-        
-        ArrayList<String> opts = new ArrayList<String>();
-        opts.add("-mtriple=" + arch.getLlvmName() + "-unknown-" + os);
-        if (os.getFamily() == OS.Family.darwin && arch.isArm()) {
-            // clang uses gas to assemble files on macosx and the XCode gas doesn't handle cfi directives
-            opts.add("-disable-cfi");
-        }
-        opts.add("-ffunction-sections");
-        opts.add("-fdata-sections");
-        opts.add("-disable-fp-elim");
-    
-        outFile.getParentFile().mkdirs();
-        new Executor(config.getLogger(), llcPath)
-            .args(opts, "-o=" + outFile.toString(), inFile)
-            .exec();
-    }
-    
-    public static void assemble(Config config, File inFile, File outFile) throws IOException {
-        List<String> opts = new ArrayList<String>();
-        if (config.isDebug()) {
-            opts.add("-g");
-        }
-        if (config.getOs().getFamily() == OS.Family.darwin) {
-            opts.add("-arch");            
-            opts.add(config.getArch().getClangName());
-        } else {
-            opts.add("-m32");            
-        }
-
-        outFile.getParentFile().mkdirs();
-        new Executor(config.getLogger(), getCcPath(config))
-            .args("-c", "-o", outFile, opts, inFile)
-            .exec();
-    }
-    
     public static void link(Config config, List<String> args, List<File> objectFiles, List<String> libs, File outFile) throws IOException {
         File objectsFile = new File(config.getTmpDir(), "objects");
         FileUtils.writeLines(objectsFile, "UTF-8", objectFiles, "\n");

@@ -63,11 +63,11 @@ public class ConsoleTarget extends AbstractTarget {
         super.init(config);
         os = config.getOs();
         if (os == null) {
-            os = OS.getDefaultOS(config.getLlvmHomeDir());
+            os = OS.getDefaultOS();
         }
         arch = config.getArch();
         if (arch == null) {
-            arch = Arch.getDefaultArch(config.getLlvmHomeDir());
+            arch = Arch.getDefaultArch();
         }
     }
 }

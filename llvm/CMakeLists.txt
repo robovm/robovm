@@ -57,10 +57,17 @@ set(LLVM_LIBS
   -lLLVMAsmParser -lLLVMBitWriter -lLLVMBitReader -lLLVMCore -lLLVMSupport
 )
 # This was generated using 'llvm-config --ldflags'
-set(LLVM_LDFLAGS
-  -L"${CMAKE_BINARY_DIR}/llvm/lib"
-  -lrt -ldl -lpthread -lz
-)
+if(LINUX)
+  set(LLVM_LDFLAGS
+    -L"${CMAKE_BINARY_DIR}/llvm/lib"
+    -lrt -ldl -lpthread -lz
+  )
+elseif(MACOSX)
+  set(LLVM_LDFLAGS
+    -L"${CMAKE_BINARY_DIR}/llvm/lib"
+    -lpthread -lz
+  )
+endif()
 
 set(SRC
   src/main/native/LLVM_wrap.c
@@ -71,6 +78,11 @@ add_library(robovm-llvm SHARED ${SRC})
 add_dependencies(robovm-llvm extllvm)
 target_link_libraries(robovm-llvm ${LLVM_LIBS} ${LLVM_LDFLAGS})
 set_target_properties(robovm-llvm PROPERTIES LINKER_LANGUAGE CXX)
-set_target_properties(robovm-llvm PROPERTIES LINK_FLAGS "-Wl,--gc-sections -Wl,--version-script=${CMAKE_SOURCE_DIR}/src/main/native/exports_linux.sym")
+if(LINUX)
+  set_target_properties(robovm-llvm PROPERTIES LINK_FLAGS "-Wl,--gc-sections -Wl,--version-script=${CMAKE_SOURCE_DIR}/src/main/native/exports_linux.sym")
+elseif(MACOSX)
+  set_target_properties(robovm-llvm PROPERTIES LINK_FLAGS "-Wl,-dead_strip -Wl,-exported_symbols_list -Wl,${CMAKE_SOURCE_DIR}/src/main/native/exports_macosx.sym")
+  set_target_properties(robovm-llvm PROPERTIES SUFFIX ".jnilib")
+endif()
 set(INSTALL_DIR ${CMAKE_SOURCE_DIR}/src/main/resources/org/robovm/llvm/binding/${OS}/${ARCH})
 install(TARGETS robovm-llvm DESTINATION ${INSTALL_DIR})

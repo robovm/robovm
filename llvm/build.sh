@@ -33,7 +33,7 @@ done
 OS=$(uname)
 case $OS in
 Darwin)
-  TARGETS="macosx-x86_64 macosx-x86"
+  TARGETS="macosx-x86_64"
   ;;
 Linux)
   TARGETS="linux-x86_64 linux-x86"

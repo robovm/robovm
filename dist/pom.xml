@@ -64,20 +64,34 @@
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <version>2.4</version>
-        <configuration>
-          <descriptors>
-            <descriptor>src/main/assembly/dist.xml</descriptor>
-          </descriptors>
-          <finalName>robovm-${project.version}</finalName>
-          <appendAssemblyId>false</appendAssemblyId>
-        </configuration>
         <executions>
           <execution>
-            <id>distro-assembly</id>
+            <id>distro-full-assembly</id>
             <phase>package</phase>
             <goals>
               <goal>single</goal>
             </goals>
+            <configuration>
+              <descriptors>
+                <descriptor>src/main/assembly/dist-full.xml</descriptor>
+              </descriptors>
+              <finalName>robovm-${project.version}</finalName>
+              <appendAssemblyId>false</appendAssemblyId>
+            </configuration>
+          </execution>
+          <execution>
+            <id>distro-nocompiler-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <descriptors>
+                <descriptor>src/main/assembly/dist-nocompiler.xml</descriptor>
+              </descriptors>
+              <finalName>robovm-${project.version}</finalName>
+              <appendAssemblyId>true</appendAssemblyId>
+            </configuration>
           </execution>
         </executions>
       </plugin>

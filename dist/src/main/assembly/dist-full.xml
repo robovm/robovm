@@ -1,0 +1,42 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+
+  <id>full</id>
+
+  <formats>
+    <format>tar.gz</format>
+  </formats>
+  <includeBaseDirectory>true</includeBaseDirectory>
+  <baseDirectory>robovm-${project.version}</baseDirectory>
+
+  <componentDescriptors>
+    <componentDescriptor>src/main/assembly/dist-common.xml</componentDescriptor>
+  </componentDescriptors>
+
+  <dependencySets>
+    <dependencySet>
+      <includes>
+        <include>*:*:jar:*</include>
+      </includes>
+      <outputDirectory>lib</outputDirectory>
+      <unpack>false</unpack>
+      <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
+      <fileMode>644</fileMode>
+      <useProjectArtifact>false</useProjectArtifact>
+      <useTransitiveDependencies>false</useTransitiveDependencies>
+    </dependencySet>
+    <dependencySet>
+      <includes>
+        <include>*:*:*:sources</include>
+      </includes>
+      <outputDirectory>lib</outputDirectory>
+      <unpack>false</unpack>
+      <outputFileNameMapping>${artifact.artifactId}-${artifact.classifier}.${artifact.extension}</outputFileNameMapping>
+      <fileMode>644</fileMode>
+      <useProjectArtifact>false</useProjectArtifact>
+      <useTransitiveDependencies>false</useTransitiveDependencies>
+    </dependencySet>
+  </dependencySets>
+
+</assembly>

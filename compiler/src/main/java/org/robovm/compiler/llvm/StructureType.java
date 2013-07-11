@@ -18,6 +18,11 @@ package org.robovm.compiler.llvm;
 
 import java.util.Arrays;
 
+import org.robovm.llvm.Context;
+import org.robovm.llvm.Module;
+import org.robovm.llvm.Target;
+import org.robovm.llvm.TargetMachine;
+
 
 /**
  *
@@ -38,6 +43,29 @@ public class StructureType extends AggregateType {
     @Override
     public Type getTypeAt(int index) {
         return types[index];
+    }
+    
+    public int getAllocSize(String triple) {
+        Context context = null;
+        Module module = null;
+        TargetMachine targetMachine = null;
+        try {
+            context = new Context();
+            module = Module.parseIR(context, "%t = type " + getDefinition(), null);
+            Target target = Target.lookupTarget(triple);
+            targetMachine = target.createTargetMachine(triple);
+            return (int) targetMachine.getDataLayout().getTypeAllocSize(module.getTypeByName("t"));
+        } finally {
+            if (module != null) {
+                module.dispose();
+            }
+            if (context != null) {
+                context.dispose();
+            }
+            if (targetMachine != null) {
+                targetMachine.dispose();
+            }
+        }
     }
     
     @Override

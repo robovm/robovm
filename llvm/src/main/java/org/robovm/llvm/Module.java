@@ -47,6 +47,11 @@ public class Module {
         ref = null;
     }
     
+    public Type getTypeByName(String name) {
+        checkDisposed();
+        return new Type(LLVM.GetTypeByName(ref, name));
+    }
+    
     public void writeBitcode(File file) {
         checkDisposed();
         if (LLVM.WriteBitcodeToFile(ref, file.getAbsolutePath()) != 0) {
@@ -93,13 +98,13 @@ public class Module {
     }
     
     public static Module parseIR(Context context, byte[] data, String filename) {
+        filename = filename == null ? "" : filename;
         MemoryBufferRef memoryBufferRef = LLVM.CreateMemoryBufferWithMemoryRangeCopy(data, filename);
         if (memoryBufferRef == null) {
             throw new LlvmException("Failed to create memory buffer");
         }
         ModuleRefOut moduleRefOut = new ModuleRefOut();
         StringOut errorMessage = new StringOut();
-        filename = filename == null ? "" : filename;
         // LLVMParseIRInContext() takes ownership of the MemoryBuffer so there's no need for us
         // to dispose of it
         if (!LLVM.ParseIRInContext(context.ref, memoryBufferRef, moduleRefOut, errorMessage)) {

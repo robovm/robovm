@@ -51,6 +51,11 @@ public class TargetMachine {
         return new Target(LLVM.GetTargetMachineTarget(ref));
     }
     
+    public DataLayout getDataLayout() {
+        checkDisposed();
+        return new DataLayout(LLVM.GetTargetMachineData(ref));
+    }
+    
     public TargetOptions getOptions() {
         return new TargetOptions(LLVM.GetTargetMachineTargetOptions(ref));
     }

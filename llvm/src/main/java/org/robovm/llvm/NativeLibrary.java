@@ -33,7 +33,7 @@ public class NativeLibrary {
     private static boolean loaded = false;
     private static final String os;
     private static final String arch;
-    private static final String libName = System.mapLibraryName("robovm-llvm");
+    private static final String libName;
 
     static {
         String osProp = System.getProperty("os.name").toLowerCase();
@@ -52,6 +52,8 @@ public class NativeLibrary {
         } else {
             throw new Error("Unsupported arch: " + System.getProperty("os.arch"));
         }
+        
+        libName = "librobovm-llvm" + (os.equals("macosx") ? ".dylib" : ".so");
     }
     
     public static synchronized void load() {

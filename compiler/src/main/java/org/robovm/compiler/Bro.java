@@ -43,6 +43,8 @@ import soot.tagkit.AnnotationTag;
 import soot.tagkit.InnerClassTag;
 import soot.tagkit.SignatureTag;
 import soot.tagkit.Tag;
+import soot.tagkit.VisibilityAnnotationTag;
+import soot.tagkit.VisibilityParameterAnnotationTag;
 
 /**
  * 
@@ -563,5 +565,29 @@ public abstract class Bro {
         public SootMethod getSetter() {
             return setter;
         }
+    }
+    
+    public static SootMethod createFakeStructRetMethod(SootMethod originalMethod) {
+        // Create a new method with the same parameters but a @StructRet parameter inserted first
+        @SuppressWarnings("unchecked")
+        ArrayList<soot.Type> newParameterTypes = new ArrayList<soot.Type>(originalMethod.getParameterTypes());
+        newParameterTypes.add(0, originalMethod.getReturnType());
+        SootMethod method = new SootMethod(originalMethod.getName(), newParameterTypes, VoidType.v(), originalMethod.getModifiers());
+        method.setDeclaringClass(originalMethod.getDeclaringClass());
+        method.setDeclared(true);
+        // Copy all parameter annotations from the original method to the copy
+        VisibilityParameterAnnotationTag vpaTag = new VisibilityParameterAnnotationTag(newParameterTypes.size(), 0);
+        VisibilityAnnotationTag vaTag = new VisibilityAnnotationTag(0);
+        vaTag.addAnnotation(new AnnotationTag(STRUCT_RET, 0));
+        vpaTag.addVisibilityAnnotation(vaTag);
+        for (int i = 0; i < originalMethod.getParameterCount(); i++) {
+            vaTag = new VisibilityAnnotationTag(0);
+            for (AnnotationTag tag : getParameterAnnotations(originalMethod, i)) {
+                vaTag.addAnnotation(tag);
+            }
+            vpaTag.addVisibilityAnnotation(vaTag);
+        }
+        method.addTag(vpaTag);
+        return method;
     }
 }

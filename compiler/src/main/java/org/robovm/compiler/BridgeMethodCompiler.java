@@ -28,7 +28,9 @@ import static org.robovm.compiler.llvm.Type.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
+import org.robovm.compiler.config.OS;
 import org.robovm.compiler.llvm.Argument;
 import org.robovm.compiler.llvm.BasicBlockRef;
 import org.robovm.compiler.llvm.Br;
@@ -52,6 +54,7 @@ import org.robovm.compiler.llvm.Value;
 import org.robovm.compiler.llvm.Variable;
 import org.robovm.compiler.llvm.VariableRef;
 import org.robovm.compiler.trampoline.Invokestatic;
+import org.robovm.compiler.trampoline.LdcClass;
 
 import soot.SootClass;
 import soot.SootMethod;
@@ -86,24 +89,67 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
 
         Function outerFn = FunctionBuilder.method(method);
         moduleBuilder.addFunction(outerFn);
-        Function innerFn = FunctionBuilder.bridgeInner(method);
-        moduleBuilder.addFunction(innerFn);
         
-        Type[] parameterTypes = innerFn.getType().getParameterTypes();
-        String[] parameterNames = innerFn.getParameterNames();
+        Type[] parameterTypes = outerFn.getType().getParameterTypes();
+        String[] parameterNames = outerFn.getParameterNames();
         ArrayList<Argument> args = new ArrayList<Argument>();
         for (int i = 0; i < parameterTypes.length; i++) {
             args.add(new Argument(new VariableRef(parameterNames[i], parameterTypes[i])));
         }
         
+        SootMethod originalMethod = method;
+        if (isPassByValue(originalMethod)) {
+            // The method returns a struct by value. Determine whether that struct
+            // is small enough to be passed in a register or has to be returned
+            // using a @StructRet parameter.
+            
+            Arch arch = config.getArch();
+            OS os = config.getOs();
+            String triple = config.getTriple();
+            if (getStructType(originalMethod.getReturnType()).getAllocSize(triple) > os.getMaxRegisterReturnSize(arch)) {
+                method = createFakeStructRetMethod(method);
+                
+                // Call Struct.allocate(<returnType>) to allocate a struct instance
+                // which will be used as return value.
+                VariableRef env = outerFn.getParameterRef(0);
+                LdcClass ldcClass = new LdcClass(getInternalName(method.getDeclaringClass()), 
+                        getInternalName(originalMethod.getReturnType()));
+                trampolines.add(ldcClass);
+                Value cls = call(outerFn, ldcClass.getFunctionRef(), env);
+                Invokestatic invokestatic = new Invokestatic(
+                        getInternalName(method.getDeclaringClass()), "org/robovm/rt/bro/Struct", 
+                        "allocate", "(Ljava/lang/Class;)Lorg/robovm/rt/bro/Struct;");
+                trampolines.add(invokestatic);
+                Value structObj = call(outerFn, invokestatic.getFunctionRef(), env, cls);
+    
+                // Insert the allocated struct as arg 1 (first arg is always the Env*)
+                args.add(1, new Argument(structObj));
+            }
+        }
+        
+        Function innerFn = FunctionBuilder.bridgeInner(method);
+        moduleBuilder.addFunction(innerFn);
+        
         Value resultOuter = callWithArguments(outerFn, innerFn.ref(), args);
-        outerFn.add(new Ret(resultOuter));
+        if (method != originalMethod) {
+            outerFn.add(new Ret(args.get(1).getValue()));
+        } else {
+            outerFn.add(new Ret(resultOuter));
+        }
 
+        // Recreate the args for the inner function.
+        parameterTypes = innerFn.getType().getParameterTypes();
+        parameterNames = innerFn.getParameterNames();
+        args = new ArrayList<Argument>();
+        for (int i = 0; i < parameterTypes.length; i++) {
+            args.add(new Argument(new VariableRef(parameterNames[i], parameterTypes[i])));
+        }
+        
         FunctionType targetFnType = getBridgeFunctionType(method);
 
         // Load the address of the resolved @Bridge method
         Variable targetFn = innerFn.newVariable(targetFnType);
-        Global targetFnPtr = new Global(getTargetFnPtrName(method), 
+        Global targetFnPtr = new Global(getTargetFnPtrName(originalMethod), 
                 _private, new NullConstant(I8_PTR));
         moduleBuilder.addGlobal(targetFnPtr);
         innerFn.add(new Load(targetFn, new ConstantBitcast(targetFnPtr.ref(), new PointerType(targetFnType))));
@@ -117,7 +163,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         VariableRef env = innerFn.getParameterRef(0);
         call(innerFn, BC_THROW_UNSATISIFED_LINK_ERROR, env,
                 moduleBuilder.getString(String.format("Bridge method %s.%s%s not bound", className,
-                        method.getName(), getDescriptor(method))));
+                        originalMethod.getName(), getDescriptor(originalMethod))));
         innerFn.add(new Unreachable());
         innerFn.newBasicBlock(notNullLabel);
         
@@ -139,8 +185,8 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         List<MarshaledArg> marshaledArgs = new ArrayList<MarshaledArg>();
         
         Type[] targetParameterTypes = targetFnType.getParameterTypes();
-        for (int i = 0; i < sootMethod.getParameterCount(); i++) {
-            soot.Type type = sootMethod.getParameterType(i);
+        for (int i = 0; i < method.getParameterCount(); i++) {
+            soot.Type type = method.getParameterType(i);
             if (needsMarshaler(type)) {
 
                 String marshalerClassName = getMarshalerClassName(method, i, false);
@@ -197,7 +243,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         // Call Marshaler.updateObject() or Marshaler.updatePtr() for each object that was marshaled before
         // the call.
         for (MarshaledArg value : marshaledArgs) {
-            soot.Type type = sootMethod.getParameterType(value.paramIndex);
+            soot.Type type = method.getParameterType(value.paramIndex);
             String marshalerClassName = getMarshalerClassName(method, value.paramIndex, true);
             if (isPtr(type)) {
                 // Call the Marshaler's updatePtr() method

@@ -29,6 +29,7 @@ public class Function {
     private final String name;
     private final Linkage linkage;
     private final FunctionAttribute[] attributes;
+    private final ParameterAttribute[][] parameterAttributes;
     private final String section;
     private final FunctionType type;
     private final Map<Label, BasicBlock> basicBlockMap = new HashMap<Label, BasicBlock>();
@@ -51,6 +52,7 @@ public class Function {
             }
         }
         this.parameterNames = parameterNames;
+        this.parameterAttributes = new ParameterAttribute[type.getParameterTypes().length][];
     }
 
     public FunctionRef ref() {
@@ -79,6 +81,10 @@ public class Function {
     
     public String[] getParameterNames() {
         return parameterNames.clone();
+    }
+    
+    public void setParameterAttributes(int paramIndex, ParameterAttribute ... attributes) {
+        parameterAttributes[paramIndex] = attributes.clone();
     }
     
     String getLabel(BasicBlock bb) {
@@ -157,6 +163,12 @@ public class Function {
                 sb.append(", ");
             }
             sb.append(parameterTypes[i].toString());
+            if (parameterAttributes[i] != null) {
+                for (ParameterAttribute attrib : parameterAttributes[i]) {
+                    sb.append(' ');
+                    sb.append(attrib);
+                }
+            }
             sb.append(" %");
             sb.append(parameterNames[i]);
         }

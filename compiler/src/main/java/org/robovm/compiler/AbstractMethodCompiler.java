@@ -28,16 +28,24 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
+import org.robovm.compiler.config.OS;
+import org.robovm.compiler.llvm.Alias;
 import org.robovm.compiler.llvm.Alloca;
 import org.robovm.compiler.llvm.BasicBlockRef;
+import org.robovm.compiler.llvm.Bitcast;
+import org.robovm.compiler.llvm.BooleanConstant;
+import org.robovm.compiler.llvm.ConstantBitcast;
 import org.robovm.compiler.llvm.Function;
 import org.robovm.compiler.llvm.FunctionRef;
 import org.robovm.compiler.llvm.FunctionType;
 import org.robovm.compiler.llvm.IntegerConstant;
 import org.robovm.compiler.llvm.Inttoptr;
 import org.robovm.compiler.llvm.Label;
+import org.robovm.compiler.llvm.Linkage;
 import org.robovm.compiler.llvm.Load;
+import org.robovm.compiler.llvm.ParameterAttribute;
 import org.robovm.compiler.llvm.PointerType;
 import org.robovm.compiler.llvm.PrimitiveType;
 import org.robovm.compiler.llvm.Ptrtoint;
@@ -60,12 +68,14 @@ import soot.SootMethod;
  * @version $Id$
  */
 public abstract class AbstractMethodCompiler {
+    protected Config config;
     protected String className;
     protected SootMethod sootMethod;
     protected Set<Trampoline> trampolines;
     protected Set<String> catches;
     
     public AbstractMethodCompiler(Config config) {
+        this.config = config;
     }
     
     public Set<Trampoline> getTrampolines() {
@@ -145,14 +155,36 @@ public abstract class AbstractMethodCompiler {
     private void compileCallback(ModuleBuilder moduleBuilder, SootMethod method) {
         validateCallbackMethod(method);
 
+        SootMethod originalMethod = method;
+        if (isPassByValue(originalMethod)) {
+            // The method returns a struct by value. Determine whether that struct
+            // is small enough to be passed in a register or has to be returned
+            // using a @StructRet parameter.
+            
+            Arch arch = config.getArch();
+            OS os = config.getOs();
+            String triple = config.getTriple();
+            if (getStructType(originalMethod.getReturnType()).getAllocSize(triple) > os.getMaxRegisterReturnSize(arch)) {
+                method = createFakeStructRetMethod(method);
+            }
+        }
+        
         Function callbackFn = FunctionBuilder.callback(method);
+        if (originalMethod != method) {
+            callbackFn.setParameterAttributes(0, ParameterAttribute.sret);
+            // ClassCompiler assumes that the callback function has the same type as
+            // the Java method. Add an alias that casts the callback function to the
+            // type assumed by ClassCompiler.
+            moduleBuilder.addAlias(new Alias(mangleMethod(originalMethod) + "_callback", 
+                    Linkage._private, new ConstantBitcast(callbackFn.ref(), getCallbackFunctionType(originalMethod))));
+        }
         moduleBuilder.addFunction(callbackFn);
 
-        String targetName = mangleMethod(method);
-        if (method.isSynchronized()) {
+        String targetName = mangleMethod(originalMethod);
+        if (originalMethod.isSynchronized()) {
             targetName += "_synchronized";
         }
-        FunctionRef targetFn = new FunctionRef(targetName, getFunctionType(method));
+        FunctionRef targetFn = new FunctionRef(targetName, getFunctionType(originalMethod));
         
         // Increase the attach count for the current thread (attaches the thread
         // if not attached)
@@ -169,9 +201,12 @@ public abstract class AbstractMethodCompiler {
         ArrayList<Value> args = new ArrayList<Value>();
         args.add(env);
         
-        for (int i = 0; i < sootMethod.getParameterCount(); i++) {
+        // Skip the first parameter if we're returning a large struct by value.
+        int start = originalMethod == method ? 0 : 1;
+        
+        for (int i = start; i < method.getParameterCount(); i++) {
             Value arg = callbackFn.getParameterRef(i);
-            soot.Type type = sootMethod.getParameterType(i);
+            soot.Type type = method.getParameterType(i);
             
             if (needsMarshaler(type)) {
                 String marshalerClassName = getMarshalerClassName(method, i, true);
@@ -231,6 +266,23 @@ public abstract class AbstractMethodCompiler {
             }
         } else if (hasPointerAnnotation(method)) {
             result = marshalLongToPointer(callbackFn, result);
+        } else if (originalMethod != method) {
+            // The original method returns a large struct by value. The callback
+            // function takes a struct allocated on the stack by the caller as
+            // it's first parameter. We need to copy the struct which the Java
+            // method returned to the struct passed in by the caller.
+            String marshalerClassName = getMarshalerClassName(originalMethod, false);
+            PointerType nativeType = (PointerType) callbackFn.getType().getParameterTypes()[0];
+            Value addr = marshalObjectToNative(callbackFn, marshalerClassName, null, nativeType, env, result);
+            Variable src = callbackFn.newVariable(I8_PTR);
+            Variable dest = callbackFn.newVariable(I8_PTR);
+            callbackFn.add(new Bitcast(src, addr, I8_PTR));
+            callbackFn.add(new Bitcast(dest, callbackFn.getParameterRef(0), I8_PTR));
+            call(callbackFn, LLVM_MEMCPY, dest.ref(), src.ref(), 
+                    sizeof((StructureType) nativeType.getBase()), new IntegerConstant(0), BooleanConstant.FALSE);
+            
+            // Make sure the callback returns void.
+            result = null;
         }
         
         trycatchLeave(callbackFn, env);

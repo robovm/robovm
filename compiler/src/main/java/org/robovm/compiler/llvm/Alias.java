@@ -26,11 +26,11 @@ public class Alias {
     private final Linkage linkage;
     private final Constant value;
 
-    public Alias(String name, FunctionRef aliasee) {
+    public Alias(String name, Constant aliasee) {
         this(name, null, aliasee);
     }
     
-    public Alias(String name, Linkage linkage, FunctionRef aliasee) {
+    public Alias(String name, Linkage linkage, Constant aliasee) {
         this.name = name;
         this.linkage = linkage;
         this.value = aliasee;

@@ -93,6 +93,7 @@ public class Functions {
     public static final FunctionRef BC_TRYCATCH_LEAVE = new FunctionRef("_bcTrycatchLeave", new FunctionType(VOID, ENV_PTR));
 
     public static final FunctionRef LLVM_FRAMEADDRESS = new FunctionRef("llvm.frameaddress", new FunctionType(I8_PTR, I32));
+    public static final FunctionRef LLVM_MEMCPY = new FunctionRef("llvm.memcpy.p0i8.p0i8.i32", new FunctionType(VOID, I8_PTR, I8_PTR, I32, I32, I1));
 
     public static final FunctionRef REGISTER_FINALIZABLE = new FunctionRef("register_finalizable", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
     public static final FunctionRef CHECK_NULL = new FunctionRef("checknull", new FunctionType(I8, ENV_PTR, OBJECT_PTR));

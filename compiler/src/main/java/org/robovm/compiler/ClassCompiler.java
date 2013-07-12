@@ -267,7 +267,7 @@ public class ClassCompiler {
         OS os = config.getOs();
 
         try {
-            config.getLogger().debug("Compiling %s (%s)", clazz, arch);
+            config.getLogger().debug("Compiling %s (%s %s)", clazz, os, arch);
             output.reset();
             compile(clazz, output);
         } catch (Throwable t) {
@@ -289,7 +289,7 @@ public class ClassCompiler {
         passManager.run(module);
         passManager.dispose();
 
-        String triple = arch.getLlvmName() + "-unknown-" + os;
+        String triple = config.getTriple();
         Target target = Target.lookupTarget(triple);
         TargetMachine targetMachine = target.createTargetMachine(triple);
         targetMachine.setAsmVerbosityDefault(true);

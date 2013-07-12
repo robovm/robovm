@@ -159,6 +159,10 @@ public class Config {
         return arch;
     }
 
+    public String getTriple() {
+        return arch.getLlvmName() + "-unknown-" + os;
+    }
+    
     public boolean isClean() {
         return clean;
     }

@@ -102,7 +102,9 @@ public class Mangler {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < name.length(); i++) {
             char c = name.charAt(i);
-            if (c == '_') {
+            if (c >= '0' && c <= '9' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z') {
+                sb.append(c);
+            } else if (c == '_') {
                 sb.append("_1");
             } else if (c == ';') {
                 sb.append("_2");
@@ -110,10 +112,8 @@ public class Mangler {
                 sb.append("_3");
             } else if (c == '/') {
                 sb.append("_");
-            } else if (c > 0x7f) {
-                sb.append(String.format("_0%04x", (int) c));
             } else {
-                sb.append(c);
+                sb.append(String.format("_0%04x", (int) c));
             }
         }
         return sb.toString();

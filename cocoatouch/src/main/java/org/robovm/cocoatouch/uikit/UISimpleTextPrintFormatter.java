@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UISimpleTextPrintFormatter /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UISimpleTextPrintFormatter /*</name>*/.class);
 
     /*<constructors>*/
@@ -55,7 +54,7 @@ import org.robovm.rt.bro.ptr.*;
     public UISimpleTextPrintFormatter() {}
     
     private static final Selector initWithText$ = Selector.register("initWithText:");
-    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithText(UISimpleTextPrintFormatter __self__, Selector __cmd__, String text);
+    @Bridge private native static @Pointer long objc_initWithText(UISimpleTextPrintFormatter __self__, Selector __cmd__, String text);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISimpleTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instm/UISimpleTextPrintFormatter/initWithText:">- (id)initWithText:(NSString *)text</a>
      * @since Available in iOS 4.2 and later.
@@ -68,8 +67,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector color = Selector.register("color");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getColor(UISimpleTextPrintFormatter __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getColorSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIColor objc_getColor(UISimpleTextPrintFormatter __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_getColorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISimpleTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UISimpleTextPrintFormatter/color">@property(nonatomic, retain) UIColor *color</a>
      * @since Available in iOS 4.2 and later.
@@ -90,8 +89,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector font = Selector.register("font");
-    @Bridge(symbol = "objc_msgSend") private native static UIFont objc_getFont(UISimpleTextPrintFormatter __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIFont objc_getFontSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIFont objc_getFont(UISimpleTextPrintFormatter __self__, Selector __cmd__);
+    @Bridge private native static UIFont objc_getFontSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISimpleTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UISimpleTextPrintFormatter/font">@property(nonatomic, retain) UIFont *font</a>
      * @since Available in iOS 4.2 and later.
@@ -112,8 +111,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector lineBreakMode = Selector.register("lineBreakMode");
-    @Bridge(symbol = "objc_msgSend") private native static UILineBreakMode objc_getLineBreakMode(UISimpleTextPrintFormatter __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UILineBreakMode objc_getLineBreakModeSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UILineBreakMode objc_getLineBreakMode(UISimpleTextPrintFormatter __self__, Selector __cmd__);
+    @Bridge private native static UILineBreakMode objc_getLineBreakModeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISimpleTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UISimpleTextPrintFormatter/lineBreakMode">@property(nonatomic) UILineBreakMode lineBreakMode</a>
      */
@@ -132,8 +131,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector text = Selector.register("text");
-    @Bridge(symbol = "objc_msgSend") private native static String objc_getText(UISimpleTextPrintFormatter __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getTextSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static String objc_getText(UISimpleTextPrintFormatter __self__, Selector __cmd__);
+    @Bridge private native static String objc_getTextSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISimpleTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UISimpleTextPrintFormatter/text">@property(nonatomic, copy) NSString *text</a>
      * @since Available in iOS 4.2 and later.
@@ -154,8 +153,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector textAlignment = Selector.register("textAlignment");
-    @Bridge(symbol = "objc_msgSend") private native static UITextAlignment objc_getTextAlignment(UISimpleTextPrintFormatter __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UITextAlignment objc_getTextAlignmentSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UITextAlignment objc_getTextAlignment(UISimpleTextPrintFormatter __self__, Selector __cmd__);
+    @Bridge private native static UITextAlignment objc_getTextAlignmentSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISimpleTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UISimpleTextPrintFormatter/textAlignment">@property(nonatomic) UITextAlignment textAlignment</a>
      * @since Available in iOS 4.2 and later.

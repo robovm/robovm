@@ -76,7 +76,6 @@ import org.robovm.rt.bro.ptr.*;
         }
     }
     
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSObject /*</name>*/.class);
 
     @Override
@@ -120,8 +119,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector description = Selector.register("description");
-    @Bridge(symbol = "objc_msgSend") private native static String objc_description(NSObject __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_descriptionSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static String objc_description(NSObject __self__, Selector __cmd__);
+    @Bridge private native static String objc_descriptionSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Protocols/NSObject_Protocol/Reference/NSObject.html#//apple_ref/occ/intfm/NSObject/description">- (NSString *)description</a>
      * @since Available in iOS 2.0 and later.
@@ -131,8 +130,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector hash = Selector.register("hash");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_hash(NSObject __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_hashSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static int objc_hash(NSObject __self__, Selector __cmd__);
+    @Bridge private native static int objc_hashSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Protocols/NSObject_Protocol/Reference/NSObject.html#//apple_ref/occ/intfm/NSObject/hash">- (NSUInteger)hash</a>
      * @since Available in iOS 2.0 and later.
@@ -142,7 +141,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector init = Selector.register("init");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_init(NSObject __self__, Selector __cmd__);
+    @Bridge private native static NSObject objc_init(NSObject __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSObject_Class/Reference/Reference.html#//apple_ref/occ/instm/NSObject/init">- (id)init</a>
      * @since Available in iOS 2.0 and later.
@@ -152,8 +151,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isEqual$ = Selector.register("isEqual:");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isEqual(NSObject __self__, Selector __cmd__, NSObject anObject);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isEqualSuper(ObjCSuper __super__, Selector __cmd__, NSObject anObject);
+    @Bridge private native static boolean objc_isEqual(NSObject __self__, Selector __cmd__, NSObject anObject);
+    @Bridge private native static boolean objc_isEqualSuper(ObjCSuper __super__, Selector __cmd__, NSObject anObject);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Protocols/NSObject_Protocol/Reference/NSObject.html#//apple_ref/occ/intfm/NSObject/isEqual:">- (BOOL)isEqual:(id)anObject</a>
      * @since Available in iOS 2.0 and later.
@@ -163,8 +162,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector release = Selector.register("release");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_release(NSObject __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_releaseSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_release(NSObject __self__, Selector __cmd__);
+    @Bridge private native static void objc_releaseSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Protocols/NSObject_Protocol/Reference/NSObject.html#//apple_ref/occ/intfm/NSObject/release">- (oneway void)release</a>
      * @since Available in iOS 2.0 and later.
@@ -174,8 +173,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector retain = Selector.register("retain");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_retain(NSObject __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSObject objc_retainSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static NSObject objc_retain(NSObject __self__, Selector __cmd__);
+    @Bridge private native static NSObject objc_retainSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Protocols/NSObject_Protocol/Reference/NSObject.html#//apple_ref/occ/intfm/NSObject/retain">- (id)retain</a>
      * @since Available in iOS 2.0 and later.

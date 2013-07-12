@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIMenuItem /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIMenuItem /*</name>*/.class);
 
     /*<constructors>*/
@@ -55,7 +54,7 @@ import org.robovm.rt.bro.ptr.*;
     public UIMenuItem() {}
     
     private static final Selector initWithTitle$action$ = Selector.register("initWithTitle:action:");
-    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithTitle(UIMenuItem __self__, Selector __cmd__, String title, Selector action);
+    @Bridge private native static @Pointer long objc_initWithTitle(UIMenuItem __self__, Selector __cmd__, String title, Selector action);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIMenuItem_Class/Reference/MenuItem.html#//apple_ref/occ/instm/UIMenuItem/initWithTitle:action:">- (id)initWithTitle:(NSString *)title action:(SEL)action</a>
      * @since Available in iOS 3.2 and later.
@@ -68,8 +67,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector action = Selector.register("action");
-    @Bridge(symbol = "objc_msgSend") private native static Selector objc_getAction(UIMenuItem __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static Selector objc_getActionSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static Selector objc_getAction(UIMenuItem __self__, Selector __cmd__);
+    @Bridge private native static Selector objc_getActionSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIMenuItem_Class/Reference/MenuItem.html#//apple_ref/occ/instp/UIMenuItem/action">@property SEL action</a>
      * @since Available in iOS 3.2 and later.
@@ -90,8 +89,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector title = Selector.register("title");
-    @Bridge(symbol = "objc_msgSend") private native static String objc_getTitle(UIMenuItem __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getTitleSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static String objc_getTitle(UIMenuItem __self__, Selector __cmd__);
+    @Bridge private native static String objc_getTitleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIMenuItem_Class/Reference/MenuItem.html#//apple_ref/occ/instp/UIMenuItem/title">@property(copy) NSString *title</a>
      * @since Available in iOS 3.2 and later.

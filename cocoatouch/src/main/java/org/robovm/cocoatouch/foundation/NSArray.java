@@ -71,7 +71,6 @@ import org.robovm.rt.bro.ptr.*;
         }
     }
     
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSArray /*</name>*/.class);
 
     private AbstractList<T> adapter = createAdapter();
@@ -203,8 +202,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector containsObject$ = Selector.register("containsObject:");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_containsObject(NSArray __self__, Selector __cmd__, NSObject anObject);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_containsObjectSuper(ObjCSuper __super__, Selector __cmd__, NSObject anObject);
+    @Bridge private native static boolean objc_containsObject(NSArray __self__, Selector __cmd__, NSObject anObject);
+    @Bridge private native static boolean objc_containsObjectSuper(ObjCSuper __super__, Selector __cmd__, NSObject anObject);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSArray_Class/NSArray.html#//apple_ref/occ/instm/NSArray/containsObject:">- (BOOL)containsObject:(id)anObject</a>
      * @since Available in iOS 2.0 and later.
@@ -214,8 +213,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector count = Selector.register("count");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_count(NSArray __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_countSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static int objc_count(NSArray __self__, Selector __cmd__);
+    @Bridge private native static int objc_countSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSArray_Class/NSArray.html#//apple_ref/occ/instm/NSArray/count">- (NSUInteger)count</a>
      * @since Available in iOS 2.0 and later.
@@ -225,8 +224,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector indexOfObject$ = Selector.register("indexOfObject:");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_indexOfObject(NSArray __self__, Selector __cmd__, NSObject anObject);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_indexOfObjectSuper(ObjCSuper __super__, Selector __cmd__, NSObject anObject);
+    @Bridge private native static int objc_indexOfObject(NSArray __self__, Selector __cmd__, NSObject anObject);
+    @Bridge private native static int objc_indexOfObjectSuper(ObjCSuper __super__, Selector __cmd__, NSObject anObject);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSArray_Class/NSArray.html#//apple_ref/occ/instm/NSArray/indexOfObject:">- (NSUInteger)indexOfObject:(id)anObject</a>
      * @since Available in iOS 2.0 and later.
@@ -236,8 +235,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector initWithArray$ = Selector.register("initWithArray:");
-    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithArray(NSArray __self__, Selector __cmd__, NSArray anArray);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @Pointer long objc_initWithArraySuper(ObjCSuper __super__, Selector __cmd__, NSArray anArray);
+    @Bridge private native static @Pointer long objc_initWithArray(NSArray __self__, Selector __cmd__, NSArray anArray);
+    @Bridge private native static @Pointer long objc_initWithArraySuper(ObjCSuper __super__, Selector __cmd__, NSArray anArray);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSArray_Class/NSArray.html#//apple_ref/occ/instm/NSArray/initWithArray:">- (id)initWithArray:(NSArray *)anArray</a>
      * @since Available in iOS 2.0 and later.
@@ -247,8 +246,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector initWithObjects$count$ = Selector.register("initWithObjects:count:");
-    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithObjects(NSArray __self__, Selector __cmd__, @Pointer long objects, int count);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @Pointer long objc_initWithObjectsSuper(ObjCSuper __super__, Selector __cmd__, @Pointer long objects, int count);
+    @Bridge private native static @Pointer long objc_initWithObjects(NSArray __self__, Selector __cmd__, @Pointer long objects, int count);
+    @Bridge private native static @Pointer long objc_initWithObjectsSuper(ObjCSuper __super__, Selector __cmd__, @Pointer long objects, int count);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSArray_Class/NSArray.html#//apple_ref/occ/instm/NSArray/initWithObjects:count:">- (id)initWithObjects:(const id[])objects count:(NSUInteger)count</a>
      * @since Available in iOS 2.0 and later.
@@ -258,8 +257,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector objectAtIndex$ = Selector.register("objectAtIndex:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_objectAtIndex(NSArray __self__, Selector __cmd__, int index);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSObject objc_objectAtIndexSuper(ObjCSuper __super__, Selector __cmd__, int index);
+    @Bridge private native static NSObject objc_objectAtIndex(NSArray __self__, Selector __cmd__, int index);
+    @Bridge private native static NSObject objc_objectAtIndexSuper(ObjCSuper __super__, Selector __cmd__, int index);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSArray_Class/NSArray.html#//apple_ref/occ/instm/NSArray/objectAtIndex:">- (id)objectAtIndex:(NSUInteger)index</a>
      * @since Available in iOS 2.0 and later.
@@ -269,8 +268,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector subarrayWithRange$ = Selector.register("subarrayWithRange:");
-    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_subarrayWithRange(NSArray __self__, Selector __cmd__, @ByVal NSRange range);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_subarrayWithRangeSuper(ObjCSuper __super__, Selector __cmd__, @ByVal NSRange range);
+    @Bridge private native static NSArray objc_subarrayWithRange(NSArray __self__, Selector __cmd__, @ByVal NSRange range);
+    @Bridge private native static NSArray objc_subarrayWithRangeSuper(ObjCSuper __super__, Selector __cmd__, @ByVal NSRange range);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSArray_Class/NSArray.html#//apple_ref/occ/instm/NSArray/subarrayWithRange:">- (NSArray *)subarrayWithRange:(NSRange)range</a>
      * @since Available in iOS 2.0 and later.

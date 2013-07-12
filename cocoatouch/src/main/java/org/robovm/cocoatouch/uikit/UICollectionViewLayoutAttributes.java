@@ -46,7 +46,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UICollectionViewLayoutAttributes /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UICollectionViewLayoutAttributes /*</name>*/.class);
 
     /*<constructors>*/
@@ -57,8 +56,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector alpha = Selector.register("alpha");
-    @Bridge(symbol = "objc_msgSend") private native static float objc_getAlpha(UICollectionViewLayoutAttributes __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getAlphaSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static float objc_getAlpha(UICollectionViewLayoutAttributes __self__, Selector __cmd__);
+    @Bridge private native static float objc_getAlphaSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayoutAttributes_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewLayoutAttributes/alpha">@property (nonatomic) CGFloat alpha;</a>
      * @since Available in iOS 6.0 and later.
@@ -79,16 +78,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector center = Selector.register("center");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGPoint objc_getCenter(UICollectionViewLayoutAttributes __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getCenter_stret(@StructRet CGPoint __ret__, UICollectionViewLayoutAttributes __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGPoint objc_getCenterSuper(ObjCSuper __super__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getCenterSuper_stret(@StructRet CGPoint __ret__, ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static @ByVal CGPoint objc_getCenter(UICollectionViewLayoutAttributes __self__, Selector __cmd__);
+    @Bridge private native static @ByVal CGPoint objc_getCenterSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayoutAttributes_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewLayoutAttributes/center">@property (nonatomic) CGPoint center;</a>
      * @since Available in iOS 6.0 and later.
      */
     public CGPoint getCenter() {
-        if (X86) { if (customClass) { return objc_getCenterSuper(getSuper(), center); } else { return objc_getCenter(this, center); } } else { CGPoint __ret__ = new CGPoint(); if (customClass) { objc_getCenterSuper_stret(__ret__, getSuper(), center); } else { objc_getCenter_stret(__ret__, this, center); } return __ret__; }
+        if (customClass) { return objc_getCenterSuper(getSuper(), center); } else { return objc_getCenter(this, center); }
     }
     
     private static final Selector setCenter$ = Selector.register("setCenter:");
@@ -103,14 +100,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector frame = Selector.register("frame");
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getFrame_stret(@StructRet CGRect __ret__, UICollectionViewLayoutAttributes __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getFrameSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static @ByVal CGRect objc_getFrame(UICollectionViewLayoutAttributes __self__, Selector __cmd__);
+    @Bridge private native static @ByVal CGRect objc_getFrameSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayoutAttributes_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewLayoutAttributes/frame">@property (nonatomic) CGRect frame;</a>
      * @since Available in iOS 6.0 and later.
      */
     public CGRect getFrame() {
-        CGRect __ret__ = new CGRect(); if (customClass) { objc_getFrameSuper_stret(__ret__, getSuper(), frame); } else { objc_getFrame_stret(__ret__, this, frame); } return __ret__;
+        if (customClass) { return objc_getFrameSuper(getSuper(), frame); } else { return objc_getFrame(this, frame); }
     }
     
     private static final Selector setFrame$ = Selector.register("setFrame:");
@@ -125,8 +122,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isHidden = Selector.register("isHidden");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isHidden(UICollectionViewLayoutAttributes __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isHiddenSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isHidden(UICollectionViewLayoutAttributes __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isHiddenSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayoutAttributes_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewLayoutAttributes/hidden">@property (nonatomic, getter=isHidden) BOOL hidden;</a>
      * @since Available in iOS 6.0 and later.
@@ -147,8 +144,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector indexPath = Selector.register("indexPath");
-    @Bridge(symbol = "objc_msgSend") private native static NSIndexPath objc_getIndexPath(UICollectionViewLayoutAttributes __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSIndexPath objc_getIndexPathSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static NSIndexPath objc_getIndexPath(UICollectionViewLayoutAttributes __self__, Selector __cmd__);
+    @Bridge private native static NSIndexPath objc_getIndexPathSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayoutAttributes_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewLayoutAttributes/indexPath">@property (nonatomic, retain) NSIndexPath *indexPath;</a>
      * @since Available in iOS 6.0 and later.
@@ -169,8 +166,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector representedElementCategory = Selector.register("representedElementCategory");
-    @Bridge(symbol = "objc_msgSend") private native static UICollectionElementCategory objc_getRepresentedElementCategory(UICollectionViewLayoutAttributes __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UICollectionElementCategory objc_getRepresentedElementCategorySuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UICollectionElementCategory objc_getRepresentedElementCategory(UICollectionViewLayoutAttributes __self__, Selector __cmd__);
+    @Bridge private native static UICollectionElementCategory objc_getRepresentedElementCategorySuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayoutAttributes_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewLayoutAttributes/representedElementCategory">@property (nonatomic, readonly) UICollectionElementCategory representedElementCategory;</a>
      * @since Available in iOS 6.0 and later.
@@ -180,8 +177,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector representedElementKind = Selector.register("representedElementKind");
-    @Bridge(symbol = "objc_msgSend") private native static String objc_getRepresentedElementKind(UICollectionViewLayoutAttributes __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getRepresentedElementKindSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static String objc_getRepresentedElementKind(UICollectionViewLayoutAttributes __self__, Selector __cmd__);
+    @Bridge private native static String objc_getRepresentedElementKindSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayoutAttributes_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewLayoutAttributes/representedElementKind">@property (nonatomic, readonly) NSString *representedElementKind;</a>
      * @since Available in iOS 6.0 and later.
@@ -191,16 +188,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector size = Selector.register("size");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGSize objc_getSize(UICollectionViewLayoutAttributes __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getSize_stret(@StructRet CGSize __ret__, UICollectionViewLayoutAttributes __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGSize objc_getSizeSuper(ObjCSuper __super__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getSizeSuper_stret(@StructRet CGSize __ret__, ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static @ByVal CGSize objc_getSize(UICollectionViewLayoutAttributes __self__, Selector __cmd__);
+    @Bridge private native static @ByVal CGSize objc_getSizeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayoutAttributes_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewLayoutAttributes/size">@property (nonatomic) CGSize size;</a>
      * @since Available in iOS 6.0 and later.
      */
     public CGSize getSize() {
-        if (X86) { if (customClass) { return objc_getSizeSuper(getSuper(), size); } else { return objc_getSize(this, size); } } else { CGSize __ret__ = new CGSize(); if (customClass) { objc_getSizeSuper_stret(__ret__, getSuper(), size); } else { objc_getSize_stret(__ret__, this, size); } return __ret__; }
+        if (customClass) { return objc_getSizeSuper(getSuper(), size); } else { return objc_getSize(this, size); }
     }
     
     private static final Selector setSize$ = Selector.register("setSize:");
@@ -215,14 +210,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector transform3D = Selector.register("transform3D");
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getTransform3D_stret(@StructRet CATransform3D __ret__, UICollectionViewLayoutAttributes __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getTransform3DSuper_stret(@StructRet CATransform3D __ret__, ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static @ByVal CATransform3D objc_getTransform3D(UICollectionViewLayoutAttributes __self__, Selector __cmd__);
+    @Bridge private native static @ByVal CATransform3D objc_getTransform3DSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayoutAttributes_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewLayoutAttributes/transform3D">@property (nonatomic) CATransform3D transform3D;</a>
      * @since Available in iOS 6.0 and later.
      */
     public CATransform3D getTransform3D() {
-        CATransform3D __ret__ = new CATransform3D(); if (customClass) { objc_getTransform3DSuper_stret(__ret__, getSuper(), transform3D); } else { objc_getTransform3D_stret(__ret__, this, transform3D); } return __ret__;
+        if (customClass) { return objc_getTransform3DSuper(getSuper(), transform3D); } else { return objc_getTransform3D(this, transform3D); }
     }
     
     private static final Selector setTransform3D$ = Selector.register("setTransform3D:");
@@ -237,8 +232,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector zIndex = Selector.register("zIndex");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_getZIndex(UICollectionViewLayoutAttributes __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getZIndexSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static int objc_getZIndex(UICollectionViewLayoutAttributes __self__, Selector __cmd__);
+    @Bridge private native static int objc_getZIndexSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayoutAttributes_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewLayoutAttributes/zIndex">@property (nonatomic) NSInteger zIndex;</a>
      * @since Available in iOS 6.0 and later.
@@ -261,7 +256,7 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector layoutAttributesForCellWithIndexPath$ = Selector.register("layoutAttributesForCellWithIndexPath:");
-    @Bridge(symbol = "objc_msgSend") private native static UICollectionViewLayoutAttributes objc_createForCell(ObjCClass __self__, Selector __cmd__, NSIndexPath indexPath);
+    @Bridge private native static UICollectionViewLayoutAttributes objc_createForCell(ObjCClass __self__, Selector __cmd__, NSIndexPath indexPath);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayoutAttributes_class/Reference/Reference.html#//apple_ref/occ/clm/UICollectionViewLayoutAttributes/layoutAttributesForCellWithIndexPath:">+ (instancetype)layoutAttributesForCellWithIndexPath:(NSIndexPath *)indexPath</a>
      * @since Available in iOS 6.0 and later.
@@ -271,7 +266,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector layoutAttributesForDecorationViewOfKind$withIndexPath$ = Selector.register("layoutAttributesForDecorationViewOfKind:withIndexPath:");
-    @Bridge(symbol = "objc_msgSend") private native static UICollectionViewLayoutAttributes objc_createForDecorationView(ObjCClass __self__, Selector __cmd__, String decorationViewKind, NSIndexPath indexPath);
+    @Bridge private native static UICollectionViewLayoutAttributes objc_createForDecorationView(ObjCClass __self__, Selector __cmd__, String decorationViewKind, NSIndexPath indexPath);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayoutAttributes_class/Reference/Reference.html#//apple_ref/occ/clm/UICollectionViewLayoutAttributes/layoutAttributesForDecorationViewOfKind:withIndexPath:">+ (instancetype)layoutAttributesForDecorationViewOfKind:(NSString *)decorationViewKind withIndexPath:(NSIndexPath*)indexPath</a>
      * @since Available in iOS 6.0 and later.
@@ -281,7 +276,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector layoutAttributesForSupplementaryViewOfKind$withIndexPath$ = Selector.register("layoutAttributesForSupplementaryViewOfKind:withIndexPath:");
-    @Bridge(symbol = "objc_msgSend") private native static UICollectionViewLayoutAttributes objc_createForSupplementaryView(ObjCClass __self__, Selector __cmd__, String elementKind, NSIndexPath indexPath);
+    @Bridge private native static UICollectionViewLayoutAttributes objc_createForSupplementaryView(ObjCClass __self__, Selector __cmd__, String elementKind, NSIndexPath indexPath);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayoutAttributes_class/Reference/Reference.html#//apple_ref/occ/clm/UICollectionViewLayoutAttributes/layoutAttributesForSupplementaryViewOfKind:withIndexPath:">+ (instancetype)layoutAttributesForSupplementaryViewOfKind:(NSString *)elementKind withIndexPath:(NSIndexPath *)indexPath</a>
      * @since Available in iOS 6.0 and later.

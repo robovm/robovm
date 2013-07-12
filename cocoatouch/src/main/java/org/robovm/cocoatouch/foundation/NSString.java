@@ -54,7 +54,6 @@ import org.robovm.rt.VM;
 
     private static String EMPTY_STRING = "";
     private static final long STRING_VALUE_OFFSET;    
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSString /*</name>*/.class);
 
     public NSString(String s) {
@@ -85,7 +84,7 @@ import org.robovm.rt.VM;
     public NSString() {}
     
     private static final Selector initWithCharactersNoCopy$length$freeWhenDone$ = Selector.register("initWithCharactersNoCopy:length:freeWhenDone:");
-    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithCharactersNoCopy(NSString __self__, Selector __cmd__, @Pointer long characters, int length, boolean flag);
+    @Bridge private native static @Pointer long objc_initWithCharactersNoCopy(NSString __self__, Selector __cmd__, @Pointer long characters, int length, boolean flag);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSString_Class/Reference/NSString.html#//apple_ref/occ/instm/NSString/initWithCharactersNoCopy:length:freeWhenDone:">- (id)initWithCharactersNoCopy:(unichar *)characters length:(NSUInteger)length freeWhenDone:(BOOL)flag</a>
      * @since Available in iOS 2.0 and later.
@@ -101,8 +100,8 @@ import org.robovm.rt.VM;
     /*<methods>*/
     
     private static final Selector characterAtIndex$ = Selector.register("characterAtIndex:");
-    @Bridge(symbol = "objc_msgSend") private native static char objc_characterAtIndex(NSString __self__, Selector __cmd__, int index);
-    @Bridge(symbol = "objc_msgSendSuper") private native static char objc_characterAtIndexSuper(ObjCSuper __super__, Selector __cmd__, int index);
+    @Bridge private native static char objc_characterAtIndex(NSString __self__, Selector __cmd__, int index);
+    @Bridge private native static char objc_characterAtIndexSuper(ObjCSuper __super__, Selector __cmd__, int index);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSString_Class/Reference/NSString.html#//apple_ref/occ/instm/NSString/characterAtIndex:">- (unichar)characterAtIndex:(NSUInteger)index</a>
      * @since Available in iOS 2.0 and later.
@@ -112,7 +111,7 @@ import org.robovm.rt.VM;
     }
     
     private static final Selector getCharacters$range$ = Selector.register("getCharacters:range:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_getCharacters(NSString __self__, Selector __cmd__, @Pointer long buffer, @ByVal NSRange aRange);
+    @Bridge private native static void objc_getCharacters(NSString __self__, Selector __cmd__, @Pointer long buffer, @ByVal NSRange aRange);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSString_Class/Reference/NSString.html#//apple_ref/occ/instm/NSString/getCharacters:range:">- (void)getCharacters:(unichar *)buffer range:(NSRange)aRange</a>
      * @since Available in iOS 2.0 and later.
@@ -122,8 +121,8 @@ import org.robovm.rt.VM;
     }
     
     private static final Selector length = Selector.register("length");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_length(NSString __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_lengthSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static int objc_length(NSString __self__, Selector __cmd__);
+    @Bridge private native static int objc_lengthSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSString_Class/Reference/NSString.html#//apple_ref/occ/instm/NSString/length">- (NSUInteger)length</a>
      * @since Available in iOS 2.0 and later.

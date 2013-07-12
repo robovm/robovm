@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UITableViewController /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITableViewController /*</name>*/.class);
 
     /*<constructors>*/
@@ -55,7 +54,7 @@ import org.robovm.rt.bro.ptr.*;
     public UITableViewController() {}
     
     private static final Selector initWithStyle$ = Selector.register("initWithStyle:");
-    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithStyle(UITableViewController __self__, Selector __cmd__, UITableViewStyle style);
+    @Bridge private native static @Pointer long objc_initWithStyle(UITableViewController __self__, Selector __cmd__, UITableViewStyle style);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewController/initWithStyle:">- (id)initWithStyle:(UITableViewStyle)style</a>
      * @since Available in iOS 2.0 and later.
@@ -68,8 +67,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector clearsSelectionOnViewWillAppear = Selector.register("clearsSelectionOnViewWillAppear");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isClearsSelectionOnViewWillAppear(UITableViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isClearsSelectionOnViewWillAppearSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isClearsSelectionOnViewWillAppear(UITableViewController __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isClearsSelectionOnViewWillAppearSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewController/clearsSelectionOnViewWillAppear">@property(nonatomic) BOOL clearsSelectionOnViewWillAppear</a>
      * @since Available in iOS 3.2 and later.
@@ -90,8 +89,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector refreshControl = Selector.register("refreshControl");
-    @Bridge(symbol = "objc_msgSend") private native static UIRefreshControl objc_getRefreshControl(UITableViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIRefreshControl objc_getRefreshControlSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIRefreshControl objc_getRefreshControl(UITableViewController __self__, Selector __cmd__);
+    @Bridge private native static UIRefreshControl objc_getRefreshControlSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewController/refreshControl">@property (nonatomic,retain) UIRefreshControl *refreshControl</a>
      * @since Available in iOS 6.0 and later.
@@ -112,8 +111,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector tableView = Selector.register("tableView");
-    @Bridge(symbol = "objc_msgSend") private native static UITableView objc_getTableView(UITableViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UITableView objc_getTableViewSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UITableView objc_getTableView(UITableViewController __self__, Selector __cmd__);
+    @Bridge private native static UITableView objc_getTableViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewController/tableView">@property(nonatomic, retain) UITableView *tableView</a>
      * @since Available in iOS 2.0 and later.

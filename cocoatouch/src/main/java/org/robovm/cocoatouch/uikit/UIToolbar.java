@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIToolbar /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIToolbar /*</name>*/.class);
 
     public UIToolbar(CGRect aRect) {
@@ -61,8 +60,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector barStyle = Selector.register("barStyle");
-    @Bridge(symbol = "objc_msgSend") private native static UIBarStyle objc_getBarStyle(UIToolbar __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIBarStyle objc_getBarStyleSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIBarStyle objc_getBarStyle(UIToolbar __self__, Selector __cmd__);
+    @Bridge private native static UIBarStyle objc_getBarStyleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIToolbar_Class/Reference/Reference.html#//apple_ref/occ/instp/UIToolbar/barStyle">@property(nonatomic) UIBarStyle barStyle</a>
      * @since Available in iOS 2.0 and later.
@@ -83,8 +82,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector items = Selector.register("items");
-    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getItems(UIToolbar __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getItemsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getItems(UIToolbar __self__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getItemsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIToolbar_Class/Reference/Reference.html#//apple_ref/occ/instp/UIToolbar/items">@property(nonatomic, copy) NSArray *items</a>
      * @since Available in iOS 2.0 and later.
@@ -105,8 +104,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector tintColor = Selector.register("tintColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getTintColor(UIToolbar __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getTintColorSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIColor objc_getTintColor(UIToolbar __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_getTintColorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIToolbar_Class/Reference/Reference.html#//apple_ref/occ/instp/UIToolbar/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 2.0 and later.
@@ -127,8 +126,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isTranslucent = Selector.register("isTranslucent");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isTranslucent(UIToolbar __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isTranslucentSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isTranslucent(UIToolbar __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isTranslucentSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIToolbar_Class/Reference/Reference.html#//apple_ref/occ/instp/UIToolbar/translucent">@property(nonatomic, assign, getter=isTranslucent) BOOL translucent</a>
      * @since Available in iOS 3.0 and later.
@@ -151,8 +150,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector backgroundImageForToolbarPosition$barMetrics$ = Selector.register("backgroundImageForToolbarPosition:barMetrics:");
-    @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getBackgroundImage(UIToolbar __self__, Selector __cmd__, UIToolbarPosition topOrBottom, UIBarMetrics barMetrics);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getBackgroundImageSuper(ObjCSuper __super__, Selector __cmd__, UIToolbarPosition topOrBottom, UIBarMetrics barMetrics);
+    @Bridge private native static UIImage objc_getBackgroundImage(UIToolbar __self__, Selector __cmd__, UIToolbarPosition topOrBottom, UIBarMetrics barMetrics);
+    @Bridge private native static UIImage objc_getBackgroundImageSuper(ObjCSuper __super__, Selector __cmd__, UIToolbarPosition topOrBottom, UIBarMetrics barMetrics);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIToolbar_Class/Reference/Reference.html#//apple_ref/occ/instm/UIToolbar/backgroundImageForToolbarPosition:barMetrics:">- (UIImage *)backgroundImageForToolbarPosition:(UIToolbarPosition)topOrBottom barMetrics:(UIBarMetrics)barMetrics</a>
      * @since Available in iOS 5.0 and later.
@@ -162,8 +161,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector shadowImageForToolbarPosition$ = Selector.register("shadowImageForToolbarPosition:");
-    @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getShadowImage(UIToolbar __self__, Selector __cmd__, UIToolbarPosition topOrBottom);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getShadowImageSuper(ObjCSuper __super__, Selector __cmd__, UIToolbarPosition topOrBottom);
+    @Bridge private native static UIImage objc_getShadowImage(UIToolbar __self__, Selector __cmd__, UIToolbarPosition topOrBottom);
+    @Bridge private native static UIImage objc_getShadowImageSuper(ObjCSuper __super__, Selector __cmd__, UIToolbarPosition topOrBottom);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIToolbar_Class/Reference/Reference.html#//apple_ref/occ/instm/UIToolbar/shadowImageForToolbarPosition:">- (UIImage *)shadowImageForToolbarPosition:(UIToolbarPosition)topOrBottom</a>
      * @since Available in iOS 6.0 and later.
@@ -173,8 +172,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setBackgroundImage$forToolbarPosition$barMetrics$ = Selector.register("setBackgroundImage:forToolbarPosition:barMetrics:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setBackgroundImage(UIToolbar __self__, Selector __cmd__, UIImage backgroundImage, UIToolbarPosition topOrBottom, UIBarMetrics barMetrics);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBackgroundImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage backgroundImage, UIToolbarPosition topOrBottom, UIBarMetrics barMetrics);
+    @Bridge private native static void objc_setBackgroundImage(UIToolbar __self__, Selector __cmd__, UIImage backgroundImage, UIToolbarPosition topOrBottom, UIBarMetrics barMetrics);
+    @Bridge private native static void objc_setBackgroundImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage backgroundImage, UIToolbarPosition topOrBottom, UIBarMetrics barMetrics);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIToolbar_Class/Reference/Reference.html#//apple_ref/occ/instm/UIToolbar/setBackgroundImage:forToolbarPosition:barMetrics:">- (void)setBackgroundImage:(UIImage *)backgroundImage forToolbarPosition:(UIToolbarPosition)topOrBottom barMetrics:(UIBarMetrics)barMetrics</a>
      * @since Available in iOS 5.0 and later.
@@ -184,8 +183,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setItems$animated$ = Selector.register("setItems:animated:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setItems(UIToolbar __self__, Selector __cmd__, NSArray items, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setItemsSuper(ObjCSuper __super__, Selector __cmd__, NSArray items, boolean animated);
+    @Bridge private native static void objc_setItems(UIToolbar __self__, Selector __cmd__, NSArray items, boolean animated);
+    @Bridge private native static void objc_setItemsSuper(ObjCSuper __super__, Selector __cmd__, NSArray items, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIToolbar_Class/Reference/Reference.html#//apple_ref/occ/instm/UIToolbar/setItems:animated:">- (void)setItems:(NSArray *)items animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
@@ -195,8 +194,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setShadowImage$forToolbarPosition$ = Selector.register("setShadowImage:forToolbarPosition:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setShadowImage(UIToolbar __self__, Selector __cmd__, UIImage shadowImage, UIToolbarPosition topOrBottom);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShadowImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage shadowImage, UIToolbarPosition topOrBottom);
+    @Bridge private native static void objc_setShadowImage(UIToolbar __self__, Selector __cmd__, UIImage shadowImage, UIToolbarPosition topOrBottom);
+    @Bridge private native static void objc_setShadowImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage shadowImage, UIToolbarPosition topOrBottom);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIToolbar_Class/Reference/Reference.html#//apple_ref/occ/instm/UIToolbar/setShadowImage:forToolbarPosition:">- (void)setShadowImage:(UIImage *)shadowImage forToolbarPosition:(UIToolbarPosition)topOrBottom</a>
      * @since Available in iOS 6.0 and later.

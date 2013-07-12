@@ -42,7 +42,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ NSBundle /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSBundle /*</name>*/.class);
 
     /*<constructors>*/
@@ -56,7 +55,7 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector mainBundle = Selector.register("mainBundle");
-    @Bridge(symbol = "objc_msgSend") private native static NSBundle objc_getMainBundle(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static NSBundle objc_getMainBundle(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSBundle_Class/Reference/Reference.html#//apple_ref/occ/clm/NSBundle/mainBundle">+ (NSBundle *)mainBundle</a>
      * @since Available in iOS 2.0 and later.
@@ -66,8 +65,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector bundlePath = Selector.register("bundlePath");
-    @Bridge(symbol = "objc_msgSend") private native static String objc_getBundlePath(NSBundle __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getBundlePathSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static String objc_getBundlePath(NSBundle __self__, Selector __cmd__);
+    @Bridge private native static String objc_getBundlePathSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSBundle_Class/Reference/Reference.html#//apple_ref/occ/instm/NSBundle/bundlePath">- (NSString *)bundlePath</a>
      * @since Available in iOS 2.0 and later.
@@ -77,8 +76,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector resourcePath = Selector.register("resourcePath");
-    @Bridge(symbol = "objc_msgSend") private native static String objc_getResourcePath(NSBundle __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getResourcePathSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static String objc_getResourcePath(NSBundle __self__, Selector __cmd__);
+    @Bridge private native static String objc_getResourcePathSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSBundle_Class/Reference/Reference.html#//apple_ref/occ/instm/NSBundle/resourcePath">- (NSString *)resourcePath</a>
      * @since Available in iOS 2.0 and later.

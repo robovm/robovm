@@ -45,7 +45,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ GLKView /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ GLKView /*</name>*/.class);
 
     public GLKView(CGRect aRect) {
@@ -56,7 +55,7 @@ import org.robovm.rt.bro.ptr.*;
     public GLKView() {}
     
     private static final Selector initWithFrame$context$ = Selector.register("initWithFrame:context:");
-    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithFrame(GLKView __self__, Selector __cmd__, @ByVal CGRect frame, EAGLContext context);
+    @Bridge private native static @Pointer long objc_initWithFrame(GLKView __self__, Selector __cmd__, @ByVal CGRect frame, EAGLContext context);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKView_ClassReference/Reference/Reference.html#//apple_ref/occ/instm/GLKView/initWithFrame:context:">- (id)initWithFrame:(CGRect)frame context:(EAGLContext *)context</a>
      * @since Available in iOS 5.0 and later.
@@ -69,8 +68,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector context = Selector.register("context");
-    @Bridge(symbol = "objc_msgSend") private native static EAGLContext objc_getContext(GLKView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static EAGLContext objc_getContextSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static EAGLContext objc_getContext(GLKView __self__, Selector __cmd__);
+    @Bridge private native static EAGLContext objc_getContextSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKView_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/GLKView/context">@property(nonatomic, retain) EAGLContext *context</a>
      * @since Available in iOS 5.0 and later.
@@ -91,8 +90,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector delegate = Selector.register("delegate");
-    @Bridge(symbol = "objc_msgSend") private native static GLKViewDelegate objc_getDelegate(GLKView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static GLKViewDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static GLKViewDelegate objc_getDelegate(GLKView __self__, Selector __cmd__);
+    @Bridge private native static GLKViewDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKView_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/GLKView/delegate">@property(nonatomic, assign) id&amp;lt;GLKViewDelegate&amp;gt; delegate</a>
      * @since Available in iOS 5.0 and later.
@@ -113,8 +112,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector drawableColorFormat = Selector.register("drawableColorFormat");
-    @Bridge(symbol = "objc_msgSend") private native static GLKViewDrawableColorFormat objc_getDrawableColorFormat(GLKView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static GLKViewDrawableColorFormat objc_getDrawableColorFormatSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static GLKViewDrawableColorFormat objc_getDrawableColorFormat(GLKView __self__, Selector __cmd__);
+    @Bridge private native static GLKViewDrawableColorFormat objc_getDrawableColorFormatSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKView_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/GLKView/drawableColorFormat">@property(nonatomic) GLKViewDrawableColorFormat drawableColorFormat</a>
      * @since Available in iOS 5.0 and later.
@@ -135,8 +134,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector drawableDepthFormat = Selector.register("drawableDepthFormat");
-    @Bridge(symbol = "objc_msgSend") private native static GLKViewDrawableDepthFormat objc_getDrawableDepthFormat(GLKView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static GLKViewDrawableDepthFormat objc_getDrawableDepthFormatSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static GLKViewDrawableDepthFormat objc_getDrawableDepthFormat(GLKView __self__, Selector __cmd__);
+    @Bridge private native static GLKViewDrawableDepthFormat objc_getDrawableDepthFormatSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKView_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/GLKView/drawableDepthFormat">@property(nonatomic) GLKViewDrawableDepthFormat drawableDepthFormat</a>
      * @since Available in iOS 5.0 and later.
@@ -157,8 +156,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector drawableHeight = Selector.register("drawableHeight");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_getDrawableHeight(GLKView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getDrawableHeightSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static int objc_getDrawableHeight(GLKView __self__, Selector __cmd__);
+    @Bridge private native static int objc_getDrawableHeightSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKView_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/GLKView/drawableHeight">@property(nonatomic, readonly) NSInteger drawableHeight</a>
      * @since Available in iOS 5.0 and later.
@@ -168,8 +167,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector drawableMultisample = Selector.register("drawableMultisample");
-    @Bridge(symbol = "objc_msgSend") private native static GLKViewDrawableMultisample objc_getDrawableMultisample(GLKView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static GLKViewDrawableMultisample objc_getDrawableMultisampleSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static GLKViewDrawableMultisample objc_getDrawableMultisample(GLKView __self__, Selector __cmd__);
+    @Bridge private native static GLKViewDrawableMultisample objc_getDrawableMultisampleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKView_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/GLKView/drawableMultisample">@property(nonatomic) GLKViewDrawableMultisample drawableMultisample</a>
      * @since Available in iOS 5.0 and later.
@@ -190,8 +189,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector drawableStencilFormat = Selector.register("drawableStencilFormat");
-    @Bridge(symbol = "objc_msgSend") private native static GLKViewDrawableStencilFormat objc_getDrawableStencilFormat(GLKView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static GLKViewDrawableStencilFormat objc_getDrawableStencilFormatSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static GLKViewDrawableStencilFormat objc_getDrawableStencilFormat(GLKView __self__, Selector __cmd__);
+    @Bridge private native static GLKViewDrawableStencilFormat objc_getDrawableStencilFormatSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKView_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/GLKView/drawableStencilFormat">@property(nonatomic) GLKViewDrawableStencilFormat drawableStencilFormat</a>
      * @since Available in iOS 5.0 and later.
@@ -212,8 +211,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector drawableWidth = Selector.register("drawableWidth");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_getDrawableWidth(GLKView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getDrawableWidthSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static int objc_getDrawableWidth(GLKView __self__, Selector __cmd__);
+    @Bridge private native static int objc_getDrawableWidthSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKView_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/GLKView/drawableWidth">@property(nonatomic, readonly) NSInteger drawableWidth</a>
      * @since Available in iOS 5.0 and later.
@@ -223,8 +222,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector enableSetNeedsDisplay = Selector.register("enableSetNeedsDisplay");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isEnableSetNeedsDisplay(GLKView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isEnableSetNeedsDisplaySuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isEnableSetNeedsDisplay(GLKView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isEnableSetNeedsDisplaySuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKView_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/GLKView/enableSetNeedsDisplay">@property(nonatomic) BOOL enableSetNeedsDisplay</a>
      * @since Available in iOS 5.0 and later.
@@ -247,8 +246,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector bindDrawable = Selector.register("bindDrawable");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_bindDrawable(GLKView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_bindDrawableSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_bindDrawable(GLKView __self__, Selector __cmd__);
+    @Bridge private native static void objc_bindDrawableSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKView_ClassReference/Reference/Reference.html#//apple_ref/occ/instm/GLKView/bindDrawable">- (void)bindDrawable</a>
      * @since Available in iOS 5.0 and later.
@@ -258,8 +257,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector deleteDrawable = Selector.register("deleteDrawable");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_deleteDrawable(GLKView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_deleteDrawableSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_deleteDrawable(GLKView __self__, Selector __cmd__);
+    @Bridge private native static void objc_deleteDrawableSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKView_ClassReference/Reference/Reference.html#//apple_ref/occ/instm/GLKView/deleteDrawable">- (void)deleteDrawable</a>
      * @since Available in iOS 5.0 and later.
@@ -269,8 +268,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector display = Selector.register("display");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_display(GLKView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_displaySuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_display(GLKView __self__, Selector __cmd__);
+    @Bridge private native static void objc_displaySuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKView_ClassReference/Reference/Reference.html#//apple_ref/occ/instm/GLKView/display">- (void)display</a>
      * @since Available in iOS 5.0 and later.
@@ -280,8 +279,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector snapshot = Selector.register("snapshot");
-    @Bridge(symbol = "objc_msgSend") private native static UIImage objc_snapshot(GLKView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_snapshotSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIImage objc_snapshot(GLKView __self__, Selector __cmd__);
+    @Bridge private native static UIImage objc_snapshotSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKView_ClassReference/Reference/Reference.html#//apple_ref/occ/instm/GLKView/snapshot">- (UIImage *)snapshot</a>
      * @since Available in iOS 5.0 and later.

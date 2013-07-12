@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIMarkupTextPrintFormatter /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIMarkupTextPrintFormatter /*</name>*/.class);
 
     /*<constructors>*/
@@ -55,7 +54,7 @@ import org.robovm.rt.bro.ptr.*;
     public UIMarkupTextPrintFormatter() {}
     
     private static final Selector initWithMarkupText$ = Selector.register("initWithMarkupText:");
-    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithMarkupText(UIMarkupTextPrintFormatter __self__, Selector __cmd__, String markupText);
+    @Bridge private native static @Pointer long objc_initWithMarkupText(UIMarkupTextPrintFormatter __self__, Selector __cmd__, String markupText);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIMarkupTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instm/UIMarkupTextPrintFormatter/initWithMarkupText:">- (id)initWithMarkupText:(NSString *)markupText</a>
      * @since Available in iOS 4.2 and later.
@@ -68,8 +67,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector markupText = Selector.register("markupText");
-    @Bridge(symbol = "objc_msgSend") private native static String objc_getMarkupText(UIMarkupTextPrintFormatter __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getMarkupTextSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static String objc_getMarkupText(UIMarkupTextPrintFormatter __self__, Selector __cmd__);
+    @Bridge private native static String objc_getMarkupTextSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIMarkupTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIMarkupTextPrintFormatter/markupText">@property(nonatomic, copy) NSString *markupText</a>
      * @since Available in iOS 4.2 and later.

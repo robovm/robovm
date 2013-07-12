@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UITabBarItem /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITabBarItem /*</name>*/.class);
 
     /*<constructors>*/
@@ -55,7 +54,7 @@ import org.robovm.rt.bro.ptr.*;
     public UITabBarItem() {}
     
     private static final Selector initWithTabBarSystemItem$tag$ = Selector.register("initWithTabBarSystemItem:tag:");
-    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithTabBarSystemItem(UITabBarItem __self__, Selector __cmd__, UITabBarSystemItem systemItem, int tag);
+    @Bridge private native static @Pointer long objc_initWithTabBarSystemItem(UITabBarItem __self__, Selector __cmd__, UITabBarSystemItem systemItem, int tag);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarItem_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBarItem/initWithTabBarSystemItem:tag:">- (id)initWithTabBarSystemItem:(UITabBarSystemItem)systemItem tag:(NSInteger)tag</a>
      * @since Available in iOS 2.0 and later.
@@ -66,7 +65,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector initWithTitle$image$tag$ = Selector.register("initWithTitle:image:tag:");
-    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithTitle(UITabBarItem __self__, Selector __cmd__, String title, UIImage image, int tag);
+    @Bridge private native static @Pointer long objc_initWithTitle(UITabBarItem __self__, Selector __cmd__, String title, UIImage image, int tag);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarItem_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBarItem/initWithTitle:image:tag:">- (id)initWithTitle:(NSString *)title image:(UIImage *)image tag:(NSInteger)tag</a>
      * @since Available in iOS 2.0 and later.
@@ -79,8 +78,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector badgeValue = Selector.register("badgeValue");
-    @Bridge(symbol = "objc_msgSend") private native static String objc_getBadgeValue(UITabBarItem __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getBadgeValueSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static String objc_getBadgeValue(UITabBarItem __self__, Selector __cmd__);
+    @Bridge private native static String objc_getBadgeValueSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarItem/badgeValue">@property(nonatomic, copy) NSString *badgeValue</a>
      * @since Available in iOS 2.0 and later.
@@ -103,8 +102,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector finishedSelectedImage = Selector.register("finishedSelectedImage");
-    @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getFinishedSelectedImage(UITabBarItem __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getFinishedSelectedImageSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIImage objc_getFinishedSelectedImage(UITabBarItem __self__, Selector __cmd__);
+    @Bridge private native static UIImage objc_getFinishedSelectedImageSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarItem_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBarItem/finishedSelectedImage">- (UIImage *)finishedSelectedImage</a>
      * @since Available in iOS 5.0 and later.
@@ -114,8 +113,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector finishedUnselectedImage = Selector.register("finishedUnselectedImage");
-    @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getFinishedUnselectedImage(UITabBarItem __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getFinishedUnselectedImageSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIImage objc_getFinishedUnselectedImage(UITabBarItem __self__, Selector __cmd__);
+    @Bridge private native static UIImage objc_getFinishedUnselectedImageSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarItem_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBarItem/finishedUnselectedImage">- (UIImage *)finishedUnselectedImage</a>
      * @since Available in iOS 5.0 and later.
@@ -125,21 +124,19 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector titlePositionAdjustment = Selector.register("titlePositionAdjustment");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal UIOffset objc_getTitlePositionAdjustment(UITabBarItem __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getTitlePositionAdjustment_stret(@StructRet UIOffset __ret__, UITabBarItem __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal UIOffset objc_getTitlePositionAdjustmentSuper(ObjCSuper __super__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getTitlePositionAdjustmentSuper_stret(@StructRet UIOffset __ret__, ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static @ByVal UIOffset objc_getTitlePositionAdjustment(UITabBarItem __self__, Selector __cmd__);
+    @Bridge private native static @ByVal UIOffset objc_getTitlePositionAdjustmentSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarItem_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBarItem/titlePositionAdjustment">- (UIOffset)titlePositionAdjustment</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIOffset getTitlePositionAdjustment() {
-        if (X86) { if (customClass) { return objc_getTitlePositionAdjustmentSuper(getSuper(), titlePositionAdjustment); } else { return objc_getTitlePositionAdjustment(this, titlePositionAdjustment); } } else { UIOffset __ret__ = new UIOffset(); if (customClass) { objc_getTitlePositionAdjustmentSuper_stret(__ret__, getSuper(), titlePositionAdjustment); } else { objc_getTitlePositionAdjustment_stret(__ret__, this, titlePositionAdjustment); } return __ret__; }
+        if (customClass) { return objc_getTitlePositionAdjustmentSuper(getSuper(), titlePositionAdjustment); } else { return objc_getTitlePositionAdjustment(this, titlePositionAdjustment); }
     }
     
     private static final Selector setFinishedSelectedImage$withFinishedUnselectedImage$ = Selector.register("setFinishedSelectedImage:withFinishedUnselectedImage:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setFinishedImages(UITabBarItem __self__, Selector __cmd__, UIImage selectedImage, UIImage unselectedImage);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setFinishedImagesSuper(ObjCSuper __super__, Selector __cmd__, UIImage selectedImage, UIImage unselectedImage);
+    @Bridge private native static void objc_setFinishedImages(UITabBarItem __self__, Selector __cmd__, UIImage selectedImage, UIImage unselectedImage);
+    @Bridge private native static void objc_setFinishedImagesSuper(ObjCSuper __super__, Selector __cmd__, UIImage selectedImage, UIImage unselectedImage);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarItem_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBarItem/setFinishedSelectedImage:withFinishedUnselectedImage:">- (void)setFinishedSelectedImage:(UIImage *)selectedImage withFinishedUnselectedImage:(UIImage *)unselectedImage</a>
      * @since Available in iOS 5.0 and later.
@@ -149,8 +146,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTitlePositionAdjustment$ = Selector.register("setTitlePositionAdjustment:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTitlePositionAdjustment(UITabBarItem __self__, Selector __cmd__, @ByVal UIOffset adjustment);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTitlePositionAdjustmentSuper(ObjCSuper __super__, Selector __cmd__, @ByVal UIOffset adjustment);
+    @Bridge private native static void objc_setTitlePositionAdjustment(UITabBarItem __self__, Selector __cmd__, @ByVal UIOffset adjustment);
+    @Bridge private native static void objc_setTitlePositionAdjustmentSuper(ObjCSuper __super__, Selector __cmd__, @ByVal UIOffset adjustment);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarItem_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBarItem/setTitlePositionAdjustment:">- (void)setTitlePositionAdjustment:(UIOffset)adjustment</a>
      * @since Available in iOS 5.0 and later.

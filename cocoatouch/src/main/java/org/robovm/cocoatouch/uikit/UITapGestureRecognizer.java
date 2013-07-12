@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UITapGestureRecognizer /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITapGestureRecognizer /*</name>*/.class);
 
     /*<constructors>*/
@@ -58,8 +57,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector numberOfTapsRequired = Selector.register("numberOfTapsRequired");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_getNumberOfTapsRequired(UITapGestureRecognizer __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getNumberOfTapsRequiredSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static int objc_getNumberOfTapsRequired(UITapGestureRecognizer __self__, Selector __cmd__);
+    @Bridge private native static int objc_getNumberOfTapsRequiredSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITapGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UITapGestureRecognizer/numberOfTapsRequired">@property(nonatomic) NSUInteger numberOfTapsRequired</a>
      * @since Available in iOS 3.2 and later.
@@ -80,8 +79,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector numberOfTouchesRequired = Selector.register("numberOfTouchesRequired");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_getNumberOfTouchesRequired(UITapGestureRecognizer __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getNumberOfTouchesRequiredSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static int objc_getNumberOfTouchesRequired(UITapGestureRecognizer __self__, Selector __cmd__);
+    @Bridge private native static int objc_getNumberOfTouchesRequiredSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITapGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UITapGestureRecognizer/numberOfTouchesRequired">@property(nonatomic) NSUInteger numberOfTouchesRequired</a>
      * @since Available in iOS 3.2 and later.

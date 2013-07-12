@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UITabBar /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITabBar /*</name>*/.class);
 
     public UITabBar(CGRect aRect) {
@@ -61,8 +60,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector backgroundImage = Selector.register("backgroundImage");
-    @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getBackgroundImage(UITabBar __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getBackgroundImageSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIImage objc_getBackgroundImage(UITabBar __self__, Selector __cmd__);
+    @Bridge private native static UIImage objc_getBackgroundImageSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/backgroundImage">@property(nonatomic, retain) UIImage *backgroundImage</a>
      * @since Available in iOS 5.0 and later.
@@ -83,8 +82,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector delegate = Selector.register("delegate");
-    @Bridge(symbol = "objc_msgSend") private native static UITabBarDelegate objc_getDelegate(UITabBar __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UITabBarDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UITabBarDelegate objc_getDelegate(UITabBar __self__, Selector __cmd__);
+    @Bridge private native static UITabBarDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/delegate">@property(nonatomic, assign) id&amp;lt;UITabBarDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
@@ -105,8 +104,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector items = Selector.register("items");
-    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getItems(UITabBar __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getItemsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getItems(UITabBar __self__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getItemsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/items">@property(nonatomic, copy) NSArray *items</a>
      * @since Available in iOS 2.0 and later.
@@ -127,8 +126,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector selectedImageTintColor = Selector.register("selectedImageTintColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getSelectedImageTintColor(UITabBar __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getSelectedImageTintColorSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIColor objc_getSelectedImageTintColor(UITabBar __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_getSelectedImageTintColorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/selectedImageTintColor">@property(nonatomic, retain) UIColor *selectedImageTintColor</a>
      * @since Available in iOS 5.0 and later.
@@ -149,8 +148,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector selectedItem = Selector.register("selectedItem");
-    @Bridge(symbol = "objc_msgSend") private native static UITabBarItem objc_getSelectedItem(UITabBar __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UITabBarItem objc_getSelectedItemSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UITabBarItem objc_getSelectedItem(UITabBar __self__, Selector __cmd__);
+    @Bridge private native static UITabBarItem objc_getSelectedItemSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/selectedItem">@property(nonatomic, assign) UITabBarItem *selectedItem</a>
      * @since Available in iOS 2.0 and later.
@@ -171,8 +170,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector selectionIndicatorImage = Selector.register("selectionIndicatorImage");
-    @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getSelectionIndicatorImage(UITabBar __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getSelectionIndicatorImageSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIImage objc_getSelectionIndicatorImage(UITabBar __self__, Selector __cmd__);
+    @Bridge private native static UIImage objc_getSelectionIndicatorImageSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/selectionIndicatorImage">@property(nonatomic, retain) UIImage *selectionIndicatorImage</a>
      * @since Available in iOS 5.0 and later.
@@ -193,8 +192,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector shadowImage = Selector.register("shadowImage");
-    @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getShadowImage(UITabBar __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getShadowImageSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIImage objc_getShadowImage(UITabBar __self__, Selector __cmd__);
+    @Bridge private native static UIImage objc_getShadowImageSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/shadowImage">@property(nonatomic,retain) UIImage *shadowImage</a>
      * @since Available in iOS 6.0 and later.
@@ -215,8 +214,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector tintColor = Selector.register("tintColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getTintColor(UITabBar __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getTintColorSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIColor objc_getTintColor(UITabBar __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_getTintColorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 5.0 and later.
@@ -239,8 +238,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector beginCustomizingItems$ = Selector.register("beginCustomizingItems:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_beginCustomizing(UITabBar __self__, Selector __cmd__, NSArray items);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_beginCustomizingSuper(ObjCSuper __super__, Selector __cmd__, NSArray items);
+    @Bridge private native static void objc_beginCustomizing(UITabBar __self__, Selector __cmd__, NSArray items);
+    @Bridge private native static void objc_beginCustomizingSuper(ObjCSuper __super__, Selector __cmd__, NSArray items);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBar/beginCustomizingItems:">- (void)beginCustomizingItems:(NSArray *)items</a>
      * @since Available in iOS 2.0 and later.
@@ -250,8 +249,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector endCustomizingAnimated$ = Selector.register("endCustomizingAnimated:");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_endCustomizing(UITabBar __self__, Selector __cmd__, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_endCustomizingSuper(ObjCSuper __super__, Selector __cmd__, boolean animated);
+    @Bridge private native static boolean objc_endCustomizing(UITabBar __self__, Selector __cmd__, boolean animated);
+    @Bridge private native static boolean objc_endCustomizingSuper(ObjCSuper __super__, Selector __cmd__, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBar/endCustomizingAnimated:">- (BOOL)endCustomizingAnimated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
@@ -261,8 +260,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isCustomizing = Selector.register("isCustomizing");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isCustomizing(UITabBar __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isCustomizingSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isCustomizing(UITabBar __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isCustomizingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBar/isCustomizing">- (BOOL)isCustomizing</a>
      * @since Available in iOS 2.0 and later.
@@ -272,8 +271,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setItems$animated$ = Selector.register("setItems:animated:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setItems(UITabBar __self__, Selector __cmd__, NSArray items, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setItemsSuper(ObjCSuper __super__, Selector __cmd__, NSArray items, boolean animated);
+    @Bridge private native static void objc_setItems(UITabBar __self__, Selector __cmd__, NSArray items, boolean animated);
+    @Bridge private native static void objc_setItemsSuper(ObjCSuper __super__, Selector __cmd__, NSArray items, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBar/setItems:animated:">- (void)setItems:(NSArray *)items animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.

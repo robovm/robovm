@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIColor /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIColor /*</name>*/.class);
 
     /*<constructors>*/
@@ -55,7 +54,7 @@ import org.robovm.rt.bro.ptr.*;
     public UIColor() {}
     
     private static final Selector initWithCGColor$ = Selector.register("initWithCGColor:");
-    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithCGColor(UIColor __self__, Selector __cmd__, CGColor cgColor);
+    @Bridge private native static @Pointer long objc_initWithCGColor(UIColor __self__, Selector __cmd__, CGColor cgColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instm/UIColor/initWithCGColor:">- (UIColor *)initWithCGColor:(CGColorRef)cgColor</a>
      * @since Available in iOS 2.0 and later.
@@ -66,7 +65,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector initWithCIColor$ = Selector.register("initWithCIColor:");
-    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithCIColor(UIColor __self__, Selector __cmd__, CIColor ciColor);
+    @Bridge private native static @Pointer long objc_initWithCIColor(UIColor __self__, Selector __cmd__, CIColor ciColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instm/UIColor/initWithCIColor:">- (UIColor *)initWithCIColor:(CIColor *)ciColor</a>
      * @since Available in iOS 5.0 and later.
@@ -77,7 +76,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector initWithRed$green$blue$alpha$ = Selector.register("initWithRed:green:blue:alpha:");
-    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithRed(UIColor __self__, Selector __cmd__, float red, float green, float blue, float alpha);
+    @Bridge private native static @Pointer long objc_initWithRed(UIColor __self__, Selector __cmd__, float red, float green, float blue, float alpha);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instm/UIColor/initWithRed:green:blue:alpha:">- (UIColor *)initWithRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha</a>
      * @since Available in iOS 2.0 and later.
@@ -90,8 +89,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector CGColor = Selector.register("CGColor");
-    @Bridge(symbol = "objc_msgSend") private native static CGColor objc_getCGColor(UIColor __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static CGColor objc_getCGColorSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static CGColor objc_getCGColor(UIColor __self__, Selector __cmd__);
+    @Bridge private native static CGColor objc_getCGColorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instp/UIColor/CGColor">@property(nonatomic, readonly) CGColorRef CGColor</a>
      * @since Available in iOS 2.0 and later.
@@ -101,8 +100,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector CIColor = Selector.register("CIColor");
-    @Bridge(symbol = "objc_msgSend") private native static CIColor objc_getCIColor(UIColor __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static CIColor objc_getCIColorSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static CIColor objc_getCIColor(UIColor __self__, Selector __cmd__);
+    @Bridge private native static CIColor objc_getCIColorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instp/UIColor/CIColor">@property(nonatomic, readonly) CIColor *CIColor</a>
      * @since Available in iOS 5.0 and later.
@@ -114,7 +113,7 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector blackColor = Selector.register("blackColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_blackColor(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_blackColor(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/blackColor">+ (UIColor *)blackColor</a>
      * @since Available in iOS 2.0 and later.
@@ -124,7 +123,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector blueColor = Selector.register("blueColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_blueColor(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_blueColor(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/blueColor">+ (UIColor *)blueColor</a>
      * @since Available in iOS 2.0 and later.
@@ -134,7 +133,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector brownColor = Selector.register("brownColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_brownColor(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_brownColor(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/brownColor">+ (UIColor *)brownColor</a>
      * @since Available in iOS 2.0 and later.
@@ -144,7 +143,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector clearColor = Selector.register("clearColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_clearColor(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_clearColor(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/clearColor">+ (UIColor *)clearColor</a>
      * @since Available in iOS 2.0 and later.
@@ -154,7 +153,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector cyanColor = Selector.register("cyanColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_cyanColor(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_cyanColor(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/cyanColor">+ (UIColor *)cyanColor</a>
      * @since Available in iOS 2.0 and later.
@@ -164,7 +163,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector darkGrayColor = Selector.register("darkGrayColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_darkGrayColor(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_darkGrayColor(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/darkGrayColor">+ (UIColor *)darkGrayColor</a>
      * @since Available in iOS 2.0 and later.
@@ -174,7 +173,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector darkTextColor = Selector.register("darkTextColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_darkTextColor(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_darkTextColor(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/darkTextColor">+ (UIColor *)darkTextColor</a>
      * @since Available in iOS 2.0 and later.
@@ -184,7 +183,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector colorWithCGColor$ = Selector.register("colorWithCGColor:");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_fromCGColor(ObjCClass __self__, Selector __cmd__, CGColor cgColor);
+    @Bridge private native static UIColor objc_fromCGColor(ObjCClass __self__, Selector __cmd__, CGColor cgColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/colorWithCGColor:">+ (UIColor *)colorWithCGColor:(CGColorRef)cgColor</a>
      * @since Available in iOS 2.0 and later.
@@ -194,7 +193,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector colorWithCIColor$ = Selector.register("colorWithCIColor:");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_fromCIColor(ObjCClass __self__, Selector __cmd__, CIColor ciColor);
+    @Bridge private native static UIColor objc_fromCIColor(ObjCClass __self__, Selector __cmd__, CIColor ciColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/colorWithCIColor:">+ (UIColor *)colorWithCIColor:(CIColor *)ciColor</a>
      * @since Available in iOS 5.0 and later.
@@ -204,7 +203,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector colorWithHue$saturation$brightness$alpha$ = Selector.register("colorWithHue:saturation:brightness:alpha:");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_fromHSBA(ObjCClass __self__, Selector __cmd__, float hue, float saturation, float brightness, float alpha);
+    @Bridge private native static UIColor objc_fromHSBA(ObjCClass __self__, Selector __cmd__, float hue, float saturation, float brightness, float alpha);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/colorWithHue:saturation:brightness:alpha:">+ (UIColor *)colorWithHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha</a>
      * @since Available in iOS 2.0 and later.
@@ -214,7 +213,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector colorWithPatternImage$ = Selector.register("colorWithPatternImage:");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_fromPatternImage(ObjCClass __self__, Selector __cmd__, UIImage image);
+    @Bridge private native static UIColor objc_fromPatternImage(ObjCClass __self__, Selector __cmd__, UIImage image);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/colorWithPatternImage:">+ (UIColor *)colorWithPatternImage:(UIImage *)image</a>
      * @since Available in iOS 2.0 and later.
@@ -224,7 +223,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector colorWithRed$green$blue$alpha$ = Selector.register("colorWithRed:green:blue:alpha:");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_fromRGBA(ObjCClass __self__, Selector __cmd__, float red, float green, float blue, float alpha);
+    @Bridge private native static UIColor objc_fromRGBA(ObjCClass __self__, Selector __cmd__, float red, float green, float blue, float alpha);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/colorWithRed:green:blue:alpha:">+ (UIColor *)colorWithRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha</a>
      * @since Available in iOS 2.0 and later.
@@ -234,7 +233,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector colorWithWhite$alpha$ = Selector.register("colorWithWhite:alpha:");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_fromWhiteAlpha(ObjCClass __self__, Selector __cmd__, float white, float alpha);
+    @Bridge private native static UIColor objc_fromWhiteAlpha(ObjCClass __self__, Selector __cmd__, float white, float alpha);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/colorWithWhite:alpha:">+ (UIColor *)colorWithWhite:(CGFloat)white alpha:(CGFloat)alpha</a>
      * @since Available in iOS 2.0 and later.
@@ -244,7 +243,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector grayColor = Selector.register("grayColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_grayColor(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_grayColor(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/grayColor">+ (UIColor *)grayColor</a>
      * @since Available in iOS 2.0 and later.
@@ -254,7 +253,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector greenColor = Selector.register("greenColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_greenColor(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_greenColor(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/greenColor">+ (UIColor *)greenColor</a>
      * @since Available in iOS 2.0 and later.
@@ -264,7 +263,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector groupTableViewBackgroundColor = Selector.register("groupTableViewBackgroundColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_groupTableViewBackgroundColor(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_groupTableViewBackgroundColor(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/groupTableViewBackgroundColor">+ (UIColor *)groupTableViewBackgroundColor</a>
      * @since Available in iOS 2.0 and later.
@@ -274,7 +273,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector lightGrayColor = Selector.register("lightGrayColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_lightGrayColor(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_lightGrayColor(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/lightGrayColor">+ (UIColor *)lightGrayColor</a>
      * @since Available in iOS 2.0 and later.
@@ -284,7 +283,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector lightTextColor = Selector.register("lightTextColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_lightTextColor(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_lightTextColor(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/lightTextColor">+ (UIColor *)lightTextColor</a>
      * @since Available in iOS 2.0 and later.
@@ -294,7 +293,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector magentaColor = Selector.register("magentaColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_magentaColor(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_magentaColor(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/magentaColor">+ (UIColor *)magentaColor</a>
      * @since Available in iOS 2.0 and later.
@@ -304,7 +303,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector orangeColor = Selector.register("orangeColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_orangeColor(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_orangeColor(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/orangeColor">+ (UIColor *)orangeColor</a>
      * @since Available in iOS 2.0 and later.
@@ -314,7 +313,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector purpleColor = Selector.register("purpleColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_purpleColor(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_purpleColor(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/purpleColor">+ (UIColor *)purpleColor</a>
      * @since Available in iOS 2.0 and later.
@@ -324,7 +323,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector redColor = Selector.register("redColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_redColor(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_redColor(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/redColor">+ (UIColor *)redColor</a>
      * @since Available in iOS 2.0 and later.
@@ -334,7 +333,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector scrollViewTexturedBackgroundColor = Selector.register("scrollViewTexturedBackgroundColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_scrollViewTexturedBackgroundColor(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_scrollViewTexturedBackgroundColor(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/scrollViewTexturedBackgroundColor">+ (UIColor *)scrollViewTexturedBackgroundColor</a>
      * @since Available in iOS 3.2 and later.
@@ -344,7 +343,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector underPageBackgroundColor = Selector.register("underPageBackgroundColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_underPageBackgroundColor(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_underPageBackgroundColor(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/underPageBackgroundColor">+ (UIColor *)underPageBackgroundColor</a>
      * @since Available in iOS 5.0 and later.
@@ -354,7 +353,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector viewFlipsideBackgroundColor = Selector.register("viewFlipsideBackgroundColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_viewFlipsideBackgroundColor(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_viewFlipsideBackgroundColor(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/viewFlipsideBackgroundColor">+ (UIColor *)viewFlipsideBackgroundColor</a>
      * @since Available in iOS 2.0 and later.
@@ -364,7 +363,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector whiteColor = Selector.register("whiteColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_whiteColor(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_whiteColor(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/whiteColor">+ (UIColor *)whiteColor</a>
      * @since Available in iOS 2.0 and later.
@@ -374,7 +373,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector yellowColor = Selector.register("yellowColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_yellowColor(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_yellowColor(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/clm/UIColor/yellowColor">+ (UIColor *)yellowColor</a>
      * @since Available in iOS 2.0 and later.
@@ -384,8 +383,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector colorWithAlphaComponent$ = Selector.register("colorWithAlphaComponent:");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_colorWithAlpha(UIColor __self__, Selector __cmd__, float alpha);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_colorWithAlphaSuper(ObjCSuper __super__, Selector __cmd__, float alpha);
+    @Bridge private native static UIColor objc_colorWithAlpha(UIColor __self__, Selector __cmd__, float alpha);
+    @Bridge private native static UIColor objc_colorWithAlphaSuper(ObjCSuper __super__, Selector __cmd__, float alpha);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instm/UIColor/colorWithAlphaComponent:">- (UIColor *)colorWithAlphaComponent:(CGFloat)alpha</a>
      * @since Available in iOS 2.0 and later.
@@ -395,8 +394,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector getHue$saturation$brightness$alpha$ = Selector.register("getHue:saturation:brightness:alpha:");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_getHSBA(UIColor __self__, Selector __cmd__, FloatPtr hue, FloatPtr saturation, FloatPtr brightness, FloatPtr alpha);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_getHSBASuper(ObjCSuper __super__, Selector __cmd__, FloatPtr hue, FloatPtr saturation, FloatPtr brightness, FloatPtr alpha);
+    @Bridge private native static boolean objc_getHSBA(UIColor __self__, Selector __cmd__, FloatPtr hue, FloatPtr saturation, FloatPtr brightness, FloatPtr alpha);
+    @Bridge private native static boolean objc_getHSBASuper(ObjCSuper __super__, Selector __cmd__, FloatPtr hue, FloatPtr saturation, FloatPtr brightness, FloatPtr alpha);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instm/UIColor/getHue:saturation:brightness:alpha:">- (BOOL)getHue:(CGFloat *)hue saturation:(CGFloat *)saturation brightness:(CGFloat *)brightness alpha:(CGFloat *)alpha</a>
      * @since Available in iOS 5.0 and later.
@@ -406,8 +405,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector getRed$green$blue$alpha$ = Selector.register("getRed:green:blue:alpha:");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_getRGBA(UIColor __self__, Selector __cmd__, FloatPtr red, FloatPtr green, FloatPtr blue, FloatPtr alpha);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_getRGBASuper(ObjCSuper __super__, Selector __cmd__, FloatPtr red, FloatPtr green, FloatPtr blue, FloatPtr alpha);
+    @Bridge private native static boolean objc_getRGBA(UIColor __self__, Selector __cmd__, FloatPtr red, FloatPtr green, FloatPtr blue, FloatPtr alpha);
+    @Bridge private native static boolean objc_getRGBASuper(ObjCSuper __super__, Selector __cmd__, FloatPtr red, FloatPtr green, FloatPtr blue, FloatPtr alpha);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instm/UIColor/getRed:green:blue:alpha:">- (BOOL)getRed:(CGFloat *)red green:(CGFloat *)green blue:(CGFloat *)blue alpha:(CGFloat *)alpha</a>
      * @since Available in iOS 5.0 and later.
@@ -417,8 +416,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector getWhite$alpha$ = Selector.register("getWhite:alpha:");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_getWhiteAlpha(UIColor __self__, Selector __cmd__, FloatPtr white, FloatPtr alpha);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_getWhiteAlphaSuper(ObjCSuper __super__, Selector __cmd__, FloatPtr white, FloatPtr alpha);
+    @Bridge private native static boolean objc_getWhiteAlpha(UIColor __self__, Selector __cmd__, FloatPtr white, FloatPtr alpha);
+    @Bridge private native static boolean objc_getWhiteAlphaSuper(ObjCSuper __super__, Selector __cmd__, FloatPtr white, FloatPtr alpha);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instm/UIColor/getWhite:alpha:">- (BOOL)getWhite:(CGFloat *)white alpha:(CGFloat *)alpha</a>
      * @since Available in iOS 5.0 and later.
@@ -428,8 +427,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setFill = Selector.register("setFill");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setFill(UIColor __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setFillSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_setFill(UIColor __self__, Selector __cmd__);
+    @Bridge private native static void objc_setFillSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instm/UIColor/setFill">- (void)setFill</a>
      * @since Available in iOS 2.0 and later.
@@ -439,8 +438,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector set = Selector.register("set");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setFillAndStroke(UIColor __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setFillAndStrokeSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_setFillAndStroke(UIColor __self__, Selector __cmd__);
+    @Bridge private native static void objc_setFillAndStrokeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instm/UIColor/set">- (void)set</a>
      * @since Available in iOS 2.0 and later.
@@ -450,8 +449,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setStroke = Selector.register("setStroke");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setStroke(UIColor __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStrokeSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_setStroke(UIColor __self__, Selector __cmd__);
+    @Bridge private native static void objc_setStrokeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIColor_Class/Reference/Reference.html#//apple_ref/occ/instm/UIColor/setStroke">- (void)setStroke</a>
      * @since Available in iOS 2.0 and later.

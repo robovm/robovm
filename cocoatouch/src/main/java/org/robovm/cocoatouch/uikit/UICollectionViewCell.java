@@ -46,7 +46,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UICollectionViewCell /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UICollectionViewCell /*</name>*/.class);
 
     public UICollectionViewCell(CGRect aRect) {
@@ -60,8 +59,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector backgroundView = Selector.register("backgroundView");
-    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getBackgroundView(UICollectionViewCell __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIView objc_getBackgroundView(UICollectionViewCell __self__, Selector __cmd__);
+    @Bridge private native static UIView objc_getBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/backgroundView">@property (nonatomic, retain) UIView *backgroundView</a>
      * @since Available in iOS 6.0 and later.
@@ -82,8 +81,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector contentView = Selector.register("contentView");
-    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getContentView(UICollectionViewCell __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getContentViewSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIView objc_getContentView(UICollectionViewCell __self__, Selector __cmd__);
+    @Bridge private native static UIView objc_getContentViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/contentView">@property (nonatomic, readonly) UIView *contentView</a>
      * @since Available in iOS 6.0 and later.
@@ -93,8 +92,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isHighlighted = Selector.register("isHighlighted");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isHighlighted(UICollectionViewCell __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isHighlightedSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isHighlighted(UICollectionViewCell __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isHighlightedSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/highlighted">@property (nonatomic, getter=isHighlighted) BOOL highlighted</a>
      * @since Available in iOS 6.0 and later.
@@ -115,8 +114,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isSelected = Selector.register("isSelected");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isSelected(UICollectionViewCell __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isSelectedSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isSelected(UICollectionViewCell __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isSelectedSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/selected">@property (nonatomic, getter=isSelected) BOOL selected</a>
      * @since Available in iOS 6.0 and later.
@@ -137,8 +136,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector selectedBackgroundView = Selector.register("selectedBackgroundView");
-    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getSelectedBackgroundView(UICollectionViewCell __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getSelectedBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIView objc_getSelectedBackgroundView(UICollectionViewCell __self__, Selector __cmd__);
+    @Bridge private native static UIView objc_getSelectedBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/selectedBackgroundView">@property (nonatomic, retain) UIView *selectedBackgroundView</a>
      * @since Available in iOS 6.0 and later.

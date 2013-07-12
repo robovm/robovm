@@ -46,7 +46,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIActionSheet /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIActionSheet /*</name>*/.class);
 
     public UIActionSheet(CGRect aRect) {
@@ -60,8 +59,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector actionSheetStyle = Selector.register("actionSheetStyle");
-    @Bridge(symbol = "objc_msgSend") private native static UIActionSheetStyle objc_getActionSheetStyle(UIActionSheet __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIActionSheetStyle objc_getActionSheetStyleSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIActionSheetStyle objc_getActionSheetStyle(UIActionSheet __self__, Selector __cmd__);
+    @Bridge private native static UIActionSheetStyle objc_getActionSheetStyleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/actionSheetStyle">@property(nonatomic) UIActionSheetStyle actionSheetStyle</a>
      * @since Available in iOS 2.0 and later.
@@ -82,8 +81,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector cancelButtonIndex = Selector.register("cancelButtonIndex");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_getCancelButtonIndex(UIActionSheet __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getCancelButtonIndexSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static int objc_getCancelButtonIndex(UIActionSheet __self__, Selector __cmd__);
+    @Bridge private native static int objc_getCancelButtonIndexSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/cancelButtonIndex">@property(nonatomic) NSInteger cancelButtonIndex</a>
      * @since Available in iOS 2.0 and later.
@@ -104,8 +103,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector delegate = Selector.register("delegate");
-    @Bridge(symbol = "objc_msgSend") private native static UIActionSheetDelegate objc_getDelegate(UIActionSheet __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIActionSheetDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIActionSheetDelegate objc_getDelegate(UIActionSheet __self__, Selector __cmd__);
+    @Bridge private native static UIActionSheetDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/delegate">@property(nonatomic, assign) id&amp;lt;UIActionSheetDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
@@ -126,8 +125,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector destructiveButtonIndex = Selector.register("destructiveButtonIndex");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_getDestructiveButtonIndex(UIActionSheet __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getDestructiveButtonIndexSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static int objc_getDestructiveButtonIndex(UIActionSheet __self__, Selector __cmd__);
+    @Bridge private native static int objc_getDestructiveButtonIndexSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/destructiveButtonIndex">@property(nonatomic) NSInteger destructiveButtonIndex</a>
      * @since Available in iOS 2.0 and later.
@@ -148,8 +147,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector firstOtherButtonIndex = Selector.register("firstOtherButtonIndex");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_getFirstOtherButtonIndex(UIActionSheet __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getFirstOtherButtonIndexSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static int objc_getFirstOtherButtonIndex(UIActionSheet __self__, Selector __cmd__);
+    @Bridge private native static int objc_getFirstOtherButtonIndexSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/firstOtherButtonIndex">@property(nonatomic, readonly) NSInteger firstOtherButtonIndex</a>
      * @since Available in iOS 2.0 and later.
@@ -159,8 +158,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector numberOfButtons = Selector.register("numberOfButtons");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_getNumberOfButtons(UIActionSheet __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getNumberOfButtonsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static int objc_getNumberOfButtons(UIActionSheet __self__, Selector __cmd__);
+    @Bridge private native static int objc_getNumberOfButtonsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/numberOfButtons">@property(nonatomic, readonly) NSInteger numberOfButtons</a>
      * @since Available in iOS 2.0 and later.
@@ -170,8 +169,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector title = Selector.register("title");
-    @Bridge(symbol = "objc_msgSend") private native static String objc_getTitle(UIActionSheet __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getTitleSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static String objc_getTitle(UIActionSheet __self__, Selector __cmd__);
+    @Bridge private native static String objc_getTitleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/title">@property(nonatomic, copy) NSString *title</a>
      * @since Available in iOS 2.0 and later.
@@ -192,8 +191,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isVisible = Selector.register("isVisible");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isVisible(UIActionSheet __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isVisibleSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isVisible(UIActionSheet __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isVisibleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/visible">@property(nonatomic, readonly, getter=isVisible) BOOL visible</a>
      * @since Available in iOS 2.0 and later.
@@ -205,8 +204,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector addButtonWithTitle$ = Selector.register("addButtonWithTitle:");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_addButton(UIActionSheet __self__, Selector __cmd__, String title);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_addButtonSuper(ObjCSuper __super__, Selector __cmd__, String title);
+    @Bridge private native static int objc_addButton(UIActionSheet __self__, Selector __cmd__, String title);
+    @Bridge private native static int objc_addButtonSuper(ObjCSuper __super__, Selector __cmd__, String title);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActionSheet/addButtonWithTitle:">- (NSInteger)addButtonWithTitle:(NSString *)title</a>
      * @since Available in iOS 2.0 and later.
@@ -216,8 +215,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector dismissWithClickedButtonIndex$animated$ = Selector.register("dismissWithClickedButtonIndex:animated:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_dismiss(UIActionSheet __self__, Selector __cmd__, int buttonIndex, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_dismissSuper(ObjCSuper __super__, Selector __cmd__, int buttonIndex, boolean animated);
+    @Bridge private native static void objc_dismiss(UIActionSheet __self__, Selector __cmd__, int buttonIndex, boolean animated);
+    @Bridge private native static void objc_dismissSuper(ObjCSuper __super__, Selector __cmd__, int buttonIndex, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActionSheet/dismissWithClickedButtonIndex:animated:">- (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
@@ -227,8 +226,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector buttonTitleAtIndex$ = Selector.register("buttonTitleAtIndex:");
-    @Bridge(symbol = "objc_msgSend") private native static String objc_getButtonTitle(UIActionSheet __self__, Selector __cmd__, int buttonIndex);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getButtonTitleSuper(ObjCSuper __super__, Selector __cmd__, int buttonIndex);
+    @Bridge private native static String objc_getButtonTitle(UIActionSheet __self__, Selector __cmd__, int buttonIndex);
+    @Bridge private native static String objc_getButtonTitleSuper(ObjCSuper __super__, Selector __cmd__, int buttonIndex);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActionSheet/buttonTitleAtIndex:">- (NSString *)buttonTitleAtIndex:(NSInteger)buttonIndex</a>
      * @since Available in iOS 2.0 and later.
@@ -238,8 +237,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector showFromBarButtonItem$animated$ = Selector.register("showFromBarButtonItem:animated:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_showFrom(UIActionSheet __self__, Selector __cmd__, UIBarButtonItem item, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_showFromSuper(ObjCSuper __super__, Selector __cmd__, UIBarButtonItem item, boolean animated);
+    @Bridge private native static void objc_showFrom(UIActionSheet __self__, Selector __cmd__, UIBarButtonItem item, boolean animated);
+    @Bridge private native static void objc_showFromSuper(ObjCSuper __super__, Selector __cmd__, UIBarButtonItem item, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActionSheet/showFromBarButtonItem:animated:">- (void)showFromBarButtonItem:(UIBarButtonItem *)item animated:(BOOL)animated</a>
      * @since Available in iOS 3.2 and later.
@@ -249,8 +248,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector showFromToolbar$ = Selector.register("showFromToolbar:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_showFrom(UIActionSheet __self__, Selector __cmd__, UIToolbar view);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_showFromSuper(ObjCSuper __super__, Selector __cmd__, UIToolbar view);
+    @Bridge private native static void objc_showFrom(UIActionSheet __self__, Selector __cmd__, UIToolbar view);
+    @Bridge private native static void objc_showFromSuper(ObjCSuper __super__, Selector __cmd__, UIToolbar view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActionSheet/showFromToolbar:">- (void)showFromToolbar:(UIToolbar *)view</a>
      * @since Available in iOS 2.0 and later.
@@ -260,8 +259,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector showFromTabBar$ = Selector.register("showFromTabBar:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_showFrom(UIActionSheet __self__, Selector __cmd__, UITabBar view);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_showFromSuper(ObjCSuper __super__, Selector __cmd__, UITabBar view);
+    @Bridge private native static void objc_showFrom(UIActionSheet __self__, Selector __cmd__, UITabBar view);
+    @Bridge private native static void objc_showFromSuper(ObjCSuper __super__, Selector __cmd__, UITabBar view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActionSheet/showFromTabBar:">- (void)showFromTabBar:(UITabBar *)view</a>
      * @since Available in iOS 2.0 and later.
@@ -271,8 +270,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector showFromRect$inView$animated$ = Selector.register("showFromRect:inView:animated:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_showFrom(UIActionSheet __self__, Selector __cmd__, @ByVal CGRect rect, UIView view, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_showFromSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, UIView view, boolean animated);
+    @Bridge private native static void objc_showFrom(UIActionSheet __self__, Selector __cmd__, @ByVal CGRect rect, UIView view, boolean animated);
+    @Bridge private native static void objc_showFromSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, UIView view, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActionSheet/showFromRect:inView:animated:">- (void)showFromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated</a>
      * @since Available in iOS 3.2 and later.
@@ -282,8 +281,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector showInView$ = Selector.register("showInView:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_showInView(UIActionSheet __self__, Selector __cmd__, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_showInViewSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
+    @Bridge private native static void objc_showInView(UIActionSheet __self__, Selector __cmd__, UIView view);
+    @Bridge private native static void objc_showInViewSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActionSheet/showInView:">- (void)showInView:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.

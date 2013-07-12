@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIPanGestureRecognizer /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIPanGestureRecognizer /*</name>*/.class);
 
     /*<constructors>*/
@@ -58,8 +57,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector maximumNumberOfTouches = Selector.register("maximumNumberOfTouches");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_getMaximumNumberOfTouches(UIPanGestureRecognizer __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getMaximumNumberOfTouchesSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static int objc_getMaximumNumberOfTouches(UIPanGestureRecognizer __self__, Selector __cmd__);
+    @Bridge private native static int objc_getMaximumNumberOfTouchesSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPanGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPanGestureRecognizer/maximumNumberOfTouches">@property(nonatomic) NSUInteger maximumNumberOfTouches</a>
      * @since Available in iOS 3.2 and later.
@@ -80,8 +79,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector minimumNumberOfTouches = Selector.register("minimumNumberOfTouches");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_getMinimumNumberOfTouches(UIPanGestureRecognizer __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getMinimumNumberOfTouchesSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static int objc_getMinimumNumberOfTouches(UIPanGestureRecognizer __self__, Selector __cmd__);
+    @Bridge private native static int objc_getMinimumNumberOfTouchesSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPanGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPanGestureRecognizer/minimumNumberOfTouches">@property(nonatomic) NSUInteger minimumNumberOfTouches</a>
      * @since Available in iOS 3.2 and later.
@@ -104,34 +103,30 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector translationInView$ = Selector.register("translationInView:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGPoint objc_getTranslation(UIPanGestureRecognizer __self__, Selector __cmd__, UIView view);
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getTranslation_stret(@StructRet CGPoint __ret__, UIPanGestureRecognizer __self__, Selector __cmd__, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGPoint objc_getTranslationSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getTranslationSuper_stret(@StructRet CGPoint __ret__, ObjCSuper __super__, Selector __cmd__, UIView view);
+    @Bridge private native static @ByVal CGPoint objc_getTranslation(UIPanGestureRecognizer __self__, Selector __cmd__, UIView view);
+    @Bridge private native static @ByVal CGPoint objc_getTranslationSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPanGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPanGestureRecognizer/translationInView:">- (CGPoint)translationInView:(UIView *)view</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGPoint getTranslation(UIView view) {
-        if (X86) { if (customClass) { return objc_getTranslationSuper(getSuper(), translationInView$, view); } else { return objc_getTranslation(this, translationInView$, view); } } else { CGPoint __ret__ = new CGPoint(); if (customClass) { objc_getTranslationSuper_stret(__ret__, getSuper(), translationInView$, view); } else { objc_getTranslation_stret(__ret__, this, translationInView$, view); } return __ret__; }
+        if (customClass) { return objc_getTranslationSuper(getSuper(), translationInView$, view); } else { return objc_getTranslation(this, translationInView$, view); }
     }
     
     private static final Selector velocityInView$ = Selector.register("velocityInView:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGPoint objc_getVelocity(UIPanGestureRecognizer __self__, Selector __cmd__, UIView view);
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getVelocity_stret(@StructRet CGPoint __ret__, UIPanGestureRecognizer __self__, Selector __cmd__, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGPoint objc_getVelocitySuper(ObjCSuper __super__, Selector __cmd__, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getVelocitySuper_stret(@StructRet CGPoint __ret__, ObjCSuper __super__, Selector __cmd__, UIView view);
+    @Bridge private native static @ByVal CGPoint objc_getVelocity(UIPanGestureRecognizer __self__, Selector __cmd__, UIView view);
+    @Bridge private native static @ByVal CGPoint objc_getVelocitySuper(ObjCSuper __super__, Selector __cmd__, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPanGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPanGestureRecognizer/velocityInView:">- (CGPoint)velocityInView:(UIView *)view</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGPoint getVelocity(UIView view) {
-        if (X86) { if (customClass) { return objc_getVelocitySuper(getSuper(), velocityInView$, view); } else { return objc_getVelocity(this, velocityInView$, view); } } else { CGPoint __ret__ = new CGPoint(); if (customClass) { objc_getVelocitySuper_stret(__ret__, getSuper(), velocityInView$, view); } else { objc_getVelocity_stret(__ret__, this, velocityInView$, view); } return __ret__; }
+        if (customClass) { return objc_getVelocitySuper(getSuper(), velocityInView$, view); } else { return objc_getVelocity(this, velocityInView$, view); }
     }
     
     private static final Selector setTranslation$inView$ = Selector.register("setTranslation:inView:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTranslation(UIPanGestureRecognizer __self__, Selector __cmd__, @ByVal CGPoint translation, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTranslationSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint translation, UIView view);
+    @Bridge private native static void objc_setTranslation(UIPanGestureRecognizer __self__, Selector __cmd__, @ByVal CGPoint translation, UIView view);
+    @Bridge private native static void objc_setTranslationSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint translation, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPanGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPanGestureRecognizer/setTranslation:inView:">- (void)setTranslation:(CGPoint)translation inView:(UIView *)view</a>
      * @since Available in iOS 3.2 and later.

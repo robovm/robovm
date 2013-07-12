@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UITabBarController /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITabBarController /*</name>*/.class);
 
     /*<constructors>*/
@@ -58,8 +57,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector customizableViewControllers = Selector.register("customizableViewControllers");
-    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getCustomizableViewControllers(UITabBarController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getCustomizableViewControllersSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getCustomizableViewControllers(UITabBarController __self__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getCustomizableViewControllersSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/customizableViewControllers">@property(nonatomic, copy) NSArray *customizableViewControllers</a>
      * @since Available in iOS 2.0 and later.
@@ -80,8 +79,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector delegate = Selector.register("delegate");
-    @Bridge(symbol = "objc_msgSend") private native static UITabBarControllerDelegate objc_getDelegate(UITabBarController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UITabBarControllerDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UITabBarControllerDelegate objc_getDelegate(UITabBarController __self__, Selector __cmd__);
+    @Bridge private native static UITabBarControllerDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/delegate">@property(nonatomic, assign) id&amp;lt;UITabBarControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
@@ -102,8 +101,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector moreNavigationController = Selector.register("moreNavigationController");
-    @Bridge(symbol = "objc_msgSend") private native static UINavigationController objc_getMoreNavigationController(UITabBarController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UINavigationController objc_getMoreNavigationControllerSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UINavigationController objc_getMoreNavigationController(UITabBarController __self__, Selector __cmd__);
+    @Bridge private native static UINavigationController objc_getMoreNavigationControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/moreNavigationController">@property(nonatomic, readonly) UINavigationController *moreNavigationController</a>
      * @since Available in iOS 2.0 and later.
@@ -113,8 +112,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector selectedIndex = Selector.register("selectedIndex");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_getSelectedIndex(UITabBarController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getSelectedIndexSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static int objc_getSelectedIndex(UITabBarController __self__, Selector __cmd__);
+    @Bridge private native static int objc_getSelectedIndexSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/selectedIndex">@property(nonatomic) NSUInteger selectedIndex</a>
      * @since Available in iOS 2.0 and later.
@@ -135,8 +134,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector selectedViewController = Selector.register("selectedViewController");
-    @Bridge(symbol = "objc_msgSend") private native static UIViewController objc_getSelectedViewController(UITabBarController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIViewController objc_getSelectedViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIViewController objc_getSelectedViewController(UITabBarController __self__, Selector __cmd__);
+    @Bridge private native static UIViewController objc_getSelectedViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/selectedViewController">@property(nonatomic, assign) UIViewController *selectedViewController</a>
      * @since Available in iOS 2.0 and later.
@@ -157,8 +156,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector tabBar = Selector.register("tabBar");
-    @Bridge(symbol = "objc_msgSend") private native static UITabBar objc_getTabBar(UITabBarController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UITabBar objc_getTabBarSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UITabBar objc_getTabBar(UITabBarController __self__, Selector __cmd__);
+    @Bridge private native static UITabBar objc_getTabBarSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/tabBar">@property(nonatomic,readonly) UITabBar *tabBar</a>
      * @since Available in iOS 3.0 and later.
@@ -168,8 +167,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector viewControllers = Selector.register("viewControllers");
-    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getViewControllers(UITabBarController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getViewControllersSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getViewControllers(UITabBarController __self__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getViewControllersSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/viewControllers">@property(nonatomic, copy) NSArray *viewControllers</a>
      * @since Available in iOS 2.0 and later.
@@ -192,8 +191,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector setViewControllers$animated$ = Selector.register("setViewControllers:animated:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setViewControllers(UITabBarController __self__, Selector __cmd__, NSArray viewControllers, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setViewControllersSuper(ObjCSuper __super__, Selector __cmd__, NSArray viewControllers, boolean animated);
+    @Bridge private native static void objc_setViewControllers(UITabBarController __self__, Selector __cmd__, NSArray viewControllers, boolean animated);
+    @Bridge private native static void objc_setViewControllersSuper(ObjCSuper __super__, Selector __cmd__, NSArray viewControllers, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBarController/setViewControllers:animated:">- (void)setViewControllers:(NSArray *)viewControllers  animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.

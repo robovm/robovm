@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UINib /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UINib /*</name>*/.class);
 
     /*<constructors>*/
@@ -61,7 +60,7 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector nibWithData$bundle$ = Selector.register("nibWithData:bundle:");
-    @Bridge(symbol = "objc_msgSend") private native static UINib objc_fromData(ObjCClass __self__, Selector __cmd__, NSData data, NSBundle bundleOrNil);
+    @Bridge private native static UINib objc_fromData(ObjCClass __self__, Selector __cmd__, NSData data, NSBundle bundleOrNil);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINib_Ref/Reference/Reference.html#//apple_ref/occ/clm/UINib/nibWithData:bundle:">+ (UINib *)nibWithData:(NSData *)data bundle:(NSBundle *)bundleOrNil</a>
      * @since Available in iOS 4.0 and later.
@@ -71,7 +70,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector nibWithNibName$bundle$ = Selector.register("nibWithNibName:bundle:");
-    @Bridge(symbol = "objc_msgSend") private native static UINib objc_fromName(ObjCClass __self__, Selector __cmd__, String name, NSBundle bundleOrNil);
+    @Bridge private native static UINib objc_fromName(ObjCClass __self__, Selector __cmd__, String name, NSBundle bundleOrNil);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINib_Ref/Reference/Reference.html#//apple_ref/occ/clm/UINib/nibWithNibName:bundle:">+ (UINib *)nibWithNibName:(NSString *)name bundle:(NSBundle *)bundleOrNil</a>
      * @since Available in iOS 4.0 and later.
@@ -81,8 +80,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector instantiateWithOwner$options$ = Selector.register("instantiateWithOwner:options:");
-    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_instantiate(UINib __self__, Selector __cmd__, NSObject ownerOrNil, NSDictionary optionsOrNil);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_instantiateSuper(ObjCSuper __super__, Selector __cmd__, NSObject ownerOrNil, NSDictionary optionsOrNil);
+    @Bridge private native static NSArray objc_instantiate(UINib __self__, Selector __cmd__, NSObject ownerOrNil, NSDictionary optionsOrNil);
+    @Bridge private native static NSArray objc_instantiateSuper(ObjCSuper __super__, Selector __cmd__, NSObject ownerOrNil, NSDictionary optionsOrNil);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINib_Ref/Reference/Reference.html#//apple_ref/occ/instm/UINib/instantiateWithOwner:options:">- (NSArray *)instantiateWithOwner:(id)ownerOrNil options:(NSDictionary *)optionsOrNil</a>
      * @since Available in iOS 4.0 and later.

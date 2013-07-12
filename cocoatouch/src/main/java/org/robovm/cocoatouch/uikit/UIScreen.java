@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIScreen /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIScreen /*</name>*/.class);
 
     /*<constructors>*/
@@ -58,19 +57,19 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector applicationFrame = Selector.register("applicationFrame");
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getApplicationFrame_stret(@StructRet CGRect __ret__, UIScreen __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getApplicationFrameSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static @ByVal CGRect objc_getApplicationFrame(UIScreen __self__, Selector __cmd__);
+    @Bridge private native static @ByVal CGRect objc_getApplicationFrameSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/applicationFrame">@property(nonatomic, readonly) CGRect applicationFrame</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getApplicationFrame() {
-        CGRect __ret__ = new CGRect(); if (customClass) { objc_getApplicationFrameSuper_stret(__ret__, getSuper(), applicationFrame); } else { objc_getApplicationFrame_stret(__ret__, this, applicationFrame); } return __ret__;
+        if (customClass) { return objc_getApplicationFrameSuper(getSuper(), applicationFrame); } else { return objc_getApplicationFrame(this, applicationFrame); }
     }
     
     private static final Selector availableModes = Selector.register("availableModes");
-    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getAvailableModes(UIScreen __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getAvailableModesSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getAvailableModes(UIScreen __self__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getAvailableModesSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/availableModes">@property(nonatomic, readonly, copy) NSArray *availableModes</a>
      * @since Available in iOS 3.2 and later.
@@ -80,19 +79,19 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector bounds = Selector.register("bounds");
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getBounds_stret(@StructRet CGRect __ret__, UIScreen __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getBoundsSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static @ByVal CGRect objc_getBounds(UIScreen __self__, Selector __cmd__);
+    @Bridge private native static @ByVal CGRect objc_getBoundsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/bounds">@property(nonatomic, readonly) CGRect bounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getBounds() {
-        CGRect __ret__ = new CGRect(); if (customClass) { objc_getBoundsSuper_stret(__ret__, getSuper(), bounds); } else { objc_getBounds_stret(__ret__, this, bounds); } return __ret__;
+        if (customClass) { return objc_getBoundsSuper(getSuper(), bounds); } else { return objc_getBounds(this, bounds); }
     }
     
     private static final Selector brightness = Selector.register("brightness");
-    @Bridge(symbol = "objc_msgSend") private native static float objc_getBrightness(UIScreen __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getBrightnessSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static float objc_getBrightness(UIScreen __self__, Selector __cmd__);
+    @Bridge private native static float objc_getBrightnessSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/brightness">@property(nonatomic) CGFloat brightness</a>
      * @since Available in iOS 5.0 and later.
@@ -113,8 +112,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector currentMode = Selector.register("currentMode");
-    @Bridge(symbol = "objc_msgSend") private native static UIScreenMode objc_getCurrentMode(UIScreen __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIScreenMode objc_getCurrentModeSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIScreenMode objc_getCurrentMode(UIScreen __self__, Selector __cmd__);
+    @Bridge private native static UIScreenMode objc_getCurrentModeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/currentMode">@property(nonatomic, retain) UIScreenMode *currentMode</a>
      * @since Available in iOS 3.2 and later.
@@ -135,8 +134,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector mirroredScreen = Selector.register("mirroredScreen");
-    @Bridge(symbol = "objc_msgSend") private native static UIScreen objc_getMirroredScreen(UIScreen __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIScreen objc_getMirroredScreenSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIScreen objc_getMirroredScreen(UIScreen __self__, Selector __cmd__);
+    @Bridge private native static UIScreen objc_getMirroredScreenSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/mirroredScreen">@property(nonatomic, readonly, retain) UIScreen *mirroredScreen</a>
      * @since Available in iOS 4.3 and later.
@@ -146,8 +145,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector overscanCompensation = Selector.register("overscanCompensation");
-    @Bridge(symbol = "objc_msgSend") private native static UIScreenOverscanCompensation objc_getOverscanCompensation(UIScreen __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIScreenOverscanCompensation objc_getOverscanCompensationSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIScreenOverscanCompensation objc_getOverscanCompensation(UIScreen __self__, Selector __cmd__);
+    @Bridge private native static UIScreenOverscanCompensation objc_getOverscanCompensationSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/overscanCompensation">@property(nonatomic) UIScreenOverscanCompensation overscanCompensation</a>
      * @since Available in iOS 5.0 and later.
@@ -168,8 +167,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector preferredMode = Selector.register("preferredMode");
-    @Bridge(symbol = "objc_msgSend") private native static UIScreenMode objc_getPreferredMode(UIScreen __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIScreenMode objc_getPreferredModeSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIScreenMode objc_getPreferredMode(UIScreen __self__, Selector __cmd__);
+    @Bridge private native static UIScreenMode objc_getPreferredModeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/preferredMode">@property(nonatomic, readonly, retain) UIScreenMode *preferredMode</a>
      * @since Available in iOS 4.3 and later.
@@ -179,8 +178,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector scale = Selector.register("scale");
-    @Bridge(symbol = "objc_msgSend") private native static float objc_getScale(UIScreen __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getScaleSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static float objc_getScale(UIScreen __self__, Selector __cmd__);
+    @Bridge private native static float objc_getScaleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/scale">@property(nonatomic, readonly) CGFloat scale</a>
      * @since Available in iOS 4.0 and later.
@@ -190,8 +189,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector wantsSoftwareDimming = Selector.register("wantsSoftwareDimming");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isWantsSoftwareDimming(UIScreen __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isWantsSoftwareDimmingSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isWantsSoftwareDimming(UIScreen __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isWantsSoftwareDimmingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/wantsSoftwareDimming">@property(nonatomic) BOOL wantsSoftwareDimming</a>
      * @since Available in iOS 5.0 and later.
@@ -214,7 +213,7 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector mainScreen = Selector.register("mainScreen");
-    @Bridge(symbol = "objc_msgSend") private native static UIScreen objc_getMainScreen(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static UIScreen objc_getMainScreen(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/clm/UIScreen/mainScreen">+ (UIScreen *)mainScreen</a>
      * @since Available in iOS 2.0 and later.
@@ -224,7 +223,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector screens = Selector.register("screens");
-    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getScreens(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getScreens(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/clm/UIScreen/screens">+ (NSArray *)screens</a>
      * @since Available in iOS 3.2 and later.
@@ -234,8 +233,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector displayLinkWithTarget$selector$ = Selector.register("displayLinkWithTarget:selector:");
-    @Bridge(symbol = "objc_msgSend") private native static CADisplayLink objc_createDisplayLink(UIScreen __self__, Selector __cmd__, NSObject target, Selector sel);
-    @Bridge(symbol = "objc_msgSendSuper") private native static CADisplayLink objc_createDisplayLinkSuper(ObjCSuper __super__, Selector __cmd__, NSObject target, Selector sel);
+    @Bridge private native static CADisplayLink objc_createDisplayLink(UIScreen __self__, Selector __cmd__, NSObject target, Selector sel);
+    @Bridge private native static CADisplayLink objc_createDisplayLinkSuper(ObjCSuper __super__, Selector __cmd__, NSObject target, Selector sel);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instm/UIScreen/displayLinkWithTarget:selector:">- (CADisplayLink *)displayLinkWithTarget:(id)target selector:(SEL)sel</a>
      * @since Available in iOS 4.0 and later.

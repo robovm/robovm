@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIView /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIView /*</name>*/.class);
 
     /*<constructors>*/
@@ -55,7 +54,7 @@ import org.robovm.rt.bro.ptr.*;
     public UIView() {}
     
     private static final Selector initWithFrame$ = Selector.register("initWithFrame:");
-    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithFrame(UIView __self__, Selector __cmd__, @ByVal CGRect aRect);
+    @Bridge private native static @Pointer long objc_initWithFrame(UIView __self__, Selector __cmd__, @ByVal CGRect aRect);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/initWithFrame:">- (id)initWithFrame:(CGRect)aRect</a>
      * @since Available in iOS 2.0 and later.
@@ -68,8 +67,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector alpha = Selector.register("alpha");
-    @Bridge(symbol = "objc_msgSend") private native static float objc_getAlpha(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getAlphaSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static float objc_getAlpha(UIView __self__, Selector __cmd__);
+    @Bridge private native static float objc_getAlphaSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/alpha">@property(nonatomic) CGFloat alpha</a>
      * @since Available in iOS 2.0 and later.
@@ -90,8 +89,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector autoresizesSubviews = Selector.register("autoresizesSubviews");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isAutoresizesSubviews(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isAutoresizesSubviewsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isAutoresizesSubviews(UIView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isAutoresizesSubviewsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/autoresizesSubviews">@property(nonatomic) BOOL autoresizesSubviews</a>
      * @since Available in iOS 2.0 and later.
@@ -112,8 +111,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector autoresizingMask = Selector.register("autoresizingMask");
-    @Bridge(symbol = "objc_msgSend") private native static UIViewAutoresizing objc_getAutoresizingMask(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIViewAutoresizing objc_getAutoresizingMaskSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIViewAutoresizing objc_getAutoresizingMask(UIView __self__, Selector __cmd__);
+    @Bridge private native static UIViewAutoresizing objc_getAutoresizingMaskSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/autoresizingMask">@property(nonatomic) UIViewAutoresizing autoresizingMask</a>
      * @since Available in iOS 2.0 and later.
@@ -134,8 +133,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector backgroundColor = Selector.register("backgroundColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getBackgroundColor(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getBackgroundColorSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIColor objc_getBackgroundColor(UIView __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_getBackgroundColorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/backgroundColor">@property(nonatomic, copy) UIColor *backgroundColor</a>
      * @since Available in iOS 2.0 and later.
@@ -156,14 +155,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector bounds = Selector.register("bounds");
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getBounds_stret(@StructRet CGRect __ret__, UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getBoundsSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static @ByVal CGRect objc_getBounds(UIView __self__, Selector __cmd__);
+    @Bridge private native static @ByVal CGRect objc_getBoundsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/bounds">@property(nonatomic) CGRect bounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getBounds() {
-        CGRect __ret__ = new CGRect(); if (customClass) { objc_getBoundsSuper_stret(__ret__, getSuper(), bounds); } else { objc_getBounds_stret(__ret__, this, bounds); } return __ret__;
+        if (customClass) { return objc_getBoundsSuper(getSuper(), bounds); } else { return objc_getBounds(this, bounds); }
     }
     
     private static final Selector setBounds$ = Selector.register("setBounds:");
@@ -178,16 +177,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector center = Selector.register("center");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGPoint objc_getCenter(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getCenter_stret(@StructRet CGPoint __ret__, UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGPoint objc_getCenterSuper(ObjCSuper __super__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getCenterSuper_stret(@StructRet CGPoint __ret__, ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static @ByVal CGPoint objc_getCenter(UIView __self__, Selector __cmd__);
+    @Bridge private native static @ByVal CGPoint objc_getCenterSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/center">@property(nonatomic) CGPoint center</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGPoint getCenter() {
-        if (X86) { if (customClass) { return objc_getCenterSuper(getSuper(), center); } else { return objc_getCenter(this, center); } } else { CGPoint __ret__ = new CGPoint(); if (customClass) { objc_getCenterSuper_stret(__ret__, getSuper(), center); } else { objc_getCenter_stret(__ret__, this, center); } return __ret__; }
+        if (customClass) { return objc_getCenterSuper(getSuper(), center); } else { return objc_getCenter(this, center); }
     }
     
     private static final Selector setCenter$ = Selector.register("setCenter:");
@@ -202,8 +199,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector clearsContextBeforeDrawing = Selector.register("clearsContextBeforeDrawing");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isClearsContextBeforeDrawing(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isClearsContextBeforeDrawingSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isClearsContextBeforeDrawing(UIView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isClearsContextBeforeDrawingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/clearsContextBeforeDrawing">@property(nonatomic) BOOL clearsContextBeforeDrawing</a>
      * @since Available in iOS 2.0 and later.
@@ -224,8 +221,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector clipsToBounds = Selector.register("clipsToBounds");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isClipsToBounds(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isClipsToBoundsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isClipsToBounds(UIView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isClipsToBoundsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/clipsToBounds">@property(nonatomic) BOOL clipsToBounds</a>
      * @since Available in iOS 2.0 and later.
@@ -246,8 +243,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector contentMode = Selector.register("contentMode");
-    @Bridge(symbol = "objc_msgSend") private native static UIViewContentMode objc_getContentMode(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIViewContentMode objc_getContentModeSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIViewContentMode objc_getContentMode(UIView __self__, Selector __cmd__);
+    @Bridge private native static UIViewContentMode objc_getContentModeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/contentMode">@property(nonatomic) UIViewContentMode contentMode</a>
      * @since Available in iOS 2.0 and later.
@@ -268,8 +265,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector contentScaleFactor = Selector.register("contentScaleFactor");
-    @Bridge(symbol = "objc_msgSend") private native static float objc_getContentScaleFactor(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getContentScaleFactorSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static float objc_getContentScaleFactor(UIView __self__, Selector __cmd__);
+    @Bridge private native static float objc_getContentScaleFactorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/contentScaleFactor">@property(nonatomic) CGFloat contentScaleFactor</a>
      * @since Available in iOS 4.0 and later.
@@ -290,8 +287,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isExclusiveTouch = Selector.register("isExclusiveTouch");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isExclusiveTouch(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isExclusiveTouchSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isExclusiveTouch(UIView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isExclusiveTouchSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/exclusiveTouch">@property(nonatomic, getter=isExclusiveTouch) BOOL exclusiveTouch</a>
      * @since Available in iOS 2.0 and later.
@@ -312,14 +309,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector frame = Selector.register("frame");
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getFrame_stret(@StructRet CGRect __ret__, UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getFrameSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static @ByVal CGRect objc_getFrame(UIView __self__, Selector __cmd__);
+    @Bridge private native static @ByVal CGRect objc_getFrameSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/frame">@property(nonatomic) CGRect frame</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getFrame() {
-        CGRect __ret__ = new CGRect(); if (customClass) { objc_getFrameSuper_stret(__ret__, getSuper(), frame); } else { objc_getFrame_stret(__ret__, this, frame); } return __ret__;
+        if (customClass) { return objc_getFrameSuper(getSuper(), frame); } else { return objc_getFrame(this, frame); }
     }
     
     private static final Selector setFrame$ = Selector.register("setFrame:");
@@ -334,8 +331,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector gestureRecognizers = Selector.register("gestureRecognizers");
-    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getGestureRecognizers(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getGestureRecognizersSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getGestureRecognizers(UIView __self__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getGestureRecognizersSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/gestureRecognizers">@property(nonatomic, copy) NSArray *gestureRecognizers</a>
      * @since Available in iOS 3.2 and later.
@@ -356,8 +353,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isHidden = Selector.register("isHidden");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isHidden(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isHiddenSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isHidden(UIView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isHiddenSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/hidden">@property(nonatomic, getter=isHidden) BOOL hidden</a>
      * @since Available in iOS 2.0 and later.
@@ -378,8 +375,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector layer = Selector.register("layer");
-    @Bridge(symbol = "objc_msgSend") private native static CALayer objc_getLayer(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static CALayer objc_getLayerSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static CALayer objc_getLayer(UIView __self__, Selector __cmd__);
+    @Bridge private native static CALayer objc_getLayerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/layer">@property(nonatomic, readonly, retain) CALayer *layer</a>
      * @since Available in iOS 2.0 and later.
@@ -389,8 +386,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isMultipleTouchEnabled = Selector.register("isMultipleTouchEnabled");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isMultipleTouchEnabled(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isMultipleTouchEnabledSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isMultipleTouchEnabled(UIView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isMultipleTouchEnabledSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/multipleTouchEnabled">@property(nonatomic, getter=isMultipleTouchEnabled) BOOL multipleTouchEnabled</a>
      * @since Available in iOS 2.0 and later.
@@ -411,8 +408,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isOpaque = Selector.register("isOpaque");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isOpaque(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isOpaqueSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isOpaque(UIView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isOpaqueSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/opaque">@property(nonatomic, getter=isOpaque) BOOL opaque</a>
      * @since Available in iOS 2.0 and later.
@@ -433,8 +430,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector restorationIdentifier = Selector.register("restorationIdentifier");
-    @Bridge(symbol = "objc_msgSend") private native static String objc_getRestorationIdentifier(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getRestorationIdentifierSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static String objc_getRestorationIdentifier(UIView __self__, Selector __cmd__);
+    @Bridge private native static String objc_getRestorationIdentifierSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/restorationIdentifier">@property (nonatomic, copy) NSString *restorationIdentifier</a>
      * @since Available in iOS 6.0 and later.
@@ -455,8 +452,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector subviews = Selector.register("subviews");
-    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getSubviews(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getSubviewsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getSubviews(UIView __self__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getSubviewsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/subviews">@property(nonatomic, readonly, copy) NSArray *subviews</a>
      * @since Available in iOS 2.0 and later.
@@ -466,8 +463,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector superview = Selector.register("superview");
-    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getSuperview(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getSuperviewSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIView objc_getSuperview(UIView __self__, Selector __cmd__);
+    @Bridge private native static UIView objc_getSuperviewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/superview">@property(nonatomic, readonly) UIView *superview</a>
      * @since Available in iOS 2.0 and later.
@@ -477,8 +474,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector tag = Selector.register("tag");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_getTag(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getTagSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static int objc_getTag(UIView __self__, Selector __cmd__);
+    @Bridge private native static int objc_getTagSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/tag">@property(nonatomic) NSInteger tag</a>
      * @since Available in iOS 2.0 and later.
@@ -499,14 +496,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector transform = Selector.register("transform");
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getTransform_stret(@StructRet CGAffineTransform __ret__, UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getTransformSuper_stret(@StructRet CGAffineTransform __ret__, ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static @ByVal CGAffineTransform objc_getTransform(UIView __self__, Selector __cmd__);
+    @Bridge private native static @ByVal CGAffineTransform objc_getTransformSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/transform">@property(nonatomic) CGAffineTransform transform</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGAffineTransform getTransform() {
-        CGAffineTransform __ret__ = new CGAffineTransform(); if (customClass) { objc_getTransformSuper_stret(__ret__, getSuper(), transform); } else { objc_getTransform_stret(__ret__, this, transform); } return __ret__;
+        if (customClass) { return objc_getTransformSuper(getSuper(), transform); } else { return objc_getTransform(this, transform); }
     }
     
     private static final Selector setTransform$ = Selector.register("setTransform:");
@@ -521,8 +518,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isUserInteractionEnabled = Selector.register("isUserInteractionEnabled");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isUserInteractionEnabled(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isUserInteractionEnabledSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isUserInteractionEnabled(UIView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isUserInteractionEnabledSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/userInteractionEnabled">@property(nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled</a>
      * @since Available in iOS 2.0 and later.
@@ -543,8 +540,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector window = Selector.register("window");
-    @Bridge(symbol = "objc_msgSend") private native static UIWindow objc_getWindow(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIWindow objc_getWindowSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIWindow objc_getWindow(UIView __self__, Selector __cmd__);
+    @Bridge private native static UIWindow objc_getWindowSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/window">@property(nonatomic, readonly) UIWindow *window</a>
      * @since Available in iOS 2.0 and later.
@@ -556,7 +553,7 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector animateWithDuration$animations$ = Selector.register("animateWithDuration:animations:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_animate(ObjCClass __self__, Selector __cmd__, double duration, VoidBlock animations);
+    @Bridge private native static void objc_animate(ObjCClass __self__, Selector __cmd__, double duration, VoidBlock animations);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/animateWithDuration:animations:">+ (void)animateWithDuration:(NSTimeInterval)duration animations:(void (^)(void))animations</a>
      * @since Available in iOS 4.0 and later.
@@ -566,7 +563,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector animateWithDuration$animations$completion$ = Selector.register("animateWithDuration:animations:completion:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_animate(ObjCClass __self__, Selector __cmd__, double duration, VoidBlock animations, VoidBooleanBlock completion);
+    @Bridge private native static void objc_animate(ObjCClass __self__, Selector __cmd__, double duration, VoidBlock animations, VoidBooleanBlock completion);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/animateWithDuration:animations:completion:">+ (void)animateWithDuration:(NSTimeInterval)duration animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion</a>
      * @since Available in iOS 4.0 and later.
@@ -576,7 +573,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector animateWithDuration$delay$options$animations$completion$ = Selector.register("animateWithDuration:delay:options:animations:completion:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_animate(ObjCClass __self__, Selector __cmd__, double duration, double delay, UIViewAnimationOptions options, VoidBlock animations, VoidBooleanBlock completion);
+    @Bridge private native static void objc_animate(ObjCClass __self__, Selector __cmd__, double duration, double delay, UIViewAnimationOptions options, VoidBlock animations, VoidBooleanBlock completion);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/animateWithDuration:delay:options:animations:completion:">+ (void)animateWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay options:(UIViewAnimationOptions)options animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion</a>
      * @since Available in iOS 4.0 and later.
@@ -586,7 +583,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector areAnimationsEnabled = Selector.register("areAnimationsEnabled");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_areAnimationsEnabled(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_areAnimationsEnabled(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/areAnimationsEnabled">+ (BOOL)areAnimationsEnabled</a>
      * @since Available in iOS 2.0 and later.
@@ -596,7 +593,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector beginAnimations$context$ = Selector.register("beginAnimations:context:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_beginAnimations(ObjCClass __self__, Selector __cmd__, String animationID, VoidPtr context);
+    @Bridge private native static void objc_beginAnimations(ObjCClass __self__, Selector __cmd__, String animationID, VoidPtr context);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/beginAnimations:context:">+ (void)beginAnimations:(NSString *)animationID context:(void *)context</a>
      * @since Available in iOS 2.0 and later.
@@ -606,7 +603,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector commitAnimations = Selector.register("commitAnimations");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_commitAnimations(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static void objc_commitAnimations(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/commitAnimations">+ (void)commitAnimations</a>
      * @since Available in iOS 2.0 and later.
@@ -616,7 +613,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector layerClass = Selector.register("layerClass");
-    @Bridge(symbol = "objc_msgSend") private native static ObjCClass objc_getLayerClass(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static ObjCClass objc_getLayerClass(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/layerClass">+ (Class)layerClass</a>
      * @since Available in iOS 2.0 and later.
@@ -626,7 +623,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector requiresConstraintBasedLayout = Selector.register("requiresConstraintBasedLayout");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_requiresConstraintBasedLayout(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_requiresConstraintBasedLayout(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/requiresConstraintBasedLayout">+ (BOOL)requiresConstraintBasedLayout</a>
      * @since Available in iOS 6.0 and later.
@@ -636,7 +633,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAnimationBeginsFromCurrentState$ = Selector.register("setAnimationBeginsFromCurrentState:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAnimationBeginsFromCurrentState(ObjCClass __self__, Selector __cmd__, boolean fromCurrentState);
+    @Bridge private native static void objc_setAnimationBeginsFromCurrentState(ObjCClass __self__, Selector __cmd__, boolean fromCurrentState);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationBeginsFromCurrentState:">+ (void)setAnimationBeginsFromCurrentState:(BOOL)fromCurrentState</a>
      * @since Available in iOS 2.0 and later.
@@ -646,7 +643,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAnimationCurve$ = Selector.register("setAnimationCurve:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAnimationCurve(ObjCClass __self__, Selector __cmd__, UIViewAnimationCurve curve);
+    @Bridge private native static void objc_setAnimationCurve(ObjCClass __self__, Selector __cmd__, UIViewAnimationCurve curve);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationCurve:">+ (void)setAnimationCurve:(UIViewAnimationCurve)curve</a>
      * @since Available in iOS 2.0 and later.
@@ -656,7 +653,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAnimationDelay$ = Selector.register("setAnimationDelay:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAnimationDelay(ObjCClass __self__, Selector __cmd__, double delay);
+    @Bridge private native static void objc_setAnimationDelay(ObjCClass __self__, Selector __cmd__, double delay);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationDelay:">+ (void)setAnimationDelay:(NSTimeInterval)delay</a>
      * @since Available in iOS 2.0 and later.
@@ -666,7 +663,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAnimationDelegate$ = Selector.register("setAnimationDelegate:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAnimationDelegate(ObjCClass __self__, Selector __cmd__, NSObject delegate);
+    @Bridge private native static void objc_setAnimationDelegate(ObjCClass __self__, Selector __cmd__, NSObject delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationDelegate:">+ (void)setAnimationDelegate:(id)delegate</a>
      * @since Available in iOS 2.0 and later.
@@ -676,7 +673,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAnimationDidStopSelector$ = Selector.register("setAnimationDidStopSelector:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAnimationDidStopSelector(ObjCClass __self__, Selector __cmd__, Selector selector);
+    @Bridge private native static void objc_setAnimationDidStopSelector(ObjCClass __self__, Selector __cmd__, Selector selector);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationDidStopSelector:">+ (void)setAnimationDidStopSelector:(SEL)selector</a>
      * @since Available in iOS 2.0 and later.
@@ -686,7 +683,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAnimationRepeatAutoreverses$ = Selector.register("setAnimationRepeatAutoreverses:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAnimationRepeatAutoreverses(ObjCClass __self__, Selector __cmd__, boolean repeatAutoreverses);
+    @Bridge private native static void objc_setAnimationRepeatAutoreverses(ObjCClass __self__, Selector __cmd__, boolean repeatAutoreverses);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationRepeatAutoreverses:">+ (void)setAnimationRepeatAutoreverses:(BOOL)repeatAutoreverses</a>
      * @since Available in iOS 2.0 and later.
@@ -696,7 +693,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAnimationRepeatCount$ = Selector.register("setAnimationRepeatCount:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAnimationRepeatCount(ObjCClass __self__, Selector __cmd__, float repeatCount);
+    @Bridge private native static void objc_setAnimationRepeatCount(ObjCClass __self__, Selector __cmd__, float repeatCount);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationRepeatCount:">+ (void)setAnimationRepeatCount:(float)repeatCount</a>
      * @since Available in iOS 2.0 and later.
@@ -706,7 +703,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAnimationStartDate$ = Selector.register("setAnimationStartDate:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAnimationStartDate(ObjCClass __self__, Selector __cmd__, NSDate startTime);
+    @Bridge private native static void objc_setAnimationStartDate(ObjCClass __self__, Selector __cmd__, NSDate startTime);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationStartDate:">+ (void)setAnimationStartDate:(NSDate *)startTime</a>
      * @since Available in iOS 2.0 and later.
@@ -716,7 +713,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAnimationTransition$forView$cache$ = Selector.register("setAnimationTransition:forView:cache:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAnimationTransition(ObjCClass __self__, Selector __cmd__, UIViewAnimationTransition transition, UIView view, boolean cache);
+    @Bridge private native static void objc_setAnimationTransition(ObjCClass __self__, Selector __cmd__, UIViewAnimationTransition transition, UIView view, boolean cache);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationTransition:forView:cache:">+ (void)setAnimationTransition:(UIViewAnimationTransition)transition forView:(UIView *)view cache:(BOOL)cache</a>
      * @since Available in iOS 2.0 and later.
@@ -726,7 +723,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAnimationWillStartSelector$ = Selector.register("setAnimationWillStartSelector:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAnimationWillStartSelector(ObjCClass __self__, Selector __cmd__, Selector selector);
+    @Bridge private native static void objc_setAnimationWillStartSelector(ObjCClass __self__, Selector __cmd__, Selector selector);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationWillStartSelector:">+ (void)setAnimationWillStartSelector:(SEL)selector</a>
      * @since Available in iOS 2.0 and later.
@@ -736,7 +733,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAnimationsEnabled$ = Selector.register("setAnimationsEnabled:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAnimationsEnabled(ObjCClass __self__, Selector __cmd__, boolean enabled);
+    @Bridge private native static void objc_setAnimationsEnabled(ObjCClass __self__, Selector __cmd__, boolean enabled);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationsEnabled:">+ (void)setAnimationsEnabled:(BOOL)enabled</a>
      * @since Available in iOS 2.0 and later.
@@ -746,7 +743,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAnimationDuration$ = Selector.register("setAnimationDuration:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDurationForAnimation(ObjCClass __self__, Selector __cmd__, double duration);
+    @Bridge private native static void objc_setDurationForAnimation(ObjCClass __self__, Selector __cmd__, double duration);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationDuration:">+ (void)setAnimationDuration:(NSTimeInterval)duration</a>
      * @since Available in iOS 2.0 and later.
@@ -756,7 +753,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector transitionWithView$duration$options$animations$completion$ = Selector.register("transitionWithView:duration:options:animations:completion:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_transition(ObjCClass __self__, Selector __cmd__, UIView view, double duration, UIViewAnimationOptions options, VoidBlock animations, VoidBooleanBlock completion);
+    @Bridge private native static void objc_transition(ObjCClass __self__, Selector __cmd__, UIView view, double duration, UIViewAnimationOptions options, VoidBlock animations, VoidBooleanBlock completion);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/transitionWithView:duration:options:animations:completion:">+ (void)transitionWithView:(UIView *)view duration:(NSTimeInterval)duration options:(UIViewAnimationOptions)options animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion</a>
      * @since Available in iOS 4.0 and later.
@@ -766,7 +763,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector transitionFromView$toView$duration$options$completion$ = Selector.register("transitionFromView:toView:duration:options:completion:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_transition(ObjCClass __self__, Selector __cmd__, UIView fromView, UIView toView, double duration, UIViewAnimationOptions options, VoidBooleanBlock completion);
+    @Bridge private native static void objc_transition(ObjCClass __self__, Selector __cmd__, UIView fromView, UIView toView, double duration, UIViewAnimationOptions options, VoidBooleanBlock completion);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/transitionFromView:toView:duration:options:completion:">+ (void)transitionFromView:(UIView *)fromView toView:(UIView *)toView duration:(NSTimeInterval)duration options:(UIViewAnimationOptions)options completion:(void (^)(BOOL finished))completion</a>
      * @since Available in iOS 4.0 and later.
@@ -776,8 +773,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector addConstraint$ = Selector.register("addConstraint:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_addConstraint(UIView __self__, Selector __cmd__, NSLayoutConstraint constraint);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_addConstraintSuper(ObjCSuper __super__, Selector __cmd__, NSLayoutConstraint constraint);
+    @Bridge private native static void objc_addConstraint(UIView __self__, Selector __cmd__, NSLayoutConstraint constraint);
+    @Bridge private native static void objc_addConstraintSuper(ObjCSuper __super__, Selector __cmd__, NSLayoutConstraint constraint);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/addConstraint:">- (void)addConstraint:(NSLayoutConstraint *)constraint</a>
      * @since Available in iOS 6.0 and later.
@@ -787,8 +784,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector addConstraints$ = Selector.register("addConstraints:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_addConstraints(UIView __self__, Selector __cmd__, NSArray constraints);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_addConstraintsSuper(ObjCSuper __super__, Selector __cmd__, NSArray constraints);
+    @Bridge private native static void objc_addConstraints(UIView __self__, Selector __cmd__, NSArray constraints);
+    @Bridge private native static void objc_addConstraintsSuper(ObjCSuper __super__, Selector __cmd__, NSArray constraints);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/addConstraints:">- (void)addConstraints:(NSArray *)constraints</a>
      * @since Available in iOS 6.0 and later.
@@ -798,8 +795,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector addGestureRecognizer$ = Selector.register("addGestureRecognizer:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_addGestureRecognizer(UIView __self__, Selector __cmd__, UIGestureRecognizer gestureRecognizer);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_addGestureRecognizerSuper(ObjCSuper __super__, Selector __cmd__, UIGestureRecognizer gestureRecognizer);
+    @Bridge private native static void objc_addGestureRecognizer(UIView __self__, Selector __cmd__, UIGestureRecognizer gestureRecognizer);
+    @Bridge private native static void objc_addGestureRecognizerSuper(ObjCSuper __super__, Selector __cmd__, UIGestureRecognizer gestureRecognizer);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/addGestureRecognizer:">- (void)addGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer</a>
      * @since Available in iOS 3.2 and later.
@@ -809,8 +806,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector addSubview$ = Selector.register("addSubview:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_addSubview(UIView __self__, Selector __cmd__, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_addSubviewSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
+    @Bridge private native static void objc_addSubview(UIView __self__, Selector __cmd__, UIView view);
+    @Bridge private native static void objc_addSubviewSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/addSubview:">- (void)addSubview:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
@@ -820,8 +817,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector bringSubviewToFront$ = Selector.register("bringSubviewToFront:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_bringSubviewToFront(UIView __self__, Selector __cmd__, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_bringSubviewToFrontSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
+    @Bridge private native static void objc_bringSubviewToFront(UIView __self__, Selector __cmd__, UIView view);
+    @Bridge private native static void objc_bringSubviewToFrontSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/bringSubviewToFront:">- (void)bringSubviewToFront:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
@@ -831,56 +828,52 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector convertPoint$fromView$ = Selector.register("convertPoint:fromView:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGPoint objc_convertPointFromView(UIView __self__, Selector __cmd__, @ByVal CGPoint point, UIView view);
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_convertPointFromView_stret(@StructRet CGPoint __ret__, UIView __self__, Selector __cmd__, @ByVal CGPoint point, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGPoint objc_convertPointFromViewSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_convertPointFromViewSuper_stret(@StructRet CGPoint __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point, UIView view);
+    @Bridge private native static @ByVal CGPoint objc_convertPointFromView(UIView __self__, Selector __cmd__, @ByVal CGPoint point, UIView view);
+    @Bridge private native static @ByVal CGPoint objc_convertPointFromViewSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/convertPoint:fromView:">- (CGPoint)convertPoint:(CGPoint)point fromView:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGPoint convertPointFromView(CGPoint point, UIView view) {
-        if (X86) { if (customClass) { return objc_convertPointFromViewSuper(getSuper(), convertPoint$fromView$, point, view); } else { return objc_convertPointFromView(this, convertPoint$fromView$, point, view); } } else { CGPoint __ret__ = new CGPoint(); if (customClass) { objc_convertPointFromViewSuper_stret(__ret__, getSuper(), convertPoint$fromView$, point, view); } else { objc_convertPointFromView_stret(__ret__, this, convertPoint$fromView$, point, view); } return __ret__; }
+        if (customClass) { return objc_convertPointFromViewSuper(getSuper(), convertPoint$fromView$, point, view); } else { return objc_convertPointFromView(this, convertPoint$fromView$, point, view); }
     }
     
     private static final Selector convertPoint$toView$ = Selector.register("convertPoint:toView:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGPoint objc_convertPointToView(UIView __self__, Selector __cmd__, @ByVal CGPoint point, UIView view);
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_convertPointToView_stret(@StructRet CGPoint __ret__, UIView __self__, Selector __cmd__, @ByVal CGPoint point, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGPoint objc_convertPointToViewSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_convertPointToViewSuper_stret(@StructRet CGPoint __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point, UIView view);
+    @Bridge private native static @ByVal CGPoint objc_convertPointToView(UIView __self__, Selector __cmd__, @ByVal CGPoint point, UIView view);
+    @Bridge private native static @ByVal CGPoint objc_convertPointToViewSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/convertPoint:toView:">- (CGPoint)convertPoint:(CGPoint)point toView:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGPoint convertPointToView(CGPoint point, UIView view) {
-        if (X86) { if (customClass) { return objc_convertPointToViewSuper(getSuper(), convertPoint$toView$, point, view); } else { return objc_convertPointToView(this, convertPoint$toView$, point, view); } } else { CGPoint __ret__ = new CGPoint(); if (customClass) { objc_convertPointToViewSuper_stret(__ret__, getSuper(), convertPoint$toView$, point, view); } else { objc_convertPointToView_stret(__ret__, this, convertPoint$toView$, point, view); } return __ret__; }
+        if (customClass) { return objc_convertPointToViewSuper(getSuper(), convertPoint$toView$, point, view); } else { return objc_convertPointToView(this, convertPoint$toView$, point, view); }
     }
     
     private static final Selector convertRect$fromView$ = Selector.register("convertRect:fromView:");
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_convertRectFromView_stret(@StructRet CGRect __ret__, UIView __self__, Selector __cmd__, @ByVal CGRect rect, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_convertRectFromViewSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, UIView view);
+    @Bridge private native static @ByVal CGRect objc_convertRectFromView(UIView __self__, Selector __cmd__, @ByVal CGRect rect, UIView view);
+    @Bridge private native static @ByVal CGRect objc_convertRectFromViewSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/convertRect:fromView:">- (CGRect)convertRect:(CGRect)rect fromView:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect convertRectFromView(CGRect rect, UIView view) {
-        CGRect __ret__ = new CGRect(); if (customClass) { objc_convertRectFromViewSuper_stret(__ret__, getSuper(), convertRect$fromView$, rect, view); } else { objc_convertRectFromView_stret(__ret__, this, convertRect$fromView$, rect, view); } return __ret__;
+        if (customClass) { return objc_convertRectFromViewSuper(getSuper(), convertRect$fromView$, rect, view); } else { return objc_convertRectFromView(this, convertRect$fromView$, rect, view); }
     }
     
     private static final Selector convertRect$toView$ = Selector.register("convertRect:toView:");
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_convertRectToView_stret(@StructRet CGRect __ret__, UIView __self__, Selector __cmd__, @ByVal CGRect rect, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_convertRectToViewSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, UIView view);
+    @Bridge private native static @ByVal CGRect objc_convertRectToView(UIView __self__, Selector __cmd__, @ByVal CGRect rect, UIView view);
+    @Bridge private native static @ByVal CGRect objc_convertRectToViewSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/convertRect:toView:">- (CGRect)convertRect:(CGRect)rect toView:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect convertRectToView(CGRect rect, UIView view) {
-        CGRect __ret__ = new CGRect(); if (customClass) { objc_convertRectToViewSuper_stret(__ret__, getSuper(), convertRect$toView$, rect, view); } else { objc_convertRectToView_stret(__ret__, this, convertRect$toView$, rect, view); } return __ret__;
+        if (customClass) { return objc_convertRectToViewSuper(getSuper(), convertRect$toView$, rect, view); } else { return objc_convertRectToView(this, convertRect$toView$, rect, view); }
     }
     
     private static final Selector decodeRestorableStateWithCoder$ = Selector.register("decodeRestorableStateWithCoder:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_decodeRestorableState(UIView __self__, Selector __cmd__, NSCoder coder);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_decodeRestorableStateSuper(ObjCSuper __super__, Selector __cmd__, NSCoder coder);
+    @Bridge private native static void objc_decodeRestorableState(UIView __self__, Selector __cmd__, NSCoder coder);
+    @Bridge private native static void objc_decodeRestorableStateSuper(ObjCSuper __super__, Selector __cmd__, NSCoder coder);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/decodeRestorableStateWithCoder:">- (void) decodeRestorableStateWithCoder:(NSCoder *)coder</a>
      * @since Available in iOS 6.0 and later.
@@ -890,8 +883,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector didAddSubview$ = Selector.register("didAddSubview:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_didAddSubview(UIView __self__, Selector __cmd__, UIView subview);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_didAddSubviewSuper(ObjCSuper __super__, Selector __cmd__, UIView subview);
+    @Bridge private native static void objc_didAddSubview(UIView __self__, Selector __cmd__, UIView subview);
+    @Bridge private native static void objc_didAddSubviewSuper(ObjCSuper __super__, Selector __cmd__, UIView subview);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/didAddSubview:">- (void)didAddSubview:(UIView *)subview</a>
      * @since Available in iOS 2.0 and later.
@@ -901,8 +894,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector didMoveToSuperview = Selector.register("didMoveToSuperview");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_didMoveToSuperview(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_didMoveToSuperviewSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_didMoveToSuperview(UIView __self__, Selector __cmd__);
+    @Bridge private native static void objc_didMoveToSuperviewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/didMoveToSuperview">- (void)didMoveToSuperview</a>
      * @since Available in iOS 2.0 and later.
@@ -912,8 +905,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector didMoveToWindow = Selector.register("didMoveToWindow");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_didMoveToWindow(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_didMoveToWindowSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_didMoveToWindow(UIView __self__, Selector __cmd__);
+    @Bridge private native static void objc_didMoveToWindowSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/didMoveToWindow">- (void)didMoveToWindow</a>
      * @since Available in iOS 2.0 and later.
@@ -923,8 +916,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector drawRect$ = Selector.register("drawRect:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_draw(UIView __self__, Selector __cmd__, @ByVal CGRect rect);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_drawSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect);
+    @Bridge private native static void objc_draw(UIView __self__, Selector __cmd__, @ByVal CGRect rect);
+    @Bridge private native static void objc_drawSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/drawRect:">- (void)drawRect:(CGRect)rect</a>
      * @since Available in iOS 2.0 and later.
@@ -934,8 +927,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector drawRect$forViewPrintFormatter$ = Selector.register("drawRect:forViewPrintFormatter:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_drawRect(UIView __self__, Selector __cmd__, @ByVal CGRect area, UIViewPrintFormatter formatter);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_drawRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect area, UIViewPrintFormatter formatter);
+    @Bridge private native static void objc_drawRect(UIView __self__, Selector __cmd__, @ByVal CGRect area, UIViewPrintFormatter formatter);
+    @Bridge private native static void objc_drawRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect area, UIViewPrintFormatter formatter);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/drawRect:forViewPrintFormatter:">- (void)drawRect:(CGRect)area forViewPrintFormatter:(UIViewPrintFormatter *)formatter</a>
      * @since Available in iOS 4.2 and later.
@@ -945,8 +938,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector encodeRestorableStateWithCoder$ = Selector.register("encodeRestorableStateWithCoder:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_encodeRestorableState(UIView __self__, Selector __cmd__, NSCoder coder);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_encodeRestorableStateSuper(ObjCSuper __super__, Selector __cmd__, NSCoder coder);
+    @Bridge private native static void objc_encodeRestorableState(UIView __self__, Selector __cmd__, NSCoder coder);
+    @Bridge private native static void objc_encodeRestorableStateSuper(ObjCSuper __super__, Selector __cmd__, NSCoder coder);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/encodeRestorableStateWithCoder:">- (void) encodeRestorableStateWithCoder:(NSCoder *)coder</a>
      * @since Available in iOS 6.0 and later.
@@ -956,8 +949,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector endEditing$ = Selector.register("endEditing:");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_endEditing(UIView __self__, Selector __cmd__, boolean force);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_endEditingSuper(ObjCSuper __super__, Selector __cmd__, boolean force);
+    @Bridge private native static boolean objc_endEditing(UIView __self__, Selector __cmd__, boolean force);
+    @Bridge private native static boolean objc_endEditingSuper(ObjCSuper __super__, Selector __cmd__, boolean force);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/endEditing:">- (BOOL)endEditing:(BOOL)force</a>
      * @since Available in iOS 2.0 and later.
@@ -967,8 +960,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector exchangeSubviewAtIndex$withSubviewAtIndex$ = Selector.register("exchangeSubviewAtIndex:withSubviewAtIndex:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_exchangeSubview(UIView __self__, Selector __cmd__, int index1, int index2);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_exchangeSubviewSuper(ObjCSuper __super__, Selector __cmd__, int index1, int index2);
+    @Bridge private native static void objc_exchangeSubview(UIView __self__, Selector __cmd__, int index1, int index2);
+    @Bridge private native static void objc_exchangeSubviewSuper(ObjCSuper __super__, Selector __cmd__, int index1, int index2);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/exchangeSubviewAtIndex:withSubviewAtIndex:">- (void)exchangeSubviewAtIndex:(NSInteger)index1 withSubviewAtIndex:(NSInteger)index2</a>
      * @since Available in iOS 2.0 and later.
@@ -978,8 +971,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector exerciseAmbiguityInLayout = Selector.register("exerciseAmbiguityInLayout");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_exerciseAmbiguityInLayout(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_exerciseAmbiguityInLayoutSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_exerciseAmbiguityInLayout(UIView __self__, Selector __cmd__);
+    @Bridge private native static void objc_exerciseAmbiguityInLayoutSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/exerciseAmbiguityInLayout">- (void)exerciseAmbiguityInLayout</a>
      * @since Available in iOS 6.0 and later.
@@ -989,8 +982,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector gestureRecognizerShouldBegin$ = Selector.register("gestureRecognizerShouldBegin:");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_gestureRecognizerShouldBegin(UIView __self__, Selector __cmd__, UIGestureRecognizer gestureRecognizer);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_gestureRecognizerShouldBeginSuper(ObjCSuper __super__, Selector __cmd__, UIGestureRecognizer gestureRecognizer);
+    @Bridge private native static boolean objc_gestureRecognizerShouldBegin(UIView __self__, Selector __cmd__, UIGestureRecognizer gestureRecognizer);
+    @Bridge private native static boolean objc_gestureRecognizerShouldBeginSuper(ObjCSuper __super__, Selector __cmd__, UIGestureRecognizer gestureRecognizer);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/gestureRecognizerShouldBegin:">- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer</a>
      * @since Available in iOS 6.0 and later.
@@ -1000,30 +993,30 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector frameForAlignmentRect$ = Selector.register("frameForAlignmentRect:");
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getAlignmentRectFrame_stret(@StructRet CGRect __ret__, UIView __self__, Selector __cmd__, @ByVal CGRect alignmentRect);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getAlignmentRectFrameSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGRect alignmentRect);
+    @Bridge private native static @ByVal CGRect objc_getAlignmentRectFrame(UIView __self__, Selector __cmd__, @ByVal CGRect alignmentRect);
+    @Bridge private native static @ByVal CGRect objc_getAlignmentRectFrameSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect alignmentRect);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/frameForAlignmentRect:">- (CGRect)frameForAlignmentRect:(CGRect)alignmentRect</a>
      * @since Available in iOS 6.0 and later.
      */
     public CGRect getAlignmentRectFrame(CGRect alignmentRect) {
-        CGRect __ret__ = new CGRect(); if (customClass) { objc_getAlignmentRectFrameSuper_stret(__ret__, getSuper(), frameForAlignmentRect$, alignmentRect); } else { objc_getAlignmentRectFrame_stret(__ret__, this, frameForAlignmentRect$, alignmentRect); } return __ret__;
+        if (customClass) { return objc_getAlignmentRectFrameSuper(getSuper(), frameForAlignmentRect$, alignmentRect); } else { return objc_getAlignmentRectFrame(this, frameForAlignmentRect$, alignmentRect); }
     }
     
     private static final Selector alignmentRectInsets = Selector.register("alignmentRectInsets");
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getAlignmentRectInsets_stret(@StructRet UIEdgeInsets __ret__, UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getAlignmentRectInsetsSuper_stret(@StructRet UIEdgeInsets __ret__, ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static @ByVal UIEdgeInsets objc_getAlignmentRectInsets(UIView __self__, Selector __cmd__);
+    @Bridge private native static @ByVal UIEdgeInsets objc_getAlignmentRectInsetsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/alignmentRectInsets">- (UIEdgeInsets)alignmentRectInsets</a>
      * @since Available in iOS 6.0 and later.
      */
     public UIEdgeInsets getAlignmentRectInsets() {
-        UIEdgeInsets __ret__ = new UIEdgeInsets(); if (customClass) { objc_getAlignmentRectInsetsSuper_stret(__ret__, getSuper(), alignmentRectInsets); } else { objc_getAlignmentRectInsets_stret(__ret__, this, alignmentRectInsets); } return __ret__;
+        if (customClass) { return objc_getAlignmentRectInsetsSuper(getSuper(), alignmentRectInsets); } else { return objc_getAlignmentRectInsets(this, alignmentRectInsets); }
     }
     
     private static final Selector viewForBaselineLayout = Selector.register("viewForBaselineLayout");
-    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getBaselineLayoutView(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getBaselineLayoutViewSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIView objc_getBaselineLayoutView(UIView __self__, Selector __cmd__);
+    @Bridge private native static UIView objc_getBaselineLayoutViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/viewForBaselineLayout">- (UIView *)viewForBaselineLayout</a>
      * @since Available in iOS 6.0 and later.
@@ -1033,8 +1026,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector constraints = Selector.register("constraints");
-    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getConstraints(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getConstraintsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getConstraints(UIView __self__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getConstraintsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/constraints">- (NSArray *)constraints</a>
      * @since Available in iOS 6.0 and later.
@@ -1044,8 +1037,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector constraintsAffectingLayoutForAxis$ = Selector.register("constraintsAffectingLayoutForAxis:");
-    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getConstraintsAffectingLayout(UIView __self__, Selector __cmd__, UILayoutConstraintAxis axis);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getConstraintsAffectingLayoutSuper(ObjCSuper __super__, Selector __cmd__, UILayoutConstraintAxis axis);
+    @Bridge private native static NSArray objc_getConstraintsAffectingLayout(UIView __self__, Selector __cmd__, UILayoutConstraintAxis axis);
+    @Bridge private native static NSArray objc_getConstraintsAffectingLayoutSuper(ObjCSuper __super__, Selector __cmd__, UILayoutConstraintAxis axis);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/constraintsAffectingLayoutForAxis:">- (NSArray *)constraintsAffectingLayoutForAxis:(UILayoutConstraintAxis)axis</a>
      * @since Available in iOS 6.0 and later.
@@ -1055,8 +1048,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector contentCompressionResistancePriorityForAxis$ = Selector.register("contentCompressionResistancePriorityForAxis:");
-    @Bridge(symbol = "objc_msgSend") private native static UILayoutPriority objc_getContentCompressionResistancePriority(UIView __self__, Selector __cmd__, UILayoutConstraintAxis axis);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UILayoutPriority objc_getContentCompressionResistancePrioritySuper(ObjCSuper __super__, Selector __cmd__, UILayoutConstraintAxis axis);
+    @Bridge private native static UILayoutPriority objc_getContentCompressionResistancePriority(UIView __self__, Selector __cmd__, UILayoutConstraintAxis axis);
+    @Bridge private native static UILayoutPriority objc_getContentCompressionResistancePrioritySuper(ObjCSuper __super__, Selector __cmd__, UILayoutConstraintAxis axis);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/contentCompressionResistancePriorityForAxis:">- (UILayoutPriority)contentCompressionResistancePriorityForAxis:(UILayoutConstraintAxis)axis</a>
      * @since Available in iOS 6.0 and later.
@@ -1066,8 +1059,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector contentHuggingPriorityForAxis$ = Selector.register("contentHuggingPriorityForAxis:");
-    @Bridge(symbol = "objc_msgSend") private native static UILayoutPriority objc_getContentHuggingPriority(UIView __self__, Selector __cmd__, UILayoutConstraintAxis axis);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UILayoutPriority objc_getContentHuggingPrioritySuper(ObjCSuper __super__, Selector __cmd__, UILayoutConstraintAxis axis);
+    @Bridge private native static UILayoutPriority objc_getContentHuggingPriority(UIView __self__, Selector __cmd__, UILayoutConstraintAxis axis);
+    @Bridge private native static UILayoutPriority objc_getContentHuggingPrioritySuper(ObjCSuper __super__, Selector __cmd__, UILayoutConstraintAxis axis);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/contentHuggingPriorityForAxis:">- (UILayoutPriority)contentHuggingPriorityForAxis:(UILayoutConstraintAxis)axis</a>
      * @since Available in iOS 6.0 and later.
@@ -1077,58 +1070,52 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector alignmentRectForFrame$ = Selector.register("alignmentRectForFrame:");
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getFrameAlignmentRect_stret(@StructRet CGRect __ret__, UIView __self__, Selector __cmd__, @ByVal CGRect frame);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getFrameAlignmentRectSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGRect frame);
+    @Bridge private native static @ByVal CGRect objc_getFrameAlignmentRect(UIView __self__, Selector __cmd__, @ByVal CGRect frame);
+    @Bridge private native static @ByVal CGRect objc_getFrameAlignmentRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect frame);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/alignmentRectForFrame:">- (CGRect)alignmentRectForFrame:(CGRect)frame</a>
      * @since Available in iOS 6.0 and later.
      */
     public CGRect getFrameAlignmentRect(CGRect frame) {
-        CGRect __ret__ = new CGRect(); if (customClass) { objc_getFrameAlignmentRectSuper_stret(__ret__, getSuper(), alignmentRectForFrame$, frame); } else { objc_getFrameAlignmentRect_stret(__ret__, this, alignmentRectForFrame$, frame); } return __ret__;
+        if (customClass) { return objc_getFrameAlignmentRectSuper(getSuper(), alignmentRectForFrame$, frame); } else { return objc_getFrameAlignmentRect(this, alignmentRectForFrame$, frame); }
     }
     
     private static final Selector intrinsicContentSize = Selector.register("intrinsicContentSize");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGSize objc_getIntrinsicContentSize(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getIntrinsicContentSize_stret(@StructRet CGSize __ret__, UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGSize objc_getIntrinsicContentSizeSuper(ObjCSuper __super__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getIntrinsicContentSizeSuper_stret(@StructRet CGSize __ret__, ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static @ByVal CGSize objc_getIntrinsicContentSize(UIView __self__, Selector __cmd__);
+    @Bridge private native static @ByVal CGSize objc_getIntrinsicContentSizeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/intrinsicContentSize">- (CGSize)intrinsicContentSize</a>
      * @since Available in iOS 6.0 and later.
      */
     public CGSize getIntrinsicContentSize() {
-        if (X86) { if (customClass) { return objc_getIntrinsicContentSizeSuper(getSuper(), intrinsicContentSize); } else { return objc_getIntrinsicContentSize(this, intrinsicContentSize); } } else { CGSize __ret__ = new CGSize(); if (customClass) { objc_getIntrinsicContentSizeSuper_stret(__ret__, getSuper(), intrinsicContentSize); } else { objc_getIntrinsicContentSize_stret(__ret__, this, intrinsicContentSize); } return __ret__; }
+        if (customClass) { return objc_getIntrinsicContentSizeSuper(getSuper(), intrinsicContentSize); } else { return objc_getIntrinsicContentSize(this, intrinsicContentSize); }
     }
     
     private static final Selector sizeThatFits$ = Selector.register("sizeThatFits:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGSize objc_getSizeThatFits(UIView __self__, Selector __cmd__, @ByVal CGSize size);
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getSizeThatFits_stret(@StructRet CGSize __ret__, UIView __self__, Selector __cmd__, @ByVal CGSize size);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGSize objc_getSizeThatFitsSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGSize size);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getSizeThatFitsSuper_stret(@StructRet CGSize __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGSize size);
+    @Bridge private native static @ByVal CGSize objc_getSizeThatFits(UIView __self__, Selector __cmd__, @ByVal CGSize size);
+    @Bridge private native static @ByVal CGSize objc_getSizeThatFitsSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGSize size);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/sizeThatFits:">- (CGSize)sizeThatFits:(CGSize)size</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGSize getSizeThatFits(CGSize size) {
-        if (X86) { if (customClass) { return objc_getSizeThatFitsSuper(getSuper(), sizeThatFits$, size); } else { return objc_getSizeThatFits(this, sizeThatFits$, size); } } else { CGSize __ret__ = new CGSize(); if (customClass) { objc_getSizeThatFitsSuper_stret(__ret__, getSuper(), sizeThatFits$, size); } else { objc_getSizeThatFits_stret(__ret__, this, sizeThatFits$, size); } return __ret__; }
+        if (customClass) { return objc_getSizeThatFitsSuper(getSuper(), sizeThatFits$, size); } else { return objc_getSizeThatFits(this, sizeThatFits$, size); }
     }
     
     private static final Selector systemLayoutSizeFittingSize$ = Selector.register("systemLayoutSizeFittingSize:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGSize objc_getSystemLayoutSizeFittingSize(UIView __self__, Selector __cmd__, @ByVal CGSize targetSize);
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getSystemLayoutSizeFittingSize_stret(@StructRet CGSize __ret__, UIView __self__, Selector __cmd__, @ByVal CGSize targetSize);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGSize objc_getSystemLayoutSizeFittingSizeSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGSize targetSize);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getSystemLayoutSizeFittingSizeSuper_stret(@StructRet CGSize __ret__, ObjCSuper __super__, Selector __cmd__, @ByVal CGSize targetSize);
+    @Bridge private native static @ByVal CGSize objc_getSystemLayoutSizeFittingSize(UIView __self__, Selector __cmd__, @ByVal CGSize targetSize);
+    @Bridge private native static @ByVal CGSize objc_getSystemLayoutSizeFittingSizeSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGSize targetSize);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/systemLayoutSizeFittingSize:">- (CGSize)systemLayoutSizeFittingSize:(CGSize)targetSize</a>
      * @since Available in iOS 6.0 and later.
      */
     public CGSize getSystemLayoutSizeFittingSize(CGSize targetSize) {
-        if (X86) { if (customClass) { return objc_getSystemLayoutSizeFittingSizeSuper(getSuper(), systemLayoutSizeFittingSize$, targetSize); } else { return objc_getSystemLayoutSizeFittingSize(this, systemLayoutSizeFittingSize$, targetSize); } } else { CGSize __ret__ = new CGSize(); if (customClass) { objc_getSystemLayoutSizeFittingSizeSuper_stret(__ret__, getSuper(), systemLayoutSizeFittingSize$, targetSize); } else { objc_getSystemLayoutSizeFittingSize_stret(__ret__, this, systemLayoutSizeFittingSize$, targetSize); } return __ret__; }
+        if (customClass) { return objc_getSystemLayoutSizeFittingSizeSuper(getSuper(), systemLayoutSizeFittingSize$, targetSize); } else { return objc_getSystemLayoutSizeFittingSize(this, systemLayoutSizeFittingSize$, targetSize); }
     }
     
     private static final Selector viewPrintFormatter = Selector.register("viewPrintFormatter");
-    @Bridge(symbol = "objc_msgSend") private native static UIViewPrintFormatter objc_getViewPrintFormatter(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIViewPrintFormatter objc_getViewPrintFormatterSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIViewPrintFormatter objc_getViewPrintFormatter(UIView __self__, Selector __cmd__);
+    @Bridge private native static UIViewPrintFormatter objc_getViewPrintFormatterSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/viewPrintFormatter">- (UIViewPrintFormatter *)viewPrintFormatter</a>
      * @since Available in iOS 4.2 and later.
@@ -1138,8 +1125,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector viewWithTag$ = Selector.register("viewWithTag:");
-    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getViewWithTag(UIView __self__, Selector __cmd__, int tag);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getViewWithTagSuper(ObjCSuper __super__, Selector __cmd__, int tag);
+    @Bridge private native static UIView objc_getViewWithTag(UIView __self__, Selector __cmd__, int tag);
+    @Bridge private native static UIView objc_getViewWithTagSuper(ObjCSuper __super__, Selector __cmd__, int tag);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/viewWithTag:">- (UIView *)viewWithTag:(NSInteger)tag</a>
      * @since Available in iOS 2.0 and later.
@@ -1149,8 +1136,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector hasAmbiguousLayout = Selector.register("hasAmbiguousLayout");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_hasAmbiguousLayout(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_hasAmbiguousLayoutSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_hasAmbiguousLayout(UIView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_hasAmbiguousLayoutSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/hasAmbiguousLayout">- (BOOL)hasAmbiguousLayout</a>
      * @since Available in iOS 6.0 and later.
@@ -1160,8 +1147,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector hitTest$withEvent$ = Selector.register("hitTest:withEvent:");
-    @Bridge(symbol = "objc_msgSend") private native static UIView objc_hitTest(UIView __self__, Selector __cmd__, @ByVal CGPoint point, UIEvent event);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_hitTestSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point, UIEvent event);
+    @Bridge private native static UIView objc_hitTest(UIView __self__, Selector __cmd__, @ByVal CGPoint point, UIEvent event);
+    @Bridge private native static UIView objc_hitTestSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point, UIEvent event);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/hitTest:withEvent:">- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event</a>
      * @since Available in iOS 2.0 and later.
@@ -1171,8 +1158,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector insertSubview$atIndex$ = Selector.register("insertSubview:atIndex:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_insertSubview(UIView __self__, Selector __cmd__, UIView view, int index);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_insertSubviewSuper(ObjCSuper __super__, Selector __cmd__, UIView view, int index);
+    @Bridge private native static void objc_insertSubview(UIView __self__, Selector __cmd__, UIView view, int index);
+    @Bridge private native static void objc_insertSubviewSuper(ObjCSuper __super__, Selector __cmd__, UIView view, int index);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/insertSubview:atIndex:">- (void)insertSubview:(UIView *)view atIndex:(NSInteger)index</a>
      * @since Available in iOS 2.0 and later.
@@ -1182,8 +1169,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector insertSubview$aboveSubview$ = Selector.register("insertSubview:aboveSubview:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_insertSubviewAbove(UIView __self__, Selector __cmd__, UIView view, UIView siblingSubview);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_insertSubviewAboveSuper(ObjCSuper __super__, Selector __cmd__, UIView view, UIView siblingSubview);
+    @Bridge private native static void objc_insertSubviewAbove(UIView __self__, Selector __cmd__, UIView view, UIView siblingSubview);
+    @Bridge private native static void objc_insertSubviewAboveSuper(ObjCSuper __super__, Selector __cmd__, UIView view, UIView siblingSubview);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/insertSubview:aboveSubview:">- (void)insertSubview:(UIView *)view aboveSubview:(UIView *)siblingSubview</a>
      * @since Available in iOS 2.0 and later.
@@ -1193,8 +1180,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector insertSubview$belowSubview$ = Selector.register("insertSubview:belowSubview:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_insertSubviewBelow(UIView __self__, Selector __cmd__, UIView view, UIView siblingSubview);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_insertSubviewBelowSuper(ObjCSuper __super__, Selector __cmd__, UIView view, UIView siblingSubview);
+    @Bridge private native static void objc_insertSubviewBelow(UIView __self__, Selector __cmd__, UIView view, UIView siblingSubview);
+    @Bridge private native static void objc_insertSubviewBelowSuper(ObjCSuper __super__, Selector __cmd__, UIView view, UIView siblingSubview);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/insertSubview:belowSubview:">- (void)insertSubview:(UIView *)view belowSubview:(UIView *)siblingSubview</a>
      * @since Available in iOS 2.0 and later.
@@ -1204,8 +1191,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector invalidateIntrinsicContentSize = Selector.register("invalidateIntrinsicContentSize");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_invalidateIntrinsicContentSize(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_invalidateIntrinsicContentSizeSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_invalidateIntrinsicContentSize(UIView __self__, Selector __cmd__);
+    @Bridge private native static void objc_invalidateIntrinsicContentSizeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/invalidateIntrinsicContentSize">- (void)invalidateIntrinsicContentSize</a>
      * @since Available in iOS 6.0 and later.
@@ -1215,8 +1202,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isDescendantOfView$ = Selector.register("isDescendantOfView:");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isDescendantOf(UIView __self__, Selector __cmd__, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isDescendantOfSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
+    @Bridge private native static boolean objc_isDescendantOf(UIView __self__, Selector __cmd__, UIView view);
+    @Bridge private native static boolean objc_isDescendantOfSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/isDescendantOfView:">- (BOOL)isDescendantOfView:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
@@ -1226,8 +1213,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector translatesAutoresizingMaskIntoConstraints = Selector.register("translatesAutoresizingMaskIntoConstraints");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isTranslatesAutoresizingMaskIntoConstraints(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isTranslatesAutoresizingMaskIntoConstraintsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isTranslatesAutoresizingMaskIntoConstraints(UIView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isTranslatesAutoresizingMaskIntoConstraintsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/translatesAutoresizingMaskIntoConstraints">- (BOOL)translatesAutoresizingMaskIntoConstraints</a>
      * @since Available in iOS 6.0 and later.
@@ -1237,8 +1224,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector layoutIfNeeded = Selector.register("layoutIfNeeded");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_layoutIfNeeded(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_layoutIfNeededSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_layoutIfNeeded(UIView __self__, Selector __cmd__);
+    @Bridge private native static void objc_layoutIfNeededSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/layoutIfNeeded">- (void)layoutIfNeeded</a>
      * @since Available in iOS 2.0 and later.
@@ -1248,8 +1235,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector layoutSubviews = Selector.register("layoutSubviews");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_layoutSubviews(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_layoutSubviewsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_layoutSubviews(UIView __self__, Selector __cmd__);
+    @Bridge private native static void objc_layoutSubviewsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/layoutSubviews">- (void)layoutSubviews</a>
      * @since Available in iOS 2.0 and later.
@@ -1259,8 +1246,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector needsUpdateConstraints = Selector.register("needsUpdateConstraints");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_needsUpdateConstraints(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_needsUpdateConstraintsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_needsUpdateConstraints(UIView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_needsUpdateConstraintsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/needsUpdateConstraints">- (BOOL)needsUpdateConstraints</a>
      * @since Available in iOS 6.0 and later.
@@ -1270,8 +1257,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector pointInside$withEvent$ = Selector.register("pointInside:withEvent:");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_pointInside(UIView __self__, Selector __cmd__, @ByVal CGPoint point, UIEvent event);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_pointInsideSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point, UIEvent event);
+    @Bridge private native static boolean objc_pointInside(UIView __self__, Selector __cmd__, @ByVal CGPoint point, UIEvent event);
+    @Bridge private native static boolean objc_pointInsideSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point, UIEvent event);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/pointInside:withEvent:">- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event</a>
      * @since Available in iOS 2.0 and later.
@@ -1281,8 +1268,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector removeConstraint$ = Selector.register("removeConstraint:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_removeConstraint(UIView __self__, Selector __cmd__, NSLayoutConstraint constraint);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_removeConstraintSuper(ObjCSuper __super__, Selector __cmd__, NSLayoutConstraint constraint);
+    @Bridge private native static void objc_removeConstraint(UIView __self__, Selector __cmd__, NSLayoutConstraint constraint);
+    @Bridge private native static void objc_removeConstraintSuper(ObjCSuper __super__, Selector __cmd__, NSLayoutConstraint constraint);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/removeConstraint:">- (void)removeConstraint:(NSLayoutConstraint *)constraint</a>
      * @since Available in iOS 6.0 and later.
@@ -1292,8 +1279,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector removeConstraints$ = Selector.register("removeConstraints:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_removeConstraints(UIView __self__, Selector __cmd__, NSArray constraints);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_removeConstraintsSuper(ObjCSuper __super__, Selector __cmd__, NSArray constraints);
+    @Bridge private native static void objc_removeConstraints(UIView __self__, Selector __cmd__, NSArray constraints);
+    @Bridge private native static void objc_removeConstraintsSuper(ObjCSuper __super__, Selector __cmd__, NSArray constraints);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/removeConstraints:">- (void)removeConstraints:(NSArray *)constraints</a>
      * @since Available in iOS 6.0 and later.
@@ -1303,8 +1290,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector removeFromSuperview = Selector.register("removeFromSuperview");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_removeFromSuperview(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_removeFromSuperviewSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_removeFromSuperview(UIView __self__, Selector __cmd__);
+    @Bridge private native static void objc_removeFromSuperviewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/removeFromSuperview">- (void)removeFromSuperview</a>
      * @since Available in iOS 2.0 and later.
@@ -1314,8 +1301,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector removeGestureRecognizer$ = Selector.register("removeGestureRecognizer:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_removeGestureRecognizer(UIView __self__, Selector __cmd__, UIGestureRecognizer gestureRecognizer);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_removeGestureRecognizerSuper(ObjCSuper __super__, Selector __cmd__, UIGestureRecognizer gestureRecognizer);
+    @Bridge private native static void objc_removeGestureRecognizer(UIView __self__, Selector __cmd__, UIGestureRecognizer gestureRecognizer);
+    @Bridge private native static void objc_removeGestureRecognizerSuper(ObjCSuper __super__, Selector __cmd__, UIGestureRecognizer gestureRecognizer);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/removeGestureRecognizer:">- (void)removeGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer</a>
      * @since Available in iOS 3.2 and later.
@@ -1325,8 +1312,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector sizeToFit = Selector.register("sizeToFit");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_resizeToFit(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_resizeToFitSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_resizeToFit(UIView __self__, Selector __cmd__);
+    @Bridge private native static void objc_resizeToFitSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/sizeToFit">- (void)sizeToFit</a>
      * @since Available in iOS 2.0 and later.
@@ -1336,8 +1323,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector sendSubviewToBack$ = Selector.register("sendSubviewToBack:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_sendSubviewToBack(UIView __self__, Selector __cmd__, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_sendSubviewToBackSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
+    @Bridge private native static void objc_sendSubviewToBack(UIView __self__, Selector __cmd__, UIView view);
+    @Bridge private native static void objc_sendSubviewToBackSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/sendSubviewToBack:">- (void)sendSubviewToBack:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
@@ -1347,8 +1334,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setContentCompressionResistancePriority$forAxis$ = Selector.register("setContentCompressionResistancePriority:forAxis:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setContentCompressionResistancePriority(UIView __self__, Selector __cmd__, UILayoutPriority priority, UILayoutConstraintAxis axis);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setContentCompressionResistancePrioritySuper(ObjCSuper __super__, Selector __cmd__, UILayoutPriority priority, UILayoutConstraintAxis axis);
+    @Bridge private native static void objc_setContentCompressionResistancePriority(UIView __self__, Selector __cmd__, UILayoutPriority priority, UILayoutConstraintAxis axis);
+    @Bridge private native static void objc_setContentCompressionResistancePrioritySuper(ObjCSuper __super__, Selector __cmd__, UILayoutPriority priority, UILayoutConstraintAxis axis);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/setContentCompressionResistancePriority:forAxis:">- (void)setContentCompressionResistancePriority:(UILayoutPriority)priority forAxis:(UILayoutConstraintAxis)axis</a>
      * @since Available in iOS 6.0 and later.
@@ -1358,8 +1345,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setContentHuggingPriority$forAxis$ = Selector.register("setContentHuggingPriority:forAxis:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setContentHuggingPriority(UIView __self__, Selector __cmd__, UILayoutPriority priority, UILayoutConstraintAxis axis);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setContentHuggingPrioritySuper(ObjCSuper __super__, Selector __cmd__, UILayoutPriority priority, UILayoutConstraintAxis axis);
+    @Bridge private native static void objc_setContentHuggingPriority(UIView __self__, Selector __cmd__, UILayoutPriority priority, UILayoutConstraintAxis axis);
+    @Bridge private native static void objc_setContentHuggingPrioritySuper(ObjCSuper __super__, Selector __cmd__, UILayoutPriority priority, UILayoutConstraintAxis axis);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/setContentHuggingPriority:forAxis:">- (void)setContentHuggingPriority:(UILayoutPriority)priority forAxis:(UILayoutConstraintAxis)axis</a>
      * @since Available in iOS 6.0 and later.
@@ -1369,8 +1356,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setNeedsDisplay = Selector.register("setNeedsDisplay");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setNeedsDisplay(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setNeedsDisplaySuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_setNeedsDisplay(UIView __self__, Selector __cmd__);
+    @Bridge private native static void objc_setNeedsDisplaySuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/setNeedsDisplay">- (void)setNeedsDisplay</a>
      * @since Available in iOS 2.0 and later.
@@ -1380,8 +1367,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setNeedsDisplayInRect$ = Selector.register("setNeedsDisplayInRect:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setNeedsDisplay(UIView __self__, Selector __cmd__, @ByVal CGRect invalidRect);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setNeedsDisplaySuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect invalidRect);
+    @Bridge private native static void objc_setNeedsDisplay(UIView __self__, Selector __cmd__, @ByVal CGRect invalidRect);
+    @Bridge private native static void objc_setNeedsDisplaySuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect invalidRect);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/setNeedsDisplayInRect:">- (void)setNeedsDisplayInRect:(CGRect)invalidRect</a>
      * @since Available in iOS 2.0 and later.
@@ -1391,8 +1378,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setNeedsLayout = Selector.register("setNeedsLayout");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setNeedsLayout(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setNeedsLayoutSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_setNeedsLayout(UIView __self__, Selector __cmd__);
+    @Bridge private native static void objc_setNeedsLayoutSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/setNeedsLayout">- (void)setNeedsLayout</a>
      * @since Available in iOS 2.0 and later.
@@ -1402,8 +1389,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setNeedsUpdateConstraints = Selector.register("setNeedsUpdateConstraints");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setNeedsUpdateConstraints(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setNeedsUpdateConstraintsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_setNeedsUpdateConstraints(UIView __self__, Selector __cmd__);
+    @Bridge private native static void objc_setNeedsUpdateConstraintsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/setNeedsUpdateConstraints">- (void)setNeedsUpdateConstraints</a>
      * @since Available in iOS 6.0 and later.
@@ -1413,8 +1400,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTranslatesAutoresizingMaskIntoConstraints$ = Selector.register("setTranslatesAutoresizingMaskIntoConstraints:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTranslatesAutoresizingMaskIntoConstraints(UIView __self__, Selector __cmd__, boolean flag);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTranslatesAutoresizingMaskIntoConstraintsSuper(ObjCSuper __super__, Selector __cmd__, boolean flag);
+    @Bridge private native static void objc_setTranslatesAutoresizingMaskIntoConstraints(UIView __self__, Selector __cmd__, boolean flag);
+    @Bridge private native static void objc_setTranslatesAutoresizingMaskIntoConstraintsSuper(ObjCSuper __super__, Selector __cmd__, boolean flag);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/setTranslatesAutoresizingMaskIntoConstraints:">- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)flag</a>
      * @since Available in iOS 6.0 and later.
@@ -1424,8 +1411,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector updateConstraints = Selector.register("updateConstraints");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_updateConstraints(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_updateConstraintsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_updateConstraints(UIView __self__, Selector __cmd__);
+    @Bridge private native static void objc_updateConstraintsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/updateConstraints">- (void)updateConstraints</a>
      * @since Available in iOS 6.0 and later.
@@ -1435,8 +1422,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector updateConstraintsIfNeeded = Selector.register("updateConstraintsIfNeeded");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_updateConstraintsIfNeeded(UIView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_updateConstraintsIfNeededSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_updateConstraintsIfNeeded(UIView __self__, Selector __cmd__);
+    @Bridge private native static void objc_updateConstraintsIfNeededSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/updateConstraintsIfNeeded">- (void)updateConstraintsIfNeeded</a>
      * @since Available in iOS 6.0 and later.
@@ -1446,8 +1433,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector willMoveToSuperview$ = Selector.register("willMoveToSuperview:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_willMoveToSuperview(UIView __self__, Selector __cmd__, UIView newSuperview);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_willMoveToSuperviewSuper(ObjCSuper __super__, Selector __cmd__, UIView newSuperview);
+    @Bridge private native static void objc_willMoveToSuperview(UIView __self__, Selector __cmd__, UIView newSuperview);
+    @Bridge private native static void objc_willMoveToSuperviewSuper(ObjCSuper __super__, Selector __cmd__, UIView newSuperview);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/willMoveToSuperview:">- (void)willMoveToSuperview:(UIView *)newSuperview</a>
      * @since Available in iOS 2.0 and later.
@@ -1457,8 +1444,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector willMoveToWindow$ = Selector.register("willMoveToWindow:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_willMoveToWindow(UIView __self__, Selector __cmd__, UIWindow newWindow);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_willMoveToWindowSuper(ObjCSuper __super__, Selector __cmd__, UIWindow newWindow);
+    @Bridge private native static void objc_willMoveToWindow(UIView __self__, Selector __cmd__, UIWindow newWindow);
+    @Bridge private native static void objc_willMoveToWindowSuper(ObjCSuper __super__, Selector __cmd__, UIWindow newWindow);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/willMoveToWindow:">- (void)willMoveToWindow:(UIWindow *)newWindow</a>
      * @since Available in iOS 2.0 and later.
@@ -1468,8 +1455,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector willRemoveSubview$ = Selector.register("willRemoveSubview:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_willRemoveSubview(UIView __self__, Selector __cmd__, UIView subview);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_willRemoveSubviewSuper(ObjCSuper __super__, Selector __cmd__, UIView subview);
+    @Bridge private native static void objc_willRemoveSubview(UIView __self__, Selector __cmd__, UIView subview);
+    @Bridge private native static void objc_willRemoveSubviewSuper(ObjCSuper __super__, Selector __cmd__, UIView subview);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/willRemoveSubview:">- (void)willRemoveSubview:(UIView *)subview</a>
      * @since Available in iOS 2.0 and later.

@@ -46,7 +46,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UICollectionViewController /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UICollectionViewController /*</name>*/.class);
 
     /*<constructors>*/
@@ -54,7 +53,7 @@ import org.robovm.rt.bro.ptr.*;
     public UICollectionViewController() {}
     
     private static final Selector initWithCollectionViewLayout$ = Selector.register("initWithCollectionViewLayout:");
-    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithCollectionViewLayout(UICollectionViewController __self__, Selector __cmd__, UICollectionViewLayout layout);
+    @Bridge private native static @Pointer long objc_initWithCollectionViewLayout(UICollectionViewController __self__, Selector __cmd__, UICollectionViewLayout layout);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewController_clas/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewController/initWithCollectionViewLayout:">- (id)initWithCollectionViewLayout:(UICollectionViewLayout *)layout</a>
      * @since Available in iOS 6.0 and later.
@@ -67,8 +66,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector clearsSelectionOnViewWillAppear = Selector.register("clearsSelectionOnViewWillAppear");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isClearsSelectionOnViewWillAppear(UICollectionViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isClearsSelectionOnViewWillAppearSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isClearsSelectionOnViewWillAppear(UICollectionViewController __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isClearsSelectionOnViewWillAppearSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewController_clas/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewController/clearsSelectionOnViewWillAppear">@property (nonatomic) BOOL clearsSelectionOnViewWillAppear</a>
      * @since Available in iOS 6.0 and later.
@@ -89,8 +88,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector collectionView = Selector.register("collectionView");
-    @Bridge(symbol = "objc_msgSend") private native static UICollectionView objc_getCollectionView(UICollectionViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UICollectionView objc_getCollectionViewSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UICollectionView objc_getCollectionView(UICollectionViewController __self__, Selector __cmd__);
+    @Bridge private native static UICollectionView objc_getCollectionViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewController_clas/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewController/collectionView">@property (nonatomic, retain) UICollectionView *collectionView</a>
      * @since Available in iOS 6.0 and later.

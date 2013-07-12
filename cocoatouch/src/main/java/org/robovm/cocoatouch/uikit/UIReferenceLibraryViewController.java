@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIReferenceLibraryViewController /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIReferenceLibraryViewController /*</name>*/.class);
 
     /*<constructors>*/
@@ -55,7 +54,7 @@ import org.robovm.rt.bro.ptr.*;
     public UIReferenceLibraryViewController() {}
     
     private static final Selector initWithTerm$ = Selector.register("initWithTerm:");
-    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithTerm(UIReferenceLibraryViewController __self__, Selector __cmd__, String term);
+    @Bridge private native static @Pointer long objc_initWithTerm(UIReferenceLibraryViewController __self__, Selector __cmd__, String term);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIReferenceLibraryViewControllerClassRef/Reference/Reference.html#//apple_ref/occ/instm/UIReferenceLibraryViewController/initWithTerm:">- (id)initWithTerm:(NSString *)term</a>
      * @since Available in iOS 5.0 and later.
@@ -71,7 +70,7 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector dictionaryHasDefinitionForTerm$ = Selector.register("dictionaryHasDefinitionForTerm:");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_dictionaryHasDefinitionForTerm(ObjCClass __self__, Selector __cmd__, String term);
+    @Bridge private native static boolean objc_dictionaryHasDefinitionForTerm(ObjCClass __self__, Selector __cmd__, String term);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIReferenceLibraryViewControllerClassRef/Reference/Reference.html#//apple_ref/occ/clm/UIReferenceLibraryViewController/dictionaryHasDefinitionForTerm:">+ (BOOL)dictionaryHasDefinitionForTerm:(NSString *)term</a>
      * @since Available in iOS 5.0 and later.

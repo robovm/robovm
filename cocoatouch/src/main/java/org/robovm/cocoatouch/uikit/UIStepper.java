@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIStepper /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIStepper /*</name>*/.class);
 
     public UIStepper(CGRect aRect) {
@@ -61,8 +60,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector autorepeat = Selector.register("autorepeat");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isAutorepeat(UIStepper __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isAutorepeatSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isAutorepeat(UIStepper __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isAutorepeatSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/autorepeat">@property(nonatomic) BOOL autorepeat</a>
      * @since Available in iOS 5.0 and later.
@@ -83,8 +82,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isContinuous = Selector.register("isContinuous");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isContinuous(UIStepper __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isContinuousSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isContinuous(UIStepper __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isContinuousSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/continuous">@property(nonatomic, getter=isContinuous) BOOL continuous</a>
      * @since Available in iOS 5.0 and later.
@@ -105,8 +104,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector maximumValue = Selector.register("maximumValue");
-    @Bridge(symbol = "objc_msgSend") private native static double objc_getMaximumValue(UIStepper __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static double objc_getMaximumValueSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static double objc_getMaximumValue(UIStepper __self__, Selector __cmd__);
+    @Bridge private native static double objc_getMaximumValueSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/maximumValue">@property(nonatomic) double maximumValue</a>
      * @since Available in iOS 5.0 and later.
@@ -127,8 +126,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector minimumValue = Selector.register("minimumValue");
-    @Bridge(symbol = "objc_msgSend") private native static double objc_getMinimumValue(UIStepper __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static double objc_getMinimumValueSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static double objc_getMinimumValue(UIStepper __self__, Selector __cmd__);
+    @Bridge private native static double objc_getMinimumValueSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/minimumValue">@property(nonatomic) double minimumValue</a>
      * @since Available in iOS 5.0 and later.
@@ -149,8 +148,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector stepValue = Selector.register("stepValue");
-    @Bridge(symbol = "objc_msgSend") private native static double objc_getStepValue(UIStepper __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static double objc_getStepValueSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static double objc_getStepValue(UIStepper __self__, Selector __cmd__);
+    @Bridge private native static double objc_getStepValueSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/stepValue">@property(nonatomic) double stepValue</a>
      * @since Available in iOS 5.0 and later.
@@ -171,8 +170,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector tintColor = Selector.register("tintColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getTintColor(UIStepper __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getTintColorSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIColor objc_getTintColor(UIStepper __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_getTintColorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 6.0 and later.
@@ -193,8 +192,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector value = Selector.register("value");
-    @Bridge(symbol = "objc_msgSend") private native static double objc_getValue(UIStepper __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static double objc_getValueSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static double objc_getValue(UIStepper __self__, Selector __cmd__);
+    @Bridge private native static double objc_getValueSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/value">@property(nonatomic) double value</a>
      * @since Available in iOS 5.0 and later.
@@ -215,8 +214,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector wraps = Selector.register("wraps");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isWraps(UIStepper __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isWrapsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isWraps(UIStepper __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isWrapsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/wraps">@property(nonatomic) BOOL wraps</a>
      * @since Available in iOS 5.0 and later.
@@ -239,8 +238,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector backgroundImageForState$ = Selector.register("backgroundImageForState:");
-    @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getBackgroundImage(UIStepper __self__, Selector __cmd__, UIControlState state);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getBackgroundImageSuper(ObjCSuper __super__, Selector __cmd__, UIControlState state);
+    @Bridge private native static UIImage objc_getBackgroundImage(UIStepper __self__, Selector __cmd__, UIControlState state);
+    @Bridge private native static UIImage objc_getBackgroundImageSuper(ObjCSuper __super__, Selector __cmd__, UIControlState state);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instm/UIStepper/backgroundImageForState:">- (UIImage *)backgroundImageForState:(UIControlState)state</a>
      * @since Available in iOS 6.0 and later.
@@ -250,8 +249,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector decrementImageForState$ = Selector.register("decrementImageForState:");
-    @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getDecrementImage(UIStepper __self__, Selector __cmd__, UIControlState state);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getDecrementImageSuper(ObjCSuper __super__, Selector __cmd__, UIControlState state);
+    @Bridge private native static UIImage objc_getDecrementImage(UIStepper __self__, Selector __cmd__, UIControlState state);
+    @Bridge private native static UIImage objc_getDecrementImageSuper(ObjCSuper __super__, Selector __cmd__, UIControlState state);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instm/UIStepper/decrementImageForState:">- (UIImage *)decrementImageForState:(UIControlState)state</a>
      * @since Available in iOS 6.0 and later.
@@ -261,8 +260,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector dividerImageForLeftSegmentState$rightSegmentState$ = Selector.register("dividerImageForLeftSegmentState:rightSegmentState:");
-    @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getDividerImage(UIStepper __self__, Selector __cmd__, UIControlState leftState, UIControlState rightState);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getDividerImageSuper(ObjCSuper __super__, Selector __cmd__, UIControlState leftState, UIControlState rightState);
+    @Bridge private native static UIImage objc_getDividerImage(UIStepper __self__, Selector __cmd__, UIControlState leftState, UIControlState rightState);
+    @Bridge private native static UIImage objc_getDividerImageSuper(ObjCSuper __super__, Selector __cmd__, UIControlState leftState, UIControlState rightState);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instm/UIStepper/dividerImageForLeftSegmentState:rightSegmentState:">- (UIImage *)dividerImageForLeftSegmentState:(UIControlState)leftState rightSegmentState:(UIControlState)rightState</a>
      * @since Available in iOS 6.0 and later.
@@ -272,8 +271,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector incrementImageForState$ = Selector.register("incrementImageForState:");
-    @Bridge(symbol = "objc_msgSend") private native static UIImage objc_getIncrementImage(UIStepper __self__, Selector __cmd__, UIControlState state);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIImage objc_getIncrementImageSuper(ObjCSuper __super__, Selector __cmd__, UIControlState state);
+    @Bridge private native static UIImage objc_getIncrementImage(UIStepper __self__, Selector __cmd__, UIControlState state);
+    @Bridge private native static UIImage objc_getIncrementImageSuper(ObjCSuper __super__, Selector __cmd__, UIControlState state);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instm/UIStepper/incrementImageForState:">- (UIImage *)incrementImageForState:(UIControlState)state</a>
      * @since Available in iOS 6.0 and later.
@@ -283,8 +282,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setBackgroundImage$forState$ = Selector.register("setBackgroundImage:forState:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setBackgroundImage(UIStepper __self__, Selector __cmd__, UIImage image, UIControlState state);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBackgroundImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage image, UIControlState state);
+    @Bridge private native static void objc_setBackgroundImage(UIStepper __self__, Selector __cmd__, UIImage image, UIControlState state);
+    @Bridge private native static void objc_setBackgroundImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage image, UIControlState state);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instm/UIStepper/setBackgroundImage:forState:">- (void)setBackgroundImage:(UIImage *)image forState:(UIControlState)state</a>
      * @since Available in iOS 6.0 and later.
@@ -294,8 +293,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDecrementImage$forState$ = Selector.register("setDecrementImage:forState:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDecrementImage(UIStepper __self__, Selector __cmd__, UIImage image, UIControlState state);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDecrementImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage image, UIControlState state);
+    @Bridge private native static void objc_setDecrementImage(UIStepper __self__, Selector __cmd__, UIImage image, UIControlState state);
+    @Bridge private native static void objc_setDecrementImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage image, UIControlState state);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instm/UIStepper/setDecrementImage:forState:">- (void)setDecrementImage:(UIImage *)image forState:(UIControlState)state</a>
      * @since Available in iOS 6.0 and later.
@@ -305,8 +304,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDividerImage$forLeftSegmentState$rightSegmentState$ = Selector.register("setDividerImage:forLeftSegmentState:rightSegmentState:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDividerImage(UIStepper __self__, Selector __cmd__, UIImage image, UIControlState leftState, UIControlState rightState);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDividerImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage image, UIControlState leftState, UIControlState rightState);
+    @Bridge private native static void objc_setDividerImage(UIStepper __self__, Selector __cmd__, UIImage image, UIControlState leftState, UIControlState rightState);
+    @Bridge private native static void objc_setDividerImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage image, UIControlState leftState, UIControlState rightState);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instm/UIStepper/setDividerImage:forLeftSegmentState:rightSegmentState:">- (void)setDividerImage:(UIImage *)image forLeftSegmentState:(UIControlState)leftState rightSegmentState:(UIControlState)rightState</a>
      * @since Available in iOS 6.0 and later.
@@ -316,8 +315,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setIncrementImage$forState$ = Selector.register("setIncrementImage:forState:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setIncrementImage(UIStepper __self__, Selector __cmd__, UIImage image, UIControlState state);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setIncrementImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage image, UIControlState state);
+    @Bridge private native static void objc_setIncrementImage(UIStepper __self__, Selector __cmd__, UIImage image, UIControlState state);
+    @Bridge private native static void objc_setIncrementImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage image, UIControlState state);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instm/UIStepper/setIncrementImage:forState:">- (void)setIncrementImage:(UIImage *)image forState:(UIControlState)state</a>
      * @since Available in iOS 6.0 and later.

@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UITouch /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITouch /*</name>*/.class);
 
     /*<constructors>*/
@@ -58,8 +57,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector gestureRecognizers = Selector.register("gestureRecognizers");
-    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getGestureRecognizers(UITouch __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getGestureRecognizersSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getGestureRecognizers(UITouch __self__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getGestureRecognizersSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITouch_Class/Reference/Reference.html#//apple_ref/occ/instp/UITouch/gestureRecognizers">@property(nonatomic,readonly,copy) NSArray *gestureRecognizers</a>
      * @since Available in iOS 3.2 and later.
@@ -69,8 +68,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector phase = Selector.register("phase");
-    @Bridge(symbol = "objc_msgSend") private native static UITouchPhase objc_getPhase(UITouch __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UITouchPhase objc_getPhaseSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UITouchPhase objc_getPhase(UITouch __self__, Selector __cmd__);
+    @Bridge private native static UITouchPhase objc_getPhaseSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITouch_Class/Reference/Reference.html#//apple_ref/occ/instp/UITouch/phase">@property(nonatomic, readonly) UITouchPhase phase</a>
      * @since Available in iOS 2.0 and later.
@@ -80,8 +79,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector tapCount = Selector.register("tapCount");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_getTapCount(UITouch __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getTapCountSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static int objc_getTapCount(UITouch __self__, Selector __cmd__);
+    @Bridge private native static int objc_getTapCountSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITouch_Class/Reference/Reference.html#//apple_ref/occ/instp/UITouch/tapCount">@property(nonatomic, readonly) NSUInteger tapCount</a>
      * @since Available in iOS 2.0 and later.
@@ -91,8 +90,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector timestamp = Selector.register("timestamp");
-    @Bridge(symbol = "objc_msgSend") private native static double objc_getTimestamp(UITouch __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static double objc_getTimestampSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static double objc_getTimestamp(UITouch __self__, Selector __cmd__);
+    @Bridge private native static double objc_getTimestampSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITouch_Class/Reference/Reference.html#//apple_ref/occ/instp/UITouch/timestamp">@property(nonatomic, readonly) NSTimeInterval timestamp</a>
      * @since Available in iOS 2.0 and later.
@@ -102,8 +101,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector view = Selector.register("view");
-    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getView(UITouch __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getViewSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIView objc_getView(UITouch __self__, Selector __cmd__);
+    @Bridge private native static UIView objc_getViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITouch_Class/Reference/Reference.html#//apple_ref/occ/instp/UITouch/view">@property(nonatomic, readonly, retain) UIView *view</a>
      * @since Available in iOS 2.0 and later.
@@ -113,8 +112,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector window = Selector.register("window");
-    @Bridge(symbol = "objc_msgSend") private native static UIWindow objc_getWindow(UITouch __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIWindow objc_getWindowSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIWindow objc_getWindow(UITouch __self__, Selector __cmd__);
+    @Bridge private native static UIWindow objc_getWindowSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITouch_Class/Reference/Reference.html#//apple_ref/occ/instp/UITouch/window">@property(nonatomic, readonly, retain) UIWindow *window</a>
      * @since Available in iOS 2.0 and later.
@@ -126,29 +125,25 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector locationInView$ = Selector.register("locationInView:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGPoint objc_getLocation(UITouch __self__, Selector __cmd__, UIView view);
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getLocation_stret(@StructRet CGPoint __ret__, UITouch __self__, Selector __cmd__, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGPoint objc_getLocationSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getLocationSuper_stret(@StructRet CGPoint __ret__, ObjCSuper __super__, Selector __cmd__, UIView view);
+    @Bridge private native static @ByVal CGPoint objc_getLocation(UITouch __self__, Selector __cmd__, UIView view);
+    @Bridge private native static @ByVal CGPoint objc_getLocationSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITouch_Class/Reference/Reference.html#//apple_ref/occ/instm/UITouch/locationInView:">- (CGPoint)locationInView:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGPoint getLocation(UIView view) {
-        if (X86) { if (customClass) { return objc_getLocationSuper(getSuper(), locationInView$, view); } else { return objc_getLocation(this, locationInView$, view); } } else { CGPoint __ret__ = new CGPoint(); if (customClass) { objc_getLocationSuper_stret(__ret__, getSuper(), locationInView$, view); } else { objc_getLocation_stret(__ret__, this, locationInView$, view); } return __ret__; }
+        if (customClass) { return objc_getLocationSuper(getSuper(), locationInView$, view); } else { return objc_getLocation(this, locationInView$, view); }
     }
     
     private static final Selector previousLocationInView$ = Selector.register("previousLocationInView:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGPoint objc_getPreviousLocation(UITouch __self__, Selector __cmd__, UIView view);
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getPreviousLocation_stret(@StructRet CGPoint __ret__, UITouch __self__, Selector __cmd__, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGPoint objc_getPreviousLocationSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getPreviousLocationSuper_stret(@StructRet CGPoint __ret__, ObjCSuper __super__, Selector __cmd__, UIView view);
+    @Bridge private native static @ByVal CGPoint objc_getPreviousLocation(UITouch __self__, Selector __cmd__, UIView view);
+    @Bridge private native static @ByVal CGPoint objc_getPreviousLocationSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITouch_Class/Reference/Reference.html#//apple_ref/occ/instm/UITouch/previousLocationInView:">- (CGPoint)previousLocationInView:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGPoint getPreviousLocation(UIView view) {
-        if (X86) { if (customClass) { return objc_getPreviousLocationSuper(getSuper(), previousLocationInView$, view); } else { return objc_getPreviousLocation(this, previousLocationInView$, view); } } else { CGPoint __ret__ = new CGPoint(); if (customClass) { objc_getPreviousLocationSuper_stret(__ret__, getSuper(), previousLocationInView$, view); } else { objc_getPreviousLocation_stret(__ret__, this, previousLocationInView$, view); } return __ret__; }
+        if (customClass) { return objc_getPreviousLocationSuper(getSuper(), previousLocationInView$, view); } else { return objc_getPreviousLocation(this, previousLocationInView$, view); }
     }
     /*</methods>*/
     /*<callbacks>*/

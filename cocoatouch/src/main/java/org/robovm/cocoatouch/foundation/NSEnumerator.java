@@ -84,7 +84,6 @@ import org.robovm.rt.bro.ptr.*;
         
     }
     
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSEnumerator /*</name>*/.class);
 
     /*<constructors>*/
@@ -104,8 +103,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector nextObject = Selector.register("nextObject");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc__nextObject(NSEnumerator __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSObject objc__nextObjectSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static NSObject objc__nextObject(NSEnumerator __self__, Selector __cmd__);
+    @Bridge private native static NSObject objc__nextObjectSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSEnumerator_Class/Reference/Reference.html#//apple_ref/occ/instm/NSEnumerator/nextObject">- (id)nextObject</a>
      * @since Available in iOS 2.0 and later.
@@ -115,8 +114,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector allObjects = Selector.register("allObjects");
-    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_allObjects(NSEnumerator __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_allObjectsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static NSArray objc_allObjects(NSEnumerator __self__, Selector __cmd__);
+    @Bridge private native static NSArray objc_allObjectsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSEnumerator_Class/Reference/Reference.html#//apple_ref/occ/instm/NSEnumerator/allObjects">- (NSArray *)allObjects</a>
      * @since Available in iOS 2.0 and later.

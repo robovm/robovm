@@ -131,7 +131,6 @@ import org.robovm.rt.bro.ptr.*;
         }
     }
     
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSDictionary /*</name>*/.class);
 
     private AbstractMap<K, V> adapter = createAdapter();
@@ -212,7 +211,7 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector dictionaryWithContentsOfFile$ = Selector.register("dictionaryWithContentsOfFile:");
-    @Bridge(symbol = "objc_msgSend") private native static NSDictionary objc_fromFile(ObjCClass __self__, Selector __cmd__, String path);
+    @Bridge private native static NSDictionary objc_fromFile(ObjCClass __self__, Selector __cmd__, String path);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/clm/NSDictionary/dictionaryWithContentsOfFile:">+ (id)dictionaryWithContentsOfFile:(NSString *)path</a>
      * @since Available in iOS 2.0 and later.
@@ -222,7 +221,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector dictionaryWithContentsOfURL$ = Selector.register("dictionaryWithContentsOfURL:");
-    @Bridge(symbol = "objc_msgSend") private native static NSDictionary objc_fromUrl(ObjCClass __self__, Selector __cmd__, NSURL aURL);
+    @Bridge private native static NSDictionary objc_fromUrl(ObjCClass __self__, Selector __cmd__, NSURL aURL);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/clm/NSDictionary/dictionaryWithContentsOfURL:">+ (id)dictionaryWithContentsOfURL:(NSURL *)aURL</a>
      * @since Available in iOS 2.0 and later.
@@ -232,8 +231,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector allKeys = Selector.register("allKeys");
-    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_allKeys(NSDictionary __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_allKeysSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static NSArray objc_allKeys(NSDictionary __self__, Selector __cmd__);
+    @Bridge private native static NSArray objc_allKeysSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/instm/NSDictionary/allKeys">- (NSArray *)allKeys</a>
      * @since Available in iOS 2.0 and later.
@@ -243,8 +242,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector allValues = Selector.register("allValues");
-    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_allValues(NSDictionary __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_allValuesSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static NSArray objc_allValues(NSDictionary __self__, Selector __cmd__);
+    @Bridge private native static NSArray objc_allValuesSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/instm/NSDictionary/allValues">- (NSArray *)allValues</a>
      * @since Available in iOS 2.0 and later.
@@ -254,8 +253,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector count = Selector.register("count");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_count(NSDictionary __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_countSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static int objc_count(NSDictionary __self__, Selector __cmd__);
+    @Bridge private native static int objc_countSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/instm/NSDictionary/count">- (NSUInteger)count</a>
      * @since Available in iOS 2.0 and later.
@@ -265,8 +264,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector initWithDictionary$ = Selector.register("initWithDictionary:");
-    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithDictionary(NSDictionary __self__, Selector __cmd__, NSDictionary otherDictionary);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @Pointer long objc_initWithDictionarySuper(ObjCSuper __super__, Selector __cmd__, NSDictionary otherDictionary);
+    @Bridge private native static @Pointer long objc_initWithDictionary(NSDictionary __self__, Selector __cmd__, NSDictionary otherDictionary);
+    @Bridge private native static @Pointer long objc_initWithDictionarySuper(ObjCSuper __super__, Selector __cmd__, NSDictionary otherDictionary);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/instm/NSDictionary/initWithDictionary:">- (id)initWithDictionary:(NSDictionary *)otherDictionary</a>
      * @since Available in iOS 2.0 and later.
@@ -276,8 +275,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector initWithObjects$forKeys$ = Selector.register("initWithObjects:forKeys:");
-    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithObjects(NSDictionary __self__, Selector __cmd__, NSArray objects, NSArray keys);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @Pointer long objc_initWithObjectsSuper(ObjCSuper __super__, Selector __cmd__, NSArray objects, NSArray keys);
+    @Bridge private native static @Pointer long objc_initWithObjects(NSDictionary __self__, Selector __cmd__, NSArray objects, NSArray keys);
+    @Bridge private native static @Pointer long objc_initWithObjectsSuper(ObjCSuper __super__, Selector __cmd__, NSArray objects, NSArray keys);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/instm/NSDictionary/initWithObjects:forKeys:">- (id)initWithObjects:(NSArray *)objects forKeys:(NSArray *)keys</a>
      * @since Available in iOS 2.0 and later.
@@ -287,8 +286,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector objectForKey$ = Selector.register("objectForKey:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_objectForKey(NSDictionary __self__, Selector __cmd__, NSObject aKey);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSObject objc_objectForKeySuper(ObjCSuper __super__, Selector __cmd__, NSObject aKey);
+    @Bridge private native static NSObject objc_objectForKey(NSDictionary __self__, Selector __cmd__, NSObject aKey);
+    @Bridge private native static NSObject objc_objectForKeySuper(ObjCSuper __super__, Selector __cmd__, NSObject aKey);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/instm/NSDictionary/objectForKey:">- (id)objectForKey:(id)aKey</a>
      * @since Available in iOS 2.0 and later.
@@ -298,8 +297,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector writeToFile$atomically$ = Selector.register("writeToFile:atomically:");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_writeToFile(NSDictionary __self__, Selector __cmd__, String path, boolean flag);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_writeToFileSuper(ObjCSuper __super__, Selector __cmd__, String path, boolean flag);
+    @Bridge private native static boolean objc_writeToFile(NSDictionary __self__, Selector __cmd__, String path, boolean flag);
+    @Bridge private native static boolean objc_writeToFileSuper(ObjCSuper __super__, Selector __cmd__, String path, boolean flag);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/instm/NSDictionary/writeToFile:atomically:">- (BOOL)writeToFile:(NSString *)path atomically:(BOOL)flag</a>
      * @since Available in iOS 2.0 and later.

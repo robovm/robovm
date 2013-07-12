@@ -46,7 +46,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UITableViewHeaderFooterView /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITableViewHeaderFooterView /*</name>*/.class);
 
     public UITableViewHeaderFooterView(CGRect aRect) {
@@ -57,7 +56,7 @@ import org.robovm.rt.bro.ptr.*;
     public UITableViewHeaderFooterView() {}
     
     private static final Selector initWithReuseIdentifier$ = Selector.register("initWithReuseIdentifier:");
-    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithReuseIdentifier(UITableViewHeaderFooterView __self__, Selector __cmd__, String reuseIdentifier);
+    @Bridge private native static @Pointer long objc_initWithReuseIdentifier(UITableViewHeaderFooterView __self__, Selector __cmd__, String reuseIdentifier);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewHeaderFooterView/initWithReuseIdentifier:">- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier</a>
      * @since Available in iOS 6.0 and later.
@@ -70,8 +69,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector backgroundView = Selector.register("backgroundView");
-    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getBackgroundView(UITableViewHeaderFooterView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIView objc_getBackgroundView(UITableViewHeaderFooterView __self__, Selector __cmd__);
+    @Bridge private native static UIView objc_getBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/backgroundView">@property(nonatomic, retain) UIView *backgroundView</a>
      * @since Available in iOS 6.0 and later.
@@ -92,8 +91,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector contentView = Selector.register("contentView");
-    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getContentView(UITableViewHeaderFooterView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getContentViewSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIView objc_getContentView(UITableViewHeaderFooterView __self__, Selector __cmd__);
+    @Bridge private native static UIView objc_getContentViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/contentView">@property(nonatomic, readonly, retain) UIView *contentView</a>
      * @since Available in iOS 6.0 and later.
@@ -103,8 +102,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector detailTextLabel = Selector.register("detailTextLabel");
-    @Bridge(symbol = "objc_msgSend") private native static UILabel objc_getDetailTextLabel(UITableViewHeaderFooterView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UILabel objc_getDetailTextLabelSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UILabel objc_getDetailTextLabel(UITableViewHeaderFooterView __self__, Selector __cmd__);
+    @Bridge private native static UILabel objc_getDetailTextLabelSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/detailTextLabel">@property(nonatomic, readonly, retain) UILabel *detailTextLabel</a>
      * @since Available in iOS 6.0 and later.
@@ -114,8 +113,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector reuseIdentifier = Selector.register("reuseIdentifier");
-    @Bridge(symbol = "objc_msgSend") private native static String objc_getReuseIdentifier(UITableViewHeaderFooterView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getReuseIdentifierSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static String objc_getReuseIdentifier(UITableViewHeaderFooterView __self__, Selector __cmd__);
+    @Bridge private native static String objc_getReuseIdentifierSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/reuseIdentifier">@property(nonatomic, readonly, copy) NSString *reuseIdentifier</a>
      * @since Available in iOS 6.0 and later.
@@ -125,8 +124,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector textLabel = Selector.register("textLabel");
-    @Bridge(symbol = "objc_msgSend") private native static UILabel objc_getTextLabel(UITableViewHeaderFooterView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UILabel objc_getTextLabelSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UILabel objc_getTextLabel(UITableViewHeaderFooterView __self__, Selector __cmd__);
+    @Bridge private native static UILabel objc_getTextLabelSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/textLabel">@property(nonatomic, readonly, retain) UILabel *textLabel</a>
      * @since Available in iOS 6.0 and later.
@@ -136,8 +135,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector tintColor = Selector.register("tintColor");
-    @Bridge(symbol = "objc_msgSend") private native static UIColor objc_getTintColor(UITableViewHeaderFooterView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIColor objc_getTintColorSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIColor objc_getTintColor(UITableViewHeaderFooterView __self__, Selector __cmd__);
+    @Bridge private native static UIColor objc_getTintColorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 6.0 and later.
@@ -160,8 +159,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector prepareForReuse = Selector.register("prepareForReuse");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_prepareForReuse(UITableViewHeaderFooterView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_prepareForReuseSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_prepareForReuse(UITableViewHeaderFooterView __self__, Selector __cmd__);
+    @Bridge private native static void objc_prepareForReuseSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewHeaderFooterView/prepareForReuse">- (void)prepareForReuse</a>
      * @since Available in iOS 6.0 and later.

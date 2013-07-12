@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIStoryboard /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIStoryboard /*</name>*/.class);
 
     /*<constructors>*/
@@ -61,7 +60,7 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector storyboardWithName$bundle$ = Selector.register("storyboardWithName:bundle:");
-    @Bridge(symbol = "objc_msgSend") private native static UIStoryboard objc_fromName(ObjCClass __self__, Selector __cmd__, String name, NSBundle storyboardBundleOrNil);
+    @Bridge private native static UIStoryboard objc_fromName(ObjCClass __self__, Selector __cmd__, String name, NSBundle storyboardBundleOrNil);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboard_Class/Reference/Reference.html#//apple_ref/occ/clm/UIStoryboard/storyboardWithName:bundle:">+ (UIStoryboard *)storyboardWithName:(NSString *)name bundle:(NSBundle *)storyboardBundleOrNil</a>
      * @since Available in iOS 5.0 and later.
@@ -71,8 +70,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector instantiateInitialViewController = Selector.register("instantiateInitialViewController");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_instantiateInitialViewController(UIStoryboard __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSObject objc_instantiateInitialViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static NSObject objc_instantiateInitialViewController(UIStoryboard __self__, Selector __cmd__);
+    @Bridge private native static NSObject objc_instantiateInitialViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboard_Class/Reference/Reference.html#//apple_ref/occ/instm/UIStoryboard/instantiateInitialViewController">- (id)instantiateInitialViewController</a>
      * @since Available in iOS 5.0 and later.
@@ -82,8 +81,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector instantiateViewControllerWithIdentifier$ = Selector.register("instantiateViewControllerWithIdentifier:");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_instantiateViewController(UIStoryboard __self__, Selector __cmd__, String identifier);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSObject objc_instantiateViewControllerSuper(ObjCSuper __super__, Selector __cmd__, String identifier);
+    @Bridge private native static NSObject objc_instantiateViewController(UIStoryboard __self__, Selector __cmd__, String identifier);
+    @Bridge private native static NSObject objc_instantiateViewControllerSuper(ObjCSuper __super__, Selector __cmd__, String identifier);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboard_Class/Reference/Reference.html#//apple_ref/occ/instm/UIStoryboard/instantiateViewControllerWithIdentifier:">- (id)instantiateViewControllerWithIdentifier:(NSString *)identifier</a>
      * @since Available in iOS 5.0 and later.

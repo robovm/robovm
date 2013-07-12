@@ -262,33 +262,21 @@ class ObjCMethod
     else
       msg_send_parameters = [@static ? 'ObjCClass __self__' : "#{@clazz.name} __self__", 'Selector __cmd__', @parameters.map {|p| "#{p[0].to_bro} #{p[1]}"}].flatten
       msg_send_super_parameters = ['ObjCSuper __super__', 'Selector __cmd__', @parameters.map {|p| "#{p[0].to_bro} #{p[1]}"}].flatten
-      msg_send_stret_parameters = ["#{@return_type.to_bro_return_type} __ret__", msg_send_parameters].flatten
-      msg_send_super_stret_parameters = ["#{@return_type.to_bro_return_type} __ret__", msg_send_super_parameters].flatten
       msg_send_parameters_s = msg_send_parameters.join(', ')
       msg_send_super_parameters_s = msg_send_super_parameters.join(', ')
-      msg_send_stret_parameters_s = msg_send_stret_parameters.join(', ')
-      msg_send_super_stret_parameters_s = msg_send_super_stret_parameters.join(', ')
 
       msg_send_ret_s = constructor? ? '@Pointer long' : @return_type.to_bro
       msg_send_super_ret_s = @return_type.to_bro
 
       msg_send = "objc_#{@name}"
-      msg_send_proto = "@Bridge(symbol = \"objc_msgSend\") private native static #{msg_send_ret_s} #{msg_send}(#{msg_send_parameters_s});"
+      msg_send_proto = "@Bridge private native static #{msg_send_ret_s} #{msg_send}(#{msg_send_parameters_s});"
       msg_send_super = "objc_#{@name}Super"
-      msg_send_super_proto = "@Bridge(symbol = \"objc_msgSendSuper\") private native static #{@return_type.to_bro} #{msg_send_super}(#{msg_send_super_parameters_s});"
-      msg_send_stret = "objc_#{@name}_stret"
-      msg_send_stret_proto = "@Bridge(symbol = \"objc_msgSend_stret\") private native static void #{msg_send_stret}(#{msg_send_stret_parameters_s});"
-      msg_send_super_stret = "objc_#{@name}Super_stret"
-      msg_send_super_stret_proto = "@Bridge(symbol = \"objc_msgSendSuper_stret\") private native static void #{msg_send_super_stret}(#{msg_send_super_stret_parameters_s});"
+      msg_send_super_proto = "@Bridge private native static #{@return_type.to_bro} #{msg_send_super}(#{msg_send_super_parameters_s});"
 
       args = [@static ? 'objCClass' : 'this', selector_var, @parameters.map {|p| p[1]}].flatten
       args_super = ['getSuper()', selector_var, @parameters.map {|p| p[1]}].flatten
-      args_stret = ['__ret__', args].flatten
-      args_super_stret = ['__ret__', args_super].flatten
       args_s = args.join(', ')
       args_super_s = args_super.join(', ')
-      args_stret_s = args_stret.join(', ')
-      args_super_stret_s = args_super_stret.join(', ')
 
       java = "#{java}\nprivate static final Selector #{selector_var} = Selector.register(\"#{@selector}\");"
       body = ""
@@ -302,35 +290,15 @@ class ObjCMethod
         can_override = !@static && !(@visibility.include?('private') || @visibility.include?('final'))
         if can_override
           body_msg_send = "if (customClass) { #{ret}#{msg_send_super}(#{args_super_s}); } else { #{ret}#{msg_send}(#{args_s}); }"
-          body_msg_send_stret = "#{@return_type.to_java} __ret__ = new #{@return_type.to_java}(); if (customClass) { #{msg_send_super_stret}(#{args_super_stret_s}); } else { #{msg_send_stret}(#{args_stret_s}); } return __ret__;"
         else
           body_msg_send = "#{ret}#{msg_send}(#{args_s});"
-          body_msg_send_stret = "#{@return_type.to_java} __ret__ = new #{@return_type.to_java}(); #{msg_send_stret}(#{args_stret_s}); return __ret__;"
         end
 
-        if @return_type.by_val?
-          if @clazz.structs[@return_type.to_java]['size'] <= 8
-            java = "#{java}\n#{msg_send_proto}"
-            java = "#{java}\n#{msg_send_stret_proto}"
-            if can_override
-              java = "#{java}\n#{msg_send_super_proto}"
-              java = "#{java}\n#{msg_send_super_stret_proto}"
-            end
-            body = "if (X86) { #{body_msg_send} } else { #{body_msg_send_stret} }"
-          else
-            java = "#{java}\n#{msg_send_stret_proto}"
-            if can_override
-              java = "#{java}\n#{msg_send_super_stret_proto}"
-            end
-            body = body_msg_send_stret
-          end
-        else
-          java = "#{java}\n#{msg_send_proto}"
-          if can_override
-            java = "#{java}\n#{msg_send_super_proto}"
-          end
-          body = body_msg_send
+        java = "#{java}\n#{msg_send_proto}"
+        if can_override
+          java = "#{java}\n#{msg_send_super_proto}"
         end
+        body = body_msg_send
 
       end
 
@@ -418,57 +386,29 @@ class ObjCProperty
     else
       msg_send_parameters_s = "#{@clazz.name} __self__, Selector __cmd__"
       msg_send_super_parameters_s = "ObjCSuper __super__, Selector __cmd__"
-      msg_send_stret_parameters_s = "#{@type.to_bro_return_type} __ret__, #{@clazz.name} __self__, Selector __cmd__"
-      msg_send_super_stret_parameters_s = "#{@type.to_bro_return_type} __ret__, ObjCSuper __super__, Selector __cmd__"
 
       msg_send = "objc_#{getter}"
-      msg_send_proto = "@Bridge(symbol = \"objc_msgSend\") private native static #{@type.to_bro} #{msg_send}(#{msg_send_parameters_s});"
+      msg_send_proto = "@Bridge private native static #{@type.to_bro} #{msg_send}(#{msg_send_parameters_s});"
       msg_send_super = "objc_#{getter}Super"
-      msg_send_super_proto = "@Bridge(symbol = \"objc_msgSendSuper\") private native static #{@type.to_bro} #{msg_send_super}(#{msg_send_super_parameters_s});"
-      msg_send_stret = "objc_#{getter}_stret"
-      msg_send_stret_proto = "@Bridge(symbol = \"objc_msgSend_stret\") private native static void #{msg_send_stret}(#{msg_send_stret_parameters_s});"
-      msg_send_super_stret = "objc_#{getter}Super_stret"
-      msg_send_super_stret_proto = "@Bridge(symbol = \"objc_msgSendSuper_stret\") private native static void #{msg_send_super_stret}(#{msg_send_super_stret_parameters_s});"
+      msg_send_super_proto = "@Bridge private native static #{@type.to_bro} #{msg_send_super}(#{msg_send_super_parameters_s});"
 
       args_s = "this, #{selector_var}"
       args_super_s = "getSuper(), #{selector_var}"
-      args_stret_s = "__ret__, this, #{selector_var}"
-      args_super_stret_s = "__ret__, getSuper(), #{selector_var}"
 
       can_override = !(@visibility.include?('private') || @visibility.include?('final'))
       if can_override
         body_msg_send = "if (customClass) { return #{msg_send_super}(#{args_super_s}); } else { return #{msg_send}(#{args_s}); }"
-        body_msg_send_stret = "#{@type.to_java} __ret__ = new #{@type.to_java}(); if (customClass) { #{msg_send_super_stret}(#{args_super_stret_s}); } else { #{msg_send_stret}(#{args_stret_s}); } return __ret__;"
       else
         body_msg_send = "return #{msg_send}(#{args_s});"
-        body_msg_send_stret = "#{@type.to_java} __ret__ = new #{@type.to_java}(); #{msg_send_stret}(#{args_stret_s}); return __ret__;"
       end
 
       java = "#{java}\nprivate static final Selector #{selector_var} = Selector.register(\"#{@getter_selector}\");"
       body = ""
-      if @type.by_val?
-        if @clazz.structs[@type.to_java]['size'] <= 8
-          java = "#{java}\n#{msg_send_proto}"
-          java = "#{java}\n#{msg_send_stret_proto}"
-          if can_override
-            java = "#{java}\n#{msg_send_super_proto}"
-            java = "#{java}\n#{msg_send_super_stret_proto}"
-          end
-          body = "if (X86) { #{body_msg_send} } else { #{body_msg_send_stret} }"
-        else
-          java = "#{java}\n#{msg_send_stret_proto}"
-          if can_override
-            java = "#{java}\n#{msg_send_super_stret_proto}"
-          end
-          body = body_msg_send_stret
-        end
-      else
-        java = "#{java}\n#{msg_send_proto}"
-        if can_override
-          java = "#{java}\n#{msg_send_super_proto}"
-        end
-        body = body_msg_send
+      java = "#{java}\n#{msg_send_proto}"
+      if can_override
+        java = "#{java}\n#{msg_send_super_proto}"
       end
+      body = body_msg_send
 
 #      if !(@visibility.include?('private') || @visibility.include?('final'))
 #        # Call objc_msgSendSuper if this is a custom class

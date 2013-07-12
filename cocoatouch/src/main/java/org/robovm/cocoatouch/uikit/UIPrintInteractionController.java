@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIPrintInteractionController /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIPrintInteractionController /*</name>*/.class);
 
     /*<constructors>*/
@@ -58,8 +57,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector delegate = Selector.register("delegate");
-    @Bridge(symbol = "objc_msgSend") private native static UIPrintInteractionControllerDelegate objc_getDelegate(UIPrintInteractionController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIPrintInteractionControllerDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIPrintInteractionControllerDelegate objc_getDelegate(UIPrintInteractionController __self__, Selector __cmd__);
+    @Bridge private native static UIPrintInteractionControllerDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInteractionController/delegate">@property(nonatomic, assign) id&amp;lt;UIPrintInteractionControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 4.2 and later.
@@ -80,8 +79,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector printFormatter = Selector.register("printFormatter");
-    @Bridge(symbol = "objc_msgSend") private native static UIPrintFormatter objc_getPrintFormatter(UIPrintInteractionController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIPrintFormatter objc_getPrintFormatterSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIPrintFormatter objc_getPrintFormatter(UIPrintInteractionController __self__, Selector __cmd__);
+    @Bridge private native static UIPrintFormatter objc_getPrintFormatterSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInteractionController/printFormatter">@property(nonatomic, retain) UIPrintFormatter *printFormatter</a>
      * @since Available in iOS 4.2 and later.
@@ -102,8 +101,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector printInfo = Selector.register("printInfo");
-    @Bridge(symbol = "objc_msgSend") private native static UIPrintInfo objc_getPrintInfo(UIPrintInteractionController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIPrintInfo objc_getPrintInfoSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIPrintInfo objc_getPrintInfo(UIPrintInteractionController __self__, Selector __cmd__);
+    @Bridge private native static UIPrintInfo objc_getPrintInfoSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInteractionController/printInfo">@property(nonatomic, retain) UIPrintInfo *printInfo</a>
      * @since Available in iOS 4.2 and later.
@@ -124,8 +123,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector printPageRenderer = Selector.register("printPageRenderer");
-    @Bridge(symbol = "objc_msgSend") private native static UIPrintPageRenderer objc_getPrintPageRenderer(UIPrintInteractionController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIPrintPageRenderer objc_getPrintPageRendererSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIPrintPageRenderer objc_getPrintPageRenderer(UIPrintInteractionController __self__, Selector __cmd__);
+    @Bridge private native static UIPrintPageRenderer objc_getPrintPageRendererSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInteractionController/printPageRenderer">@property(nonatomic, retain) UIPrintPageRenderer printPageRenderer</a>
      * @since Available in iOS 4.2 and later.
@@ -146,8 +145,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector printPaper = Selector.register("printPaper");
-    @Bridge(symbol = "objc_msgSend") private native static UIPrintPaper objc_getPrintPaper(UIPrintInteractionController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIPrintPaper objc_getPrintPaperSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIPrintPaper objc_getPrintPaper(UIPrintInteractionController __self__, Selector __cmd__);
+    @Bridge private native static UIPrintPaper objc_getPrintPaperSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInteractionController/printPaper">@property(nonatomic, readonly) UIPrintPaper *printPaper</a>
      * @since Available in iOS 4.2 and later.
@@ -157,8 +156,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector printingItem = Selector.register("printingItem");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_getPrintingItem(UIPrintInteractionController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSObject objc_getPrintingItemSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static NSObject objc_getPrintingItem(UIPrintInteractionController __self__, Selector __cmd__);
+    @Bridge private native static NSObject objc_getPrintingItemSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInteractionController/printingItem">@property(nonatomic, copy) id printingItem</a>
      * @since Available in iOS 4.2 and later.
@@ -179,8 +178,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector printingItems = Selector.register("printingItems");
-    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getPrintingItems(UIPrintInteractionController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getPrintingItemsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getPrintingItems(UIPrintInteractionController __self__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getPrintingItemsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInteractionController/printingItems">@property(nonatomic, copy) NSArray *printingItems</a>
      * @since Available in iOS 4.2 and later.
@@ -201,8 +200,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector showsPageRange = Selector.register("showsPageRange");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isShowsPageRange(UIPrintInteractionController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isShowsPageRangeSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isShowsPageRange(UIPrintInteractionController __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isShowsPageRangeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInteractionController/showsPageRange">@property(nonatomic) BOOL showsPageRange</a>
      * @since Available in iOS 4.2 and later.
@@ -225,7 +224,7 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector canPrintData$ = Selector.register("canPrintData:");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_canPrint(ObjCClass __self__, Selector __cmd__, NSData data);
+    @Bridge private native static boolean objc_canPrint(ObjCClass __self__, Selector __cmd__, NSData data);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/clm/UIPrintInteractionController/canPrintData:">+ (BOOL)canPrintData:(NSData *)data</a>
      * @since Available in iOS 4.2 and later.
@@ -235,7 +234,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector canPrintURL$ = Selector.register("canPrintURL:");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_canPrint(ObjCClass __self__, Selector __cmd__, NSURL url);
+    @Bridge private native static boolean objc_canPrint(ObjCClass __self__, Selector __cmd__, NSURL url);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/clm/UIPrintInteractionController/canPrintURL:">+ (BOOL)canPrintURL:(NSURL *)url</a>
      * @since Available in iOS 4.2 and later.
@@ -245,7 +244,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector printableUTIs = Selector.register("printableUTIs");
-    @Bridge(symbol = "objc_msgSend") private native static NSSet objc_getPrintableUTIs(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static NSSet objc_getPrintableUTIs(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/clm/UIPrintInteractionController/printableUTIs">+ (NSSet *)printableUTIs</a>
      * @since Available in iOS 4.2 and later.
@@ -255,7 +254,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector sharedPrintController = Selector.register("sharedPrintController");
-    @Bridge(symbol = "objc_msgSend") private native static UIPrintInteractionController objc_getSharedPrintController(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static UIPrintInteractionController objc_getSharedPrintController(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/clm/UIPrintInteractionController/sharedPrintController">+ (UIPrintInteractionController *)sharedPrintController</a>
      * @since Available in iOS 4.2 and later.
@@ -265,7 +264,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isPrintingAvailable = Selector.register("isPrintingAvailable");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isPrintingAvailable(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isPrintingAvailable(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/clm/UIPrintInteractionController/isPrintingAvailable">+ (BOOL)isPrintingAvailable</a>
      * @since Available in iOS 4.2 and later.
@@ -275,8 +274,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector dismissAnimated$ = Selector.register("dismissAnimated:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_dismiss(UIPrintInteractionController __self__, Selector __cmd__, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_dismissSuper(ObjCSuper __super__, Selector __cmd__, boolean animated);
+    @Bridge private native static void objc_dismiss(UIPrintInteractionController __self__, Selector __cmd__, boolean animated);
+    @Bridge private native static void objc_dismissSuper(ObjCSuper __super__, Selector __cmd__, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInteractionController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPrintInteractionController/dismissAnimated:">- (void)dismissAnimated:(BOOL)animated</a>
      * @since Available in iOS 4.2 and later.

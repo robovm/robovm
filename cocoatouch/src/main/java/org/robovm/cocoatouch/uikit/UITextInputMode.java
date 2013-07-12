@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UITextInputMode /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UITextInputMode /*</name>*/.class);
 
     /*<constructors>*/
@@ -58,8 +57,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector primaryLanguage = Selector.register("primaryLanguage");
-    @Bridge(symbol = "objc_msgSend") private native static String objc_getPrimaryLanguage(UITextInputMode __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getPrimaryLanguageSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static String objc_getPrimaryLanguage(UITextInputMode __self__, Selector __cmd__);
+    @Bridge private native static String objc_getPrimaryLanguageSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputMode_Class/Reference/Reference.html#//apple_ref/occ/instp/UITextInputMode/primaryLanguage">@property (nonatomic, readonly, retain) NSString *primaryLanguage</a>
      * @since Available in iOS 4.2 and later.
@@ -71,7 +70,7 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector activeInputModes = Selector.register("activeInputModes");
-    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getActiveInputModes(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getActiveInputModes(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputMode_Class/Reference/Reference.html#//apple_ref/occ/clm/UITextInputMode/activeInputModes">+ (NSArray *)activeInputModes</a>
      * @since Available in iOS 5.0 and later.
@@ -81,7 +80,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector currentInputMode = Selector.register("currentInputMode");
-    @Bridge(symbol = "objc_msgSend") private native static UITextInputMode objc_getCurrentInputMode(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static UITextInputMode objc_getCurrentInputMode(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputMode_Class/Reference/Reference.html#//apple_ref/occ/clm/UITextInputMode/currentInputMode">+ (UITextInputMode *)currentInputMode</a>
      * @since Available in iOS 4.2 and later.

@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIScrollView /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIScrollView /*</name>*/.class);
 
     public UIScrollView(CGRect aRect) {
@@ -61,8 +60,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector alwaysBounceHorizontal = Selector.register("alwaysBounceHorizontal");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isAlwaysBounceHorizontal(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isAlwaysBounceHorizontalSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isAlwaysBounceHorizontal(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isAlwaysBounceHorizontalSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/alwaysBounceHorizontal">@property(nonatomic) BOOL alwaysBounceHorizontal</a>
      * @since Available in iOS 2.0 and later.
@@ -83,8 +82,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector alwaysBounceVertical = Selector.register("alwaysBounceVertical");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isAlwaysBounceVertical(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isAlwaysBounceVerticalSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isAlwaysBounceVertical(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isAlwaysBounceVerticalSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/alwaysBounceVertical">@property(nonatomic) BOOL alwaysBounceVertical</a>
      * @since Available in iOS 2.0 and later.
@@ -105,8 +104,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector bounces = Selector.register("bounces");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isBounces(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isBouncesSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isBounces(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isBouncesSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/bounces">@property(nonatomic) BOOL bounces</a>
      * @since Available in iOS 2.0 and later.
@@ -127,8 +126,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector bouncesZoom = Selector.register("bouncesZoom");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isBouncesZoom(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isBouncesZoomSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isBouncesZoom(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isBouncesZoomSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/bouncesZoom">@property(nonatomic) BOOL bouncesZoom</a>
      * @since Available in iOS 2.0 and later.
@@ -149,8 +148,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector canCancelContentTouches = Selector.register("canCancelContentTouches");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isCanCancelContentTouches(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isCanCancelContentTouchesSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isCanCancelContentTouches(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isCanCancelContentTouchesSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/canCancelContentTouches">@property(nonatomic) BOOL canCancelContentTouches</a>
      * @since Available in iOS 2.0 and later.
@@ -171,14 +170,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector contentInset = Selector.register("contentInset");
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getContentInset_stret(@StructRet UIEdgeInsets __ret__, UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getContentInsetSuper_stret(@StructRet UIEdgeInsets __ret__, ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static @ByVal UIEdgeInsets objc_getContentInset(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static @ByVal UIEdgeInsets objc_getContentInsetSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/contentInset">@property(nonatomic) UIEdgeInsets contentInset</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIEdgeInsets getContentInset() {
-        UIEdgeInsets __ret__ = new UIEdgeInsets(); if (customClass) { objc_getContentInsetSuper_stret(__ret__, getSuper(), contentInset); } else { objc_getContentInset_stret(__ret__, this, contentInset); } return __ret__;
+        if (customClass) { return objc_getContentInsetSuper(getSuper(), contentInset); } else { return objc_getContentInset(this, contentInset); }
     }
     
     private static final Selector setContentInset$ = Selector.register("setContentInset:");
@@ -193,16 +192,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector contentOffset = Selector.register("contentOffset");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGPoint objc_getContentOffset(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getContentOffset_stret(@StructRet CGPoint __ret__, UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGPoint objc_getContentOffsetSuper(ObjCSuper __super__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getContentOffsetSuper_stret(@StructRet CGPoint __ret__, ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static @ByVal CGPoint objc_getContentOffset(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static @ByVal CGPoint objc_getContentOffsetSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/contentOffset">@property(nonatomic) CGPoint contentOffset</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGPoint getContentOffset() {
-        if (X86) { if (customClass) { return objc_getContentOffsetSuper(getSuper(), contentOffset); } else { return objc_getContentOffset(this, contentOffset); } } else { CGPoint __ret__ = new CGPoint(); if (customClass) { objc_getContentOffsetSuper_stret(__ret__, getSuper(), contentOffset); } else { objc_getContentOffset_stret(__ret__, this, contentOffset); } return __ret__; }
+        if (customClass) { return objc_getContentOffsetSuper(getSuper(), contentOffset); } else { return objc_getContentOffset(this, contentOffset); }
     }
     
     private static final Selector setContentOffset$ = Selector.register("setContentOffset:");
@@ -217,16 +214,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector contentSize = Selector.register("contentSize");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGSize objc_getContentSize(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getContentSize_stret(@StructRet CGSize __ret__, UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGSize objc_getContentSizeSuper(ObjCSuper __super__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getContentSizeSuper_stret(@StructRet CGSize __ret__, ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static @ByVal CGSize objc_getContentSize(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static @ByVal CGSize objc_getContentSizeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/contentSize">@property(nonatomic) CGSize contentSize</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGSize getContentSize() {
-        if (X86) { if (customClass) { return objc_getContentSizeSuper(getSuper(), contentSize); } else { return objc_getContentSize(this, contentSize); } } else { CGSize __ret__ = new CGSize(); if (customClass) { objc_getContentSizeSuper_stret(__ret__, getSuper(), contentSize); } else { objc_getContentSize_stret(__ret__, this, contentSize); } return __ret__; }
+        if (customClass) { return objc_getContentSizeSuper(getSuper(), contentSize); } else { return objc_getContentSize(this, contentSize); }
     }
     
     private static final Selector setContentSize$ = Selector.register("setContentSize:");
@@ -241,8 +236,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isDecelerating = Selector.register("isDecelerating");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isDecelerating(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isDeceleratingSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isDecelerating(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isDeceleratingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/decelerating">@property(nonatomic, readonly, getter=isDecelerating) BOOL decelerating</a>
      * @since Available in iOS 2.0 and later.
@@ -252,8 +247,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector decelerationRate = Selector.register("decelerationRate");
-    @Bridge(symbol = "objc_msgSend") private native static float objc_getDecelerationRate(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getDecelerationRateSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static float objc_getDecelerationRate(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static float objc_getDecelerationRateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/decelerationRate">@property(nonatomic) float decelerationRate</a>
      * @since Available in iOS 3.0 and later.
@@ -274,8 +269,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector delaysContentTouches = Selector.register("delaysContentTouches");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isDelaysContentTouches(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isDelaysContentTouchesSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isDelaysContentTouches(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isDelaysContentTouchesSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/delaysContentTouches">@property(nonatomic) BOOL delaysContentTouches</a>
      * @since Available in iOS 2.0 and later.
@@ -296,8 +291,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector delegate = Selector.register("delegate");
-    @Bridge(symbol = "objc_msgSend") private native static UIScrollViewDelegate objc_getDelegate(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIScrollViewDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIScrollViewDelegate objc_getDelegate(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static UIScrollViewDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/delegate">@property(nonatomic, assign) id&amp;lt;UIScrollViewDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
@@ -318,8 +313,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isDirectionalLockEnabled = Selector.register("isDirectionalLockEnabled");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isDirectionalLockEnabled(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isDirectionalLockEnabledSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isDirectionalLockEnabled(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isDirectionalLockEnabledSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/directionalLockEnabled">@property(nonatomic, getter=isDirectionalLockEnabled) BOOL directionalLockEnabled</a>
      * @since Available in iOS 2.0 and later.
@@ -340,8 +335,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isDragging = Selector.register("isDragging");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isDragging(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isDraggingSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isDragging(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isDraggingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/dragging">@property(nonatomic, readonly, getter=isDragging) BOOL dragging</a>
      * @since Available in iOS 2.0 and later.
@@ -351,8 +346,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector indicatorStyle = Selector.register("indicatorStyle");
-    @Bridge(symbol = "objc_msgSend") private native static UIScrollViewIndicatorStyle objc_getIndicatorStyle(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIScrollViewIndicatorStyle objc_getIndicatorStyleSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIScrollViewIndicatorStyle objc_getIndicatorStyle(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static UIScrollViewIndicatorStyle objc_getIndicatorStyleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/indicatorStyle">@property(nonatomic) UIScrollViewIndicatorStyle indicatorStyle</a>
      * @since Available in iOS 2.0 and later.
@@ -373,8 +368,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector maximumZoomScale = Selector.register("maximumZoomScale");
-    @Bridge(symbol = "objc_msgSend") private native static float objc_getMaximumZoomScale(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getMaximumZoomScaleSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static float objc_getMaximumZoomScale(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static float objc_getMaximumZoomScaleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/maximumZoomScale">@property(nonatomic) float maximumZoomScale</a>
      * @since Available in iOS 2.0 and later.
@@ -395,8 +390,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector minimumZoomScale = Selector.register("minimumZoomScale");
-    @Bridge(symbol = "objc_msgSend") private native static float objc_getMinimumZoomScale(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getMinimumZoomScaleSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static float objc_getMinimumZoomScale(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static float objc_getMinimumZoomScaleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/minimumZoomScale">@property(nonatomic) float minimumZoomScale</a>
      * @since Available in iOS 2.0 and later.
@@ -417,8 +412,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isPagingEnabled = Selector.register("isPagingEnabled");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isPagingEnabled(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isPagingEnabledSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isPagingEnabled(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isPagingEnabledSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/pagingEnabled">@property(nonatomic, getter=isPagingEnabled) BOOL pagingEnabled</a>
      * @since Available in iOS 2.0 and later.
@@ -439,8 +434,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector panGestureRecognizer = Selector.register("panGestureRecognizer");
-    @Bridge(symbol = "objc_msgSend") private native static UIPanGestureRecognizer objc_getPanGestureRecognizer(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIPanGestureRecognizer objc_getPanGestureRecognizerSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIPanGestureRecognizer objc_getPanGestureRecognizer(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static UIPanGestureRecognizer objc_getPanGestureRecognizerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/panGestureRecognizer">@property(nonatomic, readonly) UIPanGestureRecognizer *panGestureRecognizer</a>
      * @since Available in iOS 5.0 and later.
@@ -450,8 +445,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector pinchGestureRecognizer = Selector.register("pinchGestureRecognizer");
-    @Bridge(symbol = "objc_msgSend") private native static UIPinchGestureRecognizer objc_getPinchGestureRecognizer(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIPinchGestureRecognizer objc_getPinchGestureRecognizerSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIPinchGestureRecognizer objc_getPinchGestureRecognizer(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static UIPinchGestureRecognizer objc_getPinchGestureRecognizerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/pinchGestureRecognizer">@property(nonatomic, readonly) UIPinchGestureRecognizer *pinchGestureRecognizer</a>
      * @since Available in iOS 5.0 and later.
@@ -461,8 +456,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isScrollEnabled = Selector.register("isScrollEnabled");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isScrollEnabled(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isScrollEnabledSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isScrollEnabled(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isScrollEnabledSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/scrollEnabled">@property(nonatomic, getter=isScrollEnabled) BOOL scrollEnabled</a>
      * @since Available in iOS 2.0 and later.
@@ -483,14 +478,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector scrollIndicatorInsets = Selector.register("scrollIndicatorInsets");
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getScrollIndicatorInsets_stret(@StructRet UIEdgeInsets __ret__, UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getScrollIndicatorInsetsSuper_stret(@StructRet UIEdgeInsets __ret__, ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static @ByVal UIEdgeInsets objc_getScrollIndicatorInsets(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static @ByVal UIEdgeInsets objc_getScrollIndicatorInsetsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/scrollIndicatorInsets">@property(nonatomic) UIEdgeInsets scrollIndicatorInsets</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIEdgeInsets getScrollIndicatorInsets() {
-        UIEdgeInsets __ret__ = new UIEdgeInsets(); if (customClass) { objc_getScrollIndicatorInsetsSuper_stret(__ret__, getSuper(), scrollIndicatorInsets); } else { objc_getScrollIndicatorInsets_stret(__ret__, this, scrollIndicatorInsets); } return __ret__;
+        if (customClass) { return objc_getScrollIndicatorInsetsSuper(getSuper(), scrollIndicatorInsets); } else { return objc_getScrollIndicatorInsets(this, scrollIndicatorInsets); }
     }
     
     private static final Selector setScrollIndicatorInsets$ = Selector.register("setScrollIndicatorInsets:");
@@ -505,8 +500,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector scrollsToTop = Selector.register("scrollsToTop");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isScrollsToTop(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isScrollsToTopSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isScrollsToTop(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isScrollsToTopSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/scrollsToTop">@property(nonatomic) BOOL scrollsToTop</a>
      * @since Available in iOS 2.0 and later.
@@ -527,8 +522,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector showsHorizontalScrollIndicator = Selector.register("showsHorizontalScrollIndicator");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isShowsHorizontalScrollIndicator(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isShowsHorizontalScrollIndicatorSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isShowsHorizontalScrollIndicator(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isShowsHorizontalScrollIndicatorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/showsHorizontalScrollIndicator">@property(nonatomic) BOOL showsHorizontalScrollIndicator</a>
      * @since Available in iOS 2.0 and later.
@@ -549,8 +544,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector showsVerticalScrollIndicator = Selector.register("showsVerticalScrollIndicator");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isShowsVerticalScrollIndicator(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isShowsVerticalScrollIndicatorSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isShowsVerticalScrollIndicator(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isShowsVerticalScrollIndicatorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/showsVerticalScrollIndicator">@property(nonatomic) BOOL showsVerticalScrollIndicator</a>
      * @since Available in iOS 2.0 and later.
@@ -571,8 +566,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isTracking = Selector.register("isTracking");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isTracking(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isTrackingSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isTracking(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isTrackingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/tracking">@property(nonatomic, readonly, getter=isTracking) BOOL tracking</a>
      * @since Available in iOS 2.0 and later.
@@ -582,8 +577,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isZoomBouncing = Selector.register("isZoomBouncing");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isZoomBouncing(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isZoomBouncingSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isZoomBouncing(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isZoomBouncingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/zoomBouncing">@property(nonatomic, readonly, getter=isZoomBouncing) BOOL zoomBouncing</a>
      * @since Available in iOS 2.0 and later.
@@ -593,8 +588,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector zoomScale = Selector.register("zoomScale");
-    @Bridge(symbol = "objc_msgSend") private native static float objc_getZoomScale(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getZoomScaleSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static float objc_getZoomScale(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static float objc_getZoomScaleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/zoomScale">@property(nonatomic) float zoomScale</a>
      * @since Available in iOS 3.0 and later.
@@ -615,8 +610,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isZooming = Selector.register("isZooming");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isZooming(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isZoomingSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isZooming(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isZoomingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instp/UIScrollView/zooming">@property(nonatomic, readonly, getter=isZooming) BOOL zooming</a>
      * @since Available in iOS 2.0 and later.
@@ -628,8 +623,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector flashScrollIndicators = Selector.register("flashScrollIndicators");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_flashScrollIndicators(UIScrollView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_flashScrollIndicatorsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_flashScrollIndicators(UIScrollView __self__, Selector __cmd__);
+    @Bridge private native static void objc_flashScrollIndicatorsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instm/UIScrollView/flashScrollIndicators">- (void)flashScrollIndicators</a>
      * @since Available in iOS 2.0 and later.
@@ -639,8 +634,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector scrollRectToVisible$animated$ = Selector.register("scrollRectToVisible:animated:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_scrollRectToVisible(UIScrollView __self__, Selector __cmd__, @ByVal CGRect rect, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_scrollRectToVisibleSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, boolean animated);
+    @Bridge private native static void objc_scrollRectToVisible(UIScrollView __self__, Selector __cmd__, @ByVal CGRect rect, boolean animated);
+    @Bridge private native static void objc_scrollRectToVisibleSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instm/UIScrollView/scrollRectToVisible:animated:">- (void)scrollRectToVisible:(CGRect)rect animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
@@ -650,8 +645,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setContentOffset$animated$ = Selector.register("setContentOffset:animated:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setContentOffset(UIScrollView __self__, Selector __cmd__, @ByVal CGPoint contentOffset, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setContentOffsetSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint contentOffset, boolean animated);
+    @Bridge private native static void objc_setContentOffset(UIScrollView __self__, Selector __cmd__, @ByVal CGPoint contentOffset, boolean animated);
+    @Bridge private native static void objc_setContentOffsetSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint contentOffset, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instm/UIScrollView/setContentOffset:animated:">- (void)setContentOffset:(CGPoint)contentOffset animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
@@ -661,8 +656,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setZoomScale$animated$ = Selector.register("setZoomScale:animated:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setZoomScale(UIScrollView __self__, Selector __cmd__, float scale, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setZoomScaleSuper(ObjCSuper __super__, Selector __cmd__, float scale, boolean animated);
+    @Bridge private native static void objc_setZoomScale(UIScrollView __self__, Selector __cmd__, float scale, boolean animated);
+    @Bridge private native static void objc_setZoomScaleSuper(ObjCSuper __super__, Selector __cmd__, float scale, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instm/UIScrollView/setZoomScale:animated:">- (void)setZoomScale:(float)scale animated:(BOOL)animated</a>
      * @since Available in iOS 3.0 and later.
@@ -672,8 +667,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector touchesShouldBegin$withEvent$inContentView$ = Selector.register("touchesShouldBegin:withEvent:inContentView:");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_touchesShouldBegin(UIScrollView __self__, Selector __cmd__, NSSet touches, UIEvent event, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_touchesShouldBeginSuper(ObjCSuper __super__, Selector __cmd__, NSSet touches, UIEvent event, UIView view);
+    @Bridge private native static boolean objc_touchesShouldBegin(UIScrollView __self__, Selector __cmd__, NSSet touches, UIEvent event, UIView view);
+    @Bridge private native static boolean objc_touchesShouldBeginSuper(ObjCSuper __super__, Selector __cmd__, NSSet touches, UIEvent event, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instm/UIScrollView/touchesShouldBegin:withEvent:inContentView:">- (BOOL)touchesShouldBegin:(NSSet *)touches withEvent:(UIEvent *)event inContentView:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
@@ -683,8 +678,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector touchesShouldCancelInContentView$ = Selector.register("touchesShouldCancelInContentView:");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_touchesShouldCancelInContentView(UIScrollView __self__, Selector __cmd__, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_touchesShouldCancelInContentViewSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
+    @Bridge private native static boolean objc_touchesShouldCancelInContentView(UIScrollView __self__, Selector __cmd__, UIView view);
+    @Bridge private native static boolean objc_touchesShouldCancelInContentViewSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instm/UIScrollView/touchesShouldCancelInContentView:">- (BOOL)touchesShouldCancelInContentView:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
@@ -694,8 +689,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector zoomToRect$animated$ = Selector.register("zoomToRect:animated:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_zoomToRect(UIScrollView __self__, Selector __cmd__, @ByVal CGRect rect, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_zoomToRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, boolean animated);
+    @Bridge private native static void objc_zoomToRect(UIScrollView __self__, Selector __cmd__, @ByVal CGRect rect, boolean animated);
+    @Bridge private native static void objc_zoomToRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollView_Class/Reference/UIScrollView.html#//apple_ref/occ/instm/UIScrollView/zoomToRect:animated:">- (void)zoomToRect:(CGRect)rect animated:(BOOL)animated</a>
      * @since Available in iOS 3.0 and later.

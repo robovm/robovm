@@ -42,7 +42,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ NSURL /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSURL /*</name>*/.class);
 
     /*<constructors>*/
@@ -50,7 +49,7 @@ import org.robovm.rt.bro.ptr.*;
     public NSURL() {}
     
     private static final Selector initWithString$ = Selector.register("initWithString:");
-    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithString(NSURL __self__, Selector __cmd__, String URLString);
+    @Bridge private native static @Pointer long objc_initWithString(NSURL __self__, Selector __cmd__, String URLString);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSURL_Class/Reference/Reference.html#//apple_ref/occ/instm/NSURL/initWithString:">- (id)initWithString:(NSString *)URLString</a>
      * @since Available in iOS 2.0 and later.

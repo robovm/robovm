@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIPopoverBackgroundView /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIPopoverBackgroundView /*</name>*/.class);
 
     public UIPopoverBackgroundView(CGRect aRect) {
@@ -61,8 +60,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector arrowDirection = Selector.register("arrowDirection");
-    @Bridge(symbol = "objc_msgSend") private native static UIPopoverArrowDirection objc_getArrowDirection(UIPopoverBackgroundView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIPopoverArrowDirection objc_getArrowDirectionSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIPopoverArrowDirection objc_getArrowDirection(UIPopoverBackgroundView __self__, Selector __cmd__);
+    @Bridge private native static UIPopoverArrowDirection objc_getArrowDirectionSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverBackgroundView_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverBackgroundView/arrowDirection">@property (nonatomic, readwrite) UIPopoverArrowDirection arrowDirection</a>
      * @since Available in iOS 5.0 and later.
@@ -83,8 +82,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector arrowOffset = Selector.register("arrowOffset");
-    @Bridge(symbol = "objc_msgSend") private native static float objc_getArrowOffset(UIPopoverBackgroundView __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getArrowOffsetSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static float objc_getArrowOffset(UIPopoverBackgroundView __self__, Selector __cmd__);
+    @Bridge private native static float objc_getArrowOffsetSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverBackgroundView_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverBackgroundView/arrowOffset">@property (nonatomic, readwrite) CGFloat arrowOffset</a>
      * @since Available in iOS 5.0 and later.
@@ -107,7 +106,7 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector arrowBase = Selector.register("arrowBase");
-    @Bridge(symbol = "objc_msgSend") private native static float objc_getArrowBase(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static float objc_getArrowBase(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverBackgroundView_class/Reference/Reference.html#//apple_ref/occ/clm/UIPopoverBackgroundView/arrowBase">+ (CGFloat)arrowBase</a>
      * @since Available in iOS 5.0 and later.
@@ -117,7 +116,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector arrowHeight = Selector.register("arrowHeight");
-    @Bridge(symbol = "objc_msgSend") private native static float objc_getArrowHeight(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static float objc_getArrowHeight(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverBackgroundView_class/Reference/Reference.html#//apple_ref/occ/clm/UIPopoverBackgroundView/arrowHeight">+ (CGFloat)arrowHeight</a>
      * @since Available in iOS 5.0 and later.
@@ -127,17 +126,17 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector contentViewInsets = Selector.register("contentViewInsets");
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getContentViewInsets_stret(@StructRet UIEdgeInsets __ret__, ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static @ByVal UIEdgeInsets objc_getContentViewInsets(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverBackgroundView_class/Reference/Reference.html#//apple_ref/occ/clm/UIPopoverBackgroundView/contentViewInsets">+ (UIEdgeInsets)contentViewInsets</a>
      * @since Available in iOS 5.0 and later.
      */
     public static UIEdgeInsets getContentViewInsets() {
-        UIEdgeInsets __ret__ = new UIEdgeInsets(); objc_getContentViewInsets_stret(__ret__, objCClass, contentViewInsets); return __ret__;
+        return objc_getContentViewInsets(objCClass, contentViewInsets);
     }
     
     private static final Selector wantsDefaultContentAppearance = Selector.register("wantsDefaultContentAppearance");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_wantsDefaultContentAppearance(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_wantsDefaultContentAppearance(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverBackgroundView_class/Reference/Reference.html#//apple_ref/occ/clm/UIPopoverBackgroundView/wantsDefaultContentAppearance">+ (BOOL)wantsDefaultContentAppearance</a>
      * @since Available in iOS 6.0 and later.

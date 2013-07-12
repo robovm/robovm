@@ -45,7 +45,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ GLKViewController /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ GLKViewController /*</name>*/.class);
 
     /*<constructors>*/
@@ -56,8 +55,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector delegate = Selector.register("delegate");
-    @Bridge(symbol = "objc_msgSend") private native static GLKViewControllerDelegate objc_getDelegate(GLKViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static GLKViewControllerDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static GLKViewControllerDelegate objc_getDelegate(GLKViewController __self__, Selector __cmd__);
+    @Bridge private native static GLKViewControllerDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKViewController_ClassRef/Reference/Reference.html#//apple_ref/occ/instp/GLKViewController/delegate">@property(nonatomic, assign) id&amp;lt;GLKViewControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 5.0 and later.
@@ -78,8 +77,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector framesDisplayed = Selector.register("framesDisplayed");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_getFramesDisplayed(GLKViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getFramesDisplayedSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static int objc_getFramesDisplayed(GLKViewController __self__, Selector __cmd__);
+    @Bridge private native static int objc_getFramesDisplayedSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKViewController_ClassRef/Reference/Reference.html#//apple_ref/occ/instp/GLKViewController/framesDisplayed">@property(nonatomic, readonly) NSInteger framesDisplayed</a>
      * @since Available in iOS 5.0 and later.
@@ -89,8 +88,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector framesPerSecond = Selector.register("framesPerSecond");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_getFramesPerSecond(GLKViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getFramesPerSecondSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static int objc_getFramesPerSecond(GLKViewController __self__, Selector __cmd__);
+    @Bridge private native static int objc_getFramesPerSecondSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKViewController_ClassRef/Reference/Reference.html#//apple_ref/occ/instp/GLKViewController/framesPerSecond">@property(nonatomic, readonly) NSInteger framesPerSecond</a>
      * @since Available in iOS 5.0 and later.
@@ -100,8 +99,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector pauseOnWillResignActive = Selector.register("pauseOnWillResignActive");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isPauseOnWillResignActive(GLKViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isPauseOnWillResignActiveSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isPauseOnWillResignActive(GLKViewController __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isPauseOnWillResignActiveSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKViewController_ClassRef/Reference/Reference.html#//apple_ref/occ/instp/GLKViewController/pauseOnWillResignActive">@property(nonatomic) BOOL pauseOnWillResignActive</a>
      * @since Available in iOS 5.0 and later.
@@ -122,8 +121,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isPaused = Selector.register("isPaused");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isPaused(GLKViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isPausedSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isPaused(GLKViewController __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isPausedSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKViewController_ClassRef/Reference/Reference.html#//apple_ref/occ/instp/GLKViewController/paused">@property(nonatomic, getter=isPaused) BOOL paused</a>
      * @since Available in iOS 5.0 and later.
@@ -144,8 +143,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector preferredFramesPerSecond = Selector.register("preferredFramesPerSecond");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_getPreferredFramesPerSecond(GLKViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getPreferredFramesPerSecondSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static int objc_getPreferredFramesPerSecond(GLKViewController __self__, Selector __cmd__);
+    @Bridge private native static int objc_getPreferredFramesPerSecondSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKViewController_ClassRef/Reference/Reference.html#//apple_ref/occ/instp/GLKViewController/preferredFramesPerSecond">@property(nonatomic) NSInteger preferredFramesPerSecond</a>
      * @since Available in iOS 5.0 and later.
@@ -166,8 +165,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector resumeOnDidBecomeActive = Selector.register("resumeOnDidBecomeActive");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isResumeOnDidBecomeActive(GLKViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isResumeOnDidBecomeActiveSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isResumeOnDidBecomeActive(GLKViewController __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isResumeOnDidBecomeActiveSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKViewController_ClassRef/Reference/Reference.html#//apple_ref/occ/instp/GLKViewController/resumeOnDidBecomeActive">@property(nonatomic) BOOL resumeOnDidBecomeActive</a>
      * @since Available in iOS 5.0 and later.
@@ -188,8 +187,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector timeSinceFirstResume = Selector.register("timeSinceFirstResume");
-    @Bridge(symbol = "objc_msgSend") private native static double objc_getTimeSinceFirstResume(GLKViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static double objc_getTimeSinceFirstResumeSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static double objc_getTimeSinceFirstResume(GLKViewController __self__, Selector __cmd__);
+    @Bridge private native static double objc_getTimeSinceFirstResumeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKViewController_ClassRef/Reference/Reference.html#//apple_ref/occ/instp/GLKViewController/timeSinceFirstResume">@property(nonatomic, readonly) NSTimeInterval timeSinceFirstResume</a>
      * @since Available in iOS 5.0 and later.
@@ -199,8 +198,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector timeSinceLastDraw = Selector.register("timeSinceLastDraw");
-    @Bridge(symbol = "objc_msgSend") private native static double objc_getTimeSinceLastDraw(GLKViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static double objc_getTimeSinceLastDrawSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static double objc_getTimeSinceLastDraw(GLKViewController __self__, Selector __cmd__);
+    @Bridge private native static double objc_getTimeSinceLastDrawSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKViewController_ClassRef/Reference/Reference.html#//apple_ref/occ/instp/GLKViewController/timeSinceLastDraw">@property(nonatomic, readonly) NSTimeInterval timeSinceLastDraw</a>
      * @since Available in iOS 5.0 and later.
@@ -210,8 +209,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector timeSinceLastResume = Selector.register("timeSinceLastResume");
-    @Bridge(symbol = "objc_msgSend") private native static double objc_getTimeSinceLastResume(GLKViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static double objc_getTimeSinceLastResumeSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static double objc_getTimeSinceLastResume(GLKViewController __self__, Selector __cmd__);
+    @Bridge private native static double objc_getTimeSinceLastResumeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKViewController_ClassRef/Reference/Reference.html#//apple_ref/occ/instp/GLKViewController/timeSinceLastResume">@property(nonatomic, readonly) NSTimeInterval timeSinceLastResume</a>
      * @since Available in iOS 5.0 and later.
@@ -221,8 +220,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector timeSinceLastUpdate = Selector.register("timeSinceLastUpdate");
-    @Bridge(symbol = "objc_msgSend") private native static double objc_getTimeSinceLastUpdate(GLKViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static double objc_getTimeSinceLastUpdateSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static double objc_getTimeSinceLastUpdate(GLKViewController __self__, Selector __cmd__);
+    @Bridge private native static double objc_getTimeSinceLastUpdateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKViewController_ClassRef/Reference/Reference.html#//apple_ref/occ/instp/GLKViewController/timeSinceLastUpdate">@property(nonatomic, readonly) NSTimeInterval timeSinceLastUpdate</a>
      * @since Available in iOS 5.0 and later.

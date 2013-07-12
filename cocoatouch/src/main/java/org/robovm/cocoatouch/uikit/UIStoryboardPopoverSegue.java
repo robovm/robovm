@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIStoryboardPopoverSegue /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIStoryboardPopoverSegue /*</name>*/.class);
 
     /*<constructors>*/
@@ -58,8 +57,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector popoverController = Selector.register("popoverController");
-    @Bridge(symbol = "objc_msgSend") private native static UIPopoverController objc_getPopoverController(UIStoryboardPopoverSegue __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIPopoverController objc_getPopoverControllerSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIPopoverController objc_getPopoverController(UIStoryboardPopoverSegue __self__, Selector __cmd__);
+    @Bridge private native static UIPopoverController objc_getPopoverControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardPopoverSegue_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStoryboardPopoverSegue/popoverController">@property(nonatomic, retain, readonly) UIPopoverController *popoverController</a>
      * @since Available in iOS 5.0 and later.

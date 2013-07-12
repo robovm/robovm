@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIGestureRecognizer /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIGestureRecognizer /*</name>*/.class);
 
     /*<constructors>*/
@@ -55,7 +54,7 @@ import org.robovm.rt.bro.ptr.*;
     public UIGestureRecognizer() {}
     
     private static final Selector initWithTarget$action$ = Selector.register("initWithTarget:action:");
-    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithTarget(UIGestureRecognizer __self__, Selector __cmd__, NSObject target, Selector action);
+    @Bridge private native static @Pointer long objc_initWithTarget(UIGestureRecognizer __self__, Selector __cmd__, NSObject target, Selector action);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/initWithTarget:action:">- (id)initWithTarget:(id)target action:(SEL)action</a>
      * @since Available in iOS 3.2 and later.
@@ -68,8 +67,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector cancelsTouchesInView = Selector.register("cancelsTouchesInView");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isCancelsTouchesInView(UIGestureRecognizer __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isCancelsTouchesInViewSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isCancelsTouchesInView(UIGestureRecognizer __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isCancelsTouchesInViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/cancelsTouchesInView">@property(nonatomic) BOOL cancelsTouchesInView</a>
      * @since Available in iOS 3.2 and later.
@@ -90,8 +89,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector delaysTouchesBegan = Selector.register("delaysTouchesBegan");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isDelaysTouchesBegan(UIGestureRecognizer __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isDelaysTouchesBeganSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isDelaysTouchesBegan(UIGestureRecognizer __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isDelaysTouchesBeganSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/delaysTouchesBegan">@property(nonatomic) BOOL delaysTouchesBegan</a>
      * @since Available in iOS 3.2 and later.
@@ -112,8 +111,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector delaysTouchesEnded = Selector.register("delaysTouchesEnded");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isDelaysTouchesEnded(UIGestureRecognizer __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isDelaysTouchesEndedSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isDelaysTouchesEnded(UIGestureRecognizer __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isDelaysTouchesEndedSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/delaysTouchesEnded">@property(nonatomic) BOOL delaysTouchesEnded</a>
      * @since Available in iOS 3.2 and later.
@@ -134,8 +133,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector delegate = Selector.register("delegate");
-    @Bridge(symbol = "objc_msgSend") private native static UIGestureRecognizerDelegate objc_getDelegate(UIGestureRecognizer __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIGestureRecognizerDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIGestureRecognizerDelegate objc_getDelegate(UIGestureRecognizer __self__, Selector __cmd__);
+    @Bridge private native static UIGestureRecognizerDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/delegate">@property(nonatomic, assign) id&amp;lt;UIGestureRecognizerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.2 and later.
@@ -156,8 +155,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isEnabled = Selector.register("isEnabled");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isEnabled(UIGestureRecognizer __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isEnabledSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isEnabled(UIGestureRecognizer __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isEnabledSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/enabled">@property(nonatomic, getter=isEnabled) BOOL enabled</a>
      * @since Available in iOS 3.2 and later.
@@ -178,8 +177,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector state = Selector.register("state");
-    @Bridge(symbol = "objc_msgSend") private native static UIGestureRecognizerState objc_getState(UIGestureRecognizer __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIGestureRecognizerState objc_getStateSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIGestureRecognizerState objc_getState(UIGestureRecognizer __self__, Selector __cmd__);
+    @Bridge private native static UIGestureRecognizerState objc_getStateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/state">@property(nonatomic, readonly) UIGestureRecognizerState state</a>
      * @since Available in iOS 3.2 and later.
@@ -189,8 +188,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector view = Selector.register("view");
-    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getView(UIGestureRecognizer __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getViewSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIView objc_getView(UIGestureRecognizer __self__, Selector __cmd__);
+    @Bridge private native static UIView objc_getViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/view">@property(nonatomic, readonly) UIView *view</a>
      * @since Available in iOS 3.2 and later.
@@ -202,8 +201,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector addTarget$action$ = Selector.register("addTarget:action:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_addTarget(UIGestureRecognizer __self__, Selector __cmd__, NSObject target, Selector action);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_addTargetSuper(ObjCSuper __super__, Selector __cmd__, NSObject target, Selector action);
+    @Bridge private native static void objc_addTarget(UIGestureRecognizer __self__, Selector __cmd__, NSObject target, Selector action);
+    @Bridge private native static void objc_addTargetSuper(ObjCSuper __super__, Selector __cmd__, NSObject target, Selector action);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/addTarget:action:">- (void)addTarget:(id)target action:(SEL)action</a>
      * @since Available in iOS 3.2 and later.
@@ -213,8 +212,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector canBePreventedByGestureRecognizer$ = Selector.register("canBePreventedByGestureRecognizer:");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_canBePreventedByGestureRecognizer(UIGestureRecognizer __self__, Selector __cmd__, UIGestureRecognizer preventingGestureRecognizer);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_canBePreventedByGestureRecognizerSuper(ObjCSuper __super__, Selector __cmd__, UIGestureRecognizer preventingGestureRecognizer);
+    @Bridge private native static boolean objc_canBePreventedByGestureRecognizer(UIGestureRecognizer __self__, Selector __cmd__, UIGestureRecognizer preventingGestureRecognizer);
+    @Bridge private native static boolean objc_canBePreventedByGestureRecognizerSuper(ObjCSuper __super__, Selector __cmd__, UIGestureRecognizer preventingGestureRecognizer);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/canBePreventedByGestureRecognizer:">- (BOOL)canBePreventedByGestureRecognizer:(UIGestureRecognizer *)preventingGestureRecognizer</a>
      * @since Available in iOS 3.2 and later.
@@ -224,8 +223,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector canPreventGestureRecognizer$ = Selector.register("canPreventGestureRecognizer:");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_canPreventGestureRecognizer(UIGestureRecognizer __self__, Selector __cmd__, UIGestureRecognizer preventedGestureRecognizer);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_canPreventGestureRecognizerSuper(ObjCSuper __super__, Selector __cmd__, UIGestureRecognizer preventedGestureRecognizer);
+    @Bridge private native static boolean objc_canPreventGestureRecognizer(UIGestureRecognizer __self__, Selector __cmd__, UIGestureRecognizer preventedGestureRecognizer);
+    @Bridge private native static boolean objc_canPreventGestureRecognizerSuper(ObjCSuper __super__, Selector __cmd__, UIGestureRecognizer preventedGestureRecognizer);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/canPreventGestureRecognizer:">- (BOOL)canPreventGestureRecognizer:(UIGestureRecognizer *)preventedGestureRecognizer</a>
      * @since Available in iOS 3.2 and later.
@@ -235,34 +234,30 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector locationInView$ = Selector.register("locationInView:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGPoint objc_getLocation(UIGestureRecognizer __self__, Selector __cmd__, UIView view);
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getLocation_stret(@StructRet CGPoint __ret__, UIGestureRecognizer __self__, Selector __cmd__, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGPoint objc_getLocationSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getLocationSuper_stret(@StructRet CGPoint __ret__, ObjCSuper __super__, Selector __cmd__, UIView view);
+    @Bridge private native static @ByVal CGPoint objc_getLocation(UIGestureRecognizer __self__, Selector __cmd__, UIView view);
+    @Bridge private native static @ByVal CGPoint objc_getLocationSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/locationInView:">- (CGPoint)locationInView:(UIView *)view</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGPoint getLocation(UIView view) {
-        if (X86) { if (customClass) { return objc_getLocationSuper(getSuper(), locationInView$, view); } else { return objc_getLocation(this, locationInView$, view); } } else { CGPoint __ret__ = new CGPoint(); if (customClass) { objc_getLocationSuper_stret(__ret__, getSuper(), locationInView$, view); } else { objc_getLocation_stret(__ret__, this, locationInView$, view); } return __ret__; }
+        if (customClass) { return objc_getLocationSuper(getSuper(), locationInView$, view); } else { return objc_getLocation(this, locationInView$, view); }
     }
     
     private static final Selector locationOfTouch$inView$ = Selector.register("locationOfTouch:inView:");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGPoint objc_getLocation(UIGestureRecognizer __self__, Selector __cmd__, int touchIndex, UIView view);
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getLocation_stret(@StructRet CGPoint __ret__, UIGestureRecognizer __self__, Selector __cmd__, int touchIndex, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGPoint objc_getLocationSuper(ObjCSuper __super__, Selector __cmd__, int touchIndex, UIView view);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getLocationSuper_stret(@StructRet CGPoint __ret__, ObjCSuper __super__, Selector __cmd__, int touchIndex, UIView view);
+    @Bridge private native static @ByVal CGPoint objc_getLocation(UIGestureRecognizer __self__, Selector __cmd__, int touchIndex, UIView view);
+    @Bridge private native static @ByVal CGPoint objc_getLocationSuper(ObjCSuper __super__, Selector __cmd__, int touchIndex, UIView view);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/locationOfTouch:inView:">- (CGPoint)locationOfTouch:(NSUInteger)touchIndex inView:(UIView *)view</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGPoint getLocation(int touchIndex, UIView view) {
-        if (X86) { if (customClass) { return objc_getLocationSuper(getSuper(), locationOfTouch$inView$, touchIndex, view); } else { return objc_getLocation(this, locationOfTouch$inView$, touchIndex, view); } } else { CGPoint __ret__ = new CGPoint(); if (customClass) { objc_getLocationSuper_stret(__ret__, getSuper(), locationOfTouch$inView$, touchIndex, view); } else { objc_getLocation_stret(__ret__, this, locationOfTouch$inView$, touchIndex, view); } return __ret__; }
+        if (customClass) { return objc_getLocationSuper(getSuper(), locationOfTouch$inView$, touchIndex, view); } else { return objc_getLocation(this, locationOfTouch$inView$, touchIndex, view); }
     }
     
     private static final Selector numberOfTouches = Selector.register("numberOfTouches");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_getNumberOfTouches(UIGestureRecognizer __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getNumberOfTouchesSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static int objc_getNumberOfTouches(UIGestureRecognizer __self__, Selector __cmd__);
+    @Bridge private native static int objc_getNumberOfTouchesSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/numberOfTouches">- (NSUInteger)numberOfTouches</a>
      * @since Available in iOS 3.2 and later.
@@ -272,8 +267,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector ignoreTouch$forEvent$ = Selector.register("ignoreTouch:forEvent:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_ignoreTouch(UIGestureRecognizer __self__, Selector __cmd__, UITouch touch, UIEvent event);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_ignoreTouchSuper(ObjCSuper __super__, Selector __cmd__, UITouch touch, UIEvent event);
+    @Bridge private native static void objc_ignoreTouch(UIGestureRecognizer __self__, Selector __cmd__, UITouch touch, UIEvent event);
+    @Bridge private native static void objc_ignoreTouchSuper(ObjCSuper __super__, Selector __cmd__, UITouch touch, UIEvent event);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/ignoreTouch:forEvent:">- (void)ignoreTouch:(UITouch *)touch forEvent:(UIEvent *)event</a>
      * @since Available in iOS 3.2 and later.
@@ -283,8 +278,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector removeTarget$action$ = Selector.register("removeTarget:action:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_removeTarget(UIGestureRecognizer __self__, Selector __cmd__, NSObject target, Selector action);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_removeTargetSuper(ObjCSuper __super__, Selector __cmd__, NSObject target, Selector action);
+    @Bridge private native static void objc_removeTarget(UIGestureRecognizer __self__, Selector __cmd__, NSObject target, Selector action);
+    @Bridge private native static void objc_removeTargetSuper(ObjCSuper __super__, Selector __cmd__, NSObject target, Selector action);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/removeTarget:action:">- (void)removeTarget:(id)target action:(SEL)action</a>
      * @since Available in iOS 3.2 and later.
@@ -294,8 +289,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector requireGestureRecognizerToFail$ = Selector.register("requireGestureRecognizerToFail:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_requireGestureRecognizerToFail(UIGestureRecognizer __self__, Selector __cmd__, UIGestureRecognizer otherGestureRecognizer);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_requireGestureRecognizerToFailSuper(ObjCSuper __super__, Selector __cmd__, UIGestureRecognizer otherGestureRecognizer);
+    @Bridge private native static void objc_requireGestureRecognizerToFail(UIGestureRecognizer __self__, Selector __cmd__, UIGestureRecognizer otherGestureRecognizer);
+    @Bridge private native static void objc_requireGestureRecognizerToFailSuper(ObjCSuper __super__, Selector __cmd__, UIGestureRecognizer otherGestureRecognizer);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/requireGestureRecognizerToFail:">- (void)requireGestureRecognizerToFail:(UIGestureRecognizer *)otherGestureRecognizer</a>
      * @since Available in iOS 3.2 and later.
@@ -305,8 +300,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector reset = Selector.register("reset");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_reset(UIGestureRecognizer __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_resetSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_reset(UIGestureRecognizer __self__, Selector __cmd__);
+    @Bridge private native static void objc_resetSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/reset">- (void)reset</a>
      * @since Available in iOS 3.2 and later.
@@ -316,8 +311,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector touchesBegan$withEvent$ = Selector.register("touchesBegan:withEvent:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_touchesBegan(UIGestureRecognizer __self__, Selector __cmd__, NSSet touches, UIEvent event);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_touchesBeganSuper(ObjCSuper __super__, Selector __cmd__, NSSet touches, UIEvent event);
+    @Bridge private native static void objc_touchesBegan(UIGestureRecognizer __self__, Selector __cmd__, NSSet touches, UIEvent event);
+    @Bridge private native static void objc_touchesBeganSuper(ObjCSuper __super__, Selector __cmd__, NSSet touches, UIEvent event);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/touchesBegan:withEvent:">- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event</a>
      * @since Available in iOS 3.2 and later.
@@ -327,8 +322,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector touchesCancelled$withEvent$ = Selector.register("touchesCancelled:withEvent:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_touchesCancelled(UIGestureRecognizer __self__, Selector __cmd__, NSSet touches, UIEvent event);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_touchesCancelledSuper(ObjCSuper __super__, Selector __cmd__, NSSet touches, UIEvent event);
+    @Bridge private native static void objc_touchesCancelled(UIGestureRecognizer __self__, Selector __cmd__, NSSet touches, UIEvent event);
+    @Bridge private native static void objc_touchesCancelledSuper(ObjCSuper __super__, Selector __cmd__, NSSet touches, UIEvent event);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/touchesCancelled:withEvent:">- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event</a>
      * @since Available in iOS 3.2 and later.
@@ -338,8 +333,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector touchesEnded$withEvent$ = Selector.register("touchesEnded:withEvent:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_touchesEnded(UIGestureRecognizer __self__, Selector __cmd__, NSSet touches, UIEvent event);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_touchesEndedSuper(ObjCSuper __super__, Selector __cmd__, NSSet touches, UIEvent event);
+    @Bridge private native static void objc_touchesEnded(UIGestureRecognizer __self__, Selector __cmd__, NSSet touches, UIEvent event);
+    @Bridge private native static void objc_touchesEndedSuper(ObjCSuper __super__, Selector __cmd__, NSSet touches, UIEvent event);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/touchesEnded:withEvent:">- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event</a>
      * @since Available in iOS 3.2 and later.
@@ -349,8 +344,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector touchesMoved$withEvent$ = Selector.register("touchesMoved:withEvent:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_touchesMoved(UIGestureRecognizer __self__, Selector __cmd__, NSSet touches, UIEvent event);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_touchesMovedSuper(ObjCSuper __super__, Selector __cmd__, NSSet touches, UIEvent event);
+    @Bridge private native static void objc_touchesMoved(UIGestureRecognizer __self__, Selector __cmd__, NSSet touches, UIEvent event);
+    @Bridge private native static void objc_touchesMovedSuper(ObjCSuper __super__, Selector __cmd__, NSSet touches, UIEvent event);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/touchesMoved:withEvent:">- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event</a>
      * @since Available in iOS 3.2 and later.

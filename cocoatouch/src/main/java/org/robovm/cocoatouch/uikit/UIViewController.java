@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIViewController /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIViewController /*</name>*/.class);
 
     /*<constructors>*/
@@ -55,7 +54,7 @@ import org.robovm.rt.bro.ptr.*;
     public UIViewController() {}
     
     private static final Selector initWithNibName$bundle$ = Selector.register("initWithNibName:bundle:");
-    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithNibName(UIViewController __self__, Selector __cmd__, String nibName, NSBundle nibBundle);
+    @Bridge private native static @Pointer long objc_initWithNibName(UIViewController __self__, Selector __cmd__, String nibName, NSBundle nibBundle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/initWithNibName:bundle:">- (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle</a>
      * @since Available in iOS 2.0 and later.
@@ -68,8 +67,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector childViewControllers = Selector.register("childViewControllers");
-    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getChildViewControllers(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getChildViewControllersSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getChildViewControllers(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getChildViewControllersSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/childViewControllers">@property(nonatomic, readonly) NSArray *childViewControllers</a>
      * @since Available in iOS 5.0 and later.
@@ -79,16 +78,14 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector contentSizeForViewInPopover = Selector.register("contentSizeForViewInPopover");
-    @Bridge(symbol = "objc_msgSend") private native static @ByVal CGSize objc_getContentSizeForViewInPopover(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getContentSizeForViewInPopover_stret(@StructRet CGSize __ret__, UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static @ByVal CGSize objc_getContentSizeForViewInPopoverSuper(ObjCSuper __super__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getContentSizeForViewInPopoverSuper_stret(@StructRet CGSize __ret__, ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static @ByVal CGSize objc_getContentSizeForViewInPopover(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static @ByVal CGSize objc_getContentSizeForViewInPopoverSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/contentSizeForViewInPopover">@property(nonatomic, readwrite) CGSize contentSizeForViewInPopover</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGSize getContentSizeForViewInPopover() {
-        if (X86) { if (customClass) { return objc_getContentSizeForViewInPopoverSuper(getSuper(), contentSizeForViewInPopover); } else { return objc_getContentSizeForViewInPopover(this, contentSizeForViewInPopover); } } else { CGSize __ret__ = new CGSize(); if (customClass) { objc_getContentSizeForViewInPopoverSuper_stret(__ret__, getSuper(), contentSizeForViewInPopover); } else { objc_getContentSizeForViewInPopover_stret(__ret__, this, contentSizeForViewInPopover); } return __ret__; }
+        if (customClass) { return objc_getContentSizeForViewInPopoverSuper(getSuper(), contentSizeForViewInPopover); } else { return objc_getContentSizeForViewInPopover(this, contentSizeForViewInPopover); }
     }
     
     private static final Selector setContentSizeForViewInPopover$ = Selector.register("setContentSizeForViewInPopover:");
@@ -103,8 +100,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector definesPresentationContext = Selector.register("definesPresentationContext");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isDefinesPresentationContext(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isDefinesPresentationContextSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isDefinesPresentationContext(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isDefinesPresentationContextSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/definesPresentationContext">@property(nonatomic, assign) BOOL definesPresentationContext</a>
      * @since Available in iOS 5.0 and later.
@@ -125,8 +122,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isEditing = Selector.register("isEditing");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isEditing(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isEditingSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isEditing(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isEditingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/editing">@property(nonatomic, getter=isEditing) BOOL editing</a>
      * @since Available in iOS 2.0 and later.
@@ -147,8 +144,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector hidesBottomBarWhenPushed = Selector.register("hidesBottomBarWhenPushed");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isHidesBottomBarWhenPushed(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isHidesBottomBarWhenPushedSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isHidesBottomBarWhenPushed(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isHidesBottomBarWhenPushedSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/hidesBottomBarWhenPushed">@property(nonatomic) BOOL hidesBottomBarWhenPushed</a>
      * @since Available in iOS 2.0 and later.
@@ -169,8 +166,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector interfaceOrientation = Selector.register("interfaceOrientation");
-    @Bridge(symbol = "objc_msgSend") private native static UIInterfaceOrientation objc_getInterfaceOrientation(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIInterfaceOrientation objc_getInterfaceOrientationSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIInterfaceOrientation objc_getInterfaceOrientation(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static UIInterfaceOrientation objc_getInterfaceOrientationSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/interfaceOrientation">@property(nonatomic, readonly) UIInterfaceOrientation interfaceOrientation</a>
      * @since Available in iOS 2.0 and later.
@@ -180,8 +177,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isModalInPopover = Selector.register("isModalInPopover");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isModalInPopover(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isModalInPopoverSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isModalInPopover(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isModalInPopoverSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/modalInPopover">@property(nonatomic, readwrite, getter=isModalInPopover) BOOL modalInPopover</a>
      * @since Available in iOS 3.2 and later.
@@ -202,8 +199,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector modalPresentationStyle = Selector.register("modalPresentationStyle");
-    @Bridge(symbol = "objc_msgSend") private native static UIModalPresentationStyle objc_getModalPresentationStyle(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIModalPresentationStyle objc_getModalPresentationStyleSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIModalPresentationStyle objc_getModalPresentationStyle(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static UIModalPresentationStyle objc_getModalPresentationStyleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/modalPresentationStyle">@property(nonatomic, assign) UIModalPresentationStyle modalPresentationStyle</a>
      * @since Available in iOS 3.2 and later.
@@ -224,8 +221,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector modalTransitionStyle = Selector.register("modalTransitionStyle");
-    @Bridge(symbol = "objc_msgSend") private native static UIModalTransitionStyle objc_getModalTransitionStyle(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIModalTransitionStyle objc_getModalTransitionStyleSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIModalTransitionStyle objc_getModalTransitionStyle(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static UIModalTransitionStyle objc_getModalTransitionStyleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/modalTransitionStyle">@property(nonatomic, assign) UIModalTransitionStyle modalTransitionStyle</a>
      * @since Available in iOS 3.0 and later.
@@ -246,8 +243,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector navigationController = Selector.register("navigationController");
-    @Bridge(symbol = "objc_msgSend") private native static UINavigationController objc_getNavigationController(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UINavigationController objc_getNavigationControllerSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UINavigationController objc_getNavigationController(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static UINavigationController objc_getNavigationControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/navigationController">@property(nonatomic, readonly, retain) UINavigationController *navigationController</a>
      * @since Available in iOS 2.0 and later.
@@ -257,8 +254,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector navigationItem = Selector.register("navigationItem");
-    @Bridge(symbol = "objc_msgSend") private native static UINavigationItem objc_getNavigationItem(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UINavigationItem objc_getNavigationItemSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UINavigationItem objc_getNavigationItem(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static UINavigationItem objc_getNavigationItemSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/navigationItem">@property(nonatomic, readonly, retain) UINavigationItem *navigationItem</a>
      * @since Available in iOS 2.0 and later.
@@ -268,8 +265,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector nibBundle = Selector.register("nibBundle");
-    @Bridge(symbol = "objc_msgSend") private native static NSBundle objc_getNibBundle(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSBundle objc_getNibBundleSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static NSBundle objc_getNibBundle(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static NSBundle objc_getNibBundleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/nibBundle">@property(nonatomic, readonly, retain) NSBundle *nibBundle</a>
      * @since Available in iOS 2.0 and later.
@@ -279,8 +276,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector nibName = Selector.register("nibName");
-    @Bridge(symbol = "objc_msgSend") private native static String objc_getNibName(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getNibNameSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static String objc_getNibName(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static String objc_getNibNameSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/nibName">@property(nonatomic, readonly, copy) NSString *nibName</a>
      * @since Available in iOS 2.0 and later.
@@ -290,8 +287,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector parentViewController = Selector.register("parentViewController");
-    @Bridge(symbol = "objc_msgSend") private native static UIViewController objc_getParentViewController(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIViewController objc_getParentViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIViewController objc_getParentViewController(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static UIViewController objc_getParentViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/parentViewController">@property(nonatomic, readonly) UIViewController *parentViewController</a>
      * @since Available in iOS 2.0 and later.
@@ -301,8 +298,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector presentedViewController = Selector.register("presentedViewController");
-    @Bridge(symbol = "objc_msgSend") private native static UIViewController objc_getPresentedViewController(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIViewController objc_getPresentedViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIViewController objc_getPresentedViewController(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static UIViewController objc_getPresentedViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/presentedViewController">@property(nonatomic, readonly) UIViewController *presentedViewController</a>
      * @since Available in iOS 5.0 and later.
@@ -312,8 +309,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector presentingViewController = Selector.register("presentingViewController");
-    @Bridge(symbol = "objc_msgSend") private native static UIViewController objc_getPresentingViewController(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIViewController objc_getPresentingViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIViewController objc_getPresentingViewController(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static UIViewController objc_getPresentingViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/presentingViewController">@property(nonatomic, readonly) UIViewController *presentingViewController</a>
      * @since Available in iOS 5.0 and later.
@@ -323,8 +320,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector providesPresentationContextTransitionStyle = Selector.register("providesPresentationContextTransitionStyle");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isProvidesPresentationContextTransitionStyle(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isProvidesPresentationContextTransitionStyleSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isProvidesPresentationContextTransitionStyle(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isProvidesPresentationContextTransitionStyleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/providesPresentationContextTransitionStyle">@property(nonatomic, assign) BOOL providesPresentationContextTransitionStyle</a>
      * @since Available in iOS 5.0 and later.
@@ -345,8 +342,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector restorationClass = Selector.register("restorationClass");
-    @Bridge(symbol = "objc_msgSend") private native static ObjCClass objc_getRestorationClass(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static ObjCClass objc_getRestorationClassSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static ObjCClass objc_getRestorationClass(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static ObjCClass objc_getRestorationClassSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/restorationClass">@property(nonatomic, readwrite, assign) Class&amp;lt;UIViewControllerRestoration&amp;gt; restorationClass</a>
      * @since Available in iOS 6.0 and later.
@@ -367,8 +364,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector restorationIdentifier = Selector.register("restorationIdentifier");
-    @Bridge(symbol = "objc_msgSend") private native static String objc_getRestorationIdentifier(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getRestorationIdentifierSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static String objc_getRestorationIdentifier(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static String objc_getRestorationIdentifierSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/restorationIdentifier">@property(nonatomic, copy) NSString *restorationIdentifier</a>
      * @since Available in iOS 6.0 and later.
@@ -389,8 +386,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector searchDisplayController = Selector.register("searchDisplayController");
-    @Bridge(symbol = "objc_msgSend") private native static UISearchDisplayController objc_getSearchDisplayController(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UISearchDisplayController objc_getSearchDisplayControllerSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UISearchDisplayController objc_getSearchDisplayController(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static UISearchDisplayController objc_getSearchDisplayControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/searchDisplayController">@property(nonatomic, readonly, retain) UISearchDisplayController *searchDisplayController</a>
      * @since Available in iOS 3.0 and later.
@@ -400,8 +397,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector splitViewController = Selector.register("splitViewController");
-    @Bridge(symbol = "objc_msgSend") private native static UISplitViewController objc_getSplitViewController(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UISplitViewController objc_getSplitViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UISplitViewController objc_getSplitViewController(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static UISplitViewController objc_getSplitViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/splitViewController">@property(nonatomic, readonly, retain) UISplitViewController *splitViewController</a>
      * @since Available in iOS 3.2 and later.
@@ -411,8 +408,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector storyboard = Selector.register("storyboard");
-    @Bridge(symbol = "objc_msgSend") private native static UIStoryboard objc_getStoryboard(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIStoryboard objc_getStoryboardSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIStoryboard objc_getStoryboard(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static UIStoryboard objc_getStoryboardSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/storyboard">@property(nonatomic, readonly, retain) UIStoryboard *storyboard</a>
      * @since Available in iOS 5.0 and later.
@@ -422,8 +419,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector tabBarController = Selector.register("tabBarController");
-    @Bridge(symbol = "objc_msgSend") private native static UITabBarController objc_getTabBarController(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UITabBarController objc_getTabBarControllerSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UITabBarController objc_getTabBarController(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static UITabBarController objc_getTabBarControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/tabBarController">@property(nonatomic, readonly, retain) UITabBarController *tabBarController</a>
      * @since Available in iOS 2.0 and later.
@@ -433,8 +430,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector tabBarItem = Selector.register("tabBarItem");
-    @Bridge(symbol = "objc_msgSend") private native static UITabBarItem objc_getTabBarItem(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UITabBarItem objc_getTabBarItemSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UITabBarItem objc_getTabBarItem(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static UITabBarItem objc_getTabBarItemSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/tabBarItem">@property(nonatomic, retain) UITabBarItem *tabBarItem</a>
      * @since Available in iOS 2.0 and later.
@@ -455,8 +452,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector title = Selector.register("title");
-    @Bridge(symbol = "objc_msgSend") private native static String objc_getTitle(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getTitleSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static String objc_getTitle(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static String objc_getTitleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/title">@property(nonatomic, copy) NSString *title</a>
      * @since Available in iOS 2.0 and later.
@@ -477,8 +474,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector toolbarItems = Selector.register("toolbarItems");
-    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getToolbarItems(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getToolbarItemsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getToolbarItems(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getToolbarItemsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/toolbarItems">@property(nonatomic, retain) NSArray *toolbarItems</a>
      * @since Available in iOS 3.0 and later.
@@ -499,8 +496,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector view = Selector.register("view");
-    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getView(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getViewSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIView objc_getView(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static UIView objc_getViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/view">@property(nonatomic, retain) UIView *view</a>
      * @since Available in iOS 2.0 and later.
@@ -521,8 +518,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector wantsFullScreenLayout = Selector.register("wantsFullScreenLayout");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isWantsFullScreenLayout(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isWantsFullScreenLayoutSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isWantsFullScreenLayout(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isWantsFullScreenLayoutSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIViewController/wantsFullScreenLayout">@property(nonatomic, assign) BOOL wantsFullScreenLayout</a>
      * @since Available in iOS 3.0 and later.
@@ -545,7 +542,7 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector attemptRotationToDeviceOrientation = Selector.register("attemptRotationToDeviceOrientation");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_attemptRotationToDeviceOrientation(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static void objc_attemptRotationToDeviceOrientation(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/clm/UIViewController/attemptRotationToDeviceOrientation">+ (void)attemptRotationToDeviceOrientation</a>
      * @since Available in iOS 5.0 and later.
@@ -555,8 +552,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector addChildViewController$ = Selector.register("addChildViewController:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_addChildViewController(UIViewController __self__, Selector __cmd__, UIViewController childController);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_addChildViewControllerSuper(ObjCSuper __super__, Selector __cmd__, UIViewController childController);
+    @Bridge private native static void objc_addChildViewController(UIViewController __self__, Selector __cmd__, UIViewController childController);
+    @Bridge private native static void objc_addChildViewControllerSuper(ObjCSuper __super__, Selector __cmd__, UIViewController childController);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/addChildViewController:">- (void)addChildViewController:(UIViewController *)childController</a>
      * @since Available in iOS 5.0 and later.
@@ -566,8 +563,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector beginAppearanceTransition$animated$ = Selector.register("beginAppearanceTransition:animated:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_beginAppearanceTransition(UIViewController __self__, Selector __cmd__, boolean isAppearing, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_beginAppearanceTransitionSuper(ObjCSuper __super__, Selector __cmd__, boolean isAppearing, boolean animated);
+    @Bridge private native static void objc_beginAppearanceTransition(UIViewController __self__, Selector __cmd__, boolean isAppearing, boolean animated);
+    @Bridge private native static void objc_beginAppearanceTransitionSuper(ObjCSuper __super__, Selector __cmd__, boolean isAppearing, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/beginAppearanceTransition:animated:">- (void)beginAppearanceTransition:(BOOL)isAppearing animated:(BOOL)animated</a>
      * @since Available in iOS 6.0 and later.
@@ -577,8 +574,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector canPerformUnwindSegueAction$fromViewController$withSender$ = Selector.register("canPerformUnwindSegueAction:fromViewController:withSender:");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_canPerformUnwindSegueAction(UIViewController __self__, Selector __cmd__, Selector action, UIViewController fromViewController, NSObject sender);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_canPerformUnwindSegueActionSuper(ObjCSuper __super__, Selector __cmd__, Selector action, UIViewController fromViewController, NSObject sender);
+    @Bridge private native static boolean objc_canPerformUnwindSegueAction(UIViewController __self__, Selector __cmd__, Selector action, UIViewController fromViewController, NSObject sender);
+    @Bridge private native static boolean objc_canPerformUnwindSegueActionSuper(ObjCSuper __super__, Selector __cmd__, Selector action, UIViewController fromViewController, NSObject sender);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/canPerformUnwindSegueAction:fromViewController:withSender:">- (BOOL)canPerformUnwindSegueAction:(SEL)action fromViewController:(UIViewController *)fromViewController withSender:(id)sender</a>
      * @since Available in iOS 6.0 and later.
@@ -588,8 +585,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector decodeRestorableStateWithCoder$ = Selector.register("decodeRestorableStateWithCoder:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_decodeRestorableState(UIViewController __self__, Selector __cmd__, NSCoder coder);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_decodeRestorableStateSuper(ObjCSuper __super__, Selector __cmd__, NSCoder coder);
+    @Bridge private native static void objc_decodeRestorableState(UIViewController __self__, Selector __cmd__, NSCoder coder);
+    @Bridge private native static void objc_decodeRestorableStateSuper(ObjCSuper __super__, Selector __cmd__, NSCoder coder);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/decodeRestorableStateWithCoder:">- (void)decodeRestorableStateWithCoder:(NSCoder *)coder</a>
      * @since Available in iOS 6.0 and later.
@@ -599,8 +596,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector didMoveToParentViewController$ = Selector.register("didMoveToParentViewController:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_didMoveToParentViewController(UIViewController __self__, Selector __cmd__, UIViewController parent);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_didMoveToParentViewControllerSuper(ObjCSuper __super__, Selector __cmd__, UIViewController parent);
+    @Bridge private native static void objc_didMoveToParentViewController(UIViewController __self__, Selector __cmd__, UIViewController parent);
+    @Bridge private native static void objc_didMoveToParentViewControllerSuper(ObjCSuper __super__, Selector __cmd__, UIViewController parent);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/didMoveToParentViewController:">- (void)didMoveToParentViewController:(UIViewController *)parent</a>
      * @since Available in iOS 5.0 and later.
@@ -610,8 +607,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector didReceiveMemoryWarning = Selector.register("didReceiveMemoryWarning");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_didReceiveMemoryWarning(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_didReceiveMemoryWarningSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_didReceiveMemoryWarning(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static void objc_didReceiveMemoryWarningSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/didReceiveMemoryWarning">- (void)didReceiveMemoryWarning</a>
      * @since Available in iOS 2.0 and later.
@@ -621,8 +618,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector didRotateFromInterfaceOrientation$ = Selector.register("didRotateFromInterfaceOrientation:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_didRotate(UIViewController __self__, Selector __cmd__, UIInterfaceOrientation fromInterfaceOrientation);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_didRotateSuper(ObjCSuper __super__, Selector __cmd__, UIInterfaceOrientation fromInterfaceOrientation);
+    @Bridge private native static void objc_didRotate(UIViewController __self__, Selector __cmd__, UIInterfaceOrientation fromInterfaceOrientation);
+    @Bridge private native static void objc_didRotateSuper(ObjCSuper __super__, Selector __cmd__, UIInterfaceOrientation fromInterfaceOrientation);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/didRotateFromInterfaceOrientation:">- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation</a>
      * @since Available in iOS 2.0 and later.
@@ -632,8 +629,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector disablesAutomaticKeyboardDismissal = Selector.register("disablesAutomaticKeyboardDismissal");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_disablesAutomaticKeyboardDismissal(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_disablesAutomaticKeyboardDismissalSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_disablesAutomaticKeyboardDismissal(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_disablesAutomaticKeyboardDismissalSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/disablesAutomaticKeyboardDismissal">- (BOOL)disablesAutomaticKeyboardDismissal</a>
      * @since Available in iOS 4.3 and later.
@@ -643,8 +640,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector dismissViewControllerAnimated$completion$ = Selector.register("dismissViewControllerAnimated:completion:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_dismissViewController(UIViewController __self__, Selector __cmd__, boolean flag, VoidBlock completion);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_dismissViewControllerSuper(ObjCSuper __super__, Selector __cmd__, boolean flag, VoidBlock completion);
+    @Bridge private native static void objc_dismissViewController(UIViewController __self__, Selector __cmd__, boolean flag, VoidBlock completion);
+    @Bridge private native static void objc_dismissViewControllerSuper(ObjCSuper __super__, Selector __cmd__, boolean flag, VoidBlock completion);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/dismissViewControllerAnimated:completion:">- (void)dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion</a>
      * @since Available in iOS 5.0 and later.
@@ -654,8 +651,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector encodeRestorableStateWithCoder$ = Selector.register("encodeRestorableStateWithCoder:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_encodeRestorableState(UIViewController __self__, Selector __cmd__, NSCoder coder);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_encodeRestorableStateSuper(ObjCSuper __super__, Selector __cmd__, NSCoder coder);
+    @Bridge private native static void objc_encodeRestorableState(UIViewController __self__, Selector __cmd__, NSCoder coder);
+    @Bridge private native static void objc_encodeRestorableStateSuper(ObjCSuper __super__, Selector __cmd__, NSCoder coder);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/encodeRestorableStateWithCoder:">- (void)encodeRestorableStateWithCoder:(NSCoder *)coder</a>
      * @since Available in iOS 6.0 and later.
@@ -665,8 +662,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector endAppearanceTransition = Selector.register("endAppearanceTransition");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_endAppearanceTransition(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_endAppearanceTransitionSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_endAppearanceTransition(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static void objc_endAppearanceTransitionSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/endAppearanceTransition">- (void)endAppearanceTransition</a>
      * @since Available in iOS 6.0 and later.
@@ -676,8 +673,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector editButtonItem = Selector.register("editButtonItem");
-    @Bridge(symbol = "objc_msgSend") private native static UIBarButtonItem objc_getEditButtonItem(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIBarButtonItem objc_getEditButtonItemSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIBarButtonItem objc_getEditButtonItem(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static UIBarButtonItem objc_getEditButtonItemSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/editButtonItem">- (UIBarButtonItem *)editButtonItem</a>
      * @since Available in iOS 2.0 and later.
@@ -687,8 +684,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector preferredInterfaceOrientationForPresentation = Selector.register("preferredInterfaceOrientationForPresentation");
-    @Bridge(symbol = "objc_msgSend") private native static UIInterfaceOrientation objc_getPreferredInterfaceOrientation(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIInterfaceOrientation objc_getPreferredInterfaceOrientationSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIInterfaceOrientation objc_getPreferredInterfaceOrientation(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static UIInterfaceOrientation objc_getPreferredInterfaceOrientationSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/preferredInterfaceOrientationForPresentation">- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation</a>
      * @since Available in iOS 6.0 and later.
@@ -698,8 +695,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector rotatingFooterView = Selector.register("rotatingFooterView");
-    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getRotatingFooterView(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getRotatingFooterViewSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIView objc_getRotatingFooterView(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static UIView objc_getRotatingFooterViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/rotatingFooterView">- (UIView *)rotatingFooterView</a>
      * @since Available in iOS 2.0 and later.
@@ -709,8 +706,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector rotatingHeaderView = Selector.register("rotatingHeaderView");
-    @Bridge(symbol = "objc_msgSend") private native static UIView objc_getRotatingHeaderView(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIView objc_getRotatingHeaderViewSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIView objc_getRotatingHeaderView(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static UIView objc_getRotatingHeaderViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/rotatingHeaderView">- (UIView *)rotatingHeaderView</a>
      * @since Available in iOS 2.0 and later.
@@ -720,8 +717,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector supportedInterfaceOrientations = Selector.register("supportedInterfaceOrientations");
-    @Bridge(symbol = "objc_msgSend") private native static UIInterfaceOrientationMask objc_getSupportedInterfaceOrientations(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIInterfaceOrientationMask objc_getSupportedInterfaceOrientationsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIInterfaceOrientationMask objc_getSupportedInterfaceOrientations(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static UIInterfaceOrientationMask objc_getSupportedInterfaceOrientationsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/supportedInterfaceOrientations">- (NSUInteger)supportedInterfaceOrientations</a>
      * @since Available in iOS 6.0 and later.
@@ -731,8 +728,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector segueForUnwindingToViewController$fromViewController$identifier$ = Selector.register("segueForUnwindingToViewController:fromViewController:identifier:");
-    @Bridge(symbol = "objc_msgSend") private native static UIStoryboardSegue objc_getUnwindSegue(UIViewController __self__, Selector __cmd__, UIViewController toViewController, UIViewController fromViewController, String identifier);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIStoryboardSegue objc_getUnwindSegueSuper(ObjCSuper __super__, Selector __cmd__, UIViewController toViewController, UIViewController fromViewController, String identifier);
+    @Bridge private native static UIStoryboardSegue objc_getUnwindSegue(UIViewController __self__, Selector __cmd__, UIViewController toViewController, UIViewController fromViewController, String identifier);
+    @Bridge private native static UIStoryboardSegue objc_getUnwindSegueSuper(ObjCSuper __super__, Selector __cmd__, UIViewController toViewController, UIViewController fromViewController, String identifier);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/segueForUnwindingToViewController:fromViewController:identifier:">- (UIStoryboardSegue *)segueForUnwindingToViewController:(UIViewController *)toViewController fromViewController:(UIViewController *)fromViewController identifier:(NSString *)identifier</a>
      * @since Available in iOS 6.0 and later.
@@ -742,8 +739,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector viewControllerForUnwindSegueAction$fromViewController$withSender$ = Selector.register("viewControllerForUnwindSegueAction:fromViewController:withSender:");
-    @Bridge(symbol = "objc_msgSend") private native static UIViewController objc_getUnwindSegueActionViewController(UIViewController __self__, Selector __cmd__, Selector action, UIViewController fromViewController, NSObject sender);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIViewController objc_getUnwindSegueActionViewControllerSuper(ObjCSuper __super__, Selector __cmd__, Selector action, UIViewController fromViewController, NSObject sender);
+    @Bridge private native static UIViewController objc_getUnwindSegueActionViewController(UIViewController __self__, Selector __cmd__, Selector action, UIViewController fromViewController, NSObject sender);
+    @Bridge private native static UIViewController objc_getUnwindSegueActionViewControllerSuper(ObjCSuper __super__, Selector __cmd__, Selector action, UIViewController fromViewController, NSObject sender);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/viewControllerForUnwindSegueAction:fromViewController:withSender:">- (UIViewController *)viewControllerForUnwindSegueAction:(SEL)action fromViewController:(UIViewController *)fromViewController withSender:(id)sender</a>
      * @since Available in iOS 6.0 and later.
@@ -753,8 +750,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isBeingDismissed = Selector.register("isBeingDismissed");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isBeingDismissed(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isBeingDismissedSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isBeingDismissed(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isBeingDismissedSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/isBeingDismissed">- (BOOL)isBeingDismissed</a>
      * @since Available in iOS 5.0 and later.
@@ -764,8 +761,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isBeingPresented = Selector.register("isBeingPresented");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isBeingPresented(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isBeingPresentedSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isBeingPresented(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isBeingPresentedSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/isBeingPresented">- (BOOL)isBeingPresented</a>
      * @since Available in iOS 5.0 and later.
@@ -775,8 +772,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isMovingFromParentViewController = Selector.register("isMovingFromParentViewController");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isMovingFromParentViewController(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isMovingFromParentViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isMovingFromParentViewController(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isMovingFromParentViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/isMovingFromParentViewController">- (BOOL)isMovingFromParentViewController</a>
      * @since Available in iOS 5.0 and later.
@@ -786,8 +783,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isMovingToParentViewController = Selector.register("isMovingToParentViewController");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isMovingToParentViewController(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isMovingToParentViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isMovingToParentViewController(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isMovingToParentViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/isMovingToParentViewController">- (BOOL)isMovingToParentViewController</a>
      * @since Available in iOS 5.0 and later.
@@ -797,8 +794,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isViewLoaded = Selector.register("isViewLoaded");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isViewLoaded(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isViewLoadedSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isViewLoaded(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isViewLoadedSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/isViewLoaded">- (BOOL)isViewLoaded</a>
      * @since Available in iOS 3.0 and later.
@@ -808,8 +805,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector loadView = Selector.register("loadView");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_loadView(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_loadViewSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_loadView(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static void objc_loadViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/loadView">- (void)loadView</a>
      * @since Available in iOS 2.0 and later.
@@ -819,8 +816,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector performSegueWithIdentifier$sender$ = Selector.register("performSegueWithIdentifier:sender:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_performSegue(UIViewController __self__, Selector __cmd__, String identifier, NSObject sender);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_performSegueSuper(ObjCSuper __super__, Selector __cmd__, String identifier, NSObject sender);
+    @Bridge private native static void objc_performSegue(UIViewController __self__, Selector __cmd__, String identifier, NSObject sender);
+    @Bridge private native static void objc_performSegueSuper(ObjCSuper __super__, Selector __cmd__, String identifier, NSObject sender);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/performSegueWithIdentifier:sender:">- (void)performSegueWithIdentifier:(NSString *)identifier sender:(id)sender</a>
      * @since Available in iOS 5.0 and later.
@@ -830,8 +827,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector prepareForSegue$sender$ = Selector.register("prepareForSegue:sender:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_prepareForSegue(UIViewController __self__, Selector __cmd__, UIStoryboardSegue segue, NSObject sender);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_prepareForSegueSuper(ObjCSuper __super__, Selector __cmd__, UIStoryboardSegue segue, NSObject sender);
+    @Bridge private native static void objc_prepareForSegue(UIViewController __self__, Selector __cmd__, UIStoryboardSegue segue, NSObject sender);
+    @Bridge private native static void objc_prepareForSegueSuper(ObjCSuper __super__, Selector __cmd__, UIStoryboardSegue segue, NSObject sender);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/prepareForSegue:sender:">- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender</a>
      * @since Available in iOS 5.0 and later.
@@ -841,8 +838,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector presentViewController$animated$completion$ = Selector.register("presentViewController:animated:completion:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_presentViewController(UIViewController __self__, Selector __cmd__, UIViewController viewControllerToPresent, boolean flag, VoidBlock completion);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_presentViewControllerSuper(ObjCSuper __super__, Selector __cmd__, UIViewController viewControllerToPresent, boolean flag, VoidBlock completion);
+    @Bridge private native static void objc_presentViewController(UIViewController __self__, Selector __cmd__, UIViewController viewControllerToPresent, boolean flag, VoidBlock completion);
+    @Bridge private native static void objc_presentViewControllerSuper(ObjCSuper __super__, Selector __cmd__, UIViewController viewControllerToPresent, boolean flag, VoidBlock completion);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/presentViewController:animated:completion:">- (void)presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion</a>
      * @since Available in iOS 5.0 and later.
@@ -852,8 +849,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector removeFromParentViewController = Selector.register("removeFromParentViewController");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_removeFromParentViewController(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_removeFromParentViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_removeFromParentViewController(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static void objc_removeFromParentViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/removeFromParentViewController">- (void)removeFromParentViewController</a>
      * @since Available in iOS 5.0 and later.
@@ -863,8 +860,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setEditing$animated$ = Selector.register("setEditing:animated:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setEditing(UIViewController __self__, Selector __cmd__, boolean editing, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setEditingSuper(ObjCSuper __super__, Selector __cmd__, boolean editing, boolean animated);
+    @Bridge private native static void objc_setEditing(UIViewController __self__, Selector __cmd__, boolean editing, boolean animated);
+    @Bridge private native static void objc_setEditingSuper(ObjCSuper __super__, Selector __cmd__, boolean editing, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/setEditing:animated:">- (void)setEditing:(BOOL)editing animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
@@ -874,8 +871,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setToolbarItems$animated$ = Selector.register("setToolbarItems:animated:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setToolbarItems(UIViewController __self__, Selector __cmd__, NSArray toolbarItems, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setToolbarItemsSuper(ObjCSuper __super__, Selector __cmd__, NSArray toolbarItems, boolean animated);
+    @Bridge private native static void objc_setToolbarItems(UIViewController __self__, Selector __cmd__, NSArray toolbarItems, boolean animated);
+    @Bridge private native static void objc_setToolbarItemsSuper(ObjCSuper __super__, Selector __cmd__, NSArray toolbarItems, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/setToolbarItems:animated:">- (void)setToolbarItems:(NSArray *)toolbarItems animated:(BOOL)animated</a>
      * @since Available in iOS 3.0 and later.
@@ -885,8 +882,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector shouldAutomaticallyForwardAppearanceMethods = Selector.register("shouldAutomaticallyForwardAppearanceMethods");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_shouldAutomaticallyForwardAppearanceMethods(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_shouldAutomaticallyForwardAppearanceMethodsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_shouldAutomaticallyForwardAppearanceMethods(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_shouldAutomaticallyForwardAppearanceMethodsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/shouldAutomaticallyForwardAppearanceMethods">- (BOOL)shouldAutomaticallyForwardAppearanceMethods</a>
      * @since Available in iOS 6.0 and later.
@@ -896,8 +893,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector shouldAutomaticallyForwardRotationMethods = Selector.register("shouldAutomaticallyForwardRotationMethods");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_shouldAutomaticallyForwardRotationMethods(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_shouldAutomaticallyForwardRotationMethodsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_shouldAutomaticallyForwardRotationMethods(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_shouldAutomaticallyForwardRotationMethodsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/shouldAutomaticallyForwardRotationMethods">- (BOOL)shouldAutomaticallyForwardRotationMethods</a>
      * @since Available in iOS 6.0 and later.
@@ -907,8 +904,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector shouldAutorotate = Selector.register("shouldAutorotate");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_shouldAutorotate(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_shouldAutorotateSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_shouldAutorotate(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_shouldAutorotateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/shouldAutorotate">- (BOOL)shouldAutorotate</a>
      * @since Available in iOS 6.0 and later.
@@ -918,8 +915,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector shouldPerformSegueWithIdentifier$sender$ = Selector.register("shouldPerformSegueWithIdentifier:sender:");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_shouldPerformSegue(UIViewController __self__, Selector __cmd__, String identifier, NSObject sender);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_shouldPerformSegueSuper(ObjCSuper __super__, Selector __cmd__, String identifier, NSObject sender);
+    @Bridge private native static boolean objc_shouldPerformSegue(UIViewController __self__, Selector __cmd__, String identifier, NSObject sender);
+    @Bridge private native static boolean objc_shouldPerformSegueSuper(ObjCSuper __super__, Selector __cmd__, String identifier, NSObject sender);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/shouldPerformSegueWithIdentifier:sender:">- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender</a>
      * @since Available in iOS 6.0 and later.
@@ -929,8 +926,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector transitionFromViewController$toViewController$duration$options$animations$completion$ = Selector.register("transitionFromViewController:toViewController:duration:options:animations:completion:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_transition(UIViewController __self__, Selector __cmd__, UIViewController fromViewController, UIViewController toViewController, double duration, UIViewAnimationOptions options, VoidBlock animations, VoidBooleanBlock completion);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_transitionSuper(ObjCSuper __super__, Selector __cmd__, UIViewController fromViewController, UIViewController toViewController, double duration, UIViewAnimationOptions options, VoidBlock animations, VoidBooleanBlock completion);
+    @Bridge private native static void objc_transition(UIViewController __self__, Selector __cmd__, UIViewController fromViewController, UIViewController toViewController, double duration, UIViewAnimationOptions options, VoidBlock animations, VoidBooleanBlock completion);
+    @Bridge private native static void objc_transitionSuper(ObjCSuper __super__, Selector __cmd__, UIViewController fromViewController, UIViewController toViewController, double duration, UIViewAnimationOptions options, VoidBlock animations, VoidBooleanBlock completion);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/transitionFromViewController:toViewController:duration:options:animations:completion:">- (void)transitionFromViewController:(UIViewController *)fromViewController toViewController:(UIViewController *)toViewController duration:(NSTimeInterval)duration options:(UIViewAnimationOptions)options animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion</a>
      * @since Available in iOS 5.0 and later.
@@ -940,8 +937,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector updateViewConstraints = Selector.register("updateViewConstraints");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_updateViewConstraints(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_updateViewConstraintsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_updateViewConstraints(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static void objc_updateViewConstraintsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/updateViewConstraints">- (void)updateViewConstraints</a>
      * @since Available in iOS 6.0 and later.
@@ -951,8 +948,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector viewDidAppear$ = Selector.register("viewDidAppear:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_viewDidAppear(UIViewController __self__, Selector __cmd__, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_viewDidAppearSuper(ObjCSuper __super__, Selector __cmd__, boolean animated);
+    @Bridge private native static void objc_viewDidAppear(UIViewController __self__, Selector __cmd__, boolean animated);
+    @Bridge private native static void objc_viewDidAppearSuper(ObjCSuper __super__, Selector __cmd__, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/viewDidAppear:">- (void)viewDidAppear:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
@@ -962,8 +959,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector viewDidDisappear$ = Selector.register("viewDidDisappear:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_viewDidDisappear(UIViewController __self__, Selector __cmd__, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_viewDidDisappearSuper(ObjCSuper __super__, Selector __cmd__, boolean animated);
+    @Bridge private native static void objc_viewDidDisappear(UIViewController __self__, Selector __cmd__, boolean animated);
+    @Bridge private native static void objc_viewDidDisappearSuper(ObjCSuper __super__, Selector __cmd__, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/viewDidDisappear:">- (void)viewDidDisappear:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
@@ -973,8 +970,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector viewDidLayoutSubviews = Selector.register("viewDidLayoutSubviews");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_viewDidLayoutSubviews(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_viewDidLayoutSubviewsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_viewDidLayoutSubviews(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static void objc_viewDidLayoutSubviewsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/viewDidLayoutSubviews">- (void)viewDidLayoutSubviews</a>
      * @since Available in iOS 5.0 and later.
@@ -984,8 +981,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector viewDidLoad = Selector.register("viewDidLoad");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_viewDidLoad(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_viewDidLoadSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_viewDidLoad(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static void objc_viewDidLoadSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/viewDidLoad">- (void)viewDidLoad</a>
      * @since Available in iOS 2.0 and later.
@@ -995,8 +992,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector viewWillAppear$ = Selector.register("viewWillAppear:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_viewWillAppear(UIViewController __self__, Selector __cmd__, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_viewWillAppearSuper(ObjCSuper __super__, Selector __cmd__, boolean animated);
+    @Bridge private native static void objc_viewWillAppear(UIViewController __self__, Selector __cmd__, boolean animated);
+    @Bridge private native static void objc_viewWillAppearSuper(ObjCSuper __super__, Selector __cmd__, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/viewWillAppear:">- (void)viewWillAppear:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
@@ -1006,8 +1003,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector viewWillDisappear$ = Selector.register("viewWillDisappear:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_viewWillDisappear(UIViewController __self__, Selector __cmd__, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_viewWillDisappearSuper(ObjCSuper __super__, Selector __cmd__, boolean animated);
+    @Bridge private native static void objc_viewWillDisappear(UIViewController __self__, Selector __cmd__, boolean animated);
+    @Bridge private native static void objc_viewWillDisappearSuper(ObjCSuper __super__, Selector __cmd__, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/viewWillDisappear:">- (void)viewWillDisappear:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
@@ -1017,8 +1014,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector viewWillLayoutSubviews = Selector.register("viewWillLayoutSubviews");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_viewWillLayoutSubviews(UIViewController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_viewWillLayoutSubviewsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_viewWillLayoutSubviews(UIViewController __self__, Selector __cmd__);
+    @Bridge private native static void objc_viewWillLayoutSubviewsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/viewWillLayoutSubviews">- (void)viewWillLayoutSubviews</a>
      * @since Available in iOS 5.0 and later.
@@ -1028,8 +1025,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector willAnimateRotationToInterfaceOrientation$duration$ = Selector.register("willAnimateRotationToInterfaceOrientation:duration:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_willAnimateRotation(UIViewController __self__, Selector __cmd__, UIInterfaceOrientation interfaceOrientation, double duration);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_willAnimateRotationSuper(ObjCSuper __super__, Selector __cmd__, UIInterfaceOrientation interfaceOrientation, double duration);
+    @Bridge private native static void objc_willAnimateRotation(UIViewController __self__, Selector __cmd__, UIInterfaceOrientation interfaceOrientation, double duration);
+    @Bridge private native static void objc_willAnimateRotationSuper(ObjCSuper __super__, Selector __cmd__, UIInterfaceOrientation interfaceOrientation, double duration);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/willAnimateRotationToInterfaceOrientation:duration:">- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration</a>
      * @since Available in iOS 3.0 and later.
@@ -1039,8 +1036,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector willMoveToParentViewController$ = Selector.register("willMoveToParentViewController:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_willMoveToParent(UIViewController __self__, Selector __cmd__, UIViewController parent);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_willMoveToParentSuper(ObjCSuper __super__, Selector __cmd__, UIViewController parent);
+    @Bridge private native static void objc_willMoveToParent(UIViewController __self__, Selector __cmd__, UIViewController parent);
+    @Bridge private native static void objc_willMoveToParentSuper(ObjCSuper __super__, Selector __cmd__, UIViewController parent);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/willMoveToParentViewController:">- (void)willMoveToParentViewController:(UIViewController *)parent</a>
      * @since Available in iOS 5.0 and later.
@@ -1050,8 +1047,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector willRotateToInterfaceOrientation$duration$ = Selector.register("willRotateToInterfaceOrientation:duration:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_willRotate(UIViewController __self__, Selector __cmd__, UIInterfaceOrientation toInterfaceOrientation, double duration);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_willRotateSuper(ObjCSuper __super__, Selector __cmd__, UIInterfaceOrientation toInterfaceOrientation, double duration);
+    @Bridge private native static void objc_willRotate(UIViewController __self__, Selector __cmd__, UIInterfaceOrientation toInterfaceOrientation, double duration);
+    @Bridge private native static void objc_willRotateSuper(ObjCSuper __super__, Selector __cmd__, UIInterfaceOrientation toInterfaceOrientation, double duration);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/willRotateToInterfaceOrientation:duration:">- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration</a>
      * @since Available in iOS 2.0 and later.
@@ -1144,7 +1141,7 @@ import org.robovm.rt.bro.ptr.*;
         @Callback @BindSelector("viewDidAppear:") public static void viewDidAppear(UIViewController __self__, Selector __cmd__, boolean animated) { __self__.viewDidAppear(animated); }
         @Callback @BindSelector("viewDidDisappear:") public static void viewDidDisappear(UIViewController __self__, Selector __cmd__, boolean animated) { __self__.viewDidDisappear(animated); }
         @Callback @BindSelector("viewDidLayoutSubviews") public static void viewDidLayoutSubviews(UIViewController __self__, Selector __cmd__) { __self__.viewDidLayoutSubviews(); }
-        @Callback @BindSelector("viewDidLoad") public static void viewDidLoad(UIViewController __self__, Selector __cmd__) { System.err.println("viewDidLoad: self = " + __self__); __self__.viewDidLoad(); }
+        @Callback @BindSelector("viewDidLoad") public static void viewDidLoad(UIViewController __self__, Selector __cmd__) { __self__.viewDidLoad(); }
         @Callback @BindSelector("viewWillAppear:") public static void viewWillAppear(UIViewController __self__, Selector __cmd__, boolean animated) { __self__.viewWillAppear(animated); }
         @Callback @BindSelector("viewWillDisappear:") public static void viewWillDisappear(UIViewController __self__, Selector __cmd__, boolean animated) { __self__.viewWillDisappear(animated); }
         @Callback @BindSelector("viewWillLayoutSubviews") public static void viewWillLayoutSubviews(UIViewController __self__, Selector __cmd__) { __self__.viewWillLayoutSubviews(); }

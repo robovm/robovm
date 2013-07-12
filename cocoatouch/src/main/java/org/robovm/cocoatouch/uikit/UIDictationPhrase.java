@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIDictationPhrase /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIDictationPhrase /*</name>*/.class);
 
     /*<constructors>*/
@@ -58,8 +57,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector alternativeInterpretations = Selector.register("alternativeInterpretations");
-    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getAlternativeInterpretations(UIDictationPhrase __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getAlternativeInterpretationsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getAlternativeInterpretations(UIDictationPhrase __self__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getAlternativeInterpretationsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDictationPhraseClass/Reference/Reference.html#//apple_ref/occ/instp/UIDictationPhrase/alternativeInterpretations">@property (nonatomic, readonly) NSArray *alternativeInterpretations</a>
      * @since Available in iOS 5.1 and later.
@@ -69,8 +68,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector text = Selector.register("text");
-    @Bridge(symbol = "objc_msgSend") private native static String objc_getText(UIDictationPhrase __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getTextSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static String objc_getText(UIDictationPhrase __self__, Selector __cmd__);
+    @Bridge private native static String objc_getTextSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDictationPhraseClass/Reference/Reference.html#//apple_ref/occ/instp/UIDictationPhrase/text">@property (nonatomic, readonly) NSString *text</a>
      * @since Available in iOS 5.1 and later.

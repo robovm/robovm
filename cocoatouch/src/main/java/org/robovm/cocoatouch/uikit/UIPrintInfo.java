@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIPrintInfo /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIPrintInfo /*</name>*/.class);
 
     /*<constructors>*/
@@ -58,8 +57,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector duplex = Selector.register("duplex");
-    @Bridge(symbol = "objc_msgSend") private native static UIPrintInfoDuplex objc_getDuplex(UIPrintInfo __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIPrintInfoDuplex objc_getDuplexSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIPrintInfoDuplex objc_getDuplex(UIPrintInfo __self__, Selector __cmd__);
+    @Bridge private native static UIPrintInfoDuplex objc_getDuplexSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/duplex">@property(nonatomic) UIPrintInfoDuplex duplex</a>
      * @since Available in iOS 4.2 and later.
@@ -80,8 +79,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector jobName = Selector.register("jobName");
-    @Bridge(symbol = "objc_msgSend") private native static String objc_getJobName(UIPrintInfo __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getJobNameSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static String objc_getJobName(UIPrintInfo __self__, Selector __cmd__);
+    @Bridge private native static String objc_getJobNameSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/jobName">@property(nonatomic, copy) NSString *jobName</a>
      * @since Available in iOS 4.2 and later.
@@ -102,8 +101,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector orientation = Selector.register("orientation");
-    @Bridge(symbol = "objc_msgSend") private native static UIPrintInfoOrientation objc_getOrientation(UIPrintInfo __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIPrintInfoOrientation objc_getOrientationSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIPrintInfoOrientation objc_getOrientation(UIPrintInfo __self__, Selector __cmd__);
+    @Bridge private native static UIPrintInfoOrientation objc_getOrientationSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/orientation">@property(nonatomic) UIPrintInfoOrientation orientation</a>
      * @since Available in iOS 4.2 and later.
@@ -124,8 +123,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector outputType = Selector.register("outputType");
-    @Bridge(symbol = "objc_msgSend") private native static UIPrintInfoOutputType objc_getOutputType(UIPrintInfo __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIPrintInfoOutputType objc_getOutputTypeSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIPrintInfoOutputType objc_getOutputType(UIPrintInfo __self__, Selector __cmd__);
+    @Bridge private native static UIPrintInfoOutputType objc_getOutputTypeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/outputType">@property(nonatomic) UIPrintInfoOutputType outputType</a>
      * @since Available in iOS 4.2 and later.
@@ -146,8 +145,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector printerID = Selector.register("printerID");
-    @Bridge(symbol = "objc_msgSend") private native static String objc_getPrinterID(UIPrintInfo __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getPrinterIDSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static String objc_getPrinterID(UIPrintInfo __self__, Selector __cmd__);
+    @Bridge private native static String objc_getPrinterIDSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/printerID">@property(nonatomic, copy) NSString *printerID</a>
      * @since Available in iOS 4.2 and later.
@@ -170,7 +169,7 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector printInfoWithDictionary$ = Selector.register("printInfoWithDictionary:");
-    @Bridge(symbol = "objc_msgSend") private native static UIPrintInfo objc_fromDictionary(ObjCClass __self__, Selector __cmd__, NSDictionary dictionary);
+    @Bridge private native static UIPrintInfo objc_fromDictionary(ObjCClass __self__, Selector __cmd__, NSDictionary dictionary);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/clm/UIPrintInfo/printInfoWithDictionary:">+ (UIPrintInfo *)printInfoWithDictionary:(NSDictionary *)dictionary</a>
      * @since Available in iOS 4.2 and later.
@@ -180,7 +179,7 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector printInfo = Selector.register("printInfo");
-    @Bridge(symbol = "objc_msgSend") private native static UIPrintInfo objc_getPrintInfo(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static UIPrintInfo objc_getPrintInfo(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/clm/UIPrintInfo/printInfo">+ (UIPrintInfo *)printInfo</a>
      * @since Available in iOS 4.2 and later.
@@ -190,8 +189,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector dictionaryRepresentation = Selector.register("dictionaryRepresentation");
-    @Bridge(symbol = "objc_msgSend") private native static NSDictionary objc_toDictionary(UIPrintInfo __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSDictionary objc_toDictionarySuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static NSDictionary objc_toDictionary(UIPrintInfo __self__, Selector __cmd__);
+    @Bridge private native static NSDictionary objc_toDictionarySuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPrintInfo/dictionaryRepresentation">- (NSDictionary *)dictionaryRepresentation</a>
      * @since Available in iOS 4.2 and later.

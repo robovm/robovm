@@ -41,7 +41,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ NSMutableDictionary /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSMutableDictionary /*</name>*/.class);
 
     /*<constructors>*/
@@ -66,8 +65,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector setObject$forKey$ = Selector.register("setObject:forKey:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setObject(NSMutableDictionary __self__, Selector __cmd__, NSObject anObject, NSObject aKey);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setObjectSuper(ObjCSuper __super__, Selector __cmd__, NSObject anObject, NSObject aKey);
+    @Bridge private native static void objc_setObject(NSMutableDictionary __self__, Selector __cmd__, NSObject anObject, NSObject aKey);
+    @Bridge private native static void objc_setObjectSuper(ObjCSuper __super__, Selector __cmd__, NSObject anObject, NSObject aKey);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSMutableDictionary_Class/Reference/Reference.html#//apple_ref/occ/instm/NSMutableDictionary/setObject:forKey:">- (void)setObject:(id)anObject forKey:(id &amp;lt; NSCopying &amp;gt;)aKey</a>
      * @since Available in iOS 2.0 and later.

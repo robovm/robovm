@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIStoryboardSegue /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIStoryboardSegue /*</name>*/.class);
 
     /*<constructors>*/
@@ -55,7 +54,7 @@ import org.robovm.rt.bro.ptr.*;
     public UIStoryboardSegue() {}
     
     private static final Selector initWithIdentifier$source$destination$ = Selector.register("initWithIdentifier:source:destination:");
-    @Bridge(symbol = "objc_msgSend") private native static @Pointer long objc_initWithIdentifier(UIStoryboardSegue __self__, Selector __cmd__, String identifier, UIViewController source, UIViewController destination);
+    @Bridge private native static @Pointer long objc_initWithIdentifier(UIStoryboardSegue __self__, Selector __cmd__, String identifier, UIViewController source, UIViewController destination);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instm/UIStoryboardSegue/initWithIdentifier:source:destination:">- (id)initWithIdentifier:(NSString *)identifier source:(UIViewController *)source destination:(UIViewController *)destination</a>
      * @since Available in iOS 5.0 and later.
@@ -68,8 +67,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector destinationViewController = Selector.register("destinationViewController");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_getDestinationViewController(UIStoryboardSegue __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSObject objc_getDestinationViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static NSObject objc_getDestinationViewController(UIStoryboardSegue __self__, Selector __cmd__);
+    @Bridge private native static NSObject objc_getDestinationViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStoryboardSegue/destinationViewController">@property(nonatomic, readonly) id destinationViewController</a>
      * @since Available in iOS 5.0 and later.
@@ -79,8 +78,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector identifier = Selector.register("identifier");
-    @Bridge(symbol = "objc_msgSend") private native static String objc_getIdentifier(UIStoryboardSegue __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static String objc_getIdentifierSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static String objc_getIdentifier(UIStoryboardSegue __self__, Selector __cmd__);
+    @Bridge private native static String objc_getIdentifierSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStoryboardSegue/identifier">@property (nonatomic, readonly) NSString *identifier</a>
      * @since Available in iOS 5.0 and later.
@@ -90,8 +89,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector sourceViewController = Selector.register("sourceViewController");
-    @Bridge(symbol = "objc_msgSend") private native static NSObject objc_getSourceViewController(UIStoryboardSegue __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSObject objc_getSourceViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static NSObject objc_getSourceViewController(UIStoryboardSegue __self__, Selector __cmd__);
+    @Bridge private native static NSObject objc_getSourceViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStoryboardSegue/sourceViewController">@property(nonatomic, readonly) id sourceViewController</a>
      * @since Available in iOS 5.0 and later.
@@ -103,8 +102,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector perform = Selector.register("perform");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_perform(UIStoryboardSegue __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_performSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_perform(UIStoryboardSegue __self__, Selector __cmd__);
+    @Bridge private native static void objc_performSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instm/UIStoryboardSegue/perform">- (void)perform</a>
      * @since Available in iOS 5.0 and later.

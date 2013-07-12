@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIMenuController /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIMenuController /*</name>*/.class);
 
     /*<constructors>*/
@@ -58,8 +57,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector arrowDirection = Selector.register("arrowDirection");
-    @Bridge(symbol = "objc_msgSend") private native static UIMenuControllerArrowDirection objc_getArrowDirection(UIMenuController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static UIMenuControllerArrowDirection objc_getArrowDirectionSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static UIMenuControllerArrowDirection objc_getArrowDirection(UIMenuController __self__, Selector __cmd__);
+    @Bridge private native static UIMenuControllerArrowDirection objc_getArrowDirectionSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIMenuController_Class/UIMenuController.html#//apple_ref/occ/instp/UIMenuController/arrowDirection">@property UIMenuControllerArrowDirection arrowDirection</a>
      * @since Available in iOS 3.2 and later.
@@ -80,19 +79,19 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector menuFrame = Selector.register("menuFrame");
-    @Bridge(symbol = "objc_msgSend_stret") private native static void objc_getMenuFrame_stret(@StructRet CGRect __ret__, UIMenuController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper_stret") private native static void objc_getMenuFrameSuper_stret(@StructRet CGRect __ret__, ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static @ByVal CGRect objc_getMenuFrame(UIMenuController __self__, Selector __cmd__);
+    @Bridge private native static @ByVal CGRect objc_getMenuFrameSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIMenuController_Class/UIMenuController.html#//apple_ref/occ/instp/UIMenuController/menuFrame">@property(nonatomic, readonly) CGRect menuFrame</a>
      * @since Available in iOS 3.0 and later.
      */
     public CGRect getMenuFrame() {
-        CGRect __ret__ = new CGRect(); if (customClass) { objc_getMenuFrameSuper_stret(__ret__, getSuper(), menuFrame); } else { objc_getMenuFrame_stret(__ret__, this, menuFrame); } return __ret__;
+        if (customClass) { return objc_getMenuFrameSuper(getSuper(), menuFrame); } else { return objc_getMenuFrame(this, menuFrame); }
     }
     
     private static final Selector menuItems = Selector.register("menuItems");
-    @Bridge(symbol = "objc_msgSend") private native static NSArray objc_getMenuItems(UIMenuController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static NSArray objc_getMenuItemsSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getMenuItems(UIMenuController __self__, Selector __cmd__);
+    @Bridge private native static NSArray objc_getMenuItemsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIMenuController_Class/UIMenuController.html#//apple_ref/occ/instp/UIMenuController/menuItems">@property(copy) NSArray *menuItems</a>
      * @since Available in iOS 3.2 and later.
@@ -113,8 +112,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector isMenuVisible = Selector.register("isMenuVisible");
-    @Bridge(symbol = "objc_msgSend") private native static boolean objc_isMenuVisible(UIMenuController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static boolean objc_isMenuVisibleSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static boolean objc_isMenuVisible(UIMenuController __self__, Selector __cmd__);
+    @Bridge private native static boolean objc_isMenuVisibleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIMenuController_Class/UIMenuController.html#//apple_ref/occ/instp/UIMenuController/menuVisible">@property(nonatomic, getter=isMenuVisible) BOOL menuVisible</a>
      * @since Available in iOS 3.0 and later.
@@ -137,7 +136,7 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector sharedMenuController = Selector.register("sharedMenuController");
-    @Bridge(symbol = "objc_msgSend") private native static UIMenuController objc_getSharedMenuController(ObjCClass __self__, Selector __cmd__);
+    @Bridge private native static UIMenuController objc_getSharedMenuController(ObjCClass __self__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIMenuController_Class/UIMenuController.html#//apple_ref/occ/clm/UIMenuController/sharedMenuController">+ (UIMenuController *)sharedMenuController</a>
      * @since Available in iOS 3.0 and later.
@@ -147,8 +146,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setMenuVisible$animated$ = Selector.register("setMenuVisible:animated:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setMenuVisible(UIMenuController __self__, Selector __cmd__, boolean menuVisible, boolean animated);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMenuVisibleSuper(ObjCSuper __super__, Selector __cmd__, boolean menuVisible, boolean animated);
+    @Bridge private native static void objc_setMenuVisible(UIMenuController __self__, Selector __cmd__, boolean menuVisible, boolean animated);
+    @Bridge private native static void objc_setMenuVisibleSuper(ObjCSuper __super__, Selector __cmd__, boolean menuVisible, boolean animated);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIMenuController_Class/UIMenuController.html#//apple_ref/occ/instm/UIMenuController/setMenuVisible:animated:">- (void)setMenuVisible:(BOOL)menuVisible animated:(BOOL)animated</a>
      * @since Available in iOS 3.0 and later.
@@ -158,8 +157,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTargetRect$inView$ = Selector.register("setTargetRect:inView:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTargetRect(UIMenuController __self__, Selector __cmd__, @ByVal CGRect targetRect, UIView targetView);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTargetRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect targetRect, UIView targetView);
+    @Bridge private native static void objc_setTargetRect(UIMenuController __self__, Selector __cmd__, @ByVal CGRect targetRect, UIView targetView);
+    @Bridge private native static void objc_setTargetRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect targetRect, UIView targetView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIMenuController_Class/UIMenuController.html#//apple_ref/occ/instm/UIMenuController/setTargetRect:inView:">- (void)setTargetRect:(CGRect)targetRect inView:(UIView *)targetView</a>
      * @since Available in iOS 3.0 and later.
@@ -169,8 +168,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector update = Selector.register("update");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_update(UIMenuController __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_updateSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static void objc_update(UIMenuController __self__, Selector __cmd__);
+    @Bridge private native static void objc_updateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIMenuController_Class/UIMenuController.html#//apple_ref/occ/instm/UIMenuController/update">- (void)update</a>
      * @since Available in iOS 3.0 and later.

@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UIPinchGestureRecognizer /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIPinchGestureRecognizer /*</name>*/.class);
 
     /*<constructors>*/
@@ -58,8 +57,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector scale = Selector.register("scale");
-    @Bridge(symbol = "objc_msgSend") private native static float objc_getScale(UIPinchGestureRecognizer __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getScaleSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static float objc_getScale(UIPinchGestureRecognizer __self__, Selector __cmd__);
+    @Bridge private native static float objc_getScaleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPinchGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPinchGestureRecognizer/scale">@property(nonatomic) CGFloat scale</a>
      * @since Available in iOS 3.2 and later.
@@ -80,8 +79,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector velocity = Selector.register("velocity");
-    @Bridge(symbol = "objc_msgSend") private native static float objc_getVelocity(UIPinchGestureRecognizer __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getVelocitySuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static float objc_getVelocity(UIPinchGestureRecognizer __self__, Selector __cmd__);
+    @Bridge private native static float objc_getVelocitySuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPinchGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPinchGestureRecognizer/velocity">@property(nonatomic, readonly) CGFloat velocity</a>
      * @since Available in iOS 3.2 and later.

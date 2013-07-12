@@ -47,7 +47,6 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ UILongPressGestureRecognizer /*</name>*/.class);
     }
 
-    private static final boolean X86 = Bro.IS_X86;
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UILongPressGestureRecognizer /*</name>*/.class);
 
     /*<constructors>*/
@@ -58,8 +57,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*/
     
     private static final Selector allowableMovement = Selector.register("allowableMovement");
-    @Bridge(symbol = "objc_msgSend") private native static float objc_getAllowableMovement(UILongPressGestureRecognizer __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static float objc_getAllowableMovementSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static float objc_getAllowableMovement(UILongPressGestureRecognizer __self__, Selector __cmd__);
+    @Bridge private native static float objc_getAllowableMovementSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILongPressGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UILongPressGestureRecognizer/allowableMovement">@property(nonatomic) CGFloat allowableMovement</a>
      * @since Available in iOS 3.2 and later.
@@ -80,8 +79,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector minimumPressDuration = Selector.register("minimumPressDuration");
-    @Bridge(symbol = "objc_msgSend") private native static double objc_getMinimumPressDuration(UILongPressGestureRecognizer __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static double objc_getMinimumPressDurationSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static double objc_getMinimumPressDuration(UILongPressGestureRecognizer __self__, Selector __cmd__);
+    @Bridge private native static double objc_getMinimumPressDurationSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILongPressGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UILongPressGestureRecognizer/minimumPressDuration">@property(nonatomic) CFTimeInterval minimumPressDuration</a>
      * @since Available in iOS 3.2 and later.
@@ -102,8 +101,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector numberOfTapsRequired = Selector.register("numberOfTapsRequired");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_getNumberOfTapsRequired(UILongPressGestureRecognizer __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getNumberOfTapsRequiredSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static int objc_getNumberOfTapsRequired(UILongPressGestureRecognizer __self__, Selector __cmd__);
+    @Bridge private native static int objc_getNumberOfTapsRequiredSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILongPressGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UILongPressGestureRecognizer/numberOfTapsRequired">@property (nonatomic) NSUInteger  numberOfTapsRequired</a>
      * @since Available in iOS 3.2 and later.
@@ -124,8 +123,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector numberOfTouchesRequired = Selector.register("numberOfTouchesRequired");
-    @Bridge(symbol = "objc_msgSend") private native static int objc_getNumberOfTouchesRequired(UILongPressGestureRecognizer __self__, Selector __cmd__);
-    @Bridge(symbol = "objc_msgSendSuper") private native static int objc_getNumberOfTouchesRequiredSuper(ObjCSuper __super__, Selector __cmd__);
+    @Bridge private native static int objc_getNumberOfTouchesRequired(UILongPressGestureRecognizer __self__, Selector __cmd__);
+    @Bridge private native static int objc_getNumberOfTouchesRequiredSuper(ObjCSuper __super__, Selector __cmd__);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILongPressGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UILongPressGestureRecognizer/numberOfTouchesRequired">@property(nonatomic) NSInteger numberOfTouchesRequired</a>
      * @since Available in iOS 3.2 and later.

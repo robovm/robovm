@@ -15,9 +15,16 @@
  */
 package org.robovm.objc;
 
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.robovm.rt.VM;
 import org.robovm.rt.bro.Bro;
+import org.robovm.rt.bro.Runtime;
+import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.Bridge;
+import org.robovm.rt.bro.annotation.ByVal;
 import org.robovm.rt.bro.annotation.Library;
 import org.robovm.rt.bro.annotation.Pointer;
 import org.robovm.rt.bro.annotation.StructRet;
@@ -29,6 +36,8 @@ import org.robovm.rt.bro.ptr.BytePtr;
 @Library("objc")
 public class ObjCRuntime {
 
+    private static final Map<Class<?>, Integer> structSizes = new HashMap<Class<?>, Integer>();
+    
     static {
         Bro.bind();
     }
@@ -39,7 +48,66 @@ public class ObjCRuntime {
     }
     
     public static void bind(Class<?> c) {
+        for (Method method : c.getDeclaredMethods()) {
+            Bridge bridge = method.getAnnotation(Bridge.class);
+            if (bridge != null && (bridge.symbol() == null || "".equals(bridge.symbol()))) {
+                Class<?>[] paramTypes = method.getParameterTypes();
+                if (paramTypes.length >= 2) {
+                    // An ObjC method takes at least 2 parameters (self, selector)
+                    // or (super, selector).
+                    if (paramTypes[1] == Selector.class) {
+                        String symbol = null;
+                        if (paramTypes[0] == ObjCSuper.class) {
+                            symbol = "objc_msgSendSuper";
+                        } else if (ObjCObject.class.isAssignableFrom(paramTypes[0])) {
+                            symbol = "objc_msgSend";
+                        }
+                        if (symbol != null) {
+                            // So this is a bridge to an ObjC method. If the method
+                            // returns a struct by value we may have to use the
+                            // special stret versions of objc_msgSend/objc_msgSendSuper.
+                            Class<?> returnType = method.getReturnType();
+                            if (returnType.getSuperclass() == Struct.class 
+                                    && (method.getAnnotation(ByVal.class) != null 
+                                    || returnType.getAnnotation(ByVal.class) != null)) {
+                                int structSize = getStructSize(returnType);
+                                if (Bro.IS_X86) {
+                                    if (structSize > 8) {
+                                        // On x86 stret has to be used for structs
+                                        // larger than 8 bytes
+                                        symbol += "_stret";
+                                    }
+                                } else {
+                                    if (structSize > 4) {
+                                        // On ARM stret has to be used for structs
+                                        // larger than 4 bytes
+                                        symbol += "_stret";
+                                    }
+                                }
+                            }
+                            long f = Runtime.resolveBridge("objc", symbol, method);
+                            VM.bindBridgeMethod(method, f);
+                        }
+                    }
+                    
+                }
+            }
+        }
         Bro.bind(c);
+    }
+    
+    private static synchronized int getStructSize(Class<?> cls) {
+        Integer size = structSizes.get(cls);
+        if (size == null) {
+            try {
+                Method sizeOf = cls.getMethod("sizeOf");
+                size = (Integer) sizeOf.invoke(null);
+            } catch (Exception e) {
+                throw new Error(e);
+            }
+            structSizes.put(cls, size);
+        }
+        return size;
     }
     
     @Bridge

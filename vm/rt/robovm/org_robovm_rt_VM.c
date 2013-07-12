@@ -225,6 +225,12 @@ void Java_org_robovm_rt_VM_bindBridgeMethod(Env* env, Class* c, Object* methodOb
     *method->targetFnPtr = LONG_TO_PTR(impl);
 }
 
+jboolean Java_org_robovm_rt_VM_isBridgeMethodBound(Env* env, Class* c, Object* methodObject) {
+    BridgeMethod* method = (BridgeMethod*) getMethodFromMethodObject(env, methodObject);
+    if (!method) return FALSE;
+    return *method->targetFnPtr == NULL ? FALSE : TRUE;
+}
+
 jlong Java_org_robovm_rt_VM_getObjectAddress(Env* env, Class* c, Object* object) {
     return PTR_TO_LONG(object);
 }

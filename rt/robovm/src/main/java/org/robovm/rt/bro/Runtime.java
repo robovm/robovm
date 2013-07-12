@@ -203,7 +203,17 @@ public final class Runtime {
         }
         return f;
     }
-    
+
+    public static long resolveBridge(String libraryName, String symbol, Method method) {
+        long handle = getHandle(libraryName);
+        long f = Dl.resolve(handle, symbol);
+        if (f == 0L) {
+            throw new UnsatisfiedLinkError("Failed to resolve native function " + symbol
+                    + "for method " + method + " in library " + libraryName);
+        }
+        return f;
+    }
+
     protected static long getHandle(String name) {
         synchronized (handles) {
             Long handle = handles.get(name);

@@ -51,7 +51,7 @@ public class Bro {
         }
         for (Method method : c.getDeclaredMethods()) {
             Bridge bridge = method.getAnnotation(Bridge.class);
-            if (bridge != null) {
+            if (bridge != null && !VM.isBridgeMethodBound(method)) {
                 long f = Runtime.resolveBridge(library, bridge, method);
                 VM.bindBridgeMethod(method, f);
             }

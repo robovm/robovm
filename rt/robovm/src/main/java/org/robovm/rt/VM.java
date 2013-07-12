@@ -95,7 +95,9 @@ public final class VM {
     public native static final long getCallbackMethodImpl(Method method);
     
     public native static final void bindBridgeMethod(Method method, long impl);
-    
+
+    public native static final boolean isBridgeMethodBound(Method method);
+
     public native static final long getObjectAddress(Object object);
     
     public native static final Object castAddressToObject(long address);

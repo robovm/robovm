@@ -191,12 +191,13 @@ classes:
         url: ../../../Cocoa/Reference/ApplicationKit/Classes/NSShadow_Class/Reference/Reference.html
     NSStringDrawingContext:
         url: ../NSStringDrawingContext_class/Reference/Reference.html
-#    UIAcceleration:
-#        # Only used by UIAccelerometerDelegate which is deprected in iOS 5
-#        url: ../UIAcceleration_Class/Reference/UIAcceleration.html
-#    UIAccelerometer:
-#        # Unusable since UIAccelerometerDelegate is deprected in iOS 5???
-#        url: ../UIAccelerometer_Class/Reference/UIAccelerometer.html
+    UIAcceleration:
+        url: ../UIAcceleration_Class/Reference/UIAcceleration.html
+    UIAccelerometer:
+        url: ../UIAccelerometer_Class/Reference/UIAccelerometer.html
+        methods:
+            "+sharedAccelerometer":
+                name: getSharedAccelerometer
 #    UIAccessibilityElement:
 #        url: ../UIAccessibilityElement_Class/Reference/Reference.html
     UIActionSheet:
@@ -1492,9 +1493,11 @@ classes:
             "-convertRect:toWindow:":
                 name: convertRectToWindow
 protocols:
-#    UIAccelerometerDelegate:
-#        # Deprecated in iOS 5
-#        url: ../UIAccelerometerDelegate_Protocol/UIAccelerometerDelegate/UIAccelerometerDelegate.html
+    UIAccelerometerDelegate:
+        urls: [../UIAccelerometerDelegate_Protocol/UIAccelerometerDelegate/UIAccelerometerDelegate.html, ../UIAccelerometerDelegate_Protocol/DeprecationAppendix/AppendixADeprecatedAPI.html]
+        methods:
+            "-accelerometer:didAccelerate:":
+                name: didAccelerate
 #    UIAccessibility:
 #        url: ../UIAccessibility_Protocol/Introduction/Introduction.html
 #    UIAccessibilityAction:

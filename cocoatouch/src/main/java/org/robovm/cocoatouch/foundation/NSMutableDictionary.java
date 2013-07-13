@@ -43,10 +43,22 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSMutableDictionary /*</name>*/.class);
 
+    public NSMutableDictionary() {
+        this(16);
+    }
     /*<constructors>*/
     protected NSMutableDictionary(SkipInit skipInit) { super(skipInit); }
-    public NSMutableDictionary() {}
     
+    private static final Selector initWithCapacity$ = Selector.register("initWithCapacity:");
+    @Bridge private native static @Pointer long objc_initWithCapacity(NSMutableDictionary __self__, Selector __cmd__, int numItems);
+    /**
+     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSMutableDictionary_Class/Reference/Reference.html#//apple_ref/occ/instm/NSMutableDictionary/initWithCapacity:">- (id)initWithCapacity:(NSUInteger)numItems</a>
+     * @since Available in iOS 2.0 and later.
+     */
+    public NSMutableDictionary(int numItems) {
+        super((SkipInit) null);
+        setHandle(objc_initWithCapacity(this, initWithCapacity$, numItems));
+    }
     /*</constructors>*/
     /*<properties>*/
     

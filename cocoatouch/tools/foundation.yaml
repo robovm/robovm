@@ -157,12 +157,14 @@ classes:
     NSMutableDictionary:
         url: ../Classes/NSMutableDictionary_Class/Reference/Reference.html
         protocols: []
+        skip_def_constructor: true
         methods:
             "-setObject:forKey:":
                 visibility: protected
                 parameters:
                     aKey:
                         type: NSObject
+            "-initWithCapacity:":
             "+*":
                 exclude: true
             "-*":

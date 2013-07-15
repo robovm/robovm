@@ -28,6 +28,10 @@
 #include <cstring>
 #include <string>
 #include <stdio.h>
+#include <locale.h>
+#ifdef __APPLE__
+#include <xlocale.h>
+#endif
 
 #include <jni.h>
 
@@ -287,6 +291,11 @@ static void assembleDiagHandler(const SMDiagnostic &Diag, void *Context) {
 }
 
 int LLVMTargetMachineAssembleToOutputStream(LLVMTargetMachineRef TM, LLVMMemoryBufferRef Mem, void *JOStream, LLVMBool RelaxAll, LLVMBool NoExecStack, char **ErrorMessage) {
+  *ErrorMessage = NULL;
+
+  locale_t loc = newlocale(LC_ALL_MASK, "C", 0);
+  locale_t oldLoc = uselocale(loc);
+
   TargetMachine *TheTargetMachine = unwrap(TM);
   const Target *TheTarget = &(TheTargetMachine->getTarget());
 
@@ -333,17 +342,21 @@ int LLVMTargetMachineAssembleToOutputStream(LLVMTargetMachineRef TM, LLVMMemoryB
   OwningPtr<MCTargetAsmParser> TAP(TheTarget->createMCAsmParser(*STI, *Parser));
   if (!TAP) {
     *ErrorMessage = strdup("this target does not support assembly parsing");
-    return 1;
+    goto done;
   }
 
   Parser->setTargetParser(*TAP.get());
 
   if (Parser->Run(false)) {
     *ErrorMessage = strdup(DiagStream.str().c_str());
-    return 1;
+    goto done;
   }
   Out.flush();
-  return 0;
+
+done:
+  uselocale(oldLoc);
+  freelocale(loc);
+  return *ErrorMessage ? 1 : 0;
 }
 
 static LLVMBool LLVMTargetMachineEmit(LLVMTargetMachineRef T, LLVMModuleRef M,
@@ -387,8 +400,16 @@ static LLVMBool LLVMTargetMachineEmit(LLVMTargetMachineRef T, LLVMModuleRef M,
 
 LLVMBool LLVMTargetMachineEmitToOutputStream(LLVMTargetMachineRef T, LLVMModuleRef M,
   void *JOStream, LLVMCodeGenFileType codegen, char** ErrorMessage) {
+
+  locale_t loc = newlocale(LC_ALL_MASK, "C", 0);
+  locale_t oldLoc = uselocale(loc);
+
   formatted_raw_ostream Out(*((raw_java_ostream*) JOStream));
   bool Result = LLVMTargetMachineEmit(T, M, Out, codegen, ErrorMessage);
   Out.flush();
+
+  uselocale(oldLoc);
+  freelocale(loc);
+
   return Result;
 }

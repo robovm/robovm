@@ -1,9 +1,9 @@
 <config>
   <os>macosx</os>
   <arch>x86</arch>
-  <roots>
-    <root>javax.**.*</root>
-  </roots>
+  <forceLinkClasses>
+    <pattern>javax.**.*</pattern>
+  </forceLinkClasses>
   <libs>
     <lib>dl</lib>
     <lib>libs/libmy.a</lib>

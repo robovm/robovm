@@ -85,6 +85,8 @@ public class Config {
     private Arch arch = null;
     @ElementList(required = false, entry = "root")
     private ArrayList<String> roots;
+    @ElementList(required = false, entry = "pattern")
+    private ArrayList<String> forceLinkClasses;
     @ElementList(required = false, entry = "lib")
     private ArrayList<Lib> libs;
     @ElementList(required = false, entry = "framework")
@@ -224,9 +226,9 @@ public class Config {
         return tmpDir;
     }
 
-    public List<String> getRoots() {
-        return roots == null ? Collections.<String>emptyList() 
-                : Collections.unmodifiableList(roots);
+    public List<String> getForceLinkClasses() {
+        return forceLinkClasses == null ? Collections.<String>emptyList() 
+                : Collections.unmodifiableList(forceLinkClasses);
     }
     
     public List<String> getLibs() {
@@ -721,18 +723,18 @@ public class Config {
             return this;
         }
 
-        public Builder clearRoots() {
-            if (config.roots != null) {
-                config.roots.clear();
+        public Builder clearForceLinkClasses() {
+            if (config.forceLinkClasses != null) {
+                config.forceLinkClasses.clear();
             }
             return this;
         }
 
-        public Builder addRoot(String pattern) {
-            if (config.roots == null) {
-                config.roots = new ArrayList<String>();
+        public Builder addForceLinkClass(String pattern) {
+            if (config.forceLinkClasses == null) {
+                config.forceLinkClasses = new ArrayList<String>();
             }
-            config.roots.add(pattern);
+            config.forceLinkClasses.add(pattern);
             return this;
         }
 
@@ -860,7 +862,16 @@ public class Config {
         
         public void read(Reader reader, File wd) throws Exception {
             Serializer serializer = createSerializer(wd);
-            serializer.read(config, reader);            
+            serializer.read(config, reader);
+            // <roots> was renamed to <forceLinkClasses> but we still support <roots>. We need to
+            // copy <roots> to <forceLinkClasses> and set <roots> to null.
+            if (config.roots != null && !config.roots.isEmpty()) {
+                if (config.forceLinkClasses == null) {
+                    config.forceLinkClasses = new ArrayList<String>();
+                }
+                config.forceLinkClasses.addAll(config.roots);
+                config.roots = null;
+            }
         }
         
         public void write(File file) throws Exception {

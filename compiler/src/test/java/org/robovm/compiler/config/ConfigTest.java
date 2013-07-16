@@ -59,7 +59,21 @@ public class ConfigTest {
         assertEquals(Arrays.asList("Foundation", "AppKit"), config.getFrameworks());
         assertEquals(Arrays.asList("dl", "/tmp/wd/libs/libmy.a", "/tmp/wd/libs/foo.o", "/usr/lib/libbar.a"), config.getLibs());
         assertEquals(Arrays.asList(new File("/tmp/wd/resources"), new File("/usr/share/resources")), config.getResources());
-        assertEquals(Arrays.asList("javax.**.*"), config.getRoots());
+        assertEquals(Arrays.asList("javax.**.*"), config.getForceLinkClasses());
+        assertEquals(OS.macosx, config.getOs());
+        assertEquals(Arch.x86, config.getArch());
+    }
+    
+    @Test
+    public void testReadOldConsole() throws Exception {
+        Config.Builder builder = new Config.Builder();
+        builder.read(new InputStreamReader(getClass().getResourceAsStream("ConfigTest.old.console.xml"), "utf-8"), wd);
+        Config config = builder.config;
+        assertEquals(Arrays.asList(new File(wd, "foo1.jar"), new File(tmp, "foo2.jar")), config.getClasspath());
+        assertEquals(Arrays.asList("Foundation", "AppKit"), config.getFrameworks());
+        assertEquals(Arrays.asList("dl", "/tmp/wd/libs/libmy.a", "/tmp/wd/libs/foo.o", "/usr/lib/libbar.a"), config.getLibs());
+        assertEquals(Arrays.asList(new File("/tmp/wd/resources"), new File("/usr/share/resources")), config.getResources());
+        assertEquals(Arrays.asList("javax.**.*"), config.getForceLinkClasses());
         assertEquals(OS.macosx, config.getOs());
         assertEquals(Arch.x86, config.getArch());
     }
@@ -77,7 +91,7 @@ public class ConfigTest {
         builder.addLib("/usr/lib/libbar.a");
         builder.addResource(new File("resources"));
         builder.addResource(new File("/usr/share/resources"));
-        builder.addRoot("javax.**.*");
+        builder.addForceLinkClass("javax.**.*");
         builder.os(OS.macosx);
         builder.arch(Arch.x86);
         

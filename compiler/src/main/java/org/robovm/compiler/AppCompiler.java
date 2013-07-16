@@ -187,22 +187,22 @@ public class AppCompiler {
             classes.add(clazz);
         }
         
-        if (config.getRoots().isEmpty()) {
+        if (config.getForceLinkClasses().isEmpty()) {
             if (config.getMainClass() == null) {
                 classes.addAll(config.getClazzes().listClasses());
             }
         } else {
-            for (String root : config.getRoots()) {
-                if (root.indexOf('*') == -1) {
-                    Clazz clazz = config.getClazzes().load(root.replace('.', '/'));
+            for (String pattern : config.getForceLinkClasses()) {
+                if (pattern.indexOf('*') == -1) {
+                    Clazz clazz = config.getClazzes().load(pattern.replace('.', '/'));
                     if (clazz == null) {
-                        throw new CompilerException("Root class " + root + " not found");
+                        throw new CompilerException("Root class " + pattern + " not found");
                     }
                     classes.add(clazz);
                 } else {
-                    Collection<Clazz> matches = getMatchingClasses(root);
+                    Collection<Clazz> matches = getMatchingClasses(pattern);
                     if (matches.isEmpty()) {
-                        config.getLogger().warn("Root pattern %s matches no classes", root);
+                        config.getLogger().warn("Root pattern %s matches no classes", pattern);
                     } else {
                         classes.addAll(matches);
                     }
@@ -324,10 +324,10 @@ public class AppCompiler {
                 } else if ("-target".equals(args[i])) {
                     String s = args[++i];
                     builder.targetType("auto".equals(s) ? null : TargetType.valueOf(s));
-                } else if ("-roots".equals(args[i])) {
+                } else if ("-forcelinkclasses".equals(args[i])) {
                     for (String p : args[++i].split(":")) {
                         p = p.replace('#', '*');
-                        builder.addRoot(p);
+                        builder.addForceLinkClass(p);
                     }
                 } else if ("-libs".equals(args[i])) {
                     for (String p : args[++i].split(":")) {
@@ -510,13 +510,13 @@ public class AppCompiler {
                          + "                        is used if not specified. Use llc to determine allowed values.");
         System.err.println("  -target <name>        The target to build for. Either 'auto', 'console' or 'ios'.\n" 
                          + "                        The default is 'auto' which means use -os to decide.");
-        System.err.println("  -roots <list>         : separated list of class patterns matching\n" 
-                         + "                        classes that must be included when determinig the required\n" 
-                         + "                        classes. If a main class is specified it will automatically\n" 
-                         + "                        become a root. If no main class is specified and no roots\n" 
-                         + "                        all classes will be included. A pattern is an ANT style\n" 
-                         + "                        path pattern, e.g. com.foo.**.bar.*.Main. Alternative\n" 
-                         + "                        syntax using # is also supported, e.g. com.##.#.Main.");
+        System.err.println("  -forcelinkclasses <list> : separated list of class patterns matching\n" 
+                         + "                        classes that must be linked in even if not referenced\n" 
+                         + "                        (directly or indirectly) from the main class. If no main\n" 
+                         + "                        class is specified all classes will be linked in unless this\n" 
+                         + "                        option has been given. A pattern is an ANT style path pattern,\n" 
+                         + "                        e.g. com.foo.**.bar.*.Main. An alternative syntax using # is\n" 
+                         + "                        also supported, e.g. com.##.#.Main.");
         System.err.println("  -run                  Run the executable directly without installing it (-d is\n" 
                          + "                        ignored). The executable will be executed from the\n" 
                          + "                        temporary dir specified with -tmp.");

@@ -1,0 +1,25 @@
+<config>
+  <os>macosx</os>
+  <arch>x86</arch>
+  <roots>
+    <root>javax.**.*</root>
+  </roots>
+  <libs>
+    <lib>dl</lib>
+    <lib>libs/libmy.a</lib>
+    <lib>libs/foo.o</lib>
+    <lib>/usr/lib/libbar.a</lib>
+  </libs>
+  <frameworks>
+    <framework>Foundation</framework>
+    <framework>AppKit</framework>
+  </frameworks>
+  <resources>
+    <resource>resources</resource>
+    <resource>/usr/share/resources</resource>
+  </resources>
+  <classpath>
+    <classpathentry>foo1.jar</classpathentry>
+    <classpathentry>/tmp/foo2.jar</classpathentry>
+  </classpath>
+</config>

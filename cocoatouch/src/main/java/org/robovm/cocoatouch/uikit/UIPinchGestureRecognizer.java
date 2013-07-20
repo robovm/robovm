@@ -68,8 +68,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setScale$ = Selector.register("setScale:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setScale(UIPinchGestureRecognizer __self__, Selector __cmd__, float scale);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setScaleSuper(ObjCSuper __super__, Selector __cmd__, float scale);
+    @Bridge private native static void objc_setScale(UIPinchGestureRecognizer __self__, Selector __cmd__, float scale);
+    @Bridge private native static void objc_setScaleSuper(ObjCSuper __super__, Selector __cmd__, float scale);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPinchGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPinchGestureRecognizer/scale">@property(nonatomic) CGFloat scale</a>
      * @since Available in iOS 3.2 and later.

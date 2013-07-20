@@ -89,8 +89,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setMinimumScaleFactor$ = Selector.register("setMinimumScaleFactor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setMinimumScaleFactor(NSStringDrawingContext __self__, Selector __cmd__, float minimumScaleFactor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMinimumScaleFactorSuper(ObjCSuper __super__, Selector __cmd__, float minimumScaleFactor);
+    @Bridge private native static void objc_setMinimumScaleFactor(NSStringDrawingContext __self__, Selector __cmd__, float minimumScaleFactor);
+    @Bridge private native static void objc_setMinimumScaleFactorSuper(ObjCSuper __super__, Selector __cmd__, float minimumScaleFactor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../NSStringDrawingContext_class/Reference/Reference.html#//apple_ref/occ/instp/NSStringDrawingContext/minimumScaleFactor">@property(nonatomic) CGFloat minimumScaleFactor</a>
      * @since Available in iOS 6.0 and later.
@@ -111,8 +111,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setMinimumTrackingAdjustment$ = Selector.register("setMinimumTrackingAdjustment:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setMinimumTrackingAdjustment(NSStringDrawingContext __self__, Selector __cmd__, float minimumTrackingAdjustment);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMinimumTrackingAdjustmentSuper(ObjCSuper __super__, Selector __cmd__, float minimumTrackingAdjustment);
+    @Bridge private native static void objc_setMinimumTrackingAdjustment(NSStringDrawingContext __self__, Selector __cmd__, float minimumTrackingAdjustment);
+    @Bridge private native static void objc_setMinimumTrackingAdjustmentSuper(ObjCSuper __super__, Selector __cmd__, float minimumTrackingAdjustment);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../NSStringDrawingContext_class/Reference/Reference.html#//apple_ref/occ/instp/NSStringDrawingContext/minimumTrackingAdjustment">@property(nonatomic) CGFloat minimumTrackingAdjustment</a>
      * @since Available in iOS 6.0 and later.

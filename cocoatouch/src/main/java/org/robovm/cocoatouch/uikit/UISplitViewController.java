@@ -68,8 +68,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDelegate$ = Selector.register("setDelegate:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UISplitViewController __self__, Selector __cmd__, UISplitViewControllerDelegate delegate);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UISplitViewControllerDelegate delegate);
+    @Bridge private native static void objc_setDelegate(UISplitViewController __self__, Selector __cmd__, UISplitViewControllerDelegate delegate);
+    @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UISplitViewControllerDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISplitViewController_class/Reference/Reference.html#//apple_ref/occ/instp/UISplitViewController/delegate">@property(nonatomic, assign) id &amp;lt;UISplitViewControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.2 and later.
@@ -90,8 +90,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setPresentsWithGesture$ = Selector.register("setPresentsWithGesture:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setPresentsWithGesture(UISplitViewController __self__, Selector __cmd__, boolean presentsWithGesture);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setPresentsWithGestureSuper(ObjCSuper __super__, Selector __cmd__, boolean presentsWithGesture);
+    @Bridge private native static void objc_setPresentsWithGesture(UISplitViewController __self__, Selector __cmd__, boolean presentsWithGesture);
+    @Bridge private native static void objc_setPresentsWithGestureSuper(ObjCSuper __super__, Selector __cmd__, boolean presentsWithGesture);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISplitViewController_class/Reference/Reference.html#//apple_ref/occ/instp/UISplitViewController/presentsWithGesture">@property (nonatomic) BOOL presentsWithGesture</a>
      * @since Available in iOS 5.1 and later.
@@ -112,8 +112,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setViewControllers$ = Selector.register("setViewControllers:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setViewControllers(UISplitViewController __self__, Selector __cmd__, NSArray viewControllers);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setViewControllersSuper(ObjCSuper __super__, Selector __cmd__, NSArray viewControllers);
+    @Bridge private native static void objc_setViewControllers(UISplitViewController __self__, Selector __cmd__, NSArray viewControllers);
+    @Bridge private native static void objc_setViewControllersSuper(ObjCSuper __super__, Selector __cmd__, NSArray viewControllers);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISplitViewController_class/Reference/Reference.html#//apple_ref/occ/instp/UISplitViewController/viewControllers">@property(nonatomic, copy) NSArray *viewControllers</a>
      * @since Available in iOS 3.2 and later.

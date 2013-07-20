@@ -80,8 +80,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAllowsMultipleSelection$ = Selector.register("setAllowsMultipleSelection:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAllowsMultipleSelection(UICollectionView __self__, Selector __cmd__, boolean allowsMultipleSelection);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAllowsMultipleSelectionSuper(ObjCSuper __super__, Selector __cmd__, boolean allowsMultipleSelection);
+    @Bridge private native static void objc_setAllowsMultipleSelection(UICollectionView __self__, Selector __cmd__, boolean allowsMultipleSelection);
+    @Bridge private native static void objc_setAllowsMultipleSelectionSuper(ObjCSuper __super__, Selector __cmd__, boolean allowsMultipleSelection);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionView_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionView/allowsMultipleSelection">@property (nonatomic) BOOL allowsMultipleSelection</a>
      * @since Available in iOS 6.0 and later.
@@ -102,8 +102,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAllowsSelection$ = Selector.register("setAllowsSelection:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAllowsSelection(UICollectionView __self__, Selector __cmd__, boolean allowsSelection);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAllowsSelectionSuper(ObjCSuper __super__, Selector __cmd__, boolean allowsSelection);
+    @Bridge private native static void objc_setAllowsSelection(UICollectionView __self__, Selector __cmd__, boolean allowsSelection);
+    @Bridge private native static void objc_setAllowsSelectionSuper(ObjCSuper __super__, Selector __cmd__, boolean allowsSelection);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionView_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionView/allowsSelection">@property (nonatomic) BOOL allowsSelection</a>
      * @since Available in iOS 6.0 and later.
@@ -124,8 +124,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setBackgroundView$ = Selector.register("setBackgroundView:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setBackgroundView(UICollectionView __self__, Selector __cmd__, UIView backgroundView);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__, UIView backgroundView);
+    @Bridge private native static void objc_setBackgroundView(UICollectionView __self__, Selector __cmd__, UIView backgroundView);
+    @Bridge private native static void objc_setBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__, UIView backgroundView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionView_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionView/backgroundView">@property (nonatomic, retain) UIView *backgroundView;</a>
      * @since Available in iOS 6.0 and later.
@@ -146,8 +146,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setCollectionViewLayout$ = Selector.register("setCollectionViewLayout:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setCollectionViewLayout(UICollectionView __self__, Selector __cmd__, UICollectionViewLayout collectionViewLayout);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCollectionViewLayoutSuper(ObjCSuper __super__, Selector __cmd__, UICollectionViewLayout collectionViewLayout);
+    @Bridge private native static void objc_setCollectionViewLayout(UICollectionView __self__, Selector __cmd__, UICollectionViewLayout collectionViewLayout);
+    @Bridge private native static void objc_setCollectionViewLayoutSuper(ObjCSuper __super__, Selector __cmd__, UICollectionViewLayout collectionViewLayout);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionView_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionView/collectionViewLayout">@property (nonatomic, retain) UICollectionViewLayout *collectionViewLayout;</a>
      * @since Available in iOS 6.0 and later.
@@ -168,8 +168,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDataSource$ = Selector.register("setDataSource:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDataSource(UICollectionView __self__, Selector __cmd__, UICollectionViewDataSource dataSource);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDataSourceSuper(ObjCSuper __super__, Selector __cmd__, UICollectionViewDataSource dataSource);
+    @Bridge private native static void objc_setDataSource(UICollectionView __self__, Selector __cmd__, UICollectionViewDataSource dataSource);
+    @Bridge private native static void objc_setDataSourceSuper(ObjCSuper __super__, Selector __cmd__, UICollectionViewDataSource dataSource);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionView_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionView/dataSource">@property (nonatomic, assign) id &amp;lt;UICollectionViewDataSource&amp;gt; dataSource;</a>
      * @since Available in iOS 6.0 and later.
@@ -190,8 +190,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDelegate$ = Selector.register("setDelegate:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UICollectionView __self__, Selector __cmd__, UICollectionViewDelegate delegate);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UICollectionViewDelegate delegate);
+    @Bridge private native static void objc_setDelegate(UICollectionView __self__, Selector __cmd__, UICollectionViewDelegate delegate);
+    @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UICollectionViewDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionView_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionView/delegate">@property (nonatomic, assign) id &amp;lt;UICollectionViewDelegate&amp;gt; delegate;</a>
      * @since Available in iOS 6.0 and later.

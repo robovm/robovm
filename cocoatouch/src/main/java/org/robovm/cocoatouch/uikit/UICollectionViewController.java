@@ -77,8 +77,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setClearsSelectionOnViewWillAppear$ = Selector.register("setClearsSelectionOnViewWillAppear:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setClearsSelectionOnViewWillAppear(UICollectionViewController __self__, Selector __cmd__, boolean clearsSelectionOnViewWillAppear);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setClearsSelectionOnViewWillAppearSuper(ObjCSuper __super__, Selector __cmd__, boolean clearsSelectionOnViewWillAppear);
+    @Bridge private native static void objc_setClearsSelectionOnViewWillAppear(UICollectionViewController __self__, Selector __cmd__, boolean clearsSelectionOnViewWillAppear);
+    @Bridge private native static void objc_setClearsSelectionOnViewWillAppearSuper(ObjCSuper __super__, Selector __cmd__, boolean clearsSelectionOnViewWillAppear);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewController_clas/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewController/clearsSelectionOnViewWillAppear">@property (nonatomic) BOOL clearsSelectionOnViewWillAppear</a>
      * @since Available in iOS 6.0 and later.
@@ -99,8 +99,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setCollectionView$ = Selector.register("setCollectionView:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setCollectionView(UICollectionViewController __self__, Selector __cmd__, UICollectionView collectionView);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCollectionViewSuper(ObjCSuper __super__, Selector __cmd__, UICollectionView collectionView);
+    @Bridge private native static void objc_setCollectionView(UICollectionViewController __self__, Selector __cmd__, UICollectionView collectionView);
+    @Bridge private native static void objc_setCollectionViewSuper(ObjCSuper __super__, Selector __cmd__, UICollectionView collectionView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewController_clas/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewController/collectionView">@property (nonatomic, retain) UICollectionView *collectionView</a>
      * @since Available in iOS 6.0 and later.

@@ -68,8 +68,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setArrowDirection$ = Selector.register("setArrowDirection:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setArrowDirection(UIMenuController __self__, Selector __cmd__, UIMenuControllerArrowDirection arrowDirection);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setArrowDirectionSuper(ObjCSuper __super__, Selector __cmd__, UIMenuControllerArrowDirection arrowDirection);
+    @Bridge private native static void objc_setArrowDirection(UIMenuController __self__, Selector __cmd__, UIMenuControllerArrowDirection arrowDirection);
+    @Bridge private native static void objc_setArrowDirectionSuper(ObjCSuper __super__, Selector __cmd__, UIMenuControllerArrowDirection arrowDirection);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIMenuController_Class/UIMenuController.html#//apple_ref/occ/instp/UIMenuController/arrowDirection">@property UIMenuControllerArrowDirection arrowDirection</a>
      * @since Available in iOS 3.2 and later.
@@ -101,8 +101,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setMenuItems$ = Selector.register("setMenuItems:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setMenuItems(UIMenuController __self__, Selector __cmd__, NSArray menuItems);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMenuItemsSuper(ObjCSuper __super__, Selector __cmd__, NSArray menuItems);
+    @Bridge private native static void objc_setMenuItems(UIMenuController __self__, Selector __cmd__, NSArray menuItems);
+    @Bridge private native static void objc_setMenuItemsSuper(ObjCSuper __super__, Selector __cmd__, NSArray menuItems);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIMenuController_Class/UIMenuController.html#//apple_ref/occ/instp/UIMenuController/menuItems">@property(copy) NSArray *menuItems</a>
      * @since Available in iOS 3.2 and later.
@@ -123,8 +123,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setMenuVisible$ = Selector.register("setMenuVisible:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setMenuVisible(UIMenuController __self__, Selector __cmd__, boolean menuVisible);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMenuVisibleSuper(ObjCSuper __super__, Selector __cmd__, boolean menuVisible);
+    @Bridge private native static void objc_setMenuVisible(UIMenuController __self__, Selector __cmd__, boolean menuVisible);
+    @Bridge private native static void objc_setMenuVisibleSuper(ObjCSuper __super__, Selector __cmd__, boolean menuVisible);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIMenuController_Class/UIMenuController.html#//apple_ref/occ/instp/UIMenuController/menuVisible">@property(nonatomic, getter=isMenuVisible) BOOL menuVisible</a>
      * @since Available in iOS 3.0 and later.

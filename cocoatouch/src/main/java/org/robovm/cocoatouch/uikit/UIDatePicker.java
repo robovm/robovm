@@ -71,8 +71,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setCalendar$ = Selector.register("setCalendar:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setCalendar(UIDatePicker __self__, Selector __cmd__, NSCalendar calendar);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCalendarSuper(ObjCSuper __super__, Selector __cmd__, NSCalendar calendar);
+    @Bridge private native static void objc_setCalendar(UIDatePicker __self__, Selector __cmd__, NSCalendar calendar);
+    @Bridge private native static void objc_setCalendarSuper(ObjCSuper __super__, Selector __cmd__, NSCalendar calendar);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/calendar">@property(nonatomic, copy) NSCalendar *calendar</a>
      * @since Available in iOS 2.0 and later.
@@ -93,8 +93,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setCountDownDuration$ = Selector.register("setCountDownDuration:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setCountDownDuration(UIDatePicker __self__, Selector __cmd__, double countDownDuration);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCountDownDurationSuper(ObjCSuper __super__, Selector __cmd__, double countDownDuration);
+    @Bridge private native static void objc_setCountDownDuration(UIDatePicker __self__, Selector __cmd__, double countDownDuration);
+    @Bridge private native static void objc_setCountDownDurationSuper(ObjCSuper __super__, Selector __cmd__, double countDownDuration);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/countDownDuration">@property(nonatomic) NSTimeInterval countDownDuration</a>
      * @since Available in iOS 2.0 and later.
@@ -115,8 +115,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDate$ = Selector.register("setDate:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDate(UIDatePicker __self__, Selector __cmd__, NSDate date);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDateSuper(ObjCSuper __super__, Selector __cmd__, NSDate date);
+    @Bridge private native static void objc_setDate(UIDatePicker __self__, Selector __cmd__, NSDate date);
+    @Bridge private native static void objc_setDateSuper(ObjCSuper __super__, Selector __cmd__, NSDate date);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/date">@property(nonatomic, retain) NSDate *date</a>
      * @since Available in iOS 2.0 and later.
@@ -137,8 +137,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDatePickerMode$ = Selector.register("setDatePickerMode:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDatePickerMode(UIDatePicker __self__, Selector __cmd__, UIDatePickerMode datePickerMode);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDatePickerModeSuper(ObjCSuper __super__, Selector __cmd__, UIDatePickerMode datePickerMode);
+    @Bridge private native static void objc_setDatePickerMode(UIDatePicker __self__, Selector __cmd__, UIDatePickerMode datePickerMode);
+    @Bridge private native static void objc_setDatePickerModeSuper(ObjCSuper __super__, Selector __cmd__, UIDatePickerMode datePickerMode);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/datePickerMode">@property(nonatomic) UIDatePickerMode datePickerMode</a>
      * @since Available in iOS 2.0 and later.
@@ -159,8 +159,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setLocale$ = Selector.register("setLocale:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setLocale(UIDatePicker __self__, Selector __cmd__, NSLocale locale);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setLocaleSuper(ObjCSuper __super__, Selector __cmd__, NSLocale locale);
+    @Bridge private native static void objc_setLocale(UIDatePicker __self__, Selector __cmd__, NSLocale locale);
+    @Bridge private native static void objc_setLocaleSuper(ObjCSuper __super__, Selector __cmd__, NSLocale locale);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/locale">@property(nonatomic, retain) NSLocale *locale</a>
      * @since Available in iOS 2.0 and later.
@@ -181,8 +181,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setMaximumDate$ = Selector.register("setMaximumDate:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setMaximumDate(UIDatePicker __self__, Selector __cmd__, NSDate maximumDate);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMaximumDateSuper(ObjCSuper __super__, Selector __cmd__, NSDate maximumDate);
+    @Bridge private native static void objc_setMaximumDate(UIDatePicker __self__, Selector __cmd__, NSDate maximumDate);
+    @Bridge private native static void objc_setMaximumDateSuper(ObjCSuper __super__, Selector __cmd__, NSDate maximumDate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/maximumDate">@property(nonatomic, retain) NSDate *maximumDate</a>
      * @since Available in iOS 2.0 and later.
@@ -203,8 +203,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setMinimumDate$ = Selector.register("setMinimumDate:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setMinimumDate(UIDatePicker __self__, Selector __cmd__, NSDate minimumDate);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMinimumDateSuper(ObjCSuper __super__, Selector __cmd__, NSDate minimumDate);
+    @Bridge private native static void objc_setMinimumDate(UIDatePicker __self__, Selector __cmd__, NSDate minimumDate);
+    @Bridge private native static void objc_setMinimumDateSuper(ObjCSuper __super__, Selector __cmd__, NSDate minimumDate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/minimumDate">@property(nonatomic, retain) NSDate *minimumDate</a>
      * @since Available in iOS 2.0 and later.
@@ -225,8 +225,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setMinuteInterval$ = Selector.register("setMinuteInterval:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setMinuteInterval(UIDatePicker __self__, Selector __cmd__, int minuteInterval);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMinuteIntervalSuper(ObjCSuper __super__, Selector __cmd__, int minuteInterval);
+    @Bridge private native static void objc_setMinuteInterval(UIDatePicker __self__, Selector __cmd__, int minuteInterval);
+    @Bridge private native static void objc_setMinuteIntervalSuper(ObjCSuper __super__, Selector __cmd__, int minuteInterval);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/minuteInterval">@property(nonatomic) NSInteger minuteInterval</a>
      * @since Available in iOS 2.0 and later.
@@ -247,8 +247,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTimeZone$ = Selector.register("setTimeZone:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTimeZone(UIDatePicker __self__, Selector __cmd__, NSTimeZone timeZone);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTimeZoneSuper(ObjCSuper __super__, Selector __cmd__, NSTimeZone timeZone);
+    @Bridge private native static void objc_setTimeZone(UIDatePicker __self__, Selector __cmd__, NSTimeZone timeZone);
+    @Bridge private native static void objc_setTimeZoneSuper(ObjCSuper __super__, Selector __cmd__, NSTimeZone timeZone);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDatePicker_Class/Reference/UIDatePicker.html#//apple_ref/occ/instp/UIDatePicker/timeZone">@property(nonatomic, retain) NSTimeZone *timeZone</a>
      * @since Available in iOS 2.0 and later.

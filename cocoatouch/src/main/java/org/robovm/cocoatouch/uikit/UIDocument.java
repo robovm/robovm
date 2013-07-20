@@ -89,8 +89,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setFileModificationDate$ = Selector.register("setFileModificationDate:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setFileModificationDate(UIDocument __self__, Selector __cmd__, NSDate fileModificationDate);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setFileModificationDateSuper(ObjCSuper __super__, Selector __cmd__, NSDate fileModificationDate);
+    @Bridge private native static void objc_setFileModificationDate(UIDocument __self__, Selector __cmd__, NSDate fileModificationDate);
+    @Bridge private native static void objc_setFileModificationDateSuper(ObjCSuper __super__, Selector __cmd__, NSDate fileModificationDate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instp/UIDocument/fileModificationDate">@property(copy) NSDate *fileModificationDate</a>
      * @since Available in iOS 5.0 and later.
@@ -144,8 +144,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setUndoManager$ = Selector.register("setUndoManager:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setUndoManager(UIDocument __self__, Selector __cmd__, NSUndoManager undoManager);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setUndoManagerSuper(ObjCSuper __super__, Selector __cmd__, NSUndoManager undoManager);
+    @Bridge private native static void objc_setUndoManager(UIDocument __self__, Selector __cmd__, NSUndoManager undoManager);
+    @Bridge private native static void objc_setUndoManagerSuper(ObjCSuper __super__, Selector __cmd__, NSUndoManager undoManager);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instp/UIDocument/undoManager">@property(retain) NSUndoManager *undoManager</a>
      * @since Available in iOS 5.0 and later.

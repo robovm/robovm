@@ -67,8 +67,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setConstant$ = Selector.register("setConstant:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setConstant(NSLayoutConstraint __self__, Selector __cmd__, float constant);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setConstantSuper(ObjCSuper __super__, Selector __cmd__, float constant);
+    @Bridge private native static void objc_setConstant(NSLayoutConstraint __self__, Selector __cmd__, float constant);
+    @Bridge private native static void objc_setConstantSuper(ObjCSuper __super__, Selector __cmd__, float constant);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/constant">@property CGFloat constant</a>
      * @since Available in iOS 6.0 and later.
@@ -122,8 +122,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setPriority$ = Selector.register("setPriority:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setPriority(NSLayoutConstraint __self__, Selector __cmd__, UILayoutPriority priority);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setPrioritySuper(ObjCSuper __super__, Selector __cmd__, UILayoutPriority priority);
+    @Bridge private native static void objc_setPriority(NSLayoutConstraint __self__, Selector __cmd__, UILayoutPriority priority);
+    @Bridge private native static void objc_setPrioritySuper(ObjCSuper __super__, Selector __cmd__, UILayoutPriority priority);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/priority">@property NSLayoutPriority priority;</a>
      * @since Available in iOS 6.0 and later.
@@ -177,8 +177,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setShouldBeArchived$ = Selector.register("setShouldBeArchived:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setShouldBeArchived(NSLayoutConstraint __self__, Selector __cmd__, boolean shouldBeArchived);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShouldBeArchivedSuper(ObjCSuper __super__, Selector __cmd__, boolean shouldBeArchived);
+    @Bridge private native static void objc_setShouldBeArchived(NSLayoutConstraint __self__, Selector __cmd__, boolean shouldBeArchived);
+    @Bridge private native static void objc_setShouldBeArchivedSuper(ObjCSuper __super__, Selector __cmd__, boolean shouldBeArchived);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/shouldBeArchived">@property BOOL shouldBeArchived;</a>
      * @since Available in iOS 6.0 and later.

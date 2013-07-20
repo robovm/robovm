@@ -68,8 +68,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDuplex$ = Selector.register("setDuplex:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDuplex(UIPrintInfo __self__, Selector __cmd__, UIPrintInfoDuplex duplex);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDuplexSuper(ObjCSuper __super__, Selector __cmd__, UIPrintInfoDuplex duplex);
+    @Bridge private native static void objc_setDuplex(UIPrintInfo __self__, Selector __cmd__, UIPrintInfoDuplex duplex);
+    @Bridge private native static void objc_setDuplexSuper(ObjCSuper __super__, Selector __cmd__, UIPrintInfoDuplex duplex);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/duplex">@property(nonatomic) UIPrintInfoDuplex duplex</a>
      * @since Available in iOS 4.2 and later.
@@ -90,8 +90,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setJobName$ = Selector.register("setJobName:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setJobName(UIPrintInfo __self__, Selector __cmd__, String jobName);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setJobNameSuper(ObjCSuper __super__, Selector __cmd__, String jobName);
+    @Bridge private native static void objc_setJobName(UIPrintInfo __self__, Selector __cmd__, String jobName);
+    @Bridge private native static void objc_setJobNameSuper(ObjCSuper __super__, Selector __cmd__, String jobName);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/jobName">@property(nonatomic, copy) NSString *jobName</a>
      * @since Available in iOS 4.2 and later.
@@ -112,8 +112,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setOrientation$ = Selector.register("setOrientation:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setOrientation(UIPrintInfo __self__, Selector __cmd__, UIPrintInfoOrientation orientation);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setOrientationSuper(ObjCSuper __super__, Selector __cmd__, UIPrintInfoOrientation orientation);
+    @Bridge private native static void objc_setOrientation(UIPrintInfo __self__, Selector __cmd__, UIPrintInfoOrientation orientation);
+    @Bridge private native static void objc_setOrientationSuper(ObjCSuper __super__, Selector __cmd__, UIPrintInfoOrientation orientation);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/orientation">@property(nonatomic) UIPrintInfoOrientation orientation</a>
      * @since Available in iOS 4.2 and later.
@@ -134,8 +134,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setOutputType$ = Selector.register("setOutputType:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setOutputType(UIPrintInfo __self__, Selector __cmd__, UIPrintInfoOutputType outputType);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setOutputTypeSuper(ObjCSuper __super__, Selector __cmd__, UIPrintInfoOutputType outputType);
+    @Bridge private native static void objc_setOutputType(UIPrintInfo __self__, Selector __cmd__, UIPrintInfoOutputType outputType);
+    @Bridge private native static void objc_setOutputTypeSuper(ObjCSuper __super__, Selector __cmd__, UIPrintInfoOutputType outputType);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/outputType">@property(nonatomic) UIPrintInfoOutputType outputType</a>
      * @since Available in iOS 4.2 and later.
@@ -156,8 +156,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setPrinterID$ = Selector.register("setPrinterID:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setPrinterID(UIPrintInfo __self__, Selector __cmd__, String printerID);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setPrinterIDSuper(ObjCSuper __super__, Selector __cmd__, String printerID);
+    @Bridge private native static void objc_setPrinterID(UIPrintInfo __self__, Selector __cmd__, String printerID);
+    @Bridge private native static void objc_setPrinterIDSuper(ObjCSuper __super__, Selector __cmd__, String printerID);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/printerID">@property(nonatomic, copy) NSString *printerID</a>
      * @since Available in iOS 4.2 and later.

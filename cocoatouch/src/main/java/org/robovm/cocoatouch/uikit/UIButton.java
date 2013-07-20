@@ -71,8 +71,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAdjustsImageWhenDisabled$ = Selector.register("setAdjustsImageWhenDisabled:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAdjustsImageWhenDisabled(UIButton __self__, Selector __cmd__, boolean adjustsImageWhenDisabled);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAdjustsImageWhenDisabledSuper(ObjCSuper __super__, Selector __cmd__, boolean adjustsImageWhenDisabled);
+    @Bridge private native static void objc_setAdjustsImageWhenDisabled(UIButton __self__, Selector __cmd__, boolean adjustsImageWhenDisabled);
+    @Bridge private native static void objc_setAdjustsImageWhenDisabledSuper(ObjCSuper __super__, Selector __cmd__, boolean adjustsImageWhenDisabled);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/adjustsImageWhenDisabled">@property(nonatomic) BOOL adjustsImageWhenDisabled</a>
      * @since Available in iOS 2.0 and later.
@@ -93,8 +93,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAdjustsImageWhenHighlighted$ = Selector.register("setAdjustsImageWhenHighlighted:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAdjustsImageWhenHighlighted(UIButton __self__, Selector __cmd__, boolean adjustsImageWhenHighlighted);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAdjustsImageWhenHighlightedSuper(ObjCSuper __super__, Selector __cmd__, boolean adjustsImageWhenHighlighted);
+    @Bridge private native static void objc_setAdjustsImageWhenHighlighted(UIButton __self__, Selector __cmd__, boolean adjustsImageWhenHighlighted);
+    @Bridge private native static void objc_setAdjustsImageWhenHighlightedSuper(ObjCSuper __super__, Selector __cmd__, boolean adjustsImageWhenHighlighted);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/adjustsImageWhenHighlighted">@property(nonatomic) BOOL adjustsImageWhenHighlighted</a>
      * @since Available in iOS 2.0 and later.
@@ -126,8 +126,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setContentEdgeInsets$ = Selector.register("setContentEdgeInsets:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setContentEdgeInsets(UIButton __self__, Selector __cmd__, @ByVal UIEdgeInsets contentEdgeInsets);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setContentEdgeInsetsSuper(ObjCSuper __super__, Selector __cmd__, @ByVal UIEdgeInsets contentEdgeInsets);
+    @Bridge private native static void objc_setContentEdgeInsets(UIButton __self__, Selector __cmd__, @ByVal UIEdgeInsets contentEdgeInsets);
+    @Bridge private native static void objc_setContentEdgeInsetsSuper(ObjCSuper __super__, Selector __cmd__, @ByVal UIEdgeInsets contentEdgeInsets);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/contentEdgeInsets">@property(nonatomic) UIEdgeInsets contentEdgeInsets</a>
      * @since Available in iOS 2.0 and later.
@@ -214,8 +214,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setImageEdgeInsets$ = Selector.register("setImageEdgeInsets:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setImageEdgeInsets(UIButton __self__, Selector __cmd__, @ByVal UIEdgeInsets imageEdgeInsets);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setImageEdgeInsetsSuper(ObjCSuper __super__, Selector __cmd__, @ByVal UIEdgeInsets imageEdgeInsets);
+    @Bridge private native static void objc_setImageEdgeInsets(UIButton __self__, Selector __cmd__, @ByVal UIEdgeInsets imageEdgeInsets);
+    @Bridge private native static void objc_setImageEdgeInsetsSuper(ObjCSuper __super__, Selector __cmd__, @ByVal UIEdgeInsets imageEdgeInsets);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/imageEdgeInsets">@property(nonatomic) UIEdgeInsets imageEdgeInsets</a>
      * @since Available in iOS 2.0 and later.
@@ -247,8 +247,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setReversesTitleShadowWhenHighlighted$ = Selector.register("setReversesTitleShadowWhenHighlighted:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setReversesTitleShadowWhenHighlighted(UIButton __self__, Selector __cmd__, boolean reversesTitleShadowWhenHighlighted);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setReversesTitleShadowWhenHighlightedSuper(ObjCSuper __super__, Selector __cmd__, boolean reversesTitleShadowWhenHighlighted);
+    @Bridge private native static void objc_setReversesTitleShadowWhenHighlighted(UIButton __self__, Selector __cmd__, boolean reversesTitleShadowWhenHighlighted);
+    @Bridge private native static void objc_setReversesTitleShadowWhenHighlightedSuper(ObjCSuper __super__, Selector __cmd__, boolean reversesTitleShadowWhenHighlighted);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/reversesTitleShadowWhenHighlighted">@property(nonatomic) BOOL reversesTitleShadowWhenHighlighted</a>
      * @since Available in iOS 2.0 and later.
@@ -269,8 +269,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setShowsTouchWhenHighlighted$ = Selector.register("setShowsTouchWhenHighlighted:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setShowsTouchWhenHighlighted(UIButton __self__, Selector __cmd__, boolean showsTouchWhenHighlighted);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShowsTouchWhenHighlightedSuper(ObjCSuper __super__, Selector __cmd__, boolean showsTouchWhenHighlighted);
+    @Bridge private native static void objc_setShowsTouchWhenHighlighted(UIButton __self__, Selector __cmd__, boolean showsTouchWhenHighlighted);
+    @Bridge private native static void objc_setShowsTouchWhenHighlightedSuper(ObjCSuper __super__, Selector __cmd__, boolean showsTouchWhenHighlighted);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/showsTouchWhenHighlighted">@property(nonatomic) BOOL showsTouchWhenHighlighted</a>
      * @since Available in iOS 2.0 and later.
@@ -291,8 +291,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTintColor$ = Selector.register("setTintColor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTintColor(UIButton __self__, Selector __cmd__, UIColor tintColor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor tintColor);
+    @Bridge private native static void objc_setTintColor(UIButton __self__, Selector __cmd__, UIColor tintColor);
+    @Bridge private native static void objc_setTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor tintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 5.0 and later.
@@ -313,8 +313,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTitleEdgeInsets$ = Selector.register("setTitleEdgeInsets:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTitleEdgeInsets(UIButton __self__, Selector __cmd__, @ByVal UIEdgeInsets titleEdgeInsets);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTitleEdgeInsetsSuper(ObjCSuper __super__, Selector __cmd__, @ByVal UIEdgeInsets titleEdgeInsets);
+    @Bridge private native static void objc_setTitleEdgeInsets(UIButton __self__, Selector __cmd__, @ByVal UIEdgeInsets titleEdgeInsets);
+    @Bridge private native static void objc_setTitleEdgeInsetsSuper(ObjCSuper __super__, Selector __cmd__, @ByVal UIEdgeInsets titleEdgeInsets);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIButton_Class/UIButton/UIButton.html#//apple_ref/occ/instp/UIButton/titleEdgeInsets">@property(nonatomic) UIEdgeInsets titleEdgeInsets</a>
      * @since Available in iOS 2.0 and later.

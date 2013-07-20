@@ -68,8 +68,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDirection$ = Selector.register("setDirection:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDirection(UISwipeGestureRecognizer __self__, Selector __cmd__, UISwipeGestureRecognizerDirection direction);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDirectionSuper(ObjCSuper __super__, Selector __cmd__, UISwipeGestureRecognizerDirection direction);
+    @Bridge private native static void objc_setDirection(UISwipeGestureRecognizer __self__, Selector __cmd__, UISwipeGestureRecognizerDirection direction);
+    @Bridge private native static void objc_setDirectionSuper(ObjCSuper __super__, Selector __cmd__, UISwipeGestureRecognizerDirection direction);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwipeGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwipeGestureRecognizer/direction">@property(nonatomic) UISwipeGestureRecognizerDirection direction</a>
      * @since Available in iOS 3.2 and later.
@@ -90,8 +90,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setNumberOfTouchesRequired$ = Selector.register("setNumberOfTouchesRequired:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setNumberOfTouchesRequired(UISwipeGestureRecognizer __self__, Selector __cmd__, int numberOfTouchesRequired);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setNumberOfTouchesRequiredSuper(ObjCSuper __super__, Selector __cmd__, int numberOfTouchesRequired);
+    @Bridge private native static void objc_setNumberOfTouchesRequired(UISwipeGestureRecognizer __self__, Selector __cmd__, int numberOfTouchesRequired);
+    @Bridge private native static void objc_setNumberOfTouchesRequiredSuper(ObjCSuper __super__, Selector __cmd__, int numberOfTouchesRequired);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwipeGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwipeGestureRecognizer/numberOfTouchesRequired">@property(nonatomic) NSUInteger numberOfTouchesRequired</a>
      * @since Available in iOS 3.2 and later.

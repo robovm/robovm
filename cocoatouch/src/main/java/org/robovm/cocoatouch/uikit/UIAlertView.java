@@ -71,8 +71,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAlertViewStyle$ = Selector.register("setAlertViewStyle:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAlertViewStyle(UIAlertView __self__, Selector __cmd__, UIAlertViewStyle alertViewStyle);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAlertViewStyleSuper(ObjCSuper __super__, Selector __cmd__, UIAlertViewStyle alertViewStyle);
+    @Bridge private native static void objc_setAlertViewStyle(UIAlertView __self__, Selector __cmd__, UIAlertViewStyle alertViewStyle);
+    @Bridge private native static void objc_setAlertViewStyleSuper(ObjCSuper __super__, Selector __cmd__, UIAlertViewStyle alertViewStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertView_Class/UIAlertView/UIAlertView.html#//apple_ref/occ/instp/UIAlertView/alertViewStyle">@property(nonatomic, assign) UIAlertViewStyle alertViewStyle</a>
      * @since Available in iOS 5.0 and later.
@@ -93,8 +93,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setCancelButtonIndex$ = Selector.register("setCancelButtonIndex:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setCancelButtonIndex(UIAlertView __self__, Selector __cmd__, int cancelButtonIndex);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCancelButtonIndexSuper(ObjCSuper __super__, Selector __cmd__, int cancelButtonIndex);
+    @Bridge private native static void objc_setCancelButtonIndex(UIAlertView __self__, Selector __cmd__, int cancelButtonIndex);
+    @Bridge private native static void objc_setCancelButtonIndexSuper(ObjCSuper __super__, Selector __cmd__, int cancelButtonIndex);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertView_Class/UIAlertView/UIAlertView.html#//apple_ref/occ/instp/UIAlertView/cancelButtonIndex">@property(nonatomic) NSInteger cancelButtonIndex</a>
      * @since Available in iOS 2.0 and later.
@@ -115,8 +115,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDelegate$ = Selector.register("setDelegate:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UIAlertView __self__, Selector __cmd__, UIAlertViewDelegate delegate);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIAlertViewDelegate delegate);
+    @Bridge private native static void objc_setDelegate(UIAlertView __self__, Selector __cmd__, UIAlertViewDelegate delegate);
+    @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIAlertViewDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertView_Class/UIAlertView/UIAlertView.html#//apple_ref/occ/instp/UIAlertView/delegate">@property(nonatomic, assign) id delegate</a>
      * @since Available in iOS 2.0 and later.
@@ -148,8 +148,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setMessage$ = Selector.register("setMessage:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setMessage(UIAlertView __self__, Selector __cmd__, String message);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMessageSuper(ObjCSuper __super__, Selector __cmd__, String message);
+    @Bridge private native static void objc_setMessage(UIAlertView __self__, Selector __cmd__, String message);
+    @Bridge private native static void objc_setMessageSuper(ObjCSuper __super__, Selector __cmd__, String message);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertView_Class/UIAlertView/UIAlertView.html#//apple_ref/occ/instp/UIAlertView/message">@property(nonatomic, copy) NSString *message</a>
      * @since Available in iOS 2.0 and later.
@@ -181,8 +181,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTitle$ = Selector.register("setTitle:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTitle(UIAlertView __self__, Selector __cmd__, String title);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTitleSuper(ObjCSuper __super__, Selector __cmd__, String title);
+    @Bridge private native static void objc_setTitle(UIAlertView __self__, Selector __cmd__, String title);
+    @Bridge private native static void objc_setTitleSuper(ObjCSuper __super__, Selector __cmd__, String title);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAlertView_Class/UIAlertView/UIAlertView.html#//apple_ref/occ/instp/UIAlertView/title">@property(nonatomic, copy) NSString *title</a>
      * @since Available in iOS 2.0 and later.

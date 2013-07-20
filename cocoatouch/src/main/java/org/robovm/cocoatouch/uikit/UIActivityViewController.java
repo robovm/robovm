@@ -77,8 +77,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setExcludedActivityTypes$ = Selector.register("setExcludedActivityTypes:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setExcludedActivityTypes(UIActivityViewController __self__, Selector __cmd__, NSArray excludedActivityTypes);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setExcludedActivityTypesSuper(ObjCSuper __super__, Selector __cmd__, NSArray excludedActivityTypes);
+    @Bridge private native static void objc_setExcludedActivityTypes(UIActivityViewController __self__, Selector __cmd__, NSArray excludedActivityTypes);
+    @Bridge private native static void objc_setExcludedActivityTypesSuper(ObjCSuper __super__, Selector __cmd__, NSArray excludedActivityTypes);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActivityViewController/excludedActivityTypes">@property(nonatomic,copy) NSArray *excludedActivityTypes</a>
      * @since Available in iOS 6.0 and later.

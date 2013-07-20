@@ -67,8 +67,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDelegate$ = Selector.register("setDelegate:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UIAccelerometer __self__, Selector __cmd__, UIAccelerometerDelegate delegate);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIAccelerometerDelegate delegate);
+    @Bridge private native static void objc_setDelegate(UIAccelerometer __self__, Selector __cmd__, UIAccelerometerDelegate delegate);
+    @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIAccelerometerDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAccelerometer_Class/Reference/UIAccelerometer.html#//apple_ref/occ/instp/UIAccelerometer/delegate">@property(nonatomic, assign) id&amp;lt;UIAccelerometerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
@@ -89,8 +89,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setUpdateInterval$ = Selector.register("setUpdateInterval:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setUpdateInterval(UIAccelerometer __self__, Selector __cmd__, double updateInterval);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setUpdateIntervalSuper(ObjCSuper __super__, Selector __cmd__, double updateInterval);
+    @Bridge private native static void objc_setUpdateInterval(UIAccelerometer __self__, Selector __cmd__, double updateInterval);
+    @Bridge private native static void objc_setUpdateIntervalSuper(ObjCSuper __super__, Selector __cmd__, double updateInterval);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAccelerometer_Class/Reference/UIAccelerometer.html#//apple_ref/occ/instp/UIAccelerometer/updateInterval">@property(nonatomic) NSTimeInterval updateInterval</a>
      * @since Available in iOS 2.0 and later.

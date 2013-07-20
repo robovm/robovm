@@ -122,8 +122,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAction$ = Selector.register("setAction:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAction(UIBarButtonItem __self__, Selector __cmd__, Selector action);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setActionSuper(ObjCSuper __super__, Selector __cmd__, Selector action);
+    @Bridge private native static void objc_setAction(UIBarButtonItem __self__, Selector __cmd__, Selector action);
+    @Bridge private native static void objc_setActionSuper(ObjCSuper __super__, Selector __cmd__, Selector action);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarButtonItem/action">@property(nonatomic) SEL action</a>
      * @since Available in iOS 2.0 and later.
@@ -144,8 +144,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setCustomView$ = Selector.register("setCustomView:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setCustomView(UIBarButtonItem __self__, Selector __cmd__, UIView customView);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCustomViewSuper(ObjCSuper __super__, Selector __cmd__, UIView customView);
+    @Bridge private native static void objc_setCustomView(UIBarButtonItem __self__, Selector __cmd__, UIView customView);
+    @Bridge private native static void objc_setCustomViewSuper(ObjCSuper __super__, Selector __cmd__, UIView customView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarButtonItem/customView">@property(nonatomic, retain) UIView *customView</a>
      * @since Available in iOS 2.0 and later.
@@ -166,8 +166,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setPossibleTitles$ = Selector.register("setPossibleTitles:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setPossibleTitles(UIBarButtonItem __self__, Selector __cmd__, NSSet possibleTitles);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setPossibleTitlesSuper(ObjCSuper __super__, Selector __cmd__, NSSet possibleTitles);
+    @Bridge private native static void objc_setPossibleTitles(UIBarButtonItem __self__, Selector __cmd__, NSSet possibleTitles);
+    @Bridge private native static void objc_setPossibleTitlesSuper(ObjCSuper __super__, Selector __cmd__, NSSet possibleTitles);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarButtonItem/possibleTitles">@property(nonatomic, copy) NSSet *possibleTitles</a>
      * @since Available in iOS 2.0 and later.
@@ -188,8 +188,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setStyle$ = Selector.register("setStyle:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setStyle(UIBarButtonItem __self__, Selector __cmd__, UIBarButtonItemStyle style);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStyleSuper(ObjCSuper __super__, Selector __cmd__, UIBarButtonItemStyle style);
+    @Bridge private native static void objc_setStyle(UIBarButtonItem __self__, Selector __cmd__, UIBarButtonItemStyle style);
+    @Bridge private native static void objc_setStyleSuper(ObjCSuper __super__, Selector __cmd__, UIBarButtonItemStyle style);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarButtonItem/style">@property(nonatomic) UIBarButtonItemStyle style</a>
      * @since Available in iOS 2.0 and later.
@@ -210,8 +210,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTarget$ = Selector.register("setTarget:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTarget(UIBarButtonItem __self__, Selector __cmd__, NSObject target);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTargetSuper(ObjCSuper __super__, Selector __cmd__, NSObject target);
+    @Bridge private native static void objc_setTarget(UIBarButtonItem __self__, Selector __cmd__, NSObject target);
+    @Bridge private native static void objc_setTargetSuper(ObjCSuper __super__, Selector __cmd__, NSObject target);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarButtonItem/target">@property(nonatomic, assign) id target</a>
      * @since Available in iOS 2.0 and later.
@@ -232,8 +232,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTintColor$ = Selector.register("setTintColor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTintColor(UIBarButtonItem __self__, Selector __cmd__, UIColor tintColor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor tintColor);
+    @Bridge private native static void objc_setTintColor(UIBarButtonItem __self__, Selector __cmd__, UIColor tintColor);
+    @Bridge private native static void objc_setTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor tintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarButtonItem/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 5.0 and later.
@@ -254,8 +254,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setWidth$ = Selector.register("setWidth:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setWidth(UIBarButtonItem __self__, Selector __cmd__, float width);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setWidthSuper(ObjCSuper __super__, Selector __cmd__, float width);
+    @Bridge private native static void objc_setWidth(UIBarButtonItem __self__, Selector __cmd__, float width);
+    @Bridge private native static void objc_setWidthSuper(ObjCSuper __super__, Selector __cmd__, float width);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBarButtonItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UIBarButtonItem/width">@property(nonatomic) CGFloat width</a>
      * @since Available in iOS 2.0 and later.

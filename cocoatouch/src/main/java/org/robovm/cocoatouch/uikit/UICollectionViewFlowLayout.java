@@ -67,8 +67,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setFooterReferenceSize$ = Selector.register("setFooterReferenceSize:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setFooterReferenceSize(UICollectionViewFlowLayout __self__, Selector __cmd__, @ByVal CGSize footerReferenceSize);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setFooterReferenceSizeSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGSize footerReferenceSize);
+    @Bridge private native static void objc_setFooterReferenceSize(UICollectionViewFlowLayout __self__, Selector __cmd__, @ByVal CGSize footerReferenceSize);
+    @Bridge private native static void objc_setFooterReferenceSizeSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGSize footerReferenceSize);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewFlowLayout_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewFlowLayout/footerReferenceSize">@property (nonatomic) CGSize footerReferenceSize;</a>
      * @since Available in iOS 6.0 and later.
@@ -89,8 +89,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setHeaderReferenceSize$ = Selector.register("setHeaderReferenceSize:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setHeaderReferenceSize(UICollectionViewFlowLayout __self__, Selector __cmd__, @ByVal CGSize headerReferenceSize);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setHeaderReferenceSizeSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGSize headerReferenceSize);
+    @Bridge private native static void objc_setHeaderReferenceSize(UICollectionViewFlowLayout __self__, Selector __cmd__, @ByVal CGSize headerReferenceSize);
+    @Bridge private native static void objc_setHeaderReferenceSizeSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGSize headerReferenceSize);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewFlowLayout_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewFlowLayout/headerReferenceSize">@property (nonatomic) CGSize headerReferenceSize;</a>
      * @since Available in iOS 6.0 and later.
@@ -111,8 +111,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setItemSize$ = Selector.register("setItemSize:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setItemSize(UICollectionViewFlowLayout __self__, Selector __cmd__, @ByVal CGSize itemSize);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setItemSizeSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGSize itemSize);
+    @Bridge private native static void objc_setItemSize(UICollectionViewFlowLayout __self__, Selector __cmd__, @ByVal CGSize itemSize);
+    @Bridge private native static void objc_setItemSizeSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGSize itemSize);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewFlowLayout_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewFlowLayout/itemSize">@property (nonatomic) CGSize itemSize;</a>
      * @since Available in iOS 6.0 and later.
@@ -133,8 +133,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setMinimumInteritemSpacing$ = Selector.register("setMinimumInteritemSpacing:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setMinimumInteritemSpacing(UICollectionViewFlowLayout __self__, Selector __cmd__, float minimumInteritemSpacing);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMinimumInteritemSpacingSuper(ObjCSuper __super__, Selector __cmd__, float minimumInteritemSpacing);
+    @Bridge private native static void objc_setMinimumInteritemSpacing(UICollectionViewFlowLayout __self__, Selector __cmd__, float minimumInteritemSpacing);
+    @Bridge private native static void objc_setMinimumInteritemSpacingSuper(ObjCSuper __super__, Selector __cmd__, float minimumInteritemSpacing);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewFlowLayout_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewFlowLayout/minimumInteritemSpacing">@property (nonatomic) CGFloat minimumInteritemSpacing;</a>
      * @since Available in iOS 6.0 and later.
@@ -155,8 +155,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setMinimumLineSpacing$ = Selector.register("setMinimumLineSpacing:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setMinimumLineSpacing(UICollectionViewFlowLayout __self__, Selector __cmd__, float minimumLineSpacing);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMinimumLineSpacingSuper(ObjCSuper __super__, Selector __cmd__, float minimumLineSpacing);
+    @Bridge private native static void objc_setMinimumLineSpacing(UICollectionViewFlowLayout __self__, Selector __cmd__, float minimumLineSpacing);
+    @Bridge private native static void objc_setMinimumLineSpacingSuper(ObjCSuper __super__, Selector __cmd__, float minimumLineSpacing);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewFlowLayout_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewFlowLayout/minimumLineSpacing">@property (nonatomic) CGFloat minimumLineSpacing;</a>
      * @since Available in iOS 6.0 and later.
@@ -177,8 +177,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setScrollDirection$ = Selector.register("setScrollDirection:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setScrollDirection(UICollectionViewFlowLayout __self__, Selector __cmd__, UICollectionViewScrollDirection scrollDirection);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setScrollDirectionSuper(ObjCSuper __super__, Selector __cmd__, UICollectionViewScrollDirection scrollDirection);
+    @Bridge private native static void objc_setScrollDirection(UICollectionViewFlowLayout __self__, Selector __cmd__, UICollectionViewScrollDirection scrollDirection);
+    @Bridge private native static void objc_setScrollDirectionSuper(ObjCSuper __super__, Selector __cmd__, UICollectionViewScrollDirection scrollDirection);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewFlowLayout_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewFlowLayout/scrollDirection">@property (nonatomic) UICollectionViewScrollDirection scrollDirection;</a>
      * @since Available in iOS 6.0 and later.
@@ -199,8 +199,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setSectionInset$ = Selector.register("setSectionInset:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setSectionInset(UICollectionViewFlowLayout __self__, Selector __cmd__, @ByVal UIEdgeInsets sectionInset);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSectionInsetSuper(ObjCSuper __super__, Selector __cmd__, @ByVal UIEdgeInsets sectionInset);
+    @Bridge private native static void objc_setSectionInset(UICollectionViewFlowLayout __self__, Selector __cmd__, @ByVal UIEdgeInsets sectionInset);
+    @Bridge private native static void objc_setSectionInsetSuper(ObjCSuper __super__, Selector __cmd__, @ByVal UIEdgeInsets sectionInset);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewFlowLayout_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewFlowLayout/sectionInset">@property (nonatomic) UIEdgeInsets sectionInset;</a>
      * @since Available in iOS 6.0 and later.

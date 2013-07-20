@@ -82,8 +82,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setRootViewController$ = Selector.register("setRootViewController:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setRootViewController(UIWindow __self__, Selector __cmd__, UIViewController rootViewController);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setRootViewControllerSuper(ObjCSuper __super__, Selector __cmd__, UIViewController rootViewController);
+    @Bridge private native static void objc_setRootViewController(UIWindow __self__, Selector __cmd__, UIViewController rootViewController);
+    @Bridge private native static void objc_setRootViewControllerSuper(ObjCSuper __super__, Selector __cmd__, UIViewController rootViewController);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instp/UIWindow/rootViewController">@property(nonatomic, retain) UIViewController *rootViewController</a>
      * @since Available in iOS 4.0 and later.
@@ -104,8 +104,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setScreen$ = Selector.register("setScreen:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setScreen(UIWindow __self__, Selector __cmd__, UIScreen screen);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setScreenSuper(ObjCSuper __super__, Selector __cmd__, UIScreen screen);
+    @Bridge private native static void objc_setScreen(UIWindow __self__, Selector __cmd__, UIScreen screen);
+    @Bridge private native static void objc_setScreenSuper(ObjCSuper __super__, Selector __cmd__, UIScreen screen);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instp/UIWindow/screen">@property(nonatomic, retain) UIScreen *screen</a>
      * @since Available in iOS 3.2 and later.
@@ -126,8 +126,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setWindowLevel$ = Selector.register("setWindowLevel:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setWindowLevel(UIWindow __self__, Selector __cmd__, float windowLevel);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setWindowLevelSuper(ObjCSuper __super__, Selector __cmd__, float windowLevel);
+    @Bridge private native static void objc_setWindowLevel(UIWindow __self__, Selector __cmd__, float windowLevel);
+    @Bridge private native static void objc_setWindowLevelSuper(ObjCSuper __super__, Selector __cmd__, float windowLevel);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instp/UIWindow/windowLevel">@property(nonatomic) UIWindowLevel windowLevel</a>
      * @since Available in iOS 2.0 and later.

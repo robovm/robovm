@@ -78,8 +78,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setActive$ = Selector.register("setActive:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setActive(UISearchDisplayController __self__, Selector __cmd__, boolean active);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setActiveSuper(ObjCSuper __super__, Selector __cmd__, boolean active);
+    @Bridge private native static void objc_setActive(UISearchDisplayController __self__, Selector __cmd__, boolean active);
+    @Bridge private native static void objc_setActiveSuper(ObjCSuper __super__, Selector __cmd__, boolean active);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/active">@property(nonatomic, getter=isActive) BOOL active</a>
      * @since Available in iOS 3.0 and later.
@@ -100,8 +100,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDelegate$ = Selector.register("setDelegate:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UISearchDisplayController __self__, Selector __cmd__, UISearchDisplayDelegate delegate);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UISearchDisplayDelegate delegate);
+    @Bridge private native static void objc_setDelegate(UISearchDisplayController __self__, Selector __cmd__, UISearchDisplayDelegate delegate);
+    @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UISearchDisplayDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/delegate">@property(nonatomic, assign) id&amp;lt;UISearchDisplayDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.0 and later.
@@ -144,8 +144,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setSearchResultsDataSource$ = Selector.register("setSearchResultsDataSource:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setSearchResultsDataSource(UISearchDisplayController __self__, Selector __cmd__, UITableViewDataSource searchResultsDataSource);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSearchResultsDataSourceSuper(ObjCSuper __super__, Selector __cmd__, UITableViewDataSource searchResultsDataSource);
+    @Bridge private native static void objc_setSearchResultsDataSource(UISearchDisplayController __self__, Selector __cmd__, UITableViewDataSource searchResultsDataSource);
+    @Bridge private native static void objc_setSearchResultsDataSourceSuper(ObjCSuper __super__, Selector __cmd__, UITableViewDataSource searchResultsDataSource);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsDataSource">@property(nonatomic, assign) id&amp;lt;UITableViewDataSource&amp;gt; searchResultsDataSource</a>
      * @since Available in iOS 3.0 and later.
@@ -166,8 +166,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setSearchResultsDelegate$ = Selector.register("setSearchResultsDelegate:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setSearchResultsDelegate(UISearchDisplayController __self__, Selector __cmd__, UITableViewDelegate searchResultsDelegate);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSearchResultsDelegateSuper(ObjCSuper __super__, Selector __cmd__, UITableViewDelegate searchResultsDelegate);
+    @Bridge private native static void objc_setSearchResultsDelegate(UISearchDisplayController __self__, Selector __cmd__, UITableViewDelegate searchResultsDelegate);
+    @Bridge private native static void objc_setSearchResultsDelegateSuper(ObjCSuper __super__, Selector __cmd__, UITableViewDelegate searchResultsDelegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsDelegate">@property(nonatomic, assign) id&amp;lt;UITableViewDelegate&amp;gt; searchResultsDelegate</a>
      * @since Available in iOS 3.0 and later.
@@ -199,8 +199,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setSearchResultsTitle$ = Selector.register("setSearchResultsTitle:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setSearchResultsTitle(UISearchDisplayController __self__, Selector __cmd__, String searchResultsTitle);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSearchResultsTitleSuper(ObjCSuper __super__, Selector __cmd__, String searchResultsTitle);
+    @Bridge private native static void objc_setSearchResultsTitle(UISearchDisplayController __self__, Selector __cmd__, String searchResultsTitle);
+    @Bridge private native static void objc_setSearchResultsTitleSuper(ObjCSuper __super__, Selector __cmd__, String searchResultsTitle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsTitle">@property(nonatomic, copy) NSString *searchResultsTitle</a>
      * @since Available in iOS 5.0 and later.

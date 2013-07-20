@@ -435,13 +435,13 @@ class ObjCProperty
       msg_send = "objc_#{setter}"
       msg_send_parameters_s = "#{@clazz.name} __self__, Selector __cmd__, #{@type.to_bro} #{@name}"
       msg_send_super_parameters_s = "ObjCSuper __super__, Selector __cmd__, #{@type.to_bro} #{@name}"
-      java = "#{java}\n@Bridge(symbol = \"objc_msgSend\") private native static void #{msg_send}(#{msg_send_parameters_s});"
+      java = "#{java}\n@Bridge private native static void #{msg_send}(#{msg_send_parameters_s});"
       args = "this, #{selector_var}, #{@name}"
       args_super = "getSuper(), #{selector_var}, #{@name}"
       body = ""
       if !(@visibility.include?('private') || @visibility.include?('final'))
         # Call objc_msgSendSuper if this is a custom class
-        java = "#{java}\n@Bridge(symbol = \"objc_msgSendSuper\") private native static void #{msg_send}Super(#{msg_send_super_parameters_s});"
+        java = "#{java}\n@Bridge private native static void #{msg_send}Super(#{msg_send_super_parameters_s});"
         body = "if (customClass) { #{msg_send}Super(#{args_super}); } else { #{msg_send}(#{args}); }"
       else
         body = "#{msg_send}(#{args});"

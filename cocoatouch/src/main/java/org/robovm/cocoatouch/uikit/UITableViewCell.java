@@ -81,8 +81,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAccessoryType$ = Selector.register("setAccessoryType:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAccessoryType(UITableViewCell __self__, Selector __cmd__, UITableViewCellAccessoryType accessoryType);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAccessoryTypeSuper(ObjCSuper __super__, Selector __cmd__, UITableViewCellAccessoryType accessoryType);
+    @Bridge private native static void objc_setAccessoryType(UITableViewCell __self__, Selector __cmd__, UITableViewCellAccessoryType accessoryType);
+    @Bridge private native static void objc_setAccessoryTypeSuper(ObjCSuper __super__, Selector __cmd__, UITableViewCellAccessoryType accessoryType);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/accessoryType">@property(nonatomic) UITableViewCellAccessoryType accessoryType</a>
      * @since Available in iOS 2.0 and later.
@@ -103,8 +103,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAccessoryView$ = Selector.register("setAccessoryView:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAccessoryView(UITableViewCell __self__, Selector __cmd__, UIView accessoryView);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAccessoryViewSuper(ObjCSuper __super__, Selector __cmd__, UIView accessoryView);
+    @Bridge private native static void objc_setAccessoryView(UITableViewCell __self__, Selector __cmd__, UIView accessoryView);
+    @Bridge private native static void objc_setAccessoryViewSuper(ObjCSuper __super__, Selector __cmd__, UIView accessoryView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/accessoryView">@property(nonatomic, retain) UIView *accessoryView</a>
      * @since Available in iOS 2.0 and later.
@@ -125,8 +125,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setBackgroundView$ = Selector.register("setBackgroundView:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setBackgroundView(UITableViewCell __self__, Selector __cmd__, UIView backgroundView);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__, UIView backgroundView);
+    @Bridge private native static void objc_setBackgroundView(UITableViewCell __self__, Selector __cmd__, UIView backgroundView);
+    @Bridge private native static void objc_setBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__, UIView backgroundView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/backgroundView">@property(nonatomic, retain) UIView *backgroundView</a>
      * @since Available in iOS 2.0 and later.
@@ -169,8 +169,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setEditing$ = Selector.register("setEditing:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setEditing(UITableViewCell __self__, Selector __cmd__, boolean editing);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setEditingSuper(ObjCSuper __super__, Selector __cmd__, boolean editing);
+    @Bridge private native static void objc_setEditing(UITableViewCell __self__, Selector __cmd__, boolean editing);
+    @Bridge private native static void objc_setEditingSuper(ObjCSuper __super__, Selector __cmd__, boolean editing);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/editing">@property(nonatomic, getter=isEditing) BOOL editing</a>
      * @since Available in iOS 2.0 and later.
@@ -191,8 +191,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setEditingAccessoryType$ = Selector.register("setEditingAccessoryType:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setEditingAccessoryType(UITableViewCell __self__, Selector __cmd__, UITableViewCellAccessoryType editingAccessoryType);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setEditingAccessoryTypeSuper(ObjCSuper __super__, Selector __cmd__, UITableViewCellAccessoryType editingAccessoryType);
+    @Bridge private native static void objc_setEditingAccessoryType(UITableViewCell __self__, Selector __cmd__, UITableViewCellAccessoryType editingAccessoryType);
+    @Bridge private native static void objc_setEditingAccessoryTypeSuper(ObjCSuper __super__, Selector __cmd__, UITableViewCellAccessoryType editingAccessoryType);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/editingAccessoryType">@property(nonatomic) UITableViewCellAccessoryType editingAccessoryType</a>
      * @since Available in iOS 3.0 and later.
@@ -213,8 +213,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setEditingAccessoryView$ = Selector.register("setEditingAccessoryView:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setEditingAccessoryView(UITableViewCell __self__, Selector __cmd__, UIView editingAccessoryView);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setEditingAccessoryViewSuper(ObjCSuper __super__, Selector __cmd__, UIView editingAccessoryView);
+    @Bridge private native static void objc_setEditingAccessoryView(UITableViewCell __self__, Selector __cmd__, UIView editingAccessoryView);
+    @Bridge private native static void objc_setEditingAccessoryViewSuper(ObjCSuper __super__, Selector __cmd__, UIView editingAccessoryView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/editingAccessoryView">@property(nonatomic, retain) UIView *editingAccessoryView</a>
      * @since Available in iOS 3.0 and later.
@@ -246,8 +246,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setHighlighted$ = Selector.register("setHighlighted:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setHighlighted(UITableViewCell __self__, Selector __cmd__, boolean highlighted);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setHighlightedSuper(ObjCSuper __super__, Selector __cmd__, boolean highlighted);
+    @Bridge private native static void objc_setHighlighted(UITableViewCell __self__, Selector __cmd__, boolean highlighted);
+    @Bridge private native static void objc_setHighlightedSuper(ObjCSuper __super__, Selector __cmd__, boolean highlighted);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/highlighted">@property(nonatomic, getter=isHighlighted) BOOL highlighted</a>
      * @since Available in iOS 3.0 and later.
@@ -279,8 +279,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setIndentationLevel$ = Selector.register("setIndentationLevel:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setIndentationLevel(UITableViewCell __self__, Selector __cmd__, int indentationLevel);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setIndentationLevelSuper(ObjCSuper __super__, Selector __cmd__, int indentationLevel);
+    @Bridge private native static void objc_setIndentationLevel(UITableViewCell __self__, Selector __cmd__, int indentationLevel);
+    @Bridge private native static void objc_setIndentationLevelSuper(ObjCSuper __super__, Selector __cmd__, int indentationLevel);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/indentationLevel">@property(nonatomic) NSInteger indentationLevel</a>
      * @since Available in iOS 2.0 and later.
@@ -301,8 +301,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setIndentationWidth$ = Selector.register("setIndentationWidth:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setIndentationWidth(UITableViewCell __self__, Selector __cmd__, float indentationWidth);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setIndentationWidthSuper(ObjCSuper __super__, Selector __cmd__, float indentationWidth);
+    @Bridge private native static void objc_setIndentationWidth(UITableViewCell __self__, Selector __cmd__, float indentationWidth);
+    @Bridge private native static void objc_setIndentationWidthSuper(ObjCSuper __super__, Selector __cmd__, float indentationWidth);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/indentationWidth">@property(nonatomic) CGFloat indentationWidth</a>
      * @since Available in iOS 2.0 and later.
@@ -323,8 +323,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setMultipleSelectionBackgroundView$ = Selector.register("setMultipleSelectionBackgroundView:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setMultipleSelectionBackgroundView(UITableViewCell __self__, Selector __cmd__, UIView multipleSelectionBackgroundView);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMultipleSelectionBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__, UIView multipleSelectionBackgroundView);
+    @Bridge private native static void objc_setMultipleSelectionBackgroundView(UITableViewCell __self__, Selector __cmd__, UIView multipleSelectionBackgroundView);
+    @Bridge private native static void objc_setMultipleSelectionBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__, UIView multipleSelectionBackgroundView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/multipleSelectionBackgroundView">@property(nonatomic,retain) UIView *multipleSelectionBackgroundView</a>
      * @since Available in iOS 5.0 and later.
@@ -356,8 +356,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setSelected$ = Selector.register("setSelected:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setSelected(UITableViewCell __self__, Selector __cmd__, boolean selected);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSelectedSuper(ObjCSuper __super__, Selector __cmd__, boolean selected);
+    @Bridge private native static void objc_setSelected(UITableViewCell __self__, Selector __cmd__, boolean selected);
+    @Bridge private native static void objc_setSelectedSuper(ObjCSuper __super__, Selector __cmd__, boolean selected);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/selected">@property(nonatomic, getter=isSelected) BOOL selected</a>
      * @since Available in iOS 2.0 and later.
@@ -378,8 +378,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setSelectedBackgroundView$ = Selector.register("setSelectedBackgroundView:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setSelectedBackgroundView(UITableViewCell __self__, Selector __cmd__, UIView selectedBackgroundView);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSelectedBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__, UIView selectedBackgroundView);
+    @Bridge private native static void objc_setSelectedBackgroundView(UITableViewCell __self__, Selector __cmd__, UIView selectedBackgroundView);
+    @Bridge private native static void objc_setSelectedBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__, UIView selectedBackgroundView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/selectedBackgroundView">@property(nonatomic, retain) UIView *selectedBackgroundView</a>
      * @since Available in iOS 2.0 and later.
@@ -400,8 +400,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setSelectionStyle$ = Selector.register("setSelectionStyle:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setSelectionStyle(UITableViewCell __self__, Selector __cmd__, UITableViewCellSelectionStyle selectionStyle);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSelectionStyleSuper(ObjCSuper __super__, Selector __cmd__, UITableViewCellSelectionStyle selectionStyle);
+    @Bridge private native static void objc_setSelectionStyle(UITableViewCell __self__, Selector __cmd__, UITableViewCellSelectionStyle selectionStyle);
+    @Bridge private native static void objc_setSelectionStyleSuper(ObjCSuper __super__, Selector __cmd__, UITableViewCellSelectionStyle selectionStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/selectionStyle">@property(nonatomic) UITableViewCellSelectionStyle selectionStyle</a>
      * @since Available in iOS 2.0 and later.
@@ -422,8 +422,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setShouldIndentWhileEditing$ = Selector.register("setShouldIndentWhileEditing:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setShouldIndentWhileEditing(UITableViewCell __self__, Selector __cmd__, boolean shouldIndentWhileEditing);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShouldIndentWhileEditingSuper(ObjCSuper __super__, Selector __cmd__, boolean shouldIndentWhileEditing);
+    @Bridge private native static void objc_setShouldIndentWhileEditing(UITableViewCell __self__, Selector __cmd__, boolean shouldIndentWhileEditing);
+    @Bridge private native static void objc_setShouldIndentWhileEditingSuper(ObjCSuper __super__, Selector __cmd__, boolean shouldIndentWhileEditing);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/shouldIndentWhileEditing">@property(nonatomic) BOOL shouldIndentWhileEditing</a>
      * @since Available in iOS 2.0 and later.
@@ -455,8 +455,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setShowsReorderControl$ = Selector.register("setShowsReorderControl:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setShowsReorderControl(UITableViewCell __self__, Selector __cmd__, boolean showsReorderControl);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShowsReorderControlSuper(ObjCSuper __super__, Selector __cmd__, boolean showsReorderControl);
+    @Bridge private native static void objc_setShowsReorderControl(UITableViewCell __self__, Selector __cmd__, boolean showsReorderControl);
+    @Bridge private native static void objc_setShowsReorderControlSuper(ObjCSuper __super__, Selector __cmd__, boolean showsReorderControl);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/showsReorderControl">@property(nonatomic) BOOL showsReorderControl</a>
      * @since Available in iOS 2.0 and later.

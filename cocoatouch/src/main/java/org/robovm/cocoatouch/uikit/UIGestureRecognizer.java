@@ -78,8 +78,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setCancelsTouchesInView$ = Selector.register("setCancelsTouchesInView:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setCancelsTouchesInView(UIGestureRecognizer __self__, Selector __cmd__, boolean cancelsTouchesInView);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCancelsTouchesInViewSuper(ObjCSuper __super__, Selector __cmd__, boolean cancelsTouchesInView);
+    @Bridge private native static void objc_setCancelsTouchesInView(UIGestureRecognizer __self__, Selector __cmd__, boolean cancelsTouchesInView);
+    @Bridge private native static void objc_setCancelsTouchesInViewSuper(ObjCSuper __super__, Selector __cmd__, boolean cancelsTouchesInView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/cancelsTouchesInView">@property(nonatomic) BOOL cancelsTouchesInView</a>
      * @since Available in iOS 3.2 and later.
@@ -100,8 +100,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDelaysTouchesBegan$ = Selector.register("setDelaysTouchesBegan:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelaysTouchesBegan(UIGestureRecognizer __self__, Selector __cmd__, boolean delaysTouchesBegan);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelaysTouchesBeganSuper(ObjCSuper __super__, Selector __cmd__, boolean delaysTouchesBegan);
+    @Bridge private native static void objc_setDelaysTouchesBegan(UIGestureRecognizer __self__, Selector __cmd__, boolean delaysTouchesBegan);
+    @Bridge private native static void objc_setDelaysTouchesBeganSuper(ObjCSuper __super__, Selector __cmd__, boolean delaysTouchesBegan);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/delaysTouchesBegan">@property(nonatomic) BOOL delaysTouchesBegan</a>
      * @since Available in iOS 3.2 and later.
@@ -122,8 +122,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDelaysTouchesEnded$ = Selector.register("setDelaysTouchesEnded:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelaysTouchesEnded(UIGestureRecognizer __self__, Selector __cmd__, boolean delaysTouchesEnded);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelaysTouchesEndedSuper(ObjCSuper __super__, Selector __cmd__, boolean delaysTouchesEnded);
+    @Bridge private native static void objc_setDelaysTouchesEnded(UIGestureRecognizer __self__, Selector __cmd__, boolean delaysTouchesEnded);
+    @Bridge private native static void objc_setDelaysTouchesEndedSuper(ObjCSuper __super__, Selector __cmd__, boolean delaysTouchesEnded);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/delaysTouchesEnded">@property(nonatomic) BOOL delaysTouchesEnded</a>
      * @since Available in iOS 3.2 and later.
@@ -144,8 +144,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDelegate$ = Selector.register("setDelegate:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UIGestureRecognizer __self__, Selector __cmd__, UIGestureRecognizerDelegate delegate);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIGestureRecognizerDelegate delegate);
+    @Bridge private native static void objc_setDelegate(UIGestureRecognizer __self__, Selector __cmd__, UIGestureRecognizerDelegate delegate);
+    @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIGestureRecognizerDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/delegate">@property(nonatomic, assign) id&amp;lt;UIGestureRecognizerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.2 and later.
@@ -166,8 +166,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setEnabled$ = Selector.register("setEnabled:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setEnabled(UIGestureRecognizer __self__, Selector __cmd__, boolean enabled);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setEnabledSuper(ObjCSuper __super__, Selector __cmd__, boolean enabled);
+    @Bridge private native static void objc_setEnabled(UIGestureRecognizer __self__, Selector __cmd__, boolean enabled);
+    @Bridge private native static void objc_setEnabledSuper(ObjCSuper __super__, Selector __cmd__, boolean enabled);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/enabled">@property(nonatomic, getter=isEnabled) BOOL enabled</a>
      * @since Available in iOS 3.2 and later.

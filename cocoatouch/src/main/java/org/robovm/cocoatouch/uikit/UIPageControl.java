@@ -71,8 +71,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setCurrentPage$ = Selector.register("setCurrentPage:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setCurrentPage(UIPageControl __self__, Selector __cmd__, int currentPage);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCurrentPageSuper(ObjCSuper __super__, Selector __cmd__, int currentPage);
+    @Bridge private native static void objc_setCurrentPage(UIPageControl __self__, Selector __cmd__, int currentPage);
+    @Bridge private native static void objc_setCurrentPageSuper(ObjCSuper __super__, Selector __cmd__, int currentPage);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/currentPage">@property(nonatomic) NSInteger currentPage</a>
      * @since Available in iOS 2.0 and later.
@@ -93,8 +93,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setCurrentPageIndicatorTintColor$ = Selector.register("setCurrentPageIndicatorTintColor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setCurrentPageIndicatorTintColor(UIPageControl __self__, Selector __cmd__, UIColor currentPageIndicatorTintColor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCurrentPageIndicatorTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor currentPageIndicatorTintColor);
+    @Bridge private native static void objc_setCurrentPageIndicatorTintColor(UIPageControl __self__, Selector __cmd__, UIColor currentPageIndicatorTintColor);
+    @Bridge private native static void objc_setCurrentPageIndicatorTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor currentPageIndicatorTintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/currentPageIndicatorTintColor">@property(nonatomic,retain) UIColor *currentPageIndicatorTintColor</a>
      * @since Available in iOS 6.0 and later.
@@ -115,8 +115,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDefersCurrentPageDisplay$ = Selector.register("setDefersCurrentPageDisplay:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDefersCurrentPageDisplay(UIPageControl __self__, Selector __cmd__, boolean defersCurrentPageDisplay);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDefersCurrentPageDisplaySuper(ObjCSuper __super__, Selector __cmd__, boolean defersCurrentPageDisplay);
+    @Bridge private native static void objc_setDefersCurrentPageDisplay(UIPageControl __self__, Selector __cmd__, boolean defersCurrentPageDisplay);
+    @Bridge private native static void objc_setDefersCurrentPageDisplaySuper(ObjCSuper __super__, Selector __cmd__, boolean defersCurrentPageDisplay);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/defersCurrentPageDisplay">@property(nonatomic) BOOL defersCurrentPageDisplay</a>
      * @since Available in iOS 2.0 and later.
@@ -137,8 +137,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setHidesForSinglePage$ = Selector.register("setHidesForSinglePage:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setHidesForSinglePage(UIPageControl __self__, Selector __cmd__, boolean hidesForSinglePage);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setHidesForSinglePageSuper(ObjCSuper __super__, Selector __cmd__, boolean hidesForSinglePage);
+    @Bridge private native static void objc_setHidesForSinglePage(UIPageControl __self__, Selector __cmd__, boolean hidesForSinglePage);
+    @Bridge private native static void objc_setHidesForSinglePageSuper(ObjCSuper __super__, Selector __cmd__, boolean hidesForSinglePage);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/hidesForSinglePage">@property(nonatomic) BOOL hidesForSinglePage</a>
      * @since Available in iOS 2.0 and later.
@@ -159,8 +159,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setNumberOfPages$ = Selector.register("setNumberOfPages:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setNumberOfPages(UIPageControl __self__, Selector __cmd__, int numberOfPages);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setNumberOfPagesSuper(ObjCSuper __super__, Selector __cmd__, int numberOfPages);
+    @Bridge private native static void objc_setNumberOfPages(UIPageControl __self__, Selector __cmd__, int numberOfPages);
+    @Bridge private native static void objc_setNumberOfPagesSuper(ObjCSuper __super__, Selector __cmd__, int numberOfPages);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/numberOfPages">@property(nonatomic) NSInteger numberOfPages</a>
      * @since Available in iOS 2.0 and later.
@@ -181,8 +181,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setPageIndicatorTintColor$ = Selector.register("setPageIndicatorTintColor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setPageIndicatorTintColor(UIPageControl __self__, Selector __cmd__, UIColor pageIndicatorTintColor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setPageIndicatorTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor pageIndicatorTintColor);
+    @Bridge private native static void objc_setPageIndicatorTintColor(UIPageControl __self__, Selector __cmd__, UIColor pageIndicatorTintColor);
+    @Bridge private native static void objc_setPageIndicatorTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor pageIndicatorTintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/pageIndicatorTintColor">@property(nonatomic,retain) UIColor *pageIndicatorTintColor</a>
      * @since Available in iOS 6.0 and later.

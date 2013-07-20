@@ -68,8 +68,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setFooterHeight$ = Selector.register("setFooterHeight:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setFooterHeight(UIPrintPageRenderer __self__, Selector __cmd__, float footerHeight);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setFooterHeightSuper(ObjCSuper __super__, Selector __cmd__, float footerHeight);
+    @Bridge private native static void objc_setFooterHeight(UIPrintPageRenderer __self__, Selector __cmd__, float footerHeight);
+    @Bridge private native static void objc_setFooterHeightSuper(ObjCSuper __super__, Selector __cmd__, float footerHeight);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIPrintPageRenderer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintPageRenderer/footerHeight">@property CGFloat footerHeight</a>
      * @since Available in iOS 4.2 and later.
@@ -90,8 +90,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setHeaderHeight$ = Selector.register("setHeaderHeight:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setHeaderHeight(UIPrintPageRenderer __self__, Selector __cmd__, float headerHeight);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setHeaderHeightSuper(ObjCSuper __super__, Selector __cmd__, float headerHeight);
+    @Bridge private native static void objc_setHeaderHeight(UIPrintPageRenderer __self__, Selector __cmd__, float headerHeight);
+    @Bridge private native static void objc_setHeaderHeightSuper(ObjCSuper __super__, Selector __cmd__, float headerHeight);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIPrintPageRenderer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintPageRenderer/headerHeight">@property CGFloat headerHeight</a>
      * @since Available in iOS 4.2 and later.
@@ -123,8 +123,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setPrintFormatters$ = Selector.register("setPrintFormatters:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setPrintFormatters(UIPrintPageRenderer __self__, Selector __cmd__, NSArray printFormatters);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setPrintFormattersSuper(ObjCSuper __super__, Selector __cmd__, NSArray printFormatters);
+    @Bridge private native static void objc_setPrintFormatters(UIPrintPageRenderer __self__, Selector __cmd__, NSArray printFormatters);
+    @Bridge private native static void objc_setPrintFormattersSuper(ObjCSuper __super__, Selector __cmd__, NSArray printFormatters);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIPrintPageRenderer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintPageRenderer/printFormatters">@property(copy) NSArray *printFormatters</a>
      * @since Available in iOS 4.2 and later.

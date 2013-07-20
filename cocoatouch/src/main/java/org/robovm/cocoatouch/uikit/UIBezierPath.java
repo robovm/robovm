@@ -68,8 +68,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setCGPath$ = Selector.register("setCGPath:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setCGPath(UIBezierPath __self__, Selector __cmd__, CGPath CGPath);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCGPathSuper(ObjCSuper __super__, Selector __cmd__, CGPath CGPath);
+    @Bridge private native static void objc_setCGPath(UIBezierPath __self__, Selector __cmd__, CGPath CGPath);
+    @Bridge private native static void objc_setCGPathSuper(ObjCSuper __super__, Selector __cmd__, CGPath CGPath);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/CGPath">@property(nonatomic) CGPathRef CGPath</a>
      * @since Available in iOS 3.2 and later.
@@ -123,8 +123,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setFlatness$ = Selector.register("setFlatness:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setFlatness(UIBezierPath __self__, Selector __cmd__, float flatness);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setFlatnessSuper(ObjCSuper __super__, Selector __cmd__, float flatness);
+    @Bridge private native static void objc_setFlatness(UIBezierPath __self__, Selector __cmd__, float flatness);
+    @Bridge private native static void objc_setFlatnessSuper(ObjCSuper __super__, Selector __cmd__, float flatness);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/flatness">@property(nonatomic) CGFloat flatness</a>
      * @since Available in iOS 3.2 and later.
@@ -145,8 +145,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setLineCapStyle$ = Selector.register("setLineCapStyle:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setLineCapStyle(UIBezierPath __self__, Selector __cmd__, CGLineCap lineCapStyle);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setLineCapStyleSuper(ObjCSuper __super__, Selector __cmd__, CGLineCap lineCapStyle);
+    @Bridge private native static void objc_setLineCapStyle(UIBezierPath __self__, Selector __cmd__, CGLineCap lineCapStyle);
+    @Bridge private native static void objc_setLineCapStyleSuper(ObjCSuper __super__, Selector __cmd__, CGLineCap lineCapStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/lineCapStyle">@property(nonatomic) CGLineCap lineCapStyle</a>
      * @since Available in iOS 3.2 and later.
@@ -167,8 +167,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setLineJoinStyle$ = Selector.register("setLineJoinStyle:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setLineJoinStyle(UIBezierPath __self__, Selector __cmd__, CGLineJoin lineJoinStyle);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setLineJoinStyleSuper(ObjCSuper __super__, Selector __cmd__, CGLineJoin lineJoinStyle);
+    @Bridge private native static void objc_setLineJoinStyle(UIBezierPath __self__, Selector __cmd__, CGLineJoin lineJoinStyle);
+    @Bridge private native static void objc_setLineJoinStyleSuper(ObjCSuper __super__, Selector __cmd__, CGLineJoin lineJoinStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/lineJoinStyle">@property(nonatomic) CGLineJoin lineJoinStyle</a>
      * @since Available in iOS 3.2 and later.
@@ -189,8 +189,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setLineWidth$ = Selector.register("setLineWidth:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setLineWidth(UIBezierPath __self__, Selector __cmd__, float lineWidth);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setLineWidthSuper(ObjCSuper __super__, Selector __cmd__, float lineWidth);
+    @Bridge private native static void objc_setLineWidth(UIBezierPath __self__, Selector __cmd__, float lineWidth);
+    @Bridge private native static void objc_setLineWidthSuper(ObjCSuper __super__, Selector __cmd__, float lineWidth);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/lineWidth">@property(nonatomic) CGFloat lineWidth</a>
      * @since Available in iOS 3.2 and later.
@@ -211,8 +211,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setMiterLimit$ = Selector.register("setMiterLimit:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setMiterLimit(UIBezierPath __self__, Selector __cmd__, float miterLimit);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMiterLimitSuper(ObjCSuper __super__, Selector __cmd__, float miterLimit);
+    @Bridge private native static void objc_setMiterLimit(UIBezierPath __self__, Selector __cmd__, float miterLimit);
+    @Bridge private native static void objc_setMiterLimitSuper(ObjCSuper __super__, Selector __cmd__, float miterLimit);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/miterLimit">@property(nonatomic) CGFloat miterLimit</a>
      * @since Available in iOS 3.2 and later.
@@ -233,8 +233,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setUsesEvenOddFillRule$ = Selector.register("setUsesEvenOddFillRule:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setUsesEvenOddFillRule(UIBezierPath __self__, Selector __cmd__, boolean usesEvenOddFillRule);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setUsesEvenOddFillRuleSuper(ObjCSuper __super__, Selector __cmd__, boolean usesEvenOddFillRule);
+    @Bridge private native static void objc_setUsesEvenOddFillRule(UIBezierPath __self__, Selector __cmd__, boolean usesEvenOddFillRule);
+    @Bridge private native static void objc_setUsesEvenOddFillRuleSuper(ObjCSuper __super__, Selector __cmd__, boolean usesEvenOddFillRule);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/usesEvenOddFillRule">@property(nonatomic) BOOL usesEvenOddFillRule</a>
      * @since Available in iOS 3.2 and later.

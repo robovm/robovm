@@ -95,8 +95,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setApplicationIconBadgeNumber$ = Selector.register("setApplicationIconBadgeNumber:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setApplicationIconBadgeNumber(UIApplication __self__, Selector __cmd__, int applicationIconBadgeNumber);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setApplicationIconBadgeNumberSuper(ObjCSuper __super__, Selector __cmd__, int applicationIconBadgeNumber);
+    @Bridge private native static void objc_setApplicationIconBadgeNumber(UIApplication __self__, Selector __cmd__, int applicationIconBadgeNumber);
+    @Bridge private native static void objc_setApplicationIconBadgeNumberSuper(ObjCSuper __super__, Selector __cmd__, int applicationIconBadgeNumber);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/applicationIconBadgeNumber">@property(nonatomic) NSInteger applicationIconBadgeNumber</a>
      * @since Available in iOS 2.0 and later.
@@ -128,8 +128,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setApplicationSupportsShakeToEdit$ = Selector.register("setApplicationSupportsShakeToEdit:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setApplicationSupportsShakeToEdit(UIApplication __self__, Selector __cmd__, boolean applicationSupportsShakeToEdit);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setApplicationSupportsShakeToEditSuper(ObjCSuper __super__, Selector __cmd__, boolean applicationSupportsShakeToEdit);
+    @Bridge private native static void objc_setApplicationSupportsShakeToEdit(UIApplication __self__, Selector __cmd__, boolean applicationSupportsShakeToEdit);
+    @Bridge private native static void objc_setApplicationSupportsShakeToEditSuper(ObjCSuper __super__, Selector __cmd__, boolean applicationSupportsShakeToEdit);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/applicationSupportsShakeToEdit">@property(nonatomic) BOOL applicationSupportsShakeToEdit</a>
      * @since Available in iOS 3.0 and later.
@@ -161,8 +161,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDelegate$ = Selector.register("setDelegate:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UIApplication __self__, Selector __cmd__, UIApplicationDelegate delegate);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIApplicationDelegate delegate);
+    @Bridge private native static void objc_setDelegate(UIApplication __self__, Selector __cmd__, UIApplicationDelegate delegate);
+    @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIApplicationDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/delegate">@property(nonatomic, assign) id&amp;lt;UIApplicationDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
@@ -183,8 +183,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setIdleTimerDisabled$ = Selector.register("setIdleTimerDisabled:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setIdleTimerDisabled(UIApplication __self__, Selector __cmd__, boolean idleTimerDisabled);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setIdleTimerDisabledSuper(ObjCSuper __super__, Selector __cmd__, boolean idleTimerDisabled);
+    @Bridge private native static void objc_setIdleTimerDisabled(UIApplication __self__, Selector __cmd__, boolean idleTimerDisabled);
+    @Bridge private native static void objc_setIdleTimerDisabledSuper(ObjCSuper __super__, Selector __cmd__, boolean idleTimerDisabled);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/idleTimerDisabled">@property(nonatomic, getter=isIdleTimerDisabled) BOOL idleTimerDisabled</a>
      * @since Available in iOS 2.0 and later.
@@ -216,8 +216,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setNetworkActivityIndicatorVisible$ = Selector.register("setNetworkActivityIndicatorVisible:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setNetworkActivityIndicatorVisible(UIApplication __self__, Selector __cmd__, boolean networkActivityIndicatorVisible);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setNetworkActivityIndicatorVisibleSuper(ObjCSuper __super__, Selector __cmd__, boolean networkActivityIndicatorVisible);
+    @Bridge private native static void objc_setNetworkActivityIndicatorVisible(UIApplication __self__, Selector __cmd__, boolean networkActivityIndicatorVisible);
+    @Bridge private native static void objc_setNetworkActivityIndicatorVisibleSuper(ObjCSuper __super__, Selector __cmd__, boolean networkActivityIndicatorVisible);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/networkActivityIndicatorVisible">@property(nonatomic, getter=isNetworkActivityIndicatorVisible) BOOL networkActivityIndicatorVisible</a>
      * @since Available in iOS 2.0 and later.
@@ -249,8 +249,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setScheduledLocalNotifications$ = Selector.register("setScheduledLocalNotifications:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setScheduledLocalNotifications(UIApplication __self__, Selector __cmd__, NSArray scheduledLocalNotifications);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setScheduledLocalNotificationsSuper(ObjCSuper __super__, Selector __cmd__, NSArray scheduledLocalNotifications);
+    @Bridge private native static void objc_setScheduledLocalNotifications(UIApplication __self__, Selector __cmd__, NSArray scheduledLocalNotifications);
+    @Bridge private native static void objc_setScheduledLocalNotificationsSuper(ObjCSuper __super__, Selector __cmd__, NSArray scheduledLocalNotifications);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/scheduledLocalNotifications">@property(nonatomic, copy) NSArray *scheduledLocalNotifications</a>
      * @since Available in iOS 4.2 and later.
@@ -282,8 +282,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setStatusBarHidden$ = Selector.register("setStatusBarHidden:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setStatusBarHidden(UIApplication __self__, Selector __cmd__, boolean statusBarHidden);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStatusBarHiddenSuper(ObjCSuper __super__, Selector __cmd__, boolean statusBarHidden);
+    @Bridge private native static void objc_setStatusBarHidden(UIApplication __self__, Selector __cmd__, boolean statusBarHidden);
+    @Bridge private native static void objc_setStatusBarHiddenSuper(ObjCSuper __super__, Selector __cmd__, boolean statusBarHidden);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarHidden">@property(nonatomic, getter=isStatusBarHidden) BOOL statusBarHidden</a>
      * @since Available in iOS 2.0 and later.
@@ -304,8 +304,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setStatusBarOrientation$ = Selector.register("setStatusBarOrientation:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setStatusBarOrientation(UIApplication __self__, Selector __cmd__, UIInterfaceOrientation statusBarOrientation);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStatusBarOrientationSuper(ObjCSuper __super__, Selector __cmd__, UIInterfaceOrientation statusBarOrientation);
+    @Bridge private native static void objc_setStatusBarOrientation(UIApplication __self__, Selector __cmd__, UIInterfaceOrientation statusBarOrientation);
+    @Bridge private native static void objc_setStatusBarOrientationSuper(ObjCSuper __super__, Selector __cmd__, UIInterfaceOrientation statusBarOrientation);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarOrientation">@property(nonatomic) UIInterfaceOrientation statusBarOrientation</a>
      * @since Available in iOS 2.0 and later.
@@ -337,8 +337,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setStatusBarStyle$ = Selector.register("setStatusBarStyle:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setStatusBarStyle(UIApplication __self__, Selector __cmd__, UIStatusBarStyle statusBarStyle);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStatusBarStyleSuper(ObjCSuper __super__, Selector __cmd__, UIStatusBarStyle statusBarStyle);
+    @Bridge private native static void objc_setStatusBarStyle(UIApplication __self__, Selector __cmd__, UIStatusBarStyle statusBarStyle);
+    @Bridge private native static void objc_setStatusBarStyleSuper(ObjCSuper __super__, Selector __cmd__, UIStatusBarStyle statusBarStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarStyle">@property(nonatomic) UIStatusBarStyle statusBarStyle</a>
      * @since Available in iOS 2.0 and later.

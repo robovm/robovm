@@ -101,8 +101,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setBrightness$ = Selector.register("setBrightness:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setBrightness(UIScreen __self__, Selector __cmd__, float brightness);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBrightnessSuper(ObjCSuper __super__, Selector __cmd__, float brightness);
+    @Bridge private native static void objc_setBrightness(UIScreen __self__, Selector __cmd__, float brightness);
+    @Bridge private native static void objc_setBrightnessSuper(ObjCSuper __super__, Selector __cmd__, float brightness);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/brightness">@property(nonatomic) CGFloat brightness</a>
      * @since Available in iOS 5.0 and later.
@@ -123,8 +123,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setCurrentMode$ = Selector.register("setCurrentMode:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setCurrentMode(UIScreen __self__, Selector __cmd__, UIScreenMode currentMode);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCurrentModeSuper(ObjCSuper __super__, Selector __cmd__, UIScreenMode currentMode);
+    @Bridge private native static void objc_setCurrentMode(UIScreen __self__, Selector __cmd__, UIScreenMode currentMode);
+    @Bridge private native static void objc_setCurrentModeSuper(ObjCSuper __super__, Selector __cmd__, UIScreenMode currentMode);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/currentMode">@property(nonatomic, retain) UIScreenMode *currentMode</a>
      * @since Available in iOS 3.2 and later.
@@ -156,8 +156,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setOverscanCompensation$ = Selector.register("setOverscanCompensation:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setOverscanCompensation(UIScreen __self__, Selector __cmd__, UIScreenOverscanCompensation overscanCompensation);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setOverscanCompensationSuper(ObjCSuper __super__, Selector __cmd__, UIScreenOverscanCompensation overscanCompensation);
+    @Bridge private native static void objc_setOverscanCompensation(UIScreen __self__, Selector __cmd__, UIScreenOverscanCompensation overscanCompensation);
+    @Bridge private native static void objc_setOverscanCompensationSuper(ObjCSuper __super__, Selector __cmd__, UIScreenOverscanCompensation overscanCompensation);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/overscanCompensation">@property(nonatomic) UIScreenOverscanCompensation overscanCompensation</a>
      * @since Available in iOS 5.0 and later.
@@ -200,8 +200,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setWantsSoftwareDimming$ = Selector.register("setWantsSoftwareDimming:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setWantsSoftwareDimming(UIScreen __self__, Selector __cmd__, boolean wantsSoftwareDimming);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setWantsSoftwareDimmingSuper(ObjCSuper __super__, Selector __cmd__, boolean wantsSoftwareDimming);
+    @Bridge private native static void objc_setWantsSoftwareDimming(UIScreen __self__, Selector __cmd__, boolean wantsSoftwareDimming);
+    @Bridge private native static void objc_setWantsSoftwareDimmingSuper(ObjCSuper __super__, Selector __cmd__, boolean wantsSoftwareDimming);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreen_Class/Reference/UIScreen.html#//apple_ref/occ/instp/UIScreen/wantsSoftwareDimming">@property(nonatomic) BOOL wantsSoftwareDimming</a>
      * @since Available in iOS 5.0 and later.

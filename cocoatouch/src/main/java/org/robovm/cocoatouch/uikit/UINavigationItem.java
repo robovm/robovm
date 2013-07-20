@@ -78,8 +78,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setBackBarButtonItem$ = Selector.register("setBackBarButtonItem:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setBackBarButtonItem(UINavigationItem __self__, Selector __cmd__, UIBarButtonItem backBarButtonItem);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBackBarButtonItemSuper(ObjCSuper __super__, Selector __cmd__, UIBarButtonItem backBarButtonItem);
+    @Bridge private native static void objc_setBackBarButtonItem(UINavigationItem __self__, Selector __cmd__, UIBarButtonItem backBarButtonItem);
+    @Bridge private native static void objc_setBackBarButtonItemSuper(ObjCSuper __super__, Selector __cmd__, UIBarButtonItem backBarButtonItem);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/backBarButtonItem">@property(nonatomic, retain) UIBarButtonItem *backBarButtonItem</a>
      * @since Available in iOS 2.0 and later.
@@ -100,8 +100,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setHidesBackButton$ = Selector.register("setHidesBackButton:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setHidesBackButton(UINavigationItem __self__, Selector __cmd__, boolean hidesBackButton);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setHidesBackButtonSuper(ObjCSuper __super__, Selector __cmd__, boolean hidesBackButton);
+    @Bridge private native static void objc_setHidesBackButton(UINavigationItem __self__, Selector __cmd__, boolean hidesBackButton);
+    @Bridge private native static void objc_setHidesBackButtonSuper(ObjCSuper __super__, Selector __cmd__, boolean hidesBackButton);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/hidesBackButton">@property(nonatomic, assign) BOOL hidesBackButton</a>
      * @since Available in iOS 2.0 and later.
@@ -122,8 +122,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setLeftBarButtonItem$ = Selector.register("setLeftBarButtonItem:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setLeftBarButtonItem(UINavigationItem __self__, Selector __cmd__, UIBarButtonItem leftBarButtonItem);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setLeftBarButtonItemSuper(ObjCSuper __super__, Selector __cmd__, UIBarButtonItem leftBarButtonItem);
+    @Bridge private native static void objc_setLeftBarButtonItem(UINavigationItem __self__, Selector __cmd__, UIBarButtonItem leftBarButtonItem);
+    @Bridge private native static void objc_setLeftBarButtonItemSuper(ObjCSuper __super__, Selector __cmd__, UIBarButtonItem leftBarButtonItem);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/leftBarButtonItem">@property(nonatomic, retain) UIBarButtonItem *leftBarButtonItem</a>
      * @since Available in iOS 2.0 and later.
@@ -144,8 +144,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setLeftBarButtonItems$ = Selector.register("setLeftBarButtonItems:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setLeftBarButtonItems(UINavigationItem __self__, Selector __cmd__, NSArray leftBarButtonItems);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setLeftBarButtonItemsSuper(ObjCSuper __super__, Selector __cmd__, NSArray leftBarButtonItems);
+    @Bridge private native static void objc_setLeftBarButtonItems(UINavigationItem __self__, Selector __cmd__, NSArray leftBarButtonItems);
+    @Bridge private native static void objc_setLeftBarButtonItemsSuper(ObjCSuper __super__, Selector __cmd__, NSArray leftBarButtonItems);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/leftBarButtonItems">@property(nonatomic, copy) NSArray *leftBarButtonItems</a>
      * @since Available in iOS 5.0 and later.
@@ -166,8 +166,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setLeftItemsSupplementBackButton$ = Selector.register("setLeftItemsSupplementBackButton:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setLeftItemsSupplementBackButton(UINavigationItem __self__, Selector __cmd__, boolean leftItemsSupplementBackButton);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setLeftItemsSupplementBackButtonSuper(ObjCSuper __super__, Selector __cmd__, boolean leftItemsSupplementBackButton);
+    @Bridge private native static void objc_setLeftItemsSupplementBackButton(UINavigationItem __self__, Selector __cmd__, boolean leftItemsSupplementBackButton);
+    @Bridge private native static void objc_setLeftItemsSupplementBackButtonSuper(ObjCSuper __super__, Selector __cmd__, boolean leftItemsSupplementBackButton);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/leftItemsSupplementBackButton">@property BOOL leftItemsSupplementBackButton</a>
      * @since Available in iOS 5.0 and later.
@@ -188,8 +188,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setPrompt$ = Selector.register("setPrompt:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setPrompt(UINavigationItem __self__, Selector __cmd__, String prompt);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setPromptSuper(ObjCSuper __super__, Selector __cmd__, String prompt);
+    @Bridge private native static void objc_setPrompt(UINavigationItem __self__, Selector __cmd__, String prompt);
+    @Bridge private native static void objc_setPromptSuper(ObjCSuper __super__, Selector __cmd__, String prompt);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/prompt">@property(nonatomic, copy) NSString *prompt</a>
      * @since Available in iOS 2.0 and later.
@@ -210,8 +210,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setRightBarButtonItem$ = Selector.register("setRightBarButtonItem:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setRightBarButtonItem(UINavigationItem __self__, Selector __cmd__, UIBarButtonItem rightBarButtonItem);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setRightBarButtonItemSuper(ObjCSuper __super__, Selector __cmd__, UIBarButtonItem rightBarButtonItem);
+    @Bridge private native static void objc_setRightBarButtonItem(UINavigationItem __self__, Selector __cmd__, UIBarButtonItem rightBarButtonItem);
+    @Bridge private native static void objc_setRightBarButtonItemSuper(ObjCSuper __super__, Selector __cmd__, UIBarButtonItem rightBarButtonItem);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/rightBarButtonItem">@property(nonatomic, retain) UIBarButtonItem *rightBarButtonItem</a>
      * @since Available in iOS 2.0 and later.
@@ -232,8 +232,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setRightBarButtonItems$ = Selector.register("setRightBarButtonItems:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setRightBarButtonItems(UINavigationItem __self__, Selector __cmd__, NSArray rightBarButtonItems);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setRightBarButtonItemsSuper(ObjCSuper __super__, Selector __cmd__, NSArray rightBarButtonItems);
+    @Bridge private native static void objc_setRightBarButtonItems(UINavigationItem __self__, Selector __cmd__, NSArray rightBarButtonItems);
+    @Bridge private native static void objc_setRightBarButtonItemsSuper(ObjCSuper __super__, Selector __cmd__, NSArray rightBarButtonItems);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/rightBarButtonItems">@property(nonatomic, copy) NSArray *rightBarButtonItems</a>
      * @since Available in iOS 5.0 and later.
@@ -254,8 +254,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTitle$ = Selector.register("setTitle:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTitle(UINavigationItem __self__, Selector __cmd__, String title);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTitleSuper(ObjCSuper __super__, Selector __cmd__, String title);
+    @Bridge private native static void objc_setTitle(UINavigationItem __self__, Selector __cmd__, String title);
+    @Bridge private native static void objc_setTitleSuper(ObjCSuper __super__, Selector __cmd__, String title);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/title">@property(nonatomic, copy) NSString *title</a>
      * @since Available in iOS 2.0 and later.
@@ -276,8 +276,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTitleView$ = Selector.register("setTitleView:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTitleView(UINavigationItem __self__, Selector __cmd__, UIView titleView);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTitleViewSuper(ObjCSuper __super__, Selector __cmd__, UIView titleView);
+    @Bridge private native static void objc_setTitleView(UINavigationItem __self__, Selector __cmd__, UIView titleView);
+    @Bridge private native static void objc_setTitleViewSuper(ObjCSuper __super__, Selector __cmd__, UIView titleView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationItem_Class/Reference/UINavigationItem.html#//apple_ref/occ/instp/UINavigationItem/titleView">@property(nonatomic, retain) UIView *titleView</a>
      * @since Available in iOS 2.0 and later.

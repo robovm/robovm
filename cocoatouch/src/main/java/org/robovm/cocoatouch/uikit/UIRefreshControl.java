@@ -70,8 +70,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAttributedTitle$ = Selector.register("setAttributedTitle:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAttributedTitle(UIRefreshControl __self__, Selector __cmd__, NSAttributedString attributedTitle);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAttributedTitleSuper(ObjCSuper __super__, Selector __cmd__, NSAttributedString attributedTitle);
+    @Bridge private native static void objc_setAttributedTitle(UIRefreshControl __self__, Selector __cmd__, NSAttributedString attributedTitle);
+    @Bridge private native static void objc_setAttributedTitleSuper(ObjCSuper __super__, Selector __cmd__, NSAttributedString attributedTitle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIRefreshControl_class/Reference/Reference.html#//apple_ref/occ/instp/UIRefreshControl/attributedTitle">@property (nonatomic, retain) NSAttributedString *attributedTitle</a>
      * @since Available in iOS 6.0 and later.
@@ -103,8 +103,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTintColor$ = Selector.register("setTintColor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTintColor(UIRefreshControl __self__, Selector __cmd__, UIColor tintColor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor tintColor);
+    @Bridge private native static void objc_setTintColor(UIRefreshControl __self__, Selector __cmd__, UIColor tintColor);
+    @Bridge private native static void objc_setTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor tintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIRefreshControl_class/Reference/Reference.html#//apple_ref/occ/instp/UIRefreshControl/tintColor">@property (nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 6.0 and later.

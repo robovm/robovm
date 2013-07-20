@@ -80,8 +80,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setActivityIndicatorViewStyle$ = Selector.register("setActivityIndicatorViewStyle:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setActivityIndicatorViewStyle(UIActivityIndicatorView __self__, Selector __cmd__, UIActivityIndicatorViewStyle activityIndicatorViewStyle);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setActivityIndicatorViewStyleSuper(ObjCSuper __super__, Selector __cmd__, UIActivityIndicatorViewStyle activityIndicatorViewStyle);
+    @Bridge private native static void objc_setActivityIndicatorViewStyle(UIActivityIndicatorView __self__, Selector __cmd__, UIActivityIndicatorViewStyle activityIndicatorViewStyle);
+    @Bridge private native static void objc_setActivityIndicatorViewStyleSuper(ObjCSuper __super__, Selector __cmd__, UIActivityIndicatorViewStyle activityIndicatorViewStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityIndicatorView_Class/Reference/UIActivityIndicatorView.html#//apple_ref/occ/instp/UIActivityIndicatorView/activityIndicatorViewStyle">@property UIActivityIndicatorViewStyle activityIndicatorViewStyle</a>
      * @since Available in iOS 2.0 and later.
@@ -102,8 +102,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setColor$ = Selector.register("setColor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setColor(UIActivityIndicatorView __self__, Selector __cmd__, UIColor color);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor color);
+    @Bridge private native static void objc_setColor(UIActivityIndicatorView __self__, Selector __cmd__, UIColor color);
+    @Bridge private native static void objc_setColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor color);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityIndicatorView_Class/Reference/UIActivityIndicatorView.html#//apple_ref/occ/instp/UIActivityIndicatorView/color">@property (readwrite, nonatomic, retain) UIColor *color</a>
      * @since Available in iOS 5.0 and later.
@@ -124,8 +124,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setHidesWhenStopped$ = Selector.register("setHidesWhenStopped:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setHidesWhenStopped(UIActivityIndicatorView __self__, Selector __cmd__, boolean hidesWhenStopped);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setHidesWhenStoppedSuper(ObjCSuper __super__, Selector __cmd__, boolean hidesWhenStopped);
+    @Bridge private native static void objc_setHidesWhenStopped(UIActivityIndicatorView __self__, Selector __cmd__, boolean hidesWhenStopped);
+    @Bridge private native static void objc_setHidesWhenStoppedSuper(ObjCSuper __super__, Selector __cmd__, boolean hidesWhenStopped);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityIndicatorView_Class/Reference/UIActivityIndicatorView.html#//apple_ref/occ/instp/UIActivityIndicatorView/hidesWhenStopped">@property BOOL hidesWhenStopped</a>
      * @since Available in iOS 2.0 and later.

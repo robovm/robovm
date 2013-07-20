@@ -89,8 +89,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setBadgeValue$ = Selector.register("setBadgeValue:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setBadgeValue(UITabBarItem __self__, Selector __cmd__, String badgeValue);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBadgeValueSuper(ObjCSuper __super__, Selector __cmd__, String badgeValue);
+    @Bridge private native static void objc_setBadgeValue(UITabBarItem __self__, Selector __cmd__, String badgeValue);
+    @Bridge private native static void objc_setBadgeValueSuper(ObjCSuper __super__, Selector __cmd__, String badgeValue);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarItem_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarItem/badgeValue">@property(nonatomic, copy) NSString *badgeValue</a>
      * @since Available in iOS 2.0 and later.

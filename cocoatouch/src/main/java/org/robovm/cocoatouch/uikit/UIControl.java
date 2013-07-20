@@ -151,8 +151,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setContentHorizontalAlignment$ = Selector.register("setContentHorizontalAlignment:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setContentHorizontalAlignment(UIControl __self__, Selector __cmd__, UIControlContentHorizontalAlignment contentHorizontalAlignment);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setContentHorizontalAlignmentSuper(ObjCSuper __super__, Selector __cmd__, UIControlContentHorizontalAlignment contentHorizontalAlignment);
+    @Bridge private native static void objc_setContentHorizontalAlignment(UIControl __self__, Selector __cmd__, UIControlContentHorizontalAlignment contentHorizontalAlignment);
+    @Bridge private native static void objc_setContentHorizontalAlignmentSuper(ObjCSuper __super__, Selector __cmd__, UIControlContentHorizontalAlignment contentHorizontalAlignment);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIControl/contentHorizontalAlignment">@property(nonatomic) UIControlContentHorizontalAlignment contentHorizontalAlignment</a>
      * @since Available in iOS 2.0 and later.
@@ -173,8 +173,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setContentVerticalAlignment$ = Selector.register("setContentVerticalAlignment:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setContentVerticalAlignment(UIControl __self__, Selector __cmd__, UIControlContentVerticalAlignment contentVerticalAlignment);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setContentVerticalAlignmentSuper(ObjCSuper __super__, Selector __cmd__, UIControlContentVerticalAlignment contentVerticalAlignment);
+    @Bridge private native static void objc_setContentVerticalAlignment(UIControl __self__, Selector __cmd__, UIControlContentVerticalAlignment contentVerticalAlignment);
+    @Bridge private native static void objc_setContentVerticalAlignmentSuper(ObjCSuper __super__, Selector __cmd__, UIControlContentVerticalAlignment contentVerticalAlignment);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIControl/contentVerticalAlignment">@property(nonatomic) UIControlContentVerticalAlignment contentVerticalAlignment</a>
      * @since Available in iOS 2.0 and later.
@@ -195,8 +195,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setEnabled$ = Selector.register("setEnabled:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setEnabled(UIControl __self__, Selector __cmd__, boolean enabled);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setEnabledSuper(ObjCSuper __super__, Selector __cmd__, boolean enabled);
+    @Bridge private native static void objc_setEnabled(UIControl __self__, Selector __cmd__, boolean enabled);
+    @Bridge private native static void objc_setEnabledSuper(ObjCSuper __super__, Selector __cmd__, boolean enabled);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIControl/enabled">@property(nonatomic, getter=isEnabled) BOOL enabled</a>
      * @since Available in iOS 2.0 and later.
@@ -217,8 +217,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setHighlighted$ = Selector.register("setHighlighted:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setHighlighted(UIControl __self__, Selector __cmd__, boolean highlighted);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setHighlightedSuper(ObjCSuper __super__, Selector __cmd__, boolean highlighted);
+    @Bridge private native static void objc_setHighlighted(UIControl __self__, Selector __cmd__, boolean highlighted);
+    @Bridge private native static void objc_setHighlightedSuper(ObjCSuper __super__, Selector __cmd__, boolean highlighted);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIControl/highlighted">@property(nonatomic, getter=isHighlighted) BOOL highlighted</a>
      * @since Available in iOS 2.0 and later.
@@ -239,8 +239,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setSelected$ = Selector.register("setSelected:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setSelected(UIControl __self__, Selector __cmd__, boolean selected);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSelectedSuper(ObjCSuper __super__, Selector __cmd__, boolean selected);
+    @Bridge private native static void objc_setSelected(UIControl __self__, Selector __cmd__, boolean selected);
+    @Bridge private native static void objc_setSelectedSuper(ObjCSuper __super__, Selector __cmd__, boolean selected);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIControl/selected">@property(nonatomic, getter=isSelected) BOOL selected</a>
      * @since Available in iOS 2.0 and later.

@@ -75,8 +75,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setFrameInterval$ = Selector.register("setFrameInterval:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setFrameInterval(CADisplayLink __self__, Selector __cmd__, int frameInterval);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setFrameIntervalSuper(ObjCSuper __super__, Selector __cmd__, int frameInterval);
+    @Bridge private native static void objc_setFrameInterval(CADisplayLink __self__, Selector __cmd__, int frameInterval);
+    @Bridge private native static void objc_setFrameIntervalSuper(ObjCSuper __super__, Selector __cmd__, int frameInterval);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../QuartzCore/Reference/CADisplayLink_ClassRef/Reference/Reference.html#//apple_ref/occ/instp/CADisplayLink/frameInterval">@property(nonatomic) NSInteger frameInterval</a>
      * @since Available in iOS 3.1 and later.
@@ -97,8 +97,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setPaused$ = Selector.register("setPaused:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setPaused(CADisplayLink __self__, Selector __cmd__, boolean paused);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setPausedSuper(ObjCSuper __super__, Selector __cmd__, boolean paused);
+    @Bridge private native static void objc_setPaused(CADisplayLink __self__, Selector __cmd__, boolean paused);
+    @Bridge private native static void objc_setPausedSuper(ObjCSuper __super__, Selector __cmd__, boolean paused);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../QuartzCore/Reference/CADisplayLink_ClassRef/Reference/Reference.html#//apple_ref/occ/instp/CADisplayLink/paused">@property(getter=isPaused, nonatomic) BOOL paused</a>
      * @since Available in iOS 3.1 and later.

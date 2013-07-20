@@ -90,8 +90,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setModelConfiguration$ = Selector.register("setModelConfiguration:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setModelConfiguration(UIManagedDocument __self__, Selector __cmd__, String modelConfiguration);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setModelConfigurationSuper(ObjCSuper __super__, Selector __cmd__, String modelConfiguration);
+    @Bridge private native static void objc_setModelConfiguration(UIManagedDocument __self__, Selector __cmd__, String modelConfiguration);
+    @Bridge private native static void objc_setModelConfigurationSuper(ObjCSuper __super__, Selector __cmd__, String modelConfiguration);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIManagedDocument_Class/Reference/Reference.html#//apple_ref/occ/instp/UIManagedDocument/modelConfiguration">@property(nonatomic, copy) NSString *modelConfiguration</a>
      * @since Available in iOS 5.0 and later.
@@ -112,8 +112,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setPersistentStoreOptions$ = Selector.register("setPersistentStoreOptions:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setPersistentStoreOptions(UIManagedDocument __self__, Selector __cmd__, NSDictionary persistentStoreOptions);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setPersistentStoreOptionsSuper(ObjCSuper __super__, Selector __cmd__, NSDictionary persistentStoreOptions);
+    @Bridge private native static void objc_setPersistentStoreOptions(UIManagedDocument __self__, Selector __cmd__, NSDictionary persistentStoreOptions);
+    @Bridge private native static void objc_setPersistentStoreOptionsSuper(ObjCSuper __super__, Selector __cmd__, NSDictionary persistentStoreOptions);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIManagedDocument_Class/Reference/Reference.html#//apple_ref/occ/instp/UIManagedDocument/persistentStoreOptions">@property(nonatomic, copy) NSDictionary *persistentStoreOptions</a>
      * @since Available in iOS 5.0 and later.

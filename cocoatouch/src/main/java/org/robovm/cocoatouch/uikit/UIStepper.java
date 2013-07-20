@@ -71,8 +71,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAutorepeat$ = Selector.register("setAutorepeat:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAutorepeat(UIStepper __self__, Selector __cmd__, boolean autorepeat);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAutorepeatSuper(ObjCSuper __super__, Selector __cmd__, boolean autorepeat);
+    @Bridge private native static void objc_setAutorepeat(UIStepper __self__, Selector __cmd__, boolean autorepeat);
+    @Bridge private native static void objc_setAutorepeatSuper(ObjCSuper __super__, Selector __cmd__, boolean autorepeat);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/autorepeat">@property(nonatomic) BOOL autorepeat</a>
      * @since Available in iOS 5.0 and later.
@@ -93,8 +93,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setContinuous$ = Selector.register("setContinuous:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setContinuous(UIStepper __self__, Selector __cmd__, boolean continuous);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setContinuousSuper(ObjCSuper __super__, Selector __cmd__, boolean continuous);
+    @Bridge private native static void objc_setContinuous(UIStepper __self__, Selector __cmd__, boolean continuous);
+    @Bridge private native static void objc_setContinuousSuper(ObjCSuper __super__, Selector __cmd__, boolean continuous);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/continuous">@property(nonatomic, getter=isContinuous) BOOL continuous</a>
      * @since Available in iOS 5.0 and later.
@@ -115,8 +115,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setMaximumValue$ = Selector.register("setMaximumValue:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setMaximumValue(UIStepper __self__, Selector __cmd__, double maximumValue);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMaximumValueSuper(ObjCSuper __super__, Selector __cmd__, double maximumValue);
+    @Bridge private native static void objc_setMaximumValue(UIStepper __self__, Selector __cmd__, double maximumValue);
+    @Bridge private native static void objc_setMaximumValueSuper(ObjCSuper __super__, Selector __cmd__, double maximumValue);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/maximumValue">@property(nonatomic) double maximumValue</a>
      * @since Available in iOS 5.0 and later.
@@ -137,8 +137,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setMinimumValue$ = Selector.register("setMinimumValue:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setMinimumValue(UIStepper __self__, Selector __cmd__, double minimumValue);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMinimumValueSuper(ObjCSuper __super__, Selector __cmd__, double minimumValue);
+    @Bridge private native static void objc_setMinimumValue(UIStepper __self__, Selector __cmd__, double minimumValue);
+    @Bridge private native static void objc_setMinimumValueSuper(ObjCSuper __super__, Selector __cmd__, double minimumValue);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/minimumValue">@property(nonatomic) double minimumValue</a>
      * @since Available in iOS 5.0 and later.
@@ -159,8 +159,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setStepValue$ = Selector.register("setStepValue:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setStepValue(UIStepper __self__, Selector __cmd__, double stepValue);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStepValueSuper(ObjCSuper __super__, Selector __cmd__, double stepValue);
+    @Bridge private native static void objc_setStepValue(UIStepper __self__, Selector __cmd__, double stepValue);
+    @Bridge private native static void objc_setStepValueSuper(ObjCSuper __super__, Selector __cmd__, double stepValue);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/stepValue">@property(nonatomic) double stepValue</a>
      * @since Available in iOS 5.0 and later.
@@ -181,8 +181,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTintColor$ = Selector.register("setTintColor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTintColor(UIStepper __self__, Selector __cmd__, UIColor tintColor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor tintColor);
+    @Bridge private native static void objc_setTintColor(UIStepper __self__, Selector __cmd__, UIColor tintColor);
+    @Bridge private native static void objc_setTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor tintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 6.0 and later.
@@ -203,8 +203,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setValue$ = Selector.register("setValue:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setValue(UIStepper __self__, Selector __cmd__, double value);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setValueSuper(ObjCSuper __super__, Selector __cmd__, double value);
+    @Bridge private native static void objc_setValue(UIStepper __self__, Selector __cmd__, double value);
+    @Bridge private native static void objc_setValueSuper(ObjCSuper __super__, Selector __cmd__, double value);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/value">@property(nonatomic) double value</a>
      * @since Available in iOS 5.0 and later.
@@ -225,8 +225,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setWraps$ = Selector.register("setWraps:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setWraps(UIStepper __self__, Selector __cmd__, boolean wraps);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setWrapsSuper(ObjCSuper __super__, Selector __cmd__, boolean wraps);
+    @Bridge private native static void objc_setWraps(UIStepper __self__, Selector __cmd__, boolean wraps);
+    @Bridge private native static void objc_setWrapsSuper(ObjCSuper __super__, Selector __cmd__, boolean wraps);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStepper_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStepper/wraps">@property(nonatomic) BOOL wraps</a>
      * @since Available in iOS 5.0 and later.

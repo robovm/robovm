@@ -68,8 +68,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setURL$ = Selector.register("setURL:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setURL(UIPasteboard __self__, Selector __cmd__, NSURL URL);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setURLSuper(ObjCSuper __super__, Selector __cmd__, NSURL URL);
+    @Bridge private native static void objc_setURL(UIPasteboard __self__, Selector __cmd__, NSURL URL);
+    @Bridge private native static void objc_setURLSuper(ObjCSuper __super__, Selector __cmd__, NSURL URL);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/URL">@property(nonatomic, copy) NSURL *URL</a>
      * @since Available in iOS 3.0 and later.
@@ -90,8 +90,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setURLs$ = Selector.register("setURLs:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setURLs(UIPasteboard __self__, Selector __cmd__, NSArray URLs);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setURLsSuper(ObjCSuper __super__, Selector __cmd__, NSArray URLs);
+    @Bridge private native static void objc_setURLs(UIPasteboard __self__, Selector __cmd__, NSArray URLs);
+    @Bridge private native static void objc_setURLsSuper(ObjCSuper __super__, Selector __cmd__, NSArray URLs);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/URLs">@property(nonatomic, copy) NSArray *URLs</a>
      * @since Available in iOS 3.0 and later.
@@ -123,8 +123,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setColor$ = Selector.register("setColor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setColor(UIPasteboard __self__, Selector __cmd__, UIColor color);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor color);
+    @Bridge private native static void objc_setColor(UIPasteboard __self__, Selector __cmd__, UIColor color);
+    @Bridge private native static void objc_setColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor color);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/color">@property(nonatomic, copy) UIColor *color</a>
      * @since Available in iOS 3.0 and later.
@@ -145,8 +145,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setColors$ = Selector.register("setColors:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setColors(UIPasteboard __self__, Selector __cmd__, NSArray colors);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setColorsSuper(ObjCSuper __super__, Selector __cmd__, NSArray colors);
+    @Bridge private native static void objc_setColors(UIPasteboard __self__, Selector __cmd__, NSArray colors);
+    @Bridge private native static void objc_setColorsSuper(ObjCSuper __super__, Selector __cmd__, NSArray colors);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/colors">@property(nonatomic, copy) NSArray *colors</a>
      * @since Available in iOS 3.0 and later.
@@ -178,8 +178,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setImage$ = Selector.register("setImage:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setImage(UIPasteboard __self__, Selector __cmd__, UIImage image);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage image);
+    @Bridge private native static void objc_setImage(UIPasteboard __self__, Selector __cmd__, UIImage image);
+    @Bridge private native static void objc_setImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage image);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/image">@property(nonatomic, copy) UIImage *image</a>
      * @since Available in iOS 3.0 and later.
@@ -200,8 +200,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setImages$ = Selector.register("setImages:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setImages(UIPasteboard __self__, Selector __cmd__, NSArray images);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setImagesSuper(ObjCSuper __super__, Selector __cmd__, NSArray images);
+    @Bridge private native static void objc_setImages(UIPasteboard __self__, Selector __cmd__, NSArray images);
+    @Bridge private native static void objc_setImagesSuper(ObjCSuper __super__, Selector __cmd__, NSArray images);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/images">@property(nonatomic, copy) NSArray *images</a>
      * @since Available in iOS 3.0 and later.
@@ -222,8 +222,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setItems$ = Selector.register("setItems:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setItems(UIPasteboard __self__, Selector __cmd__, NSArray items);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setItemsSuper(ObjCSuper __super__, Selector __cmd__, NSArray items);
+    @Bridge private native static void objc_setItems(UIPasteboard __self__, Selector __cmd__, NSArray items);
+    @Bridge private native static void objc_setItemsSuper(ObjCSuper __super__, Selector __cmd__, NSArray items);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/items">@property(nonatomic,copy) NSArray *items</a>
      * @since Available in iOS 3.0 and later.
@@ -255,8 +255,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setPersistent$ = Selector.register("setPersistent:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setPersistent(UIPasteboard __self__, Selector __cmd__, boolean persistent);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setPersistentSuper(ObjCSuper __super__, Selector __cmd__, boolean persistent);
+    @Bridge private native static void objc_setPersistent(UIPasteboard __self__, Selector __cmd__, boolean persistent);
+    @Bridge private native static void objc_setPersistentSuper(ObjCSuper __super__, Selector __cmd__, boolean persistent);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/persistent">@property(getter=isPersistent, nonatomic) BOOL persistent</a>
      * @since Available in iOS 3.0 and later.
@@ -277,8 +277,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setString$ = Selector.register("setString:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setString(UIPasteboard __self__, Selector __cmd__, String string);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStringSuper(ObjCSuper __super__, Selector __cmd__, String string);
+    @Bridge private native static void objc_setString(UIPasteboard __self__, Selector __cmd__, String string);
+    @Bridge private native static void objc_setStringSuper(ObjCSuper __super__, Selector __cmd__, String string);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/string">@property(nonatomic, copy) NSString *string</a>
      * @since Available in iOS 3.0 and later.
@@ -299,8 +299,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setStrings$ = Selector.register("setStrings:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setStrings(UIPasteboard __self__, Selector __cmd__, NSArray strings);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStringsSuper(ObjCSuper __super__, Selector __cmd__, NSArray strings);
+    @Bridge private native static void objc_setStrings(UIPasteboard __self__, Selector __cmd__, NSArray strings);
+    @Bridge private native static void objc_setStringsSuper(ObjCSuper __super__, Selector __cmd__, NSArray strings);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/strings">@property(nonatomic, copy) NSArray *strings</a>
      * @since Available in iOS 3.0 and later.

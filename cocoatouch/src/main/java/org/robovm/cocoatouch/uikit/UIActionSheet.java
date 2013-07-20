@@ -70,8 +70,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setActionSheetStyle$ = Selector.register("setActionSheetStyle:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setActionSheetStyle(UIActionSheet __self__, Selector __cmd__, UIActionSheetStyle actionSheetStyle);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setActionSheetStyleSuper(ObjCSuper __super__, Selector __cmd__, UIActionSheetStyle actionSheetStyle);
+    @Bridge private native static void objc_setActionSheetStyle(UIActionSheet __self__, Selector __cmd__, UIActionSheetStyle actionSheetStyle);
+    @Bridge private native static void objc_setActionSheetStyleSuper(ObjCSuper __super__, Selector __cmd__, UIActionSheetStyle actionSheetStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/actionSheetStyle">@property(nonatomic) UIActionSheetStyle actionSheetStyle</a>
      * @since Available in iOS 2.0 and later.
@@ -92,8 +92,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setCancelButtonIndex$ = Selector.register("setCancelButtonIndex:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setCancelButtonIndex(UIActionSheet __self__, Selector __cmd__, int cancelButtonIndex);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setCancelButtonIndexSuper(ObjCSuper __super__, Selector __cmd__, int cancelButtonIndex);
+    @Bridge private native static void objc_setCancelButtonIndex(UIActionSheet __self__, Selector __cmd__, int cancelButtonIndex);
+    @Bridge private native static void objc_setCancelButtonIndexSuper(ObjCSuper __super__, Selector __cmd__, int cancelButtonIndex);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/cancelButtonIndex">@property(nonatomic) NSInteger cancelButtonIndex</a>
      * @since Available in iOS 2.0 and later.
@@ -114,8 +114,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDelegate$ = Selector.register("setDelegate:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UIActionSheet __self__, Selector __cmd__, UIActionSheetDelegate delegate);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIActionSheetDelegate delegate);
+    @Bridge private native static void objc_setDelegate(UIActionSheet __self__, Selector __cmd__, UIActionSheetDelegate delegate);
+    @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIActionSheetDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/delegate">@property(nonatomic, assign) id&amp;lt;UIActionSheetDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
@@ -136,8 +136,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDestructiveButtonIndex$ = Selector.register("setDestructiveButtonIndex:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDestructiveButtonIndex(UIActionSheet __self__, Selector __cmd__, int destructiveButtonIndex);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDestructiveButtonIndexSuper(ObjCSuper __super__, Selector __cmd__, int destructiveButtonIndex);
+    @Bridge private native static void objc_setDestructiveButtonIndex(UIActionSheet __self__, Selector __cmd__, int destructiveButtonIndex);
+    @Bridge private native static void objc_setDestructiveButtonIndexSuper(ObjCSuper __super__, Selector __cmd__, int destructiveButtonIndex);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/destructiveButtonIndex">@property(nonatomic) NSInteger destructiveButtonIndex</a>
      * @since Available in iOS 2.0 and later.
@@ -180,8 +180,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTitle$ = Selector.register("setTitle:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTitle(UIActionSheet __self__, Selector __cmd__, String title);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTitleSuper(ObjCSuper __super__, Selector __cmd__, String title);
+    @Bridge private native static void objc_setTitle(UIActionSheet __self__, Selector __cmd__, String title);
+    @Bridge private native static void objc_setTitleSuper(ObjCSuper __super__, Selector __cmd__, String title);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/title">@property(nonatomic, copy) NSString *title</a>
      * @since Available in iOS 2.0 and later.

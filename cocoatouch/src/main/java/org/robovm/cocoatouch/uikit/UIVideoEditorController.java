@@ -68,8 +68,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDelegate$ = Selector.register("setDelegate:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UIVideoEditorController __self__, Selector __cmd__, UIVideoEditorControllerDelegate delegate);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIVideoEditorControllerDelegate delegate);
+    @Bridge private native static void objc_setDelegate(UIVideoEditorController __self__, Selector __cmd__, UIVideoEditorControllerDelegate delegate);
+    @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIVideoEditorControllerDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorController_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/UIVideoEditorController/delegate">@property(nonatomic,assign) id &amp;lt;UINavigationControllerDelegate, UIVideoEditorControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.1 and later.
@@ -90,8 +90,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setVideoMaximumDuration$ = Selector.register("setVideoMaximumDuration:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setVideoMaximumDuration(UIVideoEditorController __self__, Selector __cmd__, double videoMaximumDuration);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setVideoMaximumDurationSuper(ObjCSuper __super__, Selector __cmd__, double videoMaximumDuration);
+    @Bridge private native static void objc_setVideoMaximumDuration(UIVideoEditorController __self__, Selector __cmd__, double videoMaximumDuration);
+    @Bridge private native static void objc_setVideoMaximumDurationSuper(ObjCSuper __super__, Selector __cmd__, double videoMaximumDuration);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorController_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/UIVideoEditorController/videoMaximumDuration">@property(nonatomic) NSTimeInterval videoMaximumDuration</a>
      * @since Available in iOS 3.1 and later.
@@ -112,8 +112,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setVideoPath$ = Selector.register("setVideoPath:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setVideoPath(UIVideoEditorController __self__, Selector __cmd__, String videoPath);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setVideoPathSuper(ObjCSuper __super__, Selector __cmd__, String videoPath);
+    @Bridge private native static void objc_setVideoPath(UIVideoEditorController __self__, Selector __cmd__, String videoPath);
+    @Bridge private native static void objc_setVideoPathSuper(ObjCSuper __super__, Selector __cmd__, String videoPath);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorController_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/UIVideoEditorController/videoPath">@property(nonatomic, copy) NSString *videoPath</a>
      * @since Available in iOS 3.1 and later.
@@ -134,8 +134,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setVideoQuality$ = Selector.register("setVideoQuality:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setVideoQuality(UIVideoEditorController __self__, Selector __cmd__, UIImagePickerControllerQualityType videoQuality);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setVideoQualitySuper(ObjCSuper __super__, Selector __cmd__, UIImagePickerControllerQualityType videoQuality);
+    @Bridge private native static void objc_setVideoQuality(UIVideoEditorController __self__, Selector __cmd__, UIImagePickerControllerQualityType videoQuality);
+    @Bridge private native static void objc_setVideoQualitySuper(ObjCSuper __super__, Selector __cmd__, UIImagePickerControllerQualityType videoQuality);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorController_ClassReference/Reference/Reference.html#//apple_ref/occ/instp/UIVideoEditorController/videoQuality">@property(nonatomic) UIImagePickerControllerQualityType videoQuality</a>
      * @since Available in iOS 3.1 and later.

@@ -78,8 +78,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setMarkupText$ = Selector.register("setMarkupText:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setMarkupText(UIMarkupTextPrintFormatter __self__, Selector __cmd__, String markupText);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMarkupTextSuper(ObjCSuper __super__, Selector __cmd__, String markupText);
+    @Bridge private native static void objc_setMarkupText(UIMarkupTextPrintFormatter __self__, Selector __cmd__, String markupText);
+    @Bridge private native static void objc_setMarkupTextSuper(ObjCSuper __super__, Selector __cmd__, String markupText);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIMarkupTextPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIMarkupTextPrintFormatter/markupText">@property(nonatomic, copy) NSString *markupText</a>
      * @since Available in iOS 4.2 and later.

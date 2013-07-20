@@ -67,8 +67,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setShadowBlurRadius$ = Selector.register("setShadowBlurRadius:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setShadowBlurRadius(NSShadow __self__, Selector __cmd__, float shadowBlurRadius);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShadowBlurRadiusSuper(ObjCSuper __super__, Selector __cmd__, float shadowBlurRadius);
+    @Bridge private native static void objc_setShadowBlurRadius(NSShadow __self__, Selector __cmd__, float shadowBlurRadius);
+    @Bridge private native static void objc_setShadowBlurRadiusSuper(ObjCSuper __super__, Selector __cmd__, float shadowBlurRadius);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSShadow_Class/Reference/Reference.html#//apple_ref/occ/instp/NSShadow/shadowBlurRadius">@property (nonatomic, assign) CGFloat shadowBlurRadius</a>
      * @since Available in iOS 6.0 and later.
@@ -89,8 +89,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setShadowColor$ = Selector.register("setShadowColor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setShadowColor(NSShadow __self__, Selector __cmd__, NSObject shadowColor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShadowColorSuper(ObjCSuper __super__, Selector __cmd__, NSObject shadowColor);
+    @Bridge private native static void objc_setShadowColor(NSShadow __self__, Selector __cmd__, NSObject shadowColor);
+    @Bridge private native static void objc_setShadowColorSuper(ObjCSuper __super__, Selector __cmd__, NSObject shadowColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSShadow_Class/Reference/Reference.html#//apple_ref/occ/instp/NSShadow/shadowColor">@property (nonatomic, retain) id shadowColor</a>
      * @since Available in iOS 6.0 and later.
@@ -111,8 +111,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setShadowOffset$ = Selector.register("setShadowOffset:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setShadowOffset(NSShadow __self__, Selector __cmd__, @ByVal CGSize shadowOffset);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShadowOffsetSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGSize shadowOffset);
+    @Bridge private native static void objc_setShadowOffset(NSShadow __self__, Selector __cmd__, @ByVal CGSize shadowOffset);
+    @Bridge private native static void objc_setShadowOffsetSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGSize shadowOffset);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../Cocoa/Reference/ApplicationKit/Classes/NSShadow_Class/Reference/Reference.html#//apple_ref/occ/instp/NSShadow/shadowOffset">@property (nonatomic, assign) CGSize shadowOffset</a>
      * @since Available in iOS 6.0 and later.

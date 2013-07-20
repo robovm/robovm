@@ -92,8 +92,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAnimationDuration$ = Selector.register("setAnimationDuration:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAnimationDuration(UIImageView __self__, Selector __cmd__, double animationDuration);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAnimationDurationSuper(ObjCSuper __super__, Selector __cmd__, double animationDuration);
+    @Bridge private native static void objc_setAnimationDuration(UIImageView __self__, Selector __cmd__, double animationDuration);
+    @Bridge private native static void objc_setAnimationDurationSuper(ObjCSuper __super__, Selector __cmd__, double animationDuration);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/animationDuration">@property(nonatomic) NSTimeInterval animationDuration</a>
      * @since Available in iOS 2.0 and later.
@@ -114,8 +114,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAnimationImages$ = Selector.register("setAnimationImages:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAnimationImages(UIImageView __self__, Selector __cmd__, NSArray animationImages);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAnimationImagesSuper(ObjCSuper __super__, Selector __cmd__, NSArray animationImages);
+    @Bridge private native static void objc_setAnimationImages(UIImageView __self__, Selector __cmd__, NSArray animationImages);
+    @Bridge private native static void objc_setAnimationImagesSuper(ObjCSuper __super__, Selector __cmd__, NSArray animationImages);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/animationImages">@property(nonatomic, copy) NSArray *animationImages</a>
      * @since Available in iOS 2.0 and later.
@@ -136,8 +136,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAnimationRepeatCount$ = Selector.register("setAnimationRepeatCount:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAnimationRepeatCount(UIImageView __self__, Selector __cmd__, int animationRepeatCount);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAnimationRepeatCountSuper(ObjCSuper __super__, Selector __cmd__, int animationRepeatCount);
+    @Bridge private native static void objc_setAnimationRepeatCount(UIImageView __self__, Selector __cmd__, int animationRepeatCount);
+    @Bridge private native static void objc_setAnimationRepeatCountSuper(ObjCSuper __super__, Selector __cmd__, int animationRepeatCount);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/animationRepeatCount">@property(nonatomic) NSInteger animationRepeatCount</a>
      * @since Available in iOS 2.0 and later.
@@ -158,8 +158,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setHighlighted$ = Selector.register("setHighlighted:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setHighlighted(UIImageView __self__, Selector __cmd__, boolean highlighted);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setHighlightedSuper(ObjCSuper __super__, Selector __cmd__, boolean highlighted);
+    @Bridge private native static void objc_setHighlighted(UIImageView __self__, Selector __cmd__, boolean highlighted);
+    @Bridge private native static void objc_setHighlightedSuper(ObjCSuper __super__, Selector __cmd__, boolean highlighted);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/highlighted">@property(nonatomic, getter=isHighlighted) BOOL highlighted</a>
      * @since Available in iOS 3.0 and later.
@@ -180,8 +180,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setHighlightedAnimationImages$ = Selector.register("setHighlightedAnimationImages:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setHighlightedAnimationImages(UIImageView __self__, Selector __cmd__, NSArray highlightedAnimationImages);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setHighlightedAnimationImagesSuper(ObjCSuper __super__, Selector __cmd__, NSArray highlightedAnimationImages);
+    @Bridge private native static void objc_setHighlightedAnimationImages(UIImageView __self__, Selector __cmd__, NSArray highlightedAnimationImages);
+    @Bridge private native static void objc_setHighlightedAnimationImagesSuper(ObjCSuper __super__, Selector __cmd__, NSArray highlightedAnimationImages);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/highlightedAnimationImages">@property(nonatomic, copy) NSArray *highlightedAnimationImages</a>
      * @since Available in iOS 3.0 and later.
@@ -202,8 +202,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setHighlightedImage$ = Selector.register("setHighlightedImage:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setHighlightedImage(UIImageView __self__, Selector __cmd__, UIImage highlightedImage);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setHighlightedImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage highlightedImage);
+    @Bridge private native static void objc_setHighlightedImage(UIImageView __self__, Selector __cmd__, UIImage highlightedImage);
+    @Bridge private native static void objc_setHighlightedImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage highlightedImage);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/highlightedImage">@property(nonatomic, retain) UIImage *highlightedImage</a>
      * @since Available in iOS 3.0 and later.
@@ -224,8 +224,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setImage$ = Selector.register("setImage:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setImage(UIImageView __self__, Selector __cmd__, UIImage image);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage image);
+    @Bridge private native static void objc_setImage(UIImageView __self__, Selector __cmd__, UIImage image);
+    @Bridge private native static void objc_setImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage image);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/image">@property(nonatomic, retain) UIImage *image</a>
      * @since Available in iOS 2.0 and later.
@@ -246,8 +246,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setUserInteractionEnabled$ = Selector.register("setUserInteractionEnabled:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setUserInteractionEnabled(UIImageView __self__, Selector __cmd__, boolean userInteractionEnabled);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setUserInteractionEnabledSuper(ObjCSuper __super__, Selector __cmd__, boolean userInteractionEnabled);
+    @Bridge private native static void objc_setUserInteractionEnabled(UIImageView __self__, Selector __cmd__, boolean userInteractionEnabled);
+    @Bridge private native static void objc_setUserInteractionEnabledSuper(ObjCSuper __super__, Selector __cmd__, boolean userInteractionEnabled);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/userInteractionEnabled">@property(nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled</a>
      * @since Available in iOS 2.0 and later.

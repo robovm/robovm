@@ -81,8 +81,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setProgress$ = Selector.register("setProgress:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setProgress(UIProgressView __self__, Selector __cmd__, float progress);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setProgressSuper(ObjCSuper __super__, Selector __cmd__, float progress);
+    @Bridge private native static void objc_setProgress(UIProgressView __self__, Selector __cmd__, float progress);
+    @Bridge private native static void objc_setProgressSuper(ObjCSuper __super__, Selector __cmd__, float progress);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIProgressView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIProgressView/progress">@property(nonatomic) float progress</a>
      * @since Available in iOS 2.0 and later.
@@ -103,8 +103,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setProgressImage$ = Selector.register("setProgressImage:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setProgressImage(UIProgressView __self__, Selector __cmd__, UIImage progressImage);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setProgressImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage progressImage);
+    @Bridge private native static void objc_setProgressImage(UIProgressView __self__, Selector __cmd__, UIImage progressImage);
+    @Bridge private native static void objc_setProgressImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage progressImage);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIProgressView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIProgressView/progressImage">@property(nonatomic, retain) UIImage *progressImage</a>
      * @since Available in iOS 5.0 and later.
@@ -125,8 +125,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setProgressTintColor$ = Selector.register("setProgressTintColor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setProgressTintColor(UIProgressView __self__, Selector __cmd__, UIColor progressTintColor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setProgressTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor progressTintColor);
+    @Bridge private native static void objc_setProgressTintColor(UIProgressView __self__, Selector __cmd__, UIColor progressTintColor);
+    @Bridge private native static void objc_setProgressTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor progressTintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIProgressView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIProgressView/progressTintColor">@property(nonatomic, retain) UIColor *progressTintColor</a>
      * @since Available in iOS 5.0 and later.
@@ -147,8 +147,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setProgressViewStyle$ = Selector.register("setProgressViewStyle:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setProgressViewStyle(UIProgressView __self__, Selector __cmd__, UIProgressViewStyle progressViewStyle);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setProgressViewStyleSuper(ObjCSuper __super__, Selector __cmd__, UIProgressViewStyle progressViewStyle);
+    @Bridge private native static void objc_setProgressViewStyle(UIProgressView __self__, Selector __cmd__, UIProgressViewStyle progressViewStyle);
+    @Bridge private native static void objc_setProgressViewStyleSuper(ObjCSuper __super__, Selector __cmd__, UIProgressViewStyle progressViewStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIProgressView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIProgressView/progressViewStyle">@property(nonatomic) UIProgressViewStyle progressViewStyle</a>
      * @since Available in iOS 2.0 and later.
@@ -169,8 +169,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTrackImage$ = Selector.register("setTrackImage:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTrackImage(UIProgressView __self__, Selector __cmd__, UIImage trackImage);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTrackImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage trackImage);
+    @Bridge private native static void objc_setTrackImage(UIProgressView __self__, Selector __cmd__, UIImage trackImage);
+    @Bridge private native static void objc_setTrackImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage trackImage);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIProgressView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIProgressView/trackImage">@property(nonatomic, retain) UIImage *trackImage</a>
      * @since Available in iOS 5.0 and later.
@@ -191,8 +191,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTrackTintColor$ = Selector.register("setTrackTintColor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTrackTintColor(UIProgressView __self__, Selector __cmd__, UIColor trackTintColor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTrackTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor trackTintColor);
+    @Bridge private native static void objc_setTrackTintColor(UIProgressView __self__, Selector __cmd__, UIColor trackTintColor);
+    @Bridge private native static void objc_setTrackTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor trackTintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIProgressView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIProgressView/trackTintColor">@property(nonatomic, retain) UIColor *trackTintColor</a>
      * @since Available in iOS 5.0 and later.

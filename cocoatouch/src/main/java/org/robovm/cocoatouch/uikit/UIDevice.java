@@ -79,8 +79,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setBatteryMonitoringEnabled$ = Selector.register("setBatteryMonitoringEnabled:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setBatteryMonitoringEnabled(UIDevice __self__, Selector __cmd__, boolean batteryMonitoringEnabled);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBatteryMonitoringEnabledSuper(ObjCSuper __super__, Selector __cmd__, boolean batteryMonitoringEnabled);
+    @Bridge private native static void objc_setBatteryMonitoringEnabled(UIDevice __self__, Selector __cmd__, boolean batteryMonitoringEnabled);
+    @Bridge private native static void objc_setBatteryMonitoringEnabledSuper(ObjCSuper __super__, Selector __cmd__, boolean batteryMonitoringEnabled);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDevice_Class/Reference/UIDevice.html#//apple_ref/occ/instp/UIDevice/batteryMonitoringEnabled">@property(nonatomic, getter=isBatteryMonitoringEnabled) BOOL batteryMonitoringEnabled</a>
      * @since Available in iOS 3.0 and later.
@@ -178,8 +178,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setProximityMonitoringEnabled$ = Selector.register("setProximityMonitoringEnabled:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setProximityMonitoringEnabled(UIDevice __self__, Selector __cmd__, boolean proximityMonitoringEnabled);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setProximityMonitoringEnabledSuper(ObjCSuper __super__, Selector __cmd__, boolean proximityMonitoringEnabled);
+    @Bridge private native static void objc_setProximityMonitoringEnabled(UIDevice __self__, Selector __cmd__, boolean proximityMonitoringEnabled);
+    @Bridge private native static void objc_setProximityMonitoringEnabledSuper(ObjCSuper __super__, Selector __cmd__, boolean proximityMonitoringEnabled);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDevice_Class/Reference/UIDevice.html#//apple_ref/occ/instp/UIDevice/proximityMonitoringEnabled">@property(nonatomic, getter=isProximityMonitoringEnabled) BOOL proximityMonitoringEnabled</a>
      * @since Available in iOS 3.0 and later.

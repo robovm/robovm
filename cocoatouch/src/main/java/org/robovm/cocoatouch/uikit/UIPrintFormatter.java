@@ -68,8 +68,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setContentInsets$ = Selector.register("setContentInsets:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setContentInsets(UIPrintFormatter __self__, Selector __cmd__, @ByVal UIEdgeInsets contentInsets);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setContentInsetsSuper(ObjCSuper __super__, Selector __cmd__, @ByVal UIEdgeInsets contentInsets);
+    @Bridge private native static void objc_setContentInsets(UIPrintFormatter __self__, Selector __cmd__, @ByVal UIEdgeInsets contentInsets);
+    @Bridge private native static void objc_setContentInsetsSuper(ObjCSuper __super__, Selector __cmd__, @ByVal UIEdgeInsets contentInsets);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/contentInsets">@property(nonatomic) UIEdgeInsets contentInsets</a>
      * @since Available in iOS 4.2 and later.
@@ -90,8 +90,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setMaximumContentHeight$ = Selector.register("setMaximumContentHeight:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setMaximumContentHeight(UIPrintFormatter __self__, Selector __cmd__, float maximumContentHeight);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMaximumContentHeightSuper(ObjCSuper __super__, Selector __cmd__, float maximumContentHeight);
+    @Bridge private native static void objc_setMaximumContentHeight(UIPrintFormatter __self__, Selector __cmd__, float maximumContentHeight);
+    @Bridge private native static void objc_setMaximumContentHeightSuper(ObjCSuper __super__, Selector __cmd__, float maximumContentHeight);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/maximumContentHeight">@property(nonatomic) CGFloat maximumContentHeight</a>
      * @since Available in iOS 4.2 and later.
@@ -112,8 +112,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setMaximumContentWidth$ = Selector.register("setMaximumContentWidth:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setMaximumContentWidth(UIPrintFormatter __self__, Selector __cmd__, float maximumContentWidth);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMaximumContentWidthSuper(ObjCSuper __super__, Selector __cmd__, float maximumContentWidth);
+    @Bridge private native static void objc_setMaximumContentWidth(UIPrintFormatter __self__, Selector __cmd__, float maximumContentWidth);
+    @Bridge private native static void objc_setMaximumContentWidthSuper(ObjCSuper __super__, Selector __cmd__, float maximumContentWidth);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/maximumContentWidth">@property(nonatomic) CGFloat maximumContentWidth</a>
      * @since Available in iOS 4.2 and later.
@@ -156,8 +156,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setStartPage$ = Selector.register("setStartPage:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setStartPage(UIPrintFormatter __self__, Selector __cmd__, int startPage);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setStartPageSuper(ObjCSuper __super__, Selector __cmd__, int startPage);
+    @Bridge private native static void objc_setStartPage(UIPrintFormatter __self__, Selector __cmd__, int startPage);
+    @Bridge private native static void objc_setStartPageSuper(ObjCSuper __super__, Selector __cmd__, int startPage);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/startPage">@property(nonatomic) NSInteger startPage</a>
      * @since Available in iOS 4.2 and later.

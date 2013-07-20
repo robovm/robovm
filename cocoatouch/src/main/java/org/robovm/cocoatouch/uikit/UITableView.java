@@ -81,8 +81,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAllowsMultipleSelection$ = Selector.register("setAllowsMultipleSelection:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAllowsMultipleSelection(UITableView __self__, Selector __cmd__, boolean allowsMultipleSelection);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAllowsMultipleSelectionSuper(ObjCSuper __super__, Selector __cmd__, boolean allowsMultipleSelection);
+    @Bridge private native static void objc_setAllowsMultipleSelection(UITableView __self__, Selector __cmd__, boolean allowsMultipleSelection);
+    @Bridge private native static void objc_setAllowsMultipleSelectionSuper(ObjCSuper __super__, Selector __cmd__, boolean allowsMultipleSelection);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/allowsMultipleSelection">@property(nonatomic) BOOL allowsMultipleSelection</a>
      * @since Available in iOS 5.0 and later.
@@ -103,8 +103,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAllowsMultipleSelectionDuringEditing$ = Selector.register("setAllowsMultipleSelectionDuringEditing:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAllowsMultipleSelectionDuringEditing(UITableView __self__, Selector __cmd__, boolean allowsMultipleSelectionDuringEditing);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAllowsMultipleSelectionDuringEditingSuper(ObjCSuper __super__, Selector __cmd__, boolean allowsMultipleSelectionDuringEditing);
+    @Bridge private native static void objc_setAllowsMultipleSelectionDuringEditing(UITableView __self__, Selector __cmd__, boolean allowsMultipleSelectionDuringEditing);
+    @Bridge private native static void objc_setAllowsMultipleSelectionDuringEditingSuper(ObjCSuper __super__, Selector __cmd__, boolean allowsMultipleSelectionDuringEditing);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/allowsMultipleSelectionDuringEditing">@property(nonatomic) BOOL allowsMultipleSelectionDuringEditing</a>
      * @since Available in iOS 5.0 and later.
@@ -125,8 +125,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAllowsSelection$ = Selector.register("setAllowsSelection:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAllowsSelection(UITableView __self__, Selector __cmd__, boolean allowsSelection);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAllowsSelectionSuper(ObjCSuper __super__, Selector __cmd__, boolean allowsSelection);
+    @Bridge private native static void objc_setAllowsSelection(UITableView __self__, Selector __cmd__, boolean allowsSelection);
+    @Bridge private native static void objc_setAllowsSelectionSuper(ObjCSuper __super__, Selector __cmd__, boolean allowsSelection);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/allowsSelection">@property(nonatomic) BOOL allowsSelection</a>
      * @since Available in iOS 3.0 and later.
@@ -147,8 +147,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAllowsSelectionDuringEditing$ = Selector.register("setAllowsSelectionDuringEditing:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAllowsSelectionDuringEditing(UITableView __self__, Selector __cmd__, boolean allowsSelectionDuringEditing);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAllowsSelectionDuringEditingSuper(ObjCSuper __super__, Selector __cmd__, boolean allowsSelectionDuringEditing);
+    @Bridge private native static void objc_setAllowsSelectionDuringEditing(UITableView __self__, Selector __cmd__, boolean allowsSelectionDuringEditing);
+    @Bridge private native static void objc_setAllowsSelectionDuringEditingSuper(ObjCSuper __super__, Selector __cmd__, boolean allowsSelectionDuringEditing);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/allowsSelectionDuringEditing">@property(nonatomic) BOOL allowsSelectionDuringEditing</a>
      * @since Available in iOS 2.0 and later.
@@ -169,8 +169,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setBackgroundView$ = Selector.register("setBackgroundView:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setBackgroundView(UITableView __self__, Selector __cmd__, UIView backgroundView);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__, UIView backgroundView);
+    @Bridge private native static void objc_setBackgroundView(UITableView __self__, Selector __cmd__, UIView backgroundView);
+    @Bridge private native static void objc_setBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__, UIView backgroundView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/backgroundView">@property(nonatomic, readwrite, retain) UIView *backgroundView</a>
      * @since Available in iOS 3.2 and later.
@@ -191,8 +191,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDataSource$ = Selector.register("setDataSource:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDataSource(UITableView __self__, Selector __cmd__, UITableViewDataSource dataSource);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDataSourceSuper(ObjCSuper __super__, Selector __cmd__, UITableViewDataSource dataSource);
+    @Bridge private native static void objc_setDataSource(UITableView __self__, Selector __cmd__, UITableViewDataSource dataSource);
+    @Bridge private native static void objc_setDataSourceSuper(ObjCSuper __super__, Selector __cmd__, UITableViewDataSource dataSource);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/dataSource">@property(nonatomic, assign) id&amp;lt;UITableViewDataSource&amp;gt; dataSource</a>
      * @since Available in iOS 2.0 and later.
@@ -213,8 +213,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDelegate$ = Selector.register("setDelegate:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UITableView __self__, Selector __cmd__, UITableViewDelegate delegate);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UITableViewDelegate delegate);
+    @Bridge private native static void objc_setDelegate(UITableView __self__, Selector __cmd__, UITableViewDelegate delegate);
+    @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UITableViewDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/delegate">@property(nonatomic, assign) id&amp;lt;UITableViewDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
@@ -235,8 +235,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setEditing$ = Selector.register("setEditing:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setEditing(UITableView __self__, Selector __cmd__, boolean editing);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setEditingSuper(ObjCSuper __super__, Selector __cmd__, boolean editing);
+    @Bridge private native static void objc_setEditing(UITableView __self__, Selector __cmd__, boolean editing);
+    @Bridge private native static void objc_setEditingSuper(ObjCSuper __super__, Selector __cmd__, boolean editing);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/editing">@property(nonatomic, getter=isEditing) BOOL editing</a>
      * @since Available in iOS 2.0 and later.
@@ -257,8 +257,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setRowHeight$ = Selector.register("setRowHeight:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setRowHeight(UITableView __self__, Selector __cmd__, float rowHeight);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setRowHeightSuper(ObjCSuper __super__, Selector __cmd__, float rowHeight);
+    @Bridge private native static void objc_setRowHeight(UITableView __self__, Selector __cmd__, float rowHeight);
+    @Bridge private native static void objc_setRowHeightSuper(ObjCSuper __super__, Selector __cmd__, float rowHeight);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/rowHeight">@property(nonatomic) CGFloat rowHeight</a>
      * @since Available in iOS 2.0 and later.
@@ -279,8 +279,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setSectionFooterHeight$ = Selector.register("setSectionFooterHeight:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setSectionFooterHeight(UITableView __self__, Selector __cmd__, float sectionFooterHeight);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSectionFooterHeightSuper(ObjCSuper __super__, Selector __cmd__, float sectionFooterHeight);
+    @Bridge private native static void objc_setSectionFooterHeight(UITableView __self__, Selector __cmd__, float sectionFooterHeight);
+    @Bridge private native static void objc_setSectionFooterHeightSuper(ObjCSuper __super__, Selector __cmd__, float sectionFooterHeight);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/sectionFooterHeight">@property(nonatomic) CGFloat sectionFooterHeight</a>
      * @since Available in iOS 2.0 and later.
@@ -301,8 +301,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setSectionHeaderHeight$ = Selector.register("setSectionHeaderHeight:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setSectionHeaderHeight(UITableView __self__, Selector __cmd__, float sectionHeaderHeight);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSectionHeaderHeightSuper(ObjCSuper __super__, Selector __cmd__, float sectionHeaderHeight);
+    @Bridge private native static void objc_setSectionHeaderHeight(UITableView __self__, Selector __cmd__, float sectionHeaderHeight);
+    @Bridge private native static void objc_setSectionHeaderHeightSuper(ObjCSuper __super__, Selector __cmd__, float sectionHeaderHeight);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/sectionHeaderHeight">@property(nonatomic) CGFloat sectionHeaderHeight</a>
      * @since Available in iOS 2.0 and later.
@@ -323,8 +323,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setSectionIndexColor$ = Selector.register("setSectionIndexColor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setSectionIndexColor(UITableView __self__, Selector __cmd__, UIColor sectionIndexColor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSectionIndexColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor sectionIndexColor);
+    @Bridge private native static void objc_setSectionIndexColor(UITableView __self__, Selector __cmd__, UIColor sectionIndexColor);
+    @Bridge private native static void objc_setSectionIndexColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor sectionIndexColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/sectionIndexColor">@property(nonatomic, retain) UIColor *sectionIndexColor</a>
      * @since Available in iOS 6.0 and later.
@@ -345,8 +345,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setSectionIndexMinimumDisplayRowCount$ = Selector.register("setSectionIndexMinimumDisplayRowCount:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setSectionIndexMinimumDisplayRowCount(UITableView __self__, Selector __cmd__, int sectionIndexMinimumDisplayRowCount);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSectionIndexMinimumDisplayRowCountSuper(ObjCSuper __super__, Selector __cmd__, int sectionIndexMinimumDisplayRowCount);
+    @Bridge private native static void objc_setSectionIndexMinimumDisplayRowCount(UITableView __self__, Selector __cmd__, int sectionIndexMinimumDisplayRowCount);
+    @Bridge private native static void objc_setSectionIndexMinimumDisplayRowCountSuper(ObjCSuper __super__, Selector __cmd__, int sectionIndexMinimumDisplayRowCount);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/sectionIndexMinimumDisplayRowCount">@property(nonatomic) NSInteger sectionIndexMinimumDisplayRowCount</a>
      * @since Available in iOS 2.0 and later.
@@ -367,8 +367,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setSectionIndexTrackingBackgroundColor$ = Selector.register("setSectionIndexTrackingBackgroundColor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setSectionIndexTrackingBackgroundColor(UITableView __self__, Selector __cmd__, UIColor sectionIndexTrackingBackgroundColor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSectionIndexTrackingBackgroundColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor sectionIndexTrackingBackgroundColor);
+    @Bridge private native static void objc_setSectionIndexTrackingBackgroundColor(UITableView __self__, Selector __cmd__, UIColor sectionIndexTrackingBackgroundColor);
+    @Bridge private native static void objc_setSectionIndexTrackingBackgroundColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor sectionIndexTrackingBackgroundColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/sectionIndexTrackingBackgroundColor">@property(nonatomic, retain) UIColor *sectionIndexTrackingBackgroundColor</a>
      * @since Available in iOS 6.0 and later.
@@ -389,8 +389,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setSeparatorColor$ = Selector.register("setSeparatorColor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setSeparatorColor(UITableView __self__, Selector __cmd__, UIColor separatorColor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSeparatorColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor separatorColor);
+    @Bridge private native static void objc_setSeparatorColor(UITableView __self__, Selector __cmd__, UIColor separatorColor);
+    @Bridge private native static void objc_setSeparatorColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor separatorColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/separatorColor">@property(nonatomic, retain) UIColor *separatorColor</a>
      * @since Available in iOS 2.0 and later.
@@ -411,8 +411,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setSeparatorStyle$ = Selector.register("setSeparatorStyle:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setSeparatorStyle(UITableView __self__, Selector __cmd__, UITableViewCellSeparatorStyle separatorStyle);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSeparatorStyleSuper(ObjCSuper __super__, Selector __cmd__, UITableViewCellSeparatorStyle separatorStyle);
+    @Bridge private native static void objc_setSeparatorStyle(UITableView __self__, Selector __cmd__, UITableViewCellSeparatorStyle separatorStyle);
+    @Bridge private native static void objc_setSeparatorStyleSuper(ObjCSuper __super__, Selector __cmd__, UITableViewCellSeparatorStyle separatorStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/separatorStyle">@property(nonatomic) UITableViewCellSeparatorStyle separatorStyle</a>
      * @since Available in iOS 2.0 and later.
@@ -444,8 +444,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTableFooterView$ = Selector.register("setTableFooterView:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTableFooterView(UITableView __self__, Selector __cmd__, UIView tableFooterView);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTableFooterViewSuper(ObjCSuper __super__, Selector __cmd__, UIView tableFooterView);
+    @Bridge private native static void objc_setTableFooterView(UITableView __self__, Selector __cmd__, UIView tableFooterView);
+    @Bridge private native static void objc_setTableFooterViewSuper(ObjCSuper __super__, Selector __cmd__, UIView tableFooterView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/tableFooterView">@property(nonatomic, retain) UIView *tableFooterView</a>
      * @since Available in iOS 2.0 and later.
@@ -466,8 +466,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTableHeaderView$ = Selector.register("setTableHeaderView:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTableHeaderView(UITableView __self__, Selector __cmd__, UIView tableHeaderView);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTableHeaderViewSuper(ObjCSuper __super__, Selector __cmd__, UIView tableHeaderView);
+    @Bridge private native static void objc_setTableHeaderView(UITableView __self__, Selector __cmd__, UIView tableHeaderView);
+    @Bridge private native static void objc_setTableHeaderViewSuper(ObjCSuper __super__, Selector __cmd__, UIView tableHeaderView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableView_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableView/tableHeaderView">@property(nonatomic, retain) UIView *tableHeaderView</a>
      * @since Available in iOS 2.0 and later.

@@ -71,8 +71,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAdjustsFontSizeToFitWidth$ = Selector.register("setAdjustsFontSizeToFitWidth:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAdjustsFontSizeToFitWidth(UILabel __self__, Selector __cmd__, boolean adjustsFontSizeToFitWidth);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAdjustsFontSizeToFitWidthSuper(ObjCSuper __super__, Selector __cmd__, boolean adjustsFontSizeToFitWidth);
+    @Bridge private native static void objc_setAdjustsFontSizeToFitWidth(UILabel __self__, Selector __cmd__, boolean adjustsFontSizeToFitWidth);
+    @Bridge private native static void objc_setAdjustsFontSizeToFitWidthSuper(ObjCSuper __super__, Selector __cmd__, boolean adjustsFontSizeToFitWidth);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/adjustsFontSizeToFitWidth">@property(nonatomic) BOOL adjustsFontSizeToFitWidth</a>
      * @since Available in iOS 2.0 and later.
@@ -93,8 +93,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAdjustsLetterSpacingToFitWidth$ = Selector.register("setAdjustsLetterSpacingToFitWidth:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAdjustsLetterSpacingToFitWidth(UILabel __self__, Selector __cmd__, boolean adjustsLetterSpacingToFitWidth);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAdjustsLetterSpacingToFitWidthSuper(ObjCSuper __super__, Selector __cmd__, boolean adjustsLetterSpacingToFitWidth);
+    @Bridge private native static void objc_setAdjustsLetterSpacingToFitWidth(UILabel __self__, Selector __cmd__, boolean adjustsLetterSpacingToFitWidth);
+    @Bridge private native static void objc_setAdjustsLetterSpacingToFitWidthSuper(ObjCSuper __super__, Selector __cmd__, boolean adjustsLetterSpacingToFitWidth);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/adjustsLetterSpacingToFitWidth">@property(nonatomic) BOOL adjustsLetterSpacingToFitWidth</a>
      * @since Available in iOS 6.0 and later.
@@ -115,8 +115,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAttributedText$ = Selector.register("setAttributedText:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAttributedText(UILabel __self__, Selector __cmd__, NSAttributedString attributedText);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAttributedTextSuper(ObjCSuper __super__, Selector __cmd__, NSAttributedString attributedText);
+    @Bridge private native static void objc_setAttributedText(UILabel __self__, Selector __cmd__, NSAttributedString attributedText);
+    @Bridge private native static void objc_setAttributedTextSuper(ObjCSuper __super__, Selector __cmd__, NSAttributedString attributedText);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/attributedText">@property(nonatomic,copy) NSAttributedString *attributedText</a>
      * @since Available in iOS 6.0 and later.
@@ -137,8 +137,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setBaselineAdjustment$ = Selector.register("setBaselineAdjustment:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setBaselineAdjustment(UILabel __self__, Selector __cmd__, UIBaselineAdjustment baselineAdjustment);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBaselineAdjustmentSuper(ObjCSuper __super__, Selector __cmd__, UIBaselineAdjustment baselineAdjustment);
+    @Bridge private native static void objc_setBaselineAdjustment(UILabel __self__, Selector __cmd__, UIBaselineAdjustment baselineAdjustment);
+    @Bridge private native static void objc_setBaselineAdjustmentSuper(ObjCSuper __super__, Selector __cmd__, UIBaselineAdjustment baselineAdjustment);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/baselineAdjustment">@property(nonatomic) UIBaselineAdjustment baselineAdjustment</a>
      * @since Available in iOS 2.0 and later.
@@ -159,8 +159,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setEnabled$ = Selector.register("setEnabled:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setEnabled(UILabel __self__, Selector __cmd__, boolean enabled);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setEnabledSuper(ObjCSuper __super__, Selector __cmd__, boolean enabled);
+    @Bridge private native static void objc_setEnabled(UILabel __self__, Selector __cmd__, boolean enabled);
+    @Bridge private native static void objc_setEnabledSuper(ObjCSuper __super__, Selector __cmd__, boolean enabled);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/enabled">@property(nonatomic, getter=isEnabled) BOOL enabled</a>
      * @since Available in iOS 2.0 and later.
@@ -181,8 +181,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setFont$ = Selector.register("setFont:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setFont(UILabel __self__, Selector __cmd__, UIFont font);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setFontSuper(ObjCSuper __super__, Selector __cmd__, UIFont font);
+    @Bridge private native static void objc_setFont(UILabel __self__, Selector __cmd__, UIFont font);
+    @Bridge private native static void objc_setFontSuper(ObjCSuper __super__, Selector __cmd__, UIFont font);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/font">@property(nonatomic, retain) UIFont *font</a>
      * @since Available in iOS 2.0 and later.
@@ -203,8 +203,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setHighlighted$ = Selector.register("setHighlighted:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setHighlighted(UILabel __self__, Selector __cmd__, boolean highlighted);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setHighlightedSuper(ObjCSuper __super__, Selector __cmd__, boolean highlighted);
+    @Bridge private native static void objc_setHighlighted(UILabel __self__, Selector __cmd__, boolean highlighted);
+    @Bridge private native static void objc_setHighlightedSuper(ObjCSuper __super__, Selector __cmd__, boolean highlighted);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/highlighted">@property(nonatomic, getter=isHighlighted) BOOL highlighted</a>
      * @since Available in iOS 2.0 and later.
@@ -225,8 +225,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setHighlightedTextColor$ = Selector.register("setHighlightedTextColor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setHighlightedTextColor(UILabel __self__, Selector __cmd__, UIColor highlightedTextColor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setHighlightedTextColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor highlightedTextColor);
+    @Bridge private native static void objc_setHighlightedTextColor(UILabel __self__, Selector __cmd__, UIColor highlightedTextColor);
+    @Bridge private native static void objc_setHighlightedTextColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor highlightedTextColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/highlightedTextColor">@property(nonatomic, retain) UIColor *highlightedTextColor</a>
      * @since Available in iOS 2.0 and later.
@@ -247,8 +247,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setLineBreakMode$ = Selector.register("setLineBreakMode:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setLineBreakMode(UILabel __self__, Selector __cmd__, NSLineBreakMode lineBreakMode);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setLineBreakModeSuper(ObjCSuper __super__, Selector __cmd__, NSLineBreakMode lineBreakMode);
+    @Bridge private native static void objc_setLineBreakMode(UILabel __self__, Selector __cmd__, NSLineBreakMode lineBreakMode);
+    @Bridge private native static void objc_setLineBreakModeSuper(ObjCSuper __super__, Selector __cmd__, NSLineBreakMode lineBreakMode);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/lineBreakMode">@property(nonatomic) NSLineBreakMode lineBreakMode</a>
      * @since Available in iOS 2.0 and later.
@@ -269,8 +269,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setMinimumScaleFactor$ = Selector.register("setMinimumScaleFactor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setMinimumScaleFactor(UILabel __self__, Selector __cmd__, float minimumScaleFactor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMinimumScaleFactorSuper(ObjCSuper __super__, Selector __cmd__, float minimumScaleFactor);
+    @Bridge private native static void objc_setMinimumScaleFactor(UILabel __self__, Selector __cmd__, float minimumScaleFactor);
+    @Bridge private native static void objc_setMinimumScaleFactorSuper(ObjCSuper __super__, Selector __cmd__, float minimumScaleFactor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/minimumScaleFactor">@property(nonatomic) CGFloat minimumScaleFactor</a>
      * @since Available in iOS 6.0 and later.
@@ -291,8 +291,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setNumberOfLines$ = Selector.register("setNumberOfLines:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setNumberOfLines(UILabel __self__, Selector __cmd__, int numberOfLines);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setNumberOfLinesSuper(ObjCSuper __super__, Selector __cmd__, int numberOfLines);
+    @Bridge private native static void objc_setNumberOfLines(UILabel __self__, Selector __cmd__, int numberOfLines);
+    @Bridge private native static void objc_setNumberOfLinesSuper(ObjCSuper __super__, Selector __cmd__, int numberOfLines);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/numberOfLines">@property(nonatomic) NSInteger numberOfLines</a>
      * @since Available in iOS 2.0 and later.
@@ -313,8 +313,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setPreferredMaxLayoutWidth$ = Selector.register("setPreferredMaxLayoutWidth:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setPreferredMaxLayoutWidth(UILabel __self__, Selector __cmd__, float preferredMaxLayoutWidth);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setPreferredMaxLayoutWidthSuper(ObjCSuper __super__, Selector __cmd__, float preferredMaxLayoutWidth);
+    @Bridge private native static void objc_setPreferredMaxLayoutWidth(UILabel __self__, Selector __cmd__, float preferredMaxLayoutWidth);
+    @Bridge private native static void objc_setPreferredMaxLayoutWidthSuper(ObjCSuper __super__, Selector __cmd__, float preferredMaxLayoutWidth);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/preferredMaxLayoutWidth">@property(nonatomic) CGFloat preferredMaxLayoutWidth</a>
      * @since Available in iOS 6.0 and later.
@@ -335,8 +335,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setShadowColor$ = Selector.register("setShadowColor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setShadowColor(UILabel __self__, Selector __cmd__, UIColor shadowColor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShadowColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor shadowColor);
+    @Bridge private native static void objc_setShadowColor(UILabel __self__, Selector __cmd__, UIColor shadowColor);
+    @Bridge private native static void objc_setShadowColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor shadowColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/shadowColor">@property(nonatomic, retain) UIColor *shadowColor</a>
      * @since Available in iOS 2.0 and later.
@@ -357,8 +357,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setShadowOffset$ = Selector.register("setShadowOffset:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setShadowOffset(UILabel __self__, Selector __cmd__, @ByVal CGSize shadowOffset);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShadowOffsetSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGSize shadowOffset);
+    @Bridge private native static void objc_setShadowOffset(UILabel __self__, Selector __cmd__, @ByVal CGSize shadowOffset);
+    @Bridge private native static void objc_setShadowOffsetSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGSize shadowOffset);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/shadowOffset">@property(nonatomic) CGSize shadowOffset</a>
      * @since Available in iOS 2.0 and later.
@@ -379,8 +379,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setText$ = Selector.register("setText:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setText(UILabel __self__, Selector __cmd__, String text);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTextSuper(ObjCSuper __super__, Selector __cmd__, String text);
+    @Bridge private native static void objc_setText(UILabel __self__, Selector __cmd__, String text);
+    @Bridge private native static void objc_setTextSuper(ObjCSuper __super__, Selector __cmd__, String text);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/text">@property(nonatomic, copy) NSString *text</a>
      * @since Available in iOS 2.0 and later.
@@ -401,8 +401,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTextAlignment$ = Selector.register("setTextAlignment:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTextAlignment(UILabel __self__, Selector __cmd__, NSTextAlignment textAlignment);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTextAlignmentSuper(ObjCSuper __super__, Selector __cmd__, NSTextAlignment textAlignment);
+    @Bridge private native static void objc_setTextAlignment(UILabel __self__, Selector __cmd__, NSTextAlignment textAlignment);
+    @Bridge private native static void objc_setTextAlignmentSuper(ObjCSuper __super__, Selector __cmd__, NSTextAlignment textAlignment);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/textAlignment">@property(nonatomic) NSTextAlignment textAlignment</a>
      * @since Available in iOS 2.0 and later.
@@ -423,8 +423,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTextColor$ = Selector.register("setTextColor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTextColor(UILabel __self__, Selector __cmd__, UIColor textColor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTextColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor textColor);
+    @Bridge private native static void objc_setTextColor(UILabel __self__, Selector __cmd__, UIColor textColor);
+    @Bridge private native static void objc_setTextColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor textColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/textColor">@property(nonatomic, retain) UIColor *textColor</a>
      * @since Available in iOS 2.0 and later.
@@ -445,8 +445,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setUserInteractionEnabled$ = Selector.register("setUserInteractionEnabled:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setUserInteractionEnabled(UILabel __self__, Selector __cmd__, boolean userInteractionEnabled);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setUserInteractionEnabledSuper(ObjCSuper __super__, Selector __cmd__, boolean userInteractionEnabled);
+    @Bridge private native static void objc_setUserInteractionEnabled(UILabel __self__, Selector __cmd__, boolean userInteractionEnabled);
+    @Bridge private native static void objc_setUserInteractionEnabledSuper(ObjCSuper __super__, Selector __cmd__, boolean userInteractionEnabled);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UILabel_Class/Reference/UILabel.html#//apple_ref/occ/instp/UILabel/userInteractionEnabled">@property(nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled</a>
      * @since Available in iOS 2.0 and later.

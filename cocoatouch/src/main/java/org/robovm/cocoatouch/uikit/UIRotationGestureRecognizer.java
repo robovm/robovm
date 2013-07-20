@@ -68,8 +68,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setRotation$ = Selector.register("setRotation:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setRotation(UIRotationGestureRecognizer __self__, Selector __cmd__, float rotation);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setRotationSuper(ObjCSuper __super__, Selector __cmd__, float rotation);
+    @Bridge private native static void objc_setRotation(UIRotationGestureRecognizer __self__, Selector __cmd__, float rotation);
+    @Bridge private native static void objc_setRotationSuper(ObjCSuper __super__, Selector __cmd__, float rotation);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIRotateGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIRotationGestureRecognizer/rotation">@property(nonatomic) CGFloat rotation</a>
      * @since Available in iOS 3.2 and later.

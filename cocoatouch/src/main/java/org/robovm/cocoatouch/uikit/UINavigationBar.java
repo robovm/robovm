@@ -82,8 +82,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setBarStyle$ = Selector.register("setBarStyle:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setBarStyle(UINavigationBar __self__, Selector __cmd__, UIBarStyle barStyle);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBarStyleSuper(ObjCSuper __super__, Selector __cmd__, UIBarStyle barStyle);
+    @Bridge private native static void objc_setBarStyle(UINavigationBar __self__, Selector __cmd__, UIBarStyle barStyle);
+    @Bridge private native static void objc_setBarStyleSuper(ObjCSuper __super__, Selector __cmd__, UIBarStyle barStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/barStyle">@property(nonatomic, assign) UIBarStyle barStyle</a>
      * @since Available in iOS 2.0 and later.
@@ -104,8 +104,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDelegate$ = Selector.register("setDelegate:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UINavigationBar __self__, Selector __cmd__, NSObject delegate);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, NSObject delegate);
+    @Bridge private native static void objc_setDelegate(UINavigationBar __self__, Selector __cmd__, NSObject delegate);
+    @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, NSObject delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/delegate">@property(nonatomic, assign) id delegate</a>
      * @since Available in iOS 2.0 and later.
@@ -126,8 +126,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setItems$ = Selector.register("setItems:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setItems(UINavigationBar __self__, Selector __cmd__, NSArray items);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setItemsSuper(ObjCSuper __super__, Selector __cmd__, NSArray items);
+    @Bridge private native static void objc_setItems(UINavigationBar __self__, Selector __cmd__, NSArray items);
+    @Bridge private native static void objc_setItemsSuper(ObjCSuper __super__, Selector __cmd__, NSArray items);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/items">@property(nonatomic, copy) NSArray *items</a>
      * @since Available in iOS 2.0 and later.
@@ -148,8 +148,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setShadowImage$ = Selector.register("setShadowImage:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setShadowImage(UINavigationBar __self__, Selector __cmd__, UIImage shadowImage);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShadowImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage shadowImage);
+    @Bridge private native static void objc_setShadowImage(UINavigationBar __self__, Selector __cmd__, UIImage shadowImage);
+    @Bridge private native static void objc_setShadowImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage shadowImage);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/shadowImage">@property(nonatomic,retain) UIImage *shadowImage</a>
      * @since Available in iOS 6.0 and later.
@@ -170,8 +170,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTintColor$ = Selector.register("setTintColor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTintColor(UINavigationBar __self__, Selector __cmd__, UIColor tintColor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor tintColor);
+    @Bridge private native static void objc_setTintColor(UINavigationBar __self__, Selector __cmd__, UIColor tintColor);
+    @Bridge private native static void objc_setTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor tintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 2.0 and later.
@@ -192,8 +192,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTitleTextAttributes$ = Selector.register("setTitleTextAttributes:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTitleTextAttributes(UINavigationBar __self__, Selector __cmd__, NSDictionary titleTextAttributes);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTitleTextAttributesSuper(ObjCSuper __super__, Selector __cmd__, NSDictionary titleTextAttributes);
+    @Bridge private native static void objc_setTitleTextAttributes(UINavigationBar __self__, Selector __cmd__, NSDictionary titleTextAttributes);
+    @Bridge private native static void objc_setTitleTextAttributesSuper(ObjCSuper __super__, Selector __cmd__, NSDictionary titleTextAttributes);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/titleTextAttributes">@property(nonatomic, copy) NSDictionary *titleTextAttributes</a>
      * @since Available in iOS 5.0 and later.
@@ -225,8 +225,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTranslucent$ = Selector.register("setTranslucent:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTranslucent(UINavigationBar __self__, Selector __cmd__, boolean translucent);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTranslucentSuper(ObjCSuper __super__, Selector __cmd__, boolean translucent);
+    @Bridge private native static void objc_setTranslucent(UINavigationBar __self__, Selector __cmd__, boolean translucent);
+    @Bridge private native static void objc_setTranslucentSuper(ObjCSuper __super__, Selector __cmd__, boolean translucent);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UINavigationBar_Class/Reference/UINavigationBar.html#//apple_ref/occ/instp/UINavigationBar/translucent">@property(nonatomic, assign, getter=isTranslucent) BOOL translucent</a>
      * @since Available in iOS 3.0 and later.

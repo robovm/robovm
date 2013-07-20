@@ -68,8 +68,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setURL$ = Selector.register("setURL:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setURL(UIDocumentInteractionController __self__, Selector __cmd__, NSURL URL);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setURLSuper(ObjCSuper __super__, Selector __cmd__, NSURL URL);
+    @Bridge private native static void objc_setURL(UIDocumentInteractionController __self__, Selector __cmd__, NSURL URL);
+    @Bridge private native static void objc_setURLSuper(ObjCSuper __super__, Selector __cmd__, NSURL URL);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/URL">@property(nonatomic,retain) NSURL *URL</a>
      * @since Available in iOS 3.2 and later.
@@ -90,8 +90,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setUTI$ = Selector.register("setUTI:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setUTI(UIDocumentInteractionController __self__, Selector __cmd__, String UTI);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setUTISuper(ObjCSuper __super__, Selector __cmd__, String UTI);
+    @Bridge private native static void objc_setUTI(UIDocumentInteractionController __self__, Selector __cmd__, String UTI);
+    @Bridge private native static void objc_setUTISuper(ObjCSuper __super__, Selector __cmd__, String UTI);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/UTI">@property(nonatomic,copy) NSString *UTI</a>
      * @since Available in iOS 3.2 and later.
@@ -112,8 +112,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAnnotation$ = Selector.register("setAnnotation:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAnnotation(UIDocumentInteractionController __self__, Selector __cmd__, NSObject annotation);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAnnotationSuper(ObjCSuper __super__, Selector __cmd__, NSObject annotation);
+    @Bridge private native static void objc_setAnnotation(UIDocumentInteractionController __self__, Selector __cmd__, NSObject annotation);
+    @Bridge private native static void objc_setAnnotationSuper(ObjCSuper __super__, Selector __cmd__, NSObject annotation);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/annotation">@property(nonatomic,retain) id annotation</a>
      * @since Available in iOS 3.2 and later.
@@ -134,8 +134,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDelegate$ = Selector.register("setDelegate:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UIDocumentInteractionController __self__, Selector __cmd__, UIDocumentInteractionControllerDelegate delegate);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIDocumentInteractionControllerDelegate delegate);
+    @Bridge private native static void objc_setDelegate(UIDocumentInteractionController __self__, Selector __cmd__, UIDocumentInteractionControllerDelegate delegate);
+    @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIDocumentInteractionControllerDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/delegate">@property(nonatomic,assign) id&amp;lt;UIDocumentInteractionControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.2 and later.
@@ -178,8 +178,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setName$ = Selector.register("setName:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setName(UIDocumentInteractionController __self__, Selector __cmd__, String name);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setNameSuper(ObjCSuper __super__, Selector __cmd__, String name);
+    @Bridge private native static void objc_setName(UIDocumentInteractionController __self__, Selector __cmd__, String name);
+    @Bridge private native static void objc_setNameSuper(ObjCSuper __super__, Selector __cmd__, String name);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/name">@property(nonatomic,copy) NSString *name</a>
      * @since Available in iOS 3.2 and later.

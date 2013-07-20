@@ -81,8 +81,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setApportionsSegmentWidthsByContent$ = Selector.register("setApportionsSegmentWidthsByContent:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setApportionsSegmentWidthsByContent(UISegmentedControl __self__, Selector __cmd__, boolean apportionsSegmentWidthsByContent);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setApportionsSegmentWidthsByContentSuper(ObjCSuper __super__, Selector __cmd__, boolean apportionsSegmentWidthsByContent);
+    @Bridge private native static void objc_setApportionsSegmentWidthsByContent(UISegmentedControl __self__, Selector __cmd__, boolean apportionsSegmentWidthsByContent);
+    @Bridge private native static void objc_setApportionsSegmentWidthsByContentSuper(ObjCSuper __super__, Selector __cmd__, boolean apportionsSegmentWidthsByContent);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISegmentedControl_Class/Reference/UISegmentedControl.html#//apple_ref/occ/instp/UISegmentedControl/apportionsSegmentWidthsByContent">@property(nonatomic) BOOL apportionsSegmentWidthsByContent</a>
      * @since Available in iOS 5.0 and later.
@@ -103,8 +103,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setSegmentedControlStyle$ = Selector.register("setSegmentedControlStyle:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setControlStyle(UISegmentedControl __self__, Selector __cmd__, UISegmentedControlStyle controlStyle);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setControlStyleSuper(ObjCSuper __super__, Selector __cmd__, UISegmentedControlStyle controlStyle);
+    @Bridge private native static void objc_setControlStyle(UISegmentedControl __self__, Selector __cmd__, UISegmentedControlStyle controlStyle);
+    @Bridge private native static void objc_setControlStyleSuper(ObjCSuper __super__, Selector __cmd__, UISegmentedControlStyle controlStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISegmentedControl_Class/Reference/UISegmentedControl.html#//apple_ref/occ/instp/UISegmentedControl/segmentedControlStyle">@property(nonatomic) UISegmentedControlStyle segmentedControlStyle</a>
      * @since Available in iOS 2.0 and later.
@@ -125,8 +125,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setMomentary$ = Selector.register("setMomentary:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setMomentary(UISegmentedControl __self__, Selector __cmd__, boolean momentary);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMomentarySuper(ObjCSuper __super__, Selector __cmd__, boolean momentary);
+    @Bridge private native static void objc_setMomentary(UISegmentedControl __self__, Selector __cmd__, boolean momentary);
+    @Bridge private native static void objc_setMomentarySuper(ObjCSuper __super__, Selector __cmd__, boolean momentary);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISegmentedControl_Class/Reference/UISegmentedControl.html#//apple_ref/occ/instp/UISegmentedControl/momentary">@property(nonatomic, getter=isMomentary) BOOL momentary</a>
      * @since Available in iOS 2.0 and later.
@@ -158,8 +158,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setSelectedSegmentIndex$ = Selector.register("setSelectedSegmentIndex:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setSelectedSegment(UISegmentedControl __self__, Selector __cmd__, int selectedSegment);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSelectedSegmentSuper(ObjCSuper __super__, Selector __cmd__, int selectedSegment);
+    @Bridge private native static void objc_setSelectedSegment(UISegmentedControl __self__, Selector __cmd__, int selectedSegment);
+    @Bridge private native static void objc_setSelectedSegmentSuper(ObjCSuper __super__, Selector __cmd__, int selectedSegment);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISegmentedControl_Class/Reference/UISegmentedControl.html#//apple_ref/occ/instp/UISegmentedControl/selectedSegmentIndex">@property(nonatomic) NSInteger selectedSegmentIndex</a>
      * @since Available in iOS 2.0 and later.
@@ -180,8 +180,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTintColor$ = Selector.register("setTintColor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTintColor(UISegmentedControl __self__, Selector __cmd__, UIColor tintColor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor tintColor);
+    @Bridge private native static void objc_setTintColor(UISegmentedControl __self__, Selector __cmd__, UIColor tintColor);
+    @Bridge private native static void objc_setTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor tintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISegmentedControl_Class/Reference/UISegmentedControl.html#//apple_ref/occ/instp/UISegmentedControl/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 2.0 and later.

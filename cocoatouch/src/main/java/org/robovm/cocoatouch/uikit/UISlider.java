@@ -71,8 +71,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setContinuous$ = Selector.register("setContinuous:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setContinuous(UISlider __self__, Selector __cmd__, boolean continuous);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setContinuousSuper(ObjCSuper __super__, Selector __cmd__, boolean continuous);
+    @Bridge private native static void objc_setContinuous(UISlider __self__, Selector __cmd__, boolean continuous);
+    @Bridge private native static void objc_setContinuousSuper(ObjCSuper __super__, Selector __cmd__, boolean continuous);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/continuous">@property(nonatomic, getter=isContinuous) BOOL continuous</a>
      * @since Available in iOS 2.0 and later.
@@ -126,8 +126,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setMaximumTrackTintColor$ = Selector.register("setMaximumTrackTintColor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setMaximumTrackTintColor(UISlider __self__, Selector __cmd__, UIColor maximumTrackTintColor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMaximumTrackTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor maximumTrackTintColor);
+    @Bridge private native static void objc_setMaximumTrackTintColor(UISlider __self__, Selector __cmd__, UIColor maximumTrackTintColor);
+    @Bridge private native static void objc_setMaximumTrackTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor maximumTrackTintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/maximumTrackTintColor">@property(nonatomic, retain) UIColor *maximumTrackTintColor</a>
      * @since Available in iOS 5.0 and later.
@@ -148,8 +148,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setMaximumValue$ = Selector.register("setMaximumValue:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setMaximumValue(UISlider __self__, Selector __cmd__, float maximumValue);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMaximumValueSuper(ObjCSuper __super__, Selector __cmd__, float maximumValue);
+    @Bridge private native static void objc_setMaximumValue(UISlider __self__, Selector __cmd__, float maximumValue);
+    @Bridge private native static void objc_setMaximumValueSuper(ObjCSuper __super__, Selector __cmd__, float maximumValue);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/maximumValue">@property(nonatomic) float maximumValue</a>
      * @since Available in iOS 2.0 and later.
@@ -170,8 +170,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setMaximumValueImage$ = Selector.register("setMaximumValueImage:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setMaximumValueImage(UISlider __self__, Selector __cmd__, UIImage maximumValueImage);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMaximumValueImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage maximumValueImage);
+    @Bridge private native static void objc_setMaximumValueImage(UISlider __self__, Selector __cmd__, UIImage maximumValueImage);
+    @Bridge private native static void objc_setMaximumValueImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage maximumValueImage);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/maximumValueImage">@property(nonatomic, retain) UIImage *maximumValueImage</a>
      * @since Available in iOS 2.0 and later.
@@ -192,8 +192,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setMinimumTrackTintColor$ = Selector.register("setMinimumTrackTintColor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setMinimumTrackTintColor(UISlider __self__, Selector __cmd__, UIColor minimumTrackTintColor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMinimumTrackTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor minimumTrackTintColor);
+    @Bridge private native static void objc_setMinimumTrackTintColor(UISlider __self__, Selector __cmd__, UIColor minimumTrackTintColor);
+    @Bridge private native static void objc_setMinimumTrackTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor minimumTrackTintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/minimumTrackTintColor">@property(nonatomic, retain) UIColor *minimumTrackTintColor</a>
      * @since Available in iOS 5.0 and later.
@@ -214,8 +214,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setMinimumValue$ = Selector.register("setMinimumValue:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setMinimumValue(UISlider __self__, Selector __cmd__, float minimumValue);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMinimumValueSuper(ObjCSuper __super__, Selector __cmd__, float minimumValue);
+    @Bridge private native static void objc_setMinimumValue(UISlider __self__, Selector __cmd__, float minimumValue);
+    @Bridge private native static void objc_setMinimumValueSuper(ObjCSuper __super__, Selector __cmd__, float minimumValue);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/minimumValue">@property(nonatomic) float minimumValue</a>
      * @since Available in iOS 2.0 and later.
@@ -236,8 +236,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setMinimumValueImage$ = Selector.register("setMinimumValueImage:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setMinimumValueImage(UISlider __self__, Selector __cmd__, UIImage minimumValueImage);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setMinimumValueImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage minimumValueImage);
+    @Bridge private native static void objc_setMinimumValueImage(UISlider __self__, Selector __cmd__, UIImage minimumValueImage);
+    @Bridge private native static void objc_setMinimumValueImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage minimumValueImage);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/minimumValueImage">@property(nonatomic, retain) UIImage *minimumValueImage</a>
      * @since Available in iOS 2.0 and later.
@@ -258,8 +258,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setThumbTintColor$ = Selector.register("setThumbTintColor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setThumbTintColor(UISlider __self__, Selector __cmd__, UIColor thumbTintColor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setThumbTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor thumbTintColor);
+    @Bridge private native static void objc_setThumbTintColor(UISlider __self__, Selector __cmd__, UIColor thumbTintColor);
+    @Bridge private native static void objc_setThumbTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor thumbTintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/thumbTintColor">@property(nonatomic, retain) UIColor *thumbTintColor</a>
      * @since Available in iOS 5.0 and later.
@@ -280,8 +280,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setValue$ = Selector.register("setValue:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setValue(UISlider __self__, Selector __cmd__, float value);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setValueSuper(ObjCSuper __super__, Selector __cmd__, float value);
+    @Bridge private native static void objc_setValue(UISlider __self__, Selector __cmd__, float value);
+    @Bridge private native static void objc_setValueSuper(ObjCSuper __super__, Selector __cmd__, float value);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISlider_Class/Reference/Reference.html#//apple_ref/occ/instp/UISlider/value">@property(nonatomic) float value</a>
      * @since Available in iOS 2.0 and later.

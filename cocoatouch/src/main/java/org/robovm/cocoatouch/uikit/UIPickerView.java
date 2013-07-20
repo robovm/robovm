@@ -71,8 +71,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDataSource$ = Selector.register("setDataSource:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDataSource(UIPickerView __self__, Selector __cmd__, UIPickerViewDataSource dataSource);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDataSourceSuper(ObjCSuper __super__, Selector __cmd__, UIPickerViewDataSource dataSource);
+    @Bridge private native static void objc_setDataSource(UIPickerView __self__, Selector __cmd__, UIPickerViewDataSource dataSource);
+    @Bridge private native static void objc_setDataSourceSuper(ObjCSuper __super__, Selector __cmd__, UIPickerViewDataSource dataSource);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerView_Class/Reference/UIPickerView.html#//apple_ref/occ/instp/UIPickerView/dataSource">@property(nonatomic, assign) id&amp;lt;UIPickerViewDataSource&amp;gt; dataSource</a>
      * @since Available in iOS 2.0 and later.
@@ -93,8 +93,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDelegate$ = Selector.register("setDelegate:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UIPickerView __self__, Selector __cmd__, UIPickerViewDelegate delegate);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIPickerViewDelegate delegate);
+    @Bridge private native static void objc_setDelegate(UIPickerView __self__, Selector __cmd__, UIPickerViewDelegate delegate);
+    @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIPickerViewDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerView_Class/Reference/UIPickerView.html#//apple_ref/occ/instp/UIPickerView/delegate">@property(nonatomic, assign) id&amp;lt;UIPickerViewDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
@@ -126,8 +126,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setShowsSelectionIndicator$ = Selector.register("setShowsSelectionIndicator:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setShowsSelectionIndicator(UIPickerView __self__, Selector __cmd__, boolean showsSelectionIndicator);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShowsSelectionIndicatorSuper(ObjCSuper __super__, Selector __cmd__, boolean showsSelectionIndicator);
+    @Bridge private native static void objc_setShowsSelectionIndicator(UIPickerView __self__, Selector __cmd__, boolean showsSelectionIndicator);
+    @Bridge private native static void objc_setShowsSelectionIndicatorSuper(ObjCSuper __super__, Selector __cmd__, boolean showsSelectionIndicator);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerView_Class/Reference/UIPickerView.html#//apple_ref/occ/instp/UIPickerView/showsSelectionIndicator">@property(nonatomic) BOOL showsSelectionIndicator</a>
      * @since Available in iOS 2.0 and later.

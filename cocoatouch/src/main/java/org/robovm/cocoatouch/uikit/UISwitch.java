@@ -78,8 +78,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setOffImage$ = Selector.register("setOffImage:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setOffImage(UISwitch __self__, Selector __cmd__, UIImage offImage);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setOffImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage offImage);
+    @Bridge private native static void objc_setOffImage(UISwitch __self__, Selector __cmd__, UIImage offImage);
+    @Bridge private native static void objc_setOffImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage offImage);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/offImage">@property(nonatomic, retain) UIImage *offImage</a>
      * @since Available in iOS 6.0 and later.
@@ -100,8 +100,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setOn$ = Selector.register("setOn:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setOn(UISwitch __self__, Selector __cmd__, boolean on);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setOnSuper(ObjCSuper __super__, Selector __cmd__, boolean on);
+    @Bridge private native static void objc_setOn(UISwitch __self__, Selector __cmd__, boolean on);
+    @Bridge private native static void objc_setOnSuper(ObjCSuper __super__, Selector __cmd__, boolean on);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/on">@property(nonatomic, getter=isOn) BOOL on</a>
      * @since Available in iOS 2.0 and later.
@@ -122,8 +122,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setOnImage$ = Selector.register("setOnImage:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setOnImage(UISwitch __self__, Selector __cmd__, UIImage onImage);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setOnImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage onImage);
+    @Bridge private native static void objc_setOnImage(UISwitch __self__, Selector __cmd__, UIImage onImage);
+    @Bridge private native static void objc_setOnImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage onImage);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/onImage">@property(nonatomic, retain) UIImage *onImage</a>
      * @since Available in iOS 6.0 and later.
@@ -144,8 +144,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setOnTintColor$ = Selector.register("setOnTintColor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setOnTintColor(UISwitch __self__, Selector __cmd__, UIColor onTintColor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setOnTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor onTintColor);
+    @Bridge private native static void objc_setOnTintColor(UISwitch __self__, Selector __cmd__, UIColor onTintColor);
+    @Bridge private native static void objc_setOnTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor onTintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/onTintColor">@property(nonatomic, retain) UIColor *onTintColor</a>
      * @since Available in iOS 5.0 and later.
@@ -166,8 +166,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setThumbTintColor$ = Selector.register("setThumbTintColor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setThumbTintColor(UISwitch __self__, Selector __cmd__, UIColor thumbTintColor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setThumbTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor thumbTintColor);
+    @Bridge private native static void objc_setThumbTintColor(UISwitch __self__, Selector __cmd__, UIColor thumbTintColor);
+    @Bridge private native static void objc_setThumbTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor thumbTintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/thumbTintColor">@property(nonatomic, retain) UIColor *thumbTintColor</a>
      * @since Available in iOS 6.0 and later.
@@ -188,8 +188,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTintColor$ = Selector.register("setTintColor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTintColor(UISwitch __self__, Selector __cmd__, UIColor tintColor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor tintColor);
+    @Bridge private native static void objc_setTintColor(UISwitch __self__, Selector __cmd__, UIColor tintColor);
+    @Bridge private native static void objc_setTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor tintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 6.0 and later.

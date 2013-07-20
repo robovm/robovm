@@ -70,8 +70,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setBackgroundView$ = Selector.register("setBackgroundView:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setBackgroundView(UICollectionViewCell __self__, Selector __cmd__, UIView backgroundView);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__, UIView backgroundView);
+    @Bridge private native static void objc_setBackgroundView(UICollectionViewCell __self__, Selector __cmd__, UIView backgroundView);
+    @Bridge private native static void objc_setBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__, UIView backgroundView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/backgroundView">@property (nonatomic, retain) UIView *backgroundView</a>
      * @since Available in iOS 6.0 and later.
@@ -103,8 +103,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setHighlighted$ = Selector.register("setHighlighted:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setHighlighted(UICollectionViewCell __self__, Selector __cmd__, boolean highlighted);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setHighlightedSuper(ObjCSuper __super__, Selector __cmd__, boolean highlighted);
+    @Bridge private native static void objc_setHighlighted(UICollectionViewCell __self__, Selector __cmd__, boolean highlighted);
+    @Bridge private native static void objc_setHighlightedSuper(ObjCSuper __super__, Selector __cmd__, boolean highlighted);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/highlighted">@property (nonatomic, getter=isHighlighted) BOOL highlighted</a>
      * @since Available in iOS 6.0 and later.
@@ -125,8 +125,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setSelected$ = Selector.register("setSelected:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setSelected(UICollectionViewCell __self__, Selector __cmd__, boolean selected);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSelectedSuper(ObjCSuper __super__, Selector __cmd__, boolean selected);
+    @Bridge private native static void objc_setSelected(UICollectionViewCell __self__, Selector __cmd__, boolean selected);
+    @Bridge private native static void objc_setSelectedSuper(ObjCSuper __super__, Selector __cmd__, boolean selected);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/selected">@property (nonatomic, getter=isSelected) BOOL selected</a>
      * @since Available in iOS 6.0 and later.
@@ -147,8 +147,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setSelectedBackgroundView$ = Selector.register("setSelectedBackgroundView:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setSelectedBackgroundView(UICollectionViewCell __self__, Selector __cmd__, UIView selectedBackgroundView);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSelectedBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__, UIView selectedBackgroundView);
+    @Bridge private native static void objc_setSelectedBackgroundView(UICollectionViewCell __self__, Selector __cmd__, UIView selectedBackgroundView);
+    @Bridge private native static void objc_setSelectedBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__, UIView selectedBackgroundView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewCell_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewCell/selectedBackgroundView">@property (nonatomic, retain) UIView *selectedBackgroundView</a>
      * @since Available in iOS 6.0 and later.

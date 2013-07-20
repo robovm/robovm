@@ -78,8 +78,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDataSource$ = Selector.register("setDataSource:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDataSource(UIPageViewController __self__, Selector __cmd__, UIPageViewControllerDataSource dataSource);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDataSourceSuper(ObjCSuper __super__, Selector __cmd__, UIPageViewControllerDataSource dataSource);
+    @Bridge private native static void objc_setDataSource(UIPageViewController __self__, Selector __cmd__, UIPageViewControllerDataSource dataSource);
+    @Bridge private native static void objc_setDataSourceSuper(ObjCSuper __super__, Selector __cmd__, UIPageViewControllerDataSource dataSource);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerClassReferenceClassRef/UIPageViewControllerClassReference.html#//apple_ref/occ/instp/UIPageViewController/dataSource">@property(nonatomic, assign) id&amp;lt;UIPageViewControllerDataSource&amp;gt; dataSource</a>
      * @since Available in iOS 5.0 and later.
@@ -100,8 +100,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDelegate$ = Selector.register("setDelegate:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UIPageViewController __self__, Selector __cmd__, UIPageViewControllerDelegate delegate);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIPageViewControllerDelegate delegate);
+    @Bridge private native static void objc_setDelegate(UIPageViewController __self__, Selector __cmd__, UIPageViewControllerDelegate delegate);
+    @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIPageViewControllerDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerClassReferenceClassRef/UIPageViewControllerClassReference.html#//apple_ref/occ/instp/UIPageViewController/delegate">@property(nonatomic, assign) id&amp;lt;UIPageViewControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 5.0 and later.
@@ -122,8 +122,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDoubleSided$ = Selector.register("setDoubleSided:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDoubleSided(UIPageViewController __self__, Selector __cmd__, boolean doubleSided);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDoubleSidedSuper(ObjCSuper __super__, Selector __cmd__, boolean doubleSided);
+    @Bridge private native static void objc_setDoubleSided(UIPageViewController __self__, Selector __cmd__, boolean doubleSided);
+    @Bridge private native static void objc_setDoubleSidedSuper(ObjCSuper __super__, Selector __cmd__, boolean doubleSided);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerClassReferenceClassRef/UIPageViewControllerClassReference.html#//apple_ref/occ/instp/UIPageViewController/doubleSided">@property(nonatomic, getter=isDoubleSided) BOOL doubleSided</a>
      * @since Available in iOS 5.0 and later.

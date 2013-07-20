@@ -78,8 +78,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setContentViewController$ = Selector.register("setContentViewController:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setContentViewController(UIPopoverController __self__, Selector __cmd__, UIViewController contentViewController);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setContentViewControllerSuper(ObjCSuper __super__, Selector __cmd__, UIViewController contentViewController);
+    @Bridge private native static void objc_setContentViewController(UIPopoverController __self__, Selector __cmd__, UIViewController contentViewController);
+    @Bridge private native static void objc_setContentViewControllerSuper(ObjCSuper __super__, Selector __cmd__, UIViewController contentViewController);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/contentViewController">@property (nonatomic, retain) UIViewController *contentViewController</a>
      * @since Available in iOS 3.2 and later.
@@ -100,8 +100,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDelegate$ = Selector.register("setDelegate:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UIPopoverController __self__, Selector __cmd__, UIPopoverControllerDelegate delegate);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIPopoverControllerDelegate delegate);
+    @Bridge private native static void objc_setDelegate(UIPopoverController __self__, Selector __cmd__, UIPopoverControllerDelegate delegate);
+    @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIPopoverControllerDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/delegate">@property (nonatomic, assign) id &amp;lt;UIPopoverControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.2 and later.
@@ -122,8 +122,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setPassthroughViews$ = Selector.register("setPassthroughViews:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setPassthroughViews(UIPopoverController __self__, Selector __cmd__, NSArray passthroughViews);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setPassthroughViewsSuper(ObjCSuper __super__, Selector __cmd__, NSArray passthroughViews);
+    @Bridge private native static void objc_setPassthroughViews(UIPopoverController __self__, Selector __cmd__, NSArray passthroughViews);
+    @Bridge private native static void objc_setPassthroughViewsSuper(ObjCSuper __super__, Selector __cmd__, NSArray passthroughViews);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/passthroughViews">@property (nonatomic, copy) NSArray *passthroughViews</a>
      * @since Available in iOS 3.2 and later.
@@ -155,8 +155,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setPopoverBackgroundViewClass$ = Selector.register("setPopoverBackgroundViewClass:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setPopoverBackgroundViewClass(UIPopoverController __self__, Selector __cmd__, ObjCClass popoverBackgroundViewClass);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setPopoverBackgroundViewClassSuper(ObjCSuper __super__, Selector __cmd__, ObjCClass popoverBackgroundViewClass);
+    @Bridge private native static void objc_setPopoverBackgroundViewClass(UIPopoverController __self__, Selector __cmd__, ObjCClass popoverBackgroundViewClass);
+    @Bridge private native static void objc_setPopoverBackgroundViewClassSuper(ObjCSuper __super__, Selector __cmd__, ObjCClass popoverBackgroundViewClass);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/popoverBackgroundViewClass">@property (nonatomic, readwrite, retain) Class popoverBackgroundViewClass</a>
      * @since Available in iOS 5.0 and later.
@@ -177,8 +177,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setPopoverContentSize$ = Selector.register("setPopoverContentSize:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setPopoverContentSize(UIPopoverController __self__, Selector __cmd__, @ByVal CGSize popoverContentSize);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setPopoverContentSizeSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGSize popoverContentSize);
+    @Bridge private native static void objc_setPopoverContentSize(UIPopoverController __self__, Selector __cmd__, @ByVal CGSize popoverContentSize);
+    @Bridge private native static void objc_setPopoverContentSizeSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGSize popoverContentSize);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/popoverContentSize">@property (nonatomic) CGSize popoverContentSize</a>
      * @since Available in iOS 3.2 and later.
@@ -199,8 +199,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setPopoverLayoutMargins$ = Selector.register("setPopoverLayoutMargins:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setPopoverLayoutMargins(UIPopoverController __self__, Selector __cmd__, @ByVal UIEdgeInsets popoverLayoutMargins);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setPopoverLayoutMarginsSuper(ObjCSuper __super__, Selector __cmd__, @ByVal UIEdgeInsets popoverLayoutMargins);
+    @Bridge private native static void objc_setPopoverLayoutMargins(UIPopoverController __self__, Selector __cmd__, @ByVal UIEdgeInsets popoverLayoutMargins);
+    @Bridge private native static void objc_setPopoverLayoutMarginsSuper(ObjCSuper __super__, Selector __cmd__, @ByVal UIEdgeInsets popoverLayoutMargins);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/popoverLayoutMargins">@property (nonatomic, readwrite) UIEdgeInsets popoverLayoutMargins</a>
      * @since Available in iOS 5.0 and later.

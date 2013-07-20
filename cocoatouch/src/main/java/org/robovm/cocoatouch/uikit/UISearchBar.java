@@ -71,8 +71,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAutocapitalizationType$ = Selector.register("setAutocapitalizationType:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAutocapitalizationType(UISearchBar __self__, Selector __cmd__, UITextAutocapitalizationType autocapitalizationType);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAutocapitalizationTypeSuper(ObjCSuper __super__, Selector __cmd__, UITextAutocapitalizationType autocapitalizationType);
+    @Bridge private native static void objc_setAutocapitalizationType(UISearchBar __self__, Selector __cmd__, UITextAutocapitalizationType autocapitalizationType);
+    @Bridge private native static void objc_setAutocapitalizationTypeSuper(ObjCSuper __super__, Selector __cmd__, UITextAutocapitalizationType autocapitalizationType);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchBar/autocapitalizationType">@property(nonatomic) UITextAutocapitalizationType autocapitalizationType</a>
      * @since Available in iOS 2.0 and later.
@@ -93,8 +93,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setAutocorrectionType$ = Selector.register("setAutocorrectionType:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setAutocorrectionType(UISearchBar __self__, Selector __cmd__, UITextAutocorrectionType autocorrectionType);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setAutocorrectionTypeSuper(ObjCSuper __super__, Selector __cmd__, UITextAutocorrectionType autocorrectionType);
+    @Bridge private native static void objc_setAutocorrectionType(UISearchBar __self__, Selector __cmd__, UITextAutocorrectionType autocorrectionType);
+    @Bridge private native static void objc_setAutocorrectionTypeSuper(ObjCSuper __super__, Selector __cmd__, UITextAutocorrectionType autocorrectionType);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchBar/autocorrectionType">@property(nonatomic) UITextAutocorrectionType autocorrectionType</a>
      * @since Available in iOS 2.0 and later.
@@ -115,8 +115,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setBackgroundImage$ = Selector.register("setBackgroundImage:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setBackgroundImage(UISearchBar __self__, Selector __cmd__, UIImage backgroundImage);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBackgroundImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage backgroundImage);
+    @Bridge private native static void objc_setBackgroundImage(UISearchBar __self__, Selector __cmd__, UIImage backgroundImage);
+    @Bridge private native static void objc_setBackgroundImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage backgroundImage);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchBar/backgroundImage">@property(nonatomic, retain) UIImage *backgroundImage</a>
      * @since Available in iOS 5.0 and later.
@@ -137,8 +137,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setBarStyle$ = Selector.register("setBarStyle:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setBarStyle(UISearchBar __self__, Selector __cmd__, UIBarStyle barStyle);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setBarStyleSuper(ObjCSuper __super__, Selector __cmd__, UIBarStyle barStyle);
+    @Bridge private native static void objc_setBarStyle(UISearchBar __self__, Selector __cmd__, UIBarStyle barStyle);
+    @Bridge private native static void objc_setBarStyleSuper(ObjCSuper __super__, Selector __cmd__, UIBarStyle barStyle);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchBar/barStyle">@property(nonatomic) UIBarStyle barStyle</a>
      * @since Available in iOS 2.0 and later.
@@ -159,8 +159,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setDelegate$ = Selector.register("setDelegate:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setDelegate(UISearchBar __self__, Selector __cmd__, UISearchBarDelegate delegate);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UISearchBarDelegate delegate);
+    @Bridge private native static void objc_setDelegate(UISearchBar __self__, Selector __cmd__, UISearchBarDelegate delegate);
+    @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UISearchBarDelegate delegate);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchBar/delegate">@property(nonatomic, assign) id&amp;lt;UISearchBarDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
@@ -181,8 +181,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setInputAccessoryView$ = Selector.register("setInputAccessoryView:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setInputAccessoryView(UISearchBar __self__, Selector __cmd__, UIView inputAccessoryView);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setInputAccessoryViewSuper(ObjCSuper __super__, Selector __cmd__, UIView inputAccessoryView);
+    @Bridge private native static void objc_setInputAccessoryView(UISearchBar __self__, Selector __cmd__, UIView inputAccessoryView);
+    @Bridge private native static void objc_setInputAccessoryViewSuper(ObjCSuper __super__, Selector __cmd__, UIView inputAccessoryView);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchBar/inputAccessoryView">@property (nonatomic, readwrite, retain) UIView *inputAccessoryView</a>
      * @since Available in iOS 6.0 and later.
@@ -203,8 +203,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setKeyboardType$ = Selector.register("setKeyboardType:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setKeyboardType(UISearchBar __self__, Selector __cmd__, UIKeyboardType keyboardType);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setKeyboardTypeSuper(ObjCSuper __super__, Selector __cmd__, UIKeyboardType keyboardType);
+    @Bridge private native static void objc_setKeyboardType(UISearchBar __self__, Selector __cmd__, UIKeyboardType keyboardType);
+    @Bridge private native static void objc_setKeyboardTypeSuper(ObjCSuper __super__, Selector __cmd__, UIKeyboardType keyboardType);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchBar/keyboardType">@property(nonatomic) UIKeyboardType keyboardType</a>
      * @since Available in iOS 2.0 and later.
@@ -225,8 +225,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setPlaceholder$ = Selector.register("setPlaceholder:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setPlaceholder(UISearchBar __self__, Selector __cmd__, String placeholder);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setPlaceholderSuper(ObjCSuper __super__, Selector __cmd__, String placeholder);
+    @Bridge private native static void objc_setPlaceholder(UISearchBar __self__, Selector __cmd__, String placeholder);
+    @Bridge private native static void objc_setPlaceholderSuper(ObjCSuper __super__, Selector __cmd__, String placeholder);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchBar/placeholder">@property(nonatomic, copy) NSString *placeholder</a>
      * @since Available in iOS 2.0 and later.
@@ -247,8 +247,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setPrompt$ = Selector.register("setPrompt:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setPrompt(UISearchBar __self__, Selector __cmd__, String prompt);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setPromptSuper(ObjCSuper __super__, Selector __cmd__, String prompt);
+    @Bridge private native static void objc_setPrompt(UISearchBar __self__, Selector __cmd__, String prompt);
+    @Bridge private native static void objc_setPromptSuper(ObjCSuper __super__, Selector __cmd__, String prompt);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchBar/prompt">@property(nonatomic, copy) NSString *prompt</a>
      * @since Available in iOS 2.0 and later.
@@ -269,8 +269,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setScopeBarBackgroundImage$ = Selector.register("setScopeBarBackgroundImage:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setScopeBarBackgroundImage(UISearchBar __self__, Selector __cmd__, UIImage scopeBarBackgroundImage);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setScopeBarBackgroundImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage scopeBarBackgroundImage);
+    @Bridge private native static void objc_setScopeBarBackgroundImage(UISearchBar __self__, Selector __cmd__, UIImage scopeBarBackgroundImage);
+    @Bridge private native static void objc_setScopeBarBackgroundImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage scopeBarBackgroundImage);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchBar/scopeBarBackgroundImage">@property(nonatomic, retain) UIImage *scopeBarBackgroundImage</a>
      * @since Available in iOS 5.0 and later.
@@ -291,8 +291,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setScopeButtonTitles$ = Selector.register("setScopeButtonTitles:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setScopeButtonTitles(UISearchBar __self__, Selector __cmd__, NSArray scopeButtonTitles);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setScopeButtonTitlesSuper(ObjCSuper __super__, Selector __cmd__, NSArray scopeButtonTitles);
+    @Bridge private native static void objc_setScopeButtonTitles(UISearchBar __self__, Selector __cmd__, NSArray scopeButtonTitles);
+    @Bridge private native static void objc_setScopeButtonTitlesSuper(ObjCSuper __super__, Selector __cmd__, NSArray scopeButtonTitles);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchBar/scopeButtonTitles">@property(nonatomic, copy) NSArray *scopeButtonTitles</a>
      * @since Available in iOS 3.0 and later.
@@ -313,8 +313,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setSearchFieldBackgroundPositionAdjustment$ = Selector.register("setSearchFieldBackgroundPositionAdjustment:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setSearchFieldBackgroundPositionAdjustment(UISearchBar __self__, Selector __cmd__, @ByVal UIOffset searchFieldBackgroundPositionAdjustment);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSearchFieldBackgroundPositionAdjustmentSuper(ObjCSuper __super__, Selector __cmd__, @ByVal UIOffset searchFieldBackgroundPositionAdjustment);
+    @Bridge private native static void objc_setSearchFieldBackgroundPositionAdjustment(UISearchBar __self__, Selector __cmd__, @ByVal UIOffset searchFieldBackgroundPositionAdjustment);
+    @Bridge private native static void objc_setSearchFieldBackgroundPositionAdjustmentSuper(ObjCSuper __super__, Selector __cmd__, @ByVal UIOffset searchFieldBackgroundPositionAdjustment);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchBar/searchFieldBackgroundPositionAdjustment">@property(nonatomic) UIOffset searchFieldBackgroundPositionAdjustment</a>
      * @since Available in iOS 5.0 and later.
@@ -335,8 +335,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setSearchResultsButtonSelected$ = Selector.register("setSearchResultsButtonSelected:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setSearchResultsButtonSelected(UISearchBar __self__, Selector __cmd__, boolean searchResultsButtonSelected);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSearchResultsButtonSelectedSuper(ObjCSuper __super__, Selector __cmd__, boolean searchResultsButtonSelected);
+    @Bridge private native static void objc_setSearchResultsButtonSelected(UISearchBar __self__, Selector __cmd__, boolean searchResultsButtonSelected);
+    @Bridge private native static void objc_setSearchResultsButtonSelectedSuper(ObjCSuper __super__, Selector __cmd__, boolean searchResultsButtonSelected);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchBar/searchResultsButtonSelected">@property(nonatomic, getter=isSearchResultsButtonSelected) BOOL searchResultsButtonSelected</a>
      * @since Available in iOS 3.2 and later.
@@ -357,8 +357,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setSearchTextPositionAdjustment$ = Selector.register("setSearchTextPositionAdjustment:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setSearchTextPositionAdjustment(UISearchBar __self__, Selector __cmd__, @ByVal UIOffset searchTextPositionAdjustment);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSearchTextPositionAdjustmentSuper(ObjCSuper __super__, Selector __cmd__, @ByVal UIOffset searchTextPositionAdjustment);
+    @Bridge private native static void objc_setSearchTextPositionAdjustment(UISearchBar __self__, Selector __cmd__, @ByVal UIOffset searchTextPositionAdjustment);
+    @Bridge private native static void objc_setSearchTextPositionAdjustmentSuper(ObjCSuper __super__, Selector __cmd__, @ByVal UIOffset searchTextPositionAdjustment);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchBar/searchTextPositionAdjustment">@property(nonatomic) UIOffset searchTextPositionAdjustment</a>
      * @since Available in iOS 5.0 and later.
@@ -379,8 +379,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setSelectedScopeButtonIndex$ = Selector.register("setSelectedScopeButtonIndex:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setSelectedScopeButtonIndex(UISearchBar __self__, Selector __cmd__, int selectedScopeButtonIndex);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSelectedScopeButtonIndexSuper(ObjCSuper __super__, Selector __cmd__, int selectedScopeButtonIndex);
+    @Bridge private native static void objc_setSelectedScopeButtonIndex(UISearchBar __self__, Selector __cmd__, int selectedScopeButtonIndex);
+    @Bridge private native static void objc_setSelectedScopeButtonIndexSuper(ObjCSuper __super__, Selector __cmd__, int selectedScopeButtonIndex);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchBar/selectedScopeButtonIndex">@property(nonatomic) NSInteger selectedScopeButtonIndex</a>
      * @since Available in iOS 3.0 and later.
@@ -401,8 +401,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setShowsBookmarkButton$ = Selector.register("setShowsBookmarkButton:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setShowsBookmarkButton(UISearchBar __self__, Selector __cmd__, boolean showsBookmarkButton);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShowsBookmarkButtonSuper(ObjCSuper __super__, Selector __cmd__, boolean showsBookmarkButton);
+    @Bridge private native static void objc_setShowsBookmarkButton(UISearchBar __self__, Selector __cmd__, boolean showsBookmarkButton);
+    @Bridge private native static void objc_setShowsBookmarkButtonSuper(ObjCSuper __super__, Selector __cmd__, boolean showsBookmarkButton);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchBar/showsBookmarkButton">@property(nonatomic) BOOL showsBookmarkButton</a>
      * @since Available in iOS 2.0 and later.
@@ -423,8 +423,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setShowsCancelButton$ = Selector.register("setShowsCancelButton:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setShowsCancelButton(UISearchBar __self__, Selector __cmd__, boolean showsCancelButton);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShowsCancelButtonSuper(ObjCSuper __super__, Selector __cmd__, boolean showsCancelButton);
+    @Bridge private native static void objc_setShowsCancelButton(UISearchBar __self__, Selector __cmd__, boolean showsCancelButton);
+    @Bridge private native static void objc_setShowsCancelButtonSuper(ObjCSuper __super__, Selector __cmd__, boolean showsCancelButton);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchBar/showsCancelButton">@property(nonatomic) BOOL showsCancelButton</a>
      * @since Available in iOS 2.0 and later.
@@ -445,8 +445,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setShowsScopeBar$ = Selector.register("setShowsScopeBar:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setShowsScopeBar(UISearchBar __self__, Selector __cmd__, boolean showsScopeBar);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShowsScopeBarSuper(ObjCSuper __super__, Selector __cmd__, boolean showsScopeBar);
+    @Bridge private native static void objc_setShowsScopeBar(UISearchBar __self__, Selector __cmd__, boolean showsScopeBar);
+    @Bridge private native static void objc_setShowsScopeBarSuper(ObjCSuper __super__, Selector __cmd__, boolean showsScopeBar);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchBar/showsScopeBar">@property(nonatomic) BOOL showsScopeBar</a>
      * @since Available in iOS 3.0 and later.
@@ -467,8 +467,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setShowsSearchResultsButton$ = Selector.register("setShowsSearchResultsButton:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setShowsSearchResultsButton(UISearchBar __self__, Selector __cmd__, boolean showsSearchResultsButton);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setShowsSearchResultsButtonSuper(ObjCSuper __super__, Selector __cmd__, boolean showsSearchResultsButton);
+    @Bridge private native static void objc_setShowsSearchResultsButton(UISearchBar __self__, Selector __cmd__, boolean showsSearchResultsButton);
+    @Bridge private native static void objc_setShowsSearchResultsButtonSuper(ObjCSuper __super__, Selector __cmd__, boolean showsSearchResultsButton);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchBar/showsSearchResultsButton">@property(nonatomic) BOOL showsSearchResultsButton</a>
      * @since Available in iOS 3.2 and later.
@@ -489,8 +489,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setSpellCheckingType$ = Selector.register("setSpellCheckingType:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setSpellCheckingType(UISearchBar __self__, Selector __cmd__, UITextSpellCheckingType spellCheckingType);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setSpellCheckingTypeSuper(ObjCSuper __super__, Selector __cmd__, UITextSpellCheckingType spellCheckingType);
+    @Bridge private native static void objc_setSpellCheckingType(UISearchBar __self__, Selector __cmd__, UITextSpellCheckingType spellCheckingType);
+    @Bridge private native static void objc_setSpellCheckingTypeSuper(ObjCSuper __super__, Selector __cmd__, UITextSpellCheckingType spellCheckingType);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchBar/spellCheckingType">@property(nonatomic) UITextSpellCheckingType spellCheckingType</a>
      * @since Available in iOS 5.0 and later.
@@ -511,8 +511,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setText$ = Selector.register("setText:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setText(UISearchBar __self__, Selector __cmd__, String text);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTextSuper(ObjCSuper __super__, Selector __cmd__, String text);
+    @Bridge private native static void objc_setText(UISearchBar __self__, Selector __cmd__, String text);
+    @Bridge private native static void objc_setTextSuper(ObjCSuper __super__, Selector __cmd__, String text);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchBar/text">@property(nonatomic, copy) NSString *text</a>
      * @since Available in iOS 2.0 and later.
@@ -533,8 +533,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTintColor$ = Selector.register("setTintColor:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTintColor(UISearchBar __self__, Selector __cmd__, UIColor tintColor);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor tintColor);
+    @Bridge private native static void objc_setTintColor(UISearchBar __self__, Selector __cmd__, UIColor tintColor);
+    @Bridge private native static void objc_setTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor tintColor);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchBar/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 2.0 and later.
@@ -555,8 +555,8 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setTranslucent$ = Selector.register("setTranslucent:");
-    @Bridge(symbol = "objc_msgSend") private native static void objc_setTranslucent(UISearchBar __self__, Selector __cmd__, boolean translucent);
-    @Bridge(symbol = "objc_msgSendSuper") private native static void objc_setTranslucentSuper(ObjCSuper __super__, Selector __cmd__, boolean translucent);
+    @Bridge private native static void objc_setTranslucent(UISearchBar __self__, Selector __cmd__, boolean translucent);
+    @Bridge private native static void objc_setTranslucentSuper(ObjCSuper __super__, Selector __cmd__, boolean translucent);
     /**
      * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchBar/translucent">@property(nonatomic, assign, getter=isTranslucent) BOOL translucent</a>
      * @since Available in iOS 3.0 and later.

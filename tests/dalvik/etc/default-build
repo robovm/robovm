@@ -37,4 +37,4 @@ if [ -r src-ex ]; then
 fi
 
 $ROBOVM_DEV_ROOT/bin/robovm -tmp `pwd`/tmp -d `pwd` \
-    -o test.out -debug -use-debug-libs -verbose -roots '##.#' -cp "$cp" Main > robovm.log 2>&1
+    -o test.out -debug -use-debug-libs -verbose -forcelinkclasses '##.#' -cp "$cp" Main > robovm.log 2>&1

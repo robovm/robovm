@@ -51,7 +51,7 @@ if [ ! -x $TARGET/test ]; then
     -os $OS \
     -o test \
     -verbose \
-    -roots '##.#' \
+    -forcelinkclasses '##.#' \
     -use-debug-libs \
     -cp $CP
   result=$?

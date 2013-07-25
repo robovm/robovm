@@ -27,8 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.exec.ExecuteException;
 import org.robovm.compiler.clazz.Clazz;
@@ -42,6 +40,7 @@ import org.robovm.compiler.log.ConsoleLogger;
 import org.robovm.compiler.target.LaunchParameters;
 import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters;
 import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters.Family;
+import org.robovm.compiler.util.AntPathMatcher;
 
 /**
  *
@@ -49,11 +48,6 @@ import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters.Family;
  */
 public class AppCompiler {
 
-    /**
-     * {@link Pattern} used to convert an ANT-style pattern into a regular expression.
-     */
-    private static final Pattern ANT_WILDCARDS = Pattern.compile("\\*\\*\\.?|\\*|\\?");
-    
     /**
      * Patterns for root classes. Classes matching these patterns will always be linked in.
      */
@@ -115,41 +109,15 @@ public class AppCompiler {
     }
     
     /**
-     * Converts an ANT-style pattern into a regular expression.
-     */
-    private Pattern antPatternToRegexp(String pattern) {
-        StringBuilder sb = new StringBuilder();
-        int start = 0;
-        Matcher matcher = ANT_WILDCARDS.matcher(pattern);
-        while (matcher.find()) {
-            if (matcher.start() - start > 0) {
-                sb.append(Pattern.quote(pattern.substring(start, matcher.start())));
-            }
-            if ("**".equals(matcher.group()) || "**.".equals(matcher.group())) {
-                sb.append(".*");
-            } else if ("*".equals(matcher.group())) {
-                sb.append("[^.]+");
-            } else if ("?".equals(matcher.group())) {
-                sb.append(".");
-            }
-            start = matcher.end();
-        }
-        if (start < pattern.length()) {
-            sb.append(Pattern.quote(pattern.substring(start)));
-        }
-        return Pattern.compile(sb.toString());
-    }
-    
-    /**
      * Returns all {@link Clazz}es in all {@link Path}s matching the specified ANT-style pattern.
      */
     private Collection<Clazz> getMatchingClasses(String pattern) {
-        Pattern regexp = antPatternToRegexp(pattern);
+        AntPathMatcher matcher = new AntPathMatcher(pattern, ".");
         Map<String, Clazz> matches = new HashMap<String, Clazz>();
         for (Path path : config.getClazzes().getPaths()) {
             for (Clazz clazz : path.listClasses()) {
                 if (!matches.containsKey(clazz.getClassName()) 
-                        && regexp.matcher(clazz.getClassName()).matches()) {
+                        && matcher.matches(clazz.getClassName())) {
                     
                     matches.put(clazz.getClassName(), clazz);
                 }

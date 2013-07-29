@@ -17,6 +17,27 @@
   <resources>
     <resource>resources</resource>
     <resource>/usr/share/resources</resource>
+    <resource>
+      <includes>
+        <include>data/**/*</include>
+      </includes>
+    </resource>
+    <resource>
+      <includes>
+        <include>videos/**/*.avi</include>
+      </includes>
+    </resource>
+    <resource>
+      <targetPath>data</targetPath>
+      <directory>resources</directory>
+      <includes>
+        <include>**/*.png</include>
+      </includes>
+      <excludes>
+        <exclude>**/foo.png</exclude>
+      </excludes>
+      <flatten>true</flatten>
+    </resource>
   </resources>
   <classpath>
     <classpathentry>foo1.jar</classpathentry>

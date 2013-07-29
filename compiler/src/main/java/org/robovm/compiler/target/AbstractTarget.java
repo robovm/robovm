@@ -39,6 +39,8 @@ import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.clazz.Path;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
+import org.robovm.compiler.config.Resource;
+import org.robovm.compiler.config.Resource.Walker;
 import org.robovm.compiler.util.Executor;
 import org.robovm.compiler.util.ToolchainUtil;
 import org.simpleframework.xml.Transient;
@@ -158,17 +160,21 @@ public abstract class AbstractTarget implements Target {
     }
     
     protected void copyResources(File destDir) throws IOException {
-        for (File f : config.getResources()) {
-            if (!f.exists()) {
-                config.getLogger().warn("Resource %s not found", f);
-            } else if (f.isDirectory()) {
-                config.getLogger().debug("Copying resource dir %s to %s", f, destDir);
-                FileUtils.copyDirectory(f, new File(destDir, f.getName()));
-            } else {
-                config.getLogger().debug("Copying resource %s to %s", f, destDir);
-                FileUtils.copyFileToDirectory(f, destDir, true);
-            }
+        for (Resource res : config.getResources()) {
+            res.walk(new Walker() {
+                @Override
+                public void process(Resource resource, File file, File destDir)
+                        throws IOException {
+                    
+                    copyFile(resource, file, destDir);
+                }
+            }, destDir);
         }
+    }
+    
+    protected void copyFile(Resource resource, File file, File destDir) throws IOException {
+        config.getLogger().debug("Copying resource %s to %s", file, destDir);
+        FileUtils.copyFileToDirectory(file, destDir, true);
     }
     
     public void install() throws IOException {

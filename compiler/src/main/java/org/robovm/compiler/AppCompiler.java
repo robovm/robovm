@@ -36,6 +36,7 @@ import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.Config.TargetType;
 import org.robovm.compiler.config.OS;
+import org.robovm.compiler.config.Resource;
 import org.robovm.compiler.log.ConsoleLogger;
 import org.robovm.compiler.target.LaunchParameters;
 import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters;
@@ -307,7 +308,13 @@ public class AppCompiler {
                     }
                 } else if ("-resources".equals(args[i])) {
                     for (String p : args[++i].split(":")) {
-                        builder.addResource(new File(p));
+                        if (AntPathMatcher.isPattern(p)) {
+                            File dir = new File(AntPathMatcher.rtrimWildcardTokens(p));
+                            String pattern = AntPathMatcher.extractPattern(p);
+                            builder.addResource(new Resource(dir, null).include(pattern));
+                        } else {
+                            builder.addResource(new Resource(new File(p)));
+                        }
                     }
                 } else if ("-cacerts".equals(args[i])) {
                     String name = args[++i];
@@ -500,7 +507,10 @@ public class AppCompiler {
         System.err.println("  -frameworks <list>    : separated list of frameworks that should be included\n" 
                          + "                        when linking the final executable.");
         System.err.println("  -resources <list>     : separated list of files and directories that should be\n"
-                         + "                        copied to the install dir.");
+                         + "                        copied to the install dir. Accepts Ant-style patterns.\n" 
+                         + "                        If a pattern is specified the left-most path before the\n" 
+                         + "                        first wildcard will be used as base directory and will not\n" 
+                         + "                        be recreated in the install dir.");
         System.err.println("  -cacerts <value>      Use the specified cacerts file. Allowed value are 'none',\n" 
                          + "                        'full'. Default is 'full' but no cacerts will be included\n" 
                          + "                        unless the code actually needs them.");

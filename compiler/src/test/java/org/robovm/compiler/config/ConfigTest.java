@@ -58,7 +58,16 @@ public class ConfigTest {
         assertEquals(Arrays.asList(new File(wd, "foo1.jar"), new File(tmp, "foo2.jar")), config.getClasspath());
         assertEquals(Arrays.asList("Foundation", "AppKit"), config.getFrameworks());
         assertEquals(Arrays.asList("dl", "/tmp/wd/libs/libmy.a", "/tmp/wd/libs/foo.o", "/usr/lib/libbar.a"), config.getLibs());
-        assertEquals(Arrays.asList(new File("/tmp/wd/resources"), new File("/usr/share/resources")), config.getResources());
+        assertEquals(Arrays.asList(
+                new Resource(new File(wd, "resources")), 
+                new Resource(new File("/usr/share/resources")),
+                new Resource(null, null).include("data/**/*"),
+                new Resource(null, null).include("videos/**/*.avi"),
+                new Resource(new File(wd, "resources"), "data")
+                    .include("**/*.png")
+                    .exclude("**/foo.png")
+                    .flatten(true)
+                ), config.getResources());
         assertEquals(Arrays.asList("javax.**.*"), config.getForceLinkClasses());
         assertEquals(OS.macosx, config.getOs());
         assertEquals(Arch.x86, config.getArch());
@@ -72,7 +81,9 @@ public class ConfigTest {
         assertEquals(Arrays.asList(new File(wd, "foo1.jar"), new File(tmp, "foo2.jar")), config.getClasspath());
         assertEquals(Arrays.asList("Foundation", "AppKit"), config.getFrameworks());
         assertEquals(Arrays.asList("dl", "/tmp/wd/libs/libmy.a", "/tmp/wd/libs/foo.o", "/usr/lib/libbar.a"), config.getLibs());
-        assertEquals(Arrays.asList(new File("/tmp/wd/resources"), new File("/usr/share/resources")), config.getResources());
+        assertEquals(Arrays.asList(new Resource(new File("/tmp/wd/resources")), 
+                new Resource(new File("/usr/share/resources"))),
+                config.getResources());
         assertEquals(Arrays.asList("javax.**.*"), config.getForceLinkClasses());
         assertEquals(OS.macosx, config.getOs());
         assertEquals(Arch.x86, config.getArch());
@@ -89,8 +100,15 @@ public class ConfigTest {
         builder.addLib("libs/libmy.a");
         builder.addLib("libs/foo.o");
         builder.addLib("/usr/lib/libbar.a");
-        builder.addResource(new File("resources"));
-        builder.addResource(new File("/usr/share/resources"));
+        builder.addResource(new Resource(new File("/tmp/wd/resources")));
+        builder.addResource(new Resource(new File("/usr/share/resources")));
+        builder.addResource(new Resource(new File("/tmp/wd"), null).include("data/**/*"));
+        builder.addResource(new Resource(null, null).include("videos/**/*.avi"));
+        builder.addResource(
+                new Resource(new File("/tmp/wd/resources"), "data")
+                    .include("**/*.png")
+                    .exclude("**/foo.png")
+                    .flatten(true));
         builder.addForceLinkClass("javax.**.*");
         builder.os(OS.macosx);
         builder.arch(Arch.x86);

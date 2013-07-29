@@ -92,7 +92,7 @@ public class Config {
     @ElementList(required = false, entry = "framework")
     private ArrayList<String> frameworks;
     @ElementList(required = false, entry = "resource")
-    private ArrayList<File> resources;
+    private ArrayList<Resource> resources;
     @ElementList(required = false, entry = "classpathentry")
     private ArrayList<File> bootclasspath;
     @ElementList(required = false, entry = "classpathentry")
@@ -246,8 +246,8 @@ public class Config {
                 : Collections.unmodifiableList(frameworks);
     }
     
-    public List<File> getResources() {
-        return resources == null ? Collections.<File>emptyList() 
+    public List<Resource> getResources() {
+        return resources == null ? Collections.<Resource>emptyList() 
                 : Collections.unmodifiableList(resources);
     }
     
@@ -775,11 +775,11 @@ public class Config {
             return this;
         }
         
-        public Builder addResource(File path) {
+        public Builder addResource(Resource resource) {
             if (config.resources == null) {
-                config.resources = new ArrayList<File>();
+                config.resources = new ArrayList<Resource>();
             }
-            config.resources.add(path);
+            config.resources.add(resource);
             return this;
         }
 
@@ -889,13 +889,23 @@ public class Config {
             serializer.write(config, writer);
         }
 
-        private Serializer createSerializer(File wd) throws Exception {
-            Registry registry = new Registry();
+        private Serializer createSerializer(final File wd) throws Exception {
             RelativeFileConverter fileConverter = new RelativeFileConverter(wd);
+            
+            Serializer resourceSerializer = new Persister(
+                    new RegistryStrategy(new Registry().bind(File.class, fileConverter)), 
+                    new PlatformFilter(config.properties), new Format(2));
+            
+            Registry registry = new Registry();
+            RegistryStrategy registryStrategy = new RegistryStrategy(registry);
+            Serializer serializer = new Persister(registryStrategy, 
+                    new PlatformFilter(config.properties), new Format(2));
+
+
             registry.bind(File.class, fileConverter);
             registry.bind(Lib.class, new RelativeLibConverter(fileConverter));
-            Serializer serializer = new Persister(new RegistryStrategy(registry), 
-                    new PlatformFilter(config.properties), new Format(2));
+            registry.bind(Resource.class, new ResourceConverter(fileConverter, resourceSerializer));
+            
             return serializer;
         }
     }
@@ -951,8 +961,8 @@ public class Config {
                 wd = wd.getParentFile();
             }
             String prefix = wd.getAbsolutePath();
-            if (!prefix.endsWith(File.separator)) {
-                prefix = prefix + File.separator;
+            if (prefix.endsWith(File.separator)) {
+                prefix = prefix.substring(0, prefix.length() - 1);
             }
             wdPrefix = prefix;
         }
@@ -976,10 +986,47 @@ public class Config {
         @Override
         public void write(OutputNode node, File value) throws Exception {
             String path = value.getAbsolutePath();
-            if (path.startsWith(wdPrefix)) {
-                node.setValue(path.substring(wdPrefix.length()));
+            if (path.equals(wdPrefix)) {
+                if ("directory".equals(node.getName())) {
+                    // Skip
+                    node.remove();
+                } else {
+                    node.setValue("");
+                }
+            } else if (path.startsWith(wdPrefix) && path.charAt(wdPrefix.length()) == File.separatorChar) {
+                node.setValue(path.substring(wdPrefix.length() + 1));
             } else {
                 node.setValue(path);
+            }
+        }
+    }
+    
+    private static final class ResourceConverter implements Converter<Resource> {
+        private final RelativeFileConverter fileConverter;
+        private final Serializer serializer;
+
+        public ResourceConverter(RelativeFileConverter fileConverter, Serializer serializer) {
+            this.fileConverter = fileConverter;
+            this.serializer = serializer;
+        }
+
+        @Override
+        public Resource read(InputNode node) throws Exception {
+            String value = node.getValue();
+            if (value != null && value.trim().length() > 0) {
+                return new Resource(fileConverter.read(value));
+            }
+            return serializer.read(Resource.class, node);
+        }
+
+        @Override
+        public void write(OutputNode node, Resource resource) throws Exception {
+            File path = resource.getPath();
+            if (path != null) {
+                fileConverter.write(node, path);
+            } else {
+                node.remove();
+                serializer.write(resource, node.getParent());
             }
         }
     }

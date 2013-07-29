@@ -464,14 +464,36 @@ public class AntPathMatcher {
             if (isPattern(v[counter])) {
                 break;
             }
-            if (counter > 0) {
+            if (counter > 0 || input.startsWith(separator)) {
                 sb.append(separator);
             }
             sb.append(v[counter]);
         }
         return sb.toString();
     }
+
+    public static String extractPattern(String input) {
+        return extractPattern(input, DEFAULT_PATH_SEPARATOR);
+    }
     
+    public static String extractPattern(String input, String separator) {
+        String[] v = tokenizeToStringArray(input, separator);
+        StringBuffer sb = new StringBuffer();
+        int counter = 0;
+        for (; counter < v.length; counter++) {
+            if (isPattern(v[counter])) {
+                break;
+            }
+        }
+        for (; counter < v.length; counter++) {
+            if (sb.length() > 0) {
+                sb.append(separator);
+            }
+            sb.append(v[counter]);
+        }
+        return sb.toString();
+    }
+
     /**
      * Tokenize the given String into a String array via a StringTokenizer.
      * Trims tokens and omits empty tokens.

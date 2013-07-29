@@ -34,11 +34,13 @@ import org.apache.commons.io.FileUtils;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
+import org.robovm.compiler.config.Resource;
 import org.robovm.compiler.log.DebugOutputStream;
 import org.robovm.compiler.log.ErrorOutputStream;
 import org.robovm.compiler.target.AbstractTarget;
 import org.robovm.compiler.target.LaunchParameters;
 import org.robovm.compiler.util.Executor;
+import org.robovm.compiler.util.ToolchainUtil;
 import org.robovm.compiler.util.io.OpenOnWriteFileOutputStream;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -285,6 +287,21 @@ public class IOSTarget extends AbstractTarget {
         return super.doLaunch(launchParameters);
     }
 
+    @Override
+    protected void copyFile(Resource resource, File file, File destDir)
+            throws IOException {
+        
+        if (arch == Arch.thumbv7 && !resource.isSkipPngCrush() 
+                && file.getName().toLowerCase().endsWith(".png")) {
+            
+            destDir.mkdirs();
+            File outFile = new File(destDir, file.getName());
+            ToolchainUtil.pngcrush(config, file, outFile);
+        } else {
+            super.copyFile(resource, file, destDir);
+        }
+    }
+    
     protected File getAppDir() {
         File dir = null;
         if (!config.isSkipInstall()) {

@@ -34,6 +34,7 @@ import org.robovm.compiler.log.Logger;
 public class ToolchainUtil {
     private static String IOS_DEV_CLANG; 
     private static String IOS_SIM_CLANG; 
+    private static String PNGCRUSH;
 
     private static String getIOSDevClang() throws IOException {
         if (IOS_DEV_CLANG == null) {
@@ -47,6 +48,19 @@ public class ToolchainUtil {
             IOS_SIM_CLANG = new Executor(Logger.NULL_LOGGER, "xcrun").args("-sdk", "iphonesimulator", "-f", "clang").execCapture();
         }
         return IOS_SIM_CLANG;
+    }
+    
+    private static String getPngCrush() throws IOException {
+        if (PNGCRUSH == null) {
+            PNGCRUSH = new Executor(Logger.NULL_LOGGER, "xcrun").args("-sdk", "iphoneos", "-f", "pngcrush").execCapture();
+        }
+        return PNGCRUSH;
+    }
+    
+    public static void pngcrush(Config config, File inFile, File outFile) throws IOException {
+        new Executor(config.getLogger(), getPngCrush())
+            .args("-q", "-f", "0", inFile, outFile)
+            .exec();
     }
     
     public static void link(Config config, List<String> args, List<File> objectFiles, List<String> libs, File outFile) throws IOException {

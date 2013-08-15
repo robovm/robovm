@@ -97,6 +97,7 @@ public final class Runtime {
         paths.add("/usr/lib");
         
         if (Bro.IS_DARWIN) {
+            paths.add("/usr/lib/system");
             String dyLdRootPath = System.getenv("DYLD_ROOT_PATH");
             if (dyLdRootPath != null) {
                 List<String> oldSearchPaths = new ArrayList<String>(paths);

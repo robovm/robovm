@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2013 Trillian AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,35 @@
  */
 package org.robovm.objc.block;
 
+import org.robovm.objc.ObjCBlock;
+import org.robovm.objc.ObjCBlock.Wrapper;
+import org.robovm.rt.bro.annotation.Callback;
 import org.robovm.rt.bro.annotation.Marshaler;
+import org.robovm.rt.bro.annotation.Pointer;
 
 /**
- * 
+ * Block which takes no arguments and returns no value. This is used to map the
+ * Objective-C {@code void (^)(void)} block type.
  */
-@Marshaler(VoidBlock.class)
-public class VoidBlock {
+@Marshaler(VoidBlock.Marshaler.class)
+public interface VoidBlock {
 
+    /**
+     * Invokes this block.
+     */
+    void invoke();
+    
+    static class Callbacks {
+        @Callback static void run(ObjCBlock block) {
+            ((VoidBlock) block.object()).invoke();
+        }
+    }
+    
+    static class Marshaler {
+        private static final Wrapper WRAPPER = new Wrapper(Callbacks.class);
+        public static @Pointer long toNative(Object o) {
+            return WRAPPER.toNative(o);
+        }
+        public static void updateObject(Object o, long handle) {}
+    }
 }

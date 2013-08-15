@@ -66,24 +66,8 @@ public class ObjCRuntime {
                             // So this is a bridge to an ObjC method. If the method
                             // returns a struct by value we may have to use the
                             // special stret versions of objc_msgSend/objc_msgSendSuper.
-                            Class<?> returnType = method.getReturnType();
-                            if (returnType.getSuperclass() == Struct.class 
-                                    && (method.getAnnotation(ByVal.class) != null 
-                                    || returnType.getAnnotation(ByVal.class) != null)) {
-                                int structSize = getStructSize(returnType);
-                                if (Bro.IS_X86) {
-                                    if (structSize > 8) {
-                                        // On x86 stret has to be used for structs
-                                        // larger than 8 bytes
-                                        symbol += "_stret";
-                                    }
-                                } else {
-                                    if (structSize > 4) {
-                                        // On ARM stret has to be used for structs
-                                        // larger than 4 bytes
-                                        symbol += "_stret";
-                                    }
-                                }
+                            if (isStret(method)) {
+                                symbol += "_stret";
                             }
                             long f = Runtime.resolveBridge("objc", symbol, method);
                             VM.bindBridgeMethod(method, f);
@@ -96,7 +80,30 @@ public class ObjCRuntime {
         Bro.bind(c);
     }
     
-    private static synchronized int getStructSize(Class<?> cls) {
+    static boolean isStret(Method method) {
+        Class<?> returnType = method.getReturnType();
+        if (returnType.getSuperclass() == Struct.class 
+                && (method.getAnnotation(ByVal.class) != null 
+                || returnType.getAnnotation(ByVal.class) != null)) {
+            int structSize = getStructSize(returnType);
+            if (Bro.IS_X86) {
+                if (structSize > 8) {
+                    // On x86 stret has to be used for structs
+                    // larger than 8 bytes
+                    return true;
+                }
+            } else {
+                if (structSize > 4) {
+                    // On ARM stret has to be used for structs
+                    // larger than 4 bytes
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    static synchronized int getStructSize(Class<?> cls) {
         Integer size = structSizes.get(cls);
         if (size == null) {
             try {

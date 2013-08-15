@@ -126,6 +126,9 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboole
         }
     }
     
+    // Make sure the thread is registered with the GC.
+    gcRegisterCurrentThread();
+
     if (!env) {
         env = rvmCreateEnv(vm);
         if (!env) goto error;
@@ -203,7 +206,7 @@ static void threadExitUncaughtException(Env* env, Thread* thread) {
 }
 
 
-static jint detachThread(Env* env, jboolean ignoreAttachCount) {
+static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregisterGC) {
     env->attachCount--;
     if (!ignoreAttachCount && env->attachCount > 0) {
         return JNI_OK;
@@ -243,6 +246,11 @@ static jint detachThread(Env* env, jboolean ignoreAttachCount) {
     pthread_setspecific(tlsEnvKey, NULL);
     rvmUnlockThreadsList();
 
+    if (unregisterGC) {
+        // Unregister the thread with the GC
+        gcUnregisterCurrentThread();
+    }
+
     return JNI_OK;
 }
 
@@ -280,10 +288,10 @@ Env* rvmGetEnv(void) {
     return (Env*) pthread_getspecific(tlsEnvKey);
 }
 
-jint rvmDetachCurrentThread(VM* vm, jboolean ignoreAttachCount) {
+jint rvmDetachCurrentThread(VM* vm, jboolean ignoreAttachCount, jboolean unregisterGC) {
     Env* env = rvmGetEnv();
     if (!env) return JNI_EDETACHED;
-    return detachThread(env, ignoreAttachCount);
+    return detachThread(env, ignoreAttachCount, unregisterGC);
 }
 
 typedef struct ThreadEntryPointArgs {
@@ -330,7 +338,7 @@ static void* startThreadEntryPoint(void* _args) {
         }
     }
 
-    detachThread(env, TRUE);
+    detachThread(env, TRUE, FALSE);
 
     return NULL;
 }

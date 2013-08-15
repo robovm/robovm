@@ -815,5 +815,5 @@ Env* _bcAttachThreadFromCallback(void) {
 }
 
 void _bcDetachThreadFromCallback(Env* env) {
-    rvmDetachCurrentThread(env->vm, FALSE);
+    rvmDetachCurrentThread(env->vm, FALSE, TRUE);
 }

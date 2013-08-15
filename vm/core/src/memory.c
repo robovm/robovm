@@ -271,8 +271,23 @@ jboolean initGC(Options* options) {
     }
 
     GC_set_warn_proc(gcWarnProc);
+    GC_allow_register_threads();
 
     return TRUE;
+}
+
+void gcRegisterCurrentThread() {
+    struct GC_stack_base stackBase;
+    if (!GC_thread_is_registered()) {
+        assert(GC_get_stack_base(&stackBase) == GC_SUCCESS);
+        assert(GC_register_my_thread(&stackBase) == GC_SUCCESS);
+    }
+}
+
+void gcUnregisterCurrentThread() {
+    if (GC_thread_is_registered()) {
+        GC_unregister_my_thread();
+    }
 }
 
 void gcAddRoot(void* ptr) {

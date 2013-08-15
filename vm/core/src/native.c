@@ -48,7 +48,7 @@ static jint AttachCurrentThread(JavaVM* vm, void** penv, void* args) {
 }
 
 static jint DetachCurrentThread(JavaVM* vm) {
-    return rvmDetachCurrentThread((VM*) vm, TRUE);
+    return rvmDetachCurrentThread((VM*) vm, TRUE, TRUE);
 }
 
 static jint GetEnv(JavaVM* vm, void** penv, jint ver) {

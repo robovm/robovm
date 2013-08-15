@@ -25,6 +25,8 @@
 typedef void (*CleanupHandler)(Env*, Object*);
 
 extern jboolean initGC(Options* options);
+extern void gcRegisterCurrentThread();
+extern void gcUnregisterCurrentThread();
 extern void gcAddRoot(void* ptr);
 extern void gcAddRoots(void* start, void* end);
 extern uint32_t gcNewDirectBitmapKind(uint32_t bitmap);

@@ -268,7 +268,7 @@ Env* rvmStartup(Options* options) {
 
 error_daemons:
 error_system_ClassLoader:
-    rvmDetachCurrentThread(env->vm, TRUE);
+    rvmDetachCurrentThread(env->vm, TRUE, FALSE);
 
     return NULL;
 }
@@ -297,7 +297,7 @@ jboolean rvmRun(Env* env) {
     }
 
     Object* throwable = rvmExceptionOccurred(env);
-    rvmDetachCurrentThread(env->vm, TRUE);
+    rvmDetachCurrentThread(env->vm, TRUE, FALSE);
 
     rvmJoinNonDaemonThreads(env);
 

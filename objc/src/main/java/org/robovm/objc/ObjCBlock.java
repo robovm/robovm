@@ -32,6 +32,9 @@ import org.robovm.rt.bro.annotation.StructMember;
  * source code of the block interfaces in the {@link org.robovm.objc.block}
  * package (e.g. {@link VoidBooleanBlock} for examples on how to marshal
  * Objective-C block types.
+ * The <a href="http://clang.llvm.org/docs/Block-ABI-Apple.html">Block ABI
+ * documentation</a> has more information on how blocks are implemented in 
+ * Objective-C.
  */
 public final class ObjCBlock extends Struct<ObjCBlock> {
     @StructMember(0)

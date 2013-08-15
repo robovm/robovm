@@ -543,8 +543,14 @@ static void finalizeObject(Env* env, Object* obj) {
 static void _finalizeObject(GC_PTR addr, GC_PTR client_data) {
     Object* obj = (Object*) addr;
     Env* env = rvmGetEnv();
-    assert(env != NULL);
-    finalizeObject(env, obj);
+    // When attaching a thread (except the main thread) there's a slight chance that the call to rvmCreateEnv()
+    // first triggers a GC. If there are finalize objects this function will be called with no Env associated 
+    // with the current thread. In such cases we reregister the object for finalization and it will be finalized later.
+    if (env) {
+        finalizeObject(env, obj);
+    } else {
+        GC_REGISTER_FINALIZER_NO_ORDER(obj, _finalizeObject, NULL, NULL, NULL);
+    }
 }
 
 void rvmRegisterFinalizer(Env* env, Object* obj) {

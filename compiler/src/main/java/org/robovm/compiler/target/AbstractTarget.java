@@ -110,13 +110,20 @@ public abstract class AbstractTarget implements Target {
         ccArgs.add("-L");
         ccArgs.add(config.getOsArchDepLibDir().getAbsolutePath());
         if (config.getOs().getFamily() == OS.Family.linux) {
-            // Create a linker script with all aliases
             ccArgs.add("-Wl,-rpath=$ORIGIN");
             ccArgs.add("-Wl,--gc-sections");
 //            ccArgs.add("-Wl,--print-gc-sections");
         } else if (config.getOs().getFamily() == OS.Family.darwin) {
             File exportedSymbolsFile = new File(config.getTmpDir(), "exported_symbols");
-            FileUtils.writeStringToFile(exportedSymbolsFile, "_catch_exception_raise\n", "ASCII");
+            List<String> exportedSymbols = new ArrayList<String>();
+            exportedSymbols.add("catch_exception_raise");
+            exportedSymbols.addAll(config.getExportedSymbols());
+            for (int i = 0; i < exportedSymbols.size(); i++) {
+                // On Darwin symbols are always prefixed with a '_'. We'll prepend
+                // '_' to each symbol here so the user won't have to.
+                exportedSymbols.set(i, "_" + exportedSymbols.get(i));
+            }
+            FileUtils.writeLines(exportedSymbolsFile, "ASCII", exportedSymbols);
             ccArgs.add("-exported_symbols_list");
             ccArgs.add(exportedSymbolsFile.getAbsolutePath());
             ccArgs.add("-Wl,-no_implicit_dylibs");

@@ -302,6 +302,10 @@ public class AppCompiler {
                     for (String p : args[++i].split(":")) {
                         builder.addLib(p);
                     }
+                } else if ("-exportedsymbols".equals(args[i])) {
+                    for (String p : args[++i].split(":")) {
+                        builder.addExportedSymbol(p);
+                    }
                 } else if ("-frameworks".equals(args[i])) {
                     for (String p : args[++i].split(":")) {
                         builder.addFramework(p);
@@ -504,6 +508,12 @@ public class AppCompiler {
         System.err.println("  -libs <list>          : separated list of static library files (.a), object\n"
                          + "                        files (.o) and system libraries that should be included\n" 
                          + "                        when linking the final executable.");
+        System.err.println("  -exportedsymbols <list> : separated list of symbols that should be exported\n"
+                         + "                        when linking the executable. This can be used when\n" 
+                         + "                        linking in function which will be called using bro.\n" 
+                         + "                        Wildcards can be used. * matches zero or more characters,\n" 
+                         + "                        ? matches one character. [abc], [a-z] matches one character\n" 
+                         + "                        from the specified set of characters.");
         System.err.println("  -frameworks <list>    : separated list of frameworks that should be included\n" 
                          + "                        when linking the final executable.");
         System.err.println("  -resources <list>     : separated list of files and directories that should be\n"

@@ -89,6 +89,8 @@ public class Config {
     private ArrayList<String> forceLinkClasses;
     @ElementList(required = false, entry = "lib")
     private ArrayList<Lib> libs;
+    @ElementList(required = false, entry = "symbol")
+    private ArrayList<String> exportedSymbols;
     @ElementList(required = false, entry = "framework")
     private ArrayList<String> frameworks;
     @ElementList(required = false, entry = "resource")
@@ -229,6 +231,11 @@ public class Config {
     public List<String> getForceLinkClasses() {
         return forceLinkClasses == null ? Collections.<String>emptyList() 
                 : Collections.unmodifiableList(forceLinkClasses);
+    }
+    
+    public List<String> getExportedSymbols() {
+        return exportedSymbols == null ? Collections.<String>emptyList() 
+                : Collections.unmodifiableList(exportedSymbols);
     }
     
     public List<String> getLibs() {
@@ -738,6 +745,21 @@ public class Config {
             return this;
         }
 
+        public Builder clearExportedSymbols() {
+            if (config.exportedSymbols != null) {
+                config.exportedSymbols.clear();
+            }
+            return this;
+        }
+
+        public Builder addExportedSymbol(String symbol) {
+            if (config.exportedSymbols == null) {
+                config.exportedSymbols = new ArrayList<String>();
+            }
+            config.exportedSymbols.add(symbol);
+            return this;
+        }
+        
         public Builder clearLibs() {
             if (config.libs != null) {
                 config.libs.clear();

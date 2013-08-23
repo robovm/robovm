@@ -27,5 +27,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 public @interface Library {
+    /**
+     * Special library name used to bind {@link Bridge} methods to functions
+     * linked into the current executable. 
+     */
+    public static final String INTERNAL = "__internal__";
+    
     public String value();
 }

@@ -219,47 +219,51 @@ public final class Runtime {
         synchronized (handles) {
             Long handle = handles.get(name);
             if (handle == null) {
-                String libName = System.mapLibraryName(name);
-                for (String searchPath : searchPaths) {
-                    File f = new File(searchPath, libName);
-                    if (f.exists()) {
-                        handle = Dl.open(f.getAbsolutePath());
-                        if (handle != 0L) {
-                            break;
-                        }
-                    }
-                    if ("libc.so".equals(libName)) {
-                        // Assume glibc 2.x
-                        f = new File(searchPath, "libc.so.6");
+                if (Library.INTERNAL.equals(name)) {
+                    handle = Dl.open(null);
+                } else {
+                    String libName = System.mapLibraryName(name);
+                    for (String searchPath : searchPaths) {
+                        File f = new File(searchPath, libName);
                         if (f.exists()) {
                             handle = Dl.open(f.getAbsolutePath());
                             if (handle != 0L) {
                                 break;
                             }
                         }
-                        f = new File(searchPath, "libc.so.6.1");
-                        if (f.exists()) {
-                            handle = Dl.open(f.getAbsolutePath());
-                            if (handle != 0L) {
-                                break;
+                        if ("libc.so".equals(libName)) {
+                            // Assume glibc 2.x
+                            f = new File(searchPath, "libc.so.6");
+                            if (f.exists()) {
+                                handle = Dl.open(f.getAbsolutePath());
+                                if (handle != 0L) {
+                                    break;
+                                }
+                            }
+                            f = new File(searchPath, "libc.so.6.1");
+                            if (f.exists()) {
+                                handle = Dl.open(f.getAbsolutePath());
+                                if (handle != 0L) {
+                                    break;
+                                }
+                            }
+                        }
+                        if (Bro.IS_DARWIN) {
+                            File fwDir = new File(searchPath, name + ".framework");
+                            if (fwDir.exists()) {
+                                f = new File(fwDir, name);
+                                handle = Dl.open(f.getAbsolutePath());
+                                if (handle != 0L) {
+                                    break;
+                                }
                             }
                         }
                     }
-                    if (Bro.IS_DARWIN) {
-                        File fwDir = new File(searchPath, name + ".framework");
-                        if (fwDir.exists()) {
-                            f = new File(fwDir, name);
-                            handle = Dl.open(f.getAbsolutePath());
-                            if (handle != 0L) {
-                                break;
-                            }
+                    if (handle == null || handle == 0L) {
+                        handle = Dl.open(name);
+                        if (handle == 0L) {
+                            handle = Dl.open(libName);
                         }
-                    }
-                }
-                if (handle == null || handle == 0L) {
-                    handle = Dl.open(name);
-                    if (handle == 0L) {
-                        handle = Dl.open(libName);
                     }
                 }
                 if (handle == null || handle == 0L) {

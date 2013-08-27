@@ -60,6 +60,7 @@ extern CallStack* captureCallStackFromFrame(Env* env, Frame* fp);
 extern void dumpThreadStackTrace(Env* env, Thread* thread, CallStack* callStack);
 
 /* class.c */
+extern uint32_t nextClassId();
 extern ProxyMethod* addProxyMethod(Env* env, Class* clazz, Method* proxiedMethod, jint access, void* impl);
 
 /* call0-<os>-<arch>.s and proxy0-<os>-<arch>.s */

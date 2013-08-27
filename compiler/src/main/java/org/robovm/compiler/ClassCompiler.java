@@ -16,7 +16,6 @@
  */
 package org.robovm.compiler;
 
-import static org.robovm.compiler.Access.*;
 import static org.robovm.compiler.Bro.*;
 import static org.robovm.compiler.Functions.*;
 import static org.robovm.compiler.Mangler.*;
@@ -46,6 +45,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.clazz.Clazz;
+import org.robovm.compiler.clazz.ClazzInfo;
 import org.robovm.compiler.clazz.Dependency;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
@@ -64,6 +64,7 @@ import org.robovm.compiler.llvm.GlobalRef;
 import org.robovm.compiler.llvm.Icmp;
 import org.robovm.compiler.llvm.IntegerConstant;
 import org.robovm.compiler.llvm.Label;
+import org.robovm.compiler.llvm.Linkage;
 import org.robovm.compiler.llvm.Load;
 import org.robovm.compiler.llvm.NullConstant;
 import org.robovm.compiler.llvm.Ordering;
@@ -216,7 +217,12 @@ public class ClassCompiler {
             return true;
         }
         
-        Set<Dependency> dependencies = clazz.getDependencies();
+        ClazzInfo ci = clazz.getClazzInfo();
+        if (ci == null) {
+            return true;
+        }
+        
+        Set<Dependency> dependencies = ci.getDependencies();
         for (Dependency dep : dependencies) {
             Clazz depClazz = config.getClazzes().load(dep.getClassName());
             if (depClazz == null) {
@@ -447,8 +453,6 @@ public class ClassCompiler {
         mb.addInclude(getClass().getClassLoader().getResource(String.format("header-%s-%s.ll", config.getOs().getFamily(), config.getArch())));
         mb.addInclude(getClass().getClassLoader().getResource("header.ll"));
 
-        mb.addFunction(createInstanceof());
-        mb.addFunction(createCheckcast());
         mb.addFunction(createLdcClass());
         mb.addFunction(createLdcClassWrapper());
         Function allocator = createAllocator();
@@ -503,15 +507,7 @@ public class ClassCompiler {
             trampolineDependencies.addAll(trampolineResolver.getDependencies());
         }
 
-        Global classInfoStruct = null;
-        StructureConstant classInfoErrorStruct = createClassInfoErrorStruct();
-        if (classInfoErrorStruct != null) {
-            // The class cannot be loaded at runtime. Replace the ClassInfo struct
-            // with a ClassInfoError struct with details of why.
-            classInfoStruct = new Global(mangleClass(sootClass) + "_info_struct", classInfoErrorStruct);
-        } else {
-            classInfoStruct = new Global(mangleClass(sootClass) + "_info_struct", createClassInfoStruct());
-        }
+        Global classInfoStruct = new Global(mangleClass(sootClass) + "_info_struct", Linkage.weak, createClassInfoStruct());
         mb.addGlobal(classInfoStruct);
         
         Function infoFn = FunctionBuilder.infoStruct(sootClass);
@@ -520,13 +516,17 @@ public class ClassCompiler {
         
         out.write(mb.build().toString().getBytes("UTF-8"));
         
-        clazz.clearDependencies();
-        clazz.addDependency("java/lang/Object"); // Make sure no class or interface has zero dependencies
+        ClazzInfo ci = clazz.resetClazzInfo();
+        
+        ci.setCatchNames(catches);
+        ci.setTrampolines(trampolines);
+        
+        ci.addDependency("java/lang/Object"); // Make sure no class or interface has zero dependencies
         if (sootClass.hasSuperclass() && !sootClass.isInterface()) {
-            clazz.addDependency(getInternalName(sootClass.getSuperclass()));
+            ci.addDependency(getInternalName(sootClass.getSuperclass()));
         }
         for (SootClass iface : sootClass.getInterfaces()) {
-            clazz.addDependency(getInternalName(iface));
+            ci.addDependency(getInternalName(iface));
         }
         for (SootField f : sootClass.getFields()) {
             addDependencyIfNeeded(clazz, f.getType());
@@ -539,9 +539,9 @@ public class ClassCompiler {
                 addDependencyIfNeeded(clazz, type);
             }
         }
-        clazz.addDependencies(attributesEncoder.getDependencies());
-        clazz.addDependencies(trampolineDependencies);
-        clazz.addDependencies(catches);
+        ci.addDependencies(attributesEncoder.getDependencies());
+        ci.addDependencies(trampolineDependencies);
+        ci.addDependencies(catches);
         
         for (Trampoline t : trampolines) {
             if (!(t instanceof LdcString)) {
@@ -550,7 +550,7 @@ public class ClassCompiler {
                     // Target is a descriptor
                     addDependencyIfNeeded(clazz, desc);
                 } else {
-                    clazz.addDependency(t.getTarget());
+                    ci.addDependency(t.getTarget());
                 }
             }
             if (t instanceof FieldAccessor) {
@@ -563,7 +563,7 @@ public class ClassCompiler {
                 }
             }
         }
-        clazz.saveDependencies();
+        clazz.saveClazzInfo();
     }
 
     private static void addDependencyIfNeeded(Clazz clazz, soot.Type type) {
@@ -576,7 +576,7 @@ public class ClassCompiler {
         if (!isPrimitive(desc) && (!isArray(desc) || !isPrimitiveBaseType(desc))) {
             String internalName = isArray(desc) ? getBaseType(desc) : getInternalNameFromDescriptor(desc);
             if (!clazz.getInternalName().equals(internalName)) {
-                clazz.addDependency(internalName);
+                clazz.getClazzInfo().addDependency(internalName);
             }
         }
     }
@@ -609,89 +609,6 @@ public class ClassCompiler {
         function.add(new Bitcast(f, fptr, f.getType()));
         Value result = call(function, f.ref(), function.getParameterRefs());
         function.add(new Ret(result));
-    }
-    
-    private StructureConstant createClassInfoErrorStruct() {
-        /*
-         * Check that clazz can be loaded, i.e. that the superclass 
-         * and interfaces of the class exist and are accessible to the
-         * class. Also check that any exception the class uses in catch
-         * clauses exist and is accessible to the class. If the class
-         * cannot be loaded we override the ClassInfoHeader struct
-         * produced by the ClassCompiler for the class with one which
-         * tells the code in bc.c to throw an appropriate exception
-         * whenever clazz is accessed.
-         */
-        
-        int errorType = ClassCompiler.CI_ERROR_TYPE_NONE;
-        String errorMessage = null;
-        if (!sootClass.isInterface() && sootClass.hasSuperclass()) {
-            // Check superclass
-            SootClass superclazz = sootClass.getSuperclass();
-            if (superclazz.isPhantom()) {
-                errorType = ClassCompiler.CI_ERROR_TYPE_NO_CLASS_DEF_FOUND;
-                errorMessage = superclazz.getName();
-            } else if (!checkClassAccessible(superclazz, sootClass)) {
-                errorType = ClassCompiler.CI_ERROR_TYPE_ILLEGAL_ACCESS;
-                errorMessage = String.format(ILLEGAL_ACCESS_ERROR_CLASS, superclazz, sootClass);
-            } else if (superclazz.isInterface()) {
-                errorType = ClassCompiler.CI_ERROR_TYPE_INCOMPATIBLE_CLASS_CHANGE;
-                errorMessage = String.format("class %s has interface %s as super class", sootClass, superclazz);
-            }
-            // No need to check for ClassCircularityError. Soot doesn't handle 
-            // such problems so the compilation will fail earlier.
-        }
-        
-        if (errorType == ClassCompiler.CI_ERROR_TYPE_NONE) {
-            // Check interfaces
-            for (SootClass interfaze :  sootClass.getInterfaces()) {
-                if (interfaze.isPhantom()) {
-                    errorType = ClassCompiler.CI_ERROR_TYPE_NO_CLASS_DEF_FOUND;
-                    errorMessage = interfaze.getName();
-                    break;
-                } else if (!checkClassAccessible(interfaze, sootClass)) {
-                    errorType = ClassCompiler.CI_ERROR_TYPE_ILLEGAL_ACCESS;
-                    errorMessage = String.format(ILLEGAL_ACCESS_ERROR_CLASS, interfaze, sootClass);
-                    break;
-                } else if (!interfaze.isInterface()) {
-                    errorType = ClassCompiler.CI_ERROR_TYPE_INCOMPATIBLE_CLASS_CHANGE;
-                    errorMessage = String.format("class %s tries to implement class %s as interface", 
-                            sootClass, interfaze);
-                    break;
-                }
-            }
-        }
-        
-        if (errorType == ClassCompiler.CI_ERROR_TYPE_NONE) {
-            // Check exceptions used in catch clauses. I cannot find any info in
-            // the VM spec specifying that this has to be done when the class is loaded.
-            // However, this is how it's done in other VMs so we do it too.
-            for (String exName : catches) {
-                Clazz ex = config.getClazzes().load(exName);
-                if (ex == null || ex.getSootClass().isPhantom()) {
-                    errorType = ClassCompiler.CI_ERROR_TYPE_NO_CLASS_DEF_FOUND;
-                    errorMessage = exName;
-                    break;
-                } else if (!checkClassAccessible(ex.getSootClass(), sootClass)) {
-                    errorType = ClassCompiler.CI_ERROR_TYPE_ILLEGAL_ACCESS;
-                    errorMessage = String.format(ILLEGAL_ACCESS_ERROR_CLASS, ex, sootClass);
-                    break;
-                }
-            }
-        }
-        
-        if (errorType == ClassCompiler.CI_ERROR_TYPE_NONE) {
-            return null;
-        }
-        
-        // Create a ClassInfoError struct
-        StructureConstantBuilder error = new StructureConstantBuilder();
-        error.add(new NullConstant(I8_PTR)); // Points to the runtime Class struct
-        error.add(new IntegerConstant(ClassCompiler.CI_ERROR));
-        error.add(getString(getInternalName(sootClass)));
-        error.add(new IntegerConstant(errorType));
-        error.add(getString(errorMessage));
-        return error.build();
     }
     
     private StructureConstant createClassInfoStruct() {
@@ -736,6 +653,8 @@ public class ClassCompiler {
         } else {
             header.add(new NullConstant(I8_PTR));
         }
+        mb.addGlobal(new Global(mangleClass(sootClass) + "_typeinfo", Linkage.external, I8_PTR, true));
+        header.add(new GlobalRef(mangleClass(sootClass) + "_typeinfo", I8_PTR)); // TypeInfo* generated by Linker
         header.add(sizeof(classType));
         header.add(sizeof(instanceType));
         if (!instanceFields.isEmpty()) {
@@ -963,22 +882,6 @@ public class ClassCompiler {
         Function fn = FunctionBuilder.allocator(sootClass);
         Value info = getInfoStruct(fn);        
         Value result = call(fn, BC_ALLOCATE, fn.getParameterRef(0), info);
-        fn.add(new Ret(result));
-        return fn;
-    }
-    
-    private Function createInstanceof() {
-        Function fn = FunctionBuilder.instanceOf(sootClass);
-        Value info = getInfoStruct(fn);        
-        Value result = call(fn, BC_INSTANCEOF, fn.getParameterRef(0), info, fn.getParameterRef(1));
-        fn.add(new Ret(result));
-        return fn;
-    }
-
-    private Function createCheckcast() {
-        Function fn = FunctionBuilder.checkcast(sootClass);
-        Value info = getInfoStruct(fn);        
-        Value result = call(fn, BC_CHECKCAST, fn.getParameterRef(0), info, fn.getParameterRef(1));
         fn.add(new Ret(result));
         return fn;
     }

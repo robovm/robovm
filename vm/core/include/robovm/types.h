@@ -44,6 +44,7 @@ typedef struct Interface Interface;
 typedef struct Exception Exception;
 typedef struct Class Class;
 typedef struct Object Object;
+typedef struct TypeInfo TypeInfo;
 typedef struct ClassLoader ClassLoader;
 typedef struct DataObject DataObject;
 typedef struct Thread Thread;
@@ -121,6 +122,15 @@ struct Object {
   uint32_t lock;
 };
 
+struct TypeInfo {
+  uint32_t id;
+  uint32_t offset;
+  uint32_t cache;
+  uint32_t classCount;
+  uint32_t interfaceCount;
+  uint32_t types[0];
+};
+
 /* 
  * Represents a java.lang.Class instance
  */
@@ -129,6 +139,7 @@ struct Class {
   void* _data;             // Reserve the memory needed to store the instance fields for java.lang.Class. 
                            // java.lang.Class has a single field, (SoftReference<ClassCache<T>> cacheRef).
                            // void* gives enough space to store that reference.
+  TypeInfo* typeInfo;      // Info on all types this class implements.
   const char* name;        // The name in modified UTF-8.
   ClassLoader* classLoader;
   Class* superclass;       // Superclass pointer. Only java.lang.Object, primitive classes and interfaces have NULL here.

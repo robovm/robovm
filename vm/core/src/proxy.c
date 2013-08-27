@@ -225,11 +225,48 @@ jboolean rvmInitProxy(Env* env) {
     return TRUE;
 }
 
+static TypeInfo* createTypeInfo(Env* env, Class* superclass, jint interfacesCount, Class** interfaces) {
+    jint classTypesCount = 1 + superclass->typeInfo->classCount;
+    jint ifTypesCount =  superclass->typeInfo->interfaceCount;
+    jint i;
+    for (i = 0; i < interfacesCount; i++) {
+        ifTypesCount += interfaces[i]->typeInfo->interfaceCount;
+    }
+
+    TypeInfo* typeInfo = rvmAllocateMemoryAtomic(env, sizeof(TypeInfo) + sizeof(uint32_t) * (classTypesCount + ifTypesCount));
+    if (!typeInfo) return NULL;
+    uint32_t classId = nextClassId();
+    typeInfo->id = classId;
+    typeInfo->cache = 0xffffffff;
+    typeInfo->offset = sizeof(TypeInfo) + sizeof(uint32_t) * (classTypesCount - 1);
+    typeInfo->classCount = classTypesCount;
+    typeInfo->interfaceCount = ifTypesCount;
+
+    uint32_t* types = typeInfo->types;
+    memcpy(types, superclass->typeInfo->types, sizeof(uint32_t) * superclass->typeInfo->classCount);
+    types += superclass->typeInfo->classCount;
+    *types = classId;
+    types++;
+    memcpy(types, &superclass->typeInfo->types[superclass->typeInfo->classCount], sizeof(uint32_t) * superclass->typeInfo->interfaceCount);
+    types += superclass->typeInfo->interfaceCount;
+    for (i = 0; i < interfacesCount; i++) {
+        TypeInfo* ifTypeInfo = interfaces[i]->typeInfo;
+        // Interfaces has classCount == 0 so we can just copy ->types directly
+        memcpy(types, ifTypeInfo->types, sizeof(uint32_t) * ifTypeInfo->interfaceCount);
+        types += ifTypeInfo->interfaceCount;
+    }
+
+    return typeInfo;
+}
+
 Class* rvmProxyCreateProxyClass(Env* env, Class* superclass, ClassLoader* classLoader, char* className, jint interfacesCount, Class** interfaces, 
         jint instanceDataSize, jint instanceDataOffset, unsigned short instanceRefCount, ProxyHandler handler) {
 
+    TypeInfo* typeInfo = createTypeInfo(env, superclass, interfacesCount, interfaces);
+    if (!typeInfo) return NULL;
+
     // Allocate the proxy class.
-    Class* proxyClass = rvmAllocateClass(env, className, superclass, classLoader, CLASS_TYPE_PROXY | ACC_PUBLIC | ACC_FINAL, 
+    Class* proxyClass = rvmAllocateClass(env, className, superclass, classLoader, CLASS_TYPE_PROXY | ACC_PUBLIC | ACC_FINAL, typeInfo,
         offsetof(Class, data) + sizeof(ProxyClassData), instanceDataSize, instanceDataOffset, 1, instanceRefCount, NULL, NULL);
     if (!proxyClass) return NULL;
 

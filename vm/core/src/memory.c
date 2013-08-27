@@ -118,6 +118,7 @@ static struct GC_ms_entry* markObject(GC_word* addr, struct GC_ms_entry* mark_st
         Class* clazz = (Class*) obj;
         mark_stack_ptr = GC_MARK_AND_PUSH(clazz->_data, mark_stack_ptr, mark_stack_limit, NULL);
         mark_stack_ptr = GC_MARK_AND_PUSH((void*) clazz->name, mark_stack_ptr, mark_stack_limit, NULL);
+        mark_stack_ptr = GC_MARK_AND_PUSH(clazz->typeInfo, mark_stack_ptr, mark_stack_limit, NULL);
         mark_stack_ptr = GC_MARK_AND_PUSH(clazz->classLoader, mark_stack_ptr, mark_stack_limit, NULL);
         mark_stack_ptr = GC_MARK_AND_PUSH(clazz->superclass, mark_stack_ptr, mark_stack_limit, NULL);
         mark_stack_ptr = GC_MARK_AND_PUSH(clazz->componentType, mark_stack_ptr, mark_stack_limit, NULL);

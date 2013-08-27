@@ -24,11 +24,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 
@@ -39,14 +34,14 @@ import soot.SootClass;
  * @version $Id$
  */
 public abstract class Clazz implements Comparable<Clazz> {
-    private final Clazzes clazzes;
+    final Clazzes clazzes;
     private final String fileName;
     private final String className;
     private final String internalName;
     private final AbstractPath path;
-    
+
+    private ClazzInfo clazzInfo = null; 
     private SootClass sootClass = null;
-    private Map<String, Dependency> dependencies = null;
     
     Clazz(Clazzes clazzes, String fileName, AbstractPath path) {
         this.clazzes = clazzes;
@@ -76,68 +71,44 @@ public abstract class Clazz implements Comparable<Clazz> {
         return internalName;
     }
     
-    @SuppressWarnings("unchecked")
-    private void loadDependencies() {
-        if (dependencies == null) {
-            File depsFile = clazzes.getConfig().getDepsFile(this);
-            if (depsFile.exists()) {
+    public ClazzInfo getClazzInfo() {
+        if (clazzInfo == null) {
+            File infoFile = clazzes.getConfig().getInfoFile(this);
+            if (infoFile.exists()) {
                 ObjectInputStream ois = null;
                 try {
-                    ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(depsFile)));
-                    dependencies = (HashMap<String, Dependency>) ois.readObject();
+                    ois = new ObjectInputStream(
+                            new BufferedInputStream(new FileInputStream(infoFile)));
+                    clazzInfo = (ClazzInfo) ois.readObject();
+                    clazzInfo.setClazz(this);
                 } catch (IOException e) {
                 } catch (ClassNotFoundException e) {
                 } finally {
                     IOUtils.closeQuietly(ois);
                 }
             }
-            if (dependencies == null) {
-                dependencies = new HashMap<String,Dependency>();
-            }
         }
+        return clazzInfo;
+    }
+
+    public ClazzInfo resetClazzInfo() {
+        clazzInfo = new ClazzInfo(this, getSootClass());
+        return clazzInfo;
     }
     
-    public void saveDependencies() throws IOException {
-        if (dependencies == null) {
-            return;
+    public void saveClazzInfo() throws IOException {
+        if (clazzInfo == null) {
+            throw new IllegalStateException();
         }
-        File depsFile = clazzes.getConfig().getDepsFile(this);
+        File infoFile = clazzes.getConfig().getInfoFile(this);
         ObjectOutputStream oos = null;
         try {
-            oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(depsFile)));
-            oos.writeObject(dependencies);
+            oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(infoFile)));
+            oos.writeObject(clazzInfo);
         } finally {
             IOUtils.closeQuietly(oos);
         }
-    }
-    
-    public void addDependency(String className) {
-        loadDependencies();
-        if (!dependencies.containsKey(className)) {
-            Clazz clazz = clazzes.load(className);
-            String path = null;
-            boolean inBootClasspath = false;
-            if (clazz != null) {
-                path = clazz.getPath().getFile().getAbsolutePath();
-                inBootClasspath = clazz.isInBootClasspath();
-            }
-            dependencies.put(className, new Dependency(className, path,inBootClasspath));
-        }
-    }
 
-    public void addDependencies(Collection<String> classNames) {
-        for (String className : classNames) {
-            addDependency(className);
-        }
-    }
-
-    public void clearDependencies() {
-        dependencies = new HashMap<String, Dependency>();
-    }
-
-    public Set<Dependency> getDependencies() {
-        loadDependencies();
-        return new HashSet<Dependency>(dependencies.values());
     }
     
     public SootClass getSootClass() {

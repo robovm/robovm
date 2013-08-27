@@ -16,6 +16,8 @@
  */
 package org.robovm.compiler;
 
+import static org.robovm.compiler.Access.*;
+import static org.robovm.compiler.Functions.*;
 import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.llvm.Linkage.*;
 import static org.robovm.compiler.llvm.Type.*;
@@ -26,12 +28,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.clazz.Clazz;
+import org.robovm.compiler.clazz.ClazzInfo;
 import org.robovm.compiler.clazz.Path;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
@@ -42,10 +48,15 @@ import org.robovm.compiler.llvm.ArrayConstantBuilder;
 import org.robovm.compiler.llvm.Constant;
 import org.robovm.compiler.llvm.ConstantBitcast;
 import org.robovm.compiler.llvm.ConstantGetelementptr;
+import org.robovm.compiler.llvm.Function;
 import org.robovm.compiler.llvm.Global;
 import org.robovm.compiler.llvm.IntegerConstant;
 import org.robovm.compiler.llvm.NullConstant;
+import org.robovm.compiler.llvm.Ret;
+import org.robovm.compiler.llvm.StructureConstant;
+import org.robovm.compiler.llvm.StructureConstantBuilder;
 import org.robovm.compiler.llvm.Type;
+import org.robovm.compiler.llvm.Value;
 import org.robovm.llvm.Context;
 import org.robovm.llvm.Module;
 import org.robovm.llvm.PassManager;
@@ -57,6 +68,52 @@ import org.robovm.llvm.binding.CodeGenFileType;
  *
  */
 public class Linker {
+    
+    private static final TypeInfo[] EMPTY_TYPE_INFOS = new TypeInfo[0];
+    
+    private static class TypeInfo implements Comparable<TypeInfo> {
+        boolean error;
+        Clazz clazz;
+        int id;
+        /**
+         * Ordered list of TypeInfos for each superclass of this class and the 
+         * class itself. Empty if this is an interface.
+         */
+        TypeInfo[] classTypes;
+        /**
+         * Unordered list of TypeInfos for each interface implemented by this
+         * class or interface.
+         */
+        TypeInfo[] interfaceTypes;
+        
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + id;
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            TypeInfo other = (TypeInfo) obj;
+            if (id != other.id)
+                return false;
+            return true;
+        }
+
+        @Override
+        public int compareTo(TypeInfo o) {
+            return id < o.id ? -1 : (id == o.id ? 0 : 1);
+        }
+    }
+    
     private final Config config;
 
     public Linker(Config config) {
@@ -75,8 +132,22 @@ public class Linker {
 
         HashTableGenerator<String, Constant> bcpHashGen = new HashTableGenerator<String, Constant>(new ModifiedUtf8HashFunction());
         HashTableGenerator<String, Constant> cpHashGen = new HashTableGenerator<String, Constant>(new ModifiedUtf8HashFunction());
+        int classCount = 0;
+        Map<ClazzInfo, TypeInfo> typeInfos = new HashMap<ClazzInfo, TypeInfo>();
         for (Clazz clazz : linkClasses) {
-            Global info = new Global(mangleClass(clazz.getInternalName()) + "_info_struct", external, I8_PTR, false);
+            TypeInfo typeInfo = new TypeInfo();
+            typeInfo.clazz = clazz;
+            typeInfo.id = classCount++;
+            typeInfos.put(clazz.getClazzInfo(), typeInfo);
+            
+            StructureConstant infoErrorStruct = createClassInfoErrorStruct(mb, clazz.getClazzInfo());
+            Global info = null;
+            if (infoErrorStruct == null) {
+                info = new Global(mangleClass(clazz.getInternalName()) + "_info_struct", external, I8_PTR, false);
+            } else {
+                typeInfo.error = true;
+                info = new Global(mangleClass(clazz.getInternalName()) + "_info_struct", infoErrorStruct);
+            }
             mb.addGlobal(info);
             if (clazz.isInBootClasspath()) {
                 bcpHashGen.put(clazz.getInternalName(), new ConstantBitcast(info.ref(), I8_PTR));
@@ -114,9 +185,38 @@ public class Linker {
             mb.addGlobal(new Global("_bcMainClass", mb.getString(config.getMainClass())));
         }        
         
+        buildTypeInfos(typeInfos);
+        
+        for (Clazz clazz : linkClasses) {
+            TypeInfo typeInfo = typeInfos.get(clazz.getClazzInfo());
+            if (!typeInfo.error) {
+                int[] classIds = new int[typeInfo.classTypes.length];
+                for (int i = 0; i < typeInfo.classTypes.length; i++) {
+                    classIds[i] = typeInfo.classTypes[i].id;
+                }
+                int[] interfaceIds = new int[typeInfo.interfaceTypes.length];
+                for (int i = 0; i < typeInfo.interfaceTypes.length; i++) {
+                    interfaceIds[i] = typeInfo.interfaceTypes[i].id;
+                }
+                mb.addGlobal(new Global(mangleClass(clazz.getInternalName()) + "_typeinfo", 
+                        new StructureConstantBuilder()
+                            .add(new IntegerConstant(typeInfo.id))
+                            .add(new IntegerConstant((typeInfo.classTypes.length - 1) * 4 + 5 * 4))
+                            .add(new IntegerConstant(-1))
+                            .add(new IntegerConstant(typeInfo.classTypes.length))
+                            .add(new IntegerConstant(typeInfo.interfaceTypes.length))
+                            .add(new ArrayConstantBuilder(I32).add(classIds).build())
+                            .add(new ArrayConstantBuilder(I32).add(interfaceIds).build())
+                            .build()));
+            }
+            
+            mb.addFunction(createCheckcast(mb, clazz, typeInfo));
+            mb.addFunction(createInstanceof(mb, clazz, typeInfo));
+        }
+        
         Arch arch = config.getArch();
         OS os = config.getOs();
-
+        
         Context context = new Context();
         Module module = Module.parseIR(context, mb.build().toString(), "linker.ll");
         PassManager passManager = new PassManager();
@@ -153,4 +253,179 @@ public class Linker {
         }
         config.getTarget().build(objectFiles);
     }
+
+    private TypeInfo buildTypeInfo(TypeInfo typeInfo, Map<ClazzInfo, TypeInfo> typeInfos) {
+        if (typeInfo.error || typeInfo.classTypes != null) {
+            return typeInfo;
+        }
+
+        typeInfo.classTypes = EMPTY_TYPE_INFOS;
+        typeInfo.interfaceTypes = EMPTY_TYPE_INFOS;
+
+        ClazzInfo ci = typeInfo.clazz.getClazzInfo();
+        Set<TypeInfo> ifTypeInfos = new TreeSet<TypeInfo>();
+        
+        if (!ci.isInterface()) {
+            if (ci.hasSuperclass()) {
+                TypeInfo superTypeInfo = buildTypeInfo(typeInfos.get(ci.getSuperclass()), typeInfos);
+                typeInfo.classTypes = new TypeInfo[superTypeInfo.classTypes.length + 1];
+                System.arraycopy(superTypeInfo.classTypes, 0, typeInfo.classTypes, 0, superTypeInfo.classTypes.length);
+                typeInfo.classTypes[typeInfo.classTypes.length - 1] = typeInfo;
+                ifTypeInfos.addAll(Arrays.asList(superTypeInfo.interfaceTypes));
+            } else {
+                typeInfo.classTypes = new TypeInfo[] {typeInfo};
+            }
+        }
+        
+        for (ClazzInfo ifCi : ci.getInterfaces()) {
+            TypeInfo ifTypeInfo = buildTypeInfo(typeInfos.get(ifCi), typeInfos);
+            ifTypeInfos.addAll(Arrays.asList(ifTypeInfo.interfaceTypes));
+        }
+        if (ci.isInterface()) {
+            ifTypeInfos.add(typeInfo);
+        }
+        if (!ifTypeInfos.isEmpty()) {
+            typeInfo.interfaceTypes = ifTypeInfos.toArray(new TypeInfo[ifTypeInfos.size()]);
+        }
+        
+        return typeInfo;
+    }
+    
+    private void buildTypeInfos(Map<ClazzInfo, TypeInfo> typeInfos) {
+        for (TypeInfo typeInfo : typeInfos.values()) {
+            buildTypeInfo(typeInfo, typeInfos);
+        }
+    }
+    
+    private StructureConstant createClassInfoErrorStruct(ModuleBuilder mb, ClazzInfo ci) {
+        /*
+         * Check that the class can be loaded, i.e. that the superclass 
+         * and interfaces of the class exist and are accessible to the
+         * class. Also check that any exception the class uses in catch
+         * clauses exist and is accessible to the class. If the class
+         * cannot be loaded we override the ClassInfoHeader struct
+         * produced by the ClassCompiler for the class with one which
+         * tells the code in bc.c to throw an appropriate exception
+         * whenever the class is accessed.
+         */
+
+        int errorType = ClassCompiler.CI_ERROR_TYPE_NONE;
+        String errorMessage = null;
+        if (!ci.isInterface() && ci.hasSuperclass()) {
+            // Check superclass
+            ClazzInfo superclazz = ci.getSuperclass();
+            if (superclazz.isPhantom()) {
+                errorType = ClassCompiler.CI_ERROR_TYPE_NO_CLASS_DEF_FOUND;
+                errorMessage = superclazz.getName();
+            } else if (!checkClassAccessible(superclazz, ci)) {
+                errorType = ClassCompiler.CI_ERROR_TYPE_ILLEGAL_ACCESS;
+                errorMessage = String.format(ILLEGAL_ACCESS_ERROR_CLASS, superclazz, ci);
+            } else if (superclazz.isInterface()) {
+                errorType = ClassCompiler.CI_ERROR_TYPE_INCOMPATIBLE_CLASS_CHANGE;
+                errorMessage = String.format("class %s has interface %s as super class", ci, superclazz);
+            }
+            // No need to check for ClassCircularityError. Soot doesn't handle 
+            // such problems so the compilation will fail earlier.
+        }
+        
+        if (errorType == ClassCompiler.CI_ERROR_TYPE_NONE) {
+            // Check interfaces
+            for (ClazzInfo interfaze :  ci.getInterfaces()) {
+                if (interfaze.isPhantom()) {
+                    errorType = ClassCompiler.CI_ERROR_TYPE_NO_CLASS_DEF_FOUND;
+                    errorMessage = interfaze.getName();
+                    break;
+                } else if (!checkClassAccessible(interfaze, ci)) {
+                    errorType = ClassCompiler.CI_ERROR_TYPE_ILLEGAL_ACCESS;
+                    errorMessage = String.format(ILLEGAL_ACCESS_ERROR_CLASS, interfaze, ci);
+                    break;
+                } else if (!interfaze.isInterface()) {
+                    errorType = ClassCompiler.CI_ERROR_TYPE_INCOMPATIBLE_CLASS_CHANGE;
+                    errorMessage = String.format("class %s tries to implement class %s as interface", 
+                            ci, interfaze);
+                    break;
+                }
+            }
+        }
+        
+        if (errorType == ClassCompiler.CI_ERROR_TYPE_NONE) {
+            // Check exceptions used in catch clauses. I cannot find any info in
+            // the VM spec specifying that this has to be done when the class is loaded.
+            // However, this is how it's done in other VMs so we do it too.
+            for (ClazzInfo ex : ci.getCatches()) {
+                if (ex == null || ex.isPhantom()) {
+                    errorType = ClassCompiler.CI_ERROR_TYPE_NO_CLASS_DEF_FOUND;
+                    errorMessage = ex.getInternalName();
+                    break;
+                } else if (!checkClassAccessible(ex, ci)) {
+                    errorType = ClassCompiler.CI_ERROR_TYPE_ILLEGAL_ACCESS;
+                    errorMessage = String.format(ILLEGAL_ACCESS_ERROR_CLASS, ex, ci);
+                    break;
+                }
+            }
+        }
+        
+        if (errorType == ClassCompiler.CI_ERROR_TYPE_NONE) {
+            return null;
+        }
+        
+        // Create a ClassInfoError struct
+        StructureConstantBuilder error = new StructureConstantBuilder();
+        error.add(new NullConstant(I8_PTR)); // Points to the runtime Class struct
+        error.add(new IntegerConstant(ClassCompiler.CI_ERROR));
+        error.add(mb.getString(ci.getInternalName()));
+        error.add(new IntegerConstant(errorType));
+        error.add(mb.getString(errorMessage));
+        return error.build();
+    }
+
+    
+    private Function createCheckcast(ModuleBuilder mb, Clazz clazz, TypeInfo typeInfo) {
+        Function fn = FunctionBuilder.checkcast(clazz);
+        Value info = getInfoStruct(mb, fn, clazz);
+        if (typeInfo.error) {
+            // This will trigger an exception
+            call(fn, BC_LDC_CLASS, fn.getParameterRef(0), info);
+            fn.add(new Ret(new NullConstant(Types.OBJECT_PTR)));
+        } else if (!clazz.getClazzInfo().isInterface()) {
+            Value result = call(fn, CHECKCAST_CLASS, fn.getParameterRef(0), info, 
+                    fn.getParameterRef(1), 
+                    new IntegerConstant((typeInfo.classTypes.length - 1) * 4 + 5 * 4),
+                    new IntegerConstant(typeInfo.id));
+            fn.add(new Ret(result));
+        } else {
+            Value result = call(fn, CHECKCAST_INTERFACE, fn.getParameterRef(0), info, 
+                    fn.getParameterRef(1), 
+                    new IntegerConstant(typeInfo.id));
+            fn.add(new Ret(result));
+        }
+        return fn;
+    }
+
+    private Function createInstanceof(ModuleBuilder mb, Clazz clazz, TypeInfo typeInfo) {
+        Function fn = FunctionBuilder.instanceOf(clazz);
+        Value info = getInfoStruct(mb, fn, clazz);
+        if (typeInfo.error) {
+            // This will trigger an exception
+            call(fn, BC_LDC_CLASS, fn.getParameterRef(0), info);
+            fn.add(new Ret(new IntegerConstant(0)));
+        } else if (!clazz.getClazzInfo().isInterface()) {
+            Value result = call(fn, INSTANCEOF_CLASS, fn.getParameterRef(0), info, 
+                    fn.getParameterRef(1), 
+                    new IntegerConstant((typeInfo.classTypes.length - 1) * 4 + 5 * 4),
+                    new IntegerConstant(typeInfo.id));
+            fn.add(new Ret(result));
+        } else {
+            Value result = call(fn, INSTANCEOF_INTERFACE, fn.getParameterRef(0), info, 
+                    fn.getParameterRef(1), 
+                    new IntegerConstant(typeInfo.id));
+            fn.add(new Ret(result));
+        }
+        return fn;
+    }
+
+    private Value getInfoStruct(ModuleBuilder mb, Function f, Clazz clazz) {
+        return new ConstantBitcast(mb.getGlobalRef(mangleClass(clazz.getInternalName()) + "_info_struct"), I8_PTR_PTR);
+    }
+
 }

@@ -80,6 +80,15 @@ public class ModuleBuilder {
         symbols.add(global.getName());
     }
     
+    public GlobalRef getGlobalRef(String name) {
+        for (Global g : globals) {
+            if (name.equals(g.getName())) {
+                return g.ref();
+            }
+        }
+        throw new IllegalArgumentException("Global with name " + name + " not found");
+    }
+    
     public Global newGlobal(Constant value) {
         return newGlobal(value, false);
     }

@@ -346,6 +346,11 @@ public class Config {
         return new File(getCacheDir(clazz.getPath()), baseName + ".class.deps");
     }
     
+    public File getInfoFile(Clazz clazz) {
+        String baseName = clazz.getInternalName().replace('/', File.separatorChar);
+        return new File(getCacheDir(clazz.getPath()), baseName + ".class.info");
+    }
+    
     public File getCacheDir(Path path) {
         File srcRoot = path.getFile().getParentFile();
         String name = path.getFile().getName();

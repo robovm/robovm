@@ -122,14 +122,16 @@ typedef struct LoadedClassEntry {
 } LoadedClassEntry;
 static LoadedClassEntry* loadedClasses = NULL;
 
-static jint nextClassId = 0;
+// Class id counter used for dynamically created classes. We assume
+// that linked in classes never have class ids above about 250 million.
+static uint32_t classIdCounter = 0x10000000;
 
 static Class* findClassByDescriptor(Env* env, const char* desc, ClassLoader* classLoader, Class* (*loaderFunc)(Env*, const char*, ClassLoader*));
 static Class* findClass(Env* env, const char* className, ClassLoader* classLoader, Class* (*loaderFunc)(Env*, const char*, ClassLoader*));
 static Class* findBootClass(Env* env, const char* className);
 
-static inline jint getNextClassId(void) {
-    return __sync_fetch_and_add(&nextClassId, 1);
+inline uint32_t nextClassId(void) {
+    return __sync_fetch_and_add(&classIdCounter, 1);
 }
 
 static Class* getLoadedClass(Env* env, const char* className) {
@@ -159,8 +161,17 @@ static inline void releaseClassLock() {
 }
 
 static Class* createPrimitiveClass(Env* env, const char* desc) {
-    Class* clazz = rvmAllocateClass(env, desc, NULL, NULL, 
-        CLASS_TYPE_PRIMITIVE | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, 
+    uint32_t classId = nextClassId();
+    TypeInfo* typeInfo = rvmAllocateMemoryAtomic(env, sizeof(TypeInfo) + sizeof(uint32_t));
+    if (!typeInfo) return NULL;
+    typeInfo->id = classId;
+    typeInfo->offset = sizeof(TypeInfo);
+    typeInfo->cache = 0xffffffff;
+    typeInfo->classCount = 1;
+    typeInfo->types[0] = classId;
+
+    Class* clazz = rvmAllocateClass(env, desc, NULL, NULL,
+        CLASS_TYPE_PRIMITIVE | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, typeInfo,
         sizeof(Class), sizeof(Object), sizeof(Object), 0, 0, NULL, NULL);
     if (!clazz) return NULL;
     clazz->_interfaces = NULL;
@@ -172,6 +183,24 @@ static Class* createPrimitiveClass(Env* env, const char* desc) {
 }
 
 static Class* createArrayClass(Env* env, Class* componentType) {
+    // Create a TypeInfo for the new array class. This TypeInfo is incomplete.
+    // It only contains C[], Object, Cloneable and Serializable. rvmIsAssignableFrom
+    // will also check the componentType if no match can be found in the TypeInfo for
+    // annary classes.
+    TypeInfo* typeInfo = NULL;
+    uint32_t classId = nextClassId();
+    typeInfo = rvmAllocateMemoryAtomic(env, sizeof(TypeInfo) + sizeof(uint32_t) * 4);
+    if (!typeInfo) return NULL;
+    typeInfo->id = classId;
+    typeInfo->offset = sizeof(TypeInfo) + sizeof(uint32_t);
+    typeInfo->cache = 0xffffffff;
+    typeInfo->classCount = 2;
+    typeInfo->interfaceCount = 2;
+    typeInfo->types[0] = java_lang_Object->typeInfo->id;
+    typeInfo->types[1] = classId;
+    typeInfo->types[2] = java_lang_Cloneable->typeInfo->id;
+    typeInfo->types[3] = java_io_Serializable->typeInfo->id;
+
     jint length = strlen(componentType->name);
     char* desc = NULL;
 
@@ -190,8 +219,8 @@ static Class* createArrayClass(Env* env, Class* componentType) {
     }
 
     // TODO: Add clone() method.
-    Class* clazz = rvmAllocateClass(env, desc, java_lang_Object, componentType->classLoader, 
-        CLASS_TYPE_ARRAY | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, 
+    Class* clazz = rvmAllocateClass(env, desc, java_lang_Object, componentType->classLoader,
+        CLASS_TYPE_ARRAY | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, typeInfo, 
         sizeof(Class), sizeof(Object), sizeof(Object), 0, 0, NULL, NULL);
     if (!clazz) return NULL;
     clazz->componentType = componentType;
@@ -456,44 +485,41 @@ jboolean rvmIsAssignableFrom(Env* env, Class* s, Class* t) {
         return TRUE;
     }
 
-    if (CLASS_IS_ARRAY(s)) {
-        if (t == java_io_Serializable) {
-            return TRUE;
-        }
-        if (t == java_lang_Cloneable) {
-            return TRUE;
-        }
-        if (!CLASS_IS_ARRAY(t)) {
-            return FALSE;
-        }
-        Class* componentType = s->componentType;
-        if (CLASS_IS_PRIMITIVE(componentType)) {
-            // s is a primitive array and can only be assigned to 
-            // class t if s == t or t == (Object|Serializable|Cloneable). But we 
-            // already know that s != t and t != (Object|Serializable|Cloneable)
-            return FALSE;
-        }
-        return rvmIsAssignableFrom(env, componentType, t->componentType);
+    TypeInfo* sti = s->typeInfo;
+    TypeInfo* tti = t->typeInfo;
+    uint32_t id = tti->id;
+    if (sti->cache == id) {
+        return TRUE;
     }
 
     if (CLASS_IS_INTERFACE(t)) {
-        // s or any of its parents must implement the interface t
-        for (; s; s = s->superclass) {
-            Interface* interface = rvmGetInterfaces(env, s);
-            if (rvmExceptionCheck(env)) return FALSE;
-            for (; interface != NULL; interface = interface->next) {
-                if (rvmIsAssignableFrom(env, interface->interface, t)) {
-                    return TRUE;
-                }
-            }
+        uint32_t ifCount = sti->interfaceCount;
+        uint32_t* base = (uint32_t*) ((((char*) sti) + sti->offset) + sizeof(uint32_t));
+        uint32_t i;
+        for (i = 0; i < ifCount; i++) {
+            if (*base == id) goto found;
+            base++;
         }
         return FALSE;
     }
 
-    while (s && s != t) {
-        s = s->superclass;
+    // t must be a class or array class
+    if (tti->offset <= sti->offset) {
+        uint32_t* base = (uint32_t*) (((char*) sti) + tti->offset);
+        if (*base == id) goto found;
     }
-    return s ? TRUE : FALSE;
+
+    // The TypeInfo of array classes doesn't give the complete information.
+    if (CLASS_IS_ARRAY(t) && CLASS_IS_ARRAY(s) 
+            && !CLASS_IS_PRIMITIVE(t->componentType) && !CLASS_IS_PRIMITIVE(s->componentType)) {
+        return rvmIsAssignableFrom(env, s->componentType, t->componentType);
+    }
+
+    return FALSE;
+
+found:
+    sti->cache = id;
+    return true;
 }
 
 jboolean rvmIsInstanceOf(Env* env, Object* obj, Class* clazz) {
@@ -770,7 +796,7 @@ ClassLoader* rvmGetSystemClassLoader(Env* env) {
     return (ClassLoader*) rvmGetObjectClassFieldValue(env, holder, field);
 }
 
-Class* rvmAllocateClass(Env* env, const char* className, Class* superclass, ClassLoader* classLoader, jint flags, 
+Class* rvmAllocateClass(Env* env, const char* className, Class* superclass, ClassLoader* classLoader, jint flags, TypeInfo* typeInfo,
         jint classDataSize, jint instanceDataSize, jint instanceDataOffset, unsigned short classRefCount, 
         unsigned short instanceRefCount, void* attributes, void* initializer) {
 
@@ -796,6 +822,7 @@ Class* rvmAllocateClass(Env* env, const char* className, Class* superclass, Clas
     clazz->name = className;
     clazz->superclass = superclass;
     clazz->classLoader = classLoader;
+    clazz->typeInfo = typeInfo;
     clazz->flags = flags;
     clazz->classDataSize = classDataSize;
     clazz->instanceDataSize = instanceDataSize;

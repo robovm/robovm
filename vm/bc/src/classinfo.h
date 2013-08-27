@@ -40,6 +40,7 @@ typedef struct {
     jint flags;
     const char* className;
     void* initializer;
+    TypeInfo* typeInfo;
     jint classDataSize;
     jint instanceDataSize;
     jint instanceDataOffset;

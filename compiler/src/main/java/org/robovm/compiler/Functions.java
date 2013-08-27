@@ -136,6 +136,10 @@ public class Functions {
     public static final FunctionRef LDC_CLASS_WRAPPER = new FunctionRef("ldcClassWrapper", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR_PTR));
     public static final FunctionRef CHECKCAST_WRAPPER = new FunctionRef("checkcastWrapper", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR_PTR, OBJECT_PTR));
     public static final FunctionRef INSTANCEOF_WRAPPER = new FunctionRef("instanceofWrapper", new FunctionType(I32, ENV_PTR, I8_PTR_PTR, OBJECT_PTR));
+    public static final FunctionRef CHECKCAST_CLASS = new FunctionRef("checkcast_class", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR_PTR, OBJECT_PTR, I32, I32));
+    public static final FunctionRef CHECKCAST_INTERFACE = new FunctionRef("checkcast_interface", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR_PTR, OBJECT_PTR, I32));
+    public static final FunctionRef INSTANCEOF_CLASS = new FunctionRef("instanceof_class", new FunctionType(I32, ENV_PTR, I8_PTR_PTR, OBJECT_PTR, I32, I32));
+    public static final FunctionRef INSTANCEOF_INTERFACE = new FunctionRef("instanceof_interface", new FunctionType(I32, ENV_PTR, I8_PTR_PTR, OBJECT_PTR, I32));
 
     public static FunctionRef getArrayLoad(soot.Type sootType) {
         if (sootType.equals(soot.BooleanType.v())) {

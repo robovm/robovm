@@ -185,7 +185,7 @@ public class AppCompiler {
         if (config.isClean() || classCompiler.mustCompile(clazz)) {
             classCompiler.compile(clazz);
         }
-        for (Dependency dep : clazz.getDependencies()) {
+        for (Dependency dep : clazz.getClazzInfo().getDependencies()) {
             Clazz depClazz = config.getClazzes().load(dep.getClassName());
             if (depClazz != null && !compiled.contains(depClazz)) {
                 compileQueue.add(depClazz);

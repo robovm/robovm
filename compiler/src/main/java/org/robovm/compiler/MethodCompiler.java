@@ -995,29 +995,17 @@ public class MethodCompiler extends AbstractMethodCompiler {
 //                    }
                 } else {
                     String targetClassName = getInternalName(sootTargetType);
-                    FunctionRef fn = null;
-                    if (targetClassName.equals(this.className)) {
-                        fn = FunctionBuilder.checkcast(sootMethod.getDeclaringClass()).ref();
-                    } else {
-                        Trampoline trampoline = new Checkcast(this.className, targetClassName);
-                        trampolines.add(trampoline);
-                        fn = trampoline.getFunctionRef();                        
-                    }
-                    result = call(fn, env, op);
+                    Trampoline trampoline = new Checkcast(this.className, targetClassName);
+                    trampolines.add(trampoline);
+                    result = call(trampoline.getFunctionRef(), env, op);
                 }
             } else if (rightOp instanceof InstanceOfExpr) {
                 Value op = immediate(stmt, (Immediate) ((InstanceOfExpr) rightOp).getOp());
                 soot.Type checkType = ((InstanceOfExpr) rightOp).getCheckType();
                 String targetClassName = getInternalName(checkType);
-                FunctionRef fn = null;
-                if (targetClassName.equals(this.className)) {
-                    fn = FunctionBuilder.instanceOf(sootMethod.getDeclaringClass()).ref();
-                } else {
-                    Trampoline trampoline = new Instanceof(this.className, targetClassName);
-                    trampolines.add(trampoline);
-                    fn = trampoline.getFunctionRef();
-                }
-                result = call(fn, env, op);
+                Trampoline trampoline = new Instanceof(this.className, targetClassName);
+                trampolines.add(trampoline);
+                result = call(trampoline.getFunctionRef(), env, op);
             } else if (rightOp instanceof NewExpr) {
                 String targetClassName = getInternalName(((NewExpr) rightOp).getBaseType());
                 FunctionRef fn = null;

@@ -61,7 +61,7 @@ public class ZipFilePath extends AbstractPath {
         private byte[] bytes = null;
         
         ZipFilePathClazz(ZipEntry entry) {
-            super(clazzes, entry.getName(), ZipFilePath.this);
+            super(ZipFilePath.this.clazzes, entry.getName(), ZipFilePath.this);
             this.entry = entry;
         }
 

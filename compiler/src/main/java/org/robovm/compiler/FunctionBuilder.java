@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.llvm.Function;
 import org.robovm.compiler.llvm.FunctionAttribute;
 import org.robovm.compiler.llvm.FunctionRef;
@@ -133,16 +134,28 @@ public class FunctionBuilder {
                 .suffix("_allocator").linkage(_private).attribs(alwaysinline, optsize).build();
     }
     
+    public static Function instanceOf(Clazz clazz) {
+        return instanceOf(clazz.getInternalName());
+    }
     public static Function instanceOf(SootClass sootClass) {
-        return new FunctionBuilder(mangleClass(sootClass), new FunctionType(I32, ENV_PTR, OBJECT_PTR))
+        return instanceOf(getInternalName(sootClass));
+    }
+    public static Function instanceOf(String internalName) {
+        return new FunctionBuilder(mangleClass(internalName), new FunctionType(I32, ENV_PTR, OBJECT_PTR))
                 .suffix("_instanceof").linkage(external).attribs(alwaysinline, optsize).build();
     }
     
+    public static Function checkcast(Clazz clazz) {
+        return checkcast(clazz.getInternalName());
+    }
     public static Function checkcast(SootClass sootClass) {
-        return new FunctionBuilder(mangleClass(sootClass), new FunctionType(OBJECT_PTR, ENV_PTR, OBJECT_PTR))
+        return checkcast(getInternalName(sootClass));
+    }
+    public static Function checkcast(String internalName) {
+        return new FunctionBuilder(mangleClass(internalName), new FunctionType(OBJECT_PTR, ENV_PTR, OBJECT_PTR))
                 .suffix("_checkcast").linkage(external).attribs(alwaysinline, optsize).build();
     }
-    
+
     public static Function trycatchEnter(SootClass sootClass) {
         return new FunctionBuilder(mangleClass(sootClass), new FunctionType(OBJECT_PTR, ENV_PTR))
                 .suffix("_trycatchenter").linkage(external).attribs(alwaysinline, optsize).build();

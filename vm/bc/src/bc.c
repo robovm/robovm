@@ -212,7 +212,7 @@ static Class* createClass(Env* env, ClassInfoHeader* header, ClassLoader* classL
         if (!superclass) return NULL;
     }
 
-    Class* clazz = rvmAllocateClass(env, header->className, superclass, classLoader, ci.access, header->classDataSize, 
+    Class* clazz = rvmAllocateClass(env, header->className, superclass, classLoader, ci.access, header->typeInfo, header->classDataSize, 
             header->instanceDataSize, header->instanceDataOffset, header->classRefCount, header->instanceRefCount,
             ci.attributes, header->initializer);
 
@@ -596,6 +596,14 @@ void _bcThrowIncompatibleClassChangeError(Env* env, char* msg) {
     rvmThrowIncompatibleClassChangeError(env, msg);
     LEAVEV;
 }
+
+void _bcThrowClassCastException(Env* env, ClassInfoHeader* header, Object* o) {
+    ENTER;
+    Class* clazz = ldcClass(env, header);
+    rvmThrowClassCastException(env, clazz, o->clazz);
+    LEAVEV;
+}
+
 
 Object* _bcAllocate(Env* env, ClassInfoHeader* header) {
     ENTER;

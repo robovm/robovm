@@ -78,7 +78,7 @@ public class DirectoryPath extends AbstractPath {
         private byte[] bytes = null;
         
         DirectoryPathClazz(File f) {
-            super(clazzes, 
+            super(DirectoryPath.this.clazzes, 
                     f.getAbsolutePath().substring(file.getAbsolutePath().length() + 1), 
                     DirectoryPath.this);
             this.f = f;

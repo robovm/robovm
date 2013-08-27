@@ -16,6 +16,8 @@
  */
 package org.robovm.compiler;
 
+import org.robovm.compiler.clazz.ClazzInfo;
+
 import soot.ClassMember;
 import soot.SootClass;
 
@@ -29,6 +31,19 @@ public class Access {
     public static final String ILLEGAL_ACCESS_ERROR_CLASS = "Attempt to access class %s from class %s";
 
     public static boolean checkClassAccessible(SootClass target, SootClass caller) {
+        if (caller == target) {
+            return true; 
+        }
+        if (target.isPublic()) {
+            return true; 
+        }
+        if (target.getPackageName().equals(caller.getPackageName())) {
+            return true;
+        }
+        return false;
+    }
+    
+    public static boolean checkClassAccessible(ClazzInfo target, ClazzInfo caller) {
         if (caller == target) {
             return true; 
         }

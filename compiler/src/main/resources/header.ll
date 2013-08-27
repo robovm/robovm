@@ -1,7 +1,8 @@
 %GatewayFrame = type {i8*, i8*, i8*}
 %Env = type {i8*, i8*, i8*, i8*, i8*, i8*, i8*, i32}
-; NOTE: The compiler assumes that %Class is a multiple of 8 in size (we don't need to pad it since it's already a multiple of 8 bytes in size, 72 bytes)
-%Class = type {i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i32, i8*, i8*, i8*, i8*, i8*, i32, i32, i32, i16, i16}
+%TypeInfo = type {i32, i32, i32, i32, i32, [0 x i32]}
+; NOTE: The compiler assumes that %Class is a multiple of 8 in size (we need to pad it since it's not a multiple of 8 bytes in size, 76 bytes)
+%Class = type {i8*, i8*, i8*, %TypeInfo*, i8*, i8*, i8*, i8*, i8*, i32, i8*, i8*, i8*, i8*, i8*, i32, i32, i32, i16, i16, i32}
 %Method = type opaque
 %Field = type opaque
 %Object = type {%Class*, i8*}
@@ -57,6 +58,7 @@ declare void @_bcThrowIllegalAccessError(%Env*, i8*) noreturn
 declare void @_bcThrowInstantiationError(%Env*, i8*) noreturn
 declare void @_bcThrowIncompatibleClassChangeError(%Env*, i8*) noreturn
 declare void @_bcThrowAbstractMethodError(%Env*, i8*) noreturn
+declare void @_bcThrowClassCastException(%Env*, i8**, %Object*) noreturn
 
 declare %Object* @_bcNew(%Env*, i8*)
 declare %Object* @_bcNewBooleanArray(%Env*, i32)
@@ -94,6 +96,48 @@ declare void @_bcCopyStruct(%Env*, %Object*, i8*, i32)
 
 declare i8* @llvm.frameaddress(i32) nounwind readnone
 declare void @llvm.memcpy.p0i8.p0i8.i32(i8*, i8*, i32, i32, i1)
+
+define private %Class* @Object_class(%Object* %o) alwaysinline {
+    %1 = getelementptr %Object* %o, i32 0, i32 0
+    %2 = load %Class** %1
+    ret %Class* %2
+}
+
+define private %TypeInfo* @Class_typeInfo(%Class* %c) alwaysinline {
+    %1 = getelementptr %Class* %c, i32 0, i32 3 ; Class->typeInfo
+    %2 = load %TypeInfo** %1
+    ret %TypeInfo* %2
+}
+
+define private i32 @Class_flags(%Class* %c) alwaysinline {
+    %1 = getelementptr %Class* %c, i32 0, i32 9 ; Class->flags
+    %2 = load i32* %1
+    ret i32 %2
+}
+
+define private i32 @TypeInfo_offset(%TypeInfo* %ti) alwaysinline {
+    %1 = getelementptr %TypeInfo* %ti, i32 0, i32 1 ; TypeInfo->offset
+    %2 = load i32* %1
+    ret i32 %2
+}
+
+define private i32 @TypeInfo_cache(%TypeInfo* %ti) alwaysinline {
+    %1 = getelementptr %TypeInfo* %ti, i32 0, i32 2 ; TypeInfo->cache
+    %2 = load i32* %1
+    ret i32 %2
+}
+
+define private void @TypeInfo_cache_store(%TypeInfo* %ti, i32 %value) alwaysinline {
+    %1 = getelementptr %TypeInfo* %ti, i32 0, i32 2 ; TypeInfo->cache
+    store i32 %value, i32* %1
+    ret void
+}
+
+define private i32 @TypeInfo_interfaceCount(%TypeInfo* %ti) alwaysinline {
+    %1 = getelementptr %TypeInfo* %ti, i32 0, i32 4 ; TypeInfo->interfaceCount
+    %2 = load i32* %1
+    ret i32 %2
+}
 
 define linkonce_odr i32 @arraylength(%Object* %o) alwaysinline {
     %array = bitcast %Object* %o to %Array*
@@ -438,13 +482,11 @@ notLoaded:
 }
 
 define private void @register_finalizable(%Env* %env, %Object* %o) alwaysinline {
-    %1 = getelementptr %Object* %o, i32 0, i32 0
-    %2 = load %Class** %1
-    %3 = getelementptr %Class* %2, i32 0, i32 8 ; Class->flags
-    %4 = load i32* %3
-    %5 = and i32 %4, 1048576  ; CLASS_FLAG_FINALIZABLE = 0x00100000
-    %6 = icmp eq i32 %5, 0
-    br i1 %6, label %done, label %register
+    %1 = call %Class* @Object_class(%Object* %o)
+    %2 = call i32 @Class_flags(%Class* %1)
+    %3 = and i32 %2, 1048576  ; CLASS_FLAG_FINALIZABLE = 0x00100000
+    %4 = icmp eq i32 %3, 0
+    br i1 %4, label %done, label %register
 
 register:
     call void @_bcRegisterFinalizer(%Env* %env, %Object* %o)
@@ -452,4 +494,121 @@ register:
 
 done:
     ret void
+}
+
+define private i1 @isinstance_class(%Object* %o, i32 %offset, i32 %id) alwaysinline {
+    %c = call %Class* @Object_class(%Object* %o)
+    %ti = call %TypeInfo* @Class_typeInfo(%Class* %c)
+    %cachedId = call i32 @TypeInfo_cache(%TypeInfo* %ti)
+    %isCachedEQ = icmp eq i32 %id, %cachedId
+    br i1 %isCachedEQ, label %found, label %notInCache
+notInCache:
+    %otherOffset = call i32 @TypeInfo_offset(%TypeInfo* %ti)
+    %isOffsetLE = icmp ule i32 %offset, %otherOffset
+    br i1 %isOffsetLE, label %compareIds, label %notFound
+compareIds:
+    %1 = bitcast %TypeInfo* %ti to [0 x i8]*
+    %2 = getelementptr [0 x i8]* %1, i32 0, i32 %offset
+    %3 = bitcast i8* %2 to i32*
+    %otherId = load i32* %3
+    %isIdEQ = icmp eq i32 %id, %otherId
+    br i1 %isIdEQ, label %storeCache, label %notFound
+storeCache:
+    call void @TypeInfo_cache_store(%TypeInfo* %ti, i32 %id)
+    br label %found
+found:
+    ret i1 1
+notFound:
+    ret i1 0
+}
+
+define private i1 @isinstance_interface(%Object* %o, i32 %id) alwaysinline {
+    %c = call %Class* @Object_class(%Object* %o)
+    %ti = call %TypeInfo* @Class_typeInfo(%Class* %c)
+    %cachedId = call i32 @TypeInfo_cache(%TypeInfo* %ti)
+    %isCachedEQ = icmp eq i32 %id, %cachedId
+    br i1 %isCachedEQ, label %found, label %notInCache
+notInCache:
+    %ifCount = call i32 @TypeInfo_interfaceCount(%TypeInfo* %ti)
+    %hasIfs = icmp ne i32 %ifCount, 0
+    br i1 %hasIfs, label %computeBase, label %notFound
+computeBase:
+    %offset = call i32 @TypeInfo_offset(%TypeInfo* %ti)
+    %ti_18p = bitcast %TypeInfo* %ti to [0 x i8]*
+    %1 = getelementptr [0 x i8]* %ti_18p, i32 0, i32 %offset
+    %2 = bitcast i8* %1 to [0 x i32]*
+    %3 = getelementptr [0 x i32]* %2, i32 0, i32 1
+    %base = bitcast i32* %3 to [0 x i32]* ; %base now points to the first interface id
+    br label %loop
+loop:
+    %n_phi = phi i32 [0, %computeBase], [%n, %checkDone]
+    %4 = getelementptr [0 x i32]* %base, i32 0, i32 %n_phi
+    %n = add i32 %n_phi, 1
+    %otherId = load i32* %4
+    %isIdEQ = icmp eq i32 %id, %otherId
+    br i1 %isIdEQ, label %storeCache, label %checkDone
+checkDone:
+    %isDone = icmp eq i32 %n, %ifCount
+    br i1 %isDone, label %notFound, label %loop
+storeCache:
+    call void @TypeInfo_cache_store(%TypeInfo* %ti, i32 %id)
+    br label %found
+found:
+    ret i1 1
+notFound:
+    ret i1 0
+}
+
+define private %Object* @checkcast_class(%Env* %env, i8** %header, %Object* %o, i32 %offset, i32 %id) alwaysinline {
+    %isNotNull = icmp ne %Object* %o, null
+    br i1 %isNotNull, label %notNull, label %null
+null:
+    ret %Object* null
+notNull:
+    %isInstance = call i1 @isinstance_class(%Object* %o, i32 %offset, i32 %id)
+    br i1 %isInstance, label %ok, label %throw
+ok:
+    ret %Object* %o
+throw:
+    call void @_bcThrowClassCastException(%Env* %env, i8** %header, %Object* %o)
+    unreachable
+}
+
+define private %Object* @checkcast_interface(%Env* %env, i8** %header, %Object* %o, i32 %id) alwaysinline {
+    %isNotNull = icmp ne %Object* %o, null
+    br i1 %isNotNull, label %notNull, label %null
+null:
+    ret %Object* null
+notNull:
+    %isInstance = call i1 @isinstance_interface(%Object* %o, i32 %id)
+    br i1 %isInstance, label %ok, label %throw
+ok:
+    ret %Object* %o
+throw:
+    call void @_bcThrowClassCastException(%Env* %env, i8** %header, %Object* %o)
+    unreachable
+}
+
+define private i32 @instanceof_class(%Env* %env, i8** %header, %Object* %o, i32 %offset, i32 %id) alwaysinline {
+    %isNotNull = icmp ne %Object* %o, null
+    br i1 %isNotNull, label %notNull, label %false
+notNull:
+    %isInstance = call i1 @isinstance_class(%Object* %o, i32 %offset, i32 %id)
+    br i1 %isInstance, label %true, label %false
+true:
+    ret i32 1
+false:
+    ret i32 0
+}
+
+define private i32 @instanceof_interface(%Env* %env, i8** %header, %Object* %o, i32 %id) alwaysinline {
+    %isNotNull = icmp ne %Object* %o, null
+    br i1 %isNotNull, label %notNull, label %false
+notNull:
+    %isInstance = call i1 @isinstance_interface(%Object* %o, i32 %id)
+    br i1 %isInstance, label %true, label %false
+true:
+    ret i32 1
+false:
+    ret i32 0
 }

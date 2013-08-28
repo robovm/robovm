@@ -19,7 +19,9 @@ package org.robovm.compiler;
 import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Type.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.robovm.compiler.llvm.Alloca;
 import org.robovm.compiler.llvm.Argument;
@@ -37,6 +39,8 @@ import org.robovm.compiler.llvm.Switch;
 import org.robovm.compiler.llvm.Type;
 import org.robovm.compiler.llvm.Value;
 import org.robovm.compiler.llvm.Variable;
+
+import soot.SootMethodRef;
 
 /**
  * @author niklas
@@ -144,6 +148,20 @@ public class Functions {
     public static final FunctionRef OBJECT_CLASS = new FunctionRef("Object_class", new FunctionType(CLASS_PTR, OBJECT_PTR));
     public static final FunctionRef CLASS_VTABLE = new FunctionRef("Class_vtable", new FunctionType(VTABLE_PTR, CLASS_PTR));
 
+    private static final Map<String, FunctionRef> INTRINSICS;
+    
+    static {
+        INTRINSICS = new HashMap<String, FunctionRef>();
+        INTRINSICS.put("java/lang/Math/sqrt(D)D", 
+                new FunctionRef("intrinsics.java_lang_Math_sqrt", 
+                        new FunctionType(DOUBLE, ENV_PTR, DOUBLE)));
+    }
+    
+    public static FunctionRef getIntrinsic(SootMethodRef ref) {
+        return INTRINSICS.get(getInternalName(ref.declaringClass()) + "/" 
+                                + ref.name() + getDescriptor(ref));
+    }
+    
     public static FunctionRef getArrayLoad(soot.Type sootType) {
         if (sootType.equals(soot.BooleanType.v())) {
             return BALOAD;

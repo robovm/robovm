@@ -212,9 +212,9 @@ static Class* createClass(Env* env, ClassInfoHeader* header, ClassLoader* classL
         if (!superclass) return NULL;
     }
 
-    Class* clazz = rvmAllocateClass(env, header->className, superclass, classLoader, ci.access, header->typeInfo, header->classDataSize, 
-            header->instanceDataSize, header->instanceDataOffset, header->classRefCount, header->instanceRefCount,
-            ci.attributes, header->initializer);
+    Class* clazz = rvmAllocateClass(env, header->className, superclass, classLoader, ci.access, header->typeInfo, header->vtable, 
+            header->classDataSize, header->instanceDataSize, header->instanceDataOffset, header->classRefCount, 
+            header->instanceRefCount, ci.attributes, header->initializer);
 
     if (clazz) {
         if (!rvmRegisterClass(env, clazz)) return NULL;
@@ -309,11 +309,11 @@ static Method* loadMethods(Env* env, Class* clazz) {
         readMethodInfo(&p, &mi);
         Method* m = NULL;
         if (mi.targetFnPtr) {
-            m = (Method*) rvmAllocateBridgeMethod(env, clazz, mi.name, mi.desc, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.targetFnPtr, mi.attributes);
+            m = (Method*) rvmAllocateBridgeMethod(env, clazz, mi.name, mi.desc, mi.vtableIndex, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.targetFnPtr, mi.attributes);
         } else if (mi.callbackImpl) {
-            m = (Method*) rvmAllocateCallbackMethod(env, clazz, mi.name, mi.desc, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.callbackImpl, mi.attributes);
+            m = (Method*) rvmAllocateCallbackMethod(env, clazz, mi.name, mi.desc, mi.vtableIndex, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.callbackImpl, mi.attributes);
         } else {
-            m = rvmAllocateMethod(env, clazz, mi.name, mi.desc, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.attributes);
+            m = rvmAllocateMethod(env, clazz, mi.name, mi.desc, mi.vtableIndex, mi.access, mi.size, mi.impl, mi.synchronizedImpl, mi.attributes);
         }
         if (!m) goto error;
         LL_PREPEND(first, m);
@@ -512,6 +512,21 @@ void* _bcLookupInterfaceMethod(Env* env, ClassInfoHeader* header, Object* thiz, 
     ENTER;
     void* result = lookupInterfaceMethod(env, header, thiz, name, desc);
     LEAVE(result);
+}
+
+void _bcAbstractMethodCalled(Env* env, Object* thiz) {
+    ENTER;
+    char msg[256];
+    char* name = env->reserved0;
+    char* desc = env->reserved1;
+    snprintf(msg, sizeof(msg), "%s.%s%s", thiz->clazz->name, name, desc);
+    char* s = msg;
+    while (*s != '\0') {
+        if (*s == '/') *s = '.';
+        s++;
+    }
+    rvmThrowAbstractMethodError(env, msg);
+    LEAVEV;
 }
 
 void _bcTrycatchLeave(Env* env) {

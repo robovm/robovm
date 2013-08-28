@@ -171,7 +171,7 @@ static Class* createPrimitiveClass(Env* env, const char* desc) {
     typeInfo->types[0] = classId;
 
     Class* clazz = rvmAllocateClass(env, desc, NULL, NULL,
-        CLASS_TYPE_PRIMITIVE | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, typeInfo,
+        CLASS_TYPE_PRIMITIVE | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, typeInfo, NULL,
         sizeof(Class), sizeof(Object), sizeof(Object), 0, 0, NULL, NULL);
     if (!clazz) return NULL;
     clazz->_interfaces = NULL;
@@ -218,9 +218,8 @@ static Class* createArrayClass(Env* env, Class* componentType) {
         desc[length + 2] = ';';
     }
 
-    // TODO: Add clone() method.
     Class* clazz = rvmAllocateClass(env, desc, java_lang_Object, componentType->classLoader,
-        CLASS_TYPE_ARRAY | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, typeInfo, 
+        CLASS_TYPE_ARRAY | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, typeInfo, java_lang_Object->vtable,
         sizeof(Class), sizeof(Object), sizeof(Object), 0, 0, NULL, NULL);
     if (!clazz) return NULL;
     clazz->componentType = componentType;
@@ -519,7 +518,7 @@ jboolean rvmIsAssignableFrom(Env* env, Class* s, Class* t) {
 
 found:
     sti->cache = id;
-    return true;
+    return TRUE;
 }
 
 jboolean rvmIsInstanceOf(Env* env, Object* obj, Class* clazz) {
@@ -797,7 +796,7 @@ ClassLoader* rvmGetSystemClassLoader(Env* env) {
 }
 
 Class* rvmAllocateClass(Env* env, const char* className, Class* superclass, ClassLoader* classLoader, jint flags, TypeInfo* typeInfo,
-        jint classDataSize, jint instanceDataSize, jint instanceDataOffset, unsigned short classRefCount, 
+        VTable* vtable, jint classDataSize, jint instanceDataSize, jint instanceDataOffset, unsigned short classRefCount, 
         unsigned short instanceRefCount, void* attributes, void* initializer) {
 
     assert((flags & CLASS_STATE_MASK) == 0);
@@ -823,6 +822,7 @@ Class* rvmAllocateClass(Env* env, const char* className, Class* superclass, Clas
     clazz->superclass = superclass;
     clazz->classLoader = classLoader;
     clazz->typeInfo = typeInfo;
+    clazz->vtable = vtable;
     clazz->flags = flags;
     clazz->classDataSize = classDataSize;
     clazz->instanceDataSize = instanceDataSize;
@@ -877,12 +877,15 @@ jboolean rvmAddInterface(Env* env, Class* clazz, Class* interf) {
     return TRUE;
 }
 
-Method* rvmAllocateMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, void* synchronizedImpl, void* attributes) {
+Method* rvmAllocateMethod(Env* env, Class* clazz, const char* name, const char* desc, 
+        jint vtableIndex, jint access, jint size, void* impl, void* synchronizedImpl, void* attributes) {
+
     Method* method = rvmAllocateMemoryAtomicUncollectable(env, IS_NATIVE(access) ? sizeof(NativeMethod) : sizeof(Method));
     if (!method) return NULL;
     method->clazz = clazz;
     method->name = name;
     method->desc = desc;
+    method->vtableIndex = vtableIndex;
     method->access = access;
     method->size = size;
     method->impl = impl;
@@ -891,9 +894,11 @@ Method* rvmAllocateMethod(Env* env, Class* clazz, const char* name, const char* 
     return method;
 }
 
-Method* rvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, void* synchronizedImpl, void* attributes) {
+Method* rvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc, 
+        jint vtableIndex, jint access, jint size, void* impl, void* synchronizedImpl, void* attributes) {
+
     assert(CLASS_IS_STATE_ALLOCATED(clazz));
-    Method* method = rvmAllocateMethod(env, clazz, name, desc, access, size, impl, synchronizedImpl, attributes);
+    Method* method = rvmAllocateMethod(env, clazz, name, desc, vtableIndex, access, size, impl, synchronizedImpl, attributes);
     if (!method) return NULL;
 
     if (clazz->_methods == &METHODS_NOT_LOADED) {
@@ -913,6 +918,7 @@ ProxyMethod* addProxyMethod(Env* env, Class* clazz, Method* proxiedMethod, jint 
     method->method.clazz = clazz;
     method->method.name = proxiedMethod->name;
     method->method.desc = proxiedMethod->desc;
+    method->method.vtableIndex = proxiedMethod->vtableIndex;
     method->method.access = access | METHOD_TYPE_PROXY;
     method->method.impl = impl;
     method->method.synchronizedImpl = NULL;
@@ -928,7 +934,8 @@ ProxyMethod* addProxyMethod(Env* env, Class* clazz, Method* proxiedMethod, jint 
     return method;
 }
 
-BridgeMethod* rvmAllocateBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, 
+BridgeMethod* rvmAllocateBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, 
+        jint vtableIndex, jint access, jint size, void* impl, 
         void* synchronizedImpl, void** targetFnPtr, void* attributes) {
 
     BridgeMethod* method = rvmAllocateMemoryAtomicUncollectable(env, sizeof(BridgeMethod));
@@ -936,6 +943,7 @@ BridgeMethod* rvmAllocateBridgeMethod(Env* env, Class* clazz, const char* name, 
     method->method.clazz = clazz;
     method->method.name = name;
     method->method.desc = desc;
+    method->method.vtableIndex = vtableIndex;
     method->method.access = access | METHOD_TYPE_BRIDGE;
     method->method.size = size;
     method->method.impl = impl;
@@ -945,11 +953,14 @@ BridgeMethod* rvmAllocateBridgeMethod(Env* env, Class* clazz, const char* name, 
     return method;
 }
 
-BridgeMethod* rvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, 
+BridgeMethod* rvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, 
+        jint vtableIndex, jint access, jint size, void* impl, 
         void* synchronizedImpl, void** targetFnPtr, void* attributes) {
     
     assert(CLASS_IS_STATE_ALLOCATED(clazz));
-    BridgeMethod* method = rvmAllocateBridgeMethod(env, clazz, name, desc, access, size, impl, synchronizedImpl, targetFnPtr, attributes);
+    BridgeMethod* method = rvmAllocateBridgeMethod(env, clazz, name, desc, access, 
+                                    vtableIndex, size, impl, synchronizedImpl, 
+                                    targetFnPtr, attributes);
     if (!method) return NULL;
 
     if (clazz->_methods == &METHODS_NOT_LOADED) {
@@ -962,7 +973,8 @@ BridgeMethod* rvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const
     return method;
 }
 
-CallbackMethod* rvmAllocateCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, 
+CallbackMethod* rvmAllocateCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, 
+        jint vtableIndex, jint access, jint size, void* impl, 
         void* synchronizedImpl, void* callbackImpl, void* attributes) {
 
     CallbackMethod* method = rvmAllocateMemoryAtomicUncollectable(env, sizeof(CallbackMethod));
@@ -970,6 +982,7 @@ CallbackMethod* rvmAllocateCallbackMethod(Env* env, Class* clazz, const char* na
     method->method.clazz = clazz;
     method->method.name = name;
     method->method.desc = desc;
+    method->method.vtableIndex = vtableIndex;
     method->method.access = access | METHOD_TYPE_CALLBACK;
     method->method.size = size;
     method->method.impl = impl;
@@ -979,11 +992,14 @@ CallbackMethod* rvmAllocateCallbackMethod(Env* env, Class* clazz, const char* na
     return method;
 }
 
-CallbackMethod* rvmAddCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint size, void* impl, 
+CallbackMethod* rvmAddCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, 
+        jint vtableIndex, jint access, jint size, void* impl, 
         void* synchronizedImpl, void* callbackImpl, void* attributes) {
     
     assert(CLASS_IS_STATE_ALLOCATED(clazz));
-    CallbackMethod* method = rvmAllocateCallbackMethod(env, clazz, name, desc, access, size, impl, synchronizedImpl, callbackImpl, attributes);
+    CallbackMethod* method = rvmAllocateCallbackMethod(env, clazz, name, desc, access, 
+                                        vtableIndex, size, impl, synchronizedImpl, 
+                                        callbackImpl, attributes);
     if (!method) return NULL;
 
     if (clazz->_methods == &METHODS_NOT_LOADED) {

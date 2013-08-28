@@ -34,6 +34,7 @@ import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 
 import org.apache.commons.io.IOUtils;
+import org.robovm.compiler.VTable;
 import org.robovm.compiler.Version;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.Clazzes;
@@ -129,6 +130,7 @@ public class Config {
     private File osArchDepLibDir;
     private File tmpDir;
     private Clazzes clazzes;
+    private VTable.Cache vtableCache;
     private Logger logger = Logger.NULL_LOGGER;
     private List<Path> resourcesPaths = new ArrayList<Path>();
 
@@ -266,6 +268,10 @@ public class Config {
         return clazzes;
     }
 
+    public VTable.Cache getVTableCache() {
+        return vtableCache;
+    }
+    
     public List<File> getBootclasspath() {
         return bootclasspath;
     }
@@ -419,6 +425,7 @@ public class Config {
         }
 
         this.clazzes = new Clazzes(this, realBootclasspath, classpath);
+        this.vtableCache = new VTable.Cache();
         
         if (!skipInstall) {
             if (installDir == null) {

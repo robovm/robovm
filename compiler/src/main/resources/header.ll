@@ -1,8 +1,9 @@
 %GatewayFrame = type {i8*, i8*, i8*}
 %Env = type {i8*, i8*, i8*, i8*, i8*, i8*, i8*, i32}
 %TypeInfo = type {i32, i32, i32, i32, i32, [0 x i32]}
-; NOTE: The compiler assumes that %Class is a multiple of 8 in size (we need to pad it since it's not a multiple of 8 bytes in size, 76 bytes)
-%Class = type {i8*, i8*, i8*, %TypeInfo*, i8*, i8*, i8*, i8*, i8*, i32, i8*, i8*, i8*, i8*, i8*, i32, i32, i32, i16, i16, i32}
+%VTable = type {i16, [0 x i8*]}
+; NOTE: The compiler assumes that %Class is a multiple of 8 in size (we don't need to pad it since it's already 8 bytes in size, 80 bytes)
+%Class = type {i8*, i8*, i8*, %TypeInfo*, %VTable*, i8*, i8*, i8*, i8*, i8*, i32, i8*, i8*, i8*, i8*, i8*, i32, i32, i32, i16, i16}
 %Method = type opaque
 %Field = type opaque
 %Object = type {%Class*, i8*}
@@ -42,6 +43,7 @@ declare void @_bcRegisterFinalizer(%Env* %env, %Object* %o)
 
 declare i8* @_bcLookupVirtualMethod(%Env*, %Object*, i8*, i8*)
 declare i8* @_bcLookupInterfaceMethod(%Env*, i8**, %Object*, i8*, i8*)
+declare void @_bcAbstractMethodCalled(%Env*, %Object*)
 declare void @_bcThrow(%Env*, %Object*) noreturn
 declare void @_bcThrowIfExceptionOccurred(%Env*)
 declare %Object* @_bcExceptionClear(%Env*)
@@ -109,8 +111,14 @@ define private %TypeInfo* @Class_typeInfo(%Class* %c) alwaysinline {
     ret %TypeInfo* %2
 }
 
+define private %VTable* @Class_vtable(%Class* %c) alwaysinline {
+    %1 = getelementptr %Class* %c, i32 0, i32 4 ; Class->vtable
+    %2 = load %VTable** %1
+    ret %VTable* %2
+}
+
 define private i32 @Class_flags(%Class* %c) alwaysinline {
-    %1 = getelementptr %Class* %c, i32 0, i32 9 ; Class->flags
+    %1 = getelementptr %Class* %c, i32 0, i32 10 ; Class->flags
     %2 = load i32* %1
     ret i32 %2
 }

@@ -259,14 +259,36 @@ static TypeInfo* createTypeInfo(Env* env, Class* superclass, jint interfacesCoun
     return typeInfo;
 }
 
+static VTable* createVTable(Env* env, Class* superclass) {
+    VTable* vtable = rvmCopyMemoryAtomic(env, superclass->vtable, offsetof(VTable, table) + sizeof(void*) * superclass->vtable->size);
+    if (!vtable) return NULL;
+
+    Class* c = superclass;
+    while (c) {
+        Method* method = rvmGetMethods(env, c);
+        if (rvmExceptionOccurred(env)) return NULL;
+        for (; method != NULL; method = method->next) {
+            // Static/private methods and constructors which don't belong in the vtable
+            // have vtableIndex=-1. Also, we mustn't override final methods.
+            if (method->vtableIndex >= 0 && !METHOD_IS_FINAL(method)) {
+                vtable->table[method->vtableIndex] = _proxy0;
+            }
+        }
+        c = c->superclass;
+    }
+    return vtable;
+}
+
 Class* rvmProxyCreateProxyClass(Env* env, Class* superclass, ClassLoader* classLoader, char* className, jint interfacesCount, Class** interfaces, 
         jint instanceDataSize, jint instanceDataOffset, unsigned short instanceRefCount, ProxyHandler handler) {
 
     TypeInfo* typeInfo = createTypeInfo(env, superclass, interfacesCount, interfaces);
     if (!typeInfo) return NULL;
+    VTable* vtable = createVTable(env, superclass);
+    if (!vtable) return NULL;
 
     // Allocate the proxy class.
-    Class* proxyClass = rvmAllocateClass(env, className, superclass, classLoader, CLASS_TYPE_PROXY | ACC_PUBLIC | ACC_FINAL, typeInfo,
+    Class* proxyClass = rvmAllocateClass(env, className, superclass, classLoader, CLASS_TYPE_PROXY | ACC_PUBLIC | ACC_FINAL, typeInfo, vtable,
         offsetof(Class, data) + sizeof(ProxyClassData), instanceDataSize, instanceDataOffset, 1, instanceRefCount, NULL, NULL);
     if (!proxyClass) return NULL;
 

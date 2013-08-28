@@ -126,6 +126,7 @@ void readFieldInfo(void** p, FieldInfo* result) {
 
 void readMethodInfo(void** p, MethodInfo* result) {
     jint flags = readShort(p);
+    jint vtableIndex = readShort(p);
     char* name = readString(p);
     jint access = 0;
     if ((flags & MI_ACCESS_MASK) == MI_PUBLIC) access |= ACC_PUBLIC;
@@ -176,6 +177,7 @@ void readMethodInfo(void** p, MethodInfo* result) {
 
     if (result) {
         result->flags = flags;
+        result->vtableIndex = vtableIndex;
         result->access = access;
         result->name = name;
         result->desc = desc;

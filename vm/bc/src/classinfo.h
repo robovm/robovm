@@ -41,6 +41,7 @@ typedef struct {
     const char* className;
     void* initializer;
     TypeInfo* typeInfo;
+    VTable* vtable;
     jint classDataSize;
     jint instanceDataSize;
     jint instanceDataOffset;
@@ -77,6 +78,7 @@ typedef struct {
 
 typedef struct {
     jint flags;
+    jint vtableIndex;
     jint access;
     const char* name;
     const char* desc;

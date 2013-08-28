@@ -39,7 +39,7 @@ import soot.SootMethod;
  *
  */
 public class ClazzInfo implements Serializable {
-    private static final long serialVersionUID = 7L;
+    private static final long serialVersionUID = 13L;
     
     private int modifiers;
     private String name;

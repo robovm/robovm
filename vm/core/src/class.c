@@ -519,7 +519,7 @@ jboolean rvmIsAssignableFrom(Env* env, Class* s, Class* t) {
 
 found:
     sti->cache = id;
-    return true;
+    return TRUE;
 }
 
 jboolean rvmIsInstanceOf(Env* env, Object* obj, Class* clazz) {

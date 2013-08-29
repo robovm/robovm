@@ -103,6 +103,8 @@ declare void @_bcCopyStruct(%Env*, %Object*, i8*, i32)
 declare i8* @llvm.frameaddress(i32) nounwind readnone
 declare void @llvm.memcpy.p0i8.p0i8.i32(i8*, i8*, i32, i32, i1)
 declare double @llvm.sqrt.f64(double)
+declare double @llvm.cos.f64(double)
+declare double @llvm.sin.f64(double)
 
 define private %Class* @Object_class(%Object* %o) alwaysinline {
     %1 = getelementptr %Object* %o, i32 0, i32 0
@@ -160,6 +162,16 @@ define private i32 @TypeInfo_interfaceCount(%TypeInfo* %ti) alwaysinline {
 
 define private double @intrinsics.java_lang_Math_sqrt(%Env* %env, double %d) alwaysinline {
     %1 = call double @llvm.sqrt.f64(double %d)
+    ret double %1
+}
+
+define private double @intrinsics.java_lang_Math_cos(%Env* %env, double %d) alwaysinline {
+    %1 = call double @llvm.cos.f64(double %d)
+    ret double %1
+}
+
+define private double @intrinsics.java_lang_Math_sin(%Env* %env, double %d) alwaysinline {
+    %1 = call double @llvm.sin.f64(double %d)
     ret double %1
 }
 

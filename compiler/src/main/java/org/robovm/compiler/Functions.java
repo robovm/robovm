@@ -157,6 +157,12 @@ public class Functions {
         INTRINSICS.put("java/lang/Math/sqrt(D)D", 
                 new FunctionRef("intrinsics.java_lang_Math_sqrt", 
                         new FunctionType(DOUBLE, ENV_PTR, DOUBLE)));
+        INTRINSICS.put("java/lang/Math/cos(D)D", 
+                new FunctionRef("intrinsics.java_lang_Math_cos", 
+                        new FunctionType(DOUBLE, ENV_PTR, DOUBLE)));
+        INTRINSICS.put("java/lang/Math/sin(D)D", 
+                new FunctionRef("intrinsics.java_lang_Math_sin", 
+                        new FunctionType(DOUBLE, ENV_PTR, DOUBLE)));
     }
     
     public static FunctionRef getIntrinsic(SootMethodRef ref) {

@@ -27,6 +27,7 @@ import static org.robovm.compiler.llvm.Type.*;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.robovm.compiler.clazz.Clazz;
@@ -51,6 +52,7 @@ import org.robovm.compiler.llvm.Load;
 import org.robovm.compiler.llvm.NullConstant;
 import org.robovm.compiler.llvm.PointerType;
 import org.robovm.compiler.llvm.Ret;
+import org.robovm.compiler.llvm.StructureType;
 import org.robovm.compiler.llvm.Unreachable;
 import org.robovm.compiler.llvm.Value;
 import org.robovm.compiler.llvm.Variable;
@@ -289,7 +291,11 @@ public class TrampolineCompiler {
                 mb.addFunction(f);
                 return;
             }
-            createTrampolineAliasForField((FieldAccessor) t, field);
+            if (!field.isStatic()) {
+                createInlinedAccessorForInstanceField((FieldAccessor) t, field);   
+            } else {
+                createTrampolineAliasForField((FieldAccessor) t, field);
+            }
         } else if (t instanceof Invokeinterface) {
             SootMethod rm = resolveInterfaceMethod(f, (Invokeinterface) t);
             if (rm != null) {
@@ -340,6 +346,22 @@ public class TrampolineCompiler {
             fnName += "_clinit";
         }
         alias(t, fnName);
+    }
+
+    private void createInlinedAccessorForInstanceField(FieldAccessor t, SootField field) {
+        Function fn = new FunctionBuilder(t).linkage(_private).attribs(alwaysinline, optsize).build();
+
+        List<SootField> classFields = Collections.emptyList();
+        StructureType classType = new StructureType();
+        List<SootField> instanceFields = getInstanceFields(field.getDeclaringClass());
+        StructureType instanceType = getInstanceType(field.getDeclaringClass());
+        if (t.isGetter()) {
+            ClassCompiler.createFieldGetter(fn, field, classFields, classType, instanceFields, instanceType);
+        } else {
+            ClassCompiler.createFieldSetter(fn, field, classFields, classType, instanceFields, instanceType);
+        }
+        
+        mb.addFunction(fn);
     }
     
     private void createTrampolineAliasForMethod(Invoke t, SootMethod rm) {

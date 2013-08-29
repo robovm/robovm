@@ -44,7 +44,9 @@ typedef struct Interface Interface;
 typedef struct Exception Exception;
 typedef struct Class Class;
 typedef struct Object Object;
-typedef struct VTable VTable;
+typedef struct VITable VITable;
+typedef struct ITables ITables;
+typedef struct ITable ITable;
 typedef struct TypeInfo TypeInfo;
 typedef struct ClassLoader ClassLoader;
 typedef struct DataObject DataObject;
@@ -80,7 +82,7 @@ struct Method {
   Class* clazz;
   const char* name;
   const char* desc;
-  jint vtableIndex;
+  jint vitableIndex;
   jint access;
   jint size;
   void* attributes;
@@ -124,9 +126,20 @@ struct Object {
   uint32_t lock;
 };
 
-struct VTable {
+struct VITable {
   uint16_t size;
   void* table[0];
+};
+
+struct ITable {
+  TypeInfo* typeInfo;
+  VITable table;
+};
+
+struct ITables {
+  uint16_t count;
+  ITable* cache;
+  ITable* table[0];
 };
 
 struct TypeInfo {
@@ -147,7 +160,8 @@ struct Class {
                            // java.lang.Class has a single field, (SoftReference<ClassCache<T>> cacheRef).
                            // void* gives enough space to store that reference.
   TypeInfo* typeInfo;      // Info on all types this class implements.
-  VTable* vtable;
+  VITable* vitable;
+  ITables* itables;
   const char* name;        // The name in modified UTF-8.
   ClassLoader* classLoader;
   Class* superclass;       // Superclass pointer. Only java.lang.Object, primitive classes and interfaces have NULL here.

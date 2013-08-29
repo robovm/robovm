@@ -212,7 +212,7 @@ static Class* createClass(Env* env, ClassInfoHeader* header, ClassLoader* classL
         if (!superclass) return NULL;
     }
 
-    Class* clazz = rvmAllocateClass(env, header->className, superclass, classLoader, ci.access, header->typeInfo, header->vtable, 
+    Class* clazz = rvmAllocateClass(env, header->className, superclass, classLoader, ci.access, header->typeInfo, header->vitable, header->itables,
             header->classDataSize, header->instanceDataSize, header->instanceDataOffset, header->classRefCount, 
             header->instanceRefCount, ci.attributes, header->initializer);
 
@@ -514,6 +514,32 @@ void* _bcLookupInterfaceMethod(Env* env, ClassInfoHeader* header, Object* thiz, 
     LEAVE(result);
 }
 
+void* _bcLookupInterfaceMethodImpl(Env* env, ClassInfoHeader* header, Object* thiz, uint32_t index) {
+    TypeInfo* typeInfo = header->typeInfo;
+    ITables* itables = thiz->clazz->itables;
+    ITable* itable = itables->cache;
+    if (itable->typeInfo == typeInfo) {
+        return itable->table.table[index];
+    }
+    uint32_t i;
+    for (i = 0; i < itables->count; i++) {
+        itable = itables->table[i];
+        if (itable->typeInfo == typeInfo) {
+            itables->cache = itable;
+            return itable->table.table[index];
+        }
+    }
+
+    ENTER;
+    initializeClass(env, header);
+    Class* ownerInterface = header->clazz;
+    char message[256];
+    snprintf(message, 256, "Class %s does not implement the requested interface %s", 
+        rvmToBinaryClassName(env, thiz->clazz->name), rvmToBinaryClassName(env, ownerInterface->name));
+    rvmThrowIncompatibleClassChangeError(env, message);
+    LEAVE(NULL);
+}
+
 void _bcAbstractMethodCalled(Env* env, Object* thiz) {
     ENTER;
     char msg[256];
@@ -526,6 +552,21 @@ void _bcAbstractMethodCalled(Env* env, Object* thiz) {
         s++;
     }
     rvmThrowAbstractMethodError(env, msg);
+    LEAVEV;
+}
+
+void _bcNonPublicMethodCalled(Env* env, Object* thiz) {
+    ENTER;
+    char msg[256];
+    char* name = env->reserved0;
+    char* desc = env->reserved1;
+    snprintf(msg, sizeof(msg), "%s.%s%s not public", thiz->clazz->name, name, desc);
+    char* s = msg;
+    while (*s != '\0') {
+        if (*s == '/') *s = '.';
+        s++;
+    }
+    rvmThrowIllegalAccessError(env, msg);
     LEAVEV;
 }
 

@@ -80,6 +80,7 @@ public class Functions {
     public static final FunctionRef BC_LDC_STRING = new FunctionRef("_bcLdcString", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR));
     public static final FunctionRef BC_LOOKUP_VIRTUAL_METHOD = new FunctionRef("_bcLookupVirtualMethod", new FunctionType(I8_PTR, ENV_PTR, OBJECT_PTR, I8_PTR, I8_PTR));
     public static final FunctionRef BC_LOOKUP_INTERFACE_METHOD = new FunctionRef("_bcLookupInterfaceMethod", new FunctionType(I8_PTR, ENV_PTR, I8_PTR_PTR, OBJECT_PTR, I8_PTR, I8_PTR));
+    public static final FunctionRef BC_LOOKUP_INTERFACE_METHOD_IMPL = new FunctionRef("_bcLookupInterfaceMethodImpl", new FunctionType(I8_PTR, ENV_PTR, I8_PTR_PTR, OBJECT_PTR, I32));
     public static final FunctionRef BC_CHECKCAST = new FunctionRef("_bcCheckcast", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR_PTR, OBJECT_PTR));
     public static final FunctionRef BC_CHECKCAST_ARRAY = new FunctionRef("_bcCheckcastArray", new FunctionType(OBJECT_PTR, ENV_PTR, OBJECT_PTR, OBJECT_PTR));
     public static final FunctionRef BC_INSTANCEOF = new FunctionRef("_bcInstanceof", new FunctionType(I32, ENV_PTR, I8_PTR_PTR, OBJECT_PTR));
@@ -96,6 +97,7 @@ public class Functions {
     public static final FunctionRef RVM_TRYCATCH_ENTER = new FunctionRef("rvmTrycatchEnter", new FunctionType(I32, ENV_PTR, TRYCATCH_CONTEXT_PTR));
     public static final FunctionRef BC_TRYCATCH_LEAVE = new FunctionRef("_bcTrycatchLeave", new FunctionType(VOID, ENV_PTR));
     public static final FunctionRef BC_ABSTRACT_METHOD_CALLED = new FunctionRef("_bcAbstractMethodCalled", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
+    public static final FunctionRef BC_NON_PUBLIC_METHOD_CALLED = new FunctionRef("_bcNonPublicMethodCalled", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
 
     public static final FunctionRef LLVM_FRAMEADDRESS = new FunctionRef("llvm.frameaddress", new FunctionType(I8_PTR, I32));
     public static final FunctionRef LLVM_MEMCPY = new FunctionRef("llvm.memcpy.p0i8.p0i8.i32", new FunctionType(VOID, I8_PTR, I8_PTR, I32, I32, I1));
@@ -146,7 +148,7 @@ public class Functions {
     public static final FunctionRef INSTANCEOF_CLASS = new FunctionRef("instanceof_class", new FunctionType(I32, ENV_PTR, I8_PTR_PTR, OBJECT_PTR, I32, I32));
     public static final FunctionRef INSTANCEOF_INTERFACE = new FunctionRef("instanceof_interface", new FunctionType(I32, ENV_PTR, I8_PTR_PTR, OBJECT_PTR, I32));
     public static final FunctionRef OBJECT_CLASS = new FunctionRef("Object_class", new FunctionType(CLASS_PTR, OBJECT_PTR));
-    public static final FunctionRef CLASS_VTABLE = new FunctionRef("Class_vtable", new FunctionType(VTABLE_PTR, CLASS_PTR));
+    public static final FunctionRef CLASS_VITABLE = new FunctionRef("Class_vitable", new FunctionType(VITABLE_PTR, CLASS_PTR));
 
     private static final Map<String, FunctionRef> INTRINSICS;
     

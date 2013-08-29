@@ -135,6 +135,9 @@ public class VTable {
     public static class Cache {
         Map<String, VTable> cache = new HashMap<String, VTable>();
         public VTable get(SootClass clazz) {
+            if (clazz.isInterface()) {
+                throw new IllegalArgumentException("Expected a class got an interface: " + clazz.getName());
+            }
             VTable vtable = cache.get(clazz.getName());
             if (vtable != null) {
                 return vtable;

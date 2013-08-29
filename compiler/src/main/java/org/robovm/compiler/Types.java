@@ -88,9 +88,9 @@ public class Types {
     public static final StructureType OBJECT = new StructureType("Object", CLASS_PTR);
     // Dummy DataObject type definition. The real one is in header.ll
     public static final StructureType DATA_OBJECT = new StructureType("DataObject", OBJECT);
-    // Dummy VTable type definition. The real one is in header.ll
-    public static final StructureType VTABLE = new StructureType("VTable", I8_PTR);
-    public static final Type VTABLE_PTR = new PointerType(VTABLE);
+    // Dummy VITable type definition. The real one is in header.ll
+    public static final StructureType VITABLE = new StructureType("VITable", I8_PTR);
+    public static final Type VITABLE_PTR = new PointerType(VITABLE);
     
     public static final Type OBJECT_PTR = new PointerType(OBJECT);
     public static final Type METHOD_PTR = new PointerType(new OpaqueType("Method"));

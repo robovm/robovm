@@ -41,7 +41,8 @@ typedef struct {
     const char* className;
     void* initializer;
     TypeInfo* typeInfo;
-    VTable* vtable;
+    VITable* vitable;
+    ITables* itables;
     jint classDataSize;
     jint instanceDataSize;
     jint instanceDataOffset;

@@ -259,8 +259,8 @@ static TypeInfo* createTypeInfo(Env* env, Class* superclass, jint interfacesCoun
     return typeInfo;
 }
 
-static VTable* createVTable(Env* env, Class* superclass) {
-    VTable* vtable = rvmCopyMemoryAtomic(env, superclass->vtable, offsetof(VTable, table) + sizeof(void*) * superclass->vtable->size);
+static VITable* createVTable(Env* env, Class* superclass) {
+    VITable* vtable = rvmCopyMemoryAtomic(env, superclass->vitable, offsetof(VITable, table) + sizeof(void*) * superclass->vitable->size);
     if (!vtable) return NULL;
 
     Class* c = superclass;
@@ -269,9 +269,9 @@ static VTable* createVTable(Env* env, Class* superclass) {
         if (rvmExceptionOccurred(env)) return NULL;
         for (; method != NULL; method = method->next) {
             // Static/private methods and constructors which don't belong in the vtable
-            // have vtableIndex=-1. Also, we mustn't override final methods.
-            if (method->vtableIndex >= 0 && !METHOD_IS_FINAL(method)) {
-                vtable->table[method->vtableIndex] = _proxy0;
+            // have vitableIndex=-1. Also, we mustn't override final methods.
+            if (method->vitableIndex >= 0 && !METHOD_IS_FINAL(method)) {
+                vtable->table[method->vitableIndex] = _proxy0;
             }
         }
         c = c->superclass;
@@ -279,16 +279,82 @@ static VTable* createVTable(Env* env, Class* superclass) {
     return vtable;
 }
 
+static ITable* createITable(Env* env, Class* interfaze) {
+    ITable* itable = rvmAllocateMemoryAtomic(env, offsetof(ITable, table) 
+        + offsetof(VITable, table) + sizeof(void*) * interfaze->vitable->size);
+    if (!itable) return NULL;
+
+    itable->typeInfo = interfaze->typeInfo;
+    itable->table.size = interfaze->vitable->size;
+
+    jint i = 0;
+    for (i = 0; i < interfaze->vitable->size; i++) {
+        itable->table.table[i] = _proxy0;
+    }
+    return itable;
+}
+
+static uint32_t countInterfacesForITables(Env* env, Class* c) {
+    Interface* ifs = rvmGetInterfaces(env, c);
+    if (rvmExceptionOccurred(env)) return 0;
+    uint32_t count = c->vitable->size;
+    for (; ifs; ifs = ifs->next) {
+        count += countInterfacesForITables(env, ifs->interface);
+        if (rvmExceptionOccurred(env)) return 0;
+    }
+    return count;
+}
+
+static void initITableArray(Env* env, Class* c, jint* index, ITable** array) {
+    if (c->vitable->size > 0) {
+        ITable* itable = createITable(env, c);
+        if (!itable) return;
+        array[*index] = itable;
+        (*index)++;
+    }
+    Interface* ifs = rvmGetInterfaces(env, c);
+    if (rvmExceptionOccurred(env)) return;
+    for (; ifs; ifs = ifs->next) {
+        initITableArray(env, ifs->interface, index, array);
+        if (rvmExceptionOccurred(env)) return;
+    }
+}
+
+static ITables* createITables(Env* env, Class* superclass, jint interfacesCount, Class** interfaces) {
+    uint32_t count = superclass->itables->count;
+    jint i;
+    for (i = 0; i < interfacesCount; i++) {
+        count += countInterfacesForITables(env, interfaces[i]);
+        if (rvmExceptionOccurred(env)) return NULL;
+    }
+    if (count == 0) return NULL;
+
+    ITables* itables = rvmAllocateMemory(env, sizeof(ITables) + sizeof(ITable*) * count);
+    if (!itables) return NULL;
+
+    itables->count = count;
+    jint index = 0;
+    for (i = 0; i < interfacesCount; i++) {
+        initITableArray(env, interfaces[i], &index, itables->table);
+        if (rvmExceptionOccurred(env)) return NULL;
+    }
+    itables->cache = itables->table[0];
+
+    return itables;
+}
+
 Class* rvmProxyCreateProxyClass(Env* env, Class* superclass, ClassLoader* classLoader, char* className, jint interfacesCount, Class** interfaces, 
         jint instanceDataSize, jint instanceDataOffset, unsigned short instanceRefCount, ProxyHandler handler) {
 
     TypeInfo* typeInfo = createTypeInfo(env, superclass, interfacesCount, interfaces);
     if (!typeInfo) return NULL;
-    VTable* vtable = createVTable(env, superclass);
+    VITable* vtable = createVTable(env, superclass);
     if (!vtable) return NULL;
+    ITables* itables = createITables(env, superclass, interfacesCount, interfaces);
+    if (!itables) return NULL;
 
     // Allocate the proxy class.
-    Class* proxyClass = rvmAllocateClass(env, className, superclass, classLoader, CLASS_TYPE_PROXY | ACC_PUBLIC | ACC_FINAL, typeInfo, vtable,
+    Class* proxyClass = rvmAllocateClass(env, className, superclass, classLoader, CLASS_TYPE_PROXY | ACC_PUBLIC | ACC_FINAL, typeInfo, vtable, itables,
         offsetof(Class, data) + sizeof(ProxyClassData), instanceDataSize, instanceDataOffset, 1, instanceRefCount, NULL, NULL);
     if (!proxyClass) return NULL;
 

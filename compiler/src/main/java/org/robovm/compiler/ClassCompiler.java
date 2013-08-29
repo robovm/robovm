@@ -43,6 +43,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.ClazzInfo;
@@ -51,6 +52,7 @@ import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.llvm.And;
+import org.robovm.compiler.llvm.ArrayConstantBuilder;
 import org.robovm.compiler.llvm.Bitcast;
 import org.robovm.compiler.llvm.Br;
 import org.robovm.compiler.llvm.Constant;
@@ -508,7 +510,18 @@ public class ClassCompiler {
             trampolineDependencies.addAll(trampolineResolver.getDependencies());
         }
 
-        Global classInfoStruct = new Global(mangleClass(sootClass) + "_info_struct", Linkage.weak, createClassInfoStruct());
+        Global classInfoStruct = null;
+        try {
+            if (!sootClass.isInterface()) {
+                config.getVTableCache().get(sootClass);
+            }
+            classInfoStruct = new Global(mangleClass(sootClass) + "_info_struct", Linkage.weak, createClassInfoStruct());
+        } catch (IllegalArgumentException e) {
+            // VTable throws this if any of the superclasses of the class is actually an interface.
+            // Shouldn't happen frequently but the DRLVM test suite has some tests for this.
+            // The Linker will take care of making sure the class cannot be loaded at runtime.
+            classInfoStruct = new Global(mangleClass(sootClass) + "_info_struct", I8_PTR, true);
+        }
         mb.addGlobal(classInfoStruct);
         
         Function infoFn = FunctionBuilder.infoStruct(sootClass);
@@ -595,12 +608,19 @@ public class ClassCompiler {
         function.add(new Store(getString(getDescriptor(m)), reserved1.ref()));
         
         if (!sootClass.isInterface()) {
-            VTable vtable = config.getVTableCache().get(sootClass);
-            VTable.Entry entry = vtable.getEntry(m);
+            int vtableIndex = 0;
+            try {
+                VTable vtable = config.getVTableCache().get(sootClass);
+                vtableIndex = vtable.getEntry(m).getIndex();
+            } catch (IllegalArgumentException e) {
+                // VTable throws this if any of the superclasses of the class is actually an interface.
+                // Shouldn't happen frequently but the DRLVM test suite has some tests for this.
+                // Use 0 as vtableIndex since this lookup function will never be called anyway.
+            }
             Value classPtr = call(function, OBJECT_CLASS, function.getParameterRef(1));
-            Value vtablePtr = call(function, CLASS_VTABLE, classPtr);
+            Value vtablePtr = call(function, CLASS_VITABLE, classPtr);
             Variable funcPtrPtr = function.newVariable(I8_PTR_PTR);
-            function.add(new Getelementptr(funcPtrPtr, vtablePtr, 0, 1, entry.getIndex()));
+            function.add(new Getelementptr(funcPtrPtr, vtablePtr, 0, 1, vtableIndex));
             Variable funcPtr = function.newVariable(I8_PTR);
             function.add(new Load(funcPtr, funcPtrPtr.ref()));
             Variable f = function.newVariable(function.getType());
@@ -608,22 +628,81 @@ public class ClassCompiler {
             Value result = call(function, f.ref(), function.getParameterRefs());
             function.add(new Ret(result));
         } else {
-            Value lookupFn = sootClass.isInterface() 
-                    ? BC_LOOKUP_INTERFACE_METHOD : BC_LOOKUP_VIRTUAL_METHOD;
+            ITable itable = config.getITableCache().get(sootClass);
+            ITable.Entry entry = itable.getEntry(m);
             List<Value> args = new ArrayList<Value>();
             args.add(function.getParameterRef(0));
-            if (sootClass.isInterface()) {
-                Value info = getInfoStruct(function);
-                args.add(info);
-            }
+            args.add(getInfoStruct(function));
             args.add(function.getParameterRef(1));
-            args.add(getString(m.getName()));
-            args.add(getString(getDescriptor(m)));
-            Value fptr = call(function, lookupFn, args);
+            args.add(new IntegerConstant(entry.getIndex()));
+            Value fptr = call(function, BC_LOOKUP_INTERFACE_METHOD_IMPL, args);
             Variable f = function.newVariable(function.getType());
             function.add(new Bitcast(f, fptr, f.getType()));
             Value result = call(function, f.ref(), function.getParameterRefs());
             function.add(new Ret(result));
+        }
+    }
+    
+    private Constant createVTableStruct() {
+        VTable vtable = config.getVTableCache().get(sootClass);
+        String name = mangleClass(sootClass) + "_vtable";
+        for (VTable.Entry entry : vtable.getEntries()) {
+            FunctionRef fref = entry.getFunctionRef();
+            if (fref != null && !mb.hasSymbol(fref.getName())) {
+                mb.addFunctionDeclaration(new FunctionDeclaration(fref));
+            }
+        }
+        Global vtableStruct = new Global(name, Linkage._private, vtable.getStruct(), true);
+        mb.addGlobal(vtableStruct);
+        return new ConstantBitcast(vtableStruct.ref(), I8_PTR);
+    }
+    
+    private Constant createITableStruct() {
+        ITable itable = config.getITableCache().get(sootClass);
+        String name = mangleClass(sootClass) + "_itable";
+        Global itableStruct = new Global(name, Linkage._private, itable.getStruct(), true);
+        mb.addGlobal(itableStruct);
+        return new ConstantBitcast(itableStruct.ref(), I8_PTR);
+    }
+    
+    private Constant createITablesStruct() {
+        if (!sootClass.isInterface()) {
+            HashSet<SootClass> interfaces = new HashSet<SootClass>();
+            collectInterfaces(sootClass, interfaces);
+            List<Constant> tables = new ArrayList<Constant>();
+            int i = 0;
+            for (SootClass ifs : interfaces) {
+                ITable itable = config.getITableCache().get(ifs);
+                if (itable.size() > 0) {
+                    String name = mangleClass(sootClass) + "_itable" + (i++);
+                    String typeInfoName = mangleClass(ifs) + "_typeinfo";
+                    if (!mb.hasSymbol(typeInfoName)) {
+                        mb.addGlobal(new Global(typeInfoName, Linkage.external, I8_PTR, true));
+                    }
+                    Global itableStruct = new Global(name, Linkage._private,
+                            new StructureConstantBuilder()
+                                .add(mb.getGlobalRef(typeInfoName))
+                                .add(itable.getStruct(sootClass)).build(), true);
+                    mb.addGlobal(itableStruct);
+                    tables.add(new ConstantBitcast(itableStruct.ref(), I8_PTR));
+                }
+            }
+            
+            if (tables.isEmpty()) {
+                return new NullConstant(I8_PTR);
+            } else {
+                Global itablesStruct = new Global(mangleClass(sootClass) + "_itables", Linkage._private,
+                        new StructureConstantBuilder()
+                            .add(new IntegerConstant((short) tables.size()))
+                            .add(tables.get(0)) // cache value must never be null
+                            .add(new ArrayConstantBuilder(I8_PTR).add(tables).build())
+                            .build());
+                mb.addGlobal(itablesStruct);
+                return new ConstantBitcast(itablesStruct.ref(), I8_PTR);
+            }
+            
+        } else {
+            return new NullConstant(I8_PTR);
         }
     }
     
@@ -671,21 +750,14 @@ public class ClassCompiler {
         }
         mb.addGlobal(new Global(mangleClass(sootClass) + "_typeinfo", Linkage.external, I8_PTR, true));
         header.add(new GlobalRef(mangleClass(sootClass) + "_typeinfo", I8_PTR)); // TypeInfo* generated by Linker
-        VTable vtable = null;
+
         if (!sootClass.isInterface()) {
-            vtable = config.getVTableCache().get(sootClass);
-            for (VTable.Entry entry : vtable.getEntries()) {
-                FunctionRef fref = entry.getFunctionRef();
-                if (fref != null && !mb.hasSymbol(fref.getName())) {
-                    mb.addFunctionDeclaration(new FunctionDeclaration(fref));
-                }
-            }
-            Global vtableStruct = new Global(mangleClass(sootClass) + "_vtable", Linkage._private, vtable.getStruct(), true);
-            mb.addGlobal(vtableStruct);
-            header.add(new ConstantBitcast(vtableStruct.ref(), I8_PTR_PTR));
+            header.add(createVTableStruct());
         } else {
-            header.add(new NullConstant(I8_PTR_PTR));
+            header.add(createITableStruct());
         }
+        header.add(createITablesStruct());
+        
         header.add(sizeof(classType));
         header.add(sizeof(instanceType));
         if (!instanceFields.isEmpty()) {
@@ -781,6 +853,9 @@ public class ClassCompiler {
             }
         }
         
+        VTable vtable = !sootClass.isInterface() ? config.getVTableCache().get(sootClass) : null;
+        ITable itable = sootClass.isInterface() ? config.getITableCache().get(sootClass) : null;;
+
         for (SootMethod m : sootClass.getMethods()) {
             soot.Type t = m.getReturnType();
             flags = 0;
@@ -834,14 +909,19 @@ public class ClassCompiler {
             }
             body.add(new IntegerConstant((short) flags));            
 
-            Constant vtableIndex = new IntegerConstant((short) -1);
+            Constant viTableIndex = new IntegerConstant((short) -1);
             if (vtable != null) {
                 VTable.Entry entry = vtable.getEntry(m);
                 if (entry != null) {
-                    vtableIndex = new IntegerConstant((short) entry.getIndex());
+                    viTableIndex = new IntegerConstant((short) entry.getIndex());
+                }
+            } else {
+                ITable.Entry entry = itable.getEntry(m);
+                if (entry != null) {
+                    viTableIndex = new IntegerConstant((short) entry.getIndex());
                 }
             }
-            body.add(vtableIndex);            
+            body.add(viTableIndex);            
             
             body.add(getString(m.getName()));
             
@@ -1118,6 +1198,18 @@ public class ClassCompiler {
     
     private static List<SootField> getInstanceFields(SootClass clazz) {
         return getFields(clazz, false);
+    }
+    
+    private static void collectInterfaces(SootClass clazz, Set<SootClass> interfaces) {
+        if (clazz.hasSuperclass()) {
+            collectInterfaces(clazz.getSuperclass(), interfaces);
+        }
+        if (clazz.isInterface()) {
+            interfaces.add(clazz);
+        }
+        for (SootClass sc : clazz.getInterfaces()) {
+            collectInterfaces(sc, interfaces);
+        }
     }
     
     private static boolean hasConstantValueTags(List<SootField> classFields) {

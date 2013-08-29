@@ -40,6 +40,13 @@ public class ArrayConstantBuilder {
         return this;
     }
 
+    public ArrayConstantBuilder add(List<? extends Value> vs) {
+        for (Value v : vs) {
+            add(v);
+        }
+        return this;
+    }
+
     public ArrayConstantBuilder add(int ... values) {
         for (int v : values) {
             add(new IntegerConstant(v));

@@ -75,7 +75,7 @@ public class Functions {
     public static final FunctionRef BC_NEW_DOUBLE_ARRAY = new FunctionRef("_bcNewDoubleArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
     public static final FunctionRef BC_MONITOR_ENTER = new FunctionRef("_bcMonitorEnter", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
     public static final FunctionRef BC_MONITOR_EXIT = new FunctionRef("_bcMonitorExit", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
-    public static final FunctionRef BC_LDC_STRING = new FunctionRef("_bcLdcString", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR));
+    public static final FunctionRef BC_LDC_STRING = new FunctionRef("_bcLdcString", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR_PTR, I8_PTR));
     public static final FunctionRef BC_LOOKUP_VIRTUAL_METHOD = new FunctionRef("_bcLookupVirtualMethod", new FunctionType(I8_PTR, ENV_PTR, OBJECT_PTR, I8_PTR, I8_PTR));
     public static final FunctionRef BC_LOOKUP_INTERFACE_METHOD = new FunctionRef("_bcLookupInterfaceMethod", new FunctionType(I8_PTR, ENV_PTR, I8_PTR_PTR, OBJECT_PTR, I8_PTR, I8_PTR));
     public static final FunctionRef BC_LOOKUP_INTERFACE_METHOD_IMPL = new FunctionRef("_bcLookupInterfaceMethodImpl", new FunctionType(I8_PTR, ENV_PTR, I8_PTR_PTR, OBJECT_PTR, I32));

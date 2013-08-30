@@ -90,7 +90,7 @@ declare %Object* @_bcNewDoubleArray(%Env*, i32)
 declare %Object* @_bcNewMultiArray(%Env*, i32, i32*, %Object*)
 declare void @_bcSetObjectArrayElement(%Env*, %Object*, i32, %Object*)
 
-declare %Object* @_bcLdcString(%Env*, i8*)
+declare %Object* @_bcLdcString(%Env*, %Object**, i8*, i32)
         
 declare void @_bcMonitorEnter(%Env*, %Object*)
 declare void @_bcMonitorExit(%Env*, %Object*)

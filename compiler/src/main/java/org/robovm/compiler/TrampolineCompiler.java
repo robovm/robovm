@@ -20,6 +20,7 @@ import static org.robovm.compiler.Access.*;
 import static org.robovm.compiler.Bro.*;
 import static org.robovm.compiler.Functions.*;
 import static org.robovm.compiler.Mangler.*;
+import static org.robovm.compiler.Strings.*;
 import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.FunctionAttribute.*;
 import static org.robovm.compiler.llvm.Linkage.*;
@@ -105,16 +106,21 @@ public class TrampolineCompiler {
     public Set<String> getDependencies() {
         return dependencies;
     }
-    
+
     public void compile(ModuleBuilder mb, Trampoline t) {
         this.mb = mb;
         this.dependencies = new HashSet<String>();
         
         if (t instanceof LdcString) {
+            byte[] modUtf8 = stringToModifiedUtf8Z(t.getTarget());
+            Global g = new Global(getStringVarName(modUtf8) + "_ptr", weak, new NullConstant(OBJECT_PTR));
+            if (!mb.hasSymbol(g.getName())) {
+                mb.addGlobal(g);
+            }
             Function f = new FunctionBuilder(t).linkage(weak).build();
             mb.addFunction(f);
-            Value result = call(f, BC_LDC_STRING, f.getParameterRef(0), 
-                    mb.getString(t.getTarget()));
+            Value result = call(f, BC_LDC_STRING, f.getParameterRef(0), g.ref(),
+                    mb.getString(t.getTarget()), new IntegerConstant(t.getTarget().length()));
             f.add(new Ret(result));
             return;
         }

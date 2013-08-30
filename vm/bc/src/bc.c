@@ -762,11 +762,15 @@ void _bcSetObjectArrayElement(Env* env, ObjectArray* array, jint index, Object* 
 }
 
 
-Object* _bcLdcString(Env* env, char* s) {
+Object* _bcLdcString(Env* env, Object** ptr, char* s, jint length) {
+    Object* o = *ptr;
+    if (o) return o;
     ENTER;
-    // TODO: The caller knows the length of the string in Java chars
-    // TODO: Use rvmNewStringAscii if string only contains ASCII
-    Object* o = rvmNewInternedStringUTF(env, s, -1);
+    o = rvmNewInternedStringUTF(env, s, length);
+    if (!rvmExceptionCheck(env)) {
+        *ptr = o;
+        rvmRegisterDisappearingLink(env, (void**) ptr, o);
+    }
     LEAVE(o);
 }
 

@@ -594,7 +594,7 @@ public class ClassCompiler {
     
     private void createLookupFunction(SootMethod m) {
         // TODO: This should use a virtual method table or interface method table.
-        Function function = FunctionBuilder.lookup(m);
+        Function function = FunctionBuilder.lookup(m, true);
         mb.addFunction(function);
 
         Variable reserved0 = function.newVariable(I8_PTR_PTR);
@@ -622,7 +622,7 @@ public class ClassCompiler {
             function.add(new Load(funcPtr, funcPtrPtr.ref()));
             Variable f = function.newVariable(function.getType());
             function.add(new Bitcast(f, funcPtr.ref(), f.getType()));
-            Value result = call(function, f.ref(), function.getParameterRefs());
+            Value result = tailcall(function, f.ref(), function.getParameterRefs());
             function.add(new Ret(result));
         } else {
             ITable itable = config.getITableCache().get(sootClass);
@@ -635,7 +635,7 @@ public class ClassCompiler {
             Value fptr = call(function, BC_LOOKUP_INTERFACE_METHOD_IMPL, args);
             Variable f = function.newVariable(function.getType());
             function.add(new Bitcast(f, fptr, f.getType()));
-            Value result = call(function, f.ref(), function.getParameterRefs());
+            Value result = tailcall(function, f.ref(), function.getParameterRefs());
             function.add(new Ret(result));
         }
     }

@@ -34,6 +34,7 @@ import org.robovm.compiler.llvm.Invoke;
 import org.robovm.compiler.llvm.PointerType;
 import org.robovm.compiler.llvm.Store;
 import org.robovm.compiler.llvm.Switch;
+import org.robovm.compiler.llvm.TailCall;
 import org.robovm.compiler.llvm.Type;
 import org.robovm.compiler.llvm.Value;
 import org.robovm.compiler.llvm.Variable;
@@ -230,6 +231,16 @@ public class Functions {
             result = currentFunction.newVariable(returnType);
         }
         currentFunction.add(new Call(result, fn, args));
+        return result == null ? null : result.ref();
+    }
+    
+    public static Value tailcall(Function currentFunction, Value fn, Value ... args) {
+        Variable result = null;
+        Type returnType = ((FunctionType) fn.getType()).getReturnType();
+        if (returnType != VOID) {
+            result = currentFunction.newVariable(returnType);
+        }
+        currentFunction.add(new TailCall(result, fn, args));
         return result == null ? null : result.ref();
     }
     

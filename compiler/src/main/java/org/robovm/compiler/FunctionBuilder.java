@@ -28,6 +28,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.robovm.compiler.clazz.Clazz;
+import org.robovm.compiler.clazz.ClazzInfo;
+import org.robovm.compiler.clazz.ClazzInfo.MethodInfo;
 import org.robovm.compiler.llvm.Function;
 import org.robovm.compiler.llvm.FunctionAttribute;
 import org.robovm.compiler.llvm.FunctionRef;
@@ -53,7 +55,7 @@ public class FunctionBuilder {
     private List<String> parameterNames = new ArrayList<String>();
     
     public FunctionBuilder() {
-        this(null, null);
+        this((String) null, (FunctionType) null);
     }
     
     public FunctionBuilder(Trampoline t) {
@@ -66,6 +68,10 @@ public class FunctionBuilder {
     
     public FunctionBuilder(SootMethod method) {
         this(mangleMethod(method), getFunctionType(method));
+    }
+    
+    public FunctionBuilder(ClazzInfo ci, MethodInfo mi) {
+        this(mangleMethod(ci.getInternalName(), mi.getName(), mi.getDesc()), getFunctionType(mi.getDesc(), mi.isStatic()));
     }
     
     public FunctionBuilder(String name, FunctionType type) {
@@ -208,10 +214,14 @@ public class FunctionBuilder {
             .linkage(external).attribs(noinline, optsize).build();
     }
     
-    public static Function lookup(SootMethod method) {
-        return new FunctionBuilder(method).suffix("_lookup").linkage(external).build();
+    public static Function lookup(SootMethod method, boolean isWeak) {
+        return new FunctionBuilder(method).suffix("_lookup").linkage(isWeak ? weak : external).build();
     }
-    
+
+    public static Function lookup(ClazzInfo ci, MethodInfo mi, boolean isWeak) {
+        return new FunctionBuilder(ci, mi).suffix("_lookup").linkage(isWeak ? weak : external).build();
+    }
+
     public static Function structMember(SootMethod method) {
         return new FunctionBuilder(method).linkage(external).attribs(noinline, optsize).build();
     }

@@ -38,6 +38,7 @@ import java.util.TreeSet;
 import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.ClazzInfo;
+import org.robovm.compiler.clazz.ClazzInfo.MethodInfo;
 import org.robovm.compiler.clazz.Path;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
@@ -49,6 +50,8 @@ import org.robovm.compiler.llvm.Constant;
 import org.robovm.compiler.llvm.ConstantBitcast;
 import org.robovm.compiler.llvm.ConstantGetelementptr;
 import org.robovm.compiler.llvm.Function;
+import org.robovm.compiler.llvm.FunctionDeclaration;
+import org.robovm.compiler.llvm.FunctionRef;
 import org.robovm.compiler.llvm.Global;
 import org.robovm.compiler.llvm.IntegerConstant;
 import org.robovm.compiler.llvm.NullConstant;
@@ -74,6 +77,7 @@ public class Linker {
     private static class TypeInfo implements Comparable<TypeInfo> {
         boolean error;
         Clazz clazz;
+        List<Clazz> children = new ArrayList<Clazz>();
         int id;
         /**
          * Ordered list of TypeInfos for each superclass of this class and the 
@@ -188,7 +192,8 @@ public class Linker {
         buildTypeInfos(typeInfos);
         
         for (Clazz clazz : linkClasses) {
-            TypeInfo typeInfo = typeInfos.get(clazz.getClazzInfo());
+            ClazzInfo ci = clazz.getClazzInfo();
+            TypeInfo typeInfo = typeInfos.get(ci);
             if (!typeInfo.error) {
                 int[] classIds = new int[typeInfo.classTypes.length];
                 for (int i = 0; i < typeInfo.classTypes.length; i++) {
@@ -208,6 +213,20 @@ public class Linker {
                             .add(new ArrayConstantBuilder(I32).add(classIds).build())
                             .add(new ArrayConstantBuilder(I32).add(interfaceIds).build())
                             .build()));
+
+                if (!ci.isInterface() && !ci.isFinal() && typeInfo.children.isEmpty()) {
+                    // Non-final class with 0 children. Override every lookup function with one
+                    // which doesn't do any lookup.
+                    for (MethodInfo mi : ci.getMethods()) {
+                        String name = mi.getName();
+                        if (!name.equals("<clinit>") && !name.equals("<init>") 
+                                && !mi.isPrivate() && !mi.isStatic() && !mi.isFinal() && !mi.isAbstract()) {
+
+                            mb.addFunction(createLookup(mb, ci, mi));
+                        }
+
+                    }
+                }
             }
             
             mb.addFunction(createCheckcast(mb, clazz, typeInfo));
@@ -272,6 +291,7 @@ public class Linker {
                 System.arraycopy(superTypeInfo.classTypes, 0, typeInfo.classTypes, 0, superTypeInfo.classTypes.length);
                 typeInfo.classTypes[typeInfo.classTypes.length - 1] = typeInfo;
                 ifTypeInfos.addAll(Arrays.asList(superTypeInfo.interfaceTypes));
+                superTypeInfo.children.add(typeInfo.clazz);
             } else {
                 typeInfo.classTypes = new TypeInfo[] {typeInfo};
             }
@@ -424,6 +444,17 @@ public class Linker {
         return fn;
     }
 
+    private Function createLookup(ModuleBuilder mb, ClazzInfo ci, MethodInfo mi) {
+        Function function = FunctionBuilder.lookup(ci, mi, false);
+        FunctionRef fn = new FunctionBuilder(ci, mi).build().ref();
+        if (!mb.hasSymbol(fn.getName())) {
+            mb.addFunctionDeclaration(new FunctionDeclaration(fn));
+        }
+        Value result = tailcall(function, fn, function.getParameterRefs());
+        function.add(new Ret(result));
+        return function;
+    }
+   
     private Value getInfoStruct(ModuleBuilder mb, Function f, Clazz clazz) {
         return new ConstantBitcast(mb.getGlobalRef(mangleClass(clazz.getInternalName()) + "_info_struct"), I8_PTR_PTR);
     }

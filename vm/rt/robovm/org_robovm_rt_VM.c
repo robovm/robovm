@@ -39,52 +39,6 @@ static char* createClasspathFromClasspathEntries(Env* env, ClasspathEntry* first
     return p;
 }
 
-// Moves n 16-bit values from src to dest. src and dest must be 16-bit aligned.
-static void move16(void* dest, const void* src, size_t n) {
-    // This function is a modified version of the move16 function in Android's java_lang_System.cpp
-    assert((((uintptr_t) dest | (uintptr_t) src) & 0x01) == 0);
-
-    uint16_t* d = (uint16_t*) dest;
-    const uint16_t* s = (uint16_t*) src;
-
-    if (d < s) {
-        /* copy forward */
-        while (n--) {
-            *d++ = *s++;
-        }
-    } else {
-        /* copy backward */
-        d += n;
-        s += n;
-        while (n--) {
-            *--d = *--s;
-        }
-    }
-}
-
-// Moves n 32-bit values from src to dest. src and dest must be 32-bit aligned.
-static void move32(void* dest, const void* src, size_t n) {
-    // This function is a modified version of the move32 function in Android's java_lang_System.cpp
-    assert((((uintptr_t) dest | (uintptr_t) src) & 0x03) == 0);
-
-    uint32_t* d = (uint32_t*) dest;
-    const uint32_t* s = (uint32_t*) src;
-
-    if (d < s) {
-        /* copy forward */
-        while (n--) {
-            *d++ = *s++;
-        }
-    } else {
-        /* copy backward */
-        d += n;
-        s += n;
-        while (n--) {
-            *--d = *--s;
-        }
-    }
-}
-
 Object* Java_org_robovm_rt_VM_bootClassPath(Env* env, Class* c) {
     char* bootclasspath = createClasspathFromClasspathEntries(env, env->vm->options->bootclasspath);
     if (!bootclasspath) return NULL;
@@ -199,15 +153,15 @@ void Java_org_robovm_rt_VM_memmove8(Env* env, Class* c, jlong s1, jlong s2, jlon
 }
 
 void Java_org_robovm_rt_VM_memmove16(Env* env, Class* c, jlong s1, jlong s2, jlong n) {
-    move16(LONG_TO_PTR(s1), LONG_TO_PTR(s2), (size_t) n);
+    rvmMoveMemory16(LONG_TO_PTR(s1), LONG_TO_PTR(s2), (size_t) n);
 }
 
 void Java_org_robovm_rt_VM_memmove32(Env* env, Class* c, jlong s1, jlong s2, jlong n) {
-    move32(LONG_TO_PTR(s1), LONG_TO_PTR(s2), (size_t) n);
+    rvmMoveMemory32(LONG_TO_PTR(s1), LONG_TO_PTR(s2), (size_t) n);
 }
 
 void Java_org_robovm_rt_VM_memmove64(Env* env, Class* c, jlong s1, jlong s2, jlong n) {
-    move32(LONG_TO_PTR(s1), LONG_TO_PTR(s2), (size_t) (n << 1));
+    rvmMoveMemory32(LONG_TO_PTR(s1), LONG_TO_PTR(s2), (size_t) (n << 1));
 }
 
 void Java_org_robovm_rt_VM_memset(Env* env, Class* cls, jlong s, jbyte c, jlong n) {

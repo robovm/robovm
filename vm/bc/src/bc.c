@@ -570,6 +570,14 @@ void _bcNonPublicMethodCalled(Env* env, Object* thiz) {
     LEAVEV;
 }
 
+void _bcMoveMemory16(void* dest, const void* src, jlong n) {
+    rvmMoveMemory16(dest, src, n);
+}
+
+void _bcMoveMemory32(void* dest, const void* src, jlong n) {
+    rvmMoveMemory32(dest, src, n);
+}
+
 void _bcTrycatchLeave(Env* env) {
     rvmTrycatchLeave(env);
 }

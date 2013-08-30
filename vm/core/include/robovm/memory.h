@@ -41,5 +41,50 @@ extern Object* rvmNewDirectByteBuffer(Env* env, void* address, jlong capacity);
 extern void* rvmGetDirectBufferAddress(Env* env, Object* buf);
 extern jlong rvmGetDirectBufferCapacity(Env* env, Object* buf);
 
+// Moves n 16-bit values from src to dest. src and dest must be 16-bit aligned.
+static inline void rvmMoveMemory16(void* dest, const void* src, size_t n) {
+    // This function is a modified version of the move16 function in Android's java_lang_System.cpp
+    assert((((uintptr_t) dest | (uintptr_t) src) & 0x01) == 0);
+
+    uint16_t* d = (uint16_t*) dest;
+    const uint16_t* s = (uint16_t*) src;
+
+    if (d < s) {
+        /* copy forward */
+        while (n--) {
+            *d++ = *s++;
+        }
+    } else {
+        /* copy backward */
+        d += n;
+        s += n;
+        while (n--) {
+            *--d = *--s;
+        }
+    }
+}
+
+// Moves n 32-bit values from src to dest. src and dest must be 32-bit aligned.
+static inline void rvmMoveMemory32(void* dest, const void* src, size_t n) {
+    // This function is a modified version of the move32 function in Android's java_lang_System.cpp
+    assert((((uintptr_t) dest | (uintptr_t) src) & 0x03) == 0);
+
+    uint32_t* d = (uint32_t*) dest;
+    const uint32_t* s = (uint32_t*) src;
+
+    if (d < s) {
+        /* copy forward */
+        while (n--) {
+            *d++ = *s++;
+        }
+    } else {
+        /* copy backward */
+        d += n;
+        s += n;
+        while (n--) {
+            *--d = *--s;
+        }
+    }
+}
 #endif
 

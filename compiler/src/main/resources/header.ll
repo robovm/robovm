@@ -57,6 +57,8 @@ declare i8* @_bcLookupInterfaceMethod(%Env*, i8**, %Object*, i8*, i8*)
 declare i8* @_bcLookupInterfaceMethodImpl(%Env*, i8**, %Object*, i32)
 declare void @_bcAbstractMethodCalled(%Env*, %Object*)
 declare void @_bcNonPublicMethodCalled(%Env*, %Object*)
+declare void @_bcMoveMemory16(i8*, i8*, i64)
+declare void @_bcMoveMemory32(i8*, i8*, i64)
 declare void @_bcThrow(%Env*, %Object*) noreturn
 declare void @_bcThrowIfExceptionOccurred(%Env*)
 declare %Object* @_bcExceptionClear(%Env*)
@@ -286,8 +288,6 @@ define private double @intrinsics.java_lang_Math_sin(%Env* %env, double %d) alwa
     ret double %1
 }
 
-declare void @Java_org_robovm_rt_VM_memmove16(%Env*, %Class*, i64, i64, i64)
-
 define private void @intrinsics.java_lang_System_arraycopy_C(%Env* %env, %Object* %src, i32 %srcPos, %Object* %dst, i32 %dstPos, i32 %length) alwaysinline {
     %1 = bitcast %Object* %src to %CharArray*
     %2 = getelementptr %CharArray* %1, i32 0, i32 2
@@ -297,11 +297,11 @@ define private void @intrinsics.java_lang_System_arraycopy_C(%Env* %env, %Object
     %5 = getelementptr %CharArray* %4, i32 0, i32 2
     %6 = getelementptr i16* %5, i32 %dstPos
     
-    %s1 = ptrtoint i16* %6 to i64
-    %s2 = ptrtoint i16* %3 to i64
+    %s1 = bitcast i16* %6 to i8*
+    %s2 = bitcast i16* %3 to i8*
     %n = sext i32 %length to i64
     
-    call void @Java_org_robovm_rt_VM_memmove16(%Env* %env, %Class* null, i64 %s1, i64 %s2, i64 %n)
+    call void @_bcMoveMemory16(i8* %s1, i8* %s2, i64 %n)
     ret void
 }
 
@@ -320,19 +320,24 @@ define private void @intrinsics.org_robovm_rt_VM_memmove8(%Env* %env, i64 %s1, i
 }
 
 define private void @intrinsics.org_robovm_rt_VM_memmove16(%Env* %env, i64 %s1, i64 %s2, i64 %n) alwaysinline {
-    call void @Java_org_robovm_rt_VM_memmove16(%Env* %env, %Class* null, i64 %s1, i64 %s2, i64 %n)
+    %dest = inttoptr i64 %s1 to i8*
+    %src = inttoptr i64 %s2 to i8*
+    call void @_bcMoveMemory16(i8* %dest, i8* %src, i64 %n)
     ret void
 }
 
-declare void @Java_org_robovm_rt_VM_memmove32(%Env*, %Class*, i64, i64, i64)
 define private void @intrinsics.org_robovm_rt_VM_memmove32(%Env* %env, i64 %s1, i64 %s2, i64 %n) alwaysinline {
-    call void @Java_org_robovm_rt_VM_memmove32(%Env* %env, %Class* null, i64 %s1, i64 %s2, i64 %n)
+    %dest = inttoptr i64 %s1 to i8*
+    %src = inttoptr i64 %s2 to i8*
+    call void @_bcMoveMemory32(i8* %dest, i8* %src, i64 %n)
     ret void
 }
 
-declare void @Java_org_robovm_rt_VM_memmove64(%Env*, %Class*, i64, i64, i64)
 define private void @intrinsics.org_robovm_rt_VM_memmove64(%Env* %env, i64 %s1, i64 %s2, i64 %n) alwaysinline {
-    call void @Java_org_robovm_rt_VM_memmove64(%Env* %env, %Class* null, i64 %s1, i64 %s2, i64 %n)
+    %dest = inttoptr i64 %s1 to i8*
+    %src = inttoptr i64 %s2 to i8*
+    %n2 = shl i64 %n, 1
+    call void @_bcMoveMemory32(i8* %dest, i8* %src, i64 %n2)
     ret void
 }
 

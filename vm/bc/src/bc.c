@@ -787,8 +787,10 @@ Object* _bcLdcArrayClass(Env* env, Class** arrayClassPtr, char* name) {
 }
 
 Object* _bcLdcClass(Env* env, ClassInfoHeader* header) {
+    Class* clazz = header->clazz;
+    if (clazz) return (Object*) clazz;
     ENTER;
-    Class* clazz = ldcClass(env, header);
+    clazz = ldcClass(env, header);
     LEAVE((Object*) clazz);
 }
 

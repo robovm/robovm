@@ -22,6 +22,15 @@
 %DoubleArray = type {%DataObject, i32, double}
 %ObjectArray = type {%DataObject, i32, %Object*}
 
+@prim_Z = external global %Class*
+@prim_B = external global %Class*
+@prim_C = external global %Class*
+@prim_S = external global %Class*
+@prim_I = external global %Class*
+@prim_J = external global %Class*
+@prim_F = external global %Class*
+@prim_D = external global %Class*
+
 @array_Z = external global %Class*
 @array_B = external global %Class*
 @array_C = external global %Class*
@@ -103,6 +112,7 @@ declare void @_bcCopyStruct(%Env*, %Object*, i8*, i32)
 
 declare i8* @llvm.frameaddress(i32) nounwind readnone
 declare void @llvm.memcpy.p0i8.p0i8.i32(i8*, i8*, i32, i32, i1)
+declare void @llvm.memmove.p0i8.p0i8.i64(i8*, i8*, i64, i32, i1)
 declare double @llvm.sqrt.f64(double)
 declare double @llvm.cos.f64(double)
 declare double @llvm.sin.f64(double)
@@ -129,6 +139,20 @@ define private %ITables* @Class_itables(%Class* %c) alwaysinline {
     %1 = getelementptr %Class* %c, i32 0, i32 5 ; Class->itables
     %2 = load %ITables** %1
     ret %ITables* %2
+}
+
+define private %Class* @Class_superclass(%Class* %c) alwaysinline {
+    %1 = getelementptr %Class* %c, i32 0, i32 8 ; Class->superclass
+    %2 = load i8** %1
+    %3 = bitcast i8* %2 to %Class*
+    ret %Class* %3
+}
+
+define private %Class* @Class_componentType(%Class* %c) alwaysinline {
+    %1 = getelementptr %Class* %c, i32 0, i32 9 ; Class->componentType
+    %2 = load i8** %1
+    %3 = bitcast i8* %2 to %Class*
+    ret %Class* %3
 }
 
 define private i32 @Class_flags(%Class* %c) alwaysinline {
@@ -161,6 +185,92 @@ define private i32 @TypeInfo_interfaceCount(%TypeInfo* %ti) alwaysinline {
     ret i32 %2
 }
 
+define private %Object* @intrinsics.ldc_prim_Z(%Env* %env) alwaysinline {
+    %1 = load %Class** @prim_Z
+    %2 = bitcast %Class* %1 to %Object*
+    ret %Object* %2
+}
+
+define private %Object* @intrinsics.ldc_prim_B(%Env* %env) alwaysinline {
+    %1 = load %Class** @prim_B
+    %2 = bitcast %Class* %1 to %Object*
+    ret %Object* %2
+}
+
+define private %Object* @intrinsics.ldc_prim_C(%Env* %env) alwaysinline {
+    %1 = load %Class** @prim_C
+    %2 = bitcast %Class* %1 to %Object*
+    ret %Object* %2
+}
+
+define private %Object* @intrinsics.ldc_prim_S(%Env* %env) alwaysinline {
+    %1 = load %Class** @prim_S
+    %2 = bitcast %Class* %1 to %Object*
+    ret %Object* %2
+}
+
+define private %Object* @intrinsics.ldc_prim_I(%Env* %env) alwaysinline {
+    %1 = load %Class** @prim_I
+    %2 = bitcast %Class* %1 to %Object*
+    ret %Object* %2
+}
+
+define private %Object* @intrinsics.ldc_prim_J(%Env* %env) alwaysinline {
+    %1 = load %Class** @prim_J
+    %2 = bitcast %Class* %1 to %Object*
+    ret %Object* %2
+}
+
+define private %Object* @intrinsics.ldc_prim_F(%Env* %env) alwaysinline {
+    %1 = load %Class** @prim_F
+    %2 = bitcast %Class* %1 to %Object*
+    ret %Object* %2
+}
+
+define private %Object* @intrinsics.ldc_prim_D(%Env* %env) alwaysinline {
+    %1 = load %Class** @prim_D
+    %2 = bitcast %Class* %1 to %Object*
+    ret %Object* %2
+}
+
+define private %Object* @intrinsics.java_lang_Class_getSuperclass(%Env* %env, %Object* %o) alwaysinline {
+    %c = bitcast %Object* %o to %Class*
+    %1 = call %Class* @Class_superclass(%Class* %c)
+    %res = bitcast %Class* %1 to %Object*
+    ret %Object* %res
+}
+
+define private %Object* @intrinsics.java_lang_Class_getComponentType(%Env* %env, %Object* %o) alwaysinline {
+    %c = bitcast %Object* %o to %Class*
+    %1 = call %Class* @Class_componentType(%Class* %c)
+    %res = bitcast %Class* %1 to %Object*
+    ret %Object* %res
+}
+
+define private i8 @intrinsics.java_lang_Class_isArray(%Env* %env, %Object* %o) alwaysinline {
+    %c = bitcast %Object* %o to %Class*
+    %flags = call i32 @Class_flags(%Class* %c)
+    %1 = and i32 %flags, 805306368       ; CLASS_TYPE_MASK = 0x30000000
+    %isArray = icmp eq i32 %1, 536870912 ; CLASS_TYPE_ARRAY = 0x20000000
+    %res = select i1 %isArray, i8 1, i8 0
+    ret i8 %res
+}
+
+define private i8 @intrinsics.java_lang_Class_isPrimitive(%Env* %env, %Object* %o) alwaysinline {
+    %c = bitcast %Object* %o to %Class*
+    %flags = call i32 @Class_flags(%Class* %c)
+    %1 = and i32 %flags, 805306368       ; CLASS_TYPE_MASK = 0x30000000
+    %isPrim = icmp eq i32 %1, 268435456  ; CLASS_TYPE_PRIMITIVE = 0x10000000
+    %res = select i1 %isPrim, i8 1, i8 0
+    ret i8 %res
+}
+
+define private %Object* @intrinsics.java_lang_Object_getClass(%Env* %env, %Object* %o) alwaysinline {
+    %c = call %Class* @Object_class(%Object* %o)
+    %res = bitcast %Class* %c to %Object*
+    ret %Object* %res
+}
+
 define private double @intrinsics.java_lang_Math_sqrt(%Env* %env, double %d) alwaysinline {
     %1 = call double @llvm.sqrt.f64(double %d)
     ret double %1
@@ -174,6 +284,56 @@ define private double @intrinsics.java_lang_Math_cos(%Env* %env, double %d) alwa
 define private double @intrinsics.java_lang_Math_sin(%Env* %env, double %d) alwaysinline {
     %1 = call double @llvm.sin.f64(double %d)
     ret double %1
+}
+
+declare void @Java_org_robovm_rt_VM_memmove16(%Env*, %Class*, i64, i64, i64)
+
+define private void @intrinsics.java_lang_System_arraycopy_C(%Env* %env, %Object* %src, i32 %srcPos, %Object* %dst, i32 %dstPos, i32 %length) alwaysinline {
+    %1 = bitcast %Object* %src to %CharArray*
+    %2 = getelementptr %CharArray* %1, i32 0, i32 2
+    %3 = getelementptr i16* %2, i32 %srcPos
+    
+    %4 = bitcast %Object* %dst to %CharArray*
+    %5 = getelementptr %CharArray* %4, i32 0, i32 2
+    %6 = getelementptr i16* %5, i32 %dstPos
+    
+    %s1 = ptrtoint i16* %6 to i64
+    %s2 = ptrtoint i16* %3 to i64
+    %n = sext i32 %length to i64
+    
+    call void @Java_org_robovm_rt_VM_memmove16(%Env* %env, %Class* null, i64 %s1, i64 %s2, i64 %n)
+    ret void
+}
+
+define private i64 @intrinsics.org_robovm_rt_VM_getArrayValuesAddress(%Env* %env, %Object* %o) alwaysinline {
+    %array = bitcast %Object* %o to %ObjectArray*
+    %base = getelementptr %ObjectArray* %array, i32 0, i32 2
+    %res = ptrtoint %Object** %base to i64
+    ret i64 %res
+}
+
+define private void @intrinsics.org_robovm_rt_VM_memmove8(%Env* %env, i64 %s1, i64 %s2, i64 %n) alwaysinline {
+    %dest = inttoptr i64 %s1 to i8*
+    %src = inttoptr i64 %s2 to i8*
+    call void @llvm.memmove.p0i8.p0i8.i64(i8* %dest, i8* %src, i64 %n, i32 1, i1 true)
+    ret void
+}
+
+define private void @intrinsics.org_robovm_rt_VM_memmove16(%Env* %env, i64 %s1, i64 %s2, i64 %n) alwaysinline {
+    call void @Java_org_robovm_rt_VM_memmove16(%Env* %env, %Class* null, i64 %s1, i64 %s2, i64 %n)
+    ret void
+}
+
+declare void @Java_org_robovm_rt_VM_memmove32(%Env*, %Class*, i64, i64, i64)
+define private void @intrinsics.org_robovm_rt_VM_memmove32(%Env* %env, i64 %s1, i64 %s2, i64 %n) alwaysinline {
+    call void @Java_org_robovm_rt_VM_memmove32(%Env* %env, %Class* null, i64 %s1, i64 %s2, i64 %n)
+    ret void
+}
+
+declare void @Java_org_robovm_rt_VM_memmove64(%Env*, %Class*, i64, i64, i64)
+define private void @intrinsics.org_robovm_rt_VM_memmove64(%Env* %env, i64 %s1, i64 %s2, i64 %n) alwaysinline {
+    call void @Java_org_robovm_rt_VM_memmove64(%Env* %env, %Class* null, i64 %s1, i64 %s2, i64 %n)
+    ret void
 }
 
 define linkonce_odr i32 @arraylength(%Object* %o) alwaysinline {

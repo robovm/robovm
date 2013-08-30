@@ -700,7 +700,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
             i++;
         }
         Value result = null;
-        FunctionRef functionRef = getIntrinsic(methodRef);
+        FunctionRef functionRef = Intrinsics.getIntrinsic(sootMethod, stmt, expr);
         if (functionRef == null) {
             if (canCallDirectly(expr)) {
                 SootMethod method = this.sootMethod.getDeclaringClass().getMethod(methodRef.name(), 
@@ -832,16 +832,18 @@ public class MethodCompiler extends AbstractMethodCompiler {
             result = widenToI32Value(result, isUnsigned(ref.getType()));
         } else if (rightOp instanceof StaticFieldRef) {
             StaticFieldRef ref = (StaticFieldRef) rightOp;
-            FunctionRef fn = null;
-            if (canAccessDirectly(ref)) {
-                fn = new FunctionRef(mangleField(ref.getFieldRef()) + "_getter", 
-                        new FunctionType(getType(ref.getType()), ENV_PTR));
-            } else {
-                String targetClassName = getInternalName(ref.getFieldRef().declaringClass());
-                Trampoline trampoline = new GetStatic(this.className, targetClassName, 
-                        ref.getFieldRef().name(), getDescriptor(ref.getFieldRef().type()));
-                trampolines.add(trampoline);
-                fn = trampoline.getFunctionRef();
+            FunctionRef fn = Intrinsics.getIntrinsic(sootMethod, stmt);
+            if (fn == null) {
+                if (canAccessDirectly(ref)) {
+                    fn = new FunctionRef(mangleField(ref.getFieldRef()) + "_getter", 
+                            new FunctionType(getType(ref.getType()), ENV_PTR));
+                } else {
+                    String targetClassName = getInternalName(ref.getFieldRef().declaringClass());
+                    Trampoline trampoline = new GetStatic(this.className, targetClassName, 
+                            ref.getFieldRef().name(), getDescriptor(ref.getFieldRef().type()));
+                    trampolines.add(trampoline);
+                    fn = trampoline.getFunctionRef();
+                }
             }
             result = call(fn, env);
             result = widenToI32Value(result, isUnsigned(ref.getType()));

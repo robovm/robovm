@@ -66,6 +66,7 @@ public class Functions {
     public static final FunctionRef BC_THROW_INSTANTIATION_ERROR = new FunctionRef("_bcThrowInstantiationError", new FunctionType(VOID, ENV_PTR, I8_PTR));
     public static final FunctionRef BC_THROW_INCOMPATIBLE_CLASS_CHANGE_ERROR = new FunctionRef("_bcThrowIncompatibleClassChangeError", new FunctionType(VOID, ENV_PTR, I8_PTR));
     public static final FunctionRef BC_THROW_ABSTRACT_METHOD_ERROR = new FunctionRef("_bcThrowAbstractMethodError", new FunctionType(VOID, ENV_PTR, I8_PTR));
+    public static final FunctionRef BC_THROW_CLASS_CAST_EXCEPTION_ARRAY = new FunctionRef("_bcThrowClassCastExceptionArray", new FunctionType(VOID, ENV_PTR, CLASS_PTR, OBJECT_PTR));
     
     public static final FunctionRef BC_NEW_BOOLEAN_ARRAY = new FunctionRef("_bcNewBooleanArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
     public static final FunctionRef BC_NEW_BYTE_ARRAY = new FunctionRef("_bcNewByteArray", new FunctionType(OBJECT_PTR, ENV_PTR, I32));
@@ -145,8 +146,10 @@ public class Functions {
     public static final FunctionRef INSTANCEOF_WRAPPER = new FunctionRef("instanceofWrapper", new FunctionType(I32, ENV_PTR, I8_PTR_PTR, OBJECT_PTR));
     public static final FunctionRef CHECKCAST_CLASS = new FunctionRef("checkcast_class", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR_PTR, OBJECT_PTR, I32, I32));
     public static final FunctionRef CHECKCAST_INTERFACE = new FunctionRef("checkcast_interface", new FunctionType(OBJECT_PTR, ENV_PTR, I8_PTR_PTR, OBJECT_PTR, I32));
+    public static final FunctionRef CHECKCAST_PRIM_ARRAY = new FunctionRef("checkcast_prim_array", new FunctionType(OBJECT_PTR, ENV_PTR, CLASS_PTR, OBJECT_PTR));
     public static final FunctionRef INSTANCEOF_CLASS = new FunctionRef("instanceof_class", new FunctionType(I32, ENV_PTR, I8_PTR_PTR, OBJECT_PTR, I32, I32));
     public static final FunctionRef INSTANCEOF_INTERFACE = new FunctionRef("instanceof_interface", new FunctionType(I32, ENV_PTR, I8_PTR_PTR, OBJECT_PTR, I32));
+    public static final FunctionRef INSTANCEOF_PRIM_ARRAY = new FunctionRef("instanceof_prim_array", new FunctionType(I32, ENV_PTR, CLASS_PTR, OBJECT_PTR));
     public static final FunctionRef OBJECT_CLASS = new FunctionRef("Object_class", new FunctionType(CLASS_PTR, OBJECT_PTR));
     public static final FunctionRef CLASS_VITABLE = new FunctionRef("Class_vitable", new FunctionType(VITABLE_PTR, CLASS_PTR));
 

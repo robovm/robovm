@@ -22,14 +22,14 @@
 %DoubleArray = type {%DataObject, i32, double}
 %ObjectArray = type {%DataObject, i32, %Object*}
 
-@array_Z = external global %Object*
-@array_B = external global %Object*
-@array_C = external global %Object*
-@array_S = external global %Object*
-@array_I = external global %Object*
-@array_J = external global %Object*
-@array_F = external global %Object*
-@array_D = external global %Object*
+@array_Z = external global %Class*
+@array_B = external global %Class*
+@array_C = external global %Class*
+@array_S = external global %Class*
+@array_I = external global %Class*
+@array_J = external global %Class*
+@array_F = external global %Class*
+@array_D = external global %Class*
 
 declare void @_bcInitializeClass(%Env*, i8**)
 declare %Object* @_bcAllocate(%Env*, i8**)
@@ -65,6 +65,7 @@ declare void @_bcThrowInstantiationError(%Env*, i8*) noreturn
 declare void @_bcThrowIncompatibleClassChangeError(%Env*, i8*) noreturn
 declare void @_bcThrowAbstractMethodError(%Env*, i8*) noreturn
 declare void @_bcThrowClassCastException(%Env*, i8**, %Object*) noreturn
+declare void @_bcThrowClassCastExceptionArray(%Env*, %Class*, %Object*) noreturn
 
 declare %Object* @_bcNew(%Env*, i8*)
 declare %Object* @_bcNewBooleanArray(%Env*, i32)
@@ -645,6 +646,33 @@ notNull:
     br i1 %isInstance, label %true, label %false
 true:
     ret i32 1
+false:
+    ret i32 0
+}
+
+define private %Object* @checkcast_prim_array(%Env* %env, %Class* %arrayClass, %Object* %o) alwaysinline {
+    %isNotNull = icmp ne %Object* %o, null
+    br i1 %isNotNull, label %notNull, label %dontThrow
+notNull:
+    %cls = call %Class* @Object_class(%Object* %o)
+    %isSame = icmp eq %Class* %cls, %arrayClass
+    br i1 %isSame, label %dontThrow, label %throw
+dontThrow:
+    ret %Object* %o;
+throw:
+    call void @_bcThrowClassCastExceptionArray(%Env* %env, %Class* %arrayClass, %Object* %o)
+    unreachable
+}
+
+define private i32 @instanceof_prim_array(%Env* %env, %Class* %arrayClass, %Object* %o) alwaysinline {
+    %isNotNull = icmp ne %Object* %o, null
+    br i1 %isNotNull, label %notNull, label %false
+notNull:
+    %cls = call %Class* @Object_class(%Object* %o)
+    %isSame = icmp eq %Class* %cls, %arrayClass
+    br i1 %isSame, label %true, label %false
+true:
+    ret i32 1;
 false:
     ret i32 0
 }

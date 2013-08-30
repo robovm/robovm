@@ -547,7 +547,8 @@ public class MethodCompiler extends AbstractMethodCompiler {
             if (isArray(targetClassName) && isPrimitiveComponentType(targetClassName)) {
                 String primitiveDesc = targetClassName.substring(1);
                 Variable result = function.newVariable(OBJECT_PTR);
-                function.add(new Load(result, new GlobalRef("array_" + primitiveDesc, OBJECT_PTR)));
+                function.add(new Load(result, new ConstantBitcast(
+                        new GlobalRef("array_" + primitiveDesc, CLASS_PTR), new PointerType(OBJECT_PTR))));
                 return result.ref();
             } else {
                 FunctionRef fn = null;
@@ -990,24 +991,37 @@ public class MethodCompiler extends AbstractMethodCompiler {
                         function.add(new Call(v, f, op));
                         result = v.ref();
                     }
-//                } else if (sootTargetType instanceof soot.ArrayType) {
-//                    soot.Type elementType = ((soot.ArrayType) sootTargetType).getElementType();
-//                    if (elementType instanceof PrimType) {
-//                        
-//                    }
                 } else {
-                    String targetClassName = getInternalName(sootTargetType);
-                    Trampoline trampoline = new Checkcast(this.className, targetClassName);
-                    trampolines.add(trampoline);
-                    result = call(trampoline.getFunctionRef(), env, op);
+                    if (sootTargetType instanceof soot.ArrayType 
+                            && ((soot.ArrayType) sootTargetType).getElementType() instanceof PrimType) {
+                        soot.Type primType = ((soot.ArrayType) sootTargetType).getElementType();
+                        GlobalRef arrayClassPtr = new GlobalRef("array_" + getDescriptor(primType), CLASS_PTR);
+                        Variable arrayClass = function.newVariable(CLASS_PTR);
+                        function.add(new Load(arrayClass, arrayClassPtr));
+                        result = call(CHECKCAST_PRIM_ARRAY, env, arrayClass.ref(), op);
+                    } else {
+                        String targetClassName = getInternalName(sootTargetType);
+                        Trampoline trampoline = new Checkcast(this.className, targetClassName);
+                        trampolines.add(trampoline);
+                        result = call(trampoline.getFunctionRef(), env, op);
+                    }
                 }
             } else if (rightOp instanceof InstanceOfExpr) {
                 Value op = immediate(stmt, (Immediate) ((InstanceOfExpr) rightOp).getOp());
                 soot.Type checkType = ((InstanceOfExpr) rightOp).getCheckType();
-                String targetClassName = getInternalName(checkType);
-                Trampoline trampoline = new Instanceof(this.className, targetClassName);
-                trampolines.add(trampoline);
-                result = call(trampoline.getFunctionRef(), env, op);
+                if (checkType instanceof soot.ArrayType 
+                        && ((soot.ArrayType) checkType).getElementType() instanceof PrimType) {
+                    soot.Type primType = ((soot.ArrayType) checkType).getElementType();
+                    GlobalRef arrayClassPtr = new GlobalRef("array_" + getDescriptor(primType), CLASS_PTR);
+                    Variable arrayClass = function.newVariable(CLASS_PTR);
+                    function.add(new Load(arrayClass, arrayClassPtr));
+                    result = call(INSTANCEOF_PRIM_ARRAY, env, arrayClass.ref(), op);
+                } else {
+                    String targetClassName = getInternalName(checkType);
+                    Trampoline trampoline = new Instanceof(this.className, targetClassName);
+                    trampolines.add(trampoline);
+                    result = call(trampoline.getFunctionRef(), env, op);
+                }
             } else if (rightOp instanceof NewExpr) {
                 String targetClassName = getInternalName(((NewExpr) rightOp).getBaseType());
                 FunctionRef fn = null;

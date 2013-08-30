@@ -660,6 +660,11 @@ void _bcThrowClassCastException(Env* env, ClassInfoHeader* header, Object* o) {
     LEAVEV;
 }
 
+void _bcThrowClassCastExceptionArray(Env* env, Class* arrayClass, Object* o) {
+    ENTER;
+    rvmThrowClassCastException(env, arrayClass, o->clazz);
+    LEAVEV;
+}
 
 Object* _bcAllocate(Env* env, ClassInfoHeader* header) {
     ENTER;

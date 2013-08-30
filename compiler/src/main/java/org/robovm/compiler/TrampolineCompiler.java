@@ -42,13 +42,11 @@ import org.robovm.compiler.llvm.FunctionDeclaration;
 import org.robovm.compiler.llvm.FunctionRef;
 import org.robovm.compiler.llvm.FunctionType;
 import org.robovm.compiler.llvm.Global;
-import org.robovm.compiler.llvm.GlobalRef;
 import org.robovm.compiler.llvm.Icmp;
 import org.robovm.compiler.llvm.Icmp.Condition;
 import org.robovm.compiler.llvm.IntegerConstant;
 import org.robovm.compiler.llvm.IntegerType;
 import org.robovm.compiler.llvm.Label;
-import org.robovm.compiler.llvm.Load;
 import org.robovm.compiler.llvm.NullConstant;
 import org.robovm.compiler.llvm.PointerType;
 import org.robovm.compiler.llvm.Ret;
@@ -402,30 +400,25 @@ public class TrampolineCompiler {
     }
     
     private FunctionRef createLdcArray(String targetClass) {
+        if (isPrimitiveComponentType(targetClass)) {
+            throw new IllegalArgumentException();
+        }
         String fnName = "array_" + mangleClass(targetClass) + "_ldc";
         FunctionRef fnRef = new FunctionRef(fnName, new FunctionType(OBJECT_PTR, ENV_PTR));
         if (!mb.hasSymbol(fnName)) {
             Function fn = new FunctionBuilder(fnRef).name(fnName).linkage(weak).build();
-            Value arrayClass = null;
-            if (isPrimitiveComponentType(targetClass)) {
-                String primitiveDesc = targetClass.substring(1);
-                Variable result = fn.newVariable(OBJECT_PTR);
-                fn.add(new Load(result, new GlobalRef("array_" + primitiveDesc, OBJECT_PTR)));
-                arrayClass = result.ref();
-            } else {
-                Global g = new Global("array_" + mangleClass(targetClass) + "_ptr", weak, new NullConstant(OBJECT_PTR));
-                if (!mb.hasSymbol(g.getName())) {
-                    mb.addGlobal(g);
-                }
-                FunctionRef ldcArrayClassFn = BC_LDC_ARRAY_BOOT_CLASS;
-                if (!isPrimitiveBaseType(targetClass)) {
-                    Clazz baseType = config.getClazzes().load(getBaseType(targetClass));
-                    if (!baseType.isInBootClasspath()) {
-                        ldcArrayClassFn = BC_LDC_ARRAY_CLASS;
-                    }
-                }
-                arrayClass = call(fn, ldcArrayClassFn, fn.getParameterRef(0), g.ref(), mb.getString(targetClass));
+            Global g = new Global("array_" + mangleClass(targetClass) + "_ptr", weak, new NullConstant(OBJECT_PTR));
+            if (!mb.hasSymbol(g.getName())) {
+                mb.addGlobal(g);
             }
+            FunctionRef ldcArrayClassFn = BC_LDC_ARRAY_BOOT_CLASS;
+            if (!isPrimitiveBaseType(targetClass)) {
+                Clazz baseType = config.getClazzes().load(getBaseType(targetClass));
+                if (!baseType.isInBootClasspath()) {
+                    ldcArrayClassFn = BC_LDC_ARRAY_CLASS;
+                }
+            }
+            Value arrayClass = call(fn, ldcArrayClassFn, fn.getParameterRef(0), g.ref(), mb.getString(targetClass));
             fn.add(new Ret(arrayClass));
             mb.addFunction(fn);
         }

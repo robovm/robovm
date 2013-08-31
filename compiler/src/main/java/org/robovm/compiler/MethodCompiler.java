@@ -1224,13 +1224,13 @@ public class MethodCompiler extends AbstractMethodCompiler {
     private void enterMonitor(EnterMonitorStmt stmt) {
         Value op = immediate(stmt, (Immediate) stmt.getOp());
         checkNull(stmt, op);
-        call(BC_MONITOR_ENTER, env, op);
+        call(MONITORENTER, env, op);
     }
     
     private void exitMonitor(ExitMonitorStmt stmt) {
         Value op = immediate(stmt, (Immediate) stmt.getOp());
         checkNull(stmt, op);
-        call(BC_MONITOR_EXIT, env, op);
+        call(MONITOREXIT, env, op);
     }
     
 }

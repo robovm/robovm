@@ -149,6 +149,8 @@ public class Functions {
     public static final FunctionRef INSTANCEOF_PRIM_ARRAY = new FunctionRef("instanceof_prim_array", new FunctionType(I32, ENV_PTR, CLASS_PTR, OBJECT_PTR));
     public static final FunctionRef OBJECT_CLASS = new FunctionRef("Object_class", new FunctionType(CLASS_PTR, OBJECT_PTR));
     public static final FunctionRef CLASS_VITABLE = new FunctionRef("Class_vitable", new FunctionType(VITABLE_PTR, CLASS_PTR));
+    public static final FunctionRef MONITORENTER = new FunctionRef("monitorenter", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
+    public static final FunctionRef MONITOREXIT = new FunctionRef("monitorexit", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
 
     public static FunctionRef getArrayLoad(soot.Type sootType) {
         if (sootType.equals(soot.BooleanType.v())) {

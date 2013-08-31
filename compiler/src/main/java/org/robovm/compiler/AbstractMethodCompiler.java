@@ -117,7 +117,7 @@ public abstract class AbstractMethodCompiler {
             monitor = syncFn.getParameterRef(1);
         }
         
-        call(syncFn, BC_MONITOR_ENTER, syncFn.getParameterRef(0), monitor);
+        call(syncFn, MONITORENTER, syncFn.getParameterRef(0), monitor);
         BasicBlockRef bbSuccess = syncFn.newBasicBlockRef(new Label("success"));
         BasicBlockRef bbFailure = syncFn.newBasicBlockRef(new Label("failure"));
         trycatchAllEnter(syncFn, bbSuccess, bbFailure);
@@ -125,12 +125,12 @@ public abstract class AbstractMethodCompiler {
         syncFn.newBasicBlock(bbSuccess.getLabel());
         Value result = call(syncFn, target, syncFn.getParameterRefs());
         trycatchLeave(syncFn);
-        call(syncFn, BC_MONITOR_EXIT, syncFn.getParameterRef(0), monitor);
+        call(syncFn, MONITOREXIT, syncFn.getParameterRef(0), monitor);
         syncFn.add(new Ret(result));
 
         syncFn.newBasicBlock(bbFailure.getLabel());
         trycatchLeave(syncFn);
-        call(syncFn, BC_MONITOR_EXIT, syncFn.getParameterRef(0), monitor);
+        call(syncFn, MONITOREXIT, syncFn.getParameterRef(0), monitor);
         call(syncFn, BC_THROW_IF_EXCEPTION_OCCURRED, syncFn.getParameterRef(0));
         syncFn.add(new Unreachable());
     }

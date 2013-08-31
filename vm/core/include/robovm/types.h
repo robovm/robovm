@@ -243,13 +243,13 @@ struct JavaThread {
 };
 
 struct Thread {
+  jint threadId;
   JavaThread* threadObj;
   struct Thread* waitNext;
   struct Thread* prev;
   struct Thread* next;
   Monitor* waitMonitor;
   pthread_t pThread;
-  jint threadId;
   void* stackAddr;
   jboolean interrupted;
   Mutex waitMutex;

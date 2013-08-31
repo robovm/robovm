@@ -1,5 +1,6 @@
 %GatewayFrame = type {i8*, i8*, i8*}
-%Env = type {i8*, i8*, i8*, i8*, i8*, i8*, i8*, i32}
+%Thread = type {i32} ; Incomplete. Just enough to get threadId
+%Env = type {i8*, i8*, i8*, %Thread*, i8*, i8*, %GatewayFrame*, i8*, i32}
 %TypeInfo = type {i32, i32, i32, i32, i32, [0 x i32]}
 %VITable = type {i16, [0 x i8*]}
 %ITable = type {%TypeInfo*, %VITable}
@@ -119,10 +120,35 @@ declare double @llvm.sqrt.f64(double)
 declare double @llvm.cos.f64(double)
 declare double @llvm.sin.f64(double)
 
+define private i32 @Thread_threadId(%Thread* %t) alwaysinline {
+    %1 = getelementptr %Thread* %t, i32 0, i32 0 ; Thread->threadId
+    %2 = load i32* %1
+    ret i32 %2
+}
+
+define private %Thread* @Env_currentThread(%Env* %env) alwaysinline {
+    %1 = getelementptr %Env* %env, i32 0, i32 3 ; Env->currentThread
+    %2 = load %Thread** %1
+    ret %Thread* %2
+}
+
 define private %Class* @Object_class(%Object* %o) alwaysinline {
     %1 = getelementptr %Object* %o, i32 0, i32 0
     %2 = load %Class** %1
     ret %Class* %2
+}
+
+define private i32 @Object_lock(%Object* %o) alwaysinline {
+    %1 = getelementptr %Object* %o, i32 0, i32 1 ; Object->lock
+    %2 = bitcast i8** %1 to i32*
+    %3 = load i32* %2
+    ret i32 %3
+}
+
+define private i32* @Object_lockPtr(%Object* %o) alwaysinline {
+    %1 = getelementptr %Object* %o, i32 0, i32 1 ; Object->lock
+    %2 = bitcast i8** %1 to i32*
+    ret i32* %2
 }
 
 define private %TypeInfo* @Class_typeInfo(%Class* %c) alwaysinline {
@@ -840,4 +866,65 @@ true:
     ret i32 1;
 false:
     ret i32 0
+}
+
+define private i1 @atomic_cas(i32 %old, i32 %new, i32* %ptr) alwaysinline {
+  %1 = cmpxchg i32* %ptr, i32 %old, i32 %new seq_cst
+  %2 = icmp eq i32 %1, %old
+  ret i1 %2
+}
+
+define private void @monitorenter(%Env* %env, %Object* %o) alwaysinline {
+    ; Try the common case first before we call _bcMonitorEnter
+    %thin = call i32 @Object_lock(%Object* %o)
+    %thinBit = and i32 %thin, 1
+    %isThin = icmp eq i32 %thinBit, 0
+    br i1 %isThin, label %yesThin, label %callBc
+yesThin:
+    %1 = lshr i32 %thin, 3 ; LW_LOCK_OWNER_SHIFT = 3
+    %owner = and i32 %1, 65535 ; LW_LOCK_OWNER_MASK = 0xffff
+    %isUnowned = icmp eq i32 %owner, 0
+    br i1 %isUnowned, label %tryLock, label %callBc
+tryLock:
+    %currentThread = call %Thread* @Env_currentThread(%Env* %env)
+    %threadId = call i32 @Thread_threadId(%Thread* %currentThread)
+    %2 = shl i32 %threadId, 3 ; LW_LOCK_OWNER_SHIFT = 3
+    %newThin = or i32 %thin, %2
+    %lockPtr = call i32* @Object_lockPtr(%Object* %o)
+    %isSuccess = call i1 @atomic_cas(i32 %thin, i32 %newThin, i32* %lockPtr)
+    br i1 %isSuccess, label %success, label %callBc
+success:
+    ret void
+callBc:
+    tail call void @_bcMonitorEnter(%Env* %env, %Object* %o)
+    ret void
+}
+
+define private void @monitorexit(%Env* %env, %Object* %o) alwaysinline {
+    ; Try the common case first before we call _bcMonitorExit
+    %thin = call i32 @Object_lock(%Object* %o)
+    %thinBit = and i32 %thin, 1
+    %isThin = icmp eq i32 %thinBit, 0
+    br i1 %isThin, label %yesThin, label %callBc
+yesThin:
+    %1 = lshr i32 %thin, 3 ; LW_LOCK_OWNER_SHIFT = 3
+    %owner = and i32 %1, 65535 ; LW_LOCK_OWNER_MASK = 0xffff
+    %currentThread = call %Thread* @Env_currentThread(%Env* %env)
+    %threadId = call i32 @Thread_threadId(%Thread* %currentThread)
+    %isOwner = icmp eq i32 %owner, %threadId
+    br i1 %isOwner, label %maybeUnlock, label %callBc
+maybeUnlock:
+    %2 = lshr i32 %thin, 19 ; LW_LOCK_COUNT_SHIFT = 19
+    %count = and i32 %2, 8191 ; LW_LOCK_COUNT_MASK = 0x1fff
+    %lockPtr = call i32* @Object_lockPtr(%Object* %o)
+    %isZero = icmp eq i32 %count, 0
+    br i1 %isZero, label %unlock, label %callBc
+unlock:
+    %newThin = and i32 %thin, 6 ; LW_HASH_STATE_MASK << LW_HASH_STATE_SHIFT (0x3 << 1)
+    fence seq_cst
+    store volatile i32 %newThin, i32* %lockPtr
+    ret void
+callBc:
+    tail call void @_bcMonitorExit(%Env* %env, %Object* %o)
+    ret void
 }

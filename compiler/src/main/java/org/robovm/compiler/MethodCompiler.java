@@ -1048,18 +1048,23 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 }
             } else if (rightOp instanceof NewMultiArrayExpr) {
                 NewMultiArrayExpr expr = (NewMultiArrayExpr) rightOp;
-                for (int i = 0; i < expr.getSizeCount(); i++) {
-                    Value size = immediate(stmt, (Immediate) expr.getSize(i));
-                    Variable ptr = function.newVariable(new PointerType(I32));
-                    function.add(new Getelementptr(ptr, dims.ref(), 0, i));
-                    function.add(new Store(size, ptr.ref()));
+                if (expr.getBaseType().numDimensions == 1 && expr.getBaseType().getElementType() instanceof PrimType) {
+                    Value size = immediate(stmt, (Immediate) expr.getSize(0));
+                    result = call(getNewArray(expr.getBaseType().getElementType()), env, size);
+                } else {
+                    for (int i = 0; i < expr.getSizeCount(); i++) {
+                        Value size = immediate(stmt, (Immediate) expr.getSize(i));
+                        Variable ptr = function.newVariable(new PointerType(I32));
+                        function.add(new Getelementptr(ptr, dims.ref(), 0, i));
+                        function.add(new Store(size, ptr.ref()));
+                    }
+                    Variable dimsI32 = function.newVariable(new PointerType(I32));
+                    function.add(new Bitcast(dimsI32, dims.ref(), dimsI32.getType()));
+                    String targetClassName = getInternalName(expr.getType());
+                    Trampoline trampoline = new Multianewarray(this.className, targetClassName);
+                    trampolines.add(trampoline);
+                    result = call(trampoline.getFunctionRef(), env, new IntegerConstant(expr.getSizeCount()), dimsI32.ref());
                 }
-                Variable dimsI32 = function.newVariable(new PointerType(I32));
-                function.add(new Bitcast(dimsI32, dims.ref(), dimsI32.getType()));
-                String targetClassName = getInternalName(expr.getType());
-                Trampoline trampoline = new Multianewarray(this.className, targetClassName);
-                trampolines.add(trampoline);
-                result = call(trampoline.getFunctionRef(), env, new IntegerConstant(expr.getSizeCount()), dimsI32.ref());
             } else if (rightOp instanceof InvokeExpr) {
                 result = invokeExpr(stmt, (InvokeExpr) rightOp);
             } else if (rightOp instanceof LengthExpr) {

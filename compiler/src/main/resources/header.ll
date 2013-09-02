@@ -299,6 +299,20 @@ define private %Object* @intrinsics.java_lang_Object_getClass(%Env* %env, %Objec
     ret %Object* %res
 }
 
+define private float @intrinsics.java_lang_Math_abs_F(%Env* %env, float %f) alwaysinline {
+    %1 = bitcast float %f to i32
+    %2 = and i32 %1, 2147483647 ; 0x7fffffff
+    %3 = bitcast i32 %2 to float
+    ret float %3
+}
+
+define private double @intrinsics.java_lang_Math_abs_D(%Env* %env, double %d) alwaysinline {
+    %1 = bitcast double %d to i64
+    %2 = and i64 %1, 9223372036854775807 ; 0x7fffffffffffffff
+    %3 = bitcast i64 %2 to double
+    ret double %3
+}
+
 define private double @intrinsics.java_lang_Math_sqrt(%Env* %env, double %d) alwaysinline {
     %1 = call double @llvm.sqrt.f64(double %d)
     ret double %1

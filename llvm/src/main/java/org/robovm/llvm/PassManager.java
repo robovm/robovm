@@ -48,13 +48,29 @@ public class PassManager {
         checkDisposed();
         LLVM.AddAggressiveDCEPass(ref);
     }
+    public void addAlwaysInlinerPass() {
+        checkDisposed();
+        LLVM.AddAlwaysInlinerPass(ref);
+    }
+    public void addArgumentPromotionPass() {
+        checkDisposed();
+        LLVM.AddArgumentPromotionPass(ref);
+    }
     public void addBasicAliasAnalysisPass() {
         checkDisposed();
         LLVM.AddBasicAliasAnalysisPass(ref);
     }
+    public void addBBVectorizePass() {
+        checkDisposed();
+        LLVM.AddBBVectorizePass(ref);
+    }
     public void addCFGSimplificationPass() {
         checkDisposed();
         LLVM.AddCFGSimplificationPass(ref);
+    }
+    public void addConstantMergePass() {
+        checkDisposed();
+        LLVM.AddConstantMergePass(ref);
     }
     public void addConstantPropagationPass() {
         checkDisposed();
@@ -63,6 +79,10 @@ public class PassManager {
     public void addCorrelatedValuePropagationPass() {
         checkDisposed();
         LLVM.AddCorrelatedValuePropagationPass(ref);
+    }
+    public void addDeadArgEliminationPass() {
+        checkDisposed();
+        LLVM.AddDeadArgEliminationPass(ref);
     }
     public void addDeadStoreEliminationPass() {
         checkDisposed();
@@ -76,6 +96,22 @@ public class PassManager {
         checkDisposed();
         LLVM.AddEarlyCSEPass(ref);
     }
+    public void addFunctionAttrsPass() {
+        checkDisposed();
+        LLVM.AddFunctionAttrsPass(ref);
+    }
+    public void addFunctionInliningPass() {
+        checkDisposed();
+        LLVM.AddFunctionInliningPass(ref);
+    }
+    public void addGlobalDCEPass() {
+        checkDisposed();
+        LLVM.AddGlobalDCEPass(ref);
+    }
+    public void addGlobalOptimizerPass() {
+        checkDisposed();
+        LLVM.AddGlobalOptimizerPass(ref);
+    }
     public void addGVNPass() {
         checkDisposed();
         LLVM.AddGVNPass(ref);
@@ -87,6 +123,18 @@ public class PassManager {
     public void addInstructionCombiningPass() {
         checkDisposed();
         LLVM.AddInstructionCombiningPass(ref);
+    }
+    public void addInternalizePass(boolean allButMain) {
+        checkDisposed();
+        LLVM.AddInternalizePass(ref, allButMain ? 1 : 0);
+    }
+    public void addIPConstantPropagationPass() {
+        checkDisposed();
+        LLVM.AddIPConstantPropagationPass(ref);
+    }
+    public void addIPSCCPPass() {
+        checkDisposed();
+        LLVM.AddIPSCCPPass(ref);
     }
     public void addJumpThreadingPass() {
         checkDisposed();
@@ -116,6 +164,10 @@ public class PassManager {
         checkDisposed();
         LLVM.AddLoopUnswitchPass(ref);
     }
+    public void addLoopVectorizePass() {
+        checkDisposed();
+        LLVM.AddLoopVectorizePass(ref);
+    }
     public void addLowerExpectIntrinsicPass() {
         checkDisposed();
         LLVM.AddLowerExpectIntrinsicPass(ref);
@@ -127,6 +179,10 @@ public class PassManager {
     public void addPromoteMemoryToRegisterPass() {
         checkDisposed();
         LLVM.AddPromoteMemoryToRegisterPass(ref);
+    }
+    public void addPruneEHPass() {
+        checkDisposed();
+        LLVM.AddPruneEHPass(ref);
     }
     public void addReassociatePass() {
         checkDisposed();
@@ -152,6 +208,18 @@ public class PassManager {
         checkDisposed();
         LLVM.AddSimplifyLibCallsPass(ref);
     }
+    public void addSLPVectorizePass() {
+        checkDisposed();
+        LLVM.AddSLPVectorizePass(ref);
+    }
+    public void addStripDeadPrototypesPass() {
+        checkDisposed();
+        LLVM.AddStripDeadPrototypesPass(ref);
+    }
+    public void addStripSymbolsPass() {
+        checkDisposed();
+        LLVM.AddStripSymbolsPass(ref);
+    }
     public void addTailCallEliminationPass() {
         checkDisposed();
         LLVM.AddTailCallEliminationPass(ref);
@@ -163,62 +231,6 @@ public class PassManager {
     public void addVerifierPass() {
         checkDisposed();
         LLVM.AddVerifierPass(ref);
-    }
-    public void addArgumentPromotionPass() {
-        checkDisposed();
-        LLVM.AddArgumentPromotionPass(ref);
-    }
-    public void addConstantMergePass() {
-        checkDisposed();
-        LLVM.AddConstantMergePass(ref);
-    }
-    public void addDeadArgEliminationPass() {
-        checkDisposed();
-        LLVM.AddDeadArgEliminationPass(ref);
-    }
-    public void addFunctionAttrsPass() {
-        checkDisposed();
-        LLVM.AddFunctionAttrsPass(ref);
-    }
-    public void addFunctionInliningPass() {
-        checkDisposed();
-        LLVM.AddFunctionInliningPass(ref);
-    }
-    public void addAlwaysInlinerPass() {
-        checkDisposed();
-        LLVM.AddAlwaysInlinerPass(ref);
-    }
-    public void addGlobalDCEPass() {
-        checkDisposed();
-        LLVM.AddGlobalDCEPass(ref);
-    }
-    public void addGlobalOptimizerPass() {
-        checkDisposed();
-        LLVM.AddGlobalOptimizerPass(ref);
-    }
-    public void addIPConstantPropagationPass() {
-        checkDisposed();
-        LLVM.AddIPConstantPropagationPass(ref);
-    }
-    public void addPruneEHPass() {
-        checkDisposed();
-        LLVM.AddPruneEHPass(ref);
-    }
-    public void addIPSCCPPass() {
-        checkDisposed();
-        LLVM.AddIPSCCPPass(ref);
-    }
-    public void addInternalizePass(boolean allButMain) {
-        checkDisposed();
-        LLVM.AddInternalizePass(ref, allButMain ? 1 : 0);
-    }
-    public void addStripDeadPrototypesPass() {
-        checkDisposed();
-        LLVM.AddStripDeadPrototypesPass(ref);
-    }
-    public void addStripSymbolsPass() {
-        checkDisposed();
-        LLVM.AddStripSymbolsPass(ref);
     }
     
     public void run(Module module) {

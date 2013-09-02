@@ -6,6 +6,11 @@ define private void @checkso() alwaysinline {
   ret void
 }
 
+define private i8* @getpc() alwaysinline {
+  %1 = tail call i8* asm sideeffect "mov $0, pc", "=r,~{dirflag},~{fpsr},~{flags}"() nounwind
+  ret i8* %1
+}
+
 define linkonce_odr float @frem(%Env* %env, float %op1, float %op2) alwaysinline {
     ; frem compiles down to fmod() for doubles and fmodf() for floats on iOS ARM.
     ; fmodf() returns incorrect results for values close to zero. Converting the

@@ -5,6 +5,7 @@
 #include <llvm-c/BitReader.h>
 #include <llvm-c/BitWriter.h>
 #include <llvm-c/Transforms/IPO.h>
+#include <llvm-c/Transforms/PassManagerBuilder.h>
 #include <llvm-c/Transforms/Scalar.h>
 #include <llvm-c/Transforms/Vectorize.h>
 #include <llvm-c/Target.h>
@@ -226,6 +227,7 @@ typedef jlong uint64_t;
 %include "llvm-c/BitReader.h"
 %include "llvm-c/BitWriter.h"
 %include "llvm-c/Transforms/IPO.h"
+%include "llvm-c/Transforms/PassManagerBuilder.h"
 %include "llvm-c/Transforms/Scalar.h"
 %include "llvm-c/Transforms/Vectorize.h"
 %include "llvm-c/Target.h"

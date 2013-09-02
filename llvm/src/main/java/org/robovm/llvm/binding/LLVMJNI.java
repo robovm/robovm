@@ -542,6 +542,17 @@ public class LLVMJNI {
   public final static native void AddInternalizePass(long jarg1, int jarg2);
   public final static native void AddStripDeadPrototypesPass(long jarg1);
   public final static native void AddStripSymbolsPass(long jarg1);
+  public final static native long PassManagerBuilderCreate();
+  public final static native void PassManagerBuilderDispose(long jarg1);
+  public final static native void PassManagerBuilderSetOptLevel(long jarg1, int jarg2);
+  public final static native void PassManagerBuilderSetSizeLevel(long jarg1, int jarg2);
+  public final static native void PassManagerBuilderSetDisableUnitAtATime(long jarg1, boolean jarg2);
+  public final static native void PassManagerBuilderSetDisableUnrollLoops(long jarg1, boolean jarg2);
+  public final static native void PassManagerBuilderSetDisableSimplifyLibCalls(long jarg1, boolean jarg2);
+  public final static native void PassManagerBuilderUseInlinerWithThreshold(long jarg1, int jarg2);
+  public final static native void PassManagerBuilderPopulateFunctionPassManager(long jarg1, long jarg2);
+  public final static native void PassManagerBuilderPopulateModulePassManager(long jarg1, long jarg2);
+  public final static native void PassManagerBuilderPopulateLTOPassManager(long jarg1, long jarg2, boolean jarg3, boolean jarg4);
   public final static native void AddAggressiveDCEPass(long jarg1);
   public final static native void AddCFGSimplificationPass(long jarg1);
   public final static native void AddDeadStoreEliminationPass(long jarg1);

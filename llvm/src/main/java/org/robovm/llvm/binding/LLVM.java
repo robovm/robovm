@@ -2347,6 +2347,51 @@ public class LLVM implements LLVMConstants {
     LLVMJNI.AddStripSymbolsPass(PassManagerRef.getCPtr(PM));
   }
 
+  public static PassManagerBuilderRef PassManagerBuilderCreate() {
+    long cPtr = LLVMJNI.PassManagerBuilderCreate();
+    return (cPtr == 0) ? null : new PassManagerBuilderRef(cPtr, false);
+  }
+
+  public static void PassManagerBuilderDispose(PassManagerBuilderRef PMB) {
+    LLVMJNI.PassManagerBuilderDispose(PassManagerBuilderRef.getCPtr(PMB));
+  }
+
+  public static void PassManagerBuilderSetOptLevel(PassManagerBuilderRef PMB, int OptLevel) {
+    LLVMJNI.PassManagerBuilderSetOptLevel(PassManagerBuilderRef.getCPtr(PMB), OptLevel);
+  }
+
+  public static void PassManagerBuilderSetSizeLevel(PassManagerBuilderRef PMB, int SizeLevel) {
+    LLVMJNI.PassManagerBuilderSetSizeLevel(PassManagerBuilderRef.getCPtr(PMB), SizeLevel);
+  }
+
+  public static void PassManagerBuilderSetDisableUnitAtATime(PassManagerBuilderRef PMB, boolean Value) {
+    LLVMJNI.PassManagerBuilderSetDisableUnitAtATime(PassManagerBuilderRef.getCPtr(PMB), Value);
+  }
+
+  public static void PassManagerBuilderSetDisableUnrollLoops(PassManagerBuilderRef PMB, boolean Value) {
+    LLVMJNI.PassManagerBuilderSetDisableUnrollLoops(PassManagerBuilderRef.getCPtr(PMB), Value);
+  }
+
+  public static void PassManagerBuilderSetDisableSimplifyLibCalls(PassManagerBuilderRef PMB, boolean Value) {
+    LLVMJNI.PassManagerBuilderSetDisableSimplifyLibCalls(PassManagerBuilderRef.getCPtr(PMB), Value);
+  }
+
+  public static void PassManagerBuilderUseInlinerWithThreshold(PassManagerBuilderRef PMB, int Threshold) {
+    LLVMJNI.PassManagerBuilderUseInlinerWithThreshold(PassManagerBuilderRef.getCPtr(PMB), Threshold);
+  }
+
+  public static void PassManagerBuilderPopulateFunctionPassManager(PassManagerBuilderRef PMB, PassManagerRef PM) {
+    LLVMJNI.PassManagerBuilderPopulateFunctionPassManager(PassManagerBuilderRef.getCPtr(PMB), PassManagerRef.getCPtr(PM));
+  }
+
+  public static void PassManagerBuilderPopulateModulePassManager(PassManagerBuilderRef PMB, PassManagerRef PM) {
+    LLVMJNI.PassManagerBuilderPopulateModulePassManager(PassManagerBuilderRef.getCPtr(PMB), PassManagerRef.getCPtr(PM));
+  }
+
+  public static void PassManagerBuilderPopulateLTOPassManager(PassManagerBuilderRef PMB, PassManagerRef PM, boolean Internalize, boolean RunInliner) {
+    LLVMJNI.PassManagerBuilderPopulateLTOPassManager(PassManagerBuilderRef.getCPtr(PMB), PassManagerRef.getCPtr(PM), Internalize, RunInliner);
+  }
+
   public static void AddAggressiveDCEPass(PassManagerRef PM) {
     LLVMJNI.AddAggressiveDCEPass(PassManagerRef.getCPtr(PM));
   }

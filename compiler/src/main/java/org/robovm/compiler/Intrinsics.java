@@ -58,6 +58,12 @@ public class Intrinsics {
         SIMPLE_INTRINSICS.put("java/lang/Object/getClass()Ljava/lang/Class;", 
                 new FunctionRef("intrinsics.java_lang_Object_getClass", 
                         new FunctionType(OBJECT_PTR, ENV_PTR, OBJECT_PTR)));
+        SIMPLE_INTRINSICS.put("java/lang/Math/abs(F)F", 
+                new FunctionRef("intrinsics.java_lang_Math_abs_F", 
+                        new FunctionType(FLOAT, ENV_PTR, FLOAT)));
+        SIMPLE_INTRINSICS.put("java/lang/Math/abs(D)D", 
+                new FunctionRef("intrinsics.java_lang_Math_abs_D", 
+                        new FunctionType(DOUBLE, ENV_PTR, DOUBLE)));
         SIMPLE_INTRINSICS.put("java/lang/Math/sqrt(D)D", 
                 new FunctionRef("intrinsics.java_lang_Math_sqrt", 
                         new FunctionType(DOUBLE, ENV_PTR, DOUBLE)));

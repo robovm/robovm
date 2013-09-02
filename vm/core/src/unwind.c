@@ -17,6 +17,16 @@
 #include "uthash.h"
 #include "private.h"
 
+/* The return addresses in frames actually point to the instruction following
+ * the call instruction. If the call is that last instruction of a method the
+ * return address may point to the first instruction in another method and the
+ * unwind code here will not find the correct methods. This macro adjusts the
+ * return addresses slighlty to fix this problem. We assume that by subtracting
+ * 2 from the return address we will always get a pointer which points inside
+ * the function.
+ */
+#define TOPC(addr) (addr - 2)
+
 typedef struct UnwindCallStackData {
     jboolean (*it)(Env*, void*, ProxyMethod*, void*);
     Env* env;
@@ -33,7 +43,7 @@ void unwindBacktrace(void* fp, jboolean (*it)(UnwindContext*, void*), void* data
     UnwindContext context = {0};
     Frame* currFp = __builtin_frame_address(0);
     context.fp = (Frame*) (fp ? fp : currFp);
-    context.pc = context.fp->returnAddress;
+    context.pc = TOPC(context.fp->returnAddress);
     context.fp = context.fp->prev;
     // fp now points to the frame of the caller of unwindBacktrace
     // pc now points to the instruction which called unwindBacktrace
@@ -43,7 +53,7 @@ void unwindBacktrace(void* fp, jboolean (*it)(UnwindContext*, void*), void* data
             context.fp = context.newFrame;
             context.newFrame = NULL;
         }
-        context.pc = context.fp->returnAddress;
+        context.pc = TOPC(context.fp->returnAddress);
         context.fp = context.fp->prev;
     }
 }

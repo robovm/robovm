@@ -151,6 +151,8 @@ public class Functions {
     public static final FunctionRef CLASS_VITABLE = new FunctionRef("Class_vitable", new FunctionType(VITABLE_PTR, CLASS_PTR));
     public static final FunctionRef MONITORENTER = new FunctionRef("monitorenter", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
     public static final FunctionRef MONITOREXIT = new FunctionRef("monitorexit", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
+    public static final FunctionRef PUSH_NATIVE_FRAME = new FunctionRef("pushNativeFrame", new FunctionType(VOID, ENV_PTR));
+    public static final FunctionRef POP_NATIVE_FRAME = new FunctionRef("popNativeFrame", new FunctionType(VOID, ENV_PTR));
 
     public static FunctionRef getArrayLoad(soot.Type sootType) {
         if (sootType.equals(soot.BooleanType.v())) {
@@ -279,14 +281,11 @@ public class Functions {
     }
     
     public static void pushNativeFrame(Function fn) {
-        Variable gwFrame = fn.newVariable(GATEWAY_FRAME_PTR);
-        fn.add(new Alloca(gwFrame, GATEWAY_FRAME));
-        Value frameAddress = call(fn, LLVM_FRAMEADDRESS, new IntegerConstant(0));
-        call(fn, BC_PUSH_NATIVE_FRAME, fn.getParameterRef(0), gwFrame.ref(), frameAddress);
+        call(fn, PUSH_NATIVE_FRAME, fn.getParameterRef(0));
     }
 
     public static void popNativeFrame(Function fn) {
-        call(fn, BC_POP_NATIVE_FRAME, fn.getParameterRef(0));
+        call(fn, POP_NATIVE_FRAME, fn.getParameterRef(0));
     }
     
     public static void pushCallbackFrame(Function fn, Value env) {

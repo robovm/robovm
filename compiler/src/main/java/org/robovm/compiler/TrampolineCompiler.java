@@ -234,7 +234,7 @@ public class TrampolineCompiler {
 //                    mb.addFunctionDeclaration(new FunctionDeclaration(fnShort.ref()));
                     targetFn = fnShort.ref();
                 }
-                Function fn = new FunctionBuilder(nc).linkage(external).build();
+                Function fn = new FunctionBuilder(nc).linkage(_private).attribs(alwaysinline, optsize).build();
                 Value result = call(fn, targetFn, fn.getParameterRefs());
                 fn.add(new Ret(result));
                 mb.addFunction(fn);
@@ -243,7 +243,7 @@ public class TrampolineCompiler {
                         nc.getMethodName(), nc.getMethodDesc()) + "_ptr", 
                         new NullConstant(I8_PTR));
                 mb.addGlobal(g);
-                Function fn = new FunctionBuilder(nc).linkage(external).build();
+                Function fn = new FunctionBuilder(nc).linkage(_private).attribs(alwaysinline, optsize).build();
                 FunctionRef ldcFn = FunctionBuilder.ldcInternal(nc.getTarget()).ref();
                 Value theClass = call(fn, ldcFn, fn.getParameterRef(0));
                 Value implI8Ptr = call(fn, BC_RESOLVE_NATIVE, fn.getParameterRef(0), 

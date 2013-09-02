@@ -1,4 +1,5 @@
 %GatewayFrame = type {i8*, i8*, i8*}
+%StackFrame = type {i8*, i8*}
 %Thread = type {i32} ; Incomplete. Just enough to get threadId
 %Env = type {i8*, i8*, i8*, %Thread*, i8*, i8*, %GatewayFrame*, i8*, i32}
 %TypeInfo = type {i32, i32, i32, i32, i32, [0 x i32]}
@@ -122,26 +123,38 @@ declare double @llvm.sin.f64(double)
 
 define private i32 @Thread_threadId(%Thread* %t) alwaysinline {
     %1 = getelementptr %Thread* %t, i32 0, i32 0 ; Thread->threadId
-    %2 = load i32* %1
+    %2 = load volatile i32* %1
     ret i32 %2
 }
 
 define private %Thread* @Env_currentThread(%Env* %env) alwaysinline {
     %1 = getelementptr %Env* %env, i32 0, i32 3 ; Env->currentThread
-    %2 = load %Thread** %1
+    %2 = load volatile %Thread** %1
     ret %Thread* %2
+}
+
+define private %GatewayFrame* @Env_gatewayFrames(%Env* %env) alwaysinline {
+    %1 = getelementptr %Env* %env, i32 0, i32 6 ; Env->gatewayFrames
+    %2 = load volatile %GatewayFrame** %1
+    ret %GatewayFrame* %2
+}
+
+define private void @Env_gatewayFrames_store(%Env* %env, %GatewayFrame* %value) alwaysinline {
+    %1 = getelementptr %Env* %env, i32 0, i32 6 ; Env->gatewayFrames
+    store volatile %GatewayFrame* %value, %GatewayFrame** %1
+    ret void
 }
 
 define private %Class* @Object_class(%Object* %o) alwaysinline {
     %1 = getelementptr %Object* %o, i32 0, i32 0
-    %2 = load %Class** %1
+    %2 = load volatile %Class** %1
     ret %Class* %2
 }
 
 define private i32 @Object_lock(%Object* %o) alwaysinline {
     %1 = getelementptr %Object* %o, i32 0, i32 1 ; Object->lock
     %2 = bitcast i8** %1 to i32*
-    %3 = load i32* %2
+    %3 = load volatile i32* %2
     ret i32 %3
 }
 
@@ -153,110 +166,110 @@ define private i32* @Object_lockPtr(%Object* %o) alwaysinline {
 
 define private %TypeInfo* @Class_typeInfo(%Class* %c) alwaysinline {
     %1 = getelementptr %Class* %c, i32 0, i32 3 ; Class->typeInfo
-    %2 = load %TypeInfo** %1
+    %2 = load volatile %TypeInfo** %1
     ret %TypeInfo* %2
 }
 
 define private %VITable* @Class_vitable(%Class* %c) alwaysinline {
     %1 = getelementptr %Class* %c, i32 0, i32 4 ; Class->vitable
-    %2 = load %VITable** %1
+    %2 = load volatile %VITable** %1
     ret %VITable* %2
 }
 
 define private %ITables* @Class_itables(%Class* %c) alwaysinline {
     %1 = getelementptr %Class* %c, i32 0, i32 5 ; Class->itables
-    %2 = load %ITables** %1
+    %2 = load volatile %ITables** %1
     ret %ITables* %2
 }
 
 define private %Class* @Class_superclass(%Class* %c) alwaysinline {
     %1 = getelementptr %Class* %c, i32 0, i32 8 ; Class->superclass
-    %2 = load i8** %1
+    %2 = load volatile i8** %1
     %3 = bitcast i8* %2 to %Class*
     ret %Class* %3
 }
 
 define private %Class* @Class_componentType(%Class* %c) alwaysinline {
     %1 = getelementptr %Class* %c, i32 0, i32 9 ; Class->componentType
-    %2 = load i8** %1
+    %2 = load volatile i8** %1
     %3 = bitcast i8* %2 to %Class*
     ret %Class* %3
 }
 
 define private i32 @Class_flags(%Class* %c) alwaysinline {
     %1 = getelementptr %Class* %c, i32 0, i32 11 ; Class->flags
-    %2 = load i32* %1
+    %2 = load volatile i32* %1
     ret i32 %2
 }
 
 define private i32 @TypeInfo_offset(%TypeInfo* %ti) alwaysinline {
     %1 = getelementptr %TypeInfo* %ti, i32 0, i32 1 ; TypeInfo->offset
-    %2 = load i32* %1
+    %2 = load volatile i32* %1
     ret i32 %2
 }
 
 define private i32 @TypeInfo_cache(%TypeInfo* %ti) alwaysinline {
     %1 = getelementptr %TypeInfo* %ti, i32 0, i32 2 ; TypeInfo->cache
-    %2 = load i32* %1
+    %2 = load volatile i32* %1
     ret i32 %2
 }
 
 define private void @TypeInfo_cache_store(%TypeInfo* %ti, i32 %value) alwaysinline {
     %1 = getelementptr %TypeInfo* %ti, i32 0, i32 2 ; TypeInfo->cache
-    store i32 %value, i32* %1
+    store volatile i32 %value, i32* %1
     ret void
 }
 
 define private i32 @TypeInfo_interfaceCount(%TypeInfo* %ti) alwaysinline {
     %1 = getelementptr %TypeInfo* %ti, i32 0, i32 4 ; TypeInfo->interfaceCount
-    %2 = load i32* %1
+    %2 = load volatile i32* %1
     ret i32 %2
 }
 
 define private %Object* @intrinsics.ldc_prim_Z(%Env* %env) alwaysinline {
-    %1 = load %Class** @prim_Z
+    %1 = load volatile %Class** @prim_Z
     %2 = bitcast %Class* %1 to %Object*
     ret %Object* %2
 }
 
 define private %Object* @intrinsics.ldc_prim_B(%Env* %env) alwaysinline {
-    %1 = load %Class** @prim_B
+    %1 = load volatile %Class** @prim_B
     %2 = bitcast %Class* %1 to %Object*
     ret %Object* %2
 }
 
 define private %Object* @intrinsics.ldc_prim_C(%Env* %env) alwaysinline {
-    %1 = load %Class** @prim_C
+    %1 = load volatile %Class** @prim_C
     %2 = bitcast %Class* %1 to %Object*
     ret %Object* %2
 }
 
 define private %Object* @intrinsics.ldc_prim_S(%Env* %env) alwaysinline {
-    %1 = load %Class** @prim_S
+    %1 = load volatile %Class** @prim_S
     %2 = bitcast %Class* %1 to %Object*
     ret %Object* %2
 }
 
 define private %Object* @intrinsics.ldc_prim_I(%Env* %env) alwaysinline {
-    %1 = load %Class** @prim_I
+    %1 = load volatile %Class** @prim_I
     %2 = bitcast %Class* %1 to %Object*
     ret %Object* %2
 }
 
 define private %Object* @intrinsics.ldc_prim_J(%Env* %env) alwaysinline {
-    %1 = load %Class** @prim_J
+    %1 = load volatile %Class** @prim_J
     %2 = bitcast %Class* %1 to %Object*
     ret %Object* %2
 }
 
 define private %Object* @intrinsics.ldc_prim_F(%Env* %env) alwaysinline {
-    %1 = load %Class** @prim_F
+    %1 = load volatile %Class** @prim_F
     %2 = bitcast %Class* %1 to %Object*
     ret %Object* %2
 }
 
 define private %Object* @intrinsics.ldc_prim_D(%Env* %env) alwaysinline {
-    %1 = load %Class** @prim_D
+    %1 = load volatile %Class** @prim_D
     %2 = bitcast %Class* %1 to %Object*
     ret %Object* %2
 }
@@ -370,7 +383,7 @@ define private void @intrinsics.org_robovm_rt_VM_memmove64(%Env* %env, i64 %s1, 
 define linkonce_odr i32 @arraylength(%Object* %o) alwaysinline {
     %array = bitcast %Object* %o to %Array*
     %length = getelementptr %Array* %array, i32 0, i32 1
-    %res = load i32* %length
+    %res = load volatile i32* %length
     ret i32 %res
 }
 
@@ -378,7 +391,7 @@ define linkonce_odr i32 @iaload(%Object* %o, i32 %index) alwaysinline {
     %array = bitcast %Object* %o to %IntArray*
     %base = getelementptr %IntArray* %array, i32 0, i32 2
     %ptr = getelementptr i32* %base, i32 %index
-    %value = load i32* %ptr
+    %value = load volatile i32* %ptr
     ret i32 %value
 }
 
@@ -386,7 +399,7 @@ define linkonce_odr void @iastore(%Object* %o, i32 %index, i32 %value) alwaysinl
     %array = bitcast %Object* %o to %IntArray*
     %base = getelementptr %IntArray* %array, i32 0, i32 2
     %ptr = getelementptr i32* %base, i32 %index
-    store i32 %value, i32* %ptr
+    store volatile i32 %value, i32* %ptr
     ret void
 }
 
@@ -394,7 +407,7 @@ define linkonce_odr i8 @baload(%Object* %o, i32 %index) alwaysinline {
     %array = bitcast %Object* %o to %ByteArray*
     %base = getelementptr %ByteArray* %array, i32 0, i32 2
     %ptr = getelementptr i8* %base, i32 %index
-    %value = load i8* %ptr
+    %value = load volatile i8* %ptr
     ret i8 %value
 }
 
@@ -402,7 +415,7 @@ define linkonce_odr void @bastore(%Object* %o, i32 %index, i8 %value) alwaysinli
     %array = bitcast %Object* %o to %ByteArray*
     %base = getelementptr %ByteArray* %array, i32 0, i32 2
     %ptr = getelementptr i8* %base, i32 %index
-    store i8 %value, i8* %ptr
+    store volatile i8 %value, i8* %ptr
     ret void
 }
 
@@ -410,7 +423,7 @@ define linkonce_odr i16 @saload(%Object* %o, i32 %index) alwaysinline {
     %array = bitcast %Object* %o to %ShortArray*
     %base = getelementptr %ShortArray* %array, i32 0, i32 2
     %ptr = getelementptr i16* %base, i32 %index
-    %value = load i16* %ptr
+    %value = load volatile i16* %ptr
     ret i16 %value
 }
 
@@ -418,7 +431,7 @@ define linkonce_odr void @sastore(%Object* %o, i32 %index, i16 %value) alwaysinl
     %array = bitcast %Object* %o to %ShortArray*
     %base = getelementptr %ShortArray* %array, i32 0, i32 2
     %ptr = getelementptr i16* %base, i32 %index
-    store i16 %value, i16* %ptr
+    store volatile i16 %value, i16* %ptr
     ret void
 }
 
@@ -426,7 +439,7 @@ define linkonce_odr i16 @caload(%Object* %o, i32 %index) alwaysinline {
     %array = bitcast %Object* %o to %CharArray*
     %base = getelementptr %CharArray* %array, i32 0, i32 2
     %ptr = getelementptr i16* %base, i32 %index
-    %value = load i16* %ptr
+    %value = load volatile i16* %ptr
     ret i16 %value
 }
 
@@ -434,7 +447,7 @@ define linkonce_odr void @castore(%Object* %o, i32 %index, i16 %value) alwaysinl
     %array = bitcast %Object* %o to %CharArray*
     %base = getelementptr %CharArray* %array, i32 0, i32 2
     %ptr = getelementptr i16* %base, i32 %index
-    store i16 %value, i16* %ptr
+    store volatile i16 %value, i16* %ptr
     ret void
 }
 
@@ -442,7 +455,7 @@ define linkonce_odr float @faload(%Object* %o, i32 %index) alwaysinline {
     %array = bitcast %Object* %o to %FloatArray*
     %base = getelementptr %FloatArray* %array, i32 0, i32 2
     %ptr = getelementptr float* %base, i32 %index
-    %value = load float* %ptr
+    %value = load volatile float* %ptr
     ret float %value
 }
 
@@ -450,7 +463,7 @@ define linkonce_odr void @fastore(%Object* %o, i32 %index, float %value) alwaysi
     %array = bitcast %Object* %o to %FloatArray*
     %base = getelementptr %FloatArray* %array, i32 0, i32 2
     %ptr = getelementptr float* %base, i32 %index
-    store float %value, float* %ptr
+    store volatile float %value, float* %ptr
     ret void
 }
 
@@ -458,7 +471,7 @@ define linkonce_odr i64 @laload(%Object* %o, i32 %index) alwaysinline {
     %array = bitcast %Object* %o to %LongArray*
     %base = getelementptr %LongArray* %array, i32 0, i32 2
     %ptr = getelementptr i64* %base, i32 %index
-    %value = load i64* %ptr
+    %value = load volatile i64* %ptr
     ret i64 %value
 }
 
@@ -466,7 +479,7 @@ define linkonce_odr void @lastore(%Object* %o, i32 %index, i64 %value) alwaysinl
     %array = bitcast %Object* %o to %LongArray*
     %base = getelementptr %LongArray* %array, i32 0, i32 2
     %ptr = getelementptr i64* %base, i32 %index
-    store i64 %value, i64* %ptr
+    store volatile i64 %value, i64* %ptr
     ret void
 }
 
@@ -474,7 +487,7 @@ define linkonce_odr double @daload(%Object* %o, i32 %index) alwaysinline {
     %array = bitcast %Object* %o to %DoubleArray*
     %base = getelementptr %DoubleArray* %array, i32 0, i32 2
     %ptr = getelementptr double* %base, i32 %index
-    %value = load double* %ptr
+    %value = load volatile double* %ptr
     ret double %value
 }
 
@@ -482,7 +495,7 @@ define linkonce_odr void @dastore(%Object* %o, i32 %index, double %value) always
     %array = bitcast %Object* %o to %DoubleArray*
     %base = getelementptr %DoubleArray* %array, i32 0, i32 2
     %ptr = getelementptr double* %base, i32 %index
-    store double %value, double* %ptr
+    store volatile double %value, double* %ptr
     ret void
 }
 
@@ -490,7 +503,7 @@ define linkonce_odr %Object* @aaload(%Object* %o, i32 %index) alwaysinline {
     %array = bitcast %Object* %o to %ObjectArray*
     %base = getelementptr %ObjectArray* %array, i32 0, i32 2
     %ptr = getelementptr %Object** %base, i32 %index
-    %value = load %Object** %ptr
+    %value = load volatile %Object** %ptr
     ret %Object* %value
 }
 
@@ -498,7 +511,7 @@ define linkonce_odr void @aastore(%Object* %o, i32 %index, %Object* %value) alwa
     %array = bitcast %Object* %o to %ObjectArray*
     %base = getelementptr %ObjectArray* %array, i32 0, i32 2
     %ptr = getelementptr %Object** %base, i32 %index
-    store %Object* %value, %Object** %ptr
+    store volatile %Object* %value, %Object** %ptr
     ret void
 }
 
@@ -698,7 +711,7 @@ define linkonce_odr i32 @dcmpg(double %op1, double %op2) alwaysinline {
 }
 
 define private %Object* @ldcClassWrapper(%Env* %env, i8** %header) alwaysinline {
-    %1 = load i8** %header
+    %1 = load volatile i8** %header
     %2 = icmp ne i8* %1, null
     br i1 %2, label %loaded, label %notLoaded
 loaded:
@@ -738,7 +751,7 @@ compareIds:
     %1 = bitcast %TypeInfo* %ti to [0 x i8]*
     %2 = getelementptr [0 x i8]* %1, i32 0, i32 %offset
     %3 = bitcast i8* %2 to i32*
-    %otherId = load i32* %3
+    %otherId = load volatile i32* %3
     %isIdEQ = icmp eq i32 %id, %otherId
     br i1 %isIdEQ, label %storeCache, label %notFound
 storeCache:
@@ -772,7 +785,7 @@ loop:
     %n_phi = phi i32 [0, %computeBase], [%n, %checkDone]
     %4 = getelementptr [0 x i32]* %base, i32 0, i32 %n_phi
     %n = add i32 %n_phi, 1
-    %otherId = load i32* %4
+    %otherId = load volatile i32* %4
     %isIdEQ = icmp eq i32 %id, %otherId
     br i1 %isIdEQ, label %storeCache, label %checkDone
 checkDone:
@@ -926,5 +939,42 @@ unlock:
     ret void
 callBc:
     tail call void @_bcMonitorExit(%Env* %env, %Object* %o)
+    ret void
+}
+
+define private void @pushNativeFrame(%Env* %env) alwaysinline {
+    ; Create a fake StackFrame
+    %sf = alloca %StackFrame
+    %sf_prev = getelementptr %StackFrame* %sf, i32 0, i32 0
+    %sf_returnAddress = getelementptr %StackFrame* %sf, i32 0, i32 1
+    %prevStackFrame = call i8* @llvm.frameaddress(i32 0)
+    %pc = call i8* @getpc()
+    store volatile i8* %prevStackFrame, i8** %sf_prev
+    store volatile i8* %pc, i8** %sf_returnAddress
+    
+    %prev_gw = call %GatewayFrame* @Env_gatewayFrames(%Env* %env)
+    %prev_gw_i8p = bitcast %GatewayFrame* %prev_gw to i8*
+    
+    ; Create the GatewayFrame
+    %gw = alloca %GatewayFrame
+    %gw_prev = getelementptr %GatewayFrame* %gw, i32 0, i32 0
+    %gw_frameAddress = getelementptr %GatewayFrame* %gw, i32 0, i32 1
+    %gw_proxyMethod = getelementptr %GatewayFrame* %gw, i32 0, i32 2
+    store volatile i8* %prev_gw_i8p, i8** %gw_prev
+    %sf_i8p = bitcast %StackFrame* %sf to i8*
+    store volatile i8* %sf_i8p, i8** %gw_frameAddress
+    store volatile i8* null, i8** %gw_proxyMethod
+    
+    call void @Env_gatewayFrames_store(%Env* %env, %GatewayFrame* %gw)
+
+    ret void
+}
+
+define private void @popNativeFrame(%Env* %env) alwaysinline {
+    %curr_gw = call %GatewayFrame* @Env_gatewayFrames(%Env* %env)
+    %curr_gw_prev = getelementptr %GatewayFrame* %curr_gw, i32 0, i32 0
+    %prev_gw_i8p = load volatile i8** %curr_gw_prev
+    %prev_gw = bitcast i8* %prev_gw_i8p to %GatewayFrame*
+    call void @Env_gatewayFrames_store(%Env* %env, %GatewayFrame* %prev_gw)
     ret void
 }

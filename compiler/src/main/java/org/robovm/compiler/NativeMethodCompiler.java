@@ -43,12 +43,10 @@ public class NativeMethodCompiler extends AbstractMethodCompiler {
     }
 
     protected void doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
-        Function outerFn = FunctionBuilder.method(method);
-        moduleBuilder.addFunction(outerFn);
-        Function innerFn = FunctionBuilder.nativeInner(method);
-        moduleBuilder.addFunction(innerFn);
+        Function fn = FunctionBuilder.method(method);
+        moduleBuilder.addFunction(fn);
 
-        Value env = innerFn.getParameterRef(0);
+        Value env = fn.getParameterRef(0);
         
         String targetClassName = getInternalName(method.getDeclaringClass());
         String methodName = method.getName();
@@ -56,21 +54,18 @@ public class NativeMethodCompiler extends AbstractMethodCompiler {
         Trampoline trampoline = new NativeCall(this.className, targetClassName, methodName, methodDesc, method.isStatic());
         trampolines.add(trampoline);
         
-        Value resultOuter = call(outerFn, innerFn.ref(), outerFn.getParameterRefs());
-        outerFn.add(new Ret(resultOuter));
-
-        ArrayList<Value> args = new ArrayList<Value>(Arrays.asList(outerFn.getParameterRefs()));
+        ArrayList<Value> args = new ArrayList<Value>(Arrays.asList(fn.getParameterRefs()));
         if (method.isStatic()) {
             // Add the current class as second parameter
             FunctionRef ldcFn = FunctionBuilder.ldcInternal(sootMethod.getDeclaringClass()).ref();
-            Value clazz = call(innerFn, ldcFn, env);
+            Value clazz = call(fn, ldcFn, env);
             args.add(1, clazz);
         }
         
-        pushNativeFrame(innerFn);
-        Value resultInner = call(innerFn, trampoline.getFunctionRef(), args);
-        popNativeFrame(innerFn);
-        call(innerFn, BC_THROW_IF_EXCEPTION_OCCURRED, env);
-        innerFn.add(new Ret(resultInner));
+        pushNativeFrame(fn);
+        Value result = call(fn, trampoline.getFunctionRef(), args);
+        popNativeFrame(fn);
+        call(fn, BC_THROW_IF_EXCEPTION_OCCURRED, env);
+        fn.add(new Ret(result));
     }
 }

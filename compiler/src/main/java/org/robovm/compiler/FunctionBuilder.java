@@ -235,16 +235,6 @@ public class FunctionBuilder {
                 .linkage(external).attribs(noinline, optsize).build();
     }
     
-    public static Function bridgeInner(SootMethod method) {
-        return new FunctionBuilder(method).suffix("_inner").linkage(internal)
-                .attribs(noinline, optsize).build();
-    }
-    
-    public static Function nativeInner(SootMethod method) {
-        return new FunctionBuilder(method).suffix("_inner").linkage(internal)
-                .attribs(noinline, optsize).build();
-    }
-    
     public static Function method(SootMethod method) {
         return new FunctionBuilder(method).linkage(external)
                 .attribs(noinline, optsize).build();

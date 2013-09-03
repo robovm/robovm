@@ -356,13 +356,8 @@ public class Executor {
             
             CommandLine commandLine = generateCommandLine();
             logCommandLine(commandLine);
-            AsyncExecutor executor = initExecutor(new AsyncExecutor());
-            Process process = executor.executeAsync(commandLine, generateEnv());
-            try {
-                process.waitFor();
-            } catch (InterruptedException e) {
-                process.destroy();
-            }
+            DefaultExecutor executor = initExecutor(new DefaultExecutor());
+            executor.execute(commandLine, generateEnv());
             return new String(baos.toByteArray()).trim();
         } finally {
             streamHandler = oldStreamHandler;

@@ -19,9 +19,6 @@
 #include <signal.h>
 #if defined(DARWIN)
 #   include <mach/mach.h>
-#   include <mach/mach_error.h>
-#   include <mach/exception.h>
-#   include <mach/task.h>
 #   include <mach/semaphore.h>
 #else
 #   include <semaphore.h>
@@ -67,49 +64,10 @@ static void signalHandler_npe_so(int signum, siginfo_t* info, void* context);
 static void signalHandler_dump_thread(int signum, siginfo_t* info, void* context);
 
 #if defined(DARWIN)
-/*
- * Install a mach exception handler which intercepts EXC_BAD_ACCESS and prevents GDB from
- * seeing it. If we don't do this GDB will not pass the EXC_BAD_ACCESS along to the OS so
- * that it can be converted into SIGBUS/SIGSEGV and handled by our signal handler. Instead
- * the EXC_BAD_ACCESS will just be raised again and again and again...
- * The code here has been inspired by the GC's code in os_dep.c and the mailing list post at
- * http://lists.apple.com/archives/darwin-dev/2006/Oct/msg00122.html.
- */
-extern boolean_t exc_server(mach_msg_header_t* request, mach_msg_header_t* reply);
-static mach_port_t mach_ex_port = MACH_PORT_NULL;
-
-kern_return_t catch_exception_raise(mach_port_t exception_port, mach_port_t thread, mach_port_t task,
-        exception_type_t exception, exception_data_t code, mach_msg_type_number_t code_count) __attribute__((visibility("default")));
-/*
- * This is called by exc_server. exc_server uses dlsym to find this function so it must be public and exported during linking. The
- * AbstractTarget class in the compiler makes sure this is exported when linking.
- */
-kern_return_t catch_exception_raise(mach_port_t exception_port, mach_port_t thread, mach_port_t task,
-        exception_type_t exception, exception_data_t code, mach_msg_type_number_t code_count) {
-    return KERN_FAILURE;
-}
-
-static void* exceptionHandlerEntryPoint(void* arg) {
-    // mach_msg_server() never returns
-    mach_msg_server(exc_server, sizeof(mach_msg_base_t) + 1024, mach_ex_port,  0);
-    return NULL;
-}
-
-static void registerDarwinExceptionHandler(void) {
-    // Create the Mach exception port
-    mach_port_t self = mach_task_self();
-    assert(mach_port_allocate(self, MACH_PORT_RIGHT_RECEIVE, &mach_ex_port) == KERN_SUCCESS);
-    assert(mach_port_insert_right(self, mach_ex_port, mach_ex_port, MACH_MSG_TYPE_MAKE_SEND) == KERN_SUCCESS);
-    
-    // Create the thread which receives the exceptions
-    pthread_t thread;
-    pthread_attr_t attr;
-    assert(!pthread_attr_init(&attr));
-    assert(!pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED));
-    assert(!pthread_create(&thread, &attr, exceptionHandlerEntryPoint, NULL));
-    pthread_attr_destroy(&attr);
-    
-    assert(task_set_exception_ports(self, EXC_MASK_BAD_ACCESS, mach_ex_port, EXCEPTION_DEFAULT, MACHINE_THREAD_STATE) == KERN_SUCCESS);
+// Weak stub for the function in vm/debug/src/debug.c. If librobovm-debug.a isn't
+// linked in this version will be used and won't do anything.
+void registerDarwinExceptionHandler(void) __attribute__ ((weak));
+void registerDarwinExceptionHandler(void) {
 }
 #endif
 

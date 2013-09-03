@@ -232,5 +232,6 @@ ExternalProject_Add(extgc
 install(FILES ${CMAKE_BINARY_DIR}/gc/lib/libgc.a DESTINATION ${INSTALL_DIR} RENAME libgc${LIB_SUFFIX})
 
 add_subdirectory(core/src)
+add_subdirectory(debug/src)
 add_subdirectory(bc/src)
 add_subdirectory(rt)

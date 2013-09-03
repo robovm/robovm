@@ -95,6 +95,9 @@ public abstract class AbstractTarget implements Target {
         } else {
             libs.addAll(Arrays.asList("-Wl,--whole-archive", "-lrobovm-rt" + libSuffix, "-Wl,--no-whole-archive"));            
         }
+        if (config.isSkipInstall()) {
+            libs.add("-lrobovm-debug" + libSuffix);
+        }
         libs.addAll(Arrays.asList(
                 "-lrobovm-core" + libSuffix, "-lgc" + libSuffix, "-lpthread", "-ldl", "-lm", "-lstdc++"));
         if (config.getOs().getFamily() == OS.Family.linux) {
@@ -116,7 +119,9 @@ public abstract class AbstractTarget implements Target {
         } else if (config.getOs().getFamily() == OS.Family.darwin) {
             File exportedSymbolsFile = new File(config.getTmpDir(), "exported_symbols");
             List<String> exportedSymbols = new ArrayList<String>();
-            exportedSymbols.add("catch_exception_raise");
+            if (config.isSkipInstall()) {
+                exportedSymbols.add("catch_exception_raise");
+            }
             exportedSymbols.addAll(config.getExportedSymbols());
             for (int i = 0; i < exportedSymbols.size(); i++) {
                 // On Darwin symbols are always prefixed with a '_'. We'll prepend

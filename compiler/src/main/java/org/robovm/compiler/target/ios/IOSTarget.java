@@ -196,7 +196,7 @@ public class IOSTarget extends AbstractTarget {
             List<File> objectFiles, List<String> libArgs)
             throws IOException {
 
-        ccArgs.add("-miphoneos-version-min=3.0");
+        ccArgs.add("-miphoneos-version-min=5.0");
         ccArgs.add("-isysroot");
         ccArgs.add(sdk.getRoot().getAbsolutePath());
         super.doBuild(outFile, ccArgs, objectFiles, libArgs);

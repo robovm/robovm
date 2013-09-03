@@ -194,7 +194,17 @@ public class Linker {
         for (Clazz clazz : linkClasses) {
             ClazzInfo ci = clazz.getClazzInfo();
             TypeInfo typeInfo = typeInfos.get(ci);
-            if (!typeInfo.error) {
+            if (typeInfo.error) {
+                // Add an empty TypeInfo
+                mb.addGlobal(new Global(mangleClass(clazz.getInternalName()) + "_typeinfo", 
+                        new StructureConstantBuilder()
+                            .add(new IntegerConstant(typeInfo.id))
+                            .add(new IntegerConstant(0))
+                            .add(new IntegerConstant(-1))
+                            .add(new IntegerConstant(0))
+                            .add(new IntegerConstant(0))
+                            .build()));
+            } else {
                 int[] classIds = new int[typeInfo.classTypes.length];
                 for (int i = 0; i < typeInfo.classTypes.length; i++) {
                     classIds[i] = typeInfo.classTypes[i].id;
@@ -278,31 +288,42 @@ public class Linker {
             return typeInfo;
         }
 
-        typeInfo.classTypes = EMPTY_TYPE_INFOS;
-        typeInfo.interfaceTypes = EMPTY_TYPE_INFOS;
-
         ClazzInfo ci = typeInfo.clazz.getClazzInfo();
+        List<TypeInfo> clTypeInfos = new ArrayList<TypeInfo>();
         Set<TypeInfo> ifTypeInfos = new TreeSet<TypeInfo>();
         
         if (!ci.isInterface()) {
             if (ci.hasSuperclass()) {
                 TypeInfo superTypeInfo = buildTypeInfo(typeInfos.get(ci.getSuperclass()), typeInfos);
-                typeInfo.classTypes = new TypeInfo[superTypeInfo.classTypes.length + 1];
-                System.arraycopy(superTypeInfo.classTypes, 0, typeInfo.classTypes, 0, superTypeInfo.classTypes.length);
-                typeInfo.classTypes[typeInfo.classTypes.length - 1] = typeInfo;
+                if (superTypeInfo.error) {
+                    typeInfo.error = true;
+                    return typeInfo;
+                }
+                clTypeInfos.addAll(Arrays.asList(superTypeInfo.classTypes));
+                clTypeInfos.add(typeInfo);
                 ifTypeInfos.addAll(Arrays.asList(superTypeInfo.interfaceTypes));
                 superTypeInfo.children.add(typeInfo.clazz);
             } else {
-                typeInfo.classTypes = new TypeInfo[] {typeInfo};
+                clTypeInfos.add(typeInfo);
             }
         }
         
         for (ClazzInfo ifCi : ci.getInterfaces()) {
             TypeInfo ifTypeInfo = buildTypeInfo(typeInfos.get(ifCi), typeInfos);
+            if (ifTypeInfo.error) {
+                typeInfo.error = true;
+                return typeInfo;
+            }
             ifTypeInfos.addAll(Arrays.asList(ifTypeInfo.interfaceTypes));
         }
         if (ci.isInterface()) {
             ifTypeInfos.add(typeInfo);
+        }
+
+        typeInfo.classTypes = EMPTY_TYPE_INFOS;
+        typeInfo.interfaceTypes = EMPTY_TYPE_INFOS;
+        if (!clTypeInfos.isEmpty()) {
+            typeInfo.classTypes = clTypeInfos.toArray(new TypeInfo[clTypeInfos.size()]);
         }
         if (!ifTypeInfos.isEmpty()) {
             typeInfo.interfaceTypes = ifTypeInfos.toArray(new TypeInfo[ifTypeInfos.size()]);

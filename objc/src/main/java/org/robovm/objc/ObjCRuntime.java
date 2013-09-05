@@ -87,9 +87,9 @@ public class ObjCRuntime {
                 || returnType.getAnnotation(ByVal.class) != null)) {
             int structSize = getStructSize(returnType);
             if (Bro.IS_X86) {
-                if (structSize > 8) {
-                    // On x86 stret has to be used for structs
-                    // larger than 8 bytes
+                if (structSize > 2 && structSize != 4 && structSize != 8) {
+                    // On x86 stret has to be used for all structs except
+                    // of size 1, 2, 4 and 8 bytes.
                     return true;
                 }
             } else {

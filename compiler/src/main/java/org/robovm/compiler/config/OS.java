@@ -28,23 +28,30 @@ public enum OS {
     public enum Family {linux, darwin}
 
     /**
-     * Returns the maximum size in bytes of aggregate types that can be returned
+     * Returns whether aggregate types of the specified size can be returned
      * in registers for this {@link OS} and the specified {@link Arch}.
      * 
-     * @param the {@link Arch}.
-     * @return the maximum size in bytes.
+     * @param arch the {@link Arch}.
+     * @param size the size of the aggregate type.
+     * @return <code>true</code> or <code>false</code>.
      */
-    public int getMaxRegisterReturnSize(Arch arch) {
+    public boolean isReturnedInRegisters(Arch arch, int size) {
         switch (arch) {
         case thumbv7:
             // ARM's AAPCS is the basis of both the iOS and Linux (EABI) ABIs
-            // and specifies that structs not larger than 4 bytes are returned
+            // and specifies that structs no larger than 4 bytes are returned
             // in r0.
-            return 4;
+            return size <= 4;
         case x86:
-            // On Darwin structs not larger than 8 bytes are returned in eax:edx.
-            // On Linux structs not larger than 4 bytes are returned in eax.
-            return this == linux ? 4 : 8;
+            // On Darwin structs of size 1, 2, 4 and 8 bytes are returned in eax:edx.
+            // On Linux no structs are returned in registers.
+            switch (this) {
+            case macosx:
+            case ios:
+                return size == 1 || size == 2 || size == 4 || size == 8;
+            case linux:
+                return false;
+            }
         }
         throw new IllegalArgumentException("Unknown arch: " + arch);
     }

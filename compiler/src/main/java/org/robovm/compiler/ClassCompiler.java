@@ -49,6 +49,7 @@ import org.robovm.compiler.clazz.Dependency;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
+import org.robovm.compiler.llvm.AliasRef;
 import org.robovm.compiler.llvm.And;
 import org.robovm.compiler.llvm.ArrayConstantBuilder;
 import org.robovm.compiler.llvm.Bitcast;
@@ -1029,7 +1030,7 @@ public class ClassCompiler {
                 body.add(new GlobalRef(BridgeMethodCompiler.getTargetFnPtrName(m), I8_PTR));
             }
             if (isCallback(m)) {
-                body.add(new ConstantBitcast(new FunctionRef(mangleMethod(m) + "_callback", getCallbackFunctionType(m)), I8_PTR));
+                body.add(new AliasRef(mangleMethod(m) + "_callback_i8p", I8_PTR));
             }
         }
         

@@ -213,7 +213,14 @@ public class FunctionBuilder {
             .type(getCallbackFunctionType(method)).suffix("_callback")
             .linkage(external).attribs(noinline, optsize).build();
     }
-    
+
+    public static Function callback(SootMethod method, Type returnType) {
+        FunctionType ft = getCallbackFunctionType(method);
+        return new FunctionBuilder(method)
+            .type(new FunctionType(returnType, ft.isVarargs(), ft.getParameterTypes())).suffix("_callback")
+            .linkage(external).attribs(noinline, optsize).build();
+    }
+
     public static Function lookup(SootMethod method, boolean isWeak) {
         return new FunctionBuilder(method).suffix("_lookup").linkage(isWeak ? weak : external).build();
     }

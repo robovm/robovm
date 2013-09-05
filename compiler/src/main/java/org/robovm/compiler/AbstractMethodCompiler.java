@@ -156,7 +156,8 @@ public abstract class AbstractMethodCompiler {
         validateCallbackMethod(method);
 
         SootMethod originalMethod = method;
-        if (isPassByValue(originalMethod)) {
+        boolean passByValue = isPassByValue(originalMethod);
+        if (passByValue) {
             // The method returns a struct by value. Determine whether that struct
             // is small enough to be passed in a register or has to be returned
             // using a @StructRet parameter.
@@ -164,7 +165,8 @@ public abstract class AbstractMethodCompiler {
             Arch arch = config.getArch();
             OS os = config.getOs();
             String triple = config.getTriple();
-            if (getStructType(originalMethod.getReturnType()).getAllocSize(triple) > os.getMaxRegisterReturnSize(arch)) {
+            int size = getStructType(originalMethod.getReturnType()).getAllocSize(triple);
+            if (!os.isReturnedInRegisters(arch, size)) {
                 method = createFakeStructRetMethod(method);
             }
         }
@@ -172,13 +174,16 @@ public abstract class AbstractMethodCompiler {
         Function callbackFn = FunctionBuilder.callback(method);
         if (originalMethod != method) {
             callbackFn.setParameterAttributes(0, ParameterAttribute.sret);
-            // ClassCompiler assumes that the callback function has the same type as
-            // the Java method. Add an alias that casts the callback function to the
-            // type assumed by ClassCompiler.
-            moduleBuilder.addAlias(new Alias(mangleMethod(originalMethod) + "_callback", 
-                    Linkage._private, new ConstantBitcast(callbackFn.ref(), getCallbackFunctionType(originalMethod))));
+        } else if (passByValue) {
+            // Returns a small struct. We need to change the return type to
+            // i8/i16/i32/i64.
+            int size = ((StructureType) callbackFn.getType().getReturnType()).getAllocSize(config.getTriple());
+            Type t = size <= 1 ? I8 : (size <= 2 ? I16 : (size <= 4 ? I32 : I64));
+            callbackFn = FunctionBuilder.callback(method, t);
         }
         moduleBuilder.addFunction(callbackFn);
+        moduleBuilder.addAlias(new Alias(mangleMethod(originalMethod) + "_callback_i8p", 
+                Linkage._private, new ConstantBitcast(callbackFn.ref(), I8_PTR_PTR)));
 
         String targetName = mangleMethod(originalMethod);
         if (originalMethod.isSynchronized()) {
@@ -255,7 +260,10 @@ public abstract class AbstractMethodCompiler {
             String marshalerClassName = getMarshalerClassName(method, false);
             Type nativeType = callbackFn.getType().getReturnType();
             
-            if (nativeType instanceof PrimitiveType) {
+            if (passByValue) {
+                // Small struct.
+                result = marshalObjectToNative(callbackFn, marshalerClassName, null, nativeType, env, result, true);
+            } else if (nativeType instanceof PrimitiveType) {
                 if (isEnum(method.getReturnType())) {
                     result = marshalEnumObjectToNative(callbackFn, marshalerClassName, nativeType, env, result);
                 } else {
@@ -343,8 +351,12 @@ public abstract class AbstractMethodCompiler {
     
     protected Value marshalNativeToObject(Function fn, String marshalerClassName, MarshaledArg marshaledArg, Value env, 
             String valueClassName, Value nativeValue, boolean copy) {
+        return marshalNativeToObject(fn, marshalerClassName, marshaledArg, env, valueClassName, nativeValue, copy, false);
+    }
+    protected Value marshalNativeToObject(Function fn, String marshalerClassName, MarshaledArg marshaledArg, Value env, 
+            String valueClassName, Value nativeValue, boolean copy, boolean smallStructRet) {
         
-        if (nativeValue.getType() instanceof StructureType) {
+        if (nativeValue.getType() instanceof StructureType || smallStructRet) {
             // Copy the result to the stack
             Variable stackCopy = fn.newVariable(new PointerType(nativeValue.getType()));
             fn.add(new Alloca(stackCopy, nativeValue.getType()));
@@ -414,6 +426,11 @@ public abstract class AbstractMethodCompiler {
     
     protected Value marshalObjectToNative(Function fn, String marshalerClassName, MarshaledArg marshaledArg, 
             Type nativeType, Value env, Value object) {
+        return marshalObjectToNative(fn, marshalerClassName, marshaledArg, nativeType, env, object, false);
+    }
+    
+    protected Value marshalObjectToNative(Function fn, String marshalerClassName, MarshaledArg marshaledArg, 
+            Type nativeType, Value env, Value object, boolean smallStructRet) {
         
         Invokestatic invokestatic = new Invokestatic(
                 getInternalName(sootMethod.getDeclaringClass()), marshalerClassName, 
@@ -423,7 +440,7 @@ public abstract class AbstractMethodCompiler {
                 env, object);
     
         Variable nativeValue = fn.newVariable(nativeType);
-        if (nativeType instanceof StructureType) {
+        if (nativeType instanceof StructureType || smallStructRet) {
             Variable tmp = fn.newVariable(new PointerType(nativeType));
             fn.add(new Inttoptr(tmp, handle, tmp.getType()));
             fn.add(new Load(nativeValue, tmp.ref()));

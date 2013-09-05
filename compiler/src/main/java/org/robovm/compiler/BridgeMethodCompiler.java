@@ -48,6 +48,7 @@ import org.robovm.compiler.llvm.ParameterAttribute;
 import org.robovm.compiler.llvm.PointerType;
 import org.robovm.compiler.llvm.PrimitiveType;
 import org.robovm.compiler.llvm.Ret;
+import org.robovm.compiler.llvm.StructureType;
 import org.robovm.compiler.llvm.Type;
 import org.robovm.compiler.llvm.Unreachable;
 import org.robovm.compiler.llvm.Value;
@@ -99,7 +100,8 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         
         SootMethod originalMethod = method;
         Value structObj = null;
-        if (isPassByValue(originalMethod)) {
+        boolean passByValue = isPassByValue(originalMethod);
+        if (passByValue) {
             // The method returns a struct by value. Determine whether that struct
             // is small enough to be passed in a register or has to be returned
             // using a @StructRet parameter.
@@ -107,7 +109,8 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             Arch arch = config.getArch();
             OS os = config.getOs();
             String triple = config.getTriple();
-            if (getStructType(originalMethod.getReturnType()).getAllocSize(triple) > os.getMaxRegisterReturnSize(arch)) {
+            int size = getStructType(originalMethod.getReturnType()).getAllocSize(triple);
+            if (!os.isReturnedInRegisters(arch, size)) {
                 method = createFakeStructRetMethod(method);
                 
                 // Call Struct.allocate(<returnType>) to allocate a struct instance
@@ -129,6 +132,13 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         }
         
         FunctionType targetFnType = getBridgeFunctionType(method);
+        if (method == originalMethod && passByValue) {
+            // Returns a small struct. We need to change the return type to
+            // i8/i16/i32/i64.
+            int size = ((StructureType) targetFnType.getReturnType()).getAllocSize(config.getTriple());
+            Type t = size <= 1 ? I8 : (size <= 2 ? I16 : (size <= 4 ? I32 : I64));
+            targetFnType = new FunctionType(t, targetFnType.isVarargs(), targetFnType.getParameterTypes());
+        }
 
         // Load the address of the resolved @Bridge method
         Variable targetFn = fn.newVariable(targetFnType);
@@ -256,7 +266,10 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             String marshalerClassName = getMarshalerClassName(method, true);
             String targetClassName = getInternalName(method.getReturnType());
             
-            if (targetFnType.getReturnType() instanceof PrimitiveType) {
+            if (passByValue) {
+                result = marshalNativeToObject(fn, marshalerClassName, null, env, 
+                        targetClassName, result, true, true);
+            } else if (targetFnType.getReturnType() instanceof PrimitiveType) {
                 if (isEnum(method.getReturnType())) {
                     result = marshalNativeToEnumObject(fn, marshalerClassName, env, targetClassName, result);
                 } else {
@@ -268,7 +281,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
                             getPtrTargetClass(method), result, getPtrWrapCount(method));
                 } else {
                     result = marshalNativeToObject(fn, marshalerClassName, null, env, 
-                            targetClassName, result, isPassByValue(method));
+                            targetClassName, result, passByValue);
                 }
             }
         } else if (hasPointerAnnotation(method)) {

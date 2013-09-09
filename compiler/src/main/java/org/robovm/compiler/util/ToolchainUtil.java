@@ -35,6 +35,7 @@ public class ToolchainUtil {
     private static String IOS_DEV_CLANG; 
     private static String IOS_SIM_CLANG; 
     private static String PNGCRUSH;
+    private static String PACKAGE_APPLICATION;
 
     private static String getIOSDevClang() throws IOException {
         if (IOS_DEV_CLANG == null) {
@@ -56,13 +57,26 @@ public class ToolchainUtil {
         }
         return PNGCRUSH;
     }
-    
+
+    private static String getPackageApplication() throws IOException {
+        if (PACKAGE_APPLICATION == null) {
+            PACKAGE_APPLICATION = new Executor(Logger.NULL_LOGGER, "xcrun").args("-sdk", "iphoneos", "-f", "PackageApplication").execCapture();
+        }
+        return PACKAGE_APPLICATION;
+    }
+
     public static void pngcrush(Config config, File inFile, File outFile) throws IOException {
         new Executor(config.getLogger(), getPngCrush())
             .args("-q", "-f", "0", inFile, outFile)
             .exec();
     }
-    
+
+    public static void packageApplication(Config config, File appDir, File outFile) throws IOException {
+        new Executor(config.getLogger(), getPackageApplication())
+            .args(appDir, "-o", outFile)
+            .exec();
+    }
+
     public static void link(Config config, List<String> args, List<File> objectFiles, List<String> libs, File outFile) throws IOException {
         File objectsFile = new File(config.getTmpDir(), "objects");
         FileUtils.writeLines(objectsFile, "UTF-8", objectFiles, "\n");

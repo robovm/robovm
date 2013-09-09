@@ -41,6 +41,7 @@ import org.robovm.compiler.log.ConsoleLogger;
 import org.robovm.compiler.target.LaunchParameters;
 import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters;
 import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters.Family;
+import org.robovm.compiler.target.ios.IOSTarget;
 import org.robovm.compiler.util.AntPathMatcher;
 
 /**
@@ -220,6 +221,7 @@ public class AppCompiler {
         
         boolean verbose = false;
         boolean run = false;
+        boolean createIpa = false;
         String dumpConfigFile = null;
         List<String> runArgs = new ArrayList<String>();
         List<String> launchArgs = new ArrayList<String>();
@@ -347,6 +349,8 @@ public class AppCompiler {
                 } else if ("-ios-sim-sdk".equals(args[i])) {
                     launchArgs.add(args[i++]);
                     launchArgs.add(args[i]);
+                } else if ("-createipa".equals(args[i])) {
+                    createIpa = true;
                 } else if (args[i].startsWith("-D")) {
                 } else if (args[i].startsWith("-X")) {
                 } else if (args[i].startsWith("-rvm:")) {
@@ -364,9 +368,13 @@ public class AppCompiler {
                 runArgs.add(args[i++]);
             }
             
+            if (createIpa && run) {
+                throw new IllegalArgumentException("Specify either -run or -createipa, not both");
+            }
+            
             builder.logger(new ConsoleLogger(verbose));
             builder.skipInstall(run);
-
+            
             if (dumpConfigFile != null) {
                 if (dumpConfigFile.equals("-")) {
                     builder.write(new OutputStreamWriter(System.out), new File("."));
@@ -382,6 +390,14 @@ public class AppCompiler {
             }
             
             compiler = new AppCompiler(builder.build());
+            
+            if (createIpa && (!(compiler.config.getTarget() instanceof IOSTarget)) 
+                    || compiler.config.getArch() != Arch.thumbv7 
+                    || compiler.config.getOs() != OS.ios) {
+                
+                throw new IllegalArgumentException("Must build for iOS thumbv7 when creating IPA");
+            }
+            
         } catch (Throwable t) {
             String message = t.getMessage();
             if (t instanceof ArrayIndexOutOfBoundsException) {
@@ -428,6 +444,8 @@ public class AppCompiler {
                 launchParameters.setArguments(runArgs);
                 Process process = compiler.config.getTarget().launch(launchParameters);
                 process.waitFor();
+            } else if (createIpa) {
+                ((IOSTarget) compiler.config.getTarget()).createIpa();
             } else {
                 compiler.config.getTarget().install();
             }
@@ -539,6 +557,8 @@ public class AppCompiler {
         System.err.println("  -version              Print the version of the compiler and exit");
         System.err.println("  -help, -?             Display this information");
         System.err.println("Target specific options:");
+        System.err.println("  -createipa            (iOS) Create a .IPA file from the app bundle and place it in\n"
+                         + "                        the install dir specified with -d.");
         System.err.println("  -plist <file>         (iOS) Info.plist file to be used by the app. If not specified\n"
                          + "                        a simple Info.plist will be generated with a CFBundleIdentifier\n" 
                          + "                        based on the main class name or executable file name.");

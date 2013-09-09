@@ -206,6 +206,7 @@ public class IOSTarget extends AbstractTarget {
         createInfoPList(installDir);
         generateDsym(installDir, getExecutable());
         if (arch == Arch.thumbv7) {
+            strip(installDir, getExecutable());
             copyResourcesPList(installDir);
             codesign(signIdentity, entitlementsPList, installDir);
         }
@@ -275,6 +276,12 @@ public class IOSTarget extends AbstractTarget {
             .exec();
     }
 
+    private void strip(File dir, String executable) throws IOException {
+        new Executor(config.getLogger(), "strip")
+            .args(new File(dir, executable))
+            .exec();
+    }
+    
     @Override
     protected void doInstall(File installDir, String executable) throws IOException {
         super.doInstall(installDir, getExecutable());
@@ -287,6 +294,17 @@ public class IOSTarget extends AbstractTarget {
         return super.doLaunch(launchParameters);
     }
 
+    public void createIpa() throws IOException {
+        config.getLogger().debug("Creating IPA in %s", config.getInstallDir());
+        config.getInstallDir().mkdirs();
+        File tmpDir = new File(config.getInstallDir(), getExecutable() + ".app");
+        FileUtils.deleteDirectory(tmpDir);
+        tmpDir.mkdirs();
+        super.doInstall(tmpDir, getExecutable());
+        prepareInstall(tmpDir);
+        ToolchainUtil.packageApplication(config, tmpDir, new File(config.getInstallDir(), getExecutable() + ".ipa"));
+    }
+    
     @Override
     protected void copyFile(Resource resource, File file, File destDir)
             throws IOException {

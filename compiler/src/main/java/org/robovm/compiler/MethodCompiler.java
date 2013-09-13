@@ -33,6 +33,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.robovm.compiler.config.Config;
+import org.robovm.compiler.debug.DebugInfoCompiler;
 import org.robovm.compiler.llvm.Add;
 import org.robovm.compiler.llvm.Alloca;
 import org.robovm.compiler.llvm.And;
@@ -200,11 +201,13 @@ public class MethodCompiler extends AbstractMethodCompiler {
     private Function function;
     private Map<Unit, List<Trap>> trapsAt;
     private Value env;
+    private DebugInfoCompiler debugCompiler;
     
     private Variable dims;
     
     public MethodCompiler(Config config) {
         super(config);
+        this.debugCompiler = new DebugInfoCompiler(config);
     }
     
     protected void doCompile(ModuleBuilder moduleBuilder, SootMethod method) {

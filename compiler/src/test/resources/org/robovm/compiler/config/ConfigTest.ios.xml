@@ -4,5 +4,4 @@
   <iosInfoPList>Info.plist</iosInfoPList>
   <iosResourceRulesPList>/tmp/resourcerules.plist</iosResourceRulesPList>
   <iosEntitlementsPList>entitlements.plist</iosEntitlementsPList>
-  <iosSignIdentity>FooBar</iosSignIdentity>
 </config>

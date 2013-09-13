@@ -31,6 +31,7 @@ import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.commons.exec.util.StringUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
@@ -68,7 +69,8 @@ public class IOSTarget extends AbstractTarget {
     private NSDictionary infoPListDict = null;
     private File resourceRulesPList;
     private File entitlementsPList;
-    private String signIdentity;
+    private SigningIdentity signIdentity;
+    private ProvisioningProfile provisioningProfile;
     
     public IOSTarget() {
     }
@@ -139,7 +141,6 @@ public class IOSTarget extends AbstractTarget {
     }
     
 
-    @SuppressWarnings("resource")
     private Executor createFruitstrapExecutor(LaunchParameters launchParameters)
             throws IOException {
 
@@ -208,7 +209,17 @@ public class IOSTarget extends AbstractTarget {
         if (arch == Arch.thumbv7) {
             strip(installDir, getExecutable());
             copyResourcesPList(installDir);
-            codesign(signIdentity, entitlementsPList, installDir);
+            // Copy the provisioning profile
+            config.getLogger().debug("Copying provisioning profile: %s (%s)", 
+                    provisioningProfile.getName(), 
+                    provisioningProfile.getEntitlements().objectForKey("application-identifier"));
+            FileUtils.copyFile(provisioningProfile.getFile(), new File(installDir, "embedded.mobileprovision"));
+            codesign(signIdentity, getOrCreateEntitlementsPList(false), installDir);
+            // For some odd reason there needs to be a symbolic link in the root of
+            // the app bundle named CodeResources pointing at _CodeSignature/CodeResources
+            new Executor(config.getLogger(), "ln")
+                .args("-s", "_CodeSignature/CodeResources", new File(installDir, "CodeResources"))
+                .exec();
         }
     }
     
@@ -218,15 +229,15 @@ public class IOSTarget extends AbstractTarget {
         generateDsym(appDir, getExecutable());
         if (arch == Arch.thumbv7) {
             copyResourcesPList(appDir);
-            codesign(signIdentity, getOrCreateEntitlementsPList(), appDir);
+            codesign(signIdentity, getOrCreateEntitlementsPList(true), appDir);
         }
     }
     
-    private void codesign(String identity, File entitlementsPList, File appDir) throws IOException {
+    private void codesign(SigningIdentity identity, File entitlementsPList, File appDir) throws IOException {
         List<Object> args = new ArrayList<Object>();
         args.add("-f");
         args.add("-s");
-        args.add(identity);
+        args.add(identity.getName());
         if (entitlementsPList != null) {
             args.add("--entitlements");
             args.add(entitlementsPList);
@@ -250,16 +261,24 @@ public class IOSTarget extends AbstractTarget {
         }
     }
     
-    private File getOrCreateEntitlementsPList() throws IOException {
+    private File getOrCreateEntitlementsPList(boolean getTaskAllow) throws IOException {
         try {
             File destFile = new File(config.getTmpDir(), "Entitlements.plist");
+            NSDictionary dict = null;
             if (entitlementsPList != null) {
-                NSDictionary dict = (NSDictionary) PropertyListParser.parse(entitlementsPList);
-                dict.put("get-task-allow", true);
-                PropertyListParser.saveAsXML(dict, destFile);
+                dict = (NSDictionary) PropertyListParser.parse(entitlementsPList);
             } else {
-                FileUtils.copyURLToFile(getClass().getResource("/Entitlements.plist"), destFile);
+                dict = (NSDictionary) PropertyListParser.parse(IOUtils.toByteArray(getClass().getResourceAsStream("/Entitlements.plist")));
             }
+            NSDictionary profileEntitlements = provisioningProfile.getEntitlements();
+            for (String key : profileEntitlements.allKeys()) {
+                if (dict.objectForKey(key) == null) {
+                    dict.put(key, profileEntitlements.objectForKey(key));
+                }
+            }
+            dict.put("application-identifier", provisioningProfile.getAppIdPrefix() + "." + getBundleId());
+            dict.put("get-task-allow", getTaskAllow);
+            PropertyListParser.saveAsXML(dict, destFile);
             return destFile;
         } catch (IOException e) {
             throw e;
@@ -341,12 +360,28 @@ public class IOSTarget extends AbstractTarget {
         return config.getExecutableName();
     }
 
+    protected String getBundleId() {
+        if (infoPListDict != null) {
+            NSObject bundleIdentifier = infoPListDict.objectForKey("CFBundleIdentifier");
+            if (bundleIdentifier != null) {
+                return bundleIdentifier.toString();
+            }
+        }
+        return config.getMainClass() != null ? config.getMainClass() : config.getExecutableName();
+    }
+    
     protected void customizeInfoPList(NSDictionary dict) {
         if (arch == Arch.x86) {
             dict.put("CFBundleSupportedPlatforms", new NSArray(new NSString("iPhoneSimulator")));
         } else {
             dict.put("CFBundleResourceSpecification", "ResourceRules.plist");
             dict.put("CFBundleSupportedPlatforms", new NSArray(new NSString("iPhoneOS")));
+            dict.put("DTPlatformVersion", sdk.getPlatformVersion());
+            dict.put("DTPlatformBuild", sdk.getPlatformBuild());
+            dict.put("DTSDKBuild", sdk.getBuild());
+            // Validation fails without these. Let's pretend the app was built with Xcode 4.6.3
+            dict.put("DTXcode", "0463");
+            dict.put("DTXcodeBuild", "4H1503");
         }
     }
     
@@ -359,8 +394,7 @@ public class IOSTarget extends AbstractTarget {
         } else {
             dict.put("CFBundleExecutable", config.getExecutableName());
             dict.put("CFBundleName", config.getExecutableName());
-            String identifier = config.getMainClass() != null ? config.getMainClass() : config.getExecutableName();
-            dict.put("CFBundleIdentifier", identifier);
+            dict.put("CFBundleIdentifier", getBundleId());
             dict.put("CFBundlePackageType", "APPL");
             dict.put("LSRequiresIPhoneOS", true);
             if (sdk.getDefaultProperty("SUPPORTED_DEVICE_FAMILIES") != null) {
@@ -388,9 +422,13 @@ public class IOSTarget extends AbstractTarget {
             dict.put("UIRequiredDeviceCapabilities", new NSArray(new NSString("armv7")));
         }
 
-        dict.put("DTPlatformName", sdk.getDefaultProperty("PLATFORM_NAME"));
-        dict.put("DTPlatformVersion", sdk.getVersion());
+        dict.put("DTPlatformName", sdk.getPlatformName());
         dict.put("DTSDKName", sdk.getCanonicalName());
+
+        if (dict.objectForKey("MinimumOSVersion") == null) {
+            // This is required
+            dict.put("MinimumOSVersion", "5.0");
+        }
         
         customizeInfoPList(dict);
 
@@ -414,9 +452,11 @@ public class IOSTarget extends AbstractTarget {
             arch = config.getArch();
         }
 
-        signIdentity = config.getIosSignIdentity();
-        if (signIdentity == null) {
-            signIdentity = "iPhone Developer";
+        if (arch == Arch.thumbv7) {
+            signIdentity = config.getIosSignIdentity();
+            if (signIdentity == null) {
+                signIdentity = SigningIdentity.find(SigningIdentity.list(), "iPhone Developer");
+            }
         }
         
         infoPList = config.getIosInfoPList();
@@ -427,7 +467,18 @@ public class IOSTarget extends AbstractTarget {
                 throw new IllegalArgumentException(t);
             }
         }
-        
+
+        if (arch == Arch.thumbv7) {
+            provisioningProfile = config.getIosProvisioningProfile();
+            if (provisioningProfile == null) {
+                NSString bundleId = infoPListDict != null ? (NSString) infoPListDict.objectForKey("CFBundleIdentifier") : null;
+                if (bundleId == null) {
+                    bundleId = new NSString("*");
+                }
+                provisioningProfile = ProvisioningProfile.find(ProvisioningProfile.list(), signIdentity, bundleId.toString());
+            }
+        }
+
         String sdkVersion = config.getIosSdkVersion();
         List<SDK> sdks = getSDKs();
         if (sdkVersion == null) {

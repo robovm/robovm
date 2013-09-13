@@ -44,6 +44,8 @@ import org.robovm.compiler.log.Logger;
 import org.robovm.compiler.target.ConsoleTarget;
 import org.robovm.compiler.target.Target;
 import org.robovm.compiler.target.ios.IOSTarget;
+import org.robovm.compiler.target.ios.ProvisioningProfile;
+import org.robovm.compiler.target.ios.SigningIdentity;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
@@ -112,8 +114,9 @@ public class Config {
     private File iosResourceRulesPList;
     @Element(required = false)
     private File iosEntitlementsPList;
-    @Element(required = false)
-    private String iosSignIdentity;
+
+    private SigningIdentity iosSignIdentity;
+    private ProvisioningProfile iosProvisioningProfile;
     
     private Target target = null;
     private Properties properties = new Properties();
@@ -314,10 +317,14 @@ public class Config {
         return iosEntitlementsPList;
     }
 
-    public String getIosSignIdentity() {
+    public SigningIdentity getIosSignIdentity() {
         return iosSignIdentity;
     }
 
+    public ProvisioningProfile getIosProvisioningProfile() {
+        return iosProvisioningProfile;
+    }
+    
     private static File makeFileRelativeTo(File dir, File f) {
         if (f.getParentFile() == null) {
             return dir;
@@ -882,11 +889,16 @@ public class Config {
             return this;
         }
         
-        public Builder iosSignIdentity(String signIdentity) {
+        public Builder iosSignIdentity(SigningIdentity signIdentity) {
             config.iosSignIdentity = signIdentity;
             return this;
         }
-        
+
+        public Builder iosProvisioningProfile(ProvisioningProfile iosProvisioningProfile) {
+            config.iosProvisioningProfile = iosProvisioningProfile;
+            return this;
+        }
+
         public Config build() throws IOException {
             return config.build();
         }

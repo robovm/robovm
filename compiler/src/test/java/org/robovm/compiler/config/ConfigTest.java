@@ -124,7 +124,6 @@ public class ConfigTest {
         builder.read(new InputStreamReader(getClass().getResourceAsStream("ConfigTest.ios.xml"), "utf-8"), wd);
         Config config = builder.config;
         assertEquals("6.1", config.getIosSdkVersion());
-        assertEquals("FooBar", config.getIosSignIdentity());
         assertEquals(new File(wd, "Info.plist"), config.getIosInfoPList());
         assertEquals(new File(wd, "entitlements.plist"), config.getIosEntitlementsPList());
         assertEquals(new File(tmp, "resourcerules.plist"), config.getIosResourceRulesPList());
@@ -137,7 +136,6 @@ public class ConfigTest {
         builder.iosInfoPList(new File("Info.plist"));
         builder.iosEntitlementsPList(new File("entitlements.plist"));
         builder.iosResourceRulesPList(new File(tmp, "resourcerules.plist"));
-        builder.iosSignIdentity("FooBar");
         builder.targetType(TargetType.ios);
         
         StringWriter out = new StringWriter();

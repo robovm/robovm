@@ -42,6 +42,8 @@ import org.robovm.compiler.target.LaunchParameters;
 import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters;
 import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters.Family;
 import org.robovm.compiler.target.ios.IOSTarget;
+import org.robovm.compiler.target.ios.ProvisioningProfile;
+import org.robovm.compiler.target.ios.SigningIdentity;
 import org.robovm.compiler.util.AntPathMatcher;
 
 /**
@@ -340,7 +342,9 @@ public class AppCompiler {
                 } else if ("-resourcerules".equals(args[i])) {
                     builder.iosResourceRulesPList(new File(args[++i]));
                 } else if ("-signidentity".equals(args[i])) {
-                    builder.iosSignIdentity(args[++i]);
+                    builder.iosSignIdentity(SigningIdentity.find(SigningIdentity.list(), args[++i]));
+                } else if ("-provisioningprofile".equals(args[i])) {
+                    builder.iosProvisioningProfile(ProvisioningProfile.find(ProvisioningProfile.list(), args[++i]));
                 } else if ("-sdk".equals(args[i])) {
                     builder.iosSdkVersion(args[++i]);
                 } else if ("-ios-sim-family".equals(args[i])) {
@@ -507,7 +511,8 @@ public class AppCompiler {
                          + "                        is used if not specified. Use llc to determine allowed values.");
         System.err.println("  -target <name>        The target to build for. Either 'auto', 'console' or 'ios'.\n" 
                          + "                        The default is 'auto' which means use -os to decide.");
-        System.err.println("  -forcelinkclasses <list> : separated list of class patterns matching\n" 
+        System.err.println("  -forcelinkclasses <list>\n" 
+                         + "                        : separated list of class patterns matching\n" 
                          + "                        classes that must be linked in even if not referenced\n" 
                          + "                        (directly or indirectly) from the main class. If no main\n" 
                          + "                        class is specified all classes will be linked in unless this\n" 
@@ -526,7 +531,8 @@ public class AppCompiler {
         System.err.println("  -libs <list>          : separated list of static library files (.a), object\n"
                          + "                        files (.o) and system libraries that should be included\n" 
                          + "                        when linking the final executable.");
-        System.err.println("  -exportedsymbols <list> : separated list of symbols that should be exported\n"
+        System.err.println("  -exportedsymbols <list>\n" 
+                         + "                        : separated list of symbols that should be exported\n"
                          + "                        when linking the executable. This can be used when\n" 
                          + "                        linking in function which will be called using bro.\n" 
                          + "                        Wildcards can be used. * matches zero or more characters,\n" 
@@ -567,6 +573,11 @@ public class AppCompiler {
         System.err.println("  -resourcerules <file> (iOS) Property list (.plist) file containing resource rules\n" 
                          + "                        passed to codesign when signing the app.");
         System.err.println("  -signidentity <id>    (iOS) Sign using this identity. Default is 'iPhone Developer'.");
+        System.err.println("  -provisioningprofile <file>\n" 
+                         + "                        (iOS) Provisioning profile to use when building for a device.\n" 
+                         + "                        Either a UUID, an app name or app id prefix. If not specified\n" 
+                         + "                        a provisioning profile matching the signing identity and bundle\n" 
+                         + "                        id from the Info.plist file will be used.");
         System.err.println("  -sdk <version>        (iOS) Version number of the iOS SDK to build against. If not\n" 
                          + "                        specified the latest SDK that can be found will be used.");
         System.err.println("iOS simulator launch options:");

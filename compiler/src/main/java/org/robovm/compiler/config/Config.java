@@ -620,12 +620,18 @@ public class Config {
 
             String rtJarName = "robovm-rt-" + Version.getVersion() + ".jar";
             File rtJar = new File(dir, "rt/target/" + rtJarName);
+            File rtClasses = new File(dir, "rt/target/classes/");
+            File rtSource = rtJar;
             if (!rtJar.exists() || rtJar.isDirectory()) {
+            	if(!rtClasses.exists() || rtClasses.isFile()) {
                 throw new IllegalArgumentException(error 
                         + "rt/target/" + rtJarName + " missing or invalid");
+            	} else {
+            		rtSource = rtClasses;
+            	}
             }
 
-            return new Home(dir, binDir, vmBinariesDir, rtJar);
+            return new Home(dir, binDir, vmBinariesDir, rtSource);
         }
     }
     

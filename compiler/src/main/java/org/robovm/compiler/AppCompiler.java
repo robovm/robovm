@@ -395,9 +395,9 @@ public class AppCompiler {
             
             compiler = new AppCompiler(builder.build());
             
-            if (createIpa && (!(compiler.config.getTarget() instanceof IOSTarget)) 
+            if (createIpa && (!(compiler.config.getTarget() instanceof IOSTarget) 
                     || compiler.config.getArch() != Arch.thumbv7 
-                    || compiler.config.getOs() != OS.ios) {
+                    || compiler.config.getOs() != OS.ios)) {
                 
                 throw new IllegalArgumentException("Must build for iOS thumbv7 when creating IPA");
             }

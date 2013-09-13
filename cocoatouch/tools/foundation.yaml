@@ -164,6 +164,10 @@ classes:
                 parameters:
                     aKey:
                         type: NSObject
+            "-removeAllObjects":
+                visibility: protected
+            "-removeObjectForKey:":
+                visibility: protected
             "-initWithCapacity:":
             "+*":
                 exclude: true

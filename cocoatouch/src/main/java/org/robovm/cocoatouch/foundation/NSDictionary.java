@@ -17,6 +17,10 @@ package org.robovm.cocoatouch.foundation;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.NoSuchElementException;
 /*<imports>*/
 import java.util.*;
 import org.robovm.objc.*;
@@ -44,6 +48,96 @@ import org.robovm.rt.bro.ptr.*;
         ObjCRuntime.bind(/*<name>*/ NSDictionary /*</name>*/.class);
     }
 
+    static class KeySet<K extends NSObject> extends AbstractSet<K> {
+        private final NSDictionary<K, ? extends NSObject> map;
+        
+        KeySet(NSDictionary<K, ? extends NSObject> map) {
+            this.map = map;
+        }
+
+        @Override
+        public Iterator<K> iterator() {
+            final Iterator<K> it = map.allKeys().iterator();
+            return new Iterator<K>() {
+                private K last = null;
+                @Override
+                public boolean hasNext() {
+                    return it.hasNext();
+                }
+                @Override
+                public K next() {
+                    last = it.next();
+                    return last;
+                }
+                @Override
+                public void remove() {
+                    if (last == null) {
+                        throw new IllegalStateException();
+                    }
+                    if (map.get(last) == null) {
+                        throw new ConcurrentModificationException();
+                    }
+                    map.remove(last);
+                    last = null;
+                }
+            };
+        }
+
+        @Override
+        public int size() {
+            return map.count();
+        }
+    }
+    
+    static class Entry<K extends NSObject, V extends NSObject> implements Map.Entry<K, V> {
+        private final NSDictionary<K, V> map;
+        private final K key;
+        private final V value;
+        
+        Entry(NSDictionary<K, V> map, K key, V value) {
+            this.map = map;
+            this.key = key;
+            this.value = value;
+        }
+
+        public V setValue(V v) {
+            if (value != map.get(key)) {
+                throw new ConcurrentModificationException();
+            }
+            return map.put(key, v);
+        }
+
+        public K getKey() {
+            return key;
+        }
+
+        public V getValue() {
+            return value;
+        }
+        
+        public boolean equals(Object object) {
+            if (this == object) {
+                return true;
+            }
+            if (object instanceof Map.Entry) {
+                Map.Entry<?, ?> entry = (Map.Entry<?, ?>) object;
+                return (key == null ? entry.getKey() == null : key.equals(entry
+                        .getKey()))
+                        && (value == null ? entry.getValue() == null : value
+                                .equals(entry.getValue()));
+            }
+            return false;
+        }
+        
+        public int hashCode() {
+            return key.hashCode() ^ value.hashCode();
+        }
+
+        public String toString() {
+            return key + "=" + value;
+        }
+    }
+    
     static class EntrySet<K extends NSObject, V extends NSObject> extends AbstractSet<Map.Entry<K, V>> {
         private final NSDictionary<K, V> map;
 
@@ -55,7 +149,7 @@ import org.robovm.rt.bro.ptr.*;
         public Iterator<Map.Entry<K, V>> iterator() {
             final Iterator<K> keysIt = map.keySet().iterator();
             return new Iterator<Map.Entry<K, V>>() {
-                Map.Entry<K, V> entry = null;
+                private Map.Entry<K, V> entry = null;
 
                 @Override
                 public boolean hasNext() {
@@ -65,16 +159,12 @@ import org.robovm.rt.bro.ptr.*;
                 @SuppressWarnings("serial")
                 @Override
                 public Map.Entry<K, V> next() {
-                    K key = keysIt.next();
-                    entry = new SimpleEntry<K, V>(key, map.get(key)) {
-                        public V setValue(V v) {
-                            Object value = map.get(entry.getKey());
-                            if (entry.getValue() != value) {
-                                throw new ConcurrentModificationException();
-                            }
-                            return super.setValue(v);
-                        }
-                    };
+                    final K key = keysIt.next();
+                    final V value = map.get(key);
+                    if (value == null) {
+                        throw new ConcurrentModificationException();
+                    }
+                    entry = new Entry<K, V>(map, key, value);
                     return entry;
                 }
 
@@ -96,44 +186,12 @@ import org.robovm.rt.bro.ptr.*;
 
         @Override
         public int size() {
-            return map.size();
+            return map.count();
         }
         
-    }
-    
-    static class MapAdapter<K extends NSObject, V extends NSObject> extends AbstractMap<K, V> {
-        private final NSDictionary<K, V> map;
-        EntrySet<K, V> entrySet = null;
-        
-
-        MapAdapter(NSDictionary<K, V> map) {
-            this.map = map;
-        }
-
-        public boolean containsKey(Object key) {
-            return get(key) != null;
-        }
-        
-        @SuppressWarnings("unchecked")
-        public V get(Object key) {
-            if (key instanceof NSObject) {
-                return (V) map.objectForKey((NSObject) key) ;
-            }
-            return null;
-        }
-
-        @Override
-        public Set<Map.Entry<K, V>> entrySet() {
-            if (entrySet == null) {
-                entrySet = new EntrySet<K, V>(map);
-            }
-            return entrySet;
-        }
     }
     
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSDictionary /*</name>*/.class);
-
-    private AbstractMap<K, V> adapter = createAdapter();
 
     /*<constructors>*/
     protected NSDictionary(SkipInit skipInit) { super(skipInit); }
@@ -159,53 +217,55 @@ import org.robovm.rt.bro.ptr.*;
     
     /*</properties>*/
 
-    protected AbstractMap<K, V> createAdapter() {
-        return new MapAdapter<K, V>(this);
-    }
-    
-    @Override
-    protected void afterMarshaled() {
-        if (adapter == null) {
-            adapter = createAdapter();
-        }
-        super.afterMarshaled();
-    }
-    
     public void clear() {
-        adapter.clear();
+        throw new UnsupportedOperationException("NSDictionary is immutable");
     }
     public boolean containsKey(Object key) {
-        return adapter.containsKey(key);
+        return get(key) != null;
     }
     public boolean containsValue(Object value) {
-        return adapter.containsValue(value);
+        if (!(value instanceof NSObject)) {
+            return false;
+        }
+        NSArray<V> values = allValues();
+        int count = values.count();
+        for (int i = 0; i < count; i++) {
+            NSObject o = values.objectAtIndex(i);
+            if (o.equals(value)) {
+                return true;
+            }
+        }
+        return false;
     }
-    public Set<java.util.Map.Entry<K, V>> entrySet() {
-        return adapter.entrySet();
+    public Set<Map.Entry<K, V>> entrySet() {
+        return new EntrySet<K, V>(this);
     }
     public V get(Object key) {
-        return adapter.get(key);
+        if (!(key instanceof NSObject)) {
+            return null;
+        }
+        return (V) objectForKey((K) key);
     }
     public boolean isEmpty() {
-        return adapter.isEmpty();
+        return count() == 0;
     }
     public Set<K> keySet() {
-        return adapter.keySet();
+        return new KeySet<K>(this);
     }
     public V put(K key, V value) {
-        return adapter.put(key, value);
+        throw new UnsupportedOperationException("NSDictionary is immutable");
     }
     public void putAll(Map<? extends K, ? extends V> m) {
-        adapter.putAll(m);
+        throw new UnsupportedOperationException("NSDictionary is immutable");
     }
     public V remove(Object key) {
-        return adapter.remove(key);
+        throw new UnsupportedOperationException("NSDictionary is immutable");
     }
     public int size() {
-        return adapter.size();
+        return count();
     }
     public Collection<V> values() {
-        return adapter.values();
+        return allValues();
     }
     
     /*<methods>*/

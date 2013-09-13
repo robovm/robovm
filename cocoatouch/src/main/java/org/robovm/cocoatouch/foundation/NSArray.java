@@ -54,6 +54,10 @@ import org.robovm.rt.bro.ptr.*;
         @SuppressWarnings("unchecked")
         @Override
         public U get(int index) {
+            int size = array.count();
+            if (index < 0 || index >= size) {
+                throw new IndexOutOfBoundsException("index = " + index + ", size = " + size);
+            }
             return (U) array.objectAtIndex(index);
         }
 

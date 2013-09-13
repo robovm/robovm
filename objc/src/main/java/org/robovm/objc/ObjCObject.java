@@ -59,22 +59,23 @@ public abstract class ObjCObject extends NativeObject {
     protected final boolean customClass;
     
     protected ObjCObject() {
-        long handle = alloc();
-        setHandle(handle);
-        AssociatedObjectHelper.setPeerObject(handle, this);
+        setHandle(alloc());
         customClass = getObjCClass().isCustom();
     }
     
     protected ObjCObject(long handle) {
-        setHandle(handle);
-        AssociatedObjectHelper.setPeerObject(handle, this);
+        initObject(handle);
         customClass = getObjCClass().isCustom();
     }
     
     ObjCObject(long handle, boolean customClass) {
+        initObject(handle);
+        this.customClass = customClass;
+    }
+    
+    protected void initObject(long handle) {
         setHandle(handle);
         AssociatedObjectHelper.setPeerObject(handle, this);
-        this.customClass = customClass;
     }
     
     protected long alloc() {

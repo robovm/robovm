@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html">UIDocumentInteractionController Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html">UIDocumentInteractionController Class Reference</a>
  *   @since Available in iOS 3.2 and later.
  * </div>
  */
@@ -60,7 +60,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSURL objc_getURL(UIDocumentInteractionController __self__, Selector __cmd__);
     @Bridge private native static NSURL objc_getURLSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/URL">@property(nonatomic,retain) NSURL *URL</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/URL">@property(nonatomic,retain) NSURL *URL</a>
      * @since Available in iOS 3.2 and later.
      */
     public NSURL getURL() {
@@ -71,7 +71,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setURL(UIDocumentInteractionController __self__, Selector __cmd__, NSURL URL);
     @Bridge private native static void objc_setURLSuper(ObjCSuper __super__, Selector __cmd__, NSURL URL);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/URL">@property(nonatomic,retain) NSURL *URL</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/URL">@property(nonatomic,retain) NSURL *URL</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setURL(NSURL URL) {
@@ -82,7 +82,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static String objc_getUTI(UIDocumentInteractionController __self__, Selector __cmd__);
     @Bridge private native static String objc_getUTISuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/UTI">@property(nonatomic,copy) NSString *UTI</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/UTI">@property(nonatomic,copy) NSString *UTI</a>
      * @since Available in iOS 3.2 and later.
      */
     public String getUTI() {
@@ -93,7 +93,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setUTI(UIDocumentInteractionController __self__, Selector __cmd__, String UTI);
     @Bridge private native static void objc_setUTISuper(ObjCSuper __super__, Selector __cmd__, String UTI);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/UTI">@property(nonatomic,copy) NSString *UTI</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/UTI">@property(nonatomic,copy) NSString *UTI</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setUTI(String UTI) {
@@ -104,7 +104,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSObject objc_getAnnotation(UIDocumentInteractionController __self__, Selector __cmd__);
     @Bridge private native static NSObject objc_getAnnotationSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/annotation">@property(nonatomic,retain) id annotation</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/annotation">@property(nonatomic,retain) id annotation</a>
      * @since Available in iOS 3.2 and later.
      */
     public NSObject getAnnotation() {
@@ -115,7 +115,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setAnnotation(UIDocumentInteractionController __self__, Selector __cmd__, NSObject annotation);
     @Bridge private native static void objc_setAnnotationSuper(ObjCSuper __super__, Selector __cmd__, NSObject annotation);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/annotation">@property(nonatomic,retain) id annotation</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/annotation">@property(nonatomic,retain) id annotation</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setAnnotation(NSObject annotation) {
@@ -126,7 +126,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIDocumentInteractionControllerDelegate objc_getDelegate(UIDocumentInteractionController __self__, Selector __cmd__);
     @Bridge private native static UIDocumentInteractionControllerDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/delegate">@property(nonatomic,assign) id&amp;lt;UIDocumentInteractionControllerDelegate&amp;gt; delegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/delegate">@property(nonatomic,assign) id&amp;lt;UIDocumentInteractionControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.2 and later.
      */
     public UIDocumentInteractionControllerDelegate getDelegate() {
@@ -137,7 +137,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setDelegate(UIDocumentInteractionController __self__, Selector __cmd__, UIDocumentInteractionControllerDelegate delegate);
     @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIDocumentInteractionControllerDelegate delegate);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/delegate">@property(nonatomic,assign) id&amp;lt;UIDocumentInteractionControllerDelegate&amp;gt; delegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/delegate">@property(nonatomic,assign) id&amp;lt;UIDocumentInteractionControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setDelegate(UIDocumentInteractionControllerDelegate delegate) {
@@ -148,7 +148,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getGestureRecognizers(UIDocumentInteractionController __self__, Selector __cmd__);
     @Bridge private native static NSArray objc_getGestureRecognizersSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/gestureRecognizers">@property(nonatomic,readonly) NSArray *gestureRecognizers</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/gestureRecognizers">@property(nonatomic,readonly) NSArray *gestureRecognizers</a>
      * @since Available in iOS 3.2 and later.
      */
     public NSArray getGestureRecognizers() {
@@ -159,7 +159,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getIcons(UIDocumentInteractionController __self__, Selector __cmd__);
     @Bridge private native static NSArray objc_getIconsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/icons">@property(nonatomic,readonly) NSArray *icons</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/icons">@property(nonatomic,readonly) NSArray *icons</a>
      * @since Available in iOS 3.2 and later.
      */
     public NSArray getIcons() {
@@ -170,7 +170,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static String objc_getName(UIDocumentInteractionController __self__, Selector __cmd__);
     @Bridge private native static String objc_getNameSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/name">@property(nonatomic,copy) NSString *name</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/name">@property(nonatomic,copy) NSString *name</a>
      * @since Available in iOS 3.2 and later.
      */
     public String getName() {
@@ -181,7 +181,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setName(UIDocumentInteractionController __self__, Selector __cmd__, String name);
     @Bridge private native static void objc_setNameSuper(ObjCSuper __super__, Selector __cmd__, String name);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/name">@property(nonatomic,copy) NSString *name</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instp/UIDocumentInteractionController/name">@property(nonatomic,copy) NSString *name</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setName(String name) {
@@ -193,7 +193,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector interactionControllerWithURL$ = Selector.register("interactionControllerWithURL:");
     @Bridge private native static UIDocumentInteractionController objc_fromURL(ObjCClass __self__, Selector __cmd__, NSURL url);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/clm/UIDocumentInteractionController/interactionControllerWithURL:">+ (UIDocumentInteractionController *)interactionControllerWithURL:(NSURL *)url</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/clm/UIDocumentInteractionController/interactionControllerWithURL:">+ (UIDocumentInteractionController *)interactionControllerWithURL:(NSURL *)url</a>
      * @since Available in iOS 3.2 and later.
      */
     public static UIDocumentInteractionController fromURL(NSURL url) {
@@ -204,7 +204,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_dismissMenu(UIDocumentInteractionController __self__, Selector __cmd__, boolean animated);
     @Bridge private native static void objc_dismissMenuSuper(ObjCSuper __super__, Selector __cmd__, boolean animated);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instm/UIDocumentInteractionController/dismissMenuAnimated:">- (void)dismissMenuAnimated:(BOOL)animated</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instm/UIDocumentInteractionController/dismissMenuAnimated:">- (void)dismissMenuAnimated:(BOOL)animated</a>
      * @since Available in iOS 3.2 and later.
      */
     public void dismissMenu(boolean animated) {
@@ -215,7 +215,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_dismissPreview(UIDocumentInteractionController __self__, Selector __cmd__, boolean animated);
     @Bridge private native static void objc_dismissPreviewSuper(ObjCSuper __super__, Selector __cmd__, boolean animated);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instm/UIDocumentInteractionController/dismissPreviewAnimated:">- (void)dismissPreviewAnimated:(BOOL)animated</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instm/UIDocumentInteractionController/dismissPreviewAnimated:">- (void)dismissPreviewAnimated:(BOOL)animated</a>
      * @since Available in iOS 3.2 and later.
      */
     public void dismissPreview(boolean animated) {
@@ -226,7 +226,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_presentOpenInMenu(UIDocumentInteractionController __self__, Selector __cmd__, UIBarButtonItem item, boolean animated);
     @Bridge private native static boolean objc_presentOpenInMenuSuper(ObjCSuper __super__, Selector __cmd__, UIBarButtonItem item, boolean animated);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instm/UIDocumentInteractionController/presentOpenInMenuFromBarButtonItem:animated:">- (BOOL)presentOpenInMenuFromBarButtonItem:(UIBarButtonItem *)item animated:(BOOL)animated</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instm/UIDocumentInteractionController/presentOpenInMenuFromBarButtonItem:animated:">- (BOOL)presentOpenInMenuFromBarButtonItem:(UIBarButtonItem *)item animated:(BOOL)animated</a>
      * @since Available in iOS 3.2 and later.
      */
     public boolean presentOpenInMenu(UIBarButtonItem item, boolean animated) {
@@ -237,7 +237,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_presentOpenInMenu(UIDocumentInteractionController __self__, Selector __cmd__, @ByVal CGRect rect, UIView view, boolean animated);
     @Bridge private native static boolean objc_presentOpenInMenuSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, UIView view, boolean animated);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instm/UIDocumentInteractionController/presentOpenInMenuFromRect:inView:animated:">- (BOOL)presentOpenInMenuFromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instm/UIDocumentInteractionController/presentOpenInMenuFromRect:inView:animated:">- (BOOL)presentOpenInMenuFromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated</a>
      * @since Available in iOS 3.2 and later.
      */
     public boolean presentOpenInMenu(CGRect rect, UIView view, boolean animated) {
@@ -248,7 +248,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_presentOptionsMenu(UIDocumentInteractionController __self__, Selector __cmd__, UIBarButtonItem item, boolean animated);
     @Bridge private native static boolean objc_presentOptionsMenuSuper(ObjCSuper __super__, Selector __cmd__, UIBarButtonItem item, boolean animated);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instm/UIDocumentInteractionController/presentOptionsMenuFromBarButtonItem:animated:">- (BOOL)presentOptionsMenuFromBarButtonItem:(UIBarButtonItem *)item animated:(BOOL)animated</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instm/UIDocumentInteractionController/presentOptionsMenuFromBarButtonItem:animated:">- (BOOL)presentOptionsMenuFromBarButtonItem:(UIBarButtonItem *)item animated:(BOOL)animated</a>
      * @since Available in iOS 3.2 and later.
      */
     public boolean presentOptionsMenu(UIBarButtonItem item, boolean animated) {
@@ -259,7 +259,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_presentOptionsMenu(UIDocumentInteractionController __self__, Selector __cmd__, @ByVal CGRect rect, UIView view, boolean animated);
     @Bridge private native static boolean objc_presentOptionsMenuSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, UIView view, boolean animated);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instm/UIDocumentInteractionController/presentOptionsMenuFromRect:inView:animated:">- (BOOL)presentOptionsMenuFromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instm/UIDocumentInteractionController/presentOptionsMenuFromRect:inView:animated:">- (BOOL)presentOptionsMenuFromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated</a>
      * @since Available in iOS 3.2 and later.
      */
     public boolean presentOptionsMenu(CGRect rect, UIView view, boolean animated) {
@@ -270,7 +270,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_presentPreview(UIDocumentInteractionController __self__, Selector __cmd__, boolean animated);
     @Bridge private native static boolean objc_presentPreviewSuper(ObjCSuper __super__, Selector __cmd__, boolean animated);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instm/UIDocumentInteractionController/presentPreviewAnimated:">- (BOOL)presentPreviewAnimated:(BOOL)animated</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocumentInteractionController_class/Reference/Reference.html#//apple_ref/occ/instm/UIDocumentInteractionController/presentPreviewAnimated:">- (BOOL)presentPreviewAnimated:(BOOL)animated</a>
      * @since Available in iOS 3.2 and later.
      */
     public boolean presentPreview(boolean animated) {

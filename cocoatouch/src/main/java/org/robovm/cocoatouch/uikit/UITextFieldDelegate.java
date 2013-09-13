@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextFieldDelegate_Protocol/UITextFieldDelegate/UITextFieldDelegate.html">UITextFieldDelegate Protocol Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextFieldDelegate_Protocol/UITextFieldDelegate/UITextFieldDelegate.html">UITextFieldDelegate Protocol Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -45,37 +45,37 @@ public interface /*<name>*/ UITextFieldDelegate /*</name>*/ /*<implements>*/ ext
     /*</properties>*/
     /*<methods>*/
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextFieldDelegate_Protocol/UITextFieldDelegate/UITextFieldDelegate.html#//apple_ref/occ/intfm/UITextFieldDelegate/textFieldDidBeginEditing:">- (void)textFieldDidBeginEditing:(UITextField *)textField</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextFieldDelegate_Protocol/UITextFieldDelegate/UITextFieldDelegate.html#//apple_ref/occ/intfm/UITextFieldDelegate/textFieldDidBeginEditing:">- (void)textFieldDidBeginEditing:(UITextField *)textField</a>
      * @since Available in iOS 2.0 and later.
      */
     void didBeginEditing(UITextField textField);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextFieldDelegate_Protocol/UITextFieldDelegate/UITextFieldDelegate.html#//apple_ref/occ/intfm/UITextFieldDelegate/textFieldDidEndEditing:">- (void)textFieldDidEndEditing:(UITextField *)textField</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextFieldDelegate_Protocol/UITextFieldDelegate/UITextFieldDelegate.html#//apple_ref/occ/intfm/UITextFieldDelegate/textFieldDidEndEditing:">- (void)textFieldDidEndEditing:(UITextField *)textField</a>
      * @since Available in iOS 2.0 and later.
      */
     void didEndEditing(UITextField textField);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextFieldDelegate_Protocol/UITextFieldDelegate/UITextFieldDelegate.html#//apple_ref/occ/intfm/UITextFieldDelegate/textFieldShouldBeginEditing:">- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextFieldDelegate_Protocol/UITextFieldDelegate/UITextFieldDelegate.html#//apple_ref/occ/intfm/UITextFieldDelegate/textFieldShouldBeginEditing:">- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField</a>
      * @since Available in iOS 2.0 and later.
      */
     boolean shouldBeginEditing(UITextField textField);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextFieldDelegate_Protocol/UITextFieldDelegate/UITextFieldDelegate.html#//apple_ref/occ/intfm/UITextFieldDelegate/textField:shouldChangeCharactersInRange:replacementString:">- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextFieldDelegate_Protocol/UITextFieldDelegate/UITextFieldDelegate.html#//apple_ref/occ/intfm/UITextFieldDelegate/textField:shouldChangeCharactersInRange:replacementString:">- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string</a>
      * @since Available in iOS 2.0 and later.
      */
     boolean shouldChangeCharacters(UITextField textField, NSRange range, String string);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextFieldDelegate_Protocol/UITextFieldDelegate/UITextFieldDelegate.html#//apple_ref/occ/intfm/UITextFieldDelegate/textFieldShouldClear:">- (BOOL)textFieldShouldClear:(UITextField *)textField</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextFieldDelegate_Protocol/UITextFieldDelegate/UITextFieldDelegate.html#//apple_ref/occ/intfm/UITextFieldDelegate/textFieldShouldClear:">- (BOOL)textFieldShouldClear:(UITextField *)textField</a>
      * @since Available in iOS 2.0 and later.
      */
     boolean shouldClear(UITextField textField);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextFieldDelegate_Protocol/UITextFieldDelegate/UITextFieldDelegate.html#//apple_ref/occ/intfm/UITextFieldDelegate/textFieldShouldEndEditing:">- (BOOL)textFieldShouldEndEditing:(UITextField *)textField</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextFieldDelegate_Protocol/UITextFieldDelegate/UITextFieldDelegate.html#//apple_ref/occ/intfm/UITextFieldDelegate/textFieldShouldEndEditing:">- (BOOL)textFieldShouldEndEditing:(UITextField *)textField</a>
      * @since Available in iOS 2.0 and later.
      */
     boolean shouldEndEditing(UITextField textField);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextFieldDelegate_Protocol/UITextFieldDelegate/UITextFieldDelegate.html#//apple_ref/occ/intfm/UITextFieldDelegate/textFieldShouldReturn:">- (BOOL)textFieldShouldReturn:(UITextField *)textField</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextFieldDelegate_Protocol/UITextFieldDelegate/UITextFieldDelegate.html#//apple_ref/occ/intfm/UITextFieldDelegate/textFieldShouldReturn:">- (BOOL)textFieldShouldReturn:(UITextField *)textField</a>
      * @since Available in iOS 2.0 and later.
      */
     boolean shouldReturn(UITextField textField);

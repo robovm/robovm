@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html">UITabBarController Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html">UITabBarController Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -60,7 +60,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getCustomizableViewControllers(UITabBarController __self__, Selector __cmd__);
     @Bridge private native static NSArray objc_getCustomizableViewControllersSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/customizableViewControllers">@property(nonatomic, copy) NSArray *customizableViewControllers</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/customizableViewControllers">@property(nonatomic, copy) NSArray *customizableViewControllers</a>
      * @since Available in iOS 2.0 and later.
      */
     public NSArray getCustomizableViewControllers() {
@@ -71,7 +71,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setCustomizableViewControllers(UITabBarController __self__, Selector __cmd__, NSArray customizableViewControllers);
     @Bridge private native static void objc_setCustomizableViewControllersSuper(ObjCSuper __super__, Selector __cmd__, NSArray customizableViewControllers);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/customizableViewControllers">@property(nonatomic, copy) NSArray *customizableViewControllers</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/customizableViewControllers">@property(nonatomic, copy) NSArray *customizableViewControllers</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setCustomizableViewControllers(NSArray customizableViewControllers) {
@@ -82,7 +82,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITabBarControllerDelegate objc_getDelegate(UITabBarController __self__, Selector __cmd__);
     @Bridge private native static UITabBarControllerDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/delegate">@property(nonatomic, assign) id&amp;lt;UITabBarControllerDelegate&amp;gt; delegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/delegate">@property(nonatomic, assign) id&amp;lt;UITabBarControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
     public UITabBarControllerDelegate getDelegate() {
@@ -93,7 +93,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setDelegate(UITabBarController __self__, Selector __cmd__, UITabBarControllerDelegate delegate);
     @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UITabBarControllerDelegate delegate);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/delegate">@property(nonatomic, assign) id&amp;lt;UITabBarControllerDelegate&amp;gt; delegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/delegate">@property(nonatomic, assign) id&amp;lt;UITabBarControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setDelegate(UITabBarControllerDelegate delegate) {
@@ -104,7 +104,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UINavigationController objc_getMoreNavigationController(UITabBarController __self__, Selector __cmd__);
     @Bridge private native static UINavigationController objc_getMoreNavigationControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/moreNavigationController">@property(nonatomic, readonly) UINavigationController *moreNavigationController</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/moreNavigationController">@property(nonatomic, readonly) UINavigationController *moreNavigationController</a>
      * @since Available in iOS 2.0 and later.
      */
     public UINavigationController getMoreNavigationController() {
@@ -115,7 +115,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_getSelectedIndex(UITabBarController __self__, Selector __cmd__);
     @Bridge private native static int objc_getSelectedIndexSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/selectedIndex">@property(nonatomic) NSUInteger selectedIndex</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/selectedIndex">@property(nonatomic) NSUInteger selectedIndex</a>
      * @since Available in iOS 2.0 and later.
      */
     public int getSelectedIndex() {
@@ -126,7 +126,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setSelectedIndex(UITabBarController __self__, Selector __cmd__, int selectedIndex);
     @Bridge private native static void objc_setSelectedIndexSuper(ObjCSuper __super__, Selector __cmd__, int selectedIndex);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/selectedIndex">@property(nonatomic) NSUInteger selectedIndex</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/selectedIndex">@property(nonatomic) NSUInteger selectedIndex</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setSelectedIndex(int selectedIndex) {
@@ -137,7 +137,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIViewController objc_getSelectedViewController(UITabBarController __self__, Selector __cmd__);
     @Bridge private native static UIViewController objc_getSelectedViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/selectedViewController">@property(nonatomic, assign) UIViewController *selectedViewController</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/selectedViewController">@property(nonatomic, assign) UIViewController *selectedViewController</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIViewController getSelectedViewController() {
@@ -148,7 +148,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setSelectedViewController(UITabBarController __self__, Selector __cmd__, UIViewController selectedViewController);
     @Bridge private native static void objc_setSelectedViewControllerSuper(ObjCSuper __super__, Selector __cmd__, UIViewController selectedViewController);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/selectedViewController">@property(nonatomic, assign) UIViewController *selectedViewController</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/selectedViewController">@property(nonatomic, assign) UIViewController *selectedViewController</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setSelectedViewController(UIViewController selectedViewController) {
@@ -159,7 +159,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITabBar objc_getTabBar(UITabBarController __self__, Selector __cmd__);
     @Bridge private native static UITabBar objc_getTabBarSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/tabBar">@property(nonatomic,readonly) UITabBar *tabBar</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/tabBar">@property(nonatomic,readonly) UITabBar *tabBar</a>
      * @since Available in iOS 3.0 and later.
      */
     public UITabBar getTabBar() {
@@ -170,7 +170,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getViewControllers(UITabBarController __self__, Selector __cmd__);
     @Bridge private native static NSArray objc_getViewControllersSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/viewControllers">@property(nonatomic, copy) NSArray *viewControllers</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/viewControllers">@property(nonatomic, copy) NSArray *viewControllers</a>
      * @since Available in iOS 2.0 and later.
      */
     public NSArray getViewControllers() {
@@ -181,7 +181,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setViewControllers(UITabBarController __self__, Selector __cmd__, NSArray viewControllers);
     @Bridge private native static void objc_setViewControllersSuper(ObjCSuper __super__, Selector __cmd__, NSArray viewControllers);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/viewControllers">@property(nonatomic, copy) NSArray *viewControllers</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBarController/viewControllers">@property(nonatomic, copy) NSArray *viewControllers</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setViewControllers(NSArray viewControllers) {
@@ -194,7 +194,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setViewControllers(UITabBarController __self__, Selector __cmd__, NSArray viewControllers, boolean animated);
     @Bridge private native static void objc_setViewControllersSuper(ObjCSuper __super__, Selector __cmd__, NSArray viewControllers, boolean animated);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBarController/setViewControllers:animated:">- (void)setViewControllers:(NSArray *)viewControllers  animated:(BOOL)animated</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarController_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBarController/setViewControllers:animated:">- (void)setViewControllers:(NSArray *)viewControllers  animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setViewControllers(NSArray viewControllers, boolean animated) {

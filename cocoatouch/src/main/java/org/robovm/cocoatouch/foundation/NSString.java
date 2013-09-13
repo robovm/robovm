@@ -32,7 +32,7 @@ import org.robovm.rt.VM;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSString_Class/Reference/NSString.html">NSString Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSString_Class/Reference/NSString.html">NSString Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -86,12 +86,12 @@ import org.robovm.rt.VM;
     private static final Selector initWithCharactersNoCopy$length$freeWhenDone$ = Selector.register("initWithCharactersNoCopy:length:freeWhenDone:");
     @Bridge private native static @Pointer long objc_initWithCharactersNoCopy(NSString __self__, Selector __cmd__, @Pointer long characters, int length, boolean flag);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSString_Class/Reference/NSString.html#//apple_ref/occ/instm/NSString/initWithCharactersNoCopy:length:freeWhenDone:">- (id)initWithCharactersNoCopy:(unichar *)characters length:(NSUInteger)length freeWhenDone:(BOOL)flag</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSString_Class/Reference/NSString.html#//apple_ref/occ/instm/NSString/initWithCharactersNoCopy:length:freeWhenDone:">- (id)initWithCharactersNoCopy:(unichar *)characters length:(NSUInteger)length freeWhenDone:(BOOL)flag</a>
      * @since Available in iOS 2.0 and later.
      */
     private NSString(@Pointer long characters, int length, boolean flag) {
         super((SkipInit) null);
-        setHandle(objc_initWithCharactersNoCopy(this, initWithCharactersNoCopy$length$freeWhenDone$, characters, length, flag));
+        initObject(objc_initWithCharactersNoCopy(this, initWithCharactersNoCopy$length$freeWhenDone$, characters, length, flag));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -103,7 +103,7 @@ import org.robovm.rt.VM;
     @Bridge private native static char objc_characterAtIndex(NSString __self__, Selector __cmd__, int index);
     @Bridge private native static char objc_characterAtIndexSuper(ObjCSuper __super__, Selector __cmd__, int index);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSString_Class/Reference/NSString.html#//apple_ref/occ/instm/NSString/characterAtIndex:">- (unichar)characterAtIndex:(NSUInteger)index</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSString_Class/Reference/NSString.html#//apple_ref/occ/instm/NSString/characterAtIndex:">- (unichar)characterAtIndex:(NSUInteger)index</a>
      * @since Available in iOS 2.0 and later.
      */
     public char characterAtIndex(int index) {
@@ -113,7 +113,7 @@ import org.robovm.rt.VM;
     private static final Selector getCharacters$range$ = Selector.register("getCharacters:range:");
     @Bridge private native static void objc_getCharacters(NSString __self__, Selector __cmd__, @Pointer long buffer, @ByVal NSRange aRange);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSString_Class/Reference/NSString.html#//apple_ref/occ/instm/NSString/getCharacters:range:">- (void)getCharacters:(unichar *)buffer range:(NSRange)aRange</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSString_Class/Reference/NSString.html#//apple_ref/occ/instm/NSString/getCharacters:range:">- (void)getCharacters:(unichar *)buffer range:(NSRange)aRange</a>
      * @since Available in iOS 2.0 and later.
      */
     private void getCharacters(@Pointer long buffer, NSRange aRange) {
@@ -124,7 +124,7 @@ import org.robovm.rt.VM;
     @Bridge private native static int objc_length(NSString __self__, Selector __cmd__);
     @Bridge private native static int objc_lengthSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSString_Class/Reference/NSString.html#//apple_ref/occ/instm/NSString/length">- (NSUInteger)length</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSString_Class/Reference/NSString.html#//apple_ref/occ/instm/NSString/length">- (NSUInteger)length</a>
      * @since Available in iOS 2.0 and later.
      */
     public int length() {

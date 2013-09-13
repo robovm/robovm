@@ -283,7 +283,7 @@ class ObjCMethod
 
       if constructor?
         java = "#{java}\n#{msg_send_proto}"
-        body = "super((SkipInit) null);\nsetHandle(#{msg_send}(#{args_s}));"
+        body = "super((SkipInit) null);\ninitObject(#{msg_send}(#{args_s}));"
       else
 
         ret = @return_type.to_java != 'void' ? 'return ' : ''

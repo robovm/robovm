@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html">UIResponder Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html">UIResponder Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -60,7 +60,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIView objc_getInputAccessoryView(UIResponder __self__, Selector __cmd__);
     @Bridge private native static UIView objc_getInputAccessoryViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instp/UIResponder/inputAccessoryView">@property (readonly, retain) UIView *inputAccessoryView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instp/UIResponder/inputAccessoryView">@property (readonly, retain) UIView *inputAccessoryView</a>
      * @since Available in iOS 3.2 and later.
      */
     public UIView getInputAccessoryView() {
@@ -71,7 +71,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIView objc_getInputView(UIResponder __self__, Selector __cmd__);
     @Bridge private native static UIView objc_getInputViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instp/UIResponder/inputView">@property (readonly, retain) UIView *inputView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instp/UIResponder/inputView">@property (readonly, retain) UIView *inputView</a>
      * @since Available in iOS 3.2 and later.
      */
     public UIView getInputView() {
@@ -82,7 +82,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSUndoManager objc_getUndoManager(UIResponder __self__, Selector __cmd__);
     @Bridge private native static NSUndoManager objc_getUndoManagerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instp/UIResponder/undoManager">@property(readonly) NSUndoManager *undoManager</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instp/UIResponder/undoManager">@property(readonly) NSUndoManager *undoManager</a>
      * @since Available in iOS 3.0 and later.
      */
     public NSUndoManager getUndoManager() {
@@ -95,7 +95,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_becomeFirstResponder(UIResponder __self__, Selector __cmd__);
     @Bridge private native static boolean objc_becomeFirstResponderSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/becomeFirstResponder">- (BOOL)becomeFirstResponder</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/becomeFirstResponder">- (BOOL)becomeFirstResponder</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean becomeFirstResponder() {
@@ -106,7 +106,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_canBecomeFirstResponder(UIResponder __self__, Selector __cmd__);
     @Bridge private native static boolean objc_canBecomeFirstResponderSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/canBecomeFirstResponder">- (BOOL)canBecomeFirstResponder</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/canBecomeFirstResponder">- (BOOL)canBecomeFirstResponder</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean canBecomeFirstResponder() {
@@ -117,7 +117,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_canPerformAction(UIResponder __self__, Selector __cmd__, Selector action, NSObject sender);
     @Bridge private native static boolean objc_canPerformActionSuper(ObjCSuper __super__, Selector __cmd__, Selector action, NSObject sender);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/canPerformAction:withSender:">- (BOOL)canPerformAction:(SEL)action withSender:(id)sender</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/canPerformAction:withSender:">- (BOOL)canPerformAction:(SEL)action withSender:(id)sender</a>
      * @since Available in iOS 3.0 and later.
      */
     public boolean canPerformAction(Selector action, NSObject sender) {
@@ -128,7 +128,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_canResignFirstResponder(UIResponder __self__, Selector __cmd__);
     @Bridge private native static boolean objc_canResignFirstResponderSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/canResignFirstResponder">- (BOOL)canResignFirstResponder</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/canResignFirstResponder">- (BOOL)canResignFirstResponder</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean canResignFirstResponder() {
@@ -139,7 +139,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIResponder objc_getNextResponder(UIResponder __self__, Selector __cmd__);
     @Bridge private native static UIResponder objc_getNextResponderSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/nextResponder">- (UIResponder *)nextResponder</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/nextResponder">- (UIResponder *)nextResponder</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIResponder getNextResponder() {
@@ -150,7 +150,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isFirstResponder(UIResponder __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isFirstResponderSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/isFirstResponder">- (BOOL)isFirstResponder</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/isFirstResponder">- (BOOL)isFirstResponder</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isFirstResponder() {
@@ -161,7 +161,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_motionBegan(UIResponder __self__, Selector __cmd__, UIEventSubtype motion, UIEvent event);
     @Bridge private native static void objc_motionBeganSuper(ObjCSuper __super__, Selector __cmd__, UIEventSubtype motion, UIEvent event);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/motionBegan:withEvent:">- (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/motionBegan:withEvent:">- (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event</a>
      * @since Available in iOS 3.0 and later.
      */
     public void motionBegan(UIEventSubtype motion, UIEvent event) {
@@ -172,7 +172,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_motionCancelled(UIResponder __self__, Selector __cmd__, UIEventSubtype motion, UIEvent event);
     @Bridge private native static void objc_motionCancelledSuper(ObjCSuper __super__, Selector __cmd__, UIEventSubtype motion, UIEvent event);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/motionCancelled:withEvent:">- (void)motionCancelled:(UIEventSubtype)motion withEvent:(UIEvent *)event</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/motionCancelled:withEvent:">- (void)motionCancelled:(UIEventSubtype)motion withEvent:(UIEvent *)event</a>
      * @since Available in iOS 3.0 and later.
      */
     public void motionCancelled(UIEventSubtype motion, UIEvent event) {
@@ -183,7 +183,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_motionEnded(UIResponder __self__, Selector __cmd__, UIEventSubtype motion, UIEvent event);
     @Bridge private native static void objc_motionEndedSuper(ObjCSuper __super__, Selector __cmd__, UIEventSubtype motion, UIEvent event);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/motionEnded:withEvent:">- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/motionEnded:withEvent:">- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event</a>
      * @since Available in iOS 3.0 and later.
      */
     public void motionEnded(UIEventSubtype motion, UIEvent event) {
@@ -194,7 +194,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_reloadInputViews(UIResponder __self__, Selector __cmd__);
     @Bridge private native static void objc_reloadInputViewsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/reloadInputViews">- (void)reloadInputViews</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/reloadInputViews">- (void)reloadInputViews</a>
      * @since Available in iOS 3.2 and later.
      */
     public void reloadInputViews() {
@@ -205,7 +205,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_remoteControlReceived(UIResponder __self__, Selector __cmd__, UIEvent event);
     @Bridge private native static void objc_remoteControlReceivedSuper(ObjCSuper __super__, Selector __cmd__, UIEvent event);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/remoteControlReceivedWithEvent:">- (void)remoteControlReceivedWithEvent:(UIEvent *)event</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/remoteControlReceivedWithEvent:">- (void)remoteControlReceivedWithEvent:(UIEvent *)event</a>
      * @since Available in iOS 4.0 and later.
      */
     public void remoteControlReceived(UIEvent event) {
@@ -216,7 +216,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_resignFirstResponder(UIResponder __self__, Selector __cmd__);
     @Bridge private native static boolean objc_resignFirstResponderSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/resignFirstResponder">- (BOOL)resignFirstResponder</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/resignFirstResponder">- (BOOL)resignFirstResponder</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean resignFirstResponder() {
@@ -227,7 +227,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_touchesBegan(UIResponder __self__, Selector __cmd__, NSSet touches, UIEvent event);
     @Bridge private native static void objc_touchesBeganSuper(ObjCSuper __super__, Selector __cmd__, NSSet touches, UIEvent event);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/touchesBegan:withEvent:">- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/touchesBegan:withEvent:">- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event</a>
      * @since Available in iOS 2.0 and later.
      */
     public void touchesBegan(NSSet touches, UIEvent event) {
@@ -238,7 +238,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_touchesCancelled(UIResponder __self__, Selector __cmd__, NSSet touches, UIEvent event);
     @Bridge private native static void objc_touchesCancelledSuper(ObjCSuper __super__, Selector __cmd__, NSSet touches, UIEvent event);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/touchesCancelled:withEvent:">- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/touchesCancelled:withEvent:">- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event</a>
      * @since Available in iOS 2.0 and later.
      */
     public void touchesCancelled(NSSet touches, UIEvent event) {
@@ -249,7 +249,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_touchesEnded(UIResponder __self__, Selector __cmd__, NSSet touches, UIEvent event);
     @Bridge private native static void objc_touchesEndedSuper(ObjCSuper __super__, Selector __cmd__, NSSet touches, UIEvent event);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/touchesEnded:withEvent:">- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/touchesEnded:withEvent:">- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event</a>
      * @since Available in iOS 2.0 and later.
      */
     public void touchesEnded(NSSet touches, UIEvent event) {
@@ -260,7 +260,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_touchesMoved(UIResponder __self__, Selector __cmd__, NSSet touches, UIEvent event);
     @Bridge private native static void objc_touchesMovedSuper(ObjCSuper __super__, Selector __cmd__, NSSet touches, UIEvent event);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/touchesMoved:withEvent:">- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponder_Class/Reference/Reference.html#//apple_ref/occ/instm/UIResponder/touchesMoved:withEvent:">- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event</a>
      * @since Available in iOS 2.0 and later.
      */
     public void touchesMoved(NSSet touches, UIEvent event) {

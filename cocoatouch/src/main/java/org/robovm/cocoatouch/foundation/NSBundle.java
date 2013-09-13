@@ -29,7 +29,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSBundle_Class/Reference/Reference.html">NSBundle Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSBundle_Class/Reference/Reference.html">NSBundle Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -57,7 +57,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector mainBundle = Selector.register("mainBundle");
     @Bridge private native static NSBundle objc_getMainBundle(ObjCClass __self__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSBundle_Class/Reference/Reference.html#//apple_ref/occ/clm/NSBundle/mainBundle">+ (NSBundle *)mainBundle</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSBundle_Class/Reference/Reference.html#//apple_ref/occ/clm/NSBundle/mainBundle">+ (NSBundle *)mainBundle</a>
      * @since Available in iOS 2.0 and later.
      */
     public static NSBundle getMainBundle() {
@@ -68,7 +68,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static String objc_getBundlePath(NSBundle __self__, Selector __cmd__);
     @Bridge private native static String objc_getBundlePathSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSBundle_Class/Reference/Reference.html#//apple_ref/occ/instm/NSBundle/bundlePath">- (NSString *)bundlePath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSBundle_Class/Reference/Reference.html#//apple_ref/occ/instm/NSBundle/bundlePath">- (NSString *)bundlePath</a>
      * @since Available in iOS 2.0 and later.
      */
     public String getBundlePath() {
@@ -79,7 +79,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static String objc_getResourcePath(NSBundle __self__, Selector __cmd__);
     @Bridge private native static String objc_getResourcePathSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSBundle_Class/Reference/Reference.html#//apple_ref/occ/instm/NSBundle/resourcePath">- (NSString *)resourcePath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSBundle_Class/Reference/Reference.html#//apple_ref/occ/instm/NSBundle/resourcePath">- (NSString *)resourcePath</a>
      * @since Available in iOS 2.0 and later.
      */
     public String getResourcePath() {

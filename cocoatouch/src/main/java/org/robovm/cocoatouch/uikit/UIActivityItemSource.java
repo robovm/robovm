@@ -33,7 +33,7 @@ import org.robovm.rt.bro.ptr.*;
 /**
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityItemSource_protocol/Reference/Reference.html">UIActivityItemSource Protocol Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityItemSource_protocol/Reference/Reference.html">UIActivityItemSource Protocol Reference</a>
  *   @since Available in iOS 6.0 and later.
  * </div>
  */
@@ -44,12 +44,12 @@ public interface /*<name>*/ UIActivityItemSource /*</name>*/ /*<implements>*/ ex
     /*</properties>*/
     /*<methods>*/
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityItemSource_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIActivityItemSource/activityViewController:itemForActivityType:">- (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityItemSource_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIActivityItemSource/activityViewController:itemForActivityType:">- (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType</a>
      * @since Available in iOS 6.0 and later.
      */
     NSObject getItem(UIActivityViewController activityViewController, String activityType);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityItemSource_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIActivityItemSource/activityViewControllerPlaceholderItem:">- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityItemSource_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIActivityItemSource/activityViewControllerPlaceholderItem:">- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController</a>
      * @since Available in iOS 6.0 and later.
      */
     NSObject getPlaceholderItem(UIActivityViewController activityViewController);

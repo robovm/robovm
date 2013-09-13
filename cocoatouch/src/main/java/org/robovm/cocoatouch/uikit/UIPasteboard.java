@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html">UIPasteboard Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html">UIPasteboard Class Reference</a>
  *   @since Available in iOS 3.0 and later.
  * </div>
  */
@@ -60,7 +60,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSURL objc_getURL(UIPasteboard __self__, Selector __cmd__);
     @Bridge private native static NSURL objc_getURLSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/URL">@property(nonatomic, copy) NSURL *URL</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/URL">@property(nonatomic, copy) NSURL *URL</a>
      * @since Available in iOS 3.0 and later.
      */
     public NSURL getURL() {
@@ -71,7 +71,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setURL(UIPasteboard __self__, Selector __cmd__, NSURL URL);
     @Bridge private native static void objc_setURLSuper(ObjCSuper __super__, Selector __cmd__, NSURL URL);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/URL">@property(nonatomic, copy) NSURL *URL</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/URL">@property(nonatomic, copy) NSURL *URL</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setURL(NSURL URL) {
@@ -82,7 +82,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getURLs(UIPasteboard __self__, Selector __cmd__);
     @Bridge private native static NSArray objc_getURLsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/URLs">@property(nonatomic, copy) NSArray *URLs</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/URLs">@property(nonatomic, copy) NSArray *URLs</a>
      * @since Available in iOS 3.0 and later.
      */
     public NSArray getURLs() {
@@ -93,7 +93,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setURLs(UIPasteboard __self__, Selector __cmd__, NSArray URLs);
     @Bridge private native static void objc_setURLsSuper(ObjCSuper __super__, Selector __cmd__, NSArray URLs);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/URLs">@property(nonatomic, copy) NSArray *URLs</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/URLs">@property(nonatomic, copy) NSArray *URLs</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setURLs(NSArray URLs) {
@@ -104,7 +104,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_getChangeCount(UIPasteboard __self__, Selector __cmd__);
     @Bridge private native static int objc_getChangeCountSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/changeCount">@property(readonly, nonatomic) NSInteger changeCount</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/changeCount">@property(readonly, nonatomic) NSInteger changeCount</a>
      * @since Available in iOS 3.0 and later.
      */
     public int getChangeCount() {
@@ -115,7 +115,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIColor objc_getColor(UIPasteboard __self__, Selector __cmd__);
     @Bridge private native static UIColor objc_getColorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/color">@property(nonatomic, copy) UIColor *color</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/color">@property(nonatomic, copy) UIColor *color</a>
      * @since Available in iOS 3.0 and later.
      */
     public UIColor getColor() {
@@ -126,7 +126,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setColor(UIPasteboard __self__, Selector __cmd__, UIColor color);
     @Bridge private native static void objc_setColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor color);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/color">@property(nonatomic, copy) UIColor *color</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/color">@property(nonatomic, copy) UIColor *color</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setColor(UIColor color) {
@@ -137,7 +137,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getColors(UIPasteboard __self__, Selector __cmd__);
     @Bridge private native static NSArray objc_getColorsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/colors">@property(nonatomic, copy) NSArray *colors</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/colors">@property(nonatomic, copy) NSArray *colors</a>
      * @since Available in iOS 3.0 and later.
      */
     public NSArray getColors() {
@@ -148,7 +148,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setColors(UIPasteboard __self__, Selector __cmd__, NSArray colors);
     @Bridge private native static void objc_setColorsSuper(ObjCSuper __super__, Selector __cmd__, NSArray colors);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/colors">@property(nonatomic, copy) NSArray *colors</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/colors">@property(nonatomic, copy) NSArray *colors</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setColors(NSArray colors) {
@@ -159,7 +159,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_getCount(UIPasteboard __self__, Selector __cmd__);
     @Bridge private native static int objc_getCountSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/numberOfItems">@property(readonly, nonatomic) NSInteger numberOfItems</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/numberOfItems">@property(readonly, nonatomic) NSInteger numberOfItems</a>
      * @since Available in iOS 3.0 and later.
      */
     public int getCount() {
@@ -170,7 +170,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIImage objc_getImage(UIPasteboard __self__, Selector __cmd__);
     @Bridge private native static UIImage objc_getImageSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/image">@property(nonatomic, copy) UIImage *image</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/image">@property(nonatomic, copy) UIImage *image</a>
      * @since Available in iOS 3.0 and later.
      */
     public UIImage getImage() {
@@ -181,7 +181,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setImage(UIPasteboard __self__, Selector __cmd__, UIImage image);
     @Bridge private native static void objc_setImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage image);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/image">@property(nonatomic, copy) UIImage *image</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/image">@property(nonatomic, copy) UIImage *image</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setImage(UIImage image) {
@@ -192,7 +192,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getImages(UIPasteboard __self__, Selector __cmd__);
     @Bridge private native static NSArray objc_getImagesSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/images">@property(nonatomic, copy) NSArray *images</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/images">@property(nonatomic, copy) NSArray *images</a>
      * @since Available in iOS 3.0 and later.
      */
     public NSArray getImages() {
@@ -203,7 +203,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setImages(UIPasteboard __self__, Selector __cmd__, NSArray images);
     @Bridge private native static void objc_setImagesSuper(ObjCSuper __super__, Selector __cmd__, NSArray images);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/images">@property(nonatomic, copy) NSArray *images</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/images">@property(nonatomic, copy) NSArray *images</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setImages(NSArray images) {
@@ -214,7 +214,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getItems(UIPasteboard __self__, Selector __cmd__);
     @Bridge private native static NSArray objc_getItemsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/items">@property(nonatomic,copy) NSArray *items</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/items">@property(nonatomic,copy) NSArray *items</a>
      * @since Available in iOS 3.0 and later.
      */
     public NSArray getItems() {
@@ -225,7 +225,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setItems(UIPasteboard __self__, Selector __cmd__, NSArray items);
     @Bridge private native static void objc_setItemsSuper(ObjCSuper __super__, Selector __cmd__, NSArray items);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/items">@property(nonatomic,copy) NSArray *items</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/items">@property(nonatomic,copy) NSArray *items</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setItems(NSArray items) {
@@ -236,7 +236,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static String objc_getName(UIPasteboard __self__, Selector __cmd__);
     @Bridge private native static String objc_getNameSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/name">@property(readonly, nonatomic) NSString *name</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/name">@property(readonly, nonatomic) NSString *name</a>
      * @since Available in iOS 3.0 and later.
      */
     public String getName() {
@@ -247,7 +247,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isPersistent(UIPasteboard __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isPersistentSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/persistent">@property(getter=isPersistent, nonatomic) BOOL persistent</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/persistent">@property(getter=isPersistent, nonatomic) BOOL persistent</a>
      * @since Available in iOS 3.0 and later.
      */
     public boolean isPersistent() {
@@ -258,7 +258,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setPersistent(UIPasteboard __self__, Selector __cmd__, boolean persistent);
     @Bridge private native static void objc_setPersistentSuper(ObjCSuper __super__, Selector __cmd__, boolean persistent);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/persistent">@property(getter=isPersistent, nonatomic) BOOL persistent</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/persistent">@property(getter=isPersistent, nonatomic) BOOL persistent</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setPersistent(boolean persistent) {
@@ -269,7 +269,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static String objc_getString(UIPasteboard __self__, Selector __cmd__);
     @Bridge private native static String objc_getStringSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/string">@property(nonatomic, copy) NSString *string</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/string">@property(nonatomic, copy) NSString *string</a>
      * @since Available in iOS 3.0 and later.
      */
     public String getString() {
@@ -280,7 +280,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setString(UIPasteboard __self__, Selector __cmd__, String string);
     @Bridge private native static void objc_setStringSuper(ObjCSuper __super__, Selector __cmd__, String string);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/string">@property(nonatomic, copy) NSString *string</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/string">@property(nonatomic, copy) NSString *string</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setString(String string) {
@@ -291,7 +291,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getStrings(UIPasteboard __self__, Selector __cmd__);
     @Bridge private native static NSArray objc_getStringsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/strings">@property(nonatomic, copy) NSArray *strings</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/strings">@property(nonatomic, copy) NSArray *strings</a>
      * @since Available in iOS 3.0 and later.
      */
     public NSArray getStrings() {
@@ -302,7 +302,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setStrings(UIPasteboard __self__, Selector __cmd__, NSArray strings);
     @Bridge private native static void objc_setStringsSuper(ObjCSuper __super__, Selector __cmd__, NSArray strings);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/strings">@property(nonatomic, copy) NSArray *strings</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instp/UIPasteboard/strings">@property(nonatomic, copy) NSArray *strings</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setStrings(NSArray strings) {
@@ -314,7 +314,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector pasteboardWithName$create$ = Selector.register("pasteboardWithName:create:");
     @Bridge private native static UIPasteboard objc_fromName(ObjCClass __self__, Selector __cmd__, String pasteboardName, boolean create);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/clm/UIPasteboard/pasteboardWithName:create:">+ (UIPasteboard *)pasteboardWithName:(NSString *)pasteboardName create:(BOOL)create</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/clm/UIPasteboard/pasteboardWithName:create:">+ (UIPasteboard *)pasteboardWithName:(NSString *)pasteboardName create:(BOOL)create</a>
      * @since Available in iOS 3.0 and later.
      */
     public static UIPasteboard fromName(String pasteboardName, boolean create) {
@@ -324,7 +324,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector generalPasteboard = Selector.register("generalPasteboard");
     @Bridge private native static UIPasteboard objc_getGeneral(ObjCClass __self__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/clm/UIPasteboard/generalPasteboard">+ (UIPasteboard *)generalPasteboard</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/clm/UIPasteboard/generalPasteboard">+ (UIPasteboard *)generalPasteboard</a>
      * @since Available in iOS 3.0 and later.
      */
     public static UIPasteboard getGeneral() {
@@ -334,7 +334,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector pasteboardWithUniqueName = Selector.register("pasteboardWithUniqueName");
     @Bridge private native static UIPasteboard objc_getUnique(ObjCClass __self__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/clm/UIPasteboard/pasteboardWithUniqueName">+ (UIPasteboard *)pasteboardWithUniqueName</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/clm/UIPasteboard/pasteboardWithUniqueName">+ (UIPasteboard *)pasteboardWithUniqueName</a>
      * @since Available in iOS 3.0 and later.
      */
     public static UIPasteboard getUnique() {
@@ -344,7 +344,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector removePasteboardWithName$ = Selector.register("removePasteboardWithName:");
     @Bridge private native static void objc_remove(ObjCClass __self__, Selector __cmd__, String pasteboardName);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/clm/UIPasteboard/removePasteboardWithName:">+ (void)removePasteboardWithName:(NSString *)pasteboardName</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/clm/UIPasteboard/removePasteboardWithName:">+ (void)removePasteboardWithName:(NSString *)pasteboardName</a>
      * @since Available in iOS 3.0 and later.
      */
     public static void remove(String pasteboardName) {
@@ -355,7 +355,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_addItems(UIPasteboard __self__, Selector __cmd__, NSArray items);
     @Bridge private native static void objc_addItemsSuper(ObjCSuper __super__, Selector __cmd__, NSArray items);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instm/UIPasteboard/addItems:">- (void)addItems:(NSArray *)items</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instm/UIPasteboard/addItems:">- (void)addItems:(NSArray *)items</a>
      * @since Available in iOS 3.0 and later.
      */
     public void addItems(NSArray items) {
@@ -366,7 +366,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_contains(UIPasteboard __self__, Selector __cmd__, NSArray pasteboardTypes);
     @Bridge private native static boolean objc_containsSuper(ObjCSuper __super__, Selector __cmd__, NSArray pasteboardTypes);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instm/UIPasteboard/containsPasteboardTypes:">- (BOOL)containsPasteboardTypes:(NSArray *)pasteboardTypes</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instm/UIPasteboard/containsPasteboardTypes:">- (BOOL)containsPasteboardTypes:(NSArray *)pasteboardTypes</a>
      * @since Available in iOS 3.0 and later.
      */
     public boolean contains(NSArray pasteboardTypes) {
@@ -377,7 +377,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_contains(UIPasteboard __self__, Selector __cmd__, NSArray pasteboardTypes, NSIndexSet itemSet);
     @Bridge private native static boolean objc_containsSuper(ObjCSuper __super__, Selector __cmd__, NSArray pasteboardTypes, NSIndexSet itemSet);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instm/UIPasteboard/containsPasteboardTypes:inItemSet:">- (BOOL)containsPasteboardTypes:(NSArray *)pasteboardTypes inItemSet:(NSIndexSet *)itemSet</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instm/UIPasteboard/containsPasteboardTypes:inItemSet:">- (BOOL)containsPasteboardTypes:(NSArray *)pasteboardTypes inItemSet:(NSIndexSet *)itemSet</a>
      * @since Available in iOS 3.0 and later.
      */
     public boolean contains(NSArray pasteboardTypes, NSIndexSet itemSet) {
@@ -388,7 +388,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSData objc_getData(UIPasteboard __self__, Selector __cmd__, String pasteboardType);
     @Bridge private native static NSData objc_getDataSuper(ObjCSuper __super__, Selector __cmd__, String pasteboardType);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instm/UIPasteboard/dataForPasteboardType:">- (NSData *)dataForPasteboardType:(NSString *)pasteboardType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instm/UIPasteboard/dataForPasteboardType:">- (NSData *)dataForPasteboardType:(NSString *)pasteboardType</a>
      * @since Available in iOS 3.0 and later.
      */
     public NSData getData(String pasteboardType) {
@@ -399,7 +399,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getData(UIPasteboard __self__, Selector __cmd__, String pasteboardType, NSIndexSet itemSet);
     @Bridge private native static NSArray objc_getDataSuper(ObjCSuper __super__, Selector __cmd__, String pasteboardType, NSIndexSet itemSet);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instm/UIPasteboard/dataForPasteboardType:inItemSet:">- (NSArray *)dataForPasteboardType:(NSString *)pasteboardType inItemSet:(NSIndexSet *)itemSet</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instm/UIPasteboard/dataForPasteboardType:inItemSet:">- (NSArray *)dataForPasteboardType:(NSString *)pasteboardType inItemSet:(NSIndexSet *)itemSet</a>
      * @since Available in iOS 3.0 and later.
      */
     public NSArray getData(String pasteboardType, NSIndexSet itemSet) {
@@ -410,7 +410,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSIndexSet objc_getItemsWithTypes(UIPasteboard __self__, Selector __cmd__, NSArray pasteboardTypes);
     @Bridge private native static NSIndexSet objc_getItemsWithTypesSuper(ObjCSuper __super__, Selector __cmd__, NSArray pasteboardTypes);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instm/UIPasteboard/itemSetWithPasteboardTypes:">- (NSIndexSet *)itemSetWithPasteboardTypes:(NSArray *)pasteboardTypes</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instm/UIPasteboard/itemSetWithPasteboardTypes:">- (NSIndexSet *)itemSetWithPasteboardTypes:(NSArray *)pasteboardTypes</a>
      * @since Available in iOS 3.0 and later.
      */
     public NSIndexSet getItemsWithTypes(NSArray pasteboardTypes) {
@@ -421,7 +421,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getTypes(UIPasteboard __self__, Selector __cmd__);
     @Bridge private native static NSArray objc_getTypesSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instm/UIPasteboard/pasteboardTypes">- (NSArray *)pasteboardTypes</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instm/UIPasteboard/pasteboardTypes">- (NSArray *)pasteboardTypes</a>
      * @since Available in iOS 3.0 and later.
      */
     public NSArray getTypes() {
@@ -432,7 +432,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getTypes(UIPasteboard __self__, Selector __cmd__, NSIndexSet itemSet);
     @Bridge private native static NSArray objc_getTypesSuper(ObjCSuper __super__, Selector __cmd__, NSIndexSet itemSet);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instm/UIPasteboard/pasteboardTypesForItemSet:">- (NSArray *)pasteboardTypesForItemSet:(NSIndexSet *)itemSet</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instm/UIPasteboard/pasteboardTypesForItemSet:">- (NSArray *)pasteboardTypesForItemSet:(NSIndexSet *)itemSet</a>
      * @since Available in iOS 3.0 and later.
      */
     public NSArray getTypes(NSIndexSet itemSet) {
@@ -443,7 +443,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSObject objc_getValue(UIPasteboard __self__, Selector __cmd__, String pasteboardType);
     @Bridge private native static NSObject objc_getValueSuper(ObjCSuper __super__, Selector __cmd__, String pasteboardType);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instm/UIPasteboard/valueForPasteboardType:">- (id)valueForPasteboardType:(NSString *)pasteboardType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instm/UIPasteboard/valueForPasteboardType:">- (id)valueForPasteboardType:(NSString *)pasteboardType</a>
      * @since Available in iOS 3.0 and later.
      */
     public NSObject getValue(String pasteboardType) {
@@ -454,7 +454,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getValues(UIPasteboard __self__, Selector __cmd__, String pasteboardType, NSIndexSet itemSet);
     @Bridge private native static NSArray objc_getValuesSuper(ObjCSuper __super__, Selector __cmd__, String pasteboardType, NSIndexSet itemSet);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instm/UIPasteboard/valuesForPasteboardType:inItemSet:">- (NSArray *)valuesForPasteboardType:(NSString *)pasteboardType inItemSet:(NSIndexSet *)itemSet</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instm/UIPasteboard/valuesForPasteboardType:inItemSet:">- (NSArray *)valuesForPasteboardType:(NSString *)pasteboardType inItemSet:(NSIndexSet *)itemSet</a>
      * @since Available in iOS 3.0 and later.
      */
     public NSArray getValues(String pasteboardType, NSIndexSet itemSet) {
@@ -465,7 +465,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setData(UIPasteboard __self__, Selector __cmd__, NSData data, String pasteboardType);
     @Bridge private native static void objc_setDataSuper(ObjCSuper __super__, Selector __cmd__, NSData data, String pasteboardType);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instm/UIPasteboard/setData:forPasteboardType:">- (void)setData:(NSData *)data forPasteboardType:(NSString *)pasteboardType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instm/UIPasteboard/setData:forPasteboardType:">- (void)setData:(NSData *)data forPasteboardType:(NSString *)pasteboardType</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setData(NSData data, String pasteboardType) {
@@ -476,7 +476,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setValue(UIPasteboard __self__, Selector __cmd__, NSObject value, String pasteboardType);
     @Bridge private native static void objc_setValueSuper(ObjCSuper __super__, Selector __cmd__, NSObject value, String pasteboardType);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instm/UIPasteboard/setValue:forPasteboardType:">- (void)setValue:(id)value forPasteboardType:(NSString *)pasteboardType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPasteboard_Class/Reference.html#//apple_ref/occ/instm/UIPasteboard/setValue:forPasteboardType:">- (void)setValue:(id)value forPasteboardType:(NSString *)pasteboardType</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setValue(NSObject value, String pasteboardType) {

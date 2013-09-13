@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html">UIImageView Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html">UIImageView Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -59,23 +59,23 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector initWithImage$ = Selector.register("initWithImage:");
     @Bridge private native static @Pointer long objc_initWithImage(UIImageView __self__, Selector __cmd__, UIImage image);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instm/UIImageView/initWithImage:">- (id)initWithImage:(UIImage *)image</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instm/UIImageView/initWithImage:">- (id)initWithImage:(UIImage *)image</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIImageView(UIImage image) {
         super((SkipInit) null);
-        setHandle(objc_initWithImage(this, initWithImage$, image));
+        initObject(objc_initWithImage(this, initWithImage$, image));
     }
     
     private static final Selector initWithImage$highlightedImage$ = Selector.register("initWithImage:highlightedImage:");
     @Bridge private native static @Pointer long objc_initWithImage(UIImageView __self__, Selector __cmd__, UIImage image, UIImage highlightedImage);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instm/UIImageView/initWithImage:highlightedImage:">- (id)initWithImage:(UIImage *)image highlightedImage:(UIImage *)highlightedImage</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instm/UIImageView/initWithImage:highlightedImage:">- (id)initWithImage:(UIImage *)image highlightedImage:(UIImage *)highlightedImage</a>
      * @since Available in iOS 3.0 and later.
      */
     public UIImageView(UIImage image, UIImage highlightedImage) {
         super((SkipInit) null);
-        setHandle(objc_initWithImage(this, initWithImage$highlightedImage$, image, highlightedImage));
+        initObject(objc_initWithImage(this, initWithImage$highlightedImage$, image, highlightedImage));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -84,7 +84,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static double objc_getAnimationDuration(UIImageView __self__, Selector __cmd__);
     @Bridge private native static double objc_getAnimationDurationSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/animationDuration">@property(nonatomic) NSTimeInterval animationDuration</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/animationDuration">@property(nonatomic) NSTimeInterval animationDuration</a>
      * @since Available in iOS 2.0 and later.
      */
     public double getAnimationDuration() {
@@ -95,7 +95,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setAnimationDuration(UIImageView __self__, Selector __cmd__, double animationDuration);
     @Bridge private native static void objc_setAnimationDurationSuper(ObjCSuper __super__, Selector __cmd__, double animationDuration);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/animationDuration">@property(nonatomic) NSTimeInterval animationDuration</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/animationDuration">@property(nonatomic) NSTimeInterval animationDuration</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setAnimationDuration(double animationDuration) {
@@ -106,7 +106,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getAnimationImages(UIImageView __self__, Selector __cmd__);
     @Bridge private native static NSArray objc_getAnimationImagesSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/animationImages">@property(nonatomic, copy) NSArray *animationImages</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/animationImages">@property(nonatomic, copy) NSArray *animationImages</a>
      * @since Available in iOS 2.0 and later.
      */
     public NSArray getAnimationImages() {
@@ -117,7 +117,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setAnimationImages(UIImageView __self__, Selector __cmd__, NSArray animationImages);
     @Bridge private native static void objc_setAnimationImagesSuper(ObjCSuper __super__, Selector __cmd__, NSArray animationImages);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/animationImages">@property(nonatomic, copy) NSArray *animationImages</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/animationImages">@property(nonatomic, copy) NSArray *animationImages</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setAnimationImages(NSArray animationImages) {
@@ -128,7 +128,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_getAnimationRepeatCount(UIImageView __self__, Selector __cmd__);
     @Bridge private native static int objc_getAnimationRepeatCountSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/animationRepeatCount">@property(nonatomic) NSInteger animationRepeatCount</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/animationRepeatCount">@property(nonatomic) NSInteger animationRepeatCount</a>
      * @since Available in iOS 2.0 and later.
      */
     public int getAnimationRepeatCount() {
@@ -139,7 +139,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setAnimationRepeatCount(UIImageView __self__, Selector __cmd__, int animationRepeatCount);
     @Bridge private native static void objc_setAnimationRepeatCountSuper(ObjCSuper __super__, Selector __cmd__, int animationRepeatCount);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/animationRepeatCount">@property(nonatomic) NSInteger animationRepeatCount</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/animationRepeatCount">@property(nonatomic) NSInteger animationRepeatCount</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setAnimationRepeatCount(int animationRepeatCount) {
@@ -150,7 +150,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isHighlighted(UIImageView __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isHighlightedSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/highlighted">@property(nonatomic, getter=isHighlighted) BOOL highlighted</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/highlighted">@property(nonatomic, getter=isHighlighted) BOOL highlighted</a>
      * @since Available in iOS 3.0 and later.
      */
     public boolean isHighlighted() {
@@ -161,7 +161,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setHighlighted(UIImageView __self__, Selector __cmd__, boolean highlighted);
     @Bridge private native static void objc_setHighlightedSuper(ObjCSuper __super__, Selector __cmd__, boolean highlighted);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/highlighted">@property(nonatomic, getter=isHighlighted) BOOL highlighted</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/highlighted">@property(nonatomic, getter=isHighlighted) BOOL highlighted</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setHighlighted(boolean highlighted) {
@@ -172,7 +172,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getHighlightedAnimationImages(UIImageView __self__, Selector __cmd__);
     @Bridge private native static NSArray objc_getHighlightedAnimationImagesSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/highlightedAnimationImages">@property(nonatomic, copy) NSArray *highlightedAnimationImages</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/highlightedAnimationImages">@property(nonatomic, copy) NSArray *highlightedAnimationImages</a>
      * @since Available in iOS 3.0 and later.
      */
     public NSArray getHighlightedAnimationImages() {
@@ -183,7 +183,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setHighlightedAnimationImages(UIImageView __self__, Selector __cmd__, NSArray highlightedAnimationImages);
     @Bridge private native static void objc_setHighlightedAnimationImagesSuper(ObjCSuper __super__, Selector __cmd__, NSArray highlightedAnimationImages);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/highlightedAnimationImages">@property(nonatomic, copy) NSArray *highlightedAnimationImages</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/highlightedAnimationImages">@property(nonatomic, copy) NSArray *highlightedAnimationImages</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setHighlightedAnimationImages(NSArray highlightedAnimationImages) {
@@ -194,7 +194,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIImage objc_getHighlightedImage(UIImageView __self__, Selector __cmd__);
     @Bridge private native static UIImage objc_getHighlightedImageSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/highlightedImage">@property(nonatomic, retain) UIImage *highlightedImage</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/highlightedImage">@property(nonatomic, retain) UIImage *highlightedImage</a>
      * @since Available in iOS 3.0 and later.
      */
     public UIImage getHighlightedImage() {
@@ -205,7 +205,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setHighlightedImage(UIImageView __self__, Selector __cmd__, UIImage highlightedImage);
     @Bridge private native static void objc_setHighlightedImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage highlightedImage);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/highlightedImage">@property(nonatomic, retain) UIImage *highlightedImage</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/highlightedImage">@property(nonatomic, retain) UIImage *highlightedImage</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setHighlightedImage(UIImage highlightedImage) {
@@ -216,7 +216,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIImage objc_getImage(UIImageView __self__, Selector __cmd__);
     @Bridge private native static UIImage objc_getImageSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/image">@property(nonatomic, retain) UIImage *image</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/image">@property(nonatomic, retain) UIImage *image</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIImage getImage() {
@@ -227,7 +227,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setImage(UIImageView __self__, Selector __cmd__, UIImage image);
     @Bridge private native static void objc_setImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage image);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/image">@property(nonatomic, retain) UIImage *image</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/image">@property(nonatomic, retain) UIImage *image</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setImage(UIImage image) {
@@ -238,7 +238,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isUserInteractionEnabled(UIImageView __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isUserInteractionEnabledSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/userInteractionEnabled">@property(nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/userInteractionEnabled">@property(nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isUserInteractionEnabled() {
@@ -249,7 +249,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setUserInteractionEnabled(UIImageView __self__, Selector __cmd__, boolean userInteractionEnabled);
     @Bridge private native static void objc_setUserInteractionEnabledSuper(ObjCSuper __super__, Selector __cmd__, boolean userInteractionEnabled);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/userInteractionEnabled">@property(nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instp/UIImageView/userInteractionEnabled">@property(nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setUserInteractionEnabled(boolean userInteractionEnabled) {
@@ -262,7 +262,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isAnimating(UIImageView __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isAnimatingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instm/UIImageView/isAnimating">- (BOOL)isAnimating</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instm/UIImageView/isAnimating">- (BOOL)isAnimating</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isAnimating() {
@@ -273,7 +273,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_startAnimating(UIImageView __self__, Selector __cmd__);
     @Bridge private native static void objc_startAnimatingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instm/UIImageView/startAnimating">- (void)startAnimating</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instm/UIImageView/startAnimating">- (void)startAnimating</a>
      * @since Available in iOS 2.0 and later.
      */
     public void startAnimating() {
@@ -284,7 +284,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_stopAnimating(UIImageView __self__, Selector __cmd__);
     @Bridge private native static void objc_stopAnimatingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instm/UIImageView/stopAnimating">- (void)stopAnimating</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImageView_Class/Reference/Reference.html#//apple_ref/occ/instm/UIImageView/stopAnimating">- (void)stopAnimating</a>
      * @since Available in iOS 2.0 and later.
      */
     public void stopAnimating() {

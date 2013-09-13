@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html">UISwitch Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html">UISwitch Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -56,12 +56,12 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector initWithFrame$ = Selector.register("initWithFrame:");
     @Bridge private native static @Pointer long objc_initWithFrame(UISwitch __self__, Selector __cmd__, @ByVal CGRect frame);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instm/UISwitch/initWithFrame:">- (id)initWithFrame:(CGRect)frame</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instm/UISwitch/initWithFrame:">- (id)initWithFrame:(CGRect)frame</a>
      * @since Available in iOS 2.0 and later.
      */
     public UISwitch(CGRect frame) {
         super((SkipInit) null);
-        setHandle(objc_initWithFrame(this, initWithFrame$, frame));
+        initObject(objc_initWithFrame(this, initWithFrame$, frame));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -70,7 +70,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIImage objc_getOffImage(UISwitch __self__, Selector __cmd__);
     @Bridge private native static UIImage objc_getOffImageSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/offImage">@property(nonatomic, retain) UIImage *offImage</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/offImage">@property(nonatomic, retain) UIImage *offImage</a>
      * @since Available in iOS 6.0 and later.
      */
     public UIImage getOffImage() {
@@ -81,7 +81,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setOffImage(UISwitch __self__, Selector __cmd__, UIImage offImage);
     @Bridge private native static void objc_setOffImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage offImage);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/offImage">@property(nonatomic, retain) UIImage *offImage</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/offImage">@property(nonatomic, retain) UIImage *offImage</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setOffImage(UIImage offImage) {
@@ -92,7 +92,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isOn(UISwitch __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isOnSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/on">@property(nonatomic, getter=isOn) BOOL on</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/on">@property(nonatomic, getter=isOn) BOOL on</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isOn() {
@@ -103,7 +103,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setOn(UISwitch __self__, Selector __cmd__, boolean on);
     @Bridge private native static void objc_setOnSuper(ObjCSuper __super__, Selector __cmd__, boolean on);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/on">@property(nonatomic, getter=isOn) BOOL on</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/on">@property(nonatomic, getter=isOn) BOOL on</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setOn(boolean on) {
@@ -114,7 +114,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIImage objc_getOnImage(UISwitch __self__, Selector __cmd__);
     @Bridge private native static UIImage objc_getOnImageSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/onImage">@property(nonatomic, retain) UIImage *onImage</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/onImage">@property(nonatomic, retain) UIImage *onImage</a>
      * @since Available in iOS 6.0 and later.
      */
     public UIImage getOnImage() {
@@ -125,7 +125,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setOnImage(UISwitch __self__, Selector __cmd__, UIImage onImage);
     @Bridge private native static void objc_setOnImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage onImage);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/onImage">@property(nonatomic, retain) UIImage *onImage</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/onImage">@property(nonatomic, retain) UIImage *onImage</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setOnImage(UIImage onImage) {
@@ -136,7 +136,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIColor objc_getOnTintColor(UISwitch __self__, Selector __cmd__);
     @Bridge private native static UIColor objc_getOnTintColorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/onTintColor">@property(nonatomic, retain) UIColor *onTintColor</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/onTintColor">@property(nonatomic, retain) UIColor *onTintColor</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIColor getOnTintColor() {
@@ -147,7 +147,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setOnTintColor(UISwitch __self__, Selector __cmd__, UIColor onTintColor);
     @Bridge private native static void objc_setOnTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor onTintColor);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/onTintColor">@property(nonatomic, retain) UIColor *onTintColor</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/onTintColor">@property(nonatomic, retain) UIColor *onTintColor</a>
      * @since Available in iOS 5.0 and later.
      */
     public void setOnTintColor(UIColor onTintColor) {
@@ -158,7 +158,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIColor objc_getThumbTintColor(UISwitch __self__, Selector __cmd__);
     @Bridge private native static UIColor objc_getThumbTintColorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/thumbTintColor">@property(nonatomic, retain) UIColor *thumbTintColor</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/thumbTintColor">@property(nonatomic, retain) UIColor *thumbTintColor</a>
      * @since Available in iOS 6.0 and later.
      */
     public UIColor getThumbTintColor() {
@@ -169,7 +169,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setThumbTintColor(UISwitch __self__, Selector __cmd__, UIColor thumbTintColor);
     @Bridge private native static void objc_setThumbTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor thumbTintColor);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/thumbTintColor">@property(nonatomic, retain) UIColor *thumbTintColor</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/thumbTintColor">@property(nonatomic, retain) UIColor *thumbTintColor</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setThumbTintColor(UIColor thumbTintColor) {
@@ -180,7 +180,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIColor objc_getTintColor(UISwitch __self__, Selector __cmd__);
     @Bridge private native static UIColor objc_getTintColorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 6.0 and later.
      */
     public UIColor getTintColor() {
@@ -191,7 +191,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setTintColor(UISwitch __self__, Selector __cmd__, UIColor tintColor);
     @Bridge private native static void objc_setTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor tintColor);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instp/UISwitch/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setTintColor(UIColor tintColor) {
@@ -204,7 +204,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setOn(UISwitch __self__, Selector __cmd__, boolean on, boolean animated);
     @Bridge private native static void objc_setOnSuper(ObjCSuper __super__, Selector __cmd__, boolean on, boolean animated);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instm/UISwitch/setOn:animated:">- (void)setOn:(BOOL)on animated:(BOOL)animated</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISwitch_Class/Reference/Reference.html#//apple_ref/occ/instm/UISwitch/setOn:animated:">- (void)setOn:(BOOL)on animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setOn(boolean on, boolean animated) {

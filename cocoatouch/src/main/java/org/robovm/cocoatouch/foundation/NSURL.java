@@ -29,7 +29,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSURL_Class/Reference/Reference.html">NSURL Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSURL_Class/Reference/Reference.html">NSURL Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -51,12 +51,12 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector initWithString$ = Selector.register("initWithString:");
     @Bridge private native static @Pointer long objc_initWithString(NSURL __self__, Selector __cmd__, String URLString);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSURL_Class/Reference/Reference.html#//apple_ref/occ/instm/NSURL/initWithString:">- (id)initWithString:(NSString *)URLString</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSURL_Class/Reference/Reference.html#//apple_ref/occ/instm/NSURL/initWithString:">- (id)initWithString:(NSString *)URLString</a>
      * @since Available in iOS 2.0 and later.
      */
     public NSURL(String URLString) {
         super((SkipInit) null);
-        setHandle(objc_initWithString(this, initWithString$, URLString));
+        initObject(objc_initWithString(this, initWithString$, URLString));
     }
     /*</constructors>*/
     /*<properties>*/

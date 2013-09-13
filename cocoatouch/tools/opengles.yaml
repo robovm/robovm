@@ -1,6 +1,6 @@
 package: org.robovm.cocoatouch.opengles
 library: OpenGLES
-base_url: http://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/
+base_url: https://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/
 imports:
     - org.robovm.cocoatouch.coregraphics.*
     - org.robovm.cocoatouch.foundation.*

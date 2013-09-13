@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html">UISearchDisplayController Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html">UISearchDisplayController Class Reference</a>
  *   @since Available in iOS 3.0 and later.
  * </div>
  */
@@ -56,12 +56,12 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector initWithSearchBar$contentsController$ = Selector.register("initWithSearchBar:contentsController:");
     @Bridge private native static @Pointer long objc_initWithSearchBar(UISearchDisplayController __self__, Selector __cmd__, UISearchBar searchBar, UIViewController viewController);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instm/UISearchDisplayController/initWithSearchBar:contentsController:">- (id)initWithSearchBar:(UISearchBar *)searchBar contentsController:(UIViewController *)viewController</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instm/UISearchDisplayController/initWithSearchBar:contentsController:">- (id)initWithSearchBar:(UISearchBar *)searchBar contentsController:(UIViewController *)viewController</a>
      * @since Available in iOS 3.0 and later.
      */
     public UISearchDisplayController(UISearchBar searchBar, UIViewController viewController) {
         super((SkipInit) null);
-        setHandle(objc_initWithSearchBar(this, initWithSearchBar$contentsController$, searchBar, viewController));
+        initObject(objc_initWithSearchBar(this, initWithSearchBar$contentsController$, searchBar, viewController));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -70,7 +70,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isActive(UISearchDisplayController __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isActiveSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/active">@property(nonatomic, getter=isActive) BOOL active</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/active">@property(nonatomic, getter=isActive) BOOL active</a>
      * @since Available in iOS 3.0 and later.
      */
     public boolean isActive() {
@@ -81,7 +81,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setActive(UISearchDisplayController __self__, Selector __cmd__, boolean active);
     @Bridge private native static void objc_setActiveSuper(ObjCSuper __super__, Selector __cmd__, boolean active);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/active">@property(nonatomic, getter=isActive) BOOL active</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/active">@property(nonatomic, getter=isActive) BOOL active</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setActive(boolean active) {
@@ -92,7 +92,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UISearchDisplayDelegate objc_getDelegate(UISearchDisplayController __self__, Selector __cmd__);
     @Bridge private native static UISearchDisplayDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/delegate">@property(nonatomic, assign) id&amp;lt;UISearchDisplayDelegate&amp;gt; delegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/delegate">@property(nonatomic, assign) id&amp;lt;UISearchDisplayDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.0 and later.
      */
     public UISearchDisplayDelegate getDelegate() {
@@ -103,7 +103,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setDelegate(UISearchDisplayController __self__, Selector __cmd__, UISearchDisplayDelegate delegate);
     @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UISearchDisplayDelegate delegate);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/delegate">@property(nonatomic, assign) id&amp;lt;UISearchDisplayDelegate&amp;gt; delegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/delegate">@property(nonatomic, assign) id&amp;lt;UISearchDisplayDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setDelegate(UISearchDisplayDelegate delegate) {
@@ -114,7 +114,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UISearchBar objc_getSearchBar(UISearchDisplayController __self__, Selector __cmd__);
     @Bridge private native static UISearchBar objc_getSearchBarSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchBar">@property(nonatomic, readonly) UISearchBar *searchBar</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchBar">@property(nonatomic, readonly) UISearchBar *searchBar</a>
      * @since Available in iOS 3.0 and later.
      */
     public UISearchBar getSearchBar() {
@@ -125,7 +125,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIViewController objc_getSearchContentsController(UISearchDisplayController __self__, Selector __cmd__);
     @Bridge private native static UIViewController objc_getSearchContentsControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchContentsController">@property(nonatomic, readonly) UIViewController *searchContentsController</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchContentsController">@property(nonatomic, readonly) UIViewController *searchContentsController</a>
      * @since Available in iOS 3.0 and later.
      */
     public UIViewController getSearchContentsController() {
@@ -136,7 +136,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITableViewDataSource objc_getSearchResultsDataSource(UISearchDisplayController __self__, Selector __cmd__);
     @Bridge private native static UITableViewDataSource objc_getSearchResultsDataSourceSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsDataSource">@property(nonatomic, assign) id&amp;lt;UITableViewDataSource&amp;gt; searchResultsDataSource</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsDataSource">@property(nonatomic, assign) id&amp;lt;UITableViewDataSource&amp;gt; searchResultsDataSource</a>
      * @since Available in iOS 3.0 and later.
      */
     public UITableViewDataSource getSearchResultsDataSource() {
@@ -147,7 +147,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setSearchResultsDataSource(UISearchDisplayController __self__, Selector __cmd__, UITableViewDataSource searchResultsDataSource);
     @Bridge private native static void objc_setSearchResultsDataSourceSuper(ObjCSuper __super__, Selector __cmd__, UITableViewDataSource searchResultsDataSource);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsDataSource">@property(nonatomic, assign) id&amp;lt;UITableViewDataSource&amp;gt; searchResultsDataSource</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsDataSource">@property(nonatomic, assign) id&amp;lt;UITableViewDataSource&amp;gt; searchResultsDataSource</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setSearchResultsDataSource(UITableViewDataSource searchResultsDataSource) {
@@ -158,7 +158,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITableViewDelegate objc_getSearchResultsDelegate(UISearchDisplayController __self__, Selector __cmd__);
     @Bridge private native static UITableViewDelegate objc_getSearchResultsDelegateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsDelegate">@property(nonatomic, assign) id&amp;lt;UITableViewDelegate&amp;gt; searchResultsDelegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsDelegate">@property(nonatomic, assign) id&amp;lt;UITableViewDelegate&amp;gt; searchResultsDelegate</a>
      * @since Available in iOS 3.0 and later.
      */
     public UITableViewDelegate getSearchResultsDelegate() {
@@ -169,7 +169,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setSearchResultsDelegate(UISearchDisplayController __self__, Selector __cmd__, UITableViewDelegate searchResultsDelegate);
     @Bridge private native static void objc_setSearchResultsDelegateSuper(ObjCSuper __super__, Selector __cmd__, UITableViewDelegate searchResultsDelegate);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsDelegate">@property(nonatomic, assign) id&amp;lt;UITableViewDelegate&amp;gt; searchResultsDelegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsDelegate">@property(nonatomic, assign) id&amp;lt;UITableViewDelegate&amp;gt; searchResultsDelegate</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setSearchResultsDelegate(UITableViewDelegate searchResultsDelegate) {
@@ -180,7 +180,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITableView objc_getSearchResultsTableView(UISearchDisplayController __self__, Selector __cmd__);
     @Bridge private native static UITableView objc_getSearchResultsTableViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsTableView">@property(nonatomic, readonly) UITableView *searchResultsTableView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsTableView">@property(nonatomic, readonly) UITableView *searchResultsTableView</a>
      * @since Available in iOS 3.0 and later.
      */
     public UITableView getSearchResultsTableView() {
@@ -191,7 +191,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static String objc_getSearchResultsTitle(UISearchDisplayController __self__, Selector __cmd__);
     @Bridge private native static String objc_getSearchResultsTitleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsTitle">@property(nonatomic, copy) NSString *searchResultsTitle</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsTitle">@property(nonatomic, copy) NSString *searchResultsTitle</a>
      * @since Available in iOS 5.0 and later.
      */
     public String getSearchResultsTitle() {
@@ -202,7 +202,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setSearchResultsTitle(UISearchDisplayController __self__, Selector __cmd__, String searchResultsTitle);
     @Bridge private native static void objc_setSearchResultsTitleSuper(ObjCSuper __super__, Selector __cmd__, String searchResultsTitle);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsTitle">@property(nonatomic, copy) NSString *searchResultsTitle</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instp/UISearchDisplayController/searchResultsTitle">@property(nonatomic, copy) NSString *searchResultsTitle</a>
      * @since Available in iOS 5.0 and later.
      */
     public void setSearchResultsTitle(String searchResultsTitle) {
@@ -215,7 +215,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setActive(UISearchDisplayController __self__, Selector __cmd__, boolean visible, boolean animated);
     @Bridge private native static void objc_setActiveSuper(ObjCSuper __super__, Selector __cmd__, boolean visible, boolean animated);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instm/UISearchDisplayController/setActive:animated:">- (void)setActive:(BOOL)visible animated:(BOOL)animated</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayController_Class/Reference/Reference.html#//apple_ref/occ/instm/UISearchDisplayController/setActive:animated:">- (void)setActive:(BOOL)visible animated:(BOOL)animated</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setActive(boolean visible, boolean animated) {

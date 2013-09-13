@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html">UITableViewCell Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html">UITableViewCell Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -59,12 +59,12 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector initWithStyle$reuseIdentifier$ = Selector.register("initWithStyle:reuseIdentifier:");
     @Bridge private native static @Pointer long objc_initWithStyle(UITableViewCell __self__, Selector __cmd__, UITableViewCellStyle style, String reuseIdentifier);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewCell/initWithStyle:reuseIdentifier:">- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewCell/initWithStyle:reuseIdentifier:">- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier</a>
      * @since Available in iOS 3.0 and later.
      */
     public UITableViewCell(UITableViewCellStyle style, String reuseIdentifier) {
         super((SkipInit) null);
-        setHandle(objc_initWithStyle(this, initWithStyle$reuseIdentifier$, style, reuseIdentifier));
+        initObject(objc_initWithStyle(this, initWithStyle$reuseIdentifier$, style, reuseIdentifier));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -73,7 +73,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITableViewCellAccessoryType objc_getAccessoryType(UITableViewCell __self__, Selector __cmd__);
     @Bridge private native static UITableViewCellAccessoryType objc_getAccessoryTypeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/accessoryType">@property(nonatomic) UITableViewCellAccessoryType accessoryType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/accessoryType">@property(nonatomic) UITableViewCellAccessoryType accessoryType</a>
      * @since Available in iOS 2.0 and later.
      */
     public UITableViewCellAccessoryType getAccessoryType() {
@@ -84,7 +84,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setAccessoryType(UITableViewCell __self__, Selector __cmd__, UITableViewCellAccessoryType accessoryType);
     @Bridge private native static void objc_setAccessoryTypeSuper(ObjCSuper __super__, Selector __cmd__, UITableViewCellAccessoryType accessoryType);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/accessoryType">@property(nonatomic) UITableViewCellAccessoryType accessoryType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/accessoryType">@property(nonatomic) UITableViewCellAccessoryType accessoryType</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setAccessoryType(UITableViewCellAccessoryType accessoryType) {
@@ -95,7 +95,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIView objc_getAccessoryView(UITableViewCell __self__, Selector __cmd__);
     @Bridge private native static UIView objc_getAccessoryViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/accessoryView">@property(nonatomic, retain) UIView *accessoryView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/accessoryView">@property(nonatomic, retain) UIView *accessoryView</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIView getAccessoryView() {
@@ -106,7 +106,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setAccessoryView(UITableViewCell __self__, Selector __cmd__, UIView accessoryView);
     @Bridge private native static void objc_setAccessoryViewSuper(ObjCSuper __super__, Selector __cmd__, UIView accessoryView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/accessoryView">@property(nonatomic, retain) UIView *accessoryView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/accessoryView">@property(nonatomic, retain) UIView *accessoryView</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setAccessoryView(UIView accessoryView) {
@@ -117,7 +117,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIView objc_getBackgroundView(UITableViewCell __self__, Selector __cmd__);
     @Bridge private native static UIView objc_getBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/backgroundView">@property(nonatomic, retain) UIView *backgroundView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/backgroundView">@property(nonatomic, retain) UIView *backgroundView</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIView getBackgroundView() {
@@ -128,7 +128,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setBackgroundView(UITableViewCell __self__, Selector __cmd__, UIView backgroundView);
     @Bridge private native static void objc_setBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__, UIView backgroundView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/backgroundView">@property(nonatomic, retain) UIView *backgroundView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/backgroundView">@property(nonatomic, retain) UIView *backgroundView</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setBackgroundView(UIView backgroundView) {
@@ -139,7 +139,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIView objc_getContentView(UITableViewCell __self__, Selector __cmd__);
     @Bridge private native static UIView objc_getContentViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/contentView">@property(nonatomic, readonly, retain) UIView *contentView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/contentView">@property(nonatomic, readonly, retain) UIView *contentView</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIView getContentView() {
@@ -150,7 +150,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UILabel objc_getDetailTextLabel(UITableViewCell __self__, Selector __cmd__);
     @Bridge private native static UILabel objc_getDetailTextLabelSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/detailTextLabel">@property(nonatomic, readonly, retain) UILabel *detailTextLabel</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/detailTextLabel">@property(nonatomic, readonly, retain) UILabel *detailTextLabel</a>
      * @since Available in iOS 3.0 and later.
      */
     public UILabel getDetailTextLabel() {
@@ -161,7 +161,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isEditing(UITableViewCell __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isEditingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/editing">@property(nonatomic, getter=isEditing) BOOL editing</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/editing">@property(nonatomic, getter=isEditing) BOOL editing</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isEditing() {
@@ -172,7 +172,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setEditing(UITableViewCell __self__, Selector __cmd__, boolean editing);
     @Bridge private native static void objc_setEditingSuper(ObjCSuper __super__, Selector __cmd__, boolean editing);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/editing">@property(nonatomic, getter=isEditing) BOOL editing</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/editing">@property(nonatomic, getter=isEditing) BOOL editing</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setEditing(boolean editing) {
@@ -183,7 +183,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITableViewCellAccessoryType objc_getEditingAccessoryType(UITableViewCell __self__, Selector __cmd__);
     @Bridge private native static UITableViewCellAccessoryType objc_getEditingAccessoryTypeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/editingAccessoryType">@property(nonatomic) UITableViewCellAccessoryType editingAccessoryType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/editingAccessoryType">@property(nonatomic) UITableViewCellAccessoryType editingAccessoryType</a>
      * @since Available in iOS 3.0 and later.
      */
     public UITableViewCellAccessoryType getEditingAccessoryType() {
@@ -194,7 +194,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setEditingAccessoryType(UITableViewCell __self__, Selector __cmd__, UITableViewCellAccessoryType editingAccessoryType);
     @Bridge private native static void objc_setEditingAccessoryTypeSuper(ObjCSuper __super__, Selector __cmd__, UITableViewCellAccessoryType editingAccessoryType);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/editingAccessoryType">@property(nonatomic) UITableViewCellAccessoryType editingAccessoryType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/editingAccessoryType">@property(nonatomic) UITableViewCellAccessoryType editingAccessoryType</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setEditingAccessoryType(UITableViewCellAccessoryType editingAccessoryType) {
@@ -205,7 +205,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIView objc_getEditingAccessoryView(UITableViewCell __self__, Selector __cmd__);
     @Bridge private native static UIView objc_getEditingAccessoryViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/editingAccessoryView">@property(nonatomic, retain) UIView *editingAccessoryView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/editingAccessoryView">@property(nonatomic, retain) UIView *editingAccessoryView</a>
      * @since Available in iOS 3.0 and later.
      */
     public UIView getEditingAccessoryView() {
@@ -216,7 +216,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setEditingAccessoryView(UITableViewCell __self__, Selector __cmd__, UIView editingAccessoryView);
     @Bridge private native static void objc_setEditingAccessoryViewSuper(ObjCSuper __super__, Selector __cmd__, UIView editingAccessoryView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/editingAccessoryView">@property(nonatomic, retain) UIView *editingAccessoryView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/editingAccessoryView">@property(nonatomic, retain) UIView *editingAccessoryView</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setEditingAccessoryView(UIView editingAccessoryView) {
@@ -227,7 +227,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITableViewCellEditingStyle objc_getEditingStyle(UITableViewCell __self__, Selector __cmd__);
     @Bridge private native static UITableViewCellEditingStyle objc_getEditingStyleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/editingStyle">@property(nonatomic, readonly) UITableViewCellEditingStyle editingStyle</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/editingStyle">@property(nonatomic, readonly) UITableViewCellEditingStyle editingStyle</a>
      * @since Available in iOS 2.0 and later.
      */
     public UITableViewCellEditingStyle getEditingStyle() {
@@ -238,7 +238,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isHighlighted(UITableViewCell __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isHighlightedSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/highlighted">@property(nonatomic, getter=isHighlighted) BOOL highlighted</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/highlighted">@property(nonatomic, getter=isHighlighted) BOOL highlighted</a>
      * @since Available in iOS 3.0 and later.
      */
     public boolean isHighlighted() {
@@ -249,7 +249,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setHighlighted(UITableViewCell __self__, Selector __cmd__, boolean highlighted);
     @Bridge private native static void objc_setHighlightedSuper(ObjCSuper __super__, Selector __cmd__, boolean highlighted);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/highlighted">@property(nonatomic, getter=isHighlighted) BOOL highlighted</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/highlighted">@property(nonatomic, getter=isHighlighted) BOOL highlighted</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setHighlighted(boolean highlighted) {
@@ -260,7 +260,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIImageView objc_getImageView(UITableViewCell __self__, Selector __cmd__);
     @Bridge private native static UIImageView objc_getImageViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/imageView">@property(nonatomic, readonly, retain) UIImageView *imageView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/imageView">@property(nonatomic, readonly, retain) UIImageView *imageView</a>
      * @since Available in iOS 3.0 and later.
      */
     public UIImageView getImageView() {
@@ -271,7 +271,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_getIndentationLevel(UITableViewCell __self__, Selector __cmd__);
     @Bridge private native static int objc_getIndentationLevelSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/indentationLevel">@property(nonatomic) NSInteger indentationLevel</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/indentationLevel">@property(nonatomic) NSInteger indentationLevel</a>
      * @since Available in iOS 2.0 and later.
      */
     public int getIndentationLevel() {
@@ -282,7 +282,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setIndentationLevel(UITableViewCell __self__, Selector __cmd__, int indentationLevel);
     @Bridge private native static void objc_setIndentationLevelSuper(ObjCSuper __super__, Selector __cmd__, int indentationLevel);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/indentationLevel">@property(nonatomic) NSInteger indentationLevel</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/indentationLevel">@property(nonatomic) NSInteger indentationLevel</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setIndentationLevel(int indentationLevel) {
@@ -293,7 +293,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static float objc_getIndentationWidth(UITableViewCell __self__, Selector __cmd__);
     @Bridge private native static float objc_getIndentationWidthSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/indentationWidth">@property(nonatomic) CGFloat indentationWidth</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/indentationWidth">@property(nonatomic) CGFloat indentationWidth</a>
      * @since Available in iOS 2.0 and later.
      */
     public float getIndentationWidth() {
@@ -304,7 +304,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setIndentationWidth(UITableViewCell __self__, Selector __cmd__, float indentationWidth);
     @Bridge private native static void objc_setIndentationWidthSuper(ObjCSuper __super__, Selector __cmd__, float indentationWidth);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/indentationWidth">@property(nonatomic) CGFloat indentationWidth</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/indentationWidth">@property(nonatomic) CGFloat indentationWidth</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setIndentationWidth(float indentationWidth) {
@@ -315,7 +315,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIView objc_getMultipleSelectionBackgroundView(UITableViewCell __self__, Selector __cmd__);
     @Bridge private native static UIView objc_getMultipleSelectionBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/multipleSelectionBackgroundView">@property(nonatomic,retain) UIView *multipleSelectionBackgroundView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/multipleSelectionBackgroundView">@property(nonatomic,retain) UIView *multipleSelectionBackgroundView</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIView getMultipleSelectionBackgroundView() {
@@ -326,7 +326,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setMultipleSelectionBackgroundView(UITableViewCell __self__, Selector __cmd__, UIView multipleSelectionBackgroundView);
     @Bridge private native static void objc_setMultipleSelectionBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__, UIView multipleSelectionBackgroundView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/multipleSelectionBackgroundView">@property(nonatomic,retain) UIView *multipleSelectionBackgroundView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/multipleSelectionBackgroundView">@property(nonatomic,retain) UIView *multipleSelectionBackgroundView</a>
      * @since Available in iOS 5.0 and later.
      */
     public void setMultipleSelectionBackgroundView(UIView multipleSelectionBackgroundView) {
@@ -337,7 +337,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static String objc_getReuseIdentifier(UITableViewCell __self__, Selector __cmd__);
     @Bridge private native static String objc_getReuseIdentifierSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/reuseIdentifier">@property(nonatomic, readonly, copy) NSString *reuseIdentifier</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/reuseIdentifier">@property(nonatomic, readonly, copy) NSString *reuseIdentifier</a>
      * @since Available in iOS 2.0 and later.
      */
     public String getReuseIdentifier() {
@@ -348,7 +348,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isSelected(UITableViewCell __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isSelectedSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/selected">@property(nonatomic, getter=isSelected) BOOL selected</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/selected">@property(nonatomic, getter=isSelected) BOOL selected</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isSelected() {
@@ -359,7 +359,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setSelected(UITableViewCell __self__, Selector __cmd__, boolean selected);
     @Bridge private native static void objc_setSelectedSuper(ObjCSuper __super__, Selector __cmd__, boolean selected);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/selected">@property(nonatomic, getter=isSelected) BOOL selected</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/selected">@property(nonatomic, getter=isSelected) BOOL selected</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setSelected(boolean selected) {
@@ -370,7 +370,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIView objc_getSelectedBackgroundView(UITableViewCell __self__, Selector __cmd__);
     @Bridge private native static UIView objc_getSelectedBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/selectedBackgroundView">@property(nonatomic, retain) UIView *selectedBackgroundView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/selectedBackgroundView">@property(nonatomic, retain) UIView *selectedBackgroundView</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIView getSelectedBackgroundView() {
@@ -381,7 +381,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setSelectedBackgroundView(UITableViewCell __self__, Selector __cmd__, UIView selectedBackgroundView);
     @Bridge private native static void objc_setSelectedBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__, UIView selectedBackgroundView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/selectedBackgroundView">@property(nonatomic, retain) UIView *selectedBackgroundView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/selectedBackgroundView">@property(nonatomic, retain) UIView *selectedBackgroundView</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setSelectedBackgroundView(UIView selectedBackgroundView) {
@@ -392,7 +392,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITableViewCellSelectionStyle objc_getSelectionStyle(UITableViewCell __self__, Selector __cmd__);
     @Bridge private native static UITableViewCellSelectionStyle objc_getSelectionStyleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/selectionStyle">@property(nonatomic) UITableViewCellSelectionStyle selectionStyle</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/selectionStyle">@property(nonatomic) UITableViewCellSelectionStyle selectionStyle</a>
      * @since Available in iOS 2.0 and later.
      */
     public UITableViewCellSelectionStyle getSelectionStyle() {
@@ -403,7 +403,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setSelectionStyle(UITableViewCell __self__, Selector __cmd__, UITableViewCellSelectionStyle selectionStyle);
     @Bridge private native static void objc_setSelectionStyleSuper(ObjCSuper __super__, Selector __cmd__, UITableViewCellSelectionStyle selectionStyle);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/selectionStyle">@property(nonatomic) UITableViewCellSelectionStyle selectionStyle</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/selectionStyle">@property(nonatomic) UITableViewCellSelectionStyle selectionStyle</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setSelectionStyle(UITableViewCellSelectionStyle selectionStyle) {
@@ -414,7 +414,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isShouldIndentWhileEditing(UITableViewCell __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isShouldIndentWhileEditingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/shouldIndentWhileEditing">@property(nonatomic) BOOL shouldIndentWhileEditing</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/shouldIndentWhileEditing">@property(nonatomic) BOOL shouldIndentWhileEditing</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isShouldIndentWhileEditing() {
@@ -425,7 +425,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setShouldIndentWhileEditing(UITableViewCell __self__, Selector __cmd__, boolean shouldIndentWhileEditing);
     @Bridge private native static void objc_setShouldIndentWhileEditingSuper(ObjCSuper __super__, Selector __cmd__, boolean shouldIndentWhileEditing);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/shouldIndentWhileEditing">@property(nonatomic) BOOL shouldIndentWhileEditing</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/shouldIndentWhileEditing">@property(nonatomic) BOOL shouldIndentWhileEditing</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setShouldIndentWhileEditing(boolean shouldIndentWhileEditing) {
@@ -436,7 +436,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isShowingDeleteConfirmation(UITableViewCell __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isShowingDeleteConfirmationSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/showingDeleteConfirmation">@property(nonatomic, readonly) BOOL showingDeleteConfirmation</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/showingDeleteConfirmation">@property(nonatomic, readonly) BOOL showingDeleteConfirmation</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isShowingDeleteConfirmation() {
@@ -447,7 +447,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isShowsReorderControl(UITableViewCell __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isShowsReorderControlSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/showsReorderControl">@property(nonatomic) BOOL showsReorderControl</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/showsReorderControl">@property(nonatomic) BOOL showsReorderControl</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isShowsReorderControl() {
@@ -458,7 +458,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setShowsReorderControl(UITableViewCell __self__, Selector __cmd__, boolean showsReorderControl);
     @Bridge private native static void objc_setShowsReorderControlSuper(ObjCSuper __super__, Selector __cmd__, boolean showsReorderControl);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/showsReorderControl">@property(nonatomic) BOOL showsReorderControl</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/showsReorderControl">@property(nonatomic) BOOL showsReorderControl</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setShowsReorderControl(boolean showsReorderControl) {
@@ -469,7 +469,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UILabel objc_getTextLabel(UITableViewCell __self__, Selector __cmd__);
     @Bridge private native static UILabel objc_getTextLabelSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/textLabel">@property(nonatomic, readonly, retain) UILabel *textLabel</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewCell/textLabel">@property(nonatomic, readonly, retain) UILabel *textLabel</a>
      * @since Available in iOS 3.0 and later.
      */
     public UILabel getTextLabel() {
@@ -482,7 +482,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_didTransitionToState(UITableViewCell __self__, Selector __cmd__, UITableViewCellStateMask state);
     @Bridge private native static void objc_didTransitionToStateSuper(ObjCSuper __super__, Selector __cmd__, UITableViewCellStateMask state);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewCell/didTransitionToState:">- (void)didTransitionToState:(UITableViewCellStateMask)state</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewCell/didTransitionToState:">- (void)didTransitionToState:(UITableViewCellStateMask)state</a>
      * @since Available in iOS 3.0 and later.
      */
     public void didTransitionToState(UITableViewCellStateMask state) {
@@ -493,7 +493,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_prepareForReuse(UITableViewCell __self__, Selector __cmd__);
     @Bridge private native static void objc_prepareForReuseSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewCell/prepareForReuse">- (void)prepareForReuse</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewCell/prepareForReuse">- (void)prepareForReuse</a>
      * @since Available in iOS 2.0 and later.
      */
     public void prepareForReuse() {
@@ -504,7 +504,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setEditing(UITableViewCell __self__, Selector __cmd__, boolean editing, boolean animated);
     @Bridge private native static void objc_setEditingSuper(ObjCSuper __super__, Selector __cmd__, boolean editing, boolean animated);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewCell/setEditing:animated:">- (void)setEditing:(BOOL)editing animated:(BOOL)animated</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewCell/setEditing:animated:">- (void)setEditing:(BOOL)editing animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setEditing(boolean editing, boolean animated) {
@@ -515,7 +515,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setHighlighted(UITableViewCell __self__, Selector __cmd__, boolean highlighted, boolean animated);
     @Bridge private native static void objc_setHighlightedSuper(ObjCSuper __super__, Selector __cmd__, boolean highlighted, boolean animated);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewCell/setHighlighted:animated:">- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewCell/setHighlighted:animated:">- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setHighlighted(boolean highlighted, boolean animated) {
@@ -526,7 +526,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setSelected(UITableViewCell __self__, Selector __cmd__, boolean selected, boolean animated);
     @Bridge private native static void objc_setSelectedSuper(ObjCSuper __super__, Selector __cmd__, boolean selected, boolean animated);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewCell/setSelected:animated:">- (void)setSelected:(BOOL)selected animated:(BOOL)animated</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewCell/setSelected:animated:">- (void)setSelected:(BOOL)selected animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setSelected(boolean selected, boolean animated) {
@@ -537,7 +537,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_willTransitionToState(UITableViewCell __self__, Selector __cmd__, UITableViewCellStateMask state);
     @Bridge private native static void objc_willTransitionToStateSuper(ObjCSuper __super__, Selector __cmd__, UITableViewCellStateMask state);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewCell/willTransitionToState:">- (void)willTransitionToState:(UITableViewCellStateMask)state</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewCell_Class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewCell/willTransitionToState:">- (void)willTransitionToState:(UITableViewCellStateMask)state</a>
      * @since Available in iOS 3.0 and later.
      */
     public void willTransitionToState(UITableViewCellStateMask state) {

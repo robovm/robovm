@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreenMode_class/Reference/Reference.html">UIScreenMode Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreenMode_class/Reference/Reference.html">UIScreenMode Class Reference</a>
  *   @since Available in iOS 3.2 and later.
  * </div>
  */
@@ -60,7 +60,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static float objc_getPixelAspectRatio(UIScreenMode __self__, Selector __cmd__);
     @Bridge private native static float objc_getPixelAspectRatioSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreenMode_class/Reference/Reference.html#//apple_ref/occ/instp/UIScreenMode/pixelAspectRatio">@property(readonly,nonatomic) CGFloat pixelAspectRatio</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreenMode_class/Reference/Reference.html#//apple_ref/occ/instp/UIScreenMode/pixelAspectRatio">@property(readonly,nonatomic) CGFloat pixelAspectRatio</a>
      * @since Available in iOS 3.2 and later.
      */
     public float getPixelAspectRatio() {
@@ -71,7 +71,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGSize objc_getSize(UIScreenMode __self__, Selector __cmd__);
     @Bridge private native static @ByVal CGSize objc_getSizeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreenMode_class/Reference/Reference.html#//apple_ref/occ/instp/UIScreenMode/size">@property(readonly,nonatomic) CGSize size</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScreenMode_class/Reference/Reference.html#//apple_ref/occ/instp/UIScreenMode/size">@property(readonly,nonatomic) CGSize size</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGSize getSize() {

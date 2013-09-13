@@ -33,7 +33,7 @@ import org.robovm.rt.bro.ptr.*;
 /**
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html">UITableViewHeaderFooterView Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html">UITableViewHeaderFooterView Class Reference</a>
  *   @since Available in iOS 6.0 and later.
  * </div>
  */
@@ -58,12 +58,12 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector initWithReuseIdentifier$ = Selector.register("initWithReuseIdentifier:");
     @Bridge private native static @Pointer long objc_initWithReuseIdentifier(UITableViewHeaderFooterView __self__, Selector __cmd__, String reuseIdentifier);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewHeaderFooterView/initWithReuseIdentifier:">- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewHeaderFooterView/initWithReuseIdentifier:">- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier</a>
      * @since Available in iOS 6.0 and later.
      */
     public UITableViewHeaderFooterView(String reuseIdentifier) {
         super((SkipInit) null);
-        setHandle(objc_initWithReuseIdentifier(this, initWithReuseIdentifier$, reuseIdentifier));
+        initObject(objc_initWithReuseIdentifier(this, initWithReuseIdentifier$, reuseIdentifier));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -72,7 +72,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIView objc_getBackgroundView(UITableViewHeaderFooterView __self__, Selector __cmd__);
     @Bridge private native static UIView objc_getBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/backgroundView">@property(nonatomic, retain) UIView *backgroundView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/backgroundView">@property(nonatomic, retain) UIView *backgroundView</a>
      * @since Available in iOS 6.0 and later.
      */
     public UIView getBackgroundView() {
@@ -83,7 +83,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setBackgroundView(UITableViewHeaderFooterView __self__, Selector __cmd__, UIView backgroundView);
     @Bridge private native static void objc_setBackgroundViewSuper(ObjCSuper __super__, Selector __cmd__, UIView backgroundView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/backgroundView">@property(nonatomic, retain) UIView *backgroundView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/backgroundView">@property(nonatomic, retain) UIView *backgroundView</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setBackgroundView(UIView backgroundView) {
@@ -94,7 +94,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIView objc_getContentView(UITableViewHeaderFooterView __self__, Selector __cmd__);
     @Bridge private native static UIView objc_getContentViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/contentView">@property(nonatomic, readonly, retain) UIView *contentView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/contentView">@property(nonatomic, readonly, retain) UIView *contentView</a>
      * @since Available in iOS 6.0 and later.
      */
     public UIView getContentView() {
@@ -105,7 +105,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UILabel objc_getDetailTextLabel(UITableViewHeaderFooterView __self__, Selector __cmd__);
     @Bridge private native static UILabel objc_getDetailTextLabelSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/detailTextLabel">@property(nonatomic, readonly, retain) UILabel *detailTextLabel</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/detailTextLabel">@property(nonatomic, readonly, retain) UILabel *detailTextLabel</a>
      * @since Available in iOS 6.0 and later.
      */
     public UILabel getDetailTextLabel() {
@@ -116,7 +116,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static String objc_getReuseIdentifier(UITableViewHeaderFooterView __self__, Selector __cmd__);
     @Bridge private native static String objc_getReuseIdentifierSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/reuseIdentifier">@property(nonatomic, readonly, copy) NSString *reuseIdentifier</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/reuseIdentifier">@property(nonatomic, readonly, copy) NSString *reuseIdentifier</a>
      * @since Available in iOS 6.0 and later.
      */
     public String getReuseIdentifier() {
@@ -127,7 +127,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UILabel objc_getTextLabel(UITableViewHeaderFooterView __self__, Selector __cmd__);
     @Bridge private native static UILabel objc_getTextLabelSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/textLabel">@property(nonatomic, readonly, retain) UILabel *textLabel</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/textLabel">@property(nonatomic, readonly, retain) UILabel *textLabel</a>
      * @since Available in iOS 6.0 and later.
      */
     public UILabel getTextLabel() {
@@ -138,7 +138,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIColor objc_getTintColor(UITableViewHeaderFooterView __self__, Selector __cmd__);
     @Bridge private native static UIColor objc_getTintColorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 6.0 and later.
      */
     public UIColor getTintColor() {
@@ -149,7 +149,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setTintColor(UITableViewHeaderFooterView __self__, Selector __cmd__, UIColor tintColor);
     @Bridge private native static void objc_setTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor tintColor);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instp/UITableViewHeaderFooterView/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setTintColor(UIColor tintColor) {
@@ -162,7 +162,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_prepareForReuse(UITableViewHeaderFooterView __self__, Selector __cmd__);
     @Bridge private native static void objc_prepareForReuseSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewHeaderFooterView/prepareForReuse">- (void)prepareForReuse</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITableViewHeaderFooterView_class/Reference/Reference.html#//apple_ref/occ/instm/UITableViewHeaderFooterView/prepareForReuse">- (void)prepareForReuse</a>
      * @since Available in iOS 6.0 and later.
      */
     public void prepareForReuse() {

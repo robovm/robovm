@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html">UIImagePickerController Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html">UIImagePickerController Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -60,7 +60,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isAllowsEditing(UIImagePickerController __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isAllowsEditingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/allowsEditing">@property (nonatomic) BOOL allowsEditing</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/allowsEditing">@property (nonatomic) BOOL allowsEditing</a>
      * @since Available in iOS 3.1 and later.
      */
     public boolean isAllowsEditing() {
@@ -71,7 +71,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setAllowsEditing(UIImagePickerController __self__, Selector __cmd__, boolean allowsEditing);
     @Bridge private native static void objc_setAllowsEditingSuper(ObjCSuper __super__, Selector __cmd__, boolean allowsEditing);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/allowsEditing">@property (nonatomic) BOOL allowsEditing</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/allowsEditing">@property (nonatomic) BOOL allowsEditing</a>
      * @since Available in iOS 3.1 and later.
      */
     public void setAllowsEditing(boolean allowsEditing) {
@@ -82,7 +82,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIImagePickerControllerCameraCaptureMode objc_getCameraCaptureMode(UIImagePickerController __self__, Selector __cmd__);
     @Bridge private native static UIImagePickerControllerCameraCaptureMode objc_getCameraCaptureModeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraCaptureMode">@property (nonatomic) UIImagePickerControllerCameraCaptureMode cameraCaptureMode</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraCaptureMode">@property (nonatomic) UIImagePickerControllerCameraCaptureMode cameraCaptureMode</a>
      * @since Available in iOS 4.0 and later.
      */
     public UIImagePickerControllerCameraCaptureMode getCameraCaptureMode() {
@@ -93,7 +93,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setCameraCaptureMode(UIImagePickerController __self__, Selector __cmd__, UIImagePickerControllerCameraCaptureMode cameraCaptureMode);
     @Bridge private native static void objc_setCameraCaptureModeSuper(ObjCSuper __super__, Selector __cmd__, UIImagePickerControllerCameraCaptureMode cameraCaptureMode);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraCaptureMode">@property (nonatomic) UIImagePickerControllerCameraCaptureMode cameraCaptureMode</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraCaptureMode">@property (nonatomic) UIImagePickerControllerCameraCaptureMode cameraCaptureMode</a>
      * @since Available in iOS 4.0 and later.
      */
     public void setCameraCaptureMode(UIImagePickerControllerCameraCaptureMode cameraCaptureMode) {
@@ -104,7 +104,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIImagePickerControllerCameraDevice objc_getCameraDevice(UIImagePickerController __self__, Selector __cmd__);
     @Bridge private native static UIImagePickerControllerCameraDevice objc_getCameraDeviceSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraDevice">@property (nonatomic) UIImagePickerControllerCameraDevice cameraDevice</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraDevice">@property (nonatomic) UIImagePickerControllerCameraDevice cameraDevice</a>
      * @since Available in iOS 4.0 and later.
      */
     public UIImagePickerControllerCameraDevice getCameraDevice() {
@@ -115,7 +115,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setCameraDevice(UIImagePickerController __self__, Selector __cmd__, UIImagePickerControllerCameraDevice cameraDevice);
     @Bridge private native static void objc_setCameraDeviceSuper(ObjCSuper __super__, Selector __cmd__, UIImagePickerControllerCameraDevice cameraDevice);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraDevice">@property (nonatomic) UIImagePickerControllerCameraDevice cameraDevice</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraDevice">@property (nonatomic) UIImagePickerControllerCameraDevice cameraDevice</a>
      * @since Available in iOS 4.0 and later.
      */
     public void setCameraDevice(UIImagePickerControllerCameraDevice cameraDevice) {
@@ -126,7 +126,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIImagePickerControllerCameraFlashMode objc_getCameraFlashMode(UIImagePickerController __self__, Selector __cmd__);
     @Bridge private native static UIImagePickerControllerCameraFlashMode objc_getCameraFlashModeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraFlashMode">@property (nonatomic) UIImagePickerControllerCameraFlashMode cameraFlashMode</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraFlashMode">@property (nonatomic) UIImagePickerControllerCameraFlashMode cameraFlashMode</a>
      * @since Available in iOS 4.0 and later.
      */
     public UIImagePickerControllerCameraFlashMode getCameraFlashMode() {
@@ -137,7 +137,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setCameraFlashMode(UIImagePickerController __self__, Selector __cmd__, UIImagePickerControllerCameraFlashMode cameraFlashMode);
     @Bridge private native static void objc_setCameraFlashModeSuper(ObjCSuper __super__, Selector __cmd__, UIImagePickerControllerCameraFlashMode cameraFlashMode);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraFlashMode">@property (nonatomic) UIImagePickerControllerCameraFlashMode cameraFlashMode</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraFlashMode">@property (nonatomic) UIImagePickerControllerCameraFlashMode cameraFlashMode</a>
      * @since Available in iOS 4.0 and later.
      */
     public void setCameraFlashMode(UIImagePickerControllerCameraFlashMode cameraFlashMode) {
@@ -148,7 +148,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIView objc_getCameraOverlayView(UIImagePickerController __self__, Selector __cmd__);
     @Bridge private native static UIView objc_getCameraOverlayViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraOverlayView">@property (nonatomic, retain) UIView *cameraOverlayView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraOverlayView">@property (nonatomic, retain) UIView *cameraOverlayView</a>
      * @since Available in iOS 3.1 and later.
      */
     public UIView getCameraOverlayView() {
@@ -159,7 +159,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setCameraOverlayView(UIImagePickerController __self__, Selector __cmd__, UIView cameraOverlayView);
     @Bridge private native static void objc_setCameraOverlayViewSuper(ObjCSuper __super__, Selector __cmd__, UIView cameraOverlayView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraOverlayView">@property (nonatomic, retain) UIView *cameraOverlayView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraOverlayView">@property (nonatomic, retain) UIView *cameraOverlayView</a>
      * @since Available in iOS 3.1 and later.
      */
     public void setCameraOverlayView(UIView cameraOverlayView) {
@@ -170,7 +170,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGAffineTransform objc_getCameraViewTransform(UIImagePickerController __self__, Selector __cmd__);
     @Bridge private native static @ByVal CGAffineTransform objc_getCameraViewTransformSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraViewTransform">@property (nonatomic) CGAffineTransform cameraViewTransform</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraViewTransform">@property (nonatomic) CGAffineTransform cameraViewTransform</a>
      * @since Available in iOS 3.1 and later.
      */
     public CGAffineTransform getCameraViewTransform() {
@@ -181,7 +181,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setCameraViewTransform(UIImagePickerController __self__, Selector __cmd__, @ByVal CGAffineTransform cameraViewTransform);
     @Bridge private native static void objc_setCameraViewTransformSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGAffineTransform cameraViewTransform);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraViewTransform">@property (nonatomic) CGAffineTransform cameraViewTransform</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/cameraViewTransform">@property (nonatomic) CGAffineTransform cameraViewTransform</a>
      * @since Available in iOS 3.1 and later.
      */
     public void setCameraViewTransform(CGAffineTransform cameraViewTransform) {
@@ -192,7 +192,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIImagePickerControllerDelegate objc_getDelegate(UIImagePickerController __self__, Selector __cmd__);
     @Bridge private native static UIImagePickerControllerDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/delegate">@property (nonatomic, assign) id&amp;lt;UINavigationControllerDelegate, UIImagePickerControllerDelegate&amp;gt; delegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/delegate">@property (nonatomic, assign) id&amp;lt;UINavigationControllerDelegate, UIImagePickerControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIImagePickerControllerDelegate getDelegate() {
@@ -203,7 +203,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setDelegate(UIImagePickerController __self__, Selector __cmd__, UIImagePickerControllerDelegate delegate);
     @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIImagePickerControllerDelegate delegate);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/delegate">@property (nonatomic, assign) id&amp;lt;UINavigationControllerDelegate, UIImagePickerControllerDelegate&amp;gt; delegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/delegate">@property (nonatomic, assign) id&amp;lt;UINavigationControllerDelegate, UIImagePickerControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setDelegate(UIImagePickerControllerDelegate delegate) {
@@ -214,7 +214,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getMediaTypes(UIImagePickerController __self__, Selector __cmd__);
     @Bridge private native static NSArray objc_getMediaTypesSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/mediaTypes">@property (nonatomic, copy) NSArray *mediaTypes</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/mediaTypes">@property (nonatomic, copy) NSArray *mediaTypes</a>
      * @since Available in iOS 3.0 and later.
      */
     public NSArray getMediaTypes() {
@@ -225,7 +225,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setMediaTypes(UIImagePickerController __self__, Selector __cmd__, NSArray mediaTypes);
     @Bridge private native static void objc_setMediaTypesSuper(ObjCSuper __super__, Selector __cmd__, NSArray mediaTypes);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/mediaTypes">@property (nonatomic, copy) NSArray *mediaTypes</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/mediaTypes">@property (nonatomic, copy) NSArray *mediaTypes</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setMediaTypes(NSArray mediaTypes) {
@@ -236,7 +236,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isShowsCameraControls(UIImagePickerController __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isShowsCameraControlsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/showsCameraControls">@property (nonatomic) BOOL showsCameraControls</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/showsCameraControls">@property (nonatomic) BOOL showsCameraControls</a>
      * @since Available in iOS 3.1 and later.
      */
     public boolean isShowsCameraControls() {
@@ -247,7 +247,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setShowsCameraControls(UIImagePickerController __self__, Selector __cmd__, boolean showsCameraControls);
     @Bridge private native static void objc_setShowsCameraControlsSuper(ObjCSuper __super__, Selector __cmd__, boolean showsCameraControls);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/showsCameraControls">@property (nonatomic) BOOL showsCameraControls</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/showsCameraControls">@property (nonatomic) BOOL showsCameraControls</a>
      * @since Available in iOS 3.1 and later.
      */
     public void setShowsCameraControls(boolean showsCameraControls) {
@@ -258,7 +258,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIImagePickerControllerSourceType objc_getSourceType(UIImagePickerController __self__, Selector __cmd__);
     @Bridge private native static UIImagePickerControllerSourceType objc_getSourceTypeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/sourceType">@property (nonatomic) UIImagePickerControllerSourceType sourceType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/sourceType">@property (nonatomic) UIImagePickerControllerSourceType sourceType</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIImagePickerControllerSourceType getSourceType() {
@@ -269,7 +269,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setSourceType(UIImagePickerController __self__, Selector __cmd__, UIImagePickerControllerSourceType sourceType);
     @Bridge private native static void objc_setSourceTypeSuper(ObjCSuper __super__, Selector __cmd__, UIImagePickerControllerSourceType sourceType);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/sourceType">@property (nonatomic) UIImagePickerControllerSourceType sourceType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/sourceType">@property (nonatomic) UIImagePickerControllerSourceType sourceType</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setSourceType(UIImagePickerControllerSourceType sourceType) {
@@ -280,7 +280,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static double objc_getVideoMaximumDuration(UIImagePickerController __self__, Selector __cmd__);
     @Bridge private native static double objc_getVideoMaximumDurationSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/videoMaximumDuration">@property (nonatomic) NSTimeInterval videoMaximumDuration</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/videoMaximumDuration">@property (nonatomic) NSTimeInterval videoMaximumDuration</a>
      * @since Available in iOS 3.1 and later.
      */
     public double getVideoMaximumDuration() {
@@ -291,7 +291,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setVideoMaximumDuration(UIImagePickerController __self__, Selector __cmd__, double videoMaximumDuration);
     @Bridge private native static void objc_setVideoMaximumDurationSuper(ObjCSuper __super__, Selector __cmd__, double videoMaximumDuration);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/videoMaximumDuration">@property (nonatomic) NSTimeInterval videoMaximumDuration</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/videoMaximumDuration">@property (nonatomic) NSTimeInterval videoMaximumDuration</a>
      * @since Available in iOS 3.1 and later.
      */
     public void setVideoMaximumDuration(double videoMaximumDuration) {
@@ -302,7 +302,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIImagePickerControllerQualityType objc_getVideoQuality(UIImagePickerController __self__, Selector __cmd__);
     @Bridge private native static UIImagePickerControllerQualityType objc_getVideoQualitySuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/videoQuality">@property (nonatomic) UIImagePickerControllerQualityType videoQuality</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/videoQuality">@property (nonatomic) UIImagePickerControllerQualityType videoQuality</a>
      * @since Available in iOS 3.1 and later.
      */
     public UIImagePickerControllerQualityType getVideoQuality() {
@@ -313,7 +313,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setVideoQuality(UIImagePickerController __self__, Selector __cmd__, UIImagePickerControllerQualityType videoQuality);
     @Bridge private native static void objc_setVideoQualitySuper(ObjCSuper __super__, Selector __cmd__, UIImagePickerControllerQualityType videoQuality);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/videoQuality">@property (nonatomic) UIImagePickerControllerQualityType videoQuality</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instp/UIImagePickerController/videoQuality">@property (nonatomic) UIImagePickerControllerQualityType videoQuality</a>
      * @since Available in iOS 3.1 and later.
      */
     public void setVideoQuality(UIImagePickerControllerQualityType videoQuality) {
@@ -325,7 +325,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector availableCaptureModesForCameraDevice$ = Selector.register("availableCaptureModesForCameraDevice:");
     @Bridge private native static NSArray objc_getAvailableCaptureModes(ObjCClass __self__, Selector __cmd__, UIImagePickerControllerCameraDevice cameraDevice);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/clm/UIImagePickerController/availableCaptureModesForCameraDevice:">+ (NSArray *)availableCaptureModesForCameraDevice:(UIImagePickerControllerCameraDevice)cameraDevice</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/clm/UIImagePickerController/availableCaptureModesForCameraDevice:">+ (NSArray *)availableCaptureModesForCameraDevice:(UIImagePickerControllerCameraDevice)cameraDevice</a>
      * @since Available in iOS 4.0 and later.
      */
     public static NSArray getAvailableCaptureModes(UIImagePickerControllerCameraDevice cameraDevice) {
@@ -335,7 +335,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector availableMediaTypesForSourceType$ = Selector.register("availableMediaTypesForSourceType:");
     @Bridge private native static NSArray objc_getAvailableMediaTypes(ObjCClass __self__, Selector __cmd__, UIImagePickerControllerSourceType sourceType);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/clm/UIImagePickerController/availableMediaTypesForSourceType:">+ (NSArray *)availableMediaTypesForSourceType:(UIImagePickerControllerSourceType)sourceType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/clm/UIImagePickerController/availableMediaTypesForSourceType:">+ (NSArray *)availableMediaTypesForSourceType:(UIImagePickerControllerSourceType)sourceType</a>
      * @since Available in iOS 3.0 and later.
      */
     public static NSArray getAvailableMediaTypes(UIImagePickerControllerSourceType sourceType) {
@@ -345,7 +345,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector isCameraDeviceAvailable$ = Selector.register("isCameraDeviceAvailable:");
     @Bridge private native static boolean objc_isCameraDeviceAvailable(ObjCClass __self__, Selector __cmd__, UIImagePickerControllerCameraDevice cameraDevice);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/clm/UIImagePickerController/isCameraDeviceAvailable:">+ (BOOL)isCameraDeviceAvailable:(UIImagePickerControllerCameraDevice)cameraDevice</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/clm/UIImagePickerController/isCameraDeviceAvailable:">+ (BOOL)isCameraDeviceAvailable:(UIImagePickerControllerCameraDevice)cameraDevice</a>
      * @since Available in iOS 4.0 and later.
      */
     public static boolean isCameraDeviceAvailable(UIImagePickerControllerCameraDevice cameraDevice) {
@@ -355,7 +355,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector isFlashAvailableForCameraDevice$ = Selector.register("isFlashAvailableForCameraDevice:");
     @Bridge private native static boolean objc_isFlashAvailableForCameraDevice(ObjCClass __self__, Selector __cmd__, UIImagePickerControllerCameraDevice cameraDevice);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/clm/UIImagePickerController/isFlashAvailableForCameraDevice:">+ (BOOL)isFlashAvailableForCameraDevice:(UIImagePickerControllerCameraDevice)cameraDevice</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/clm/UIImagePickerController/isFlashAvailableForCameraDevice:">+ (BOOL)isFlashAvailableForCameraDevice:(UIImagePickerControllerCameraDevice)cameraDevice</a>
      * @since Available in iOS 4.0 and later.
      */
     public static boolean isFlashAvailableForCameraDevice(UIImagePickerControllerCameraDevice cameraDevice) {
@@ -365,7 +365,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector isSourceTypeAvailable$ = Selector.register("isSourceTypeAvailable:");
     @Bridge private native static boolean objc_isSourceTypeAvailable(ObjCClass __self__, Selector __cmd__, UIImagePickerControllerSourceType sourceType);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/clm/UIImagePickerController/isSourceTypeAvailable:">+ (BOOL)isSourceTypeAvailable:(UIImagePickerControllerSourceType)sourceType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/clm/UIImagePickerController/isSourceTypeAvailable:">+ (BOOL)isSourceTypeAvailable:(UIImagePickerControllerSourceType)sourceType</a>
      * @since Available in iOS 2.0 and later.
      */
     public static boolean isSourceTypeAvailable(UIImagePickerControllerSourceType sourceType) {
@@ -376,7 +376,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_startVideoCapture(UIImagePickerController __self__, Selector __cmd__);
     @Bridge private native static boolean objc_startVideoCaptureSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instm/UIImagePickerController/startVideoCapture">- (BOOL)startVideoCapture</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instm/UIImagePickerController/startVideoCapture">- (BOOL)startVideoCapture</a>
      * @since Available in iOS 4.0 and later.
      */
     public boolean startVideoCapture() {
@@ -387,7 +387,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_stopVideoCapture(UIImagePickerController __self__, Selector __cmd__);
     @Bridge private native static void objc_stopVideoCaptureSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instm/UIImagePickerController/stopVideoCapture">- (void)stopVideoCapture</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instm/UIImagePickerController/stopVideoCapture">- (void)stopVideoCapture</a>
      * @since Available in iOS 4.0 and later.
      */
     public void stopVideoCapture() {
@@ -398,7 +398,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_takePicture(UIImagePickerController __self__, Selector __cmd__);
     @Bridge private native static void objc_takePictureSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instm/UIImagePickerController/takePicture">- (void)takePicture</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIImagePickerController_Class/UIImagePickerController/UIImagePickerController.html#//apple_ref/occ/instm/UIImagePickerController/takePicture">- (void)takePicture</a>
      * @since Available in iOS 3.1 and later.
      */
     public void takePicture() {

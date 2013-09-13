@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html">UIGestureRecognizer Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html">UIGestureRecognizer Class Reference</a>
  *   @since Available in iOS 3.2 and later.
  * </div>
  */
@@ -56,12 +56,12 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector initWithTarget$action$ = Selector.register("initWithTarget:action:");
     @Bridge private native static @Pointer long objc_initWithTarget(UIGestureRecognizer __self__, Selector __cmd__, NSObject target, Selector action);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/initWithTarget:action:">- (id)initWithTarget:(id)target action:(SEL)action</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/initWithTarget:action:">- (id)initWithTarget:(id)target action:(SEL)action</a>
      * @since Available in iOS 3.2 and later.
      */
     public UIGestureRecognizer(NSObject target, Selector action) {
         super((SkipInit) null);
-        setHandle(objc_initWithTarget(this, initWithTarget$action$, target, action));
+        initObject(objc_initWithTarget(this, initWithTarget$action$, target, action));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -70,7 +70,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isCancelsTouchesInView(UIGestureRecognizer __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isCancelsTouchesInViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/cancelsTouchesInView">@property(nonatomic) BOOL cancelsTouchesInView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/cancelsTouchesInView">@property(nonatomic) BOOL cancelsTouchesInView</a>
      * @since Available in iOS 3.2 and later.
      */
     public boolean isCancelsTouchesInView() {
@@ -81,7 +81,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setCancelsTouchesInView(UIGestureRecognizer __self__, Selector __cmd__, boolean cancelsTouchesInView);
     @Bridge private native static void objc_setCancelsTouchesInViewSuper(ObjCSuper __super__, Selector __cmd__, boolean cancelsTouchesInView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/cancelsTouchesInView">@property(nonatomic) BOOL cancelsTouchesInView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/cancelsTouchesInView">@property(nonatomic) BOOL cancelsTouchesInView</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setCancelsTouchesInView(boolean cancelsTouchesInView) {
@@ -92,7 +92,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isDelaysTouchesBegan(UIGestureRecognizer __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isDelaysTouchesBeganSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/delaysTouchesBegan">@property(nonatomic) BOOL delaysTouchesBegan</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/delaysTouchesBegan">@property(nonatomic) BOOL delaysTouchesBegan</a>
      * @since Available in iOS 3.2 and later.
      */
     public boolean isDelaysTouchesBegan() {
@@ -103,7 +103,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setDelaysTouchesBegan(UIGestureRecognizer __self__, Selector __cmd__, boolean delaysTouchesBegan);
     @Bridge private native static void objc_setDelaysTouchesBeganSuper(ObjCSuper __super__, Selector __cmd__, boolean delaysTouchesBegan);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/delaysTouchesBegan">@property(nonatomic) BOOL delaysTouchesBegan</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/delaysTouchesBegan">@property(nonatomic) BOOL delaysTouchesBegan</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setDelaysTouchesBegan(boolean delaysTouchesBegan) {
@@ -114,7 +114,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isDelaysTouchesEnded(UIGestureRecognizer __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isDelaysTouchesEndedSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/delaysTouchesEnded">@property(nonatomic) BOOL delaysTouchesEnded</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/delaysTouchesEnded">@property(nonatomic) BOOL delaysTouchesEnded</a>
      * @since Available in iOS 3.2 and later.
      */
     public boolean isDelaysTouchesEnded() {
@@ -125,7 +125,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setDelaysTouchesEnded(UIGestureRecognizer __self__, Selector __cmd__, boolean delaysTouchesEnded);
     @Bridge private native static void objc_setDelaysTouchesEndedSuper(ObjCSuper __super__, Selector __cmd__, boolean delaysTouchesEnded);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/delaysTouchesEnded">@property(nonatomic) BOOL delaysTouchesEnded</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/delaysTouchesEnded">@property(nonatomic) BOOL delaysTouchesEnded</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setDelaysTouchesEnded(boolean delaysTouchesEnded) {
@@ -136,7 +136,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIGestureRecognizerDelegate objc_getDelegate(UIGestureRecognizer __self__, Selector __cmd__);
     @Bridge private native static UIGestureRecognizerDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/delegate">@property(nonatomic, assign) id&amp;lt;UIGestureRecognizerDelegate&amp;gt; delegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/delegate">@property(nonatomic, assign) id&amp;lt;UIGestureRecognizerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.2 and later.
      */
     public UIGestureRecognizerDelegate getDelegate() {
@@ -147,7 +147,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setDelegate(UIGestureRecognizer __self__, Selector __cmd__, UIGestureRecognizerDelegate delegate);
     @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIGestureRecognizerDelegate delegate);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/delegate">@property(nonatomic, assign) id&amp;lt;UIGestureRecognizerDelegate&amp;gt; delegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/delegate">@property(nonatomic, assign) id&amp;lt;UIGestureRecognizerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setDelegate(UIGestureRecognizerDelegate delegate) {
@@ -158,7 +158,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isEnabled(UIGestureRecognizer __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isEnabledSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/enabled">@property(nonatomic, getter=isEnabled) BOOL enabled</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/enabled">@property(nonatomic, getter=isEnabled) BOOL enabled</a>
      * @since Available in iOS 3.2 and later.
      */
     public boolean isEnabled() {
@@ -169,7 +169,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setEnabled(UIGestureRecognizer __self__, Selector __cmd__, boolean enabled);
     @Bridge private native static void objc_setEnabledSuper(ObjCSuper __super__, Selector __cmd__, boolean enabled);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/enabled">@property(nonatomic, getter=isEnabled) BOOL enabled</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/enabled">@property(nonatomic, getter=isEnabled) BOOL enabled</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setEnabled(boolean enabled) {
@@ -180,7 +180,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIGestureRecognizerState objc_getState(UIGestureRecognizer __self__, Selector __cmd__);
     @Bridge private native static UIGestureRecognizerState objc_getStateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/state">@property(nonatomic, readonly) UIGestureRecognizerState state</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/state">@property(nonatomic, readonly) UIGestureRecognizerState state</a>
      * @since Available in iOS 3.2 and later.
      */
     public UIGestureRecognizerState getState() {
@@ -191,7 +191,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIView objc_getView(UIGestureRecognizer __self__, Selector __cmd__);
     @Bridge private native static UIView objc_getViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/view">@property(nonatomic, readonly) UIView *view</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instp/UIGestureRecognizer/view">@property(nonatomic, readonly) UIView *view</a>
      * @since Available in iOS 3.2 and later.
      */
     public UIView getView() {
@@ -204,7 +204,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_addTarget(UIGestureRecognizer __self__, Selector __cmd__, NSObject target, Selector action);
     @Bridge private native static void objc_addTargetSuper(ObjCSuper __super__, Selector __cmd__, NSObject target, Selector action);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/addTarget:action:">- (void)addTarget:(id)target action:(SEL)action</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/addTarget:action:">- (void)addTarget:(id)target action:(SEL)action</a>
      * @since Available in iOS 3.2 and later.
      */
     public void addTarget(NSObject target, Selector action) {
@@ -215,7 +215,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_canBePreventedByGestureRecognizer(UIGestureRecognizer __self__, Selector __cmd__, UIGestureRecognizer preventingGestureRecognizer);
     @Bridge private native static boolean objc_canBePreventedByGestureRecognizerSuper(ObjCSuper __super__, Selector __cmd__, UIGestureRecognizer preventingGestureRecognizer);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/canBePreventedByGestureRecognizer:">- (BOOL)canBePreventedByGestureRecognizer:(UIGestureRecognizer *)preventingGestureRecognizer</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/canBePreventedByGestureRecognizer:">- (BOOL)canBePreventedByGestureRecognizer:(UIGestureRecognizer *)preventingGestureRecognizer</a>
      * @since Available in iOS 3.2 and later.
      */
     public boolean canBePreventedByGestureRecognizer(UIGestureRecognizer preventingGestureRecognizer) {
@@ -226,7 +226,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_canPreventGestureRecognizer(UIGestureRecognizer __self__, Selector __cmd__, UIGestureRecognizer preventedGestureRecognizer);
     @Bridge private native static boolean objc_canPreventGestureRecognizerSuper(ObjCSuper __super__, Selector __cmd__, UIGestureRecognizer preventedGestureRecognizer);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/canPreventGestureRecognizer:">- (BOOL)canPreventGestureRecognizer:(UIGestureRecognizer *)preventedGestureRecognizer</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/canPreventGestureRecognizer:">- (BOOL)canPreventGestureRecognizer:(UIGestureRecognizer *)preventedGestureRecognizer</a>
      * @since Available in iOS 3.2 and later.
      */
     public boolean canPreventGestureRecognizer(UIGestureRecognizer preventedGestureRecognizer) {
@@ -237,7 +237,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGPoint objc_getLocation(UIGestureRecognizer __self__, Selector __cmd__, UIView view);
     @Bridge private native static @ByVal CGPoint objc_getLocationSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/locationInView:">- (CGPoint)locationInView:(UIView *)view</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/locationInView:">- (CGPoint)locationInView:(UIView *)view</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGPoint getLocation(UIView view) {
@@ -248,7 +248,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGPoint objc_getLocation(UIGestureRecognizer __self__, Selector __cmd__, int touchIndex, UIView view);
     @Bridge private native static @ByVal CGPoint objc_getLocationSuper(ObjCSuper __super__, Selector __cmd__, int touchIndex, UIView view);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/locationOfTouch:inView:">- (CGPoint)locationOfTouch:(NSUInteger)touchIndex inView:(UIView *)view</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/locationOfTouch:inView:">- (CGPoint)locationOfTouch:(NSUInteger)touchIndex inView:(UIView *)view</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGPoint getLocation(int touchIndex, UIView view) {
@@ -259,7 +259,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_getNumberOfTouches(UIGestureRecognizer __self__, Selector __cmd__);
     @Bridge private native static int objc_getNumberOfTouchesSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/numberOfTouches">- (NSUInteger)numberOfTouches</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/numberOfTouches">- (NSUInteger)numberOfTouches</a>
      * @since Available in iOS 3.2 and later.
      */
     public int getNumberOfTouches() {
@@ -270,7 +270,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_ignoreTouch(UIGestureRecognizer __self__, Selector __cmd__, UITouch touch, UIEvent event);
     @Bridge private native static void objc_ignoreTouchSuper(ObjCSuper __super__, Selector __cmd__, UITouch touch, UIEvent event);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/ignoreTouch:forEvent:">- (void)ignoreTouch:(UITouch *)touch forEvent:(UIEvent *)event</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/ignoreTouch:forEvent:">- (void)ignoreTouch:(UITouch *)touch forEvent:(UIEvent *)event</a>
      * @since Available in iOS 3.2 and later.
      */
     public void ignoreTouch(UITouch touch, UIEvent event) {
@@ -281,7 +281,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_removeTarget(UIGestureRecognizer __self__, Selector __cmd__, NSObject target, Selector action);
     @Bridge private native static void objc_removeTargetSuper(ObjCSuper __super__, Selector __cmd__, NSObject target, Selector action);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/removeTarget:action:">- (void)removeTarget:(id)target action:(SEL)action</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/removeTarget:action:">- (void)removeTarget:(id)target action:(SEL)action</a>
      * @since Available in iOS 3.2 and later.
      */
     public void removeTarget(NSObject target, Selector action) {
@@ -292,7 +292,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_requireGestureRecognizerToFail(UIGestureRecognizer __self__, Selector __cmd__, UIGestureRecognizer otherGestureRecognizer);
     @Bridge private native static void objc_requireGestureRecognizerToFailSuper(ObjCSuper __super__, Selector __cmd__, UIGestureRecognizer otherGestureRecognizer);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/requireGestureRecognizerToFail:">- (void)requireGestureRecognizerToFail:(UIGestureRecognizer *)otherGestureRecognizer</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/requireGestureRecognizerToFail:">- (void)requireGestureRecognizerToFail:(UIGestureRecognizer *)otherGestureRecognizer</a>
      * @since Available in iOS 3.2 and later.
      */
     public void requireGestureRecognizerToFail(UIGestureRecognizer otherGestureRecognizer) {
@@ -303,7 +303,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_reset(UIGestureRecognizer __self__, Selector __cmd__);
     @Bridge private native static void objc_resetSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/reset">- (void)reset</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/reset">- (void)reset</a>
      * @since Available in iOS 3.2 and later.
      */
     public void reset() {
@@ -314,7 +314,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_touchesBegan(UIGestureRecognizer __self__, Selector __cmd__, NSSet touches, UIEvent event);
     @Bridge private native static void objc_touchesBeganSuper(ObjCSuper __super__, Selector __cmd__, NSSet touches, UIEvent event);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/touchesBegan:withEvent:">- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/touchesBegan:withEvent:">- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event</a>
      * @since Available in iOS 3.2 and later.
      */
     public void touchesBegan(NSSet touches, UIEvent event) {
@@ -325,7 +325,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_touchesCancelled(UIGestureRecognizer __self__, Selector __cmd__, NSSet touches, UIEvent event);
     @Bridge private native static void objc_touchesCancelledSuper(ObjCSuper __super__, Selector __cmd__, NSSet touches, UIEvent event);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/touchesCancelled:withEvent:">- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/touchesCancelled:withEvent:">- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event</a>
      * @since Available in iOS 3.2 and later.
      */
     public void touchesCancelled(NSSet touches, UIEvent event) {
@@ -336,7 +336,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_touchesEnded(UIGestureRecognizer __self__, Selector __cmd__, NSSet touches, UIEvent event);
     @Bridge private native static void objc_touchesEndedSuper(ObjCSuper __super__, Selector __cmd__, NSSet touches, UIEvent event);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/touchesEnded:withEvent:">- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/touchesEnded:withEvent:">- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event</a>
      * @since Available in iOS 3.2 and later.
      */
     public void touchesEnded(NSSet touches, UIEvent event) {
@@ -347,7 +347,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_touchesMoved(UIGestureRecognizer __self__, Selector __cmd__, NSSet touches, UIEvent event);
     @Bridge private native static void objc_touchesMovedSuper(ObjCSuper __super__, Selector __cmd__, NSSet touches, UIEvent event);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/touchesMoved:withEvent:">- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIGestureRecognizer_Class/Reference/Reference.html#//apple_ref/occ/instm/UIGestureRecognizer/touchesMoved:withEvent:">- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event</a>
      * @since Available in iOS 3.2 and later.
      */
     public void touchesMoved(NSSet touches, UIEvent event) {

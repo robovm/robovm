@@ -33,7 +33,7 @@ import org.robovm.rt.bro.ptr.*;
 /**
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAccelerometerDelegate_Protocol/UIAccelerometerDelegate/UIAccelerometerDelegate.html">UIAccelerometerDelegate Protocol Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAccelerometerDelegate_Protocol/UIAccelerometerDelegate/UIAccelerometerDelegate.html">UIAccelerometerDelegate Protocol Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -44,7 +44,7 @@ public interface /*<name>*/ UIAccelerometerDelegate /*</name>*/ /*<implements>*/
     /*</properties>*/
     /*<methods>*/
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAccelerometerDelegate_Protocol/DeprecationAppendix/AppendixADeprecatedAPI.html#//apple_ref/occ/intfm/UIAccelerometerDelegate/accelerometer:didAccelerate:">- (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAccelerometerDelegate_Protocol/DeprecationAppendix/AppendixADeprecatedAPI.html#//apple_ref/occ/intfm/UIAccelerometerDelegate/accelerometer:didAccelerate:">- (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration</a>
      * @since Available in iOS 2.0 and later.
      */
     void didAccelerate(UIAccelerometer accelerometer, UIAcceleration acceleration);

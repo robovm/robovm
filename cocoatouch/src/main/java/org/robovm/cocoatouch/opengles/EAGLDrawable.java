@@ -30,7 +30,7 @@ import org.robovm.rt.bro.ptr.*;
 /**
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/../../../iPhone/Reference/EAGLDrawable_Ref/EAGLDrawable/EAGLDrawable.html">EAGLDrawable Protocol Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/../../../iPhone/Reference/EAGLDrawable_Ref/EAGLDrawable/EAGLDrawable.html">EAGLDrawable Protocol Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -38,12 +38,12 @@ public interface /*<name>*/ EAGLDrawable /*</name>*/ /*<implements>*/ extends NS
 
     /*<properties>*/
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/../../../iPhone/Reference/EAGLDrawable_Ref/EAGLDrawable/EAGLDrawable.html#//apple_ref/occ/intfp/EAGLDrawable/drawableProperties">@property(copy) NSDictionary* drawableProperties;</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/../../../iPhone/Reference/EAGLDrawable_Ref/EAGLDrawable/EAGLDrawable.html#//apple_ref/occ/intfp/EAGLDrawable/drawableProperties">@property(copy) NSDictionary* drawableProperties;</a>
      * @since Available in iOS 2.0 and later.
      */
     NSDictionary getDrawableProperties();
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/../../../iPhone/Reference/EAGLDrawable_Ref/EAGLDrawable/EAGLDrawable.html#//apple_ref/occ/intfp/EAGLDrawable/drawableProperties">@property(copy) NSDictionary* drawableProperties;</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/../../../iPhone/Reference/EAGLDrawable_Ref/EAGLDrawable/EAGLDrawable.html#//apple_ref/occ/intfp/EAGLDrawable/drawableProperties">@property(copy) NSDictionary* drawableProperties;</a>
      * @since Available in iOS 2.0 and later.
      */
     void setDrawableProperties(NSDictionary v);

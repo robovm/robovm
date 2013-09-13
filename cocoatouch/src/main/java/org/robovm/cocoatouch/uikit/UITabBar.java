@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html">UITabBar Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html">UITabBar Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -63,7 +63,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIImage objc_getBackgroundImage(UITabBar __self__, Selector __cmd__);
     @Bridge private native static UIImage objc_getBackgroundImageSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/backgroundImage">@property(nonatomic, retain) UIImage *backgroundImage</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/backgroundImage">@property(nonatomic, retain) UIImage *backgroundImage</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIImage getBackgroundImage() {
@@ -74,7 +74,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setBackgroundImage(UITabBar __self__, Selector __cmd__, UIImage backgroundImage);
     @Bridge private native static void objc_setBackgroundImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage backgroundImage);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/backgroundImage">@property(nonatomic, retain) UIImage *backgroundImage</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/backgroundImage">@property(nonatomic, retain) UIImage *backgroundImage</a>
      * @since Available in iOS 5.0 and later.
      */
     public void setBackgroundImage(UIImage backgroundImage) {
@@ -85,7 +85,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITabBarDelegate objc_getDelegate(UITabBar __self__, Selector __cmd__);
     @Bridge private native static UITabBarDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/delegate">@property(nonatomic, assign) id&amp;lt;UITabBarDelegate&amp;gt; delegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/delegate">@property(nonatomic, assign) id&amp;lt;UITabBarDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
     public UITabBarDelegate getDelegate() {
@@ -96,7 +96,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setDelegate(UITabBar __self__, Selector __cmd__, UITabBarDelegate delegate);
     @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UITabBarDelegate delegate);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/delegate">@property(nonatomic, assign) id&amp;lt;UITabBarDelegate&amp;gt; delegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/delegate">@property(nonatomic, assign) id&amp;lt;UITabBarDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setDelegate(UITabBarDelegate delegate) {
@@ -107,7 +107,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getItems(UITabBar __self__, Selector __cmd__);
     @Bridge private native static NSArray objc_getItemsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/items">@property(nonatomic, copy) NSArray *items</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/items">@property(nonatomic, copy) NSArray *items</a>
      * @since Available in iOS 2.0 and later.
      */
     public NSArray getItems() {
@@ -118,7 +118,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setItems(UITabBar __self__, Selector __cmd__, NSArray items);
     @Bridge private native static void objc_setItemsSuper(ObjCSuper __super__, Selector __cmd__, NSArray items);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/items">@property(nonatomic, copy) NSArray *items</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/items">@property(nonatomic, copy) NSArray *items</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setItems(NSArray items) {
@@ -129,7 +129,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIColor objc_getSelectedImageTintColor(UITabBar __self__, Selector __cmd__);
     @Bridge private native static UIColor objc_getSelectedImageTintColorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/selectedImageTintColor">@property(nonatomic, retain) UIColor *selectedImageTintColor</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/selectedImageTintColor">@property(nonatomic, retain) UIColor *selectedImageTintColor</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIColor getSelectedImageTintColor() {
@@ -140,7 +140,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setSelectedImageTintColor(UITabBar __self__, Selector __cmd__, UIColor selectedImageTintColor);
     @Bridge private native static void objc_setSelectedImageTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor selectedImageTintColor);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/selectedImageTintColor">@property(nonatomic, retain) UIColor *selectedImageTintColor</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/selectedImageTintColor">@property(nonatomic, retain) UIColor *selectedImageTintColor</a>
      * @since Available in iOS 5.0 and later.
      */
     public void setSelectedImageTintColor(UIColor selectedImageTintColor) {
@@ -151,7 +151,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITabBarItem objc_getSelectedItem(UITabBar __self__, Selector __cmd__);
     @Bridge private native static UITabBarItem objc_getSelectedItemSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/selectedItem">@property(nonatomic, assign) UITabBarItem *selectedItem</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/selectedItem">@property(nonatomic, assign) UITabBarItem *selectedItem</a>
      * @since Available in iOS 2.0 and later.
      */
     public UITabBarItem getSelectedItem() {
@@ -162,7 +162,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setSelectedItem(UITabBar __self__, Selector __cmd__, UITabBarItem selectedItem);
     @Bridge private native static void objc_setSelectedItemSuper(ObjCSuper __super__, Selector __cmd__, UITabBarItem selectedItem);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/selectedItem">@property(nonatomic, assign) UITabBarItem *selectedItem</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/selectedItem">@property(nonatomic, assign) UITabBarItem *selectedItem</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setSelectedItem(UITabBarItem selectedItem) {
@@ -173,7 +173,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIImage objc_getSelectionIndicatorImage(UITabBar __self__, Selector __cmd__);
     @Bridge private native static UIImage objc_getSelectionIndicatorImageSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/selectionIndicatorImage">@property(nonatomic, retain) UIImage *selectionIndicatorImage</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/selectionIndicatorImage">@property(nonatomic, retain) UIImage *selectionIndicatorImage</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIImage getSelectionIndicatorImage() {
@@ -184,7 +184,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setSelectionIndicatorImage(UITabBar __self__, Selector __cmd__, UIImage selectionIndicatorImage);
     @Bridge private native static void objc_setSelectionIndicatorImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage selectionIndicatorImage);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/selectionIndicatorImage">@property(nonatomic, retain) UIImage *selectionIndicatorImage</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/selectionIndicatorImage">@property(nonatomic, retain) UIImage *selectionIndicatorImage</a>
      * @since Available in iOS 5.0 and later.
      */
     public void setSelectionIndicatorImage(UIImage selectionIndicatorImage) {
@@ -195,7 +195,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIImage objc_getShadowImage(UITabBar __self__, Selector __cmd__);
     @Bridge private native static UIImage objc_getShadowImageSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/shadowImage">@property(nonatomic,retain) UIImage *shadowImage</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/shadowImage">@property(nonatomic,retain) UIImage *shadowImage</a>
      * @since Available in iOS 6.0 and later.
      */
     public UIImage getShadowImage() {
@@ -206,7 +206,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setShadowImage(UITabBar __self__, Selector __cmd__, UIImage shadowImage);
     @Bridge private native static void objc_setShadowImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage shadowImage);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/shadowImage">@property(nonatomic,retain) UIImage *shadowImage</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/shadowImage">@property(nonatomic,retain) UIImage *shadowImage</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setShadowImage(UIImage shadowImage) {
@@ -217,7 +217,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIColor objc_getTintColor(UITabBar __self__, Selector __cmd__);
     @Bridge private native static UIColor objc_getTintColorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIColor getTintColor() {
@@ -228,7 +228,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setTintColor(UITabBar __self__, Selector __cmd__, UIColor tintColor);
     @Bridge private native static void objc_setTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor tintColor);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instp/UITabBar/tintColor">@property(nonatomic, retain) UIColor *tintColor</a>
      * @since Available in iOS 5.0 and later.
      */
     public void setTintColor(UIColor tintColor) {
@@ -241,7 +241,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_beginCustomizing(UITabBar __self__, Selector __cmd__, NSArray items);
     @Bridge private native static void objc_beginCustomizingSuper(ObjCSuper __super__, Selector __cmd__, NSArray items);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBar/beginCustomizingItems:">- (void)beginCustomizingItems:(NSArray *)items</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBar/beginCustomizingItems:">- (void)beginCustomizingItems:(NSArray *)items</a>
      * @since Available in iOS 2.0 and later.
      */
     public void beginCustomizing(NSArray items) {
@@ -252,7 +252,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_endCustomizing(UITabBar __self__, Selector __cmd__, boolean animated);
     @Bridge private native static boolean objc_endCustomizingSuper(ObjCSuper __super__, Selector __cmd__, boolean animated);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBar/endCustomizingAnimated:">- (BOOL)endCustomizingAnimated:(BOOL)animated</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBar/endCustomizingAnimated:">- (BOOL)endCustomizingAnimated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean endCustomizing(boolean animated) {
@@ -263,7 +263,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isCustomizing(UITabBar __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isCustomizingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBar/isCustomizing">- (BOOL)isCustomizing</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBar/isCustomizing">- (BOOL)isCustomizing</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isCustomizing() {
@@ -274,7 +274,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setItems(UITabBar __self__, Selector __cmd__, NSArray items, boolean animated);
     @Bridge private native static void objc_setItemsSuper(ObjCSuper __super__, Selector __cmd__, NSArray items, boolean animated);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBar/setItems:animated:">- (void)setItems:(NSArray *)items animated:(BOOL)animated</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBar_Class/Reference/Reference.html#//apple_ref/occ/instm/UITabBar/setItems:animated:">- (void)setItems:(NSArray *)items animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setItems(NSArray items, boolean animated) {

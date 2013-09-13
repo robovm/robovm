@@ -34,7 +34,8 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html">UIResponderStandardEditActions Protocol Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html">UIResponderStandardEditActions Protocol Reference</a>
+ *   @since Available in iOS 3.0 and later.
  * </div>
  */
 public interface /*<name>*/ UIResponderStandardEditActions /*</name>*/ /*<implements>*/ extends NSObjectProtocol /*</implements>*/ {
@@ -44,57 +45,57 @@ public interface /*<name>*/ UIResponderStandardEditActions /*</name>*/ /*<implem
     /*</properties>*/
     /*<methods>*/
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html#//apple_ref/occ/instm/NSObject/copy:">- (void)copy:(id)sender</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html#//apple_ref/occ/instm/NSObject/copy:">- (void)copy:(id)sender</a>
      * @since Available in iOS 3.0 and later.
      */
     void copy(NSObject sender);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html#//apple_ref/occ/instm/NSObject/cut:">- (void)cut:(id)sender</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html#//apple_ref/occ/instm/NSObject/cut:">- (void)cut:(id)sender</a>
      * @since Available in iOS 3.0 and later.
      */
     void cut(NSObject sender);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html#//apple_ref/occ/instm/NSObject/delete:">- (void)delete:(id)sender</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html#//apple_ref/occ/instm/NSObject/delete:">- (void)delete:(id)sender</a>
      * @since Available in iOS 3.2 and later.
      */
     void delete(NSObject sender);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html#//apple_ref/occ/instm/NSObject/makeTextWritingDirectionLeftToRight:">- (void)makeTextWritingDirectionLeftToRight:(id)sender</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html#//apple_ref/occ/instm/NSObject/makeTextWritingDirectionLeftToRight:">- (void)makeTextWritingDirectionLeftToRight:(id)sender</a>
      * @since Available in iOS 5.0 and later.
      */
     void makeTextWritingDirectionLeftToRight(NSObject sender);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html#//apple_ref/occ/instm/NSObject/makeTextWritingDirectionRightToLeft:">- (void)makeTextWritingDirectionRightToLeft:(id)sender</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html#//apple_ref/occ/instm/NSObject/makeTextWritingDirectionRightToLeft:">- (void)makeTextWritingDirectionRightToLeft:(id)sender</a>
      * @since Available in iOS 5.0 and later.
      */
     void makeTextWritingDirectionRightToLeft(NSObject sender);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html#//apple_ref/occ/instm/NSObject/paste:">- (void)paste:(id)sender</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html#//apple_ref/occ/instm/NSObject/paste:">- (void)paste:(id)sender</a>
      * @since Available in iOS 3.0 and later.
      */
     void paste(NSObject sender);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html#//apple_ref/occ/instm/NSObject/select:">- (void)select:(id)sender</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html#//apple_ref/occ/instm/NSObject/select:">- (void)select:(id)sender</a>
      * @since Available in iOS 3.0 and later.
      */
     void select(NSObject sender);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html#//apple_ref/occ/instm/NSObject/selectAll:">- (void)selectAll:(id)sender</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html#//apple_ref/occ/instm/NSObject/selectAll:">- (void)selectAll:(id)sender</a>
      * @since Available in iOS 3.0 and later.
      */
     void selectAll(NSObject sender);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html#//apple_ref/occ/instm/NSObject/toggleBoldface:">- (void)toggleBoldface:(id)sender</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html#//apple_ref/occ/instm/NSObject/toggleBoldface:">- (void)toggleBoldface:(id)sender</a>
      * @since Available in iOS 6.0 and later.
      */
     void toggleBoldface(NSObject sender);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html#//apple_ref/occ/instm/NSObject/toggleItalics:">- (void)toggleItalics:(id)sender</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html#//apple_ref/occ/instm/NSObject/toggleItalics:">- (void)toggleItalics:(id)sender</a>
      * @since Available in iOS 6.0 and later.
      */
     void toggleItalics(NSObject sender);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html#//apple_ref/occ/instm/NSObject/toggleUnderline:">- (void)toggleUnderline:(id)sender</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIResponderStandardEditActions_Protocol/UIResponderStandardEditActions.html#//apple_ref/occ/instm/NSObject/toggleUnderline:">- (void)toggleUnderline:(id)sender</a>
      * @since Available in iOS 6.0 and later.
      */
     void toggleUnderline(NSObject sender);

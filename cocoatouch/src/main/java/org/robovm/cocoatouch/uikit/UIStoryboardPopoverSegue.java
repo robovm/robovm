@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardPopoverSegue_Class/Reference/Reference.html">UIStoryboardPopoverSegue Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardPopoverSegue_Class/Reference/Reference.html">UIStoryboardPopoverSegue Class Reference</a>
  *   @since Available in iOS 5.0 and later.
  * </div>
  */
@@ -60,7 +60,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIPopoverController objc_getPopoverController(UIStoryboardPopoverSegue __self__, Selector __cmd__);
     @Bridge private native static UIPopoverController objc_getPopoverControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardPopoverSegue_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStoryboardPopoverSegue/popoverController">@property(nonatomic, retain, readonly) UIPopoverController *popoverController</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardPopoverSegue_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStoryboardPopoverSegue/popoverController">@property(nonatomic, retain, readonly) UIPopoverController *popoverController</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIPopoverController getPopoverController() {

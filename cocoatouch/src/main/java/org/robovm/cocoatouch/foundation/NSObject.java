@@ -29,7 +29,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSObject_Class/Reference/Reference.html">NSObject Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSObject_Class/Reference/Reference.html">NSObject Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -48,7 +48,7 @@ import org.robovm.rt.bro.ptr.*;
     protected static class SkipInit {}
     
     public NSObject() {
-        init();
+        initObject(init());
     }
 
     protected NSObject(SkipInit skipInit) {
@@ -122,7 +122,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static String objc_description(NSObject __self__, Selector __cmd__);
     @Bridge private native static String objc_descriptionSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Protocols/NSObject_Protocol/Reference/NSObject.html#//apple_ref/occ/intfm/NSObject/description">- (NSString *)description</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Protocols/NSObject_Protocol/Reference/NSObject.html#//apple_ref/occ/intfm/NSObject/description">- (NSString *)description</a>
      * @since Available in iOS 2.0 and later.
      */
     public String description() {
@@ -133,7 +133,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_hash(NSObject __self__, Selector __cmd__);
     @Bridge private native static int objc_hashSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Protocols/NSObject_Protocol/Reference/NSObject.html#//apple_ref/occ/intfm/NSObject/hash">- (NSUInteger)hash</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Protocols/NSObject_Protocol/Reference/NSObject.html#//apple_ref/occ/intfm/NSObject/hash">- (NSUInteger)hash</a>
      * @since Available in iOS 2.0 and later.
      */
     protected int hash() {
@@ -141,12 +141,12 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector init = Selector.register("init");
-    @Bridge private native static NSObject objc_init(NSObject __self__, Selector __cmd__);
+    @Bridge private native static @Pointer long objc_init(NSObject __self__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSObject_Class/Reference/Reference.html#//apple_ref/occ/instm/NSObject/init">- (id)init</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSObject_Class/Reference/Reference.html#//apple_ref/occ/instm/NSObject/init">- (id)init</a>
      * @since Available in iOS 2.0 and later.
      */
-    private NSObject init() {
+    private @Pointer long init() {
         return objc_init(this, init);
     }
     
@@ -154,7 +154,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isEqual(NSObject __self__, Selector __cmd__, NSObject anObject);
     @Bridge private native static boolean objc_isEqualSuper(ObjCSuper __super__, Selector __cmd__, NSObject anObject);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Protocols/NSObject_Protocol/Reference/NSObject.html#//apple_ref/occ/intfm/NSObject/isEqual:">- (BOOL)isEqual:(id)anObject</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Protocols/NSObject_Protocol/Reference/NSObject.html#//apple_ref/occ/intfm/NSObject/isEqual:">- (BOOL)isEqual:(id)anObject</a>
      * @since Available in iOS 2.0 and later.
      */
     protected boolean isEqual(NSObject anObject) {
@@ -165,7 +165,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_release(NSObject __self__, Selector __cmd__);
     @Bridge private native static void objc_releaseSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Protocols/NSObject_Protocol/Reference/NSObject.html#//apple_ref/occ/intfm/NSObject/release">- (oneway void)release</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Protocols/NSObject_Protocol/Reference/NSObject.html#//apple_ref/occ/intfm/NSObject/release">- (oneway void)release</a>
      * @since Available in iOS 2.0 and later.
      */
     protected void release() {
@@ -176,7 +176,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSObject objc_retain(NSObject __self__, Selector __cmd__);
     @Bridge private native static NSObject objc_retainSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Protocols/NSObject_Protocol/Reference/NSObject.html#//apple_ref/occ/intfm/NSObject/retain">- (id)retain</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Protocols/NSObject_Protocol/Reference/NSObject.html#//apple_ref/occ/intfm/NSObject/retain">- (id)retain</a>
      * @since Available in iOS 2.0 and later.
      */
     protected NSObject retain() {

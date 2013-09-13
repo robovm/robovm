@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarDelegate_Protocol/Reference/Reference.html">UITabBarDelegate Protocol Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarDelegate_Protocol/Reference/Reference.html">UITabBarDelegate Protocol Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -45,27 +45,27 @@ public interface /*<name>*/ UITabBarDelegate /*</name>*/ /*<implements>*/ extend
     /*</properties>*/
     /*<methods>*/
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITabBarDelegate/tabBar:didBeginCustomizingItems:">- (void)tabBar:(UITabBar *)tabBar didBeginCustomizingItems:(NSArray *)items</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITabBarDelegate/tabBar:didBeginCustomizingItems:">- (void)tabBar:(UITabBar *)tabBar didBeginCustomizingItems:(NSArray *)items</a>
      * @since Available in iOS 2.0 and later.
      */
     void didBeginCustomizingItems(UITabBar tabBar, NSArray items);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITabBarDelegate/tabBar:didEndCustomizingItems:changed:">- (void)tabBar:(UITabBar *)tabBar didEndCustomizingItems:(NSArray *)items changed:(BOOL)changed</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITabBarDelegate/tabBar:didEndCustomizingItems:changed:">- (void)tabBar:(UITabBar *)tabBar didEndCustomizingItems:(NSArray *)items changed:(BOOL)changed</a>
      * @since Available in iOS 2.0 and later.
      */
     void didEndCustomizingItems(UITabBar tabBar, NSArray items, boolean changed);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITabBarDelegate/tabBar:didSelectItem:">- (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITabBarDelegate/tabBar:didSelectItem:">- (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item</a>
      * @since Available in iOS 2.0 and later.
      */
     void didSelectItem(UITabBar tabBar, UITabBarItem item);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITabBarDelegate/tabBar:willBeginCustomizingItems:">- (void)tabBar:(UITabBar *)tabBar willBeginCustomizingItems:(NSArray *)items</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITabBarDelegate/tabBar:willBeginCustomizingItems:">- (void)tabBar:(UITabBar *)tabBar willBeginCustomizingItems:(NSArray *)items</a>
      * @since Available in iOS 2.0 and later.
      */
     void willBeginCustomizingItems(UITabBar tabBar, NSArray items);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITabBarDelegate/tabBar:willEndCustomizingItems:changed:">- (void)tabBar:(UITabBar *)tabBar willEndCustomizingItems:(NSArray *)items changed:(BOOL)changed</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITabBarDelegate/tabBar:willEndCustomizingItems:changed:">- (void)tabBar:(UITabBar *)tabBar willEndCustomizingItems:(NSArray *)items changed:(BOOL)changed</a>
      * @since Available in iOS 2.0 and later.
      */
     void willEndCustomizingItems(UITabBar tabBar, NSArray items, boolean changed);

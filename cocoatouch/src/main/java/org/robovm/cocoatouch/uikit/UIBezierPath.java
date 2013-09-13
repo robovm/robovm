@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html">UIBezierPath Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html">UIBezierPath Class Reference</a>
  *   @since Available in iOS 3.2 and later.
  * </div>
  */
@@ -60,7 +60,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static CGPath objc_getCGPath(UIBezierPath __self__, Selector __cmd__);
     @Bridge private native static CGPath objc_getCGPathSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/CGPath">@property(nonatomic) CGPathRef CGPath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/CGPath">@property(nonatomic) CGPathRef CGPath</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGPath getCGPath() {
@@ -71,7 +71,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setCGPath(UIBezierPath __self__, Selector __cmd__, CGPath CGPath);
     @Bridge private native static void objc_setCGPathSuper(ObjCSuper __super__, Selector __cmd__, CGPath CGPath);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/CGPath">@property(nonatomic) CGPathRef CGPath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/CGPath">@property(nonatomic) CGPathRef CGPath</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setCGPath(CGPath CGPath) {
@@ -82,7 +82,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGRect objc_getBounds(UIBezierPath __self__, Selector __cmd__);
     @Bridge private native static @ByVal CGRect objc_getBoundsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/bounds">@property(nonatomic, readonly) CGRect bounds</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/bounds">@property(nonatomic, readonly) CGRect bounds</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGRect getBounds() {
@@ -93,7 +93,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGPoint objc_getCurrentPoint(UIBezierPath __self__, Selector __cmd__);
     @Bridge private native static @ByVal CGPoint objc_getCurrentPointSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/currentPoint">@property(nonatomic, readonly) CGPoint currentPoint</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/currentPoint">@property(nonatomic, readonly) CGPoint currentPoint</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGPoint getCurrentPoint() {
@@ -104,7 +104,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isEmpty(UIBezierPath __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isEmptySuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/empty">@property(readonly, getter=isEmpty) BOOL empty</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/empty">@property(readonly, getter=isEmpty) BOOL empty</a>
      * @since Available in iOS 3.2 and later.
      */
     public boolean isEmpty() {
@@ -115,7 +115,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static float objc_getFlatness(UIBezierPath __self__, Selector __cmd__);
     @Bridge private native static float objc_getFlatnessSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/flatness">@property(nonatomic) CGFloat flatness</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/flatness">@property(nonatomic) CGFloat flatness</a>
      * @since Available in iOS 3.2 and later.
      */
     public float getFlatness() {
@@ -126,7 +126,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setFlatness(UIBezierPath __self__, Selector __cmd__, float flatness);
     @Bridge private native static void objc_setFlatnessSuper(ObjCSuper __super__, Selector __cmd__, float flatness);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/flatness">@property(nonatomic) CGFloat flatness</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/flatness">@property(nonatomic) CGFloat flatness</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setFlatness(float flatness) {
@@ -137,7 +137,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static CGLineCap objc_getLineCapStyle(UIBezierPath __self__, Selector __cmd__);
     @Bridge private native static CGLineCap objc_getLineCapStyleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/lineCapStyle">@property(nonatomic) CGLineCap lineCapStyle</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/lineCapStyle">@property(nonatomic) CGLineCap lineCapStyle</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGLineCap getLineCapStyle() {
@@ -148,7 +148,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setLineCapStyle(UIBezierPath __self__, Selector __cmd__, CGLineCap lineCapStyle);
     @Bridge private native static void objc_setLineCapStyleSuper(ObjCSuper __super__, Selector __cmd__, CGLineCap lineCapStyle);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/lineCapStyle">@property(nonatomic) CGLineCap lineCapStyle</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/lineCapStyle">@property(nonatomic) CGLineCap lineCapStyle</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setLineCapStyle(CGLineCap lineCapStyle) {
@@ -159,7 +159,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static CGLineJoin objc_getLineJoinStyle(UIBezierPath __self__, Selector __cmd__);
     @Bridge private native static CGLineJoin objc_getLineJoinStyleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/lineJoinStyle">@property(nonatomic) CGLineJoin lineJoinStyle</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/lineJoinStyle">@property(nonatomic) CGLineJoin lineJoinStyle</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGLineJoin getLineJoinStyle() {
@@ -170,7 +170,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setLineJoinStyle(UIBezierPath __self__, Selector __cmd__, CGLineJoin lineJoinStyle);
     @Bridge private native static void objc_setLineJoinStyleSuper(ObjCSuper __super__, Selector __cmd__, CGLineJoin lineJoinStyle);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/lineJoinStyle">@property(nonatomic) CGLineJoin lineJoinStyle</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/lineJoinStyle">@property(nonatomic) CGLineJoin lineJoinStyle</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setLineJoinStyle(CGLineJoin lineJoinStyle) {
@@ -181,7 +181,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static float objc_getLineWidth(UIBezierPath __self__, Selector __cmd__);
     @Bridge private native static float objc_getLineWidthSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/lineWidth">@property(nonatomic) CGFloat lineWidth</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/lineWidth">@property(nonatomic) CGFloat lineWidth</a>
      * @since Available in iOS 3.2 and later.
      */
     public float getLineWidth() {
@@ -192,7 +192,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setLineWidth(UIBezierPath __self__, Selector __cmd__, float lineWidth);
     @Bridge private native static void objc_setLineWidthSuper(ObjCSuper __super__, Selector __cmd__, float lineWidth);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/lineWidth">@property(nonatomic) CGFloat lineWidth</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/lineWidth">@property(nonatomic) CGFloat lineWidth</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setLineWidth(float lineWidth) {
@@ -203,7 +203,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static float objc_getMiterLimit(UIBezierPath __self__, Selector __cmd__);
     @Bridge private native static float objc_getMiterLimitSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/miterLimit">@property(nonatomic) CGFloat miterLimit</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/miterLimit">@property(nonatomic) CGFloat miterLimit</a>
      * @since Available in iOS 3.2 and later.
      */
     public float getMiterLimit() {
@@ -214,7 +214,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setMiterLimit(UIBezierPath __self__, Selector __cmd__, float miterLimit);
     @Bridge private native static void objc_setMiterLimitSuper(ObjCSuper __super__, Selector __cmd__, float miterLimit);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/miterLimit">@property(nonatomic) CGFloat miterLimit</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/miterLimit">@property(nonatomic) CGFloat miterLimit</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setMiterLimit(float miterLimit) {
@@ -225,7 +225,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isUsesEvenOddFillRule(UIBezierPath __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isUsesEvenOddFillRuleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/usesEvenOddFillRule">@property(nonatomic) BOOL usesEvenOddFillRule</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/usesEvenOddFillRule">@property(nonatomic) BOOL usesEvenOddFillRule</a>
      * @since Available in iOS 3.2 and later.
      */
     public boolean isUsesEvenOddFillRule() {
@@ -236,7 +236,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setUsesEvenOddFillRule(UIBezierPath __self__, Selector __cmd__, boolean usesEvenOddFillRule);
     @Bridge private native static void objc_setUsesEvenOddFillRuleSuper(ObjCSuper __super__, Selector __cmd__, boolean usesEvenOddFillRule);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/usesEvenOddFillRule">@property(nonatomic) BOOL usesEvenOddFillRule</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instp/UIBezierPath/usesEvenOddFillRule">@property(nonatomic) BOOL usesEvenOddFillRule</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setUsesEvenOddFillRule(boolean usesEvenOddFillRule) {
@@ -248,7 +248,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector bezierPath = Selector.register("bezierPath");
     @Bridge private native static UIBezierPath objc_create(ObjCClass __self__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/clm/UIBezierPath/bezierPath">+ (UIBezierPath *)bezierPath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/clm/UIBezierPath/bezierPath">+ (UIBezierPath *)bezierPath</a>
      * @since Available in iOS 3.2 and later.
      */
     public static UIBezierPath create() {
@@ -258,7 +258,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector bezierPathWithArcCenter$radius$startAngle$endAngle$clockwise$ = Selector.register("bezierPathWithArcCenter:radius:startAngle:endAngle:clockwise:");
     @Bridge private native static UIBezierPath objc_fromArc(ObjCClass __self__, Selector __cmd__, @ByVal CGPoint center, float radius, float startAngle, float endAngle, boolean clockwise);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/clm/UIBezierPath/bezierPathWithArcCenter:radius:startAngle:endAngle:clockwise:">+ (UIBezierPath *)bezierPathWithArcCenter:(CGPoint)center radius:(CGFloat)radius startAngle:(CGFloat)startAngle endAngle:(CGFloat)endAngle clockwise:(BOOL)clockwise</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/clm/UIBezierPath/bezierPathWithArcCenter:radius:startAngle:endAngle:clockwise:">+ (UIBezierPath *)bezierPathWithArcCenter:(CGPoint)center radius:(CGFloat)radius startAngle:(CGFloat)startAngle endAngle:(CGFloat)endAngle clockwise:(BOOL)clockwise</a>
      * @since Available in iOS 3.2 and later.
      */
     public static UIBezierPath fromArc(CGPoint center, float radius, float startAngle, float endAngle, boolean clockwise) {
@@ -268,7 +268,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector bezierPathWithOvalInRect$ = Selector.register("bezierPathWithOvalInRect:");
     @Bridge private native static UIBezierPath objc_fromOval(ObjCClass __self__, Selector __cmd__, @ByVal CGRect rect);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/clm/UIBezierPath/bezierPathWithOvalInRect:">+ (UIBezierPath *)bezierPathWithOvalInRect:(CGRect)rect</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/clm/UIBezierPath/bezierPathWithOvalInRect:">+ (UIBezierPath *)bezierPathWithOvalInRect:(CGRect)rect</a>
      * @since Available in iOS 3.2 and later.
      */
     public static UIBezierPath fromOval(CGRect rect) {
@@ -278,7 +278,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector bezierPathWithCGPath$ = Selector.register("bezierPathWithCGPath:");
     @Bridge private native static UIBezierPath objc_fromPath(ObjCClass __self__, Selector __cmd__, CGPath CGPath);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/clm/UIBezierPath/bezierPathWithCGPath:">+ (UIBezierPath *)bezierPathWithCGPath:(CGPathRef)CGPath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/clm/UIBezierPath/bezierPathWithCGPath:">+ (UIBezierPath *)bezierPathWithCGPath:(CGPathRef)CGPath</a>
      * @since Available in iOS 3.2 and later.
      */
     public static UIBezierPath fromPath(CGPath CGPath) {
@@ -288,7 +288,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector bezierPathWithRect$ = Selector.register("bezierPathWithRect:");
     @Bridge private native static UIBezierPath objc_fromRect(ObjCClass __self__, Selector __cmd__, @ByVal CGRect rect);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/clm/UIBezierPath/bezierPathWithRect:">+ (UIBezierPath *)bezierPathWithRect:(CGRect)rect</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/clm/UIBezierPath/bezierPathWithRect:">+ (UIBezierPath *)bezierPathWithRect:(CGRect)rect</a>
      * @since Available in iOS 3.2 and later.
      */
     public static UIBezierPath fromRect(CGRect rect) {
@@ -298,7 +298,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector bezierPathWithRoundedRect$byRoundingCorners$cornerRadii$ = Selector.register("bezierPathWithRoundedRect:byRoundingCorners:cornerRadii:");
     @Bridge private native static UIBezierPath objc_fromRoundedRect(ObjCClass __self__, Selector __cmd__, @ByVal CGRect rect, UIRectCorner corners, @ByVal CGSize cornerRadii);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/clm/UIBezierPath/bezierPathWithRoundedRect:byRoundingCorners:cornerRadii:">+ (UIBezierPath *)bezierPathWithRoundedRect:(CGRect)rect byRoundingCorners:(UIRectCorner)corners cornerRadii:(CGSize)cornerRadii</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/clm/UIBezierPath/bezierPathWithRoundedRect:byRoundingCorners:cornerRadii:">+ (UIBezierPath *)bezierPathWithRoundedRect:(CGRect)rect byRoundingCorners:(UIRectCorner)corners cornerRadii:(CGSize)cornerRadii</a>
      * @since Available in iOS 3.2 and later.
      */
     public static UIBezierPath fromRoundedRect(CGRect rect, UIRectCorner corners, CGSize cornerRadii) {
@@ -308,7 +308,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector bezierPathWithRoundedRect$cornerRadius$ = Selector.register("bezierPathWithRoundedRect:cornerRadius:");
     @Bridge private native static UIBezierPath objc_fromRoundedRect(ObjCClass __self__, Selector __cmd__, @ByVal CGRect rect, float cornerRadius);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/clm/UIBezierPath/bezierPathWithRoundedRect:cornerRadius:">+ (UIBezierPath *)bezierPathWithRoundedRect:(CGRect)rect cornerRadius:(CGFloat)cornerRadius</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/clm/UIBezierPath/bezierPathWithRoundedRect:cornerRadius:">+ (UIBezierPath *)bezierPathWithRoundedRect:(CGRect)rect cornerRadius:(CGFloat)cornerRadius</a>
      * @since Available in iOS 3.2 and later.
      */
     public static UIBezierPath fromRoundedRect(CGRect rect, float cornerRadius) {
@@ -319,7 +319,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_addArc(UIBezierPath __self__, Selector __cmd__, @ByVal CGPoint center, float radius, float startAngle, float endAngle, boolean clockwise);
     @Bridge private native static void objc_addArcSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint center, float radius, float startAngle, float endAngle, boolean clockwise);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/addArcWithCenter:radius:startAngle:endAngle:clockwise:">- (void)addArcWithCenter:(CGPoint)center radius:(CGFloat)radius startAngle:(CGFloat)startAngle endAngle:(CGFloat)endAngle clockwise:(BOOL)clockwise</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/addArcWithCenter:radius:startAngle:endAngle:clockwise:">- (void)addArcWithCenter:(CGPoint)center radius:(CGFloat)radius startAngle:(CGFloat)startAngle endAngle:(CGFloat)endAngle clockwise:(BOOL)clockwise</a>
      * @since Available in iOS 4.0 and later.
      */
     public void addArc(CGPoint center, float radius, float startAngle, float endAngle, boolean clockwise) {
@@ -330,7 +330,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_addClip(UIBezierPath __self__, Selector __cmd__);
     @Bridge private native static void objc_addClipSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/addClip">- (void)addClip</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/addClip">- (void)addClip</a>
      * @since Available in iOS 3.2 and later.
      */
     public void addClip() {
@@ -341,7 +341,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_addCurve(UIBezierPath __self__, Selector __cmd__, @ByVal CGPoint endPoint, @ByVal CGPoint controlPoint1, @ByVal CGPoint controlPoint2);
     @Bridge private native static void objc_addCurveSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint endPoint, @ByVal CGPoint controlPoint1, @ByVal CGPoint controlPoint2);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/addCurveToPoint:controlPoint1:controlPoint2:">- (void)addCurveToPoint:(CGPoint)endPoint controlPoint1:(CGPoint)controlPoint1 controlPoint2:(CGPoint)controlPoint2</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/addCurveToPoint:controlPoint1:controlPoint2:">- (void)addCurveToPoint:(CGPoint)endPoint controlPoint1:(CGPoint)controlPoint1 controlPoint2:(CGPoint)controlPoint2</a>
      * @since Available in iOS 3.2 and later.
      */
     public void addCurve(CGPoint endPoint, CGPoint controlPoint1, CGPoint controlPoint2) {
@@ -352,7 +352,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_addLine(UIBezierPath __self__, Selector __cmd__, @ByVal CGPoint point);
     @Bridge private native static void objc_addLineSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/addLineToPoint:">- (void)addLineToPoint:(CGPoint)point</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/addLineToPoint:">- (void)addLineToPoint:(CGPoint)point</a>
      * @since Available in iOS 3.2 and later.
      */
     public void addLine(CGPoint point) {
@@ -363,7 +363,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_addQuadCurve(UIBezierPath __self__, Selector __cmd__, @ByVal CGPoint endPoint, @ByVal CGPoint controlPoint);
     @Bridge private native static void objc_addQuadCurveSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint endPoint, @ByVal CGPoint controlPoint);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/addQuadCurveToPoint:controlPoint:">- (void)addQuadCurveToPoint:(CGPoint)endPoint controlPoint:(CGPoint)controlPoint</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/addQuadCurveToPoint:controlPoint:">- (void)addQuadCurveToPoint:(CGPoint)endPoint controlPoint:(CGPoint)controlPoint</a>
      * @since Available in iOS 3.2 and later.
      */
     public void addQuadCurve(CGPoint endPoint, CGPoint controlPoint) {
@@ -374,7 +374,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_appendPath(UIBezierPath __self__, Selector __cmd__, UIBezierPath bezierPath);
     @Bridge private native static void objc_appendPathSuper(ObjCSuper __super__, Selector __cmd__, UIBezierPath bezierPath);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/appendPath:">- (void)appendPath:(UIBezierPath *)bezierPath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/appendPath:">- (void)appendPath:(UIBezierPath *)bezierPath</a>
      * @since Available in iOS 3.2 and later.
      */
     public void appendPath(UIBezierPath bezierPath) {
@@ -385,7 +385,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_applyTransform(UIBezierPath __self__, Selector __cmd__, @ByVal CGAffineTransform transform);
     @Bridge private native static void objc_applyTransformSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGAffineTransform transform);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/applyTransform:">- (void)applyTransform:(CGAffineTransform)transform</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/applyTransform:">- (void)applyTransform:(CGAffineTransform)transform</a>
      * @since Available in iOS 3.2 and later.
      */
     public void applyTransform(CGAffineTransform transform) {
@@ -396,7 +396,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_closePath(UIBezierPath __self__, Selector __cmd__);
     @Bridge private native static void objc_closePathSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/closePath">- (void)closePath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/closePath">- (void)closePath</a>
      * @since Available in iOS 3.2 and later.
      */
     public void closePath() {
@@ -407,7 +407,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_containsPoint(UIBezierPath __self__, Selector __cmd__, @ByVal CGPoint point);
     @Bridge private native static boolean objc_containsPointSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/containsPoint:">- (BOOL)containsPoint:(CGPoint)point</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/containsPoint:">- (BOOL)containsPoint:(CGPoint)point</a>
      * @since Available in iOS 3.2 and later.
      */
     public boolean containsPoint(CGPoint point) {
@@ -418,7 +418,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_fill(UIBezierPath __self__, Selector __cmd__, CGBlendMode blendMode, float alpha);
     @Bridge private native static void objc_fillSuper(ObjCSuper __super__, Selector __cmd__, CGBlendMode blendMode, float alpha);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/fillWithBlendMode:alpha:">- (void)fillWithBlendMode:(CGBlendMode)blendMode alpha:(CGFloat)alpha</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/fillWithBlendMode:alpha:">- (void)fillWithBlendMode:(CGBlendMode)blendMode alpha:(CGFloat)alpha</a>
      * @since Available in iOS 3.2 and later.
      */
     public void fill(CGBlendMode blendMode, float alpha) {
@@ -429,7 +429,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_fill(UIBezierPath __self__, Selector __cmd__);
     @Bridge private native static void objc_fillSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/fill">- (void)fill</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/fill">- (void)fill</a>
      * @since Available in iOS 3.2 and later.
      */
     public void fill() {
@@ -440,7 +440,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_getLineDash(UIBezierPath __self__, Selector __cmd__, FloatPtr pattern, IntPtr count, FloatPtr phase);
     @Bridge private native static void objc_getLineDashSuper(ObjCSuper __super__, Selector __cmd__, FloatPtr pattern, IntPtr count, FloatPtr phase);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/getLineDash:count:phase:">- (void)getLineDash:(CGFloat *)pattern count:(NSInteger *)count phase:(CGFloat *)phase</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/getLineDash:count:phase:">- (void)getLineDash:(CGFloat *)pattern count:(NSInteger *)count phase:(CGFloat *)phase</a>
      * @since Available in iOS 3.2 and later.
      */
     public void getLineDash(FloatPtr pattern, IntPtr count, FloatPtr phase) {
@@ -451,7 +451,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_move(UIBezierPath __self__, Selector __cmd__, @ByVal CGPoint point);
     @Bridge private native static void objc_moveSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/moveToPoint:">- (void)moveToPoint:(CGPoint)point</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/moveToPoint:">- (void)moveToPoint:(CGPoint)point</a>
      * @since Available in iOS 3.2 and later.
      */
     public void move(CGPoint point) {
@@ -462,7 +462,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_removeAllPoints(UIBezierPath __self__, Selector __cmd__);
     @Bridge private native static void objc_removeAllPointsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/removeAllPoints">- (void)removeAllPoints</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/removeAllPoints">- (void)removeAllPoints</a>
      * @since Available in iOS 3.2 and later.
      */
     public void removeAllPoints() {
@@ -473,7 +473,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIBezierPath objc_reverse(UIBezierPath __self__, Selector __cmd__);
     @Bridge private native static UIBezierPath objc_reverseSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/bezierPathByReversingPath">- (UIBezierPath *)bezierPathByReversingPath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/bezierPathByReversingPath">- (UIBezierPath *)bezierPathByReversingPath</a>
      * @since Available in iOS 6.0 and later.
      */
     public UIBezierPath reverse() {
@@ -484,7 +484,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setLineDash(UIBezierPath __self__, Selector __cmd__, FloatPtr pattern, int count, float phase);
     @Bridge private native static void objc_setLineDashSuper(ObjCSuper __super__, Selector __cmd__, FloatPtr pattern, int count, float phase);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/setLineDash:count:phase:">- (void)setLineDash:(const CGFloat *)pattern count:(NSInteger)count phase:(CGFloat)phase</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/setLineDash:count:phase:">- (void)setLineDash:(const CGFloat *)pattern count:(NSInteger)count phase:(CGFloat)phase</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setLineDash(FloatPtr pattern, int count, float phase) {
@@ -495,7 +495,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_stroke(UIBezierPath __self__, Selector __cmd__);
     @Bridge private native static void objc_strokeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/stroke">- (void)stroke</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/stroke">- (void)stroke</a>
      * @since Available in iOS 3.2 and later.
      */
     public void stroke() {
@@ -506,7 +506,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_stroke(UIBezierPath __self__, Selector __cmd__, CGBlendMode blendMode, float alpha);
     @Bridge private native static void objc_strokeSuper(ObjCSuper __super__, Selector __cmd__, CGBlendMode blendMode, float alpha);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/strokeWithBlendMode:alpha:">- (void)strokeWithBlendMode:(CGBlendMode)blendMode alpha:(CGFloat)alpha</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIBezierPath_class/Reference/Reference.html#//apple_ref/occ/instm/UIBezierPath/strokeWithBlendMode:alpha:">- (void)strokeWithBlendMode:(CGBlendMode)blendMode alpha:(CGFloat)alpha</a>
      * @since Available in iOS 3.2 and later.
      */
     public void stroke(CGBlendMode blendMode, float alpha) {

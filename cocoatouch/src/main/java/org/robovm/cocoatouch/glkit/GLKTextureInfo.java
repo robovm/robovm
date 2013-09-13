@@ -32,7 +32,7 @@ import org.robovm.rt.bro.ptr.*;
 /**
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKTextureInfo_Ref/Reference/Reference.html">GLKTextureInfo Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKTextureInfo_Ref/Reference/Reference.html">GLKTextureInfo Class Reference</a>
  *   @since Available in iOS 5.0 and later.
  * </div>
  */
@@ -58,7 +58,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static GLKTextureInfoAlphaState objc_getAlphaState(GLKTextureInfo __self__, Selector __cmd__);
     @Bridge private native static GLKTextureInfoAlphaState objc_getAlphaStateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKTextureInfo_Ref/Reference/Reference.html#//apple_ref/occ/instp/GLKTextureInfo/alphaState">@property(readonly) GLKTextureInfoAlphaState alphaState</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKTextureInfo_Ref/Reference/Reference.html#//apple_ref/occ/instp/GLKTextureInfo/alphaState">@property(readonly) GLKTextureInfoAlphaState alphaState</a>
      * @since Available in iOS 5.0 and later.
      */
     public GLKTextureInfoAlphaState getAlphaState() {
@@ -69,7 +69,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isContainsMipmaps(GLKTextureInfo __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isContainsMipmapsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKTextureInfo_Ref/Reference/Reference.html#//apple_ref/occ/instp/GLKTextureInfo/containsMipmaps">@property(readonly) BOOL containsMipmaps</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKTextureInfo_Ref/Reference/Reference.html#//apple_ref/occ/instp/GLKTextureInfo/containsMipmaps">@property(readonly) BOOL containsMipmaps</a>
      * @since Available in iOS 5.0 and later.
      */
     public boolean isContainsMipmaps() {
@@ -80,7 +80,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_getHeight(GLKTextureInfo __self__, Selector __cmd__);
     @Bridge private native static int objc_getHeightSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKTextureInfo_Ref/Reference/Reference.html#//apple_ref/occ/instp/GLKTextureInfo/height">@property(readonly) GLuint height</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKTextureInfo_Ref/Reference/Reference.html#//apple_ref/occ/instp/GLKTextureInfo/height">@property(readonly) GLuint height</a>
      * @since Available in iOS 5.0 and later.
      */
     public int getHeight() {
@@ -91,7 +91,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_getName(GLKTextureInfo __self__, Selector __cmd__);
     @Bridge private native static int objc_getNameSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKTextureInfo_Ref/Reference/Reference.html#//apple_ref/occ/instp/GLKTextureInfo/name">@property(readonly) GLuint name</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKTextureInfo_Ref/Reference/Reference.html#//apple_ref/occ/instp/GLKTextureInfo/name">@property(readonly) GLuint name</a>
      * @since Available in iOS 5.0 and later.
      */
     public int getName() {
@@ -102,7 +102,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_getTarget(GLKTextureInfo __self__, Selector __cmd__);
     @Bridge private native static int objc_getTargetSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKTextureInfo_Ref/Reference/Reference.html#//apple_ref/occ/instp/GLKTextureInfo/target">@property(readonly) GLenum target</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKTextureInfo_Ref/Reference/Reference.html#//apple_ref/occ/instp/GLKTextureInfo/target">@property(readonly) GLenum target</a>
      * @since Available in iOS 5.0 and later.
      */
     public int getTarget() {
@@ -113,7 +113,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static GLKTextureInfoOrigin objc_getTextureOrigin(GLKTextureInfo __self__, Selector __cmd__);
     @Bridge private native static GLKTextureInfoOrigin objc_getTextureOriginSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKTextureInfo_Ref/Reference/Reference.html#//apple_ref/occ/instp/GLKTextureInfo/textureOrigin">@property(readonly) GLKTextureInfoOrigin textureOrigin</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKTextureInfo_Ref/Reference/Reference.html#//apple_ref/occ/instp/GLKTextureInfo/textureOrigin">@property(readonly) GLKTextureInfoOrigin textureOrigin</a>
      * @since Available in iOS 5.0 and later.
      */
     public GLKTextureInfoOrigin getTextureOrigin() {
@@ -124,7 +124,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_getWidth(GLKTextureInfo __self__, Selector __cmd__);
     @Bridge private native static int objc_getWidthSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKTextureInfo_Ref/Reference/Reference.html#//apple_ref/occ/instp/GLKTextureInfo/width">@property(readonly) GLuint width</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKTextureInfo_Ref/Reference/Reference.html#//apple_ref/occ/instp/GLKTextureInfo/width">@property(readonly) GLuint width</a>
      * @since Available in iOS 5.0 and later.
      */
     public int getWidth() {

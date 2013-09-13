@@ -33,7 +33,7 @@ import org.robovm.rt.bro.ptr.*;
 /**
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html">NSLayoutConstraint Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html">NSLayoutConstraint Class Reference</a>
  *   @since Available in iOS 6.0 and later.
  * </div>
  */
@@ -59,7 +59,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static float objc_getConstant(NSLayoutConstraint __self__, Selector __cmd__);
     @Bridge private native static float objc_getConstantSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/constant">@property CGFloat constant</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/constant">@property CGFloat constant</a>
      * @since Available in iOS 6.0 and later.
      */
     public float getConstant() {
@@ -70,7 +70,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setConstant(NSLayoutConstraint __self__, Selector __cmd__, float constant);
     @Bridge private native static void objc_setConstantSuper(ObjCSuper __super__, Selector __cmd__, float constant);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/constant">@property CGFloat constant</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/constant">@property CGFloat constant</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setConstant(float constant) {
@@ -81,7 +81,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSLayoutAttribute objc_getFirstAttribute(NSLayoutConstraint __self__, Selector __cmd__);
     @Bridge private native static NSLayoutAttribute objc_getFirstAttributeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/firstAttribute">@property (readonly) NSLayoutAttribute firstAttribute</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/firstAttribute">@property (readonly) NSLayoutAttribute firstAttribute</a>
      * @since Available in iOS 6.0 and later.
      */
     public NSLayoutAttribute getFirstAttribute() {
@@ -92,7 +92,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSObject objc_getFirstItem(NSLayoutConstraint __self__, Selector __cmd__);
     @Bridge private native static NSObject objc_getFirstItemSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/firstItem">@property (readonly, assign) id firstItem</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/firstItem">@property (readonly, assign) id firstItem</a>
      * @since Available in iOS 6.0 and later.
      */
     public NSObject getFirstItem() {
@@ -103,7 +103,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static float objc_getMultiplier(NSLayoutConstraint __self__, Selector __cmd__);
     @Bridge private native static float objc_getMultiplierSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/multiplier">@property (readonly) CGFloat multiplier</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/multiplier">@property (readonly) CGFloat multiplier</a>
      * @since Available in iOS 6.0 and later.
      */
     public float getMultiplier() {
@@ -114,7 +114,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UILayoutPriority objc_getPriority(NSLayoutConstraint __self__, Selector __cmd__);
     @Bridge private native static UILayoutPriority objc_getPrioritySuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/priority">@property NSLayoutPriority priority;</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/priority">@property NSLayoutPriority priority;</a>
      * @since Available in iOS 6.0 and later.
      */
     public UILayoutPriority getPriority() {
@@ -125,7 +125,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setPriority(NSLayoutConstraint __self__, Selector __cmd__, UILayoutPriority priority);
     @Bridge private native static void objc_setPrioritySuper(ObjCSuper __super__, Selector __cmd__, UILayoutPriority priority);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/priority">@property NSLayoutPriority priority;</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/priority">@property NSLayoutPriority priority;</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setPriority(UILayoutPriority priority) {
@@ -136,7 +136,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSLayoutRelation objc_getRelation(NSLayoutConstraint __self__, Selector __cmd__);
     @Bridge private native static NSLayoutRelation objc_getRelationSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/relation">@property (readonly) NSLayoutRelation relation</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/relation">@property (readonly) NSLayoutRelation relation</a>
      * @since Available in iOS 6.0 and later.
      */
     public NSLayoutRelation getRelation() {
@@ -147,7 +147,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSLayoutAttribute objc_getSecondAttribute(NSLayoutConstraint __self__, Selector __cmd__);
     @Bridge private native static NSLayoutAttribute objc_getSecondAttributeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/secondAttribute">@property (readonly) NSLayoutAttribute secondAttribute</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/secondAttribute">@property (readonly) NSLayoutAttribute secondAttribute</a>
      * @since Available in iOS 6.0 and later.
      */
     public NSLayoutAttribute getSecondAttribute() {
@@ -158,7 +158,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSObject objc_getSecondItem(NSLayoutConstraint __self__, Selector __cmd__);
     @Bridge private native static NSObject objc_getSecondItemSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/secondItem">@property (readonly, assign) id secondItem</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/secondItem">@property (readonly, assign) id secondItem</a>
      * @since Available in iOS 6.0 and later.
      */
     public NSObject getSecondItem() {
@@ -169,7 +169,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isShouldBeArchived(NSLayoutConstraint __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isShouldBeArchivedSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/shouldBeArchived">@property BOOL shouldBeArchived;</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/shouldBeArchived">@property BOOL shouldBeArchived;</a>
      * @since Available in iOS 6.0 and later.
      */
     public boolean isShouldBeArchived() {
@@ -180,7 +180,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setShouldBeArchived(NSLayoutConstraint __self__, Selector __cmd__, boolean shouldBeArchived);
     @Bridge private native static void objc_setShouldBeArchivedSuper(ObjCSuper __super__, Selector __cmd__, boolean shouldBeArchived);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/shouldBeArchived">@property BOOL shouldBeArchived;</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/instp/NSLayoutConstraint/shouldBeArchived">@property BOOL shouldBeArchived;</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setShouldBeArchived(boolean shouldBeArchived) {
@@ -192,7 +192,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector constraintWithItem$attribute$relatedBy$toItem$attribute$multiplier$constant$ = Selector.register("constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:");
     @Bridge private native static NSObject objc_create(ObjCClass __self__, Selector __cmd__, NSObject view1, NSLayoutAttribute attr1, NSLayoutRelation relation, NSObject view2, NSLayoutAttribute attr2, float multiplier, float c);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/clm/NSLayoutConstraint/constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:">+ (id)constraintWithItem:(id)view1 attribute:(NSLayoutAttribute)attr1 relatedBy:(NSLayoutRelation)relation toItem:(id)view2 attribute:(NSLayoutAttribute)attr2 multiplier:(CGFloat)multiplier constant:(CGFloat)c</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/clm/NSLayoutConstraint/constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:">+ (id)constraintWithItem:(id)view1 attribute:(NSLayoutAttribute)attr1 relatedBy:(NSLayoutRelation)relation toItem:(id)view2 attribute:(NSLayoutAttribute)attr2 multiplier:(CGFloat)multiplier constant:(CGFloat)c</a>
      * @since Available in iOS 6.0 and later.
      */
     public static NSObject create(NSObject view1, NSLayoutAttribute attr1, NSLayoutRelation relation, NSObject view2, NSLayoutAttribute attr2, float multiplier, float c) {
@@ -202,7 +202,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector constraintsWithVisualFormat$options$metrics$views$ = Selector.register("constraintsWithVisualFormat:options:metrics:views:");
     @Bridge private native static NSArray objc_fromVisualFormat(ObjCClass __self__, Selector __cmd__, String format, NSLayoutFormatOptions opts, NSDictionary metrics, NSDictionary views);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/clm/NSLayoutConstraint/constraintsWithVisualFormat:options:metrics:views:">+ (NSArray *)constraintsWithVisualFormat:(NSString *)format  options:(NSLayoutFormatOptions)opts  metrics:(NSDictionary *)metrics  views:(NSDictionary *)views</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../AppKit/Reference/NSLayoutConstraint_Class/NSLayoutConstraint/NSLayoutConstraint.html#//apple_ref/occ/clm/NSLayoutConstraint/constraintsWithVisualFormat:options:metrics:views:">+ (NSArray *)constraintsWithVisualFormat:(NSString *)format  options:(NSLayoutFormatOptions)opts  metrics:(NSDictionary *)metrics  views:(NSDictionary *)views</a>
      * @since Available in iOS 6.0 and later.
      */
     public static NSArray fromVisualFormat(String format, NSLayoutFormatOptions opts, NSDictionary metrics, NSDictionary views) {

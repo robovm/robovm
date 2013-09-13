@@ -33,7 +33,7 @@ import org.robovm.rt.bro.ptr.*;
 /**
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityViewController_Class/Reference/Reference.html">UIActivityViewController Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityViewController_Class/Reference/Reference.html">UIActivityViewController Class Reference</a>
  *   @since Available in iOS 6.0 and later.
  * </div>
  */
@@ -55,12 +55,12 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector initWithActivityItems$applicationActivities$ = Selector.register("initWithActivityItems:applicationActivities:");
     @Bridge private native static @Pointer long objc_initWithActivityItems(UIActivityViewController __self__, Selector __cmd__, NSArray activityItems, NSArray applicationActivities);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActivityViewController/initWithActivityItems:applicationActivities:">- (id)initWithActivityItems:(NSArray *)activityItems applicationActivities:(NSArray *)applicationActivities</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActivityViewController/initWithActivityItems:applicationActivities:">- (id)initWithActivityItems:(NSArray *)activityItems applicationActivities:(NSArray *)applicationActivities</a>
      * @since Available in iOS 6.0 and later.
      */
     public UIActivityViewController(NSArray activityItems, NSArray applicationActivities) {
         super((SkipInit) null);
-        setHandle(objc_initWithActivityItems(this, initWithActivityItems$applicationActivities$, activityItems, applicationActivities));
+        initObject(objc_initWithActivityItems(this, initWithActivityItems$applicationActivities$, activityItems, applicationActivities));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -69,7 +69,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getExcludedActivityTypes(UIActivityViewController __self__, Selector __cmd__);
     @Bridge private native static NSArray objc_getExcludedActivityTypesSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActivityViewController/excludedActivityTypes">@property(nonatomic,copy) NSArray *excludedActivityTypes</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActivityViewController/excludedActivityTypes">@property(nonatomic,copy) NSArray *excludedActivityTypes</a>
      * @since Available in iOS 6.0 and later.
      */
     public NSArray getExcludedActivityTypes() {
@@ -80,7 +80,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setExcludedActivityTypes(UIActivityViewController __self__, Selector __cmd__, NSArray excludedActivityTypes);
     @Bridge private native static void objc_setExcludedActivityTypesSuper(ObjCSuper __super__, Selector __cmd__, NSArray excludedActivityTypes);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActivityViewController/excludedActivityTypes">@property(nonatomic,copy) NSArray *excludedActivityTypes</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActivityViewController_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActivityViewController/excludedActivityTypes">@property(nonatomic,copy) NSArray *excludedActivityTypes</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setExcludedActivityTypes(NSArray excludedActivityTypes) {

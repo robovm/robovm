@@ -31,7 +31,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html">NSDictionary Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html">NSDictionary Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -144,14 +144,14 @@ import org.robovm.rt.bro.ptr.*;
     public NSDictionary(Map<K, V> m) {
         super((SkipInit) null);
         if (m instanceof NSDictionary) {
-            setHandle(objc_initWithDictionary(this, initWithDictionary$, (NSDictionary<K, V>) m));
+            initObject(objc_initWithDictionary(this, initWithDictionary$, (NSDictionary<K, V>) m));
         } else {
             Set<K> keys = m.keySet();
             List<V> objects = new ArrayList<V>(keys.size());
             for (K key : keys) {
                 objects.add(m.get(key));
             }
-            setHandle(objc_initWithObjects(this, initWithObjects$forKeys$, new NSArray<V>(objects), new NSArray<K>(keys)));
+            initObject(objc_initWithObjects(this, initWithObjects$forKeys$, new NSArray<V>(objects), new NSArray<K>(keys)));
         }
     }
     
@@ -213,7 +213,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector dictionaryWithContentsOfFile$ = Selector.register("dictionaryWithContentsOfFile:");
     @Bridge private native static NSDictionary objc_fromFile(ObjCClass __self__, Selector __cmd__, String path);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/clm/NSDictionary/dictionaryWithContentsOfFile:">+ (id)dictionaryWithContentsOfFile:(NSString *)path</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/clm/NSDictionary/dictionaryWithContentsOfFile:">+ (id)dictionaryWithContentsOfFile:(NSString *)path</a>
      * @since Available in iOS 2.0 and later.
      */
     public static NSDictionary fromFile(String path) {
@@ -223,7 +223,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector dictionaryWithContentsOfURL$ = Selector.register("dictionaryWithContentsOfURL:");
     @Bridge private native static NSDictionary objc_fromUrl(ObjCClass __self__, Selector __cmd__, NSURL aURL);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/clm/NSDictionary/dictionaryWithContentsOfURL:">+ (id)dictionaryWithContentsOfURL:(NSURL *)aURL</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/clm/NSDictionary/dictionaryWithContentsOfURL:">+ (id)dictionaryWithContentsOfURL:(NSURL *)aURL</a>
      * @since Available in iOS 2.0 and later.
      */
     public static NSDictionary fromUrl(NSURL aURL) {
@@ -234,7 +234,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_allKeys(NSDictionary __self__, Selector __cmd__);
     @Bridge private native static NSArray objc_allKeysSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/instm/NSDictionary/allKeys">- (NSArray *)allKeys</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/instm/NSDictionary/allKeys">- (NSArray *)allKeys</a>
      * @since Available in iOS 2.0 and later.
      */
     protected NSArray allKeys() {
@@ -245,7 +245,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_allValues(NSDictionary __self__, Selector __cmd__);
     @Bridge private native static NSArray objc_allValuesSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/instm/NSDictionary/allValues">- (NSArray *)allValues</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/instm/NSDictionary/allValues">- (NSArray *)allValues</a>
      * @since Available in iOS 2.0 and later.
      */
     protected NSArray allValues() {
@@ -256,7 +256,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_count(NSDictionary __self__, Selector __cmd__);
     @Bridge private native static int objc_countSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/instm/NSDictionary/count">- (NSUInteger)count</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/instm/NSDictionary/count">- (NSUInteger)count</a>
      * @since Available in iOS 2.0 and later.
      */
     protected int count() {
@@ -267,7 +267,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @Pointer long objc_initWithDictionary(NSDictionary __self__, Selector __cmd__, NSDictionary otherDictionary);
     @Bridge private native static @Pointer long objc_initWithDictionarySuper(ObjCSuper __super__, Selector __cmd__, NSDictionary otherDictionary);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/instm/NSDictionary/initWithDictionary:">- (id)initWithDictionary:(NSDictionary *)otherDictionary</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/instm/NSDictionary/initWithDictionary:">- (id)initWithDictionary:(NSDictionary *)otherDictionary</a>
      * @since Available in iOS 2.0 and later.
      */
     protected @Pointer long initWithDictionary(NSDictionary otherDictionary) {
@@ -278,7 +278,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @Pointer long objc_initWithObjects(NSDictionary __self__, Selector __cmd__, NSArray objects, NSArray keys);
     @Bridge private native static @Pointer long objc_initWithObjectsSuper(ObjCSuper __super__, Selector __cmd__, NSArray objects, NSArray keys);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/instm/NSDictionary/initWithObjects:forKeys:">- (id)initWithObjects:(NSArray *)objects forKeys:(NSArray *)keys</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/instm/NSDictionary/initWithObjects:forKeys:">- (id)initWithObjects:(NSArray *)objects forKeys:(NSArray *)keys</a>
      * @since Available in iOS 2.0 and later.
      */
     protected @Pointer long initWithObjects(NSArray objects, NSArray keys) {
@@ -289,7 +289,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSObject objc_objectForKey(NSDictionary __self__, Selector __cmd__, NSObject aKey);
     @Bridge private native static NSObject objc_objectForKeySuper(ObjCSuper __super__, Selector __cmd__, NSObject aKey);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/instm/NSDictionary/objectForKey:">- (id)objectForKey:(id)aKey</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/instm/NSDictionary/objectForKey:">- (id)objectForKey:(id)aKey</a>
      * @since Available in iOS 2.0 and later.
      */
     protected NSObject objectForKey(NSObject aKey) {
@@ -300,7 +300,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_writeToFile(NSDictionary __self__, Selector __cmd__, String path, boolean flag);
     @Bridge private native static boolean objc_writeToFileSuper(ObjCSuper __super__, Selector __cmd__, String path, boolean flag);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/instm/NSDictionary/writeToFile:atomically:">- (BOOL)writeToFile:(NSString *)path atomically:(BOOL)flag</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSDictionary_Class/Reference/Reference.html#//apple_ref/occ/instm/NSDictionary/writeToFile:atomically:">- (BOOL)writeToFile:(NSString *)path atomically:(BOOL)flag</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean writeToFile(String path, boolean flag) {

@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html">UIPrintFormatter Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html">UIPrintFormatter Class Reference</a>
  *   @since Available in iOS 4.2 and later.
  * </div>
  */
@@ -60,7 +60,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal UIEdgeInsets objc_getContentInsets(UIPrintFormatter __self__, Selector __cmd__);
     @Bridge private native static @ByVal UIEdgeInsets objc_getContentInsetsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/contentInsets">@property(nonatomic) UIEdgeInsets contentInsets</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/contentInsets">@property(nonatomic) UIEdgeInsets contentInsets</a>
      * @since Available in iOS 4.2 and later.
      */
     public UIEdgeInsets getContentInsets() {
@@ -71,7 +71,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setContentInsets(UIPrintFormatter __self__, Selector __cmd__, @ByVal UIEdgeInsets contentInsets);
     @Bridge private native static void objc_setContentInsetsSuper(ObjCSuper __super__, Selector __cmd__, @ByVal UIEdgeInsets contentInsets);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/contentInsets">@property(nonatomic) UIEdgeInsets contentInsets</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/contentInsets">@property(nonatomic) UIEdgeInsets contentInsets</a>
      * @since Available in iOS 4.2 and later.
      */
     public void setContentInsets(UIEdgeInsets contentInsets) {
@@ -82,7 +82,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static float objc_getMaximumContentHeight(UIPrintFormatter __self__, Selector __cmd__);
     @Bridge private native static float objc_getMaximumContentHeightSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/maximumContentHeight">@property(nonatomic) CGFloat maximumContentHeight</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/maximumContentHeight">@property(nonatomic) CGFloat maximumContentHeight</a>
      * @since Available in iOS 4.2 and later.
      */
     public float getMaximumContentHeight() {
@@ -93,7 +93,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setMaximumContentHeight(UIPrintFormatter __self__, Selector __cmd__, float maximumContentHeight);
     @Bridge private native static void objc_setMaximumContentHeightSuper(ObjCSuper __super__, Selector __cmd__, float maximumContentHeight);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/maximumContentHeight">@property(nonatomic) CGFloat maximumContentHeight</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/maximumContentHeight">@property(nonatomic) CGFloat maximumContentHeight</a>
      * @since Available in iOS 4.2 and later.
      */
     public void setMaximumContentHeight(float maximumContentHeight) {
@@ -104,7 +104,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static float objc_getMaximumContentWidth(UIPrintFormatter __self__, Selector __cmd__);
     @Bridge private native static float objc_getMaximumContentWidthSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/maximumContentWidth">@property(nonatomic) CGFloat maximumContentWidth</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/maximumContentWidth">@property(nonatomic) CGFloat maximumContentWidth</a>
      * @since Available in iOS 4.2 and later.
      */
     public float getMaximumContentWidth() {
@@ -115,7 +115,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setMaximumContentWidth(UIPrintFormatter __self__, Selector __cmd__, float maximumContentWidth);
     @Bridge private native static void objc_setMaximumContentWidthSuper(ObjCSuper __super__, Selector __cmd__, float maximumContentWidth);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/maximumContentWidth">@property(nonatomic) CGFloat maximumContentWidth</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/maximumContentWidth">@property(nonatomic) CGFloat maximumContentWidth</a>
      * @since Available in iOS 4.2 and later.
      */
     public void setMaximumContentWidth(float maximumContentWidth) {
@@ -126,7 +126,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_getPageCount(UIPrintFormatter __self__, Selector __cmd__);
     @Bridge private native static int objc_getPageCountSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/pageCount">@property(nonatomic, readonly) NSInteger pageCount</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/pageCount">@property(nonatomic, readonly) NSInteger pageCount</a>
      * @since Available in iOS 4.2 and later.
      */
     public int getPageCount() {
@@ -137,7 +137,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIPrintPageRenderer objc_getPrintPageRenderer(UIPrintFormatter __self__, Selector __cmd__);
     @Bridge private native static UIPrintPageRenderer objc_getPrintPageRendererSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/printPageRenderer">@property(readonly) UIPrintPageRenderer *printPageRenderer</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/printPageRenderer">@property(readonly) UIPrintPageRenderer *printPageRenderer</a>
      * @since Available in iOS 4.2 and later.
      */
     public UIPrintPageRenderer getPrintPageRenderer() {
@@ -148,7 +148,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_getStartPage(UIPrintFormatter __self__, Selector __cmd__);
     @Bridge private native static int objc_getStartPageSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/startPage">@property(nonatomic) NSInteger startPage</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/startPage">@property(nonatomic) NSInteger startPage</a>
      * @since Available in iOS 4.2 and later.
      */
     public int getStartPage() {
@@ -159,7 +159,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setStartPage(UIPrintFormatter __self__, Selector __cmd__, int startPage);
     @Bridge private native static void objc_setStartPageSuper(ObjCSuper __super__, Selector __cmd__, int startPage);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/startPage">@property(nonatomic) NSInteger startPage</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintFormatter/startPage">@property(nonatomic) NSInteger startPage</a>
      * @since Available in iOS 4.2 and later.
      */
     public void setStartPage(int startPage) {
@@ -172,7 +172,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_draw(UIPrintFormatter __self__, Selector __cmd__, @ByVal CGRect rect, int pageIndex);
     @Bridge private native static void objc_drawSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, int pageIndex);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPrintFormatter/drawInRect:forPageAtIndex:">- (void)drawInRect:(CGRect)rect forPageAtIndex:(NSInteger)pageIndex</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPrintFormatter/drawInRect:forPageAtIndex:">- (void)drawInRect:(CGRect)rect forPageAtIndex:(NSInteger)pageIndex</a>
      * @since Available in iOS 4.2 and later.
      */
     public void draw(CGRect rect, int pageIndex) {
@@ -183,7 +183,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGRect objc_getRectForPage(UIPrintFormatter __self__, Selector __cmd__, int pageIndex);
     @Bridge private native static @ByVal CGRect objc_getRectForPageSuper(ObjCSuper __super__, Selector __cmd__, int pageIndex);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPrintFormatter/rectForPageAtIndex:">- (CGRect)rectForPageAtIndex:(NSIndex)pageIndex</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPrintFormatter/rectForPageAtIndex:">- (CGRect)rectForPageAtIndex:(NSIndex)pageIndex</a>
      * @since Available in iOS 4.2 and later.
      */
     public CGRect getRectForPage(int pageIndex) {
@@ -194,7 +194,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_removeFromPrintPageRenderer(UIPrintFormatter __self__, Selector __cmd__);
     @Bridge private native static void objc_removeFromPrintPageRendererSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPrintFormatter/removeFromPrintPageRenderer">- (void)removeFromPrintPageRenderer</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintFormatter_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPrintFormatter/removeFromPrintPageRenderer">- (void)removeFromPrintPageRenderer</a>
      * @since Available in iOS 4.2 and later.
      */
     public void removeFromPrintPageRenderer() {

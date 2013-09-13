@@ -33,7 +33,7 @@ import org.robovm.rt.bro.ptr.*;
 /**
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDataSourceModelAssociation_protocol/Reference/Reference.html">UIDataSourceModelAssociation Protocol Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDataSourceModelAssociation_protocol/Reference/Reference.html">UIDataSourceModelAssociation Protocol Reference</a>
  *   @since Available in iOS 6.0 and later.
  * </div>
  */
@@ -44,12 +44,12 @@ public interface /*<name>*/ UIDataSourceModelAssociation /*</name>*/ /*<implemen
     /*</properties>*/
     /*<methods>*/
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDataSourceModelAssociation_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIDataSourceModelAssociation/indexPathForElementWithModelIdentifier:inView:">- (NSIndexPath *) indexPathForElementWithModelIdentifier:(NSString *)identifier inView:(UIView *)view</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDataSourceModelAssociation_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIDataSourceModelAssociation/indexPathForElementWithModelIdentifier:inView:">- (NSIndexPath *) indexPathForElementWithModelIdentifier:(NSString *)identifier inView:(UIView *)view</a>
      * @since Available in iOS 6.0 and later.
      */
     NSIndexPath getElementIndexPath(String identifier, UIView view);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDataSourceModelAssociation_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIDataSourceModelAssociation/modelIdentifierForElementAtIndexPath:inView:">- (NSString *) modelIdentifierForElementAtIndexPath:(NSIndexPath *)idx inView:(UIView *)view</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDataSourceModelAssociation_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIDataSourceModelAssociation/modelIdentifierForElementAtIndexPath:inView:">- (NSString *) modelIdentifierForElementAtIndexPath:(NSIndexPath *)idx inView:(UIView *)view</a>
      * @since Available in iOS 6.0 and later.
      */
     String getElementModelIdentifier(NSIndexPath idx, UIView view);

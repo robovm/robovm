@@ -32,7 +32,7 @@ import org.robovm.rt.bro.ptr.*;
 /**
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKViewDelegate_ProtocolRef/Reference/Reference.html">GLKViewDelegate Protocol Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKViewDelegate_ProtocolRef/Reference/Reference.html">GLKViewDelegate Protocol Reference</a>
  *   @since Available in iOS 5.0 and later.
  * </div>
  */
@@ -43,7 +43,7 @@ public interface /*<name>*/ GLKViewDelegate /*</name>*/ /*<implements>*/ extends
     /*</properties>*/
     /*<methods>*/
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKViewDelegate_ProtocolRef/Reference/Reference.html#//apple_ref/occ/intfm/GLKViewDelegate/glkView:drawInRect:">- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKViewDelegate_ProtocolRef/Reference/Reference.html#//apple_ref/occ/intfm/GLKViewDelegate/glkView:drawInRect:">- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect</a>
      * @since Available in iOS 5.0 and later.
      */
     void draw(GLKView view, CGRect rect);

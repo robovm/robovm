@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html">UIView Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html">UIView Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -56,12 +56,12 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector initWithFrame$ = Selector.register("initWithFrame:");
     @Bridge private native static @Pointer long objc_initWithFrame(UIView __self__, Selector __cmd__, @ByVal CGRect aRect);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/initWithFrame:">- (id)initWithFrame:(CGRect)aRect</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/initWithFrame:">- (id)initWithFrame:(CGRect)aRect</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIView(CGRect aRect) {
         super((SkipInit) null);
-        setHandle(objc_initWithFrame(this, initWithFrame$, aRect));
+        initObject(objc_initWithFrame(this, initWithFrame$, aRect));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -70,7 +70,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static float objc_getAlpha(UIView __self__, Selector __cmd__);
     @Bridge private native static float objc_getAlphaSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/alpha">@property(nonatomic) CGFloat alpha</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/alpha">@property(nonatomic) CGFloat alpha</a>
      * @since Available in iOS 2.0 and later.
      */
     public float getAlpha() {
@@ -81,7 +81,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setAlpha(UIView __self__, Selector __cmd__, float alpha);
     @Bridge private native static void objc_setAlphaSuper(ObjCSuper __super__, Selector __cmd__, float alpha);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/alpha">@property(nonatomic) CGFloat alpha</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/alpha">@property(nonatomic) CGFloat alpha</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setAlpha(float alpha) {
@@ -92,7 +92,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isAutoresizesSubviews(UIView __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isAutoresizesSubviewsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/autoresizesSubviews">@property(nonatomic) BOOL autoresizesSubviews</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/autoresizesSubviews">@property(nonatomic) BOOL autoresizesSubviews</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isAutoresizesSubviews() {
@@ -103,7 +103,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setAutoresizesSubviews(UIView __self__, Selector __cmd__, boolean autoresizesSubviews);
     @Bridge private native static void objc_setAutoresizesSubviewsSuper(ObjCSuper __super__, Selector __cmd__, boolean autoresizesSubviews);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/autoresizesSubviews">@property(nonatomic) BOOL autoresizesSubviews</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/autoresizesSubviews">@property(nonatomic) BOOL autoresizesSubviews</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setAutoresizesSubviews(boolean autoresizesSubviews) {
@@ -114,7 +114,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIViewAutoresizing objc_getAutoresizingMask(UIView __self__, Selector __cmd__);
     @Bridge private native static UIViewAutoresizing objc_getAutoresizingMaskSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/autoresizingMask">@property(nonatomic) UIViewAutoresizing autoresizingMask</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/autoresizingMask">@property(nonatomic) UIViewAutoresizing autoresizingMask</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIViewAutoresizing getAutoresizingMask() {
@@ -125,7 +125,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setAutoresizingMask(UIView __self__, Selector __cmd__, UIViewAutoresizing autoresizingMask);
     @Bridge private native static void objc_setAutoresizingMaskSuper(ObjCSuper __super__, Selector __cmd__, UIViewAutoresizing autoresizingMask);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/autoresizingMask">@property(nonatomic) UIViewAutoresizing autoresizingMask</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/autoresizingMask">@property(nonatomic) UIViewAutoresizing autoresizingMask</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setAutoresizingMask(UIViewAutoresizing autoresizingMask) {
@@ -136,7 +136,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIColor objc_getBackgroundColor(UIView __self__, Selector __cmd__);
     @Bridge private native static UIColor objc_getBackgroundColorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/backgroundColor">@property(nonatomic, copy) UIColor *backgroundColor</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/backgroundColor">@property(nonatomic, copy) UIColor *backgroundColor</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIColor getBackgroundColor() {
@@ -147,7 +147,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setBackgroundColor(UIView __self__, Selector __cmd__, UIColor backgroundColor);
     @Bridge private native static void objc_setBackgroundColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor backgroundColor);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/backgroundColor">@property(nonatomic, copy) UIColor *backgroundColor</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/backgroundColor">@property(nonatomic, copy) UIColor *backgroundColor</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setBackgroundColor(UIColor backgroundColor) {
@@ -158,7 +158,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGRect objc_getBounds(UIView __self__, Selector __cmd__);
     @Bridge private native static @ByVal CGRect objc_getBoundsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/bounds">@property(nonatomic) CGRect bounds</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/bounds">@property(nonatomic) CGRect bounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getBounds() {
@@ -169,7 +169,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setBounds(UIView __self__, Selector __cmd__, @ByVal CGRect bounds);
     @Bridge private native static void objc_setBoundsSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/bounds">@property(nonatomic) CGRect bounds</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/bounds">@property(nonatomic) CGRect bounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setBounds(CGRect bounds) {
@@ -180,7 +180,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGPoint objc_getCenter(UIView __self__, Selector __cmd__);
     @Bridge private native static @ByVal CGPoint objc_getCenterSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/center">@property(nonatomic) CGPoint center</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/center">@property(nonatomic) CGPoint center</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGPoint getCenter() {
@@ -191,7 +191,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setCenter(UIView __self__, Selector __cmd__, @ByVal CGPoint center);
     @Bridge private native static void objc_setCenterSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint center);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/center">@property(nonatomic) CGPoint center</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/center">@property(nonatomic) CGPoint center</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setCenter(CGPoint center) {
@@ -202,7 +202,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isClearsContextBeforeDrawing(UIView __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isClearsContextBeforeDrawingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/clearsContextBeforeDrawing">@property(nonatomic) BOOL clearsContextBeforeDrawing</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/clearsContextBeforeDrawing">@property(nonatomic) BOOL clearsContextBeforeDrawing</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isClearsContextBeforeDrawing() {
@@ -213,7 +213,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setClearsContextBeforeDrawing(UIView __self__, Selector __cmd__, boolean clearsContextBeforeDrawing);
     @Bridge private native static void objc_setClearsContextBeforeDrawingSuper(ObjCSuper __super__, Selector __cmd__, boolean clearsContextBeforeDrawing);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/clearsContextBeforeDrawing">@property(nonatomic) BOOL clearsContextBeforeDrawing</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/clearsContextBeforeDrawing">@property(nonatomic) BOOL clearsContextBeforeDrawing</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setClearsContextBeforeDrawing(boolean clearsContextBeforeDrawing) {
@@ -224,7 +224,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isClipsToBounds(UIView __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isClipsToBoundsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/clipsToBounds">@property(nonatomic) BOOL clipsToBounds</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/clipsToBounds">@property(nonatomic) BOOL clipsToBounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isClipsToBounds() {
@@ -235,7 +235,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setClipsToBounds(UIView __self__, Selector __cmd__, boolean clipsToBounds);
     @Bridge private native static void objc_setClipsToBoundsSuper(ObjCSuper __super__, Selector __cmd__, boolean clipsToBounds);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/clipsToBounds">@property(nonatomic) BOOL clipsToBounds</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/clipsToBounds">@property(nonatomic) BOOL clipsToBounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setClipsToBounds(boolean clipsToBounds) {
@@ -246,7 +246,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIViewContentMode objc_getContentMode(UIView __self__, Selector __cmd__);
     @Bridge private native static UIViewContentMode objc_getContentModeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/contentMode">@property(nonatomic) UIViewContentMode contentMode</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/contentMode">@property(nonatomic) UIViewContentMode contentMode</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIViewContentMode getContentMode() {
@@ -257,7 +257,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setContentMode(UIView __self__, Selector __cmd__, UIViewContentMode contentMode);
     @Bridge private native static void objc_setContentModeSuper(ObjCSuper __super__, Selector __cmd__, UIViewContentMode contentMode);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/contentMode">@property(nonatomic) UIViewContentMode contentMode</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/contentMode">@property(nonatomic) UIViewContentMode contentMode</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setContentMode(UIViewContentMode contentMode) {
@@ -268,7 +268,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static float objc_getContentScaleFactor(UIView __self__, Selector __cmd__);
     @Bridge private native static float objc_getContentScaleFactorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/contentScaleFactor">@property(nonatomic) CGFloat contentScaleFactor</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/contentScaleFactor">@property(nonatomic) CGFloat contentScaleFactor</a>
      * @since Available in iOS 4.0 and later.
      */
     public float getContentScaleFactor() {
@@ -279,7 +279,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setContentScaleFactor(UIView __self__, Selector __cmd__, float contentScaleFactor);
     @Bridge private native static void objc_setContentScaleFactorSuper(ObjCSuper __super__, Selector __cmd__, float contentScaleFactor);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/contentScaleFactor">@property(nonatomic) CGFloat contentScaleFactor</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/contentScaleFactor">@property(nonatomic) CGFloat contentScaleFactor</a>
      * @since Available in iOS 4.0 and later.
      */
     public void setContentScaleFactor(float contentScaleFactor) {
@@ -290,7 +290,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isExclusiveTouch(UIView __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isExclusiveTouchSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/exclusiveTouch">@property(nonatomic, getter=isExclusiveTouch) BOOL exclusiveTouch</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/exclusiveTouch">@property(nonatomic, getter=isExclusiveTouch) BOOL exclusiveTouch</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isExclusiveTouch() {
@@ -301,7 +301,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setExclusiveTouch(UIView __self__, Selector __cmd__, boolean exclusiveTouch);
     @Bridge private native static void objc_setExclusiveTouchSuper(ObjCSuper __super__, Selector __cmd__, boolean exclusiveTouch);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/exclusiveTouch">@property(nonatomic, getter=isExclusiveTouch) BOOL exclusiveTouch</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/exclusiveTouch">@property(nonatomic, getter=isExclusiveTouch) BOOL exclusiveTouch</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setExclusiveTouch(boolean exclusiveTouch) {
@@ -312,7 +312,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGRect objc_getFrame(UIView __self__, Selector __cmd__);
     @Bridge private native static @ByVal CGRect objc_getFrameSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/frame">@property(nonatomic) CGRect frame</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/frame">@property(nonatomic) CGRect frame</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getFrame() {
@@ -323,7 +323,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setFrame(UIView __self__, Selector __cmd__, @ByVal CGRect frame);
     @Bridge private native static void objc_setFrameSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect frame);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/frame">@property(nonatomic) CGRect frame</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/frame">@property(nonatomic) CGRect frame</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setFrame(CGRect frame) {
@@ -334,7 +334,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getGestureRecognizers(UIView __self__, Selector __cmd__);
     @Bridge private native static NSArray objc_getGestureRecognizersSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/gestureRecognizers">@property(nonatomic, copy) NSArray *gestureRecognizers</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/gestureRecognizers">@property(nonatomic, copy) NSArray *gestureRecognizers</a>
      * @since Available in iOS 3.2 and later.
      */
     public NSArray getGestureRecognizers() {
@@ -345,7 +345,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setGestureRecognizers(UIView __self__, Selector __cmd__, NSArray gestureRecognizers);
     @Bridge private native static void objc_setGestureRecognizersSuper(ObjCSuper __super__, Selector __cmd__, NSArray gestureRecognizers);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/gestureRecognizers">@property(nonatomic, copy) NSArray *gestureRecognizers</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/gestureRecognizers">@property(nonatomic, copy) NSArray *gestureRecognizers</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setGestureRecognizers(NSArray gestureRecognizers) {
@@ -356,7 +356,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isHidden(UIView __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isHiddenSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/hidden">@property(nonatomic, getter=isHidden) BOOL hidden</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/hidden">@property(nonatomic, getter=isHidden) BOOL hidden</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isHidden() {
@@ -367,7 +367,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setHidden(UIView __self__, Selector __cmd__, boolean hidden);
     @Bridge private native static void objc_setHiddenSuper(ObjCSuper __super__, Selector __cmd__, boolean hidden);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/hidden">@property(nonatomic, getter=isHidden) BOOL hidden</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/hidden">@property(nonatomic, getter=isHidden) BOOL hidden</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setHidden(boolean hidden) {
@@ -378,7 +378,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static CALayer objc_getLayer(UIView __self__, Selector __cmd__);
     @Bridge private native static CALayer objc_getLayerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/layer">@property(nonatomic, readonly, retain) CALayer *layer</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/layer">@property(nonatomic, readonly, retain) CALayer *layer</a>
      * @since Available in iOS 2.0 and later.
      */
     public CALayer getLayer() {
@@ -389,7 +389,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isMultipleTouchEnabled(UIView __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isMultipleTouchEnabledSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/multipleTouchEnabled">@property(nonatomic, getter=isMultipleTouchEnabled) BOOL multipleTouchEnabled</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/multipleTouchEnabled">@property(nonatomic, getter=isMultipleTouchEnabled) BOOL multipleTouchEnabled</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isMultipleTouchEnabled() {
@@ -400,7 +400,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setMultipleTouchEnabled(UIView __self__, Selector __cmd__, boolean multipleTouchEnabled);
     @Bridge private native static void objc_setMultipleTouchEnabledSuper(ObjCSuper __super__, Selector __cmd__, boolean multipleTouchEnabled);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/multipleTouchEnabled">@property(nonatomic, getter=isMultipleTouchEnabled) BOOL multipleTouchEnabled</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/multipleTouchEnabled">@property(nonatomic, getter=isMultipleTouchEnabled) BOOL multipleTouchEnabled</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setMultipleTouchEnabled(boolean multipleTouchEnabled) {
@@ -411,7 +411,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isOpaque(UIView __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isOpaqueSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/opaque">@property(nonatomic, getter=isOpaque) BOOL opaque</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/opaque">@property(nonatomic, getter=isOpaque) BOOL opaque</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isOpaque() {
@@ -422,7 +422,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setOpaque(UIView __self__, Selector __cmd__, boolean opaque);
     @Bridge private native static void objc_setOpaqueSuper(ObjCSuper __super__, Selector __cmd__, boolean opaque);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/opaque">@property(nonatomic, getter=isOpaque) BOOL opaque</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/opaque">@property(nonatomic, getter=isOpaque) BOOL opaque</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setOpaque(boolean opaque) {
@@ -433,7 +433,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static String objc_getRestorationIdentifier(UIView __self__, Selector __cmd__);
     @Bridge private native static String objc_getRestorationIdentifierSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/restorationIdentifier">@property (nonatomic, copy) NSString *restorationIdentifier</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/restorationIdentifier">@property (nonatomic, copy) NSString *restorationIdentifier</a>
      * @since Available in iOS 6.0 and later.
      */
     public String getRestorationIdentifier() {
@@ -444,7 +444,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setRestorationIdentifier(UIView __self__, Selector __cmd__, String restorationIdentifier);
     @Bridge private native static void objc_setRestorationIdentifierSuper(ObjCSuper __super__, Selector __cmd__, String restorationIdentifier);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/restorationIdentifier">@property (nonatomic, copy) NSString *restorationIdentifier</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/restorationIdentifier">@property (nonatomic, copy) NSString *restorationIdentifier</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setRestorationIdentifier(String restorationIdentifier) {
@@ -455,7 +455,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getSubviews(UIView __self__, Selector __cmd__);
     @Bridge private native static NSArray objc_getSubviewsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/subviews">@property(nonatomic, readonly, copy) NSArray *subviews</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/subviews">@property(nonatomic, readonly, copy) NSArray *subviews</a>
      * @since Available in iOS 2.0 and later.
      */
     public NSArray getSubviews() {
@@ -466,7 +466,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIView objc_getSuperview(UIView __self__, Selector __cmd__);
     @Bridge private native static UIView objc_getSuperviewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/superview">@property(nonatomic, readonly) UIView *superview</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/superview">@property(nonatomic, readonly) UIView *superview</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIView getSuperview() {
@@ -477,7 +477,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_getTag(UIView __self__, Selector __cmd__);
     @Bridge private native static int objc_getTagSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/tag">@property(nonatomic) NSInteger tag</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/tag">@property(nonatomic) NSInteger tag</a>
      * @since Available in iOS 2.0 and later.
      */
     public int getTag() {
@@ -488,7 +488,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setTag(UIView __self__, Selector __cmd__, int tag);
     @Bridge private native static void objc_setTagSuper(ObjCSuper __super__, Selector __cmd__, int tag);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/tag">@property(nonatomic) NSInteger tag</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/tag">@property(nonatomic) NSInteger tag</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setTag(int tag) {
@@ -499,7 +499,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGAffineTransform objc_getTransform(UIView __self__, Selector __cmd__);
     @Bridge private native static @ByVal CGAffineTransform objc_getTransformSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/transform">@property(nonatomic) CGAffineTransform transform</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/transform">@property(nonatomic) CGAffineTransform transform</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGAffineTransform getTransform() {
@@ -510,7 +510,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setTransform(UIView __self__, Selector __cmd__, @ByVal CGAffineTransform transform);
     @Bridge private native static void objc_setTransformSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGAffineTransform transform);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/transform">@property(nonatomic) CGAffineTransform transform</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/transform">@property(nonatomic) CGAffineTransform transform</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setTransform(CGAffineTransform transform) {
@@ -521,7 +521,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isUserInteractionEnabled(UIView __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isUserInteractionEnabledSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/userInteractionEnabled">@property(nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/userInteractionEnabled">@property(nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isUserInteractionEnabled() {
@@ -532,7 +532,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setUserInteractionEnabled(UIView __self__, Selector __cmd__, boolean userInteractionEnabled);
     @Bridge private native static void objc_setUserInteractionEnabledSuper(ObjCSuper __super__, Selector __cmd__, boolean userInteractionEnabled);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/userInteractionEnabled">@property(nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/userInteractionEnabled">@property(nonatomic, getter=isUserInteractionEnabled) BOOL userInteractionEnabled</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setUserInteractionEnabled(boolean userInteractionEnabled) {
@@ -543,7 +543,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIWindow objc_getWindow(UIView __self__, Selector __cmd__);
     @Bridge private native static UIWindow objc_getWindowSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/window">@property(nonatomic, readonly) UIWindow *window</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instp/UIView/window">@property(nonatomic, readonly) UIWindow *window</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIWindow getWindow() {
@@ -555,7 +555,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector animateWithDuration$animations$ = Selector.register("animateWithDuration:animations:");
     @Bridge private native static void objc_animate(ObjCClass __self__, Selector __cmd__, double duration, VoidBlock animations);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/animateWithDuration:animations:">+ (void)animateWithDuration:(NSTimeInterval)duration animations:(void (^)(void))animations</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/animateWithDuration:animations:">+ (void)animateWithDuration:(NSTimeInterval)duration animations:(void (^)(void))animations</a>
      * @since Available in iOS 4.0 and later.
      */
     public static void animate(double duration, VoidBlock animations) {
@@ -565,7 +565,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector animateWithDuration$animations$completion$ = Selector.register("animateWithDuration:animations:completion:");
     @Bridge private native static void objc_animate(ObjCClass __self__, Selector __cmd__, double duration, VoidBlock animations, VoidBooleanBlock completion);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/animateWithDuration:animations:completion:">+ (void)animateWithDuration:(NSTimeInterval)duration animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/animateWithDuration:animations:completion:">+ (void)animateWithDuration:(NSTimeInterval)duration animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion</a>
      * @since Available in iOS 4.0 and later.
      */
     public static void animate(double duration, VoidBlock animations, VoidBooleanBlock completion) {
@@ -575,7 +575,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector animateWithDuration$delay$options$animations$completion$ = Selector.register("animateWithDuration:delay:options:animations:completion:");
     @Bridge private native static void objc_animate(ObjCClass __self__, Selector __cmd__, double duration, double delay, UIViewAnimationOptions options, VoidBlock animations, VoidBooleanBlock completion);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/animateWithDuration:delay:options:animations:completion:">+ (void)animateWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay options:(UIViewAnimationOptions)options animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/animateWithDuration:delay:options:animations:completion:">+ (void)animateWithDuration:(NSTimeInterval)duration delay:(NSTimeInterval)delay options:(UIViewAnimationOptions)options animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion</a>
      * @since Available in iOS 4.0 and later.
      */
     public static void animate(double duration, double delay, UIViewAnimationOptions options, VoidBlock animations, VoidBooleanBlock completion) {
@@ -585,7 +585,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector areAnimationsEnabled = Selector.register("areAnimationsEnabled");
     @Bridge private native static boolean objc_areAnimationsEnabled(ObjCClass __self__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/areAnimationsEnabled">+ (BOOL)areAnimationsEnabled</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/areAnimationsEnabled">+ (BOOL)areAnimationsEnabled</a>
      * @since Available in iOS 2.0 and later.
      */
     public static boolean areAnimationsEnabled() {
@@ -595,7 +595,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector beginAnimations$context$ = Selector.register("beginAnimations:context:");
     @Bridge private native static void objc_beginAnimations(ObjCClass __self__, Selector __cmd__, String animationID, VoidPtr context);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/beginAnimations:context:">+ (void)beginAnimations:(NSString *)animationID context:(void *)context</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/beginAnimations:context:">+ (void)beginAnimations:(NSString *)animationID context:(void *)context</a>
      * @since Available in iOS 2.0 and later.
      */
     public static void beginAnimations(String animationID, VoidPtr context) {
@@ -605,7 +605,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector commitAnimations = Selector.register("commitAnimations");
     @Bridge private native static void objc_commitAnimations(ObjCClass __self__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/commitAnimations">+ (void)commitAnimations</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/commitAnimations">+ (void)commitAnimations</a>
      * @since Available in iOS 2.0 and later.
      */
     public static void commitAnimations() {
@@ -615,7 +615,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector layerClass = Selector.register("layerClass");
     @Bridge private native static ObjCClass objc_getLayerClass(ObjCClass __self__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/layerClass">+ (Class)layerClass</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/layerClass">+ (Class)layerClass</a>
      * @since Available in iOS 2.0 and later.
      */
     public static ObjCClass getLayerClass() {
@@ -625,7 +625,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector requiresConstraintBasedLayout = Selector.register("requiresConstraintBasedLayout");
     @Bridge private native static boolean objc_requiresConstraintBasedLayout(ObjCClass __self__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/requiresConstraintBasedLayout">+ (BOOL)requiresConstraintBasedLayout</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/requiresConstraintBasedLayout">+ (BOOL)requiresConstraintBasedLayout</a>
      * @since Available in iOS 6.0 and later.
      */
     public static boolean requiresConstraintBasedLayout() {
@@ -635,7 +635,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector setAnimationBeginsFromCurrentState$ = Selector.register("setAnimationBeginsFromCurrentState:");
     @Bridge private native static void objc_setAnimationBeginsFromCurrentState(ObjCClass __self__, Selector __cmd__, boolean fromCurrentState);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationBeginsFromCurrentState:">+ (void)setAnimationBeginsFromCurrentState:(BOOL)fromCurrentState</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationBeginsFromCurrentState:">+ (void)setAnimationBeginsFromCurrentState:(BOOL)fromCurrentState</a>
      * @since Available in iOS 2.0 and later.
      */
     public static void setAnimationBeginsFromCurrentState(boolean fromCurrentState) {
@@ -645,7 +645,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector setAnimationCurve$ = Selector.register("setAnimationCurve:");
     @Bridge private native static void objc_setAnimationCurve(ObjCClass __self__, Selector __cmd__, UIViewAnimationCurve curve);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationCurve:">+ (void)setAnimationCurve:(UIViewAnimationCurve)curve</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationCurve:">+ (void)setAnimationCurve:(UIViewAnimationCurve)curve</a>
      * @since Available in iOS 2.0 and later.
      */
     public static void setAnimationCurve(UIViewAnimationCurve curve) {
@@ -655,7 +655,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector setAnimationDelay$ = Selector.register("setAnimationDelay:");
     @Bridge private native static void objc_setAnimationDelay(ObjCClass __self__, Selector __cmd__, double delay);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationDelay:">+ (void)setAnimationDelay:(NSTimeInterval)delay</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationDelay:">+ (void)setAnimationDelay:(NSTimeInterval)delay</a>
      * @since Available in iOS 2.0 and later.
      */
     public static void setAnimationDelay(double delay) {
@@ -665,7 +665,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector setAnimationDelegate$ = Selector.register("setAnimationDelegate:");
     @Bridge private native static void objc_setAnimationDelegate(ObjCClass __self__, Selector __cmd__, NSObject delegate);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationDelegate:">+ (void)setAnimationDelegate:(id)delegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationDelegate:">+ (void)setAnimationDelegate:(id)delegate</a>
      * @since Available in iOS 2.0 and later.
      */
     public static void setAnimationDelegate(NSObject delegate) {
@@ -675,7 +675,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector setAnimationDidStopSelector$ = Selector.register("setAnimationDidStopSelector:");
     @Bridge private native static void objc_setAnimationDidStopSelector(ObjCClass __self__, Selector __cmd__, Selector selector);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationDidStopSelector:">+ (void)setAnimationDidStopSelector:(SEL)selector</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationDidStopSelector:">+ (void)setAnimationDidStopSelector:(SEL)selector</a>
      * @since Available in iOS 2.0 and later.
      */
     public static void setAnimationDidStopSelector(Selector selector) {
@@ -685,7 +685,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector setAnimationRepeatAutoreverses$ = Selector.register("setAnimationRepeatAutoreverses:");
     @Bridge private native static void objc_setAnimationRepeatAutoreverses(ObjCClass __self__, Selector __cmd__, boolean repeatAutoreverses);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationRepeatAutoreverses:">+ (void)setAnimationRepeatAutoreverses:(BOOL)repeatAutoreverses</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationRepeatAutoreverses:">+ (void)setAnimationRepeatAutoreverses:(BOOL)repeatAutoreverses</a>
      * @since Available in iOS 2.0 and later.
      */
     public static void setAnimationRepeatAutoreverses(boolean repeatAutoreverses) {
@@ -695,7 +695,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector setAnimationRepeatCount$ = Selector.register("setAnimationRepeatCount:");
     @Bridge private native static void objc_setAnimationRepeatCount(ObjCClass __self__, Selector __cmd__, float repeatCount);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationRepeatCount:">+ (void)setAnimationRepeatCount:(float)repeatCount</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationRepeatCount:">+ (void)setAnimationRepeatCount:(float)repeatCount</a>
      * @since Available in iOS 2.0 and later.
      */
     public static void setAnimationRepeatCount(float repeatCount) {
@@ -705,7 +705,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector setAnimationStartDate$ = Selector.register("setAnimationStartDate:");
     @Bridge private native static void objc_setAnimationStartDate(ObjCClass __self__, Selector __cmd__, NSDate startTime);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationStartDate:">+ (void)setAnimationStartDate:(NSDate *)startTime</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationStartDate:">+ (void)setAnimationStartDate:(NSDate *)startTime</a>
      * @since Available in iOS 2.0 and later.
      */
     public static void setAnimationStartDate(NSDate startTime) {
@@ -715,7 +715,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector setAnimationTransition$forView$cache$ = Selector.register("setAnimationTransition:forView:cache:");
     @Bridge private native static void objc_setAnimationTransition(ObjCClass __self__, Selector __cmd__, UIViewAnimationTransition transition, UIView view, boolean cache);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationTransition:forView:cache:">+ (void)setAnimationTransition:(UIViewAnimationTransition)transition forView:(UIView *)view cache:(BOOL)cache</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationTransition:forView:cache:">+ (void)setAnimationTransition:(UIViewAnimationTransition)transition forView:(UIView *)view cache:(BOOL)cache</a>
      * @since Available in iOS 2.0 and later.
      */
     public static void setAnimationTransition(UIViewAnimationTransition transition, UIView view, boolean cache) {
@@ -725,7 +725,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector setAnimationWillStartSelector$ = Selector.register("setAnimationWillStartSelector:");
     @Bridge private native static void objc_setAnimationWillStartSelector(ObjCClass __self__, Selector __cmd__, Selector selector);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationWillStartSelector:">+ (void)setAnimationWillStartSelector:(SEL)selector</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationWillStartSelector:">+ (void)setAnimationWillStartSelector:(SEL)selector</a>
      * @since Available in iOS 2.0 and later.
      */
     public static void setAnimationWillStartSelector(Selector selector) {
@@ -735,7 +735,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector setAnimationsEnabled$ = Selector.register("setAnimationsEnabled:");
     @Bridge private native static void objc_setAnimationsEnabled(ObjCClass __self__, Selector __cmd__, boolean enabled);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationsEnabled:">+ (void)setAnimationsEnabled:(BOOL)enabled</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationsEnabled:">+ (void)setAnimationsEnabled:(BOOL)enabled</a>
      * @since Available in iOS 2.0 and later.
      */
     public static void setAnimationsEnabled(boolean enabled) {
@@ -745,7 +745,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector setAnimationDuration$ = Selector.register("setAnimationDuration:");
     @Bridge private native static void objc_setDurationForAnimation(ObjCClass __self__, Selector __cmd__, double duration);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationDuration:">+ (void)setAnimationDuration:(NSTimeInterval)duration</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/setAnimationDuration:">+ (void)setAnimationDuration:(NSTimeInterval)duration</a>
      * @since Available in iOS 2.0 and later.
      */
     public static void setDurationForAnimation(double duration) {
@@ -755,7 +755,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector transitionWithView$duration$options$animations$completion$ = Selector.register("transitionWithView:duration:options:animations:completion:");
     @Bridge private native static void objc_transition(ObjCClass __self__, Selector __cmd__, UIView view, double duration, UIViewAnimationOptions options, VoidBlock animations, VoidBooleanBlock completion);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/transitionWithView:duration:options:animations:completion:">+ (void)transitionWithView:(UIView *)view duration:(NSTimeInterval)duration options:(UIViewAnimationOptions)options animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/transitionWithView:duration:options:animations:completion:">+ (void)transitionWithView:(UIView *)view duration:(NSTimeInterval)duration options:(UIViewAnimationOptions)options animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion</a>
      * @since Available in iOS 4.0 and later.
      */
     public static void transition(UIView view, double duration, UIViewAnimationOptions options, VoidBlock animations, VoidBooleanBlock completion) {
@@ -765,7 +765,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector transitionFromView$toView$duration$options$completion$ = Selector.register("transitionFromView:toView:duration:options:completion:");
     @Bridge private native static void objc_transition(ObjCClass __self__, Selector __cmd__, UIView fromView, UIView toView, double duration, UIViewAnimationOptions options, VoidBooleanBlock completion);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/transitionFromView:toView:duration:options:completion:">+ (void)transitionFromView:(UIView *)fromView toView:(UIView *)toView duration:(NSTimeInterval)duration options:(UIViewAnimationOptions)options completion:(void (^)(BOOL finished))completion</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/clm/UIView/transitionFromView:toView:duration:options:completion:">+ (void)transitionFromView:(UIView *)fromView toView:(UIView *)toView duration:(NSTimeInterval)duration options:(UIViewAnimationOptions)options completion:(void (^)(BOOL finished))completion</a>
      * @since Available in iOS 4.0 and later.
      */
     public static void transition(UIView fromView, UIView toView, double duration, UIViewAnimationOptions options, VoidBooleanBlock completion) {
@@ -776,7 +776,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_addConstraint(UIView __self__, Selector __cmd__, NSLayoutConstraint constraint);
     @Bridge private native static void objc_addConstraintSuper(ObjCSuper __super__, Selector __cmd__, NSLayoutConstraint constraint);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/addConstraint:">- (void)addConstraint:(NSLayoutConstraint *)constraint</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/addConstraint:">- (void)addConstraint:(NSLayoutConstraint *)constraint</a>
      * @since Available in iOS 6.0 and later.
      */
     public void addConstraint(NSLayoutConstraint constraint) {
@@ -787,7 +787,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_addConstraints(UIView __self__, Selector __cmd__, NSArray constraints);
     @Bridge private native static void objc_addConstraintsSuper(ObjCSuper __super__, Selector __cmd__, NSArray constraints);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/addConstraints:">- (void)addConstraints:(NSArray *)constraints</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/addConstraints:">- (void)addConstraints:(NSArray *)constraints</a>
      * @since Available in iOS 6.0 and later.
      */
     public void addConstraints(NSArray constraints) {
@@ -798,7 +798,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_addGestureRecognizer(UIView __self__, Selector __cmd__, UIGestureRecognizer gestureRecognizer);
     @Bridge private native static void objc_addGestureRecognizerSuper(ObjCSuper __super__, Selector __cmd__, UIGestureRecognizer gestureRecognizer);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/addGestureRecognizer:">- (void)addGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/addGestureRecognizer:">- (void)addGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer</a>
      * @since Available in iOS 3.2 and later.
      */
     public void addGestureRecognizer(UIGestureRecognizer gestureRecognizer) {
@@ -809,7 +809,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_addSubview(UIView __self__, Selector __cmd__, UIView view);
     @Bridge private native static void objc_addSubviewSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/addSubview:">- (void)addSubview:(UIView *)view</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/addSubview:">- (void)addSubview:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
      */
     public void addSubview(UIView view) {
@@ -820,7 +820,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_bringSubviewToFront(UIView __self__, Selector __cmd__, UIView view);
     @Bridge private native static void objc_bringSubviewToFrontSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/bringSubviewToFront:">- (void)bringSubviewToFront:(UIView *)view</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/bringSubviewToFront:">- (void)bringSubviewToFront:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
      */
     public void bringSubviewToFront(UIView view) {
@@ -831,7 +831,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGPoint objc_convertPointFromView(UIView __self__, Selector __cmd__, @ByVal CGPoint point, UIView view);
     @Bridge private native static @ByVal CGPoint objc_convertPointFromViewSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point, UIView view);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/convertPoint:fromView:">- (CGPoint)convertPoint:(CGPoint)point fromView:(UIView *)view</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/convertPoint:fromView:">- (CGPoint)convertPoint:(CGPoint)point fromView:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGPoint convertPointFromView(CGPoint point, UIView view) {
@@ -842,7 +842,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGPoint objc_convertPointToView(UIView __self__, Selector __cmd__, @ByVal CGPoint point, UIView view);
     @Bridge private native static @ByVal CGPoint objc_convertPointToViewSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point, UIView view);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/convertPoint:toView:">- (CGPoint)convertPoint:(CGPoint)point toView:(UIView *)view</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/convertPoint:toView:">- (CGPoint)convertPoint:(CGPoint)point toView:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGPoint convertPointToView(CGPoint point, UIView view) {
@@ -853,7 +853,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGRect objc_convertRectFromView(UIView __self__, Selector __cmd__, @ByVal CGRect rect, UIView view);
     @Bridge private native static @ByVal CGRect objc_convertRectFromViewSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, UIView view);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/convertRect:fromView:">- (CGRect)convertRect:(CGRect)rect fromView:(UIView *)view</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/convertRect:fromView:">- (CGRect)convertRect:(CGRect)rect fromView:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect convertRectFromView(CGRect rect, UIView view) {
@@ -864,7 +864,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGRect objc_convertRectToView(UIView __self__, Selector __cmd__, @ByVal CGRect rect, UIView view);
     @Bridge private native static @ByVal CGRect objc_convertRectToViewSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, UIView view);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/convertRect:toView:">- (CGRect)convertRect:(CGRect)rect toView:(UIView *)view</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/convertRect:toView:">- (CGRect)convertRect:(CGRect)rect toView:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect convertRectToView(CGRect rect, UIView view) {
@@ -875,7 +875,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_decodeRestorableState(UIView __self__, Selector __cmd__, NSCoder coder);
     @Bridge private native static void objc_decodeRestorableStateSuper(ObjCSuper __super__, Selector __cmd__, NSCoder coder);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/decodeRestorableStateWithCoder:">- (void) decodeRestorableStateWithCoder:(NSCoder *)coder</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/decodeRestorableStateWithCoder:">- (void) decodeRestorableStateWithCoder:(NSCoder *)coder</a>
      * @since Available in iOS 6.0 and later.
      */
     public void decodeRestorableState(NSCoder coder) {
@@ -886,7 +886,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_didAddSubview(UIView __self__, Selector __cmd__, UIView subview);
     @Bridge private native static void objc_didAddSubviewSuper(ObjCSuper __super__, Selector __cmd__, UIView subview);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/didAddSubview:">- (void)didAddSubview:(UIView *)subview</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/didAddSubview:">- (void)didAddSubview:(UIView *)subview</a>
      * @since Available in iOS 2.0 and later.
      */
     public void didAddSubview(UIView subview) {
@@ -897,7 +897,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_didMoveToSuperview(UIView __self__, Selector __cmd__);
     @Bridge private native static void objc_didMoveToSuperviewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/didMoveToSuperview">- (void)didMoveToSuperview</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/didMoveToSuperview">- (void)didMoveToSuperview</a>
      * @since Available in iOS 2.0 and later.
      */
     public void didMoveToSuperview() {
@@ -908,7 +908,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_didMoveToWindow(UIView __self__, Selector __cmd__);
     @Bridge private native static void objc_didMoveToWindowSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/didMoveToWindow">- (void)didMoveToWindow</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/didMoveToWindow">- (void)didMoveToWindow</a>
      * @since Available in iOS 2.0 and later.
      */
     public void didMoveToWindow() {
@@ -919,7 +919,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_draw(UIView __self__, Selector __cmd__, @ByVal CGRect rect);
     @Bridge private native static void objc_drawSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/drawRect:">- (void)drawRect:(CGRect)rect</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/drawRect:">- (void)drawRect:(CGRect)rect</a>
      * @since Available in iOS 2.0 and later.
      */
     public void draw(CGRect rect) {
@@ -930,7 +930,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_drawRect(UIView __self__, Selector __cmd__, @ByVal CGRect area, UIViewPrintFormatter formatter);
     @Bridge private native static void objc_drawRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect area, UIViewPrintFormatter formatter);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/drawRect:forViewPrintFormatter:">- (void)drawRect:(CGRect)area forViewPrintFormatter:(UIViewPrintFormatter *)formatter</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/drawRect:forViewPrintFormatter:">- (void)drawRect:(CGRect)area forViewPrintFormatter:(UIViewPrintFormatter *)formatter</a>
      * @since Available in iOS 4.2 and later.
      */
     public void drawRect(CGRect area, UIViewPrintFormatter formatter) {
@@ -941,7 +941,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_encodeRestorableState(UIView __self__, Selector __cmd__, NSCoder coder);
     @Bridge private native static void objc_encodeRestorableStateSuper(ObjCSuper __super__, Selector __cmd__, NSCoder coder);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/encodeRestorableStateWithCoder:">- (void) encodeRestorableStateWithCoder:(NSCoder *)coder</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/encodeRestorableStateWithCoder:">- (void) encodeRestorableStateWithCoder:(NSCoder *)coder</a>
      * @since Available in iOS 6.0 and later.
      */
     public void encodeRestorableState(NSCoder coder) {
@@ -952,7 +952,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_endEditing(UIView __self__, Selector __cmd__, boolean force);
     @Bridge private native static boolean objc_endEditingSuper(ObjCSuper __super__, Selector __cmd__, boolean force);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/endEditing:">- (BOOL)endEditing:(BOOL)force</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/endEditing:">- (BOOL)endEditing:(BOOL)force</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean endEditing(boolean force) {
@@ -963,7 +963,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_exchangeSubview(UIView __self__, Selector __cmd__, int index1, int index2);
     @Bridge private native static void objc_exchangeSubviewSuper(ObjCSuper __super__, Selector __cmd__, int index1, int index2);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/exchangeSubviewAtIndex:withSubviewAtIndex:">- (void)exchangeSubviewAtIndex:(NSInteger)index1 withSubviewAtIndex:(NSInteger)index2</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/exchangeSubviewAtIndex:withSubviewAtIndex:">- (void)exchangeSubviewAtIndex:(NSInteger)index1 withSubviewAtIndex:(NSInteger)index2</a>
      * @since Available in iOS 2.0 and later.
      */
     public void exchangeSubview(int index1, int index2) {
@@ -974,7 +974,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_exerciseAmbiguityInLayout(UIView __self__, Selector __cmd__);
     @Bridge private native static void objc_exerciseAmbiguityInLayoutSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/exerciseAmbiguityInLayout">- (void)exerciseAmbiguityInLayout</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/exerciseAmbiguityInLayout">- (void)exerciseAmbiguityInLayout</a>
      * @since Available in iOS 6.0 and later.
      */
     public void exerciseAmbiguityInLayout() {
@@ -985,7 +985,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_gestureRecognizerShouldBegin(UIView __self__, Selector __cmd__, UIGestureRecognizer gestureRecognizer);
     @Bridge private native static boolean objc_gestureRecognizerShouldBeginSuper(ObjCSuper __super__, Selector __cmd__, UIGestureRecognizer gestureRecognizer);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/gestureRecognizerShouldBegin:">- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/gestureRecognizerShouldBegin:">- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer</a>
      * @since Available in iOS 6.0 and later.
      */
     public boolean gestureRecognizerShouldBegin(UIGestureRecognizer gestureRecognizer) {
@@ -996,7 +996,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGRect objc_getAlignmentRectFrame(UIView __self__, Selector __cmd__, @ByVal CGRect alignmentRect);
     @Bridge private native static @ByVal CGRect objc_getAlignmentRectFrameSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect alignmentRect);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/frameForAlignmentRect:">- (CGRect)frameForAlignmentRect:(CGRect)alignmentRect</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/frameForAlignmentRect:">- (CGRect)frameForAlignmentRect:(CGRect)alignmentRect</a>
      * @since Available in iOS 6.0 and later.
      */
     public CGRect getAlignmentRectFrame(CGRect alignmentRect) {
@@ -1007,7 +1007,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal UIEdgeInsets objc_getAlignmentRectInsets(UIView __self__, Selector __cmd__);
     @Bridge private native static @ByVal UIEdgeInsets objc_getAlignmentRectInsetsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/alignmentRectInsets">- (UIEdgeInsets)alignmentRectInsets</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/alignmentRectInsets">- (UIEdgeInsets)alignmentRectInsets</a>
      * @since Available in iOS 6.0 and later.
      */
     public UIEdgeInsets getAlignmentRectInsets() {
@@ -1018,7 +1018,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIView objc_getBaselineLayoutView(UIView __self__, Selector __cmd__);
     @Bridge private native static UIView objc_getBaselineLayoutViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/viewForBaselineLayout">- (UIView *)viewForBaselineLayout</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/viewForBaselineLayout">- (UIView *)viewForBaselineLayout</a>
      * @since Available in iOS 6.0 and later.
      */
     public UIView getBaselineLayoutView() {
@@ -1029,7 +1029,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getConstraints(UIView __self__, Selector __cmd__);
     @Bridge private native static NSArray objc_getConstraintsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/constraints">- (NSArray *)constraints</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/constraints">- (NSArray *)constraints</a>
      * @since Available in iOS 6.0 and later.
      */
     public NSArray getConstraints() {
@@ -1040,7 +1040,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getConstraintsAffectingLayout(UIView __self__, Selector __cmd__, UILayoutConstraintAxis axis);
     @Bridge private native static NSArray objc_getConstraintsAffectingLayoutSuper(ObjCSuper __super__, Selector __cmd__, UILayoutConstraintAxis axis);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/constraintsAffectingLayoutForAxis:">- (NSArray *)constraintsAffectingLayoutForAxis:(UILayoutConstraintAxis)axis</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/constraintsAffectingLayoutForAxis:">- (NSArray *)constraintsAffectingLayoutForAxis:(UILayoutConstraintAxis)axis</a>
      * @since Available in iOS 6.0 and later.
      */
     public NSArray getConstraintsAffectingLayout(UILayoutConstraintAxis axis) {
@@ -1051,7 +1051,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UILayoutPriority objc_getContentCompressionResistancePriority(UIView __self__, Selector __cmd__, UILayoutConstraintAxis axis);
     @Bridge private native static UILayoutPriority objc_getContentCompressionResistancePrioritySuper(ObjCSuper __super__, Selector __cmd__, UILayoutConstraintAxis axis);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/contentCompressionResistancePriorityForAxis:">- (UILayoutPriority)contentCompressionResistancePriorityForAxis:(UILayoutConstraintAxis)axis</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/contentCompressionResistancePriorityForAxis:">- (UILayoutPriority)contentCompressionResistancePriorityForAxis:(UILayoutConstraintAxis)axis</a>
      * @since Available in iOS 6.0 and later.
      */
     public UILayoutPriority getContentCompressionResistancePriority(UILayoutConstraintAxis axis) {
@@ -1062,7 +1062,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UILayoutPriority objc_getContentHuggingPriority(UIView __self__, Selector __cmd__, UILayoutConstraintAxis axis);
     @Bridge private native static UILayoutPriority objc_getContentHuggingPrioritySuper(ObjCSuper __super__, Selector __cmd__, UILayoutConstraintAxis axis);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/contentHuggingPriorityForAxis:">- (UILayoutPriority)contentHuggingPriorityForAxis:(UILayoutConstraintAxis)axis</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/contentHuggingPriorityForAxis:">- (UILayoutPriority)contentHuggingPriorityForAxis:(UILayoutConstraintAxis)axis</a>
      * @since Available in iOS 6.0 and later.
      */
     public UILayoutPriority getContentHuggingPriority(UILayoutConstraintAxis axis) {
@@ -1073,7 +1073,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGRect objc_getFrameAlignmentRect(UIView __self__, Selector __cmd__, @ByVal CGRect frame);
     @Bridge private native static @ByVal CGRect objc_getFrameAlignmentRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect frame);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/alignmentRectForFrame:">- (CGRect)alignmentRectForFrame:(CGRect)frame</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/alignmentRectForFrame:">- (CGRect)alignmentRectForFrame:(CGRect)frame</a>
      * @since Available in iOS 6.0 and later.
      */
     public CGRect getFrameAlignmentRect(CGRect frame) {
@@ -1084,7 +1084,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGSize objc_getIntrinsicContentSize(UIView __self__, Selector __cmd__);
     @Bridge private native static @ByVal CGSize objc_getIntrinsicContentSizeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/intrinsicContentSize">- (CGSize)intrinsicContentSize</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/intrinsicContentSize">- (CGSize)intrinsicContentSize</a>
      * @since Available in iOS 6.0 and later.
      */
     public CGSize getIntrinsicContentSize() {
@@ -1095,7 +1095,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGSize objc_getSizeThatFits(UIView __self__, Selector __cmd__, @ByVal CGSize size);
     @Bridge private native static @ByVal CGSize objc_getSizeThatFitsSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGSize size);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/sizeThatFits:">- (CGSize)sizeThatFits:(CGSize)size</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/sizeThatFits:">- (CGSize)sizeThatFits:(CGSize)size</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGSize getSizeThatFits(CGSize size) {
@@ -1106,7 +1106,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGSize objc_getSystemLayoutSizeFittingSize(UIView __self__, Selector __cmd__, @ByVal CGSize targetSize);
     @Bridge private native static @ByVal CGSize objc_getSystemLayoutSizeFittingSizeSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGSize targetSize);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/systemLayoutSizeFittingSize:">- (CGSize)systemLayoutSizeFittingSize:(CGSize)targetSize</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/systemLayoutSizeFittingSize:">- (CGSize)systemLayoutSizeFittingSize:(CGSize)targetSize</a>
      * @since Available in iOS 6.0 and later.
      */
     public CGSize getSystemLayoutSizeFittingSize(CGSize targetSize) {
@@ -1117,7 +1117,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIViewPrintFormatter objc_getViewPrintFormatter(UIView __self__, Selector __cmd__);
     @Bridge private native static UIViewPrintFormatter objc_getViewPrintFormatterSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/viewPrintFormatter">- (UIViewPrintFormatter *)viewPrintFormatter</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/viewPrintFormatter">- (UIViewPrintFormatter *)viewPrintFormatter</a>
      * @since Available in iOS 4.2 and later.
      */
     public UIViewPrintFormatter getViewPrintFormatter() {
@@ -1128,7 +1128,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIView objc_getViewWithTag(UIView __self__, Selector __cmd__, int tag);
     @Bridge private native static UIView objc_getViewWithTagSuper(ObjCSuper __super__, Selector __cmd__, int tag);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/viewWithTag:">- (UIView *)viewWithTag:(NSInteger)tag</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/viewWithTag:">- (UIView *)viewWithTag:(NSInteger)tag</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIView getViewWithTag(int tag) {
@@ -1139,7 +1139,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_hasAmbiguousLayout(UIView __self__, Selector __cmd__);
     @Bridge private native static boolean objc_hasAmbiguousLayoutSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/hasAmbiguousLayout">- (BOOL)hasAmbiguousLayout</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/hasAmbiguousLayout">- (BOOL)hasAmbiguousLayout</a>
      * @since Available in iOS 6.0 and later.
      */
     public boolean hasAmbiguousLayout() {
@@ -1150,7 +1150,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIView objc_hitTest(UIView __self__, Selector __cmd__, @ByVal CGPoint point, UIEvent event);
     @Bridge private native static UIView objc_hitTestSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point, UIEvent event);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/hitTest:withEvent:">- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/hitTest:withEvent:">- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIView hitTest(CGPoint point, UIEvent event) {
@@ -1161,7 +1161,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_insertSubview(UIView __self__, Selector __cmd__, UIView view, int index);
     @Bridge private native static void objc_insertSubviewSuper(ObjCSuper __super__, Selector __cmd__, UIView view, int index);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/insertSubview:atIndex:">- (void)insertSubview:(UIView *)view atIndex:(NSInteger)index</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/insertSubview:atIndex:">- (void)insertSubview:(UIView *)view atIndex:(NSInteger)index</a>
      * @since Available in iOS 2.0 and later.
      */
     public void insertSubview(UIView view, int index) {
@@ -1172,7 +1172,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_insertSubviewAbove(UIView __self__, Selector __cmd__, UIView view, UIView siblingSubview);
     @Bridge private native static void objc_insertSubviewAboveSuper(ObjCSuper __super__, Selector __cmd__, UIView view, UIView siblingSubview);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/insertSubview:aboveSubview:">- (void)insertSubview:(UIView *)view aboveSubview:(UIView *)siblingSubview</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/insertSubview:aboveSubview:">- (void)insertSubview:(UIView *)view aboveSubview:(UIView *)siblingSubview</a>
      * @since Available in iOS 2.0 and later.
      */
     public void insertSubviewAbove(UIView view, UIView siblingSubview) {
@@ -1183,7 +1183,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_insertSubviewBelow(UIView __self__, Selector __cmd__, UIView view, UIView siblingSubview);
     @Bridge private native static void objc_insertSubviewBelowSuper(ObjCSuper __super__, Selector __cmd__, UIView view, UIView siblingSubview);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/insertSubview:belowSubview:">- (void)insertSubview:(UIView *)view belowSubview:(UIView *)siblingSubview</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/insertSubview:belowSubview:">- (void)insertSubview:(UIView *)view belowSubview:(UIView *)siblingSubview</a>
      * @since Available in iOS 2.0 and later.
      */
     public void insertSubviewBelow(UIView view, UIView siblingSubview) {
@@ -1194,7 +1194,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_invalidateIntrinsicContentSize(UIView __self__, Selector __cmd__);
     @Bridge private native static void objc_invalidateIntrinsicContentSizeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/invalidateIntrinsicContentSize">- (void)invalidateIntrinsicContentSize</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/invalidateIntrinsicContentSize">- (void)invalidateIntrinsicContentSize</a>
      * @since Available in iOS 6.0 and later.
      */
     public void invalidateIntrinsicContentSize() {
@@ -1205,7 +1205,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isDescendantOf(UIView __self__, Selector __cmd__, UIView view);
     @Bridge private native static boolean objc_isDescendantOfSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/isDescendantOfView:">- (BOOL)isDescendantOfView:(UIView *)view</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/isDescendantOfView:">- (BOOL)isDescendantOfView:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isDescendantOf(UIView view) {
@@ -1216,7 +1216,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isTranslatesAutoresizingMaskIntoConstraints(UIView __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isTranslatesAutoresizingMaskIntoConstraintsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/translatesAutoresizingMaskIntoConstraints">- (BOOL)translatesAutoresizingMaskIntoConstraints</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/translatesAutoresizingMaskIntoConstraints">- (BOOL)translatesAutoresizingMaskIntoConstraints</a>
      * @since Available in iOS 6.0 and later.
      */
     public boolean isTranslatesAutoresizingMaskIntoConstraints() {
@@ -1227,7 +1227,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_layoutIfNeeded(UIView __self__, Selector __cmd__);
     @Bridge private native static void objc_layoutIfNeededSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/layoutIfNeeded">- (void)layoutIfNeeded</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/layoutIfNeeded">- (void)layoutIfNeeded</a>
      * @since Available in iOS 2.0 and later.
      */
     public void layoutIfNeeded() {
@@ -1238,7 +1238,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_layoutSubviews(UIView __self__, Selector __cmd__);
     @Bridge private native static void objc_layoutSubviewsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/layoutSubviews">- (void)layoutSubviews</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/layoutSubviews">- (void)layoutSubviews</a>
      * @since Available in iOS 2.0 and later.
      */
     public void layoutSubviews() {
@@ -1249,7 +1249,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_needsUpdateConstraints(UIView __self__, Selector __cmd__);
     @Bridge private native static boolean objc_needsUpdateConstraintsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/needsUpdateConstraints">- (BOOL)needsUpdateConstraints</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/needsUpdateConstraints">- (BOOL)needsUpdateConstraints</a>
      * @since Available in iOS 6.0 and later.
      */
     public boolean needsUpdateConstraints() {
@@ -1260,7 +1260,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_pointInside(UIView __self__, Selector __cmd__, @ByVal CGPoint point, UIEvent event);
     @Bridge private native static boolean objc_pointInsideSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point, UIEvent event);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/pointInside:withEvent:">- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/pointInside:withEvent:">- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean pointInside(CGPoint point, UIEvent event) {
@@ -1271,7 +1271,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_removeConstraint(UIView __self__, Selector __cmd__, NSLayoutConstraint constraint);
     @Bridge private native static void objc_removeConstraintSuper(ObjCSuper __super__, Selector __cmd__, NSLayoutConstraint constraint);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/removeConstraint:">- (void)removeConstraint:(NSLayoutConstraint *)constraint</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/removeConstraint:">- (void)removeConstraint:(NSLayoutConstraint *)constraint</a>
      * @since Available in iOS 6.0 and later.
      */
     public void removeConstraint(NSLayoutConstraint constraint) {
@@ -1282,7 +1282,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_removeConstraints(UIView __self__, Selector __cmd__, NSArray constraints);
     @Bridge private native static void objc_removeConstraintsSuper(ObjCSuper __super__, Selector __cmd__, NSArray constraints);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/removeConstraints:">- (void)removeConstraints:(NSArray *)constraints</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/removeConstraints:">- (void)removeConstraints:(NSArray *)constraints</a>
      * @since Available in iOS 6.0 and later.
      */
     public void removeConstraints(NSArray constraints) {
@@ -1293,7 +1293,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_removeFromSuperview(UIView __self__, Selector __cmd__);
     @Bridge private native static void objc_removeFromSuperviewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/removeFromSuperview">- (void)removeFromSuperview</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/removeFromSuperview">- (void)removeFromSuperview</a>
      * @since Available in iOS 2.0 and later.
      */
     public void removeFromSuperview() {
@@ -1304,7 +1304,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_removeGestureRecognizer(UIView __self__, Selector __cmd__, UIGestureRecognizer gestureRecognizer);
     @Bridge private native static void objc_removeGestureRecognizerSuper(ObjCSuper __super__, Selector __cmd__, UIGestureRecognizer gestureRecognizer);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/removeGestureRecognizer:">- (void)removeGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/removeGestureRecognizer:">- (void)removeGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer</a>
      * @since Available in iOS 3.2 and later.
      */
     public void removeGestureRecognizer(UIGestureRecognizer gestureRecognizer) {
@@ -1315,7 +1315,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_resizeToFit(UIView __self__, Selector __cmd__);
     @Bridge private native static void objc_resizeToFitSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/sizeToFit">- (void)sizeToFit</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/sizeToFit">- (void)sizeToFit</a>
      * @since Available in iOS 2.0 and later.
      */
     public void resizeToFit() {
@@ -1326,7 +1326,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_sendSubviewToBack(UIView __self__, Selector __cmd__, UIView view);
     @Bridge private native static void objc_sendSubviewToBackSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/sendSubviewToBack:">- (void)sendSubviewToBack:(UIView *)view</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/sendSubviewToBack:">- (void)sendSubviewToBack:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
      */
     public void sendSubviewToBack(UIView view) {
@@ -1337,7 +1337,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setContentCompressionResistancePriority(UIView __self__, Selector __cmd__, UILayoutPriority priority, UILayoutConstraintAxis axis);
     @Bridge private native static void objc_setContentCompressionResistancePrioritySuper(ObjCSuper __super__, Selector __cmd__, UILayoutPriority priority, UILayoutConstraintAxis axis);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/setContentCompressionResistancePriority:forAxis:">- (void)setContentCompressionResistancePriority:(UILayoutPriority)priority forAxis:(UILayoutConstraintAxis)axis</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/setContentCompressionResistancePriority:forAxis:">- (void)setContentCompressionResistancePriority:(UILayoutPriority)priority forAxis:(UILayoutConstraintAxis)axis</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setContentCompressionResistancePriority(UILayoutPriority priority, UILayoutConstraintAxis axis) {
@@ -1348,7 +1348,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setContentHuggingPriority(UIView __self__, Selector __cmd__, UILayoutPriority priority, UILayoutConstraintAxis axis);
     @Bridge private native static void objc_setContentHuggingPrioritySuper(ObjCSuper __super__, Selector __cmd__, UILayoutPriority priority, UILayoutConstraintAxis axis);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/setContentHuggingPriority:forAxis:">- (void)setContentHuggingPriority:(UILayoutPriority)priority forAxis:(UILayoutConstraintAxis)axis</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/setContentHuggingPriority:forAxis:">- (void)setContentHuggingPriority:(UILayoutPriority)priority forAxis:(UILayoutConstraintAxis)axis</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setContentHuggingPriority(UILayoutPriority priority, UILayoutConstraintAxis axis) {
@@ -1359,7 +1359,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setNeedsDisplay(UIView __self__, Selector __cmd__);
     @Bridge private native static void objc_setNeedsDisplaySuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/setNeedsDisplay">- (void)setNeedsDisplay</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/setNeedsDisplay">- (void)setNeedsDisplay</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setNeedsDisplay() {
@@ -1370,7 +1370,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setNeedsDisplay(UIView __self__, Selector __cmd__, @ByVal CGRect invalidRect);
     @Bridge private native static void objc_setNeedsDisplaySuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect invalidRect);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/setNeedsDisplayInRect:">- (void)setNeedsDisplayInRect:(CGRect)invalidRect</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/setNeedsDisplayInRect:">- (void)setNeedsDisplayInRect:(CGRect)invalidRect</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setNeedsDisplay(CGRect invalidRect) {
@@ -1381,7 +1381,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setNeedsLayout(UIView __self__, Selector __cmd__);
     @Bridge private native static void objc_setNeedsLayoutSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/setNeedsLayout">- (void)setNeedsLayout</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/setNeedsLayout">- (void)setNeedsLayout</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setNeedsLayout() {
@@ -1392,7 +1392,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setNeedsUpdateConstraints(UIView __self__, Selector __cmd__);
     @Bridge private native static void objc_setNeedsUpdateConstraintsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/setNeedsUpdateConstraints">- (void)setNeedsUpdateConstraints</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/setNeedsUpdateConstraints">- (void)setNeedsUpdateConstraints</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setNeedsUpdateConstraints() {
@@ -1403,7 +1403,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setTranslatesAutoresizingMaskIntoConstraints(UIView __self__, Selector __cmd__, boolean flag);
     @Bridge private native static void objc_setTranslatesAutoresizingMaskIntoConstraintsSuper(ObjCSuper __super__, Selector __cmd__, boolean flag);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/setTranslatesAutoresizingMaskIntoConstraints:">- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)flag</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/setTranslatesAutoresizingMaskIntoConstraints:">- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)flag</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setTranslatesAutoresizingMaskIntoConstraints(boolean flag) {
@@ -1414,7 +1414,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_updateConstraints(UIView __self__, Selector __cmd__);
     @Bridge private native static void objc_updateConstraintsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/updateConstraints">- (void)updateConstraints</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/updateConstraints">- (void)updateConstraints</a>
      * @since Available in iOS 6.0 and later.
      */
     public void updateConstraints() {
@@ -1425,7 +1425,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_updateConstraintsIfNeeded(UIView __self__, Selector __cmd__);
     @Bridge private native static void objc_updateConstraintsIfNeededSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/updateConstraintsIfNeeded">- (void)updateConstraintsIfNeeded</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/updateConstraintsIfNeeded">- (void)updateConstraintsIfNeeded</a>
      * @since Available in iOS 6.0 and later.
      */
     public void updateConstraintsIfNeeded() {
@@ -1436,7 +1436,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_willMoveToSuperview(UIView __self__, Selector __cmd__, UIView newSuperview);
     @Bridge private native static void objc_willMoveToSuperviewSuper(ObjCSuper __super__, Selector __cmd__, UIView newSuperview);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/willMoveToSuperview:">- (void)willMoveToSuperview:(UIView *)newSuperview</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/willMoveToSuperview:">- (void)willMoveToSuperview:(UIView *)newSuperview</a>
      * @since Available in iOS 2.0 and later.
      */
     public void willMoveToSuperview(UIView newSuperview) {
@@ -1447,7 +1447,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_willMoveToWindow(UIView __self__, Selector __cmd__, UIWindow newWindow);
     @Bridge private native static void objc_willMoveToWindowSuper(ObjCSuper __super__, Selector __cmd__, UIWindow newWindow);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/willMoveToWindow:">- (void)willMoveToWindow:(UIWindow *)newWindow</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/willMoveToWindow:">- (void)willMoveToWindow:(UIWindow *)newWindow</a>
      * @since Available in iOS 2.0 and later.
      */
     public void willMoveToWindow(UIWindow newWindow) {
@@ -1458,7 +1458,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_willRemoveSubview(UIView __self__, Selector __cmd__, UIView subview);
     @Bridge private native static void objc_willRemoveSubviewSuper(ObjCSuper __super__, Selector __cmd__, UIView subview);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/willRemoveSubview:">- (void)willRemoveSubview:(UIView *)subview</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIView_Class/UIView/UIView.html#//apple_ref/occ/instm/UIView/willRemoveSubview:">- (void)willRemoveSubview:(UIView *)subview</a>
      * @since Available in iOS 2.0 and later.
      */
     public void willRemoveSubview(UIView subview) {

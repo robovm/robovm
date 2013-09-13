@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputMode_Class/Reference/Reference.html">UITextInputMode Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputMode_Class/Reference/Reference.html">UITextInputMode Class Reference</a>
  *   @since Available in iOS 4.2 and later.
  * </div>
  */
@@ -60,7 +60,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static String objc_getPrimaryLanguage(UITextInputMode __self__, Selector __cmd__);
     @Bridge private native static String objc_getPrimaryLanguageSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputMode_Class/Reference/Reference.html#//apple_ref/occ/instp/UITextInputMode/primaryLanguage">@property (nonatomic, readonly, retain) NSString *primaryLanguage</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputMode_Class/Reference/Reference.html#//apple_ref/occ/instp/UITextInputMode/primaryLanguage">@property (nonatomic, readonly, retain) NSString *primaryLanguage</a>
      * @since Available in iOS 4.2 and later.
      */
     public String getPrimaryLanguage() {
@@ -72,7 +72,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector activeInputModes = Selector.register("activeInputModes");
     @Bridge private native static NSArray objc_getActiveInputModes(ObjCClass __self__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputMode_Class/Reference/Reference.html#//apple_ref/occ/clm/UITextInputMode/activeInputModes">+ (NSArray *)activeInputModes</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputMode_Class/Reference/Reference.html#//apple_ref/occ/clm/UITextInputMode/activeInputModes">+ (NSArray *)activeInputModes</a>
      * @since Available in iOS 5.0 and later.
      */
     public static NSArray getActiveInputModes() {
@@ -82,7 +82,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector currentInputMode = Selector.register("currentInputMode");
     @Bridge private native static UITextInputMode objc_getCurrentInputMode(ObjCClass __self__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputMode_Class/Reference/Reference.html#//apple_ref/occ/clm/UITextInputMode/currentInputMode">+ (UITextInputMode *)currentInputMode</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputMode_Class/Reference/Reference.html#//apple_ref/occ/clm/UITextInputMode/currentInputMode">+ (UITextInputMode *)currentInputMode</a>
      * @since Available in iOS 4.2 and later.
      */
     public static UITextInputMode getCurrentInputMode() {

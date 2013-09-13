@@ -29,7 +29,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSCoder_Class/Reference/NSCoder.html">NSCoder Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSCoder_Class/Reference/NSCoder.html">NSCoder Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */

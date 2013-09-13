@@ -30,7 +30,7 @@ import org.robovm.rt.bro.ptr.*;
 /**
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../QuartzCore/Reference/CADisplayLink_ClassRef/Reference/Reference.html">CADisplayLink Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../QuartzCore/Reference/CADisplayLink_ClassRef/Reference/Reference.html">CADisplayLink Class Reference</a>
  *   @since Available in iOS 3.1 and later.
  * </div>
  */
@@ -56,7 +56,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static double objc_getDuration(CADisplayLink __self__, Selector __cmd__);
     @Bridge private native static double objc_getDurationSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../QuartzCore/Reference/CADisplayLink_ClassRef/Reference/Reference.html#//apple_ref/occ/instp/CADisplayLink/duration">@property(readonly, nonatomic) CFTimeInterval duration</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../QuartzCore/Reference/CADisplayLink_ClassRef/Reference/Reference.html#//apple_ref/occ/instp/CADisplayLink/duration">@property(readonly, nonatomic) CFTimeInterval duration</a>
      * @since Available in iOS 3.1 and later.
      */
     public double getDuration() {
@@ -67,7 +67,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_getFrameInterval(CADisplayLink __self__, Selector __cmd__);
     @Bridge private native static int objc_getFrameIntervalSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../QuartzCore/Reference/CADisplayLink_ClassRef/Reference/Reference.html#//apple_ref/occ/instp/CADisplayLink/frameInterval">@property(nonatomic) NSInteger frameInterval</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../QuartzCore/Reference/CADisplayLink_ClassRef/Reference/Reference.html#//apple_ref/occ/instp/CADisplayLink/frameInterval">@property(nonatomic) NSInteger frameInterval</a>
      * @since Available in iOS 3.1 and later.
      */
     public int getFrameInterval() {
@@ -78,7 +78,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setFrameInterval(CADisplayLink __self__, Selector __cmd__, int frameInterval);
     @Bridge private native static void objc_setFrameIntervalSuper(ObjCSuper __super__, Selector __cmd__, int frameInterval);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../QuartzCore/Reference/CADisplayLink_ClassRef/Reference/Reference.html#//apple_ref/occ/instp/CADisplayLink/frameInterval">@property(nonatomic) NSInteger frameInterval</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../QuartzCore/Reference/CADisplayLink_ClassRef/Reference/Reference.html#//apple_ref/occ/instp/CADisplayLink/frameInterval">@property(nonatomic) NSInteger frameInterval</a>
      * @since Available in iOS 3.1 and later.
      */
     public void setFrameInterval(int frameInterval) {
@@ -89,7 +89,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isPaused(CADisplayLink __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isPausedSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../QuartzCore/Reference/CADisplayLink_ClassRef/Reference/Reference.html#//apple_ref/occ/instp/CADisplayLink/paused">@property(getter=isPaused, nonatomic) BOOL paused</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../QuartzCore/Reference/CADisplayLink_ClassRef/Reference/Reference.html#//apple_ref/occ/instp/CADisplayLink/paused">@property(getter=isPaused, nonatomic) BOOL paused</a>
      * @since Available in iOS 3.1 and later.
      */
     public boolean isPaused() {
@@ -100,7 +100,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setPaused(CADisplayLink __self__, Selector __cmd__, boolean paused);
     @Bridge private native static void objc_setPausedSuper(ObjCSuper __super__, Selector __cmd__, boolean paused);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../QuartzCore/Reference/CADisplayLink_ClassRef/Reference/Reference.html#//apple_ref/occ/instp/CADisplayLink/paused">@property(getter=isPaused, nonatomic) BOOL paused</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../QuartzCore/Reference/CADisplayLink_ClassRef/Reference/Reference.html#//apple_ref/occ/instp/CADisplayLink/paused">@property(getter=isPaused, nonatomic) BOOL paused</a>
      * @since Available in iOS 3.1 and later.
      */
     public void setPaused(boolean paused) {
@@ -111,7 +111,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static double objc_getTimestamp(CADisplayLink __self__, Selector __cmd__);
     @Bridge private native static double objc_getTimestampSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../QuartzCore/Reference/CADisplayLink_ClassRef/Reference/Reference.html#//apple_ref/occ/instp/CADisplayLink/timestamp">@property(readonly, nonatomic) CFTimeInterval timestamp</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../QuartzCore/Reference/CADisplayLink_ClassRef/Reference/Reference.html#//apple_ref/occ/instp/CADisplayLink/timestamp">@property(readonly, nonatomic) CFTimeInterval timestamp</a>
      * @since Available in iOS 3.1 and later.
      */
     public double getTimestamp() {
@@ -123,7 +123,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector displayLinkWithTarget$selector$ = Selector.register("displayLinkWithTarget:selector:");
     @Bridge private native static CADisplayLink objc_create(ObjCClass __self__, Selector __cmd__, NSObject target, Selector sel);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../QuartzCore/Reference/CADisplayLink_ClassRef/Reference/Reference.html#//apple_ref/occ/clm/CADisplayLink/displayLinkWithTarget:selector:">+ (CADisplayLink *)displayLinkWithTarget:(id)target selector:(SEL)sel</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../QuartzCore/Reference/CADisplayLink_ClassRef/Reference/Reference.html#//apple_ref/occ/clm/CADisplayLink/displayLinkWithTarget:selector:">+ (CADisplayLink *)displayLinkWithTarget:(id)target selector:(SEL)sel</a>
      * @since Available in iOS 3.1 and later.
      */
     public static CADisplayLink create(NSObject target, Selector sel) {
@@ -134,7 +134,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_addToRunLoop(CADisplayLink __self__, Selector __cmd__, NSRunLoop runloop, String mode);
     @Bridge private native static void objc_addToRunLoopSuper(ObjCSuper __super__, Selector __cmd__, NSRunLoop runloop, String mode);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../QuartzCore/Reference/CADisplayLink_ClassRef/Reference/Reference.html#//apple_ref/occ/instm/CADisplayLink/addToRunLoop:forMode:">- (void)addToRunLoop:(NSRunLoop *)runloop forMode:(NSString *)mode</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../QuartzCore/Reference/CADisplayLink_ClassRef/Reference/Reference.html#//apple_ref/occ/instm/CADisplayLink/addToRunLoop:forMode:">- (void)addToRunLoop:(NSRunLoop *)runloop forMode:(NSString *)mode</a>
      * @since Available in iOS 3.1 and later.
      */
     public void addToRunLoop(NSRunLoop runloop, String mode) {
@@ -145,7 +145,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_invalidate(CADisplayLink __self__, Selector __cmd__);
     @Bridge private native static void objc_invalidateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../QuartzCore/Reference/CADisplayLink_ClassRef/Reference/Reference.html#//apple_ref/occ/instm/CADisplayLink/invalidate">- (void)invalidate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../QuartzCore/Reference/CADisplayLink_ClassRef/Reference/Reference.html#//apple_ref/occ/instm/CADisplayLink/invalidate">- (void)invalidate</a>
      * @since Available in iOS 3.1 and later.
      */
     public void invalidate() {
@@ -156,7 +156,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_removeFromRunLoop(CADisplayLink __self__, Selector __cmd__, NSRunLoop runloop, String mode);
     @Bridge private native static void objc_removeFromRunLoopSuper(ObjCSuper __super__, Selector __cmd__, NSRunLoop runloop, String mode);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../QuartzCore/Reference/CADisplayLink_ClassRef/Reference/Reference.html#//apple_ref/occ/instm/CADisplayLink/removeFromRunLoop:forMode:">- (void)removeFromRunLoop:(NSRunLoop *)runloop forMode:(NSString *)mode</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreAnimation_framework/../../../QuartzCore/Reference/CADisplayLink_ClassRef/Reference/Reference.html#//apple_ref/occ/instm/CADisplayLink/removeFromRunLoop:forMode:">- (void)removeFromRunLoop:(NSRunLoop *)runloop forMode:(NSString *)mode</a>
      * @since Available in iOS 3.1 and later.
      */
     public void removeFromRunLoop(NSRunLoop runloop, String mode) {

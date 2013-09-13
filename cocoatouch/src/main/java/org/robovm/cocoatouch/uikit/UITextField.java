@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html">UITextField Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html">UITextField Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -63,7 +63,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isAdjustsFontSizeToFitWidth(UITextField __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isAdjustsFontSizeToFitWidthSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/adjustsFontSizeToFitWidth">@property(nonatomic) BOOL adjustsFontSizeToFitWidth</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/adjustsFontSizeToFitWidth">@property(nonatomic) BOOL adjustsFontSizeToFitWidth</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isAdjustsFontSizeToFitWidth() {
@@ -74,7 +74,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setAdjustsFontSizeToFitWidth(UITextField __self__, Selector __cmd__, boolean adjustsFontSizeToFitWidth);
     @Bridge private native static void objc_setAdjustsFontSizeToFitWidthSuper(ObjCSuper __super__, Selector __cmd__, boolean adjustsFontSizeToFitWidth);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/adjustsFontSizeToFitWidth">@property(nonatomic) BOOL adjustsFontSizeToFitWidth</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/adjustsFontSizeToFitWidth">@property(nonatomic) BOOL adjustsFontSizeToFitWidth</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setAdjustsFontSizeToFitWidth(boolean adjustsFontSizeToFitWidth) {
@@ -85,7 +85,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isAllowsEditingTextAttributes(UITextField __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isAllowsEditingTextAttributesSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/allowsEditingTextAttributes">@property(nonatomic) BOOL allowsEditingTextAttributes</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/allowsEditingTextAttributes">@property(nonatomic) BOOL allowsEditingTextAttributes</a>
      * @since Available in iOS 6.0 and later.
      */
     public boolean isAllowsEditingTextAttributes() {
@@ -96,7 +96,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setAllowsEditingTextAttributes(UITextField __self__, Selector __cmd__, boolean allowsEditingTextAttributes);
     @Bridge private native static void objc_setAllowsEditingTextAttributesSuper(ObjCSuper __super__, Selector __cmd__, boolean allowsEditingTextAttributes);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/allowsEditingTextAttributes">@property(nonatomic) BOOL allowsEditingTextAttributes</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/allowsEditingTextAttributes">@property(nonatomic) BOOL allowsEditingTextAttributes</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setAllowsEditingTextAttributes(boolean allowsEditingTextAttributes) {
@@ -107,7 +107,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSAttributedString objc_getAttributedPlaceholder(UITextField __self__, Selector __cmd__);
     @Bridge private native static NSAttributedString objc_getAttributedPlaceholderSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/attributedPlaceholder">@property(nonatomic,copy) NSAttributedString *attributedPlaceholder</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/attributedPlaceholder">@property(nonatomic,copy) NSAttributedString *attributedPlaceholder</a>
      * @since Available in iOS 6.0 and later.
      */
     public NSAttributedString getAttributedPlaceholder() {
@@ -118,7 +118,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setAttributedPlaceholder(UITextField __self__, Selector __cmd__, NSAttributedString attributedPlaceholder);
     @Bridge private native static void objc_setAttributedPlaceholderSuper(ObjCSuper __super__, Selector __cmd__, NSAttributedString attributedPlaceholder);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/attributedPlaceholder">@property(nonatomic,copy) NSAttributedString *attributedPlaceholder</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/attributedPlaceholder">@property(nonatomic,copy) NSAttributedString *attributedPlaceholder</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setAttributedPlaceholder(NSAttributedString attributedPlaceholder) {
@@ -129,7 +129,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSAttributedString objc_getAttributedText(UITextField __self__, Selector __cmd__);
     @Bridge private native static NSAttributedString objc_getAttributedTextSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/attributedText">@property(nonatomic,copy) NSAttributedString *attributedText</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/attributedText">@property(nonatomic,copy) NSAttributedString *attributedText</a>
      * @since Available in iOS 6.0 and later.
      */
     public NSAttributedString getAttributedText() {
@@ -140,7 +140,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setAttributedText(UITextField __self__, Selector __cmd__, NSAttributedString attributedText);
     @Bridge private native static void objc_setAttributedTextSuper(ObjCSuper __super__, Selector __cmd__, NSAttributedString attributedText);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/attributedText">@property(nonatomic,copy) NSAttributedString *attributedText</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/attributedText">@property(nonatomic,copy) NSAttributedString *attributedText</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setAttributedText(NSAttributedString attributedText) {
@@ -151,7 +151,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITextAutocapitalizationType objc_getAutocapitalizationType(UITextField __self__, Selector __cmd__);
     @Bridge private native static UITextAutocapitalizationType objc_getAutocapitalizationTypeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/autocapitalizationType">@property(nonatomic) UITextAutocapitalizationType autocapitalizationType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/autocapitalizationType">@property(nonatomic) UITextAutocapitalizationType autocapitalizationType</a>
      * @since Available in iOS 2.0 and later.
      */
     public UITextAutocapitalizationType getAutocapitalizationType() {
@@ -162,7 +162,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setAutocapitalizationType(UITextField __self__, Selector __cmd__, UITextAutocapitalizationType autocapitalizationType);
     @Bridge private native static void objc_setAutocapitalizationTypeSuper(ObjCSuper __super__, Selector __cmd__, UITextAutocapitalizationType autocapitalizationType);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/autocapitalizationType">@property(nonatomic) UITextAutocapitalizationType autocapitalizationType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/autocapitalizationType">@property(nonatomic) UITextAutocapitalizationType autocapitalizationType</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setAutocapitalizationType(UITextAutocapitalizationType autocapitalizationType) {
@@ -173,7 +173,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITextAutocorrectionType objc_getAutocorrectionType(UITextField __self__, Selector __cmd__);
     @Bridge private native static UITextAutocorrectionType objc_getAutocorrectionTypeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/autocorrectionType">@property(nonatomic) UITextAutocorrectionType autocorrectionType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/autocorrectionType">@property(nonatomic) UITextAutocorrectionType autocorrectionType</a>
      * @since Available in iOS 2.0 and later.
      */
     public UITextAutocorrectionType getAutocorrectionType() {
@@ -184,7 +184,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setAutocorrectionType(UITextField __self__, Selector __cmd__, UITextAutocorrectionType autocorrectionType);
     @Bridge private native static void objc_setAutocorrectionTypeSuper(ObjCSuper __super__, Selector __cmd__, UITextAutocorrectionType autocorrectionType);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/autocorrectionType">@property(nonatomic) UITextAutocorrectionType autocorrectionType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/autocorrectionType">@property(nonatomic) UITextAutocorrectionType autocorrectionType</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setAutocorrectionType(UITextAutocorrectionType autocorrectionType) {
@@ -195,7 +195,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIImage objc_getBackground(UITextField __self__, Selector __cmd__);
     @Bridge private native static UIImage objc_getBackgroundSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/background">@property(nonatomic, retain) UIImage *background</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/background">@property(nonatomic, retain) UIImage *background</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIImage getBackground() {
@@ -206,7 +206,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setBackground(UITextField __self__, Selector __cmd__, UIImage background);
     @Bridge private native static void objc_setBackgroundSuper(ObjCSuper __super__, Selector __cmd__, UIImage background);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/background">@property(nonatomic, retain) UIImage *background</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/background">@property(nonatomic, retain) UIImage *background</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setBackground(UIImage background) {
@@ -217,7 +217,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITextPosition objc_getBeginningOfDocument(UITextField __self__, Selector __cmd__);
     @Bridge private native static UITextPosition objc_getBeginningOfDocumentSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/beginningOfDocument">@property(nonatomic, readonly) UITextPosition *beginningOfDocument</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/beginningOfDocument">@property(nonatomic, readonly) UITextPosition *beginningOfDocument</a>
      * @since Available in iOS 3.2 and later.
      */
     public UITextPosition getBeginningOfDocument() {
@@ -228,7 +228,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITextBorderStyle objc_getBorderStyle(UITextField __self__, Selector __cmd__);
     @Bridge private native static UITextBorderStyle objc_getBorderStyleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/borderStyle">@property(nonatomic) UITextBorderStyle borderStyle</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/borderStyle">@property(nonatomic) UITextBorderStyle borderStyle</a>
      * @since Available in iOS 2.0 and later.
      */
     public UITextBorderStyle getBorderStyle() {
@@ -239,7 +239,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setBorderStyle(UITextField __self__, Selector __cmd__, UITextBorderStyle borderStyle);
     @Bridge private native static void objc_setBorderStyleSuper(ObjCSuper __super__, Selector __cmd__, UITextBorderStyle borderStyle);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/borderStyle">@property(nonatomic) UITextBorderStyle borderStyle</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/borderStyle">@property(nonatomic) UITextBorderStyle borderStyle</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setBorderStyle(UITextBorderStyle borderStyle) {
@@ -250,7 +250,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITextFieldViewMode objc_getClearButtonMode(UITextField __self__, Selector __cmd__);
     @Bridge private native static UITextFieldViewMode objc_getClearButtonModeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/clearButtonMode">@property(nonatomic) UITextFieldViewMode clearButtonMode</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/clearButtonMode">@property(nonatomic) UITextFieldViewMode clearButtonMode</a>
      * @since Available in iOS 2.0 and later.
      */
     public UITextFieldViewMode getClearButtonMode() {
@@ -261,7 +261,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setClearButtonMode(UITextField __self__, Selector __cmd__, UITextFieldViewMode clearButtonMode);
     @Bridge private native static void objc_setClearButtonModeSuper(ObjCSuper __super__, Selector __cmd__, UITextFieldViewMode clearButtonMode);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/clearButtonMode">@property(nonatomic) UITextFieldViewMode clearButtonMode</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/clearButtonMode">@property(nonatomic) UITextFieldViewMode clearButtonMode</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setClearButtonMode(UITextFieldViewMode clearButtonMode) {
@@ -272,7 +272,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isClearsOnBeginEditing(UITextField __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isClearsOnBeginEditingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/clearsOnBeginEditing">@property(nonatomic) BOOL clearsOnBeginEditing</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/clearsOnBeginEditing">@property(nonatomic) BOOL clearsOnBeginEditing</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isClearsOnBeginEditing() {
@@ -283,7 +283,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setClearsOnBeginEditing(UITextField __self__, Selector __cmd__, boolean clearsOnBeginEditing);
     @Bridge private native static void objc_setClearsOnBeginEditingSuper(ObjCSuper __super__, Selector __cmd__, boolean clearsOnBeginEditing);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/clearsOnBeginEditing">@property(nonatomic) BOOL clearsOnBeginEditing</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/clearsOnBeginEditing">@property(nonatomic) BOOL clearsOnBeginEditing</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setClearsOnBeginEditing(boolean clearsOnBeginEditing) {
@@ -294,7 +294,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isClearsOnInsertion(UITextField __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isClearsOnInsertionSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/clearsOnInsertion">@property(nonatomic) BOOL clearsOnInsertion</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/clearsOnInsertion">@property(nonatomic) BOOL clearsOnInsertion</a>
      * @since Available in iOS 6.0 and later.
      */
     public boolean isClearsOnInsertion() {
@@ -305,7 +305,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setClearsOnInsertion(UITextField __self__, Selector __cmd__, boolean clearsOnInsertion);
     @Bridge private native static void objc_setClearsOnInsertionSuper(ObjCSuper __super__, Selector __cmd__, boolean clearsOnInsertion);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/clearsOnInsertion">@property(nonatomic) BOOL clearsOnInsertion</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/clearsOnInsertion">@property(nonatomic) BOOL clearsOnInsertion</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setClearsOnInsertion(boolean clearsOnInsertion) {
@@ -316,7 +316,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITextFieldDelegate objc_getDelegate(UITextField __self__, Selector __cmd__);
     @Bridge private native static UITextFieldDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/delegate">@property(nonatomic, assign) id&amp;lt;UITextFieldDelegate&amp;gt; delegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/delegate">@property(nonatomic, assign) id&amp;lt;UITextFieldDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
     public UITextFieldDelegate getDelegate() {
@@ -327,7 +327,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setDelegate(UITextField __self__, Selector __cmd__, UITextFieldDelegate delegate);
     @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UITextFieldDelegate delegate);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/delegate">@property(nonatomic, assign) id&amp;lt;UITextFieldDelegate&amp;gt; delegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/delegate">@property(nonatomic, assign) id&amp;lt;UITextFieldDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setDelegate(UITextFieldDelegate delegate) {
@@ -338,7 +338,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIImage objc_getDisabledBackground(UITextField __self__, Selector __cmd__);
     @Bridge private native static UIImage objc_getDisabledBackgroundSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/disabledBackground">@property(nonatomic, retain) UIImage *disabledBackground</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/disabledBackground">@property(nonatomic, retain) UIImage *disabledBackground</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIImage getDisabledBackground() {
@@ -349,7 +349,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setDisabledBackground(UITextField __self__, Selector __cmd__, UIImage disabledBackground);
     @Bridge private native static void objc_setDisabledBackgroundSuper(ObjCSuper __super__, Selector __cmd__, UIImage disabledBackground);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/disabledBackground">@property(nonatomic, retain) UIImage *disabledBackground</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/disabledBackground">@property(nonatomic, retain) UIImage *disabledBackground</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setDisabledBackground(UIImage disabledBackground) {
@@ -360,7 +360,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isEditing(UITextField __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isEditingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/editing">@property(nonatomic, readonly, getter=isEditing) BOOL editing</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/editing">@property(nonatomic, readonly, getter=isEditing) BOOL editing</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isEditing() {
@@ -371,7 +371,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isEnablesReturnKeyAutomatically(UITextField __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isEnablesReturnKeyAutomaticallySuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/enablesReturnKeyAutomatically">@property(nonatomic) BOOL enablesReturnKeyAutomatically</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/enablesReturnKeyAutomatically">@property(nonatomic) BOOL enablesReturnKeyAutomatically</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isEnablesReturnKeyAutomatically() {
@@ -382,7 +382,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setEnablesReturnKeyAutomatically(UITextField __self__, Selector __cmd__, boolean enablesReturnKeyAutomatically);
     @Bridge private native static void objc_setEnablesReturnKeyAutomaticallySuper(ObjCSuper __super__, Selector __cmd__, boolean enablesReturnKeyAutomatically);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/enablesReturnKeyAutomatically">@property(nonatomic) BOOL enablesReturnKeyAutomatically</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/enablesReturnKeyAutomatically">@property(nonatomic) BOOL enablesReturnKeyAutomatically</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setEnablesReturnKeyAutomatically(boolean enablesReturnKeyAutomatically) {
@@ -393,7 +393,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITextPosition objc_getEndOfDocument(UITextField __self__, Selector __cmd__);
     @Bridge private native static UITextPosition objc_getEndOfDocumentSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/endOfDocument">@property(nonatomic, readonly) UITextPosition *endOfDocument</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/endOfDocument">@property(nonatomic, readonly) UITextPosition *endOfDocument</a>
      * @since Available in iOS 3.2 and later.
      */
     public UITextPosition getEndOfDocument() {
@@ -404,7 +404,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIFont objc_getFont(UITextField __self__, Selector __cmd__);
     @Bridge private native static UIFont objc_getFontSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/font">@property(nonatomic, retain) UIFont *font</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/font">@property(nonatomic, retain) UIFont *font</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIFont getFont() {
@@ -415,7 +415,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setFont(UITextField __self__, Selector __cmd__, UIFont font);
     @Bridge private native static void objc_setFontSuper(ObjCSuper __super__, Selector __cmd__, UIFont font);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/font">@property(nonatomic, retain) UIFont *font</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/font">@property(nonatomic, retain) UIFont *font</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setFont(UIFont font) {
@@ -426,7 +426,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIView objc_getInputAccessoryView(UITextField __self__, Selector __cmd__);
     @Bridge private native static UIView objc_getInputAccessoryViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/inputAccessoryView">@property (readwrite, retain) UIView *inputAccessoryView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/inputAccessoryView">@property (readwrite, retain) UIView *inputAccessoryView</a>
      * @since Available in iOS 3.2 and later.
      */
     public UIView getInputAccessoryView() {
@@ -437,7 +437,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setInputAccessoryView(UITextField __self__, Selector __cmd__, UIView inputAccessoryView);
     @Bridge private native static void objc_setInputAccessoryViewSuper(ObjCSuper __super__, Selector __cmd__, UIView inputAccessoryView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/inputAccessoryView">@property (readwrite, retain) UIView *inputAccessoryView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/inputAccessoryView">@property (readwrite, retain) UIView *inputAccessoryView</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setInputAccessoryView(UIView inputAccessoryView) {
@@ -448,7 +448,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITextInputDelegate objc_getInputDelegate(UITextField __self__, Selector __cmd__);
     @Bridge private native static UITextInputDelegate objc_getInputDelegateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/inputDelegate">@property(nonatomic, assign) id&amp;lt;UITextInputDelegate&amp;gt; inputDelegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/inputDelegate">@property(nonatomic, assign) id&amp;lt;UITextInputDelegate&amp;gt; inputDelegate</a>
      * @since Available in iOS 3.2 and later.
      */
     public UITextInputDelegate getInputDelegate() {
@@ -459,7 +459,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setInputDelegate(UITextField __self__, Selector __cmd__, UITextInputDelegate inputDelegate);
     @Bridge private native static void objc_setInputDelegateSuper(ObjCSuper __super__, Selector __cmd__, UITextInputDelegate inputDelegate);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/inputDelegate">@property(nonatomic, assign) id&amp;lt;UITextInputDelegate&amp;gt; inputDelegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/inputDelegate">@property(nonatomic, assign) id&amp;lt;UITextInputDelegate&amp;gt; inputDelegate</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setInputDelegate(UITextInputDelegate inputDelegate) {
@@ -470,7 +470,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIView objc_getInputView(UITextField __self__, Selector __cmd__);
     @Bridge private native static UIView objc_getInputViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/inputView">@property (readwrite, retain) UIView *inputView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/inputView">@property (readwrite, retain) UIView *inputView</a>
      * @since Available in iOS 3.2 and later.
      */
     public UIView getInputView() {
@@ -481,7 +481,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setInputView(UITextField __self__, Selector __cmd__, UIView inputView);
     @Bridge private native static void objc_setInputViewSuper(ObjCSuper __super__, Selector __cmd__, UIView inputView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/inputView">@property (readwrite, retain) UIView *inputView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/inputView">@property (readwrite, retain) UIView *inputView</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setInputView(UIView inputView) {
@@ -492,7 +492,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIKeyboardAppearance objc_getKeyboardAppearance(UITextField __self__, Selector __cmd__);
     @Bridge private native static UIKeyboardAppearance objc_getKeyboardAppearanceSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/keyboardAppearance">@property(nonatomic) UIKeyboardAppearance keyboardAppearance</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/keyboardAppearance">@property(nonatomic) UIKeyboardAppearance keyboardAppearance</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIKeyboardAppearance getKeyboardAppearance() {
@@ -503,7 +503,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setKeyboardAppearance(UITextField __self__, Selector __cmd__, UIKeyboardAppearance keyboardAppearance);
     @Bridge private native static void objc_setKeyboardAppearanceSuper(ObjCSuper __super__, Selector __cmd__, UIKeyboardAppearance keyboardAppearance);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/keyboardAppearance">@property(nonatomic) UIKeyboardAppearance keyboardAppearance</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/keyboardAppearance">@property(nonatomic) UIKeyboardAppearance keyboardAppearance</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setKeyboardAppearance(UIKeyboardAppearance keyboardAppearance) {
@@ -514,7 +514,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIKeyboardType objc_getKeyboardType(UITextField __self__, Selector __cmd__);
     @Bridge private native static UIKeyboardType objc_getKeyboardTypeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/keyboardType">@property(nonatomic) UIKeyboardType keyboardType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/keyboardType">@property(nonatomic) UIKeyboardType keyboardType</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIKeyboardType getKeyboardType() {
@@ -525,7 +525,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setKeyboardType(UITextField __self__, Selector __cmd__, UIKeyboardType keyboardType);
     @Bridge private native static void objc_setKeyboardTypeSuper(ObjCSuper __super__, Selector __cmd__, UIKeyboardType keyboardType);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/keyboardType">@property(nonatomic) UIKeyboardType keyboardType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/keyboardType">@property(nonatomic) UIKeyboardType keyboardType</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setKeyboardType(UIKeyboardType keyboardType) {
@@ -536,7 +536,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIView objc_getLeftView(UITextField __self__, Selector __cmd__);
     @Bridge private native static UIView objc_getLeftViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/leftView">@property(nonatomic, retain) UIView *leftView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/leftView">@property(nonatomic, retain) UIView *leftView</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIView getLeftView() {
@@ -547,7 +547,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setLeftView(UITextField __self__, Selector __cmd__, UIView leftView);
     @Bridge private native static void objc_setLeftViewSuper(ObjCSuper __super__, Selector __cmd__, UIView leftView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/leftView">@property(nonatomic, retain) UIView *leftView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/leftView">@property(nonatomic, retain) UIView *leftView</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setLeftView(UIView leftView) {
@@ -558,7 +558,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITextFieldViewMode objc_getLeftViewMode(UITextField __self__, Selector __cmd__);
     @Bridge private native static UITextFieldViewMode objc_getLeftViewModeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/leftViewMode">@property(nonatomic) UITextFieldViewMode leftViewMode</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/leftViewMode">@property(nonatomic) UITextFieldViewMode leftViewMode</a>
      * @since Available in iOS 2.0 and later.
      */
     public UITextFieldViewMode getLeftViewMode() {
@@ -569,7 +569,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setLeftViewMode(UITextField __self__, Selector __cmd__, UITextFieldViewMode leftViewMode);
     @Bridge private native static void objc_setLeftViewModeSuper(ObjCSuper __super__, Selector __cmd__, UITextFieldViewMode leftViewMode);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/leftViewMode">@property(nonatomic) UITextFieldViewMode leftViewMode</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/leftViewMode">@property(nonatomic) UITextFieldViewMode leftViewMode</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setLeftViewMode(UITextFieldViewMode leftViewMode) {
@@ -580,7 +580,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITextRange objc_getMarkedTextRange(UITextField __self__, Selector __cmd__);
     @Bridge private native static UITextRange objc_getMarkedTextRangeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/markedTextRange">@property(nonatomic, readonly) UITextRange *markedTextRange</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/markedTextRange">@property(nonatomic, readonly) UITextRange *markedTextRange</a>
      * @since Available in iOS 3.2 and later.
      */
     public UITextRange getMarkedTextRange() {
@@ -591,7 +591,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSDictionary objc_getMarkedTextStyle(UITextField __self__, Selector __cmd__);
     @Bridge private native static NSDictionary objc_getMarkedTextStyleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/markedTextStyle">@property(nonatomic, copy) NSDictionary *markedTextStyle</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/markedTextStyle">@property(nonatomic, copy) NSDictionary *markedTextStyle</a>
      * @since Available in iOS 3.2 and later.
      */
     public NSDictionary getMarkedTextStyle() {
@@ -602,7 +602,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setMarkedTextStyle(UITextField __self__, Selector __cmd__, NSDictionary markedTextStyle);
     @Bridge private native static void objc_setMarkedTextStyleSuper(ObjCSuper __super__, Selector __cmd__, NSDictionary markedTextStyle);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/markedTextStyle">@property(nonatomic, copy) NSDictionary *markedTextStyle</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/markedTextStyle">@property(nonatomic, copy) NSDictionary *markedTextStyle</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setMarkedTextStyle(NSDictionary markedTextStyle) {
@@ -613,7 +613,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static float objc_getMinimumFontSize(UITextField __self__, Selector __cmd__);
     @Bridge private native static float objc_getMinimumFontSizeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/minimumFontSize">@property(nonatomic) CGFloat minimumFontSize</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/minimumFontSize">@property(nonatomic) CGFloat minimumFontSize</a>
      * @since Available in iOS 2.0 and later.
      */
     public float getMinimumFontSize() {
@@ -624,7 +624,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setMinimumFontSize(UITextField __self__, Selector __cmd__, float minimumFontSize);
     @Bridge private native static void objc_setMinimumFontSizeSuper(ObjCSuper __super__, Selector __cmd__, float minimumFontSize);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/minimumFontSize">@property(nonatomic) CGFloat minimumFontSize</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/minimumFontSize">@property(nonatomic) CGFloat minimumFontSize</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setMinimumFontSize(float minimumFontSize) {
@@ -635,7 +635,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static String objc_getPlaceholder(UITextField __self__, Selector __cmd__);
     @Bridge private native static String objc_getPlaceholderSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/placeholder">@property(nonatomic, copy) NSString *placeholder</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/placeholder">@property(nonatomic, copy) NSString *placeholder</a>
      * @since Available in iOS 2.0 and later.
      */
     public String getPlaceholder() {
@@ -646,7 +646,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setPlaceholder(UITextField __self__, Selector __cmd__, String placeholder);
     @Bridge private native static void objc_setPlaceholderSuper(ObjCSuper __super__, Selector __cmd__, String placeholder);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/placeholder">@property(nonatomic, copy) NSString *placeholder</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/placeholder">@property(nonatomic, copy) NSString *placeholder</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setPlaceholder(String placeholder) {
@@ -657,7 +657,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIReturnKeyType objc_getReturnKeyType(UITextField __self__, Selector __cmd__);
     @Bridge private native static UIReturnKeyType objc_getReturnKeyTypeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/returnKeyType">@property(nonatomic) UIReturnKeyType returnKeyType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/returnKeyType">@property(nonatomic) UIReturnKeyType returnKeyType</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIReturnKeyType getReturnKeyType() {
@@ -668,7 +668,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setReturnKeyType(UITextField __self__, Selector __cmd__, UIReturnKeyType returnKeyType);
     @Bridge private native static void objc_setReturnKeyTypeSuper(ObjCSuper __super__, Selector __cmd__, UIReturnKeyType returnKeyType);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/returnKeyType">@property(nonatomic) UIReturnKeyType returnKeyType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/returnKeyType">@property(nonatomic) UIReturnKeyType returnKeyType</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setReturnKeyType(UIReturnKeyType returnKeyType) {
@@ -679,7 +679,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIView objc_getRightView(UITextField __self__, Selector __cmd__);
     @Bridge private native static UIView objc_getRightViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/rightView">@property(nonatomic, retain) UIView *rightView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/rightView">@property(nonatomic, retain) UIView *rightView</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIView getRightView() {
@@ -690,7 +690,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setRightView(UITextField __self__, Selector __cmd__, UIView rightView);
     @Bridge private native static void objc_setRightViewSuper(ObjCSuper __super__, Selector __cmd__, UIView rightView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/rightView">@property(nonatomic, retain) UIView *rightView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/rightView">@property(nonatomic, retain) UIView *rightView</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setRightView(UIView rightView) {
@@ -701,7 +701,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITextFieldViewMode objc_getRightViewMode(UITextField __self__, Selector __cmd__);
     @Bridge private native static UITextFieldViewMode objc_getRightViewModeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/rightViewMode">@property(nonatomic) UITextFieldViewMode rightViewMode</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/rightViewMode">@property(nonatomic) UITextFieldViewMode rightViewMode</a>
      * @since Available in iOS 2.0 and later.
      */
     public UITextFieldViewMode getRightViewMode() {
@@ -712,7 +712,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setRightViewMode(UITextField __self__, Selector __cmd__, UITextFieldViewMode rightViewMode);
     @Bridge private native static void objc_setRightViewModeSuper(ObjCSuper __super__, Selector __cmd__, UITextFieldViewMode rightViewMode);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/rightViewMode">@property(nonatomic) UITextFieldViewMode rightViewMode</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/rightViewMode">@property(nonatomic) UITextFieldViewMode rightViewMode</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setRightViewMode(UITextFieldViewMode rightViewMode) {
@@ -723,7 +723,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isSecureTextEntry(UITextField __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isSecureTextEntrySuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/secureTextEntry">@property(nonatomic, getter=isSecureTextEntry) BOOL secureTextEntry</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/secureTextEntry">@property(nonatomic, getter=isSecureTextEntry) BOOL secureTextEntry</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isSecureTextEntry() {
@@ -734,7 +734,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setSecureTextEntry(UITextField __self__, Selector __cmd__, boolean secureTextEntry);
     @Bridge private native static void objc_setSecureTextEntrySuper(ObjCSuper __super__, Selector __cmd__, boolean secureTextEntry);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/secureTextEntry">@property(nonatomic, getter=isSecureTextEntry) BOOL secureTextEntry</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/secureTextEntry">@property(nonatomic, getter=isSecureTextEntry) BOOL secureTextEntry</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setSecureTextEntry(boolean secureTextEntry) {
@@ -745,7 +745,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITextRange objc_getSelectedTextRange(UITextField __self__, Selector __cmd__);
     @Bridge private native static UITextRange objc_getSelectedTextRangeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/selectedTextRange">@property(readwrite, copy) UITextRange *selectedTextRange</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/selectedTextRange">@property(readwrite, copy) UITextRange *selectedTextRange</a>
      * @since Available in iOS 3.2 and later.
      */
     public UITextRange getSelectedTextRange() {
@@ -756,7 +756,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setSelectedTextRange(UITextField __self__, Selector __cmd__, UITextRange selectedTextRange);
     @Bridge private native static void objc_setSelectedTextRangeSuper(ObjCSuper __super__, Selector __cmd__, UITextRange selectedTextRange);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/selectedTextRange">@property(readwrite, copy) UITextRange *selectedTextRange</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/selectedTextRange">@property(readwrite, copy) UITextRange *selectedTextRange</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setSelectedTextRange(UITextRange selectedTextRange) {
@@ -767,7 +767,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITextStorageDirection objc_getSelectionAffinity(UITextField __self__, Selector __cmd__);
     @Bridge private native static UITextStorageDirection objc_getSelectionAffinitySuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/selectionAffinity">@property(nonatomic) UITextStorageDirection selectionAffinity</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/selectionAffinity">@property(nonatomic) UITextStorageDirection selectionAffinity</a>
      * @since Available in iOS 3.2 and later.
      */
     public UITextStorageDirection getSelectionAffinity() {
@@ -778,7 +778,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setSelectionAffinity(UITextField __self__, Selector __cmd__, UITextStorageDirection selectionAffinity);
     @Bridge private native static void objc_setSelectionAffinitySuper(ObjCSuper __super__, Selector __cmd__, UITextStorageDirection selectionAffinity);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/selectionAffinity">@property(nonatomic) UITextStorageDirection selectionAffinity</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/selectionAffinity">@property(nonatomic) UITextStorageDirection selectionAffinity</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setSelectionAffinity(UITextStorageDirection selectionAffinity) {
@@ -789,7 +789,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITextSpellCheckingType objc_getSpellCheckingType(UITextField __self__, Selector __cmd__);
     @Bridge private native static UITextSpellCheckingType objc_getSpellCheckingTypeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/spellCheckingType">@property(nonatomic) UITextSpellCheckingType spellCheckingType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/spellCheckingType">@property(nonatomic) UITextSpellCheckingType spellCheckingType</a>
      * @since Available in iOS 5.0 and later.
      */
     public UITextSpellCheckingType getSpellCheckingType() {
@@ -800,7 +800,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setSpellCheckingType(UITextField __self__, Selector __cmd__, UITextSpellCheckingType spellCheckingType);
     @Bridge private native static void objc_setSpellCheckingTypeSuper(ObjCSuper __super__, Selector __cmd__, UITextSpellCheckingType spellCheckingType);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/spellCheckingType">@property(nonatomic) UITextSpellCheckingType spellCheckingType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInputTraits_Protocol/Reference/UITextInputTraits.html#//apple_ref/occ/intfp/UITextInputTraits/spellCheckingType">@property(nonatomic) UITextSpellCheckingType spellCheckingType</a>
      * @since Available in iOS 5.0 and later.
      */
     public void setSpellCheckingType(UITextSpellCheckingType spellCheckingType) {
@@ -811,7 +811,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static String objc_getText(UITextField __self__, Selector __cmd__);
     @Bridge private native static String objc_getTextSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/text">@property(nonatomic, copy) NSString *text</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/text">@property(nonatomic, copy) NSString *text</a>
      * @since Available in iOS 2.0 and later.
      */
     public String getText() {
@@ -822,7 +822,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setText(UITextField __self__, Selector __cmd__, String text);
     @Bridge private native static void objc_setTextSuper(ObjCSuper __super__, Selector __cmd__, String text);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/text">@property(nonatomic, copy) NSString *text</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/text">@property(nonatomic, copy) NSString *text</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setText(String text) {
@@ -833,7 +833,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSTextAlignment objc_getTextAlignment(UITextField __self__, Selector __cmd__);
     @Bridge private native static NSTextAlignment objc_getTextAlignmentSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/textAlignment">@property(nonatomic) NSTextAlignment textAlignment</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/textAlignment">@property(nonatomic) NSTextAlignment textAlignment</a>
      * @since Available in iOS 2.0 and later.
      */
     public NSTextAlignment getTextAlignment() {
@@ -844,7 +844,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setTextAlignment(UITextField __self__, Selector __cmd__, NSTextAlignment textAlignment);
     @Bridge private native static void objc_setTextAlignmentSuper(ObjCSuper __super__, Selector __cmd__, NSTextAlignment textAlignment);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/textAlignment">@property(nonatomic) NSTextAlignment textAlignment</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/textAlignment">@property(nonatomic) NSTextAlignment textAlignment</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setTextAlignment(NSTextAlignment textAlignment) {
@@ -855,7 +855,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIColor objc_getTextColor(UITextField __self__, Selector __cmd__);
     @Bridge private native static UIColor objc_getTextColorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/textColor">@property(nonatomic, retain) UIColor *textColor</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/textColor">@property(nonatomic, retain) UIColor *textColor</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIColor getTextColor() {
@@ -866,7 +866,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setTextColor(UITextField __self__, Selector __cmd__, UIColor textColor);
     @Bridge private native static void objc_setTextColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor textColor);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/textColor">@property(nonatomic, retain) UIColor *textColor</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/textColor">@property(nonatomic, retain) UIColor *textColor</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setTextColor(UIColor textColor) {
@@ -877,7 +877,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIView objc_getTextInputView(UITextField __self__, Selector __cmd__);
     @Bridge private native static UIView objc_getTextInputViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/textInputView">@property(nonatomic, readonly) UIView *textInputView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/textInputView">@property(nonatomic, readonly) UIView *textInputView</a>
      * @since Available in iOS 3.2 and later.
      */
     public UIView getTextInputView() {
@@ -888,7 +888,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITextInputTokenizer objc_getTokenizer(UITextField __self__, Selector __cmd__);
     @Bridge private native static UITextInputTokenizer objc_getTokenizerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/tokenizer">@property(nonatomic, readonly) id&amp;lt;UITextInputTokenizer&amp;gt; tokenizer</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfp/UITextInput/tokenizer">@property(nonatomic, readonly) id&amp;lt;UITextInputTokenizer&amp;gt; tokenizer</a>
      * @since Available in iOS 3.2 and later.
      */
     public UITextInputTokenizer getTokenizer() {
@@ -899,7 +899,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSDictionary objc_getTypingAttributes(UITextField __self__, Selector __cmd__);
     @Bridge private native static NSDictionary objc_getTypingAttributesSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/typingAttributes">@property(nonatomic,copy) NSDictionary *typingAttributes;</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/typingAttributes">@property(nonatomic,copy) NSDictionary *typingAttributes;</a>
      * @since Available in iOS 6.0 and later.
      */
     public NSDictionary getTypingAttributes() {
@@ -910,7 +910,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setTypingAttributes(UITextField __self__, Selector __cmd__, NSDictionary typingAttributes);
     @Bridge private native static void objc_setTypingAttributesSuper(ObjCSuper __super__, Selector __cmd__, NSDictionary typingAttributes);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/typingAttributes">@property(nonatomic,copy) NSDictionary *typingAttributes;</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instp/UITextField/typingAttributes">@property(nonatomic,copy) NSDictionary *typingAttributes;</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setTypingAttributes(NSDictionary typingAttributes) {
@@ -923,7 +923,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGRect objc_clearButtonRect(UITextField __self__, Selector __cmd__, @ByVal CGRect bounds);
     @Bridge private native static @ByVal CGRect objc_clearButtonRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instm/UITextField/clearButtonRectForBounds:">- (CGRect)clearButtonRectForBounds:(CGRect)bounds</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instm/UITextField/clearButtonRectForBounds:">- (CGRect)clearButtonRectForBounds:(CGRect)bounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect clearButtonRect(CGRect bounds) {
@@ -934,7 +934,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSComparisonResult objc_comparePositions(UITextField __self__, Selector __cmd__, UITextPosition position, UITextPosition other);
     @Bridge private native static NSComparisonResult objc_comparePositionsSuper(ObjCSuper __super__, Selector __cmd__, UITextPosition position, UITextPosition other);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/comparePosition:toPosition:">- (NSComparisonResult)comparePosition:(UITextPosition *)position toPosition:(UITextPosition *)other</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/comparePosition:toPosition:">- (NSComparisonResult)comparePosition:(UITextPosition *)position toPosition:(UITextPosition *)other</a>
      * @since Available in iOS 3.2 and later.
      */
     public NSComparisonResult comparePositions(UITextPosition position, UITextPosition other) {
@@ -945,7 +945,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_deleteBackward(UITextField __self__, Selector __cmd__);
     @Bridge private native static void objc_deleteBackwardSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIKeyInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIKeyInput/deleteBackward">- (void)deleteBackward</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIKeyInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIKeyInput/deleteBackward">- (void)deleteBackward</a>
      * @since Available in iOS 3.2 and later.
      */
     public void deleteBackward() {
@@ -956,7 +956,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_dictationRecognitionFailed(UITextField __self__, Selector __cmd__);
     @Bridge private native static void objc_dictationRecognitionFailedSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/dictationRecognitionFailed">- (void)dictationRecognitionFailed</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/dictationRecognitionFailed">- (void)dictationRecognitionFailed</a>
      * @since Available in iOS 5.1 and later.
      */
     public void dictationRecognitionFailed() {
@@ -967,7 +967,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_dictationRecordingDidEnd(UITextField __self__, Selector __cmd__);
     @Bridge private native static void objc_dictationRecordingDidEndSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/dictationRecordingDidEnd">- (void)dictationRecordingDidEnd</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/dictationRecordingDidEnd">- (void)dictationRecordingDidEnd</a>
      * @since Available in iOS 5.1 and later.
      */
     public void dictationRecordingDidEnd() {
@@ -978,7 +978,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_drawPlaceholder(UITextField __self__, Selector __cmd__, @ByVal CGRect rect);
     @Bridge private native static void objc_drawPlaceholderSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instm/UITextField/drawPlaceholderInRect:">- (void)drawPlaceholderInRect:(CGRect)rect</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instm/UITextField/drawPlaceholderInRect:">- (void)drawPlaceholderInRect:(CGRect)rect</a>
      * @since Available in iOS 2.0 and later.
      */
     public void drawPlaceholder(CGRect rect) {
@@ -989,7 +989,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_drawText(UITextField __self__, Selector __cmd__, @ByVal CGRect rect);
     @Bridge private native static void objc_drawTextSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instm/UITextField/drawTextInRect:">- (void)drawTextInRect:(CGRect)rect</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instm/UITextField/drawTextInRect:">- (void)drawTextInRect:(CGRect)rect</a>
      * @since Available in iOS 2.0 and later.
      */
     public void drawText(CGRect rect) {
@@ -1000,7 +1000,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITextWritingDirection objc_getBaseWritingDirection(UITextField __self__, Selector __cmd__, UITextPosition position, UITextStorageDirection direction);
     @Bridge private native static UITextWritingDirection objc_getBaseWritingDirectionSuper(ObjCSuper __super__, Selector __cmd__, UITextPosition position, UITextStorageDirection direction);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/baseWritingDirectionForPosition:inDirection:">- (UITextWritingDirection)baseWritingDirectionForPosition:(UITextPosition *)position inDirection:(UITextStorageDirection)direction</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/baseWritingDirectionForPosition:inDirection:">- (UITextWritingDirection)baseWritingDirectionForPosition:(UITextPosition *)position inDirection:(UITextStorageDirection)direction</a>
      * @since Available in iOS 3.2 and later.
      */
     public UITextWritingDirection getBaseWritingDirection(UITextPosition position, UITextStorageDirection direction) {
@@ -1011,7 +1011,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGRect objc_getBorderRect(UITextField __self__, Selector __cmd__, @ByVal CGRect bounds);
     @Bridge private native static @ByVal CGRect objc_getBorderRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instm/UITextField/borderRectForBounds:">- (CGRect)borderRectForBounds:(CGRect)bounds</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instm/UITextField/borderRectForBounds:">- (CGRect)borderRectForBounds:(CGRect)bounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getBorderRect(CGRect bounds) {
@@ -1022,7 +1022,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGRect objc_getCaretRect(UITextField __self__, Selector __cmd__, UITextPosition position);
     @Bridge private native static @ByVal CGRect objc_getCaretRectSuper(ObjCSuper __super__, Selector __cmd__, UITextPosition position);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/caretRectForPosition:">- (CGRect)caretRectForPosition:(UITextPosition *)position</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/caretRectForPosition:">- (CGRect)caretRectForPosition:(UITextPosition *)position</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGRect getCaretRect(UITextPosition position) {
@@ -1033,7 +1033,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_getCharacterOffset(UITextField __self__, Selector __cmd__, UITextPosition position, UITextRange range);
     @Bridge private native static int objc_getCharacterOffsetSuper(ObjCSuper __super__, Selector __cmd__, UITextPosition position, UITextRange range);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/characterOffsetOfPosition:withinRange:">- (NSInteger)characterOffsetOfPosition:(UITextPosition *)position withinRange:(UITextRange *)range</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/characterOffsetOfPosition:withinRange:">- (NSInteger)characterOffsetOfPosition:(UITextPosition *)position withinRange:(UITextRange *)range</a>
      * @since Available in iOS 3.2 and later.
      */
     public int getCharacterOffset(UITextPosition position, UITextRange range) {
@@ -1044,7 +1044,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITextRange objc_getCharacterRange(UITextField __self__, Selector __cmd__, @ByVal CGPoint point);
     @Bridge private native static UITextRange objc_getCharacterRangeSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/characterRangeAtPoint:">- (UITextRange *)characterRangeAtPoint:(CGPoint)point</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/characterRangeAtPoint:">- (UITextRange *)characterRangeAtPoint:(CGPoint)point</a>
      * @since Available in iOS 3.2 and later.
      */
     public UITextRange getCharacterRange(CGPoint point) {
@@ -1055,7 +1055,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITextRange objc_getCharacterRange(UITextField __self__, Selector __cmd__, UITextPosition position, UITextLayoutDirection direction);
     @Bridge private native static UITextRange objc_getCharacterRangeSuper(ObjCSuper __super__, Selector __cmd__, UITextPosition position, UITextLayoutDirection direction);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/characterRangeByExtendingPosition:inDirection:">- (UITextRange *)characterRangeByExtendingPosition:(UITextPosition *)position inDirection:(UITextLayoutDirection)direction</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/characterRangeByExtendingPosition:inDirection:">- (UITextRange *)characterRangeByExtendingPosition:(UITextPosition *)position inDirection:(UITextLayoutDirection)direction</a>
      * @since Available in iOS 3.2 and later.
      */
     public UITextRange getCharacterRange(UITextPosition position, UITextLayoutDirection direction) {
@@ -1066,7 +1066,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITextPosition objc_getClosestPosition(UITextField __self__, Selector __cmd__, @ByVal CGPoint point, UITextRange range);
     @Bridge private native static UITextPosition objc_getClosestPositionSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point, UITextRange range);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/closestPositionToPoint:withinRange:">- (UITextPosition *)closestPositionToPoint:(CGPoint)point withinRange:(UITextRange *)range</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/closestPositionToPoint:withinRange:">- (UITextPosition *)closestPositionToPoint:(CGPoint)point withinRange:(UITextRange *)range</a>
      * @since Available in iOS 3.2 and later.
      */
     public UITextPosition getClosestPosition(CGPoint point, UITextRange range) {
@@ -1077,7 +1077,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITextPosition objc_getClosestPosition(UITextField __self__, Selector __cmd__, @ByVal CGPoint point);
     @Bridge private native static UITextPosition objc_getClosestPositionSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/closestPositionToPoint:">- (UITextPosition *)closestPositionToPoint:(CGPoint)point</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/closestPositionToPoint:">- (UITextPosition *)closestPositionToPoint:(CGPoint)point</a>
      * @since Available in iOS 3.2 and later.
      */
     public UITextPosition getClosestPosition(CGPoint point) {
@@ -1088,7 +1088,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGRect objc_getDictationResultPlaceholderFrame(UITextField __self__, Selector __cmd__, NSObject placeholder);
     @Bridge private native static @ByVal CGRect objc_getDictationResultPlaceholderFrameSuper(ObjCSuper __super__, Selector __cmd__, NSObject placeholder);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/frameForDictationResultPlaceholder:">- (CGRect)frameForDictationResultPlaceholder:(id)placeholder</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/frameForDictationResultPlaceholder:">- (CGRect)frameForDictationResultPlaceholder:(id)placeholder</a>
      * @since Available in iOS 6.0 and later.
      */
     public CGRect getDictationResultPlaceholderFrame(NSObject placeholder) {
@@ -1099,7 +1099,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGRect objc_getEditingRect(UITextField __self__, Selector __cmd__, @ByVal CGRect bounds);
     @Bridge private native static @ByVal CGRect objc_getEditingRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instm/UITextField/editingRectForBounds:">- (CGRect)editingRectForBounds:(CGRect)bounds</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instm/UITextField/editingRectForBounds:">- (CGRect)editingRectForBounds:(CGRect)bounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getEditingRect(CGRect bounds) {
@@ -1110,7 +1110,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGRect objc_getFirstRect(UITextField __self__, Selector __cmd__, UITextRange range);
     @Bridge private native static @ByVal CGRect objc_getFirstRectSuper(ObjCSuper __super__, Selector __cmd__, UITextRange range);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/firstRectForRange:">- (CGRect)firstRectForRange:(UITextRange *)range</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/firstRectForRange:">- (CGRect)firstRectForRange:(UITextRange *)range</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGRect getFirstRect(UITextRange range) {
@@ -1121,7 +1121,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGRect objc_getLeftViewRect(UITextField __self__, Selector __cmd__, @ByVal CGRect bounds);
     @Bridge private native static @ByVal CGRect objc_getLeftViewRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instm/UITextField/leftViewRectForBounds:">- (CGRect)leftViewRectForBounds:(CGRect)bounds</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instm/UITextField/leftViewRectForBounds:">- (CGRect)leftViewRectForBounds:(CGRect)bounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getLeftViewRect(CGRect bounds) {
@@ -1132,7 +1132,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_getOffset(UITextField __self__, Selector __cmd__, UITextPosition fromPosition, UITextPosition toPosition);
     @Bridge private native static int objc_getOffsetSuper(ObjCSuper __super__, Selector __cmd__, UITextPosition fromPosition, UITextPosition toPosition);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/offsetFromPosition:toPosition:">- (NSInteger)offsetFromPosition:(UITextPosition *)fromPosition toPosition:(UITextPosition *)toPosition</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/offsetFromPosition:toPosition:">- (NSInteger)offsetFromPosition:(UITextPosition *)fromPosition toPosition:(UITextPosition *)toPosition</a>
      * @since Available in iOS 3.2 and later.
      */
     public int getOffset(UITextPosition fromPosition, UITextPosition toPosition) {
@@ -1143,7 +1143,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGRect objc_getPlaceholderRect(UITextField __self__, Selector __cmd__, @ByVal CGRect bounds);
     @Bridge private native static @ByVal CGRect objc_getPlaceholderRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instm/UITextField/placeholderRectForBounds:">- (CGRect)placeholderRectForBounds:(CGRect)bounds</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instm/UITextField/placeholderRectForBounds:">- (CGRect)placeholderRectForBounds:(CGRect)bounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getPlaceholderRect(CGRect bounds) {
@@ -1154,7 +1154,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITextPosition objc_getPosition(UITextField __self__, Selector __cmd__, UITextPosition position, UITextLayoutDirection direction, int offset);
     @Bridge private native static UITextPosition objc_getPositionSuper(ObjCSuper __super__, Selector __cmd__, UITextPosition position, UITextLayoutDirection direction, int offset);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/positionFromPosition:inDirection:offset:">- (UITextPosition *)positionFromPosition:(UITextPosition *)position inDirection:(UITextLayoutDirection)direction offset:(NSInteger)offset</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/positionFromPosition:inDirection:offset:">- (UITextPosition *)positionFromPosition:(UITextPosition *)position inDirection:(UITextLayoutDirection)direction offset:(NSInteger)offset</a>
      * @since Available in iOS 3.2 and later.
      */
     public UITextPosition getPosition(UITextPosition position, UITextLayoutDirection direction, int offset) {
@@ -1165,7 +1165,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITextPosition objc_getPosition(UITextField __self__, Selector __cmd__, UITextRange range, int offset);
     @Bridge private native static UITextPosition objc_getPositionSuper(ObjCSuper __super__, Selector __cmd__, UITextRange range, int offset);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/positionWithinRange:atCharacterOffset:">- (UITextPosition *)positionWithinRange:(UITextRange *)range atCharacterOffset:(NSInteger)offset</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/positionWithinRange:atCharacterOffset:">- (UITextPosition *)positionWithinRange:(UITextRange *)range atCharacterOffset:(NSInteger)offset</a>
      * @since Available in iOS 3.2 and later.
      */
     public UITextPosition getPosition(UITextRange range, int offset) {
@@ -1176,7 +1176,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITextPosition objc_getPosition(UITextField __self__, Selector __cmd__, UITextPosition position, int offset);
     @Bridge private native static UITextPosition objc_getPositionSuper(ObjCSuper __super__, Selector __cmd__, UITextPosition position, int offset);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/positionFromPosition:offset:">- (UITextPosition *)positionFromPosition:(UITextPosition *)position offset:(NSInteger)offset</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/positionFromPosition:offset:">- (UITextPosition *)positionFromPosition:(UITextPosition *)position offset:(NSInteger)offset</a>
      * @since Available in iOS 3.2 and later.
      */
     public UITextPosition getPosition(UITextPosition position, int offset) {
@@ -1187,7 +1187,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITextPosition objc_getPosition(UITextField __self__, Selector __cmd__, UITextRange range, UITextLayoutDirection direction);
     @Bridge private native static UITextPosition objc_getPositionSuper(ObjCSuper __super__, Selector __cmd__, UITextRange range, UITextLayoutDirection direction);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/positionWithinRange:farthestInDirection:">- (UITextPosition *)positionWithinRange:(UITextRange *)range farthestInDirection:(UITextLayoutDirection)direction</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/positionWithinRange:farthestInDirection:">- (UITextPosition *)positionWithinRange:(UITextRange *)range farthestInDirection:(UITextLayoutDirection)direction</a>
      * @since Available in iOS 3.2 and later.
      */
     public UITextPosition getPosition(UITextRange range, UITextLayoutDirection direction) {
@@ -1198,7 +1198,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGRect objc_getRightViewRect(UITextField __self__, Selector __cmd__, @ByVal CGRect bounds);
     @Bridge private native static @ByVal CGRect objc_getRightViewRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instm/UITextField/rightViewRectForBounds:">- (CGRect)rightViewRectForBounds:(CGRect)bounds</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instm/UITextField/rightViewRectForBounds:">- (CGRect)rightViewRectForBounds:(CGRect)bounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getRightViewRect(CGRect bounds) {
@@ -1209,7 +1209,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getSelectionRects(UITextField __self__, Selector __cmd__, UITextRange range);
     @Bridge private native static NSArray objc_getSelectionRectsSuper(ObjCSuper __super__, Selector __cmd__, UITextRange range);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/selectionRectsForRange:">- (NSArray *)selectionRectsForRange:(UITextRange *)range</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/selectionRectsForRange:">- (NSArray *)selectionRectsForRange:(UITextRange *)range</a>
      * @since Available in iOS 6.0 and later.
      */
     public NSArray getSelectionRects(UITextRange range) {
@@ -1220,7 +1220,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static String objc_getText(UITextField __self__, Selector __cmd__, UITextRange range);
     @Bridge private native static String objc_getTextSuper(ObjCSuper __super__, Selector __cmd__, UITextRange range);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/textInRange:">- (NSString *)textInRange:(UITextRange *)range</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/textInRange:">- (NSString *)textInRange:(UITextRange *)range</a>
      * @since Available in iOS 3.2 and later.
      */
     public String getText(UITextRange range) {
@@ -1231,7 +1231,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UITextRange objc_getTextRange(UITextField __self__, Selector __cmd__, UITextPosition fromPosition, UITextPosition toPosition);
     @Bridge private native static UITextRange objc_getTextRangeSuper(ObjCSuper __super__, Selector __cmd__, UITextPosition fromPosition, UITextPosition toPosition);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/textRangeFromPosition:toPosition:">- (UITextRange *)textRangeFromPosition:(UITextPosition *)fromPosition toPosition:(UITextPosition *)toPosition</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/textRangeFromPosition:toPosition:">- (UITextRange *)textRangeFromPosition:(UITextPosition *)fromPosition toPosition:(UITextPosition *)toPosition</a>
      * @since Available in iOS 3.2 and later.
      */
     public UITextRange getTextRange(UITextPosition fromPosition, UITextPosition toPosition) {
@@ -1242,7 +1242,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGRect objc_getTextRect(UITextField __self__, Selector __cmd__, @ByVal CGRect bounds);
     @Bridge private native static @ByVal CGRect objc_getTextRectSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect bounds);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instm/UITextField/textRectForBounds:">- (CGRect)textRectForBounds:(CGRect)bounds</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextField_Class/Reference/UITextField.html#//apple_ref/occ/instm/UITextField/textRectForBounds:">- (CGRect)textRectForBounds:(CGRect)bounds</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getTextRect(CGRect bounds) {
@@ -1253,7 +1253,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSDictionary objc_getTextStyling(UITextField __self__, Selector __cmd__, UITextPosition position, UITextStorageDirection direction);
     @Bridge private native static NSDictionary objc_getTextStylingSuper(ObjCSuper __super__, Selector __cmd__, UITextPosition position, UITextStorageDirection direction);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/textStylingAtPosition:inDirection:">- (NSDictionary *)textStylingAtPosition:(UITextPosition *)position inDirection:(UITextStorageDirection)direction</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/textStylingAtPosition:inDirection:">- (NSDictionary *)textStylingAtPosition:(UITextPosition *)position inDirection:(UITextStorageDirection)direction</a>
      * @since Available in iOS 3.2 and later.
      */
     public NSDictionary getTextStyling(UITextPosition position, UITextStorageDirection direction) {
@@ -1264,7 +1264,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_hasText(UITextField __self__, Selector __cmd__);
     @Bridge private native static boolean objc_hasTextSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIKeyInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIKeyInput/hasText">- (BOOL)hasText</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIKeyInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIKeyInput/hasText">- (BOOL)hasText</a>
      * @since Available in iOS 3.2 and later.
      */
     public boolean hasText() {
@@ -1275,7 +1275,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_insertDictationResult(UITextField __self__, Selector __cmd__, NSArray dictationResult);
     @Bridge private native static void objc_insertDictationResultSuper(ObjCSuper __super__, Selector __cmd__, NSArray dictationResult);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/insertDictationResult:">- (void)insertDictationResult:(NSArray *)dictationResult</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/insertDictationResult:">- (void)insertDictationResult:(NSArray *)dictationResult</a>
      * @since Available in iOS 5.1 and later.
      */
     public void insertDictationResult(NSArray dictationResult) {
@@ -1286,7 +1286,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSObject objc_insertDictationResultPlaceholder(UITextField __self__, Selector __cmd__);
     @Bridge private native static NSObject objc_insertDictationResultPlaceholderSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/insertDictationResultPlaceholder">- (id)insertDictationResultPlaceholder</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/insertDictationResultPlaceholder">- (id)insertDictationResultPlaceholder</a>
      * @since Available in iOS 6.0 and later.
      */
     public NSObject insertDictationResultPlaceholder() {
@@ -1297,7 +1297,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_insertText(UITextField __self__, Selector __cmd__, String text);
     @Bridge private native static void objc_insertTextSuper(ObjCSuper __super__, Selector __cmd__, String text);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIKeyInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIKeyInput/insertText:">- (void)insertText:(NSString *)text</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIKeyInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIKeyInput/insertText:">- (void)insertText:(NSString *)text</a>
      * @since Available in iOS 3.2 and later.
      */
     public void insertText(String text) {
@@ -1308,7 +1308,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_removeDictationResultPlaceholder(UITextField __self__, Selector __cmd__, NSObject placeholder, boolean willInsertResult);
     @Bridge private native static void objc_removeDictationResultPlaceholderSuper(ObjCSuper __super__, Selector __cmd__, NSObject placeholder, boolean willInsertResult);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/removeDictationResultPlaceholder:willInsertResult:">- (void)removeDictationResultPlaceholder:(id)placeholder willInsertResult:(BOOL)willInsertResult</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/removeDictationResultPlaceholder:willInsertResult:">- (void)removeDictationResultPlaceholder:(id)placeholder willInsertResult:(BOOL)willInsertResult</a>
      * @since Available in iOS 6.0 and later.
      */
     public void removeDictationResultPlaceholder(NSObject placeholder, boolean willInsertResult) {
@@ -1319,7 +1319,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_replaceText(UITextField __self__, Selector __cmd__, UITextRange range, String text);
     @Bridge private native static void objc_replaceTextSuper(ObjCSuper __super__, Selector __cmd__, UITextRange range, String text);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/replaceRange:withText:">- (void)replaceRange:(UITextRange *)range withText:(NSString *)text</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/replaceRange:withText:">- (void)replaceRange:(UITextRange *)range withText:(NSString *)text</a>
      * @since Available in iOS 3.2 and later.
      */
     public void replaceText(UITextRange range, String text) {
@@ -1330,7 +1330,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setBaseWritingDirection(UITextField __self__, Selector __cmd__, UITextWritingDirection writingDirection, UITextRange range);
     @Bridge private native static void objc_setBaseWritingDirectionSuper(ObjCSuper __super__, Selector __cmd__, UITextWritingDirection writingDirection, UITextRange range);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/setBaseWritingDirection:forRange:">- (void)setBaseWritingDirection:(UITextWritingDirection)writingDirection forRange:(UITextRange *)range</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/setBaseWritingDirection:forRange:">- (void)setBaseWritingDirection:(UITextWritingDirection)writingDirection forRange:(UITextRange *)range</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setBaseWritingDirection(UITextWritingDirection writingDirection, UITextRange range) {
@@ -1341,7 +1341,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setMarkedText(UITextField __self__, Selector __cmd__, String markedText, @ByVal NSRange selectedRange);
     @Bridge private native static void objc_setMarkedTextSuper(ObjCSuper __super__, Selector __cmd__, String markedText, @ByVal NSRange selectedRange);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/setMarkedText:selectedRange:">- (void)setMarkedText:(NSString *)markedText selectedRange:(NSRange)selectedRange</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/setMarkedText:selectedRange:">- (void)setMarkedText:(NSString *)markedText selectedRange:(NSRange)selectedRange</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setMarkedText(String markedText, NSRange selectedRange) {
@@ -1352,7 +1352,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_shouldChangeText(UITextField __self__, Selector __cmd__, UITextRange range, String text);
     @Bridge private native static boolean objc_shouldChangeTextSuper(ObjCSuper __super__, Selector __cmd__, UITextRange range, String text);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/shouldChangeTextInRange:replacementText:">- (BOOL)shouldChangeTextInRange:(UITextRange *)range replacementText:(NSString *)text</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/shouldChangeTextInRange:replacementText:">- (BOOL)shouldChangeTextInRange:(UITextRange *)range replacementText:(NSString *)text</a>
      * @since Available in iOS 6.0 and later.
      */
     public boolean shouldChangeText(UITextRange range, String text) {
@@ -1363,7 +1363,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_unmarkText(UITextField __self__, Selector __cmd__);
     @Bridge private native static void objc_unmarkTextSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/unmarkText">- (void)unmarkText</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextInput_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITextInput/unmarkText">- (void)unmarkText</a>
      * @since Available in iOS 3.2 and later.
      */
     public void unmarkText() {

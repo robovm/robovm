@@ -28,7 +28,7 @@ import org.robovm.rt.bro.ptr.*;
 /**
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSRunLoop_Class/Reference/Reference.html">NSRunLoop Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSRunLoop_Class/Reference/Reference.html">NSRunLoop Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -56,7 +56,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector currentRunLoop = Selector.register("currentRunLoop");
     @Bridge private native static NSRunLoop objc_getCurrent(ObjCClass __self__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSRunLoop_Class/Reference/Reference.html#//apple_ref/occ/clm/NSRunLoop/currentRunLoop">+ (NSRunLoop *)currentRunLoop</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSRunLoop_Class/Reference/Reference.html#//apple_ref/occ/clm/NSRunLoop/currentRunLoop">+ (NSRunLoop *)currentRunLoop</a>
      * @since Available in iOS 2.0 and later.
      */
     public static NSRunLoop getCurrent() {
@@ -66,7 +66,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector mainRunLoop = Selector.register("mainRunLoop");
     @Bridge private native static NSRunLoop objc_getMain(ObjCClass __self__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSRunLoop_Class/Reference/Reference.html#//apple_ref/occ/clm/NSRunLoop/mainRunLoop">+ (NSRunLoop *)mainRunLoop</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSRunLoop_Class/Reference/Reference.html#//apple_ref/occ/clm/NSRunLoop/mainRunLoop">+ (NSRunLoop *)mainRunLoop</a>
      * @since Available in iOS 2.0 and later.
      */
     public static NSRunLoop getMain() {
@@ -77,7 +77,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_acceptInputForMode(NSRunLoop __self__, Selector __cmd__, String mode, NSDate limitDate);
     @Bridge private native static void objc_acceptInputForModeSuper(ObjCSuper __super__, Selector __cmd__, String mode, NSDate limitDate);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSRunLoop_Class/Reference/Reference.html#//apple_ref/occ/instm/NSRunLoop/acceptInputForMode:beforeDate:">- (void)acceptInputForMode:(NSString *)mode beforeDate:(NSDate *)limitDate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSRunLoop_Class/Reference/Reference.html#//apple_ref/occ/instm/NSRunLoop/acceptInputForMode:beforeDate:">- (void)acceptInputForMode:(NSString *)mode beforeDate:(NSDate *)limitDate</a>
      * @since Available in iOS 2.0 and later.
      */
     public void acceptInputForMode(String mode, NSDate limitDate) {
@@ -88,7 +88,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_addTimer(NSRunLoop __self__, Selector __cmd__, NSTimer aTimer, String mode);
     @Bridge private native static void objc_addTimerSuper(ObjCSuper __super__, Selector __cmd__, NSTimer aTimer, String mode);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSRunLoop_Class/Reference/Reference.html#//apple_ref/occ/instm/NSRunLoop/addTimer:forMode:">- (void)addTimer:(NSTimer *)aTimer forMode:(NSString *)mode</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSRunLoop_Class/Reference/Reference.html#//apple_ref/occ/instm/NSRunLoop/addTimer:forMode:">- (void)addTimer:(NSTimer *)aTimer forMode:(NSString *)mode</a>
      * @since Available in iOS 2.0 and later.
      */
     public void addTimer(NSTimer aTimer, String mode) {
@@ -99,7 +99,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_cancel(NSRunLoop __self__, Selector __cmd__, Selector aSelector, NSObject target, NSObject anArgument);
     @Bridge private native static void objc_cancelSuper(ObjCSuper __super__, Selector __cmd__, Selector aSelector, NSObject target, NSObject anArgument);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSRunLoop_Class/Reference/Reference.html#//apple_ref/occ/instm/NSRunLoop/cancelPerformSelector:target:argument:">- (void)cancelPerformSelector:(SEL)aSelector target:(id)target argument:(id)anArgument</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSRunLoop_Class/Reference/Reference.html#//apple_ref/occ/instm/NSRunLoop/cancelPerformSelector:target:argument:">- (void)cancelPerformSelector:(SEL)aSelector target:(id)target argument:(id)anArgument</a>
      * @since Available in iOS 2.0 and later.
      */
     public void cancel(Selector aSelector, NSObject target, NSObject anArgument) {
@@ -110,7 +110,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_cancel(NSRunLoop __self__, Selector __cmd__, NSObject target);
     @Bridge private native static void objc_cancelSuper(ObjCSuper __super__, Selector __cmd__, NSObject target);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSRunLoop_Class/Reference/Reference.html#//apple_ref/occ/instm/NSRunLoop/cancelPerformSelectorsWithTarget:">- (void)cancelPerformSelectorsWithTarget:(id)target</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSRunLoop_Class/Reference/Reference.html#//apple_ref/occ/instm/NSRunLoop/cancelPerformSelectorsWithTarget:">- (void)cancelPerformSelectorsWithTarget:(id)target</a>
      * @since Available in iOS 2.0 and later.
      */
     public void cancel(NSObject target) {
@@ -121,7 +121,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static String objc_getCurrentMode(NSRunLoop __self__, Selector __cmd__);
     @Bridge private native static String objc_getCurrentModeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSRunLoop_Class/Reference/Reference.html#//apple_ref/occ/instm/NSRunLoop/currentMode">- (NSString *)currentMode</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSRunLoop_Class/Reference/Reference.html#//apple_ref/occ/instm/NSRunLoop/currentMode">- (NSString *)currentMode</a>
      * @since Available in iOS 2.0 and later.
      */
     public String getCurrentMode() {
@@ -132,7 +132,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSDate objc_limitDateForMode(NSRunLoop __self__, Selector __cmd__, String mode);
     @Bridge private native static NSDate objc_limitDateForModeSuper(ObjCSuper __super__, Selector __cmd__, String mode);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSRunLoop_Class/Reference/Reference.html#//apple_ref/occ/instm/NSRunLoop/limitDateForMode:">- (NSDate *)limitDateForMode:(NSString *)mode</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSRunLoop_Class/Reference/Reference.html#//apple_ref/occ/instm/NSRunLoop/limitDateForMode:">- (NSDate *)limitDateForMode:(NSString *)mode</a>
      * @since Available in iOS 2.0 and later.
      */
     public NSDate limitDateForMode(String mode) {
@@ -143,7 +143,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_perform(NSRunLoop __self__, Selector __cmd__, Selector aSelector, NSObject target, NSObject anArgument, int order, NSArray modes);
     @Bridge private native static void objc_performSuper(ObjCSuper __super__, Selector __cmd__, Selector aSelector, NSObject target, NSObject anArgument, int order, NSArray modes);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSRunLoop_Class/Reference/Reference.html#//apple_ref/occ/instm/NSRunLoop/performSelector:target:argument:order:modes:">- (void)performSelector:(SEL)aSelector target:(id)target argument:(id)anArgument order:(NSUInteger)order modes:(NSArray *)modes</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSRunLoop_Class/Reference/Reference.html#//apple_ref/occ/instm/NSRunLoop/performSelector:target:argument:order:modes:">- (void)performSelector:(SEL)aSelector target:(id)target argument:(id)anArgument order:(NSUInteger)order modes:(NSArray *)modes</a>
      * @since Available in iOS 2.0 and later.
      */
     public void perform(Selector aSelector, NSObject target, NSObject anArgument, int order, NSArray modes) {
@@ -154,7 +154,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_run(NSRunLoop __self__, Selector __cmd__);
     @Bridge private native static void objc_runSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSRunLoop_Class/Reference/Reference.html#//apple_ref/occ/instm/NSRunLoop/run">- (void)run</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSRunLoop_Class/Reference/Reference.html#//apple_ref/occ/instm/NSRunLoop/run">- (void)run</a>
      * @since Available in iOS 2.0 and later.
      */
     public void run() {
@@ -165,7 +165,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_runUntil(NSRunLoop __self__, Selector __cmd__, String mode, NSDate limitDate);
     @Bridge private native static boolean objc_runUntilSuper(ObjCSuper __super__, Selector __cmd__, String mode, NSDate limitDate);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSRunLoop_Class/Reference/Reference.html#//apple_ref/occ/instm/NSRunLoop/runMode:beforeDate:">- (BOOL)runMode:(NSString *)mode beforeDate:(NSDate *)limitDate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSRunLoop_Class/Reference/Reference.html#//apple_ref/occ/instm/NSRunLoop/runMode:beforeDate:">- (BOOL)runMode:(NSString *)mode beforeDate:(NSDate *)limitDate</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean runUntil(String mode, NSDate limitDate) {
@@ -176,7 +176,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_runUntil(NSRunLoop __self__, Selector __cmd__, NSDate limitDate);
     @Bridge private native static void objc_runUntilSuper(ObjCSuper __super__, Selector __cmd__, NSDate limitDate);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSRunLoop_Class/Reference/Reference.html#//apple_ref/occ/instm/NSRunLoop/runUntilDate:">- (void)runUntilDate:(NSDate *)limitDate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSRunLoop_Class/Reference/Reference.html#//apple_ref/occ/instm/NSRunLoop/runUntilDate:">- (void)runUntilDate:(NSDate *)limitDate</a>
      * @since Available in iOS 2.0 and later.
      */
     public void runUntil(NSDate limitDate) {

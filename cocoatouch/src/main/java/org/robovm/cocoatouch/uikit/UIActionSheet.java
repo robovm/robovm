@@ -33,7 +33,7 @@ import org.robovm.rt.bro.ptr.*;
 /**
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html">UIActionSheet Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html">UIActionSheet Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -62,7 +62,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIActionSheetStyle objc_getActionSheetStyle(UIActionSheet __self__, Selector __cmd__);
     @Bridge private native static UIActionSheetStyle objc_getActionSheetStyleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/actionSheetStyle">@property(nonatomic) UIActionSheetStyle actionSheetStyle</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/actionSheetStyle">@property(nonatomic) UIActionSheetStyle actionSheetStyle</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIActionSheetStyle getActionSheetStyle() {
@@ -73,7 +73,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setActionSheetStyle(UIActionSheet __self__, Selector __cmd__, UIActionSheetStyle actionSheetStyle);
     @Bridge private native static void objc_setActionSheetStyleSuper(ObjCSuper __super__, Selector __cmd__, UIActionSheetStyle actionSheetStyle);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/actionSheetStyle">@property(nonatomic) UIActionSheetStyle actionSheetStyle</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/actionSheetStyle">@property(nonatomic) UIActionSheetStyle actionSheetStyle</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setActionSheetStyle(UIActionSheetStyle actionSheetStyle) {
@@ -84,7 +84,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_getCancelButtonIndex(UIActionSheet __self__, Selector __cmd__);
     @Bridge private native static int objc_getCancelButtonIndexSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/cancelButtonIndex">@property(nonatomic) NSInteger cancelButtonIndex</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/cancelButtonIndex">@property(nonatomic) NSInteger cancelButtonIndex</a>
      * @since Available in iOS 2.0 and later.
      */
     public int getCancelButtonIndex() {
@@ -95,7 +95,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setCancelButtonIndex(UIActionSheet __self__, Selector __cmd__, int cancelButtonIndex);
     @Bridge private native static void objc_setCancelButtonIndexSuper(ObjCSuper __super__, Selector __cmd__, int cancelButtonIndex);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/cancelButtonIndex">@property(nonatomic) NSInteger cancelButtonIndex</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/cancelButtonIndex">@property(nonatomic) NSInteger cancelButtonIndex</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setCancelButtonIndex(int cancelButtonIndex) {
@@ -106,7 +106,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIActionSheetDelegate objc_getDelegate(UIActionSheet __self__, Selector __cmd__);
     @Bridge private native static UIActionSheetDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/delegate">@property(nonatomic, assign) id&amp;lt;UIActionSheetDelegate&amp;gt; delegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/delegate">@property(nonatomic, assign) id&amp;lt;UIActionSheetDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIActionSheetDelegate getDelegate() {
@@ -117,7 +117,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setDelegate(UIActionSheet __self__, Selector __cmd__, UIActionSheetDelegate delegate);
     @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIActionSheetDelegate delegate);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/delegate">@property(nonatomic, assign) id&amp;lt;UIActionSheetDelegate&amp;gt; delegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/delegate">@property(nonatomic, assign) id&amp;lt;UIActionSheetDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setDelegate(UIActionSheetDelegate delegate) {
@@ -128,7 +128,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_getDestructiveButtonIndex(UIActionSheet __self__, Selector __cmd__);
     @Bridge private native static int objc_getDestructiveButtonIndexSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/destructiveButtonIndex">@property(nonatomic) NSInteger destructiveButtonIndex</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/destructiveButtonIndex">@property(nonatomic) NSInteger destructiveButtonIndex</a>
      * @since Available in iOS 2.0 and later.
      */
     public int getDestructiveButtonIndex() {
@@ -139,7 +139,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setDestructiveButtonIndex(UIActionSheet __self__, Selector __cmd__, int destructiveButtonIndex);
     @Bridge private native static void objc_setDestructiveButtonIndexSuper(ObjCSuper __super__, Selector __cmd__, int destructiveButtonIndex);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/destructiveButtonIndex">@property(nonatomic) NSInteger destructiveButtonIndex</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/destructiveButtonIndex">@property(nonatomic) NSInteger destructiveButtonIndex</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setDestructiveButtonIndex(int destructiveButtonIndex) {
@@ -150,7 +150,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_getFirstOtherButtonIndex(UIActionSheet __self__, Selector __cmd__);
     @Bridge private native static int objc_getFirstOtherButtonIndexSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/firstOtherButtonIndex">@property(nonatomic, readonly) NSInteger firstOtherButtonIndex</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/firstOtherButtonIndex">@property(nonatomic, readonly) NSInteger firstOtherButtonIndex</a>
      * @since Available in iOS 2.0 and later.
      */
     public int getFirstOtherButtonIndex() {
@@ -161,7 +161,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_getNumberOfButtons(UIActionSheet __self__, Selector __cmd__);
     @Bridge private native static int objc_getNumberOfButtonsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/numberOfButtons">@property(nonatomic, readonly) NSInteger numberOfButtons</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/numberOfButtons">@property(nonatomic, readonly) NSInteger numberOfButtons</a>
      * @since Available in iOS 2.0 and later.
      */
     public int getNumberOfButtons() {
@@ -172,7 +172,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static String objc_getTitle(UIActionSheet __self__, Selector __cmd__);
     @Bridge private native static String objc_getTitleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/title">@property(nonatomic, copy) NSString *title</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/title">@property(nonatomic, copy) NSString *title</a>
      * @since Available in iOS 2.0 and later.
      */
     public String getTitle() {
@@ -183,7 +183,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setTitle(UIActionSheet __self__, Selector __cmd__, String title);
     @Bridge private native static void objc_setTitleSuper(ObjCSuper __super__, Selector __cmd__, String title);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/title">@property(nonatomic, copy) NSString *title</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/title">@property(nonatomic, copy) NSString *title</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setTitle(String title) {
@@ -194,7 +194,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isVisible(UIActionSheet __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isVisibleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/visible">@property(nonatomic, readonly, getter=isVisible) BOOL visible</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instp/UIActionSheet/visible">@property(nonatomic, readonly, getter=isVisible) BOOL visible</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isVisible() {
@@ -207,7 +207,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_addButton(UIActionSheet __self__, Selector __cmd__, String title);
     @Bridge private native static int objc_addButtonSuper(ObjCSuper __super__, Selector __cmd__, String title);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActionSheet/addButtonWithTitle:">- (NSInteger)addButtonWithTitle:(NSString *)title</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActionSheet/addButtonWithTitle:">- (NSInteger)addButtonWithTitle:(NSString *)title</a>
      * @since Available in iOS 2.0 and later.
      */
     public int addButton(String title) {
@@ -218,7 +218,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_dismiss(UIActionSheet __self__, Selector __cmd__, int buttonIndex, boolean animated);
     @Bridge private native static void objc_dismissSuper(ObjCSuper __super__, Selector __cmd__, int buttonIndex, boolean animated);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActionSheet/dismissWithClickedButtonIndex:animated:">- (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActionSheet/dismissWithClickedButtonIndex:animated:">- (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
      */
     public void dismiss(int buttonIndex, boolean animated) {
@@ -229,7 +229,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static String objc_getButtonTitle(UIActionSheet __self__, Selector __cmd__, int buttonIndex);
     @Bridge private native static String objc_getButtonTitleSuper(ObjCSuper __super__, Selector __cmd__, int buttonIndex);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActionSheet/buttonTitleAtIndex:">- (NSString *)buttonTitleAtIndex:(NSInteger)buttonIndex</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActionSheet/buttonTitleAtIndex:">- (NSString *)buttonTitleAtIndex:(NSInteger)buttonIndex</a>
      * @since Available in iOS 2.0 and later.
      */
     public String getButtonTitle(int buttonIndex) {
@@ -240,7 +240,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_showFrom(UIActionSheet __self__, Selector __cmd__, UIBarButtonItem item, boolean animated);
     @Bridge private native static void objc_showFromSuper(ObjCSuper __super__, Selector __cmd__, UIBarButtonItem item, boolean animated);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActionSheet/showFromBarButtonItem:animated:">- (void)showFromBarButtonItem:(UIBarButtonItem *)item animated:(BOOL)animated</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActionSheet/showFromBarButtonItem:animated:">- (void)showFromBarButtonItem:(UIBarButtonItem *)item animated:(BOOL)animated</a>
      * @since Available in iOS 3.2 and later.
      */
     public void showFrom(UIBarButtonItem item, boolean animated) {
@@ -251,7 +251,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_showFrom(UIActionSheet __self__, Selector __cmd__, UIToolbar view);
     @Bridge private native static void objc_showFromSuper(ObjCSuper __super__, Selector __cmd__, UIToolbar view);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActionSheet/showFromToolbar:">- (void)showFromToolbar:(UIToolbar *)view</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActionSheet/showFromToolbar:">- (void)showFromToolbar:(UIToolbar *)view</a>
      * @since Available in iOS 2.0 and later.
      */
     public void showFrom(UIToolbar view) {
@@ -262,7 +262,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_showFrom(UIActionSheet __self__, Selector __cmd__, UITabBar view);
     @Bridge private native static void objc_showFromSuper(ObjCSuper __super__, Selector __cmd__, UITabBar view);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActionSheet/showFromTabBar:">- (void)showFromTabBar:(UITabBar *)view</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActionSheet/showFromTabBar:">- (void)showFromTabBar:(UITabBar *)view</a>
      * @since Available in iOS 2.0 and later.
      */
     public void showFrom(UITabBar view) {
@@ -273,7 +273,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_showFrom(UIActionSheet __self__, Selector __cmd__, @ByVal CGRect rect, UIView view, boolean animated);
     @Bridge private native static void objc_showFromSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, UIView view, boolean animated);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActionSheet/showFromRect:inView:animated:">- (void)showFromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActionSheet/showFromRect:inView:animated:">- (void)showFromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated</a>
      * @since Available in iOS 3.2 and later.
      */
     public void showFrom(CGRect rect, UIView view, boolean animated) {
@@ -284,7 +284,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_showInView(UIActionSheet __self__, Selector __cmd__, UIView view);
     @Bridge private native static void objc_showInViewSuper(ObjCSuper __super__, Selector __cmd__, UIView view);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActionSheet/showInView:">- (void)showInView:(UIView *)view</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIActionSheet_Class/Reference/Reference.html#//apple_ref/occ/instm/UIActionSheet/showInView:">- (void)showInView:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
      */
     public void showInView(UIView view) {

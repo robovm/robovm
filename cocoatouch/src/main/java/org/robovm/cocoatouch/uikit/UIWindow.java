@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html">UIWindow Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html">UIWindow Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -63,7 +63,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isKeyWindow(UIWindow __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isKeyWindowSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instp/UIWindow/keyWindow">@property(nonatomic, readonly, getter=isKeyWindow) BOOL keyWindow</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instp/UIWindow/keyWindow">@property(nonatomic, readonly, getter=isKeyWindow) BOOL keyWindow</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isKeyWindow() {
@@ -74,7 +74,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIViewController objc_getRootViewController(UIWindow __self__, Selector __cmd__);
     @Bridge private native static UIViewController objc_getRootViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instp/UIWindow/rootViewController">@property(nonatomic, retain) UIViewController *rootViewController</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instp/UIWindow/rootViewController">@property(nonatomic, retain) UIViewController *rootViewController</a>
      * @since Available in iOS 4.0 and later.
      */
     public UIViewController getRootViewController() {
@@ -85,7 +85,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setRootViewController(UIWindow __self__, Selector __cmd__, UIViewController rootViewController);
     @Bridge private native static void objc_setRootViewControllerSuper(ObjCSuper __super__, Selector __cmd__, UIViewController rootViewController);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instp/UIWindow/rootViewController">@property(nonatomic, retain) UIViewController *rootViewController</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instp/UIWindow/rootViewController">@property(nonatomic, retain) UIViewController *rootViewController</a>
      * @since Available in iOS 4.0 and later.
      */
     public void setRootViewController(UIViewController rootViewController) {
@@ -96,7 +96,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIScreen objc_getScreen(UIWindow __self__, Selector __cmd__);
     @Bridge private native static UIScreen objc_getScreenSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instp/UIWindow/screen">@property(nonatomic, retain) UIScreen *screen</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instp/UIWindow/screen">@property(nonatomic, retain) UIScreen *screen</a>
      * @since Available in iOS 3.2 and later.
      */
     public UIScreen getScreen() {
@@ -107,7 +107,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setScreen(UIWindow __self__, Selector __cmd__, UIScreen screen);
     @Bridge private native static void objc_setScreenSuper(ObjCSuper __super__, Selector __cmd__, UIScreen screen);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instp/UIWindow/screen">@property(nonatomic, retain) UIScreen *screen</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instp/UIWindow/screen">@property(nonatomic, retain) UIScreen *screen</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setScreen(UIScreen screen) {
@@ -118,7 +118,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static float objc_getWindowLevel(UIWindow __self__, Selector __cmd__);
     @Bridge private native static float objc_getWindowLevelSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instp/UIWindow/windowLevel">@property(nonatomic) UIWindowLevel windowLevel</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instp/UIWindow/windowLevel">@property(nonatomic) UIWindowLevel windowLevel</a>
      * @since Available in iOS 2.0 and later.
      */
     public float getWindowLevel() {
@@ -129,7 +129,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setWindowLevel(UIWindow __self__, Selector __cmd__, float windowLevel);
     @Bridge private native static void objc_setWindowLevelSuper(ObjCSuper __super__, Selector __cmd__, float windowLevel);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instp/UIWindow/windowLevel">@property(nonatomic) UIWindowLevel windowLevel</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instp/UIWindow/windowLevel">@property(nonatomic) UIWindowLevel windowLevel</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setWindowLevel(float windowLevel) {
@@ -142,7 +142,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_becomeKeyWindow(UIWindow __self__, Selector __cmd__);
     @Bridge private native static void objc_becomeKeyWindowSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/becomeKeyWindow">- (void)becomeKeyWindow</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/becomeKeyWindow">- (void)becomeKeyWindow</a>
      * @since Available in iOS 2.0 and later.
      */
     public void becomeKeyWindow() {
@@ -153,7 +153,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGPoint objc_convertPointFromWindow(UIWindow __self__, Selector __cmd__, @ByVal CGPoint point, UIWindow window);
     @Bridge private native static @ByVal CGPoint objc_convertPointFromWindowSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point, UIWindow window);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/convertPoint:fromWindow:">- (CGPoint)convertPoint:(CGPoint)point fromWindow:(UIWindow *)window</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/convertPoint:fromWindow:">- (CGPoint)convertPoint:(CGPoint)point fromWindow:(UIWindow *)window</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGPoint convertPointFromWindow(CGPoint point, UIWindow window) {
@@ -164,7 +164,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGPoint objc_convertPointToWindow(UIWindow __self__, Selector __cmd__, @ByVal CGPoint point, UIWindow window);
     @Bridge private native static @ByVal CGPoint objc_convertPointToWindowSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint point, UIWindow window);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/convertPoint:toWindow:">- (CGPoint)convertPoint:(CGPoint)point toWindow:(UIWindow *)window</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/convertPoint:toWindow:">- (CGPoint)convertPoint:(CGPoint)point toWindow:(UIWindow *)window</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGPoint convertPointToWindow(CGPoint point, UIWindow window) {
@@ -175,7 +175,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGRect objc_convertRectFromWindow(UIWindow __self__, Selector __cmd__, @ByVal CGRect rect, UIWindow window);
     @Bridge private native static @ByVal CGRect objc_convertRectFromWindowSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, UIWindow window);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/convertRect:fromWindow:">- (CGRect)convertRect:(CGRect)rect fromWindow:(UIWindow *)window</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/convertRect:fromWindow:">- (CGRect)convertRect:(CGRect)rect fromWindow:(UIWindow *)window</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect convertRectFromWindow(CGRect rect, UIWindow window) {
@@ -186,7 +186,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGRect objc_convertRectToWindow(UIWindow __self__, Selector __cmd__, @ByVal CGRect rect, UIWindow window);
     @Bridge private native static @ByVal CGRect objc_convertRectToWindowSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, UIWindow window);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/convertRect:toWindow:">- (CGRect)convertRect:(CGRect)rect toWindow:(UIWindow *)window</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/convertRect:toWindow:">- (CGRect)convertRect:(CGRect)rect toWindow:(UIWindow *)window</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect convertRectToWindow(CGRect rect, UIWindow window) {
@@ -197,7 +197,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_makeKeyAndVisible(UIWindow __self__, Selector __cmd__);
     @Bridge private native static void objc_makeKeyAndVisibleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/makeKeyAndVisible">- (void)makeKeyAndVisible</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/makeKeyAndVisible">- (void)makeKeyAndVisible</a>
      * @since Available in iOS 2.0 and later.
      */
     public void makeKeyAndVisible() {
@@ -208,7 +208,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_makeKeyWindow(UIWindow __self__, Selector __cmd__);
     @Bridge private native static void objc_makeKeyWindowSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/makeKeyWindow">- (void)makeKeyWindow</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/makeKeyWindow">- (void)makeKeyWindow</a>
      * @since Available in iOS 2.0 and later.
      */
     public void makeKeyWindow() {
@@ -219,7 +219,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_resignKeyWindow(UIWindow __self__, Selector __cmd__);
     @Bridge private native static void objc_resignKeyWindowSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/resignKeyWindow">- (void)resignKeyWindow</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/resignKeyWindow">- (void)resignKeyWindow</a>
      * @since Available in iOS 2.0 and later.
      */
     public void resignKeyWindow() {
@@ -230,7 +230,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_sendEvent(UIWindow __self__, Selector __cmd__, UIEvent event);
     @Bridge private native static void objc_sendEventSuper(ObjCSuper __super__, Selector __cmd__, UIEvent event);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/sendEvent:">- (void)sendEvent:(UIEvent *)event</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIWindow_Class/UIWindowClassReference/UIWindowClassReference.html#//apple_ref/occ/instm/UIWindow/sendEvent:">- (void)sendEvent:(UIEvent *)event</a>
      * @since Available in iOS 2.0 and later.
      */
     public void sendEvent(UIEvent event) {

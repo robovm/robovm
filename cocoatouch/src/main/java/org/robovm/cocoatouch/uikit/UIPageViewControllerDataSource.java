@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDataSourceProtocolRef/UIPageViewControllerDataSource.html">UIPageViewControllerDataSource Protocol Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDataSourceProtocolRef/UIPageViewControllerDataSource.html">UIPageViewControllerDataSource Protocol Reference</a>
  *   @since Available in iOS 5.0 and later.
  * </div>
  */
@@ -45,22 +45,22 @@ public interface /*<name>*/ UIPageViewControllerDataSource /*</name>*/ /*<implem
     /*</properties>*/
     /*<methods>*/
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDataSourceProtocolRef/UIPageViewControllerDataSource.html#//apple_ref/occ/intfm/UIPageViewControllerDataSource/presentationCountForPageViewController:">- (NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDataSourceProtocolRef/UIPageViewControllerDataSource.html#//apple_ref/occ/intfm/UIPageViewControllerDataSource/presentationCountForPageViewController:">- (NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController</a>
      * @since Available in iOS 6.0 and later.
      */
     int getPresentationCount(UIPageViewController pageViewController);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDataSourceProtocolRef/UIPageViewControllerDataSource.html#//apple_ref/occ/intfm/UIPageViewControllerDataSource/presentationIndexForPageViewController:">- (NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDataSourceProtocolRef/UIPageViewControllerDataSource.html#//apple_ref/occ/intfm/UIPageViewControllerDataSource/presentationIndexForPageViewController:">- (NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController</a>
      * @since Available in iOS 6.0 and later.
      */
     int getPresentationIndex(UIPageViewController pageViewController);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDataSourceProtocolRef/UIPageViewControllerDataSource.html#//apple_ref/occ/intfm/UIPageViewControllerDataSource/pageViewController:viewControllerAfterViewController:">- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDataSourceProtocolRef/UIPageViewControllerDataSource.html#//apple_ref/occ/intfm/UIPageViewControllerDataSource/pageViewController:viewControllerAfterViewController:">- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController</a>
      * @since Available in iOS 5.0 and later.
      */
     UIViewController getViewControllerAfter(UIPageViewController pageViewController, UIViewController viewController);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDataSourceProtocolRef/UIPageViewControllerDataSource.html#//apple_ref/occ/intfm/UIPageViewControllerDataSource/pageViewController:viewControllerBeforeViewController:">- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDataSourceProtocolRef/UIPageViewControllerDataSource.html#//apple_ref/occ/intfm/UIPageViewControllerDataSource/pageViewController:viewControllerBeforeViewController:">- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController</a>
      * @since Available in iOS 5.0 and later.
      */
     UIViewController getViewControllerBefore(UIPageViewController pageViewController, UIViewController viewController);

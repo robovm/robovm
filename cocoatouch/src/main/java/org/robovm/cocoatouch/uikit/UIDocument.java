@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html">UIDocument Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html">UIDocument Class Reference</a>
  *   @since Available in iOS 5.0 and later.
  * </div>
  */
@@ -56,12 +56,12 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector initWithFileURL$ = Selector.register("initWithFileURL:");
     @Bridge private native static @Pointer long objc_initWithFileURL(UIDocument __self__, Selector __cmd__, NSURL url);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/initWithFileURL:">- (id)initWithFileURL:(NSURL *)url</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/initWithFileURL:">- (id)initWithFileURL:(NSURL *)url</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIDocument(NSURL url) {
         super((SkipInit) null);
-        setHandle(objc_initWithFileURL(this, initWithFileURL$, url));
+        initObject(objc_initWithFileURL(this, initWithFileURL$, url));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -70,7 +70,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIDocumentState objc_getDocumentState(UIDocument __self__, Selector __cmd__);
     @Bridge private native static UIDocumentState objc_getDocumentStateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instp/UIDocument/documentState">@property(readonly) UIDocumentState documentState</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instp/UIDocument/documentState">@property(readonly) UIDocumentState documentState</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIDocumentState getDocumentState() {
@@ -81,7 +81,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSDate objc_getFileModificationDate(UIDocument __self__, Selector __cmd__);
     @Bridge private native static NSDate objc_getFileModificationDateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instp/UIDocument/fileModificationDate">@property(copy) NSDate *fileModificationDate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instp/UIDocument/fileModificationDate">@property(copy) NSDate *fileModificationDate</a>
      * @since Available in iOS 5.0 and later.
      */
     public NSDate getFileModificationDate() {
@@ -92,7 +92,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setFileModificationDate(UIDocument __self__, Selector __cmd__, NSDate fileModificationDate);
     @Bridge private native static void objc_setFileModificationDateSuper(ObjCSuper __super__, Selector __cmd__, NSDate fileModificationDate);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instp/UIDocument/fileModificationDate">@property(copy) NSDate *fileModificationDate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instp/UIDocument/fileModificationDate">@property(copy) NSDate *fileModificationDate</a>
      * @since Available in iOS 5.0 and later.
      */
     public void setFileModificationDate(NSDate fileModificationDate) {
@@ -103,7 +103,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static String objc_getFileType(UIDocument __self__, Selector __cmd__);
     @Bridge private native static String objc_getFileTypeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instp/UIDocument/fileType">@property(readonly, copy) NSString *fileType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instp/UIDocument/fileType">@property(readonly, copy) NSString *fileType</a>
      * @since Available in iOS 5.0 and later.
      */
     public String getFileType() {
@@ -114,7 +114,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSURL objc_getFileURL(UIDocument __self__, Selector __cmd__);
     @Bridge private native static NSURL objc_getFileURLSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instp/UIDocument/fileURL">@property(readonly) NSURL *fileURL</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instp/UIDocument/fileURL">@property(readonly) NSURL *fileURL</a>
      * @since Available in iOS 5.0 and later.
      */
     public NSURL getFileURL() {
@@ -125,7 +125,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static String objc_getLocalizedName(UIDocument __self__, Selector __cmd__);
     @Bridge private native static String objc_getLocalizedNameSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instp/UIDocument/localizedName">@property(readonly, copy) NSString *localizedName</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instp/UIDocument/localizedName">@property(readonly, copy) NSString *localizedName</a>
      * @since Available in iOS 5.0 and later.
      */
     public String getLocalizedName() {
@@ -136,7 +136,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSUndoManager objc_getUndoManager(UIDocument __self__, Selector __cmd__);
     @Bridge private native static NSUndoManager objc_getUndoManagerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instp/UIDocument/undoManager">@property(retain) NSUndoManager *undoManager</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instp/UIDocument/undoManager">@property(retain) NSUndoManager *undoManager</a>
      * @since Available in iOS 5.0 and later.
      */
     public NSUndoManager getUndoManager() {
@@ -147,7 +147,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setUndoManager(UIDocument __self__, Selector __cmd__, NSUndoManager undoManager);
     @Bridge private native static void objc_setUndoManagerSuper(ObjCSuper __super__, Selector __cmd__, NSUndoManager undoManager);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instp/UIDocument/undoManager">@property(retain) NSUndoManager *undoManager</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instp/UIDocument/undoManager">@property(retain) NSUndoManager *undoManager</a>
      * @since Available in iOS 5.0 and later.
      */
     public void setUndoManager(NSUndoManager undoManager) {
@@ -160,7 +160,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_autoSave(UIDocument __self__, Selector __cmd__, VoidBooleanBlock completionHandler);
     @Bridge private native static void objc_autoSaveSuper(ObjCSuper __super__, Selector __cmd__, VoidBooleanBlock completionHandler);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/autosaveWithCompletionHandler:">- (void)autosaveWithCompletionHandler:(void (^)(BOOL success))completionHandler</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/autosaveWithCompletionHandler:">- (void)autosaveWithCompletionHandler:(void (^)(BOOL success))completionHandler</a>
      * @since Available in iOS 5.0 and later.
      */
     public void autoSave(VoidBooleanBlock completionHandler) {
@@ -171,7 +171,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSObject objc_changeCountTokenForSaveOperation(UIDocument __self__, Selector __cmd__, UIDocumentSaveOperation saveOperation);
     @Bridge private native static NSObject objc_changeCountTokenForSaveOperationSuper(ObjCSuper __super__, Selector __cmd__, UIDocumentSaveOperation saveOperation);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/changeCountTokenForSaveOperation:">- (id)changeCountTokenForSaveOperation:(UIDocumentSaveOperation)saveOperation</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/changeCountTokenForSaveOperation:">- (id)changeCountTokenForSaveOperation:(UIDocumentSaveOperation)saveOperation</a>
      * @since Available in iOS 5.0 and later.
      */
     public NSObject changeCountTokenForSaveOperation(UIDocumentSaveOperation saveOperation) {
@@ -182,7 +182,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_close(UIDocument __self__, Selector __cmd__, VoidBooleanBlock completionHandler);
     @Bridge private native static void objc_closeSuper(ObjCSuper __super__, Selector __cmd__, VoidBooleanBlock completionHandler);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/closeWithCompletionHandler:">- (void)closeWithCompletionHandler:(void (^)(BOOL success))completionHandler</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/closeWithCompletionHandler:">- (void)closeWithCompletionHandler:(void (^)(BOOL success))completionHandler</a>
      * @since Available in iOS 5.0 and later.
      */
     public void close(VoidBooleanBlock completionHandler) {
@@ -193,7 +193,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSObject objc_contentsForType(UIDocument __self__, Selector __cmd__, String typeName, Ptr<NSError> outError);
     @Bridge private native static NSObject objc_contentsForTypeSuper(ObjCSuper __super__, Selector __cmd__, String typeName, Ptr<NSError> outError);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/contentsForType:error:">- (id)contentsForType:(NSString *)typeName error:(NSError **)outError</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/contentsForType:error:">- (id)contentsForType:(NSString *)typeName error:(NSError **)outError</a>
      * @since Available in iOS 5.0 and later.
      */
     public NSObject contentsForType(String typeName, Ptr<NSError> outError) {
@@ -204,7 +204,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_disableEditing(UIDocument __self__, Selector __cmd__);
     @Bridge private native static void objc_disableEditingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/disableEditing">- (void)disableEditing</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/disableEditing">- (void)disableEditing</a>
      * @since Available in iOS 5.0 and later.
      */
     public void disableEditing() {
@@ -215,7 +215,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_enableEditing(UIDocument __self__, Selector __cmd__);
     @Bridge private native static void objc_enableEditingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/enableEditing">- (void)enableEditing</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/enableEditing">- (void)enableEditing</a>
      * @since Available in iOS 5.0 and later.
      */
     public void enableEditing() {
@@ -226,7 +226,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_finishedHandlingError(UIDocument __self__, Selector __cmd__, NSError error, boolean recovered);
     @Bridge private native static void objc_finishedHandlingErrorSuper(ObjCSuper __super__, Selector __cmd__, NSError error, boolean recovered);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/finishedHandlingError:recovered:">- (void)finishedHandlingError:(NSError *)error recovered:(BOOL)recovered</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/finishedHandlingError:recovered:">- (void)finishedHandlingError:(NSError *)error recovered:(BOOL)recovered</a>
      * @since Available in iOS 5.0 and later.
      */
     public void finishedHandlingError(NSError error, boolean recovered) {
@@ -237,7 +237,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSDictionary objc_getFileAttributesToWrite(UIDocument __self__, Selector __cmd__, NSURL url, UIDocumentSaveOperation saveOperation, Ptr<NSError> outError);
     @Bridge private native static NSDictionary objc_getFileAttributesToWriteSuper(ObjCSuper __super__, Selector __cmd__, NSURL url, UIDocumentSaveOperation saveOperation, Ptr<NSError> outError);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/fileAttributesToWriteToURL:forSaveOperation:error:">- (NSDictionary *)fileAttributesToWriteToURL:(NSURL *)url forSaveOperation:(UIDocumentSaveOperation)saveOperation error:(NSError **)outError</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/fileAttributesToWriteToURL:forSaveOperation:error:">- (NSDictionary *)fileAttributesToWriteToURL:(NSURL *)url forSaveOperation:(UIDocumentSaveOperation)saveOperation error:(NSError **)outError</a>
      * @since Available in iOS 5.0 and later.
      */
     public NSDictionary getFileAttributesToWrite(NSURL url, UIDocumentSaveOperation saveOperation, Ptr<NSError> outError) {
@@ -248,7 +248,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static String objc_getFileNameExtension(UIDocument __self__, Selector __cmd__, String typeName, UIDocumentSaveOperation saveOperation);
     @Bridge private native static String objc_getFileNameExtensionSuper(ObjCSuper __super__, Selector __cmd__, String typeName, UIDocumentSaveOperation saveOperation);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/fileNameExtensionForType:saveOperation:">- (NSString *)fileNameExtensionForType:(NSString *)typeName saveOperation:(UIDocumentSaveOperation)saveOperation</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/fileNameExtensionForType:saveOperation:">- (NSString *)fileNameExtensionForType:(NSString *)typeName saveOperation:(UIDocumentSaveOperation)saveOperation</a>
      * @since Available in iOS 5.0 and later.
      */
     public String getFileNameExtension(String typeName, UIDocumentSaveOperation saveOperation) {
@@ -259,7 +259,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static String objc_getSavingFileType(UIDocument __self__, Selector __cmd__);
     @Bridge private native static String objc_getSavingFileTypeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/savingFileType">- (NSString *)savingFileType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/savingFileType">- (NSString *)savingFileType</a>
      * @since Available in iOS 5.0 and later.
      */
     public String getSavingFileType() {
@@ -270,7 +270,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_handleError(UIDocument __self__, Selector __cmd__, NSError error, boolean userInteractionPermitted);
     @Bridge private native static void objc_handleErrorSuper(ObjCSuper __super__, Selector __cmd__, NSError error, boolean userInteractionPermitted);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/handleError:userInteractionPermitted:">- (void)handleError:(NSError *)error userInteractionPermitted:(BOOL)userInteractionPermitted</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/handleError:userInteractionPermitted:">- (void)handleError:(NSError *)error userInteractionPermitted:(BOOL)userInteractionPermitted</a>
      * @since Available in iOS 5.0 and later.
      */
     public void handleError(NSError error, boolean userInteractionPermitted) {
@@ -281,7 +281,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_hasUnsavedChanges(UIDocument __self__, Selector __cmd__);
     @Bridge private native static boolean objc_hasUnsavedChangesSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/hasUnsavedChanges">- (BOOL)hasUnsavedChanges</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/hasUnsavedChanges">- (BOOL)hasUnsavedChanges</a>
      * @since Available in iOS 5.0 and later.
      */
     public boolean hasUnsavedChanges() {
@@ -292,7 +292,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_loadFromContents(UIDocument __self__, Selector __cmd__, NSObject contents, String typeName, Ptr<NSError> outError);
     @Bridge private native static boolean objc_loadFromContentsSuper(ObjCSuper __super__, Selector __cmd__, NSObject contents, String typeName, Ptr<NSError> outError);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/loadFromContents:ofType:error:">- (BOOL)loadFromContents:(id)contents ofType:(NSString *)typeName error:(NSError **)outError</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/loadFromContents:ofType:error:">- (BOOL)loadFromContents:(id)contents ofType:(NSString *)typeName error:(NSError **)outError</a>
      * @since Available in iOS 5.0 and later.
      */
     public boolean loadFromContents(NSObject contents, String typeName, Ptr<NSError> outError) {
@@ -303,7 +303,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_open(UIDocument __self__, Selector __cmd__, VoidBooleanBlock completionHandler);
     @Bridge private native static void objc_openSuper(ObjCSuper __super__, Selector __cmd__, VoidBooleanBlock completionHandler);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/openWithCompletionHandler:">- (void)openWithCompletionHandler:(void (^)(BOOL success))completionHandler</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/openWithCompletionHandler:">- (void)openWithCompletionHandler:(void (^)(BOOL success))completionHandler</a>
      * @since Available in iOS 5.0 and later.
      */
     public void open(VoidBooleanBlock completionHandler) {
@@ -314,7 +314,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_performAsynchronousFileAccess(UIDocument __self__, Selector __cmd__, VoidBlock block);
     @Bridge private native static void objc_performAsynchronousFileAccessSuper(ObjCSuper __super__, Selector __cmd__, VoidBlock block);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/performAsynchronousFileAccessUsingBlock:">- (void)performAsynchronousFileAccessUsingBlock:(void (^)(void))block</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/performAsynchronousFileAccessUsingBlock:">- (void)performAsynchronousFileAccessUsingBlock:(void (^)(void))block</a>
      * @since Available in iOS 5.0 and later.
      */
     public void performAsynchronousFileAccess(VoidBlock block) {
@@ -325,7 +325,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_read(UIDocument __self__, Selector __cmd__, NSURL url, Ptr<NSError> outError);
     @Bridge private native static boolean objc_readSuper(ObjCSuper __super__, Selector __cmd__, NSURL url, Ptr<NSError> outError);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/readFromURL:error:">- (BOOL)readFromURL:(NSURL *)url error:(NSError **)outError</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/readFromURL:error:">- (BOOL)readFromURL:(NSURL *)url error:(NSError **)outError</a>
      * @since Available in iOS 5.0 and later.
      */
     public boolean read(NSURL url, Ptr<NSError> outError) {
@@ -336,7 +336,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_revert(UIDocument __self__, Selector __cmd__, NSURL url, VoidBooleanBlock completionHandler);
     @Bridge private native static void objc_revertSuper(ObjCSuper __super__, Selector __cmd__, NSURL url, VoidBooleanBlock completionHandler);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/revertToContentsOfURL:completionHandler:">- (void)revertToContentsOfURL:(NSURL *)url completionHandler:(void (^)(BOOL success))completionHandler</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/revertToContentsOfURL:completionHandler:">- (void)revertToContentsOfURL:(NSURL *)url completionHandler:(void (^)(BOOL success))completionHandler</a>
      * @since Available in iOS 5.0 and later.
      */
     public void revert(NSURL url, VoidBooleanBlock completionHandler) {
@@ -347,7 +347,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_save(UIDocument __self__, Selector __cmd__, NSURL url, UIDocumentSaveOperation saveOperation, VoidBooleanBlock completionHandler);
     @Bridge private native static void objc_saveSuper(ObjCSuper __super__, Selector __cmd__, NSURL url, UIDocumentSaveOperation saveOperation, VoidBooleanBlock completionHandler);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/saveToURL:forSaveOperation:completionHandler:">- (void)saveToURL:(NSURL *)url forSaveOperation:(UIDocumentSaveOperation)saveOperation completionHandler:(void (^)(BOOL success))completionHandler</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/saveToURL:forSaveOperation:completionHandler:">- (void)saveToURL:(NSURL *)url forSaveOperation:(UIDocumentSaveOperation)saveOperation completionHandler:(void (^)(BOOL success))completionHandler</a>
      * @since Available in iOS 5.0 and later.
      */
     public void save(NSURL url, UIDocumentSaveOperation saveOperation, VoidBooleanBlock completionHandler) {
@@ -358,7 +358,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_updateChangeCount(UIDocument __self__, Selector __cmd__, NSObject changeCountToken, UIDocumentSaveOperation saveOperation);
     @Bridge private native static void objc_updateChangeCountSuper(ObjCSuper __super__, Selector __cmd__, NSObject changeCountToken, UIDocumentSaveOperation saveOperation);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/updateChangeCountWithToken:forSaveOperation:">- (void)updateChangeCountWithToken:(id)changeCountToken forSaveOperation:(UIDocumentSaveOperation)saveOperation</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/updateChangeCountWithToken:forSaveOperation:">- (void)updateChangeCountWithToken:(id)changeCountToken forSaveOperation:(UIDocumentSaveOperation)saveOperation</a>
      * @since Available in iOS 5.0 and later.
      */
     public void updateChangeCount(NSObject changeCountToken, UIDocumentSaveOperation saveOperation) {
@@ -369,7 +369,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_updateChangeCount(UIDocument __self__, Selector __cmd__, UIDocumentChangeKind change);
     @Bridge private native static void objc_updateChangeCountSuper(ObjCSuper __super__, Selector __cmd__, UIDocumentChangeKind change);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/updateChangeCount:">- (void)updateChangeCount:(UIDocumentChangeKind)change</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/updateChangeCount:">- (void)updateChangeCount:(UIDocumentChangeKind)change</a>
      * @since Available in iOS 5.0 and later.
      */
     public void updateChangeCount(UIDocumentChangeKind change) {
@@ -380,7 +380,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_userInteractionNoLongerPermittedForError(UIDocument __self__, Selector __cmd__, NSError error);
     @Bridge private native static void objc_userInteractionNoLongerPermittedForErrorSuper(ObjCSuper __super__, Selector __cmd__, NSError error);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/userInteractionNoLongerPermittedForError:">- (void)userInteractionNoLongerPermittedForError:(NSError *)error</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/userInteractionNoLongerPermittedForError:">- (void)userInteractionNoLongerPermittedForError:(NSError *)error</a>
      * @since Available in iOS 5.0 and later.
      */
     public void userInteractionNoLongerPermittedForError(NSError error) {
@@ -391,7 +391,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_writeContents(UIDocument __self__, Selector __cmd__, NSObject contents, NSDictionary additionalFileAttributes, NSURL url, UIDocumentSaveOperation saveOperation, Ptr<NSError> outError);
     @Bridge private native static boolean objc_writeContentsSuper(ObjCSuper __super__, Selector __cmd__, NSObject contents, NSDictionary additionalFileAttributes, NSURL url, UIDocumentSaveOperation saveOperation, Ptr<NSError> outError);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/writeContents:andAttributes:safelyToURL:forSaveOperation:error:">- (BOOL)writeContents:(id)contents andAttributes:(NSDictionary *)additionalFileAttributes safelyToURL:(NSURL *)url forSaveOperation:(UIDocumentSaveOperation)saveOperation error:(NSError **)outError</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/writeContents:andAttributes:safelyToURL:forSaveOperation:error:">- (BOOL)writeContents:(id)contents andAttributes:(NSDictionary *)additionalFileAttributes safelyToURL:(NSURL *)url forSaveOperation:(UIDocumentSaveOperation)saveOperation error:(NSError **)outError</a>
      * @since Available in iOS 5.0 and later.
      */
     public boolean writeContents(NSObject contents, NSDictionary additionalFileAttributes, NSURL url, UIDocumentSaveOperation saveOperation, Ptr<NSError> outError) {
@@ -402,7 +402,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_writeContents(UIDocument __self__, Selector __cmd__, NSObject contents, NSURL url, UIDocumentSaveOperation saveOperation, NSURL originalContentsURL, Ptr<NSError> outError);
     @Bridge private native static boolean objc_writeContentsSuper(ObjCSuper __super__, Selector __cmd__, NSObject contents, NSURL url, UIDocumentSaveOperation saveOperation, NSURL originalContentsURL, Ptr<NSError> outError);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/writeContents:toURL:forSaveOperation:originalContentsURL:error:">- (BOOL)writeContents:(id)contents toURL:(NSURL *)url forSaveOperation:(UIDocumentSaveOperation)saveOperation originalContentsURL:(NSURL *)originalContentsURL error:(NSError **)outError</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/writeContents:toURL:forSaveOperation:originalContentsURL:error:">- (BOOL)writeContents:(id)contents toURL:(NSURL *)url forSaveOperation:(UIDocumentSaveOperation)saveOperation originalContentsURL:(NSURL *)originalContentsURL error:(NSError **)outError</a>
      * @since Available in iOS 5.0 and later.
      */
     public boolean writeContents(NSObject contents, NSURL url, UIDocumentSaveOperation saveOperation, NSURL originalContentsURL, Ptr<NSError> outError) {

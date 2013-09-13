@@ -1,6 +1,6 @@
 package: org.robovm.cocoatouch.foundation
 library: Foundation
-base_url: http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/
+base_url: https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/
 enums:
 #    NSStringEncoding:
 #        first: NSASCIIStringEncoding
@@ -19,7 +19,7 @@ enums:
     NSTextAlignment:
     NSWritingDirection:
 classes:
-    NSArray:
+    NSArray:    
         url: ../Classes/NSArray_Class/NSArray.html
         protocols: []
         methods:
@@ -254,6 +254,7 @@ classes:
             "-init":
                 visibility: private
                 constructor: false
+                return_type: '@Pointer long'
             "-description":
             "-isEqual:":
                 visibility: protected

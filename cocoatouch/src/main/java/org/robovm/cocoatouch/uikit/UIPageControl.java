@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html">UIPageControl Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html">UIPageControl Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -63,7 +63,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_getCurrentPage(UIPageControl __self__, Selector __cmd__);
     @Bridge private native static int objc_getCurrentPageSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/currentPage">@property(nonatomic) NSInteger currentPage</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/currentPage">@property(nonatomic) NSInteger currentPage</a>
      * @since Available in iOS 2.0 and later.
      */
     public int getCurrentPage() {
@@ -74,7 +74,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setCurrentPage(UIPageControl __self__, Selector __cmd__, int currentPage);
     @Bridge private native static void objc_setCurrentPageSuper(ObjCSuper __super__, Selector __cmd__, int currentPage);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/currentPage">@property(nonatomic) NSInteger currentPage</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/currentPage">@property(nonatomic) NSInteger currentPage</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setCurrentPage(int currentPage) {
@@ -85,7 +85,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIColor objc_getCurrentPageIndicatorTintColor(UIPageControl __self__, Selector __cmd__);
     @Bridge private native static UIColor objc_getCurrentPageIndicatorTintColorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/currentPageIndicatorTintColor">@property(nonatomic,retain) UIColor *currentPageIndicatorTintColor</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/currentPageIndicatorTintColor">@property(nonatomic,retain) UIColor *currentPageIndicatorTintColor</a>
      * @since Available in iOS 6.0 and later.
      */
     public UIColor getCurrentPageIndicatorTintColor() {
@@ -96,7 +96,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setCurrentPageIndicatorTintColor(UIPageControl __self__, Selector __cmd__, UIColor currentPageIndicatorTintColor);
     @Bridge private native static void objc_setCurrentPageIndicatorTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor currentPageIndicatorTintColor);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/currentPageIndicatorTintColor">@property(nonatomic,retain) UIColor *currentPageIndicatorTintColor</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/currentPageIndicatorTintColor">@property(nonatomic,retain) UIColor *currentPageIndicatorTintColor</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setCurrentPageIndicatorTintColor(UIColor currentPageIndicatorTintColor) {
@@ -107,7 +107,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isDefersCurrentPageDisplay(UIPageControl __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isDefersCurrentPageDisplaySuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/defersCurrentPageDisplay">@property(nonatomic) BOOL defersCurrentPageDisplay</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/defersCurrentPageDisplay">@property(nonatomic) BOOL defersCurrentPageDisplay</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isDefersCurrentPageDisplay() {
@@ -118,7 +118,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setDefersCurrentPageDisplay(UIPageControl __self__, Selector __cmd__, boolean defersCurrentPageDisplay);
     @Bridge private native static void objc_setDefersCurrentPageDisplaySuper(ObjCSuper __super__, Selector __cmd__, boolean defersCurrentPageDisplay);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/defersCurrentPageDisplay">@property(nonatomic) BOOL defersCurrentPageDisplay</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/defersCurrentPageDisplay">@property(nonatomic) BOOL defersCurrentPageDisplay</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setDefersCurrentPageDisplay(boolean defersCurrentPageDisplay) {
@@ -129,7 +129,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isHidesForSinglePage(UIPageControl __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isHidesForSinglePageSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/hidesForSinglePage">@property(nonatomic) BOOL hidesForSinglePage</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/hidesForSinglePage">@property(nonatomic) BOOL hidesForSinglePage</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isHidesForSinglePage() {
@@ -140,7 +140,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setHidesForSinglePage(UIPageControl __self__, Selector __cmd__, boolean hidesForSinglePage);
     @Bridge private native static void objc_setHidesForSinglePageSuper(ObjCSuper __super__, Selector __cmd__, boolean hidesForSinglePage);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/hidesForSinglePage">@property(nonatomic) BOOL hidesForSinglePage</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/hidesForSinglePage">@property(nonatomic) BOOL hidesForSinglePage</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setHidesForSinglePage(boolean hidesForSinglePage) {
@@ -151,7 +151,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_getNumberOfPages(UIPageControl __self__, Selector __cmd__);
     @Bridge private native static int objc_getNumberOfPagesSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/numberOfPages">@property(nonatomic) NSInteger numberOfPages</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/numberOfPages">@property(nonatomic) NSInteger numberOfPages</a>
      * @since Available in iOS 2.0 and later.
      */
     public int getNumberOfPages() {
@@ -162,7 +162,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setNumberOfPages(UIPageControl __self__, Selector __cmd__, int numberOfPages);
     @Bridge private native static void objc_setNumberOfPagesSuper(ObjCSuper __super__, Selector __cmd__, int numberOfPages);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/numberOfPages">@property(nonatomic) NSInteger numberOfPages</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/numberOfPages">@property(nonatomic) NSInteger numberOfPages</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setNumberOfPages(int numberOfPages) {
@@ -173,7 +173,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIColor objc_getPageIndicatorTintColor(UIPageControl __self__, Selector __cmd__);
     @Bridge private native static UIColor objc_getPageIndicatorTintColorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/pageIndicatorTintColor">@property(nonatomic,retain) UIColor *pageIndicatorTintColor</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/pageIndicatorTintColor">@property(nonatomic,retain) UIColor *pageIndicatorTintColor</a>
      * @since Available in iOS 6.0 and later.
      */
     public UIColor getPageIndicatorTintColor() {
@@ -184,7 +184,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setPageIndicatorTintColor(UIPageControl __self__, Selector __cmd__, UIColor pageIndicatorTintColor);
     @Bridge private native static void objc_setPageIndicatorTintColorSuper(ObjCSuper __super__, Selector __cmd__, UIColor pageIndicatorTintColor);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/pageIndicatorTintColor">@property(nonatomic,retain) UIColor *pageIndicatorTintColor</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPageControl/pageIndicatorTintColor">@property(nonatomic,retain) UIColor *pageIndicatorTintColor</a>
      * @since Available in iOS 6.0 and later.
      */
     public void setPageIndicatorTintColor(UIColor pageIndicatorTintColor) {
@@ -197,7 +197,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGSize objc_getSizeForNumberOfPages(UIPageControl __self__, Selector __cmd__, int pageCount);
     @Bridge private native static @ByVal CGSize objc_getSizeForNumberOfPagesSuper(ObjCSuper __super__, Selector __cmd__, int pageCount);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPageControl/sizeForNumberOfPages:">- (CGSize)sizeForNumberOfPages:(NSInteger)pageCount</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPageControl/sizeForNumberOfPages:">- (CGSize)sizeForNumberOfPages:(NSInteger)pageCount</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGSize getSizeForNumberOfPages(int pageCount) {
@@ -208,7 +208,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_updateCurrentPageDisplay(UIPageControl __self__, Selector __cmd__);
     @Bridge private native static void objc_updateCurrentPageDisplaySuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPageControl/updateCurrentPageDisplay">- (void)updateCurrentPageDisplay</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageControl_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPageControl/updateCurrentPageDisplay">- (void)updateCurrentPageDisplay</a>
      * @since Available in iOS 2.0 and later.
      */
     public void updateCurrentPageDisplay() {

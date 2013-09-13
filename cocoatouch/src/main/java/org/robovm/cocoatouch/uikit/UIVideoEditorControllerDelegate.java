@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorControllerDelegate_ProtocolReference/Reference/Reference.html">UIVideoEditorControllerDelegate Protocol Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorControllerDelegate_ProtocolReference/Reference/Reference.html">UIVideoEditorControllerDelegate Protocol Reference</a>
  *   @since Available in iOS 3.1 and later.
  * </div>
  */
@@ -45,17 +45,17 @@ public interface /*<name>*/ UIVideoEditorControllerDelegate /*</name>*/ /*<imple
     /*</properties>*/
     /*<methods>*/
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorControllerDelegate_ProtocolReference/Reference/Reference.html#//apple_ref/occ/intfm/UIVideoEditorControllerDelegate/videoEditorControllerDidCancel:">- (void)videoEditorControllerDidCancel:(UIVideoEditorController *)editor</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorControllerDelegate_ProtocolReference/Reference/Reference.html#//apple_ref/occ/intfm/UIVideoEditorControllerDelegate/videoEditorControllerDidCancel:">- (void)videoEditorControllerDidCancel:(UIVideoEditorController *)editor</a>
      * @since Available in iOS 3.1 and later.
      */
     void didCancel(UIVideoEditorController editor);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorControllerDelegate_ProtocolReference/Reference/Reference.html#//apple_ref/occ/intfm/UIVideoEditorControllerDelegate/videoEditorController:didFailWithError:">- (void)videoEditorController:(UIVideoEditorController *)editor didFailWithError:(NSError *)error</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorControllerDelegate_ProtocolReference/Reference/Reference.html#//apple_ref/occ/intfm/UIVideoEditorControllerDelegate/videoEditorController:didFailWithError:">- (void)videoEditorController:(UIVideoEditorController *)editor didFailWithError:(NSError *)error</a>
      * @since Available in iOS 3.1 and later.
      */
     void didFail(UIVideoEditorController editor, NSError error);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorControllerDelegate_ProtocolReference/Reference/Reference.html#//apple_ref/occ/intfm/UIVideoEditorControllerDelegate/videoEditorController:didSaveEditedVideoToPath:">- (void)videoEditorController:(UIVideoEditorController *)editor
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIVideoEditorControllerDelegate_ProtocolReference/Reference/Reference.html#//apple_ref/occ/intfm/UIVideoEditorControllerDelegate/videoEditorController:didSaveEditedVideoToPath:">- (void)videoEditorController:(UIVideoEditorController *)editor
     didSaveEditedVideoToPath:(NSString *)editedVideoPath</a>
      * @since Available in iOS 3.1 and later.
      */

@@ -28,7 +28,7 @@ import org.robovm.rt.bro.ptr.*;
 /**
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSEnumerator_Class/Reference/Reference.html">NSEnumerator Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSEnumerator_Class/Reference/Reference.html">NSEnumerator Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -106,7 +106,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSObject objc__nextObject(NSEnumerator __self__, Selector __cmd__);
     @Bridge private native static NSObject objc__nextObjectSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSEnumerator_Class/Reference/Reference.html#//apple_ref/occ/instm/NSEnumerator/nextObject">- (id)nextObject</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSEnumerator_Class/Reference/Reference.html#//apple_ref/occ/instm/NSEnumerator/nextObject">- (id)nextObject</a>
      * @since Available in iOS 2.0 and later.
      */
     protected NSObject _nextObject() {
@@ -117,7 +117,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_allObjects(NSEnumerator __self__, Selector __cmd__);
     @Bridge private native static NSArray objc_allObjectsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSEnumerator_Class/Reference/Reference.html#//apple_ref/occ/instm/NSEnumerator/allObjects">- (NSArray *)allObjects</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSEnumerator_Class/Reference/Reference.html#//apple_ref/occ/instm/NSEnumerator/allObjects">- (NSArray *)allObjects</a>
      * @since Available in iOS 2.0 and later.
      */
     public NSArray<T> allObjects() {

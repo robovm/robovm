@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarControllerDelegate_Protocol/Reference/Reference.html">UITabBarControllerDelegate Protocol Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarControllerDelegate_Protocol/Reference/Reference.html">UITabBarControllerDelegate Protocol Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -45,27 +45,27 @@ public interface /*<name>*/ UITabBarControllerDelegate /*</name>*/ /*<implements
     /*</properties>*/
     /*<methods>*/
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarControllerDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITabBarControllerDelegate/tabBarController:didEndCustomizingViewControllers:changed:">- (void)tabBarController:(UITabBarController *)tabBarController  didEndCustomizingViewControllers:(NSArray *)viewControllers  changed:(BOOL)changed</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarControllerDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITabBarControllerDelegate/tabBarController:didEndCustomizingViewControllers:changed:">- (void)tabBarController:(UITabBarController *)tabBarController  didEndCustomizingViewControllers:(NSArray *)viewControllers  changed:(BOOL)changed</a>
      * @since Available in iOS 2.0 and later.
      */
     void didEndCustomizingViewControllers(UITabBarController tabBarController, NSArray viewControllers, boolean changed);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarControllerDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITabBarControllerDelegate/tabBarController:didSelectViewController:">- (void)tabBarController:(UITabBarController *)tabBarController  didSelectViewController:(UIViewController *)viewController</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarControllerDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITabBarControllerDelegate/tabBarController:didSelectViewController:">- (void)tabBarController:(UITabBarController *)tabBarController  didSelectViewController:(UIViewController *)viewController</a>
      * @since Available in iOS 2.0 and later.
      */
     void didSelectViewController(UITabBarController tabBarController, UIViewController viewController);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarControllerDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITabBarControllerDelegate/tabBarController:shouldSelectViewController:">- (BOOL)tabBarController:(UITabBarController *)tabBarController  shouldSelectViewController:(UIViewController *)viewController</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarControllerDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITabBarControllerDelegate/tabBarController:shouldSelectViewController:">- (BOOL)tabBarController:(UITabBarController *)tabBarController  shouldSelectViewController:(UIViewController *)viewController</a>
      * @since Available in iOS 3.0 and later.
      */
     boolean shouldSelectViewController(UITabBarController tabBarController, UIViewController viewController);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarControllerDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITabBarControllerDelegate/tabBarController:willBeginCustomizingViewControllers:">- (void)tabBarController:(UITabBarController *)tabBarController  willBeginCustomizingViewControllers:(NSArray *)viewControllers</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarControllerDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITabBarControllerDelegate/tabBarController:willBeginCustomizingViewControllers:">- (void)tabBarController:(UITabBarController *)tabBarController  willBeginCustomizingViewControllers:(NSArray *)viewControllers</a>
      * @since Available in iOS 3.0 and later.
      */
     void willBeginCustomizingViewControllers(UITabBarController tabBarController, NSArray viewControllers);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarControllerDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITabBarControllerDelegate/tabBarController:willEndCustomizingViewControllers:changed:">- (void)tabBarController:(UITabBarController *)tabBarController  willEndCustomizingViewControllers:(NSArray *)viewControllers  changed:(BOOL)changed</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITabBarControllerDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITabBarControllerDelegate/tabBarController:willEndCustomizingViewControllers:changed:">- (void)tabBarController:(UITabBarController *)tabBarController  willEndCustomizingViewControllers:(NSArray *)viewControllers  changed:(BOOL)changed</a>
      * @since Available in iOS 3.0 and later.
      */
     void willEndCustomizingViewControllers(UITabBarController tabBarController, NSArray viewControllers, boolean changed);

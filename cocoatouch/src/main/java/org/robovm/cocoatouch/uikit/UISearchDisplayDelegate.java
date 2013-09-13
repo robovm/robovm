@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayDelegate_Protocol/Reference/Reference.html">UISearchDisplayDelegate Protocol Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayDelegate_Protocol/Reference/Reference.html">UISearchDisplayDelegate Protocol Reference</a>
  *   @since Available in iOS 3.0 and later.
  * </div>
  */
@@ -45,63 +45,63 @@ public interface /*<name>*/ UISearchDisplayDelegate /*</name>*/ /*<implements>*/
     /*</properties>*/
     /*<methods>*/
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchDisplayDelegate/searchDisplayControllerDidBeginSearch:">- (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchDisplayDelegate/searchDisplayControllerDidBeginSearch:">- (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller</a>
      * @since Available in iOS 3.0 and later.
      */
     void didBeginSearch(UISearchDisplayController controller);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchDisplayDelegate/searchDisplayControllerDidEndSearch:">- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchDisplayDelegate/searchDisplayControllerDidEndSearch:">- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller</a>
      * @since Available in iOS 3.0 and later.
      */
     void didEndSearch(UISearchDisplayController controller);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchDisplayDelegate/searchDisplayController:didHideSearchResultsTableView:">- (void)searchDisplayController:(UISearchDisplayController *)controller didHideSearchResultsTableView:(UITableView *)tableView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchDisplayDelegate/searchDisplayController:didHideSearchResultsTableView:">- (void)searchDisplayController:(UISearchDisplayController *)controller didHideSearchResultsTableView:(UITableView *)tableView</a>
      * @since Available in iOS 3.0 and later.
      */
     void didHideSearchResults(UISearchDisplayController controller, UITableView tableView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchDisplayDelegate/searchDisplayController:didLoadSearchResultsTableView:">- (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchDisplayDelegate/searchDisplayController:didLoadSearchResultsTableView:">- (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView</a>
      * @since Available in iOS 3.0 and later.
      */
     void didLoadSearchResults(UISearchDisplayController controller, UITableView tableView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchDisplayDelegate/searchDisplayController:didShowSearchResultsTableView:">- (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchDisplayDelegate/searchDisplayController:didShowSearchResultsTableView:">- (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView</a>
      * @since Available in iOS 3.0 and later.
      */
     void didShowSearchResults(UISearchDisplayController controller, UITableView tableView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchDisplayDelegate/searchDisplayController:shouldReloadTableForSearchScope:">- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchScope:(NSInteger)searchOption</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchDisplayDelegate/searchDisplayController:shouldReloadTableForSearchScope:">- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchScope:(NSInteger)searchOption</a>
      * @since Available in iOS 3.0 and later.
      */
     boolean shouldReloadForSearchScope(UISearchDisplayController controller, int searchOption);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchDisplayDelegate/searchDisplayController:shouldReloadTableForSearchString:">- (BOOL)searchDisplayController:(UISearchDisplayController *)controller
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchDisplayDelegate/searchDisplayController:shouldReloadTableForSearchString:">- (BOOL)searchDisplayController:(UISearchDisplayController *)controller
     shouldReloadTableForSearchString:(NSString *)searchString</a>
      * @since Available in iOS 3.0 and later.
      */
     boolean shouldReloadForSearchString(UISearchDisplayController controller, String searchString);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchDisplayDelegate/searchDisplayControllerWillBeginSearch:">- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchDisplayDelegate/searchDisplayControllerWillBeginSearch:">- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller</a>
      * @since Available in iOS 3.0 and later.
      */
     void willBeginSearch(UISearchDisplayController controller);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchDisplayDelegate/searchDisplayControllerWillEndSearch:">- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchDisplayDelegate/searchDisplayControllerWillEndSearch:">- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller</a>
      * @since Available in iOS 3.0 and later.
      */
     void willEndSearch(UISearchDisplayController controller);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchDisplayDelegate/searchDisplayController:willHideSearchResultsTableView:">- (void)searchDisplayController:(UISearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchDisplayDelegate/searchDisplayController:willHideSearchResultsTableView:">- (void)searchDisplayController:(UISearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView</a>
      * @since Available in iOS 3.0 and later.
      */
     void willHideSearchResults(UISearchDisplayController controller, UITableView tableView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchDisplayDelegate/searchDisplayController:willShowSearchResultsTableView:">- (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)tableView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchDisplayDelegate/searchDisplayController:willShowSearchResultsTableView:">- (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)tableView</a>
      * @since Available in iOS 3.0 and later.
      */
     void willShowSearchResults(UISearchDisplayController controller, UITableView tableView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchDisplayDelegate/searchDisplayController:willUnloadSearchResultsTableView:">- (void)searchDisplayController:(UISearchDisplayController *)controller willUnloadSearchResultsTableView:(UITableView *)tableView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UISearchDisplayDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UISearchDisplayDelegate/searchDisplayController:willUnloadSearchResultsTableView:">- (void)searchDisplayController:(UISearchDisplayController *)controller willUnloadSearchResultsTableView:(UITableView *)tableView</a>
      * @since Available in iOS 3.0 and later.
      */
     void willUnloadSearchResults(UISearchDisplayController controller, UITableView tableView);

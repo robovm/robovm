@@ -16,7 +16,7 @@ license: |
      */
 package: org.robovm.cocoatouch.coredata
 library: CoreData
-base_url: http://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreData_ObjC/
+base_url: https://developer.apple.com/library/ios/documentation/Cocoa/Reference/CoreData_ObjC/
 imports:
     - org.robovm.cocoatouch.foundation.*
 enums:

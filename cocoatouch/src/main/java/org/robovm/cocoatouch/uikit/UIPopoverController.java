@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html">UIPopoverController Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html">UIPopoverController Class Reference</a>
  *   @since Available in iOS 3.2 and later.
  * </div>
  */
@@ -56,12 +56,12 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector initWithContentViewController$ = Selector.register("initWithContentViewController:");
     @Bridge private native static @Pointer long objc_initWithContentViewController(UIPopoverController __self__, Selector __cmd__, UIViewController viewController);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instm/UIPopoverController/initWithContentViewController:">- (id)initWithContentViewController:(UIViewController *)viewController</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instm/UIPopoverController/initWithContentViewController:">- (id)initWithContentViewController:(UIViewController *)viewController</a>
      * @since Available in iOS 3.2 and later.
      */
     public UIPopoverController(UIViewController viewController) {
         super((SkipInit) null);
-        setHandle(objc_initWithContentViewController(this, initWithContentViewController$, viewController));
+        initObject(objc_initWithContentViewController(this, initWithContentViewController$, viewController));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -70,7 +70,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIViewController objc_getContentViewController(UIPopoverController __self__, Selector __cmd__);
     @Bridge private native static UIViewController objc_getContentViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/contentViewController">@property (nonatomic, retain) UIViewController *contentViewController</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/contentViewController">@property (nonatomic, retain) UIViewController *contentViewController</a>
      * @since Available in iOS 3.2 and later.
      */
     public UIViewController getContentViewController() {
@@ -81,7 +81,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setContentViewController(UIPopoverController __self__, Selector __cmd__, UIViewController contentViewController);
     @Bridge private native static void objc_setContentViewControllerSuper(ObjCSuper __super__, Selector __cmd__, UIViewController contentViewController);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/contentViewController">@property (nonatomic, retain) UIViewController *contentViewController</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/contentViewController">@property (nonatomic, retain) UIViewController *contentViewController</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setContentViewController(UIViewController contentViewController) {
@@ -92,7 +92,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIPopoverControllerDelegate objc_getDelegate(UIPopoverController __self__, Selector __cmd__);
     @Bridge private native static UIPopoverControllerDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/delegate">@property (nonatomic, assign) id &amp;lt;UIPopoverControllerDelegate&amp;gt; delegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/delegate">@property (nonatomic, assign) id &amp;lt;UIPopoverControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.2 and later.
      */
     public UIPopoverControllerDelegate getDelegate() {
@@ -103,7 +103,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setDelegate(UIPopoverController __self__, Selector __cmd__, UIPopoverControllerDelegate delegate);
     @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIPopoverControllerDelegate delegate);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/delegate">@property (nonatomic, assign) id &amp;lt;UIPopoverControllerDelegate&amp;gt; delegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/delegate">@property (nonatomic, assign) id &amp;lt;UIPopoverControllerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setDelegate(UIPopoverControllerDelegate delegate) {
@@ -114,7 +114,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getPassthroughViews(UIPopoverController __self__, Selector __cmd__);
     @Bridge private native static NSArray objc_getPassthroughViewsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/passthroughViews">@property (nonatomic, copy) NSArray *passthroughViews</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/passthroughViews">@property (nonatomic, copy) NSArray *passthroughViews</a>
      * @since Available in iOS 3.2 and later.
      */
     public NSArray getPassthroughViews() {
@@ -125,7 +125,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setPassthroughViews(UIPopoverController __self__, Selector __cmd__, NSArray passthroughViews);
     @Bridge private native static void objc_setPassthroughViewsSuper(ObjCSuper __super__, Selector __cmd__, NSArray passthroughViews);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/passthroughViews">@property (nonatomic, copy) NSArray *passthroughViews</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/passthroughViews">@property (nonatomic, copy) NSArray *passthroughViews</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setPassthroughViews(NSArray passthroughViews) {
@@ -136,7 +136,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIPopoverArrowDirection objc_getPopoverArrowDirection(UIPopoverController __self__, Selector __cmd__);
     @Bridge private native static UIPopoverArrowDirection objc_getPopoverArrowDirectionSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/popoverArrowDirection">@property (nonatomic, readonly) UIPopoverArrowDirection popoverArrowDirection</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/popoverArrowDirection">@property (nonatomic, readonly) UIPopoverArrowDirection popoverArrowDirection</a>
      * @since Available in iOS 3.2 and later.
      */
     public UIPopoverArrowDirection getPopoverArrowDirection() {
@@ -147,7 +147,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static ObjCClass objc_getPopoverBackgroundViewClass(UIPopoverController __self__, Selector __cmd__);
     @Bridge private native static ObjCClass objc_getPopoverBackgroundViewClassSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/popoverBackgroundViewClass">@property (nonatomic, readwrite, retain) Class popoverBackgroundViewClass</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/popoverBackgroundViewClass">@property (nonatomic, readwrite, retain) Class popoverBackgroundViewClass</a>
      * @since Available in iOS 5.0 and later.
      */
     public ObjCClass getPopoverBackgroundViewClass() {
@@ -158,7 +158,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setPopoverBackgroundViewClass(UIPopoverController __self__, Selector __cmd__, ObjCClass popoverBackgroundViewClass);
     @Bridge private native static void objc_setPopoverBackgroundViewClassSuper(ObjCSuper __super__, Selector __cmd__, ObjCClass popoverBackgroundViewClass);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/popoverBackgroundViewClass">@property (nonatomic, readwrite, retain) Class popoverBackgroundViewClass</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/popoverBackgroundViewClass">@property (nonatomic, readwrite, retain) Class popoverBackgroundViewClass</a>
      * @since Available in iOS 5.0 and later.
      */
     public void setPopoverBackgroundViewClass(ObjCClass popoverBackgroundViewClass) {
@@ -169,7 +169,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGSize objc_getPopoverContentSize(UIPopoverController __self__, Selector __cmd__);
     @Bridge private native static @ByVal CGSize objc_getPopoverContentSizeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/popoverContentSize">@property (nonatomic) CGSize popoverContentSize</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/popoverContentSize">@property (nonatomic) CGSize popoverContentSize</a>
      * @since Available in iOS 3.2 and later.
      */
     public CGSize getPopoverContentSize() {
@@ -180,7 +180,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setPopoverContentSize(UIPopoverController __self__, Selector __cmd__, @ByVal CGSize popoverContentSize);
     @Bridge private native static void objc_setPopoverContentSizeSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGSize popoverContentSize);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/popoverContentSize">@property (nonatomic) CGSize popoverContentSize</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/popoverContentSize">@property (nonatomic) CGSize popoverContentSize</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setPopoverContentSize(CGSize popoverContentSize) {
@@ -191,7 +191,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal UIEdgeInsets objc_getPopoverLayoutMargins(UIPopoverController __self__, Selector __cmd__);
     @Bridge private native static @ByVal UIEdgeInsets objc_getPopoverLayoutMarginsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/popoverLayoutMargins">@property (nonatomic, readwrite) UIEdgeInsets popoverLayoutMargins</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/popoverLayoutMargins">@property (nonatomic, readwrite) UIEdgeInsets popoverLayoutMargins</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIEdgeInsets getPopoverLayoutMargins() {
@@ -202,7 +202,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setPopoverLayoutMargins(UIPopoverController __self__, Selector __cmd__, @ByVal UIEdgeInsets popoverLayoutMargins);
     @Bridge private native static void objc_setPopoverLayoutMarginsSuper(ObjCSuper __super__, Selector __cmd__, @ByVal UIEdgeInsets popoverLayoutMargins);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/popoverLayoutMargins">@property (nonatomic, readwrite) UIEdgeInsets popoverLayoutMargins</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/popoverLayoutMargins">@property (nonatomic, readwrite) UIEdgeInsets popoverLayoutMargins</a>
      * @since Available in iOS 5.0 and later.
      */
     public void setPopoverLayoutMargins(UIEdgeInsets popoverLayoutMargins) {
@@ -213,7 +213,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isPopoverVisible(UIPopoverController __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isPopoverVisibleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/popoverVisible">@property (nonatomic, readonly, getter=isPopoverVisible) BOOL popoverVisible</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instp/UIPopoverController/popoverVisible">@property (nonatomic, readonly, getter=isPopoverVisible) BOOL popoverVisible</a>
      * @since Available in iOS 3.2 and later.
      */
     public boolean isPopoverVisible() {
@@ -226,7 +226,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_dismiss(UIPopoverController __self__, Selector __cmd__, boolean animated);
     @Bridge private native static void objc_dismissSuper(ObjCSuper __super__, Selector __cmd__, boolean animated);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instm/UIPopoverController/dismissPopoverAnimated:">- (void)dismissPopoverAnimated:(BOOL)animated</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instm/UIPopoverController/dismissPopoverAnimated:">- (void)dismissPopoverAnimated:(BOOL)animated</a>
      * @since Available in iOS 3.2 and later.
      */
     public void dismiss(boolean animated) {
@@ -237,7 +237,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_presentFromBarButtonItem(UIPopoverController __self__, Selector __cmd__, UIBarButtonItem item, UIPopoverArrowDirection arrowDirections, boolean animated);
     @Bridge private native static void objc_presentFromBarButtonItemSuper(ObjCSuper __super__, Selector __cmd__, UIBarButtonItem item, UIPopoverArrowDirection arrowDirections, boolean animated);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instm/UIPopoverController/presentPopoverFromBarButtonItem:permittedArrowDirections:animated:">- (void)presentPopoverFromBarButtonItem:(UIBarButtonItem *)item permittedArrowDirections:(UIPopoverArrowDirection)arrowDirections animated:(BOOL)animated</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instm/UIPopoverController/presentPopoverFromBarButtonItem:permittedArrowDirections:animated:">- (void)presentPopoverFromBarButtonItem:(UIBarButtonItem *)item permittedArrowDirections:(UIPopoverArrowDirection)arrowDirections animated:(BOOL)animated</a>
      * @since Available in iOS 3.2 and later.
      */
     public void presentFromBarButtonItem(UIBarButtonItem item, UIPopoverArrowDirection arrowDirections, boolean animated) {
@@ -248,7 +248,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_presentFromRectInView(UIPopoverController __self__, Selector __cmd__, @ByVal CGRect rect, UIView view, UIPopoverArrowDirection arrowDirections, boolean animated);
     @Bridge private native static void objc_presentFromRectInViewSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect, UIView view, UIPopoverArrowDirection arrowDirections, boolean animated);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instm/UIPopoverController/presentPopoverFromRect:inView:permittedArrowDirections:animated:">- (void)presentPopoverFromRect:(CGRect)rect inView:(UIView *)view permittedArrowDirections:(UIPopoverArrowDirection)arrowDirections animated:(BOOL)animated</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instm/UIPopoverController/presentPopoverFromRect:inView:permittedArrowDirections:animated:">- (void)presentPopoverFromRect:(CGRect)rect inView:(UIView *)view permittedArrowDirections:(UIPopoverArrowDirection)arrowDirections animated:(BOOL)animated</a>
      * @since Available in iOS 3.2 and later.
      */
     public void presentFromRectInView(CGRect rect, UIView view, UIPopoverArrowDirection arrowDirections, boolean animated) {
@@ -259,7 +259,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setContentViewController(UIPopoverController __self__, Selector __cmd__, UIViewController viewController, boolean animated);
     @Bridge private native static void objc_setContentViewControllerSuper(ObjCSuper __super__, Selector __cmd__, UIViewController viewController, boolean animated);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instm/UIPopoverController/setContentViewController:animated:">- (void)setContentViewController:(UIViewController *)viewController animated:(BOOL)animated</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instm/UIPopoverController/setContentViewController:animated:">- (void)setContentViewController:(UIViewController *)viewController animated:(BOOL)animated</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setContentViewController(UIViewController viewController, boolean animated) {
@@ -270,7 +270,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setPopoverContentSize(UIPopoverController __self__, Selector __cmd__, @ByVal CGSize size, boolean animated);
     @Bridge private native static void objc_setPopoverContentSizeSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGSize size, boolean animated);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instm/UIPopoverController/setPopoverContentSize:animated:">- (void)setPopoverContentSize:(CGSize)size animated:(BOOL)animated</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverController_class/Reference/Reference.html#//apple_ref/occ/instm/UIPopoverController/setPopoverContentSize:animated:">- (void)setPopoverContentSize:(CGSize)size animated:(BOOL)animated</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setPopoverContentSize(CGSize size, boolean animated) {

@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html">UIStoryboardSegue Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html">UIStoryboardSegue Class Reference</a>
  *   @since Available in iOS 5.0 and later.
  * </div>
  */
@@ -56,12 +56,12 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector initWithIdentifier$source$destination$ = Selector.register("initWithIdentifier:source:destination:");
     @Bridge private native static @Pointer long objc_initWithIdentifier(UIStoryboardSegue __self__, Selector __cmd__, String identifier, UIViewController source, UIViewController destination);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instm/UIStoryboardSegue/initWithIdentifier:source:destination:">- (id)initWithIdentifier:(NSString *)identifier source:(UIViewController *)source destination:(UIViewController *)destination</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instm/UIStoryboardSegue/initWithIdentifier:source:destination:">- (id)initWithIdentifier:(NSString *)identifier source:(UIViewController *)source destination:(UIViewController *)destination</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIStoryboardSegue(String identifier, UIViewController source, UIViewController destination) {
         super((SkipInit) null);
-        setHandle(objc_initWithIdentifier(this, initWithIdentifier$source$destination$, identifier, source, destination));
+        initObject(objc_initWithIdentifier(this, initWithIdentifier$source$destination$, identifier, source, destination));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -70,7 +70,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSObject objc_getDestinationViewController(UIStoryboardSegue __self__, Selector __cmd__);
     @Bridge private native static NSObject objc_getDestinationViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStoryboardSegue/destinationViewController">@property(nonatomic, readonly) id destinationViewController</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStoryboardSegue/destinationViewController">@property(nonatomic, readonly) id destinationViewController</a>
      * @since Available in iOS 5.0 and later.
      */
     public NSObject getDestinationViewController() {
@@ -81,7 +81,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static String objc_getIdentifier(UIStoryboardSegue __self__, Selector __cmd__);
     @Bridge private native static String objc_getIdentifierSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStoryboardSegue/identifier">@property (nonatomic, readonly) NSString *identifier</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStoryboardSegue/identifier">@property(nonatomic, readonly) NSString *identifier</a>
      * @since Available in iOS 5.0 and later.
      */
     public String getIdentifier() {
@@ -92,7 +92,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSObject objc_getSourceViewController(UIStoryboardSegue __self__, Selector __cmd__);
     @Bridge private native static NSObject objc_getSourceViewControllerSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStoryboardSegue/sourceViewController">@property(nonatomic, readonly) id sourceViewController</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instp/UIStoryboardSegue/sourceViewController">@property(nonatomic, readonly) id sourceViewController</a>
      * @since Available in iOS 5.0 and later.
      */
     public NSObject getSourceViewController() {
@@ -101,11 +101,21 @@ import org.robovm.rt.bro.ptr.*;
     /*</properties>*/
     /*<methods>*/
     
+    private static final Selector segueWithIdentifier$source$destination$performHandler$ = Selector.register("segueWithIdentifier:source:destination:performHandler:");
+    @Bridge private native static NSObject objc_getSegue(ObjCClass __self__, Selector __cmd__, String identifier, UIViewController source, UIViewController destination, VoidBlock performHandler);
+    /**
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/clm/UIStoryboardSegue/segueWithIdentifier:source:destination:performHandler:">+ (id)segueWithIdentifier:(NSString *)identifier source:(UIViewController *)source destination:(UIViewController *)destination performHandler:(void (^)(void))performHandler</a>
+     * @since Available in iOS 6.0 and later.
+     */
+    public static NSObject getSegue(String identifier, UIViewController source, UIViewController destination, VoidBlock performHandler) {
+        return objc_getSegue(objCClass, segueWithIdentifier$source$destination$performHandler$, identifier, source, destination, performHandler);
+    }
+    
     private static final Selector perform = Selector.register("perform");
     @Bridge private native static void objc_perform(UIStoryboardSegue __self__, Selector __cmd__);
     @Bridge private native static void objc_performSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instm/UIStoryboardSegue/perform">- (void)perform</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/instm/UIStoryboardSegue/perform">- (void)perform</a>
      * @since Available in iOS 5.0 and later.
      */
     public void perform() {

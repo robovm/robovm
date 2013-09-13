@@ -28,7 +28,7 @@ import org.robovm.rt.bro.ptr.*;
 /**
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSAutoreleasePool_Class/Reference/Reference.html">NSAutoreleasePool Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSAutoreleasePool_Class/Reference/Reference.html">NSAutoreleasePool Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -57,7 +57,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_drain(NSAutoreleasePool __self__, Selector __cmd__);
     @Bridge private native static void objc_drainSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSAutoreleasePool_Class/Reference/Reference.html#//apple_ref/occ/instm/NSAutoreleasePool/drain">- (void)drain</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSAutoreleasePool_Class/Reference/Reference.html#//apple_ref/occ/instm/NSAutoreleasePool/drain">- (void)drain</a>
      * @since Available in iOS 2.0 and later.
      */
     public void drain() {

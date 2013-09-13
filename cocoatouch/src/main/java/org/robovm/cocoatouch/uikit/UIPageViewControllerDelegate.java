@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDelegateProtocolRef/UIPageViewControllerDelegate.html">UIPageViewControllerDelegate Protocol Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDelegateProtocolRef/UIPageViewControllerDelegate.html">UIPageViewControllerDelegate Protocol Reference</a>
  *   @since Available in iOS 5.0 and later.
  * </div>
  */
@@ -45,7 +45,7 @@ public interface /*<name>*/ UIPageViewControllerDelegate /*</name>*/ /*<implemen
     /*</properties>*/
     /*<methods>*/
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDelegateProtocolRef/UIPageViewControllerDelegate.html#//apple_ref/occ/intfm/UIPageViewControllerDelegate/pageViewController:didFinishAnimating:previousViewControllers:transitionCompleted:">- (void)pageViewController:(UIPageViewController *)pageViewController
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDelegateProtocolRef/UIPageViewControllerDelegate.html#//apple_ref/occ/intfm/UIPageViewControllerDelegate/pageViewController:didFinishAnimating:previousViewControllers:transitionCompleted:">- (void)pageViewController:(UIPageViewController *)pageViewController
     didFinishAnimating:(BOOL)finished
     previousViewControllers:(NSArray *)previousViewControllers
     transitionCompleted:(BOOL)completed</a>
@@ -53,13 +53,13 @@ public interface /*<name>*/ UIPageViewControllerDelegate /*</name>*/ /*<implemen
      */
     void didFinishAnimating(UIPageViewController pageViewController, boolean finished, NSArray previousViewControllers, boolean completed);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDelegateProtocolRef/UIPageViewControllerDelegate.html#//apple_ref/occ/intfm/UIPageViewControllerDelegate/pageViewController:spineLocationForInterfaceOrientation:">- (UIPageViewControllerSpineLocation)pageViewController:(UIPageViewController *)pageViewController
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDelegateProtocolRef/UIPageViewControllerDelegate.html#//apple_ref/occ/intfm/UIPageViewControllerDelegate/pageViewController:spineLocationForInterfaceOrientation:">- (UIPageViewControllerSpineLocation)pageViewController:(UIPageViewController *)pageViewController
     spineLocationForInterfaceOrientation:(UIInterfaceOrientation)orientation</a>
      * @since Available in iOS 5.0 and later.
      */
     UIPageViewControllerSpineLocation getSpineLocation(UIPageViewController pageViewController, UIInterfaceOrientation orientation);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDelegateProtocolRef/UIPageViewControllerDelegate.html#//apple_ref/occ/intfm/UIPageViewControllerDelegate/pageViewController:willTransitionToViewControllers:">- (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerDelegateProtocolRef/UIPageViewControllerDelegate.html#//apple_ref/occ/intfm/UIPageViewControllerDelegate/pageViewController:willTransitionToViewControllers:">- (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers</a>
      * @since Available in iOS 6.0 and later.
      */
     void willTransition(UIPageViewController pageViewController, NSArray pendingViewControllers);

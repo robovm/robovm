@@ -32,7 +32,7 @@ import org.robovm.rt.bro.ptr.*;
 /**
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKViewControllerDelegate_ProtocolRef/Reference/Reference.html">GLKViewControllerDelegate Protocol Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKViewControllerDelegate_ProtocolRef/Reference/Reference.html">GLKViewControllerDelegate Protocol Reference</a>
  *   @since Available in iOS 5.0 and later.
  * </div>
  */
@@ -43,12 +43,12 @@ public interface /*<name>*/ GLKViewControllerDelegate /*</name>*/ /*<implements>
     /*</properties>*/
     /*<methods>*/
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKViewControllerDelegate_ProtocolRef/Reference/Reference.html#//apple_ref/occ/intfm/GLKViewControllerDelegate/glkViewControllerUpdate:">- (void)glkViewControllerUpdate:(GLKViewController *)controller</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKViewControllerDelegate_ProtocolRef/Reference/Reference.html#//apple_ref/occ/intfm/GLKViewControllerDelegate/glkViewControllerUpdate:">- (void)glkViewControllerUpdate:(GLKViewController *)controller</a>
      * @since Available in iOS 5.0 and later.
      */
     void update(GLKViewController controller);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKViewControllerDelegate_ProtocolRef/Reference/Reference.html#//apple_ref/occ/intfm/GLKViewControllerDelegate/glkViewController:willPause:">- (void)glkViewController:(GLKViewController *)controller willPause:(BOOL)pause</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/../GLKViewControllerDelegate_ProtocolRef/Reference/Reference.html#//apple_ref/occ/intfm/GLKViewControllerDelegate/glkViewController:willPause:">- (void)glkViewController:(GLKViewController *)controller willPause:(BOOL)pause</a>
      * @since Available in iOS 5.0 and later.
      */
     void willPause(GLKViewController controller, boolean pause);

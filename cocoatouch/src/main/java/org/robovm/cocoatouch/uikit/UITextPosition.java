@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextPosition_Class/Reference/Reference.html">UITextPosition Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UITextPosition_Class/Reference/Reference.html">UITextPosition Class Reference</a>
  *   @since Available in iOS 3.2 and later.
  * </div>
  */

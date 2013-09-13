@@ -33,7 +33,7 @@ import org.robovm.rt.bro.ptr.*;
 /**
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html">UICollectionViewLayout Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html">UICollectionViewLayout Class Reference</a>
  *   @since Available in iOS 6.0 and later.
  * </div>
  */
@@ -59,7 +59,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UICollectionView objc_getCollectionView(UICollectionViewLayout __self__, Selector __cmd__);
     @Bridge private native static UICollectionView objc_getCollectionViewSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewLayout/collectionView">@property (nonatomic, readonly) UICollectionView *collectionView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instp/UICollectionViewLayout/collectionView">@property (nonatomic, readonly) UICollectionView *collectionView</a>
      * @since Available in iOS 6.0 and later.
      */
     public UICollectionView getCollectionView() {
@@ -71,7 +71,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector layoutAttributesClass = Selector.register("layoutAttributesClass");
     @Bridge private native static ObjCClass objc_getLayoutAttributesClass(ObjCClass __self__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/clm/UICollectionViewLayout/layoutAttributesClass">+ (Class)layoutAttributesClass</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/clm/UICollectionViewLayout/layoutAttributesClass">+ (Class)layoutAttributesClass</a>
      * @since Available in iOS 6.0 and later.
      */
     public static ObjCClass getLayoutAttributesClass() {
@@ -82,7 +82,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_finalizeAnimatedBoundsChange(UICollectionViewLayout __self__, Selector __cmd__);
     @Bridge private native static void objc_finalizeAnimatedBoundsChangeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/finalizeAnimatedBoundsChange">- (void)finalizeAnimatedBoundsChange</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/finalizeAnimatedBoundsChange">- (void)finalizeAnimatedBoundsChange</a>
      * @since Available in iOS 6.0 and later.
      */
     public void finalizeAnimatedBoundsChange() {
@@ -93,7 +93,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_finalizeCollectionViewUpdates(UICollectionViewLayout __self__, Selector __cmd__);
     @Bridge private native static void objc_finalizeCollectionViewUpdatesSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/finalizeCollectionViewUpdates">- (void)finalizeCollectionViewUpdates</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/finalizeCollectionViewUpdates">- (void)finalizeCollectionViewUpdates</a>
      * @since Available in iOS 6.0 and later.
      */
     public void finalizeCollectionViewUpdates() {
@@ -104,7 +104,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGSize objc_getCollectionViewContentSize(UICollectionViewLayout __self__, Selector __cmd__);
     @Bridge private native static @ByVal CGSize objc_getCollectionViewContentSizeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/collectionViewContentSize">- (CGSize)collectionViewContentSize</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/collectionViewContentSize">- (CGSize)collectionViewContentSize</a>
      * @since Available in iOS 6.0 and later.
      */
     public CGSize getCollectionViewContentSize() {
@@ -115,7 +115,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UICollectionViewLayoutAttributes objc_getFinalLayoutAttributesForDisappearingDecorationElement(UICollectionViewLayout __self__, Selector __cmd__, String elementKind, NSIndexPath elementIndexPath);
     @Bridge private native static UICollectionViewLayoutAttributes objc_getFinalLayoutAttributesForDisappearingDecorationElementSuper(ObjCSuper __super__, Selector __cmd__, String elementKind, NSIndexPath elementIndexPath);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/finalLayoutAttributesForDisappearingDecorationElementOfKind:atIndexPath:">- (UICollectionViewLayoutAttributes *)finalLayoutAttributesForDisappearingDecorationElementOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)elementIndexPath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/finalLayoutAttributesForDisappearingDecorationElementOfKind:atIndexPath:">- (UICollectionViewLayoutAttributes *)finalLayoutAttributesForDisappearingDecorationElementOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)elementIndexPath</a>
      * @since Available in iOS 6.0 and later.
      */
     public UICollectionViewLayoutAttributes getFinalLayoutAttributesForDisappearingDecorationElement(String elementKind, NSIndexPath elementIndexPath) {
@@ -126,7 +126,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UICollectionViewLayoutAttributes objc_getFinalLayoutAttributesForDisappearingItem(UICollectionViewLayout __self__, Selector __cmd__, NSIndexPath itemIndexPath);
     @Bridge private native static UICollectionViewLayoutAttributes objc_getFinalLayoutAttributesForDisappearingItemSuper(ObjCSuper __super__, Selector __cmd__, NSIndexPath itemIndexPath);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/finalLayoutAttributesForDisappearingItemAtIndexPath:">- (UICollectionViewLayoutAttributes *)finalLayoutAttributesForDisappearingItemAtIndexPath:(NSIndexPath *)itemIndexPath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/finalLayoutAttributesForDisappearingItemAtIndexPath:">- (UICollectionViewLayoutAttributes *)finalLayoutAttributesForDisappearingItemAtIndexPath:(NSIndexPath *)itemIndexPath</a>
      * @since Available in iOS 6.0 and later.
      */
     public UICollectionViewLayoutAttributes getFinalLayoutAttributesForDisappearingItem(NSIndexPath itemIndexPath) {
@@ -137,7 +137,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UICollectionViewLayoutAttributes objc_getFinalLayoutAttributesForDisappearingSupplementaryElement(UICollectionViewLayout __self__, Selector __cmd__, String elementKind, NSIndexPath elementIndexPath);
     @Bridge private native static UICollectionViewLayoutAttributes objc_getFinalLayoutAttributesForDisappearingSupplementaryElementSuper(ObjCSuper __super__, Selector __cmd__, String elementKind, NSIndexPath elementIndexPath);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/finalLayoutAttributesForDisappearingSupplementaryElementOfKind:atIndexPath:">- (UICollectionViewLayoutAttributes *)finalLayoutAttributesForDisappearingSupplementaryElementOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)elementIndexPath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/finalLayoutAttributesForDisappearingSupplementaryElementOfKind:atIndexPath:">- (UICollectionViewLayoutAttributes *)finalLayoutAttributesForDisappearingSupplementaryElementOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)elementIndexPath</a>
      * @since Available in iOS 6.0 and later.
      */
     public UICollectionViewLayoutAttributes getFinalLayoutAttributesForDisappearingSupplementaryElement(String elementKind, NSIndexPath elementIndexPath) {
@@ -148,7 +148,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UICollectionViewLayoutAttributes objc_getInitialLayoutAttributesForAppearingDecorationElement(UICollectionViewLayout __self__, Selector __cmd__, String elementKind, NSIndexPath elementIndexPath);
     @Bridge private native static UICollectionViewLayoutAttributes objc_getInitialLayoutAttributesForAppearingDecorationElementSuper(ObjCSuper __super__, Selector __cmd__, String elementKind, NSIndexPath elementIndexPath);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/initialLayoutAttributesForAppearingDecorationElementOfKind:atIndexPath:">- (UICollectionViewLayoutAttributes *)initialLayoutAttributesForAppearingDecorationElementOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)elementIndexPath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/initialLayoutAttributesForAppearingDecorationElementOfKind:atIndexPath:">- (UICollectionViewLayoutAttributes *)initialLayoutAttributesForAppearingDecorationElementOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)elementIndexPath</a>
      * @since Available in iOS 6.0 and later.
      */
     public UICollectionViewLayoutAttributes getInitialLayoutAttributesForAppearingDecorationElement(String elementKind, NSIndexPath elementIndexPath) {
@@ -159,7 +159,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UICollectionViewLayoutAttributes objc_getInitialLayoutAttributesForAppearingItem(UICollectionViewLayout __self__, Selector __cmd__, NSIndexPath itemIndexPath);
     @Bridge private native static UICollectionViewLayoutAttributes objc_getInitialLayoutAttributesForAppearingItemSuper(ObjCSuper __super__, Selector __cmd__, NSIndexPath itemIndexPath);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/initialLayoutAttributesForAppearingItemAtIndexPath:">- (UICollectionViewLayoutAttributes *)initialLayoutAttributesForAppearingItemAtIndexPath:(NSIndexPath *)itemIndexPath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/initialLayoutAttributesForAppearingItemAtIndexPath:">- (UICollectionViewLayoutAttributes *)initialLayoutAttributesForAppearingItemAtIndexPath:(NSIndexPath *)itemIndexPath</a>
      * @since Available in iOS 6.0 and later.
      */
     public UICollectionViewLayoutAttributes getInitialLayoutAttributesForAppearingItem(NSIndexPath itemIndexPath) {
@@ -170,7 +170,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UICollectionViewLayoutAttributes objc_getInitialLayoutAttributesForAppearingSupplementaryElement(UICollectionViewLayout __self__, Selector __cmd__, String elementKind, NSIndexPath elementIndexPath);
     @Bridge private native static UICollectionViewLayoutAttributes objc_getInitialLayoutAttributesForAppearingSupplementaryElementSuper(ObjCSuper __super__, Selector __cmd__, String elementKind, NSIndexPath elementIndexPath);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/initialLayoutAttributesForAppearingSupplementaryElementOfKind:atIndexPath:">- (UICollectionViewLayoutAttributes *)initialLayoutAttributesForAppearingSupplementaryElementOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)elementIndexPath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/initialLayoutAttributesForAppearingSupplementaryElementOfKind:atIndexPath:">- (UICollectionViewLayoutAttributes *)initialLayoutAttributesForAppearingSupplementaryElementOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)elementIndexPath</a>
      * @since Available in iOS 6.0 and later.
      */
     public UICollectionViewLayoutAttributes getInitialLayoutAttributesForAppearingSupplementaryElement(String elementKind, NSIndexPath elementIndexPath) {
@@ -181,7 +181,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UICollectionViewLayoutAttributes objc_getLayoutAttributesForDecorationView(UICollectionViewLayout __self__, Selector __cmd__, String decorationViewKind, NSIndexPath indexPath);
     @Bridge private native static UICollectionViewLayoutAttributes objc_getLayoutAttributesForDecorationViewSuper(ObjCSuper __super__, Selector __cmd__, String decorationViewKind, NSIndexPath indexPath);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/layoutAttributesForDecorationViewOfKind:atIndexPath:">- (UICollectionViewLayoutAttributes *)layoutAttributesForDecorationViewOfKind:(NSString*)decorationViewKind atIndexPath:(NSIndexPath *)indexPath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/layoutAttributesForDecorationViewOfKind:atIndexPath:">- (UICollectionViewLayoutAttributes *)layoutAttributesForDecorationViewOfKind:(NSString*)decorationViewKind atIndexPath:(NSIndexPath *)indexPath</a>
      * @since Available in iOS 6.0 and later.
      */
     public UICollectionViewLayoutAttributes getLayoutAttributesForDecorationView(String decorationViewKind, NSIndexPath indexPath) {
@@ -192,7 +192,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getLayoutAttributesForElements(UICollectionViewLayout __self__, Selector __cmd__, @ByVal CGRect rect);
     @Bridge private native static NSArray objc_getLayoutAttributesForElementsSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect rect);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/layoutAttributesForElementsInRect:">- (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/layoutAttributesForElementsInRect:">- (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect</a>
      * @since Available in iOS 6.0 and later.
      */
     public NSArray getLayoutAttributesForElements(CGRect rect) {
@@ -203,7 +203,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UICollectionViewLayoutAttributes objc_getLayoutAttributesForItem(UICollectionViewLayout __self__, Selector __cmd__, NSIndexPath indexPath);
     @Bridge private native static UICollectionViewLayoutAttributes objc_getLayoutAttributesForItemSuper(ObjCSuper __super__, Selector __cmd__, NSIndexPath indexPath);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/layoutAttributesForItemAtIndexPath:">- (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/layoutAttributesForItemAtIndexPath:">- (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath</a>
      * @since Available in iOS 6.0 and later.
      */
     public UICollectionViewLayoutAttributes getLayoutAttributesForItem(NSIndexPath indexPath) {
@@ -214,7 +214,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UICollectionViewLayoutAttributes objc_getLayoutAttributesForSupplementaryView(UICollectionViewLayout __self__, Selector __cmd__, String kind, NSIndexPath indexPath);
     @Bridge private native static UICollectionViewLayoutAttributes objc_getLayoutAttributesForSupplementaryViewSuper(ObjCSuper __super__, Selector __cmd__, String kind, NSIndexPath indexPath);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/layoutAttributesForSupplementaryViewOfKind:atIndexPath:">- (UICollectionViewLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/layoutAttributesForSupplementaryViewOfKind:atIndexPath:">- (UICollectionViewLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath</a>
      * @since Available in iOS 6.0 and later.
      */
     public UICollectionViewLayoutAttributes getLayoutAttributesForSupplementaryView(String kind, NSIndexPath indexPath) {
@@ -225,7 +225,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGPoint objc_getTargetContentOffset(UICollectionViewLayout __self__, Selector __cmd__, @ByVal CGPoint proposedContentOffset, @ByVal CGPoint velocity);
     @Bridge private native static @ByVal CGPoint objc_getTargetContentOffsetSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGPoint proposedContentOffset, @ByVal CGPoint velocity);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/targetContentOffsetForProposedContentOffset:withScrollingVelocity:">- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/targetContentOffsetForProposedContentOffset:withScrollingVelocity:">- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset withScrollingVelocity:(CGPoint)velocity</a>
      * @since Available in iOS 6.0 and later.
      */
     public CGPoint getTargetContentOffset(CGPoint proposedContentOffset, CGPoint velocity) {
@@ -236,7 +236,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_invalidateLayout(UICollectionViewLayout __self__, Selector __cmd__);
     @Bridge private native static void objc_invalidateLayoutSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/invalidateLayout">- (void)invalidateLayout</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/invalidateLayout">- (void)invalidateLayout</a>
      * @since Available in iOS 6.0 and later.
      */
     public void invalidateLayout() {
@@ -247,7 +247,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_prepareForAnimatedBoundsChange(UICollectionViewLayout __self__, Selector __cmd__, @ByVal CGRect oldBounds);
     @Bridge private native static void objc_prepareForAnimatedBoundsChangeSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect oldBounds);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/prepareForAnimatedBoundsChange:">- (void)prepareForAnimatedBoundsChange:(CGRect)oldBounds</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/prepareForAnimatedBoundsChange:">- (void)prepareForAnimatedBoundsChange:(CGRect)oldBounds</a>
      * @since Available in iOS 6.0 and later.
      */
     public void prepareForAnimatedBoundsChange(CGRect oldBounds) {
@@ -258,7 +258,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_prepareForCollectionViewUpdates(UICollectionViewLayout __self__, Selector __cmd__, NSArray updateItems);
     @Bridge private native static void objc_prepareForCollectionViewUpdatesSuper(ObjCSuper __super__, Selector __cmd__, NSArray updateItems);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/prepareForCollectionViewUpdates:">- (void)prepareForCollectionViewUpdates:(NSArray *)updateItems</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/prepareForCollectionViewUpdates:">- (void)prepareForCollectionViewUpdates:(NSArray *)updateItems</a>
      * @since Available in iOS 6.0 and later.
      */
     public void prepareForCollectionViewUpdates(NSArray updateItems) {
@@ -269,7 +269,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_prepareLayout(UICollectionViewLayout __self__, Selector __cmd__);
     @Bridge private native static void objc_prepareLayoutSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/prepareLayout">- (void)prepareLayout</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/prepareLayout">- (void)prepareLayout</a>
      * @since Available in iOS 6.0 and later.
      */
     public void prepareLayout() {
@@ -280,7 +280,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_registerDecorationViewClass(UICollectionViewLayout __self__, Selector __cmd__, ObjCClass viewClass, String decorationViewKind);
     @Bridge private native static void objc_registerDecorationViewClassSuper(ObjCSuper __super__, Selector __cmd__, ObjCClass viewClass, String decorationViewKind);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/registerClass:forDecorationViewOfKind:">- (void)registerClass:(Class)viewClass forDecorationViewOfKind:(NSString *)decorationViewKind</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/registerClass:forDecorationViewOfKind:">- (void)registerClass:(Class)viewClass forDecorationViewOfKind:(NSString *)decorationViewKind</a>
      * @since Available in iOS 6.0 and later.
      */
     public void registerDecorationViewClass(ObjCClass viewClass, String decorationViewKind) {
@@ -291,7 +291,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_registerDecorationViewNib(UICollectionViewLayout __self__, Selector __cmd__, UINib nib, String decorationViewKind);
     @Bridge private native static void objc_registerDecorationViewNibSuper(ObjCSuper __super__, Selector __cmd__, UINib nib, String decorationViewKind);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/registerNib:forDecorationViewOfKind:">- (void)registerNib:(UINib *)nib forDecorationViewOfKind:(NSString *)decorationViewKind</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/registerNib:forDecorationViewOfKind:">- (void)registerNib:(UINib *)nib forDecorationViewOfKind:(NSString *)decorationViewKind</a>
      * @since Available in iOS 6.0 and later.
      */
     public void registerDecorationViewNib(UINib nib, String decorationViewKind) {
@@ -302,7 +302,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_shouldInvalidateLayoutForBoundsChange(UICollectionViewLayout __self__, Selector __cmd__, @ByVal CGRect newBounds);
     @Bridge private native static boolean objc_shouldInvalidateLayoutForBoundsChangeSuper(ObjCSuper __super__, Selector __cmd__, @ByVal CGRect newBounds);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/shouldInvalidateLayoutForBoundsChange:">- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewLayout_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionViewLayout/shouldInvalidateLayoutForBoundsChange:">- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds</a>
      * @since Available in iOS 6.0 and later.
      */
     public boolean shouldInvalidateLayoutForBoundsChange(CGRect newBounds) {

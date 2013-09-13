@@ -16,7 +16,7 @@ license: |
      */
 package: org.robovm.cocoatouch.uikit
 library: UIKit
-base_url: http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/
+base_url: https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/
 data_type_urls: 
     - ../UIKitDataTypesReference/Reference/reference.html
     - ../NSString_UIKit_Additions/Reference/Reference.html
@@ -1055,6 +1055,9 @@ classes:
         url: ../UIStoryboardPopoverSegue_Class/Reference/Reference.html
     UIStoryboardSegue:
         url: ../UIStoryboardSegue_Class/Reference/Reference.html
+        methods:
+            "+segueWithIdentifier:source:destination:performHandler:":
+                name: getSegue
     UISwipeGestureRecognizer:
         url: ../UISwipeGestureRecognizer_Class/Reference/Reference.html
     UISwitch:
@@ -1092,7 +1095,7 @@ classes:
             "-dequeueReusableCellWithIdentifier:forIndexPath:":
                 name: dequeueReusableCell
             "-dequeueReusableHeaderFooterViewWithIdentifier:":
-                name: dequeueReusableHeaderFooterView
+                name: dequeueReusableHeaderFooterView   
             "-deselectRowAtIndexPath:animated:":
                 name: deselectRow
             "-indexPathForCell:":

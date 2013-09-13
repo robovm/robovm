@@ -30,7 +30,7 @@ import org.robovm.rt.bro.ptr.*;
 /**
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/../EAGLSharegroup_ClassRef/Reference/EAGLSharegroup.html">EAGLSharegroup Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/../EAGLSharegroup_ClassRef/Reference/EAGLSharegroup.html">EAGLSharegroup Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */

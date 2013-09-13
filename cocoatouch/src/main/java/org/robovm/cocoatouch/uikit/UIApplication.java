@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html">UIApplication Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html">UIApplication Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -87,7 +87,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_getApplicationIconBadgeNumber(UIApplication __self__, Selector __cmd__);
     @Bridge private native static int objc_getApplicationIconBadgeNumberSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/applicationIconBadgeNumber">@property(nonatomic) NSInteger applicationIconBadgeNumber</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/applicationIconBadgeNumber">@property(nonatomic) NSInteger applicationIconBadgeNumber</a>
      * @since Available in iOS 2.0 and later.
      */
     public int getApplicationIconBadgeNumber() {
@@ -98,7 +98,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setApplicationIconBadgeNumber(UIApplication __self__, Selector __cmd__, int applicationIconBadgeNumber);
     @Bridge private native static void objc_setApplicationIconBadgeNumberSuper(ObjCSuper __super__, Selector __cmd__, int applicationIconBadgeNumber);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/applicationIconBadgeNumber">@property(nonatomic) NSInteger applicationIconBadgeNumber</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/applicationIconBadgeNumber">@property(nonatomic) NSInteger applicationIconBadgeNumber</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setApplicationIconBadgeNumber(int applicationIconBadgeNumber) {
@@ -109,7 +109,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIApplicationState objc_getApplicationState(UIApplication __self__, Selector __cmd__);
     @Bridge private native static UIApplicationState objc_getApplicationStateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/applicationState">@property(nonatomic, readonly) UIApplicationState applicationState</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/applicationState">@property(nonatomic, readonly) UIApplicationState applicationState</a>
      * @since Available in iOS 4.0 and later.
      */
     public UIApplicationState getApplicationState() {
@@ -120,7 +120,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isApplicationSupportsShakeToEdit(UIApplication __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isApplicationSupportsShakeToEditSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/applicationSupportsShakeToEdit">@property(nonatomic) BOOL applicationSupportsShakeToEdit</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/applicationSupportsShakeToEdit">@property(nonatomic) BOOL applicationSupportsShakeToEdit</a>
      * @since Available in iOS 3.0 and later.
      */
     public boolean isApplicationSupportsShakeToEdit() {
@@ -131,7 +131,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setApplicationSupportsShakeToEdit(UIApplication __self__, Selector __cmd__, boolean applicationSupportsShakeToEdit);
     @Bridge private native static void objc_setApplicationSupportsShakeToEditSuper(ObjCSuper __super__, Selector __cmd__, boolean applicationSupportsShakeToEdit);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/applicationSupportsShakeToEdit">@property(nonatomic) BOOL applicationSupportsShakeToEdit</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/applicationSupportsShakeToEdit">@property(nonatomic) BOOL applicationSupportsShakeToEdit</a>
      * @since Available in iOS 3.0 and later.
      */
     public void setApplicationSupportsShakeToEdit(boolean applicationSupportsShakeToEdit) {
@@ -142,7 +142,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static double objc_getBackgroundTimeRemaining(UIApplication __self__, Selector __cmd__);
     @Bridge private native static double objc_getBackgroundTimeRemainingSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/backgroundTimeRemaining">@property(nonatomic, readonly) NSTimeInterval backgroundTimeRemaining</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/backgroundTimeRemaining">@property(nonatomic, readonly) NSTimeInterval backgroundTimeRemaining</a>
      * @since Available in iOS 4.0 and later.
      */
     public double getBackgroundTimeRemaining() {
@@ -153,7 +153,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIApplicationDelegate objc_getDelegate(UIApplication __self__, Selector __cmd__);
     @Bridge private native static UIApplicationDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/delegate">@property(nonatomic, assign) id&amp;lt;UIApplicationDelegate&amp;gt; delegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/delegate">@property(nonatomic, assign) id&amp;lt;UIApplicationDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIApplicationDelegate getDelegate() {
@@ -164,7 +164,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setDelegate(UIApplication __self__, Selector __cmd__, UIApplicationDelegate delegate);
     @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIApplicationDelegate delegate);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/delegate">@property(nonatomic, assign) id&amp;lt;UIApplicationDelegate&amp;gt; delegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/delegate">@property(nonatomic, assign) id&amp;lt;UIApplicationDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setDelegate(UIApplicationDelegate delegate) {
@@ -175,7 +175,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isIdleTimerDisabled(UIApplication __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isIdleTimerDisabledSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/idleTimerDisabled">@property(nonatomic, getter=isIdleTimerDisabled) BOOL idleTimerDisabled</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/idleTimerDisabled">@property(nonatomic, getter=isIdleTimerDisabled) BOOL idleTimerDisabled</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isIdleTimerDisabled() {
@@ -186,7 +186,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setIdleTimerDisabled(UIApplication __self__, Selector __cmd__, boolean idleTimerDisabled);
     @Bridge private native static void objc_setIdleTimerDisabledSuper(ObjCSuper __super__, Selector __cmd__, boolean idleTimerDisabled);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/idleTimerDisabled">@property(nonatomic, getter=isIdleTimerDisabled) BOOL idleTimerDisabled</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/idleTimerDisabled">@property(nonatomic, getter=isIdleTimerDisabled) BOOL idleTimerDisabled</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setIdleTimerDisabled(boolean idleTimerDisabled) {
@@ -197,7 +197,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIWindow objc_getKeyWindow(UIApplication __self__, Selector __cmd__);
     @Bridge private native static UIWindow objc_getKeyWindowSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/keyWindow">@property(nonatomic, readonly) UIWindow *keyWindow</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/keyWindow">@property(nonatomic, readonly) UIWindow *keyWindow</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIWindow getKeyWindow() {
@@ -208,7 +208,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isNetworkActivityIndicatorVisible(UIApplication __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isNetworkActivityIndicatorVisibleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/networkActivityIndicatorVisible">@property(nonatomic, getter=isNetworkActivityIndicatorVisible) BOOL networkActivityIndicatorVisible</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/networkActivityIndicatorVisible">@property(nonatomic, getter=isNetworkActivityIndicatorVisible) BOOL networkActivityIndicatorVisible</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isNetworkActivityIndicatorVisible() {
@@ -219,7 +219,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setNetworkActivityIndicatorVisible(UIApplication __self__, Selector __cmd__, boolean networkActivityIndicatorVisible);
     @Bridge private native static void objc_setNetworkActivityIndicatorVisibleSuper(ObjCSuper __super__, Selector __cmd__, boolean networkActivityIndicatorVisible);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/networkActivityIndicatorVisible">@property(nonatomic, getter=isNetworkActivityIndicatorVisible) BOOL networkActivityIndicatorVisible</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/networkActivityIndicatorVisible">@property(nonatomic, getter=isNetworkActivityIndicatorVisible) BOOL networkActivityIndicatorVisible</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setNetworkActivityIndicatorVisible(boolean networkActivityIndicatorVisible) {
@@ -230,7 +230,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isProtectedDataAvailable(UIApplication __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isProtectedDataAvailableSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/protectedDataAvailable">@property(nonatomic, readonly, getter=isProtectedDataAvailable) BOOL protectedDataAvailable</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/protectedDataAvailable">@property(nonatomic, readonly, getter=isProtectedDataAvailable) BOOL protectedDataAvailable</a>
      * @since Available in iOS 4.0 and later.
      */
     public boolean isProtectedDataAvailable() {
@@ -241,8 +241,8 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getScheduledLocalNotifications(UIApplication __self__, Selector __cmd__);
     @Bridge private native static NSArray objc_getScheduledLocalNotificationsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/scheduledLocalNotifications">@property(nonatomic, copy) NSArray *scheduledLocalNotifications</a>
-     * @since Available in iOS 4.2 and later.
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/scheduledLocalNotifications">@property(nonatomic, copy) NSArray *scheduledLocalNotifications</a>
+     * @since Available in iOS 4.0 and later.
      */
     public NSArray getScheduledLocalNotifications() {
         if (customClass) { return objc_getScheduledLocalNotificationsSuper(getSuper(), scheduledLocalNotifications); } else { return objc_getScheduledLocalNotifications(this, scheduledLocalNotifications); }
@@ -252,8 +252,8 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setScheduledLocalNotifications(UIApplication __self__, Selector __cmd__, NSArray scheduledLocalNotifications);
     @Bridge private native static void objc_setScheduledLocalNotificationsSuper(ObjCSuper __super__, Selector __cmd__, NSArray scheduledLocalNotifications);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/scheduledLocalNotifications">@property(nonatomic, copy) NSArray *scheduledLocalNotifications</a>
-     * @since Available in iOS 4.2 and later.
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/scheduledLocalNotifications">@property(nonatomic, copy) NSArray *scheduledLocalNotifications</a>
+     * @since Available in iOS 4.0 and later.
      */
     public void setScheduledLocalNotifications(NSArray scheduledLocalNotifications) {
         if (customClass) { objc_setScheduledLocalNotificationsSuper(getSuper(), setScheduledLocalNotifications$, scheduledLocalNotifications); } else { objc_setScheduledLocalNotifications(this, setScheduledLocalNotifications$, scheduledLocalNotifications); }
@@ -263,7 +263,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @ByVal CGRect objc_getStatusBarFrame(UIApplication __self__, Selector __cmd__);
     @Bridge private native static @ByVal CGRect objc_getStatusBarFrameSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarFrame">@property(nonatomic, readonly) CGRect statusBarFrame</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarFrame">@property(nonatomic, readonly) CGRect statusBarFrame</a>
      * @since Available in iOS 2.0 and later.
      */
     public CGRect getStatusBarFrame() {
@@ -274,7 +274,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isStatusBarHidden(UIApplication __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isStatusBarHiddenSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarHidden">@property(nonatomic, getter=isStatusBarHidden) BOOL statusBarHidden</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarHidden">@property(nonatomic, getter=isStatusBarHidden) BOOL statusBarHidden</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isStatusBarHidden() {
@@ -285,7 +285,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setStatusBarHidden(UIApplication __self__, Selector __cmd__, boolean statusBarHidden);
     @Bridge private native static void objc_setStatusBarHiddenSuper(ObjCSuper __super__, Selector __cmd__, boolean statusBarHidden);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarHidden">@property(nonatomic, getter=isStatusBarHidden) BOOL statusBarHidden</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarHidden">@property(nonatomic, getter=isStatusBarHidden) BOOL statusBarHidden</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setStatusBarHidden(boolean statusBarHidden) {
@@ -296,7 +296,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIInterfaceOrientation objc_getStatusBarOrientation(UIApplication __self__, Selector __cmd__);
     @Bridge private native static UIInterfaceOrientation objc_getStatusBarOrientationSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarOrientation">@property(nonatomic) UIInterfaceOrientation statusBarOrientation</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarOrientation">@property(nonatomic) UIInterfaceOrientation statusBarOrientation</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIInterfaceOrientation getStatusBarOrientation() {
@@ -307,7 +307,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setStatusBarOrientation(UIApplication __self__, Selector __cmd__, UIInterfaceOrientation statusBarOrientation);
     @Bridge private native static void objc_setStatusBarOrientationSuper(ObjCSuper __super__, Selector __cmd__, UIInterfaceOrientation statusBarOrientation);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarOrientation">@property(nonatomic) UIInterfaceOrientation statusBarOrientation</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarOrientation">@property(nonatomic) UIInterfaceOrientation statusBarOrientation</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setStatusBarOrientation(UIInterfaceOrientation statusBarOrientation) {
@@ -318,7 +318,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static double objc_getStatusBarOrientationAnimationDuration(UIApplication __self__, Selector __cmd__);
     @Bridge private native static double objc_getStatusBarOrientationAnimationDurationSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarOrientationAnimationDuration">@property(nonatomic, readonly) NSTimeInterval statusBarOrientationAnimationDuration</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarOrientationAnimationDuration">@property(nonatomic, readonly) NSTimeInterval statusBarOrientationAnimationDuration</a>
      * @since Available in iOS 2.0 and later.
      */
     public double getStatusBarOrientationAnimationDuration() {
@@ -329,7 +329,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIStatusBarStyle objc_getStatusBarStyle(UIApplication __self__, Selector __cmd__);
     @Bridge private native static UIStatusBarStyle objc_getStatusBarStyleSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarStyle">@property(nonatomic) UIStatusBarStyle statusBarStyle</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarStyle">@property(nonatomic) UIStatusBarStyle statusBarStyle</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIStatusBarStyle getStatusBarStyle() {
@@ -340,7 +340,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setStatusBarStyle(UIApplication __self__, Selector __cmd__, UIStatusBarStyle statusBarStyle);
     @Bridge private native static void objc_setStatusBarStyleSuper(ObjCSuper __super__, Selector __cmd__, UIStatusBarStyle statusBarStyle);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarStyle">@property(nonatomic) UIStatusBarStyle statusBarStyle</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/statusBarStyle">@property(nonatomic) UIStatusBarStyle statusBarStyle</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setStatusBarStyle(UIStatusBarStyle statusBarStyle) {
@@ -351,7 +351,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIUserInterfaceLayoutDirection objc_getUserInterfaceLayoutDirection(UIApplication __self__, Selector __cmd__);
     @Bridge private native static UIUserInterfaceLayoutDirection objc_getUserInterfaceLayoutDirectionSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/userInterfaceLayoutDirection">@property(nonatomic, readonly) UIUserInterfaceLayoutDirection userInterfaceLayoutDirection</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/userInterfaceLayoutDirection">@property(nonatomic, readonly) UIUserInterfaceLayoutDirection userInterfaceLayoutDirection</a>
      * @since Available in iOS 5.0 and later.
      */
     public UIUserInterfaceLayoutDirection getUserInterfaceLayoutDirection() {
@@ -362,7 +362,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSArray objc_getWindows(UIApplication __self__, Selector __cmd__);
     @Bridge private native static NSArray objc_getWindowsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/windows">@property(nonatomic, readonly) NSArray *windows</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instp/UIApplication/windows">@property(nonatomic, readonly) NSArray *windows</a>
      * @since Available in iOS 2.0 and later.
      */
     public NSArray getWindows() {
@@ -374,7 +374,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector sharedApplication = Selector.register("sharedApplication");
     @Bridge private native static UIApplication objc_getSharedApplication(ObjCClass __self__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/clm/UIApplication/sharedApplication">+ (UIApplication *)sharedApplication</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/clm/UIApplication/sharedApplication">+ (UIApplication *)sharedApplication</a>
      * @since Available in iOS 2.0 and later.
      */
     public static UIApplication getSharedApplication() {
@@ -385,7 +385,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_beginBackgroundTask(UIApplication __self__, Selector __cmd__, VoidBlock handler);
     @Bridge private native static int objc_beginBackgroundTaskSuper(ObjCSuper __super__, Selector __cmd__, VoidBlock handler);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/beginBackgroundTaskWithExpirationHandler:">- (UIBackgroundTaskIdentifier)beginBackgroundTaskWithExpirationHandler:(void (^)(void))handler</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/beginBackgroundTaskWithExpirationHandler:">- (UIBackgroundTaskIdentifier)beginBackgroundTaskWithExpirationHandler:(void (^)(void))handler</a>
      * @since Available in iOS 4.0 and later.
      */
     public int beginBackgroundTask(VoidBlock handler) {
@@ -396,7 +396,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_beginIgnoringInteractionEvents(UIApplication __self__, Selector __cmd__);
     @Bridge private native static void objc_beginIgnoringInteractionEventsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/beginIgnoringInteractionEvents">- (void)beginIgnoringInteractionEvents</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/beginIgnoringInteractionEvents">- (void)beginIgnoringInteractionEvents</a>
      * @since Available in iOS 2.0 and later.
      */
     public void beginIgnoringInteractionEvents() {
@@ -407,7 +407,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_beginReceivingRemoteControlEvents(UIApplication __self__, Selector __cmd__);
     @Bridge private native static void objc_beginReceivingRemoteControlEventsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/beginReceivingRemoteControlEvents">- (void)beginReceivingRemoteControlEvents</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/beginReceivingRemoteControlEvents">- (void)beginReceivingRemoteControlEvents</a>
      * @since Available in iOS 4.0 and later.
      */
     public void beginReceivingRemoteControlEvents() {
@@ -418,7 +418,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_canOpenURL(UIApplication __self__, Selector __cmd__, NSURL url);
     @Bridge private native static boolean objc_canOpenURLSuper(ObjCSuper __super__, Selector __cmd__, NSURL url);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/canOpenURL:">- (BOOL)canOpenURL:(NSURL *)url</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/canOpenURL:">- (BOOL)canOpenURL:(NSURL *)url</a>
      * @since Available in iOS 3.0 and later.
      */
     public boolean canOpenURL(NSURL url) {
@@ -429,7 +429,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_cancelAllLocalNotifications(UIApplication __self__, Selector __cmd__);
     @Bridge private native static void objc_cancelAllLocalNotificationsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/cancelAllLocalNotifications">- (void)cancelAllLocalNotifications</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/cancelAllLocalNotifications">- (void)cancelAllLocalNotifications</a>
      * @since Available in iOS 4.0 and later.
      */
     public void cancelAllLocalNotifications() {
@@ -440,7 +440,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_cancelLocalNotification(UIApplication __self__, Selector __cmd__, UILocalNotification notification);
     @Bridge private native static void objc_cancelLocalNotificationSuper(ObjCSuper __super__, Selector __cmd__, UILocalNotification notification);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/cancelLocalNotification:">- (void)cancelLocalNotification:(UILocalNotification *)notification</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/cancelLocalNotification:">- (void)cancelLocalNotification:(UILocalNotification *)notification</a>
      * @since Available in iOS 4.0 and later.
      */
     public void cancelLocalNotification(UILocalNotification notification) {
@@ -451,7 +451,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_clearKeepAliveTimeout(UIApplication __self__, Selector __cmd__);
     @Bridge private native static void objc_clearKeepAliveTimeoutSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/clearKeepAliveTimeout">- (void)clearKeepAliveTimeout</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/clearKeepAliveTimeout">- (void)clearKeepAliveTimeout</a>
      * @since Available in iOS 4.0 and later.
      */
     public void clearKeepAliveTimeout() {
@@ -462,7 +462,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_completeStateRestoration(UIApplication __self__, Selector __cmd__);
     @Bridge private native static void objc_completeStateRestorationSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/completeStateRestoration">- (void)completeStateRestoration</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/completeStateRestoration">- (void)completeStateRestoration</a>
      * @since Available in iOS 6.0 and later.
      */
     public void completeStateRestoration() {
@@ -473,7 +473,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_endBackgroundTask(UIApplication __self__, Selector __cmd__, int identifier);
     @Bridge private native static void objc_endBackgroundTaskSuper(ObjCSuper __super__, Selector __cmd__, int identifier);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/endBackgroundTask:">- (void)endBackgroundTask:(UIBackgroundTaskIdentifier)identifier</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/endBackgroundTask:">- (void)endBackgroundTask:(UIBackgroundTaskIdentifier)identifier</a>
      * @since Available in iOS 4.0 and later.
      */
     public void endBackgroundTask(int identifier) {
@@ -484,7 +484,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_endIgnoringInteractionEvents(UIApplication __self__, Selector __cmd__);
     @Bridge private native static void objc_endIgnoringInteractionEventsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/endIgnoringInteractionEvents">- (void)endIgnoringInteractionEvents</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/endIgnoringInteractionEvents">- (void)endIgnoringInteractionEvents</a>
      * @since Available in iOS 2.0 and later.
      */
     public void endIgnoringInteractionEvents() {
@@ -495,7 +495,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_endReceivingRemoteControlEvents(UIApplication __self__, Selector __cmd__);
     @Bridge private native static void objc_endReceivingRemoteControlEventsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/endReceivingRemoteControlEvents">- (void)endReceivingRemoteControlEvents</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/endReceivingRemoteControlEvents">- (void)endReceivingRemoteControlEvents</a>
      * @since Available in iOS 4.0 and later.
      */
     public void endReceivingRemoteControlEvents() {
@@ -506,7 +506,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_extendStateRestoration(UIApplication __self__, Selector __cmd__);
     @Bridge private native static void objc_extendStateRestorationSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/extendStateRestoration">- (void)extendStateRestoration</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/extendStateRestoration">- (void)extendStateRestoration</a>
      * @since Available in iOS 6.0 and later.
      */
     public void extendStateRestoration() {
@@ -517,7 +517,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIRemoteNotificationType objc_getEnabledRemoteNotificationTypes(UIApplication __self__, Selector __cmd__);
     @Bridge private native static UIRemoteNotificationType objc_getEnabledRemoteNotificationTypesSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/enabledRemoteNotificationTypes">- (UIRemoteNotificationType)enabledRemoteNotificationTypes</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/enabledRemoteNotificationTypes">- (UIRemoteNotificationType)enabledRemoteNotificationTypes</a>
      * @since Available in iOS 3.0 and later.
      */
     public UIRemoteNotificationType getEnabledRemoteNotificationTypes() {
@@ -528,7 +528,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_getSupportedInterfaceOrientations(UIApplication __self__, Selector __cmd__, UIWindow window);
     @Bridge private native static int objc_getSupportedInterfaceOrientationsSuper(ObjCSuper __super__, Selector __cmd__, UIWindow window);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/supportedInterfaceOrientationsForWindow:">- (NSUInteger)supportedInterfaceOrientationsForWindow:(UIWindow *)window</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/supportedInterfaceOrientationsForWindow:">- (NSUInteger)supportedInterfaceOrientationsForWindow:(UIWindow *)window</a>
      * @since Available in iOS 6.0 and later.
      */
     public int getSupportedInterfaceOrientations(UIWindow window) {
@@ -539,7 +539,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_isIgnoringInteractionEvents(UIApplication __self__, Selector __cmd__);
     @Bridge private native static boolean objc_isIgnoringInteractionEventsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/isIgnoringInteractionEvents">- (BOOL)isIgnoringInteractionEvents</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/isIgnoringInteractionEvents">- (BOOL)isIgnoringInteractionEvents</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean isIgnoringInteractionEvents() {
@@ -550,7 +550,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_openURL(UIApplication __self__, Selector __cmd__, NSURL url);
     @Bridge private native static boolean objc_openURLSuper(ObjCSuper __super__, Selector __cmd__, NSURL url);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/openURL:">- (BOOL)openURL:(NSURL *)url</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/openURL:">- (BOOL)openURL:(NSURL *)url</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean openURL(NSURL url) {
@@ -561,7 +561,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_presentLocalNotificationNow(UIApplication __self__, Selector __cmd__, UILocalNotification notification);
     @Bridge private native static void objc_presentLocalNotificationNowSuper(ObjCSuper __super__, Selector __cmd__, UILocalNotification notification);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/presentLocalNotificationNow:">- (void)presentLocalNotificationNow:(UILocalNotification *)notification</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/presentLocalNotificationNow:">- (void)presentLocalNotificationNow:(UILocalNotification *)notification</a>
      * @since Available in iOS 4.0 and later.
      */
     public void presentLocalNotificationNow(UILocalNotification notification) {
@@ -572,7 +572,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_registerForRemoteNotificationTypes(UIApplication __self__, Selector __cmd__, UIRemoteNotificationType types);
     @Bridge private native static void objc_registerForRemoteNotificationTypesSuper(ObjCSuper __super__, Selector __cmd__, UIRemoteNotificationType types);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/registerForRemoteNotificationTypes:">- (void)registerForRemoteNotificationTypes:(UIRemoteNotificationType)types</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/registerForRemoteNotificationTypes:">- (void)registerForRemoteNotificationTypes:(UIRemoteNotificationType)types</a>
      * @since Available in iOS 3.0 and later.
      */
     public void registerForRemoteNotificationTypes(UIRemoteNotificationType types) {
@@ -583,7 +583,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_scheduleLocalNotification(UIApplication __self__, Selector __cmd__, UILocalNotification notification);
     @Bridge private native static void objc_scheduleLocalNotificationSuper(ObjCSuper __super__, Selector __cmd__, UILocalNotification notification);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/scheduleLocalNotification:">- (void)scheduleLocalNotification:(UILocalNotification *)notification</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/scheduleLocalNotification:">- (void)scheduleLocalNotification:(UILocalNotification *)notification</a>
      * @since Available in iOS 4.0 and later.
      */
     public void scheduleLocalNotification(UILocalNotification notification) {
@@ -594,7 +594,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_sendAction(UIApplication __self__, Selector __cmd__, Selector action, NSObject target, NSObject sender, UIEvent event);
     @Bridge private native static boolean objc_sendActionSuper(ObjCSuper __super__, Selector __cmd__, Selector action, NSObject target, NSObject sender, UIEvent event);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/sendAction:to:from:forEvent:">- (BOOL)sendAction:(SEL)action to:(id)target from:(id)sender forEvent:(UIEvent *)event</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/sendAction:to:from:forEvent:">- (BOOL)sendAction:(SEL)action to:(id)target from:(id)sender forEvent:(UIEvent *)event</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean sendAction(Selector action, NSObject target, NSObject sender, UIEvent event) {
@@ -605,7 +605,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_sendEvent(UIApplication __self__, Selector __cmd__, UIEvent event);
     @Bridge private native static void objc_sendEventSuper(ObjCSuper __super__, Selector __cmd__, UIEvent event);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/sendEvent:">- (void)sendEvent:(UIEvent *)event</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/sendEvent:">- (void)sendEvent:(UIEvent *)event</a>
      * @since Available in iOS 2.0 and later.
      */
     public void sendEvent(UIEvent event) {
@@ -616,7 +616,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_setKeepAliveTimeout(UIApplication __self__, Selector __cmd__, double timeout, VoidBlock keepAliveHandler);
     @Bridge private native static boolean objc_setKeepAliveTimeoutSuper(ObjCSuper __super__, Selector __cmd__, double timeout, VoidBlock keepAliveHandler);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/setKeepAliveTimeout:handler:">- (BOOL)setKeepAliveTimeout:(NSTimeInterval)timeout handler:(void (^)(void))keepAliveHandler</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/setKeepAliveTimeout:handler:">- (BOOL)setKeepAliveTimeout:(NSTimeInterval)timeout handler:(void (^)(void))keepAliveHandler</a>
      * @since Available in iOS 4.0 and later.
      */
     public boolean setKeepAliveTimeout(double timeout, VoidBlock keepAliveHandler) {
@@ -627,7 +627,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setNewsstandIconImage(UIApplication __self__, Selector __cmd__, UIImage image);
     @Bridge private native static void objc_setNewsstandIconImageSuper(ObjCSuper __super__, Selector __cmd__, UIImage image);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/setNewsstandIconImage:">- (void)setNewsstandIconImage:(UIImage *)image</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/setNewsstandIconImage:">- (void)setNewsstandIconImage:(UIImage *)image</a>
      * @since Available in iOS 5.0 and later.
      */
     public void setNewsstandIconImage(UIImage image) {
@@ -638,7 +638,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setStatusBarHidden(UIApplication __self__, Selector __cmd__, boolean hidden, UIStatusBarAnimation animation);
     @Bridge private native static void objc_setStatusBarHiddenSuper(ObjCSuper __super__, Selector __cmd__, boolean hidden, UIStatusBarAnimation animation);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/setStatusBarHidden:withAnimation:">- (void)setStatusBarHidden:(BOOL)hidden withAnimation:(UIStatusBarAnimation)animation</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/setStatusBarHidden:withAnimation:">- (void)setStatusBarHidden:(BOOL)hidden withAnimation:(UIStatusBarAnimation)animation</a>
      * @since Available in iOS 3.2 and later.
      */
     public void setStatusBarHidden(boolean hidden, UIStatusBarAnimation animation) {
@@ -649,7 +649,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setStatusBarOrientation(UIApplication __self__, Selector __cmd__, UIInterfaceOrientation interfaceOrientation, boolean animated);
     @Bridge private native static void objc_setStatusBarOrientationSuper(ObjCSuper __super__, Selector __cmd__, UIInterfaceOrientation interfaceOrientation, boolean animated);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/setStatusBarOrientation:animated:">- (void)setStatusBarOrientation:(UIInterfaceOrientation)interfaceOrientation animated:(BOOL)animated</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/setStatusBarOrientation:animated:">- (void)setStatusBarOrientation:(UIInterfaceOrientation)interfaceOrientation animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setStatusBarOrientation(UIInterfaceOrientation interfaceOrientation, boolean animated) {
@@ -660,7 +660,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setStatusBarStyle(UIApplication __self__, Selector __cmd__, UIStatusBarStyle statusBarStyle, boolean animated);
     @Bridge private native static void objc_setStatusBarStyleSuper(ObjCSuper __super__, Selector __cmd__, UIStatusBarStyle statusBarStyle, boolean animated);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/setStatusBarStyle:animated:">- (void)setStatusBarStyle:(UIStatusBarStyle)statusBarStyle animated:(BOOL)animated</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/setStatusBarStyle:animated:">- (void)setStatusBarStyle:(UIStatusBarStyle)statusBarStyle animated:(BOOL)animated</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setStatusBarStyle(UIStatusBarStyle statusBarStyle, boolean animated) {
@@ -671,7 +671,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_unregisterForRemoteNotifications(UIApplication __self__, Selector __cmd__);
     @Bridge private native static void objc_unregisterForRemoteNotificationsSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/unregisterForRemoteNotifications">- (void)unregisterForRemoteNotifications</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/unregisterForRemoteNotifications">- (void)unregisterForRemoteNotifications</a>
      * @since Available in iOS 3.0 and later.
      */
     public void unregisterForRemoteNotifications() {

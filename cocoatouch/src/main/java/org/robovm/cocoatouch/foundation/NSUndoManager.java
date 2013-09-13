@@ -29,7 +29,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSUndoManager_Class/Reference/Reference.html">NSUndoManager Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSUndoManager_Class/Reference/Reference.html">NSUndoManager Class Reference</a>
  *   @since Available in iOS 3.0 and later.
  * </div>
  */

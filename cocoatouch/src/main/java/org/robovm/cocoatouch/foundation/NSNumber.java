@@ -28,7 +28,7 @@ import org.robovm.rt.bro.ptr.*;
 /**
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html">NSNumber Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html">NSNumber Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -56,7 +56,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector numberWithBool$ = Selector.register("numberWithBool:");
     @Bridge private native static NSNumber objc_valueOf(ObjCClass __self__, Selector __cmd__, boolean value);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/clm/NSNumber/numberWithBool:">+ (NSNumber *)numberWithBool:(BOOL)value</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/clm/NSNumber/numberWithBool:">+ (NSNumber *)numberWithBool:(BOOL)value</a>
      * @since Available in iOS 2.0 and later.
      */
     public static NSNumber valueOf(boolean value) {
@@ -66,7 +66,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector numberWithChar$ = Selector.register("numberWithChar:");
     @Bridge private native static NSNumber objc_valueOf(ObjCClass __self__, Selector __cmd__, byte value);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/clm/NSNumber/numberWithChar:">+ (NSNumber *)numberWithChar:(char)value</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/clm/NSNumber/numberWithChar:">+ (NSNumber *)numberWithChar:(char)value</a>
      * @since Available in iOS 2.0 and later.
      */
     public static NSNumber valueOf(byte value) {
@@ -76,7 +76,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector numberWithDouble$ = Selector.register("numberWithDouble:");
     @Bridge private native static NSNumber objc_valueOf(ObjCClass __self__, Selector __cmd__, double value);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/clm/NSNumber/numberWithDouble:">+ (NSNumber *)numberWithDouble:(double)value</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/clm/NSNumber/numberWithDouble:">+ (NSNumber *)numberWithDouble:(double)value</a>
      * @since Available in iOS 2.0 and later.
      */
     public static NSNumber valueOf(double value) {
@@ -86,7 +86,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector numberWithFloat$ = Selector.register("numberWithFloat:");
     @Bridge private native static NSNumber objc_valueOf(ObjCClass __self__, Selector __cmd__, float value);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/clm/NSNumber/numberWithFloat:">+ (NSNumber *)numberWithFloat:(float)value</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/clm/NSNumber/numberWithFloat:">+ (NSNumber *)numberWithFloat:(float)value</a>
      * @since Available in iOS 2.0 and later.
      */
     public static NSNumber valueOf(float value) {
@@ -96,7 +96,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector numberWithInt$ = Selector.register("numberWithInt:");
     @Bridge private native static NSNumber objc_valueOf(ObjCClass __self__, Selector __cmd__, int value);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/clm/NSNumber/numberWithInt:">+ (NSNumber *)numberWithInt:(int)value</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/clm/NSNumber/numberWithInt:">+ (NSNumber *)numberWithInt:(int)value</a>
      * @since Available in iOS 2.0 and later.
      */
     public static NSNumber valueOf(int value) {
@@ -106,7 +106,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector numberWithLongLong$ = Selector.register("numberWithLongLong:");
     @Bridge private native static NSNumber objc_valueOf(ObjCClass __self__, Selector __cmd__, long value);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/clm/NSNumber/numberWithLongLong:">+ (NSNumber *)numberWithLongLong:(long long)value</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/clm/NSNumber/numberWithLongLong:">+ (NSNumber *)numberWithLongLong:(long long)value</a>
      * @since Available in iOS 2.0 and later.
      */
     public static NSNumber valueOf(long value) {
@@ -116,7 +116,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector numberWithShort$ = Selector.register("numberWithShort:");
     @Bridge private native static NSNumber objc_valueOf(ObjCClass __self__, Selector __cmd__, short value);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/clm/NSNumber/numberWithShort:">+ (NSNumber *)numberWithShort:(short)value</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/clm/NSNumber/numberWithShort:">+ (NSNumber *)numberWithShort:(short)value</a>
      * @since Available in iOS 2.0 and later.
      */
     public static NSNumber valueOf(short value) {
@@ -126,7 +126,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector numberWithUnsignedShort$ = Selector.register("numberWithUnsignedShort:");
     @Bridge private native static NSNumber objc_valueOf(ObjCClass __self__, Selector __cmd__, char value);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/clm/NSNumber/numberWithUnsignedShort:">+ (NSNumber *)numberWithUnsignedShort:(unsigned short)value</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/clm/NSNumber/numberWithUnsignedShort:">+ (NSNumber *)numberWithUnsignedShort:(unsigned short)value</a>
      * @since Available in iOS 2.0 and later.
      */
     public static NSNumber valueOf(char value) {
@@ -137,7 +137,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_booleanValue(NSNumber __self__, Selector __cmd__);
     @Bridge private native static boolean objc_booleanValueSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/instm/NSNumber/boolValue">- (BOOL)boolValue</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/instm/NSNumber/boolValue">- (BOOL)boolValue</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean booleanValue() {
@@ -148,7 +148,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static byte objc_byteValue(NSNumber __self__, Selector __cmd__);
     @Bridge private native static byte objc_byteValueSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/instm/NSNumber/charValue">- (char)charValue</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/instm/NSNumber/charValue">- (char)charValue</a>
      * @since Available in iOS 2.0 and later.
      */
     public byte byteValue() {
@@ -159,7 +159,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static char objc_charValue(NSNumber __self__, Selector __cmd__);
     @Bridge private native static char objc_charValueSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/instm/NSNumber/unsignedShortValue">- (unsigned short)unsignedShortValue</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/instm/NSNumber/unsignedShortValue">- (unsigned short)unsignedShortValue</a>
      * @since Available in iOS 2.0 and later.
      */
     public char charValue() {
@@ -170,7 +170,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static double objc_doubleValue(NSNumber __self__, Selector __cmd__);
     @Bridge private native static double objc_doubleValueSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/instm/NSNumber/doubleValue">- (double)doubleValue</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/instm/NSNumber/doubleValue">- (double)doubleValue</a>
      * @since Available in iOS 2.0 and later.
      */
     public double doubleValue() {
@@ -181,7 +181,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static float objc_floatValue(NSNumber __self__, Selector __cmd__);
     @Bridge private native static float objc_floatValueSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/instm/NSNumber/floatValue">- (float)floatValue</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/instm/NSNumber/floatValue">- (float)floatValue</a>
      * @since Available in iOS 2.0 and later.
      */
     public float floatValue() {
@@ -192,7 +192,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_intValue(NSNumber __self__, Selector __cmd__);
     @Bridge private native static int objc_intValueSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/instm/NSNumber/intValue">- (int)intValue</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/instm/NSNumber/intValue">- (int)intValue</a>
      * @since Available in iOS 2.0 and later.
      */
     public int intValue() {
@@ -203,7 +203,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static long objc_longValue(NSNumber __self__, Selector __cmd__);
     @Bridge private native static long objc_longValueSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/instm/NSNumber/longLongValue">- (long long)longLongValue</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/instm/NSNumber/longLongValue">- (long long)longLongValue</a>
      * @since Available in iOS 2.0 and later.
      */
     public long longValue() {
@@ -214,7 +214,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static short objc_shortValue(NSNumber __self__, Selector __cmd__);
     @Bridge private native static short objc_shortValueSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/instm/NSNumber/shortValue">- (short)shortValue</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSNumber_Class/Reference/Reference.html#//apple_ref/occ/instm/NSNumber/shortValue">- (short)shortValue</a>
      * @since Available in iOS 2.0 and later.
      */
     public short shortValue() {

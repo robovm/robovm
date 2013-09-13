@@ -33,7 +33,7 @@ import org.robovm.rt.bro.ptr.*;
 /**
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIModalViewDelegate_Protocol/UIActionSheetDelegate/UIActionSheetDelegate.html">UIActionSheetDelegate Protocol Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIModalViewDelegate_Protocol/UIActionSheetDelegate/UIActionSheetDelegate.html">UIActionSheetDelegate Protocol Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -44,32 +44,32 @@ public interface /*<name>*/ UIActionSheetDelegate /*</name>*/ /*<implements>*/ e
     /*</properties>*/
     /*<methods>*/
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIModalViewDelegate_Protocol/UIActionSheetDelegate/UIActionSheetDelegate.html#//apple_ref/occ/intfm/UIActionSheetDelegate/actionSheetCancel:">- (void)actionSheetCancel:(UIActionSheet *)actionSheet</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIModalViewDelegate_Protocol/UIActionSheetDelegate/UIActionSheetDelegate.html#//apple_ref/occ/intfm/UIActionSheetDelegate/actionSheetCancel:">- (void)actionSheetCancel:(UIActionSheet *)actionSheet</a>
      * @since Available in iOS 2.0 and later.
      */
     void cancel(UIActionSheet actionSheet);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIModalViewDelegate_Protocol/UIActionSheetDelegate/UIActionSheetDelegate.html#//apple_ref/occ/intfm/UIActionSheetDelegate/actionSheet:clickedButtonAtIndex:">- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIModalViewDelegate_Protocol/UIActionSheetDelegate/UIActionSheetDelegate.html#//apple_ref/occ/intfm/UIActionSheetDelegate/actionSheet:clickedButtonAtIndex:">- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex</a>
      * @since Available in iOS 2.0 and later.
      */
     void clicked(UIActionSheet actionSheet, int buttonIndex);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIModalViewDelegate_Protocol/UIActionSheetDelegate/UIActionSheetDelegate.html#//apple_ref/occ/intfm/UIActionSheetDelegate/actionSheet:didDismissWithButtonIndex:">- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIModalViewDelegate_Protocol/UIActionSheetDelegate/UIActionSheetDelegate.html#//apple_ref/occ/intfm/UIActionSheetDelegate/actionSheet:didDismissWithButtonIndex:">- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex</a>
      * @since Available in iOS 2.0 and later.
      */
     void didDismiss(UIActionSheet actionSheet, int buttonIndex);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIModalViewDelegate_Protocol/UIActionSheetDelegate/UIActionSheetDelegate.html#//apple_ref/occ/intfm/UIActionSheetDelegate/didPresentActionSheet:">- (void)didPresentActionSheet:(UIActionSheet *)actionSheet</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIModalViewDelegate_Protocol/UIActionSheetDelegate/UIActionSheetDelegate.html#//apple_ref/occ/intfm/UIActionSheetDelegate/didPresentActionSheet:">- (void)didPresentActionSheet:(UIActionSheet *)actionSheet</a>
      * @since Available in iOS 2.0 and later.
      */
     void didPresent(UIActionSheet actionSheet);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIModalViewDelegate_Protocol/UIActionSheetDelegate/UIActionSheetDelegate.html#//apple_ref/occ/intfm/UIActionSheetDelegate/actionSheet:willDismissWithButtonIndex:">- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIModalViewDelegate_Protocol/UIActionSheetDelegate/UIActionSheetDelegate.html#//apple_ref/occ/intfm/UIActionSheetDelegate/actionSheet:willDismissWithButtonIndex:">- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex</a>
      * @since Available in iOS 2.0 and later.
      */
     void willDismiss(UIActionSheet actionSheet, int buttonIndex);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIModalViewDelegate_Protocol/UIActionSheetDelegate/UIActionSheetDelegate.html#//apple_ref/occ/intfm/UIActionSheetDelegate/willPresentActionSheet:">- (void)willPresentActionSheet:(UIActionSheet *)actionSheet</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIModalViewDelegate_Protocol/UIActionSheetDelegate/UIActionSheetDelegate.html#//apple_ref/occ/intfm/UIActionSheetDelegate/willPresentActionSheet:">- (void)willPresentActionSheet:(UIActionSheet *)actionSheet</a>
      * @since Available in iOS 2.0 and later.
      */
     void willPresent(UIActionSheet actionSheet);

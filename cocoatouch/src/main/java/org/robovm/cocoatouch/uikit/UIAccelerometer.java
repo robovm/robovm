@@ -33,7 +33,7 @@ import org.robovm.rt.bro.ptr.*;
 /**
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAccelerometer_Class/Reference/UIAccelerometer.html">UIAccelerometer Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAccelerometer_Class/Reference/UIAccelerometer.html">UIAccelerometer Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -59,7 +59,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIAccelerometerDelegate objc_getDelegate(UIAccelerometer __self__, Selector __cmd__);
     @Bridge private native static UIAccelerometerDelegate objc_getDelegateSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAccelerometer_Class/Reference/UIAccelerometer.html#//apple_ref/occ/instp/UIAccelerometer/delegate">@property(nonatomic, assign) id&amp;lt;UIAccelerometerDelegate&amp;gt; delegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAccelerometer_Class/Reference/UIAccelerometer.html#//apple_ref/occ/instp/UIAccelerometer/delegate">@property(nonatomic, assign) id&amp;lt;UIAccelerometerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
     public UIAccelerometerDelegate getDelegate() {
@@ -70,7 +70,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setDelegate(UIAccelerometer __self__, Selector __cmd__, UIAccelerometerDelegate delegate);
     @Bridge private native static void objc_setDelegateSuper(ObjCSuper __super__, Selector __cmd__, UIAccelerometerDelegate delegate);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAccelerometer_Class/Reference/UIAccelerometer.html#//apple_ref/occ/instp/UIAccelerometer/delegate">@property(nonatomic, assign) id&amp;lt;UIAccelerometerDelegate&amp;gt; delegate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAccelerometer_Class/Reference/UIAccelerometer.html#//apple_ref/occ/instp/UIAccelerometer/delegate">@property(nonatomic, assign) id&amp;lt;UIAccelerometerDelegate&amp;gt; delegate</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setDelegate(UIAccelerometerDelegate delegate) {
@@ -81,7 +81,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static double objc_getUpdateInterval(UIAccelerometer __self__, Selector __cmd__);
     @Bridge private native static double objc_getUpdateIntervalSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAccelerometer_Class/Reference/UIAccelerometer.html#//apple_ref/occ/instp/UIAccelerometer/updateInterval">@property(nonatomic) NSTimeInterval updateInterval</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAccelerometer_Class/Reference/UIAccelerometer.html#//apple_ref/occ/instp/UIAccelerometer/updateInterval">@property(nonatomic) NSTimeInterval updateInterval</a>
      * @since Available in iOS 2.0 and later.
      */
     public double getUpdateInterval() {
@@ -92,7 +92,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setUpdateInterval(UIAccelerometer __self__, Selector __cmd__, double updateInterval);
     @Bridge private native static void objc_setUpdateIntervalSuper(ObjCSuper __super__, Selector __cmd__, double updateInterval);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAccelerometer_Class/Reference/UIAccelerometer.html#//apple_ref/occ/instp/UIAccelerometer/updateInterval">@property(nonatomic) NSTimeInterval updateInterval</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAccelerometer_Class/Reference/UIAccelerometer.html#//apple_ref/occ/instp/UIAccelerometer/updateInterval">@property(nonatomic) NSTimeInterval updateInterval</a>
      * @since Available in iOS 2.0 and later.
      */
     public void setUpdateInterval(double updateInterval) {
@@ -104,7 +104,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector sharedAccelerometer = Selector.register("sharedAccelerometer");
     @Bridge private native static UIAccelerometer objc_getSharedAccelerometer(ObjCClass __self__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAccelerometer_Class/Reference/UIAccelerometer.html#//apple_ref/occ/clm/UIAccelerometer/sharedAccelerometer">+ (UIAccelerometer *)sharedAccelerometer</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAccelerometer_Class/Reference/UIAccelerometer.html#//apple_ref/occ/clm/UIAccelerometer/sharedAccelerometer">+ (UIAccelerometer *)sharedAccelerometer</a>
      * @since Available in iOS 2.0 and later.
      */
     public static UIAccelerometer getSharedAccelerometer() {

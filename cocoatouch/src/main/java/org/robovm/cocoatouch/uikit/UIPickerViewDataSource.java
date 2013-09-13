@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIPickerViewDataSource_Protocol/Reference/Reference.html">UIPickerViewDataSource Protocol Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIPickerViewDataSource_Protocol/Reference/Reference.html">UIPickerViewDataSource Protocol Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -45,12 +45,12 @@ public interface /*<name>*/ UIPickerViewDataSource /*</name>*/ /*<implements>*/ 
     /*</properties>*/
     /*<methods>*/
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIPickerViewDataSource_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIPickerViewDataSource/numberOfComponentsInPickerView:">- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIPickerViewDataSource_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIPickerViewDataSource/numberOfComponentsInPickerView:">- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView</a>
      * @since Available in iOS 2.0 and later.
      */
     int getNumberOfComponents(UIPickerView pickerView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIPickerViewDataSource_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIPickerViewDataSource/pickerView:numberOfRowsInComponent:">- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../iPhone/Reference/UIPickerViewDataSource_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIPickerViewDataSource/pickerView:numberOfRowsInComponent:">- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component</a>
      * @since Available in iOS 2.0 and later.
      */
     int getNumberOfRows(UIPickerView pickerView, int component);

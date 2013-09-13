@@ -30,7 +30,7 @@ import org.robovm.rt.bro.ptr.*;
 /**
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/../EAGLContext_ClassRef/Reference/EAGLContext.html">EAGLContext Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/../EAGLContext_ClassRef/Reference/EAGLContext.html">EAGLContext Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -52,23 +52,23 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector initWithAPI$ = Selector.register("initWithAPI:");
     @Bridge private native static @Pointer long objc_initWithAPI(EAGLContext __self__, Selector __cmd__, EAGLRenderingAPI api);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/../EAGLContext_ClassRef/Reference/EAGLContext.html#//apple_ref/occ/instm/EAGLContext/initWithAPI:">- (id)initWithAPI:(EAGLRenderingAPI)api</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/../EAGLContext_ClassRef/Reference/EAGLContext.html#//apple_ref/occ/instm/EAGLContext/initWithAPI:">- (id)initWithAPI:(EAGLRenderingAPI)api</a>
      * @since Available in iOS 2.0 and later.
      */
     public EAGLContext(EAGLRenderingAPI api) {
         super((SkipInit) null);
-        setHandle(objc_initWithAPI(this, initWithAPI$, api));
+        initObject(objc_initWithAPI(this, initWithAPI$, api));
     }
     
     private static final Selector initWithAPI$sharegroup$ = Selector.register("initWithAPI:sharegroup:");
     @Bridge private native static @Pointer long objc_initWithAPI(EAGLContext __self__, Selector __cmd__, EAGLRenderingAPI api, EAGLSharegroup sharegroup);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/../EAGLContext_ClassRef/Reference/EAGLContext.html#//apple_ref/occ/instm/EAGLContext/initWithAPI:sharegroup:">- (id)initWithAPI:(EAGLRenderingAPI)api sharegroup:(EAGLSharegroup *)sharegroup</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/../EAGLContext_ClassRef/Reference/EAGLContext.html#//apple_ref/occ/instm/EAGLContext/initWithAPI:sharegroup:">- (id)initWithAPI:(EAGLRenderingAPI)api sharegroup:(EAGLSharegroup *)sharegroup</a>
      * @since Available in iOS 2.0 and later.
      */
     public EAGLContext(EAGLRenderingAPI api, EAGLSharegroup sharegroup) {
         super((SkipInit) null);
-        setHandle(objc_initWithAPI(this, initWithAPI$sharegroup$, api, sharegroup));
+        initObject(objc_initWithAPI(this, initWithAPI$sharegroup$, api, sharegroup));
     }
     /*</constructors>*/
     /*<properties>*/
@@ -77,7 +77,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static EAGLRenderingAPI objc_getAPI(EAGLContext __self__, Selector __cmd__);
     @Bridge private native static EAGLRenderingAPI objc_getAPISuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/../EAGLContext_ClassRef/Reference/EAGLContext.html#//apple_ref/occ/instp/EAGLContext/API">@property(readonly) EAGLRenderingAPI API</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/../EAGLContext_ClassRef/Reference/EAGLContext.html#//apple_ref/occ/instp/EAGLContext/API">@property(readonly) EAGLRenderingAPI API</a>
      * @since Available in iOS 2.0 and later.
      */
     public EAGLRenderingAPI getAPI() {
@@ -88,7 +88,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static EAGLSharegroup objc_getSharegroup(EAGLContext __self__, Selector __cmd__);
     @Bridge private native static EAGLSharegroup objc_getSharegroupSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/../EAGLContext_ClassRef/Reference/EAGLContext.html#//apple_ref/occ/instp/EAGLContext/sharegroup">@property(readonly) EAGLSharegroup *sharegroup</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/../EAGLContext_ClassRef/Reference/EAGLContext.html#//apple_ref/occ/instp/EAGLContext/sharegroup">@property(readonly) EAGLSharegroup *sharegroup</a>
      * @since Available in iOS 2.0 and later.
      */
     public EAGLSharegroup getSharegroup() {
@@ -100,7 +100,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector currentContext = Selector.register("currentContext");
     @Bridge private native static EAGLContext objc_getCurrentContext(ObjCClass __self__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/../EAGLContext_ClassRef/Reference/EAGLContext.html#//apple_ref/occ/clm/EAGLContext/currentContext">+ (EAGLContext *)currentContext</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/../EAGLContext_ClassRef/Reference/EAGLContext.html#//apple_ref/occ/clm/EAGLContext/currentContext">+ (EAGLContext *)currentContext</a>
      * @since Available in iOS 2.0 and later.
      */
     public static EAGLContext getCurrentContext() {
@@ -110,7 +110,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector setCurrentContext$ = Selector.register("setCurrentContext:");
     @Bridge private native static boolean objc_setCurrentContext(ObjCClass __self__, Selector __cmd__, EAGLContext context);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/../EAGLContext_ClassRef/Reference/EAGLContext.html#//apple_ref/occ/clm/EAGLContext/setCurrentContext:">+ (BOOL)setCurrentContext:(EAGLContext *)context</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/../EAGLContext_ClassRef/Reference/EAGLContext.html#//apple_ref/occ/clm/EAGLContext/setCurrentContext:">+ (BOOL)setCurrentContext:(EAGLContext *)context</a>
      * @since Available in iOS 2.0 and later.
      */
     public static boolean setCurrentContext(EAGLContext context) {
@@ -121,7 +121,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_presentRenderbuffer(EAGLContext __self__, Selector __cmd__, int target);
     @Bridge private native static boolean objc_presentRenderbufferSuper(ObjCSuper __super__, Selector __cmd__, int target);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/../EAGLContext_ClassRef/Reference/EAGLContext.html#//apple_ref/occ/instm/EAGLContext/presentRenderbuffer:">- (BOOL)presentRenderbuffer:(NSUInteger)target</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/../EAGLContext_ClassRef/Reference/EAGLContext.html#//apple_ref/occ/instm/EAGLContext/presentRenderbuffer:">- (BOOL)presentRenderbuffer:(NSUInteger)target</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean presentRenderbuffer(int target) {
@@ -132,7 +132,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static boolean objc_renderbufferStorage(EAGLContext __self__, Selector __cmd__, int target, EAGLDrawable drawable);
     @Bridge private native static boolean objc_renderbufferStorageSuper(ObjCSuper __super__, Selector __cmd__, int target, EAGLDrawable drawable);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/../EAGLContext_ClassRef/Reference/EAGLContext.html#//apple_ref/occ/instm/EAGLContext/renderbufferStorage:fromDrawable:">- (BOOL)renderbufferStorage:(NSUInteger)target fromDrawable:(id&amp;lt;EAGLDrawable&amp;gt;)drawable</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/opengles/reference/opengles_framework/../EAGLContext_ClassRef/Reference/EAGLContext.html#//apple_ref/occ/instm/EAGLContext/renderbufferStorage:fromDrawable:">- (BOOL)renderbufferStorage:(NSUInteger)target fromDrawable:(id&amp;lt;EAGLDrawable&amp;gt;)drawable</a>
      * @since Available in iOS 2.0 and later.
      */
     public boolean renderbufferStorage(int target, EAGLDrawable drawable) {

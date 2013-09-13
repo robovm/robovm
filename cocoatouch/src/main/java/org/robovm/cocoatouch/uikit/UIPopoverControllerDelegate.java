@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverControllerDelegate_protocol/Reference/Reference.html">UIPopoverControllerDelegate Protocol Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverControllerDelegate_protocol/Reference/Reference.html">UIPopoverControllerDelegate Protocol Reference</a>
  *   @since Available in iOS 3.2 and later.
  * </div>
  */
@@ -45,12 +45,12 @@ public interface /*<name>*/ UIPopoverControllerDelegate /*</name>*/ /*<implement
     /*</properties>*/
     /*<methods>*/
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverControllerDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIPopoverControllerDelegate/popoverControllerDidDismissPopover:">- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverControllerDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIPopoverControllerDelegate/popoverControllerDidDismissPopover:">- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController</a>
      * @since Available in iOS 3.2 and later.
      */
     void didDismissPopover(UIPopoverController popoverController);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverControllerDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIPopoverControllerDelegate/popoverControllerShouldDismissPopover:">- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPopoverControllerDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UIPopoverControllerDelegate/popoverControllerShouldDismissPopover:">- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController</a>
      * @since Available in iOS 3.2 and later.
      */
     boolean shouldDismissPopover(UIPopoverController popoverController);

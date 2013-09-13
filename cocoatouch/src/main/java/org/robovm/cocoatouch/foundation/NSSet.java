@@ -30,7 +30,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSSet_Class/Reference/Reference.html">NSSet Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSSet_Class/Reference/Reference.html">NSSet Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -82,9 +82,9 @@ import org.robovm.rt.bro.ptr.*;
     public NSSet(Collection<T> c) {
         super((SkipInit) null);
         if (c instanceof NSArray) {
-            setHandle(objc_initWithArray(this, initWithArray$, (NSArray) c));
+            initObject(objc_initWithArray(this, initWithArray$, (NSArray) c));
         } else if (c instanceof NSSet) {
-            setHandle(objc_initWithSet(this, initWithSet$, (NSSet) c));
+            initObject(objc_initWithSet(this, initWithSet$, (NSSet) c));
         } else {
             NSObject[] objects = c.toArray(new NSObject[c.size()]);
             initWithObjects(objects);
@@ -107,7 +107,7 @@ import org.robovm.rt.bro.ptr.*;
             ptr = ptr.next();
         }
         ptr = ptr.previous(objects.length);
-        setHandle(objc_initWithObjects(this, initWithObjects$count$, ptr.getHandle(), objects.length));
+        initObject(objc_initWithObjects(this, initWithObjects$count$, ptr.getHandle(), objects.length));
     }
     
     protected AbstractSet<T> createAdapter() {
@@ -168,7 +168,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static int objc_count(NSSet __self__, Selector __cmd__);
     @Bridge private native static int objc_countSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSSet_Class/Reference/Reference.html#//apple_ref/occ/instm/NSSet/count">- (NSUInteger)count</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSSet_Class/Reference/Reference.html#//apple_ref/occ/instm/NSSet/count">- (NSUInteger)count</a>
      * @since Available in iOS 2.0 and later.
      */
     protected int count() {
@@ -179,7 +179,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @Pointer long objc_initWithArray(NSSet __self__, Selector __cmd__, NSArray array);
     @Bridge private native static @Pointer long objc_initWithArraySuper(ObjCSuper __super__, Selector __cmd__, NSArray array);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSSet_Class/Reference/Reference.html#//apple_ref/occ/instm/NSSet/initWithArray:">- (id)initWithArray:(NSArray *)array</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSSet_Class/Reference/Reference.html#//apple_ref/occ/instm/NSSet/initWithArray:">- (id)initWithArray:(NSArray *)array</a>
      * @since Available in iOS 2.0 and later.
      */
     protected @Pointer long initWithArray(NSArray array) {
@@ -190,7 +190,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @Pointer long objc_initWithObjects(NSSet __self__, Selector __cmd__, @Pointer long objects, int cnt);
     @Bridge private native static @Pointer long objc_initWithObjectsSuper(ObjCSuper __super__, Selector __cmd__, @Pointer long objects, int cnt);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSSet_Class/Reference/Reference.html#//apple_ref/occ/instm/NSSet/initWithObjects:count:">- (id)initWithObjects:(const id *)objects count:(NSUInteger)cnt</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSSet_Class/Reference/Reference.html#//apple_ref/occ/instm/NSSet/initWithObjects:count:">- (id)initWithObjects:(const id *)objects count:(NSUInteger)cnt</a>
      * @since Available in iOS 2.0 and later.
      */
     protected @Pointer long initWithObjects(@Pointer long objects, int cnt) {
@@ -201,7 +201,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static @Pointer long objc_initWithSet(NSSet __self__, Selector __cmd__, NSSet set);
     @Bridge private native static @Pointer long objc_initWithSetSuper(ObjCSuper __super__, Selector __cmd__, NSSet set);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSSet_Class/Reference/Reference.html#//apple_ref/occ/instm/NSSet/initWithSet:">- (id)initWithSet:(NSSet *)set</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSSet_Class/Reference/Reference.html#//apple_ref/occ/instm/NSSet/initWithSet:">- (id)initWithSet:(NSSet *)set</a>
      * @since Available in iOS 2.0 and later.
      */
     protected @Pointer long initWithSet(NSSet set) {
@@ -212,7 +212,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSObject objc_member(NSSet __self__, Selector __cmd__, NSObject object);
     @Bridge private native static NSObject objc_memberSuper(ObjCSuper __super__, Selector __cmd__, NSObject object);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSSet_Class/Reference/Reference.html#//apple_ref/occ/instm/NSSet/member:">- (id)member:(id)object</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSSet_Class/Reference/Reference.html#//apple_ref/occ/instm/NSSet/member:">- (id)member:(id)object</a>
      * @since Available in iOS 2.0 and later.
      */
     protected NSObject member(NSObject object) {
@@ -223,7 +223,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSEnumerator objc_objectEnumerator(NSSet __self__, Selector __cmd__);
     @Bridge private native static NSEnumerator objc_objectEnumeratorSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSSet_Class/Reference/Reference.html#//apple_ref/occ/instm/NSSet/objectEnumerator">- (NSEnumerator *)objectEnumerator</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/ObjC_classic/../Classes/NSSet_Class/Reference/Reference.html#//apple_ref/occ/instm/NSSet/objectEnumerator">- (NSEnumerator *)objectEnumerator</a>
      * @since Available in iOS 2.0 and later.
      */
     protected NSEnumerator objectEnumerator() {

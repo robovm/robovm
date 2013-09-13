@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerViewDelegate_Protocol/Reference/UIPickerViewDelegate.html">UIPickerViewDelegate Protocol Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerViewDelegate_Protocol/Reference/UIPickerViewDelegate.html">UIPickerViewDelegate Protocol Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -45,32 +45,32 @@ public interface /*<name>*/ UIPickerViewDelegate /*</name>*/ /*<implements>*/ ex
     /*</properties>*/
     /*<methods>*/
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerViewDelegate_Protocol/Reference/UIPickerViewDelegate.html#//apple_ref/occ/intfm/UIPickerViewDelegate/pickerView:didSelectRow:inComponent:">- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerViewDelegate_Protocol/Reference/UIPickerViewDelegate.html#//apple_ref/occ/intfm/UIPickerViewDelegate/pickerView:didSelectRow:inComponent:">- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component</a>
      * @since Available in iOS 2.0 and later.
      */
     void didSelectRow(UIPickerView pickerView, int row, int component);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerViewDelegate_Protocol/Reference/UIPickerViewDelegate.html#//apple_ref/occ/intfm/UIPickerViewDelegate/pickerView:attributedTitleForRow:forComponent:">- (NSAttributedString *)pickerView:(UIPickerView *)pickerView attributedTitleForRow:(NSInteger)row forComponent:(NSInteger)component</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerViewDelegate_Protocol/Reference/UIPickerViewDelegate.html#//apple_ref/occ/intfm/UIPickerViewDelegate/pickerView:attributedTitleForRow:forComponent:">- (NSAttributedString *)pickerView:(UIPickerView *)pickerView attributedTitleForRow:(NSInteger)row forComponent:(NSInteger)component</a>
      * @since Available in iOS 6.0 and later.
      */
     NSAttributedString getAttributedRowTitle(UIPickerView pickerView, int row, int component);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerViewDelegate_Protocol/Reference/UIPickerViewDelegate.html#//apple_ref/occ/intfm/UIPickerViewDelegate/pickerView:widthForComponent:">- (CGFloat)pickerView:(UIPickerView *)pickerView  widthForComponent:(NSInteger)component</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerViewDelegate_Protocol/Reference/UIPickerViewDelegate.html#//apple_ref/occ/intfm/UIPickerViewDelegate/pickerView:widthForComponent:">- (CGFloat)pickerView:(UIPickerView *)pickerView  widthForComponent:(NSInteger)component</a>
      * @since Available in iOS 2.0 and later.
      */
     float getComponentWidth(UIPickerView pickerView, int component);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerViewDelegate_Protocol/Reference/UIPickerViewDelegate.html#//apple_ref/occ/intfm/UIPickerViewDelegate/pickerView:rowHeightForComponent:">- (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerViewDelegate_Protocol/Reference/UIPickerViewDelegate.html#//apple_ref/occ/intfm/UIPickerViewDelegate/pickerView:rowHeightForComponent:">- (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component</a>
      * @since Available in iOS 2.0 and later.
      */
     float getRowHeight(UIPickerView pickerView, int component);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerViewDelegate_Protocol/Reference/UIPickerViewDelegate.html#//apple_ref/occ/intfm/UIPickerViewDelegate/pickerView:titleForRow:forComponent:">- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerViewDelegate_Protocol/Reference/UIPickerViewDelegate.html#//apple_ref/occ/intfm/UIPickerViewDelegate/pickerView:titleForRow:forComponent:">- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component</a>
      * @since Available in iOS 2.0 and later.
      */
     String getRowTitle(UIPickerView pickerView, int row, int component);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerViewDelegate_Protocol/Reference/UIPickerViewDelegate.html#//apple_ref/occ/intfm/UIPickerViewDelegate/pickerView:viewForRow:forComponent:reusingView:">- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPickerViewDelegate_Protocol/Reference/UIPickerViewDelegate.html#//apple_ref/occ/intfm/UIPickerViewDelegate/pickerView:viewForRow:forComponent:reusingView:">- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view</a>
      * @since Available in iOS 2.0 and later.
      */
     UIView getRowView(UIPickerView pickerView, int row, int component, UIView view);

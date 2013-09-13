@@ -33,7 +33,7 @@ import org.robovm.rt.bro.ptr.*;
 /**
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegate_protocol/Reference/Reference.html">UICollectionViewDelegate Protocol Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegate_protocol/Reference/Reference.html">UICollectionViewDelegate Protocol Reference</a>
  *   @since Available in iOS 6.0 and later.
  * </div>
  */
@@ -44,62 +44,62 @@ public interface /*<name>*/ UICollectionViewDelegate /*</name>*/ /*<implements>*
     /*</properties>*/
     /*<methods>*/
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegate/collectionView:canPerformAction:forItemAtIndexPath:withSender:">- (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegate/collectionView:canPerformAction:forItemAtIndexPath:withSender:">- (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender</a>
      * @since Available in iOS 6.0 and later.
      */
     boolean canPerformAction(UICollectionView collectionView, Selector action, NSIndexPath indexPath, NSObject sender);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegate/collectionView:didDeselectItemAtIndexPath:">- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegate/collectionView:didDeselectItemAtIndexPath:">- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath</a>
      * @since Available in iOS 6.0 and later.
      */
     void didDeselectItem(UICollectionView collectionView, NSIndexPath indexPath);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegate/collectionView:didEndDisplayingCell:forItemAtIndexPath:">- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegate/collectionView:didEndDisplayingCell:forItemAtIndexPath:">- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath</a>
      * @since Available in iOS 6.0 and later.
      */
     void didEndDisplayingCell(UICollectionView collectionView, UICollectionViewCell cell, NSIndexPath indexPath);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegate/collectionView:didEndDisplayingSupplementaryView:forElementOfKind:atIndexPath:">- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingSupplementaryView:(UICollectionReusableView *)view forElementOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegate/collectionView:didEndDisplayingSupplementaryView:forElementOfKind:atIndexPath:">- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingSupplementaryView:(UICollectionReusableView *)view forElementOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath</a>
      * @since Available in iOS 6.0 and later.
      */
     void didEndDisplayingSupplementaryView(UICollectionView collectionView, UICollectionReusableView view, String elementKind, NSIndexPath indexPath);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegate/collectionView:didHighlightItemAtIndexPath:">- (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegate/collectionView:didHighlightItemAtIndexPath:">- (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath</a>
      * @since Available in iOS 6.0 and later.
      */
     void didHighlightItem(UICollectionView collectionView, NSIndexPath indexPath);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegate/collectionView:didSelectItemAtIndexPath:">- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegate/collectionView:didSelectItemAtIndexPath:">- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath</a>
      * @since Available in iOS 6.0 and later.
      */
     void didSelectItem(UICollectionView collectionView, NSIndexPath indexPath);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegate/collectionView:didUnhighlightItemAtIndexPath:">- (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegate/collectionView:didUnhighlightItemAtIndexPath:">- (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath</a>
      * @since Available in iOS 6.0 and later.
      */
     void didUnhighlightItem(UICollectionView collectionView, NSIndexPath indexPath);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegate/collectionView:performAction:forItemAtIndexPath:withSender:">- (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegate/collectionView:performAction:forItemAtIndexPath:withSender:">- (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender</a>
      * @since Available in iOS 6.0 and later.
      */
     void performAction(UICollectionView collectionView, Selector action, NSIndexPath indexPath, NSObject sender);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegate/collectionView:shouldDeselectItemAtIndexPath:">- (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegate/collectionView:shouldDeselectItemAtIndexPath:">- (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath</a>
      * @since Available in iOS 6.0 and later.
      */
     boolean shouldDeselectItem(UICollectionView collectionView, NSIndexPath indexPath);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegate/collectionView:shouldHighlightItemAtIndexPath:">- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegate/collectionView:shouldHighlightItemAtIndexPath:">- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath</a>
      * @since Available in iOS 6.0 and later.
      */
     boolean shouldHighlightItem(UICollectionView collectionView, NSIndexPath indexPath);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegate/collectionView:shouldSelectItemAtIndexPath:">- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegate/collectionView:shouldSelectItemAtIndexPath:">- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath</a>
      * @since Available in iOS 6.0 and later.
      */
     boolean shouldSelectItem(UICollectionView collectionView, NSIndexPath indexPath);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegate/collectionView:shouldShowMenuForItemAtIndexPath:">- (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionViewDelegate_protocol/Reference/Reference.html#//apple_ref/occ/intfm/UICollectionViewDelegate/collectionView:shouldShowMenuForItemAtIndexPath:">- (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath</a>
      * @since Available in iOS 6.0 and later.
      */
     boolean shouldShowMenuForItem(UICollectionView collectionView, NSIndexPath indexPath);

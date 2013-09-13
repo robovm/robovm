@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html">UIPrintInfo Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html">UIPrintInfo Class Reference</a>
  *   @since Available in iOS 4.2 and later.
  * </div>
  */
@@ -60,7 +60,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIPrintInfoDuplex objc_getDuplex(UIPrintInfo __self__, Selector __cmd__);
     @Bridge private native static UIPrintInfoDuplex objc_getDuplexSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/duplex">@property(nonatomic) UIPrintInfoDuplex duplex</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/duplex">@property(nonatomic) UIPrintInfoDuplex duplex</a>
      * @since Available in iOS 4.2 and later.
      */
     public UIPrintInfoDuplex getDuplex() {
@@ -71,7 +71,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setDuplex(UIPrintInfo __self__, Selector __cmd__, UIPrintInfoDuplex duplex);
     @Bridge private native static void objc_setDuplexSuper(ObjCSuper __super__, Selector __cmd__, UIPrintInfoDuplex duplex);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/duplex">@property(nonatomic) UIPrintInfoDuplex duplex</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/duplex">@property(nonatomic) UIPrintInfoDuplex duplex</a>
      * @since Available in iOS 4.2 and later.
      */
     public void setDuplex(UIPrintInfoDuplex duplex) {
@@ -82,7 +82,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static String objc_getJobName(UIPrintInfo __self__, Selector __cmd__);
     @Bridge private native static String objc_getJobNameSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/jobName">@property(nonatomic, copy) NSString *jobName</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/jobName">@property(nonatomic, copy) NSString *jobName</a>
      * @since Available in iOS 4.2 and later.
      */
     public String getJobName() {
@@ -93,7 +93,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setJobName(UIPrintInfo __self__, Selector __cmd__, String jobName);
     @Bridge private native static void objc_setJobNameSuper(ObjCSuper __super__, Selector __cmd__, String jobName);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/jobName">@property(nonatomic, copy) NSString *jobName</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/jobName">@property(nonatomic, copy) NSString *jobName</a>
      * @since Available in iOS 4.2 and later.
      */
     public void setJobName(String jobName) {
@@ -104,7 +104,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIPrintInfoOrientation objc_getOrientation(UIPrintInfo __self__, Selector __cmd__);
     @Bridge private native static UIPrintInfoOrientation objc_getOrientationSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/orientation">@property(nonatomic) UIPrintInfoOrientation orientation</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/orientation">@property(nonatomic) UIPrintInfoOrientation orientation</a>
      * @since Available in iOS 4.2 and later.
      */
     public UIPrintInfoOrientation getOrientation() {
@@ -115,7 +115,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setOrientation(UIPrintInfo __self__, Selector __cmd__, UIPrintInfoOrientation orientation);
     @Bridge private native static void objc_setOrientationSuper(ObjCSuper __super__, Selector __cmd__, UIPrintInfoOrientation orientation);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/orientation">@property(nonatomic) UIPrintInfoOrientation orientation</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/orientation">@property(nonatomic) UIPrintInfoOrientation orientation</a>
      * @since Available in iOS 4.2 and later.
      */
     public void setOrientation(UIPrintInfoOrientation orientation) {
@@ -126,7 +126,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static UIPrintInfoOutputType objc_getOutputType(UIPrintInfo __self__, Selector __cmd__);
     @Bridge private native static UIPrintInfoOutputType objc_getOutputTypeSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/outputType">@property(nonatomic) UIPrintInfoOutputType outputType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/outputType">@property(nonatomic) UIPrintInfoOutputType outputType</a>
      * @since Available in iOS 4.2 and later.
      */
     public UIPrintInfoOutputType getOutputType() {
@@ -137,7 +137,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setOutputType(UIPrintInfo __self__, Selector __cmd__, UIPrintInfoOutputType outputType);
     @Bridge private native static void objc_setOutputTypeSuper(ObjCSuper __super__, Selector __cmd__, UIPrintInfoOutputType outputType);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/outputType">@property(nonatomic) UIPrintInfoOutputType outputType</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/outputType">@property(nonatomic) UIPrintInfoOutputType outputType</a>
      * @since Available in iOS 4.2 and later.
      */
     public void setOutputType(UIPrintInfoOutputType outputType) {
@@ -148,7 +148,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static String objc_getPrinterID(UIPrintInfo __self__, Selector __cmd__);
     @Bridge private native static String objc_getPrinterIDSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/printerID">@property(nonatomic, copy) NSString *printerID</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/printerID">@property(nonatomic, copy) NSString *printerID</a>
      * @since Available in iOS 4.2 and later.
      */
     public String getPrinterID() {
@@ -159,7 +159,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static void objc_setPrinterID(UIPrintInfo __self__, Selector __cmd__, String printerID);
     @Bridge private native static void objc_setPrinterIDSuper(ObjCSuper __super__, Selector __cmd__, String printerID);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/printerID">@property(nonatomic, copy) NSString *printerID</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instp/UIPrintInfo/printerID">@property(nonatomic, copy) NSString *printerID</a>
      * @since Available in iOS 4.2 and later.
      */
     public void setPrinterID(String printerID) {
@@ -171,7 +171,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector printInfoWithDictionary$ = Selector.register("printInfoWithDictionary:");
     @Bridge private native static UIPrintInfo objc_fromDictionary(ObjCClass __self__, Selector __cmd__, NSDictionary dictionary);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/clm/UIPrintInfo/printInfoWithDictionary:">+ (UIPrintInfo *)printInfoWithDictionary:(NSDictionary *)dictionary</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/clm/UIPrintInfo/printInfoWithDictionary:">+ (UIPrintInfo *)printInfoWithDictionary:(NSDictionary *)dictionary</a>
      * @since Available in iOS 4.2 and later.
      */
     public static UIPrintInfo fromDictionary(NSDictionary dictionary) {
@@ -181,7 +181,7 @@ import org.robovm.rt.bro.ptr.*;
     private static final Selector printInfo = Selector.register("printInfo");
     @Bridge private native static UIPrintInfo objc_getPrintInfo(ObjCClass __self__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/clm/UIPrintInfo/printInfo">+ (UIPrintInfo *)printInfo</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/clm/UIPrintInfo/printInfo">+ (UIPrintInfo *)printInfo</a>
      * @since Available in iOS 4.2 and later.
      */
     public static UIPrintInfo getPrintInfo() {
@@ -192,7 +192,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static NSDictionary objc_toDictionary(UIPrintInfo __self__, Selector __cmd__);
     @Bridge private native static NSDictionary objc_toDictionarySuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPrintInfo/dictionaryRepresentation">- (NSDictionary *)dictionaryRepresentation</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPrintInfo_Class/Reference/Reference.html#//apple_ref/occ/instm/UIPrintInfo/dictionaryRepresentation">- (NSDictionary *)dictionaryRepresentation</a>
      * @since Available in iOS 4.2 and later.
      */
     public NSDictionary toDictionary() {

@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html">UIScrollViewDelegate Protocol Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html">UIScrollViewDelegate Protocol Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -45,67 +45,67 @@ public interface /*<name>*/ UIScrollViewDelegate /*</name>*/ /*<implements>*/ ex
     /*</properties>*/
     /*<methods>*/
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/occ/intfm/UIScrollViewDelegate/scrollViewDidEndDecelerating:">- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/occ/intfm/UIScrollViewDelegate/scrollViewDidEndDecelerating:">- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView</a>
      * @since Available in iOS 2.0 and later.
      */
     void didEndDecelerating(UIScrollView scrollView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/occ/intfm/UIScrollViewDelegate/scrollViewDidEndDragging:willDecelerate:">- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/occ/intfm/UIScrollViewDelegate/scrollViewDidEndDragging:willDecelerate:">- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate</a>
      * @since Available in iOS 2.0 and later.
      */
     void didEndDragging(UIScrollView scrollView, boolean decelerate);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/occ/intfm/UIScrollViewDelegate/scrollViewDidEndScrollingAnimation:">- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/occ/intfm/UIScrollViewDelegate/scrollViewDidEndScrollingAnimation:">- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView</a>
      * @since Available in iOS 2.0 and later.
      */
     void didEndScrollingAnimation(UIScrollView scrollView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/occ/intfm/UIScrollViewDelegate/scrollViewDidEndZooming:withView:atScale:">- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/occ/intfm/UIScrollViewDelegate/scrollViewDidEndZooming:withView:atScale:">- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale</a>
      * @since Available in iOS 2.0 and later.
      */
     void didEndZooming(UIScrollView scrollView, UIView view, float scale);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/occ/intfm/UIScrollViewDelegate/scrollViewDidScroll:">- (void)scrollViewDidScroll:(UIScrollView *)scrollView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/occ/intfm/UIScrollViewDelegate/scrollViewDidScroll:">- (void)scrollViewDidScroll:(UIScrollView *)scrollView</a>
      * @since Available in iOS 2.0 and later.
      */
     void didScroll(UIScrollView scrollView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/occ/intfm/UIScrollViewDelegate/scrollViewDidScrollToTop:">- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/occ/intfm/UIScrollViewDelegate/scrollViewDidScrollToTop:">- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView</a>
      * @since Available in iOS 2.0 and later.
      */
     void didScrollToTop(UIScrollView scrollView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/occ/intfm/UIScrollViewDelegate/scrollViewDidZoom:">- (void)scrollViewDidZoom:(UIScrollView *)scrollView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/occ/intfm/UIScrollViewDelegate/scrollViewDidZoom:">- (void)scrollViewDidZoom:(UIScrollView *)scrollView</a>
      * @since Available in iOS 3.2 and later.
      */
     void didZoom(UIScrollView scrollView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/occ/intfm/UIScrollViewDelegate/viewForZoomingInScrollView:">- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/occ/intfm/UIScrollViewDelegate/viewForZoomingInScrollView:">- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView</a>
      * @since Available in iOS 2.0 and later.
      */
     UIView getViewForZooming(UIScrollView scrollView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/occ/intfm/UIScrollViewDelegate/scrollViewShouldScrollToTop:">- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/occ/intfm/UIScrollViewDelegate/scrollViewShouldScrollToTop:">- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView</a>
      * @since Available in iOS 2.0 and later.
      */
     boolean shouldScrollToTop(UIScrollView scrollView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/occ/intfm/UIScrollViewDelegate/scrollViewWillBeginDecelerating:">- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/occ/intfm/UIScrollViewDelegate/scrollViewWillBeginDecelerating:">- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView</a>
      * @since Available in iOS 2.0 and later.
      */
     void willBeginDecelerating(UIScrollView scrollView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/occ/intfm/UIScrollViewDelegate/scrollViewWillBeginDragging:">- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/occ/intfm/UIScrollViewDelegate/scrollViewWillBeginDragging:">- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView</a>
      * @since Available in iOS 2.0 and later.
      */
     void willBeginDragging(UIScrollView scrollView);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/occ/intfm/UIScrollViewDelegate/scrollViewWillBeginZooming:withView:">- (void)scrollViewWillBeginZooming:(UIScrollView *)scrollView withView:(UIView *)view</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/occ/intfm/UIScrollViewDelegate/scrollViewWillBeginZooming:withView:">- (void)scrollViewWillBeginZooming:(UIScrollView *)scrollView withView:(UIView *)view</a>
      * @since Available in iOS 3.2 and later.
      */
     void willBeginZooming(UIScrollView scrollView, UIView view);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/occ/intfm/UIScrollViewDelegate/scrollViewWillEndDragging:withVelocity:targetContentOffset:">- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIScrollViewDelegate_Protocol/Reference/UIScrollViewDelegate.html#//apple_ref/occ/intfm/UIScrollViewDelegate/scrollViewWillEndDragging:withVelocity:targetContentOffset:">- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset</a>
      * @since Available in iOS 5.0 and later.
      */
     void willEndDragging(UIScrollView scrollView, CGPoint velocity, CGPoint targetContentOffset);

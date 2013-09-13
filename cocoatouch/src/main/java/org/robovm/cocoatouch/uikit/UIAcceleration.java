@@ -33,7 +33,7 @@ import org.robovm.rt.bro.ptr.*;
 /**
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAcceleration_Class/Reference/UIAcceleration.html">UIAcceleration Class Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAcceleration_Class/Reference/UIAcceleration.html">UIAcceleration Class Reference</a>
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
@@ -59,7 +59,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static double objc_getTimestamp(UIAcceleration __self__, Selector __cmd__);
     @Bridge private native static double objc_getTimestampSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAcceleration_Class/Reference/UIAcceleration.html#//apple_ref/occ/instp/UIAcceleration/timestamp">@property(nonatomic, readonly) NSTimeInterval timestamp</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAcceleration_Class/Reference/UIAcceleration.html#//apple_ref/occ/instp/UIAcceleration/timestamp">@property(nonatomic, readonly) NSTimeInterval timestamp</a>
      * @since Available in iOS 2.0 and later.
      */
     public double getTimestamp() {
@@ -70,7 +70,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static double objc_getX(UIAcceleration __self__, Selector __cmd__);
     @Bridge private native static double objc_getXSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAcceleration_Class/Reference/UIAcceleration.html#//apple_ref/occ/instp/UIAcceleration/x">@property(nonatomic, readonly) UIAccelerationValue x</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAcceleration_Class/Reference/UIAcceleration.html#//apple_ref/occ/instp/UIAcceleration/x">@property(nonatomic, readonly) UIAccelerationValue x</a>
      * @since Available in iOS 2.0 and later.
      */
     public double getX() {
@@ -81,7 +81,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static double objc_getY(UIAcceleration __self__, Selector __cmd__);
     @Bridge private native static double objc_getYSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAcceleration_Class/Reference/UIAcceleration.html#//apple_ref/occ/instp/UIAcceleration/y">@property(nonatomic, readonly) UIAccelerationValue y</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAcceleration_Class/Reference/UIAcceleration.html#//apple_ref/occ/instp/UIAcceleration/y">@property(nonatomic, readonly) UIAccelerationValue y</a>
      * @since Available in iOS 2.0 and later.
      */
     public double getY() {
@@ -92,7 +92,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge private native static double objc_getZ(UIAcceleration __self__, Selector __cmd__);
     @Bridge private native static double objc_getZSuper(ObjCSuper __super__, Selector __cmd__);
     /**
-     * @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAcceleration_Class/Reference/UIAcceleration.html#//apple_ref/occ/instp/UIAcceleration/z">@property(nonatomic, readonly) UIAccelerationValue z</a>
+     * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIAcceleration_Class/Reference/UIAcceleration.html#//apple_ref/occ/instp/UIAcceleration/z">@property(nonatomic, readonly) UIAccelerationValue z</a>
      * @since Available in iOS 2.0 and later.
      */
     public double getZ() {

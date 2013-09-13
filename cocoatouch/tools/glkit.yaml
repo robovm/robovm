@@ -1,6 +1,6 @@
 package: org.robovm.cocoatouch.glkit
 library: GLKit
-base_url: http://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/
+base_url: https://developer.apple.com/library/ios/documentation/GLkit/Reference/GLKit_Collection/
 imports:
     - org.robovm.cocoatouch.coregraphics.*
     - org.robovm.cocoatouch.foundation.*

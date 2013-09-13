@@ -34,7 +34,7 @@ import org.robovm.rt.bro.ptr.*;
  *
  *
  * <div class="javadoc">
- *   @see <a href="http://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../../recipes/UIAppearanceContainer_Protocol/Reference/Reference.html">UIAppearanceContainer Protocol Reference</a>
+ *   @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../../../../recipes/UIAppearanceContainer_Protocol/Reference/Reference.html">UIAppearanceContainer Protocol Reference</a>
  *   @since Available in iOS 5.0 and later.
  * </div>
  */

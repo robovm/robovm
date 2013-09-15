@@ -199,12 +199,15 @@ public class AppCompiler {
     public void compile() throws IOException {
         TreeSet<Clazz> compileQueue = getRootClasses();
         Set<Clazz> linkClasses = new HashSet<Clazz>();
-        while (!compileQueue.isEmpty()) {
+        while (!compileQueue.isEmpty() && !Thread.currentThread().isInterrupted()) {
             Clazz clazz = compileQueue.pollFirst();
             if (!linkClasses.contains(clazz)) {
                 compile(clazz, compileQueue, linkClasses);
                 linkClasses.add(clazz);
             }
+        }
+        if (Thread.currentThread().isInterrupted()) {
+            return;
         }
         
         if (linkClasses.contains(config.getClazzes().load(TRUSTED_CERTIFICATE_STORE_CLASS))) {

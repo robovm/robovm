@@ -35,6 +35,7 @@
 
 #if defined(DARWIN)
     void readDarwinOSVersionFromSystemVersionPList(char* buffer);
+    void getDarwinLocaleParts(char* lang, char* country, char* variant);
 #endif
 
 jint Java_java_lang_System_identityHashCode(Env* env, Class* c, Object* o) {
@@ -98,7 +99,13 @@ ObjectArray* Java_java_lang_System_robovmSpecialProperties(Env* env, Class* c) {
     strcat(osVersion, "os.version=");
     readDarwinOSVersionFromSystemVersionPList(osVersion);
 
-    ObjectArray* result = rvmNewObjectArray(env, 3, java_lang_String, NULL, NULL);
+    char userLanguage[64] = "user.language=";
+    char userRegion[64] = "user.region=";
+    char userVariant[64] = "user.variant=";
+    getDarwinLocaleParts(userLanguage, userRegion, userVariant);
+    jboolean hasLocale = strcmp(userLanguage, "user.language=") != 0;
+
+    ObjectArray* result = rvmNewObjectArray(env, hasLocale ? 6 : 3, java_lang_String, NULL, NULL);
     if (!result) return NULL;
 
     result->values[0] = rvmNewStringUTF(env, osName, -1);
@@ -107,6 +114,14 @@ ObjectArray* Java_java_lang_System_robovmSpecialProperties(Env* env, Class* c) {
     if (!result->values[1]) return NULL;
     result->values[2] = rvmNewStringUTF(env, osArch, -1);
     if (!result->values[2]) return NULL;
+    if (hasLocale) {
+        result->values[3] = rvmNewStringUTF(env, userLanguage, -1);
+        if (!result->values[3]) return NULL;
+        result->values[4] = rvmNewStringUTF(env, userRegion, -1);
+        if (!result->values[4]) return NULL;
+        result->values[5] = rvmNewStringUTF(env, userVariant, -1);
+        if (!result->values[5]) return NULL;
+    }
 
     return result;
 #else

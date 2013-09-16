@@ -27,11 +27,11 @@ set(SRC
 )
 
 if(DARWIN)
-  set(SRC ${SRC} darwin_os_version.m)
-  set_property(SOURCE darwin_os_version.m PROPERTY LANGUAGE C)
-  set_property(SOURCE darwin_os_version.m PROPERTY COMPILE_FLAGS "-x objective-c")
+  set(SRC ${SRC} darwin.m)
+  set_property(SOURCE darwin.m PROPERTY LANGUAGE C)
+  set_property(SOURCE darwin.m PROPERTY COMPILE_FLAGS "-x objective-c")
   if(IOS)
-    set_property(SOURCE darwin_os_version.m PROPERTY COMPILE_FLAGS "-x objective-c -fobjc-abi-version=2")
+    set_property(SOURCE darwin.m PROPERTY COMPILE_FLAGS "-x objective-c -fobjc-abi-version=2")
   endif()
 endif()
 

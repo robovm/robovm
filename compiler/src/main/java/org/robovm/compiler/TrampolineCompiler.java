@@ -491,7 +491,13 @@ public class TrampolineCompiler {
                 
         SootClass runtimeClass = null;
         if (runtimeClassName != null && !isArray(runtimeClassName)) {
-            runtimeClass = config.getClazzes().load(runtimeClassName).getSootClass();
+            Clazz c = config.getClazzes().load(runtimeClassName);
+            if (c == null) {
+                // The runtime class type is not available. Classloading will fail earlier so let's
+                // just return true here.
+                return true;
+            }
+            runtimeClass = c.getSootClass();
         }
         
         if (Access.checkMemberAccessible(member, caller, runtimeClass)) {

@@ -295,8 +295,8 @@ public class IOSTarget extends AbstractTarget {
     }
 
     private void strip(File dir, String executable) throws IOException {
-        new Executor(config.getLogger(), "strip")
-            .args(new File(dir, executable))
+        new Executor(config.getLogger(), "xcrun")
+            .args("strip", new File(dir, executable))
             .exec();
     }
     

@@ -137,7 +137,7 @@ public class IOSTarget extends AbstractTarget {
             args.addAll(launchParameters.getArguments());
         }
         
-        return super.createExecutor(launchParameters, iosSimPath).args(args);
+        return super.createExecutor(launchParameters, iosSimPath, args);
     }
     
 
@@ -178,9 +178,8 @@ public class IOSTarget extends AbstractTarget {
         } else {
             err = System.err;
         }
-        
-        return super.createExecutor(launchParameters, fruitstrapPath)
-                .args(args)
+
+        return super.createExecutor(launchParameters, fruitstrapPath, args)
                 .streamHandler(new FruitstrapStreamHandler(out, err, fruitstrapOut, fruitstrapErr));
     }
     

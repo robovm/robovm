@@ -241,13 +241,15 @@ public abstract class AbstractTarget implements Target {
         if (!config.isSkipInstall()) {
             dir = config.getInstallDir();
         }
-        return createExecutor(launchParameters, new File(dir, config.getExecutableName()).getAbsolutePath());
+        return createExecutor(launchParameters, new File(dir, 
+                config.getExecutableName()).getAbsolutePath(), 
+                launchParameters.getArguments());
     }
     
-    protected Executor createExecutor(LaunchParameters launchParameters, String cmd) throws IOException {
+    protected Executor createExecutor(LaunchParameters launchParameters, String cmd, List<? extends Object> args) throws IOException {
         Map<String, String> env = launchParameters.getEnvironment();
         return new Executor(config.getLogger(), cmd)
-            .args(launchParameters.getArguments())
+            .args(args)
             .wd(launchParameters.getWorkingDirectory())
             .inheritEnv(env == null)
             .env(env == null ? Collections.<String, String>emptyMap() : env);

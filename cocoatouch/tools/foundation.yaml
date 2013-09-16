@@ -398,6 +398,8 @@ classes:
         url: ../../../../Foundation/Reference/NSUUID_Class/Reference/Reference.html
         protocols: []
         methods:
+            "-UUIDString":
+                name: asString
             "+*":
                 exclude: true
             "-*":

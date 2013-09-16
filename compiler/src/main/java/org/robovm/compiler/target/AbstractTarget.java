@@ -215,6 +215,20 @@ public abstract class AbstractTarget implements Target {
             throw new IllegalStateException("Cannot skip linking if target should be run");
         }
         
+        // Add -rvm:log=warn to command line arguments if no logging level has been set explicitly
+        boolean add = true;
+        for (String arg : launchParameters.getArguments()) {
+            if (arg.startsWith("-rvm:log=")) {
+                add = false;
+                break;
+            }
+        }
+        if (add) {
+            List<String> args = new ArrayList<String>(launchParameters.getArguments());
+            args.add(0, "-rvm:log=warn");
+            launchParameters.setArguments(args);
+        }
+
         return doLaunch(launchParameters);
     }
     

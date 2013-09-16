@@ -292,7 +292,16 @@ Class* Java_java_lang_Class_classForName(Env* env, Class* cls, Object* className
     if (!classNameUTF) return NULL;
     Class* clazz = rvmFindClassUsingLoader(env, classNameUTF, classLoader);
     if (!clazz) {
-        WARNF("Class forName failed to load '%s'", classNameUTF);
+        char* p = classNameUTF;
+        while (*p != '\0') {
+            if (*p == '/') *p = '.';
+            p++;
+        }
+        WARNF("Class.forName() failed to load '%s'. "
+              "Use the -forcelinkclasses command line option "
+              "or add <forceLinkClasses><pattern>%s</pattern></forceLinkClasses> "
+              "to your robovm.xml file to link it in.",
+              classNameUTF, classNameUTF);
         return NULL;
     }
     if (initializeBoolean) {

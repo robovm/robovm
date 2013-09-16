@@ -75,7 +75,9 @@ classes:
                 name: getBundlePath
             "-resourcePath":
                 name: getResourcePath
-            "+*":
+            "-infoDictionary":
+                name: getInfoDictionary
+            "+*":   
                 exclude: true
             "-*":
                 exclude: true

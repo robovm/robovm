@@ -243,7 +243,6 @@ class PathClassLoader extends ClassLoader {
         return new EnumerateListArray<URL>(results);
     }
 
-    @SuppressWarnings("deprecation")
     private URL findResource(String name, int i) {
         File pathFile = mFiles[i];
         ZipFile zip = mZips[i];
@@ -255,7 +254,7 @@ class PathClassLoader extends ClassLoader {
                     // creating absolute path names. If we construct the
                     // URL by concatenating strings, we might end up with
                     // illegal URLs for relative names.
-                    return new URL("jar:" + pathFile.toURL() + "!/" + name);
+                    return new URL("jar:" + pathFile.toURI() + "!/" + name);
                 }
                 catch (MalformedURLException e) {
                     throw new RuntimeException(e);
@@ -267,7 +266,7 @@ class PathClassLoader extends ClassLoader {
                 //System.out.println("  found resource " + name);
                 try {
                     // Same as archive case regarding URL construction.
-                    return dataFile.toURL();
+                    return dataFile.toURI().toURL();
                 }
                 catch (MalformedURLException e) {
                     throw new RuntimeException(e);

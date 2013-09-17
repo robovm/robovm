@@ -45,8 +45,8 @@ import org.robovm.rt.VM;
         ObjCRuntime.bind(/*<name>*/ NSString /*</name>*/.class);
         
         try {
-            Field f = String.class.getDeclaredField("value");
-            STRING_VALUE_OFFSET = VM.getInstanceFieldOffset(VM.getFieldAddress(f));
+            STRING_VALUE_OFFSET = VM.getInstanceFieldOffset(VM.getFieldAddress(String.class.getDeclaredField("value")));
+            STRING_OFFSET_OFFSET = VM.getInstanceFieldOffset(VM.getFieldAddress(String.class.getDeclaredField("offset")));
         } catch (Throwable t) {
             throw new Error(t);
         }
@@ -54,6 +54,7 @@ import org.robovm.rt.VM;
 
     private static String EMPTY_STRING = "";
     private static final long STRING_VALUE_OFFSET;    
+    private static final long STRING_OFFSET_OFFSET;    
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSString /*</name>*/.class);
 
     public NSString(String s) {
@@ -62,9 +63,10 @@ import org.robovm.rt.VM;
     
     private static long copyChars(String s) {
         int len = s.length();
+        int offset = VM.getInt(VM.getObjectAddress(s) + STRING_OFFSET_OFFSET);
         char[] value = (char[]) VM.getObject(VM.getObjectAddress(s) + STRING_VALUE_OFFSET);
         long dest = VM.malloc(len << 1);
-        VM.memcpy(dest, VM.getArrayValuesAddress(value), len << 1);
+        VM.memcpy(dest, VM.getArrayValuesAddress(value) + (offset << 1), len << 1);
         return dest;
     }
     

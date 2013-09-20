@@ -16,12 +16,14 @@
  */
 package org.robovm.compiler.util;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
@@ -79,7 +81,18 @@ public class ToolchainUtil {
 
     public static void link(Config config, List<String> args, List<File> objectFiles, List<String> libs, File outFile) throws IOException {
         File objectsFile = new File(config.getTmpDir(), "objects");
-        FileUtils.writeLines(objectsFile, "UTF-8", objectFiles, "\n");
+        BufferedOutputStream objectsOut = null;
+        try {
+            objectsOut = new BufferedOutputStream(new FileOutputStream(objectsFile));
+            for (File f : objectFiles) {
+                objectsOut.write('"');
+                objectsOut.write(f.getAbsolutePath().getBytes());
+                objectsOut.write('"');
+                objectsOut.write('\n');
+            }
+        } finally {
+            IOUtils.closeQuietly(objectsOut);
+        }
         
         List<String> opts = new ArrayList<String>();
         if (config.isDebug()) {

@@ -158,6 +158,9 @@ public class ProvisioningProfile implements Comparable<ProvisioningProfile> {
     
     public static List<ProvisioningProfile> list() {
         File dir = new File(new File(System.getProperty("user.home")), "Library/MobileDevice/Provisioning Profiles");
+        if (!dir.exists() || !dir.isDirectory()) {
+            return Collections.emptyList();
+        }
         List<ProvisioningProfile> result = new ArrayList<ProvisioningProfile>();
         for (File f : dir.listFiles()) {
             if (f.getName().endsWith(".mobileprovision")) {

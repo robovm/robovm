@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
@@ -81,17 +82,24 @@ public class ToolchainUtil {
 
     public static void link(Config config, List<String> args, List<File> objectFiles, List<String> libs, File outFile) throws IOException {
         File objectsFile = new File(config.getTmpDir(), "objects");
-        BufferedOutputStream objectsOut = null;
-        try {
-            objectsOut = new BufferedOutputStream(new FileOutputStream(objectsFile));
-            for (File f : objectFiles) {
-                objectsOut.write('"');
-                objectsOut.write(f.getAbsolutePath().getBytes());
-                objectsOut.write('"');
-                objectsOut.write('\n');
+        if (config.getOs().getFamily() == OS.Family.darwin) {
+            // The Xcode linker doesn't need paths with spaces to be quoted and 
+            // will fail if we do quote
+            FileUtils.writeLines(objectsFile, objectFiles, "\n");
+        } else {
+            // The linker on Linux will fail if we don't quote paths with spaces
+            BufferedOutputStream objectsOut = null;
+            try {
+                objectsOut = new BufferedOutputStream(new FileOutputStream(objectsFile));
+                for (File f : objectFiles) {
+                    objectsOut.write('"');
+                    objectsOut.write(f.getAbsolutePath().getBytes());
+                    objectsOut.write('"');
+                    objectsOut.write('\n');
+                }
+            } finally {
+                IOUtils.closeQuietly(objectsOut);
             }
-        } finally {
-            IOUtils.closeQuietly(objectsOut);
         }
         
         List<String> opts = new ArrayList<String>();

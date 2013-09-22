@@ -400,8 +400,10 @@ public class Resource {
             } else {
                 dir = new File("").getCanonicalFile();
             }
-            for (File f : dir.listFiles()) {
-                walk(walker, dir, f.getName(), destDir, inc, exc);
+            if (dir.exists() && dir.isDirectory()) {
+                for (File f : dir.listFiles()) {
+                    walk(walker, dir, f.getName(), destDir, inc, exc);
+                }
             }
         }
     }

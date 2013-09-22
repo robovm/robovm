@@ -391,6 +391,7 @@ public class IOSTarget extends AbstractTarget {
                 dict.put(key, infoPListDict.objectForKey(key));
             }
         } else {
+            dict.put("CFBundleVersion", "1.0");
             dict.put("CFBundleExecutable", config.getExecutableName());
             dict.put("CFBundleName", config.getExecutableName());
             dict.put("CFBundleIdentifier", getBundleId());

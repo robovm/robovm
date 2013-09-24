@@ -397,13 +397,24 @@ public class IOSTarget extends AbstractTarget {
             dict.put("CFBundleIdentifier", getBundleId());
             dict.put("CFBundlePackageType", "APPL");
             dict.put("LSRequiresIPhoneOS", true);
-            if (sdk.getDefaultProperty("SUPPORTED_DEVICE_FAMILIES") != null) {
-                // Values in SUPPORTED_DEVICE_FAMILIES are NSStrings while UIDeviceFamily
-                // values should be NSNumbers.
-                NSArray defFamilies = (NSArray) sdk.getDefaultProperty("SUPPORTED_DEVICE_FAMILIES");
-                NSArray families = new NSArray(defFamilies.count());
-                for (int i = 0; i < families.count(); i++) {
-                    families.setValue(i, new NSNumber(defFamilies.objectAtIndex(i).toString()));
+            NSObject supportedDeviceFamilies = sdk.getDefaultProperty("SUPPORTED_DEVICE_FAMILIES");
+            if (supportedDeviceFamilies != null) {
+                // SUPPORTED_DEVICE_FAMILIES is either a NSString of comma separated numbers
+                // or an NSArray with NSStrings. UIDeviceFamily values should be NSNumbers.
+                NSArray families = null;
+                if (supportedDeviceFamilies instanceof NSString) {
+                    NSString defFamilies = (NSString) supportedDeviceFamilies;
+                    String[] parts = defFamilies.toString().split(",");
+                    families = new NSArray(parts.length);
+                    for (int i = 0; i < families.count(); i++) {
+                        families.setValue(i, new NSNumber(parts[i].trim()));
+                    }
+                } else {
+                    NSArray defFamilies = (NSArray) supportedDeviceFamilies;
+                    families = new NSArray(defFamilies.count());
+                    for (int i = 0; i < families.count(); i++) {
+                        families.setValue(i, new NSNumber(defFamilies.objectAtIndex(i).toString()));
+                    }
                 }
                 dict.put("UIDeviceFamily", families);
             }

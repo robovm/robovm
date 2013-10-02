@@ -217,7 +217,7 @@ public class IOSTarget extends AbstractTarget {
             // For some odd reason there needs to be a symbolic link in the root of
             // the app bundle named CodeResources pointing at _CodeSignature/CodeResources
             new Executor(config.getLogger(), "ln")
-                .args("-s", "_CodeSignature/CodeResources", new File(installDir, "CodeResources"))
+                .args("-f", "-s", "_CodeSignature/CodeResources", new File(installDir, "CodeResources"))
                 .exec();
         }
     }

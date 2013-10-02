@@ -1127,6 +1127,20 @@ extern "C" void Java_libcore_io_Posix_setgid(JNIEnv* env, jobject, jint gid) {
 }
 
 extern "C" void Java_libcore_io_Posix_setsockoptByte(JNIEnv* env, jobject, jobject javaFd, jint level, jint option, jint value) {
+#if defined(__APPLE__)
+    // RoboVM note: MulticastSocket.setTimeToLive() ultimately calls setsockoptByte(fd, IPPROTO_IP, IP_MULTICAST_TTL) followed by
+    // setsockoptInt(fd, IPPROTO_IPV6, IPV6_MULTICAST_HOPS) (see libcore.io.IoBridge.setSocketOptionErrno()). Our sockets
+    // are always IPv6 and that first call to setsockoptByte() fails on Darwin when called for IPv6 sockets.
+    if (level == IPPROTO_IP && option == IP_MULTICAST_TTL) {
+        return;
+    }
+    // RoboVM note: MulticastSocket.setLoopbackMode() ultimately calls setsockoptByte(fd, IPPROTO_IP, IP_MULTICAST_LOOP) followed by
+    // setsockoptInt(fd, IPPROTO_IPV6, IPV6_MULTICAST_LOOP) (see libcore.io.IoBridge.setSocketOptionErrno()). Our sockets
+    // are always IPv6 and that first call to setsockoptByte() fails on Darwin when called for IPv6 sockets.
+    if (level == IPPROTO_IP && option == IP_MULTICAST_LOOP) {
+        return;
+    }
+#endif
     int fd = jniGetFDFromFileDescriptor(env, javaFd);
     u_char byte = value;
     throwIfMinusOne(env, "setsockopt", TEMP_FAILURE_RETRY(setsockopt(fd, level, option, &byte, sizeof(byte))));
@@ -1181,20 +1195,40 @@ extern "C" void Java_libcore_io_Posix_setsockoptIpMreqn(JNIEnv* env, jobject, jo
 }
 
 extern "C" void Java_libcore_io_Posix_setsockoptGroupReq(JNIEnv* env, jobject, jobject javaFd, jint level, jint option, jobject javaGroupReq) {
+    // RoboVM note: On Darwin we need to use IPv6 for multicast join/leave.
+#if defined(__APPLE__)
+    level = IPPROTO_IPV6;
+    option = (option == MCAST_JOIN_GROUP) ? IPV6_JOIN_GROUP : IPV6_LEAVE_GROUP;
+    struct ipv6_mreq req;
+#else
     struct group_req req;
+#endif
     memset(&req, 0, sizeof(req));
 
     static jfieldID grInterfaceFid = env->GetFieldID(JniConstants::structGroupReqClass, "gr_interface", "I");
+#if defined(__APPLE__)
+    req.ipv6mr_interface = env->GetIntField(javaGroupReq, grInterfaceFid);
+#else
     req.gr_interface = env->GetIntField(javaGroupReq, grInterfaceFid);
+#endif
     // Get the IPv4 or IPv6 multicast address to join or leave.
     static jfieldID grGroupFid = env->GetFieldID(JniConstants::structGroupReqClass, "gr_group", "Ljava/net/InetAddress;");
     ScopedLocalRef<jobject> javaGroup(env, env->GetObjectField(javaGroupReq, grGroupFid));
+#if defined(__APPLE__)
+    sockaddr_storage ss;
+    if (!inetAddressToSockaddr(env, javaGroup.get(), 0, &ss)) {
+        return;
+    }
+    req.ipv6mr_multiaddr = ((sockaddr_in6*) &ss)->sin6_addr;
+#else
     if (!inetAddressToSockaddrVerbatim(env, javaGroup.get(), 0, &req.gr_group)) {
         return;
     }
+#endif
 
     int fd = jniGetFDFromFileDescriptor(env, javaFd);
     int rc = TEMP_FAILURE_RETRY(setsockopt(fd, level, option, &req, sizeof(req)));
+#if !defined(__APPLE__)
     if (rc == -1 && errno == EINVAL) {
         // Maybe we're a 32-bit binary talking to a 64-bit kernel?
         // glibc doesn't automatically handle this.
@@ -1208,6 +1242,7 @@ extern "C" void Java_libcore_io_Posix_setsockoptGroupReq(JNIEnv* env, jobject, j
         memcpy(&req64.gr_group, &req.gr_group, sizeof(req.gr_group));
         rc = TEMP_FAILURE_RETRY(setsockopt(fd, level, option, &req64, sizeof(req64)));
     }
+#endif
     throwIfMinusOne(env, "setsockopt", rc);
 }
 

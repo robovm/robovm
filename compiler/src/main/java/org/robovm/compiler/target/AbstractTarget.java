@@ -104,6 +104,7 @@ public abstract class AbstractTarget implements Target {
             libs.add("-lrt");
         }
         if (config.getOs().getFamily() == OS.Family.darwin) {
+            libs.add("-lc++");
             libs.add("-liconv");
             libs.add("-lsqlite3");
             libs.add("-framework");

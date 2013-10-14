@@ -1,6 +1,21 @@
-diff -rupN ../libplist-1.10/src/CMakeLists.txt libplist-1.10/src/CMakeLists.txt
---- ../libplist-1.10/src/CMakeLists.txt	2013-10-12 14:10:36.000000000 +0200
-+++ libplist-1.10/src/CMakeLists.txt	2013-10-12 14:08:27.000000000 +0200
+diff -rupN libplist-1.10/CMakeLists.txt extlibplist/CMakeLists.txt
+--- libplist-1.10/CMakeLists.txt	2013-03-19 17:34:11.000000000 +0100
++++ extlibplist/CMakeLists.txt	2013-10-14 14:51:38.163572992 +0200
+@@ -53,9 +53,9 @@ SET ( PLIST_BYTE_ORDER ${endianess} )
+ 
+ ADD_SUBDIRECTORY( libcnary )
+ ADD_SUBDIRECTORY( src )
+-ADD_SUBDIRECTORY( plistutil )
++#ADD_SUBDIRECTORY( plistutil )
+ ADD_SUBDIRECTORY( include )
+-ADD_SUBDIRECTORY( test )
++#ADD_SUBDIRECTORY( test )
+ 
+ ADD_DEPENDENCIES( plist libcnary )
+ 
+diff -rupN libplist-1.10/src/CMakeLists.txt extlibplist/src/CMakeLists.txt
+--- libplist-1.10/src/CMakeLists.txt	2013-03-19 17:34:11.000000000 +0100
++++ extlibplist/src/CMakeLists.txt	2013-10-14 14:47:01.427566678 +0200
 @@ -37,7 +37,7 @@ SET(libcnary_object_files
  SET_SOURCE_FILES_PROPERTIES(${libcnary_object_files} PROPERTIES EXTERNAL_OBJECT true GENERATED true)
  

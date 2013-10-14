@@ -7,13 +7,17 @@ COUT="$BASE/src/main/native"
 function rename {
     from=$1
     to=$2
-    sed -i -e "s/\b$from\b/$to/g" "$JAVAOUT"/*.java
+    if [ $(uname) == 'Darwin' ]; then
+    	sed -i '' -e "s/[[:<:]]$from[[:>:]]/$to/g" "$JAVAOUT"/*.java
+    else
+    	sed -i -e "s/\b$from\b/$to/g" "$JAVAOUT"/*.java
+    fi
     mv "$JAVAOUT/$from.java" "$JAVAOUT/$to.java" 
 }
 
 mkdir -p "$JAVAOUT"
 mkdir -p "$COUT"
-swig -includeall -I"$BASE/src/main/swig/include" -outdir "$JAVAOUT" -o "$COUT"/LLVM_wrap.c -java -package org.robovm.llvm.binding "$BASE/src/main/swig/LLVM.i"
+swig -includeall -I"$BASE/src/main/swig/include" -outdir "$JAVAOUT" -o "$COUT"/LLVM_wrap.c -java -package org.robovm.llvm.binding -fakeversion 2.0.4 "$BASE/src/main/swig/LLVM.i"
 
 rename SWIGTYPE_p_LLVMOpaqueBasicBlock BasicBlockRef
 rename SWIGTYPE_p_LLVMOpaqueBuilder BuilderRef

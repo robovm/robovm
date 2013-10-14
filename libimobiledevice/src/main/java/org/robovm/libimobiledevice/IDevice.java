@@ -145,6 +145,12 @@ public class IDevice implements AutoCloseable {
                 udids[i] = devices.get(i);
             }
             return udids;
+        } catch (LibIMobileDeviceException e) {
+        	if (e.getErrorCode() == IDEVICE_E_NO_DEVICE) {
+        		// This happens when usbmuxd isn't running
+        		return new String[0];
+        	}
+        	throw e;
         } finally {
             devicesOut.delete();
             countOut.delete();

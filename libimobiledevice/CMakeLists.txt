@@ -56,7 +56,7 @@ ExternalProject_Add(extusbmuxd
   DEPENDS extlibusbx extlibplist
 )
 set(LIBIMOBILEDEVICE_CFLAGS "${EXTCFLAGS}")
-if(MACOSX AND X86)
+if(MACOSX)
   set(LIBIMOBILEDEVICE_CFLAGS "${EXTCFLAGS} -std=gnu89")
 endif()
 ExternalProject_Add(extlibimobiledevice

@@ -1,0 +1,53 @@
+diff -rupN ../usbmuxd-1.0.8/CMakeLists.txt usbmuxd-1.0.8/CMakeLists.txt
+--- ../usbmuxd-1.0.8/CMakeLists.txt	2012-04-08 00:50:09.000000000 +0200
++++ usbmuxd-1.0.8/CMakeLists.txt	2013-10-13 08:38:28.000000000 +0200
+@@ -71,7 +71,7 @@ if (WITH_USBMUXD)
+     add_subdirectory (udev)
+   endif()
+ endif()
+-add_subdirectory (tools)
++#add_subdirectory (tools)
+ 
+ # pkg-config
+ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/libusbmuxd.pc.in" "${CMAKE_CURRENT_BINARY_DIR}/libusbmuxd.pc")
+diff -rupN ../usbmuxd-1.0.8/Modules/describe.sh usbmuxd-1.0.8/Modules/describe.sh
+--- ../usbmuxd-1.0.8/Modules/describe.sh	2012-04-08 00:50:09.000000000 +0200
++++ usbmuxd-1.0.8/Modules/describe.sh	2013-10-13 08:55:36.000000000 +0200
+@@ -1,17 +1,17 @@
+ #!/bin/bash
+ 
+ # Check for git and a git repo.
+-if head=`git rev-parse --verify HEAD 2>/dev/null`; then
+-	/bin/echo -n `git describe`
+-
+-	# Are there uncommitted changes?
+-	git update-index --refresh --unmerged > /dev/null
+-	git diff-index --quiet HEAD || /bin/echo -n -dirty
+-else
++#if head=`git rev-parse --verify HEAD 2>/dev/null`; then
++#	/bin/echo -n `git describe`
++#
++#	# Are there uncommitted changes?
++#	git update-index --refresh --unmerged > /dev/null
++#	git diff-index --quiet HEAD || /bin/echo -n -dirty
++#else
+ # Check for version tag
+ 	if [ -e version.tag ]; then
+ 		/bin/echo -n `cat version.tag`
+ 	fi
+-fi
++#fi
+ 
+ echo
+diff -rupN ../usbmuxd-1.0.8/libusbmuxd/CMakeLists.txt usbmuxd-1.0.8/libusbmuxd/CMakeLists.txt
+--- ../usbmuxd-1.0.8/libusbmuxd/CMakeLists.txt	2012-04-08 00:50:09.000000000 +0200
++++ usbmuxd-1.0.8/libusbmuxd/CMakeLists.txt	2013-10-13 08:34:03.000000000 +0200
+@@ -10,7 +10,7 @@ if (INOTIFY_FOUND)
+ endif()
+ endif(WANT_INOTIFY)
+ 
+-add_library (libusbmuxd SHARED libusbmuxd.c sock_stuff.c ${CMAKE_SOURCE_DIR}/common/utils.c)
++add_library (libusbmuxd STATIC libusbmuxd.c sock_stuff.c ${CMAKE_SOURCE_DIR}/common/utils.c)
+ find_library (PTHREAD pthread)
+ 
+ if (HAVE_PLIST)

@@ -1,0 +1,21 @@
+diff -rupN ../libplist-1.10/src/CMakeLists.txt libplist-1.10/src/CMakeLists.txt
+--- ../libplist-1.10/src/CMakeLists.txt	2013-10-12 14:10:36.000000000 +0200
++++ libplist-1.10/src/CMakeLists.txt	2013-10-12 14:08:27.000000000 +0200
+@@ -37,7 +37,7 @@ SET(libcnary_object_files
+ SET_SOURCE_FILES_PROPERTIES(${libcnary_object_files} PROPERTIES EXTERNAL_OBJECT true GENERATED true)
+ 
+ SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DPLIST_BYTE_ORDER=${PLIST_BYTE_ORDER}")
+-ADD_LIBRARY( plist SHARED ${libplist_SRC} ${libcnary_object_files} )
++ADD_LIBRARY( plist STATIC ${libplist_SRC} ${libcnary_object_files} )
+ TARGET_LINK_LIBRARIES( plist ${LIBXML2_LIBRARIES} )
+ SET_TARGET_PROPERTIES( plist PROPERTIES VERSION ${LIBPLIST_LIBVERSION} )
+ SET_TARGET_PROPERTIES( plist PROPERTIES SOVERSION ${LIBPLIST_SOVERSION} )
+@@ -45,7 +45,7 @@ if(APPLE)
+   SET_TARGET_PROPERTIES( plist PROPERTIES INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
+ endif()
+ 
+-ADD_LIBRARY( plist++ SHARED ${libplist++_SRC} )
++ADD_LIBRARY( plist++ STATIC ${libplist++_SRC} )
+ TARGET_LINK_LIBRARIES( plist++ plist )
+ SET_TARGET_PROPERTIES( plist++ PROPERTIES VERSION ${LIBPLIST_LIBVERSION} )
+ SET_TARGET_PROPERTIES( plist++ PROPERTIES SOVERSION ${LIBPLIST_SOVERSION} )

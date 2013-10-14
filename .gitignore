@@ -7,6 +7,7 @@ a.out
 /vm/target/
 /compiler/target/
 /llvm/target/
+/libimobiledevice/target/
 /rt/target/
 /cacerts/target/
 /cacerts/full/target/

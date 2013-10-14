@@ -140,6 +140,7 @@
   
   <modules>
     <module>llvm</module>
+    <module>libimobiledevice</module>
     <module>compiler</module>
     <module>rt</module>
     <module>cacerts</module>

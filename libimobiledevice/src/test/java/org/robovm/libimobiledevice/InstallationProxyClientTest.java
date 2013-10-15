@@ -90,7 +90,6 @@ public class InstallationProxyClientTest {
             }
         }
         assertNotNull(safari);
-        System.out.println(array.toXMLPropertyList());
     }
 
     @Test

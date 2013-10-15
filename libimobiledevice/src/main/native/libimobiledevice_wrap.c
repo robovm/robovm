@@ -203,9 +203,9 @@ static void SWIG_JavaArrayArgoutSchar (JNIEnv *jenv, jbyte *jarr, signed char *c
 static jbyteArray SWIG_JavaArrayOutSchar (JNIEnv *jenv, signed char *result, jsize sz);
 
 
-static int SWIG_JavaArrayInUchar (JNIEnv *jenv, jshort **jarr, unsigned char **carr, jshortArray input);
-static void SWIG_JavaArrayArgoutUchar (JNIEnv *jenv, jshort *jarr, unsigned char *carr, jshortArray input);
-static jshortArray SWIG_JavaArrayOutUchar (JNIEnv *jenv, unsigned char *result, jsize sz);
+static int SWIG_JavaArrayInUchar (JNIEnv *jenv, jbyte **jarr, unsigned char **carr, jbyteArray input);
+static void SWIG_JavaArrayArgoutUchar (JNIEnv *jenv, jbyte *jarr, unsigned char *carr, jbyteArray input);
+static jbyteArray SWIG_JavaArrayOutUchar (JNIEnv *jenv, unsigned char *result, jsize sz);
 
 
 static int SWIG_JavaArrayInShort (JNIEnv *jenv, jshort **jarr, short **carr, jshortArray input);
@@ -213,9 +213,9 @@ static void SWIG_JavaArrayArgoutShort (JNIEnv *jenv, jshort *jarr, short *carr, 
 static jshortArray SWIG_JavaArrayOutShort (JNIEnv *jenv, short *result, jsize sz);
 
 
-static int SWIG_JavaArrayInUshort (JNIEnv *jenv, jint **jarr, unsigned short **carr, jintArray input);
-static void SWIG_JavaArrayArgoutUshort (JNIEnv *jenv, jint *jarr, unsigned short *carr, jintArray input);
-static jintArray SWIG_JavaArrayOutUshort (JNIEnv *jenv, unsigned short *result, jsize sz);
+static int SWIG_JavaArrayInUshort (JNIEnv *jenv, jchar **jarr, unsigned short **carr, jcharArray input);
+static void SWIG_JavaArrayArgoutUshort (JNIEnv *jenv, jchar *jarr, unsigned short *carr, jcharArray input);
+static jcharArray SWIG_JavaArrayOutUshort (JNIEnv *jenv, unsigned short *result, jsize sz);
 
 
 static int SWIG_JavaArrayInInt (JNIEnv *jenv, jint **jarr, int **carr, jintArray input);
@@ -223,9 +223,9 @@ static void SWIG_JavaArrayArgoutInt (JNIEnv *jenv, jint *jarr, int *carr, jintAr
 static jintArray SWIG_JavaArrayOutInt (JNIEnv *jenv, int *result, jsize sz);
 
 
-static int SWIG_JavaArrayInUint (JNIEnv *jenv, jlong **jarr, unsigned int **carr, jlongArray input);
-static void SWIG_JavaArrayArgoutUint (JNIEnv *jenv, jlong *jarr, unsigned int *carr, jlongArray input);
-static jlongArray SWIG_JavaArrayOutUint (JNIEnv *jenv, unsigned int *result, jsize sz);
+static int SWIG_JavaArrayInUint (JNIEnv *jenv, jint **jarr, unsigned int **carr, jintArray input);
+static void SWIG_JavaArrayArgoutUint (JNIEnv *jenv, jint *jarr, unsigned int *carr, jintArray input);
+static jintArray SWIG_JavaArrayOutUint (JNIEnv *jenv, unsigned int *result, jsize sz);
 
 
 static int SWIG_JavaArrayInLong (JNIEnv *jenv, jint **jarr, long **carr, jintArray input);
@@ -233,9 +233,9 @@ static void SWIG_JavaArrayArgoutLong (JNIEnv *jenv, jint *jarr, long *carr, jint
 static jintArray SWIG_JavaArrayOutLong (JNIEnv *jenv, long *result, jsize sz);
 
 
-static int SWIG_JavaArrayInUlong (JNIEnv *jenv, jlong **jarr, unsigned long **carr, jlongArray input);
-static void SWIG_JavaArrayArgoutUlong (JNIEnv *jenv, jlong *jarr, unsigned long *carr, jlongArray input);
-static jlongArray SWIG_JavaArrayOutUlong (JNIEnv *jenv, unsigned long *result, jsize sz);
+static int SWIG_JavaArrayInUlong (JNIEnv *jenv, jint **jarr, unsigned long **carr, jintArray input);
+static void SWIG_JavaArrayArgoutUlong (JNIEnv *jenv, jint *jarr, unsigned long *carr, jintArray input);
+static jintArray SWIG_JavaArrayOutUlong (JNIEnv *jenv, unsigned long *result, jsize sz);
 
 
 static int SWIG_JavaArrayInLonglong (JNIEnv *jenv, jlong **jarr, jlong **carr, jlongArray input);
@@ -267,22 +267,12 @@ static int SWIG_JavaArrayInSchar (JNIEnv *jenv, jbyte **jarr, signed char **carr
   sz = (*jenv)->GetArrayLength(jenv, input);
   *jarr = (*jenv)->GetByteArrayElements(jenv, input, 0);
   if (!*jarr)
-    return 0; 
-  *carr = (signed char*) calloc(sz, sizeof(signed char)); 
-  if (!*carr) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "array memory allocation failed");
     return 0;
-  }
-  for (i=0; i<sz; i++)
-    (*carr)[i] = (signed char)(*jarr)[i];
+  *carr = (signed char*) *jarr;
   return 1;
 }
 
 static void SWIG_JavaArrayArgoutSchar (JNIEnv *jenv, jbyte *jarr, signed char *carr, jbyteArray input) {
-  int i;
-  jsize sz = (*jenv)->GetArrayLength(jenv, input);
-  for (i=0; i<sz; i++)
-    jarr[i] = (jbyte)carr[i];
   (*jenv)->ReleaseByteArrayElements(jenv, input, jarr, 0);
 }
 
@@ -292,18 +282,13 @@ static jbyteArray SWIG_JavaArrayOutSchar (JNIEnv *jenv, signed char *result, jsi
   jbyteArray jresult = (*jenv)->NewByteArray(jenv, sz);
   if (!jresult)
     return NULL;
-  arr = (*jenv)->GetByteArrayElements(jenv, jresult, 0);
-  if (!arr)
-    return NULL;
-  for (i=0; i<sz; i++)
-    arr[i] = (jbyte)result[i];
-  (*jenv)->ReleaseByteArrayElements(jenv, jresult, arr, 0);
+  (*jenv)->SetByteArrayRegion(jenv, jresult, 0, sz, (jbyte *) result);
   return jresult;
 }
 
 
 /* unsigned char[] support */
-static int SWIG_JavaArrayInUchar (JNIEnv *jenv, jshort **jarr, unsigned char **carr, jshortArray input) {
+static int SWIG_JavaArrayInUchar (JNIEnv *jenv, jbyte **jarr, unsigned char **carr, jbyteArray input) {
   int i;
   jsize sz;
   if (!input) {
@@ -311,39 +296,24 @@ static int SWIG_JavaArrayInUchar (JNIEnv *jenv, jshort **jarr, unsigned char **c
     return 0;
   }
   sz = (*jenv)->GetArrayLength(jenv, input);
-  *jarr = (*jenv)->GetShortArrayElements(jenv, input, 0);
+  *jarr = (*jenv)->GetByteArrayElements(jenv, input, 0);
   if (!*jarr)
-    return 0; 
-  *carr = (unsigned char*) calloc(sz, sizeof(unsigned char)); 
-  if (!*carr) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "array memory allocation failed");
     return 0;
-  }
-  for (i=0; i<sz; i++)
-    (*carr)[i] = (unsigned char)(*jarr)[i];
+  *carr = (unsigned char*) *jarr;
   return 1;
 }
 
-static void SWIG_JavaArrayArgoutUchar (JNIEnv *jenv, jshort *jarr, unsigned char *carr, jshortArray input) {
-  int i;
-  jsize sz = (*jenv)->GetArrayLength(jenv, input);
-  for (i=0; i<sz; i++)
-    jarr[i] = (jshort)carr[i];
-  (*jenv)->ReleaseShortArrayElements(jenv, input, jarr, 0);
+static void SWIG_JavaArrayArgoutUchar (JNIEnv *jenv, jbyte *jarr, unsigned char *carr, jbyteArray input) {
+  (*jenv)->ReleaseByteArrayElements(jenv, input, jarr, 0);
 }
 
-static jshortArray SWIG_JavaArrayOutUchar (JNIEnv *jenv, unsigned char *result, jsize sz) {
-  jshort *arr;
+static jbyteArray SWIG_JavaArrayOutUchar (JNIEnv *jenv, unsigned char *result, jsize sz) {
+  jbyte *arr;
   int i;
-  jshortArray jresult = (*jenv)->NewShortArray(jenv, sz);
+  jbyteArray jresult = (*jenv)->NewByteArray(jenv, sz);
   if (!jresult)
     return NULL;
-  arr = (*jenv)->GetShortArrayElements(jenv, jresult, 0);
-  if (!arr)
-    return NULL;
-  for (i=0; i<sz; i++)
-    arr[i] = (jshort)result[i];
-  (*jenv)->ReleaseShortArrayElements(jenv, jresult, arr, 0);
+  (*jenv)->SetByteArrayRegion(jenv, jresult, 0, sz, (jbyte *) result);
   return jresult;
 }
 
@@ -359,22 +329,12 @@ static int SWIG_JavaArrayInShort (JNIEnv *jenv, jshort **jarr, short **carr, jsh
   sz = (*jenv)->GetArrayLength(jenv, input);
   *jarr = (*jenv)->GetShortArrayElements(jenv, input, 0);
   if (!*jarr)
-    return 0; 
-  *carr = (short*) calloc(sz, sizeof(short)); 
-  if (!*carr) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "array memory allocation failed");
     return 0;
-  }
-  for (i=0; i<sz; i++)
-    (*carr)[i] = (short)(*jarr)[i];
+  *carr = (short*) *jarr;
   return 1;
 }
 
 static void SWIG_JavaArrayArgoutShort (JNIEnv *jenv, jshort *jarr, short *carr, jshortArray input) {
-  int i;
-  jsize sz = (*jenv)->GetArrayLength(jenv, input);
-  for (i=0; i<sz; i++)
-    jarr[i] = (jshort)carr[i];
   (*jenv)->ReleaseShortArrayElements(jenv, input, jarr, 0);
 }
 
@@ -384,18 +344,13 @@ static jshortArray SWIG_JavaArrayOutShort (JNIEnv *jenv, short *result, jsize sz
   jshortArray jresult = (*jenv)->NewShortArray(jenv, sz);
   if (!jresult)
     return NULL;
-  arr = (*jenv)->GetShortArrayElements(jenv, jresult, 0);
-  if (!arr)
-    return NULL;
-  for (i=0; i<sz; i++)
-    arr[i] = (jshort)result[i];
-  (*jenv)->ReleaseShortArrayElements(jenv, jresult, arr, 0);
+  (*jenv)->SetShortArrayRegion(jenv, jresult, 0, sz, (jshort *) result);
   return jresult;
 }
 
 
 /* unsigned short[] support */
-static int SWIG_JavaArrayInUshort (JNIEnv *jenv, jint **jarr, unsigned short **carr, jintArray input) {
+static int SWIG_JavaArrayInUshort (JNIEnv *jenv, jchar **jarr, unsigned short **carr, jcharArray input) {
   int i;
   jsize sz;
   if (!input) {
@@ -403,39 +358,24 @@ static int SWIG_JavaArrayInUshort (JNIEnv *jenv, jint **jarr, unsigned short **c
     return 0;
   }
   sz = (*jenv)->GetArrayLength(jenv, input);
-  *jarr = (*jenv)->GetIntArrayElements(jenv, input, 0);
+  *jarr = (*jenv)->GetCharArrayElements(jenv, input, 0);
   if (!*jarr)
-    return 0; 
-  *carr = (unsigned short*) calloc(sz, sizeof(unsigned short)); 
-  if (!*carr) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "array memory allocation failed");
     return 0;
-  }
-  for (i=0; i<sz; i++)
-    (*carr)[i] = (unsigned short)(*jarr)[i];
+  *carr = (unsigned short*) *jarr;
   return 1;
 }
 
-static void SWIG_JavaArrayArgoutUshort (JNIEnv *jenv, jint *jarr, unsigned short *carr, jintArray input) {
-  int i;
-  jsize sz = (*jenv)->GetArrayLength(jenv, input);
-  for (i=0; i<sz; i++)
-    jarr[i] = (jint)carr[i];
-  (*jenv)->ReleaseIntArrayElements(jenv, input, jarr, 0);
+static void SWIG_JavaArrayArgoutUshort (JNIEnv *jenv, jchar *jarr, unsigned short *carr, jcharArray input) {
+  (*jenv)->ReleaseCharArrayElements(jenv, input, jarr, 0);
 }
 
-static jintArray SWIG_JavaArrayOutUshort (JNIEnv *jenv, unsigned short *result, jsize sz) {
-  jint *arr;
+static jcharArray SWIG_JavaArrayOutUshort (JNIEnv *jenv, unsigned short *result, jsize sz) {
+  jchar *arr;
   int i;
-  jintArray jresult = (*jenv)->NewIntArray(jenv, sz);
+  jcharArray jresult = (*jenv)->NewCharArray(jenv, sz);
   if (!jresult)
     return NULL;
-  arr = (*jenv)->GetIntArrayElements(jenv, jresult, 0);
-  if (!arr)
-    return NULL;
-  for (i=0; i<sz; i++)
-    arr[i] = (jint)result[i];
-  (*jenv)->ReleaseIntArrayElements(jenv, jresult, arr, 0);
+  (*jenv)->SetCharArrayRegion(jenv, jresult, 0, sz, (jchar *) result);
   return jresult;
 }
 
@@ -451,22 +391,12 @@ static int SWIG_JavaArrayInInt (JNIEnv *jenv, jint **jarr, int **carr, jintArray
   sz = (*jenv)->GetArrayLength(jenv, input);
   *jarr = (*jenv)->GetIntArrayElements(jenv, input, 0);
   if (!*jarr)
-    return 0; 
-  *carr = (int*) calloc(sz, sizeof(int)); 
-  if (!*carr) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "array memory allocation failed");
     return 0;
-  }
-  for (i=0; i<sz; i++)
-    (*carr)[i] = (int)(*jarr)[i];
+  *carr = (int*) *jarr;
   return 1;
 }
 
 static void SWIG_JavaArrayArgoutInt (JNIEnv *jenv, jint *jarr, int *carr, jintArray input) {
-  int i;
-  jsize sz = (*jenv)->GetArrayLength(jenv, input);
-  for (i=0; i<sz; i++)
-    jarr[i] = (jint)carr[i];
   (*jenv)->ReleaseIntArrayElements(jenv, input, jarr, 0);
 }
 
@@ -476,18 +406,13 @@ static jintArray SWIG_JavaArrayOutInt (JNIEnv *jenv, int *result, jsize sz) {
   jintArray jresult = (*jenv)->NewIntArray(jenv, sz);
   if (!jresult)
     return NULL;
-  arr = (*jenv)->GetIntArrayElements(jenv, jresult, 0);
-  if (!arr)
-    return NULL;
-  for (i=0; i<sz; i++)
-    arr[i] = (jint)result[i];
-  (*jenv)->ReleaseIntArrayElements(jenv, jresult, arr, 0);
+  (*jenv)->SetIntArrayRegion(jenv, jresult, 0, sz, (jint *) result);
   return jresult;
 }
 
 
 /* unsigned int[] support */
-static int SWIG_JavaArrayInUint (JNIEnv *jenv, jlong **jarr, unsigned int **carr, jlongArray input) {
+static int SWIG_JavaArrayInUint (JNIEnv *jenv, jint **jarr, unsigned int **carr, jintArray input) {
   int i;
   jsize sz;
   if (!input) {
@@ -495,39 +420,24 @@ static int SWIG_JavaArrayInUint (JNIEnv *jenv, jlong **jarr, unsigned int **carr
     return 0;
   }
   sz = (*jenv)->GetArrayLength(jenv, input);
-  *jarr = (*jenv)->GetLongArrayElements(jenv, input, 0);
+  *jarr = (*jenv)->GetIntArrayElements(jenv, input, 0);
   if (!*jarr)
-    return 0; 
-  *carr = (unsigned int*) calloc(sz, sizeof(unsigned int)); 
-  if (!*carr) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "array memory allocation failed");
     return 0;
-  }
-  for (i=0; i<sz; i++)
-    (*carr)[i] = (unsigned int)(*jarr)[i];
+  *carr = (unsigned int*) *jarr;
   return 1;
 }
 
-static void SWIG_JavaArrayArgoutUint (JNIEnv *jenv, jlong *jarr, unsigned int *carr, jlongArray input) {
-  int i;
-  jsize sz = (*jenv)->GetArrayLength(jenv, input);
-  for (i=0; i<sz; i++)
-    jarr[i] = (jlong)carr[i];
-  (*jenv)->ReleaseLongArrayElements(jenv, input, jarr, 0);
+static void SWIG_JavaArrayArgoutUint (JNIEnv *jenv, jint *jarr, unsigned int *carr, jintArray input) {
+  (*jenv)->ReleaseIntArrayElements(jenv, input, jarr, 0);
 }
 
-static jlongArray SWIG_JavaArrayOutUint (JNIEnv *jenv, unsigned int *result, jsize sz) {
-  jlong *arr;
+static jintArray SWIG_JavaArrayOutUint (JNIEnv *jenv, unsigned int *result, jsize sz) {
+  jint *arr;
   int i;
-  jlongArray jresult = (*jenv)->NewLongArray(jenv, sz);
+  jintArray jresult = (*jenv)->NewIntArray(jenv, sz);
   if (!jresult)
     return NULL;
-  arr = (*jenv)->GetLongArrayElements(jenv, jresult, 0);
-  if (!arr)
-    return NULL;
-  for (i=0; i<sz; i++)
-    arr[i] = (jlong)result[i];
-  (*jenv)->ReleaseLongArrayElements(jenv, jresult, arr, 0);
+  (*jenv)->SetIntArrayRegion(jenv, jresult, 0, sz, (jint *) result);
   return jresult;
 }
 
@@ -543,22 +453,12 @@ static int SWIG_JavaArrayInLong (JNIEnv *jenv, jint **jarr, long **carr, jintArr
   sz = (*jenv)->GetArrayLength(jenv, input);
   *jarr = (*jenv)->GetIntArrayElements(jenv, input, 0);
   if (!*jarr)
-    return 0; 
-  *carr = (long*) calloc(sz, sizeof(long)); 
-  if (!*carr) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "array memory allocation failed");
     return 0;
-  }
-  for (i=0; i<sz; i++)
-    (*carr)[i] = (long)(*jarr)[i];
+  *carr = (long*) *jarr;
   return 1;
 }
 
 static void SWIG_JavaArrayArgoutLong (JNIEnv *jenv, jint *jarr, long *carr, jintArray input) {
-  int i;
-  jsize sz = (*jenv)->GetArrayLength(jenv, input);
-  for (i=0; i<sz; i++)
-    jarr[i] = (jint)carr[i];
   (*jenv)->ReleaseIntArrayElements(jenv, input, jarr, 0);
 }
 
@@ -568,18 +468,13 @@ static jintArray SWIG_JavaArrayOutLong (JNIEnv *jenv, long *result, jsize sz) {
   jintArray jresult = (*jenv)->NewIntArray(jenv, sz);
   if (!jresult)
     return NULL;
-  arr = (*jenv)->GetIntArrayElements(jenv, jresult, 0);
-  if (!arr)
-    return NULL;
-  for (i=0; i<sz; i++)
-    arr[i] = (jint)result[i];
-  (*jenv)->ReleaseIntArrayElements(jenv, jresult, arr, 0);
+  (*jenv)->SetIntArrayRegion(jenv, jresult, 0, sz, (jint *) result);
   return jresult;
 }
 
 
 /* unsigned long[] support */
-static int SWIG_JavaArrayInUlong (JNIEnv *jenv, jlong **jarr, unsigned long **carr, jlongArray input) {
+static int SWIG_JavaArrayInUlong (JNIEnv *jenv, jint **jarr, unsigned long **carr, jintArray input) {
   int i;
   jsize sz;
   if (!input) {
@@ -587,39 +482,24 @@ static int SWIG_JavaArrayInUlong (JNIEnv *jenv, jlong **jarr, unsigned long **ca
     return 0;
   }
   sz = (*jenv)->GetArrayLength(jenv, input);
-  *jarr = (*jenv)->GetLongArrayElements(jenv, input, 0);
+  *jarr = (*jenv)->GetIntArrayElements(jenv, input, 0);
   if (!*jarr)
-    return 0; 
-  *carr = (unsigned long*) calloc(sz, sizeof(unsigned long)); 
-  if (!*carr) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "array memory allocation failed");
     return 0;
-  }
-  for (i=0; i<sz; i++)
-    (*carr)[i] = (unsigned long)(*jarr)[i];
+  *carr = (unsigned long*) *jarr;
   return 1;
 }
 
-static void SWIG_JavaArrayArgoutUlong (JNIEnv *jenv, jlong *jarr, unsigned long *carr, jlongArray input) {
-  int i;
-  jsize sz = (*jenv)->GetArrayLength(jenv, input);
-  for (i=0; i<sz; i++)
-    jarr[i] = (jlong)carr[i];
-  (*jenv)->ReleaseLongArrayElements(jenv, input, jarr, 0);
+static void SWIG_JavaArrayArgoutUlong (JNIEnv *jenv, jint *jarr, unsigned long *carr, jintArray input) {
+  (*jenv)->ReleaseIntArrayElements(jenv, input, jarr, 0);
 }
 
-static jlongArray SWIG_JavaArrayOutUlong (JNIEnv *jenv, unsigned long *result, jsize sz) {
-  jlong *arr;
+static jintArray SWIG_JavaArrayOutUlong (JNIEnv *jenv, unsigned long *result, jsize sz) {
+  jint *arr;
   int i;
-  jlongArray jresult = (*jenv)->NewLongArray(jenv, sz);
+  jintArray jresult = (*jenv)->NewIntArray(jenv, sz);
   if (!jresult)
     return NULL;
-  arr = (*jenv)->GetLongArrayElements(jenv, jresult, 0);
-  if (!arr)
-    return NULL;
-  for (i=0; i<sz; i++)
-    arr[i] = (jlong)result[i];
-  (*jenv)->ReleaseLongArrayElements(jenv, jresult, arr, 0);
+  (*jenv)->SetIntArrayRegion(jenv, jresult, 0, sz, (jint *) result);
   return jresult;
 }
 
@@ -635,22 +515,12 @@ static int SWIG_JavaArrayInLonglong (JNIEnv *jenv, jlong **jarr, jlong **carr, j
   sz = (*jenv)->GetArrayLength(jenv, input);
   *jarr = (*jenv)->GetLongArrayElements(jenv, input, 0);
   if (!*jarr)
-    return 0; 
-  *carr = (jlong*) calloc(sz, sizeof(jlong)); 
-  if (!*carr) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "array memory allocation failed");
     return 0;
-  }
-  for (i=0; i<sz; i++)
-    (*carr)[i] = (jlong)(*jarr)[i];
+  *carr = (jlong*) *jarr;
   return 1;
 }
 
 static void SWIG_JavaArrayArgoutLonglong (JNIEnv *jenv, jlong *jarr, jlong *carr, jlongArray input) {
-  int i;
-  jsize sz = (*jenv)->GetArrayLength(jenv, input);
-  for (i=0; i<sz; i++)
-    jarr[i] = (jlong)carr[i];
   (*jenv)->ReleaseLongArrayElements(jenv, input, jarr, 0);
 }
 
@@ -660,12 +530,7 @@ static jlongArray SWIG_JavaArrayOutLonglong (JNIEnv *jenv, jlong *result, jsize 
   jlongArray jresult = (*jenv)->NewLongArray(jenv, sz);
   if (!jresult)
     return NULL;
-  arr = (*jenv)->GetLongArrayElements(jenv, jresult, 0);
-  if (!arr)
-    return NULL;
-  for (i=0; i<sz; i++)
-    arr[i] = (jlong)result[i];
-  (*jenv)->ReleaseLongArrayElements(jenv, jresult, arr, 0);
+  (*jenv)->SetLongArrayRegion(jenv, jresult, 0, sz, (jlong *) result);
   return jresult;
 }
 
@@ -681,22 +546,12 @@ static int SWIG_JavaArrayInFloat (JNIEnv *jenv, jfloat **jarr, float **carr, jfl
   sz = (*jenv)->GetArrayLength(jenv, input);
   *jarr = (*jenv)->GetFloatArrayElements(jenv, input, 0);
   if (!*jarr)
-    return 0; 
-  *carr = (float*) calloc(sz, sizeof(float)); 
-  if (!*carr) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "array memory allocation failed");
     return 0;
-  }
-  for (i=0; i<sz; i++)
-    (*carr)[i] = (float)(*jarr)[i];
+  *carr = (float*) *jarr;
   return 1;
 }
 
 static void SWIG_JavaArrayArgoutFloat (JNIEnv *jenv, jfloat *jarr, float *carr, jfloatArray input) {
-  int i;
-  jsize sz = (*jenv)->GetArrayLength(jenv, input);
-  for (i=0; i<sz; i++)
-    jarr[i] = (jfloat)carr[i];
   (*jenv)->ReleaseFloatArrayElements(jenv, input, jarr, 0);
 }
 
@@ -706,12 +561,7 @@ static jfloatArray SWIG_JavaArrayOutFloat (JNIEnv *jenv, float *result, jsize sz
   jfloatArray jresult = (*jenv)->NewFloatArray(jenv, sz);
   if (!jresult)
     return NULL;
-  arr = (*jenv)->GetFloatArrayElements(jenv, jresult, 0);
-  if (!arr)
-    return NULL;
-  for (i=0; i<sz; i++)
-    arr[i] = (jfloat)result[i];
-  (*jenv)->ReleaseFloatArrayElements(jenv, jresult, arr, 0);
+  (*jenv)->SetFloatArrayRegion(jenv, jresult, 0, sz, (jfloat *) result);
   return jresult;
 }
 
@@ -727,22 +577,12 @@ static int SWIG_JavaArrayInDouble (JNIEnv *jenv, jdouble **jarr, double **carr, 
   sz = (*jenv)->GetArrayLength(jenv, input);
   *jarr = (*jenv)->GetDoubleArrayElements(jenv, input, 0);
   if (!*jarr)
-    return 0; 
-  *carr = (double*) calloc(sz, sizeof(double)); 
-  if (!*carr) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaOutOfMemoryError, "array memory allocation failed");
     return 0;
-  }
-  for (i=0; i<sz; i++)
-    (*carr)[i] = (double)(*jarr)[i];
+  *carr = (double*) *jarr;
   return 1;
 }
 
 static void SWIG_JavaArrayArgoutDouble (JNIEnv *jenv, jdouble *jarr, double *carr, jdoubleArray input) {
-  int i;
-  jsize sz = (*jenv)->GetArrayLength(jenv, input);
-  for (i=0; i<sz; i++)
-    jarr[i] = (jdouble)carr[i];
   (*jenv)->ReleaseDoubleArrayElements(jenv, input, jarr, 0);
 }
 
@@ -752,12 +592,7 @@ static jdoubleArray SWIG_JavaArrayOutDouble (JNIEnv *jenv, double *result, jsize
   jdoubleArray jresult = (*jenv)->NewDoubleArray(jenv, sz);
   if (!jresult)
     return NULL;
-  arr = (*jenv)->GetDoubleArrayElements(jenv, jresult, 0);
-  if (!arr)
-    return NULL;
-  for (i=0; i<sz; i++)
-    arr[i] = (jdouble)result[i];
-  (*jenv)->ReleaseDoubleArrayElements(jenv, jresult, arr, 0);
+  (*jenv)->SetDoubleArrayRegion(jenv, jresult, 0, sz, (jdouble *) result);
   return jresult;
 }
 
@@ -974,24 +809,13 @@ void delete_StringArray_values_z(StringArray* s) {
         }
     }
 }
-static void loadCallbacksClass(JNIEnv *env) {
-    if (!class_Callbacks) {
-        class_Callbacks = (*env)->FindClass(env, "org/robovm/libimobiledevice/Callbacks");
-        if ((*env)->ExceptionCheck(env)) {
-            fprintf(stderr, "FindClass(\"org/robovm/libimobiledevice/Callbacks\") failed\n");
-            abort();
-        }
-    }
-}
-static void loadCallbacksMethod(JNIEnv *env, const char *name, const char *desc, jmethodID *ptr) {
-    if (!*ptr) {
-        loadCallbacksClass(env);
-        *ptr = (*env)->GetStaticMethodID(env, class_Callbacks, name, desc);
-        if ((*env)->ExceptionCheck(env)) {
-            fprintf(stderr, "GetMethodID(\"%s\", \"%s\") failed\n", name, desc);
-            abort();
-        }
-    }
+SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_initNative(JNIEnv *env, jclass cls) {
+    class_Callbacks = (*env)->FindClass(env, "org/robovm/libimobiledevice/Callbacks");
+    if ((*env)->ExceptionCheck(env)) return;
+    meth_callInstproxyCallback = (*env)->GetStaticMethodID(env, class_Callbacks, "callInstproxyCallback", "(Ljava/lang/String;[BI)V");
+    if ((*env)->ExceptionCheck(env)) return;
+    meth_callIDeviceEventCallback = (*env)->GetStaticMethodID(env, class_Callbacks, "callIDeviceEventCallback", "(ILjava/lang/String;)V");
+    if ((*env)->ExceptionCheck(env)) return;
 }
 static void global_instproxy_status_cb(const char *operation, plist_t status, void *user_data) {
     char *plist_bin = NULL;
@@ -1008,7 +832,6 @@ static void global_instproxy_status_cb(const char *operation, plist_t status, vo
     (*env)->SetByteArrayRegion(env, jstatus, 0, length, (const jbyte *) plist_bin);
     free(plist_bin);
     jint jid = *((jint*) &user_data);
-    loadCallbacksMethod(env, "callInstproxyCallback", "(Ljava/lang/String;[BI)V", &meth_callInstproxyCallback);
     (*env)->CallStaticVoidMethod(env, class_Callbacks, meth_callInstproxyCallback, jop, jstatus, jid);
 }
 jlong get_global_instproxy_status_cb(void) {
@@ -1022,7 +845,6 @@ static void global_idevice_event_cb(const idevice_event_t *event, void *user_dat
     }
     jint jeventType = event->event;
     jstring judid = (*env)->NewStringUTF(env, event->udid);
-    loadCallbacksMethod(env, "callIDeviceEventCallback", "(ILjava/lang/String;)V", &meth_callIDeviceEventCallback);
     (*env)->CallStaticVoidMethod(env, class_Callbacks, meth_callIDeviceEventCallback, jeventType, judid);
 }
 jlong get_global_idevice_event_cb(void) {
@@ -1758,7 +1580,7 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
   arg3 = *(plist_t **)&jarg3; 
   plist_from_bin((char const *)arg1,arg2,arg3);
   SWIG_JavaArrayArgoutSchar(jenv, jarr1, (signed char *)arg1, jarg1); 
-  free(arg1); 
+  
 }
 
 
@@ -2109,7 +1931,7 @@ SWIGEXPORT jshort JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDev
   result = (idevice_error_t)idevice_connection_send(arg1,(char const *)arg2,arg3,arg4);
   jresult = (jshort)result; 
   SWIG_JavaArrayArgoutSchar(jenv, jarr2, (signed char *)arg2, jarg2); 
-  free(arg2); 
+  
   return jresult;
 }
 
@@ -2135,7 +1957,7 @@ SWIGEXPORT jshort JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDev
   result = (idevice_error_t)idevice_connection_receive_timeout(arg1,arg2,arg3,arg4,arg5);
   jresult = (jshort)result; 
   SWIG_JavaArrayArgoutSchar(jenv, jarr2, (signed char *)arg2, jarg2); 
-  free(arg2); 
+  
   return jresult;
 }
 
@@ -2159,7 +1981,7 @@ SWIGEXPORT jshort JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDev
   result = (idevice_error_t)idevice_connection_receive(arg1,arg2,arg3,arg4);
   jresult = (jshort)result; 
   SWIG_JavaArrayArgoutSchar(jenv, jarr2, (signed char *)arg2, jarg2); 
-  free(arg2); 
+  
   return jresult;
 }
 
@@ -3143,7 +2965,7 @@ SWIGEXPORT jshort JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDev
   result = (afc_error_t)afc_file_read(arg1,arg2,arg3,arg4,arg5);
   jresult = (jshort)result; 
   SWIG_JavaArrayArgoutSchar(jenv, jarr3, (signed char *)arg3, jarg3); 
-  free(arg3); 
+  
   return jresult;
 }
 
@@ -3169,7 +2991,7 @@ SWIGEXPORT jshort JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDev
   result = (afc_error_t)afc_file_write(arg1,arg2,(char const *)arg3,arg4,arg5);
   jresult = (jshort)result; 
   SWIG_JavaArrayArgoutSchar(jenv, jarr3, (signed char *)arg3, jarg3); 
-  free(arg3); 
+  
   return jresult;
 }
 

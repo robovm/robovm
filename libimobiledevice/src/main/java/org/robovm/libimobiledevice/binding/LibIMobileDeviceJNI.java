@@ -164,8 +164,10 @@ public class LibIMobileDeviceJNI {
   public final static native long instproxy_client_options_new();
   public final static native void instproxy_client_options_free(long jarg1);
 
+  private static native void initNative();
   static {
     org.robovm.libimobiledevice.NativeLibrary.load();
+    initNative();
   }
 
 }

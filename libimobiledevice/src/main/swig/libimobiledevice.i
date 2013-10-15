@@ -9,7 +9,8 @@
 %}
 
 %include "enums.swg"
-%include "arrays_java.i"
+%include "fast_primitive_arrays.i"
+//%include "arrays_java.i"
 
 %javaconst(1);
 SWIG_JAVABODY_METHODS(protected, protected, SWIGTYPE)
@@ -195,24 +196,13 @@ void delete_StringArray_values_z(StringArray* s) {
         }
     }
 }
-static void loadCallbacksClass(JNIEnv *env) {
-    if (!class_Callbacks) {
-        class_Callbacks = (*env)->FindClass(env, "org/robovm/libimobiledevice/Callbacks");
-        if ((*env)->ExceptionCheck(env)) {
-            fprintf(stderr, "FindClass(\"org/robovm/libimobiledevice/Callbacks\") failed\n");
-            abort();
-        }
-    }
-}
-static void loadCallbacksMethod(JNIEnv *env, const char *name, const char *desc, jmethodID *ptr) {
-    if (!*ptr) {
-        loadCallbacksClass(env);
-        *ptr = (*env)->GetStaticMethodID(env, class_Callbacks, name, desc);
-        if ((*env)->ExceptionCheck(env)) {
-            fprintf(stderr, "GetMethodID(\"%s\", \"%s\") failed\n", name, desc);
-            abort();
-        }
-    }
+SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_initNative(JNIEnv *env, jclass cls) {
+    class_Callbacks = (*env)->FindClass(env, "org/robovm/libimobiledevice/Callbacks");
+    if ((*env)->ExceptionCheck(env)) return;
+    meth_callInstproxyCallback = (*env)->GetStaticMethodID(env, class_Callbacks, "callInstproxyCallback", "(Ljava/lang/String;[BI)V");
+    if ((*env)->ExceptionCheck(env)) return;
+    meth_callIDeviceEventCallback = (*env)->GetStaticMethodID(env, class_Callbacks, "callIDeviceEventCallback", "(ILjava/lang/String;)V");
+    if ((*env)->ExceptionCheck(env)) return;
 }
 static void global_instproxy_status_cb(const char *operation, plist_t status, void *user_data) {
     char *plist_bin = NULL;
@@ -229,7 +219,6 @@ static void global_instproxy_status_cb(const char *operation, plist_t status, vo
     (*env)->SetByteArrayRegion(env, jstatus, 0, length, (const jbyte *) plist_bin);
     free(plist_bin);
     jint jid = *((jint*) &user_data);
-    loadCallbacksMethod(env, "callInstproxyCallback", "(Ljava/lang/String;[BI)V", &meth_callInstproxyCallback);
     (*env)->CallStaticVoidMethod(env, class_Callbacks, meth_callInstproxyCallback, jop, jstatus, jid);
 }
 jlong get_global_instproxy_status_cb(void) {
@@ -243,7 +232,6 @@ static void global_idevice_event_cb(const idevice_event_t *event, void *user_dat
     }
     jint jeventType = event->event;
     jstring judid = (*env)->NewStringUTF(env, event->udid);
-    loadCallbacksMethod(env, "callIDeviceEventCallback", "(ILjava/lang/String;)V", &meth_callIDeviceEventCallback);
     (*env)->CallStaticVoidMethod(env, class_Callbacks, meth_callIDeviceEventCallback, jeventType, judid);
 }
 jlong get_global_idevice_event_cb(void) {
@@ -257,8 +245,10 @@ jlong get_global_idevice_event_cb(void) {
 %include "libimobiledevice/installation_proxy.h"
 
 %pragma(java) jniclasscode=%{
+  private static native void initNative();
   static {
     org.robovm.libimobiledevice.NativeLibrary.load();
+    initNative();
   }
 %}
 

@@ -14,31 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
  */
-package org.robovm.compiler.target.ios;
+package org.robovm.compiler.target;
 
-import org.robovm.compiler.target.LaunchParameters;
+import java.io.IOException;
 
 /**
- * {@link LaunchParameters} implementation used by {@link IOSTarget} when
- * launching on the simulator.
+ * 
  */
-public class IOSSimulatorLaunchParameters extends LaunchParameters {
+public interface Launcher {
 
-    public static enum Family {iphone, ipad}
+    Process execAsync() throws IOException;
     
-    private Family family = Family.iphone;
-    private String sdk = null;
-    
-    public Family getFamily() {
-        return family;
-    }
-    public void setFamily(Family family) {
-        this.family = family;
-    }
-    public String getSdk() {
-        return sdk;
-    }
-    public void setSdk(String sdk) {
-        this.sdk = sdk;
-    }
 }

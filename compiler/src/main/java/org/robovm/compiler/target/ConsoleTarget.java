@@ -16,13 +16,13 @@
  */
 package org.robovm.compiler.target;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
-import org.robovm.compiler.util.Executor;
 import org.robovm.compiler.util.io.OpenOnWriteFileOutputStream;
 
 
@@ -45,9 +45,8 @@ public class ConsoleTarget extends AbstractTarget {
     }
     
     @Override
-    protected Executor createExecutor(LaunchParameters launchParameters)
-            throws IOException {
-
+    protected Launcher createLauncher(LaunchParameters launchParameters) throws IOException {
+        File dir = config.isSkipInstall() ? config.getTmpDir() : config.getInstallDir();
         OutputStream out = System.out;
         OutputStream err = System.err;
         if (launchParameters.getStdoutFifo() != null) {
@@ -56,9 +55,13 @@ public class ConsoleTarget extends AbstractTarget {
         if (launchParameters.getStderrFifo() != null) {
             err = new OpenOnWriteFileOutputStream(launchParameters.getStderrFifo());
         }
-        return super.createExecutor(launchParameters).out(out).err(err).closeOutputStreams(true);
+        
+        return createExecutor(launchParameters, new File(dir, 
+                config.getExecutableName()).getAbsolutePath(), 
+                launchParameters.getArguments())
+                .out(out).err(err).closeOutputStreams(true);
     }
-
+    
     public void init(Config config) {
         super.init(config);
         os = config.getOs();

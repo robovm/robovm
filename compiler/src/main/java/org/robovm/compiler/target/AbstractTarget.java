@@ -234,18 +234,10 @@ public abstract class AbstractTarget implements Target {
     }
     
     protected Process doLaunch(LaunchParameters launchParameters) throws IOException {
-        return createExecutor(launchParameters).execAsync();
+        return createLauncher(launchParameters).execAsync();
     }
     
-    protected Executor createExecutor(LaunchParameters launchParameters) throws IOException {
-        File dir = config.getTmpDir();
-        if (!config.isSkipInstall()) {
-            dir = config.getInstallDir();
-        }
-        return createExecutor(launchParameters, new File(dir, 
-                config.getExecutableName()).getAbsolutePath(), 
-                launchParameters.getArguments());
-    }
+    protected abstract Launcher createLauncher(LaunchParameters launchParameters) throws IOException;
     
     protected Executor createExecutor(LaunchParameters launchParameters, String cmd, List<? extends Object> args) throws IOException {
         Map<String, String> env = launchParameters.getEnvironment();

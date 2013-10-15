@@ -21,28 +21,32 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 
-import org.apache.commons.exec.util.StringUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.config.Resource;
-import org.robovm.compiler.log.DebugOutputStream;
-import org.robovm.compiler.log.ErrorOutputStream;
 import org.robovm.compiler.target.AbstractTarget;
 import org.robovm.compiler.target.LaunchParameters;
+import org.robovm.compiler.target.Launcher;
 import org.robovm.compiler.util.Executor;
 import org.robovm.compiler.util.ToolchainUtil;
 import org.robovm.compiler.util.io.OpenOnWriteFileOutputStream;
+import org.robovm.libimobiledevice.AfcClient.UploadProgressCallback;
+import org.robovm.libimobiledevice.IDevice;
+import org.robovm.libimobiledevice.InstallationProxyClient.StatusCallback;
+import org.robovm.libimobiledevice.util.AppLauncher;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -85,7 +89,7 @@ public class IOSTarget extends AbstractTarget {
         if (arch == Arch.x86) {
             return new IOSSimulatorLaunchParameters();
         }
-        return super.createLaunchParameters();
+        return new IOSDeviceLaunchParameters();
     }
     
     public List<SDK> getSDKs() {
@@ -97,17 +101,15 @@ public class IOSTarget extends AbstractTarget {
     }
 
     @Override
-    protected Executor createExecutor(LaunchParameters launchParameters)
-            throws IOException {
-        
+    protected Launcher createLauncher(LaunchParameters launchParameters) throws IOException {
         if (arch == Arch.x86) {
-            return createIOSSimExecutor(launchParameters);
+            return createIOSSimLauncher(launchParameters);
         } else {
-            return createFruitstrapExecutor(launchParameters);
+            return createIOSDevLauncher(launchParameters);
         }
     }
     
-    private Executor createIOSSimExecutor(LaunchParameters launchParameters)
+    private Launcher createIOSSimLauncher(LaunchParameters launchParameters)
             throws IOException {
 
         File dir = getAppDir();
@@ -140,57 +142,74 @@ public class IOSTarget extends AbstractTarget {
         return super.createExecutor(launchParameters, iosSimPath, args);
     }
     
-
-    private Executor createFruitstrapExecutor(LaunchParameters launchParameters)
+    private Launcher createIOSDevLauncher(LaunchParameters launchParameters)
             throws IOException {
-
-        File dir = getAppDir();
         
-        String fruitstrapPath = new File(config.getHome().getBinDir(), "fruitstrap").getAbsolutePath();
-        
-        List<Object> args = new ArrayList<Object>();
-        args.add("--verbose");
-        args.add("--unbuffered");
-        args.add("--debug");
-        args.add("--gdbargs");
-        args.add("-i mi -q");
-        args.add("--nostart");
-        
-        if (!launchParameters.getArguments().isEmpty()) {
-            args.add("--args");
-            args.add(joinArgs(launchParameters.getArguments()));
+        String deviceId = ((IOSDeviceLaunchParameters) launchParameters).getDeviceId();
+        if (deviceId == null) {
+            String[] udids = IDevice.listUdids();
+            if (udids.length == 0) {
+                throw new RuntimeException("No devices connected");
+            }
+            if (udids.length > 1) {
+                config.getLogger().warn("More than 1 device connected (%s). " 
+                        + "Using %s.", Arrays.asList(udids), udids[0]);
+            }
+            deviceId = udids[0];
         }
-
-        args.add("--bundle");
-        args.add(dir.getAbsolutePath());
+        IDevice device = new IDevice(deviceId);
         
-        OutputStream fruitstrapOut = new DebugOutputStream(config.getLogger());
-        OutputStream fruitstrapErr = new ErrorOutputStream(config.getLogger());
         OutputStream out = null;
-        OutputStream err = null;
         if (launchParameters.getStdoutFifo() != null) {
             out = new OpenOnWriteFileOutputStream(launchParameters.getStdoutFifo());
         } else {
             out = System.out;
         }
-        if (launchParameters.getStderrFifo() != null) {
-            err = new OpenOnWriteFileOutputStream(launchParameters.getStderrFifo());
-        } else {
-            err = System.err;
+        
+        Map<String, String> env = launchParameters.getEnvironment();
+        if (env == null) {
+            env = Collections.emptyMap();
         }
+        
+        AppLauncher launcher = new AppLauncher(device, getAppDir())
+            .stdout(out)
+            .closeOutOnExit(true)
+            .args(launchParameters.getArguments().toArray(new String[0]))
+            .env(env)
+            .uploadProgressCallback(new UploadProgressCallback() {
+                boolean first = true;
+                public void success() {
+                    config.getLogger().debug("[100%%] Upload complete");
+                }
+                public void progress(File path, int percentComplete) {
+                    if (first) {
+                        config.getLogger().debug("[  0%%] Beginning upload...");
+                    }
+                    first = false;
+                    config.getLogger().debug("[%3d%%] Uploading %s...", percentComplete, path);
+                }
+                public void error(String message) {
+                }
+            })
+            .installStatusCallback(new StatusCallback() {
+                boolean first = true;
+                public void success() {
+                    config.getLogger().debug("[100%%] Install complete");
+                }
+                public void progress(String status, int percentComplete) {
+                    if (first) {
+                        config.getLogger().debug("[  0%%] Beginning installation...");
+                    }
+                    first = false;
+                    config.getLogger().debug("[%3d%%] %s", percentComplete, status);
+                }
+                public void error(String message) {
+                }
+            });
+        
+        return new AppLauncherProcess(config.getLogger(), launcher, launchParameters);
+    }
 
-        return super.createExecutor(launchParameters, fruitstrapPath, args)
-                .streamHandler(new FruitstrapStreamHandler(out, err, fruitstrapOut, fruitstrapErr));
-    }
-    
-    private String joinArgs(List<String> args) {
-        StringBuilder sb = new StringBuilder();
-        for (String arg : args) {
-            sb.append(StringUtils.quoteArgument(arg));
-        }
-        return sb.toString();
-    }
-    
     @Override
     protected void doBuild(File outFile, List<String> ccArgs,
             List<File> objectFiles, List<String> libArgs)

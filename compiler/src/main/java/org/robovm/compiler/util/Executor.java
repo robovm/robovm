@@ -37,12 +37,13 @@ import org.apache.commons.exec.util.StringUtils;
 import org.robovm.compiler.log.DebugOutputStream;
 import org.robovm.compiler.log.ErrorOutputStream;
 import org.robovm.compiler.log.Logger;
+import org.robovm.compiler.target.Launcher;
 
 /**
  * Builder style wrapper around <code>commons-exec</code> which also adds support for asynchronous 
  * execution.
  */
-public class Executor {
+public class Executor implements Launcher {
     private final String cmd;
     private final Logger logger;
     private List<String> args = new ArrayList<String>();

@@ -26,10 +26,6 @@ into the public domain. Both authors disclaim copyright to the source code.
 http://code.google.com/p/smhasher/
 https://github.com/yonik/java_util
 
-The RoboVM compiler includes parts of the Netbeans C/C++ support module (cnd).
-This code is copyright 2010, Oracle and/or its affiliates and released under
-the GPLv2 and CDDL licenses. http://cnd.netbeans.org/
-
 The RoboVM compiler includes Soot which is copyright Sable Research Group and
 various contributors. Please see http://www.sable.mcgill.ca/soot/credits for a
 full list of contributors. LGPL 2.1 license. http://www.sable.mcgill.ca/soot/

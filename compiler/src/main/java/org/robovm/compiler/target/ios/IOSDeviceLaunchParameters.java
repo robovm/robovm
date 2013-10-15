@@ -19,26 +19,19 @@ package org.robovm.compiler.target.ios;
 import org.robovm.compiler.target.LaunchParameters;
 
 /**
- * {@link LaunchParameters} implementation used by {@link IOSTarget} when
- * launching on the simulator.
+ * {@link LaunchParameters} implementation used by {@link IOSTarget} when 
+ * launching on device.
  */
-public class IOSSimulatorLaunchParameters extends LaunchParameters {
+public class IOSDeviceLaunchParameters extends LaunchParameters {
 
-    public static enum Family {iphone, ipad}
+    private String deviceId;
     
-    private Family family = Family.iphone;
-    private String sdk = null;
+    public String getDeviceId() {
+        return deviceId;
+    }
     
-    public Family getFamily() {
-        return family;
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
-    public void setFamily(Family family) {
-        this.family = family;
-    }
-    public String getSdk() {
-        return sdk;
-    }
-    public void setSdk(String sdk) {
-        this.sdk = sdk;
-    }
+
 }

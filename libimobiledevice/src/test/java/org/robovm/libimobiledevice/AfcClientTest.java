@@ -191,8 +191,8 @@ public class AfcClientTest {
         long duration = System.currentTimeMillis() - start;
         client.fileClose(fd);
 
-        System.out.format("%d bytes written in %d seconds (%f kB/s)\n", n, 
-                duration / 1000, n / 1024.0 / (duration / 1000.0));
+        System.out.format("%d bytes written in %d ms (%f kB/s)\n", n, 
+                duration, n / 1024.0 / (duration / 1000.0));
         
         client.removePath("/FOO.DAT");
     }
@@ -253,6 +253,27 @@ public class AfcClientTest {
                       sw.toString());
             } finally {
                 client.removePath("/baz", true);
+            }
+        } finally {
+            FileUtils.deleteDirectory(dir.toFile());
+        }
+    }
+    
+    @Test
+    public void testUploadSpeed() throws Exception {
+        Path dir = Files.createTempDirectory(AfcClientTest.class.getSimpleName());
+        try {
+            Path foo = Files.createFile(dir.resolve("foo"));
+            byte[] data = new byte[1 << 24];
+            Files.write(foo, data);
+            long start = System.currentTimeMillis();
+            try {
+                client.upload(foo.toFile(), "/wooz");
+            } finally {
+                long duration = System.currentTimeMillis() - start;
+                System.out.format("%d bytes uploaded in %d ms (%f kB/s)\n", data.length, 
+                        duration, data.length / 1024.0 / (duration / 1000.0));
+                client.removePath("/wooz", true);
             }
         } finally {
             FileUtils.deleteDirectory(dir.toFile());

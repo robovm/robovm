@@ -152,6 +152,7 @@ public class AfcClientTest {
         while ((n = ris.read(buffer)) != -1) {
             client.fileWrite(fd, buffer, 0, n);
         }
+        ris.close();
         client.fileClose(fd);
 
         Map<String, String> fileInfo = client.getFileInfo("/FOO.TXT");
@@ -190,7 +191,7 @@ public class AfcClientTest {
         long duration = System.currentTimeMillis() - start;
         client.fileClose(fd);
 
-        System.out.format("%d: %d bytes written in %d seconds (%f kB/s)\n", n, 
+        System.out.format("%d bytes written in %d seconds (%f kB/s)\n", n, 
                 duration / 1000, n / 1024.0 / (duration / 1000.0));
         
         client.removePath("/FOO.DAT");

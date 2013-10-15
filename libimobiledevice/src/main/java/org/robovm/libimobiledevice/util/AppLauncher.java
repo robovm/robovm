@@ -411,7 +411,11 @@ public class AppLauncher {
         }
         String response = decode(receiveGdbPacket(conn, RECEIVE_TIMEOUT));
         if (!expectedResponse.equals(response)) {
-            throw new RuntimeException("Unexpected response '" + response + "' to command '" + packet + "'");
+            if (response.startsWith("E")) {
+                throw new RuntimeException("Launch failed: " + response.substring(1));
+            }
+            throw new RuntimeException("Launch failed: Unexpected response '" 
+                    + response + "' to command '" + decode(packet) + "'");
         }
     }
     
@@ -464,17 +468,12 @@ public class AppLauncher {
         }
     }
     
-    private void uploadAndInstall(LockdowndClient lockdowndClient) throws Exception {
-        upload(lockdowndClient);
-        // Upload is synchronous and if it fails an exception will already have been thrown.
-        debug("[ 50%] Upload done. Installing app...");
-        install(lockdowndClient);
-    }
-    
     public void install() throws IOException {
         if (localAppPath != null) {
             try (LockdowndClient lockdowndClient = new LockdowndClient(device, getClass().getSimpleName(), true)) {
-                uploadAndInstall(lockdowndClient);
+                uploadInternal();
+                debug("[ 50%] Upload done. Installing app...");
+                installInternal();
                 localAppPath = null;
             } catch (IOException e) {
                 throw e;
@@ -487,14 +486,12 @@ public class AppLauncher {
     }
     
     private int launchInternal() throws Exception {
-
+        install();
+        
         IDeviceConnection conn = null;
         String appPath = null;
         
         try (LockdowndClient lockdowndClient = new LockdowndClient(device, getClass().getSimpleName(), true)) {
-            if (localAppPath != null) {
-                uploadAndInstall(lockdowndClient);
-            }
             appPath = getAppPath(lockdowndClient, appId);
             LockdowndServiceDescriptor debugService = lockdowndClient.startService(DEBUG_SERVER_SERVICE_NAME);
             conn = device.connect(debugService.getPort());
@@ -560,76 +557,80 @@ public class AppLauncher {
         }
     }
 
-    private void install(LockdowndClient lockdowndClient) throws Exception {
-        final LibIMobileDeviceException[] ex = new LibIMobileDeviceException[1];
-        final CountDownLatch countDownLatch = new CountDownLatch(1);
-        LockdowndServiceDescriptor instproxyService = lockdowndClient.startService(InstallationProxyClient.SERVICE_NAME);
-        try (InstallationProxyClient instClient = new InstallationProxyClient(device, instproxyService)) {
-            instClient.upgrade("/PublicStaging/" + localAppPath.getName(), 
-                    new Options().packageType(localAppPath.isFile() ? PackageType.Developer : null), 
-                    new StatusCallback() {
-                
-                @Override
-                public void progress(String status, int percentComplete) {
-                    debug("[%3d%%] %s", 50 + percentComplete / 2, status);
-                    if (installStatusCallback != null) {
-                        installStatusCallback.progress(status, percentComplete);
-                    }
-                }
-                @Override
-                public void success() {
-                    try {
-                        debug("[100%] Installation complete");
+    private void installInternal() throws Exception {
+        try (LockdowndClient lockdowndClient = new LockdowndClient(device, getClass().getSimpleName(), true)) {
+            final LibIMobileDeviceException[] ex = new LibIMobileDeviceException[1];
+            final CountDownLatch countDownLatch = new CountDownLatch(1);
+            LockdowndServiceDescriptor instproxyService = lockdowndClient.startService(InstallationProxyClient.SERVICE_NAME);
+            try (InstallationProxyClient instClient = new InstallationProxyClient(device, instproxyService)) {
+                instClient.upgrade("/PublicStaging/" + localAppPath.getName(), 
+                        new Options().packageType(localAppPath.isFile() ? PackageType.Developer : null), 
+                        new StatusCallback() {
+                    
+                    @Override
+                    public void progress(String status, int percentComplete) {
+                        debug("[%3d%%] %s", 50 + percentComplete / 2, status);
                         if (installStatusCallback != null) {
-                            installStatusCallback.success();
+                            installStatusCallback.progress(status, percentComplete);
                         }
-                    } finally {
-                        countDownLatch.countDown();
                     }
-                }
-                @Override
-                public void error(String message) {
-                    try {
-                        ex[0] = new LibIMobileDeviceException(message);
-                        debug("Error: %s", message);
-                        if (installStatusCallback != null) {
-                            installStatusCallback.error(message);
+                    @Override
+                    public void success() {
+                        try {
+                            debug("[100%] Installation complete");
+                            if (installStatusCallback != null) {
+                                installStatusCallback.success();
+                            }
+                        } finally {
+                            countDownLatch.countDown();
                         }
-                    } finally {
-                        countDownLatch.countDown();
                     }
-                }
-            });
-            countDownLatch.await();
-        }
-        
-        if (ex[0] != null) {
-            throw ex[0];
+                    @Override
+                    public void error(String message) {
+                        try {
+                            ex[0] = new LibIMobileDeviceException(message);
+                            debug("Error: %s", message);
+                            if (installStatusCallback != null) {
+                                installStatusCallback.error(message);
+                            }
+                        } finally {
+                            countDownLatch.countDown();
+                        }
+                    }
+                });
+                countDownLatch.await();
+            }
+            
+            if (ex[0] != null) {
+                throw ex[0];
+            }
         }
     }
 
-    private void upload(LockdowndClient lockdowndClient) throws Exception {
-        LockdowndServiceDescriptor afcService = lockdowndClient.startService(AfcClient.SERVICE_NAME);
-        try (AfcClient afcClient = new AfcClient(device, afcService)) {
-            afcClient.upload(localAppPath, "/PublicStaging", new UploadProgressCallback() {
-                public void progress(File path, int percentComplete) {
-                    debug("[%3d%%] Uploading %s", percentComplete / 2, path);
-                    if (uploadProgressCallback != null) {
-                        uploadProgressCallback.progress(path, percentComplete);
+    private void uploadInternal() throws Exception {
+        try (LockdowndClient lockdowndClient = new LockdowndClient(device, getClass().getSimpleName(), true)) {
+            LockdowndServiceDescriptor afcService = lockdowndClient.startService(AfcClient.SERVICE_NAME);
+            try (AfcClient afcClient = new AfcClient(device, afcService)) {
+                afcClient.upload(localAppPath, "/PublicStaging", new UploadProgressCallback() {
+                    public void progress(File path, int percentComplete) {
+                        debug("[%3d%%] Uploading %s", percentComplete / 2, path);
+                        if (uploadProgressCallback != null) {
+                            uploadProgressCallback.progress(path, percentComplete);
+                        }
                     }
-                }
-                public void success() {
-                    if (uploadProgressCallback != null) {
-                        uploadProgressCallback.success();
+                    public void success() {
+                        if (uploadProgressCallback != null) {
+                            uploadProgressCallback.success();
+                        }
                     }
-                }
-                public void error(String message) {
-                    debug("Error: %s", message);
-                    if (uploadProgressCallback != null) {
-                        uploadProgressCallback.error(message);
+                    public void error(String message) {
+                        debug("Error: %s", message);
+                        if (uploadProgressCallback != null) {
+                            uploadProgressCallback.error(message);
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     }
     

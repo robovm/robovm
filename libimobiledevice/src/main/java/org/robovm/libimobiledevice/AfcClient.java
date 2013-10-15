@@ -479,7 +479,11 @@ public class AfcClient implements AutoCloseable {
         
         makeDirectory(targetPath);
         final Path root = localFile.toPath().getParent();
-        
+
+        // 64k seems to be a good buffer size. If smaller we will not get
+        // acceptable write speeds.
+        final byte[] buffer = new byte[64 * 1024];
+
         class FileCounterVisitor extends SimpleFileVisitor<Path> {
             int count;
             @Override
@@ -532,7 +536,6 @@ public class AfcClient implements AutoCloseable {
                     } else if (Files.isRegularFile(file, LinkOption.NOFOLLOW_LINKS)) {
                         long fd = fileOpen(deviceFile, AfcFileMode.AFC_FOPEN_WRONLY);
                         try (InputStream is = Files.newInputStream(file)) {
-                            byte[] buffer = new byte[4096];
                             int n = 0;
                             while ((n = is.read(buffer)) != -1) {
                                 fileWrite(fd, buffer, 0, n);

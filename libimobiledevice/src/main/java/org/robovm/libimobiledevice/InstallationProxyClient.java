@@ -80,7 +80,7 @@ public class InstallationProxyClient implements AutoCloseable {
      * @return an {@link NSArray} of {@link NSDictionary}s holding information
      *         about the installed applications.
      */
-    public NSArray browse() throws Exception {
+    public NSArray browse() throws IOException {
         return browse(null);
     }
     
@@ -93,7 +93,7 @@ public class InstallationProxyClient implements AutoCloseable {
      * @return an {@link NSArray} of {@link NSDictionary}s holding information
      *         about the installed applications.
      */
-    public NSArray browse(Options.ApplicationType type) throws Exception {
+    public NSArray browse(Options.ApplicationType type) throws IOException {
         PlistRefOut plistOut = new PlistRefOut();
         PlistRef clientOpts = new Options().applicationType(type).toPlistRef();
         try {

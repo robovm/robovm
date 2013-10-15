@@ -16,6 +16,8 @@
  */
 package org.robovm.libimobiledevice;
 
+import java.io.IOException;
+
 import org.robovm.libimobiledevice.binding.ByteArray;
 import org.robovm.libimobiledevice.binding.ByteArrayOut;
 import org.robovm.libimobiledevice.binding.IntOut;
@@ -31,7 +33,7 @@ import com.dd.plist.PropertyListParser;
  */
 class PlistUtil {
 
-    public static NSObject toJavaPlist(PlistRef plist) throws Exception {
+    public static NSObject toJavaPlist(PlistRef plist) throws IOException {
         PlistRefOut plistOut = new PlistRefOut();
         ByteArrayOut plistBinOut = new ByteArrayOut();
         IntOut lengthOut = new IntOut();
@@ -48,6 +50,12 @@ class PlistUtil {
                 data[i] = plistBin.get(i);
             }
             return PropertyListParser.parse(data);
+        } catch (IOException e) {
+            throw e;
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         } finally {
             plistOut.delete();
             LibIMobileDevice.delete_ByteArrayOut_value(plistBinOut);

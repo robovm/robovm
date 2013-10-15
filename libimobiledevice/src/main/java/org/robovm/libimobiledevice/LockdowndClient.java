@@ -18,6 +18,8 @@ package org.robovm.libimobiledevice;
 
 import static org.robovm.libimobiledevice.binding.LibIMobileDeviceConstants.*;
 
+import java.io.IOException;
+
 import org.robovm.libimobiledevice.binding.LibIMobileDevice;
 import org.robovm.libimobiledevice.binding.LockdowndClientRef;
 import org.robovm.libimobiledevice.binding.LockdowndClientRefOut;
@@ -99,7 +101,7 @@ public class LockdowndClient implements AutoCloseable {
      *        keys.
      * @return a plist node representing the result value node.
      */
-    public NSObject getValue(String domain, String key) throws Exception {
+    public NSObject getValue(String domain, String key) throws IOException {
         PlistRefOut plistOut = new PlistRefOut();
         try {
             checkResult(LibIMobileDevice.lockdownd_get_value(getRef(), domain, key, plistOut));

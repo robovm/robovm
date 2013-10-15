@@ -179,6 +179,24 @@ public class AfcClientTest {
     }
     
     @Test
+    public void testWriteSpeed() throws Exception {
+        byte[] buffer = new byte[64 * 1024];
+        long fd = client.fileOpen("/FOO.DAT", AfcFileMode.AFC_FOPEN_WRONLY);
+        int n = 0;
+        long start = System.currentTimeMillis();
+        while (n < (1 << 24)) {
+            n += client.fileWrite(fd, buffer, 0, buffer.length);
+        }
+        long duration = System.currentTimeMillis() - start;
+        client.fileClose(fd);
+
+        System.out.format("%d: %d bytes written in %d seconds (%f kB/s)\n", n, 
+                duration / 1000, n / 1024.0 / (duration / 1000.0));
+        
+        client.removePath("/FOO.DAT");
+    }
+    
+    @Test
     public void testMakeDirectory() throws Exception {
         client.makeDirectory("/FOO");
         client.makeDirectory("/FOO/BAR");

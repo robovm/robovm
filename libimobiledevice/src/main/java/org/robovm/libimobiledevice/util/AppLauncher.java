@@ -70,10 +70,11 @@ public class AppLauncher {
     
     private final IDevice device;
     private final String appId;
-    private final File localAppPath;
+    private File localAppPath;
     private List<String> args = new ArrayList<>();
     private Map<String, String> env = new HashMap<String, String>();
     private OutputStream stdout = System.out;
+    private boolean closeOutOnExit = false;
     private boolean debug = false;
     private volatile boolean killed = false;
     private StatusCallback installStatusCallback;
@@ -210,6 +211,17 @@ public class AppLauncher {
             throw new NullPointerException("stdout");
         }
         this.stdout = stdout;
+        return this;
+    }
+    
+    /**
+     * Sets whether the stdout stream should be closed once the app has 
+     * terminated.
+     * 
+     * @param closeOutOnExit <code>true</code> or <code>false</code>.
+     */
+    public AppLauncher closeOutOnExit(boolean closeOutOnExit) {
+        this.closeOutOnExit = closeOutOnExit;
         return this;
     }
     
@@ -424,7 +436,7 @@ public class AppLauncher {
         return sb.toString();
     }
     
-    private String getAppPath(LockdowndClient lockdowndClient, String appId) throws Exception {
+    private String getAppPath(LockdowndClient lockdowndClient, String appId) throws IOException {
         LockdowndServiceDescriptor instService = lockdowndClient.startService(InstallationProxyClient.SERVICE_NAME);
         InstallationProxyClient instClient = new InstallationProxyClient(device, instService);
         try {
@@ -452,18 +464,36 @@ public class AppLauncher {
         }
     }
     
+    private void uploadAndInstall(LockdowndClient lockdowndClient) throws Exception {
+        upload(lockdowndClient);
+        // Upload is synchronous and if it fails an exception will already have been thrown.
+        debug("[ 50%] Upload done. Installing app...");
+        install(lockdowndClient);
+    }
     
-    public int launch() throws Exception {
+    public void install() throws IOException {
+        if (localAppPath != null) {
+            try (LockdowndClient lockdowndClient = new LockdowndClient(device, getClass().getSimpleName(), true)) {
+                uploadAndInstall(lockdowndClient);
+                localAppPath = null;
+            } catch (IOException e) {
+                throw e;
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Exception e) {
+                throw new RuntimeException();
+            }
+        }
+    }
+    
+    private int launchInternal() throws Exception {
 
         IDeviceConnection conn = null;
         String appPath = null;
         
         try (LockdowndClient lockdowndClient = new LockdowndClient(device, getClass().getSimpleName(), true)) {
             if (localAppPath != null) {
-                upload(lockdowndClient);
-                // Upload is synchronous and if it fails an exception will already have been thrown.
-                debug("[ 50%] Upload done. Installing app...");
-                install(lockdowndClient);
+                uploadAndInstall(lockdowndClient);
             }
             appPath = getAppPath(lockdowndClient, appId);
             LockdowndServiceDescriptor debugService = lockdowndClient.startService(DEBUG_SERVER_SERVICE_NAME);
@@ -600,6 +630,26 @@ public class AppLauncher {
                     }
                 }
             });
+        }
+    }
+    
+    public int launch() throws IOException {
+        try {
+            return launchInternal();
+        } catch (IOException e) {
+            throw e;
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException();
+        } finally {
+            if (closeOutOnExit) {
+                try {
+                    stdout.close();
+                } catch (Throwable t) {
+                    // Ignore
+                }
+            }
         }
     }
     

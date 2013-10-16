@@ -29,7 +29,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
+import java.util.TreeSet;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeoutException;
 import java.util.zip.ZipEntry;
@@ -517,6 +519,8 @@ public class AppLauncher {
                 String cmd = String.format("QEnvironment:%s=%s", entry.getKey(), entry.getValue());
                 sendReceivePacket(conn, encode(cmd), "OK", false);
             }
+            // Tell the debuserver to send threads:xxx,yyy,... in stop replies
+            sendReceivePacket(conn, encode("QListThreadsInStopReply"), "OK", false);
             // Initialize argv with the app path and args
             sendReceivePacket(conn, encode("A" + encodeArgs(appPath)), "OK", false);
             // Make sure the launch was successful
@@ -537,6 +541,25 @@ public class AppLauncher {
                         } else if (payload.charAt(0) == 'O') {
                             // Console output encoded as hex.
                             stdout.write(fromHex(payload.substring(1)));
+                        } else if (payload.charAt(0) == 'T') {
+                            // Signal received. Just continue.
+                            // The Continue packet looks like this (thread 0x2403 was interrupted by signal 0x0b):
+                            //   $vCont;c:2603;c:2703;c:2803;c:2903;c:2a03;c:2b03;c:2c03;c:2d03;C0b:2403#ed
+                            String signal = payload.substring(1, 3);
+                            String data = payload.substring(3);
+                            String threadId = data.replaceAll(".*thread:([0-9a-fA-F]+).*", "$1");
+                            String allThreadIds = data.replaceAll(".*threads:([0-9a-fA-F,]+).*", "$1");
+                            Set<String> ids = new TreeSet<>(Arrays.asList(allThreadIds.split(",")));
+                            ids.remove(threadId);
+                            StringBuilder sb = new StringBuilder("vCont;");
+                            for (String id : ids) {
+                                sb.append("c:").append(id).append(';');
+                            }
+                            sb.append('C').append(signal).append(':').append(threadId);
+                            sendGdbPacket(conn, encode(sb.toString()));
+                        } else {
+                            throw new RuntimeException("Unexpected response " 
+                                    + "from debugserver: " + response);
                         }
                     } catch (InterruptedIOException e) {
                         // Remember whether we were interrupted. kill() clears

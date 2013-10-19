@@ -11,7 +11,7 @@ define private i8* @getpc() alwaysinline {
   ret i8* %1
 }
 
-define linkonce_odr float @frem(%Env* %env, float %op1, float %op2) alwaysinline {
+define private float @frem(%Env* %env, float %op1, float %op2) alwaysinline {
     %result = frem float %op1, %op2
     ret float %result
 }

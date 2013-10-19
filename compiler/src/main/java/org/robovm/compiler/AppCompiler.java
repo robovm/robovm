@@ -270,7 +270,7 @@ public class AppCompiler {
                     if (index <= 0) {
                         throw new IllegalArgumentException("Malformed property: " + args[i]);
                     }
-                    String name = args[i].substring(0, index);
+                    String name = args[i].substring(2, index);
                     String value = args[i].substring(index + 1);
                     builder.addProperty(name, value);
                 } else if ("-debug".equals(args[i])) {

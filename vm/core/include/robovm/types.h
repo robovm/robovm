@@ -219,8 +219,8 @@ struct Monitor {
   Mutex lock;
 };
 
-// NOTE: The compiler sorts fields by type (ref, volatile long, double, long, float, int, char, short, boolean, byte) and then by name
-// so the order of the fields here don't match the order in Thread.java
+// NOTE: The compiler sorts fields. References first, then by alignment and then by name.
+// So the order of the fields here don't match the order in Thread.java
 struct JavaThread {
   Object object;
   ClassLoader* contextClassLoader;
@@ -233,9 +233,16 @@ struct JavaThread {
   Object* parkBlocker;
   Object* target;
   Object* uncaughtHandler;
+#if defined(RVM_THUMBV7)
+  // volatile long is 8-byte aligned on ARM
   /*volatile*/ jlong threadPtr __attribute__ ((aligned (8))); // Points to the Thread
   jlong id;
   jlong stackSize;
+#else
+  jlong id;
+  jlong stackSize;
+  /*volatile*/ jlong threadPtr; // Points to the Thread
+#endif
   jint parkState;
   jint priority;
   jboolean daemon;

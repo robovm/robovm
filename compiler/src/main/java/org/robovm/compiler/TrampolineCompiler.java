@@ -357,8 +357,8 @@ public class TrampolineCompiler {
 
         List<SootField> classFields = Collections.emptyList();
         StructureType classType = new StructureType();
-        List<SootField> instanceFields = getInstanceFields(field.getDeclaringClass());
-        StructureType instanceType = getInstanceType(field.getDeclaringClass());
+        List<SootField> instanceFields = getInstanceFields(config.getOs(), config.getArch(), field.getDeclaringClass());
+        StructureType instanceType = getInstanceType(config.getOs(), config.getArch(), field.getDeclaringClass());
         if (t.isGetter()) {
             ClassCompiler.createFieldGetter(fn, field, classFields, classType, instanceFields, instanceType);
         } else {

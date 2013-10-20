@@ -490,10 +490,10 @@ public class ClassCompiler {
         mb = new ModuleBuilder();
         trampolines = new HashSet<Trampoline>();
         catches = new HashSet<String>();
-        classFields = getClassFields(sootClass);
-        instanceFields = getInstanceFields(sootClass);
-        classType = getClassType(sootClass);
-        instanceType = getInstanceType(sootClass);
+        classFields = getClassFields(config.getOs(), config.getArch(),sootClass);
+        instanceFields = getInstanceFields(config.getOs(), config.getArch(),sootClass);
+        classType = getClassType(config.getOs(), config.getArch(),sootClass);
+        instanceType = getInstanceType(config.getOs(), config.getArch(),sootClass);
         
         attributesEncoder.encode(mb, sootClass);
         

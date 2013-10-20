@@ -1277,6 +1277,12 @@ extern "C" void Java_libcore_io_Posix_shutdown(JNIEnv* env, jobject, jobject jav
 
 extern "C" jobject Java_libcore_io_Posix_socket(JNIEnv* env, jobject, jint domain, jint type, jint protocol) {
     int fd = throwIfMinusOne(env, "socket", TEMP_FAILURE_RETRY(socket(domain, type, protocol)));
+#if defined(__APPLE__)
+    if (fd != -1) {
+        int value = 1;
+        throwIfMinusOne(env, "setsockopt", TEMP_FAILURE_RETRY(setsockopt(fd, SOL_SOCKET, SO_NOSIGPIPE, &value, sizeof(value))));
+    }
+#endif
     return fd != -1 ? jniCreateFileDescriptor(env, fd) : NULL;
 }
 

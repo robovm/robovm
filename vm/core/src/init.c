@@ -49,11 +49,8 @@ static char* absolutize(char* basePath, char* rel, char* dest) {
     return dest;
 }
 
-static jboolean blockSignal(int signo) {
-    sigset_t set;
-    sigemptyset(&set);
-    sigaddset(&set, signo);
-    if (sigprocmask(SIG_BLOCK, &set, NULL) != 0) {
+static jboolean ignoreSignal(int signo) {
+    if (signal(signo, SIG_IGN) == SIG_ERR) {
         return FALSE;
     }
     return TRUE;
@@ -193,13 +190,13 @@ Env* rvmStartup(Options* options) {
     TRACE("Initializing GC");
     if (!initGC(options)) return NULL;
 
-    // Block SIGPIPE signals. SIGPIPE interrupts write() calls which we don't
+    // Ignore SIGPIPE signals. SIGPIPE interrupts write() calls which we don't
     // want. Dalvik does this too in dalvikvm/Main.cpp.
-    if (!blockSignal(SIGPIPE)) return NULL;
+    if (!ignoreSignal(SIGPIPE)) return NULL;
 
-    // Block SIGXFSZ signals. SIGXFSZ is raised when writing beyond the RLIMIT_FSIZE
+    // Ignore SIGXFSZ signals. SIGXFSZ is raised when writing beyond the RLIMIT_FSIZE
     // of the current process (at least on Darwin) using pwrite().
-    if (!blockSignal(SIGXFSZ)) return NULL;
+    if (!ignoreSignal(SIGXFSZ)) return NULL;
 
     VM* vm = rvmCreateVM(options);
     if (!vm) return NULL;

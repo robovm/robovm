@@ -351,15 +351,23 @@ public class Executor implements Launcher {
     
     public String execCapture() throws IOException {
         ExecuteStreamHandler oldStreamHandler = streamHandler;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        CommandLine commandLine = generateCommandLine();
         try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
             streamHandler(new PumpStreamHandler(baos));
-            
-            CommandLine commandLine = generateCommandLine();
             logCommandLine(commandLine);
             DefaultExecutor executor = initExecutor(new DefaultExecutor());
             executor.execute(commandLine, generateEnv());
             return new String(baos.toByteArray()).trim();
+        } catch (ExecuteException e) {
+            String output = new String(baos.toByteArray()).trim();
+            if (output.length() > 0 && e.getMessage().startsWith("Process exited with an error")) {
+                StackTraceElement[] origStackTrace = e.getStackTrace();
+                e = new ExecuteException("Command '" + commandLine + "' failed with output: " 
+                        + output + " ", e.getExitValue());
+                e.setStackTrace(origStackTrace);
+            }
+            throw e;
         } finally {
             streamHandler = oldStreamHandler;
         }

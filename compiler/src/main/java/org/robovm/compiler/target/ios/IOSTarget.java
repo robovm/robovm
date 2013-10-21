@@ -262,10 +262,7 @@ public class IOSTarget extends AbstractTarget {
         }
         args.add(appDir);
         new Executor(config.getLogger(), "codesign")
-            .addEnv("CODESIGN_ALLOCATE", 
-                new Executor(config.getLogger(), "xcrun")
-                    .args("-sdk", "iphoneos", "-f", "codesign_allocate")
-                    .execCapture())
+            .addEnv("CODESIGN_ALLOCATE", ToolchainUtil.findXcodeCommand("codesign_allocate", "iphoneos"))
             .args(args)
             .exec();
     }
@@ -512,6 +509,9 @@ public class IOSTarget extends AbstractTarget {
         String sdkVersion = config.getIosSdkVersion();
         List<SDK> sdks = getSDKs();
         if (sdkVersion == null) {
+            if (sdks.isEmpty()) {
+                throw new IllegalArgumentException("No " + (arch == Arch.thumbv7 ? "device" : "simulator") + " SDKs installed");
+            }
             Collections.sort(sdks);
             this.sdk = sdks.get(sdks.size() - 1);
         } else {

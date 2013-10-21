@@ -18,12 +18,10 @@ package org.robovm.compiler.target.ios;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.exec.util.StringUtils;
-import org.robovm.compiler.log.Logger;
-import org.robovm.compiler.util.Executor;
+import org.robovm.compiler.util.ToolchainUtil;
 
 import com.dd.plist.NSDictionary;
 import com.dd.plist.NSObject;
@@ -93,25 +91,20 @@ public class SDK implements Comparable<SDK> {
     private static List<SDK> listSDKs(String platform) {
         try {
             List<SDK> sdks = new ArrayList<SDK>();
-            List<File> sdksDirs = Arrays.asList(
-                    new File(new Executor(Logger.NULL_LOGGER, "xcode-select").args("--print-path").execCapture() + "/Platforms/" + platform + ".platform/Developer/SDKs"),
-                    new File("/Applications/Xcode.app/Contents/Developer/Platforms/" + platform + ".platform/Developer/SDKs"),
-                    new File("/Developer/Platforms/" + platform + ".platform/Developer/SDKs"));
-            for (File sdksDir : sdksDirs) {
-                if (sdksDir.exists() && sdksDir.isDirectory()) {
-                    for (File root : sdksDir.listFiles()) {
-                        try {
-                            sdks.add(SDK.create(root));
-                        } catch (Exception e) {
-                        }
-                    }
-                    if (!sdks.isEmpty()) {
-                        return sdks;
+            File sdksDir = new File(ToolchainUtil.findXcodePath() + "/Platforms/" 
+                                    + platform + ".platform/Developer/SDKs");
+            if (sdksDir.exists() && sdksDir.isDirectory()) {
+                for (File root : sdksDir.listFiles()) {
+                    try {
+                        sdks.add(SDK.create(root));
+                    } catch (Exception e) {
                     }
                 }
             }
             
             return sdks;
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }

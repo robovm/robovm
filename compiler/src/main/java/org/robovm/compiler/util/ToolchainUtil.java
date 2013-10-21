@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.exec.ExecuteException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.config.Arch;
@@ -42,32 +43,73 @@ public class ToolchainUtil {
 
     private static String getIOSDevClang() throws IOException {
         if (IOS_DEV_CLANG == null) {
-            IOS_DEV_CLANG = new Executor(Logger.NULL_LOGGER, "xcrun").args("-sdk", "iphoneos", "-f", "clang").execCapture();
+            IOS_DEV_CLANG = findXcodeCommand("clang", "iphoneos");
         }
         return IOS_DEV_CLANG;
     }
     
     private static String getIOSSimClang() throws IOException {
         if (IOS_SIM_CLANG == null) {
-            IOS_SIM_CLANG = new Executor(Logger.NULL_LOGGER, "xcrun").args("-sdk", "iphonesimulator", "-f", "clang").execCapture();
+            IOS_SIM_CLANG = findXcodeCommand("clang", "iphonesimulator");
         }
         return IOS_SIM_CLANG;
     }
     
     private static String getPngCrush() throws IOException {
         if (PNGCRUSH == null) {
-            PNGCRUSH = new Executor(Logger.NULL_LOGGER, "xcrun").args("-sdk", "iphoneos", "-f", "pngcrush").execCapture();
+            PNGCRUSH = findXcodeCommand("pngcrush", "iphoneos");
         }
         return PNGCRUSH;
     }
 
     private static String getPackageApplication() throws IOException {
         if (PACKAGE_APPLICATION == null) {
-            PACKAGE_APPLICATION = new Executor(Logger.NULL_LOGGER, "xcrun").args("-sdk", "iphoneos", "-f", "PackageApplication").execCapture();
+            PACKAGE_APPLICATION = findXcodeCommand("PackageApplication", "iphoneos");
         }
         return PACKAGE_APPLICATION;
     }
 
+    private static void handleExecuteException(ExecuteException e) {
+        if (e.getExitValue() == 2) {
+            throw new IllegalArgumentException("No Xcode is selected. Is Xcode installed? " 
+                    + "If yes, use 'sudo xcode-select -switch <path-to-xcode>' from a Terminal " 
+                    + "to switch to the correct Xcode path.");
+        }
+        if (e.getExitValue() == 69) {
+            throw new IllegalArgumentException("You must agree to the Xcode/iOS license. " 
+                    + "Please open Xcode once or run 'sudo xcrun clang' from a Terminal to agree to the terms.");
+        }
+        throw new IllegalArgumentException(e.getMessage());
+    }
+    
+    public static String findXcodePath() throws IOException {
+        try {
+            String path = new Executor(Logger.NULL_LOGGER, "xcode-select").args("--print-path").execCapture();
+            File f = new File(path);
+            if (f.exists() && f.isDirectory()) {
+                if (new File(f, "Platforms").exists() && new File(f, "Toolchains").exists()) {
+                    return path;
+                }
+            }
+            throw new IllegalArgumentException(String.format(
+                    "The path '%s' does not appear to be a valid Xcode path. Use " 
+                    + "'sudo xcode-select -switch <path-to-xcode>' from a Terminal " 
+                    + "to switch to the correct Xcode path.", path));
+        } catch (ExecuteException e) {
+            handleExecuteException(e);
+            return null;
+        }
+    }
+    
+    public static String findXcodeCommand(String cmd, String sdk) throws IOException {
+        try {
+            return new Executor(Logger.NULL_LOGGER, "xcrun").args("-sdk", sdk, "-f", cmd).execCapture();
+        } catch (ExecuteException e) {
+            handleExecuteException(e);
+            return null;
+        }
+    }
+    
     public static void pngcrush(Config config, File inFile, File outFile) throws IOException {
         new Executor(config.getLogger(), getPngCrush())
             .args("-q", "-f", "0", inFile, outFile)

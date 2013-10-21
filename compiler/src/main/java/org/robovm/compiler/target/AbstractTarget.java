@@ -142,6 +142,12 @@ public abstract class AbstractTarget implements Target {
                 libs.add(p);
             }
         }
+        if (config.getOs().getFamily() == OS.Family.darwin && !config.getWeakFrameworks().isEmpty()) {
+            for (String p : config.getWeakFrameworks()) {
+                libs.add("-weak_framework");
+                libs.add(p);
+            }
+        }
         
         if (!config.getLibs().isEmpty()) {
             objectFiles = new ArrayList<File>(objectFiles);

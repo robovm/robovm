@@ -317,6 +317,10 @@ public class AppCompiler {
                     for (String p : args[++i].split(":")) {
                         builder.addFramework(p);
                     }
+                } else if ("-weakframeworks".equals(args[i])) {
+                    for (String p : args[++i].split(":")) {
+                        builder.addWeakFramework(p);
+                    }
                 } else if ("-resources".equals(args[i])) {
                     for (String p : args[++i].split(":")) {
                         if (AntPathMatcher.isPattern(p)) {
@@ -543,6 +547,9 @@ public class AppCompiler {
                          + "                        from the specified set of characters.");
         System.err.println("  -frameworks <list>    : separated list of frameworks that should be included\n" 
                          + "                        when linking the final executable.");
+        System.err.println("  -weakframeworks <list>\n" 
+                         + "                        : separated list of frameworks that should be weakly linked\n" 
+                         + "                        into the final executable.");
         System.err.println("  -resources <list>     : separated list of files and directories that should be\n"
                          + "                        copied to the install dir. Accepts Ant-style patterns.\n" 
                          + "                        If a pattern is specified the left-most path before the\n" 

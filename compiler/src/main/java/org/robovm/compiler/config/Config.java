@@ -97,6 +97,8 @@ public class Config {
     private ArrayList<String> exportedSymbols;
     @ElementList(required = false, entry = "framework")
     private ArrayList<String> frameworks;
+    @ElementList(required = false, entry = "framework")
+    private ArrayList<String> weakFrameworks;
     @ElementList(required = false, entry = "resource")
     private ArrayList<Resource> resources;
     @ElementList(required = false, entry = "classpathentry")
@@ -258,6 +260,11 @@ public class Config {
     public List<String> getFrameworks() {
         return frameworks == null ? Collections.<String>emptyList() 
                 : Collections.unmodifiableList(frameworks);
+    }
+    
+    public List<String> getWeakFrameworks() {
+        return weakFrameworks == null ? Collections.<String>emptyList() 
+                : Collections.unmodifiableList(weakFrameworks);
     }
     
     public List<Resource> getResources() {
@@ -821,7 +828,22 @@ public class Config {
             config.frameworks.add(framework);
             return this;
         }
+
+        public Builder clearWeakFrameworks() {
+            if (config.weakFrameworks != null) {
+                config.weakFrameworks.clear();
+            }
+            return this;
+        }
         
+        public Builder addWeakFramework(String framework) {
+            if (config.weakFrameworks == null) {
+                config.weakFrameworks = new ArrayList<String>();
+            }
+            config.weakFrameworks.add(framework);
+            return this;
+        }
+
         public Builder clearResources() {
             if (config.resources != null) {
                 config.resources.clear();

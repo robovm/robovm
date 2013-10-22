@@ -678,14 +678,14 @@ public class AppLauncher {
     }
     
     private static void printUsageAndExit() {
-        System.out.println(AppLauncher.class.getName() + " ...");
-        System.out.println("  -appid    the id (CFBundleIdentifier) of the app to launch.");
-        System.out.println("  -b path   to app bundle directory or IPA containing the app to launch.");
-        System.out.println("  -udid     id of the device to launch on. If not specified the first device will be used.");
-        System.out.println("  -debug    enable debug output.");
-        System.out.println("  -env name=value " 
-                         + "            adds an anvironment variable with the specified name and value.");
-        System.out.println("  -args ... the rest of the command line will be passed on as args to the app.");
+        System.err.println(AppLauncher.class.getName() + " ...");
+        System.err.println("  -appid    the id (CFBundleIdentifier) of the app to launch.");
+        System.err.println("  -b path   to app bundle directory or IPA containing the app to launch.");
+        System.err.println("  -udid     id of the device to launch on. If not specified the first device will be used.");
+        System.err.println("  -debug    enable debug output.");
+        System.err.println("  -env name=value\n" 
+                         + "            adds an environment variable with the specified name and value.");
+        System.err.println("  -args ... the rest of the command line will be passed on as args to the app.");
         System.exit(0);
     }
     

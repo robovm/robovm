@@ -21,13 +21,18 @@ import static org.robovm.libimobiledevice.binding.LibIMobileDeviceConstants.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -639,5 +644,147 @@ public class AfcClient implements AutoCloseable {
          * @param message the error message.
          */
         void error(String message);
+    }
+    
+    private void list(String path, boolean recurse) {
+        list(path, stripDirSep(path).replaceAll(".*?([^/]+)$", "$1"), "", recurse, new PrintWriter(System.out));
+    }
+
+    private void list(String path, String filename, String indent, boolean recurse, PrintWriter out) {
+        Map<String, String> info = getFileInfo(path);
+        DateFormat df = new SimpleDateFormat("yyyyMMdd-HHmmss");
+        long birthTime = Long.parseLong(info.get(FILE_INFO_KEY_ST_BIRTHTIME)) / 1000 / 1000;
+        long mtime = Long.parseLong(info.get(FILE_INFO_KEY_ST_MTIME)) / 1000 / 1000;
+        long size = Long.parseLong(info.get(AfcClient.FILE_INFO_KEY_ST_SIZE));
+        if ("S_IFDIR".equals(info.get(AfcClient.FILE_INFO_KEY_ST_IFMT))) {
+            out.format("%s %s %9d (%s)\t%s%s/\n", 
+                    df.format(new Date(birthTime)),
+                    df.format(new Date(mtime)),
+                    size,
+                    info.get(AfcClient.FILE_INFO_KEY_ST_IFMT),
+                    indent, filename);
+            out.flush();
+            for (String f : readDirectory(path)) {
+                if (f.equals("..") || f.equals(".")) {
+                    continue;
+                }
+                if (recurse) {
+                    String childPath = path + "/" + f;
+                    list(childPath, f, indent  + "  ", recurse, out);
+                }
+            }
+        } else if ("S_IFLNK".equals(info.get(AfcClient.FILE_INFO_KEY_ST_IFMT))) {
+            out.format("%s %s %9d (%s)\t%s%s -> %s\n", 
+                    df.format(new Date(birthTime)),
+                    df.format(new Date(mtime)),
+                    size,
+                    info.get(AfcClient.FILE_INFO_KEY_ST_IFMT),
+                    indent, filename, info.get(AfcClient.FILE_INFO_KEY_LINK_TARGET));
+            out.flush();
+        } else {
+            out.format("%s %s %9d (%s)\t%s%s\n", 
+                    df.format(new Date(birthTime)),
+                    df.format(new Date(mtime)),
+                    size,
+                    info.get(AfcClient.FILE_INFO_KEY_ST_IFMT),
+                    indent, filename);
+            out.flush();
+        }
+    }
+    
+    private static void printUsageAndExit() {
+        System.err.println(AfcClient.class.getName() + " [deviceid] <action> ...");
+        System.err.println("  Actions:");
+        System.err.println("    deviceinfo       Prints device file system information.");
+        System.err.println("    rm [-f] <path>   Deletes <path> from the device. Deletes non-empty dirs if -f is specified.");
+        System.err.println("    ls [-r] <path>   Lists the contents of the specified dir.");
+        System.err.println("    mkdir <dir>      Creates the <dir> on the device.");
+        System.err.println("    mv <from> <to>   Moves (renames) the remote path <from> to <to>.");
+        System.err.println("    upload <localpath> <remotedir>\n" 
+                         + "                   Uploads the local file or dir at <localpath> to the remote dir <remotedir>.");
+        System.exit(0);
+    }
+    
+    public static void main(String[] args) throws Exception {
+        String deviceId = null;
+        String action = null;
+
+        int index = 0;
+        try {
+            action = args[index++];
+            if (action.matches("[0-9a-f]{40}")) {
+                deviceId = action;
+                action = args[index++];
+            }
+        
+            if (!action.matches("deviceinfo|rm|ls|mkdir|mv|upload")) {
+                System.err.println("Unknown action: " + action);
+                printUsageAndExit();
+            }
+            
+            if (deviceId == null) {
+                if (deviceId == null) {
+                    String[] udids = IDevice.listUdids();
+                    if (udids.length == 0) {
+                        System.err.println("No device connected");
+                        return;
+                    }
+                    if (udids.length > 1) {
+                        System.err.println("More than 1 device connected (" 
+                                + Arrays.asList(udids) + "). Using " + udids[0]);
+                    }
+                    deviceId = udids[0];
+                }
+            }
+            
+            try (IDevice device = new IDevice(deviceId)) {
+                try (LockdowndClient lockdowndClient = new LockdowndClient(device, AfcClient.class.getSimpleName(), true)) {
+                    LockdowndServiceDescriptor service = lockdowndClient.startService(SERVICE_NAME);
+                    try (AfcClient client = new AfcClient(device, service)) {
+                        boolean recurse = false;
+                        switch (action) {
+                        case "deviceinfo":
+                            System.out.println(client.getDeviceInfo());
+                            break;
+                        case "rm":
+                            if ("-r".equals(args[index])) {
+                                recurse = true;
+                                index++;
+                            }
+                            client.removePath(args[index], recurse);
+                            break;
+                        case "ls":
+                            if ("-r".equals(args[index])) {
+                                recurse = true;
+                                index++;
+                            }
+                            client.list(args[index], recurse);
+                            break;
+                        case "mkdir":
+                            client.makeDirectory(args[index]);
+                            break;
+                        case "mv":
+                            client.renamePath(args[index++], args[index]);
+                            break;
+                        case "upload":
+                            client.upload(new File(args[index++]), args[index], new UploadProgressCallback() {
+                                public void progress(File path, int percentComplete) {
+                                    System.out.format("[%3d%%] Uploading %s\n", percentComplete, path);
+                                }
+                                public void success() {
+                                    System.out.format("[100%%] Upload done!\n");
+                                }
+                                public void error(String message) {
+                                    System.out.format("Error: %s\n", message);
+                                }
+                            });
+                            break;
+                        }                    
+                    }
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            printUsageAndExit();
+        }
     }
 }

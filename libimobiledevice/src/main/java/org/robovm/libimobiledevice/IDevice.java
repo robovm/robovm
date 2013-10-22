@@ -223,4 +223,15 @@ public class IDevice implements AutoCloseable {
          */
         void deviceRemoved(String udid);
     }
+    
+    public static void main(String[] args) throws Exception {
+        String[] udids = IDevice.listUdids();
+        if (udids.length == 0) {
+            System.err.println("No devices connected");
+            return;
+        }
+        for (int i = 0; i < udids.length; i++) {
+            System.out.format("%d: %s\n", i, udids[i]);
+        }
+    }
 }

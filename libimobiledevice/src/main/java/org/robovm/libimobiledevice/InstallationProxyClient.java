@@ -19,6 +19,8 @@ package org.robovm.libimobiledevice;
 import static org.robovm.libimobiledevice.binding.LibIMobileDeviceConstants.*;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.concurrent.CountDownLatch;
 
 import org.robovm.libimobiledevice.InstallationProxyClient.Options.ApplicationType;
 import org.robovm.libimobiledevice.InstallationProxyClient.Options.PackageType;
@@ -308,5 +310,87 @@ public class InstallationProxyClient implements AutoCloseable {
          * @param message the error message.
          */
         void error(String message);
+    }
+    
+    private static void printUsageAndExit() {
+        System.err.println(InstallationProxyClient.class.getName() + " [deviceid] <action> ...");
+        System.err.println("  Actions:");
+        System.err.println("    install <remotepath>   Performs an install using the package in the specified path.");
+        System.err.println("    upgrade <remotepath>   Performs an upgrade using the package in the specified path.");
+        System.exit(0);
+    }
+    
+    public static void main(String[] args) throws Exception {
+        String deviceId = null;
+        String action = null;
+
+        int index = 0;
+        try {
+            action = args[index++];
+            if (action.matches("[0-9a-f]{40}")) {
+                deviceId = action;
+                action = args[index++];
+            }
+        
+            if (!action.matches("install|upgrade")) {
+                System.err.println("Unknown action: " + action);
+                printUsageAndExit();
+            }
+            
+            if (deviceId == null) {
+                if (deviceId == null) {
+                    String[] udids = IDevice.listUdids();
+                    if (udids.length == 0) {
+                        System.err.println("No device connected");
+                        return;
+                    }
+                    if (udids.length > 1) {
+                        System.err.println("More than 1 device connected (" 
+                                + Arrays.asList(udids) + "). Using " + udids[0]);
+                    }
+                    deviceId = udids[0];
+                }
+            }
+            
+            try (IDevice device = new IDevice(deviceId)) {
+                try (LockdowndClient lockdowndClient = new LockdowndClient(device, AfcClient.class.getSimpleName(), true)) {
+                    LockdowndServiceDescriptor service = lockdowndClient.startService(SERVICE_NAME);
+                    try (InstallationProxyClient client = new InstallationProxyClient(device, service)) {
+                        String path = args[index];
+                        Options options = new Options();
+                        if (path.toLowerCase().endsWith(".app") || path.endsWith("/")) {
+                            options.packageType(PackageType.Developer);
+                        }
+                        final CountDownLatch countDownLatch = new CountDownLatch(1);
+                        StatusCallback callback = new StatusCallback() {
+                            public void progress(String status, int percentComplete) {
+                                System.out.format("[%3d%%] %s\n", percentComplete, status);
+                            }
+                            public void success() {
+                                System.out.format("[100%%] Success!\n");
+                                countDownLatch.countDown();
+                            }
+                            @Override
+                            public void error(String message) {
+                                System.out.format("Error: %s\n", message);
+                                countDownLatch.countDown();
+                            }
+                        };
+                        switch (action) {
+                        case "install":
+                            client.install(path, options, callback);
+                            countDownLatch.await();
+                            break;
+                        case "upgrade":
+                            client.upgrade(path, options, callback);
+                            countDownLatch.await();
+                            break;
+                        }                    
+                    }
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            printUsageAndExit();
+        }
     }
 }

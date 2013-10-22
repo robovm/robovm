@@ -139,7 +139,15 @@ public class IOSTarget extends AbstractTarget {
             args.addAll(launchParameters.getArguments());
         }
         
-        return super.createExecutor(launchParameters, iosSimPath, args);
+        File xcodePath = new File(ToolchainUtil.findXcodePath());
+        Map<String, String> env = Collections.singletonMap("DYLD_FRAMEWORK_PATH", 
+                new File(xcodePath, "Platforms/iPhoneSimulator.platform/Developer/Library/PrivateFrameworks").getAbsolutePath() + ":" +
+                new File(xcodePath, "../OtherFrameworks").getAbsolutePath());
+        return new Executor(config.getLogger(), iosSimPath)
+            .args(args)
+            .wd(launchParameters.getWorkingDirectory())
+            .inheritEnv(false)
+            .env(env);
     }
     
     private Launcher createIOSDevLauncher(LaunchParameters launchParameters)

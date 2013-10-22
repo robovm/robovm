@@ -245,15 +245,6 @@ public abstract class AbstractTarget implements Target {
     
     protected abstract Launcher createLauncher(LaunchParameters launchParameters) throws IOException;
     
-    protected Executor createExecutor(LaunchParameters launchParameters, String cmd, List<? extends Object> args) throws IOException {
-        Map<String, String> env = launchParameters.getEnvironment();
-        return new Executor(config.getLogger(), cmd)
-            .args(args)
-            .wd(launchParameters.getWorkingDirectory())
-            .inheritEnv(env == null)
-            .env(env == null ? Collections.<String, String>emptyMap() : env);
-    }
-    
     protected Target build(Config config) {
         return this;
     }

@@ -19,10 +19,14 @@ package org.robovm.compiler.target;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
+import org.robovm.compiler.util.Executor;
 import org.robovm.compiler.util.io.OpenOnWriteFileOutputStream;
 
 
@@ -60,6 +64,15 @@ public class ConsoleTarget extends AbstractTarget {
                 config.getExecutableName()).getAbsolutePath(), 
                 launchParameters.getArguments())
                 .out(out).err(err).closeOutputStreams(true);
+    }
+    
+    protected Executor createExecutor(LaunchParameters launchParameters, String cmd, List<? extends Object> args) throws IOException {
+        Map<String, String> env = launchParameters.getEnvironment();
+        return new Executor(config.getLogger(), cmd)
+            .args(args)
+            .wd(launchParameters.getWorkingDirectory())
+            .inheritEnv(env == null)
+            .env(env == null ? Collections.<String, String>emptyMap() : env);
     }
     
     public void init(Config config) {

@@ -187,6 +187,15 @@ classes:
         url: ../Classes/NSIndexPath_Class/Reference/Reference.html
         protocols: []
         methods:
+            "-initWithIndex:":
+            "-length":
+                name: getLength
+            "-indexAtPosition:":
+                name: getIndexAt
+            "-indexPathByAddingIndex:":
+                name: addIndex
+            "-indexPathByRemovingLastIndex":
+                name: removeLastIndex
             "+*":
                 exclude: true
             "-*":

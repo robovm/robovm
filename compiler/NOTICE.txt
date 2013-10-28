@@ -45,3 +45,7 @@ copyright The Apache Software Foundation and released under the Apache License
 The RoboVM compiler includes code from the Spring Framework project which is 
 copyright 2002-2013 by several authors and released under the Apache License
 2.0. http://www.springsource.org/spring-framework
+
+The RoboVM compiler includes the JSON.org JSON library which is copyright 2002,
+JSON.org and released under the JSON License.
+http://www.json.org/

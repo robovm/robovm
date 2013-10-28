@@ -47,6 +47,11 @@
       <version>1.49</version>
     </dependency>
     <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20131018</version>
+    </dependency>
+    <dependency>
       <groupId>org.robovm</groupId>
       <artifactId>robovm-llvm</artifactId>
       <version>${project.version}</version>

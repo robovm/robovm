@@ -16,9 +16,14 @@
  */
 package org.robovm.compiler;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -27,8 +32,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.UUID;
 
 import org.apache.commons.exec.ExecuteException;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.json.JSONObject;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.Dependency;
 import org.robovm.compiler.clazz.Path;
@@ -197,6 +206,8 @@ public class AppCompiler {
     }
     
     public void compile() throws IOException {
+        updateCheck();
+        
         TreeSet<Clazz> compileQueue = getRootClasses();
         Set<Clazz> linkClasses = new HashSet<Clazz>();
         while (!compileQueue.isEmpty() && !Thread.currentThread().isInterrupted()) {
@@ -599,4 +610,84 @@ public class AppCompiler {
         System.exit(errorMessage != null ? 1 : 0);
     }
     
+    private class UpdateChecker extends Thread {
+        private final String address;
+        private volatile JSONObject result;
+        public UpdateChecker(String address) {
+            this.address = address;
+            setDaemon(true);
+        }
+        @Override
+        public void run() {
+            result = fetchJson(address);
+        }
+    }
+    
+    /**
+     * Performs a an update check. If a newer version of RoboVM is available
+     * a message will be printed to the log. The update check is also used to
+     * gather some anonymous usage statistics.
+     */
+    private void updateCheck() {
+        try {
+            String uuid = getInstallUuid();
+            if (uuid == null) {
+                return;
+            }
+            String osName = System.getProperty("os.name", "Unknown");
+            String osArch = System.getProperty("os.arch", "Unknown");
+            String osVersion = System.getProperty("os.version", "Unknown");
+            UpdateChecker t = new UpdateChecker("http://download.robovm.org/version?"
+                    + "uuid=" + URLEncoder.encode(uuid, "UTF-8") + "&"
+                    + "version=" + URLEncoder.encode(Version.getVersion(), "UTF-8") + "&"
+                    + "osName=" + URLEncoder.encode(osName, "UTF-8") + "&"
+                    + "osArch=" + URLEncoder.encode(osArch, "UTF-8") + "&"
+                    + "osVersion=" + URLEncoder.encode(osVersion, "UTF-8"));
+            t.start();
+            t.join((int) (3.0 * Math.random()) * 1000);
+            JSONObject result = t.result;
+            if (result != null) {
+                String version = result.optString("version", null);
+                if (version != null && Version.isOlderThan(version)) {
+                    config.getLogger().info("A new version of RoboVM is available. " 
+                            + "Current version: %s. New version: %s.", Version.getVersion(), version);
+                }
+            }
+        } catch (Throwable t) {
+            if (config.getHome().isDev()) {
+                t.printStackTrace();
+            }
+        }
+    }
+
+    private String getInstallUuid() throws IOException {
+        File uuidFile = new File(new File(System.getProperty("user.home"), ".robovm"), "uuid");
+        String uuid = uuidFile.exists() ? FileUtils.readFileToString(uuidFile, "UTF-8") : null;
+        if (uuid == null) {
+            uuid = UUID.randomUUID().toString();
+            FileUtils.writeStringToFile(uuidFile, uuid, "UTF-8");
+        }
+        uuid = uuid.trim();
+        if (uuid.matches("[0-9a-fA-F-]*")) {
+            return uuid;
+        }
+        return null;
+    }
+    
+    private JSONObject fetchJson(String address) {
+        try {
+            URL url = new URL(address);
+            URLConnection conn = url.openConnection();
+            conn.setConnectTimeout(5 * 1000);
+            conn.setReadTimeout(5 * 1000);
+            try (InputStream in = new BufferedInputStream(conn.getInputStream())) {
+                return new JSONObject(IOUtils.toString(in, "UTF-8"));
+            }
+        } catch (Exception e) {
+            if (config.getHome().isDev()) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
 }

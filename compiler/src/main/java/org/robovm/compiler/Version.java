@@ -52,4 +52,37 @@ public class Version {
             IOUtils.closeQuietly(is);
         }
     }
+    
+    /**
+     * Converts a version string on the form x.y.z into an integer which can
+     * be compared to other versions converted into integers.
+     */
+    private static int toInt(String v) {
+        boolean snapshot = v.endsWith("-SNAPSHOT");
+        if (snapshot) {
+            v = v.substring(0, v.indexOf("-SNAPSHOT"));
+        }
+        
+        String[] parts = v.split("\\.");
+        if (parts.length > 3) {
+            throw new IllegalArgumentException("Illegal version number: " + v);
+        }
+        
+        int major = parts.length > 0 ? Integer.parseInt(parts[0]) : 0;
+        int minor = parts.length > 1 ? Integer.parseInt(parts[1]) : 0;
+        int rev = parts.length > 2 ? Integer.parseInt(parts[2]) : 0;
+        int result = major * 10000000 + minor * 10000 + rev * 10;
+        if (!snapshot) {
+            result += 1;
+        }
+        return result;
+    }
+    
+    /**
+     * Returns <code>true</code> if this version is less than the specified
+     * version number.
+     */
+    public static boolean isOlderThan(String otherVersion) {
+        return toInt(getVersion()) < toInt(otherVersion);
+    }
 }

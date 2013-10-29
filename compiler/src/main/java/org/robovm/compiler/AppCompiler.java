@@ -634,6 +634,12 @@ public class AppCompiler {
             if (uuid == null) {
                 return;
             }
+            long lastCheckTime = getLastUpdateCheckTime();
+            if (System.currentTimeMillis() - lastCheckTime < 6 * 60 * 60 * 1000) {
+                // Only check for an update once every 6 hours
+                return;
+            }
+            updateLastUpdateCheckTime();
             String osName = System.getProperty("os.name", "Unknown");
             String osArch = System.getProperty("os.arch", "Unknown");
             String osVersion = System.getProperty("os.version", "Unknown");
@@ -644,7 +650,7 @@ public class AppCompiler {
                     + "osArch=" + URLEncoder.encode(osArch, "UTF-8") + "&"
                     + "osVersion=" + URLEncoder.encode(osVersion, "UTF-8"));
             t.start();
-            t.join((int) (3.0 * Math.random()) * 1000);
+            t.join(5 * 1000); // Wait for a maximum of 5 seconds
             JSONObject result = t.result;
             if (result != null) {
                 String version = result.optString("version", null);
@@ -662,18 +668,35 @@ public class AppCompiler {
 
     private String getInstallUuid() throws IOException {
         File uuidFile = new File(new File(System.getProperty("user.home"), ".robovm"), "uuid");
+        uuidFile.getParentFile().mkdirs();
         String uuid = uuidFile.exists() ? FileUtils.readFileToString(uuidFile, "UTF-8") : null;
         if (uuid == null) {
             uuid = UUID.randomUUID().toString();
             FileUtils.writeStringToFile(uuidFile, uuid, "UTF-8");
         }
         uuid = uuid.trim();
-        if (uuid.matches("[0-9a-fA-F-]*")) {
+        if (uuid.matches("[0-9a-fA-F-]{36}")) {
             return uuid;
         }
         return null;
     }
     
+    private long getLastUpdateCheckTime() {
+        try {
+            File timeFile = new File(new File(System.getProperty("user.home"), ".robovm"), "last-update-check");
+            timeFile.getParentFile().mkdirs();
+            return timeFile.exists() ? Long.parseLong(FileUtils.readFileToString(timeFile, "UTF-8").trim()) : 0;
+        } catch (IOException e) {
+            return 0;
+        }
+    }
+
+    private void updateLastUpdateCheckTime() throws IOException {
+        File timeFile = new File(new File(System.getProperty("user.home"), ".robovm"), "last-update-check");
+        timeFile.getParentFile().mkdirs();
+        FileUtils.writeStringToFile(timeFile, String.valueOf(System.currentTimeMillis()), "UTF-8");
+    }
+
     private JSONObject fetchJson(String address) {
         try {
             URL url = new URL(address);

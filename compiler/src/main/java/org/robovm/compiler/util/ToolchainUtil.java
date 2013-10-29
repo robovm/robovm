@@ -112,7 +112,7 @@ public class ToolchainUtil {
     
     public static void pngcrush(Config config, File inFile, File outFile) throws IOException {
         new Executor(config.getLogger(), getPngCrush())
-            .args("-q", "-f", "0", inFile, outFile)
+            .args("-q", "-iphone", "-f", "0", inFile, outFile)
             .exec();
     }
 

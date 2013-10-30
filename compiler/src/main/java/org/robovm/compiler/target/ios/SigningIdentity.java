@@ -34,7 +34,7 @@ public class SigningIdentity implements Comparable<SigningIdentity> {
     private final String name;
     private final String fingerprint;
     
-    private SigningIdentity(String name, String fingerprint) {
+    SigningIdentity(String name, String fingerprint) {
         this.name = name;
         this.fingerprint = fingerprint;
     }

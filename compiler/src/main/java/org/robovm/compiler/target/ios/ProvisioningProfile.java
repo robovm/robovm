@@ -59,7 +59,7 @@ public class ProvisioningProfile implements Comparable<ProvisioningProfile> {
     private final NSDictionary entitlements;
     private final List<String> certFingerprints = new ArrayList<String>();
     
-    private ProvisioningProfile(File file, NSDictionary dict) {
+    ProvisioningProfile(File file, NSDictionary dict) {
         this.file = file;
         this.dict = dict;
         this.uuid = dict.objectForKey("UUID").toString();
@@ -200,8 +200,17 @@ public class ProvisioningProfile implements Comparable<ProvisioningProfile> {
             }
         }
         if (!bundleId.equals("*")) {
-            // Try with wildcard
-            return find(profiles, signingIdentity, "*", bundleId);
+            // Try with the last component replaced with a wildcard
+            if (bundleId.endsWith(".*")) {
+                bundleId = bundleId.substring(0, bundleId.length() - 2);
+            }
+            int lastDot = bundleId.lastIndexOf('.');
+            if (lastDot != -1) {
+                bundleId = bundleId.substring(0, lastDot) + ".*";
+            } else {
+                bundleId = "*";
+            }
+            return find(profiles, signingIdentity, bundleId, origBundleId);
         }
         throw new IllegalArgumentException("No provisioning profile found " 
                 + "matching signing identity '" + signingIdentity.getName() 

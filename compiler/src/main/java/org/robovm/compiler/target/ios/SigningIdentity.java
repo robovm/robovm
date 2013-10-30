@@ -92,4 +92,12 @@ public class SigningIdentity implements Comparable<SigningIdentity> {
             throw new RuntimeException(e);
         }
     }
+    
+    public static void main(String[] args) {
+        if (args.length == 0) {
+            System.out.println(list());
+        } else {
+            System.out.println(find(list(), args[0]));
+        }
+    }
 }

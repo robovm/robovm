@@ -39,7 +39,6 @@ import com.dd.plist.NSData;
 import com.dd.plist.NSDate;
 import com.dd.plist.NSDictionary;
 import com.dd.plist.NSObject;
-import com.dd.plist.NSString;
 import com.dd.plist.PropertyListParser;
 
 /**
@@ -54,6 +53,7 @@ public class ProvisioningProfile implements Comparable<ProvisioningProfile> {
     private final String name;
     private final String appIdName;
     private final String appIdPrefix;
+    private final String appId;
     private final Date creationDate;
     private final Date expirationDate;
     private final NSDictionary entitlements;
@@ -71,6 +71,7 @@ public class ProvisioningProfile implements Comparable<ProvisioningProfile> {
         this.creationDate = ((NSDate) dict.objectForKey("CreationDate")).getDate();
         this.expirationDate = ((NSDate) dict.objectForKey("ExpirationDate")).getDate();
         this.entitlements = (NSDictionary) dict.objectForKey("Entitlements");
+        this.appId = this.entitlements.objectForKey("application-identifier").toString();
         
         for (NSObject o : ((NSArray) dict.objectForKey("DeveloperCertificates")).getArray()) {
             NSData data = (NSData) o;
@@ -190,8 +191,7 @@ public class ProvisioningProfile implements Comparable<ProvisioningProfile> {
     private static ProvisioningProfile find(List<ProvisioningProfile> profiles, SigningIdentity signingIdentity, String bundleId, String origBundleId) {
         // Try a direct match first
         for (ProvisioningProfile p : profiles) {
-            NSString appId = (NSString) p.entitlements.objectForKey("application-identifier");
-            if (appId != null && appId.toString().equals(p.appIdPrefix + "." + bundleId)) {
+            if (p.appId.equals(p.appIdPrefix + "." + bundleId)) {
                 for (String fp : p.certFingerprints) {
                     if (fp.equals(signingIdentity.getFingerprint())) {
                         return p;
@@ -219,11 +219,21 @@ public class ProvisioningProfile implements Comparable<ProvisioningProfile> {
     
     @Override
     public String toString() {
-        return "ProvisioningProfile [file=" + file + ", dict=" + dict
-                + ", uuid=" + uuid + ", name=" + name + ", appIdName="
-                + appIdName + ", appIdPrefix=" + appIdPrefix
+        return "ProvisioningProfile [file=" + file + ", uuid=" + uuid
+                + ", name=" + name + ", appIdName=" + appIdName
+                + ", appIdPrefix=" + appIdPrefix + ", appId=" + appId
                 + ", creationDate=" + creationDate + ", expirationDate="
                 + expirationDate + ", certFingerprints=" + certFingerprints
                 + "]";
+    }
+
+    public static void main(String[] args) {
+        if (args.length == 0) {
+            System.out.println(list());
+        } else if (args.length == 1) {
+            System.out.println(find(list(), args[0]));
+        } else {
+            System.out.println(find(list(), SigningIdentity.find(SigningIdentity.list(), args[0]), args[1]));
+        }
     }
 }

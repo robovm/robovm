@@ -587,7 +587,7 @@ public class AppLauncher {
             LockdowndServiceDescriptor instproxyService = lockdowndClient.startService(InstallationProxyClient.SERVICE_NAME);
             try (InstallationProxyClient instClient = new InstallationProxyClient(device, instproxyService)) {
                 instClient.upgrade("/PublicStaging/" + localAppPath.getName(), 
-                        new Options().packageType(localAppPath.isFile() ? PackageType.Developer : null), 
+                        new Options().packageType(localAppPath.isDirectory() ? PackageType.Developer : null), 
                         new StatusCallback() {
                     
                     @Override

@@ -71,4 +71,9 @@ public interface LibIMobileDeviceConstants {
   public final static int INSTPROXY_E_OP_IN_PROGRESS = -4;
   public final static int INSTPROXY_E_OP_FAILED = -5;
   public final static int INSTPROXY_E_UNKNOWN_ERROR = -256;
+  public final static int MOBILE_IMAGE_MOUNTER_E_SUCCESS = 0;
+  public final static int MOBILE_IMAGE_MOUNTER_E_INVALID_ARG = -1;
+  public final static int MOBILE_IMAGE_MOUNTER_E_PLIST_ERROR = -2;
+  public final static int MOBILE_IMAGE_MOUNTER_E_CONN_FAILED = -3;
+  public final static int MOBILE_IMAGE_MOUNTER_E_UNKNOWN_ERROR = -256;
 }

@@ -19,6 +19,7 @@ package org.robovm.libimobiledevice;
 import static org.robovm.libimobiledevice.binding.LibIMobileDeviceConstants.*;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -368,6 +369,25 @@ public class AfcClient implements AutoCloseable {
         }
     }
 
+    /**
+     * Copies the specified local {@link File} to the specified remote file.
+     * 
+     * @param localFile the {@link File} to copy.
+     * @param remoteFile the path to the remote file.
+     */
+    public void fileCopy(File localFile, String remoteFile) throws IOException {
+        long handle = fileOpen(remoteFile, AfcFileMode.AFC_FOPEN_WRONLY);
+        try (InputStream is = new FileInputStream(localFile)) {
+            int n = 0;
+            byte[] buffer = new byte[64 * 1024];
+            while ((n = is.read(buffer)) != -1) {
+                fileWrite(handle, buffer, 0, n);
+            }
+        } finally {
+            fileClose(handle);
+        }
+    }
+    
     /**
      * Deletes a file or an empty directory.
      * 

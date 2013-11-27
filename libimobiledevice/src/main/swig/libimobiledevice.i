@@ -5,6 +5,7 @@
 #include <libimobiledevice/lockdown.h>
 #include <libimobiledevice/afc.h>
 #include <libimobiledevice/installation_proxy.h>
+#include <libimobiledevice/mobile_image_mounter.h>
 
 %}
 
@@ -101,6 +102,7 @@ OUT_CLASS(lockdownd_service_descriptor_t, LockdowndServiceDescriptorStructOut)
 OUT_CLASS(afc_client_t, AfcClientRefOut)
 OUT_CLASS(plist_t, PlistRefOut)
 OUT_CLASS(instproxy_client_t, InstproxyClientRefOut)
+OUT_CLASS(mobile_image_mounter_client_t, MobileImageMounterClientRefOut)
 OUT_ARG(IntOut, int *)
 OUT_ARG(IntOut, uint32_t *)
 OUT_ARG(LongOut, uint64_t *)
@@ -126,10 +128,12 @@ OUT_ARG(LockdowndServiceDescriptorStructOut, lockdownd_service_descriptor_t *ser
 OUT_ARG(PlistRefOut, plist_t *)
 OUT_ARG(AfcClientRefOut, afc_client_t *client)
 OUT_ARG(InstproxyClientRefOut, instproxy_client_t *client)
+OUT_ARG(MobileImageMounterClientRefOut, mobile_image_mounter_client_t *client)
 
 %apply signed char[] {char *data};
 %apply signed char[] {char *plist_bin};
 %apply signed char[] {char *plist_xml};
+%apply signed char[] {char *image_signature};
 %apply jboolean {uint8_t ssl_enabled};
 
 %rename (IDeviceEvent) idevice_event_t;
@@ -243,6 +247,7 @@ jlong get_global_idevice_event_cb(void) {
 %include "libimobiledevice/lockdown.h"
 %include "libimobiledevice/afc.h"
 %include "libimobiledevice/installation_proxy.h"
+%include "libimobiledevice/mobile_image_mounter.h"
 
 %pragma(java) jniclasscode=%{
   private static native void initNative();

@@ -57,6 +57,9 @@ public class LibIMobileDeviceJNI {
   public final static native long InstproxyClientRefOut_value_get(long jarg1, InstproxyClientRefOut jarg1_);
   public final static native long new_InstproxyClientRefOut();
   public final static native void delete_InstproxyClientRefOut(long jarg1);
+  public final static native long MobileImageMounterClientRefOut_value_get(long jarg1, MobileImageMounterClientRefOut jarg1_);
+  public final static native long new_MobileImageMounterClientRefOut();
+  public final static native void delete_MobileImageMounterClientRefOut(long jarg1);
   public final static native long plist_new_dict();
   public final static native void plist_free(long jarg1);
   public final static native void plist_to_bin(long jarg1, long jarg2, ByteArrayOut jarg2_, long jarg3, IntOut jarg3_);
@@ -163,6 +166,11 @@ public class LibIMobileDeviceJNI {
   public final static native short instproxy_remove_archive(long jarg1, String jarg2, long jarg3, long jarg4, int jarg5);
   public final static native long instproxy_client_options_new();
   public final static native void instproxy_client_options_free(long jarg1);
+  public final static native short mobile_image_mounter_new(long jarg1, long jarg2, LockdowndServiceDescriptorStruct jarg2_, long jarg3, MobileImageMounterClientRefOut jarg3_);
+  public final static native short mobile_image_mounter_free(long jarg1);
+  public final static native short mobile_image_mounter_lookup_image(long jarg1, String jarg2, long jarg3, PlistRefOut jarg3_);
+  public final static native short mobile_image_mounter_mount_image(long jarg1, String jarg2, byte[] jarg3, short jarg4, String jarg5, long jarg6, PlistRefOut jarg6_);
+  public final static native short mobile_image_mounter_hangup(long jarg1);
 
   private static native void initNative();
   static {

@@ -337,6 +337,26 @@ public class LibIMobileDevice implements LibIMobileDeviceConstants {
     LibIMobileDeviceJNI.instproxy_client_options_free(PlistRef.getCPtr(client_options));
   }
 
+  public static short mobile_image_mounter_new(IDeviceRef device, LockdowndServiceDescriptorStruct service, MobileImageMounterClientRefOut client) {
+    return LibIMobileDeviceJNI.mobile_image_mounter_new(IDeviceRef.getCPtr(device), LockdowndServiceDescriptorStruct.getCPtr(service), service, MobileImageMounterClientRefOut.getCPtr(client), client);
+  }
+
+  public static short mobile_image_mounter_free(MobileImageMounterClientRef client) {
+    return LibIMobileDeviceJNI.mobile_image_mounter_free(MobileImageMounterClientRef.getCPtr(client));
+  }
+
+  public static short mobile_image_mounter_lookup_image(MobileImageMounterClientRef client, String image_type, PlistRefOut result) {
+    return LibIMobileDeviceJNI.mobile_image_mounter_lookup_image(MobileImageMounterClientRef.getCPtr(client), image_type, PlistRefOut.getCPtr(result), result);
+  }
+
+  public static short mobile_image_mounter_mount_image(MobileImageMounterClientRef client, String image_path, byte[] image_signature, short signature_length, String image_type, PlistRefOut result) {
+    return LibIMobileDeviceJNI.mobile_image_mounter_mount_image(MobileImageMounterClientRef.getCPtr(client), image_path, image_signature, signature_length, image_type, PlistRefOut.getCPtr(result), result);
+  }
+
+  public static short mobile_image_mounter_hangup(MobileImageMounterClientRef client) {
+    return LibIMobileDeviceJNI.mobile_image_mounter_hangup(MobileImageMounterClientRef.getCPtr(client));
+  }
+
 
   public static PlistRef toPlistRef(long ptr) {
     return new PlistRef(ptr, false);

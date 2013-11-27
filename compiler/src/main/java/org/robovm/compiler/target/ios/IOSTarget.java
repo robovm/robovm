@@ -179,11 +179,16 @@ public class IOSTarget extends AbstractTarget {
             env = Collections.emptyMap();
         }
         
-        AppLauncher launcher = new AppLauncher(device, getAppDir())
+        AppLauncher launcher = new AppLauncher(device, getAppDir()) {
+            protected void log(String s, Object ... args) {
+                config.getLogger().debug(s, args);
+            }
+        }
             .stdout(out)
             .closeOutOnExit(true)
             .args(launchParameters.getArguments().toArray(new String[0]))
             .env(env)
+            .xcodePath(ToolchainUtil.findXcodePath())
             .uploadProgressCallback(new UploadProgressCallback() {
                 boolean first = true;
                 public void success() {

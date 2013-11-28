@@ -38,6 +38,7 @@ import com.dd.plist.NSArray;
 import com.dd.plist.NSData;
 import com.dd.plist.NSDate;
 import com.dd.plist.NSDictionary;
+import com.dd.plist.NSNumber;
 import com.dd.plist.NSObject;
 import com.dd.plist.PropertyListParser;
 
@@ -45,8 +46,14 @@ import com.dd.plist.PropertyListParser;
  * Represents a provisioning profile.
  */
 public class ProvisioningProfile implements Comparable<ProvisioningProfile> {
+    
+    public enum Type {
+        Development, AppStore, AdHoc
+    }
+    
     private static final String HEX_DIGITS = "0123456789ABCDEF";
 
+    private final Type type;
     private final File file;
     private final NSDictionary dict;
     private final String uuid;
@@ -77,6 +84,16 @@ public class ProvisioningProfile implements Comparable<ProvisioningProfile> {
             NSData data = (NSData) o;
             certFingerprints.add(getCertFingerprint(data.bytes()));
         }
+        
+        boolean getTaskAllow = ((NSNumber) entitlements.objectForKey("get-task-allow")).boolValue();
+        NSArray provisionedDevices = (NSArray) dict.objectForKey("ProvisionedDevices");
+        if (getTaskAllow) {
+            type = Type.Development;
+        } else if (provisionedDevices != null) {
+            type = Type.AdHoc;
+        } else {
+            type = Type.AppStore;
+        }
     }
     
     @Override
@@ -104,6 +121,10 @@ public class ProvisioningProfile implements Comparable<ProvisioningProfile> {
             buf.append(HEX_DIGITS.charAt(bytes[i] & 0x0f));
         }
         return buf.toString();
+    }
+    
+    public Type getType() {
+        return type;
     }
     
     public File getFile() {
@@ -219,12 +240,37 @@ public class ProvisioningProfile implements Comparable<ProvisioningProfile> {
     
     @Override
     public String toString() {
-        return "ProvisioningProfile [file=" + file + ", uuid=" + uuid
-                + ", name=" + name + ", appIdName=" + appIdName
-                + ", appIdPrefix=" + appIdPrefix + ", appId=" + appId
-                + ", creationDate=" + creationDate + ", expirationDate="
-                + expirationDate + ", certFingerprints=" + certFingerprints
-                + "]";
+        return "ProvisioningProfile [type=" + type + ", file=" + file
+                + ", uuid=" + uuid + ", name=" + name + ", appIdName="
+                + appIdName + ", appIdPrefix=" + appIdPrefix + ", appId="
+                + appId + ", creationDate=" + creationDate
+                + ", expirationDate=" + expirationDate + ", certFingerprints="
+                + certFingerprints + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((uuid == null) ? 0 : uuid.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ProvisioningProfile other = (ProvisioningProfile) obj;
+        if (uuid == null) {
+            if (other.uuid != null)
+                return false;
+        } else if (!uuid.equals(other.uuid))
+            return false;
+        return true;
     }
 
     public static void main(String[] args) {

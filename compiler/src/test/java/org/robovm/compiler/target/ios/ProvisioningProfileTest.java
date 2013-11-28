@@ -26,10 +26,12 @@ import java.util.List;
 import java.util.UUID;
 
 import org.junit.Test;
+import org.robovm.compiler.target.ios.ProvisioningProfile.Type;
 
 import com.dd.plist.NSArray;
 import com.dd.plist.NSDate;
 import com.dd.plist.NSDictionary;
+import com.dd.plist.NSNumber;
 import com.dd.plist.NSString;
 
 /**
@@ -39,9 +41,9 @@ public class ProvisioningProfileTest {
 
     @Test
     public void testFindWithWildcardMatchesLongest() throws Exception {
-        ProvisioningProfile p1 = createProfile("Profile 1", "App 1", "DF6YH89WE3", "DF6YH89WE3.*", "0123456789");
-        ProvisioningProfile p2 = createProfile("Profile 2", "App 2", "HSKDO63H63", "HSKDO63H63.com.*", "0123456789");
-        ProvisioningProfile p3 = createProfile("Profile 3", "App 3", "GS73MK54DW", "GS73MK54DW.com.foo.*", "0123456789");
+        ProvisioningProfile p1 = createProfile("Profile 1", "App 1", "DF6YH89WE3", "DF6YH89WE3.*", false, null, "0123456789");
+        ProvisioningProfile p2 = createProfile("Profile 2", "App 2", "HSKDO63H63", "HSKDO63H63.com.*", false, null, "0123456789");
+        ProvisioningProfile p3 = createProfile("Profile 3", "App 3", "GS73MK54DW", "GS73MK54DW.com.foo.*", false, null, "0123456789");
         SigningIdentity si = new SigningIdentity("foo", "0123456789");
         ProvisioningProfile result = ProvisioningProfile.find(Arrays.asList(p1, p2, p3), si, "com.foo.bar");
         assertSame(p3, result);
@@ -49,9 +51,9 @@ public class ProvisioningProfileTest {
 
     @Test
     public void testFindDirectMatch() throws Exception {
-        ProvisioningProfile p1 = createProfile("Profile 1", "App 1", "DF6YH89WE3", "DF6YH89WE3.*", "0123456789");
-        ProvisioningProfile p2 = createProfile("Profile 2", "App 2", "HSKDO63H63", "HSKDO63H63.com.*", "0123456789");
-        ProvisioningProfile p3 = createProfile("Profile 3", "App 3", "GS73MK54DW", "GS73MK54DW.com.foo.bar", "0123456789");
+        ProvisioningProfile p1 = createProfile("Profile 1", "App 1", "DF6YH89WE3", "DF6YH89WE3.*", false, null, "0123456789");
+        ProvisioningProfile p2 = createProfile("Profile 2", "App 2", "HSKDO63H63", "HSKDO63H63.com.*", false, null, "0123456789");
+        ProvisioningProfile p3 = createProfile("Profile 3", "App 3", "GS73MK54DW", "GS73MK54DW.com.foo.bar", false, null, "0123456789");
         SigningIdentity si = new SigningIdentity("foo", "0123456789");
         ProvisioningProfile result = ProvisioningProfile.find(Arrays.asList(p1, p2, p3), si, "com.foo.bar");
         assertSame(p3, result);
@@ -59,9 +61,9 @@ public class ProvisioningProfileTest {
 
     @Test
     public void testFindNoFingerPrintMatch() throws Exception {
-        ProvisioningProfile p1 = createProfile("Profile 1", "App 1", "DF6YH89WE3", "DF6YH89WE3.*", "1123456789");
-        ProvisioningProfile p2 = createProfile("Profile 2", "App 2", "HSKDO63H63", "HSKDO63H63.com.*", "2123456789");
-        ProvisioningProfile p3 = createProfile("Profile 3", "App 3", "GS73MK54DW", "GS73MK54DW.com.foo.bar", "3123456789");
+        ProvisioningProfile p1 = createProfile("Profile 1", "App 1", "DF6YH89WE3", "DF6YH89WE3.*", false, null, "1123456789");
+        ProvisioningProfile p2 = createProfile("Profile 2", "App 2", "HSKDO63H63", "HSKDO63H63.com.*", false, null, "2123456789");
+        ProvisioningProfile p3 = createProfile("Profile 3", "App 3", "GS73MK54DW", "GS73MK54DW.com.foo.bar", false, null, "3123456789");
         SigningIdentity si = new SigningIdentity("foo", "0123456789");
         try {
             ProvisioningProfile.find(Arrays.asList(p1, p2, p3), si, "com.foo.bar");
@@ -72,20 +74,31 @@ public class ProvisioningProfileTest {
 
     @Test
     public void testFindOnlyWildcardFingerPrintMatch() throws Exception {
-        ProvisioningProfile p1 = createProfile("Profile 1", "App 1", "DF6YH89WE3", "DF6YH89WE3.*", "0123456789");
-        ProvisioningProfile p2 = createProfile("Profile 2", "App 2", "HSKDO63H63", "HSKDO63H63.com.*", "2123456789");
-        ProvisioningProfile p3 = createProfile("Profile 3", "App 3", "GS73MK54DW", "GS73MK54DW.com.foo.bar", "3123456789");
+        ProvisioningProfile p1 = createProfile("Profile 1", "App 1", "DF6YH89WE3", "DF6YH89WE3.*", false, null, "0123456789");
+        ProvisioningProfile p2 = createProfile("Profile 2", "App 2", "HSKDO63H63", "HSKDO63H63.com.*", false, null, "2123456789");
+        ProvisioningProfile p3 = createProfile("Profile 3", "App 3", "GS73MK54DW", "GS73MK54DW.com.foo.bar", false, null, "3123456789");
         SigningIdentity si = new SigningIdentity("foo", "0123456789");
         ProvisioningProfile result = ProvisioningProfile.find(Arrays.asList(p1, p2, p3), si, "com.foo.bar");
         assertSame(p1, result);
     }
     
+    @Test
+    public void testGetType() throws Exception {
+        ProvisioningProfile p1 = createProfile("Profile 1", "App 1", "DF6YH89WE3", "DF6YH89WE3.*", true, "0-1-2-3", "0123456789");
+        ProvisioningProfile p2 = createProfile("Profile 2", "App 2", "HSKDO63H63", "HSKDO63H63.com.*", false, "0-1-2-3", "2123456789");
+        ProvisioningProfile p3 = createProfile("Profile 3", "App 3", "GS73MK54DW", "GS73MK54DW.com.foo.bar", false, null, "3123456789");
+        assertEquals(Type.Development, p1.getType());
+        assertEquals(Type.AdHoc, p2.getType());
+        assertEquals(Type.AppStore, p3.getType());
+    }
+    
     @SuppressWarnings("unchecked")
     private ProvisioningProfile createProfile(String name, String appIdName, String appIdPrefix, String appId,
-            String ... fingerprints) throws Exception {
+            boolean getTaskAllow, String provisionedDevice, String fingerprint) throws Exception {
         
         NSDictionary entitlements = new NSDictionary();
         entitlements.put("application-identifier", appId);
+        entitlements.put("get-task-allow", new NSNumber(getTaskAllow));
         
         NSDictionary dict = new NSDictionary();
         dict.put("UUID", UUID.randomUUID().toString());
@@ -96,11 +109,16 @@ public class ProvisioningProfileTest {
         dict.put("ExpirationDate", new NSDate(new Date()));
         dict.put("Entitlements", entitlements);
         dict.put("DeveloperCertificates", new NSArray());
+        if (provisionedDevice != null) {
+            NSArray devices = new NSArray(1);
+            devices.setValue(0, new NSString(provisionedDevice));
+            dict.put("ProvisionedDevices", devices);
+        }
         ProvisioningProfile profile = new ProvisioningProfile(new File(""), dict);
         Field f = ProvisioningProfile.class.getDeclaredField("certFingerprints");
         f.setAccessible(true);
         List<String> certFingerprints = (List<String>) f.get(profile);
-        certFingerprints.addAll(Arrays.asList(fingerprints));
+        certFingerprints.add(fingerprint);
         return profile;
     }
 }

@@ -40,6 +40,7 @@ import org.robovm.compiler.config.Resource;
 import org.robovm.compiler.target.AbstractTarget;
 import org.robovm.compiler.target.LaunchParameters;
 import org.robovm.compiler.target.Launcher;
+import org.robovm.compiler.target.ios.ProvisioningProfile.Type;
 import org.robovm.compiler.util.Executor;
 import org.robovm.compiler.util.ToolchainUtil;
 import org.robovm.compiler.util.io.OpenOnWriteFileOutputStream;
@@ -241,11 +242,13 @@ public class IOSTarget extends AbstractTarget {
             strip(installDir, getExecutable());
             copyResourcesPList(installDir);
             // Copy the provisioning profile
-            config.getLogger().debug("Copying provisioning profile: %s (%s)", 
+            config.getLogger().debug("Copying %s provisioning profile: %s (%s)",
+                    provisioningProfile.getType(),
                     provisioningProfile.getName(), 
                     provisioningProfile.getEntitlements().objectForKey("application-identifier"));
+            boolean getTaskAllow = provisioningProfile.getType() != Type.AppStore;
             FileUtils.copyFile(provisioningProfile.getFile(), new File(installDir, "embedded.mobileprovision"));
-            codesign(signIdentity, getOrCreateEntitlementsPList(false), installDir);
+            codesign(signIdentity, getOrCreateEntitlementsPList(getTaskAllow), installDir);
             // For some odd reason there needs to be a symbolic link in the root of
             // the app bundle named CodeResources pointing at _CodeSignature/CodeResources
             new Executor(config.getLogger(), "ln")

@@ -507,7 +507,7 @@ public class IOSTarget extends AbstractTarget {
             try {
                 infoPListDict = (NSDictionary) parsePropertyList(infoPList, config.getProperties());
             } catch (Throwable t) {
-                throw new IllegalArgumentException(t);
+                throw new IllegalArgumentException("Failed to parse Info.plist XML file: " + infoPList, t);
             }
         }
 

@@ -23,8 +23,8 @@ import static org.robovm.compiler.Functions.*;
 import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Type.*;
 
-import org.robovm.compiler.Bro.StructMemberPair;
 import org.robovm.compiler.config.Config;
+import org.robovm.compiler.llvm.Bitcast;
 import org.robovm.compiler.llvm.Function;
 import org.robovm.compiler.llvm.Getelementptr;
 import org.robovm.compiler.llvm.Inttoptr;
@@ -64,7 +64,7 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
     
     private void structSizeOf(ModuleBuilder moduleBuilder, SootMethod method) {
         SootClass sootClass = method.getDeclaringClass();
-        StructureType type = getStructType(sootClass);
+        StructureType type = getStructType(config.getDataLayout(), sootClass);
         if (type == null) {
             throw new IllegalArgumentException("Struct class " + sootClass + " has no @StructMember annotated methods");
         }
@@ -75,10 +75,7 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
 
     private void structMember(ModuleBuilder moduleBuilder, SootMethod method) {
         SootClass sootClass = method.getDeclaringClass();
-        StructureType structType = getStructType(sootClass);
-        if (structType == null) {
-            throw new IllegalArgumentException("Struct class " + sootClass + " has no @StructMember annotated methods");
-        }
+        StructureType structType = getStructType(config.getDataLayout(), sootClass);
         Function function = FunctionBuilder.structMember(method);
         moduleBuilder.addFunction(function);
         
@@ -90,14 +87,20 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
         function.add(new Inttoptr(handlePtr, handleI64.ref(), handlePtr.getType()));
         
         int offset = getStructMemberOffset(method);      
-        Type memberType = structType.getTypeAt(offset);
+        Type memberType = getStructMemberType(config.getDataLayout(), method);
         Variable memberPtr = function.newVariable(new PointerType(memberType));
-        function.add(new Getelementptr(memberPtr, handlePtr.ref(), 0, offset));
-        
-        StructMemberPair pair = getStructMemberPair(sootClass, offset);
+        if (memberType != structType.getTypeAt(offset)) {
+            // Several @StructMembers of different types have this offset (union)
+            Variable tmp = function.newVariable(new PointerType(structType.getTypeAt(offset)));
+            function.add(new Getelementptr(tmp, handlePtr.ref(), 0, offset));
+            function.add(new Bitcast(memberPtr, tmp.ref(), memberPtr.getType()));
+        } else {
+            function.add(new Getelementptr(memberPtr, handlePtr.ref(), 0, offset));
+        }
         
         VariableRef env = function.getParameterRef(0);
-        if (method == pair.getGetter()) {
+        if (method.getParameterCount() == 0) {
+            // Getter
             soot.Type type = method.getReturnType();
             
             Value result = null;
@@ -136,6 +139,7 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
             function.add(new Ret(result));
             
         } else {
+            // Setter
             
             Value nativeValue = function.getParameterRef(2); // 'env' is parameter 0, 'this' is at 1, the value we're interested in is at index 2
             soot.Type type = method.getParameterType(0);

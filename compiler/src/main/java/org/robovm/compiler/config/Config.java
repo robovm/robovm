@@ -40,6 +40,7 @@ import org.robovm.compiler.Version;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.Clazzes;
 import org.robovm.compiler.clazz.Path;
+import org.robovm.compiler.llvm.DataLayout;
 import org.robovm.compiler.log.Logger;
 import org.robovm.compiler.target.ConsoleTarget;
 import org.robovm.compiler.target.Target;
@@ -140,6 +141,7 @@ public class Config {
     private ITable.Cache itableCache;
     private Logger logger = Logger.NULL_LOGGER;
     private List<Path> resourcesPaths = new ArrayList<Path>();
+    private DataLayout dataLayout;
 
     Config() {
     }
@@ -174,6 +176,10 @@ public class Config {
 
     public String getTriple() {
         return arch.getLlvmName() + "-unknown-" + os;
+    }
+    
+    public DataLayout getDataLayout() {
+        return dataLayout;
     }
     
     public boolean isClean() {
@@ -471,6 +477,7 @@ public class Config {
         
         os = target.getOs();
         arch = target.getArch();
+        dataLayout = new DataLayout(getTriple());
         
         osArchDepLibDir = new File(new File(home.libVmDir, os.toString()), 
                 arch.toString());

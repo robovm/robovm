@@ -35,6 +35,7 @@ import org.robovm.compiler.llvm.Argument;
 import org.robovm.compiler.llvm.BasicBlockRef;
 import org.robovm.compiler.llvm.Br;
 import org.robovm.compiler.llvm.ConstantBitcast;
+import org.robovm.compiler.llvm.DataLayout;
 import org.robovm.compiler.llvm.Function;
 import org.robovm.compiler.llvm.FunctionType;
 import org.robovm.compiler.llvm.Global;
@@ -48,7 +49,6 @@ import org.robovm.compiler.llvm.ParameterAttribute;
 import org.robovm.compiler.llvm.PointerType;
 import org.robovm.compiler.llvm.PrimitiveType;
 import org.robovm.compiler.llvm.Ret;
-import org.robovm.compiler.llvm.StructureType;
 import org.robovm.compiler.llvm.Type;
 import org.robovm.compiler.llvm.Unreachable;
 import org.robovm.compiler.llvm.Value;
@@ -101,6 +101,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         SootMethod originalMethod = method;
         Value structObj = null;
         boolean passByValue = isPassByValue(originalMethod);
+        DataLayout dataLayout = config.getDataLayout();
         if (passByValue) {
             // The method returns a struct by value. Determine whether that struct
             // is small enough to be passed in a register or has to be returned
@@ -108,8 +109,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             
             Arch arch = config.getArch();
             OS os = config.getOs();
-            String triple = config.getTriple();
-            int size = getStructType(originalMethod.getReturnType()).getAllocSize(triple);
+            int size = dataLayout.getAllocSize(getStructType(dataLayout, originalMethod.getReturnType()));
             if (!os.isReturnedInRegisters(arch, size)) {
                 method = createFakeStructRetMethod(method);
                 
@@ -131,11 +131,11 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             }
         }
         
-        FunctionType targetFnType = getBridgeFunctionType(method);
+        FunctionType targetFnType = getBridgeFunctionType(dataLayout, method);
         if (method == originalMethod && passByValue) {
             // Returns a small struct. We need to change the return type to
             // i8/i16/i32/i64.
-            int size = ((StructureType) targetFnType.getReturnType()).getAllocSize(config.getTriple());
+            int size = dataLayout.getAllocSize(targetFnType.getReturnType());
             Type t = size <= 1 ? I8 : (size <= 2 ? I16 : (size <= 4 ? I32 : I64));
             targetFnType = new FunctionType(t, targetFnType.isVarargs(), targetFnType.getParameterTypes());
         }

@@ -30,6 +30,7 @@ import java.util.List;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.ClazzInfo;
 import org.robovm.compiler.clazz.ClazzInfo.MethodInfo;
+import org.robovm.compiler.llvm.DataLayout;
 import org.robovm.compiler.llvm.Function;
 import org.robovm.compiler.llvm.FunctionAttribute;
 import org.robovm.compiler.llvm.FunctionRef;
@@ -208,14 +209,14 @@ public class FunctionBuilder {
                 .linkage(external).attribs(noinline, optsize).build();
     }
     
-    public static Function callback(SootMethod method) {
+    public static Function callback(DataLayout dataLayout, SootMethod method) {
         return new FunctionBuilder(method)
-            .type(getCallbackFunctionType(method)).suffix("_callback")
+            .type(getCallbackFunctionType(dataLayout, method)).suffix("_callback")
             .linkage(external).attribs(noinline, optsize).build();
     }
 
-    public static Function callback(SootMethod method, Type returnType) {
-        FunctionType ft = getCallbackFunctionType(method);
+    public static Function callback(DataLayout dataLayout, SootMethod method, Type returnType) {
+        FunctionType ft = getCallbackFunctionType(dataLayout, method);
         return new FunctionBuilder(method)
             .type(new FunctionType(returnType, ft.isVarargs(), ft.getParameterTypes())).suffix("_callback")
             .linkage(external).attribs(noinline, optsize).build();

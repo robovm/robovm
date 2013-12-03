@@ -37,6 +37,7 @@ import org.robovm.compiler.llvm.BasicBlockRef;
 import org.robovm.compiler.llvm.Bitcast;
 import org.robovm.compiler.llvm.BooleanConstant;
 import org.robovm.compiler.llvm.ConstantBitcast;
+import org.robovm.compiler.llvm.DataLayout;
 import org.robovm.compiler.llvm.Function;
 import org.robovm.compiler.llvm.FunctionRef;
 import org.robovm.compiler.llvm.FunctionType;
@@ -155,6 +156,7 @@ public abstract class AbstractMethodCompiler {
     private void compileCallback(ModuleBuilder moduleBuilder, SootMethod method) {
         validateCallbackMethod(method);
 
+        DataLayout dataLayout = config.getDataLayout();
         SootMethod originalMethod = method;
         boolean passByValue = isPassByValue(originalMethod);
         if (passByValue) {
@@ -164,22 +166,21 @@ public abstract class AbstractMethodCompiler {
             
             Arch arch = config.getArch();
             OS os = config.getOs();
-            String triple = config.getTriple();
-            int size = getStructType(originalMethod.getReturnType()).getAllocSize(triple);
+            int size = dataLayout.getAllocSize(getStructType(dataLayout, originalMethod.getReturnType()));
             if (!os.isReturnedInRegisters(arch, size)) {
                 method = createFakeStructRetMethod(method);
             }
         }
         
-        Function callbackFn = FunctionBuilder.callback(method);
+        Function callbackFn = FunctionBuilder.callback(dataLayout, method);
         if (originalMethod != method) {
             callbackFn.setParameterAttributes(0, ParameterAttribute.sret);
         } else if (passByValue) {
             // Returns a small struct. We need to change the return type to
             // i8/i16/i32/i64.
-            int size = ((StructureType) callbackFn.getType().getReturnType()).getAllocSize(config.getTriple());
+            int size = dataLayout.getAllocSize(callbackFn.getType().getReturnType());
             Type t = size <= 1 ? I8 : (size <= 2 ? I16 : (size <= 4 ? I32 : I64));
-            callbackFn = FunctionBuilder.callback(method, t);
+            callbackFn = FunctionBuilder.callback(dataLayout, method, t);
         }
         moduleBuilder.addFunction(callbackFn);
         moduleBuilder.addAlias(new Alias(mangleMethod(originalMethod) + "_callback_i8p", 

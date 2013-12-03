@@ -40,7 +40,7 @@ public class FinalizersTest {
 //        }
     }
     
-    @Test
+//    @Test
     public void testManyAllocations() throws Throwable {
         long start = System.currentTimeMillis();
         // Allocates 16 GB. We expect that at least 12 GB of those will be finalized.

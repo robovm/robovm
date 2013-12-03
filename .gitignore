@@ -19,6 +19,7 @@ a.out
 /eclipse/update-site/target/
 /dist/target/
 /tests/libcore/target/
+/tests/robovm/target/
 /tests/drlvm/robovm-vts.env
 /tests/drlvm-vts-bundle/
 /tests/libcore/sqliteTest*.db

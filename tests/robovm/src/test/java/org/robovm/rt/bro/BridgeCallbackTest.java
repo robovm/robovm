@@ -394,8 +394,6 @@ public class BridgeCallbackTest {
         ps.p3(new Point().x(3).y(6));
         ps.p4(new Point().x(4).y(8));
         Point sum = passLargeStructByVal(ps);
-        assertEquals(10, sum.x());
-        assertEquals(20, sum.y());
         assertEquals(1, ps.p1().x());
         assertEquals(2, ps.p1().y());
         assertEquals(2, ps.p2().x());
@@ -404,6 +402,8 @@ public class BridgeCallbackTest {
         assertEquals(6, ps.p3().y());
         assertEquals(4, ps.p4().x());
         assertEquals(8, ps.p4().y());
+        assertEquals(10, sum.x());
+        assertEquals(20, sum.y());
     }
 
     @Test

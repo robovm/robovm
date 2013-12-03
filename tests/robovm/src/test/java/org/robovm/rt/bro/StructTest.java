@@ -21,7 +21,9 @@ import org.junit.Test;
 import org.robovm.rt.VM;
 import org.robovm.rt.bro.annotation.ByRef;
 import org.robovm.rt.bro.annotation.ByVal;
+import org.robovm.rt.bro.annotation.Pointer;
 import org.robovm.rt.bro.annotation.StructMember;
+import org.robovm.rt.bro.ptr.BytePtr;
 import org.robovm.rt.bro.ptr.Ptr;
 
 /**
@@ -66,6 +68,24 @@ public class StructTest {
         }
     }
     
+    public static class StringMarshaler {
+        public static Object toObject(Class<?> cls, long handle, boolean copy) {
+            BytePtr ptr = Struct.toStruct(BytePtr.class, handle);
+            return ptr != null ? ptr.toStringAsciiZ() : null;
+        }
+        public static void updateObject(Object o, long handle) {
+        }
+        public static @Pointer long toNative(Object o) {
+            if (o == null) {
+                return 0L;
+            }
+            BytePtr ptr = BytePtr.toBytePtrAsciiZ((String) o);
+            return ptr.getHandle();
+        }
+        public static void updateNative(Object o, long handle) {
+        }
+    }
+    
     public static final class Point extends Struct<Point> {
         @StructMember(0)
         public native int x();
@@ -77,23 +97,78 @@ public class StructTest {
         public native Point y(int y);
     }
     
+    public static final class TestUnion extends Struct<TestUnion> {
+        @StructMember(0)
+        public native byte b();
+        @StructMember(0)
+        public native TestUnion b(byte b);
+        @StructMember(0)
+        public native long l();
+        @StructMember(0)
+        public native TestUnion l(long l);
+        @StructMember(0)
+        public native double d();
+        @StructMember(0)
+        public native TestUnion d(double l);
+        @StructMember(0)
+        public native @ByVal Point p();
+        @StructMember(0)
+        public native TestUnion p(@ByVal Point p);
+    }
+    
+    public static final class MixedStructUnion extends Struct<MixedStructUnion> {
+        @StructMember(0)
+        public native byte b1();
+        @StructMember(0)
+        public native MixedStructUnion b1(byte b);
+        @StructMember(1)
+        public native long l();
+        @StructMember(1)
+        public native MixedStructUnion l(long l);
+        @StructMember(1)
+        public native double d();
+        @StructMember(1)
+        public native MixedStructUnion d(double l);
+        @StructMember(2)
+        public native byte b2();
+        @StructMember(2)
+        public native MixedStructUnion b2(byte b);
+    }
+    
+    @org.robovm.rt.bro.annotation.Marshaler(type = String.class, value = StringMarshaler.class) 
     public static final class TestStruct extends Struct<TestStruct> {
         @StructMember(0)
         public native byte b();
         @StructMember(0)
         public native TestStruct b(byte b);
+        @StructMember(0)
+        public native byte getB();
+        @StructMember(0)
+        public native void setB(byte b);
         @StructMember(1)
         public native long l();
         @StructMember(1)
         public native TestStruct l(long l);
+        @StructMember(1)
+        public native long getL();
+        @StructMember(1)
+        public native void setL(long b);
         @StructMember(2)
         public native char c();
         @StructMember(2)
         public native TestStruct c(char b);
+        @StructMember(2)
+        public native char getC();
+        @StructMember(2)
+        public native void setC(char b);
         @StructMember(3)
         public native int i();
         @StructMember(3)
         public native TestStruct i(int i);
+        @StructMember(3)
+        public native int getI();
+        @StructMember(3)
+        public native void setI(int i);
         
         @StructMember(4)
         public native @ByVal Point pointByVal();
@@ -133,6 +208,21 @@ public class StructTest {
         public native TestBits bits();
         @StructMember(11)
         public native TestStruct bits(TestBits bits);
+
+        @StructMember(12)
+        public native String string();
+        @StructMember(12)
+        public native TestStruct string(String s);
+
+        @StructMember(13)
+        public native @ByVal TestUnion unionByVal();
+        @StructMember(13)
+        public native TestStruct unionByVal(@ByVal TestUnion u);
+        
+        @StructMember(13)
+        public native long unionByValAsLong();
+        @StructMember(13)
+        public native TestStruct unionByValAsLong(long l);
     }
     
     @Test
@@ -215,8 +305,30 @@ public class StructTest {
         assertEquals(0x9012345612345678L, s.l());
         assertEquals(9876, s.c());
         assertEquals(0x12345678, s.i());
+        assertEquals(123, s.getB());
+        assertEquals(0x9012345612345678L, s.getL());
+        assertEquals(9876, s.getC());
+        assertEquals(0x12345678, s.getI());
     }
-    
+
+    @Test
+    public void testJavaBeanLikeSetters() {
+        TestStruct s = new TestStruct();
+        s.setB((byte) 123);
+        s.setL(0x9012345612345678L);
+        s.setC((char) 9876);
+        s.setI(0x12345678);
+
+        assertEquals(123, s.b());
+        assertEquals(0x9012345612345678L, s.l());
+        assertEquals(9876, s.c());
+        assertEquals(0x12345678, s.i());
+        assertEquals(123, s.getB());
+        assertEquals(0x9012345612345678L, s.getL());
+        assertEquals(9876, s.getC());
+        assertEquals(0x12345678, s.getI());
+    }
+
     @Test
     public void testPtrMember() {
         TestStruct s = new TestStruct();
@@ -296,5 +408,96 @@ public class StructTest {
         assertEquals(TestBits.V1, s.bits());
         s.bits(s.bits().set(TestBits.V4));
         assertEquals(1 | 4, s.bits().value());
+    }
+    
+    @Test
+    public void testBytePtrMemberMarshaledAsString() {
+        TestStruct s = new TestStruct();
+        assertEquals(null, s.string());
+        s.string("Foo bar");
+        assertEquals("Foo bar", s.string());
+    }
+
+    @Test
+    public void testSimpleUnion() {
+        assertEquals(8, TestUnion.sizeOf());
+        TestUnion s = new TestUnion();
+        
+        s.d(Math.PI);
+        assertEquals(Math.PI, s.d(), 0.0001);
+        assertEquals(Double.doubleToLongBits(Math.PI), s.l());
+        assertEquals(Double.doubleToLongBits(Math.PI) & 0xff, s.b());
+        assertEquals(Double.doubleToLongBits(Math.PI) & 0xffffffffl, s.p().x() & 0xffffffffl);
+        assertEquals(Double.doubleToLongBits(Math.PI) >>> 32, s.p().y() & 0xffffffffl);
+        
+        s.l(0x123456789abcdef0l);
+        assertEquals(Double.longBitsToDouble(0x123456789abcdef0l), s.d(), 0.0001);
+        assertEquals(0x123456789abcdef0l, s.l());
+        assertEquals(0xf0, s.b() & 0xffl);
+        assertEquals(0x9abcdef0l, s.p().x() & 0xffffffffl);
+        assertEquals(0x12345678l, s.p().y() & 0xffffffffl);
+        
+        s.b((byte) 0xe4);
+        assertEquals(Double.longBitsToDouble(0x123456789abcdee4l), s.d(), 0.0001);
+        assertEquals(0x123456789abcdee4l, s.l());
+        assertEquals(0xe4, s.b() & 0xffl);
+        assertEquals(0x9abcdee4l, s.p().x() & 0xffffffffl);
+        assertEquals(0x12345678l, s.p().y() & 0xffffffffl);
+
+        s.p().x(0x10002000).y(0x30004000);
+        assertEquals(Double.longBitsToDouble(0x3000400010002000l), s.d(), 0.0001);
+        assertEquals("6", 0x3000400010002000l, s.l());
+        assertEquals(0x00, s.b() & 0xffl);
+        assertEquals("7", 0x10002000l, s.p().x() & 0xffffffffl);
+        assertEquals("8", 0x30004000l, s.p().y() & 0xffffffffl);
+    }
+    
+    @Test
+    public void testMixedStructUnion() {
+        assertEquals(16, MixedStructUnion.sizeOf());
+        MixedStructUnion s = new MixedStructUnion();
+
+        assertEquals(0, s.b1());
+        s.b1((byte) 0x34);
+        assertEquals(0x34, s.b1());
+        assertEquals(0x34, VM.getByte(s.getHandle()));
+
+        assertEquals(0, s.l());
+        s.l(0x1234567890abcdefl);
+        assertEquals(0x34, s.b1());
+        assertEquals(0x1234567890abcdefl, s.l());
+        assertEquals(0x1234567890abcdefl, VM.getLong(s.getHandle() + 4));
+
+        assertEquals(Double.longBitsToDouble(0x1234567890abcdefl), s.d(), 0.00001);
+        s.d(Math.PI);
+        assertEquals(0x34, s.b1());
+        assertEquals(Double.doubleToLongBits(Math.PI), s.l());
+        assertEquals(Math.PI, VM.getDouble(s.getHandle() + 4), 0.00001);
+
+        assertEquals(0, s.b2());
+        s.b2((byte) 0x43);
+        assertEquals(0x43, s.b2());
+        assertEquals(0x43, VM.getByte(s.getHandle() + 12));
+    }
+    
+    @Test
+    public void testUnionByVal() {
+        TestStruct s = new TestStruct();
+        TestUnion u = s.unionByVal();
+        s.unionByValAsLong(0x1234567890abcdefL);
+        assertEquals(0x1234567890abcdefL, s.unionByValAsLong());
+        assertEquals(0x1234567890abcdefL, u.l());
+        u.l(0xfedcba0987654321L);
+        assertEquals(0xfedcba0987654321L, s.unionByValAsLong());
+        assertEquals(0xfedcba0987654321L, u.l());
+        u.d(Math.PI);
+        assertEquals(Double.doubleToLongBits(Math.PI), s.unionByValAsLong());
+        assertEquals(Math.PI, u.d(), 0.00001);
+        
+        TestUnion v = new TestUnion();
+        v.l(0x6372819372612746L);
+        s.unionByVal(v);
+        assertEquals(0x6372819372612746L, s.unionByValAsLong());
+        assertEquals(0x6372819372612746L, u.l());
     }
 }

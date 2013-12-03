@@ -1118,6 +1118,10 @@ jboolean rvmRegisterClass(Env* env, Class* clazz) {
 void rvmInitialize(Env* env, Class* clazz) {
     assert(env->currentThread != NULL);
 
+    if (CLASS_IS_STATE_INITIALIZED(clazz)) {
+        return;
+    }
+
     // The initialization of a class or interface is described in the JVMS JavaSE7 edition section 5.5
     rvmLockObject(env, (Object*) clazz);
 

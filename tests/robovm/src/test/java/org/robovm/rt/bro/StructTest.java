@@ -19,11 +19,13 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.robovm.rt.VM;
+import org.robovm.rt.bro.annotation.Array;
 import org.robovm.rt.bro.annotation.ByRef;
 import org.robovm.rt.bro.annotation.ByVal;
 import org.robovm.rt.bro.annotation.Pointer;
 import org.robovm.rt.bro.annotation.StructMember;
 import org.robovm.rt.bro.ptr.BytePtr;
+import org.robovm.rt.bro.ptr.IntPtr;
 import org.robovm.rt.bro.ptr.Ptr;
 
 /**
@@ -223,6 +225,13 @@ public class StructTest {
         public native long unionByValAsLong();
         @StructMember(13)
         public native TestStruct unionByValAsLong(long l);
+    }
+
+    public static final class StructWithArray extends Struct<StructWithArray> {
+        @StructMember(0)
+        public native @Array({2, 3, 4}) @ByVal IntPtr intArray();
+        @StructMember(0)
+        public native StructWithArray intArray(@Array({2, 3, 4}) @ByVal IntPtr p);
     }
     
     @Test
@@ -499,5 +508,32 @@ public class StructTest {
         s.unionByVal(v);
         assertEquals(0x6372819372612746L, s.unionByValAsLong());
         assertEquals(0x6372819372612746L, u.l());
+    }
+    
+    @Test
+    public void testStructWithArray() {
+        assertEquals(96, StructWithArray.sizeOf());
+        StructWithArray s = new StructWithArray();
+        IntPtr p = s.intArray();
+        assertEquals(s.getHandle(), p.getHandle());
+        
+        for (int i = 0; i < 24; i++) {
+            p.next(i).set(i + 1);
+        }
+        
+        IntPtr q = s.intArray();
+        for (int i = 0; i < 24; i++) {
+            assertEquals(i + 1, q.next(i).get());
+        }
+        
+        IntPtr r = Struct.allocate(IntPtr.class, 24);
+        assertNotEquals(s.getHandle(), r.getHandle());
+        for (int i = 0; i < 24; i++) {
+            r.next(i).set(2 * (i + 1));
+        }
+        s.intArray(r);
+        for (int i = 0; i < 24; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get());
+        }
     }
 }

@@ -24,6 +24,7 @@ import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Type.*;
 
 import org.robovm.compiler.config.Config;
+import org.robovm.compiler.llvm.ArrayType;
 import org.robovm.compiler.llvm.Bitcast;
 import org.robovm.compiler.llvm.Function;
 import org.robovm.compiler.llvm.Getelementptr;
@@ -107,6 +108,9 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
             if (memberType instanceof StructureType) {
                 // The member is a child struct contained in the current struct
                 result = memberPtr.ref();
+            } else if (memberType instanceof ArrayType) {
+                // The member is an array contained in the current struct
+                result = memberPtr.ref();
             } else {
                 Variable tmp = function.newVariable(memberType);
                 function.add(new Load(tmp, memberPtr.ref()));
@@ -154,7 +158,7 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
                         nativeValue = marshalValueObjectToNative(function, marshalerClassName, memberType, env, nativeValue);
                     }
                 } else {
-                    if (memberType instanceof StructureType) {
+                    if (memberType instanceof StructureType || memberType instanceof ArrayType) {
                         // The parameter must not be null. We assume that Structs 
                         // never have a NULL handle so we just check that the Java
                         // Object isn't null.

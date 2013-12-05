@@ -42,8 +42,8 @@ public class DataLayout {
             String definition;
             if (type instanceof PrimitiveType) {
                 definition = "{" + ((PrimitiveType) type).getName() + "}";
-            } else if (type instanceof AggregateType) {
-                definition = ((AggregateType) type).getDefinition();
+            } else if (type instanceof StructureType) {
+                definition = ((StructureType) type).getDefinition();
             } else {
                 definition = "{" + ((UserType) type).getDefinition() + "}";
             }

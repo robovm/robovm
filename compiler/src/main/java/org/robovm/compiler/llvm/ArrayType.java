@@ -22,15 +22,15 @@ package org.robovm.compiler.llvm;
  */
 public class ArrayType extends AggregateType {
 
-    private final int size;
+    private final long size;
     private final Type elementType;
 
-    public ArrayType(int size, Type elementType) {
+    public ArrayType(long size, Type elementType) {
         this.size = size;
         this.elementType = elementType;
     }
     
-    public ArrayType(String alias, int size, Type elementType) {
+    public ArrayType(String alias, long size, Type elementType) {
         super(alias);
         this.size = size;
         this.elementType = elementType;
@@ -52,7 +52,7 @@ public class ArrayType extends AggregateType {
         int result = super.hashCode();
         result = prime * result
                 + ((elementType == null) ? 0 : elementType.hashCode());
-        result = prime * result + size;
+        result = prime * result + (int) (size ^ (size >>> 32));
         return result;
     }
 
@@ -80,5 +80,4 @@ public class ArrayType extends AggregateType {
         }
         return true;
     }
-
 }

@@ -24,9 +24,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.robovm.compiler.config.Arch;
-import org.robovm.compiler.config.Config;
-import org.robovm.compiler.config.OS;
 import org.robovm.compiler.llvm.ArrayType;
 import org.robovm.compiler.llvm.DataLayout;
 import org.robovm.compiler.llvm.FunctionType;
@@ -42,8 +39,11 @@ import soot.SootClass;
 import soot.SootMethod;
 import soot.SootResolver;
 import soot.VoidType;
+import soot.tagkit.AnnotationArrayElem;
 import soot.tagkit.AnnotationClassElem;
+import soot.tagkit.AnnotationElem;
 import soot.tagkit.AnnotationIntElem;
+import soot.tagkit.AnnotationLongElem;
 import soot.tagkit.AnnotationTag;
 import soot.tagkit.InnerClassTag;
 import soot.tagkit.SignatureTag;
@@ -252,7 +252,33 @@ public abstract class Bro {
         }
         return ((AnnotationIntElem) annotation.getElemAt(0)).getValue();
     }
-    
+
+    public static long[] getArrayDimensions(SootMethod method) {
+        AnnotationTag annotation = getArrayAnnotation(method);
+        if (annotation == null) {
+            return null;
+        }
+        ArrayList<AnnotationElem> values = ((AnnotationArrayElem) annotation.getElemAt(0)).getValues();
+        long[] dims = new long[values.size()];
+        for (int i = 0; i < dims.length; i++) {
+            dims[i] = ((AnnotationLongElem) values.get(i)).getValue();
+        }
+        return dims;
+    }
+
+    public static long[] getArrayDimensions(SootMethod method, int paramIndex) {
+        AnnotationTag annotation = getArrayAnnotation(method, paramIndex);
+        if (annotation == null) {
+            return null;
+        }
+        ArrayList<AnnotationElem> values = ((AnnotationArrayElem) annotation.getElemAt(0)).getValues();
+        long[] dims = new long[values.size()];
+        for (int i = 0; i < dims.length; i++) {
+            dims[i] = ((AnnotationLongElem) values.get(i)).getValue();
+        }
+        return dims;
+    }
+
     public static boolean isPassByValue(SootMethod method) {
         soot.Type sootType = method.getReturnType();
         return isStruct(sootType) && (hasByValAnnotation(method) 
@@ -474,28 +500,40 @@ public abstract class Bro {
         SootMethod setter = getter == null ? method: null;
         soot.Type type = getter != null 
                 ? getter.getReturnType() : setter.getParameterType(0);
+        Type memberType = null;
         if (isStruct(type)) {
             boolean byVal = getter != null ? isPassByValue(getter) : isPassByValue(setter, 0);
             if (!byVal) {
                 // NOTE: We use i8* instead of <StructType>* to support pointers to recursive structs
-                return I8_PTR;
+                memberType = I8_PTR;
             } else {
                 try {
-                    return getStructType(dataLayout, type);
+                    memberType = getStructType(dataLayout, type);
                 } catch (StackOverflowError e) {
                     throw new IllegalArgumentException("Struct type " + type + " refers to itself");
                 }
             }
         } else if (isNativeObject(type)) {
-            return I8_PTR;
+            memberType = I8_PTR;
         } else if (getter != null && hasPointerAnnotation(getter) || setter != null && hasPointerAnnotation(setter, 0)) {
-            return I8_PTR;
+            memberType = I8_PTR;
         } else if (type instanceof PrimType) {
-            return getType(type);
+            memberType = getType(type);
         } else {
             String marshalerClassName = getter != null ? getMarshalerClassName(getter, false) : getMarshalerClassName(setter, 0, false);
-            return getMarshalType(marshalerClassName, type);
+            memberType = getMarshalType(marshalerClassName, type);
         }
+        
+        long[] dimensions = getter != null ? getArrayDimensions(getter) : getArrayDimensions(setter, 0);
+        if (dimensions != null && dimensions.length > 0) {
+            long total = dimensions[0];
+            for (int i = 1; i < dimensions.length; i++) {
+                total *= dimensions[i];
+            }
+            memberType = new ArrayType(total, memberType);
+        }
+        
+        return memberType;
     }
     
     public static boolean isNativeObject(soot.Type t) {

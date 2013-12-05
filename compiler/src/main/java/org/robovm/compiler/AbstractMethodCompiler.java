@@ -33,6 +33,7 @@ import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.llvm.Alias;
 import org.robovm.compiler.llvm.Alloca;
+import org.robovm.compiler.llvm.ArrayType;
 import org.robovm.compiler.llvm.BasicBlockRef;
 import org.robovm.compiler.llvm.Bitcast;
 import org.robovm.compiler.llvm.BooleanConstant;
@@ -441,7 +442,7 @@ public abstract class AbstractMethodCompiler {
                 env, object);
     
         Variable nativeValue = fn.newVariable(nativeType);
-        if (nativeType instanceof StructureType || smallStructRet) {
+        if (nativeType instanceof StructureType || nativeType instanceof ArrayType || smallStructRet) {
             Variable tmp = fn.newVariable(new PointerType(nativeType));
             fn.add(new Inttoptr(tmp, handle, tmp.getType()));
             fn.add(new Load(nativeValue, tmp.ref()));

@@ -38,5 +38,5 @@ public @interface Array {
     /**
      * Array dimensions.
      */
-    long[] value();
+    int[] value();
 }

@@ -42,6 +42,7 @@ import org.robovm.compiler.llvm.DataLayout;
 import org.robovm.compiler.llvm.Function;
 import org.robovm.compiler.llvm.FunctionRef;
 import org.robovm.compiler.llvm.FunctionType;
+import org.robovm.compiler.llvm.GlobalRef;
 import org.robovm.compiler.llvm.IntegerConstant;
 import org.robovm.compiler.llvm.Inttoptr;
 import org.robovm.compiler.llvm.Label;
@@ -310,15 +311,23 @@ public abstract class AbstractMethodCompiler {
     }
     
     protected Value ldcClass(Function fn, String name, Value env) {
-        FunctionRef ldcClassFn = null;
-        if (name.equals(this.className)) {
-            ldcClassFn = FunctionBuilder.ldcInternal(this.className).ref();
+        if (isArray(name) && isPrimitiveBaseType(name)) {
+            String primitiveDesc = name.substring(name.length() - 1);
+            Variable result = fn.newVariable(OBJECT_PTR);
+            fn.add(new Load(result, new ConstantBitcast(
+                    new GlobalRef("array_" + primitiveDesc, CLASS_PTR), new PointerType(OBJECT_PTR))));
+            return result.ref();
         } else {
-            Trampoline trampoline = new LdcClass(this.className, name);
-            trampolines.add(trampoline);
-            ldcClassFn = trampoline.getFunctionRef();
+            FunctionRef ldcClassFn = null;
+            if (name.equals(this.className)) {
+                ldcClassFn = FunctionBuilder.ldcInternal(this.className).ref();
+            } else {
+                Trampoline trampoline = new LdcClass(this.className, name);
+                trampolines.add(trampoline);
+                ldcClassFn = trampoline.getFunctionRef();
+            }
+            return call(fn, ldcClassFn, env);
         }
-        return call(fn, ldcClassFn, env);
     }
     
     public static class MarshaledArg {
@@ -420,6 +429,44 @@ public abstract class AbstractMethodCompiler {
         return call(fn, invokeToObject.getFunctionRef(), env, values, nativeValue);
     }
     
+    private String arrayDimensionsDescriptor(int numDimensions) {
+        StringBuilder sb = new StringBuilder(numDimensions);
+        for (int i = 0; i < numDimensions; i++) {
+            sb.append('I');
+        }
+        return sb.toString();
+    }
+
+    private List<Value> arrayDimensionsValues(int[] dimensions) {
+        List<Value> l = new ArrayList<>();
+        for (int i = 0; i < dimensions.length; i++) {
+            l.add(new IntegerConstant(dimensions[i]));
+        }
+        return l;
+    }
+
+    protected Value marshalNativeToArray(Function fn, String marshalerClassName, Value env, 
+            String arrayClassName, Value nativeValue, int[] dimensions) {
+                
+        Invokestatic invokeToObject = new Invokestatic(
+                getInternalName(sootMethod.getDeclaringClass()), marshalerClassName, 
+                "toObject", String.format("(Ljava/lang/Class;J%s)Ljava/lang/Object;", 
+                        arrayDimensionsDescriptor(dimensions.length)));
+        trampolines.add(invokeToObject);
+
+        Variable handle = fn.newVariable(I64);
+        fn.add(new Ptrtoint(handle, nativeValue, I64)); 
+
+        Value valueClass = ldcClass(fn, arrayClassName, env);
+        List<Value> args = new ArrayList<>();
+        args.add(env);
+        args.add(valueClass);
+        args.add(handle.ref());
+        args.addAll(arrayDimensionsValues(dimensions));
+        
+        return call(fn, invokeToObject.getFunctionRef(), args);
+    }
+    
     protected Value marshalPointerToLong(Function fn, Value pointer) {
         Variable result = fn.newVariable(I64);
         fn.add(new Ptrtoint(result, pointer, I64));
@@ -472,6 +519,28 @@ public abstract class AbstractMethodCompiler {
                 "toNative", "(Ljava/lang/Enum;)" + getDescriptor(nativeType));
         trampolines.add(invokestatic);
         return call(fn, invokestatic.getFunctionRef(), env, object);
+    }
+    
+    protected void marshalArrayToNative(Function fn, String marshalerClassName, 
+            Value env, Value object, Value destPtr, int[] dimensions) {
+        
+        Invokestatic invokestatic = new Invokestatic(
+                getInternalName(sootMethod.getDeclaringClass()), marshalerClassName, 
+                "toNative", 
+                String.format("(Ljava/lang/Object;J%s)V", 
+                        arrayDimensionsDescriptor(dimensions.length)));
+        trampolines.add(invokestatic);
+
+        Variable handle = fn.newVariable(I64);
+        fn.add(new Ptrtoint(handle, destPtr, I64)); 
+
+        List<Value> args = new ArrayList<>();
+        args.add(env);
+        args.add(object);
+        args.add(handle.ref());
+        args.addAll(arrayDimensionsValues(dimensions));
+
+        call(fn, invokestatic.getFunctionRef(), args);
     }
     
     protected Value marshalLongToPointer(Function fn, Value handle) {

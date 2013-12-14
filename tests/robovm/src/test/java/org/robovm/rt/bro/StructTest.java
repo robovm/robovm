@@ -25,8 +25,13 @@ import org.robovm.rt.bro.annotation.ByVal;
 import org.robovm.rt.bro.annotation.Pointer;
 import org.robovm.rt.bro.annotation.StructMember;
 import org.robovm.rt.bro.ptr.BytePtr;
+import org.robovm.rt.bro.ptr.CharPtr;
+import org.robovm.rt.bro.ptr.DoublePtr;
+import org.robovm.rt.bro.ptr.FloatPtr;
 import org.robovm.rt.bro.ptr.IntPtr;
+import org.robovm.rt.bro.ptr.LongPtr;
 import org.robovm.rt.bro.ptr.Ptr;
+import org.robovm.rt.bro.ptr.ShortPtr;
 
 /**
  * 
@@ -229,9 +234,123 @@ public class StructTest {
 
     public static final class StructWithArray extends Struct<StructWithArray> {
         @StructMember(0)
-        public native @Array({2, 3, 4}) @ByVal IntPtr intArray();
+        public native @Array({2, 3, 4}) @ByVal BytePtr byteArrayAsPtr();
         @StructMember(0)
-        public native StructWithArray intArray(@Array({2, 3, 4}) @ByVal IntPtr p);
+        public native StructWithArray byteArrayAsPtr(@Array({2, 3, 4}) @ByVal BytePtr p);
+        @StructMember(0)
+        public native @Array(24) byte[] byteArray1D();
+        @StructMember(0)
+        public native StructWithArray byteArray1D(@Array(24) byte[] p);
+        @StructMember(0)
+        public native @Array({3, 8}) byte[][] byteArray2D();
+        @StructMember(0)
+        public native StructWithArray byteArray2D(@Array({3, 8}) byte[][] p);
+        @StructMember(0)
+        public native @Array({2, 3, 4}) byte[][][] byteArray3D();
+        @StructMember(0)
+        public native StructWithArray byteArray3D(@Array({2, 3, 4}) byte[][][] p);
+
+        @StructMember(0)
+        public native @Array({2, 3, 4}) @ByVal ShortPtr shortArrayAsPtr();
+        @StructMember(0)
+        public native StructWithArray shortArrayAsPtr(@Array({2, 3, 4}) @ByVal ShortPtr p);
+        @StructMember(0)
+        public native @Array(24) short[] shortArray1D();
+        @StructMember(0)
+        public native StructWithArray shortArray1D(@Array(24) short[] p);
+        @StructMember(0)
+        public native @Array({3, 8}) short[][] shortArray2D();
+        @StructMember(0)
+        public native StructWithArray shortArray2D(@Array({3, 8}) short[][] p);
+        @StructMember(0)
+        public native @Array({2, 3, 4}) short[][][] shortArray3D();
+        @StructMember(0)
+        public native StructWithArray shortArray3D(@Array({2, 3, 4}) short[][][] p);
+
+        @StructMember(0)
+        public native @Array({2, 3, 4}) @ByVal CharPtr charArrayAsPtr();
+        @StructMember(0)
+        public native StructWithArray charArrayAsPtr(@Array({2, 3, 4}) @ByVal CharPtr p);
+        @StructMember(0)
+        public native @Array(24) char[] charArray1D();
+        @StructMember(0)
+        public native StructWithArray charArray1D(@Array(24) char[] p);
+        @StructMember(0)
+        public native @Array({3, 8}) char[][] charArray2D();
+        @StructMember(0)
+        public native StructWithArray charArray2D(@Array({3, 8}) char[][] p);
+        @StructMember(0)
+        public native @Array({2, 3, 4}) char[][][] charArray3D();
+        @StructMember(0)
+        public native StructWithArray charArray3D(@Array({2, 3, 4}) char[][][] p);
+
+        @StructMember(0)
+        public native @Array({2, 3, 4}) @ByVal IntPtr intArrayAsPtr();
+        @StructMember(0)
+        public native StructWithArray intArrayAsPtr(@Array({2, 3, 4}) @ByVal IntPtr p);
+        @StructMember(0)
+        public native @Array(24) int[] intArray1D();
+        @StructMember(0)
+        public native StructWithArray intArray1D(@Array(24) int[] p);
+        @StructMember(0)
+        public native @Array({3, 8}) int[][] intArray2D();
+        @StructMember(0)
+        public native StructWithArray intArray2D(@Array({3, 8}) int[][] p);
+        @StructMember(0)
+        public native @Array({2, 3, 4}) int[][][] intArray3D();
+        @StructMember(0)
+        public native StructWithArray intArray3D(@Array({2, 3, 4}) int[][][] p);
+
+        @StructMember(0)
+        public native @Array({2, 3, 4}) @ByVal LongPtr longArrayAsPtr();
+        @StructMember(0)
+        public native StructWithArray longArrayAsPtr(@Array({2, 3, 4}) @ByVal LongPtr p);
+        @StructMember(0)
+        public native @Array(24) long[] longArray1D();
+        @StructMember(0)
+        public native StructWithArray longArray1D(@Array(24) long[] p);
+        @StructMember(0)
+        public native @Array({3, 8}) long[][] longArray2D();
+        @StructMember(0)
+        public native StructWithArray longArray2D(@Array({3, 8}) long[][] p);
+        @StructMember(0)
+        public native @Array({2, 3, 4}) long[][][] longArray3D();
+        @StructMember(0)
+        public native StructWithArray longArray3D(@Array({2, 3, 4}) long[][][] p);
+
+        @StructMember(0)
+        public native @Array({2, 3, 4}) @ByVal FloatPtr floatArrayAsPtr();
+        @StructMember(0)
+        public native StructWithArray floatArrayAsPtr(@Array({2, 3, 4}) @ByVal FloatPtr p);
+        @StructMember(0)
+        public native @Array(24) float[] floatArray1D();
+        @StructMember(0)
+        public native StructWithArray floatArray1D(@Array(24) float[] p);
+        @StructMember(0)
+        public native @Array({3, 8}) float[][] floatArray2D();
+        @StructMember(0)
+        public native StructWithArray floatArray2D(@Array({3, 8}) float[][] p);
+        @StructMember(0)
+        public native @Array({2, 3, 4}) float[][][] floatArray3D();
+        @StructMember(0)
+        public native StructWithArray floatArray3D(@Array({2, 3, 4}) float[][][] p);
+
+        @StructMember(0)
+        public native @Array({2, 3, 4}) @ByVal DoublePtr doubleArrayAsPtr();
+        @StructMember(0)
+        public native StructWithArray doubleArrayAsPtr(@Array({2, 3, 4}) @ByVal DoublePtr p);
+        @StructMember(0)
+        public native @Array(24) double[] doubleArray1D();
+        @StructMember(0)
+        public native StructWithArray doubleArray1D(@Array(24) double[] p);
+        @StructMember(0)
+        public native @Array({3, 8}) double[][] doubleArray2D();
+        @StructMember(0)
+        public native StructWithArray doubleArray2D(@Array({3, 8}) double[][] p);
+        @StructMember(0)
+        public native @Array({2, 3, 4}) double[][][] doubleArray3D();
+        @StructMember(0)
+        public native StructWithArray doubleArray3D(@Array({2, 3, 4}) double[][][] p);
     }
     
     @Test
@@ -511,29 +630,1458 @@ public class StructTest {
     }
     
     @Test
-    public void testStructWithArray() {
-        assertEquals(96, StructWithArray.sizeOf());
+    public void testStructWithArrayByteArrayAsPtr() {
+        assertEquals(192, StructWithArray.sizeOf());
+
+        final int D1 = 24;
         StructWithArray s = new StructWithArray();
-        IntPtr p = s.intArray();
+        BytePtr p = s.byteArrayAsPtr();
+        BytePtr q;
+        BytePtr r;
         assertEquals(s.getHandle(), p.getHandle());
         
-        for (int i = 0; i < 24; i++) {
-            p.next(i).set(i + 1);
+        for (int i = 0; i < D1; i++) {
+            p.next(i).set((byte) (i + 1));
         }
         
-        IntPtr q = s.intArray();
-        for (int i = 0; i < 24; i++) {
+        q = s.byteArrayAsPtr();
+        for (int i = 0; i < D1; i++) {
             assertEquals(i + 1, q.next(i).get());
         }
         
-        IntPtr r = Struct.allocate(IntPtr.class, 24);
+        r = Struct.allocate(BytePtr.class, D1);
         assertNotEquals(s.getHandle(), r.getHandle());
-        for (int i = 0; i < 24; i++) {
+        for (int i = 0; i < D1; i++) {
+            r.next(i).set((byte) (2 * (i + 1)));
+        }
+        s.byteArrayAsPtr(r);
+        for (int i = 0; i < D1; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get() & 0xff);
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayByteArrayAs1D() {
+        assertEquals(192, StructWithArray.sizeOf());
+        
+        final int D1 = 24;
+        byte[] array1;
+        byte[] array2;
+        byte[] array3;
+        StructWithArray s = new StructWithArray();
+        BytePtr p = s.byteArrayAsPtr();
+
+        array1 = s.byteArray1D();
+        assertEquals(D1, array1.length);
+        for (int i = 0; i < array1.length; i++) {
+            assertEquals(0, array1[i]);
+        }
+        
+        for (int i = 0; i < D1; i++) {
+            p.next(i).set((byte) (i + 1));
+        }
+
+        array2 = s.byteArray1D();
+        assertEquals(D1, array2.length);
+        for (int i = 0; i < array2.length; i++) {
+            assertEquals(i + 1, array2[i]);
+        }
+        
+        array3 = new byte[D1];
+        for (int i = 0; i < array3.length; i++) {
+            array3[i] = (byte) (2 * (i + 1));
+        }
+        s.byteArray1D(array3);
+
+        for (int i = 0; i < D1; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get() & 0xff);
+        }
+
+        try {
+            s.byteArray1D(new byte[D1 / 2]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayByteArrayAs2D() {
+        assertEquals(192, StructWithArray.sizeOf());
+        
+        final int D1 = 3;
+        final int D2 = 8;
+        byte[][] array1;
+        byte[][] array2;
+        byte[][] array3;
+        StructWithArray s = new StructWithArray();
+        BytePtr p = s.byteArrayAsPtr();
+        
+        array1 = s.byteArray2D();
+        assertEquals(D1, array1.length);
+        for (int i = 0; i < array1.length; i++) {
+            assertEquals(D2, array1[i].length);
+            for (int j = 0; j < array1[i].length; j++) {
+                assertEquals(0, array1[i][j]);
+            }
+        }
+        
+        for (int i = 0; i < D1 * D2; i++) {
+            p.next(i).set((byte) (i + 1));
+        }
+
+        array2 = s.byteArray2D();
+        assertEquals(D1, array2.length);
+        for (int i = 0; i < array2.length; i++) {
+            assertEquals(D2, array2[i].length);
+            for (int j = 0; j < array2[i].length; j++) {
+                assertEquals(i * D2 + j + 1, array2[i][j]);
+            }
+        }
+        
+        array3 = new byte[D1][D2];
+        for (int i = 0; i < array3.length; i++) {
+            for (int j = 0; j < array3[i].length; j++) {
+                array3[i][j] = (byte) (2 * (i * D2 + j + 1));
+            }
+        }
+        s.byteArray2D(array3);
+
+        for (int i = 0; i < D1 * D2; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get() & 0xff);
+        }
+        
+        try {
+            s.byteArray2D(new byte[D1 / 2][]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+
+        try {
+            s.byteArray2D(new byte[D1][D2 / 2]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayByteArrayAs3D() {
+        assertEquals(192, StructWithArray.sizeOf());
+        
+        final int D1 = 2;
+        final int D2 = 3;
+        final int D3 = 4;
+        byte[][][] array1;
+        byte[][][] array2;
+        byte[][][] array3;
+        StructWithArray s = new StructWithArray();
+        BytePtr p = s.byteArrayAsPtr();
+
+        array1 = s.byteArray3D();
+        assertEquals(D1, array1.length);
+        for (int i = 0; i < array1.length; i++) {
+            assertEquals(D2, array1[i].length);
+            for (int j = 0; j < array1[i].length; j++) {
+                assertEquals(D3, array1[i][j].length);
+                for (int k = 0; k < array1[i][j].length; k++) {
+                    assertEquals(0, array1[i][j][k]);
+                }
+            }
+        }
+        
+        for (int i = 0; i < D1 * D2 * D3; i++) {
+            p.next(i).set((byte) (i + 1));
+        }
+
+        array2 = s.byteArray3D();
+        assertEquals(D1, array2.length);
+        for (int i = 0; i < array2.length; i++) {
+            assertEquals(D2, array2[i].length);
+            for (int j = 0; j < array2[i].length; j++) {
+                assertEquals(D3, array2[i][j].length);
+                for (int k = 0; k < array2[i][j].length; k++) {
+                    assertEquals((i * D2 + j) * D3 + k + 1, array2[i][j][k]);
+                }
+            }
+        }
+        
+        array3 = new byte[D1][D2][D3];
+        for (int i = 0; i < array3.length; i++) {
+            for (int j = 0; j < array3[i].length; j++) {
+                for (int k = 0; k < array3[i][j].length; k++) {
+                    array3[i][j][k] = (byte) (2 * ((i * D2 + j) * D3 + k + 1));
+                }
+            }
+        }
+        s.byteArray3D(array3);
+
+        for (int i = 0; i < D1 * D2 * D3; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get() & 0xff);
+        }
+        
+        try {
+            s.byteArray3D(new byte[D1 / 2][][]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+
+        try {
+            s.byteArray3D(new byte[D1][D2 / 2][]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+        
+        try {
+            s.byteArray3D(new byte[D1][D2][D3 / 2]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayShortArrayAsPtr() {
+        assertEquals(192, StructWithArray.sizeOf());
+
+        final int D1 = 24;
+        StructWithArray s = new StructWithArray();
+        ShortPtr p = s.shortArrayAsPtr();
+        ShortPtr q;
+        ShortPtr r;
+        assertEquals(s.getHandle(), p.getHandle());
+        
+        for (int i = 0; i < D1; i++) {
+            p.next(i).set((short) (i + 1));
+        }
+        
+        q = s.shortArrayAsPtr();
+        for (int i = 0; i < D1; i++) {
+            assertEquals(i + 1, q.next(i).get());
+        }
+        
+        r = Struct.allocate(ShortPtr.class, D1);
+        assertNotEquals(s.getHandle(), r.getHandle());
+        for (int i = 0; i < D1; i++) {
+            r.next(i).set((short) (2 * (i + 1)));
+        }
+        s.shortArrayAsPtr(r);
+        for (int i = 0; i < D1; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get() & 0xffff);
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayShortArrayAs1D() {
+        assertEquals(192, StructWithArray.sizeOf());
+        
+        final int D1 = 24;
+        short[] array1;
+        short[] array2;
+        short[] array3;
+        StructWithArray s = new StructWithArray();
+        ShortPtr p = s.shortArrayAsPtr();
+
+        array1 = s.shortArray1D();
+        assertEquals(D1, array1.length);
+        for (int i = 0; i < array1.length; i++) {
+            assertEquals(0, array1[i]);
+        }
+        
+        for (int i = 0; i < D1; i++) {
+            p.next(i).set((short) (i + 1));
+        }
+
+        array2 = s.shortArray1D();
+        assertEquals(D1, array2.length);
+        for (int i = 0; i < array2.length; i++) {
+            assertEquals(i + 1, array2[i]);
+        }
+        
+        array3 = new short[D1];
+        for (int i = 0; i < array3.length; i++) {
+            array3[i] = (short) (2 * (i + 1));
+        }
+        s.shortArray1D(array3);
+
+        for (int i = 0; i < D1; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get() & 0xffff);
+        }
+
+        try {
+            s.shortArray1D(new short[D1 / 2]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayShortArrayAs2D() {
+        assertEquals(192, StructWithArray.sizeOf());
+        
+        final int D1 = 3;
+        final int D2 = 8;
+        short[][] array1;
+        short[][] array2;
+        short[][] array3;
+        StructWithArray s = new StructWithArray();
+        ShortPtr p = s.shortArrayAsPtr();
+        
+        array1 = s.shortArray2D();
+        assertEquals(D1, array1.length);
+        for (int i = 0; i < array1.length; i++) {
+            assertEquals(D2, array1[i].length);
+            for (int j = 0; j < array1[i].length; j++) {
+                assertEquals(0, array1[i][j]);
+            }
+        }
+        
+        for (int i = 0; i < D1 * D2; i++) {
+            p.next(i).set((short) (i + 1));
+        }
+
+        array2 = s.shortArray2D();
+        assertEquals(D1, array2.length);
+        for (int i = 0; i < array2.length; i++) {
+            assertEquals(D2, array2[i].length);
+            for (int j = 0; j < array2[i].length; j++) {
+                assertEquals(i * D2 + j + 1, array2[i][j]);
+            }
+        }
+        
+        array3 = new short[D1][D2];
+        for (int i = 0; i < array3.length; i++) {
+            for (int j = 0; j < array3[i].length; j++) {
+                array3[i][j] = (short) (2 * (i * D2 + j + 1));
+            }
+        }
+        s.shortArray2D(array3);
+
+        for (int i = 0; i < D1 * D2; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get() & 0xffff);
+        }
+        
+        try {
+            s.shortArray2D(new short[D1 / 2][]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+
+        try {
+            s.shortArray2D(new short[D1][D2 / 2]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayShortArrayAs3D() {
+        assertEquals(192, StructWithArray.sizeOf());
+        
+        final int D1 = 2;
+        final int D2 = 3;
+        final int D3 = 4;
+        short[][][] array1;
+        short[][][] array2;
+        short[][][] array3;
+        StructWithArray s = new StructWithArray();
+        ShortPtr p = s.shortArrayAsPtr();
+
+        array1 = s.shortArray3D();
+        assertEquals(D1, array1.length);
+        for (int i = 0; i < array1.length; i++) {
+            assertEquals(D2, array1[i].length);
+            for (int j = 0; j < array1[i].length; j++) {
+                assertEquals(D3, array1[i][j].length);
+                for (int k = 0; k < array1[i][j].length; k++) {
+                    assertEquals(0, array1[i][j][k]);
+                }
+            }
+        }
+        
+        for (int i = 0; i < D1 * D2 * D3; i++) {
+            p.next(i).set((short) (i + 1));
+        }
+
+        array2 = s.shortArray3D();
+        assertEquals(D1, array2.length);
+        for (int i = 0; i < array2.length; i++) {
+            assertEquals(D2, array2[i].length);
+            for (int j = 0; j < array2[i].length; j++) {
+                assertEquals(D3, array2[i][j].length);
+                for (int k = 0; k < array2[i][j].length; k++) {
+                    assertEquals((i * D2 + j) * D3 + k + 1, array2[i][j][k]);
+                }
+            }
+        }
+        
+        array3 = new short[D1][D2][D3];
+        for (int i = 0; i < array3.length; i++) {
+            for (int j = 0; j < array3[i].length; j++) {
+                for (int k = 0; k < array3[i][j].length; k++) {
+                    array3[i][j][k] = (short) (2 * ((i * D2 + j) * D3 + k + 1));
+                }
+            }
+        }
+        s.shortArray3D(array3);
+
+        for (int i = 0; i < D1 * D2 * D3; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get() & 0xffff);
+        }
+        
+        try {
+            s.shortArray3D(new short[D1 / 2][][]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+
+        try {
+            s.shortArray3D(new short[D1][D2 / 2][]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+        
+        try {
+            s.shortArray3D(new short[D1][D2][D3 / 2]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayCharArrayAsPtr() {
+        assertEquals(192, StructWithArray.sizeOf());
+
+        final int D1 = 24;
+        StructWithArray s = new StructWithArray();
+        CharPtr p = s.charArrayAsPtr();
+        CharPtr q;
+        CharPtr r;
+        assertEquals(s.getHandle(), p.getHandle());
+        
+        for (int i = 0; i < D1; i++) {
+            p.next(i).set((char) (i + 1));
+        }
+        
+        q = s.charArrayAsPtr();
+        for (int i = 0; i < D1; i++) {
+            assertEquals(i + 1, q.next(i).get());
+        }
+        
+        r = Struct.allocate(CharPtr.class, D1);
+        assertNotEquals(s.getHandle(), r.getHandle());
+        for (int i = 0; i < D1; i++) {
+            r.next(i).set((char) (2 * (i + 1)));
+        }
+        s.charArrayAsPtr(r);
+        for (int i = 0; i < D1; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get() & 0xffff);
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayCharArrayAs1D() {
+        assertEquals(192, StructWithArray.sizeOf());
+        
+        final int D1 = 24;
+        char[] array1;
+        char[] array2;
+        char[] array3;
+        StructWithArray s = new StructWithArray();
+        CharPtr p = s.charArrayAsPtr();
+
+        array1 = s.charArray1D();
+        assertEquals(D1, array1.length);
+        for (int i = 0; i < array1.length; i++) {
+            assertEquals(0, array1[i]);
+        }
+        
+        for (int i = 0; i < D1; i++) {
+            p.next(i).set((char) (i + 1));
+        }
+
+        array2 = s.charArray1D();
+        assertEquals(D1, array2.length);
+        for (int i = 0; i < array2.length; i++) {
+            assertEquals(i + 1, array2[i]);
+        }
+        
+        array3 = new char[D1];
+        for (int i = 0; i < array3.length; i++) {
+            array3[i] = (char) (2 * (i + 1));
+        }
+        s.charArray1D(array3);
+
+        for (int i = 0; i < D1; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get() & 0xffff);
+        }
+
+        try {
+            s.charArray1D(new char[D1 / 2]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayCharArrayAs2D() {
+        assertEquals(192, StructWithArray.sizeOf());
+        
+        final int D1 = 3;
+        final int D2 = 8;
+        char[][] array1;
+        char[][] array2;
+        char[][] array3;
+        StructWithArray s = new StructWithArray();
+        CharPtr p = s.charArrayAsPtr();
+        
+        array1 = s.charArray2D();
+        assertEquals(D1, array1.length);
+        for (int i = 0; i < array1.length; i++) {
+            assertEquals(D2, array1[i].length);
+            for (int j = 0; j < array1[i].length; j++) {
+                assertEquals(0, array1[i][j]);
+            }
+        }
+        
+        for (int i = 0; i < D1 * D2; i++) {
+            p.next(i).set((char) (i + 1));
+        }
+
+        array2 = s.charArray2D();
+        assertEquals(D1, array2.length);
+        for (int i = 0; i < array2.length; i++) {
+            assertEquals(D2, array2[i].length);
+            for (int j = 0; j < array2[i].length; j++) {
+                assertEquals(i * D2 + j + 1, array2[i][j]);
+            }
+        }
+        
+        array3 = new char[D1][D2];
+        for (int i = 0; i < array3.length; i++) {
+            for (int j = 0; j < array3[i].length; j++) {
+                array3[i][j] = (char) (2 * (i * D2 + j + 1));
+            }
+        }
+        s.charArray2D(array3);
+
+        for (int i = 0; i < D1 * D2; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get() & 0xffff);
+        }
+        
+        try {
+            s.charArray2D(new char[D1 / 2][]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+
+        try {
+            s.charArray2D(new char[D1][D2 / 2]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayCharArrayAs3D() {
+        assertEquals(192, StructWithArray.sizeOf());
+        
+        final int D1 = 2;
+        final int D2 = 3;
+        final int D3 = 4;
+        char[][][] array1;
+        char[][][] array2;
+        char[][][] array3;
+        StructWithArray s = new StructWithArray();
+        CharPtr p = s.charArrayAsPtr();
+
+        array1 = s.charArray3D();
+        assertEquals(D1, array1.length);
+        for (int i = 0; i < array1.length; i++) {
+            assertEquals(D2, array1[i].length);
+            for (int j = 0; j < array1[i].length; j++) {
+                assertEquals(D3, array1[i][j].length);
+                for (int k = 0; k < array1[i][j].length; k++) {
+                    assertEquals(0, array1[i][j][k]);
+                }
+            }
+        }
+        
+        for (int i = 0; i < D1 * D2 * D3; i++) {
+            p.next(i).set((char) (i + 1));
+        }
+
+        array2 = s.charArray3D();
+        assertEquals(D1, array2.length);
+        for (int i = 0; i < array2.length; i++) {
+            assertEquals(D2, array2[i].length);
+            for (int j = 0; j < array2[i].length; j++) {
+                assertEquals(D3, array2[i][j].length);
+                for (int k = 0; k < array2[i][j].length; k++) {
+                    assertEquals((i * D2 + j) * D3 + k + 1, array2[i][j][k]);
+                }
+            }
+        }
+        
+        array3 = new char[D1][D2][D3];
+        for (int i = 0; i < array3.length; i++) {
+            for (int j = 0; j < array3[i].length; j++) {
+                for (int k = 0; k < array3[i][j].length; k++) {
+                    array3[i][j][k] = (char) (2 * ((i * D2 + j) * D3 + k + 1));
+                }
+            }
+        }
+        s.charArray3D(array3);
+
+        for (int i = 0; i < D1 * D2 * D3; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get() & 0xffff);
+        }
+        
+        try {
+            s.charArray3D(new char[D1 / 2][][]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+
+        try {
+            s.charArray3D(new char[D1][D2 / 2][]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+        
+        try {
+            s.charArray3D(new char[D1][D2][D3 / 2]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayIntArrayAsPtr() {
+        assertEquals(192, StructWithArray.sizeOf());
+
+        final int D1 = 24;
+        StructWithArray s = new StructWithArray();
+        IntPtr p = s.intArrayAsPtr();
+        IntPtr q;
+        IntPtr r;
+        assertEquals(s.getHandle(), p.getHandle());
+        
+        for (int i = 0; i < D1; i++) {
+            p.next(i).set(i + 1);
+        }
+        
+        q = s.intArrayAsPtr();
+        for (int i = 0; i < D1; i++) {
+            assertEquals(i + 1, q.next(i).get());
+        }
+        
+        r = Struct.allocate(IntPtr.class, D1);
+        assertNotEquals(s.getHandle(), r.getHandle());
+        for (int i = 0; i < D1; i++) {
             r.next(i).set(2 * (i + 1));
         }
-        s.intArray(r);
-        for (int i = 0; i < 24; i++) {
+        s.intArrayAsPtr(r);
+        for (int i = 0; i < D1; i++) {
             assertEquals(2 * (i + 1), p.next(i).get());
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayIntArrayAs1D() {
+        assertEquals(192, StructWithArray.sizeOf());
+        
+        final int D1 = 24;
+        int[] array1;
+        int[] array2;
+        int[] array3;
+        StructWithArray s = new StructWithArray();
+        IntPtr p = s.intArrayAsPtr();
+
+        array1 = s.intArray1D();
+        assertEquals(D1, array1.length);
+        for (int i = 0; i < array1.length; i++) {
+            assertEquals(0, array1[i]);
+        }
+        
+        for (int i = 0; i < D1; i++) {
+            p.next(i).set(i + 1);
+        }
+
+        array2 = s.intArray1D();
+        assertEquals(D1, array2.length);
+        for (int i = 0; i < array2.length; i++) {
+            assertEquals(i + 1, array2[i]);
+        }
+        
+        array3 = new int[D1];
+        for (int i = 0; i < array3.length; i++) {
+            array3[i] = 2 * (i + 1);
+        }
+        s.intArray1D(array3);
+
+        for (int i = 0; i < D1; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get());
+        }
+
+        try {
+            s.intArray1D(new int[D1 / 2]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayIntArrayAs2D() {
+        assertEquals(192, StructWithArray.sizeOf());
+        
+        final int D1 = 3;
+        final int D2 = 8;
+        int[][] array1;
+        int[][] array2;
+        int[][] array3;
+        StructWithArray s = new StructWithArray();
+        IntPtr p = s.intArrayAsPtr();
+        
+        array1 = s.intArray2D();
+        assertEquals(D1, array1.length);
+        for (int i = 0; i < array1.length; i++) {
+            assertEquals(D2, array1[i].length);
+            for (int j = 0; j < array1[i].length; j++) {
+                assertEquals(0, array1[i][j]);
+            }
+        }
+        
+        for (int i = 0; i < D1 * D2; i++) {
+            p.next(i).set(i + 1);
+        }
+
+        array2 = s.intArray2D();
+        assertEquals(D1, array2.length);
+        for (int i = 0; i < array2.length; i++) {
+            assertEquals(D2, array2[i].length);
+            for (int j = 0; j < array2[i].length; j++) {
+                assertEquals(i * D2 + j + 1, array2[i][j]);
+            }
+        }
+        
+        array3 = new int[D1][D2];
+        for (int i = 0; i < array3.length; i++) {
+            for (int j = 0; j < array3[i].length; j++) {
+                array3[i][j] = 2 * (i * D2 + j + 1);
+            }
+        }
+        s.intArray2D(array3);
+
+        for (int i = 0; i < D1 * D2; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get());
+        }
+        
+        try {
+            s.intArray2D(new int[D1 / 2][]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+
+        try {
+            s.intArray2D(new int[D1][D2 / 2]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayIntArrayAs3D() {
+        assertEquals(192, StructWithArray.sizeOf());
+        
+        final int D1 = 2;
+        final int D2 = 3;
+        final int D3 = 4;
+        int[][][] array1;
+        int[][][] array2;
+        int[][][] array3;
+        StructWithArray s = new StructWithArray();
+        IntPtr p = s.intArrayAsPtr();
+
+        array1 = s.intArray3D();
+        assertEquals(D1, array1.length);
+        for (int i = 0; i < array1.length; i++) {
+            assertEquals(D2, array1[i].length);
+            for (int j = 0; j < array1[i].length; j++) {
+                assertEquals(D3, array1[i][j].length);
+                for (int k = 0; k < array1[i][j].length; k++) {
+                    assertEquals(0, array1[i][j][k]);
+                }
+            }
+        }
+        
+        for (int i = 0; i < D1 * D2 * D3; i++) {
+            p.next(i).set(i + 1);
+        }
+
+        array2 = s.intArray3D();
+        assertEquals(D1, array2.length);
+        for (int i = 0; i < array2.length; i++) {
+            assertEquals(D2, array2[i].length);
+            for (int j = 0; j < array2[i].length; j++) {
+                assertEquals(D3, array2[i][j].length);
+                for (int k = 0; k < array2[i][j].length; k++) {
+                    assertEquals((i * D2 + j) * D3 + k + 1, array2[i][j][k]);
+                }
+            }
+        }
+        
+        array3 = new int[D1][D2][D3];
+        for (int i = 0; i < array3.length; i++) {
+            for (int j = 0; j < array3[i].length; j++) {
+                for (int k = 0; k < array3[i][j].length; k++) {
+                    array3[i][j][k] = 2 * ((i * D2 + j) * D3 + k + 1);
+                }
+            }
+        }
+        s.intArray3D(array3);
+
+        for (int i = 0; i < D1 * D2 * D3; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get());
+        }
+        
+        try {
+            s.intArray3D(new int[D1 / 2][][]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+
+        try {
+            s.intArray3D(new int[D1][D2 / 2][]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+        
+        try {
+            s.intArray3D(new int[D1][D2][D3 / 2]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayLongArrayAsPtr() {
+        assertEquals(192, StructWithArray.sizeOf());
+
+        final int D1 = 24;
+        StructWithArray s = new StructWithArray();
+        LongPtr p = s.longArrayAsPtr();
+        LongPtr q;
+        LongPtr r;
+        assertEquals(s.getHandle(), p.getHandle());
+        
+        for (int i = 0; i < D1; i++) {
+            p.next(i).set(i + 1);
+        }
+        
+        q = s.longArrayAsPtr();
+        for (int i = 0; i < D1; i++) {
+            assertEquals(i + 1, q.next(i).get());
+        }
+        
+        r = Struct.allocate(LongPtr.class, D1);
+        assertNotEquals(s.getHandle(), r.getHandle());
+        for (int i = 0; i < D1; i++) {
+            r.next(i).set(2 * (i + 1));
+        }
+        s.longArrayAsPtr(r);
+        for (int i = 0; i < D1; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get());
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayLongArrayAs1D() {
+        assertEquals(192, StructWithArray.sizeOf());
+        
+        final int D1 = 24;
+        long[] array1;
+        long[] array2;
+        long[] array3;
+        StructWithArray s = new StructWithArray();
+        LongPtr p = s.longArrayAsPtr();
+
+        array1 = s.longArray1D();
+        assertEquals(D1, array1.length);
+        for (int i = 0; i < array1.length; i++) {
+            assertEquals(0, array1[i]);
+        }
+        
+        for (int i = 0; i < D1; i++) {
+            p.next(i).set(i + 1);
+        }
+
+        array2 = s.longArray1D();
+        assertEquals(D1, array2.length);
+        for (int i = 0; i < array2.length; i++) {
+            assertEquals(i + 1, array2[i]);
+        }
+        
+        array3 = new long[D1];
+        for (int i = 0; i < array3.length; i++) {
+            array3[i] = 2 * (i + 1);
+        }
+        s.longArray1D(array3);
+
+        for (int i = 0; i < D1; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get());
+        }
+
+        try {
+            s.longArray1D(new long[D1 / 2]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayLongArrayAs2D() {
+        assertEquals(192, StructWithArray.sizeOf());
+        
+        final int D1 = 3;
+        final int D2 = 8;
+        long[][] array1;
+        long[][] array2;
+        long[][] array3;
+        StructWithArray s = new StructWithArray();
+        LongPtr p = s.longArrayAsPtr();
+        
+        array1 = s.longArray2D();
+        assertEquals(D1, array1.length);
+        for (int i = 0; i < array1.length; i++) {
+            assertEquals(D2, array1[i].length);
+            for (int j = 0; j < array1[i].length; j++) {
+                assertEquals(0, array1[i][j]);
+            }
+        }
+        
+        for (int i = 0; i < D1 * D2; i++) {
+            p.next(i).set(i + 1);
+        }
+
+        array2 = s.longArray2D();
+        assertEquals(D1, array2.length);
+        for (int i = 0; i < array2.length; i++) {
+            assertEquals(D2, array2[i].length);
+            for (int j = 0; j < array2[i].length; j++) {
+                assertEquals(i * D2 + j + 1, array2[i][j]);
+            }
+        }
+        
+        array3 = new long[D1][D2];
+        for (int i = 0; i < array3.length; i++) {
+            for (int j = 0; j < array3[i].length; j++) {
+                array3[i][j] = 2 * (i * D2 + j + 1);
+            }
+        }
+        s.longArray2D(array3);
+
+        for (int i = 0; i < D1 * D2; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get());
+        }
+        
+        try {
+            s.longArray2D(new long[D1 / 2][]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+
+        try {
+            s.longArray2D(new long[D1][D2 / 2]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayLongArrayAs3D() {
+        assertEquals(192, StructWithArray.sizeOf());
+        
+        final int D1 = 2;
+        final int D2 = 3;
+        final int D3 = 4;
+        long[][][] array1;
+        long[][][] array2;
+        long[][][] array3;
+        StructWithArray s = new StructWithArray();
+        LongPtr p = s.longArrayAsPtr();
+
+        array1 = s.longArray3D();
+        assertEquals(D1, array1.length);
+        for (int i = 0; i < array1.length; i++) {
+            assertEquals(D2, array1[i].length);
+            for (int j = 0; j < array1[i].length; j++) {
+                assertEquals(D3, array1[i][j].length);
+                for (int k = 0; k < array1[i][j].length; k++) {
+                    assertEquals(0, array1[i][j][k]);
+                }
+            }
+        }
+        
+        for (int i = 0; i < D1 * D2 * D3; i++) {
+            p.next(i).set(i + 1);
+        }
+
+        array2 = s.longArray3D();
+        assertEquals(D1, array2.length);
+        for (int i = 0; i < array2.length; i++) {
+            assertEquals(D2, array2[i].length);
+            for (int j = 0; j < array2[i].length; j++) {
+                assertEquals(D3, array2[i][j].length);
+                for (int k = 0; k < array2[i][j].length; k++) {
+                    assertEquals((i * D2 + j) * D3 + k + 1, array2[i][j][k]);
+                }
+            }
+        }
+        
+        array3 = new long[D1][D2][D3];
+        for (int i = 0; i < array3.length; i++) {
+            for (int j = 0; j < array3[i].length; j++) {
+                for (int k = 0; k < array3[i][j].length; k++) {
+                    array3[i][j][k] = 2 * ((i * D2 + j) * D3 + k + 1);
+                }
+            }
+        }
+        s.longArray3D(array3);
+
+        for (int i = 0; i < D1 * D2 * D3; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get());
+        }
+        
+        try {
+            s.longArray3D(new long[D1 / 2][][]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+
+        try {
+            s.longArray3D(new long[D1][D2 / 2][]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+        
+        try {
+            s.longArray3D(new long[D1][D2][D3 / 2]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayFloatArrayAsPtr() {
+        assertEquals(192, StructWithArray.sizeOf());
+
+        final int D1 = 24;
+        StructWithArray s = new StructWithArray();
+        FloatPtr p = s.floatArrayAsPtr();
+        FloatPtr q;
+        FloatPtr r;
+        assertEquals(s.getHandle(), p.getHandle());
+        
+        for (int i = 0; i < D1; i++) {
+            p.next(i).set(i + 1);
+        }
+        
+        q = s.floatArrayAsPtr();
+        for (int i = 0; i < D1; i++) {
+            assertEquals(i + 1, q.next(i).get(), 0.0001f);
+        }
+        
+        r = Struct.allocate(FloatPtr.class, D1);
+        assertNotEquals(s.getHandle(), r.getHandle());
+        for (int i = 0; i < D1; i++) {
+            r.next(i).set(2 * (i + 1));
+        }
+        s.floatArrayAsPtr(r);
+        for (int i = 0; i < D1; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get(), 0.0001f);
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayFloatArrayAs1D() {
+        assertEquals(192, StructWithArray.sizeOf());
+        
+        final int D1 = 24;
+        float[] array1;
+        float[] array2;
+        float[] array3;
+        StructWithArray s = new StructWithArray();
+        FloatPtr p = s.floatArrayAsPtr();
+
+        array1 = s.floatArray1D();
+        assertEquals(D1, array1.length);
+        for (int i = 0; i < array1.length; i++) {
+            assertEquals(0, array1[i], 0.0001f);
+        }
+        
+        for (int i = 0; i < D1; i++) {
+            p.next(i).set(i + 1);
+        }
+
+        array2 = s.floatArray1D();
+        assertEquals(D1, array2.length);
+        for (int i = 0; i < array2.length; i++) {
+            assertEquals(i + 1, array2[i], 0.0001f);
+        }
+        
+        array3 = new float[D1];
+        for (int i = 0; i < array3.length; i++) {
+            array3[i] = 2 * (i + 1);
+        }
+        s.floatArray1D(array3);
+
+        for (int i = 0; i < D1; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get(), 0.0001f);
+        }
+
+        try {
+            s.floatArray1D(new float[D1 / 2]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayFloatArrayAs2D() {
+        assertEquals(192, StructWithArray.sizeOf());
+        
+        final int D1 = 3;
+        final int D2 = 8;
+        float[][] array1;
+        float[][] array2;
+        float[][] array3;
+        StructWithArray s = new StructWithArray();
+        FloatPtr p = s.floatArrayAsPtr();
+        
+        array1 = s.floatArray2D();
+        assertEquals(D1, array1.length);
+        for (int i = 0; i < array1.length; i++) {
+            assertEquals(D2, array1[i].length);
+            for (int j = 0; j < array1[i].length; j++) {
+                assertEquals(0, array1[i][j], 0.0001f);
+            }
+        }
+        
+        for (int i = 0; i < D1 * D2; i++) {
+            p.next(i).set(i + 1);
+        }
+
+        array2 = s.floatArray2D();
+        assertEquals(D1, array2.length);
+        for (int i = 0; i < array2.length; i++) {
+            assertEquals(D2, array2[i].length);
+            for (int j = 0; j < array2[i].length; j++) {
+                assertEquals(i * D2 + j + 1, array2[i][j], 0.0001f);
+            }
+        }
+        
+        array3 = new float[D1][D2];
+        for (int i = 0; i < array3.length; i++) {
+            for (int j = 0; j < array3[i].length; j++) {
+                array3[i][j] = 2 * (i * D2 + j + 1);
+            }
+        }
+        s.floatArray2D(array3);
+
+        for (int i = 0; i < D1 * D2; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get(), 0.0001f);
+        }
+        
+        try {
+            s.floatArray2D(new float[D1 / 2][]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+
+        try {
+            s.floatArray2D(new float[D1][D2 / 2]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayFloatArrayAs3D() {
+        assertEquals(192, StructWithArray.sizeOf());
+        
+        final int D1 = 2;
+        final int D2 = 3;
+        final int D3 = 4;
+        float[][][] array1;
+        float[][][] array2;
+        float[][][] array3;
+        StructWithArray s = new StructWithArray();
+        FloatPtr p = s.floatArrayAsPtr();
+
+        array1 = s.floatArray3D();
+        assertEquals(D1, array1.length);
+        for (int i = 0; i < array1.length; i++) {
+            assertEquals(D2, array1[i].length);
+            for (int j = 0; j < array1[i].length; j++) {
+                assertEquals(D3, array1[i][j].length);
+                for (int k = 0; k < array1[i][j].length; k++) {
+                    assertEquals(0, array1[i][j][k], 0.0001f);
+                }
+            }
+        }
+        
+        for (int i = 0; i < D1 * D2 * D3; i++) {
+            p.next(i).set(i + 1);
+        }
+
+        array2 = s.floatArray3D();
+        assertEquals(D1, array2.length);
+        for (int i = 0; i < array2.length; i++) {
+            assertEquals(D2, array2[i].length);
+            for (int j = 0; j < array2[i].length; j++) {
+                assertEquals(D3, array2[i][j].length);
+                for (int k = 0; k < array2[i][j].length; k++) {
+                    assertEquals((i * D2 + j) * D3 + k + 1, array2[i][j][k], 0.0001f);
+                }
+            }
+        }
+        
+        array3 = new float[D1][D2][D3];
+        for (int i = 0; i < array3.length; i++) {
+            for (int j = 0; j < array3[i].length; j++) {
+                for (int k = 0; k < array3[i][j].length; k++) {
+                    array3[i][j][k] = 2 * ((i * D2 + j) * D3 + k + 1);
+                }
+            }
+        }
+        s.floatArray3D(array3);
+
+        for (int i = 0; i < D1 * D2 * D3; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get(), 0.0001f);
+        }
+        
+        try {
+            s.floatArray3D(new float[D1 / 2][][]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+
+        try {
+            s.floatArray3D(new float[D1][D2 / 2][]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+        
+        try {
+            s.floatArray3D(new float[D1][D2][D3 / 2]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayDoubleArrayAsPtr() {
+        assertEquals(192, StructWithArray.sizeOf());
+
+        final int D1 = 24;
+        StructWithArray s = new StructWithArray();
+        DoublePtr p = s.doubleArrayAsPtr();
+        DoublePtr q;
+        DoublePtr r;
+        assertEquals(s.getHandle(), p.getHandle());
+        
+        for (int i = 0; i < D1; i++) {
+            p.next(i).set(i + 1);
+        }
+        
+        q = s.doubleArrayAsPtr();
+        for (int i = 0; i < D1; i++) {
+            assertEquals(i + 1, q.next(i).get(), 0.0001);
+        }
+        
+        r = Struct.allocate(DoublePtr.class, D1);
+        assertNotEquals(s.getHandle(), r.getHandle());
+        for (int i = 0; i < D1; i++) {
+            r.next(i).set(2 * (i + 1));
+        }
+        s.doubleArrayAsPtr(r);
+        for (int i = 0; i < D1; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get(), 0.0001);
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayDoubleArrayAs1D() {
+        assertEquals(192, StructWithArray.sizeOf());
+        
+        final int D1 = 24;
+        double[] array1;
+        double[] array2;
+        double[] array3;
+        StructWithArray s = new StructWithArray();
+        DoublePtr p = s.doubleArrayAsPtr();
+
+        array1 = s.doubleArray1D();
+        assertEquals(D1, array1.length);
+        for (int i = 0; i < array1.length; i++) {
+            assertEquals(0, array1[i], 0.0001);
+        }
+        
+        for (int i = 0; i < D1; i++) {
+            p.next(i).set(i + 1);
+        }
+
+        array2 = s.doubleArray1D();
+        assertEquals(D1, array2.length);
+        for (int i = 0; i < array2.length; i++) {
+            assertEquals(i + 1, array2[i], 0.0001);
+        }
+        
+        array3 = new double[D1];
+        for (int i = 0; i < array3.length; i++) {
+            array3[i] = 2 * (i + 1);
+        }
+        s.doubleArray1D(array3);
+
+        for (int i = 0; i < D1; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get(), 0.0001);
+        }
+
+        try {
+            s.doubleArray1D(new double[D1 / 2]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayDoubleArrayAs2D() {
+        assertEquals(192, StructWithArray.sizeOf());
+        
+        final int D1 = 3;
+        final int D2 = 8;
+        double[][] array1;
+        double[][] array2;
+        double[][] array3;
+        StructWithArray s = new StructWithArray();
+        DoublePtr p = s.doubleArrayAsPtr();
+        
+        array1 = s.doubleArray2D();
+        assertEquals(D1, array1.length);
+        for (int i = 0; i < array1.length; i++) {
+            assertEquals(D2, array1[i].length);
+            for (int j = 0; j < array1[i].length; j++) {
+                assertEquals(0, array1[i][j], 0.0001);
+            }
+        }
+        
+        for (int i = 0; i < D1 * D2; i++) {
+            p.next(i).set(i + 1);
+        }
+
+        array2 = s.doubleArray2D();
+        assertEquals(D1, array2.length);
+        for (int i = 0; i < array2.length; i++) {
+            assertEquals(D2, array2[i].length);
+            for (int j = 0; j < array2[i].length; j++) {
+                assertEquals(i * D2 + j + 1, array2[i][j], 0.0001);
+            }
+        }
+        
+        array3 = new double[D1][D2];
+        for (int i = 0; i < array3.length; i++) {
+            for (int j = 0; j < array3[i].length; j++) {
+                array3[i][j] = 2 * (i * D2 + j + 1);
+            }
+        }
+        s.doubleArray2D(array3);
+
+        for (int i = 0; i < D1 * D2; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get(), 0.0001);
+        }
+        
+        try {
+            s.doubleArray2D(new double[D1 / 2][]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+
+        try {
+            s.doubleArray2D(new double[D1][D2 / 2]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayDoubleArrayAs3D() {
+        assertEquals(192, StructWithArray.sizeOf());
+        
+        final int D1 = 2;
+        final int D2 = 3;
+        final int D3 = 4;
+        double[][][] array1;
+        double[][][] array2;
+        double[][][] array3;
+        StructWithArray s = new StructWithArray();
+        DoublePtr p = s.doubleArrayAsPtr();
+
+        array1 = s.doubleArray3D();
+        assertEquals(D1, array1.length);
+        for (int i = 0; i < array1.length; i++) {
+            assertEquals(D2, array1[i].length);
+            for (int j = 0; j < array1[i].length; j++) {
+                assertEquals(D3, array1[i][j].length);
+                for (int k = 0; k < array1[i][j].length; k++) {
+                    assertEquals(0, array1[i][j][k], 0.0001);
+                }
+            }
+        }
+        
+        for (int i = 0; i < D1 * D2 * D3; i++) {
+            p.next(i).set(i + 1);
+        }
+
+        array2 = s.doubleArray3D();
+        assertEquals(D1, array2.length);
+        for (int i = 0; i < array2.length; i++) {
+            assertEquals(D2, array2[i].length);
+            for (int j = 0; j < array2[i].length; j++) {
+                assertEquals(D3, array2[i][j].length);
+                for (int k = 0; k < array2[i][j].length; k++) {
+                    assertEquals((i * D2 + j) * D3 + k + 1, array2[i][j][k], 0.0001);
+                }
+            }
+        }
+        
+        array3 = new double[D1][D2][D3];
+        for (int i = 0; i < array3.length; i++) {
+            for (int j = 0; j < array3[i].length; j++) {
+                for (int k = 0; k < array3[i][j].length; k++) {
+                    array3[i][j][k] = 2 * ((i * D2 + j) * D3 + k + 1);
+                }
+            }
+        }
+        s.doubleArray3D(array3);
+
+        for (int i = 0; i < D1 * D2 * D3; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get(), 0.0001);
+        }
+        
+        try {
+            s.doubleArray3D(new double[D1 / 2][][]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+
+        try {
+            s.doubleArray3D(new double[D1][D2 / 2][]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+        
+        try {
+            s.doubleArray3D(new double[D1][D2][D3 / 2]);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
         }
     }
 }

@@ -43,7 +43,6 @@ import soot.tagkit.AnnotationArrayElem;
 import soot.tagkit.AnnotationClassElem;
 import soot.tagkit.AnnotationElem;
 import soot.tagkit.AnnotationIntElem;
-import soot.tagkit.AnnotationLongElem;
 import soot.tagkit.AnnotationTag;
 import soot.tagkit.InnerClassTag;
 import soot.tagkit.SignatureTag;
@@ -153,66 +152,55 @@ public abstract class Bro {
     }
     
     public static String getMarshalerClassName(SootMethod method, boolean unwrapPtr) {
-        // Use @Marshaler annotation on the method if there is one 
-        AnnotationTag annotation = getMarshalerAnnotation(method);
-        if (annotation == null) {
-            // The method has no @Marshaler annotation
-            SootClass type = ((RefType) method.getReturnType()).getSootClass();
-            if (unwrapPtr && isPtr(type)) {
-                // Search for a @Marshaler annotation for the target type pointed to
-                type = getPtrTargetClass(method);
-            }
-            // Search for a @Marshaler annotation in the class declaring the method and its superclasses
-            annotation = getMarshalerAnnotation(method.getDeclaringClass(), RefType.v(type));
-            if (annotation == null) {
-                // Search for a @Marshaler annotation in the outer class of the class declaring the method
-                SootClass outerClass = getOuterClass(method.getDeclaringClass());
-                if (outerClass != null) {
-                    annotation = getMarshalerAnnotation(outerClass, RefType.v(type));                    
-                }
-            }
-            if (annotation == null) {
-                // Search the return type and its superclasses/superinterfaces
-                annotation = getMarshalerAnnotation(type);                
-                if (annotation == null && isEnum(type)) {
-                    // For enums we have a fallback
-                    return "org/robovm/rt/bro/EnumMarshalers$AsIntMarshaler";
-                }
-            }
-        }
-        if (annotation == null) {
-            return null;
-        }
-        String desc = ((AnnotationClassElem) getElemByName(annotation, "value")).getDesc();
-        return getInternalNameFromDescriptor(desc);
+        return getMarshalerClassName(method, -1, unwrapPtr);
     }
     
     public static String getMarshalerClassName(SootMethod method, int paramIndex, boolean unwrapPtr) {
-        // Use @Marshaler annotation on parameter at paramIndex if there is one 
-        AnnotationTag annotation = getMarshalerAnnotation(method, paramIndex);
+        // Use @Marshaler annotation on method or parameter at paramIndex if there is one 
+        AnnotationTag annotation = paramIndex == -1 ? getMarshalerAnnotation(method) : getMarshalerAnnotation(method, paramIndex);
         if (annotation == null) {
-            // The parameter has no @Marshaler annotation
-            SootClass paramType = ((RefType) method.getParameterType(paramIndex)).getSootClass();
-            if (unwrapPtr && isPtr(paramType)) {
-                // Search for a @Marshaler annotation for the target type pointed to
-                paramType = getPtrTargetClass(method, paramIndex);
+            // No @Marshaler annotation
+            soot.Type type = paramIndex == -1 ? method.getReturnType() : method.getParameterType(paramIndex);
+            SootClass clazz = null;
+            if (type instanceof RefType) {
+                clazz = ((RefType) type).getSootClass();
+                if (unwrapPtr && isPtr(clazz)) {
+                    // Search for a @Marshaler annotation for the target type pointed to
+                    clazz = paramIndex == -1 ? getPtrTargetClass(method) : getPtrTargetClass(method, paramIndex);
+                }
+            } else {
+                // ArrayType. Unwrap to find the inner most type
+                soot.Type elType = ((soot.ArrayType) type).getElementType();
+                while (elType instanceof soot.ArrayType) {
+                    elType = ((soot.ArrayType) elType).getElementType();
+                }
+                if (elType instanceof RefType) {
+                    // Array of object references. Search the inner most component type
+                    // for a marshaler.
+                    clazz = ((soot.RefType) elType).getSootClass();
+                }
             }
             // Search for a @Marshaler annotation in the class declaring the method and its superclasses
-            annotation = getMarshalerAnnotation(method.getDeclaringClass(), RefType.v(paramType));
+            annotation = getMarshalerAnnotation(method.getDeclaringClass(), type);
             if (annotation == null) {
                 // Search for a @Marshaler annotation in the outer class of the class declaring the method
                 SootClass outerClass = getOuterClass(method.getDeclaringClass());
                 if (outerClass != null) {
-                    annotation = getMarshalerAnnotation(outerClass, RefType.v(paramType));                    
+                    annotation = getMarshalerAnnotation(outerClass, type);                    
                 }
             }
-            if (annotation == null) {
-                // Search the parameter type and its superclasses/superinterfaces
-                annotation = getMarshalerAnnotation(paramType);
-                if (annotation == null && isEnum(paramType)) {
+            if (clazz != null && annotation == null) {
+                // Search the type and its superclasses/superinterfaces
+                annotation = getMarshalerAnnotation(clazz);
+                if (annotation == null && isEnum(clazz)) {
                     // For enums we have a fallback
                     return "org/robovm/rt/bro/EnumMarshalers$AsIntMarshaler";
                 }
+            }
+            if (annotation == null) {
+                // Search builtin marshalers
+                SootClass builtins = SootResolver.v().resolveClass("org.robovm.rt.bro.BuiltinMarshalers", SootClass.SIGNATURES);
+                annotation = getMarshalerAnnotation(builtins, type);                    
             }
         }
         if (annotation == null) {
@@ -253,28 +241,28 @@ public abstract class Bro {
         return ((AnnotationIntElem) annotation.getElemAt(0)).getValue();
     }
 
-    public static long[] getArrayDimensions(SootMethod method) {
+    public static int[] getArrayDimensions(SootMethod method) {
         AnnotationTag annotation = getArrayAnnotation(method);
         if (annotation == null) {
             return null;
         }
         ArrayList<AnnotationElem> values = ((AnnotationArrayElem) annotation.getElemAt(0)).getValues();
-        long[] dims = new long[values.size()];
+        int[] dims = new int[values.size()];
         for (int i = 0; i < dims.length; i++) {
-            dims[i] = ((AnnotationLongElem) values.get(i)).getValue();
+            dims[i] = ((AnnotationIntElem) values.get(i)).getValue();
         }
         return dims;
     }
 
-    public static long[] getArrayDimensions(SootMethod method, int paramIndex) {
+    public static int[] getArrayDimensions(SootMethod method, int paramIndex) {
         AnnotationTag annotation = getArrayAnnotation(method, paramIndex);
         if (annotation == null) {
             return null;
         }
         ArrayList<AnnotationElem> values = ((AnnotationArrayElem) annotation.getElemAt(0)).getValues();
-        long[] dims = new long[values.size()];
+        int[] dims = new int[values.size()];
         for (int i = 0; i < dims.length; i++) {
-            dims[i] = ((AnnotationLongElem) values.get(i)).getValue();
+            dims[i] = ((AnnotationIntElem) values.get(i)).getValue();
         }
         return dims;
     }
@@ -429,6 +417,9 @@ public abstract class Bro {
                         throw new IllegalArgumentException("@StructMember(" + offset + ") annotated getter " + method.getName() 
                                 + " in class " + clazz + " must be of type long when annotated with @Pointer");
                     }
+                    if (method.getReturnType() instanceof soot.ArrayType && !hasArrayAnnotation(method)) {
+                        throw new IllegalArgumentException("@Array annotation expected on struct member getter " + method);
+                    }
                     if (!canMarshal(method)) {
                         throw new IllegalArgumentException("No @Marshaler found for " 
                                 + "@StructMember(" + offset + ") annotated getter " + method.getName() 
@@ -438,6 +429,9 @@ public abstract class Bro {
                     if (hasPointerAnnotation(method, 0) && !method.getParameterType(0).equals(LongType.v())) {
                         throw new IllegalArgumentException("@StructMember(" + offset + ") annotated setter " + method.getName() 
                                 + " in class " + clazz + " must be of type long when annotated with @Pointer");
+                    }
+                    if (method.getParameterType(0) instanceof soot.ArrayType && !hasArrayAnnotation(method, 0)) {
+                        throw new IllegalArgumentException("@Array annotation expected on first parameter of struct member setter " + method);
                     }
                     if (!canMarshal(method, 0)) {
                         throw new IllegalArgumentException("No @Marshaler found for " 
@@ -475,7 +469,7 @@ public abstract class Bro {
                         + ") defined in class " + clazz);
             }
         }
-        
+
         return new StructureType(result);
     }
     
@@ -501,7 +495,45 @@ public abstract class Bro {
         soot.Type type = getter != null 
                 ? getter.getReturnType() : setter.getParameterType(0);
         Type memberType = null;
-        if (isStruct(type)) {
+        if (type instanceof PrimType) {
+            memberType = getType(type);
+        } else if (getter != null && hasArrayAnnotation(getter) || setter != null && hasArrayAnnotation(setter, 0)) {
+            int[] dimensions = getter != null ? getArrayDimensions(getter) : getArrayDimensions(setter, 0);
+            if (dimensions == null || dimensions.length == 0) {
+                throw new IllegalArgumentException("No dimensions specified for @Array annotation on struct member " 
+                        + (getter != null ? "getter" : "setter") + " " + method);
+            }
+            if (type instanceof soot.ArrayType && ((soot.ArrayType) type).numDimensions != dimensions.length) {
+                throw new IllegalArgumentException("Mismatch in number of dimennsions for @Array annotation " 
+                        + "and struct member type on struct member " 
+                        + (getter != null ? "getter" : "setter") + " " + method);
+            }
+
+            Type baseType = null;
+            if (type instanceof soot.ArrayType) {
+                baseType = getType(((soot.ArrayType) type).baseType);
+            } else if (isStruct(type)) {
+                boolean byVal = getter != null ? isPassByValue(getter) : isPassByValue(setter, 0);
+                if (!byVal) {
+                    // NOTE: We use i8* instead of <StructType>* to support pointers to recursive structs
+                    baseType = I8_PTR;
+                } else { 
+                    try {
+                        baseType = getStructType(dataLayout, type);
+                    } catch (StackOverflowError e) {
+                        throw new IllegalArgumentException("Struct type " + type + " refers to itself");
+                    }
+                }
+            } else {
+                throw new IllegalArgumentException("Arrays of " + type + " is not supported");
+            }
+
+            long total = dimensions[0];
+            for (int i = 1; i < dimensions.length; i++) {
+                total *= dimensions[i];
+            }
+            memberType = new ArrayType(total, baseType);
+        } else if (isStruct(type)) {
             boolean byVal = getter != null ? isPassByValue(getter) : isPassByValue(setter, 0);
             if (!byVal) {
                 // NOTE: We use i8* instead of <StructType>* to support pointers to recursive structs
@@ -517,20 +549,9 @@ public abstract class Bro {
             memberType = I8_PTR;
         } else if (getter != null && hasPointerAnnotation(getter) || setter != null && hasPointerAnnotation(setter, 0)) {
             memberType = I8_PTR;
-        } else if (type instanceof PrimType) {
-            memberType = getType(type);
         } else {
             String marshalerClassName = getter != null ? getMarshalerClassName(getter, false) : getMarshalerClassName(setter, 0, false);
             memberType = getMarshalType(marshalerClassName, type);
-        }
-        
-        long[] dimensions = getter != null ? getArrayDimensions(getter) : getArrayDimensions(setter, 0);
-        if (dimensions != null && dimensions.length > 0) {
-            long total = dimensions[0];
-            for (int i = 1; i < dimensions.length; i++) {
-                total *= dimensions[i];
-            }
-            memberType = new ArrayType(total, memberType);
         }
         
         return memberType;

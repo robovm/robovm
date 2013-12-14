@@ -125,12 +125,17 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
                     if (isEnum(type)) {
                         result = marshalNativeToEnumObject(function, marshalerClassName, env, targetClassName, result);
                     } else {
+                        // Value type wrapping a primitive value (e.g. Integer and Bits)
                         result = marshalNativeToValueObject(function, marshalerClassName, env, targetClassName, result);
                     }
                 } else {
                     if (isPtr(type)) {
                         result = marshalNativeToPtr(function, marshalerClassName, null, env, 
                                 getPtrTargetClass(method), result, getPtrWrapCount(method));
+                    } else if (type instanceof soot.ArrayType) {
+                        // Array of primitive or some NativeObject (e.g. Struct)
+                        result = marshalNativeToArray(function, marshalerClassName, env, 
+                                targetClassName, result, getArrayDimensions(method));
                     } else {
                         result = marshalNativeToObject(function, marshalerClassName, null, env, 
                                 targetClassName, result, false);
@@ -165,12 +170,19 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
                         call(function, CHECK_NULL, env, nativeValue);
                     }
                     
-                    nativeValue = marshalObjectToNative(function, marshalerClassName, null, memberType, env, nativeValue);
+                    if (type instanceof soot.ArrayType) {
+                        marshalArrayToNative(function, marshalerClassName, env, nativeValue, memberPtr.ref(), getArrayDimensions(method, 0));
+                        nativeValue = null;
+                    } else {
+                        nativeValue = marshalObjectToNative(function, marshalerClassName, null, memberType, env, nativeValue);
+                    }
                 }
             } else if (hasPointerAnnotation(method, 0)) {
                 nativeValue = marshalLongToPointer(function, nativeValue);
             }
-            function.add(new Store(nativeValue, memberPtr.ref()));
+            if (nativeValue != null) {
+                function.add(new Store(nativeValue, memberPtr.ref()));
+            }
             
             if (method.getReturnType().equals(VoidType.v())) {
                 function.add(new Ret());

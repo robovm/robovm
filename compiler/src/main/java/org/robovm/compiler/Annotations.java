@@ -97,6 +97,14 @@ public class Annotations {
         return hasAnnotation(method, STRUCT_MEMBER);
     }
     
+    public static boolean hasArrayAnnotation(SootMethod method) {
+        return hasAnnotation(method, ARRAY);
+    }
+
+    public static boolean hasArrayAnnotation(SootMethod method, int paramIndex) {
+        return hasParameterAnnotation(method, paramIndex, ARRAY);
+    }
+    
     public static boolean hasPointerAnnotation(SootMethod method) {
         return hasAnnotation(method, POINTER);
     }
@@ -209,7 +217,11 @@ public class Annotations {
             }
             if (elem != null && type != null) {
                 String desc = elem.getDesc();
-                if (getInternalName(type).equals(getInternalNameFromDescriptor(desc))) {
+                if (type instanceof ArrayType) {
+                    if (getInternalName(type).equals(desc)) {
+                        return tag;
+                    }
+                } else if (getInternalName(type).equals(getInternalNameFromDescriptor(desc))) {
                     return tag;                    
                 }
             }

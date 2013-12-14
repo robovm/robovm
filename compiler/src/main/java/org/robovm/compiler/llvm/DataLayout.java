@@ -34,10 +34,11 @@ public class DataLayout {
         this.triple = triple;
         this.target = Target.lookupTarget(triple);
     }
-
-    private org.robovm.llvm.Type getTypeRef(Type type) {
+    
+    private <T> T runTypeQuery(Type type, TypeCallback<T> cb) {
         Context context = null;
         Module module = null;
+        TargetMachine targetMachine = null;
         try {
             String definition;
             if (type instanceof PrimitiveType) {
@@ -49,8 +50,12 @@ public class DataLayout {
             }
             context = new Context();
             module = Module.parseIR(context, "%t = type " + definition, null);
-            return module.getTypeByName("t");
+            targetMachine = target.createTargetMachine(triple);
+            return cb.doWithType(targetMachine, module.getTypeByName("t"));
         } finally {
+            if (targetMachine != null) {
+                targetMachine.dispose();
+            }
             if (module != null) {
                 module.dispose();
             }
@@ -61,38 +66,30 @@ public class DataLayout {
     }
     
     public int getAllocSize(Type type) {
-        TargetMachine targetMachine = null;
-        try {
-            targetMachine = target.createTargetMachine(triple);
-            return (int) targetMachine.getDataLayout().getTypeAllocSize(getTypeRef(type));
-        } finally {
-            if (targetMachine != null) {
-                targetMachine.dispose();
+        return runTypeQuery(type, new TypeCallback<Integer>() {
+            Integer doWithType(TargetMachine targetMachine, org.robovm.llvm.Type type) {
+                return (int) targetMachine.getDataLayout().getTypeAllocSize(type);
             }
-        }
+        });
     }
 
     public int getAlignment(Type type) {
-        TargetMachine targetMachine = null;
-        try {
-            targetMachine = target.createTargetMachine(triple);
-            return (int) targetMachine.getDataLayout().getABITypeAlignment(getTypeRef(type));
-        } finally {
-            if (targetMachine != null) {
-                targetMachine.dispose();
+        return runTypeQuery(type, new TypeCallback<Integer>() {
+            Integer doWithType(TargetMachine targetMachine, org.robovm.llvm.Type type) {
+                return (int) targetMachine.getDataLayout().getABITypeAlignment(type);
             }
-        }
+        });
     }
     
     public int getStoreSize(Type type) {
-        TargetMachine targetMachine = null;
-        try {
-            targetMachine = target.createTargetMachine(triple);
-            return (int) targetMachine.getDataLayout().getTypeStoreSize(getTypeRef(type));
-        } finally {
-            if (targetMachine != null) {
-                targetMachine.dispose();
+        return runTypeQuery(type, new TypeCallback<Integer>() {
+            Integer doWithType(TargetMachine targetMachine, org.robovm.llvm.Type type) {
+                return (int) targetMachine.getDataLayout().getTypeStoreSize(type);
             }
-        }
+        });
+    }
+    
+    private static abstract class TypeCallback<T> {
+        abstract T doWithType(TargetMachine targetMachine, org.robovm.llvm.Type type);
     }
 }

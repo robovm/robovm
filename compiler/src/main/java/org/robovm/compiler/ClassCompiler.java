@@ -486,6 +486,10 @@ public class ClassCompiler {
     }
     
     private void compile(Clazz clazz, OutputStream out) throws IOException {
+        methodCompiler.reset(clazz);
+        bridgeMethodCompiler.reset(clazz);
+        nativeMethodCompiler.reset(clazz);
+        structMemberMethodCompiler.reset(clazz);
         sootClass = clazz.getSootClass();
         mb = new ModuleBuilder();
         trampolines = new HashSet<Trampoline>();

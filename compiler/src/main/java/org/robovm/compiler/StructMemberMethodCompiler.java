@@ -23,6 +23,7 @@ import static org.robovm.compiler.Functions.*;
 import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Type.*;
 
+import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.llvm.ArrayType;
 import org.robovm.compiler.llvm.Bitcast;
@@ -40,7 +41,6 @@ import org.robovm.compiler.llvm.Value;
 import org.robovm.compiler.llvm.Variable;
 import org.robovm.compiler.llvm.VariableRef;
 
-import soot.SootClass;
 import soot.SootMethod;
 import soot.VoidType;
 
@@ -50,10 +50,21 @@ import soot.VoidType;
  */
 public class StructMemberMethodCompiler extends BroMethodCompiler {
 
+    private StructureType structType;
+    
     public StructMemberMethodCompiler(Config config) {
         super(config);
     }
 
+    @Override
+    public void reset(Clazz clazz) {
+        super.reset(clazz);
+        structType = null;
+        if (isStruct(sootClass)) {
+            structType = getStructType(config.getDataLayout(), sootClass);
+        }
+    }
+    
     @Override
     protected void doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
         if ("_sizeOf".equals(method.getName()) || "sizeOf".equals(method.getName())) {
@@ -64,19 +75,12 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
     }
     
     private void structSizeOf(ModuleBuilder moduleBuilder, SootMethod method) {
-        SootClass sootClass = method.getDeclaringClass();
-        StructureType type = getStructType(config.getDataLayout(), sootClass);
-        if (type == null) {
-            throw new IllegalArgumentException("Struct class " + sootClass + " has no @StructMember annotated methods");
-        }
         Function fn = FunctionBuilder.structSizeOf(method);
         moduleBuilder.addFunction(fn);
-        fn.add(new Ret(sizeof(type)));
+        fn.add(new Ret(sizeof(structType)));
     }
 
     private void structMember(ModuleBuilder moduleBuilder, SootMethod method) {
-        SootClass sootClass = method.getDeclaringClass();
-        StructureType structType = getStructType(config.getDataLayout(), sootClass);
         Function function = FunctionBuilder.structMember(method);
         moduleBuilder.addFunction(function);
         

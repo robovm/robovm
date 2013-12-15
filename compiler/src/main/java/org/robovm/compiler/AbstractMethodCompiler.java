@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
@@ -72,6 +73,7 @@ import soot.SootMethod;
  */
 public abstract class AbstractMethodCompiler {
     protected Config config;
+    protected SootClass sootClass;
     protected String className;
     protected SootMethod sootMethod;
     protected Set<Trampoline> trampolines;
@@ -79,6 +81,11 @@ public abstract class AbstractMethodCompiler {
     
     public AbstractMethodCompiler(Config config) {
         this.config = config;
+    }
+    
+    public void reset(Clazz clazz) {
+        this.sootClass = clazz.getSootClass();
+        className = getInternalName(this.sootClass);
     }
     
     public Set<Trampoline> getTrampolines() {
@@ -90,7 +97,6 @@ public abstract class AbstractMethodCompiler {
     }
     
     public void compile(ModuleBuilder moduleBuilder, SootMethod method) {
-        className = getInternalName(method.getDeclaringClass());
         sootMethod = method;
         trampolines = new HashSet<Trampoline>();
         catches = new HashSet<String>();

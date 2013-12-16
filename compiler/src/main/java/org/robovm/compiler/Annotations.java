@@ -210,19 +210,15 @@ public class Annotations {
             }
         }
         
+        String typeDesc = type != null ? getDescriptor(type) : null;
         for (AnnotationTag tag : tags) {
             AnnotationClassElem elem = (AnnotationClassElem) getElemByName(tag, "type");
             if (elem == null && type == null) {
                 return tag;
             }
             if (elem != null && type != null) {
-                String desc = elem.getDesc();
-                if (type instanceof ArrayType) {
-                    if (getInternalName(type).equals(desc)) {
-                        return tag;
-                    }
-                } else if (getInternalName(type).equals(getInternalNameFromDescriptor(desc))) {
-                    return tag;                    
+                if (typeDesc.equals(elem.getDesc())) {
+                    return tag;
                 }
             }
         }

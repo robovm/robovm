@@ -405,6 +405,14 @@ public class Types {
         return false;
     }
     
+    public static boolean isInstanceOfClass(SootClass sc, String className) {
+        SootClass clazz = sc;
+        if (className.equals(clazz.getName())) {
+            return true;
+        }
+        return isSubclass(sc, className);
+    }
+    
     public static Constant sizeof(AggregateType type) {
         return new ConstantPtrtoint(
                 new ConstantGetelementptr(new NullConstant(

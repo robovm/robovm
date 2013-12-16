@@ -525,7 +525,26 @@ public abstract class Bro {
                         throw new IllegalArgumentException("Struct type " + type + " refers to itself");
                     }
                 }
-            } else {
+            } else if (type instanceof RefType) {
+                SootClass c = ((RefType) type).getSootClass();
+                if (isInstanceOfClass(c, "java.nio.ByteBuffer")) {
+                    baseType = I8;
+                } else if (isInstanceOfClass(c, "java.nio.ShortBuffer")) {
+                    baseType = I16;
+                } else if (isInstanceOfClass(c, "java.nio.CharBuffer")) {
+                    baseType = I16;
+                } else if (isInstanceOfClass(c, "java.nio.IntBuffer")) {
+                    baseType = I32;
+                } else if (isInstanceOfClass(c, "java.nio.LongBuffer")) {
+                    baseType = I64;
+                } else if (isInstanceOfClass(c, "java.nio.FloatBuffer")) {
+                    baseType = FLOAT;
+                } else if (isInstanceOfClass(c, "java.nio.DoubleBuffer")) {
+                    baseType = DOUBLE;
+                }
+            }
+            
+            if (baseType == null) {
                 throw new IllegalArgumentException("Arrays of " + type + " is not supported");
             }
 

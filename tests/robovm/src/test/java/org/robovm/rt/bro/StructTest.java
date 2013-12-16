@@ -17,6 +17,15 @@ package org.robovm.rt.bro;
 
 import static org.junit.Assert.*;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.CharBuffer;
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.nio.LongBuffer;
+import java.nio.ShortBuffer;
+
 import org.junit.Test;
 import org.robovm.rt.VM;
 import org.robovm.rt.bro.annotation.Array;
@@ -238,6 +247,10 @@ public class StructTest {
         @StructMember(0)
         public native StructWithArray byteArrayAsPtr(@Array({2, 3, 4}) @ByVal BytePtr p);
         @StructMember(0)
+        public native @Array({2, 3, 4}) ByteBuffer byteArrayAsBuffer();
+        @StructMember(0)
+        public native StructWithArray byteArrayAsBuffer(@Array({2, 3, 4}) ByteBuffer p);
+        @StructMember(0)
         public native @Array(24) byte[] byteArray1D();
         @StructMember(0)
         public native StructWithArray byteArray1D(@Array(24) byte[] p);
@@ -254,6 +267,10 @@ public class StructTest {
         public native @Array({2, 3, 4}) @ByVal ShortPtr shortArrayAsPtr();
         @StructMember(0)
         public native StructWithArray shortArrayAsPtr(@Array({2, 3, 4}) @ByVal ShortPtr p);
+        @StructMember(0)
+        public native @Array({2, 3, 4}) ShortBuffer shortArrayAsBuffer();
+        @StructMember(0)
+        public native StructWithArray shortArrayAsBuffer(@Array({2, 3, 4}) ShortBuffer p);
         @StructMember(0)
         public native @Array(24) short[] shortArray1D();
         @StructMember(0)
@@ -272,6 +289,10 @@ public class StructTest {
         @StructMember(0)
         public native StructWithArray charArrayAsPtr(@Array({2, 3, 4}) @ByVal CharPtr p);
         @StructMember(0)
+        public native @Array({2, 3, 4}) CharBuffer charArrayAsBuffer();
+        @StructMember(0)
+        public native StructWithArray charArrayAsBuffer(@Array({2, 3, 4}) CharBuffer p);
+        @StructMember(0)
         public native @Array(24) char[] charArray1D();
         @StructMember(0)
         public native StructWithArray charArray1D(@Array(24) char[] p);
@@ -288,6 +309,10 @@ public class StructTest {
         public native @Array({2, 3, 4}) @ByVal IntPtr intArrayAsPtr();
         @StructMember(0)
         public native StructWithArray intArrayAsPtr(@Array({2, 3, 4}) @ByVal IntPtr p);
+        @StructMember(0)
+        public native @Array({2, 3, 4}) IntBuffer intArrayAsBuffer();
+        @StructMember(0)
+        public native StructWithArray intArrayAsBuffer(@Array({2, 3, 4}) IntBuffer p);
         @StructMember(0)
         public native @Array(24) int[] intArray1D();
         @StructMember(0)
@@ -306,6 +331,10 @@ public class StructTest {
         @StructMember(0)
         public native StructWithArray longArrayAsPtr(@Array({2, 3, 4}) @ByVal LongPtr p);
         @StructMember(0)
+        public native @Array({2, 3, 4}) LongBuffer longArrayAsBuffer();
+        @StructMember(0)
+        public native StructWithArray longArrayAsBuffer(@Array({2, 3, 4}) LongBuffer p);
+        @StructMember(0)
         public native @Array(24) long[] longArray1D();
         @StructMember(0)
         public native StructWithArray longArray1D(@Array(24) long[] p);
@@ -323,6 +352,10 @@ public class StructTest {
         @StructMember(0)
         public native StructWithArray floatArrayAsPtr(@Array({2, 3, 4}) @ByVal FloatPtr p);
         @StructMember(0)
+        public native @Array({2, 3, 4}) FloatBuffer floatArrayAsBuffer();
+        @StructMember(0)
+        public native StructWithArray floatArrayAsBuffer(@Array({2, 3, 4}) FloatBuffer p);
+        @StructMember(0)
         public native @Array(24) float[] floatArray1D();
         @StructMember(0)
         public native StructWithArray floatArray1D(@Array(24) float[] p);
@@ -339,6 +372,10 @@ public class StructTest {
         public native @Array({2, 3, 4}) @ByVal DoublePtr doubleArrayAsPtr();
         @StructMember(0)
         public native StructWithArray doubleArrayAsPtr(@Array({2, 3, 4}) @ByVal DoublePtr p);
+        @StructMember(0)
+        public native @Array({2, 3, 4}) DoubleBuffer doubleArrayAsBuffer();
+        @StructMember(0)
+        public native StructWithArray doubleArrayAsBuffer(@Array({2, 3, 4}) DoubleBuffer p);
         @StructMember(0)
         public native @Array(24) double[] doubleArray1D();
         @StructMember(0)
@@ -679,6 +716,55 @@ public class StructTest {
     }
     
     @Test
+    public void testStructWithArrayByteArrayAsBuffer() {
+        assertEquals(192, StructWithArray.sizeOf());
+
+        final int D1 = 24;
+        StructWithArray s = new StructWithArray();
+        BytePtr p = s.byteArrayAsPtr();
+        ByteBuffer b1;
+        ByteBuffer b2;
+        ByteBuffer b3;
+        
+        for (int i = 0; i < D1; i++) {
+            p.next(i).set((byte) (i + 1));
+        }
+        
+        b1 = s.byteArrayAsBuffer();
+        assertEquals(D1, b1.capacity());
+        assertEquals(D1, b1.limit());
+        assertEquals(0, b1.position());
+        for (int i = 0; i < D1; i++) {
+            assertEquals(i + 1, b1.get(i));
+        }
+        
+        b2 = ByteBuffer.allocateDirect(D1);
+        for (int i = 0; i < D1; i++) {
+            b2.put(i, (byte) (2 * (i + 1)));
+        }
+        s.byteArrayAsBuffer(b2);
+        for (int i = 0; i < D1; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get() & 0xff);
+        }
+        
+        b3 = ByteBuffer.allocate(D1);
+        assertFalse(b3.isDirect());
+        for (int i = 0; i < D1; i++) {
+            b3.put(i, (byte) (3 * (i + 1)));
+        }
+        s.byteArrayAsBuffer(b3);
+        for (int i = 0; i < D1; i++) {
+            assertEquals(3 * (i + 1), p.next(i).get() & 0xff);
+        }
+        
+        try {
+            s.byteArrayAsBuffer(ByteBuffer.allocate(D1 / 2));
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+    
+    @Test
     public void testStructWithArrayByteArrayAs1D() {
         assertEquals(192, StructWithArray.sizeOf());
         
@@ -887,6 +973,55 @@ public class StructTest {
     }
     
     @Test
+    public void testStructWithArrayShortArrayAsBuffer() {
+        assertEquals(192, StructWithArray.sizeOf());
+
+        final int D1 = 24;
+        StructWithArray s = new StructWithArray();
+        ShortPtr p = s.shortArrayAsPtr();
+        ShortBuffer b1;
+        ShortBuffer b2;
+        ShortBuffer b3;
+        
+        for (int i = 0; i < D1; i++) {
+            p.next(i).set((short) (i + 1));
+        }
+        
+        b1 = s.shortArrayAsBuffer();
+        assertEquals(D1, b1.capacity());
+        assertEquals(D1, b1.limit());
+        assertEquals(0, b1.position());
+        for (int i = 0; i < D1; i++) {
+            assertEquals(i + 1, b1.get(i));
+        }
+        
+        b2 = ByteBuffer.allocateDirect(D1 * 2).order(ByteOrder.nativeOrder()).asShortBuffer();
+        for (int i = 0; i < D1; i++) {
+            b2.put(i, (short) (2 * (i + 1)));
+        }
+        s.shortArrayAsBuffer(b2);
+        for (int i = 0; i < D1; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get() & 0xffff);
+        }
+        
+        b3 = ShortBuffer.allocate(D1);
+        assertFalse(b3.isDirect());
+        for (int i = 0; i < D1; i++) {
+            b3.put(i, (short) (3 * (i + 1)));
+        }
+        s.shortArrayAsBuffer(b3);
+        for (int i = 0; i < D1; i++) {
+            assertEquals(3 * (i + 1), p.next(i).get() & 0xffff);
+        }
+        
+        try {
+            s.shortArrayAsBuffer(ShortBuffer.allocate(D1 / 2));
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+    
+    @Test
     public void testStructWithArrayShortArrayAs1D() {
         assertEquals(192, StructWithArray.sizeOf());
         
@@ -1091,6 +1226,56 @@ public class StructTest {
         s.charArrayAsPtr(r);
         for (int i = 0; i < D1; i++) {
             assertEquals(2 * (i + 1), p.next(i).get() & 0xffff);
+        }
+    }
+    
+
+    @Test
+    public void testStructWithArrayCharArrayAsBuffer() {
+        assertEquals(192, StructWithArray.sizeOf());
+
+        final int D1 = 24;
+        StructWithArray s = new StructWithArray();
+        CharPtr p = s.charArrayAsPtr();
+        CharBuffer b1;
+        CharBuffer b2;
+        CharBuffer b3;
+        
+        for (int i = 0; i < D1; i++) {
+            p.next(i).set((char) (i + 1));
+        }
+        
+        b1 = s.charArrayAsBuffer();
+        assertEquals(D1, b1.capacity());
+        assertEquals(D1, b1.limit());
+        assertEquals(0, b1.position());
+        for (int i = 0; i < D1; i++) {
+            assertEquals(i + 1, b1.get(i));
+        }
+        
+        b2 = ByteBuffer.allocateDirect(D1 * 2).order(ByteOrder.nativeOrder()).asCharBuffer();
+        for (int i = 0; i < D1; i++) {
+            b2.put(i, (char) (2 * (i + 1)));
+        }
+        s.charArrayAsBuffer(b2);
+        for (int i = 0; i < D1; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get() & 0xffff);
+        }
+        
+        b3 = CharBuffer.allocate(D1);
+        assertFalse(b3.isDirect());
+        for (int i = 0; i < D1; i++) {
+            b3.put(i, (char) (3 * (i + 1)));
+        }
+        s.charArrayAsBuffer(b3);
+        for (int i = 0; i < D1; i++) {
+            assertEquals(3 * (i + 1), p.next(i).get() & 0xffff);
+        }
+        
+        try {
+            s.charArrayAsBuffer(CharBuffer.allocate(D1 / 2));
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
         }
     }
     
@@ -1303,6 +1488,55 @@ public class StructTest {
     }
     
     @Test
+    public void testStructWithArrayIntArrayAsBuffer() {
+        assertEquals(192, StructWithArray.sizeOf());
+
+        final int D1 = 24;
+        StructWithArray s = new StructWithArray();
+        IntPtr p = s.intArrayAsPtr();
+        IntBuffer b1;
+        IntBuffer b2;
+        IntBuffer b3;
+        
+        for (int i = 0; i < D1; i++) {
+            p.next(i).set(i + 1);
+        }
+        
+        b1 = s.intArrayAsBuffer();
+        assertEquals(D1, b1.capacity());
+        assertEquals(D1, b1.limit());
+        assertEquals(0, b1.position());
+        for (int i = 0; i < D1; i++) {
+            assertEquals(i + 1, b1.get(i));
+        }
+        
+        b2 = ByteBuffer.allocateDirect(D1 * 4).order(ByteOrder.nativeOrder()).asIntBuffer();
+        for (int i = 0; i < D1; i++) {
+            b2.put(i, 2 * (i + 1));
+        }
+        s.intArrayAsBuffer(b2);
+        for (int i = 0; i < D1; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get());
+        }
+        
+        b3 = IntBuffer.allocate(D1);
+        assertFalse(b3.isDirect());
+        for (int i = 0; i < D1; i++) {
+            b3.put(i, 3 * (i + 1));
+        }
+        s.intArrayAsBuffer(b3);
+        for (int i = 0; i < D1; i++) {
+            assertEquals(3 * (i + 1), p.next(i).get());
+        }
+        
+        try {
+            s.intArrayAsBuffer(IntBuffer.allocate(D1 / 2));
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+    
+    @Test
     public void testStructWithArrayIntArrayAs1D() {
         assertEquals(192, StructWithArray.sizeOf());
         
@@ -1507,6 +1741,55 @@ public class StructTest {
         s.longArrayAsPtr(r);
         for (int i = 0; i < D1; i++) {
             assertEquals(2 * (i + 1), p.next(i).get());
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayLongArrayAsBuffer() {
+        assertEquals(192, StructWithArray.sizeOf());
+
+        final int D1 = 24;
+        StructWithArray s = new StructWithArray();
+        LongPtr p = s.longArrayAsPtr();
+        LongBuffer b1;
+        LongBuffer b2;
+        LongBuffer b3;
+        
+        for (int i = 0; i < D1; i++) {
+            p.next(i).set(i + 1);
+        }
+        
+        b1 = s.longArrayAsBuffer();
+        assertEquals(D1, b1.capacity());
+        assertEquals(D1, b1.limit());
+        assertEquals(0, b1.position());
+        for (int i = 0; i < D1; i++) {
+            assertEquals(i + 1, b1.get(i));
+        }
+        
+        b2 = ByteBuffer.allocateDirect(D1 * 8).order(ByteOrder.nativeOrder()).asLongBuffer();
+        for (int i = 0; i < D1; i++) {
+            b2.put(i, 2 * (i + 1));
+        }
+        s.longArrayAsBuffer(b2);
+        for (int i = 0; i < D1; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get());
+        }
+        
+        b3 = LongBuffer.allocate(D1);
+        assertFalse(b3.isDirect());
+        for (int i = 0; i < D1; i++) {
+            b3.put(i, 3 * (i + 1));
+        }
+        s.longArrayAsBuffer(b3);
+        for (int i = 0; i < D1; i++) {
+            assertEquals(3 * (i + 1), p.next(i).get());
+        }
+        
+        try {
+            s.longArrayAsBuffer(LongBuffer.allocate(D1 / 2));
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
         }
     }
     
@@ -1719,6 +2002,55 @@ public class StructTest {
     }
     
     @Test
+    public void testStructWithArrayFloatArrayAsBuffer() {
+        assertEquals(192, StructWithArray.sizeOf());
+
+        final int D1 = 24;
+        StructWithArray s = new StructWithArray();
+        FloatPtr p = s.floatArrayAsPtr();
+        FloatBuffer b1;
+        FloatBuffer b2;
+        FloatBuffer b3;
+        
+        for (int i = 0; i < D1; i++) {
+            p.next(i).set(i + 1);
+        }
+        
+        b1 = s.floatArrayAsBuffer();
+        assertEquals(D1, b1.capacity());
+        assertEquals(D1, b1.limit());
+        assertEquals(0, b1.position());
+        for (int i = 0; i < D1; i++) {
+            assertEquals(i + 1, b1.get(i), 0.0001f);
+        }
+        
+        b2 = ByteBuffer.allocateDirect(D1 * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
+        for (int i = 0; i < D1; i++) {
+            b2.put(i, 2 * (i + 1));
+        }
+        s.floatArrayAsBuffer(b2);
+        for (int i = 0; i < D1; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get(), 0.0001f);
+        }
+        
+        b3 = FloatBuffer.allocate(D1);
+        assertFalse(b3.isDirect());
+        for (int i = 0; i < D1; i++) {
+            b3.put(i, 3 * (i + 1));
+        }
+        s.floatArrayAsBuffer(b3);
+        for (int i = 0; i < D1; i++) {
+            assertEquals(3 * (i + 1), p.next(i).get(), 0.0001f);
+        }
+        
+        try {
+            s.floatArrayAsBuffer(FloatBuffer.allocate(D1 / 2));
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+        }
+    }
+    
+    @Test
     public void testStructWithArrayFloatArrayAs1D() {
         assertEquals(192, StructWithArray.sizeOf());
         
@@ -1923,6 +2255,55 @@ public class StructTest {
         s.doubleArrayAsPtr(r);
         for (int i = 0; i < D1; i++) {
             assertEquals(2 * (i + 1), p.next(i).get(), 0.0001);
+        }
+    }
+    
+    @Test
+    public void testStructWithArrayDoubleArrayAsBuffer() {
+        assertEquals(192, StructWithArray.sizeOf());
+
+        final int D1 = 24;
+        StructWithArray s = new StructWithArray();
+        DoublePtr p = s.doubleArrayAsPtr();
+        DoubleBuffer b1;
+        DoubleBuffer b2;
+        DoubleBuffer b3;
+        
+        for (int i = 0; i < D1; i++) {
+            p.next(i).set(i + 1);
+        }
+        
+        b1 = s.doubleArrayAsBuffer();
+        assertEquals(D1, b1.capacity());
+        assertEquals(D1, b1.limit());
+        assertEquals(0, b1.position());
+        for (int i = 0; i < D1; i++) {
+            assertEquals(i + 1, b1.get(i), 0.0001);
+        }
+        
+        b2 = ByteBuffer.allocateDirect(D1 * 8).order(ByteOrder.nativeOrder()).asDoubleBuffer();
+        for (int i = 0; i < D1; i++) {
+            b2.put(i, 2 * (i + 1));
+        }
+        s.doubleArrayAsBuffer(b2);
+        for (int i = 0; i < D1; i++) {
+            assertEquals(2 * (i + 1), p.next(i).get(), 0.0001);
+        }
+        
+        b3 = DoubleBuffer.allocate(D1);
+        assertFalse(b3.isDirect());
+        for (int i = 0; i < D1; i++) {
+            b3.put(i, 3 * (i + 1));
+        }
+        s.doubleArrayAsBuffer(b3);
+        for (int i = 0; i < D1; i++) {
+            assertEquals(3 * (i + 1), p.next(i).get(), 0.0001);
+        }
+        
+        try {
+            s.doubleArrayAsBuffer(DoubleBuffer.allocate(D1 / 2));
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
         }
     }
     

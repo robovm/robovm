@@ -15,6 +15,7 @@
  */
 package org.robovm.rt.bro.ptr;
 
+import java.nio.ByteOrder;
 import java.nio.DoubleBuffer;
 
 import org.robovm.rt.bro.Struct;
@@ -65,6 +66,6 @@ public final class DoublePtr extends Struct<DoublePtr> {
      * @return the {@link DoubleBuffer}.
      */
     public DoubleBuffer asDoubleBuffer(int n) {
-        return as(BytePtr.class).asByteBuffer(n >> 3).asDoubleBuffer();
+        return as(BytePtr.class).asByteBuffer(n << 3).order(ByteOrder.nativeOrder()).asDoubleBuffer();
     }
 }

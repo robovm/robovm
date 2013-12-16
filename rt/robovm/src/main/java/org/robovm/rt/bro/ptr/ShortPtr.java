@@ -15,6 +15,7 @@
  */
 package org.robovm.rt.bro.ptr;
 
+import java.nio.ByteOrder;
 import java.nio.ShortBuffer;
 
 import org.robovm.rt.bro.Struct;
@@ -65,6 +66,6 @@ public final class ShortPtr extends Struct<ShortPtr> {
      * @return the {@link ShortBuffer}.
      */
     public ShortBuffer asShortBuffer(int n) {
-        return as(BytePtr.class).asByteBuffer(n >> 1).asShortBuffer();
+        return as(BytePtr.class).asByteBuffer(n << 1).order(ByteOrder.nativeOrder()).asShortBuffer();
     }
 }

@@ -15,7 +15,7 @@
  */
 package org.robovm.rt.bro.ptr;
 
-import java.nio.FloatBuffer;
+import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 
 import org.robovm.rt.bro.Struct;
@@ -66,6 +66,6 @@ public final class IntPtr extends Struct<IntPtr> {
      * @return the {@link IntBuffer}.
      */
     public IntBuffer asIntBuffer(int n) {
-        return as(BytePtr.class).asByteBuffer(n >> 2).asIntBuffer();
+        return as(BytePtr.class).asByteBuffer(n << 2).order(ByteOrder.nativeOrder()).asIntBuffer();
     }
 }

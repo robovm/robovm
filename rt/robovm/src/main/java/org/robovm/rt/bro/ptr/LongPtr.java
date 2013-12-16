@@ -15,7 +15,7 @@
  */
 package org.robovm.rt.bro.ptr;
 
-import java.nio.DoubleBuffer;
+import java.nio.ByteOrder;
 import java.nio.LongBuffer;
 
 import org.robovm.rt.bro.Struct;
@@ -66,6 +66,6 @@ public final class LongPtr extends Struct<LongPtr> {
      * @return the {@link LongBuffer}.
      */
     public LongBuffer asLongBuffer(int n) {
-        return as(BytePtr.class).asByteBuffer(n >> 3).asLongBuffer();
+        return as(BytePtr.class).asByteBuffer(n << 3).order(ByteOrder.nativeOrder()).asLongBuffer();
     }    
 }

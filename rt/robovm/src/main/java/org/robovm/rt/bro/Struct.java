@@ -135,7 +135,11 @@ public abstract class Struct<T extends Struct<T>> extends NativeObject implement
         return next(1);
     }
     
+    @SuppressWarnings("unchecked")
     public T next(long delta) {
+        if (delta == 0) {
+            return (T) this;
+        }
         return wrap(getHandle() + _sizeOf() * delta);
     }
 
@@ -156,6 +160,82 @@ public abstract class Struct<T extends Struct<T>> extends NativeObject implement
         return array;
     }
 
+    /**
+     * Updates the memory starting at this {@link Struct} with the 
+     * {@link Struct} starting at the specified instance.
+     * 
+     * @param o the {@link Struct} to write to the address of this 
+     *        {@link Struct}.
+     * @throws NullPointerException if {@code o} is {@code null}.
+     * @throws IllegalArgumentException if the class of {@code o} is not the 
+     *         same as this {@link Struct}'s class.
+     */
+    public void update(T o) {
+        update(o, 1);
+    }
+    
+    /**
+     * Updates the memory starting at this {@link Struct} with the 
+     * {@link Struct}s starting at the specified instance.
+     * 
+     * @param o the first {@link Struct} to write to the address of this 
+     *        {@link Struct}.
+     * @param n the number of {@link Struct}s to write.
+     * @throws NullPointerException if {@code o} is {@code null}.
+     * @throws IllegalArgumentException if the class of {@code o} is not the 
+     *         same as this {@link Struct}'s class.
+     */
+    public void update(T o, int n) {
+        if (o == null) {
+            throw new NullPointerException("o");
+        }
+        if (o.getClass() != this.getClass()) {
+            throw new IllegalArgumentException("Expected an instance of " 
+                    + this.getClass().getName() + ". Actual type: " 
+                    + o.getClass().getName());
+        }
+        if (n < 1) {
+            throw new IllegalArgumentException("n < 1");
+        }
+        VM.memcpy(getHandle(), o.getHandle(), _sizeOf() * n);
+    }
+    
+    
+    /**
+     * Updates the memory starting at this {@link Struct} with the 
+     * {@link Struct}s in the specified array.
+     * 
+     * @param array the array of {@link Struct}s to write.
+     * @throws NullPointerException if {@code array} or any of the objects in 
+     *         {@code array} are {@code null}.
+     * @throws IllegalArgumentException if the class of any of the objects in 
+     *         the array is not the same as this {@link Struct}'s class.
+     */
+    public void update(T[] array) {
+        if (array == null) {
+            throw new NullPointerException("array");
+        }
+        Class<?> cls = this.getClass();
+        int len = array.length;
+        for (int i = 0; i < len; i++) {
+            T o = array[i];
+            if (o == null) {
+                throw new NullPointerException("null at index " + i);
+            }
+            if (o.getClass() != cls) {
+                throw new IllegalArgumentException("Expected an instance of " 
+                        + cls.getName() + " at index " + i + ". Actual type: " 
+                        + o.getClass().getName());
+            }
+        }
+        long dst = getHandle();
+        int size = _sizeOf();
+        for (int i = 0; i < len; i++) {
+            VM.memcpy(dst, array[i].getHandle(), size);
+            dst += size;
+        }
+    }
+    
     public List<T> toList(int n) {
         List<T> l = new ArrayList<T>(n);
         for (int i = 0; i < n; i++) {

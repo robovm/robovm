@@ -168,17 +168,6 @@ public abstract class Bro {
                     // Search for a @Marshaler annotation for the target type pointed to
                     clazz = paramIndex == -1 ? getPtrTargetClass(method) : getPtrTargetClass(method, paramIndex);
                 }
-            } else {
-                // ArrayType. Unwrap to find the inner most type
-                soot.Type elType = ((soot.ArrayType) type).getElementType();
-                while (elType instanceof soot.ArrayType) {
-                    elType = ((soot.ArrayType) elType).getElementType();
-                }
-                if (elType instanceof RefType) {
-                    // Array of object references. Search the inner most component type
-                    // for a marshaler.
-                    clazz = ((soot.RefType) elType).getSootClass();
-                }
             }
             // Search for a @Marshaler annotation in the class declaring the method and its superclasses
             annotation = getMarshalerAnnotation(method.getDeclaringClass(), type);
@@ -495,7 +484,9 @@ public abstract class Bro {
         soot.Type type = getter != null 
                 ? getter.getReturnType() : setter.getParameterType(0);
         Type memberType = null;
-        if (type instanceof PrimType) {
+        if (getter != null && hasPointerAnnotation(getter) || setter != null && hasPointerAnnotation(setter, 0)) {
+            memberType = I8_PTR;
+        } else if (type instanceof PrimType) {
             memberType = getType(type);
         } else if (getter != null && hasArrayAnnotation(getter) || setter != null && hasArrayAnnotation(setter, 0)) {
             int[] dimensions = getter != null ? getArrayDimensions(getter) : getArrayDimensions(setter, 0);
@@ -511,7 +502,17 @@ public abstract class Bro {
 
             Type baseType = null;
             if (type instanceof soot.ArrayType) {
-                baseType = getType(((soot.ArrayType) type).baseType);
+                soot.ArrayType arrayType = (soot.ArrayType) type;
+                if (isStruct(arrayType.baseType)) {
+                    // ByVal is implied for arrays of structs
+                    try {
+                        baseType = getStructType(dataLayout, arrayType.baseType);
+                    } catch (StackOverflowError e) {
+                        throw new IllegalArgumentException("Struct type " + type + " refers to itself");
+                    }
+                } else {
+                    baseType = getType(arrayType.baseType);
+                }
             } else if (isStruct(type)) {
                 boolean byVal = getter != null ? isPassByValue(getter) : isPassByValue(setter, 0);
                 if (!byVal) {
@@ -546,8 +547,6 @@ public abstract class Bro {
                 }
             }
         } else if (isNativeObject(type)) {
-            memberType = I8_PTR;
-        } else if (getter != null && hasPointerAnnotation(getter) || setter != null && hasPointerAnnotation(setter, 0)) {
             memberType = I8_PTR;
         } else {
             String marshalerClassName = getter != null ? getMarshalerClassName(getter, false) : getMarshalerClassName(setter, 0, false);

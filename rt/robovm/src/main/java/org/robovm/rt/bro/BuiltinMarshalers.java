@@ -15,6 +15,8 @@
  */
 package org.robovm.rt.bro;
 
+import java.lang.reflect.Array;
+
 import org.robovm.rt.VM;
 import org.robovm.rt.bro.annotation.Marshaler;
 import org.robovm.rt.bro.annotation.Marshalers;
@@ -45,6 +47,9 @@ import org.robovm.rt.bro.annotation.Marshalers;
     @Marshaler(type = double[].class, value = BuiltinMarshalers.Arrays.DoubleArrayMarshaler.class),
     @Marshaler(type = double[][].class, value = BuiltinMarshalers.Arrays.DoubleArrayMarshaler.class),
     @Marshaler(type = double[][][].class, value = BuiltinMarshalers.Arrays.DoubleArrayMarshaler.class),
+    @Marshaler(type = Struct[].class, value = BuiltinMarshalers.Arrays.StructArrayMarshaler.class),
+    @Marshaler(type = Struct[][].class, value = BuiltinMarshalers.Arrays.StructArrayMarshaler.class),
+    @Marshaler(type = Struct[][][].class, value = BuiltinMarshalers.Arrays.StructArrayMarshaler.class),
 })
 public class BuiltinMarshalers {
 
@@ -57,7 +62,17 @@ public class BuiltinMarshalers {
                         + type + "[" + actual + "]" + suffix);
             }
         }
-        
+
+        private static void checkDimensions(Class<?> baseType, String format, int actual, int expected) {
+            if (actual != expected) {
+                String suffixActual = String.format(format, actual);
+                String suffixExpected = String.format(format, expected);
+                throw new IllegalArgumentException(
+                        "Expected " + baseType.getName() + suffixExpected 
+                        + ". Got " + baseType.getName() + suffixActual);
+            }
+        }
+
         /**
          * Builtin marshalers for {@code byte[]}, {@code byte[][]} and
          * {@code byte[][][]}.
@@ -592,6 +607,92 @@ public class BuiltinMarshalers {
                     for (int j = 0; j < len2; j++) {
                         VM.memcpy(handle, VM.getArrayValuesAddress(p[j]), off);
                         handle += off;
+                    }
+                }
+            }
+        }
+        
+        /**
+         * Builtin marshalers for {@code Struct[]}, {@code Struct[][]} and
+         * {@code Struct[][][]}.
+         */
+        public static class StructArrayMarshaler {
+            @SuppressWarnings("unchecked")
+            public static <T extends Struct<T>> Object toObject(Class<T[]> arrayClass, long handle, int d1) {
+                T s = Struct.toStruct((Class<T>) arrayClass.getComponentType(), handle);
+                return s.toArray(d1);
+            }
+            @SuppressWarnings("unchecked")
+            public static <T extends Struct<T>> void toNative(Object object, long handle, int d1) {
+                final T[] o = (T[]) object;
+                Class<T> structClass = (Class<T>) object.getClass().getComponentType();
+                checkDimensions(structClass, "[%d]", o.length, d1);
+                Struct<T> s = Struct.toStruct((Class<T>) structClass, handle);
+                s.update(o);
+            }
+            @SuppressWarnings("unchecked")
+            public static <T extends Struct<T>> Object toObject(Class<T[]> arrayClass, long handle, int d1, int d2) {
+                Class<T> structClass = (Class<T>) arrayClass.getComponentType().getComponentType();
+                T[][] o = (T[][]) Array.newInstance(structClass, d1, d2);
+                T s = Struct.toStruct((Class<T>) structClass, handle);
+                int len1 = o.length;
+                for (int i = 0; i < len1; i++) {
+                    o[i] = s.toArray(d2);
+                    s = s.next(d2);
+                }
+                return o;
+            }
+            @SuppressWarnings("unchecked")
+            public static <T extends Struct<T>> void toNative(Object object, long handle, int d1, int d2) {
+                final T[][] o = (T[][]) object;
+                Class<T> structClass = (Class<T>) object.getClass().getComponentType().getComponentType();
+                checkDimensions(structClass, "[%d][]", o.length, d1);
+                int len1 = o.length;
+                for (int i = 0; i < len1; i++) {
+                    checkDimensions(structClass, "[][%d]", o[i].length, d2);
+                }
+                Struct<T> s = Struct.toStruct((Class<T>) structClass, handle);
+                for (int i = 0; i < len1; i++) {
+                    s.update(o[i]);
+                    s = s.next(d2);
+                }
+            }
+            @SuppressWarnings("unchecked")
+            public static <T extends Struct<T>> Object toObject(Class<T[]> arrayClass, long handle, int d1, int d2, int d3) {
+                Class<T> structClass = (Class<T>) arrayClass.getComponentType().getComponentType().getComponentType();
+                T[][][] o = (T[][][]) Array.newInstance(structClass, d1, d2, d3);
+                T s = Struct.toStruct((Class<T>) structClass, handle);
+                int len1 = o.length;
+                for (int i = 0; i < len1; i++) {
+                    int len2 = o[i].length;
+                    for (int j = 0; j < len2; j++) {
+                        o[i][j] = s.toArray(d3);
+                        s = s.next(d3);
+                    }
+                }
+                return o;
+            }
+            @SuppressWarnings("unchecked")
+            public static <T extends Struct<T>> void toNative(Object object, long handle, int d1, int d2, int d3) {
+                final T[][][] o = (T[][][]) object;
+                Class<T> structClass = (Class<T>) object.getClass().getComponentType().getComponentType().getComponentType();
+                checkDimensions(structClass, "[%d][][]", o.length, d1);
+                int len1 = o.length;
+                for (int i = 0; i < len1; i++) {
+                    T[][] p = o[i];
+                    checkDimensions(structClass, "[][%d][]", p.length, d2);
+                    int len2 = p.length;
+                    for (int j = 0; j < len2; j++) {
+                        checkDimensions(structClass, "[][][%d]", p[j].length, d3);
+                    }
+                }
+                Struct<T> s = Struct.toStruct((Class<T>) structClass, handle);
+                for (int i = 0; i < len1; i++) {
+                    T[][] p = o[i];
+                    int len2 = p.length;
+                    for (int j = 0; j < len2; j++) {
+                        s.update(o[i][j]);
+                        s = s.next(d3);
                     }
                 }
             }

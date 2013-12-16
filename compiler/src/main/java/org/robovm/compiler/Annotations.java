@@ -226,6 +226,18 @@ public class Annotations {
                 }
             }
         }
+
+        if (type instanceof ArrayType) {
+            ArrayType arrayType = (ArrayType) type;
+            if (arrayType.baseType instanceof RefType && ((RefType) arrayType.baseType).getSootClass().hasSuperclass()) {
+                // Array of objects. Search for marshaler for array type of base types's supertype of same dimension
+                Type newType = ((RefType) arrayType.baseType).getSootClass().getSuperclass().getType();
+                for (int i = 0; i < arrayType.numDimensions; i++) {
+                    newType = newType.makeArrayType();
+                }
+                return getMarshalerAnnotation0(clazz, newType);
+            }
+        }
         
         return null;
     }

@@ -246,7 +246,7 @@ public class IOSTarget extends AbstractTarget {
                     provisioningProfile.getType(),
                     provisioningProfile.getName(), 
                     provisioningProfile.getEntitlements().objectForKey("application-identifier"));
-            boolean getTaskAllow = provisioningProfile.getType() != Type.AppStore;
+            boolean getTaskAllow = provisioningProfile.getType() == Type.Development;
             FileUtils.copyFile(provisioningProfile.getFile(), new File(installDir, "embedded.mobileprovision"));
             codesign(signIdentity, getOrCreateEntitlementsPList(getTaskAllow), installDir);
             // For some odd reason there needs to be a symbolic link in the root of

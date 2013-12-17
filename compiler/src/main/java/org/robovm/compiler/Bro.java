@@ -189,10 +189,6 @@ public abstract class Bro {
             if (clazz != null && annotation == null) {
                 // Search the type and its superclasses/superinterfaces
                 annotation = getMarshalerAnnotation(clazz);
-                if (annotation == null && isEnum(clazz)) {
-                    // For enums we have a fallback
-                    return "org/robovm/rt/bro/EnumMarshalers$AsIntMarshaler";
-                }
             }
             if (annotation == null) {
                 // Search builtin marshalers

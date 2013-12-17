@@ -146,22 +146,45 @@ public class Annotations {
         return getMarshalerAnnotation(clazz, null);
     }
     
-    public static AnnotationTag getMarshalerAnnotation(SootClass clazz, soot.Type type) {
+    public static AnnotationTag getMarshalerAnnotation(final SootClass clazz, soot.Type type) {
+        AnnotationTag tag = null;
         if (clazz.isInterface()) {
             return getMarshalerAnnotationOnInterface(clazz, type);
         } else {
-            AnnotationTag tag = getMarshalerAnnotationOnClass(clazz, type);
+            tag = getMarshalerAnnotationOnClass(clazz, type);
             if (tag == null) {
-                while (clazz.hasSuperclass()) {
-                    tag = getMarshalerAnnotationOnInterface(clazz, type);
+                SootClass sc = clazz;
+                while (sc.hasSuperclass()) {
+                    tag = getMarshalerAnnotationOnInterface(sc, type);
                     if (tag != null) {
                         break;
                     }
-                    clazz = clazz.getSuperclass();
+                    sc = sc.getSuperclass();
                 }
             }
+        }
+        if (tag != null) {
             return tag;
         }
+        
+        if (type instanceof ArrayType) {
+            ArrayType arrayType = (ArrayType) type;
+            if (arrayType.baseType instanceof RefType && ((RefType) arrayType.baseType).getSootClass().hasSuperclass()) {
+                // Array of objects. Search for marshaler for array type of base types's supertype of same dimension
+                Type newType = ((RefType) arrayType.baseType).getSootClass().getSuperclass().getType();
+                for (int i = 0; i < arrayType.numDimensions; i++) {
+                    newType = newType.makeArrayType();
+                }
+                return getMarshalerAnnotation(clazz, newType);
+            }
+        } else if (type instanceof RefType) {
+            SootClass sc = ((RefType) type).getSootClass();
+            if (sc.hasSuperclass()) {
+                return getMarshalerAnnotation(clazz, sc.getSuperclass().getType());
+            }
+        }
+        
+        return null;
     }
 
     private static AnnotationTag getMarshalerAnnotationOnClass(SootClass clazz, soot.Type type) {
@@ -221,18 +244,6 @@ public class Annotations {
                 if (typeDesc.equals(elem.getDesc())) {
                     return tag;
                 }
-            }
-        }
-
-        if (type instanceof ArrayType) {
-            ArrayType arrayType = (ArrayType) type;
-            if (arrayType.baseType instanceof RefType && ((RefType) arrayType.baseType).getSootClass().hasSuperclass()) {
-                // Array of objects. Search for marshaler for array type of base types's supertype of same dimension
-                Type newType = ((RefType) arrayType.baseType).getSootClass().getSuperclass().getType();
-                for (int i = 0; i < arrayType.numDimensions; i++) {
-                    newType = newType.makeArrayType();
-                }
-                return getMarshalerAnnotation0(clazz, newType);
             }
         }
         

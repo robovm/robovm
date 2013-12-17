@@ -41,7 +41,6 @@ import org.robovm.compiler.llvm.Value;
 import org.robovm.compiler.llvm.Variable;
 import org.robovm.compiler.llvm.VariableRef;
 
-import soot.RefType;
 import soot.SootMethod;
 import soot.VoidType;
 
@@ -137,9 +136,8 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
                     if (isPtr(type)) {
                         result = marshalNativeToPtr(function, marshalerClassName, null, env, 
                                 getPtrTargetClass(method), result, getPtrWrapCount(method));
-                    } else if (type instanceof soot.ArrayType || 
-                                memberType instanceof ArrayType && isInstanceOfClass(((RefType) type).getSootClass(), "java.nio.Buffer")) {
-                        // Array of primitive or some NativeObject (e.g. Struct) or java.nio.Buffer
+                    } else if (memberType instanceof ArrayType && !isStruct(type)) {
+                        // Array
                         result = marshalNativeToArray(function, marshalerClassName, env, 
                                 targetClassName, result, getArrayDimensions(method));
                     } else {
@@ -176,9 +174,8 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
                         call(function, CHECK_NULL, env, nativeValue);
                     }
                     
-                    if (type instanceof soot.ArrayType || 
-                            memberType instanceof ArrayType && isInstanceOfClass(((RefType) type).getSootClass(), "java.nio.Buffer")) {
-                        // Array of primitive or some NativeObject (e.g. Struct) or java.nio.Buffer
+                    if (memberType instanceof ArrayType && !isStruct(type)) {
+                        // Array
                         marshalArrayToNative(function, marshalerClassName, env, nativeValue, memberPtr.ref(), getArrayDimensions(method, 0));
                         nativeValue = null;
                     } else {

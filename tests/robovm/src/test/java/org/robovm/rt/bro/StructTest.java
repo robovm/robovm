@@ -406,6 +406,10 @@ public class StructTest {
         @StructMember(0)
         public native StructWithArray pointArray3D(@Array({2, 3, 4}) Point[][][] p);
 
+        @StructMember(0)
+        public native @Array(24) String byteArrayAsString();
+        @StructMember(0)
+        public native StructWithArray byteArrayAsString(@Array(24) String s);
     }
     
     @Test
@@ -2702,4 +2706,37 @@ public class StructTest {
         } catch (IllegalArgumentException e) {
         }
     }
+    
+    @Test
+    public void testStructWithArrayByteArrayAsString() {
+        assertEquals(192, StructWithArray.sizeOf());
+
+        final int D1 = 24;
+        StructWithArray s = new StructWithArray();
+        BytePtr p = s.byteArrayAsPtr();
+        
+        assertEquals("", s.byteArrayAsString());
+        p.set((byte) 'a');
+        p.next(1).set((byte) 'b');
+        p.next(2).set((byte) 'c');
+        assertEquals("abc", s.byteArrayAsString());
+        p.next(2).set((byte) 0);
+        assertEquals("ab", s.byteArrayAsString());
+
+        s.byteArrayAsString("foo bar");
+        assertEquals("foo bar", p.toStringAsciiZ());
+        s.byteArrayAsString("foo");
+        assertEquals("foo", p.toStringAsciiZ());
+
+        // Note: This assumes that the byte right after the byte array is 0. It should be.
+        s.byteArrayAsString("012345678901234567890123456789");
+        assertEquals("012345678901234567890123", s.byteArrayAsString());
+
+        s.byteArrayAsPtr(BytePtr.toBytePtrAsciiZ("012345678901234567890123456789"));
+        assertEquals("012345678901234567890123", s.byteArrayAsString());
+        
+        p.clear(D1);
+        assertEquals("", s.byteArrayAsString());
+    }
+    
 }

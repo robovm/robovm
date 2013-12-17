@@ -21,6 +21,7 @@ import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Type.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,9 +33,16 @@ import org.robovm.compiler.llvm.StructureType;
 import org.robovm.compiler.llvm.Type;
 import org.robovm.compiler.util.GenericSignatureParser;
 
+import soot.BooleanType;
+import soot.ByteType;
+import soot.CharType;
+import soot.DoubleType;
+import soot.FloatType;
+import soot.IntType;
 import soot.LongType;
 import soot.PrimType;
 import soot.RefType;
+import soot.ShortType;
 import soot.SootClass;
 import soot.SootMethod;
 import soot.SootResolver;
@@ -199,22 +207,33 @@ public abstract class Bro {
         return getInternalNameFromDescriptor(desc);
     }
 
-    public static Type getMarshalType(String marshalerClassName, soot.Type type) {
+    public static Type getMarshalType(String marshalerClassName, soot.Type type, boolean isarray) {
         SootClass marshalerClass = SootResolver.v().resolveClass(marshalerClassName.replace('/', '.'), SootClass.SIGNATURES);
         boolean isenum = isEnum(type);
-        Type defType = isenum ? I32 : I8_PTR;
+        Type defType = isenum ? I32 : isarray ? I8 : I8_PTR;
         if (marshalerClass.isPhantom()) {
             return defType;
         }
         try {
-            List<?> paramTypes = Collections.singletonList(RefType.v(isenum ? "java.lang.Enum" : "java.lang.Object"));
+            List<?> paramTypes = isarray ? Arrays.asList(RefType.v("java.lang.Object"), LongType.v(), IntType.v()) 
+                    : Collections.singletonList(RefType.v(isenum ? "java.lang.Enum" : "java.lang.Object"));
             SootMethod toNative = marshalerClass.getMethod("toNative", paramTypes);
-            soot.Type returnType = toNative.getReturnType();
-            if (returnType instanceof PrimType) {
-                if (!isenum && hasPointerAnnotation(toNative) && returnType == LongType.v()) {
-                    return I8_PTR;
+            if (isarray) {
+                soot.Type baseType = getArrayBaseType(toNative);
+                if (baseType != null) {
+                    if (hasPointerAnnotation(toNative) && baseType == LongType.v()) {
+                        return I8_PTR;
+                    }
+                    return getType(baseType);
                 }
-                return getType(returnType);
+            } else {
+                soot.Type returnType = toNative.getReturnType();
+                if (returnType instanceof PrimType) {
+                    if (!isenum && hasPointerAnnotation(toNative) && returnType == LongType.v()) {
+                        return I8_PTR;
+                    }
+                    return getType(returnType);
+                }
             }
         } catch (RuntimeException e) {
             // Either not found or ambiguous
@@ -254,6 +273,26 @@ public abstract class Bro {
             dims[i] = ((AnnotationIntElem) values.get(i)).getValue();
         }
         return dims;
+    }
+
+    public static soot.Type getArrayBaseType(SootMethod method) {
+        AnnotationTag annotation = getBaseTypeAnnotation(method);
+        if (annotation == null) {
+            return null;
+        }
+        AnnotationClassElem elem = (AnnotationClassElem) annotation.getElemAt(0);
+        switch (elem.getDesc().charAt(0)) {
+        case 'Z': return BooleanType.v();
+        case 'B': return ByteType.v();
+        case 'S': return ShortType.v();
+        case 'C': return CharType.v();
+        case 'I': return IntType.v();
+        case 'J': return LongType.v();
+        case 'F': return FloatType.v();
+        case 'D': return DoubleType.v();
+        }
+        throw new IllegalArgumentException("Unsupported type " + elem.getDesc() 
+                + " in @BaseType annotation on method " + method + ". Only primitive types are supported.");
     }
 
     public static boolean isPassByValue(SootMethod method) {
@@ -299,7 +338,7 @@ public abstract class Bro {
         }
 
         String marshalerClassName = getMarshalerClassName(method, false);
-        return getMarshalType(marshalerClassName, sootType);
+        return getMarshalType(marshalerClassName, sootType, false);
     }
     
     private static Type getParameterType(DataLayout dataLayout, String anno, SootMethod method, int i) {
@@ -344,7 +383,7 @@ public abstract class Bro {
         }
         
         String marshalerClassName = getMarshalerClassName(method, i, false);
-        return getMarshalType(marshalerClassName, sootType);
+        return getMarshalType(marshalerClassName, sootType, false);
     }
 
     public static FunctionType getBridgeFunctionType(DataLayout dataLayout, SootMethod method) {
@@ -541,6 +580,9 @@ public abstract class Bro {
                     baseType = FLOAT;
                 } else if (isInstanceOfClass(c, "java.nio.DoubleBuffer")) {
                     baseType = DOUBLE;
+                } else {
+                    String marshalerClassName = getter != null ? getMarshalerClassName(getter, false) : getMarshalerClassName(setter, 0, false);
+                    baseType = getMarshalType(marshalerClassName, type, true);
                 }
             }
             
@@ -569,7 +611,7 @@ public abstract class Bro {
             memberType = I8_PTR;
         } else {
             String marshalerClassName = getter != null ? getMarshalerClassName(getter, false) : getMarshalerClassName(setter, 0, false);
-            memberType = getMarshalType(marshalerClassName, type);
+            memberType = getMarshalType(marshalerClassName, type, false);
         }
         
         return memberType;

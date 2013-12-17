@@ -32,6 +32,7 @@ public class Annotations {
     public static final String CALLBACK = "Lorg/robovm/rt/bro/annotation/Callback;";
     public static final String STRUCT_MEMBER = "Lorg/robovm/rt/bro/annotation/StructMember;";
     public static final String ARRAY = "Lorg/robovm/rt/bro/annotation/Array;";
+    public static final String BASE_TYPE = "Lorg/robovm/rt/bro/annotation/BaseType;";
     public static final String STRUCT_RET = "Lorg/robovm/rt/bro/annotation/StructRet;";
     public static final String POINTER = "Lorg/robovm/rt/bro/annotation/Pointer;";
     public static final String MARSHALER = "Lorg/robovm/rt/bro/annotation/Marshaler;";
@@ -248,6 +249,10 @@ public class Annotations {
 
     public static AnnotationTag getArrayAnnotation(SootMethod method, int paramIndex) {
         return getParameterAnnotation(method, paramIndex, ARRAY);
+    }
+    
+    public static AnnotationTag getBaseTypeAnnotation(SootMethod method) {
+        return getAnnotation(method, BASE_TYPE);
     }
 
     public static boolean hasByValAnnotation(SootClass clazz) {

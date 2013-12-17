@@ -332,7 +332,7 @@ public abstract class Struct<T extends Struct<T>> extends NativeObject implement
     }
     
     /**
-     * Marshals to/fromr {@code Struct[]}, {@code Struct[][]} and
+     * Marshals to/from {@code Struct[]}, {@code Struct[][]} and
      * {@code Struct[][][]}.
      */
     public static class StructArrayMarshaler {

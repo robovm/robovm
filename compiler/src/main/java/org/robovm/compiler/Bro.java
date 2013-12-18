@@ -31,7 +31,6 @@ import org.robovm.compiler.llvm.FunctionType;
 import org.robovm.compiler.llvm.PointerType;
 import org.robovm.compiler.llvm.StructureType;
 import org.robovm.compiler.llvm.Type;
-import org.robovm.compiler.util.GenericSignatureParser;
 
 import soot.BooleanType;
 import soot.ByteType;
@@ -53,7 +52,6 @@ import soot.tagkit.AnnotationElem;
 import soot.tagkit.AnnotationIntElem;
 import soot.tagkit.AnnotationTag;
 import soot.tagkit.InnerClassTag;
-import soot.tagkit.SignatureTag;
 import soot.tagkit.Tag;
 import soot.tagkit.VisibilityAnnotationTag;
 import soot.tagkit.VisibilityParameterAnnotationTag;
@@ -93,7 +91,7 @@ public abstract class Bro {
             return true;
         }
         // Methods which have a @Marshaler set can be marshaled
-        return getMarshalerClassName(method, true) != null;            
+        return getMarshalerClassName(method) != null;            
     }
     
     public static boolean canMarshal(SootMethod method, int paramIndex) {
@@ -101,48 +99,9 @@ public abstract class Bro {
             return true;
         }
         // Parameters which have a @Marshaler set can be marshaled
-        return getMarshalerClassName(method, paramIndex, true) != null;            
-    }
-    
-    public static SootClass getPtrTargetClass(SootMethod method) {
-        return getPtrTargetClass(method, -1);
-    }
-    
-    public static SootClass getPtrTargetClass(SootMethod method, int paramIndex) {
-        SignatureTag signatureTag = (SignatureTag) method.getTag("SignatureTag");
-        if (signatureTag == null) {
-            // Assume Ptr<VoidPtr>
-            return SootResolver.v().resolveClass("org.robovm.bro.ptr.VoidPtr", SootClass.SIGNATURES);
-        } else {
-            GenericSignatureParser parser = new GenericSignatureParser(signatureTag.getSignature());
-            String sig = paramIndex != -1 ? parser.getParameterSignature(paramIndex) : parser.getReturnTypeSignature();
-            String name = sig.replaceAll("(?:Lorg/robovm/rt/bro/ptr/Ptr<)+L([^<;]+).*", "$1");
-            name = name.replace('/', '.');
-            return SootResolver.v().resolveClass(name, SootClass.SIGNATURES);
-        }
+        return getMarshalerClassName(method, paramIndex) != null;            
     }
 
-    public static int getPtrWrapCount(SootMethod method) {
-        return getPtrWrapCount(method, -1);
-    }
-    
-    public static int getPtrWrapCount(SootMethod method, int paramIndex) {
-        SignatureTag signatureTag = (SignatureTag) method.getTag("SignatureTag");
-        if (signatureTag == null) {
-            // Assume Ptr<VoidPtr>
-            return 1;
-        } else {
-            GenericSignatureParser parser = new GenericSignatureParser(signatureTag.getSignature());
-            String sig = paramIndex != -1 ? parser.getParameterSignature(paramIndex) : parser.getReturnTypeSignature();
-            int count = 0;
-            while (sig.startsWith("Lorg/robovm/rt/bro/ptr/Ptr<")) {
-                count++;
-                sig = sig.substring("Lorg/robovm/rt/bro/ptr/Ptr<".length());
-            }
-            return count;
-        }
-    }
-    
     private static SootClass getOuterClass(SootClass clazz) {
         for (Tag tag : clazz.getTags()) {
             if (tag instanceof InnerClassTag) {
@@ -159,11 +118,11 @@ public abstract class Bro {
         return null;
     }
     
-    public static String getMarshalerClassName(SootMethod method, boolean unwrapPtr) {
-        return getMarshalerClassName(method, -1, unwrapPtr);
+    public static String getMarshalerClassName(SootMethod method) {
+        return getMarshalerClassName(method, -1);
     }
     
-    public static String getMarshalerClassName(SootMethod method, int paramIndex, boolean unwrapPtr) {
+    public static String getMarshalerClassName(SootMethod method, int paramIndex) {
         // Use @Marshaler annotation on method or parameter at paramIndex if there is one 
         AnnotationTag annotation = paramIndex == -1 ? getMarshalerAnnotation(method) : getMarshalerAnnotation(method, paramIndex);
         if (annotation == null) {
@@ -172,10 +131,6 @@ public abstract class Bro {
             SootClass clazz = null;
             if (type instanceof RefType) {
                 clazz = ((RefType) type).getSootClass();
-                if (unwrapPtr && isPtr(clazz)) {
-                    // Search for a @Marshaler annotation for the target type pointed to
-                    clazz = paramIndex == -1 ? getPtrTargetClass(method) : getPtrTargetClass(method, paramIndex);
-                }
             }
             // Search for a @Marshaler annotation in the class declaring the method and its superclasses
             annotation = getMarshalerAnnotation(method.getDeclaringClass(), type);
@@ -299,13 +254,13 @@ public abstract class Bro {
     
     public static boolean isPassByValue(SootMethod method, int paramIndex) {
         soot.Type sootType = method.getParameterType(paramIndex);
-        return isStruct(sootType) && !isPtr(sootType) && (hasByValAnnotation(method, paramIndex) 
+        return isStruct(sootType) && (hasByValAnnotation(method, paramIndex) 
                 || hasByValAnnotation(((RefType) sootType).getSootClass()));
     }
     
     public static boolean isStructRet(SootMethod method, int paramIndex) {
         soot.Type sootType = method.getParameterType(paramIndex);
-        return paramIndex == 0 && isStruct(sootType) && !isPtr(sootType) 
+        return paramIndex == 0 && isStruct(sootType) 
                 && (hasStructRetAnnotation(method, paramIndex));
     }
     
@@ -333,7 +288,7 @@ public abstract class Bro {
             return getType(sootType);
         }
 
-        String marshalerClassName = getMarshalerClassName(method, false);
+        String marshalerClassName = getMarshalerClassName(method);
         return getMarshalType(marshalerClassName, sootType, false);
     }
     
@@ -378,7 +333,7 @@ public abstract class Bro {
             return getType(sootType);
         }
         
-        String marshalerClassName = getMarshalerClassName(method, i, false);
+        String marshalerClassName = getMarshalerClassName(method, i);
         return getMarshalType(marshalerClassName, sootType, false);
     }
 
@@ -418,14 +373,26 @@ public abstract class Bro {
     }
     
     public static StructureType getStructType(DataLayout dataLayout, SootClass clazz) {
+        return getStructType(dataLayout, clazz, true);
+    }
+    
+    private static StructureType getStructType(DataLayout dataLayout, SootClass clazz, boolean checkEmpty) {
         int n = 0;
         for (SootMethod method : clazz.getMethods()) {
             n = Math.max(getStructMemberOffset(method) + 1, n);
         }
-        if (n == 0) {
-            throw new IllegalArgumentException("Struct class " + clazz + " has no @StructMember annotated methods");
+        
+        Type[] result = new Type[n + 1];
+        
+        StructureType superType = null;
+        if (clazz.hasSuperclass()) {
+            SootClass superclass = clazz.getSuperclass();
+            if (!superclass.getName().equals("org.robovm.rt.bro.Struct")) {
+                superType = getStructType(dataLayout, superclass, false);
+            }
         }
-        Type[] result = new Type[n];
+        result[0] = superType != null ? superType : new StructureType();
+        
         for (SootMethod method : clazz.getMethods()) {
             int offset = getStructMemberOffset(method);
             if (offset != -1) {
@@ -476,24 +443,29 @@ public abstract class Bro {
                 }
                 
                 type = getStructMemberType(dataLayout, method);
-                if (result[offset] == null) {
-                    result[offset] = type;
-                } else if (type != result[offset]) {
+                int index = offset + 1;
+                if (result[index] == null) {
+                    result[index] = type;
+                } else if (type != result[index]) {
                     // Two members mapped to the same offset (union). Pick
                     // the type with the largest alignment and pad with bytes
                     // up to the largest size.
-                    result[offset] = mergeStructMemberTypes(dataLayout, type, result[offset]);
+                    result[index] = mergeStructMemberTypes(dataLayout, type, result[index]);
                 }
             }
         }
         
-        for (int i = 0; i < result.length; i++) {
+        for (int i = 1; i < result.length; i++) {
             if (result[i] == null) {
                 throw new IllegalArgumentException("No @StructMember(" + i 
                         + ") defined in class " + clazz);
             }
         }
 
+        if (!clazz.isAbstract() && checkEmpty && n == 0 && superType == null) {
+            throw new IllegalArgumentException("Struct class " + clazz + " has no @StructMember annotated methods");
+        }
+        
         return new StructureType(result);
     }
     
@@ -577,7 +549,7 @@ public abstract class Bro {
                 } else if (isInstanceOfClass(c, "java.nio.DoubleBuffer")) {
                     baseType = DOUBLE;
                 } else {
-                    String marshalerClassName = getter != null ? getMarshalerClassName(getter, false) : getMarshalerClassName(setter, 0, false);
+                    String marshalerClassName = getter != null ? getMarshalerClassName(getter) : getMarshalerClassName(setter, 0);
                     baseType = getMarshalType(marshalerClassName, type, true);
                 }
             }
@@ -606,7 +578,7 @@ public abstract class Bro {
         } else if (isNativeObject(type)) {
             memberType = I8_PTR;
         } else {
-            String marshalerClassName = getter != null ? getMarshalerClassName(getter, false) : getMarshalerClassName(setter, 0, false);
+            String marshalerClassName = getter != null ? getMarshalerClassName(getter) : getMarshalerClassName(setter, 0);
             memberType = getMarshalType(marshalerClassName, type, false);
         }
         
@@ -632,18 +604,7 @@ public abstract class Bro {
     }
     
     public static boolean isStruct(SootClass sc) {
-        return !sc.isAbstract() && isSubclass(sc, "org.robovm.rt.bro.Struct");
-    }
-    
-    public static boolean isPtr(soot.Type t) {
-        if (t instanceof RefType) {
-            return isPtr(((RefType) t).getSootClass());
-        }
-        return false;
-    }
-    
-    public static boolean isPtr(SootClass sc) {
-        return sc.getName().equals("org.robovm.rt.bro.ptr.Ptr");
+        return isSubclass(sc, "org.robovm.rt.bro.Struct");
     }
     
     public static class StructMemberPair {

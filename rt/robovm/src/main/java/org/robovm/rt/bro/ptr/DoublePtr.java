@@ -25,6 +25,12 @@ import org.robovm.rt.bro.annotation.StructMember;
  * Points to a <code>double</code> value (<code>double *</code> in C).
  */
 public final class DoublePtr extends Struct<DoublePtr> {
+
+    /**
+     * Pointer to {@link DoublePtr} (<code>double **</code> in C)
+     */
+    public static class Ptr extends org.robovm.rt.bro.ptr.Ptr<DoublePtr, Ptr> {}
+    
     /**
      * Creates a new {@link DoublePtr} with a value of 0.0.
      */

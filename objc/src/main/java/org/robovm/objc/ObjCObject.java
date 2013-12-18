@@ -31,8 +31,6 @@ import org.robovm.rt.bro.annotation.Library;
 import org.robovm.rt.bro.annotation.Marshaler;
 import org.robovm.rt.bro.annotation.Pointer;
 import org.robovm.rt.bro.annotation.StructMember;
-import org.robovm.rt.bro.ptr.Ptr;
-import org.robovm.rt.bro.ptr.Ptr.MarshalerCallback;
 
 /**
  *
@@ -153,14 +151,6 @@ public abstract class ObjCObject extends NativeObject {
     }
     
     public static class Marshaler {
-        @SuppressWarnings("rawtypes")
-        public static final MarshalerCallback MARSHALER_CALLBACK = new MarshalerCallback() {
-            @SuppressWarnings("unchecked")
-            public NativeObject toObject(Class cls, long handle) {
-                return ObjCObject.toObjCObject(cls, handle);
-            }
-        };
-        
         @SuppressWarnings({ "rawtypes", "unchecked" })
         public static Object toObject(Class cls, long handle, boolean copy) {
             ObjCObject o = ObjCObject.toObjCObject(cls, handle);
@@ -168,16 +158,6 @@ public abstract class ObjCObject extends NativeObject {
         }
 
         public static void updateObject(Object o, long handle) {
-        }
-        
-        @SuppressWarnings("rawtypes")
-        public static Ptr toPtr(Class cls, long handle, int wrapCount) {
-            return Ptr.toPtr(cls, handle, wrapCount, MARSHALER_CALLBACK);
-        }
-        
-        @SuppressWarnings("rawtypes")
-        public static void updatePtr(Ptr ptr, Class cls, long handle, int wrapCount) {
-            Ptr.updatePtr(ptr, cls, wrapCount, MARSHALER_CALLBACK);
         }
         
         public static @Pointer long toNative(Object o) {

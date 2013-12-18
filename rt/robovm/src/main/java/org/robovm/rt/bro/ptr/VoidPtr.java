@@ -25,6 +25,12 @@ import org.robovm.rt.bro.annotation.StructMember;
  * another type first.
  */
 public final class VoidPtr extends Struct<VoidPtr> {
+
+    /**
+     * Pointer to {@link VoidPtr} (<code>void **</code> in C)
+     */
+    public static class Ptr extends org.robovm.rt.bro.ptr.Ptr<VoidPtr, Ptr> {}
+    
     /**
      * Creates a new {@link VoidPtr} with a value of NULL.
      */

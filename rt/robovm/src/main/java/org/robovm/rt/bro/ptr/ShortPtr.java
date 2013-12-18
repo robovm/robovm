@@ -25,6 +25,12 @@ import org.robovm.rt.bro.annotation.StructMember;
  * Points to a 16-bit signed value (<code>short *</code> in C).
  */
 public final class ShortPtr extends Struct<ShortPtr> {
+
+    /**
+     * Pointer to {@link ShortPtr} (<code>short **</code> in C)
+     */
+    public static class Ptr extends org.robovm.rt.bro.ptr.Ptr<ShortPtr, Ptr> {}
+
     /**
      * Creates a new {@link ShortPtr} with a value of 0.
      */

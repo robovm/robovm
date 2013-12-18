@@ -113,6 +113,9 @@ public class StructTest {
         public native Point y(int y);
     }
     
+    public static final class PointPtr extends Ptr<Point, PointPtr> {}
+    public static final class PointPtrPtr extends Ptr<PointPtr, PointPtrPtr> {}
+    
     public static final class TestUnion extends Struct<TestUnion> {
         @StructMember(0)
         public native byte b();
@@ -201,14 +204,14 @@ public class StructTest {
         public native TestStruct recursive(TestStruct s);
         
         @StructMember(7)
-        public native Ptr<Point> pointPtr();
+        public native PointPtr pointPtr();
         @StructMember(7)
-        public native TestStruct pointPtr(Ptr<Point> ptr);
+        public native TestStruct pointPtr(PointPtr ptr);
         
         @StructMember(8)
-        public native Ptr<Ptr<Point>> pointPtrPtr();
+        public native PointPtrPtr pointPtrPtr();
         @StructMember(8)
-        public native TestStruct pointPtrPtr(Ptr<Ptr<Point>> ptr);
+        public native TestStruct pointPtrPtr(PointPtrPtr ptr);
         
         @StructMember(9)
         public native SimpleEnum simpleEnum();
@@ -520,7 +523,7 @@ public class StructTest {
     public void testPtrMember() {
         TestStruct s = new TestStruct();
         assertNull(s.pointPtr());
-        Ptr<Point> ptr = Ptr.newPtr(Point.class);
+        PointPtr ptr = new PointPtr();
         s.pointPtr(ptr);
         assertEquals(ptr, s.pointPtr());
         Point p = new Point().x(10).y(20);
@@ -534,11 +537,11 @@ public class StructTest {
     public void testPtrPtrMember() {
         TestStruct s = new TestStruct();
         assertNull(s.pointPtrPtr());
-        Ptr<Ptr<Point>> ptrOuter = Ptr.newPtrPtr(Point.class);
+        PointPtrPtr ptrOuter = new PointPtrPtr();
         s.pointPtrPtr(ptrOuter);
         assertEquals(ptrOuter, s.pointPtrPtr());
         assertNull(s.pointPtrPtr().get());
-        Ptr<Point> ptrInner = Ptr.newPtr(Point.class);
+        PointPtr ptrInner = new PointPtr();
         ptrOuter.set(ptrInner);
         assertEquals(ptrInner, s.pointPtrPtr().get());
         Point p = new Point().x(10).y(20);

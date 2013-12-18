@@ -223,7 +223,7 @@ public abstract class AbstractMethodCompiler {
             soot.Type type = method.getParameterType(i);
             
             if (needsMarshaler(type)) {
-                String marshalerClassName = getMarshalerClassName(method, i, true);
+                String marshalerClassName = getMarshalerClassName(method, i);
                 String targetClassName = getInternalName(type);
 
                 if (arg.getType() instanceof PrimitiveType) {
@@ -236,11 +236,7 @@ public abstract class AbstractMethodCompiler {
                     MarshaledArg marshaledArg = new MarshaledArg();
                     marshaledArg.paramIndex = i;
                     marshaledArgs.add(marshaledArg);
-                    if (isPtr(type)) {
-                        arg = marshalNativeToPtr(callbackFn, marshalerClassName, marshaledArg, env, getPtrTargetClass(method, i), arg, getPtrWrapCount(method, i));
-                    } else {
-                        arg = marshalNativeToObject(callbackFn, marshalerClassName, marshaledArg, env, targetClassName, arg, false);
-                    }
+                    arg = marshalNativeToObject(callbackFn, marshalerClassName, marshaledArg, env, targetClassName, arg, false);
                 }
             } else if (hasPointerAnnotation(method, i)) {
                 arg = marshalPointerToLong(callbackFn, arg);
@@ -253,7 +249,7 @@ public abstract class AbstractMethodCompiler {
         // Call Marshaler.updateNative() for each object that was marshaled before
         // the call.
         for (MarshaledArg marshaledArg : marshaledArgs) {
-            String marshalerClassName = getMarshalerClassName(method, marshaledArg.paramIndex, false);
+            String marshalerClassName = getMarshalerClassName(method, marshaledArg.paramIndex);
             // Call the Marshaler's updateNative() method
             Invokestatic invokestatic = new Invokestatic(
                     getInternalName(method.getDeclaringClass()), marshalerClassName, 
@@ -266,7 +262,7 @@ public abstract class AbstractMethodCompiler {
         
         // Marshal the returned value to a native value before returning
         if (needsMarshaler(method.getReturnType())) {
-            String marshalerClassName = getMarshalerClassName(method, false);
+            String marshalerClassName = getMarshalerClassName(method);
             Type nativeType = callbackFn.getType().getReturnType();
             
             if (passByValue) {
@@ -288,7 +284,7 @@ public abstract class AbstractMethodCompiler {
             // function takes a struct allocated on the stack by the caller as
             // it's first parameter. We need to copy the struct which the Java
             // method returned to the struct passed in by the caller.
-            String marshalerClassName = getMarshalerClassName(originalMethod, false);
+            String marshalerClassName = getMarshalerClassName(originalMethod);
             PointerType nativeType = (PointerType) callbackFn.getType().getParameterTypes()[0];
             Value addr = marshalObjectToNative(callbackFn, marshalerClassName, null, nativeType, env, result);
             Variable src = callbackFn.newVariable(I8_PTR);
@@ -340,30 +336,6 @@ public abstract class AbstractMethodCompiler {
         public Value object;
         public Value handle;
         public int paramIndex;
-    }
-    
-    protected Value marshalNativeToPtr(Function fn, String marshalerClassName, MarshaledArg marshaledArg, Value env, 
-            SootClass sootPtrTargetClass, Value nativeValue, int ptrWrapCount) {
-        
-        Value ptrTargetClass = ldcClass(fn, getInternalName(sootPtrTargetClass), env);
-        Invokestatic invokeToPtr = new Invokestatic(
-                getInternalName(sootMethod.getDeclaringClass()), marshalerClassName, 
-                "toPtr", "(Ljava/lang/Class;JI)Lorg/robovm/rt/bro/ptr/Ptr;");
-        trampolines.add(invokeToPtr);
-        
-        Variable handle = fn.newVariable(I64);
-        fn.add(new Ptrtoint(handle, nativeValue, I64));
-        
-        Value object = call(fn, invokeToPtr.getFunctionRef(), 
-                env, ptrTargetClass, 
-                handle.ref(), new IntegerConstant(ptrWrapCount));
-        
-        if (marshaledArg != null) {
-            marshaledArg.handle = handle.ref();
-            marshaledArg.object = object;
-        }
-        
-        return object;
     }
     
     protected Value marshalNativeToObject(Function fn, String marshalerClassName, MarshaledArg marshaledArg, Value env, 

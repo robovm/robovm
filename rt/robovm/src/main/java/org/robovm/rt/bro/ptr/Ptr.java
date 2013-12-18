@@ -15,11 +15,12 @@
  */
 package org.robovm.rt.bro.ptr;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.util.concurrent.ConcurrentHashMap;
 
-import org.robovm.rt.VM;
+import org.robovm.rt.bro.BuiltinMarshalers;
 import org.robovm.rt.bro.NativeObject;
 import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.Pointer;
@@ -28,25 +29,17 @@ import org.robovm.rt.bro.annotation.StructMember;
 /**
  * Generic pointer to pointer (<code>&lt;type&gt; **</code> in C).
  */
-public final class Ptr<T extends NativeObject> extends Struct<Ptr<T>> {
+public abstract class Ptr<S extends NativeObject, T extends Ptr<S, T>> extends Struct<T> {
     
+    private static final ConcurrentHashMap<Class<?>, Class<?>> TYPE_CACHE = new ConcurrentHashMap<Class<?>, Class<?>>();
+    private static final ConcurrentHashMap<Class<?>, Method> TO_OBJECT_CACHE = new ConcurrentHashMap<Class<?>, Method>();
     
-    public interface MarshalerCallback<T extends NativeObject> {
-        T toObject(Class<T> cls, long handle);
+    public Ptr() {
     }
-    
-    private static final MarshalerCallback<NativeObject> LAZY_MARSHALER_CALLBACK = 
-            new LazyMarshalerCallback<NativeObject>();
-    
-    private static Map<Class<?>, MarshalerCallback<NativeObject>> callbacks = 
-            new HashMap<Class<?>, MarshalerCallback<NativeObject>>();
-    
-    private Class<T> targetClass;
-    private MarshalerCallback<T> marshalerCallback;
-    
-    private Ptr() {
+
+    public Ptr(T o) {
     }
-    
+
     /**
      * Hidden.
      */
@@ -59,240 +52,103 @@ public final class Ptr<T extends NativeObject> extends Struct<Ptr<T>> {
     @StructMember(0)
     native void setValue(@Pointer long value);
     
-    public T get() {
-        return get(marshalerCallback);
-    }
-
-    @SuppressWarnings("unchecked")
-    public T get(MarshalerCallback<T> marshaler) {
+    public S get() {
         long v = getValue();
         if (v == 0L) {
             return null;
         }
-        if (marshaler == null) {
-            marshaler = lazy();
-        }
-        Class<T> cls = targetClass;
-        if (cls == null) {
-            cls = (Class<T>) VoidPtr.class;
-        }
-        return marshaler.toObject(cls, v);
+        return toObject(v);
     }
-    
-    public Ptr<T> set(T o) {
+
+    @SuppressWarnings("unchecked")
+    public T set(S o) {
         if (o == null) {
             setValue(0L);
         } else {
             setValue(o.getHandle());
         }
-        return this;
+        return (T) this;
     }
 
-    @Override
-    public Ptr<T> copy(int n) {
-        Ptr<T> p = super.copy(n);
-        p.targetClass = targetClass;
-        p.marshalerCallback = marshalerCallback;
-        return p;
-    }
-
-    @Override
-    public Ptr<T> copyWithMalloc(int n) {
-        Ptr<T> p = super.copyWithMalloc(n);
-        p.targetClass = targetClass;
-        p.marshalerCallback = marshalerCallback;
-        return p;
-    }
-    
-    @Override
-    protected Ptr<T> wrap(long address) {
-        Ptr<T> p = super.wrap(address);
-        p.targetClass = targetClass;
-        p.marshalerCallback = marshalerCallback;
-        return p;
-    }
-    
     @SuppressWarnings("unchecked")
-    private static <T extends NativeObject> MarshalerCallback<T> findMarshalerCallback(Class<T> targetClass) {
-        if (targetClass.getSuperclass() == Struct.class) {
-            return Struct.Marshaler.MARSHALER_CALLBACK;
+    public T set(long handle) {
+        setValue(handle);
+        return (T) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    private S toObject(long handle) {
+        Class<?> type = TYPE_CACHE.get(getClass());
+        if (type == null) {
+            type = (Class<?>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+            TYPE_CACHE.put(getClass(), type);
         }
-        
-        MarshalerCallback<T> callback = null;
-        synchronized (callbacks) {
-            callback = (MarshalerCallback<T>) callbacks.get(targetClass);
+        try {
+            Method toObject = TO_OBJECT_CACHE.get(type);
+            if (toObject == null) {
+                Class<?> marshaler = findMarshaler(type, type);
+                toObject = marshaler.getMethod("toObject", Class.class, long.class, boolean.class);
+                TO_OBJECT_CACHE.put(type, toObject);
+            }
+            return (S) toObject.invoke(null, type, handle, false);
+        } catch (InvocationTargetException e) {
+            throw new Error(e);
+        } catch (NoSuchMethodException e) {
+            throw new Error(e);
+        } catch (IllegalAccessException e) {
+            throw new Error(e);
         }
-        if (callback != null) {
-            return callback;
-        }
-        
-        Class<?> cls = targetClass;
-        while (cls.getSuperclass() != null && cls.getAnnotation(org.robovm.rt.bro.annotation.Marshaler.class) == null) {
-            cls = cls.getSuperclass();
-        }
-        org.robovm.rt.bro.annotation.Marshaler marshalerAnno = 
-                (org.robovm.rt.bro.annotation.Marshaler) cls.getAnnotation(org.robovm.rt.bro.annotation.Marshaler.class);
-        if (marshalerAnno != null) {
-            Class<?> marshaler = marshalerAnno.value();
-            try {
-                Field f = marshaler.getField("MARSHALLER_CALLBACK");
-                callback = (MarshalerCallback<T>) f.get(null);
-                synchronized (callbacks) {
-                    callbacks.put(targetClass, (MarshalerCallback<NativeObject>) callback);
-                }
-                return callback;
-            } catch (NoSuchFieldException e) {
-            } catch (IllegalArgumentException e) {
-            } catch (IllegalAccessException e) {
+    }
+    
+    private static boolean match(Class<?> findClass, Class<?> inClass, org.robovm.rt.bro.annotation.Marshaler anno) {
+        Class<?> type = anno.type();
+        return type == org.robovm.rt.bro.annotation.Marshaler.class 
+                && inClass.isAssignableFrom(findClass) || type.isAssignableFrom(findClass);
+    }
+    
+    private static Class<?> findMarshaler0(Class<?> findClass, Class<?> inClass) {
+        org.robovm.rt.bro.annotation.Marshaler anno1 = 
+                inClass.getAnnotation(org.robovm.rt.bro.annotation.Marshaler.class);
+        org.robovm.rt.bro.annotation.Marshalers anno2 = 
+                inClass.getAnnotation(org.robovm.rt.bro.annotation.Marshalers.class);
+        if (anno1 != null) {
+            if (match(findClass, inClass, anno1)) {
+                return anno1.value();
             }
         }
-        throw new RuntimeException("No MarshalerCallback found for class " 
-                                        + targetClass.getName());
+        if (anno2 != null) {
+            for (org.robovm.rt.bro.annotation.Marshaler m : anno2.value()) {
+                if (match(findClass, inClass, m)) {
+                    return m.value();
+                }
+            }
+        }
+        return null;
+    }
+    
+    private static Class<?> findMarshaler(Class<?> findClass, Class<?> inClass) {
+        // Search for a marshaler on the class and its superclasses.
+        Class<?> c = inClass;
+        while (c != null) {
+            Class<?> marshaler = findMarshaler0(findClass, c);
+            if (marshaler != null) {
+                return marshaler;
+            }
+            c = c.getSuperclass();
+        }
+        for (Class<?> intf : inClass.getInterfaces()) {
+            Class<?> marshaler = findMarshaler(findClass, intf);
+            if (marshaler != null) {
+                return marshaler;
+            }
+        }
+        
+        Class<?> marshaler = findMarshaler0(findClass, BuiltinMarshalers.class);
+        if (marshaler != null) {
+            return marshaler;
+        }
+
+        throw new Error("No marshaler found for class " + findClass.getName());
     }
 
-    @SuppressWarnings("unchecked")
-    public static <T extends NativeObject> Ptr<T> newPtr(Class<T> cls) {
-        return newPtr(cls, 1, 1);
-    }
-    
-    @SuppressWarnings("unchecked")
-    public static <T extends NativeObject> Ptr<T> newPtr(Class<T> cls, int n) {
-        return newPtr(cls, 1, n);
-    }
-    
-    @SuppressWarnings("unchecked")
-    public static <T extends NativeObject> Ptr<Ptr<T>> newPtrPtr(Class<T> cls) {
-        return newPtr(cls, 2, 1);
-    }
-    
-    @SuppressWarnings("unchecked")
-    public static <T extends NativeObject> Ptr<Ptr<T>> newPtrPtr(Class<T> cls, int n) {
-        return newPtr(cls, 2, n);
-    }
-    
-    @SuppressWarnings("rawtypes")
-    public static Ptr newPtr(Class cls, int wrapCount, int n) {
-        if (wrapCount < 1) {
-            throw new IllegalArgumentException("wrapCount < 1");
-        }
-        if (n < 1) {
-            throw new IllegalArgumentException("n < 1");
-        }
-        return toPtr(cls, VM.allocateMemory(Ptr.sizeOf() * n), wrapCount,
-                lazy());
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <T extends NativeObject> Ptr<T> mallocPtr(Class<T> cls) {
-        return mallocPtr(cls, 1, 1);
-    }
-    
-    @SuppressWarnings("unchecked")
-    public static <T extends NativeObject> Ptr<T> mallocPtr(Class<T> cls, int n) {
-        return mallocPtr(cls, 1, n);
-    }
-    
-    @SuppressWarnings("unchecked")
-    public static <T extends NativeObject> Ptr<Ptr<T>> mallocPtrPtr(Class<T> cls) {
-        return mallocPtr(cls, 2, 1);
-    }
-    
-    @SuppressWarnings("unchecked")
-    public static <T extends NativeObject> Ptr<Ptr<T>> mallocPtrPtr(Class<T> cls, int n) {
-        return mallocPtr(cls, 2, n);
-    }
-    
-    @SuppressWarnings("rawtypes")
-    public static Ptr mallocPtr(Class cls, int wrapCount, int n) {
-        if (wrapCount < 1) {
-            throw new IllegalArgumentException("wrapCount < 1");
-        }
-        if (n < 1) {
-            throw new IllegalArgumentException("n < 1");
-        }
-        long handle = VM.malloc(Ptr.sizeOf() * n);
-        return toPtr(cls, handle, wrapCount, lazy());
-    }
-    
-    public static <T extends NativeObject> Ptr<T> toPtr(Class<T> cls, long handle) {
-        return toPtr(cls, handle, Ptr.<T>lazy());
-    }
-    
-    public static <T extends NativeObject> Ptr<Ptr<T>> toPtrPtr(Class<T> cls, long handle) {
-        return toPtrPtr(cls, handle, Ptr.<T>lazy());
-    }
-    
-    @SuppressWarnings("unchecked")
-    public static <T extends NativeObject> Ptr<T> toPtr(Class<T> cls, long handle, MarshalerCallback<T> callback) {
-        return toPtr(cls, handle, 1, callback);
-    }
-    
-    @SuppressWarnings("unchecked")
-    public static <T extends NativeObject> Ptr<Ptr<T>> toPtrPtr(Class<T> cls, long handle, MarshalerCallback<T> callback) {
-        return toPtr(cls, handle, 2, callback);
-    }
-    
-    @SuppressWarnings("rawtypes")
-    public static Ptr toPtr(Class cls, long handle, int wrapCount) {
-        return toPtr(cls, handle, wrapCount, Ptr.lazy());
-    }
-    
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static Ptr toPtr(Class cls, long handle, 
-            int wrapCount, MarshalerCallback callback) {
-        
-        if (wrapCount < 1) {
-            throw new IllegalArgumentException("wrapCount < 1");
-        }
-        if (handle == 0L) {
-            return null;
-        }
-        Ptr p = Struct.toStruct(Ptr.class, handle);
-        p.targetClass = cls;
-        if (wrapCount > 1) {
-            p.marshalerCallback = new UnwrappingMarshalerCallback(wrapCount, callback);
-        } else {
-            p.marshalerCallback = callback;
-        }
-        return p;
-    }
-    
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static void updatePtr(Ptr ptr, Class cls, int wrapCount, MarshalerCallback callback) {
-        if (wrapCount < 1) {
-            throw new IllegalArgumentException("wrapCount < 1");
-        }
-        Ptr tmpPtr = toPtr(cls, ptr.getHandle(), wrapCount, callback);
-        ptr.targetClass = tmpPtr.targetClass;
-        ptr.marshalerCallback = tmpPtr.marshalerCallback;
-    }
-    
-    @SuppressWarnings("unchecked")
-    private static <T extends NativeObject> LazyMarshalerCallback<T> lazy() {
-        return (LazyMarshalerCallback<T>) LAZY_MARSHALER_CALLBACK;
-    }
-    
-    private static class LazyMarshalerCallback<T extends NativeObject> implements MarshalerCallback<T> {
-        @Override
-        public T toObject(Class<T> cls, long handle) {
-            MarshalerCallback<T> callback = findMarshalerCallback(cls);
-            return callback.toObject(cls, handle);
-        }
-    }
-    
-    private static class UnwrappingMarshalerCallback implements MarshalerCallback<Ptr<?>> {
-        private final int wrapCount;
-        private final MarshalerCallback<Ptr<?>> callback;
-        
-        public UnwrappingMarshalerCallback(int wrapCount, MarshalerCallback<Ptr<?>> callback) {
-            this.wrapCount = wrapCount;
-            this.callback = callback;
-        }
-        
-        @SuppressWarnings("rawtypes")
-        @Override
-        public Ptr toObject(Class cls, long handle) {
-            return toPtr(cls, handle, wrapCount - 1, callback);
-        }
-    }
 }

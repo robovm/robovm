@@ -38,6 +38,8 @@ import org.robovm.rt.bro.ptr.*;
     extends /*<extends>*/ NSObject /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 
+    public static class Ptr extends org.robovm.rt.bro.ptr.Ptr<NSError, Ptr> {}
+
     static {
         ObjCRuntime.bind(/*<name>*/ NSError /*</name>*/.class);
     }

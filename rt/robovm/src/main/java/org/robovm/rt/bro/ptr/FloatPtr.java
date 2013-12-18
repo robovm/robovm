@@ -25,6 +25,12 @@ import org.robovm.rt.bro.annotation.StructMember;
  * Points to a <code>float</code> value (<code>float *</code> in C).
  */
 public final class FloatPtr extends Struct<FloatPtr> {
+
+    /**
+     * Pointer to {@link FloatPtr} (<code>float **</code> in C)
+     */
+    public static class Ptr extends org.robovm.rt.bro.ptr.Ptr<FloatPtr, Ptr> {}
+    
     /**
      * Creates a new {@link FloatPtr} with a value of 0.0f.
      */

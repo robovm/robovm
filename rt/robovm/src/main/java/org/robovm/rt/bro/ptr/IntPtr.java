@@ -25,6 +25,12 @@ import org.robovm.rt.bro.annotation.StructMember;
  * Points to a 32-bit signed value (<code>int32_t *</code> in C).
  */
 public final class IntPtr extends Struct<IntPtr> {
+
+    /**
+     * Pointer to {@link IntPtr} (<code>int32_t **</code> in C)
+     */
+    public static class Ptr extends org.robovm.rt.bro.ptr.Ptr<IntPtr, Ptr> {}
+
     /**
      * Creates a new {@link IntPtr} with a value of 0.
      */

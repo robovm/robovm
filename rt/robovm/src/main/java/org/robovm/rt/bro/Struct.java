@@ -23,8 +23,6 @@ import java.util.List;
 import org.robovm.rt.VM;
 import org.robovm.rt.bro.annotation.Marshaler;
 import org.robovm.rt.bro.annotation.Pointer;
-import org.robovm.rt.bro.ptr.Ptr;
-import org.robovm.rt.bro.ptr.Ptr.MarshalerCallback;
 
 /**
  *
@@ -68,30 +66,6 @@ public abstract class Struct<T extends Struct<T>> extends NativeObject implement
      */
     public <U extends Struct<U>> U as(Class<U> type) {
         return Struct.toStruct(type, getHandle());
-    }
-    
-    /**
-     * Casts this {@link Struct} to a {@link Ptr} pointing to the specified 
-     * target type.
-     * 
-     * @param type the target type.
-     * @return a {@link Ptr} that points to the same memory 
-     *         location as this {@link Struct}.
-     */
-    public <U extends Struct<U>> Ptr<U> asPtr(Class<U> type) {
-        return Ptr.toPtr(type, getHandle());
-    }
-    
-    /**
-     * Casts this {@link Struct} to a {@link Ptr} pointing to a {@link Ptr} 
-     * pointing to the specified target type.
-     * 
-     * @param type the target type.
-     * @return a {@link Ptr} that points to the same memory 
-     *         location as this {@link Struct}.
-     */
-    public <U extends Struct<U>> Ptr<Ptr<U>> asPtrPtr(Class<U> type) {
-        return Ptr.toPtrPtr(type, getHandle());
     }
     
     protected int _sizeOf() {
@@ -290,14 +264,6 @@ public abstract class Struct<T extends Struct<T>> extends NativeObject implement
     }
     
     public static class Marshaler {
-        @SuppressWarnings("rawtypes")
-        public static final MarshalerCallback MARSHALER_CALLBACK = new MarshalerCallback() {
-            @SuppressWarnings("unchecked")
-            public NativeObject toObject(Class cls, long handle) {
-                return Struct.toStruct(cls, handle);
-            }
-        };
-        
         @SuppressWarnings({ "rawtypes", "unchecked" })
         public static Object toObject(Class cls, long handle, boolean copy) {
             Struct o = Struct.toStruct(cls, handle);
@@ -308,16 +274,6 @@ public abstract class Struct<T extends Struct<T>> extends NativeObject implement
         }
 
         public static void updateObject(Object o, long handle) {
-        }
-        
-        @SuppressWarnings("rawtypes")
-        public static Ptr toPtr(Class cls, long handle, int wrapCount) {
-            return Ptr.toPtr(cls, handle, wrapCount, MARSHALER_CALLBACK);
-        }
-        
-        @SuppressWarnings("rawtypes")
-        public static void updatePtr(Ptr ptr, Class cls, long handle, int wrapCount) {
-            Ptr.updatePtr(ptr, cls, wrapCount, MARSHALER_CALLBACK);
         }
         
         public static @Pointer long toNative(Object o) {

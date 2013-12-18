@@ -25,6 +25,12 @@ import org.robovm.rt.bro.annotation.StructMember;
  * Points to an 8-bit signed value (<code>char *</code> in C).
  */
 public final class BytePtr extends Struct<BytePtr> {
+    
+    /**
+     * Pointer to {@link BytePtr} (<code>char **</code> in C)
+     */
+    public static class Ptr extends org.robovm.rt.bro.ptr.Ptr<BytePtr, Ptr> {}
+    
     /**
      * Creates a new {@link BytePtr} with a value of 0.
      */

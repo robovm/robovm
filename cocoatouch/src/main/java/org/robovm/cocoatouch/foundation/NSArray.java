@@ -105,7 +105,7 @@ import org.robovm.rt.bro.ptr.*;
     /*</properties>*/
     
     private void initWithObjects(NSObject[] objects) {
-        VoidPtrPtr ptr = Struct.allocate(VoidPtrPtr.class, objects.length);
+        VoidPtr.Ptr ptr = Struct.allocate(VoidPtr.Ptr.class, objects.length);
         for (int i = 0; i < objects.length; i++) {
             ptr.set(objects[i].getHandle());
             ptr = ptr.next();

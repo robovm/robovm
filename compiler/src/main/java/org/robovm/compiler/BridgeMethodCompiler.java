@@ -41,7 +41,6 @@ import org.robovm.compiler.llvm.FunctionType;
 import org.robovm.compiler.llvm.Global;
 import org.robovm.compiler.llvm.Icmp;
 import org.robovm.compiler.llvm.Icmp.Condition;
-import org.robovm.compiler.llvm.IntegerConstant;
 import org.robovm.compiler.llvm.Label;
 import org.robovm.compiler.llvm.Load;
 import org.robovm.compiler.llvm.NullConstant;
@@ -57,7 +56,6 @@ import org.robovm.compiler.llvm.VariableRef;
 import org.robovm.compiler.trampoline.Invokestatic;
 import org.robovm.compiler.trampoline.LdcClass;
 
-import soot.SootClass;
 import soot.SootMethod;
 
 /**
@@ -182,7 +180,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             soot.Type type = method.getParameterType(i);
             if (needsMarshaler(type)) {
 
-                String marshalerClassName = getMarshalerClassName(method, i, false);
+                String marshalerClassName = getMarshalerClassName(method, i);
                 
                 // The return type of the marshaler's toNative() method is derived from the target function type.
                 Type nativeType = targetParameterTypes[i];
@@ -236,34 +234,19 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         // Call Marshaler.updateObject() or Marshaler.updatePtr() for each object that was marshaled before
         // the call.
         for (MarshaledArg value : marshaledArgs) {
-            soot.Type type = method.getParameterType(value.paramIndex);
-            String marshalerClassName = getMarshalerClassName(method, value.paramIndex, true);
-            if (isPtr(type)) {
-                // Call the Marshaler's updatePtr() method
-                SootClass sootPtrTargetClass = getPtrTargetClass(method, value.paramIndex);
-                Value ptrTargetClass = ldcClass(fn, getInternalName(sootPtrTargetClass), env);
-                int ptrWrapCount = getPtrWrapCount(method, value.paramIndex);
-                Invokestatic invokestatic = new Invokestatic(
-                        getInternalName(method.getDeclaringClass()), marshalerClassName, 
-                        "updatePtr", "(Lorg/robovm/rt/bro/ptr/Ptr;Ljava/lang/Class;JI)V");
-                trampolines.add(invokestatic);
-                call(fn, invokestatic.getFunctionRef(), 
-                        env, value.object, ptrTargetClass, 
-                        value.handle, new IntegerConstant(ptrWrapCount));
-            } else {
-                // Call the Marshaler's updateObject() method
-                Invokestatic invokestatic = new Invokestatic(
-                        getInternalName(method.getDeclaringClass()), marshalerClassName, 
-                        "updateObject", "(Ljava/lang/Object;J)V");
-                trampolines.add(invokestatic);
-                call(fn, invokestatic.getFunctionRef(), 
-                        env, value.object, value.handle);
-            }
+            String marshalerClassName = getMarshalerClassName(method, value.paramIndex);
+            // Call the Marshaler's updateObject() method
+            Invokestatic invokestatic = new Invokestatic(
+                    getInternalName(method.getDeclaringClass()), marshalerClassName, 
+                    "updateObject", "(Ljava/lang/Object;J)V");
+            trampolines.add(invokestatic);
+            call(fn, invokestatic.getFunctionRef(), 
+                    env, value.object, value.handle);
         }
         
         // Marshal the return value
         if (needsMarshaler(method.getReturnType())) {
-            String marshalerClassName = getMarshalerClassName(method, true);
+            String marshalerClassName = getMarshalerClassName(method);
             String targetClassName = getInternalName(method.getReturnType());
             
             if (passByValue) {
@@ -276,13 +259,8 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
                     result = marshalNativeToValueObject(fn, marshalerClassName, env, targetClassName, result);
                 }
             } else {
-                if (isPtr(method.getReturnType())) {
-                    result = marshalNativeToPtr(fn, marshalerClassName, null, env, 
-                            getPtrTargetClass(method), result, getPtrWrapCount(method));
-                } else {
-                    result = marshalNativeToObject(fn, marshalerClassName, null, env, 
-                            targetClassName, result, passByValue);
-                }
+                result = marshalNativeToObject(fn, marshalerClassName, null, env, 
+                        targetClassName, result, passByValue);
             }
         } else if (hasPointerAnnotation(method)) {
             result = marshalPointerToLong(fn, result);

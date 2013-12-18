@@ -91,7 +91,7 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
         Variable handlePtr = function.newVariable(new PointerType(structType));
         function.add(new Inttoptr(handlePtr, handleI64.ref(), handlePtr.getType()));
         
-        int offset = getStructMemberOffset(method);      
+        int offset = getStructMemberOffset(method) + 1; // Add 1 since the first type in structType is the superclass type or {}.      
         Type memberType = getStructMemberType(config.getDataLayout(), method);
         Variable memberPtr = function.newVariable(new PointerType(memberType));
         if (memberType != structType.getTypeAt(offset)) {
@@ -122,7 +122,7 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
             }
             
             if (needsMarshaler(type)) {
-                String marshalerClassName = getMarshalerClassName(method, true);
+                String marshalerClassName = getMarshalerClassName(method);
                 String targetClassName = getInternalName(type);
                 
                 if (memberType instanceof PrimitiveType) {
@@ -133,10 +133,7 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
                         result = marshalNativeToValueObject(function, marshalerClassName, env, targetClassName, result);
                     }
                 } else {
-                    if (isPtr(type)) {
-                        result = marshalNativeToPtr(function, marshalerClassName, null, env, 
-                                getPtrTargetClass(method), result, getPtrWrapCount(method));
-                    } else if (memberType instanceof ArrayType && !isStruct(type)) {
+                    if (memberType instanceof ArrayType && !isStruct(type)) {
                         // Array
                         result = marshalNativeToArray(function, marshalerClassName, env, 
                                 targetClassName, result, getArrayDimensions(method));
@@ -158,7 +155,7 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
             soot.Type type = method.getParameterType(0);
             
             if (needsMarshaler(type)) {
-                String marshalerClassName = getMarshalerClassName(method, 0, false);
+                String marshalerClassName = getMarshalerClassName(method, 0);
                 
                 if (memberType instanceof PrimitiveType) {
                     if (isEnum(type)) {

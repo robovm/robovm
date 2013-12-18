@@ -514,9 +514,6 @@ public class ClassCompiler {
         }
 
         if (isStruct(sootClass)) {
-            if (!Modifier.isFinal(sootClass.getModifiers())) {
-                throw new IllegalArgumentException("Struct class must be final");
-            }
             SootMethod _sizeOf = new SootMethod("_sizeOf", Collections.EMPTY_LIST, IntType.v(), Modifier.PROTECTED);
             sootClass.addMethod(_sizeOf);
             SootMethod sizeOf = new SootMethod("sizeOf", Collections.EMPTY_LIST, IntType.v(), Modifier.PUBLIC | Modifier.STATIC);

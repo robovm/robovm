@@ -25,6 +25,12 @@ import org.robovm.rt.bro.annotation.StructMember;
  * Points to a 64-bit signed value (<code>int64_t *</code> in C).
  */
 public final class LongPtr extends Struct<LongPtr> {
+
+    /**
+     * Pointer to {@link LongPtr} (<code>int64_t **</code> in C)
+     */
+    public static class Ptr extends org.robovm.rt.bro.ptr.Ptr<LongPtr, Ptr> {}
+    
     /**
      * Creates a new {@link LongPtr} with a value of 0.
      */

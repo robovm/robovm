@@ -190,13 +190,13 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector contentsForType$error$ = Selector.register("contentsForType:error:");
-    @Bridge private native static NSObject objc_contentsForType(UIDocument __self__, Selector __cmd__, String typeName, Ptr<NSError> outError);
-    @Bridge private native static NSObject objc_contentsForTypeSuper(ObjCSuper __super__, Selector __cmd__, String typeName, Ptr<NSError> outError);
+    @Bridge private native static NSObject objc_contentsForType(UIDocument __self__, Selector __cmd__, String typeName, NSError.Ptr outError);
+    @Bridge private native static NSObject objc_contentsForTypeSuper(ObjCSuper __super__, Selector __cmd__, String typeName, NSError.Ptr outError);
     /**
      * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/contentsForType:error:">- (id)contentsForType:(NSString *)typeName error:(NSError **)outError</a>
      * @since Available in iOS 5.0 and later.
      */
-    public NSObject contentsForType(String typeName, Ptr<NSError> outError) {
+    public NSObject contentsForType(String typeName, NSError.Ptr outError) {
         if (customClass) { return objc_contentsForTypeSuper(getSuper(), contentsForType$error$, typeName, outError); } else { return objc_contentsForType(this, contentsForType$error$, typeName, outError); }
     }
     
@@ -234,13 +234,13 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector fileAttributesToWriteToURL$forSaveOperation$error$ = Selector.register("fileAttributesToWriteToURL:forSaveOperation:error:");
-    @Bridge private native static NSDictionary objc_getFileAttributesToWrite(UIDocument __self__, Selector __cmd__, NSURL url, UIDocumentSaveOperation saveOperation, Ptr<NSError> outError);
-    @Bridge private native static NSDictionary objc_getFileAttributesToWriteSuper(ObjCSuper __super__, Selector __cmd__, NSURL url, UIDocumentSaveOperation saveOperation, Ptr<NSError> outError);
+    @Bridge private native static NSDictionary objc_getFileAttributesToWrite(UIDocument __self__, Selector __cmd__, NSURL url, UIDocumentSaveOperation saveOperation, NSError.Ptr outError);
+    @Bridge private native static NSDictionary objc_getFileAttributesToWriteSuper(ObjCSuper __super__, Selector __cmd__, NSURL url, UIDocumentSaveOperation saveOperation, NSError.Ptr outError);
     /**
      * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/fileAttributesToWriteToURL:forSaveOperation:error:">- (NSDictionary *)fileAttributesToWriteToURL:(NSURL *)url forSaveOperation:(UIDocumentSaveOperation)saveOperation error:(NSError **)outError</a>
      * @since Available in iOS 5.0 and later.
      */
-    public NSDictionary getFileAttributesToWrite(NSURL url, UIDocumentSaveOperation saveOperation, Ptr<NSError> outError) {
+    public NSDictionary getFileAttributesToWrite(NSURL url, UIDocumentSaveOperation saveOperation, NSError.Ptr outError) {
         if (customClass) { return objc_getFileAttributesToWriteSuper(getSuper(), fileAttributesToWriteToURL$forSaveOperation$error$, url, saveOperation, outError); } else { return objc_getFileAttributesToWrite(this, fileAttributesToWriteToURL$forSaveOperation$error$, url, saveOperation, outError); }
     }
     
@@ -289,13 +289,13 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector loadFromContents$ofType$error$ = Selector.register("loadFromContents:ofType:error:");
-    @Bridge private native static boolean objc_loadFromContents(UIDocument __self__, Selector __cmd__, NSObject contents, String typeName, Ptr<NSError> outError);
-    @Bridge private native static boolean objc_loadFromContentsSuper(ObjCSuper __super__, Selector __cmd__, NSObject contents, String typeName, Ptr<NSError> outError);
+    @Bridge private native static boolean objc_loadFromContents(UIDocument __self__, Selector __cmd__, NSObject contents, String typeName, NSError.Ptr outError);
+    @Bridge private native static boolean objc_loadFromContentsSuper(ObjCSuper __super__, Selector __cmd__, NSObject contents, String typeName, NSError.Ptr outError);
     /**
      * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/loadFromContents:ofType:error:">- (BOOL)loadFromContents:(id)contents ofType:(NSString *)typeName error:(NSError **)outError</a>
      * @since Available in iOS 5.0 and later.
      */
-    public boolean loadFromContents(NSObject contents, String typeName, Ptr<NSError> outError) {
+    public boolean loadFromContents(NSObject contents, String typeName, NSError.Ptr outError) {
         if (customClass) { return objc_loadFromContentsSuper(getSuper(), loadFromContents$ofType$error$, contents, typeName, outError); } else { return objc_loadFromContents(this, loadFromContents$ofType$error$, contents, typeName, outError); }
     }
     
@@ -322,13 +322,13 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector readFromURL$error$ = Selector.register("readFromURL:error:");
-    @Bridge private native static boolean objc_read(UIDocument __self__, Selector __cmd__, NSURL url, Ptr<NSError> outError);
-    @Bridge private native static boolean objc_readSuper(ObjCSuper __super__, Selector __cmd__, NSURL url, Ptr<NSError> outError);
+    @Bridge private native static boolean objc_read(UIDocument __self__, Selector __cmd__, NSURL url, NSError.Ptr outError);
+    @Bridge private native static boolean objc_readSuper(ObjCSuper __super__, Selector __cmd__, NSURL url, NSError.Ptr outError);
     /**
      * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/readFromURL:error:">- (BOOL)readFromURL:(NSURL *)url error:(NSError **)outError</a>
      * @since Available in iOS 5.0 and later.
      */
-    public boolean read(NSURL url, Ptr<NSError> outError) {
+    public boolean read(NSURL url, NSError.Ptr outError) {
         if (customClass) { return objc_readSuper(getSuper(), readFromURL$error$, url, outError); } else { return objc_read(this, readFromURL$error$, url, outError); }
     }
     
@@ -388,24 +388,24 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector writeContents$andAttributes$safelyToURL$forSaveOperation$error$ = Selector.register("writeContents:andAttributes:safelyToURL:forSaveOperation:error:");
-    @Bridge private native static boolean objc_writeContents(UIDocument __self__, Selector __cmd__, NSObject contents, NSDictionary additionalFileAttributes, NSURL url, UIDocumentSaveOperation saveOperation, Ptr<NSError> outError);
-    @Bridge private native static boolean objc_writeContentsSuper(ObjCSuper __super__, Selector __cmd__, NSObject contents, NSDictionary additionalFileAttributes, NSURL url, UIDocumentSaveOperation saveOperation, Ptr<NSError> outError);
+    @Bridge private native static boolean objc_writeContents(UIDocument __self__, Selector __cmd__, NSObject contents, NSDictionary additionalFileAttributes, NSURL url, UIDocumentSaveOperation saveOperation, NSError.Ptr outError);
+    @Bridge private native static boolean objc_writeContentsSuper(ObjCSuper __super__, Selector __cmd__, NSObject contents, NSDictionary additionalFileAttributes, NSURL url, UIDocumentSaveOperation saveOperation, NSError.Ptr outError);
     /**
      * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/writeContents:andAttributes:safelyToURL:forSaveOperation:error:">- (BOOL)writeContents:(id)contents andAttributes:(NSDictionary *)additionalFileAttributes safelyToURL:(NSURL *)url forSaveOperation:(UIDocumentSaveOperation)saveOperation error:(NSError **)outError</a>
      * @since Available in iOS 5.0 and later.
      */
-    public boolean writeContents(NSObject contents, NSDictionary additionalFileAttributes, NSURL url, UIDocumentSaveOperation saveOperation, Ptr<NSError> outError) {
+    public boolean writeContents(NSObject contents, NSDictionary additionalFileAttributes, NSURL url, UIDocumentSaveOperation saveOperation, NSError.Ptr outError) {
         if (customClass) { return objc_writeContentsSuper(getSuper(), writeContents$andAttributes$safelyToURL$forSaveOperation$error$, contents, additionalFileAttributes, url, saveOperation, outError); } else { return objc_writeContents(this, writeContents$andAttributes$safelyToURL$forSaveOperation$error$, contents, additionalFileAttributes, url, saveOperation, outError); }
     }
     
     private static final Selector writeContents$toURL$forSaveOperation$originalContentsURL$error$ = Selector.register("writeContents:toURL:forSaveOperation:originalContentsURL:error:");
-    @Bridge private native static boolean objc_writeContents(UIDocument __self__, Selector __cmd__, NSObject contents, NSURL url, UIDocumentSaveOperation saveOperation, NSURL originalContentsURL, Ptr<NSError> outError);
-    @Bridge private native static boolean objc_writeContentsSuper(ObjCSuper __super__, Selector __cmd__, NSObject contents, NSURL url, UIDocumentSaveOperation saveOperation, NSURL originalContentsURL, Ptr<NSError> outError);
+    @Bridge private native static boolean objc_writeContents(UIDocument __self__, Selector __cmd__, NSObject contents, NSURL url, UIDocumentSaveOperation saveOperation, NSURL originalContentsURL, NSError.Ptr outError);
+    @Bridge private native static boolean objc_writeContentsSuper(ObjCSuper __super__, Selector __cmd__, NSObject contents, NSURL url, UIDocumentSaveOperation saveOperation, NSURL originalContentsURL, NSError.Ptr outError);
     /**
      * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/writeContents:toURL:forSaveOperation:originalContentsURL:error:">- (BOOL)writeContents:(id)contents toURL:(NSURL *)url forSaveOperation:(UIDocumentSaveOperation)saveOperation originalContentsURL:(NSURL *)originalContentsURL error:(NSError **)outError</a>
      * @since Available in iOS 5.0 and later.
      */
-    public boolean writeContents(NSObject contents, NSURL url, UIDocumentSaveOperation saveOperation, NSURL originalContentsURL, Ptr<NSError> outError) {
+    public boolean writeContents(NSObject contents, NSURL url, UIDocumentSaveOperation saveOperation, NSURL originalContentsURL, NSError.Ptr outError) {
         if (customClass) { return objc_writeContentsSuper(getSuper(), writeContents$toURL$forSaveOperation$originalContentsURL$error$, contents, url, saveOperation, originalContentsURL, outError); } else { return objc_writeContents(this, writeContents$toURL$forSaveOperation$originalContentsURL$error$, contents, url, saveOperation, originalContentsURL, outError); }
     }
     /*</methods>*/
@@ -422,26 +422,26 @@ import org.robovm.rt.bro.ptr.*;
         @Callback @BindSelector("autosaveWithCompletionHandler:") public static void autoSave(UIDocument __self__, Selector __cmd__, VoidBooleanBlock completionHandler) { __self__.autoSave(completionHandler); }
         @Callback @BindSelector("changeCountTokenForSaveOperation:") public static NSObject changeCountTokenForSaveOperation(UIDocument __self__, Selector __cmd__, UIDocumentSaveOperation saveOperation) { return __self__.changeCountTokenForSaveOperation(saveOperation); }
         @Callback @BindSelector("closeWithCompletionHandler:") public static void close(UIDocument __self__, Selector __cmd__, VoidBooleanBlock completionHandler) { __self__.close(completionHandler); }
-        @Callback @BindSelector("contentsForType:error:") public static NSObject contentsForType(UIDocument __self__, Selector __cmd__, String typeName, Ptr<NSError> outError) { return __self__.contentsForType(typeName, outError); }
+        @Callback @BindSelector("contentsForType:error:") public static NSObject contentsForType(UIDocument __self__, Selector __cmd__, String typeName, NSError.Ptr outError) { return __self__.contentsForType(typeName, outError); }
         @Callback @BindSelector("disableEditing") public static void disableEditing(UIDocument __self__, Selector __cmd__) { __self__.disableEditing(); }
         @Callback @BindSelector("enableEditing") public static void enableEditing(UIDocument __self__, Selector __cmd__) { __self__.enableEditing(); }
         @Callback @BindSelector("finishedHandlingError:recovered:") public static void finishedHandlingError(UIDocument __self__, Selector __cmd__, NSError error, boolean recovered) { __self__.finishedHandlingError(error, recovered); }
-        @Callback @BindSelector("fileAttributesToWriteToURL:forSaveOperation:error:") public static NSDictionary getFileAttributesToWrite(UIDocument __self__, Selector __cmd__, NSURL url, UIDocumentSaveOperation saveOperation, Ptr<NSError> outError) { return __self__.getFileAttributesToWrite(url, saveOperation, outError); }
+        @Callback @BindSelector("fileAttributesToWriteToURL:forSaveOperation:error:") public static NSDictionary getFileAttributesToWrite(UIDocument __self__, Selector __cmd__, NSURL url, UIDocumentSaveOperation saveOperation, NSError.Ptr outError) { return __self__.getFileAttributesToWrite(url, saveOperation, outError); }
         @Callback @BindSelector("fileNameExtensionForType:saveOperation:") public static String getFileNameExtension(UIDocument __self__, Selector __cmd__, String typeName, UIDocumentSaveOperation saveOperation) { return __self__.getFileNameExtension(typeName, saveOperation); }
         @Callback @BindSelector("savingFileType") public static String getSavingFileType(UIDocument __self__, Selector __cmd__) { return __self__.getSavingFileType(); }
         @Callback @BindSelector("handleError:userInteractionPermitted:") public static void handleError(UIDocument __self__, Selector __cmd__, NSError error, boolean userInteractionPermitted) { __self__.handleError(error, userInteractionPermitted); }
         @Callback @BindSelector("hasUnsavedChanges") public static boolean hasUnsavedChanges(UIDocument __self__, Selector __cmd__) { return __self__.hasUnsavedChanges(); }
-        @Callback @BindSelector("loadFromContents:ofType:error:") public static boolean loadFromContents(UIDocument __self__, Selector __cmd__, NSObject contents, String typeName, Ptr<NSError> outError) { return __self__.loadFromContents(contents, typeName, outError); }
+        @Callback @BindSelector("loadFromContents:ofType:error:") public static boolean loadFromContents(UIDocument __self__, Selector __cmd__, NSObject contents, String typeName, NSError.Ptr outError) { return __self__.loadFromContents(contents, typeName, outError); }
         @Callback @BindSelector("openWithCompletionHandler:") public static void open(UIDocument __self__, Selector __cmd__, VoidBooleanBlock completionHandler) { __self__.open(completionHandler); }
         @Callback @BindSelector("performAsynchronousFileAccessUsingBlock:") public static void performAsynchronousFileAccess(UIDocument __self__, Selector __cmd__, VoidBlock block) { __self__.performAsynchronousFileAccess(block); }
-        @Callback @BindSelector("readFromURL:error:") public static boolean read(UIDocument __self__, Selector __cmd__, NSURL url, Ptr<NSError> outError) { return __self__.read(url, outError); }
+        @Callback @BindSelector("readFromURL:error:") public static boolean read(UIDocument __self__, Selector __cmd__, NSURL url, NSError.Ptr outError) { return __self__.read(url, outError); }
         @Callback @BindSelector("revertToContentsOfURL:completionHandler:") public static void revert(UIDocument __self__, Selector __cmd__, NSURL url, VoidBooleanBlock completionHandler) { __self__.revert(url, completionHandler); }
         @Callback @BindSelector("saveToURL:forSaveOperation:completionHandler:") public static void save(UIDocument __self__, Selector __cmd__, NSURL url, UIDocumentSaveOperation saveOperation, VoidBooleanBlock completionHandler) { __self__.save(url, saveOperation, completionHandler); }
         @Callback @BindSelector("updateChangeCountWithToken:forSaveOperation:") public static void updateChangeCount(UIDocument __self__, Selector __cmd__, NSObject changeCountToken, UIDocumentSaveOperation saveOperation) { __self__.updateChangeCount(changeCountToken, saveOperation); }
         @Callback @BindSelector("updateChangeCount:") public static void updateChangeCount(UIDocument __self__, Selector __cmd__, UIDocumentChangeKind change) { __self__.updateChangeCount(change); }
         @Callback @BindSelector("userInteractionNoLongerPermittedForError:") public static void userInteractionNoLongerPermittedForError(UIDocument __self__, Selector __cmd__, NSError error) { __self__.userInteractionNoLongerPermittedForError(error); }
-        @Callback @BindSelector("writeContents:andAttributes:safelyToURL:forSaveOperation:error:") public static boolean writeContents(UIDocument __self__, Selector __cmd__, NSObject contents, NSDictionary additionalFileAttributes, NSURL url, UIDocumentSaveOperation saveOperation, Ptr<NSError> outError) { return __self__.writeContents(contents, additionalFileAttributes, url, saveOperation, outError); }
-        @Callback @BindSelector("writeContents:toURL:forSaveOperation:originalContentsURL:error:") public static boolean writeContents(UIDocument __self__, Selector __cmd__, NSObject contents, NSURL url, UIDocumentSaveOperation saveOperation, NSURL originalContentsURL, Ptr<NSError> outError) { return __self__.writeContents(contents, url, saveOperation, originalContentsURL, outError); }
+        @Callback @BindSelector("writeContents:andAttributes:safelyToURL:forSaveOperation:error:") public static boolean writeContents(UIDocument __self__, Selector __cmd__, NSObject contents, NSDictionary additionalFileAttributes, NSURL url, UIDocumentSaveOperation saveOperation, NSError.Ptr outError) { return __self__.writeContents(contents, additionalFileAttributes, url, saveOperation, outError); }
+        @Callback @BindSelector("writeContents:toURL:forSaveOperation:originalContentsURL:error:") public static boolean writeContents(UIDocument __self__, Selector __cmd__, NSObject contents, NSURL url, UIDocumentSaveOperation saveOperation, NSURL originalContentsURL, NSError.Ptr outError) { return __self__.writeContents(contents, url, saveOperation, originalContentsURL, outError); }
     }
     /*</callbacks>*/
 

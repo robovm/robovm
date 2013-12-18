@@ -49,6 +49,9 @@ public class BridgeCallbackTest {
         public native Point y(int y);
     }
     
+    public static final class PointPtr extends Ptr<Point, PointPtr> {}
+    public static final class PointPtrPtr extends Ptr<PointPtr, PointPtrPtr> {}
+
     public static final class Points extends Struct<Points> {
         @StructMember(0)
         public native @ByVal Point p1();
@@ -168,9 +171,9 @@ public class BridgeCallbackTest {
     }
     
     @Bridge
-    public static native void createPoint(int x, int y, Ptr<Point> ptr);
+    public static native void createPoint(int x, int y, PointPtr ptr);
     @Callback
-    public static void createPoint_cb(int x, int y, Ptr<Point> ptr) {
+    public static void createPoint_cb(int x, int y, PointPtr ptr) {
         ptr.set(new Point().x(x).y(y));
     }
     
@@ -377,7 +380,7 @@ public class BridgeCallbackTest {
 
     @Test
     public void testMarshalStructPtr() {
-        Ptr<Point> ptr = Ptr.newPtr(Point.class);
+        PointPtr ptr = new PointPtr();
         assertNull(ptr.get());
         createPoint(10, 20, ptr);
         Point p = ptr.get();

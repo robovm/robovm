@@ -18,10 +18,8 @@ package org.robovm.rt.bro.ptr;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.robovm.rt.bro.NativeObject;
 import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.StructMember;
-import org.robovm.rt.bro.ptr.Ptr.MarshalerCallback;
 
 /**
  * Tests {@link Ptr}.
@@ -38,106 +36,17 @@ public class PtrTest {
         @StructMember(1)
         public native Point y(int y);
     }
+    
+    public static final class PointPtr extends Ptr<Point, PointPtr> {}
+    public static final class PointPtrPtr extends Ptr<PointPtr, PointPtrPtr> {}
+    
 
-    MarshalerCallback<Point> marshallerCallback = new MarshalerCallback<Point>() {
-        @Override
-        public Point toObject(Class<Point> cls, long handle) {
-            return Struct.toStruct(Point.class, handle);
-        }
-    };
-    
-    @Test
-    public void testToPtrTwoWrapCountZeroHandleAtDepth0() {
-        assertNull(Ptr.toPtr(Point.class, 0, 2, marshallerCallback));
-    }
-    
-    @Test
-    public void testToPtrOneWrapCount() {
-        Point p = new Point().x(10).y(20);
-        Ptr<Point> ptr1 = Ptr.newPtr(Point.class).set(p);
-        @SuppressWarnings("unchecked")
-        Ptr<Point> ptr2 = (Ptr<Point>) Ptr.toPtr(Point.class, ptr1.getHandle(), 1, marshallerCallback);
-        assertEquals(ptr1, ptr2);
-        assertEquals(ptr1.get(), ptr2.get());
-        assertEquals(p, ptr2.get());
-    }
-
-    @Test
-    public void testToPtrTwoWrapCount() {
-        Point p = new Point().x(10).y(20);
-        Ptr<Ptr<Point>> ptr1 = Ptr.newPtrPtr(Point.class).set(Ptr.newPtr(Point.class).set(p));
-        assertEquals(p, ptr1.get().get());
-        @SuppressWarnings("unchecked")
-        Ptr<Ptr<Point>> ptr2 = (Ptr<Ptr<Point>>) Ptr.toPtr(Point.class, ptr1.getHandle(), 2, marshallerCallback);
-        assertEquals("assertEquals(ptr1, ptr2)", ptr1, ptr2);
-        assertEquals("assertEquals(ptr1.get(), ptr2.get())", ptr1.get(), ptr2.get());
-        assertEquals("assertEquals(ptr1.get().get(), ptr2.get().get())", ptr1.get().get(), ptr2.get().get());
-        assertEquals("assertEquals(p, ptr2.get().get())", p, ptr2.get().get());
-    }
-    
-    @Test
-    public void testToPtrTwoWrapCountZeroHandleAtDepth1() {
-        Ptr<Ptr<Point>> ptr1 = Ptr.newPtrPtr(Point.class).set(Ptr.newPtr(Point.class));
-        assertNull(ptr1.get().get());
-        @SuppressWarnings("unchecked")
-        Ptr<Ptr<Point>> ptr2 = (Ptr<Ptr<Point>>) Ptr.toPtr(Point.class, ptr1.getHandle(), 2, marshallerCallback);
-        assertEquals(ptr1, ptr2);
-        assertEquals(ptr1.get(), ptr2.get());
-        assertNull(ptr2.get().get());
-    }
-    
-    @Test
-    public void testUpdatePtrOneWrapCount() {
-        Ptr<Point> ptr = Ptr.newPtr(Point.class).set(new Point().x(10).y(20));
-        Point p = new Point().x(30).y(40);
-        ptr.setValue(p.getHandle());
-        Ptr.updatePtr(ptr, Point.class, 1, marshallerCallback);
-        assertEquals(p, ptr.get());
-    }
-    
-    @Test
-    public void testUpdatePtrTwoWrapCount() {
-        Ptr<Ptr<Point>> ptr = Ptr.newPtrPtr(Point.class).set(Ptr.newPtr(Point.class).set(new Point().x(10).y(20)));
-        Point p = new Point().x(30).y(40);
-        ptr.get().setValue(p.getHandle());
-        Ptr.updatePtr(ptr, Point.class, 2, marshallerCallback);
-        assertEquals(p, ptr.get().get());
-    }
-    
-    @Test
-    public void testUpdatePtrTwoWrapCountZeroHandleAtDepth1() {
-        Ptr<Ptr<Point>> ptr = Ptr.newPtrPtr(Point.class).set(Ptr.newPtr(Point.class).set(new Point().x(10).y(20)));
-        ptr.get().setValue(0L);
-        Ptr.updatePtr(ptr, Point.class, 2, marshallerCallback);
-        assertNull(ptr.get().get());
-    }
-    
-    @Test
-    public void testUpdatePtrTwoWrapCountZeroHandleAtDepth0() {
-        Ptr<Ptr<Point>> ptr = Ptr.newPtrPtr(Point.class).set(Ptr.newPtr(Point.class).set(new Point().x(10).y(20)));
-        ptr.setValue(0L);
-        Ptr.updatePtr(ptr, Point.class, 2, marshallerCallback);
-        assertNull(ptr.get());
-    }
-    
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    @Test
-    public void testUntyped() throws Exception {
-        Ptr ptr = Struct.allocate(Ptr.class);
-        assertNull(ptr.get());
-        BytePtr bytePtr = new BytePtr();
-        ptr.set(bytePtr);
-        NativeObject value = ptr.get();
-        assertEquals(VoidPtr.class, value.getClass());
-        assertEquals(bytePtr.getHandle(), value.getHandle());
-    }
-    
     @Test
     public void testNext() throws Exception {
         Point p1 = new Point().x(1).y(2);
         Point p2 = new Point().x(3).y(4);
         Point p3 = new Point().x(5).y(6);
-        Ptr<Point> ptr = Ptr.newPtr(Point.class, 3);
+        PointPtr ptr = Struct.allocate(PointPtr.class, 3);
 
         assertNull(ptr.get());
         assertNull(ptr.next().get());
@@ -151,7 +60,7 @@ public class PtrTest {
         assertEquals(p2, ptr.next().get());
         assertEquals(p3, ptr.next().next().get());
         
-        Ptr<Point>[] ptrs = ptr.toArray(3);
+        PointPtr[] ptrs = ptr.toArray(3);
         assertEquals(p1, ptrs[0].get());
         assertEquals(p2, ptrs[1].get());
         assertEquals(p3, ptrs[2].get());
@@ -159,16 +68,16 @@ public class PtrTest {
     
     @Test
     public void testCopy() throws Exception {
-        Ptr<Point> ptr1 = Ptr.newPtr(Point.class).set(new Point().x(1).y(2));
-        Ptr<Point> ptr2 = ptr1.copy();
+        PointPtr ptr1 = Struct.allocate(PointPtr.class).set(new Point().x(1).y(2));
+        PointPtr ptr2 = ptr1.copy();
         assertTrue(ptr1.getHandle() != ptr2.getHandle());
         assertEquals(ptr1.get(), ptr2.get());
     }
     
     @Test
     public void testCopyWithMalloc() throws Exception {
-        Ptr<Point> ptr1 = Ptr.newPtr(Point.class).set(new Point().x(1).y(2));
-        Ptr<Point> ptr2 = ptr1.copyWithMalloc();
+        PointPtr ptr1 = Struct.allocate(PointPtr.class).set(new Point().x(1).y(2));
+        PointPtr ptr2 = ptr1.copyWithMalloc();
         try {
             assertTrue(ptr1.getHandle() != ptr2.getHandle());
             assertEquals(ptr1.get(), ptr2.get());

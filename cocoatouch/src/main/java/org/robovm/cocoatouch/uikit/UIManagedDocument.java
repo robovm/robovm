@@ -135,24 +135,24 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector configurePersistentStoreCoordinatorForURL$ofType$modelConfiguration$storeOptions$error$ = Selector.register("configurePersistentStoreCoordinatorForURL:ofType:modelConfiguration:storeOptions:error:");
-    @Bridge private native static boolean objc_configurePersistentStoreCoordinator(UIManagedDocument __self__, Selector __cmd__, NSURL storeURL, String fileType, String configuration, NSDictionary storeOptions, Ptr<NSError> error);
-    @Bridge private native static boolean objc_configurePersistentStoreCoordinatorSuper(ObjCSuper __super__, Selector __cmd__, NSURL storeURL, String fileType, String configuration, NSDictionary storeOptions, Ptr<NSError> error);
+    @Bridge private native static boolean objc_configurePersistentStoreCoordinator(UIManagedDocument __self__, Selector __cmd__, NSURL storeURL, String fileType, String configuration, NSDictionary storeOptions, NSError.Ptr error);
+    @Bridge private native static boolean objc_configurePersistentStoreCoordinatorSuper(ObjCSuper __super__, Selector __cmd__, NSURL storeURL, String fileType, String configuration, NSDictionary storeOptions, NSError.Ptr error);
     /**
      * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIManagedDocument_Class/Reference/Reference.html#//apple_ref/occ/instm/UIManagedDocument/configurePersistentStoreCoordinatorForURL:ofType:modelConfiguration:storeOptions:error:">- (BOOL)configurePersistentStoreCoordinatorForURL:(NSURL *)storeURL ofType:(NSString *)fileType modelConfiguration:(NSString *)configuration storeOptions:(NSDictionary *)storeOptions error:(NSError **)error</a>
      * @since Available in iOS 5.0 and later.
      */
-    public boolean configurePersistentStoreCoordinator(NSURL storeURL, String fileType, String configuration, NSDictionary storeOptions, Ptr<NSError> error) {
+    public boolean configurePersistentStoreCoordinator(NSURL storeURL, String fileType, String configuration, NSDictionary storeOptions, NSError.Ptr error) {
         if (customClass) { return objc_configurePersistentStoreCoordinatorSuper(getSuper(), configurePersistentStoreCoordinatorForURL$ofType$modelConfiguration$storeOptions$error$, storeURL, fileType, configuration, storeOptions, error); } else { return objc_configurePersistentStoreCoordinator(this, configurePersistentStoreCoordinatorForURL$ofType$modelConfiguration$storeOptions$error$, storeURL, fileType, configuration, storeOptions, error); }
     }
     
     private static final Selector additionalContentForURL$error$ = Selector.register("additionalContentForURL:error:");
-    @Bridge private native static NSObject objc_getAdditionalContent(UIManagedDocument __self__, Selector __cmd__, NSURL absoluteURL, Ptr<NSError> error);
-    @Bridge private native static NSObject objc_getAdditionalContentSuper(ObjCSuper __super__, Selector __cmd__, NSURL absoluteURL, Ptr<NSError> error);
+    @Bridge private native static NSObject objc_getAdditionalContent(UIManagedDocument __self__, Selector __cmd__, NSURL absoluteURL, NSError.Ptr error);
+    @Bridge private native static NSObject objc_getAdditionalContentSuper(ObjCSuper __super__, Selector __cmd__, NSURL absoluteURL, NSError.Ptr error);
     /**
      * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIManagedDocument_Class/Reference/Reference.html#//apple_ref/occ/instm/UIManagedDocument/additionalContentForURL:error:">- (id)additionalContentForURL:(NSURL *)absoluteURL error:(NSError **)error</a>
      * @since Available in iOS 5.0 and later.
      */
-    public NSObject getAdditionalContent(NSURL absoluteURL, Ptr<NSError> error) {
+    public NSObject getAdditionalContent(NSURL absoluteURL, NSError.Ptr error) {
         if (customClass) { return objc_getAdditionalContentSuper(getSuper(), additionalContentForURL$error$, absoluteURL, error); } else { return objc_getAdditionalContent(this, additionalContentForURL$error$, absoluteURL, error); }
     }
     
@@ -168,24 +168,24 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector readAdditionalContentFromURL$error$ = Selector.register("readAdditionalContentFromURL:error:");
-    @Bridge private native static boolean objc_readAdditionalContent(UIManagedDocument __self__, Selector __cmd__, NSURL absoluteURL, Ptr<NSError> error);
-    @Bridge private native static boolean objc_readAdditionalContentSuper(ObjCSuper __super__, Selector __cmd__, NSURL absoluteURL, Ptr<NSError> error);
+    @Bridge private native static boolean objc_readAdditionalContent(UIManagedDocument __self__, Selector __cmd__, NSURL absoluteURL, NSError.Ptr error);
+    @Bridge private native static boolean objc_readAdditionalContentSuper(ObjCSuper __super__, Selector __cmd__, NSURL absoluteURL, NSError.Ptr error);
     /**
      * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIManagedDocument_Class/Reference/Reference.html#//apple_ref/occ/instm/UIManagedDocument/readAdditionalContentFromURL:error:">- (BOOL)readAdditionalContentFromURL:(NSURL *)absoluteURL error:(NSError **)error</a>
      * @since Available in iOS 5.0 and later.
      */
-    public boolean readAdditionalContent(NSURL absoluteURL, Ptr<NSError> error) {
+    public boolean readAdditionalContent(NSURL absoluteURL, NSError.Ptr error) {
         if (customClass) { return objc_readAdditionalContentSuper(getSuper(), readAdditionalContentFromURL$error$, absoluteURL, error); } else { return objc_readAdditionalContent(this, readAdditionalContentFromURL$error$, absoluteURL, error); }
     }
     
     private static final Selector writeAdditionalContent$toURL$originalContentsURL$error$ = Selector.register("writeAdditionalContent:toURL:originalContentsURL:error:");
-    @Bridge private native static boolean objc_writeAdditionalContent(UIManagedDocument __self__, Selector __cmd__, NSObject content, NSURL absoluteURL, NSURL absoluteOriginalContentsURL, Ptr<NSError> error);
-    @Bridge private native static boolean objc_writeAdditionalContentSuper(ObjCSuper __super__, Selector __cmd__, NSObject content, NSURL absoluteURL, NSURL absoluteOriginalContentsURL, Ptr<NSError> error);
+    @Bridge private native static boolean objc_writeAdditionalContent(UIManagedDocument __self__, Selector __cmd__, NSObject content, NSURL absoluteURL, NSURL absoluteOriginalContentsURL, NSError.Ptr error);
+    @Bridge private native static boolean objc_writeAdditionalContentSuper(ObjCSuper __super__, Selector __cmd__, NSObject content, NSURL absoluteURL, NSURL absoluteOriginalContentsURL, NSError.Ptr error);
     /**
      * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIManagedDocument_Class/Reference/Reference.html#//apple_ref/occ/instm/UIManagedDocument/writeAdditionalContent:toURL:originalContentsURL:error:">- (BOOL)writeAdditionalContent:(id)content toURL:(NSURL *)absoluteURL originalContentsURL:(NSURL *)absoluteOriginalContentsURL error:(NSError **)error</a>
      * @since Available in iOS 5.0 and later.
      */
-    public boolean writeAdditionalContent(NSObject content, NSURL absoluteURL, NSURL absoluteOriginalContentsURL, Ptr<NSError> error) {
+    public boolean writeAdditionalContent(NSObject content, NSURL absoluteURL, NSURL absoluteOriginalContentsURL, NSError.Ptr error) {
         if (customClass) { return objc_writeAdditionalContentSuper(getSuper(), writeAdditionalContent$toURL$originalContentsURL$error$, content, absoluteURL, absoluteOriginalContentsURL, error); } else { return objc_writeAdditionalContent(this, writeAdditionalContent$toURL$originalContentsURL$error$, content, absoluteURL, absoluteOriginalContentsURL, error); }
     }
     /*</methods>*/
@@ -197,11 +197,11 @@ import org.robovm.rt.bro.ptr.*;
         @Callback @BindSelector("setModelConfiguration:") public static void setModelConfiguration(UIManagedDocument __self__, Selector __cmd__, String modelConfiguration) { __self__.setModelConfiguration(modelConfiguration); }
         @Callback @BindSelector("persistentStoreOptions") public static NSDictionary getPersistentStoreOptions(UIManagedDocument __self__, Selector __cmd__) { return __self__.getPersistentStoreOptions(); }
         @Callback @BindSelector("setPersistentStoreOptions:") public static void setPersistentStoreOptions(UIManagedDocument __self__, Selector __cmd__, NSDictionary persistentStoreOptions) { __self__.setPersistentStoreOptions(persistentStoreOptions); }
-        @Callback @BindSelector("configurePersistentStoreCoordinatorForURL:ofType:modelConfiguration:storeOptions:error:") public static boolean configurePersistentStoreCoordinator(UIManagedDocument __self__, Selector __cmd__, NSURL storeURL, String fileType, String configuration, NSDictionary storeOptions, Ptr<NSError> error) { return __self__.configurePersistentStoreCoordinator(storeURL, fileType, configuration, storeOptions, error); }
-        @Callback @BindSelector("additionalContentForURL:error:") public static NSObject getAdditionalContent(UIManagedDocument __self__, Selector __cmd__, NSURL absoluteURL, Ptr<NSError> error) { return __self__.getAdditionalContent(absoluteURL, error); }
+        @Callback @BindSelector("configurePersistentStoreCoordinatorForURL:ofType:modelConfiguration:storeOptions:error:") public static boolean configurePersistentStoreCoordinator(UIManagedDocument __self__, Selector __cmd__, NSURL storeURL, String fileType, String configuration, NSDictionary storeOptions, NSError.Ptr error) { return __self__.configurePersistentStoreCoordinator(storeURL, fileType, configuration, storeOptions, error); }
+        @Callback @BindSelector("additionalContentForURL:error:") public static NSObject getAdditionalContent(UIManagedDocument __self__, Selector __cmd__, NSURL absoluteURL, NSError.Ptr error) { return __self__.getAdditionalContent(absoluteURL, error); }
         @Callback @BindSelector("persistentStoreTypeForFileType:") public static String getPersistentStoreType(UIManagedDocument __self__, Selector __cmd__, String fileType) { return __self__.getPersistentStoreType(fileType); }
-        @Callback @BindSelector("readAdditionalContentFromURL:error:") public static boolean readAdditionalContent(UIManagedDocument __self__, Selector __cmd__, NSURL absoluteURL, Ptr<NSError> error) { return __self__.readAdditionalContent(absoluteURL, error); }
-        @Callback @BindSelector("writeAdditionalContent:toURL:originalContentsURL:error:") public static boolean writeAdditionalContent(UIManagedDocument __self__, Selector __cmd__, NSObject content, NSURL absoluteURL, NSURL absoluteOriginalContentsURL, Ptr<NSError> error) { return __self__.writeAdditionalContent(content, absoluteURL, absoluteOriginalContentsURL, error); }
+        @Callback @BindSelector("readAdditionalContentFromURL:error:") public static boolean readAdditionalContent(UIManagedDocument __self__, Selector __cmd__, NSURL absoluteURL, NSError.Ptr error) { return __self__.readAdditionalContent(absoluteURL, error); }
+        @Callback @BindSelector("writeAdditionalContent:toURL:originalContentsURL:error:") public static boolean writeAdditionalContent(UIManagedDocument __self__, Selector __cmd__, NSObject content, NSURL absoluteURL, NSURL absoluteOriginalContentsURL, NSError.Ptr error) { return __self__.writeAdditionalContent(content, absoluteURL, absoluteOriginalContentsURL, error); }
     }
     /*</callbacks>*/
 

@@ -49,16 +49,16 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIApplication /*</name>*/.class);
 
-    @Bridge private native static int UIApplicationMain(int argc, Ptr<BytePtr> argv, 
+    @Bridge private native static int UIApplicationMain(int argc, BytePtr.Ptr argv, 
             String principalClassName, String delegateClassName);
     
     public static <P extends UIApplication, D extends NSObject & UIApplicationDelegate> 
         void main(String[] args, Class<P> principalClass, Class<D> delegateClass) {
         
         int argc = args.length;
-        Ptr<BytePtr> argv = null;
+        BytePtr.Ptr argv = null;
         if (argc > 0) {
-            argv = Ptr.newPtr(BytePtr.class, argc);
+            argv = Struct.allocate(BytePtr.Ptr.class, argc);
             for (int i = 0; i < argc; i++) {
                 // TODO: Encoding?
                 BytePtr arg = BytePtr.toBytePtrAsciiZ(args[i]);

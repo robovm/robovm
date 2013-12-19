@@ -27,7 +27,7 @@ public class EnumMarshalers {
      * Default {@link Marshaler} for {@link Enum}s used by the compiler if no {@link Marshaler} can be found.
      */
     public static class AsIntMarshaler {
-        public static Enum<?> toObject(Enum<?>[] values, int ordinal) {
+        public static Enum<?> toObject(Enum<?>[] values, int ordinal, long flags) {
             if (values.length == 0) {
                 throw new AssertionError("Enum class has no values!");
             }
@@ -39,7 +39,7 @@ public class EnumMarshalers {
             return values[ordinal];
         }
         
-        public static int toNative(Enum<?> v) {
+        public static int toNative(Enum<?> v, long flags) {
             return v.ordinal();
         }
     }

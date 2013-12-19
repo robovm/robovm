@@ -900,3 +900,9 @@ Env* _bcAttachThreadFromCallback(void) {
 void _bcDetachThreadFromCallback(Env* env) {
     rvmDetachCurrentThread(env->vm, FALSE, TRUE);
 }
+
+void* _bcCopyStruct(Env* env, void* src, jint size) {
+    ENTER;
+    void* result = rvmCopyMemory(env, src, size);
+    LEAVE(result);
+}

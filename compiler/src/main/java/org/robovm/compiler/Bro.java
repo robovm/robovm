@@ -22,7 +22,6 @@ import static org.robovm.compiler.llvm.Type.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import org.robovm.compiler.llvm.ArrayType;
@@ -61,6 +60,16 @@ import soot.tagkit.VisibilityParameterAnnotationTag;
  */
 public abstract class Bro {
 
+    public static class MarshalerFlags {
+        // The constant here MUST correspond to those in org.robovm.rt.bro.MarshalerFlags in rt.
+        
+        // Bit 1-2: The type of call marshaled for
+        public static final long CALL_TYPE_BRIDGE               = 0 << 0;
+        public static final long CALL_TYPE_CALLBACK             = 1 << 0;
+        public static final long CALL_TYPE_STRUCT_MEMBER        = 2 << 0;
+        public static final long CALL_TYPE_PTR                  = 3 << 0;
+    }
+    
     public static boolean needsMarshaler(soot.Type t) {
         if (t.equals(VoidType.v()) || t instanceof PrimType) {
             // void and any of the primitive types can be marshaled directly
@@ -166,8 +175,8 @@ public abstract class Bro {
             return defType;
         }
         try {
-            List<?> paramTypes = isarray ? Arrays.asList(RefType.v("java.lang.Object"), LongType.v(), IntType.v()) 
-                    : Collections.singletonList(RefType.v(isenum ? "java.lang.Enum" : "java.lang.Object"));
+            List<?> paramTypes = isarray ? Arrays.asList(RefType.v("java.lang.Object"), LongType.v(), LongType.v(), IntType.v()) 
+                    : Arrays.asList(RefType.v(isenum ? "java.lang.Enum" : "java.lang.Object"), LongType.v());
             SootMethod toNative = marshalerClass.getMethod("toNative", paramTypes);
             if (isarray) {
                 soot.Type baseType = getArrayBaseType(toNative);

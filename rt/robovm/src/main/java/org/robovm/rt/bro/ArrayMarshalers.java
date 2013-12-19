@@ -36,19 +36,19 @@ public class ArrayMarshalers {
     public static class ByteArrayMarshaler {
         private static final String TYPE = "byte";
         private static final int SHIFT = 0;
-        public static Object toObject(Class<?> arrayClass, long handle, int d1) {
+        public static Object toObject(Class<?> arrayClass, long handle, long flags, int d1) {
             final byte[] o = new byte[d1];
             final int off = d1 << SHIFT;
             VM.memcpy(VM.getArrayValuesAddress(o), handle, off);
             return o;
         }
-        public static void toNative(Object object, long handle, int d1) {
+        public static void toNative(Object object, long handle, long flags, int d1) {
             final byte[] o = (byte[]) object;
             final int off = d1 << SHIFT;
             checkDimensions(TYPE, "", o.length, d1);
             VM.memcpy(handle, VM.getArrayValuesAddress(o), off);
         }
-        public static Object toObject(Class<?> arrayClass, long handle, int d1, int d2) {
+        public static Object toObject(Class<?> arrayClass, long handle, long flags, int d1, int d2) {
             final byte[][] o = new byte[d1][d2];
             final int off = d2 << SHIFT;
             for (int i = 0; i < d1; i++) {
@@ -57,7 +57,7 @@ public class ArrayMarshalers {
             }
             return o;
         }
-        public static void toNative(Object object, long handle, int d1, int d2) {
+        public static void toNative(Object object, long handle, long flags, int d1, int d2) {
             final byte[][] o = (byte[][]) object;
             final int off = d2 << SHIFT;
             checkDimensions(TYPE, "[]", o.length, d1);
@@ -70,7 +70,7 @@ public class ArrayMarshalers {
                 handle += off;
             }
         }
-        public static Object toObject(Class<?> arrayClass, long handle, int d1, int d2, int d3) {
+        public static Object toObject(Class<?> arrayClass, long handle, long flags, int d1, int d2, int d3) {
             final byte[][][] o = new byte[d1][d2][d3];
             final int off = d3 << SHIFT;
             for (int i = 0; i < d1; i++) {
@@ -81,7 +81,7 @@ public class ArrayMarshalers {
             }
             return o;
         }
-        public static void toNative(Object object, long handle, int d1, int d2, int d3) {
+        public static void toNative(Object object, long handle, long flags, int d1, int d2, int d3) {
             final byte[][][] o = (byte[][][]) object;
             byte[][] p;
             final int off = d3 << SHIFT;
@@ -112,19 +112,19 @@ public class ArrayMarshalers {
     public static class ShortArrayMarshaler {
         private static final String TYPE = "short";
         private static final int SHIFT = 1;
-        public static Object toObject(Class<?> arrayClass, long handle, int d1) {
+        public static Object toObject(Class<?> arrayClass, long handle, long flags, int d1) {
             final short[] o = new short[d1];
             final int off = d1 << SHIFT;
             VM.memcpy(VM.getArrayValuesAddress(o), handle, off);
             return o;
         }
-        public static void toNative(Object object, long handle, int d1) {
+        public static void toNative(Object object, long handle, long flags, int d1) {
             final short[] o = (short[]) object;
             final int off = d1 << SHIFT;
             checkDimensions(TYPE, "", o.length, d1);
             VM.memcpy(handle, VM.getArrayValuesAddress(o), off);
         }
-        public static Object toObject(Class<?> arrayClass, long handle, int d1, int d2) {
+        public static Object toObject(Class<?> arrayClass, long handle, long flags, int d1, int d2) {
             final short[][] o = new short[d1][d2];
             final int off = d2 << SHIFT;
             for (int i = 0; i < d1; i++) {
@@ -133,7 +133,7 @@ public class ArrayMarshalers {
             }
             return o;
         }
-        public static void toNative(Object object, long handle, int d1, int d2) {
+        public static void toNative(Object object, long handle, long flags, int d1, int d2) {
             final short[][] o = (short[][]) object;
             final int off = d2 << SHIFT;
             checkDimensions(TYPE, "[]", o.length, d1);
@@ -146,7 +146,7 @@ public class ArrayMarshalers {
                 handle += off;
             }
         }
-        public static Object toObject(Class<?> arrayClass, long handle, int d1, int d2, int d3) {
+        public static Object toObject(Class<?> arrayClass, long handle, long flags, int d1, int d2, int d3) {
             final short[][][] o = new short[d1][d2][d3];
             final int off = d3 << SHIFT;
             for (int i = 0; i < d1; i++) {
@@ -157,7 +157,7 @@ public class ArrayMarshalers {
             }
             return o;
         }
-        public static void toNative(Object object, long handle, int d1, int d2, int d3) {
+        public static void toNative(Object object, long handle, long flags, int d1, int d2, int d3) {
             final short[][][] o = (short[][][]) object;
             short[][] p;
             final int off = d3 << SHIFT;
@@ -188,19 +188,19 @@ public class ArrayMarshalers {
     public static class CharArrayMarshaler {
         private static final String TYPE = "char";
         private static final int SHIFT = 1;
-        public static Object toObject(Class<?> arrayClass, long handle, int d1) {
+        public static Object toObject(Class<?> arrayClass, long handle, long flags, int d1) {
             final char[] o = new char[d1];
             final int off = d1 << SHIFT;
             VM.memcpy(VM.getArrayValuesAddress(o), handle, off);
             return o;
         }
-        public static void toNative(Object object, long handle, int d1) {
+        public static void toNative(Object object, long handle, long flags, int d1) {
             final char[] o = (char[]) object;
             final int off = d1 << SHIFT;
             checkDimensions(TYPE, "", o.length, d1);
             VM.memcpy(handle, VM.getArrayValuesAddress(o), off);
         }
-        public static Object toObject(Class<?> arrayClass, long handle, int d1, int d2) {
+        public static Object toObject(Class<?> arrayClass, long handle, long flags, int d1, int d2) {
             final char[][] o = new char[d1][d2];
             final int off = d2 << SHIFT;
             for (int i = 0; i < d1; i++) {
@@ -209,7 +209,7 @@ public class ArrayMarshalers {
             }
             return o;
         }
-        public static void toNative(Object object, long handle, int d1, int d2) {
+        public static void toNative(Object object, long handle, long flags, int d1, int d2) {
             final char[][] o = (char[][]) object;
             final int off = d2 << SHIFT;
             checkDimensions(TYPE, "[]", o.length, d1);
@@ -222,7 +222,7 @@ public class ArrayMarshalers {
                 handle += off;
             }
         }
-        public static Object toObject(Class<?> arrayClass, long handle, int d1, int d2, int d3) {
+        public static Object toObject(Class<?> arrayClass, long handle, long flags, int d1, int d2, int d3) {
             final char[][][] o = new char[d1][d2][d3];
             final int off = d3 << SHIFT;
             for (int i = 0; i < d1; i++) {
@@ -233,7 +233,7 @@ public class ArrayMarshalers {
             }
             return o;
         }
-        public static void toNative(Object object, long handle, int d1, int d2, int d3) {
+        public static void toNative(Object object, long handle, long flags, int d1, int d2, int d3) {
             final char[][][] o = (char[][][]) object;
             char[][] p;
             final int off = d3 << SHIFT;
@@ -264,19 +264,19 @@ public class ArrayMarshalers {
     public static class IntArrayMarshaler {
         private static final String TYPE = "int";
         private static final int SHIFT = 2;
-        public static Object toObject(Class<?> arrayClass, long handle, int d1) {
+        public static Object toObject(Class<?> arrayClass, long handle, long flags, int d1) {
             final int[] o = new int[d1];
             final int off = d1 << SHIFT;
             VM.memcpy(VM.getArrayValuesAddress(o), handle, off);
             return o;
         }
-        public static void toNative(Object object, long handle, int d1) {
+        public static void toNative(Object object, long handle, long flags, int d1) {
             final int[] o = (int[]) object;
             final int off = d1 << SHIFT;
             checkDimensions(TYPE, "", o.length, d1);
             VM.memcpy(handle, VM.getArrayValuesAddress(o), off);
         }
-        public static Object toObject(Class<?> arrayClass, long handle, int d1, int d2) {
+        public static Object toObject(Class<?> arrayClass, long handle, long flags, int d1, int d2) {
             final int[][] o = new int[d1][d2];
             final int off = d2 << SHIFT;
             for (int i = 0; i < d1; i++) {
@@ -285,7 +285,7 @@ public class ArrayMarshalers {
             }
             return o;
         }
-        public static void toNative(Object object, long handle, int d1, int d2) {
+        public static void toNative(Object object, long handle, long flags, int d1, int d2) {
             final int[][] o = (int[][]) object;
             final int off = d2 << SHIFT;
             checkDimensions(TYPE, "[]", o.length, d1);
@@ -298,7 +298,7 @@ public class ArrayMarshalers {
                 handle += off;
             }
         }
-        public static Object toObject(Class<?> arrayClass, long handle, int d1, int d2, int d3) {
+        public static Object toObject(Class<?> arrayClass, long handle, long flags, int d1, int d2, int d3) {
             final int[][][] o = new int[d1][d2][d3];
             final int off = d3 << SHIFT;
             for (int i = 0; i < d1; i++) {
@@ -309,7 +309,7 @@ public class ArrayMarshalers {
             }
             return o;
         }
-        public static void toNative(Object object, long handle, int d1, int d2, int d3) {
+        public static void toNative(Object object, long handle, long flags, int d1, int d2, int d3) {
             final int[][][] o = (int[][][]) object;
             int[][] p;
             final int off = d3 << SHIFT;
@@ -340,19 +340,19 @@ public class ArrayMarshalers {
     public static class LongArrayMarshaler {
         private static final String TYPE = "long";
         private static final int SHIFT = 3;
-        public static Object toObject(Class<?> arrayClass, long handle, int d1) {
+        public static Object toObject(Class<?> arrayClass, long handle, long flags, int d1) {
             final long[] o = new long[d1];
             final int off = d1 << SHIFT;
             VM.memcpy(VM.getArrayValuesAddress(o), handle, off);
             return o;
         }
-        public static void toNative(Object object, long handle, int d1) {
+        public static void toNative(Object object, long handle, long flags, int d1) {
             final long[] o = (long[]) object;
             final int off = d1 << SHIFT;
             checkDimensions(TYPE, "", o.length, d1);
             VM.memcpy(handle, VM.getArrayValuesAddress(o), off);
         }
-        public static Object toObject(Class<?> arrayClass, long handle, int d1, int d2) {
+        public static Object toObject(Class<?> arrayClass, long handle, long flags, int d1, int d2) {
             final long[][] o = new long[d1][d2];
             final int off = d2 << SHIFT;
             for (int i = 0; i < d1; i++) {
@@ -361,7 +361,7 @@ public class ArrayMarshalers {
             }
             return o;
         }
-        public static void toNative(Object object, long handle, int d1, int d2) {
+        public static void toNative(Object object, long handle, long flags, int d1, int d2) {
             final long[][] o = (long[][]) object;
             final int off = d2 << SHIFT;
             checkDimensions(TYPE, "[]", o.length, d1);
@@ -374,7 +374,7 @@ public class ArrayMarshalers {
                 handle += off;
             }
         }
-        public static Object toObject(Class<?> arrayClass, long handle, int d1, int d2, int d3) {
+        public static Object toObject(Class<?> arrayClass, long handle, long flags, int d1, int d2, int d3) {
             final long[][][] o = new long[d1][d2][d3];
             final int off = d3 << SHIFT;
             for (int i = 0; i < d1; i++) {
@@ -385,7 +385,7 @@ public class ArrayMarshalers {
             }
             return o;
         }
-        public static void toNative(Object object, long handle, int d1, int d2, int d3) {
+        public static void toNative(Object object, long handle, long flags, int d1, int d2, int d3) {
             final long[][][] o = (long[][][]) object;
             long[][] p;
             final int off = d3 << SHIFT;
@@ -417,19 +417,19 @@ public class ArrayMarshalers {
     public static class FloatArrayMarshaler {
         private static final String TYPE = "float";
         private static final int SHIFT = 2;
-        public static Object toObject(Class<?> arrayClass, long handle, int d1) {
+        public static Object toObject(Class<?> arrayClass, long handle, long flags, int d1) {
             final float[] o = new float[d1];
             final int off = d1 << SHIFT;
             VM.memcpy(VM.getArrayValuesAddress(o), handle, off);
             return o;
         }
-        public static void toNative(Object object, long handle, int d1) {
+        public static void toNative(Object object, long handle, long flags, int d1) {
             final float[] o = (float[]) object;
             final int off = d1 << SHIFT;
             checkDimensions(TYPE, "", o.length, d1);
             VM.memcpy(handle, VM.getArrayValuesAddress(o), off);
         }
-        public static Object toObject(Class<?> arrayClass, long handle, int d1, int d2) {
+        public static Object toObject(Class<?> arrayClass, long handle, long flags, int d1, int d2) {
             final float[][] o = new float[d1][d2];
             final int off = d2 << SHIFT;
             for (int i = 0; i < d1; i++) {
@@ -438,7 +438,7 @@ public class ArrayMarshalers {
             }
             return o;
         }
-        public static void toNative(Object object, long handle, int d1, int d2) {
+        public static void toNative(Object object, long handle, long flags, int d1, int d2) {
             final float[][] o = (float[][]) object;
             final int off = d2 << SHIFT;
             checkDimensions(TYPE, "[]", o.length, d1);
@@ -451,7 +451,7 @@ public class ArrayMarshalers {
                 handle += off;
             }
         }
-        public static Object toObject(Class<?> arrayClass, long handle, int d1, int d2, int d3) {
+        public static Object toObject(Class<?> arrayClass, long handle, long flags, int d1, int d2, int d3) {
             final float[][][] o = new float[d1][d2][d3];
             final int off = d3 << SHIFT;
             for (int i = 0; i < d1; i++) {
@@ -462,7 +462,7 @@ public class ArrayMarshalers {
             }
             return o;
         }
-        public static void toNative(Object object, long handle, int d1, int d2, int d3) {
+        public static void toNative(Object object, long handle, long flags, int d1, int d2, int d3) {
             final float[][][] o = (float[][][]) object;
             float[][] p;
             final int off = d3 << SHIFT;
@@ -494,19 +494,19 @@ public class ArrayMarshalers {
     public static class DoubleArrayMarshaler {
         private static final String TYPE = "double";
         private static final int SHIFT = 3;
-        public static Object toObject(Class<?> arrayClass, long handle, int d1) {
+        public static Object toObject(Class<?> arrayClass, long handle, long flags, int d1) {
             final double[] o = new double[d1];
             final int off = d1 << SHIFT;
             VM.memcpy(VM.getArrayValuesAddress(o), handle, off);
             return o;
         }
-        public static void toNative(Object object, long handle, int d1) {
+        public static void toNative(Object object, long handle, long flags, int d1) {
             final double[] o = (double[]) object;
             final int off = d1 << SHIFT;
             checkDimensions(TYPE, "", o.length, d1);
             VM.memcpy(handle, VM.getArrayValuesAddress(o), off);
         }
-        public static Object toObject(Class<?> arrayClass, long handle, int d1, int d2) {
+        public static Object toObject(Class<?> arrayClass, long handle, long flags, int d1, int d2) {
             final double[][] o = new double[d1][d2];
             final int off = d2 << SHIFT;
             for (int i = 0; i < d1; i++) {
@@ -515,7 +515,7 @@ public class ArrayMarshalers {
             }
             return o;
         }
-        public static void toNative(Object object, long handle, int d1, int d2) {
+        public static void toNative(Object object, long handle, long flags, int d1, int d2) {
             final double[][] o = (double[][]) object;
             final int off = d2 << SHIFT;
             checkDimensions(TYPE, "[]", o.length, d1);
@@ -528,7 +528,7 @@ public class ArrayMarshalers {
                 handle += off;
             }
         }
-        public static Object toObject(Class<?> arrayClass, long handle, int d1, int d2, int d3) {
+        public static Object toObject(Class<?> arrayClass, long handle, long flags, int d1, int d2, int d3) {
             final double[][][] o = new double[d1][d2][d3];
             final int off = d3 << SHIFT;
             for (int i = 0; i < d1; i++) {
@@ -539,7 +539,7 @@ public class ArrayMarshalers {
             }
             return o;
         }
-        public static void toNative(Object object, long handle, int d1, int d2, int d3) {
+        public static void toNative(Object object, long handle, long flags, int d1, int d2, int d3) {
             final double[][][] o = (double[][][]) object;
             double[][] p;
             final int off = d3 << SHIFT;

@@ -152,22 +152,15 @@ public abstract class ObjCObject extends NativeObject {
     
     public static class Marshaler {
         @SuppressWarnings({ "rawtypes", "unchecked" })
-        public static Object toObject(Class cls, long handle, boolean copy) {
+        public static Object toObject(Class cls, long handle, long flags) {
             ObjCObject o = ObjCObject.toObjCObject(cls, handle);
             return o;
         }
-
-        public static void updateObject(Object o, long handle) {
-        }
-        
-        public static @Pointer long toNative(Object o) {
+        public static @Pointer long toNative(Object o, long flags) {
             if (o == null) {
                 return 0L;
             }
             return ((ObjCObject) o).getHandle();
-        }
-        
-        public static void updateNative(Object o, long handle) {
         }
     }
     

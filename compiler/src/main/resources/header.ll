@@ -108,11 +108,7 @@ declare void @_bcPopCallbackFrame(%Env*)
 declare %Env* @_bcAttachThreadFromCallback()
 declare void @_bcDetachThreadFromCallback(%Env*)
 
-declare %Object* @_bcNewStruct(%Env*, i8*, %Class*, i8*)
-declare i8* @_bcGetStructHandle(%Env*, %Object*)
-declare void @_bcSetStructHandle(%Env*, %Object*, i8*)
-declare i8* @_bcByValueGetStructHandle(%Env*, %Object*)
-declare void @_bcCopyStruct(%Env*, %Object*, i8*, i32)
+declare i8* @_bcCopyStruct(%Env*, i8*, i32)
 
 declare i8* @llvm.frameaddress(i32) nounwind readnone
 declare void @llvm.memcpy.p0i8.p0i8.i32(i8*, i8*, i32, i32, i1)

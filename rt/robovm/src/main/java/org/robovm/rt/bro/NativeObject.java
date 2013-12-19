@@ -66,7 +66,7 @@ public abstract class NativeObject {
     
     public static class Marshaler {
         @SuppressWarnings({ "rawtypes", "unchecked" })
-        public static Object toObject(Class cls, long handle, boolean copy) {
+        public static Object toObject(Class cls, long handle, long flags) {
             if (handle == 0L) {
                 return null;
             }
@@ -74,18 +74,11 @@ public abstract class NativeObject {
             o.setHandle(handle);
             return o;
         }
-
-        public static void updateObject(Object o, long handle) {
-        }
-        
-        public static @Pointer long toNative(Object o) {
+        public static @Pointer long toNative(Object o, long flags) {
             if (o == null) {
                 return 0L;
             }
             return ((NativeObject) o).getHandle();
-        }
-        
-        public static void updateNative(Object o, long handle) {
         }
     }
 }

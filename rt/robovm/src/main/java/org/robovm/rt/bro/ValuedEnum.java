@@ -32,7 +32,7 @@ public interface ValuedEnum {
     
     public static class AsIntMarshaler {
         
-        public static Enum<?> toObject(Enum<?>[] values, int value) {
+        public static Enum<?> toObject(Enum<?>[] values, int value, long flags) {
             int length = values.length;
             if (length == 0) {
                 throw new AssertionError("Enum class has no values!");
@@ -49,7 +49,7 @@ public interface ValuedEnum {
                     + value + " in " + enumType.getName());
         }
         
-        public static int toNative(Enum<?> v) {
+        public static int toNative(Enum<?> v, long flags) {
             return ((ValuedEnum) v).value();
         }
     }

@@ -25,6 +25,8 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.nio.LongBuffer;
 import java.nio.ShortBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 import org.robovm.rt.VM;
@@ -85,20 +87,30 @@ public class StructTest {
     }
     
     public static class StringMarshaler {
-        public static Object toObject(Class<?> cls, long handle, boolean copy) {
+        static List<String> calls = new ArrayList<String>();
+        public static Object toObject(Class<?> cls, long handle, long flags) {
             BytePtr ptr = Struct.toStruct(BytePtr.class, handle);
-            return ptr != null ? ptr.toStringAsciiZ() : null;
+            Object o = ptr != null ? ptr.toStringAsciiZ() : null;
+            String s = o == null ? null : "'" + o + "'";
+            calls.add("toObject(" + s + ", ?, " + Long.toHexString(flags) + ")");
+            return o;
         }
-        public static void updateObject(Object o, long handle) {
-        }
-        public static @Pointer long toNative(Object o) {
+        public static @Pointer long toNative(Object o, long flags) {
+            String s = o == null ? null : "'" + o + "'";
+            calls.add("toNative(" + s + ", ?, " + Long.toHexString(flags) + ")");
             if (o == null) {
                 return 0L;
             }
             BytePtr ptr = BytePtr.toBytePtrAsciiZ((String) o);
             return ptr.getHandle();
         }
-        public static void updateNative(Object o, long handle) {
+        public static void updateObject(Object o, long handle, long flags) {
+            String s = o == null ? null : "'" + o + "'";
+            calls.add("updateObject(" + s + ", ?, " + Long.toHexString(flags) + ")");
+        }
+        public static void updateNative(Object o, long handle, long flags) {
+            String s = o == null ? null : "'" + o + "'";
+            calls.add("updateNative(" + s + ", ?, " + Long.toHexString(flags) + ")");
         }
     }
     
@@ -2742,4 +2754,18 @@ public class StructTest {
         assertEquals("", s.byteArrayAsString());
     }
     
+    @Test
+    public void testMarshalerCallSequence() {
+        StringMarshaler.calls = new ArrayList<String>();
+        
+        TestStruct s = new TestStruct();
+        assertNull(s.string());
+        s.string("foobar");
+        assertEquals("foobar", s.string());
+        
+        assertEquals(3, StringMarshaler.calls.size());
+        assertEquals("toObject(null, ?, 2)", StringMarshaler.calls.get(0));
+        assertEquals("toNative('foobar', ?, 2)", StringMarshaler.calls.get(1));
+        assertEquals("toObject('foobar', ?, 2)", StringMarshaler.calls.get(2));
+    }
 }

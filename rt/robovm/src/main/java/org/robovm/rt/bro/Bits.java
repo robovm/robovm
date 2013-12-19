@@ -206,14 +206,14 @@ public abstract class Bits<T extends Bits<T>> implements Iterable<T>, Comparable
     
     public static class AsIntMarshaler {
         @SuppressWarnings({ "rawtypes", "unchecked" })
-        public static Object toObject(Class cls, int value) {
+        public static Object toObject(Class cls, int value, long flags) {
             Bits<?> f = (Bits<?>) VM.allocateObject(cls);
             f.value = ((long) value) & 0xffffffff;
             f.mask = f.value == 0 ? -1 : f.value;
             return f;
         }
         @SuppressWarnings("rawtypes")
-        public static int toNative(Object o) {
+        public static int toNative(Object o, long flags) {
             return (int) ((Bits) o).value;
         }
     }

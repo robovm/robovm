@@ -57,7 +57,7 @@ public class BufferMarshalers {
             }
         }
         
-        public static Object toObject(Class<?> cls, long handle, int d1) {
+        public static Object toObject(Class<?> cls, long handle, long flags, int d1) {
             if (cls == ByteBuffer.class) {
                 return VM.newDirectByteBuffer(handle, d1);
             }
@@ -82,7 +82,7 @@ public class BufferMarshalers {
             }
             throw new IllegalArgumentException("Unsupported class: " + cls.getName());
         }
-        public static void toNative(Object object, long handle, int d1) {
+        public static void toNative(Object object, long handle, long flags, int d1) {
             Buffer buffer = (Buffer) object;
             
             if (d1 != buffer.capacity()) {
@@ -148,17 +148,17 @@ public class BufferMarshalers {
             
             VM.memcpy(handle, src + (offset << shift), d1 << shift);
         }
-        public static Object toObject(Class<?> cls, long handle, int d1, int d2) {
-            return toObject(cls, handle, d1 * d2);
+        public static Object toObject(Class<?> cls, long handle, long flags, int d1, int d2) {
+            return toObject(cls, handle, flags, d1 * d2);
         }
-        public static void toNative(Object object, long handle, int d1, int d2) {
-            toNative(object, handle, d1 * d2);
+        public static void toNative(Object object, long handle, long flags, int d1, int d2) {
+            toNative(object, handle, flags, d1 * d2);
         }
-        public static Object toObject(Class<?> cls, long handle, int d1, int d2, int d3) {
-            return toObject(cls, handle, d1 * d2 * d3);
+        public static Object toObject(Class<?> cls, long handle, long flags, int d1, int d2, int d3) {
+            return toObject(cls, handle, flags, d1 * d2 * d3);
         }
-        public static void toNative(Object object, long handle, int d1, int d2, int d3) {
-            toNative(object, handle, d1 * d2 * d3);
+        public static void toNative(Object object, long handle, long flags, int d1, int d2, int d3) {
+            toNative(object, handle, flags, d1 * d2 * d3);
         }
     }
 

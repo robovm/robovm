@@ -882,6 +882,17 @@ void* rvmCopyMemoryAtomicZ(Env* env, const char* src) {
     return rvmCopyMemoryAtomic(env, src, strlen(src) + 1);
 }
 
+void* rvmCopyMemory(Env* env, const void* src, size_t size) {
+    void* dest = rvmAllocateMemory(env, size);
+    if (!dest) return NULL;
+    memcpy(dest, src, size);
+    return dest;
+}
+
+void* rvmCopyMemoryZ(Env* env, const char* src) {
+    return rvmCopyMemory(env, src, strlen(src) + 1);
+}
+
 Object* rvmNewDirectByteBuffer(Env* env, void* address, jlong capacity) {
     jvalue args[2];
     args[0].i = (jint) address;

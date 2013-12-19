@@ -142,19 +142,15 @@ import org.robovm.rt.VM;
 
     public static class AsStringMarshaler {
         @SuppressWarnings("rawtypes")
-        public static Object toObject(Class cls, long handle, boolean copy) {
+        public static Object toObject(Class cls, long handle, long flags) {
             NSString o = ObjCObject.toObjCObject(NSString.class, handle);
             return o != null ? o.toString() : null;
         }
-        public static void updateObject(Object o, long handle) {
-        }
-        public static @Pointer long toNative(Object o) {
+        public static @Pointer long toNative(Object o, long flags) {
             if (o == null) {
                 return 0L;
             }
             return new NSString((String) o).getHandle();
-        }
-        public static void updateNative(Object o, long handle) {
         }
     }
 }

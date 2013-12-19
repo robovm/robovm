@@ -30,7 +30,7 @@ import org.robovm.rt.bro.annotation.Marshalers;
  * Defines builtin marshalers. This is the final fallback when searching for
  * a marshaler.
  */
-@Marshalers({
+@Marshalers({ 
     @Marshaler(type = byte[].class, value = ArrayMarshalers.ByteArrayMarshaler.class),
     @Marshaler(type = byte[][].class, value = ArrayMarshalers.ByteArrayMarshaler.class),
     @Marshaler(type = byte[][][].class, value = ArrayMarshalers.ByteArrayMarshaler.class),

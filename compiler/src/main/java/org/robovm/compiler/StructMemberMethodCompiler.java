@@ -23,6 +23,7 @@ import static org.robovm.compiler.Functions.*;
 import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Type.*;
 
+import org.robovm.compiler.Bro.MarshalerFlags;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.llvm.ArrayType;
@@ -127,19 +128,22 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
                 
                 if (memberType instanceof PrimitiveType) {
                     if (isEnum(type)) {
-                        result = marshalNativeToEnumObject(function, marshalerClassName, env, targetClassName, result);
+                        result = marshalNativeToEnumObject(function, marshalerClassName, env, 
+                                targetClassName, result, MarshalerFlags.CALL_TYPE_STRUCT_MEMBER);
                     } else {
                         // Value type wrapping a primitive value (e.g. Integer and Bits)
-                        result = marshalNativeToValueObject(function, marshalerClassName, env, targetClassName, result);
+                        result = marshalNativeToValueObject(function, marshalerClassName, env, 
+                                targetClassName, result, MarshalerFlags.CALL_TYPE_STRUCT_MEMBER);
                     }
                 } else {
                     if (memberType instanceof ArrayType && !isStruct(type)) {
                         // Array
                         result = marshalNativeToArray(function, marshalerClassName, env, 
-                                targetClassName, result, getArrayDimensions(method));
+                                targetClassName, result, MarshalerFlags.CALL_TYPE_STRUCT_MEMBER,
+                                getArrayDimensions(method));
                     } else {
                         result = marshalNativeToObject(function, marshalerClassName, null, env, 
-                                targetClassName, result, false);
+                                targetClassName, result, MarshalerFlags.CALL_TYPE_STRUCT_MEMBER);
                     }
                 }
             } else if (hasPointerAnnotation(method)) {
@@ -159,9 +163,11 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
                 
                 if (memberType instanceof PrimitiveType) {
                     if (isEnum(type)) {
-                        nativeValue = marshalEnumObjectToNative(function, marshalerClassName, memberType, env, nativeValue);
+                        nativeValue = marshalEnumObjectToNative(function, marshalerClassName, memberType, env, 
+                                nativeValue, MarshalerFlags.CALL_TYPE_STRUCT_MEMBER);
                     } else {
-                        nativeValue = marshalValueObjectToNative(function, marshalerClassName, memberType, env, nativeValue);
+                        nativeValue = marshalValueObjectToNative(function, marshalerClassName, memberType, env, 
+                                nativeValue, MarshalerFlags.CALL_TYPE_STRUCT_MEMBER);
                     }
                 } else {
                     if (memberType instanceof StructureType || memberType instanceof ArrayType) {
@@ -173,10 +179,12 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
                     
                     if (memberType instanceof ArrayType && !isStruct(type)) {
                         // Array
-                        marshalArrayToNative(function, marshalerClassName, env, nativeValue, memberPtr.ref(), getArrayDimensions(method, 0));
+                        marshalArrayToNative(function, marshalerClassName, env, nativeValue, memberPtr.ref(), 
+                                MarshalerFlags.CALL_TYPE_STRUCT_MEMBER, getArrayDimensions(method, 0));
                         nativeValue = null;
                     } else {
-                        nativeValue = marshalObjectToNative(function, marshalerClassName, null, memberType, env, nativeValue);
+                        nativeValue = marshalObjectToNative(function, marshalerClassName, null, memberType, env, nativeValue,
+                                MarshalerFlags.CALL_TYPE_STRUCT_MEMBER);
                     }
                 }
             } else if (hasPointerAnnotation(method, 0)) {

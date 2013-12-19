@@ -265,25 +265,14 @@ public abstract class Struct<T extends Struct<T>> extends NativeObject implement
     
     public static class Marshaler {
         @SuppressWarnings({ "rawtypes", "unchecked" })
-        public static Object toObject(Class cls, long handle, boolean copy) {
-            Struct o = Struct.toStruct(cls, handle);
-            if (copy) {
-                o = o.copy();
-            }
-            return o;
+        public static Object toObject(Class cls, long handle, long flags) {
+            return Struct.toStruct(cls, handle);
         }
-
-        public static void updateObject(Object o, long handle) {
-        }
-        
-        public static @Pointer long toNative(Object o) {
+        public static @Pointer long toNative(Object o, long flags) {
             if (o == null) {
                 return 0L;
             }
             return ((Struct<?>) o).getHandle();
-        }
-        
-        public static void updateNative(Object o, long handle) {
         }
     }
     
@@ -303,12 +292,12 @@ public abstract class Struct<T extends Struct<T>> extends NativeObject implement
         }
         
         @SuppressWarnings("unchecked")
-        public static <T extends Struct<T>> Object toObject(Class<T[]> arrayClass, long handle, int d1) {
+        public static <T extends Struct<T>> Object toObject(Class<T[]> arrayClass, long handle, long flags, int d1) {
             T s = Struct.toStruct((Class<T>) arrayClass.getComponentType(), handle);
             return s.toArray(d1);
         }
         @SuppressWarnings("unchecked")
-        public static <T extends Struct<T>> void toNative(Object object, long handle, int d1) {
+        public static <T extends Struct<T>> void toNative(Object object, long handle, long flags, int d1) {
             final T[] o = (T[]) object;
             Class<T> structClass = (Class<T>) object.getClass().getComponentType();
             checkDimensions(structClass, "[%d]", o.length, d1);
@@ -316,7 +305,7 @@ public abstract class Struct<T extends Struct<T>> extends NativeObject implement
             s.update(o);
         }
         @SuppressWarnings("unchecked")
-        public static <T extends Struct<T>> Object toObject(Class<T[]> arrayClass, long handle, int d1, int d2) {
+        public static <T extends Struct<T>> Object toObject(Class<T[]> arrayClass, long handle, long flags, int d1, int d2) {
             Class<T> structClass = (Class<T>) arrayClass.getComponentType().getComponentType();
             T[][] o = (T[][]) Array.newInstance(structClass, d1, d2);
             T s = Struct.toStruct((Class<T>) structClass, handle);
@@ -328,7 +317,7 @@ public abstract class Struct<T extends Struct<T>> extends NativeObject implement
             return o;
         }
         @SuppressWarnings("unchecked")
-        public static <T extends Struct<T>> void toNative(Object object, long handle, int d1, int d2) {
+        public static <T extends Struct<T>> void toNative(Object object, long handle, long flags, int d1, int d2) {
             final T[][] o = (T[][]) object;
             Class<T> structClass = (Class<T>) object.getClass().getComponentType().getComponentType();
             checkDimensions(structClass, "[%d][]", o.length, d1);
@@ -343,7 +332,7 @@ public abstract class Struct<T extends Struct<T>> extends NativeObject implement
             }
         }
         @SuppressWarnings("unchecked")
-        public static <T extends Struct<T>> Object toObject(Class<T[]> arrayClass, long handle, int d1, int d2, int d3) {
+        public static <T extends Struct<T>> Object toObject(Class<T[]> arrayClass, long handle, long flags, int d1, int d2, int d3) {
             Class<T> structClass = (Class<T>) arrayClass.getComponentType().getComponentType().getComponentType();
             T[][][] o = (T[][][]) Array.newInstance(structClass, d1, d2, d3);
             T s = Struct.toStruct((Class<T>) structClass, handle);
@@ -358,7 +347,7 @@ public abstract class Struct<T extends Struct<T>> extends NativeObject implement
             return o;
         }
         @SuppressWarnings("unchecked")
-        public static <T extends Struct<T>> void toNative(Object object, long handle, int d1, int d2, int d3) {
+        public static <T extends Struct<T>> void toNative(Object object, long handle, long flags, int d1, int d2, int d3) {
             final T[][][] o = (T[][][]) object;
             Class<T> structClass = (Class<T>) object.getClass().getComponentType().getComponentType().getComponentType();
             checkDimensions(structClass, "[%d][][]", o.length, d1);

@@ -18,6 +18,8 @@ package org.robovm.rt.bro;
 import static org.junit.Assert.*;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 import org.robovm.rt.VM;
@@ -109,17 +111,23 @@ public class BridgeCallbackTest {
     }
     
     public static class StringMarshaler {
-        public static Object toObject(Class cls, long handle, boolean copy) {
+        static List<String> calls = new ArrayList<String>();
+        public static Object toObject(Class<?> cls, long handle, long flags) {
             BytePtr ptr = Struct.toStruct(BytePtr.class, handle);
-            return ptr.toStringAsciiZ();
+            Object o = ptr.toStringAsciiZ();
+            calls.add("toObject(" + o + ", ?, " + Long.toHexString(flags) + ")");
+            return o;
         }
-        public static void updateObject(Object o, long handle) {
-        }
-        public static @Pointer long toNative(Object o) {
+        public static @Pointer long toNative(Object o, long flags) {
+            calls.add("toNative(" + o + ", ?, " + Long.toHexString(flags) + ")");
             BytePtr ptr = BytePtr.toBytePtrAsciiZ((String) o);
             return ptr.getHandle();
         }
-        public static void updateNative(Object o, long handle) {
+        public static void updateObject(Object o, long handle, long flags) {
+            calls.add("updateObject(" + o + ", ?, " + Long.toHexString(flags) + ")");
+        }
+        public static void updateNative(Object o, long handle, long flags) {
+            calls.add("updateNative(" + o + ", ?, " + Long.toHexString(flags) + ")");
         }
     }
     
@@ -289,7 +297,7 @@ public class BridgeCallbackTest {
         return null;
     }
     
-    private static void bind(Class cls) {
+    private static void bind(Class<?> cls) {
         for (Method m : cls.getDeclaredMethods()) {
             if (m.getAnnotation(Bridge.class) != null) {
                 Method callbackMethod = find(m.getName() + "_cb");
@@ -446,6 +454,23 @@ public class BridgeCallbackTest {
     public void testMarshalerOnOuterClass() {
         String s = Inner3.Inner4.append("foo", "bar");
         assertEquals("foobar", s);
+    }
+    
+    @Test
+    public void testMarshalerCallSequence() {
+        StringMarshaler.calls = new ArrayList<String>();
+        append("foo", "bar");
+        assertEquals(10, StringMarshaler.calls.size());
+        assertEquals("toNative(foo, ?, 0)", StringMarshaler.calls.get(0));
+        assertEquals("toNative(bar, ?, 0)", StringMarshaler.calls.get(1));
+        assertEquals("toObject(foo, ?, 1)", StringMarshaler.calls.get(2));
+        assertEquals("toObject(bar, ?, 1)", StringMarshaler.calls.get(3));
+        assertEquals("updateNative(foo, ?, 1)", StringMarshaler.calls.get(4));
+        assertEquals("updateNative(bar, ?, 1)", StringMarshaler.calls.get(5));
+        assertEquals("toNative(foobar, ?, 1)", StringMarshaler.calls.get(6));
+        assertEquals("updateObject(foo, ?, 0)", StringMarshaler.calls.get(7));
+        assertEquals("updateObject(bar, ?, 0)", StringMarshaler.calls.get(8));
+        assertEquals("toObject(foobar, ?, 0)", StringMarshaler.calls.get(9));
     }
     
     @Test

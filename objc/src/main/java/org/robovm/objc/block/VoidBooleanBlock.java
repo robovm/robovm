@@ -41,10 +41,9 @@ public interface VoidBooleanBlock {
     
     static class Marshaler {
         private static final Wrapper WRAPPER = new Wrapper(Callbacks.class);
-        public static @Pointer long toNative(Object o) {
+        public static @Pointer long toNative(Object o, long flags) {
             return WRAPPER.toNative(o);
         }
-        public static void updateObject(Object o, long handle) {}
     }
 
 }

@@ -21,6 +21,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.robovm.rt.bro.BuiltinMarshalers;
+import org.robovm.rt.bro.MarshalerFlags;
 import org.robovm.rt.bro.NativeObject;
 import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.Pointer;
@@ -87,10 +88,10 @@ public abstract class Ptr<S extends NativeObject, T extends Ptr<S, T>> extends S
             Method toObject = TO_OBJECT_CACHE.get(type);
             if (toObject == null) {
                 Class<?> marshaler = findMarshaler(type, type);
-                toObject = marshaler.getMethod("toObject", Class.class, long.class, boolean.class);
+                toObject = marshaler.getMethod("toObject", Class.class, long.class, long.class);
                 TO_OBJECT_CACHE.put(type, toObject);
             }
-            return (S) toObject.invoke(null, type, handle, false);
+            return (S) toObject.invoke(null, type, handle, MarshalerFlags.CALL_TYPE_PTR);
         } catch (InvocationTargetException e) {
             throw new Error(e);
         } catch (NoSuchMethodException e) {

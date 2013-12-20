@@ -24,8 +24,8 @@ public enum UICollectionUpdateAction implements ValuedEnum {
     Reload(3),
     Move(4);
 
-    private final int n;
+    private final long n;
 
-    private UICollectionUpdateAction(int n) { this.n = n; }
-    public int value() { return n; }
+    private UICollectionUpdateAction(long n) { this.n = n; }
+    public long value() { return n; }
 }

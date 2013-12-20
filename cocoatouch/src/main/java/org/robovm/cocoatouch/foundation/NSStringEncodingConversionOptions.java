@@ -21,8 +21,8 @@ public enum NSStringEncodingConversionOptions implements ValuedEnum {
     AllowLossy(1),
     ExternalRepresentation(2);
 
-    private final int n;
+    private final long n;
 
-    private NSStringEncodingConversionOptions(int n) { this.n = n; }
-    public int value() { return n; }
+    private NSStringEncodingConversionOptions(long n) { this.n = n; }
+    public long value() { return n; }
 }

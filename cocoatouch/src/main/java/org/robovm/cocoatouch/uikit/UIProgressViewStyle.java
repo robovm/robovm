@@ -21,8 +21,8 @@ public enum UIProgressViewStyle implements ValuedEnum {
     Default(0),
     Bar(1);
 
-    private final int n;
+    private final long n;
 
-    private UIProgressViewStyle(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIProgressViewStyle(long n) { this.n = n; }
+    public long value() { return n; }
 }

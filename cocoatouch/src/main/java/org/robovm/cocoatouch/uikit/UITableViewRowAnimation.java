@@ -27,8 +27,8 @@ public enum UITableViewRowAnimation implements ValuedEnum {
     Middle(6),
     Automatic(100);
 
-    private final int n;
+    private final long n;
 
-    private UITableViewRowAnimation(int n) { this.n = n; }
-    public int value() { return n; }
+    private UITableViewRowAnimation(long n) { this.n = n; }
+    public long value() { return n; }
 }

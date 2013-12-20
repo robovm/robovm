@@ -25,8 +25,8 @@ public enum UITextGranularity implements ValuedEnum {
     Line(4),
     Document(5);
 
-    private final int n;
+    private final long n;
 
-    private UITextGranularity(int n) { this.n = n; }
-    public int value() { return n; }
+    private UITextGranularity(long n) { this.n = n; }
+    public long value() { return n; }
 }

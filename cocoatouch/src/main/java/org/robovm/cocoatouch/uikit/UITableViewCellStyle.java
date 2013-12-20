@@ -23,8 +23,8 @@ public enum UITableViewCellStyle implements ValuedEnum {
     Value2(2),
     Subtitle(3);
 
-    private final int n;
+    private final long n;
 
-    private UITableViewCellStyle(int n) { this.n = n; }
-    public int value() { return n; }
+    private UITableViewCellStyle(long n) { this.n = n; }
+    public long value() { return n; }
 }

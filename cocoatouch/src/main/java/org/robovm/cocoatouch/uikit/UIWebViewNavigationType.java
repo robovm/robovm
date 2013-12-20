@@ -25,8 +25,8 @@ public enum UIWebViewNavigationType implements ValuedEnum {
     FormResubmitted(4),
     Other(5);
 
-    private final int n;
+    private final long n;
 
-    private UIWebViewNavigationType(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIWebViewNavigationType(long n) { this.n = n; }
+    public long value() { return n; }
 }

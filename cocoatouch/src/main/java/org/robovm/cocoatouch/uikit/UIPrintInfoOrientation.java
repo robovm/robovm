@@ -21,8 +21,8 @@ public enum UIPrintInfoOrientation implements ValuedEnum {
     Portrait(0),
     Landscape(1);
 
-    private final int n;
+    private final long n;
 
-    private UIPrintInfoOrientation(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIPrintInfoOrientation(long n) { this.n = n; }
+    public long value() { return n; }
 }

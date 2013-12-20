@@ -22,8 +22,8 @@ public enum UIStatusBarStyle implements ValuedEnum {
     BlackTranslucent(1),
     BlackOpaque(2);
 
-    private final int n;
+    private final long n;
 
-    private UIStatusBarStyle(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIStatusBarStyle(long n) { this.n = n; }
+    public long value() { return n; }
 }

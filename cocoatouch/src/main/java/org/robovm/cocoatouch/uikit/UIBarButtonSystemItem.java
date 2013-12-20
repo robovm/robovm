@@ -43,8 +43,8 @@ public enum UIBarButtonSystemItem implements ValuedEnum {
     Redo(22),
     PageCurl(23);
 
-    private final int n;
+    private final long n;
 
-    private UIBarButtonSystemItem(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIBarButtonSystemItem(long n) { this.n = n; }
+    public long value() { return n; }
 }

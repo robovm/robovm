@@ -27,8 +27,8 @@ public enum UIImageOrientation implements ValuedEnum {
     LeftMirrored(6),
     RightMirrored(7);
 
-    private final int n;
+    private final long n;
 
-    private UIImageOrientation(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIImageOrientation(long n) { this.n = n; }
+    public long value() { return n; }
 }

@@ -22,8 +22,8 @@ public enum UITextAlignment implements ValuedEnum {
     Center(1),
     Right(2);
 
-    private final int n;
+    private final long n;
 
-    private UITextAlignment(int n) { this.n = n; }
-    public int value() { return n; }
+    private UITextAlignment(long n) { this.n = n; }
+    public long value() { return n; }
 }

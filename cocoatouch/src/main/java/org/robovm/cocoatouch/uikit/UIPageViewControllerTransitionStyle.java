@@ -20,8 +20,8 @@ import org.robovm.rt.bro.ValuedEnum;
 public enum UIPageViewControllerTransitionStyle implements ValuedEnum {
     PageCurl(0);
 
-    private final int n;
+    private final long n;
 
-    private UIPageViewControllerTransitionStyle(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIPageViewControllerTransitionStyle(long n) { this.n = n; }
+    public long value() { return n; }
 }

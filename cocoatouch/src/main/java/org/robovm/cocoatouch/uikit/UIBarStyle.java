@@ -23,8 +23,8 @@ public enum UIBarStyle implements ValuedEnum {
     BlackOpaque(1),
     BlackTranslucent(2);
 
-    private final int n;
+    private final long n;
 
-    private UIBarStyle(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIBarStyle(long n) { this.n = n; }
+    public long value() { return n; }
 }

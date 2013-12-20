@@ -22,8 +22,8 @@ public enum UIScreenOverscanCompensation implements ValuedEnum {
     InsetBounds(1),
     InsetApplicationFrame(2);
 
-    private final int n;
+    private final long n;
 
-    private UIScreenOverscanCompensation(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIScreenOverscanCompensation(long n) { this.n = n; }
+    public long value() { return n; }
 }

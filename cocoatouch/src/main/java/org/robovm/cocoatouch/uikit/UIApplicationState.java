@@ -22,8 +22,8 @@ public enum UIApplicationState implements ValuedEnum {
     Inactive(1),
     Background(2);
 
-    private final int n;
+    private final long n;
 
-    private UIApplicationState(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIApplicationState(long n) { this.n = n; }
+    public long value() { return n; }
 }

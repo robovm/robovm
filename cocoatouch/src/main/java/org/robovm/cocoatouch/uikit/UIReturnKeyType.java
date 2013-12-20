@@ -30,8 +30,8 @@ public enum UIReturnKeyType implements ValuedEnum {
     Done(9),
     EmergencyCall(10);
 
-    private final int n;
+    private final long n;
 
-    private UIReturnKeyType(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIReturnKeyType(long n) { this.n = n; }
+    public long value() { return n; }
 }

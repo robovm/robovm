@@ -24,11 +24,11 @@ public enum GLKViewDrawableDepthFormat implements ValuedEnum {
     Format16(1),
     Format24(2);
 
-    private final int n;
+    private final long n;
 
-    private GLKViewDrawableDepthFormat(int n) { this.n = n; }
-    public int value() { return n; }
-    public static GLKViewDrawableDepthFormat fromValue(int n) {
+    private GLKViewDrawableDepthFormat(long n) { this.n = n; }
+    public long value() { return n; }
+    public static GLKViewDrawableDepthFormat fromValue(long n) {
         for (GLKViewDrawableDepthFormat v : values()) {
             if (n == v.value()) {
                 return v;

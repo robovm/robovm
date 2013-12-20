@@ -25,8 +25,8 @@ public enum UIImagePickerControllerQualityType implements ValuedEnum {
     IFrame1280x720(4),
     IFrame960x540(5);
 
-    private final int n;
+    private final long n;
 
-    private UIImagePickerControllerQualityType(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIImagePickerControllerQualityType(long n) { this.n = n; }
+    public long value() { return n; }
 }

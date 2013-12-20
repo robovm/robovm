@@ -51,8 +51,8 @@ public enum CGBlendMode implements ValuedEnum {
     PlusDarker(26),
     PlusLighter(27);
     
-    private final int n;
+    private final long n;
 
-    private CGBlendMode(int n) { this.n = n; }
-    public int value() { return n; }
+    private CGBlendMode(long n) { this.n = n; }
+    public long value() { return n; }
 }

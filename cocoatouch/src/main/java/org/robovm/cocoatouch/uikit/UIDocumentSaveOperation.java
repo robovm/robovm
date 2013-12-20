@@ -21,8 +21,8 @@ public enum UIDocumentSaveOperation implements ValuedEnum {
     Creating(0),
     Overwriting(1);
 
-    private final int n;
+    private final long n;
 
-    private UIDocumentSaveOperation(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIDocumentSaveOperation(long n) { this.n = n; }
+    public long value() { return n; }
 }

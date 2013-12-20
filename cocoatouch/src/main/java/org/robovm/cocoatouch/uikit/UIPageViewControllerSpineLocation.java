@@ -23,8 +23,8 @@ public enum UIPageViewControllerSpineLocation implements ValuedEnum {
     Mid(2),
     Max(3);
 
-    private final int n;
+    private final long n;
 
-    private UIPageViewControllerSpineLocation(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIPageViewControllerSpineLocation(long n) { this.n = n; }
+    public long value() { return n; }
 }

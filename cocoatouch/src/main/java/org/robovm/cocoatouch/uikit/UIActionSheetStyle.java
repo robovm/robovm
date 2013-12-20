@@ -23,8 +23,8 @@ public enum UIActionSheetStyle implements ValuedEnum {
     BlackTranslucent(UIBarStyle.BlackTranslucent.value()),
     BlackOpaque(UIBarStyle.BlackOpaque.value());
 
-    private final int n;
+    private final long n;
 
-    private UIActionSheetStyle(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIActionSheetStyle(long n) { this.n = n; }
+    public long value() { return n; }
 }

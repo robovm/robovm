@@ -21,8 +21,8 @@ public enum UIBarMetrics implements ValuedEnum {
     Default(0),
     LandscapePhone(1);
 
-    private final int n;
+    private final long n;
 
-    private UIBarMetrics(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIBarMetrics(long n) { this.n = n; }
+    public long value() { return n; }
 }

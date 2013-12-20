@@ -25,8 +25,8 @@ public enum UIButtonType implements ValuedEnum {
     InfoDark(4),
     ContactAdd(5);
 
-    private final int n;
+    private final long n;
 
-    private UIButtonType(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIButtonType(long n) { this.n = n; }
+    public long value() { return n; }
 }

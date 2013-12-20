@@ -22,8 +22,8 @@ public enum UITableViewCellEditingStyle implements ValuedEnum {
     Delete(1),
     Insert(2);
 
-    private final int n;
+    private final long n;
 
-    private UITableViewCellEditingStyle(int n) { this.n = n; }
-    public int value() { return n; }
+    private UITableViewCellEditingStyle(long n) { this.n = n; }
+    public long value() { return n; }
 }

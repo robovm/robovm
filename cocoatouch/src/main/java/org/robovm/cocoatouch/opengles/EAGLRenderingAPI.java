@@ -21,11 +21,11 @@ public enum EAGLRenderingAPI implements ValuedEnum {
     OpenGLES1(1),
     OpenGLES2(2);
 
-    private final int n;
+    private final long n;
 
-    private EAGLRenderingAPI(int n) { this.n = n; }
-    public int value() { return n; }
-    public static EAGLRenderingAPI fromValue(int n) {
+    private EAGLRenderingAPI(long n) { this.n = n; }
+    public long value() { return n; }
+    public static EAGLRenderingAPI fromValue(long n) {
         for (EAGLRenderingAPI v : values()) {
             if (n == v.value()) {
                 return v;

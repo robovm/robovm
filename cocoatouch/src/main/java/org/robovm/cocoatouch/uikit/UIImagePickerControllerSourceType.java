@@ -22,8 +22,8 @@ public enum UIImagePickerControllerSourceType implements ValuedEnum {
     Camera(1),
     SavedPhotosAlbum(2);
 
-    private final int n;
+    private final long n;
 
-    private UIImagePickerControllerSourceType(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIImagePickerControllerSourceType(long n) { this.n = n; }
+    public long value() { return n; }
 }

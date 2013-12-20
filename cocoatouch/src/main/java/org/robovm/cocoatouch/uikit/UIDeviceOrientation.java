@@ -26,8 +26,8 @@ public enum UIDeviceOrientation implements ValuedEnum {
     FaceUp(5),
     FaceDown(6);
 
-    private final int n;
+    private final long n;
 
-    private UIDeviceOrientation(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIDeviceOrientation(long n) { this.n = n; }
+    public long value() { return n; }
 }

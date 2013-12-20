@@ -38,8 +38,8 @@ public enum NSCalendarUnit implements ValuedEnum {
     Calendar(1 << 20),
     TimeZone(1 << 21);
     
-    private final int n;
+    private final long n;
 
-    private NSCalendarUnit(int n) { this.n = n; }
-    public int value() { return n; }
+    private NSCalendarUnit(long n) { this.n = n; }
+    public long value() { return n; }
 }

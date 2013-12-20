@@ -21,8 +21,8 @@ public enum UITableViewStyle implements ValuedEnum {
     Plain(0),
     Grouped(1);
 
-    private final int n;
+    private final long n;
 
-    private UITableViewStyle(int n) { this.n = n; }
-    public int value() { return n; }
+    private UITableViewStyle(long n) { this.n = n; }
+    public long value() { return n; }
 }

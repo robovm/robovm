@@ -23,8 +23,8 @@ public enum UIDeviceBatteryState implements ValuedEnum {
     Charging(2),
     Full(3);
 
-    private final int n;
+    private final long n;
 
-    private UIDeviceBatteryState(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIDeviceBatteryState(long n) { this.n = n; }
+    public long value() { return n; }
 }

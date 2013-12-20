@@ -21,8 +21,8 @@ public enum UILayoutConstraintAxis implements ValuedEnum {
     Horizontal(0),
     Vertical(1);
 
-    private final int n;
+    private final long n;
 
-    private UILayoutConstraintAxis(int n) { this.n = n; }
-    public int value() { return n; }
+    private UILayoutConstraintAxis(long n) { this.n = n; }
+    public long value() { return n; }
 }

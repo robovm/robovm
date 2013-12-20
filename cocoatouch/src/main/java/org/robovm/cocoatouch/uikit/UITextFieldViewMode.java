@@ -23,8 +23,8 @@ public enum UITextFieldViewMode implements ValuedEnum {
     UnlessEditing(2),
     Always(3);
 
-    private final int n;
+    private final long n;
 
-    private UITextFieldViewMode(int n) { this.n = n; }
-    public int value() { return n; }
+    private UITextFieldViewMode(long n) { this.n = n; }
+    public long value() { return n; }
 }

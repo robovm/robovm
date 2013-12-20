@@ -28,8 +28,8 @@ public enum NSStringCompareOptions implements ValuedEnum {
     ForcedOrderingSearch(512),
     RegularExpressionSearch(1024);
 
-    private final int n;
+    private final long n;
 
-    private NSStringCompareOptions(int n) { this.n = n; }
-    public int value() { return n; }
+    private NSStringCompareOptions(long n) { this.n = n; }
+    public long value() { return n; }
 }

@@ -23,11 +23,11 @@ public enum GLKViewDrawableStencilFormat implements ValuedEnum {
     None(0),
     Format8(1);
 
-    private final int n;
+    private final long n;
 
-    private GLKViewDrawableStencilFormat(int n) { this.n = n; }
-    public int value() { return n; }
-    public static GLKViewDrawableStencilFormat fromValue(int n) {
+    private GLKViewDrawableStencilFormat(long n) { this.n = n; }
+    public long value() { return n; }
+    public static GLKViewDrawableStencilFormat fromValue(long n) {
         for (GLKViewDrawableStencilFormat v : values()) {
             if (n == v.value()) {
                 return v;

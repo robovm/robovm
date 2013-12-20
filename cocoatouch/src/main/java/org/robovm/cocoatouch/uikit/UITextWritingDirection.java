@@ -22,8 +22,8 @@ public enum UITextWritingDirection implements ValuedEnum {
     LeftToRight(0),
     RightToLeft(1);
 
-    private final int n;
+    private final long n;
 
-    private UITextWritingDirection(int n) { this.n = n; }
-    public int value() { return n; }
+    private UITextWritingDirection(long n) { this.n = n; }
+    public long value() { return n; }
 }

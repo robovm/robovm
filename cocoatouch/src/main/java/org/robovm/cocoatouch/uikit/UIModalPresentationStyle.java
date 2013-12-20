@@ -23,8 +23,8 @@ public enum UIModalPresentationStyle implements ValuedEnum {
     FormSheet(2),
     CurrentContext(3);
 
-    private final int n;
+    private final long n;
 
-    private UIModalPresentationStyle(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIModalPresentationStyle(long n) { this.n = n; }
+    public long value() { return n; }
 }

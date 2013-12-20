@@ -23,8 +23,8 @@ public enum UITextBorderStyle implements ValuedEnum {
     Bezel(2),
     RoundedRect(3);
 
-    private final int n;
+    private final long n;
 
-    private UITextBorderStyle(int n) { this.n = n; }
-    public int value() { return n; }
+    private UITextBorderStyle(long n) { this.n = n; }
+    public long value() { return n; }
 }

@@ -22,8 +22,8 @@ public enum UIBarButtonItemStyle implements ValuedEnum {
     Bordered(1),
     Done(2);
 
-    private final int n;
+    private final long n;
 
-    private UIBarButtonItemStyle(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIBarButtonItemStyle(long n) { this.n = n; }
+    public long value() { return n; }
 }

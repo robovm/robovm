@@ -25,8 +25,8 @@ public enum NSComparisonResult implements ValuedEnum {
     Same(0),
     Descending(1);
     
-    private final int n;
+    private final long n;
 
-    private NSComparisonResult(int n) { this.n = n; }
-    public int value() { return n; }
+    private NSComparisonResult(long n) { this.n = n; }
+    public long value() { return n; }
 }

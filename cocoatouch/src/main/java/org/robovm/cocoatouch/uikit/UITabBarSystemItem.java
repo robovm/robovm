@@ -31,8 +31,8 @@ public enum UITabBarSystemItem implements ValuedEnum {
     MostRecent(10),
     MostViewed(11);
 
-    private final int n;
+    private final long n;
 
-    private UITabBarSystemItem(int n) { this.n = n; }
-    public int value() { return n; }
+    private UITabBarSystemItem(long n) { this.n = n; }
+    public long value() { return n; }
 }

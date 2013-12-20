@@ -31,8 +31,8 @@ public enum NSLayoutAttribute implements ValuedEnum {
     Baseline(11),
     NotAnAttribute(0);
 
-    private final int n;
+    private final long n;
 
-    private NSLayoutAttribute(int n) { this.n = n; }
-    public int value() { return n; }
+    private NSLayoutAttribute(long n) { this.n = n; }
+    public long value() { return n; }
 }

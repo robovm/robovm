@@ -21,8 +21,8 @@ public enum UIPageViewControllerNavigationDirection implements ValuedEnum {
     Forward(0),
     Reverse(1);
 
-    private final int n;
+    private final long n;
 
-    private UIPageViewControllerNavigationDirection(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIPageViewControllerNavigationDirection(long n) { this.n = n; }
+    public long value() { return n; }
 }

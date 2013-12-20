@@ -77,13 +77,13 @@ public class BridgeCallbackTest {
         V1, V2, V3
     }
     public enum TestValuedEnum implements ValuedEnum {
-        V100(100), V1000(1000), V10000(10000);
+        VM1(-1), V100(100), V1000(1000), V10000(10000);
         
         private final int n;
         private TestValuedEnum(int n) {
             this.n = n;
         }
-        public int value() {
+        public long value() {
             return n;
         }
     }
@@ -274,7 +274,17 @@ public class BridgeCallbackTest {
         TestValuedEnum[] values = TestValuedEnum.values();
         return values[(v.ordinal() + 1) % values.length];
     }
-    
+
+    @Bridge
+    public static native @Marshaler(ValuedEnum.AsUnsignedIntMarshaler.class) TestValuedEnum marshalValuedEnumAsUnsignedInt(
+            @Marshaler(ValuedEnum.AsUnsignedIntMarshaler.class) TestValuedEnum v);
+    @Callback
+    public static @Marshaler(ValuedEnum.AsUnsignedIntMarshaler.class) TestValuedEnum marshalValuedEnumAsUnsignedInt_cb(
+            @Marshaler(ValuedEnum.AsUnsignedIntMarshaler.class) TestValuedEnum v) {
+        TestValuedEnum[] values = TestValuedEnum.values();
+        return values[(v.ordinal() + 1) % values.length];
+    }
+
     @Bridge
     public static native TestBits marshalBits1(TestBits v1, TestBits v2);
     @Callback
@@ -482,11 +492,32 @@ public class BridgeCallbackTest {
 
     @Test
     public void testMarshalValuedEnum() {
+        assertEquals(TestValuedEnum.V100, marshalValuedEnum(TestValuedEnum.VM1));
         assertEquals(TestValuedEnum.V1000, marshalValuedEnum(TestValuedEnum.V100));
         assertEquals(TestValuedEnum.V10000, marshalValuedEnum(TestValuedEnum.V1000));
-        assertEquals(TestValuedEnum.V100, marshalValuedEnum(TestValuedEnum.V10000));
+        assertEquals(TestValuedEnum.VM1, marshalValuedEnum(TestValuedEnum.V10000));
     }
-    
+
+    @Test
+    public void testMarshalValuedEnumAsUnsignedInt() {
+        try {
+            marshalValuedEnumAsUnsignedInt(TestValuedEnum.VM1);
+            fail("IllegalArgumentException expected");
+        } catch (IllegalArgumentException e) {
+            assertTrue(e.getMessage().contains("" + 0xffffffffL));
+            assertTrue(e.getMessage().contains("0xffffffff"));
+        }
+        try {
+            marshalValuedEnumAsUnsignedInt(TestValuedEnum.V10000);
+            fail("IllegalArgumentException expected");
+        } catch (IllegalArgumentException e) {
+            assertTrue(e.getMessage().contains("" + 0xffffffffL));
+            assertTrue(e.getMessage().contains("0xffffffff"));
+        }
+        assertEquals(TestValuedEnum.V1000, marshalValuedEnumAsUnsignedInt(TestValuedEnum.V100));
+        assertEquals(TestValuedEnum.V10000, marshalValuedEnumAsUnsignedInt(TestValuedEnum.V1000));
+    }
+
     @Test
     public void testMarshalBits1() {
         assertEquals(1 | 8, marshalBits1(TestBits.V1, TestBits.V8).value());

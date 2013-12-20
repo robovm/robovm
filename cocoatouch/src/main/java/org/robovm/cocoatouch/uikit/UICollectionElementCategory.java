@@ -22,8 +22,8 @@ public enum UICollectionElementCategory implements ValuedEnum {
     SupplementaryView(1),
     DecorationView(2);
 
-    private final int n;
+    private final long n;
 
-    private UICollectionElementCategory(int n) { this.n = n; }
-    public int value() { return n; }
+    private UICollectionElementCategory(long n) { this.n = n; }
+    public long value() { return n; }
 }

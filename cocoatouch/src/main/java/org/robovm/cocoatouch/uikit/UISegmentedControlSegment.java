@@ -24,8 +24,8 @@ public enum UISegmentedControlSegment implements ValuedEnum {
     Right(3),
     Alone(4);
 
-    private final int n;
+    private final long n;
 
-    private UISegmentedControlSegment(int n) { this.n = n; }
-    public int value() { return n; }
+    private UISegmentedControlSegment(long n) { this.n = n; }
+    public long value() { return n; }
 }

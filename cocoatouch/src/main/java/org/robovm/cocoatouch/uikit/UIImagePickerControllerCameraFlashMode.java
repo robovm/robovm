@@ -22,8 +22,8 @@ public enum UIImagePickerControllerCameraFlashMode implements ValuedEnum {
     Auto(0),
     On(1);
 
-    private final int n;
+    private final long n;
 
-    private UIImagePickerControllerCameraFlashMode(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIImagePickerControllerCameraFlashMode(long n) { this.n = n; }
+    public long value() { return n; }
 }

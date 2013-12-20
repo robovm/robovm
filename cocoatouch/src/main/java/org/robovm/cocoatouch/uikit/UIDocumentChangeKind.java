@@ -23,8 +23,8 @@ public enum UIDocumentChangeKind implements ValuedEnum {
     Redone(2),
     Cleared(3);
 
-    private final int n;
+    private final long n;
 
-    private UIDocumentChangeKind(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIDocumentChangeKind(long n) { this.n = n; }
+    public long value() { return n; }
 }

@@ -23,8 +23,8 @@ public enum UITextAutocapitalizationType implements ValuedEnum {
     Sentences(2),
     AllCharacters(3);
 
-    private final int n;
+    private final long n;
 
-    private UITextAutocapitalizationType(int n) { this.n = n; }
-    public int value() { return n; }
+    private UITextAutocapitalizationType(long n) { this.n = n; }
+    public long value() { return n; }
 }

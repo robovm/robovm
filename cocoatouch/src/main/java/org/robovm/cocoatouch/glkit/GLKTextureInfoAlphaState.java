@@ -24,11 +24,11 @@ public enum GLKTextureInfoAlphaState implements ValuedEnum {
     NonPremultiplied(1),
     Premultiplied(2);
 
-    private final int n;
+    private final long n;
 
-    private GLKTextureInfoAlphaState(int n) { this.n = n; }
-    public int value() { return n; }
-    public static GLKTextureInfoAlphaState fromValue(int n) {
+    private GLKTextureInfoAlphaState(long n) { this.n = n; }
+    public long value() { return n; }
+    public static GLKTextureInfoAlphaState fromValue(long n) {
         for (GLKTextureInfoAlphaState v : values()) {
             if (n == v.value()) {
                 return v;

@@ -23,8 +23,8 @@ public enum UISearchBarIcon implements ValuedEnum {
     Bookmark(2),
     ResultsList(3);
 
-    private final int n;
+    private final long n;
 
-    private UISearchBarIcon(int n) { this.n = n; }
-    public int value() { return n; }
+    private UISearchBarIcon(long n) { this.n = n; }
+    public long value() { return n; }
 }

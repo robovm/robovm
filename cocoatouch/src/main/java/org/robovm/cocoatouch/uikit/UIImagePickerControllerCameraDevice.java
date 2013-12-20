@@ -21,8 +21,8 @@ public enum UIImagePickerControllerCameraDevice implements ValuedEnum {
     Rear(0),
     Front(1);
 
-    private final int n;
+    private final long n;
 
-    private UIImagePickerControllerCameraDevice(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIImagePickerControllerCameraDevice(long n) { this.n = n; }
+    public long value() { return n; }
 }

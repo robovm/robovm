@@ -23,8 +23,8 @@ public enum UIDatePickerMode implements ValuedEnum {
     DateAndTime(2),
     CountDownTimer(3);
 
-    private final int n;
+    private final long n;
 
-    private UIDatePickerMode(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIDatePickerMode(long n) { this.n = n; }
+    public long value() { return n; }
 }

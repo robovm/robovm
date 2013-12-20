@@ -22,8 +22,8 @@ public enum NSLayoutRelation implements ValuedEnum {
     Equal(0),
     GreaterThanOrEqual(1);
 
-    private final int n;
+    private final long n;
 
-    private NSLayoutRelation(int n) { this.n = n; }
-    public int value() { return n; }
+    private NSLayoutRelation(long n) { this.n = n; }
+    public long value() { return n; }
 }

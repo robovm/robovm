@@ -21,8 +21,8 @@ public enum UIImagePickerControllerCameraCaptureMode implements ValuedEnum {
     Photo(0),
     Video(1);
 
-    private final int n;
+    private final long n;
 
-    private UIImagePickerControllerCameraCaptureMode(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIImagePickerControllerCameraCaptureMode(long n) { this.n = n; }
+    public long value() { return n; }
 }

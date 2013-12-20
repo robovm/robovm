@@ -22,8 +22,8 @@ public enum UITableViewCellSelectionStyle implements ValuedEnum {
     Blue(1),
     Gray(2);
 
-    private final int n;
+    private final long n;
 
-    private UITableViewCellSelectionStyle(int n) { this.n = n; }
-    public int value() { return n; }
+    private UITableViewCellSelectionStyle(long n) { this.n = n; }
+    public long value() { return n; }
 }

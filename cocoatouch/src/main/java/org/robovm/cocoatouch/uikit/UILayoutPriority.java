@@ -23,8 +23,8 @@ public enum UILayoutPriority implements ValuedEnum {
     DefaultLow(250),
     FittingSizeLevel(50);
 
-    private final int n;
+    private final long n;
 
-    private UILayoutPriority(int n) { this.n = n; }
-    public int value() { return n; }
+    private UILayoutPriority(long n) { this.n = n; }
+    public long value() { return n; }
 }

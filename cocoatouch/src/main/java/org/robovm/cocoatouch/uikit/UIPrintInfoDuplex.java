@@ -22,8 +22,8 @@ public enum UIPrintInfoDuplex implements ValuedEnum {
     LongEdge(1),
     ShortEdge(2);
 
-    private final int n;
+    private final long n;
 
-    private UIPrintInfoDuplex(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIPrintInfoDuplex(long n) { this.n = n; }
+    public long value() { return n; }
 }

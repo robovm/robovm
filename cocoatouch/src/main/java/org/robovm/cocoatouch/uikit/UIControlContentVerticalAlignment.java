@@ -23,8 +23,8 @@ public enum UIControlContentVerticalAlignment implements ValuedEnum {
     Bottom(2),
     Fill(3);
 
-    private final int n;
+    private final long n;
 
-    private UIControlContentVerticalAlignment(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIControlContentVerticalAlignment(long n) { this.n = n; }
+    public long value() { return n; }
 }

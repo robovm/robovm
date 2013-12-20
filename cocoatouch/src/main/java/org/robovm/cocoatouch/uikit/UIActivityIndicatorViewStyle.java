@@ -22,8 +22,8 @@ public enum UIActivityIndicatorViewStyle implements ValuedEnum {
     White(1),
     Gray(2);
 
-    private final int n;
+    private final long n;
 
-    private UIActivityIndicatorViewStyle(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIActivityIndicatorViewStyle(long n) { this.n = n; }
+    public long value() { return n; }
 }

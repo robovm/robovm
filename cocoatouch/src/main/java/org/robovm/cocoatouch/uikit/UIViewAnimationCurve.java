@@ -23,8 +23,8 @@ public enum UIViewAnimationCurve implements ValuedEnum {
     EaseOut(2),
     Linear(3);
 
-    private final int n;
+    private final long n;
 
-    private UIViewAnimationCurve(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIViewAnimationCurve(long n) { this.n = n; }
+    public long value() { return n; }
 }

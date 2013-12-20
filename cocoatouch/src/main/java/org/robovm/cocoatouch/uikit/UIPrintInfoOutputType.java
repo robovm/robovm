@@ -22,8 +22,8 @@ public enum UIPrintInfoOutputType implements ValuedEnum {
     Photo(1),
     Grayscale(2);
 
-    private final int n;
+    private final long n;
 
-    private UIPrintInfoOutputType(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIPrintInfoOutputType(long n) { this.n = n; }
+    public long value() { return n; }
 }

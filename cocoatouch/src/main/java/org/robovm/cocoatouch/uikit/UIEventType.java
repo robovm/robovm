@@ -22,8 +22,8 @@ public enum UIEventType implements ValuedEnum {
     Motion(1),
     RemoteControl(2);
 
-    private final int n;
+    private final long n;
 
-    private UIEventType(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIEventType(long n) { this.n = n; }
+    public long value() { return n; }
 }

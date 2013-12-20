@@ -24,11 +24,11 @@ public enum GLKTextureInfoOrigin implements ValuedEnum {
     TopLeft(1),
     BottomLeft(2);
 
-    private final int n;
+    private final long n;
 
-    private GLKTextureInfoOrigin(int n) { this.n = n; }
-    public int value() { return n; }
-    public static GLKTextureInfoOrigin fromValue(int n) {
+    private GLKTextureInfoOrigin(long n) { this.n = n; }
+    public long value() { return n; }
+    public static GLKTextureInfoOrigin fromValue(long n) {
         for (GLKTextureInfoOrigin v : values()) {
             if (n == v.value()) {
                 return v;

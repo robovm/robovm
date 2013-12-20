@@ -25,8 +25,8 @@ public enum UILineBreakMode implements ValuedEnum {
     TailTruncation(4),
     MiddleTruncation(5);
 
-    private final int n;
+    private final long n;
 
-    private UILineBreakMode(int n) { this.n = n; }
-    public int value() { return n; }
+    private UILineBreakMode(long n) { this.n = n; }
+    public long value() { return n; }
 }

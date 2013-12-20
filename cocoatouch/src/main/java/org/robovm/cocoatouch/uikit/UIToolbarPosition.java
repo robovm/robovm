@@ -22,8 +22,8 @@ public enum UIToolbarPosition implements ValuedEnum {
     Bottom(1),
     Top(2);
 
-    private final int n;
+    private final long n;
 
-    private UIToolbarPosition(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIToolbarPosition(long n) { this.n = n; }
+    public long value() { return n; }
 }

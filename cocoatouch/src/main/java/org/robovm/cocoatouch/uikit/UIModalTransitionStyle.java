@@ -23,8 +23,8 @@ public enum UIModalTransitionStyle implements ValuedEnum {
     CrossDissolve(2),
     PartialCurl(3);
 
-    private final int n;
+    private final long n;
 
-    private UIModalTransitionStyle(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIModalTransitionStyle(long n) { this.n = n; }
+    public long value() { return n; }
 }

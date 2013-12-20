@@ -24,8 +24,8 @@ public enum UITouchPhase implements ValuedEnum {
     Ended(3),
     Cancelled(4);
 
-    private final int n;
+    private final long n;
 
-    private UITouchPhase(int n) { this.n = n; }
-    public int value() { return n; }
+    private UITouchPhase(long n) { this.n = n; }
+    public long value() { return n; }
 }

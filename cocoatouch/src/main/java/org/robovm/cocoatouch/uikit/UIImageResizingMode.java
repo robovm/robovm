@@ -21,8 +21,8 @@ public enum UIImageResizingMode implements ValuedEnum {
     Tile(0),
     Stretch(1);
 
-    private final int n;
+    private final long n;
 
-    private UIImageResizingMode(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIImageResizingMode(long n) { this.n = n; }
+    public long value() { return n; }
 }

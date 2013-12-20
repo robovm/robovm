@@ -25,8 +25,8 @@ public enum CGLineJoin implements ValuedEnum {
     Round(1),
     Bevel(2);
 
-    private final int n;
+    private final long n;
 
-    private CGLineJoin(int n) { this.n = n; }
-    public int value() { return n; }
+    private CGLineJoin(long n) { this.n = n; }
+    public long value() { return n; }
 }

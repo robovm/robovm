@@ -30,8 +30,8 @@ public enum UIKeyboardType implements ValuedEnum {
     Twitter(9),
     Alphabet(UIKeyboardType.ASCIICapable.value());
 
-    private final int n;
+    private final long n;
 
-    private UIKeyboardType(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIKeyboardType(long n) { this.n = n; }
+    public long value() { return n; }
 }

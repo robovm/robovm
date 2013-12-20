@@ -21,8 +21,8 @@ public enum UIPageViewControllerNavigationOrientation implements ValuedEnum {
     Horizontal(0),
     Vertical(1);
 
-    private final int n;
+    private final long n;
 
-    private UIPageViewControllerNavigationOrientation(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIPageViewControllerNavigationOrientation(long n) { this.n = n; }
+    public long value() { return n; }
 }

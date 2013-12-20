@@ -31,8 +31,8 @@ public enum UIEventSubtype implements ValuedEnum {
     RemoteControlBeginSeekingForward(108),
     RemoteControlEndSeekingForward(109);
 
-    private final int n;
+    private final long n;
 
-    private UIEventSubtype(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIEventSubtype(long n) { this.n = n; }
+    public long value() { return n; }
 }

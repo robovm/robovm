@@ -23,8 +23,8 @@ public enum UISegmentedControlStyle implements ValuedEnum {
     Bar(2),
     Bezeled(3);
 
-    private final int n;
+    private final long n;
 
-    private UISegmentedControlStyle(int n) { this.n = n; }
-    public int value() { return n; }
+    private UISegmentedControlStyle(long n) { this.n = n; }
+    public long value() { return n; }
 }

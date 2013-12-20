@@ -23,11 +23,11 @@ public enum GLKViewDrawableMultisample implements ValuedEnum {
     None(0),
     Sample4X(1);
 
-    private final int n;
+    private final long n;
 
-    private GLKViewDrawableMultisample(int n) { this.n = n; }
-    public int value() { return n; }
-    public static GLKViewDrawableMultisample fromValue(int n) {
+    private GLKViewDrawableMultisample(long n) { this.n = n; }
+    public long value() { return n; }
+    public static GLKViewDrawableMultisample fromValue(long n) {
         for (GLKViewDrawableMultisample v : values()) {
             if (n == v.value()) {
                 return v;

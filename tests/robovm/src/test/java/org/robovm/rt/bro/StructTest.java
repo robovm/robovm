@@ -59,7 +59,7 @@ public class StructTest {
         private TestValuedEnum(int n) {
             this.n = n;
         }
-        public int value() {
+        public long value() {
             return n;
         }
     }

@@ -23,8 +23,8 @@ public enum UITableViewScrollPosition implements ValuedEnum {
     Middle(2),
     Bottom(3);
 
-    private final int n;
+    private final long n;
 
-    private UITableViewScrollPosition(int n) { this.n = n; }
-    public int value() { return n; }
+    private UITableViewScrollPosition(long n) { this.n = n; }
+    public long value() { return n; }
 }

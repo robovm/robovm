@@ -22,8 +22,8 @@ public enum UITableViewCellSeparatorStyle implements ValuedEnum {
     SingleLine(1),
     SingleLineEtched(2);
 
-    private final int n;
+    private final long n;
 
-    private UITableViewCellSeparatorStyle(int n) { this.n = n; }
-    public int value() { return n; }
+    private UITableViewCellSeparatorStyle(long n) { this.n = n; }
+    public long value() { return n; }
 }

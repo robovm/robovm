@@ -23,8 +23,8 @@ public enum UIInterfaceOrientation implements ValuedEnum {
     LandscapeLeft(UIDeviceOrientation.LandscapeRight.value()),
     LandscapeRight(UIDeviceOrientation.LandscapeLeft.value());
 
-    private final int n;
+    private final long n;
 
-    private UIInterfaceOrientation(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIInterfaceOrientation(long n) { this.n = n; }
+    public long value() { return n; }
 }

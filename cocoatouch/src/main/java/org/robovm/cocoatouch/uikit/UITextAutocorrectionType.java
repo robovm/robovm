@@ -22,8 +22,8 @@ public enum UITextAutocorrectionType implements ValuedEnum {
     No(1),
     Yes(2);
 
-    private final int n;
+    private final long n;
 
-    private UITextAutocorrectionType(int n) { this.n = n; }
-    public int value() { return n; }
+    private UITextAutocorrectionType(long n) { this.n = n; }
+    public long value() { return n; }
 }

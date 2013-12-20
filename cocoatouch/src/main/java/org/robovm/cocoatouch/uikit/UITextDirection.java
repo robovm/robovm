@@ -25,8 +25,8 @@ public enum UITextDirection implements ValuedEnum {
     Up(4),
     Down(5);
 
-    private final int n;
+    private final long n;
 
-    private UITextDirection(int n) { this.n = n; }
-    public int value() { return n; }
+    private UITextDirection(long n) { this.n = n; }
+    public long value() { return n; }
 }

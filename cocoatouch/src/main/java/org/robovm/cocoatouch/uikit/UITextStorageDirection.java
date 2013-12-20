@@ -21,8 +21,8 @@ public enum UITextStorageDirection implements ValuedEnum {
     Forward(0),
     Backward(1);
 
-    private final int n;
+    private final long n;
 
-    private UITextStorageDirection(int n) { this.n = n; }
-    public int value() { return n; }
+    private UITextStorageDirection(long n) { this.n = n; }
+    public long value() { return n; }
 }

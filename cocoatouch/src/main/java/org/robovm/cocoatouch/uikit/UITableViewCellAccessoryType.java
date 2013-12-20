@@ -23,8 +23,8 @@ public enum UITableViewCellAccessoryType implements ValuedEnum {
     DetailDisclosureButton(2),
     Checkmark(3);
 
-    private final int n;
+    private final long n;
 
-    private UITableViewCellAccessoryType(int n) { this.n = n; }
-    public int value() { return n; }
+    private UITableViewCellAccessoryType(long n) { this.n = n; }
+    public long value() { return n; }
 }

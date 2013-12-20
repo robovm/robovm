@@ -22,8 +22,8 @@ public enum UIStatusBarAnimation implements ValuedEnum {
     Fade(1),
     Slide(2);
 
-    private final int n;
+    private final long n;
 
-    private UIStatusBarAnimation(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIStatusBarAnimation(long n) { this.n = n; }
+    public long value() { return n; }
 }

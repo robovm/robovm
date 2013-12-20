@@ -21,8 +21,8 @@ public enum UIUserInterfaceIdiom implements ValuedEnum {
     Phone(0),
     Pad(1);
 
-    private final int n;
+    private final long n;
 
-    private UIUserInterfaceIdiom(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIUserInterfaceIdiom(long n) { this.n = n; }
+    public long value() { return n; }
 }

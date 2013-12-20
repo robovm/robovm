@@ -24,8 +24,8 @@ public enum NSTextAlignment implements ValuedEnum {
     Justified(3),
     Natural(4);
 
-    private final int n;
+    private final long n;
 
-    private NSTextAlignment(int n) { this.n = n; }
-    public int value() { return n; }
+    private NSTextAlignment(long n) { this.n = n; }
+    public long value() { return n; }
 }

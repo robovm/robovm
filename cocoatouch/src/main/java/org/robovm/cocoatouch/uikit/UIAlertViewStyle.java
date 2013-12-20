@@ -23,8 +23,8 @@ public enum UIAlertViewStyle implements ValuedEnum {
     PlainTextInput(2),
     LoginAndPasswordInput(3);
 
-    private final int n;
+    private final long n;
 
-    private UIAlertViewStyle(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIAlertViewStyle(long n) { this.n = n; }
+    public long value() { return n; }
 }

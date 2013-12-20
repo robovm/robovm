@@ -25,9 +25,9 @@ public enum CGLineCap implements ValuedEnum {
     Round(1),
     Square(2);
     
-    private final int n;
+    private final long n;
 
-    private CGLineCap(int n) { this.n = n; }
-    public int value() { return n; }
+    private CGLineCap(long n) { this.n = n; }
+    public long value() { return n; }
     
 }

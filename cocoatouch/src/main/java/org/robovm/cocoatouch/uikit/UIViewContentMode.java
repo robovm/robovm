@@ -32,8 +32,8 @@ public enum UIViewContentMode implements ValuedEnum {
     BottomLeft(11),
     BottomRight(12);
 
-    private final int n;
+    private final long n;
 
-    private UIViewContentMode(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIViewContentMode(long n) { this.n = n; }
+    public long value() { return n; }
 }

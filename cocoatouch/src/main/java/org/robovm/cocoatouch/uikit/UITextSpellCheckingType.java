@@ -22,8 +22,8 @@ public enum UITextSpellCheckingType implements ValuedEnum {
     No(1),
     Yes(2);
 
-    private final int n;
+    private final long n;
 
-    private UITextSpellCheckingType(int n) { this.n = n; }
-    public int value() { return n; }
+    private UITextSpellCheckingType(long n) { this.n = n; }
+    public long value() { return n; }
 }

@@ -23,8 +23,8 @@ public enum UITextLayoutDirection implements ValuedEnum {
     Up(4),
     Down(5);
 
-    private final int n;
+    private final long n;
 
-    private UITextLayoutDirection(int n) { this.n = n; }
-    public int value() { return n; }
+    private UITextLayoutDirection(long n) { this.n = n; }
+    public long value() { return n; }
 }

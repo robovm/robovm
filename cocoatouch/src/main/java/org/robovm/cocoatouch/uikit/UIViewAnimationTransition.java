@@ -24,8 +24,8 @@ public enum UIViewAnimationTransition implements ValuedEnum {
     CurlUp(3),
     CurlDown(4);
 
-    private final int n;
+    private final long n;
 
-    private UIViewAnimationTransition(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIViewAnimationTransition(long n) { this.n = n; }
+    public long value() { return n; }
 }

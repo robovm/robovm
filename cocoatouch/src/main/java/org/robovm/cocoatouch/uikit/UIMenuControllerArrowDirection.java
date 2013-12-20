@@ -24,8 +24,8 @@ public enum UIMenuControllerArrowDirection implements ValuedEnum {
     Left(3),
     Right(4);
 
-    private final int n;
+    private final long n;
 
-    private UIMenuControllerArrowDirection(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIMenuControllerArrowDirection(long n) { this.n = n; }
+    public long value() { return n; }
 }

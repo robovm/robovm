@@ -22,8 +22,8 @@ public enum UIScrollViewIndicatorStyle implements ValuedEnum {
     Black(1),
     White(2);
 
-    private final int n;
+    private final long n;
 
-    private UIScrollViewIndicatorStyle(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIScrollViewIndicatorStyle(long n) { this.n = n; }
+    public long value() { return n; }
 }

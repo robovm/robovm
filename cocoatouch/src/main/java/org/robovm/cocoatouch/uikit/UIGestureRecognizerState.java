@@ -26,8 +26,8 @@ public enum UIGestureRecognizerState implements ValuedEnum {
     Failed(5),
     Recognized(UIGestureRecognizerState.Ended.value());
 
-    private final int n;
+    private final long n;
 
-    private UIGestureRecognizerState(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIGestureRecognizerState(long n) { this.n = n; }
+    public long value() { return n; }
 }

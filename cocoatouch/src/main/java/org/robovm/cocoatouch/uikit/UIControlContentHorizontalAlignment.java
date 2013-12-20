@@ -23,8 +23,8 @@ public enum UIControlContentHorizontalAlignment implements ValuedEnum {
     Right(2),
     Fill(3);
 
-    private final int n;
+    private final long n;
 
-    private UIControlContentHorizontalAlignment(int n) { this.n = n; }
-    public int value() { return n; }
+    private UIControlContentHorizontalAlignment(long n) { this.n = n; }
+    public long value() { return n; }
 }

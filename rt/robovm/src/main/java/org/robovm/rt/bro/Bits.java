@@ -204,17 +204,54 @@ public abstract class Bits<T extends Bits<T>> implements Iterable<T>, Comparable
         return VM.allocateObject(cls).values().clone();
     }
     
+    /**
+     * Marshals a {@link Bits} as an 8-bit value.
+     */
+    public static class AsByteMarshaler {
+        public static Object toObject(Class<?> cls, byte value, long flags) {
+            return AsLongMarshaler.toObject(cls, value & 0xffffL, flags);
+        }
+        public static byte toNative(Object o, long flags) {
+            return (byte) ((Bits<?>) o).value;
+        }
+    }
+    
+    /**
+     * Marshals a {@link Bits} as a 16-bit value.
+     */
+    public static class AsShortMarshaler {
+        public static Object toObject(Class<?> cls, short value, long flags) {
+            return AsLongMarshaler.toObject(cls, value & 0xffffL, flags);
+        }
+        public static short toNative(Object o, long flags) {
+            return (short) ((Bits<?>) o).value;
+        }
+    }
+    
+    /**
+     * Marshals a {@link Bits} as a 32-bit value.
+     */
     public static class AsIntMarshaler {
-        @SuppressWarnings({ "rawtypes", "unchecked" })
-        public static Object toObject(Class cls, int value, long flags) {
+        public static Object toObject(Class<?> cls, int value, long flags) {
+            return AsLongMarshaler.toObject(cls, value & 0xffffffffL, flags);
+        }
+        public static int toNative(Object o, long flags) {
+            return (int) ((Bits<?>) o).value;
+        }
+    }
+    
+    /**
+     * Marshals a {@link Bits} as a 64-bit value.
+     */
+    public static class AsLongMarshaler {
+        public static Object toObject(Class<?> cls, long value, long flags) {
             Bits<?> f = (Bits<?>) VM.allocateObject(cls);
-            f.value = ((long) value) & 0xffffffff;
+            f.value = value;
             f.mask = f.value == 0 ? -1 : f.value;
             return f;
         }
-        @SuppressWarnings("rawtypes")
-        public static int toNative(Object o, long flags) {
-            return (int) ((Bits) o).value;
+        public static long toNative(Object o, long flags) {
+            return ((Bits<?>) o).value;
         }
     }
 }

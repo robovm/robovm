@@ -18,6 +18,7 @@ package org.robovm.rt.bro;
 import static org.junit.Assert.*;
 
 import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -298,6 +299,24 @@ public class BridgeCallbackTest {
         return v1.set(v2);
     }
     
+    @Bridge
+    public static native String marshalStringsWithDefaultMarshaler(String a, String b);
+    @Callback
+    public static BytePtr marshalStringsWithDefaultMarshaler_cb(String a, String b) {
+        return a == null && b == null ? null : BytePtr.toBytePtrAsciiZ(String.format("a = %s, b = %s", a, b));
+    }
+
+    @Bridge
+    public static native BytePtr marshalBuffersWithDefaultMarshaler(ByteBuffer a, ByteBuffer b);
+    @Callback
+    public static BytePtr marshalBuffersWithDefaultMarshaler_cb(BytePtr a, BytePtr b) {
+        return a == null && b == null ? null 
+                : BytePtr.toBytePtrAsciiZ(
+                        String.format("a = %s, b = %s", 
+                                a == null ? null : a.toStringAsciiZ(), 
+                                b == null ? null : b.toStringAsciiZ()));
+    }
+
     private static Method find(String name) {
         for (Method m : BridgeCallbackTest.class.getDeclaredMethods()) {
             if (m.getName().equals(name)) {
@@ -526,5 +545,26 @@ public class BridgeCallbackTest {
     @Test
     public void testMarshalBits2() {
         assertEquals(1 | 8, marshalBits2(1, 8));
+    }
+    
+    @Test
+    public void testMarshalStringsWithDefaultMarshaler() {
+        assertEquals("a = foo, b = bar", marshalStringsWithDefaultMarshaler("foo", "bar"));
+        assertEquals("a = null, b = bar", marshalStringsWithDefaultMarshaler(null, "bar"));
+        assertEquals("a = foo, b = null", marshalStringsWithDefaultMarshaler("foo", null));
+        assertNull(marshalStringsWithDefaultMarshaler(null, null));
+    }
+    
+    @Test
+    public void testMarshalBuffersWithDefaultMarshaler() {
+        assertEquals("a = foo, b = bar", marshalBuffersWithDefaultMarshaler(
+                ByteBuffer.wrap("foo".getBytes()), 
+                ByteBuffer.wrap("bar".getBytes())
+                ).toStringAsciiZ());
+        assertEquals("a = null, b = bar", marshalBuffersWithDefaultMarshaler(
+                null, ByteBuffer.allocateDirect(3).put("bar".getBytes())).toStringAsciiZ());
+        assertEquals("a = foo, b = null", marshalBuffersWithDefaultMarshaler(
+                ByteBuffer.allocateDirect(3).put("foo".getBytes()), null).toStringAsciiZ());
+        assertNull(marshalBuffersWithDefaultMarshaler(null, null));
     }
 }

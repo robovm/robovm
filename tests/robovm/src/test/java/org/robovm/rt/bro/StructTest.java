@@ -744,6 +744,7 @@ public class StructTest {
         ByteBuffer b1;
         ByteBuffer b2;
         ByteBuffer b3;
+        ByteBuffer b4;
         
         for (int i = 0; i < D1; i++) {
             p.next(i).set((byte) (i + 1));
@@ -775,7 +776,17 @@ public class StructTest {
         for (int i = 0; i < D1; i++) {
             assertEquals(3 * (i + 1), p.next(i).get() & 0xff);
         }
-        
+
+        b4 = ByteBuffer.allocate(D1);
+        assertFalse(b4.isDirect());
+        for (int i = 0; i < D1; i++) {
+            b4.put(i, (byte) (4 * (i + 1)));
+        }
+        s.byteArrayAsBuffer((ByteBuffer) b4.asReadOnlyBuffer().flip());
+        for (int i = 0; i < D1; i++) {
+            assertEquals(4 * (i + 1), p.next(i).get() & 0xff);
+        }
+
         try {
             s.byteArrayAsBuffer(ByteBuffer.allocate(D1 / 2));
             fail("Expected IllegalArgumentException");

@@ -41,5 +41,9 @@ public class MarshalerFlags {
      * Tells the marshaler that a {@link Ptr} to something is being marshaled.
      */
     public static final long CALL_TYPE_PTR                  = 3 << 0;
+    /**
+     * ANDing flags with this value gets the call type.
+     */
+    public static final long CALL_TYPE_MASK                 = 3 << 0;
     
 }

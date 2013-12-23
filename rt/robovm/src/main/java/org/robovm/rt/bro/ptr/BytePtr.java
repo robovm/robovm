@@ -16,6 +16,7 @@
 package org.robovm.rt.bro.ptr;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 
 import org.robovm.rt.VM;
 import org.robovm.rt.bro.Struct;
@@ -63,10 +64,13 @@ public final class BytePtr extends Struct<BytePtr> {
     public native void set(byte value);
     
     /**
-     * Returns a {@link String} created from the NUL-terminated C string pointed to by this 
-     * {@link BytePtr}. Non ASCII characters will be replaced with '?' in the result.
+     * Returns a {@link String} created from the NUL-terminated C string pointed 
+     * to by this {@link BytePtr}. Non ASCII characters will be replaced with 
+     * '?' in the result. This method is more efficient than using 
+     * {@link #toStringZ(Charset)} with ASCII as {@link Charset}.
      * 
-     * @return a {@link String} containing the same characters as the C string pointed to.
+     * @return a {@link String} containing the same characters as the C string 
+     *         pointed to.
      */
     public String toStringAsciiZ() {
         int length = 0;
@@ -88,6 +92,38 @@ public final class BytePtr extends Struct<BytePtr> {
     }
     
     /**
+     * Returns a {@link String} created from the NUL-terminated C string pointed 
+     * to by this {@link BytePtr} using the default {@link Charset}. Illegal 
+     * characters will be replaced with '?' in the result. This assumes that
+     * the default {@link Charset} is an 8-bit encoding or a variable length
+     * encoding with 8-bits as smallest bit length such as UTF-8.
+     * 
+     * @return a {@link String} converted from the C string bytes.
+     */
+    public String toStringZ() {
+        return toStringZ(Charset.defaultCharset());
+    }
+    
+    /**
+     * Returns a {@link String} created from the NUL-terminated C string pointed 
+     * to by this {@link BytePtr} using the specified {@link Charset}. Illegal 
+     * characters will be replaced with '?' in the result.
+     * 
+     * @param charset the {@link Charset} to use. Must be an 8-bit or variable
+     *        length character encoding with 8-bits as smallest value and that 
+     *        can be NUL-terminated (e.g. UTF-8).
+     * @return a {@link String} converted from the C string bytes.
+     */
+    public String toStringZ(Charset charset) {
+        int length = 0;
+        long address = getHandle();
+        while (VM.getByte(address++) != 0) {
+            length++;
+        }
+        return charset.decode(asByteBuffer(length)).toString();
+    }
+    
+    /**
      * Returns a {@link ByteBuffer} which reads and writes to the same memory
      * location pointed to by this {@link BytePtr}.
      * 
@@ -101,26 +137,98 @@ public final class BytePtr extends Struct<BytePtr> {
     }
     
     /**
-     * Converts the specified {@link String} to a NUL-terminated C string of ASCII characters. Non
-     * ASCII characters will be replaced with '?' in the result.
+     * Converts the specified {@link String} to a NUL-terminated C string of 
+     * ASCII characters. Non ASCII characters will be replaced with '?' in the 
+     * result. The memory will be allocated on the GCed heaped. This method is 
+     * more efficient than using {@link #toStringZ(Charset)} with ASCII as 
+     * {@link Charset}.
      * 
      * @param s the {@link String} to convert.
      * @return a {@link BytePtr} which points to the first character in the result.
      */
     public static BytePtr toBytePtrAsciiZ(String s) {
+        return toBytePtrAsciiZ(s, false);
+    }
+    
+    /**
+     * Converts the specified {@link String} to a NUL-terminated C string of 
+     * ASCII characters. Non ASCII characters will be replaced with '?' in the 
+     * result. This method is more efficient than using 
+     * {@link #toStringZ(Charset)} with ASCII as {@link Charset}.
+     * 
+     * @param s the {@link String} to convert.
+     * @param useNativeHeap whether the memory should be allocated on the native 
+     *        heap using {@code malloc()} or on the GCed heap.
+     * @return a {@link BytePtr} which points to the first character in the result.
+     */
+    public static BytePtr toBytePtrAsciiZ(String s, boolean useNativeHeap) {
         int length = s.length();
-        long handle = VM.allocateMemoryAtomic(length + 1);
-        byte[] bytes = new byte[length];
+        long handle = useNativeHeap ? VM.malloc(length + 1) : VM.allocateMemoryAtomic(length + 1);
+        long address = handle;
         for (int i = 0; i < length; i++) {
             char c = s.charAt(i);
             if (c < 0x80) {
-                bytes[i] = (byte) c;
+                VM.setByte(address, (byte) c);
             } else {
-                bytes[i] = '?';
+                VM.setByte(address, (byte) '?');
             }
+            address++;
         }
+        // VM.malloc() and VM.allocateMemoryAtomic() initialize the memory with 
+        // zeroes so there's no need to set the NUL-terminator.
+        return Struct.toStruct(BytePtr.class, handle);
+    }
+    
+    /**
+     * Converts the specified {@link String} to a NUL-terminated C string using
+     * the default {@link Charset}. Illegal characters will be replaced with 
+     * '?' in the result. The memory will be allocated on the GCed heaped.
+     * This assumes that the default {@link Charset} is an 8-bit encoding or a
+     * variable length encoding with 8-bits as smallest bit length such as 
+     * UTF-8.
+     * 
+     * @param s the {@link String} to convert.
+     * @return a {@link BytePtr} which points to the first character in the result.
+     */
+    public static BytePtr toBytePtrZ(String s) {
+        return toBytePtrZ(s, Charset.defaultCharset(), false);
+    }
+    
+    /**
+     * Converts the specified {@link String} to a NUL-terminated C string using
+     * the specified {@link Charset}. Illegal characters will be replaced with 
+     * '?' in the result. The memory will be allocated on the GCed heaped.
+     * 
+     * @param s the {@link String} to convert.
+     * @param charset the {@link Charset} to use. Must be an 8-bit or variable
+     *        length character encoding with 8-bits as smallest value and that 
+     *        can be NUL-terminated (e.g. UTF-8).
+     * @return a {@link BytePtr} which points to the first character in the result.
+     */
+    public static BytePtr toBytePtrZ(String s, Charset charset) {
+        return toBytePtrZ(s, charset, false);
+    }
+    
+    /**
+     * Converts the specified {@link String} to a NUL-terminated C string using
+     * the specified {@link Charset}. Illegal characters will be replaced with 
+     * '?' in the result.
+     * 
+     * @param s the {@link String} to convert.
+     * @param charset the {@link Charset} to use. Must be an 8-bit or variable
+     *        length character encoding with 8-bits as smallest value and that 
+     *        can be NUL-terminated (e.g. UTF-8).
+     * @param useNativeHeap whether the memory should be allocated on the native 
+     *        heap using {@code malloc()} or on the GCed heap.
+     * @return a {@link BytePtr} which points to the first character in the result.
+     */
+    public static BytePtr toBytePtrZ(String s, Charset charset, boolean useNativeHeap) {
+        byte[] bytes = s.getBytes(charset);
+        int length = bytes.length;
+        long handle = useNativeHeap ? VM.malloc(length + 1) : VM.allocateMemoryAtomic(length + 1);
         VM.memcpy(handle, VM.getArrayValuesAddress(bytes), length);
-        VM.setByte(handle + length, (byte) 0);
+        // VM.malloc() and VM.allocateMemoryAtomic() initialize the memory with 
+        // zeroes so there's no need to set the NUL-terminator.
         return Struct.toStruct(BytePtr.class, handle);
     }
 }

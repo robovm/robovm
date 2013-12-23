@@ -27,6 +27,7 @@ import java.nio.LongBuffer;
 import java.nio.ShortBuffer;
 
 import org.robovm.rt.VM;
+import org.robovm.rt.bro.annotation.Pointer;
 
 /**
  * Contains marshalers for {@link Buffer} subclasses.
@@ -54,6 +55,55 @@ public class BufferMarshalers {
                 _ELEMENT_SIZE_SHIFT_OFFSET = VM.getInstanceFieldOffset(VM.getFieldAddress(f2));
             } catch (NoSuchFieldException e) {
                 throw new Error(e);
+            }
+        }
+        
+        public static Object toObject(Class<?> cls, long handle, long flags) {
+            throw new UnsupportedOperationException("Marshaling " 
+                    + cls.getName() + " to pointer  is not supported");
+        }
+        
+        public static @Pointer long toNative(Object object, long flags) {
+            long callType = flags & MarshalerFlags.CALL_TYPE_MASK;
+            if (callType != MarshalerFlags.CALL_TYPE_BRIDGE) {
+                // Struct member setter values and @Callback return values can not be marshaled
+                // since we don't know how to allocate the native memory for it.
+                if (callType == MarshalerFlags.CALL_TYPE_CALLBACK) {
+                    throw new UnsupportedOperationException("Marshaling java.nio.Buffer to pointer " 
+                            + "for callback return values is not supported");
+                }
+                if (callType == MarshalerFlags.CALL_TYPE_STRUCT_MEMBER) {
+                    throw new UnsupportedOperationException("Marshaling java.nio.Buffer to pointer " 
+                            + "for struct member setter values is not supported");
+                }
+                throw new UnsupportedOperationException();
+            }
+
+            // Must be a @Bridge method argument.
+
+            if (object == null) {
+                return 0L;
+            }
+
+            Buffer buffer = (Buffer) object;
+            if (!buffer.isDirect() && !buffer.hasArray()) {
+                // Non-direct buffers must be backed by an array to be supported.
+                // We could have made a copy of the buffer contents and returned
+                // a pointer to that but then changes made to the contents by
+                // native code wouldn't be visible in the original buffer and
+                // the semantics would be different depending on the type of
+                // the buffer.
+                throw new IllegalArgumentException("Only direct and array-backed " 
+                        + "java.nio.Buffers can be marshaled to pointers.");
+            }
+
+            if (buffer.isDirect()) {
+                return VM.getInt(VM.getObjectAddress(buffer) + EFFECTIVE_DIRECT_ADDRESS_OFFSET);
+            } else {
+                Object array = buffer.array();
+                int offset = buffer.arrayOffset();
+                int shift = VM.getInt(VM.getObjectAddress(buffer) + _ELEMENT_SIZE_SHIFT_OFFSET);
+                return VM.getArrayValuesAddress(array) + (offset << shift);
             }
         }
         
@@ -119,6 +169,10 @@ public class BufferMarshalers {
                     array = buffer.array();
                     offset = buffer.arrayOffset();
                 } else {
+                    int pos = buffer.position();
+                    int limit = buffer.limit();
+                    buffer.position(0);
+                    buffer.limit(buffer.capacity());
                     if (buffer instanceof ByteBuffer) {
                         array = new byte[d1];
                         ((ByteBuffer) buffer).get((byte[]) array);
@@ -141,6 +195,8 @@ public class BufferMarshalers {
                         array = new double[d1];
                         ((DoubleBuffer) buffer).get((double[]) array);
                     }
+                    buffer.position(pos);
+                    buffer.limit(limit);
                 }
                 
                 src = VM.getArrayValuesAddress(array);

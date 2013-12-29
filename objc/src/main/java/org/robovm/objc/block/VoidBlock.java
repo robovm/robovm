@@ -44,5 +44,9 @@ public interface VoidBlock {
         public static @Pointer long toNative(Object o, long flags) {
             return WRAPPER.toNative(o);
         }
+
+        public static Object toObject(Class cls, long handle, long flags) {
+            return null;
+        }
     }
 }

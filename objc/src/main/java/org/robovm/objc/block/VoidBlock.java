@@ -18,14 +18,11 @@ package org.robovm.objc.block;
 import org.robovm.objc.ObjCBlock;
 import org.robovm.objc.ObjCBlock.Wrapper;
 import org.robovm.rt.bro.annotation.Callback;
-import org.robovm.rt.bro.annotation.Marshaler;
-import org.robovm.rt.bro.annotation.Pointer;
 
 /**
  * Block which takes no arguments and returns no value. This is used to map the
  * Objective-C {@code void (^)(void)} block type.
  */
-@Marshaler(VoidBlock.Marshaler.class)
 public interface VoidBlock {
 
     /**
@@ -41,8 +38,8 @@ public interface VoidBlock {
     
     static class Marshaler {
         private static final Wrapper WRAPPER = new Wrapper(Callbacks.class);
-        public static @Pointer long toNative(Object o, long flags) {
-            return WRAPPER.toNative(o);
+        public static ObjCBlock toObjCBlock(VoidBlock o) {
+            return WRAPPER.toObjCBlock(o);
         }
     }
 }

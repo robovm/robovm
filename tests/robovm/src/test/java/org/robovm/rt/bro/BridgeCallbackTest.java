@@ -24,12 +24,14 @@ import java.util.List;
 
 import org.junit.Test;
 import org.robovm.rt.VM;
+import org.robovm.rt.bro.annotation.AfterBridgeCall;
+import org.robovm.rt.bro.annotation.AfterCallbackCall;
 import org.robovm.rt.bro.annotation.Bridge;
 import org.robovm.rt.bro.annotation.ByVal;
 import org.robovm.rt.bro.annotation.Callback;
 import org.robovm.rt.bro.annotation.Marshaler;
 import org.robovm.rt.bro.annotation.Marshalers;
-import org.robovm.rt.bro.annotation.Pointer;
+import org.robovm.rt.bro.annotation.MarshalsPointer;
 import org.robovm.rt.bro.annotation.StructMember;
 import org.robovm.rt.bro.annotation.StructRet;
 import org.robovm.rt.bro.ptr.BytePtr;
@@ -113,22 +115,26 @@ public class BridgeCallbackTest {
     
     public static class StringMarshaler {
         static List<String> calls = new ArrayList<String>();
-        public static Object toObject(Class<?> cls, long handle, long flags) {
+        @MarshalsPointer
+        public static String toObject(Class<?> cls, long handle, long flags) {
             BytePtr ptr = Struct.toStruct(BytePtr.class, handle);
-            Object o = ptr.toStringAsciiZ();
-            calls.add("toObject(" + o + ", ?, " + Long.toHexString(flags) + ")");
-            return o;
+            String s = ptr.toStringAsciiZ();
+            calls.add("toObject(" + s + ", ?, " + Long.toHexString(flags) + ")");
+            return s;
         }
-        public static @Pointer long toNative(Object o, long flags) {
-            calls.add("toNative(" + o + ", ?, " + Long.toHexString(flags) + ")");
-            BytePtr ptr = BytePtr.toBytePtrAsciiZ((String) o);
+        @MarshalsPointer
+        public static long toNative(String s, long flags) {
+            calls.add("toNative(" + s + ", ?, " + Long.toHexString(flags) + ")");
+            BytePtr ptr = BytePtr.toBytePtrAsciiZ((String) s);
             return ptr.getHandle();
         }
-        public static void updateObject(Object o, long handle, long flags) {
-            calls.add("updateObject(" + o + ", ?, " + Long.toHexString(flags) + ")");
+        @AfterBridgeCall
+        public static void afterToNative(String s, long handle, long flags) {
+            calls.add("afterToNative(" + s + ", ?, " + Long.toHexString(flags) + ")");
         }
-        public static void updateNative(Object o, long handle, long flags) {
-            calls.add("updateNative(" + o + ", ?, " + Long.toHexString(flags) + ")");
+        @AfterCallbackCall
+        public static void afterToObject(long handle, String s, long flags) {
+            calls.add("afterToObject(?, " + s + ", " + Long.toHexString(flags) + ")");
         }
     }
     
@@ -229,7 +235,7 @@ public class BridgeCallbackTest {
         return a + b;
     }
     
-    @Marshaler(type = String.class, value = StringMarshaler.class)
+    @Marshaler(StringMarshaler.class)
     public static class Inner1 {
         @Bridge
         public static native String append(String a, String b);
@@ -238,7 +244,7 @@ public class BridgeCallbackTest {
             return a + b;
         }
     }
-    @Marshalers(@Marshaler(type = String.class, value = StringMarshaler.class))
+    @Marshalers(@Marshaler(StringMarshaler.class))
     public static class Inner2 {
         @Bridge
         public static native String append(String a, String b);
@@ -248,7 +254,7 @@ public class BridgeCallbackTest {
         }
     }
     
-    @Marshaler(type = String.class, value = StringMarshaler.class)
+    @Marshaler(StringMarshaler.class)
     public static class Inner3 {
         public static class Inner4 {
             @Bridge
@@ -494,11 +500,11 @@ public class BridgeCallbackTest {
         assertEquals("toNative(bar, ?, 0)", StringMarshaler.calls.get(1));
         assertEquals("toObject(foo, ?, 1)", StringMarshaler.calls.get(2));
         assertEquals("toObject(bar, ?, 1)", StringMarshaler.calls.get(3));
-        assertEquals("updateNative(foo, ?, 1)", StringMarshaler.calls.get(4));
-        assertEquals("updateNative(bar, ?, 1)", StringMarshaler.calls.get(5));
+        assertEquals("afterToObject(?, foo, 1)", StringMarshaler.calls.get(4));
+        assertEquals("afterToObject(?, bar, 1)", StringMarshaler.calls.get(5));
         assertEquals("toNative(foobar, ?, 1)", StringMarshaler.calls.get(6));
-        assertEquals("updateObject(foo, ?, 0)", StringMarshaler.calls.get(7));
-        assertEquals("updateObject(bar, ?, 0)", StringMarshaler.calls.get(8));
+        assertEquals("afterToNative(foo, ?, 0)", StringMarshaler.calls.get(7));
+        assertEquals("afterToNative(bar, ?, 0)", StringMarshaler.calls.get(8));
         assertEquals("toObject(foobar, ?, 0)", StringMarshaler.calls.get(9));
     }
     

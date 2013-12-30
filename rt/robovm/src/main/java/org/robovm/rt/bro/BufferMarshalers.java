@@ -27,7 +27,8 @@ import java.nio.LongBuffer;
 import java.nio.ShortBuffer;
 
 import org.robovm.rt.VM;
-import org.robovm.rt.bro.annotation.Pointer;
+import org.robovm.rt.bro.annotation.MarshalsArray;
+import org.robovm.rt.bro.annotation.MarshalsPointer;
 
 /**
  * Contains marshalers for {@link Buffer} subclasses.
@@ -58,34 +59,12 @@ public class BufferMarshalers {
             }
         }
         
-        public static Object toObject(Class<?> cls, long handle, long flags) {
-            throw new UnsupportedOperationException("Marshaling " 
-                    + cls.getName() + " to pointer  is not supported");
-        }
-        
-        public static @Pointer long toNative(Object object, long flags) {
-            long callType = flags & MarshalerFlags.CALL_TYPE_MASK;
-            if (callType != MarshalerFlags.CALL_TYPE_BRIDGE) {
-                // Struct member setter values and @Callback return values can not be marshaled
-                // since we don't know how to allocate the native memory for it.
-                if (callType == MarshalerFlags.CALL_TYPE_CALLBACK) {
-                    throw new UnsupportedOperationException("Marshaling java.nio.Buffer to pointer " 
-                            + "for callback return values is not supported");
-                }
-                if (callType == MarshalerFlags.CALL_TYPE_STRUCT_MEMBER) {
-                    throw new UnsupportedOperationException("Marshaling java.nio.Buffer to pointer " 
-                            + "for struct member setter values is not supported");
-                }
-                throw new UnsupportedOperationException();
-            }
-
-            // Must be a @Bridge method argument.
-
-            if (object == null) {
+        @MarshalsPointer(supportedCallTypes = MarshalerFlags.CALL_TYPE_BRIDGE)
+        public static long toNative(Buffer buffer, long flags) {
+            if (buffer == null) {
                 return 0L;
             }
 
-            Buffer buffer = (Buffer) object;
             if (!buffer.isDirect() && !buffer.hasArray()) {
                 // Non-direct buffers must be backed by an array to be supported.
                 // We could have made a copy of the buffer contents and returned
@@ -107,34 +86,7 @@ public class BufferMarshalers {
             }
         }
         
-        public static Object toObject(Class<?> cls, long handle, long flags, int d1) {
-            if (cls == ByteBuffer.class) {
-                return VM.newDirectByteBuffer(handle, d1);
-            }
-            ByteOrder byteOrder = ByteOrder.nativeOrder();
-            if (cls == ShortBuffer.class) {
-                return VM.newDirectByteBuffer(handle, d1 << 1).order(byteOrder).asShortBuffer();
-            }
-            if (cls == CharBuffer.class) {
-                return VM.newDirectByteBuffer(handle, d1 << 1).order(byteOrder).asCharBuffer();
-            }
-            if (cls == IntBuffer.class) {
-                return VM.newDirectByteBuffer(handle, d1 << 2).order(byteOrder).asIntBuffer();
-            }
-            if (cls == LongBuffer.class) {
-                return VM.newDirectByteBuffer(handle, d1 << 3).order(byteOrder).asLongBuffer();
-            }
-            if (cls == FloatBuffer.class) {
-                return VM.newDirectByteBuffer(handle, d1 << 2).order(byteOrder).asFloatBuffer();
-            }
-            if (cls == DoubleBuffer.class) {
-                return VM.newDirectByteBuffer(handle, d1 << 3).order(byteOrder).asDoubleBuffer();
-            }
-            throw new IllegalArgumentException("Unsupported class: " + cls.getName());
-        }
-        public static void toNative(Object object, long handle, long flags, int d1) {
-            Buffer buffer = (Buffer) object;
-            
+        private static void copyBuffer(Buffer buffer, long handle, long flags, int d1) {
             if (d1 != buffer.capacity()) {
                 Class<?> cls = null;
                 if (buffer instanceof ByteBuffer) {
@@ -204,17 +156,180 @@ public class BufferMarshalers {
             
             VM.memcpy(handle, src + (offset << shift), d1 << shift);
         }
-        public static Object toObject(Class<?> cls, long handle, long flags, int d1, int d2) {
-            return toObject(cls, handle, flags, d1 * d2);
+        
+        @MarshalsArray
+        public static ByteBuffer toByteBuffer(Class<?> cls, long handle, long flags, int d1) {
+            return VM.newDirectByteBuffer(handle, d1);
         }
-        public static void toNative(Object object, long handle, long flags, int d1, int d2) {
-            toNative(object, handle, flags, d1 * d2);
+        @MarshalsArray
+        public static void toNative(ByteBuffer buffer, long handle, long flags, int d1) {
+            copyBuffer(buffer, handle, flags, d1);
         }
-        public static Object toObject(Class<?> cls, long handle, long flags, int d1, int d2, int d3) {
-            return toObject(cls, handle, flags, d1 * d2 * d3);
+        @MarshalsArray
+        public static ByteBuffer toByteBuffer(Class<?> cls, long handle, long flags, int d1, int d2) {
+            return toByteBuffer(cls, handle, flags, d1 * d2);
         }
-        public static void toNative(Object object, long handle, long flags, int d1, int d2, int d3) {
-            toNative(object, handle, flags, d1 * d2 * d3);
+        @MarshalsArray
+        public static void toNative(ByteBuffer buffer, long handle, long flags, int d1, int d2) {
+            copyBuffer(buffer, handle, flags, d1 * d2);
+        }
+        @MarshalsArray
+        public static ByteBuffer toByteBuffer(Class<?> cls, long handle, long flags, int d1, int d2, int d3) {
+            return toByteBuffer(cls, handle, flags, d1 * d2 * d3);
+        }
+        @MarshalsArray
+        public static void toNative(ByteBuffer buffer, long handle, long flags, int d1, int d2, int d3) {
+            copyBuffer(buffer, handle, flags, d1 * d2 * d3);
+        }
+        
+        @MarshalsArray
+        public static ShortBuffer toShortBuffer(Class<?> cls, long handle, long flags, int d1) {
+            return VM.newDirectByteBuffer(handle, d1 << 1).order(ByteOrder.nativeOrder()).asShortBuffer();
+        }
+        @MarshalsArray
+        public static void toNative(ShortBuffer buffer, long handle, long flags, int d1) {
+            copyBuffer(buffer, handle, flags, d1);
+        }
+        @MarshalsArray
+        public static ShortBuffer toShortBuffer(Class<?> cls, long handle, long flags, int d1, int d2) {
+            return toShortBuffer(cls, handle, flags, d1 * d2);
+        }
+        @MarshalsArray
+        public static void toNative(ShortBuffer buffer, long handle, long flags, int d1, int d2) {
+            copyBuffer(buffer, handle, flags, d1 * d2);
+        }
+        @MarshalsArray
+        public static ShortBuffer toShortBuffer(Class<?> cls, long handle, long flags, int d1, int d2, int d3) {
+            return toShortBuffer(cls, handle, flags, d1 * d2 * d3);
+        }
+        @MarshalsArray
+        public static void toNative(ShortBuffer buffer, long handle, long flags, int d1, int d2, int d3) {
+            copyBuffer(buffer, handle, flags, d1 * d2 * d3);
+        }
+        
+        @MarshalsArray
+        public static CharBuffer toCharBuffer(Class<?> cls, long handle, long flags, int d1) {
+            return VM.newDirectByteBuffer(handle, d1 << 1).order(ByteOrder.nativeOrder()).asCharBuffer();
+        }
+        @MarshalsArray
+        public static void toNative(CharBuffer buffer, long handle, long flags, int d1) {
+            copyBuffer(buffer, handle, flags, d1);
+        }
+        @MarshalsArray
+        public static CharBuffer toCharBuffer(Class<?> cls, long handle, long flags, int d1, int d2) {
+            return toCharBuffer(cls, handle, flags, d1 * d2);
+        }
+        @MarshalsArray
+        public static void toNative(CharBuffer buffer, long handle, long flags, int d1, int d2) {
+            copyBuffer(buffer, handle, flags, d1 * d2);
+        }
+        @MarshalsArray
+        public static CharBuffer toCharBuffer(Class<?> cls, long handle, long flags, int d1, int d2, int d3) {
+            return toCharBuffer(cls, handle, flags, d1 * d2 * d3);
+        }
+        @MarshalsArray
+        public static void toNative(CharBuffer buffer, long handle, long flags, int d1, int d2, int d3) {
+            copyBuffer(buffer, handle, flags, d1 * d2 * d3);
+        }
+        
+        @MarshalsArray
+        public static IntBuffer toIntBuffer(Class<?> cls, long handle, long flags, int d1) {
+            return VM.newDirectByteBuffer(handle, d1 << 2).order(ByteOrder.nativeOrder()).asIntBuffer();
+        }
+        @MarshalsArray
+        public static void toNative(IntBuffer buffer, long handle, long flags, int d1) {
+            copyBuffer(buffer, handle, flags, d1);
+        }
+        @MarshalsArray
+        public static IntBuffer toIntBuffer(Class<?> cls, long handle, long flags, int d1, int d2) {
+            return toIntBuffer(cls, handle, flags, d1 * d2);
+        }
+        @MarshalsArray
+        public static void toNative(IntBuffer buffer, long handle, long flags, int d1, int d2) {
+            copyBuffer(buffer, handle, flags, d1 * d2);
+        }
+        @MarshalsArray
+        public static IntBuffer toIntBuffer(Class<?> cls, long handle, long flags, int d1, int d2, int d3) {
+            return toIntBuffer(cls, handle, flags, d1 * d2 * d3);
+        }
+        @MarshalsArray
+        public static void toNative(IntBuffer buffer, long handle, long flags, int d1, int d2, int d3) {
+            copyBuffer(buffer, handle, flags, d1 * d2 * d3);
+        }
+        
+        @MarshalsArray
+        public static LongBuffer toLongBuffer(Class<?> cls, long handle, long flags, int d1) {
+            return VM.newDirectByteBuffer(handle, d1 << 3).order(ByteOrder.nativeOrder()).asLongBuffer();
+        }
+        @MarshalsArray
+        public static void toNative(LongBuffer buffer, long handle, long flags, int d1) {
+            copyBuffer(buffer, handle, flags, d1);
+        }
+        @MarshalsArray
+        public static LongBuffer toLongBuffer(Class<?> cls, long handle, long flags, int d1, int d2) {
+            return toLongBuffer(cls, handle, flags, d1 * d2);
+        }
+        @MarshalsArray
+        public static void toNative(LongBuffer buffer, long handle, long flags, int d1, int d2) {
+            copyBuffer(buffer, handle, flags, d1 * d2);
+        }
+        @MarshalsArray
+        public static LongBuffer toLongBuffer(Class<?> cls, long handle, long flags, int d1, int d2, int d3) {
+            return toLongBuffer(cls, handle, flags, d1 * d2 * d3);
+        }
+        @MarshalsArray
+        public static void toNative(LongBuffer buffer, long handle, long flags, int d1, int d2, int d3) {
+            copyBuffer(buffer, handle, flags, d1 * d2 * d3);
+        }
+        
+        @MarshalsArray
+        public static FloatBuffer toFloatBuffer(Class<?> cls, long handle, long flags, int d1) {
+            return VM.newDirectByteBuffer(handle, d1 << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
+        }
+        @MarshalsArray
+        public static void toNative(FloatBuffer buffer, long handle, long flags, int d1) {
+            copyBuffer(buffer, handle, flags, d1);
+        }
+        @MarshalsArray
+        public static FloatBuffer toFloatBuffer(Class<?> cls, long handle, long flags, int d1, int d2) {
+            return toFloatBuffer(cls, handle, flags, d1 * d2);
+        }
+        @MarshalsArray
+        public static void toNative(FloatBuffer buffer, long handle, long flags, int d1, int d2) {
+            copyBuffer(buffer, handle, flags, d1 * d2);
+        }
+        @MarshalsArray
+        public static FloatBuffer toFloatBuffer(Class<?> cls, long handle, long flags, int d1, int d2, int d3) {
+            return toFloatBuffer(cls, handle, flags, d1 * d2 * d3);
+        }
+        @MarshalsArray
+        public static void toNative(FloatBuffer buffer, long handle, long flags, int d1, int d2, int d3) {
+            copyBuffer(buffer, handle, flags, d1 * d2 * d3);
+        }
+        
+        @MarshalsArray
+        public static DoubleBuffer toDoubleBuffer(Class<?> cls, long handle, long flags, int d1) {
+            return VM.newDirectByteBuffer(handle, d1 << 3).order(ByteOrder.nativeOrder()).asDoubleBuffer();
+        }
+        @MarshalsArray
+        public static void toNative(DoubleBuffer buffer, long handle, long flags, int d1) {
+            copyBuffer(buffer, handle, flags, d1);
+        }
+        @MarshalsArray
+        public static DoubleBuffer toDoubleBuffer(Class<?> cls, long handle, long flags, int d1, int d2) {
+            return toDoubleBuffer(cls, handle, flags, d1 * d2);
+        }
+        @MarshalsArray
+        public static void toNative(DoubleBuffer buffer, long handle, long flags, int d1, int d2) {
+            copyBuffer(buffer, handle, flags, d1 * d2);
+        }
+        @MarshalsArray
+        public static DoubleBuffer toDoubleBuffer(Class<?> cls, long handle, long flags, int d1, int d2, int d3) {
+            return toDoubleBuffer(cls, handle, flags, d1 * d2 * d3);
+        }
+        @MarshalsArray
+        public static void toNative(DoubleBuffer buffer, long handle, long flags, int d1, int d2, int d3) {
+            copyBuffer(buffer, handle, flags, d1 * d2 * d3);
         }
     }
 

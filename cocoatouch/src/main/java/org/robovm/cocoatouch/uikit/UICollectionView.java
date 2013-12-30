@@ -412,13 +412,16 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector performBatchUpdates$completion$ = Selector.register("performBatchUpdates:completion:");
-    @Bridge private native static void objc_performBatchUpdates(UICollectionView __self__, Selector __cmd__, VoidBlock updates, VoidBooleanBlock completion);
-    @Bridge private native static void objc_performBatchUpdatesSuper(ObjCSuper __super__, Selector __cmd__, VoidBlock updates, VoidBooleanBlock completion);
+    @Bridge private native static void objc_performBatchUpdates(UICollectionView __self__, Selector __cmd__, ObjCBlock updates, ObjCBlock completion);
+    @Bridge private native static void objc_performBatchUpdatesSuper(ObjCSuper __super__, Selector __cmd__, ObjCBlock updates, ObjCBlock completion);
     /**
      * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UICollectionView_class/Reference/Reference.html#//apple_ref/occ/instm/UICollectionView/performBatchUpdates:completion:">- (void)performBatchUpdates:(void (^)(void))updates completion:(void (^)(BOOL finished))completion</a>
      * @since Available in iOS 6.0 and later.
      */
     public void performBatchUpdates(VoidBlock updates, VoidBooleanBlock completion) {
+        performBatchUpdates(VoidBlock.Marshaler.toObjCBlock(updates), VoidBooleanBlock.Marshaler.toObjCBlock(completion));
+    }
+    protected void performBatchUpdates(ObjCBlock updates, ObjCBlock completion) {
         if (customClass) { objc_performBatchUpdatesSuper(getSuper(), performBatchUpdates$completion$, updates, completion); } else { objc_performBatchUpdates(this, performBatchUpdates$completion$, updates, completion); }
     }
     
@@ -565,7 +568,7 @@ import org.robovm.rt.bro.ptr.*;
         @Callback @BindSelector("insertSections:") public static void insertSections(UICollectionView __self__, Selector __cmd__, NSIndexSet sections) { __self__.insertSections(sections); }
         @Callback @BindSelector("moveItemAtIndexPath:toIndexPath:") public static void moveItem(UICollectionView __self__, Selector __cmd__, NSIndexPath indexPath, NSIndexPath newIndexPath) { __self__.moveItem(indexPath, newIndexPath); }
         @Callback @BindSelector("moveSection:toSection:") public static void moveSection(UICollectionView __self__, Selector __cmd__, int section, int newSection) { __self__.moveSection(section, newSection); }
-        @Callback @BindSelector("performBatchUpdates:completion:") public static void performBatchUpdates(UICollectionView __self__, Selector __cmd__, VoidBlock updates, VoidBooleanBlock completion) { __self__.performBatchUpdates(updates, completion); }
+        @Callback @BindSelector("performBatchUpdates:completion:") public static void performBatchUpdates(UICollectionView __self__, Selector __cmd__, ObjCBlock updates, ObjCBlock completion) { __self__.performBatchUpdates(updates, completion); }
         @Callback @BindSelector("registerClass:forCellWithReuseIdentifier:") public static void registerReusableCellClass(UICollectionView __self__, Selector __cmd__, ObjCClass cellClass, String identifier) { __self__.registerReusableCellClass(cellClass, identifier); }
         @Callback @BindSelector("registerNib:forCellWithReuseIdentifier:") public static void registerReusableCellNib(UICollectionView __self__, Selector __cmd__, UINib nib, String identifier) { __self__.registerReusableCellNib(nib, identifier); }
         @Callback @BindSelector("registerClass:forSupplementaryViewOfKind:withReuseIdentifier:") public static void registerReusableSupplementaryViewClass(UICollectionView __self__, Selector __cmd__, ObjCClass viewClass, String elementKind, String identifier) { __self__.registerReusableSupplementaryViewClass(viewClass, elementKind, identifier); }

@@ -19,8 +19,8 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
 import org.robovm.rt.VM;
-import org.robovm.rt.bro.annotation.BaseType;
-import org.robovm.rt.bro.annotation.Pointer;
+import org.robovm.rt.bro.annotation.MarshalsArray;
+import org.robovm.rt.bro.annotation.MarshalsPointer;
 
 /**
  * Contains marshalers for {@link String} values.
@@ -35,7 +35,7 @@ public class StringMarshalers {
             charset = Charset.forName(charsetName);
         }
         
-        public final Object toObject(Class<?> cls, long handle, long flags) {
+        public final String toObject(Class<?> cls, long handle, long flags) {
             if (handle == 0L) {
                 return null;
             }
@@ -49,7 +49,7 @@ public class StringMarshalers {
             return charset.decode(VM.newDirectByteBuffer(handle, length)).toString();
         }
         
-        public final long toNative(Object object, long flags) {
+        public final long toNative(String s, long flags) {
             long callType = flags & MarshalerFlags.CALL_TYPE_MASK;
             if (callType != MarshalerFlags.CALL_TYPE_BRIDGE) {
                 // Struct member setter values and @Callback return values can not be marshaled
@@ -67,18 +67,17 @@ public class StringMarshalers {
 
             // Must be a @Bridge method argument. Allocate native string on the heap.
 
-            if (object == null) {
+            if (s == null) {
                 return 0L;
             }
 
-            String s = (String) object;
             byte[] bytes = s.getBytes(charset);
             long handle = VM.allocateMemoryAtomic(bytes.length + 1);
             VM.memcpy(handle, VM.getArrayValuesAddress(bytes), bytes.length);
             return handle;
         }
         
-        public final Object toObject(Class<?> cls, long handle, long flags, int d1) {
+        public final String toObject(Class<?> cls, long handle, long flags, int d1) {
             int length = 0;
             while (length < d1 && VM.getByte(handle + length) != 0) {
                 length++;
@@ -89,8 +88,7 @@ public class StringMarshalers {
             return charset.decode(VM.newDirectByteBuffer(handle, length)).toString();
         }
         
-        public final void toNative(Object object, long handle, long flags, int d1) {
-            String s = (String) object;
+        public final void toNative(String s, long handle, long flags, int d1) {
             byte[] bytes = s.getBytes(charset);
             int length = Math.min(d1, bytes.length);
             ByteBuffer bb = VM.newDirectByteBuffer(handle, d1);
@@ -108,17 +106,21 @@ public class StringMarshalers {
     public static class AsDefaultCharsetZMarshaler {
         private static final EightBitZeroTerminatedStringMarshaler MARSHALER = 
                 new EightBitZeroTerminatedStringMarshaler(Charset.defaultCharset().name());
-        public static Object toObject(Class<?> cls, long handle, long flags) {
+        @MarshalsPointer
+        public static String toObject(Class<?> cls, long handle, long flags) {
             return MARSHALER.toObject(cls, handle, flags);
         }
-        public static @Pointer long toNative(Object object, long flags) {
-            return MARSHALER.toNative(object, flags);
+        @MarshalsPointer
+        public static long toNative(String s, long flags) {
+            return MARSHALER.toNative(s, flags);
         }
-        public static Object toObject(Class<?> cls, long handle, long flags, int d1) {
+        @MarshalsArray(baseType = byte.class)
+        public static String toObject(Class<?> cls, long handle, long flags, int d1) {
             return MARSHALER.toObject(cls, handle, flags, d1);
         }
-        public static @BaseType(byte.class) void toNative(Object object, long handle, long flags, int d1) {
-            MARSHALER.toNative(object, handle, flags, d1);
+        @MarshalsArray(baseType = byte.class)
+        public static void toNative(String s, long handle, long flags, int d1) {
+            MARSHALER.toNative(s, handle, flags, d1);
         }
     }
 
@@ -129,17 +131,21 @@ public class StringMarshalers {
     public static class AsAsciiZMarshaler {
         private static final EightBitZeroTerminatedStringMarshaler MARSHALER 
             = new EightBitZeroTerminatedStringMarshaler("ascii");
-        public static Object toObject(Class<?> cls, long handle, long flags) {
+        @MarshalsPointer
+        public static String toObject(Class<?> cls, long handle, long flags) {
             return MARSHALER.toObject(cls, handle, flags);
         }
-        public static @Pointer long toNative(Object object, long flags) {
-            return MARSHALER.toNative(object, flags);
+        @MarshalsPointer
+        public static long toNative(String s, long flags) {
+            return MARSHALER.toNative(s, flags);
         }
-        public static Object toObject(Class<?> cls, long handle, long flags, int d1) {
+        @MarshalsArray(baseType = byte.class)
+        public static String toObject(Class<?> cls, long handle, long flags, int d1) {
             return MARSHALER.toObject(cls, handle, flags, d1);
         }
-        public static @BaseType(byte.class) void toNative(Object object, long handle, long flags, int d1) {
-            MARSHALER.toNative(object, handle, flags, d1);
+        @MarshalsArray(baseType = byte.class)
+        public static void toNative(String s, long handle, long flags, int d1) {
+            MARSHALER.toNative(s, handle, flags, d1);
         }
     }
 
@@ -150,17 +156,21 @@ public class StringMarshalers {
     public static class AsUtf8ZMarshaler {
         private static final EightBitZeroTerminatedStringMarshaler MARSHALER 
             = new EightBitZeroTerminatedStringMarshaler("utf-8");
-        public static Object toObject(Class<?> cls, long handle, long flags) {
+        @MarshalsPointer
+        public static String toObject(Class<?> cls, long handle, long flags) {
             return MARSHALER.toObject(cls, handle, flags);
         }
-        public static @Pointer long toNative(Object object, long flags) {
-            return MARSHALER.toNative(object, flags);
+        @MarshalsPointer
+        public static long toNative(String s, long flags) {
+            return MARSHALER.toNative(s, flags);
         }
-        public static Object toObject(Class<?> cls, long handle, long flags, int d1) {
+        @MarshalsArray(baseType = byte.class)
+        public static String toObject(Class<?> cls, long handle, long flags, int d1) {
             return MARSHALER.toObject(cls, handle, flags, d1);
         }
-        public static @BaseType(byte.class) void toNative(Object object, long handle, long flags, int d1) {
-            MARSHALER.toNative(object, handle, flags, d1);
+        @MarshalsArray(baseType = byte.class)
+        public static void toNative(String s, long handle, long flags, int d1) {
+            MARSHALER.toNative(s, handle, flags, d1);
         }
     }
     
@@ -171,17 +181,21 @@ public class StringMarshalers {
     public static class AsLatin1ZMarshaler {
         private static final EightBitZeroTerminatedStringMarshaler MARSHALER 
             = new EightBitZeroTerminatedStringMarshaler("8859-1");
-        public static Object toObject(Class<?> cls, long handle, long flags) {
+        @MarshalsPointer
+        public static String toObject(Class<?> cls, long handle, long flags) {
             return MARSHALER.toObject(cls, handle, flags);
         }
-        public static @Pointer long toNative(Object object, long flags) {
-            return MARSHALER.toNative(object, flags);
+        @MarshalsPointer
+        public static long toNative(String s, long flags) {
+            return MARSHALER.toNative(s, flags);
         }
-        public static Object toObject(Class<?> cls, long handle, long flags, int d1) {
+        @MarshalsArray(baseType = byte.class)
+        public static String toObject(Class<?> cls, long handle, long flags, int d1) {
             return MARSHALER.toObject(cls, handle, flags, d1);
         }
-        public static @BaseType(byte.class) void toNative(Object object, long handle, long flags, int d1) {
-            MARSHALER.toNative(object, handle, flags, d1);
+        @MarshalsArray(baseType = byte.class)
+        public static void toNative(String s, long handle, long flags, int d1) {
+            MARSHALER.toNative(s, handle, flags, d1);
         }
     }
 
@@ -192,17 +206,21 @@ public class StringMarshalers {
     public static class AsWindow1252ZMarshaler {
         private static final EightBitZeroTerminatedStringMarshaler MARSHALER 
             = new EightBitZeroTerminatedStringMarshaler("windows-1252");
-        public static Object toObject(Class<?> cls, long handle, long flags) {
+        @MarshalsPointer
+        public static String toObject(Class<?> cls, long handle, long flags) {
             return MARSHALER.toObject(cls, handle, flags);
         }
-        public static @Pointer long toNative(Object object, long flags) {
-            return MARSHALER.toNative(object, flags);
+        @MarshalsPointer
+        public static long toNative(String s, long flags) {
+            return MARSHALER.toNative(s, flags);
         }
-        public static Object toObject(Class<?> cls, long handle, long flags, int d1) {
+        @MarshalsArray(baseType = byte.class)
+        public static String toObject(Class<?> cls, long handle, long flags, int d1) {
             return MARSHALER.toObject(cls, handle, flags, d1);
         }
-        public static @BaseType(byte.class) void toNative(Object object, long handle, long flags, int d1) {
-            MARSHALER.toNative(object, handle, flags, d1);
+        @MarshalsArray(baseType = byte.class)
+        public static void toNative(String s, long handle, long flags, int d1) {
+            MARSHALER.toNative(s, handle, flags, d1);
         }
     }
 }

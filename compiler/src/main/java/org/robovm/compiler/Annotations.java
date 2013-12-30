@@ -16,12 +16,19 @@
  */
 package org.robovm.compiler;
 
-import static org.robovm.compiler.Types.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-import java.util.*;
-
-import soot.*;
-import soot.tagkit.*;
+import soot.SootClass;
+import soot.SootMethod;
+import soot.tagkit.AnnotationAnnotationElem;
+import soot.tagkit.AnnotationArrayElem;
+import soot.tagkit.AnnotationElem;
+import soot.tagkit.AnnotationTag;
+import soot.tagkit.Host;
+import soot.tagkit.VisibilityAnnotationTag;
+import soot.tagkit.VisibilityParameterAnnotationTag;
 
 /**
  * @author niklas
@@ -37,6 +44,11 @@ public class Annotations {
     public static final String POINTER = "Lorg/robovm/rt/bro/annotation/Pointer;";
     public static final String MARSHALER = "Lorg/robovm/rt/bro/annotation/Marshaler;";
     public static final String MARSHALERS = "Lorg/robovm/rt/bro/annotation/Marshalers;";
+    public static final String MARSHALS_POINTER = "Lorg/robovm/rt/bro/annotation/MarshalsPointer;";
+    public static final String MARSHALS_VALUE = "Lorg/robovm/rt/bro/annotation/MarshalsValue;";
+    public static final String MARSHALS_ARRAY = "Lorg/robovm/rt/bro/annotation/MarshalsArray;";
+    public static final String AFTER_BRIDGE_CALL = "Lorg/robovm/rt/bro/annotation/AfterBridgeCall;";
+    public static final String AFTER_CALLBACK_CALL = "Lorg/robovm/rt/bro/annotation/AfterCallbackCall;";
     public static final String BY_VAL = "Lorg/robovm/rt/bro/annotation/ByVal;";
     public static final String BY_REF = "Lorg/robovm/rt/bro/annotation/ByRef;";
 
@@ -134,6 +146,14 @@ public class Annotations {
         return hasParameterAnnotation(method, paramIndex, BY_REF);
     }
     
+    public static boolean hasAfterBridgeCallAnnotation(SootMethod method) {
+        return hasAnnotation(method, AFTER_BRIDGE_CALL);
+    }
+    
+    public static boolean hasAfterCallbackCallAnnotation(SootMethod method) {
+        return hasAnnotation(method, AFTER_CALLBACK_CALL);
+    }
+
     public static AnnotationTag getMarshalerAnnotation(SootMethod method, int paramIndex) {
         return getParameterAnnotation(method, paramIndex, MARSHALER);
     }
@@ -142,84 +162,7 @@ public class Annotations {
         return getAnnotation(method, MARSHALER);
     }
     
-    public static AnnotationTag getMarshalerAnnotation(SootClass clazz) {
-        return getMarshalerAnnotation(clazz, null);
-    }
-    
-    public static AnnotationTag getMarshalerAnnotation(final SootClass clazz, soot.Type type) {
-        AnnotationTag tag = null;
-        if (clazz.isInterface()) {
-            return getMarshalerAnnotationOnInterface(clazz, type);
-        } else {
-            tag = getMarshalerAnnotationOnClass(clazz, type);
-            if (tag == null) {
-                SootClass sc = clazz;
-                while (sc.hasSuperclass()) {
-                    tag = getMarshalerAnnotationOnInterface(sc, type);
-                    if (tag != null) {
-                        break;
-                    }
-                    sc = sc.getSuperclass();
-                }
-            }
-        }
-        if (tag != null) {
-            return tag;
-        }
-        
-        if (type instanceof ArrayType) {
-            ArrayType arrayType = (ArrayType) type;
-            if (arrayType.baseType instanceof RefType && ((RefType) arrayType.baseType).getSootClass().hasSuperclass()) {
-                // Array of objects. Search for marshaler for array type of base types's supertype of same dimension
-                Type newType = ((RefType) arrayType.baseType).getSootClass().getSuperclass().getType();
-                for (int i = 0; i < arrayType.numDimensions; i++) {
-                    newType = newType.makeArrayType();
-                }
-                return getMarshalerAnnotation(clazz, newType);
-            }
-        } else if (type instanceof RefType) {
-            SootClass sc = ((RefType) type).getSootClass();
-            if (sc.hasSuperclass()) {
-                return getMarshalerAnnotation(clazz, sc.getSuperclass().getType());
-            }
-        }
-        
-        return null;
-    }
-
-    private static AnnotationTag getMarshalerAnnotationOnClass(SootClass clazz, soot.Type type) {
-        if (clazz.isPhantom()) {
-            return null;
-        }
-        AnnotationTag tag = getMarshalerAnnotation0(clazz, type);
-        if (tag == null) {
-            if (clazz.hasSuperclass()) {
-                tag = getMarshalerAnnotationOnClass(clazz.getSuperclass(), type);
-            }
-        }
-        return tag;
-    }
-
-    private static AnnotationTag getMarshalerAnnotationOnInterface(SootClass rootClazz, soot.Type type) {
-        // Search super interfaces breadth first
-        LinkedList<SootClass> q = new LinkedList<SootClass>();
-        q.add(rootClazz);
-        while (!q.isEmpty()) {
-            SootClass clazz = q.removeFirst();
-            if (!clazz.isPhantom()) {
-                if (clazz.isInterface()) {
-                    AnnotationTag tag = getMarshalerAnnotation0(clazz, type);
-                    if (tag != null) {
-                        return tag;
-                    }
-                }
-                q.addAll(clazz.getInterfaces());
-            }            
-        }
-        return null;
-    }
-    
-    private static AnnotationTag getMarshalerAnnotation0(SootClass clazz, soot.Type type) {
+    public static List<AnnotationTag> getMarshalerAnnotations(SootClass clazz) {
         List<AnnotationTag> tags = new ArrayList<AnnotationTag>();
         AnnotationTag marshaler = getAnnotation(clazz, MARSHALER);
         if (marshaler != null) {
@@ -234,20 +177,19 @@ public class Annotations {
             }
         }
         
-        String typeDesc = type != null ? getDescriptor(type) : null;
-        for (AnnotationTag tag : tags) {
-            AnnotationClassElem elem = (AnnotationClassElem) getElemByName(tag, "type");
-            if (elem == null && type == null) {
-                return tag;
-            }
-            if (elem != null && type != null) {
-                if (typeDesc.equals(elem.getDesc())) {
-                    return tag;
-                }
-            }
-        }
-        
-        return null;
+        return tags;
+    }
+    
+    public static AnnotationTag getMarshalsPointerAnnotation(SootMethod method) {
+        return getAnnotation(method, MARSHALS_POINTER);
+    }
+
+    public static AnnotationTag getMarshalsValueAnnotation(SootMethod method) {
+        return getAnnotation(method, MARSHALS_VALUE);
+    }
+    
+    public static AnnotationTag getMarshalsArrayAnnotation(SootMethod method) {
+        return getAnnotation(method, MARSHALS_ARRAY);
     }
 
     public static AnnotationTag getStructMemberAnnotation(SootMethod method) {

@@ -35,6 +35,7 @@ import java.util.jar.JarFile;
 
 import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.ITable;
+import org.robovm.compiler.MarshalerLookup;
 import org.robovm.compiler.VTable;
 import org.robovm.compiler.Version;
 import org.robovm.compiler.clazz.Clazz;
@@ -142,8 +143,9 @@ public class Config {
     private Logger logger = Logger.NULL_LOGGER;
     private List<Path> resourcesPaths = new ArrayList<Path>();
     private DataLayout dataLayout;
+    private MarshalerLookup marshalerLookup;
 
-    Config() {
+    protected Config() {
     }
     
     public Home getHome() {
@@ -292,6 +294,10 @@ public class Config {
     
     public ITable.Cache getITableCache() {
         return itableCache;
+    }
+    
+    public MarshalerLookup getMarshalerLookup() {
+        return marshalerLookup;
     }
     
     public List<File> getBootclasspath() {
@@ -453,6 +459,7 @@ public class Config {
         this.clazzes = new Clazzes(this, realBootclasspath, classpath);
         this.vtableCache = new VTable.Cache();
         this.itableCache = new ITable.Cache();
+        this.marshalerLookup = new MarshalerLookup(this);
         
         if (!skipInstall) {
             if (installDir == null) {
@@ -498,7 +505,13 @@ public class Config {
         private boolean dev = false;
 
         public Home(File homeDir) {
-            validate(homeDir);
+            this(homeDir, true);
+        }
+        
+        protected Home(File homeDir, boolean validate) {
+            if (validate) {
+                validate(homeDir);
+            }
             binDir = new File(homeDir, "bin");
             libVmDir = new File(homeDir, "lib/vm");
             rtPath = new File(homeDir, "lib/robovm-rt.jar");

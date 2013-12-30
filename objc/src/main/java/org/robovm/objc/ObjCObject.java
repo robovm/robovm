@@ -29,6 +29,7 @@ import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.Callback;
 import org.robovm.rt.bro.annotation.Library;
 import org.robovm.rt.bro.annotation.Marshaler;
+import org.robovm.rt.bro.annotation.MarshalsPointer;
 import org.robovm.rt.bro.annotation.Pointer;
 import org.robovm.rt.bro.annotation.StructMember;
 
@@ -151,12 +152,25 @@ public abstract class ObjCObject extends NativeObject {
     }
     
     public static class Marshaler {
-        @SuppressWarnings({ "rawtypes", "unchecked" })
-        public static Object toObject(Class cls, long handle, long flags) {
+        @MarshalsPointer
+        public static ObjCObject toObject(Class<? extends ObjCObject> cls, long handle, long flags) {
             ObjCObject o = ObjCObject.toObjCObject(cls, handle);
             return o;
         }
-        public static @Pointer long toNative(Object o, long flags) {
+        @MarshalsPointer
+        public static long toNative(ObjCObject o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return o.getHandle();
+        }
+        @MarshalsPointer
+        public static ObjCProtocol protocolToObject(Class<? extends ObjCObject> cls, long handle, long flags) {
+            ObjCObject o = ObjCObject.toObjCObject(cls, handle);
+            return (ObjCProtocol) o;
+        }
+        @MarshalsPointer
+        public static long protocolToNative(ObjCProtocol o, long flags) {
             if (o == null) {
                 return 0L;
             }

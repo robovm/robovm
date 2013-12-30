@@ -190,13 +190,16 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector setViewControllers$direction$animated$completion$ = Selector.register("setViewControllers:direction:animated:completion:");
-    @Bridge private native static void objc_setViewControllers(UIPageViewController __self__, Selector __cmd__, NSArray viewControllers, UIPageViewControllerNavigationDirection direction, boolean animated, VoidBooleanBlock completion);
-    @Bridge private native static void objc_setViewControllersSuper(ObjCSuper __super__, Selector __cmd__, NSArray viewControllers, UIPageViewControllerNavigationDirection direction, boolean animated, VoidBooleanBlock completion);
+    @Bridge private native static void objc_setViewControllers(UIPageViewController __self__, Selector __cmd__, NSArray viewControllers, UIPageViewControllerNavigationDirection direction, boolean animated, ObjCBlock completion);
+    @Bridge private native static void objc_setViewControllersSuper(ObjCSuper __super__, Selector __cmd__, NSArray viewControllers, UIPageViewControllerNavigationDirection direction, boolean animated, ObjCBlock completion);
     /**
      * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIPageViewControllerClassReferenceClassRef/UIPageViewControllerClassReference.html#//apple_ref/occ/instm/UIPageViewController/setViewControllers:direction:animated:completion:">- (void)setViewControllers:(NSArray *)viewControllers direction:(UIPageViewControllerNavigationDirection)direction animated:(BOOL)animated completion:(void (^)(BOOL finished))completion</a>
      * @since Available in iOS 5.0 and later.
      */
     public void setViewControllers(NSArray viewControllers, UIPageViewControllerNavigationDirection direction, boolean animated, VoidBooleanBlock completion) {
+        setViewControllers(viewControllers, direction, animated, VoidBooleanBlock.Marshaler.toObjCBlock(completion));
+    }
+    protected void setViewControllers(NSArray viewControllers, UIPageViewControllerNavigationDirection direction, boolean animated, ObjCBlock completion) {
         if (customClass) { objc_setViewControllersSuper(getSuper(), setViewControllers$direction$animated$completion$, viewControllers, direction, animated, completion); } else { objc_setViewControllers(this, setViewControllers$direction$animated$completion$, viewControllers, direction, animated, completion); }
     }
     /*</methods>*/
@@ -213,7 +216,7 @@ import org.robovm.rt.bro.ptr.*;
         @Callback @BindSelector("spineLocation") public static UIPageViewControllerSpineLocation getSpineLocation(UIPageViewController __self__, Selector __cmd__) { return __self__.getSpineLocation(); }
         @Callback @BindSelector("transitionStyle") public static UIPageViewControllerTransitionStyle getTransitionStyle(UIPageViewController __self__, Selector __cmd__) { return __self__.getTransitionStyle(); }
         @Callback @BindSelector("viewControllers") public static NSArray getViewControllers(UIPageViewController __self__, Selector __cmd__) { return __self__.getViewControllers(); }
-        @Callback @BindSelector("setViewControllers:direction:animated:completion:") public static void setViewControllers(UIPageViewController __self__, Selector __cmd__, NSArray viewControllers, UIPageViewControllerNavigationDirection direction, boolean animated, VoidBooleanBlock completion) { __self__.setViewControllers(viewControllers, direction, animated, completion); }
+        @Callback @BindSelector("setViewControllers:direction:animated:completion:") public static void setViewControllers(UIPageViewController __self__, Selector __cmd__, NSArray viewControllers, UIPageViewControllerNavigationDirection direction, boolean animated, ObjCBlock completion) { __self__.setViewControllers(viewControllers, direction, animated, completion); }
     }
     /*</callbacks>*/
 

@@ -187,9 +187,9 @@ public final class ObjCBlock extends Struct<ObjCBlock> {
             return block.object();
         }
         
-        public long toNative(Object o) {
+        public ObjCBlock toObjCBlock(Object o) {
             if (o == null) {
-                return 0L;
+                return null;
             }
             // Create an Objective-C block struct which looks like it was
             // allocated on the stack. The struct will be GC reachable during
@@ -206,7 +206,7 @@ public final class ObjCBlock extends Struct<ObjCBlock> {
                 .descriptor(DESCRIPTOR)
                 .object(o)
                 .wrapper(this);
-            return block.getHandle();
+            return block;
         }
         
         @SuppressWarnings("unused")

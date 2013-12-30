@@ -27,6 +27,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
 public @interface Marshaler {
-    Class<?> type() default Marshaler.class;
     Class<?> value();
 }

@@ -17,7 +17,7 @@ package org.robovm.rt.bro;
 
 import org.robovm.rt.VM;
 import org.robovm.rt.bro.annotation.Marshaler;
-import org.robovm.rt.bro.annotation.Pointer;
+import org.robovm.rt.bro.annotation.MarshalsPointer;
 
 
 /**
@@ -65,8 +65,8 @@ public abstract class NativeObject {
     }
     
     public static class Marshaler {
-        @SuppressWarnings({ "rawtypes", "unchecked" })
-        public static Object toObject(Class cls, long handle, long flags) {
+        @MarshalsPointer
+        public static NativeObject toObject(Class<?> cls, long handle, long flags) {
             if (handle == 0L) {
                 return null;
             }
@@ -74,11 +74,12 @@ public abstract class NativeObject {
             o.setHandle(handle);
             return o;
         }
-        public static @Pointer long toNative(Object o, long flags) {
+        @MarshalsPointer
+        public static long toNative(NativeObject o, long flags) {
             if (o == null) {
                 return 0L;
             }
-            return ((NativeObject) o).getHandle();
+            return o.getHandle();
         }
     }
 }

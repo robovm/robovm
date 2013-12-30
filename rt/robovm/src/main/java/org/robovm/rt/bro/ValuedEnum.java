@@ -16,6 +16,7 @@
 package org.robovm.rt.bro;
 
 import org.robovm.rt.bro.annotation.Marshaler;
+import org.robovm.rt.bro.annotation.MarshalsValue;
 
 /**
  * Implemented by {@link Enum} classes which have an explicit integer value.
@@ -34,9 +35,11 @@ public interface ValuedEnum {
      * Marshals a {@link ValuedEnum} as an 8-bit signed value.
      */
     public static class AsSignedByteMarshaler {
-        public static Enum<?> toObject(Enum<?>[] values, byte value, long flags) {
-            return AsLongMarshaler.toObject(values, value, flags);
+        @MarshalsValue
+        public static <T extends Enum<T> & ValuedEnum> ValuedEnum toObject(Class<T> cls, byte value, long flags) {
+            return AsLongMarshaler.toObject(cls, value, flags);
         }
+        @MarshalsValue
         public static byte toNative(Enum<?> v, long flags) {
             return (byte) ((ValuedEnum) v).value();
         }
@@ -46,11 +49,13 @@ public interface ValuedEnum {
      * Marshals a {@link ValuedEnum} as an 8-bit unsigned value.
      */
     public static class AsUnsignedByteMarshaler {
-        public static Enum<?> toObject(Enum<?>[] values, byte value, long flags) {
-            return AsLongMarshaler.toObject(values, value & 0xffL, flags);
+        @MarshalsValue
+        public static <T extends Enum<T> & ValuedEnum> ValuedEnum toObject(Class<T> cls, byte value, long flags) {
+            return AsLongMarshaler.toObject(cls, value & 0xffL, flags);
         }
-        public static byte toNative(Enum<?> v, long flags) {
-            return (byte) ((ValuedEnum) v).value();
+        @MarshalsValue
+        public static byte toNative(ValuedEnum v, long flags) {
+            return (byte) v.value();
         }
     }
 
@@ -58,11 +63,13 @@ public interface ValuedEnum {
      * Marshals a {@link ValuedEnum} as a 16-bit signed value.
      */
     public static class AsSignedShortMarshaler {
-        public static Enum<?> toObject(Enum<?>[] values, short value, long flags) {
-            return AsLongMarshaler.toObject(values, value, flags);
+        @MarshalsValue
+        public static <T extends Enum<T> & ValuedEnum> ValuedEnum toObject(Class<T> cls, short value, long flags) {
+            return AsLongMarshaler.toObject(cls, value, flags);
         }
-        public static short toNative(Enum<?> v, long flags) {
-            return (short) ((ValuedEnum) v).value();
+        @MarshalsValue
+        public static short toNative(ValuedEnum v, long flags) {
+            return (short) v.value();
         }
     }
 
@@ -70,11 +77,13 @@ public interface ValuedEnum {
      * Marshals a {@link ValuedEnum} as a 16-bit unsigned value.
      */
     public static class AsUnsignedShortMarshaler {
-        public static Enum<?> toObject(Enum<?>[] values, short value, long flags) {
-            return AsLongMarshaler.toObject(values, value & 0xffffL, flags);
+        @MarshalsValue
+        public static <T extends Enum<T> & ValuedEnum> ValuedEnum toObject(Class<T> cls, short value, long flags) {
+            return AsLongMarshaler.toObject(cls, value & 0xffffL, flags);
         }
-        public static short toNative(Enum<?> v, long flags) {
-            return (short) ((ValuedEnum) v).value();
+        @MarshalsValue
+        public static short toNative(ValuedEnum v, long flags) {
+            return (short) v.value();
         }
     }
 
@@ -83,11 +92,13 @@ public interface ValuedEnum {
      * default marshaler for {@link ValuedEnum}s.
      */
     public static class AsSignedIntMarshaler {
-        public static Enum<?> toObject(Enum<?>[] values, int value, long flags) {
-            return AsLongMarshaler.toObject(values, value, flags);
+        @MarshalsValue
+        public static <T extends Enum<T> & ValuedEnum> ValuedEnum toObject(Class<T> cls, int value, long flags) {
+            return AsLongMarshaler.toObject(cls, value, flags);
         }
-        public static int toNative(Enum<?> v, long flags) {
-            return (int) ((ValuedEnum) v).value();
+        @MarshalsValue
+        public static int toNative(ValuedEnum v, long flags) {
+            return (int) v.value();
         }
     }
     
@@ -95,11 +106,13 @@ public interface ValuedEnum {
      * Marshals a {@link ValuedEnum} as a 32-bit unsigned value.
      */
     public static class AsUnsignedIntMarshaler {
-        public static Enum<?> toObject(Enum<?>[] values, int value, long flags) {
-            return AsLongMarshaler.toObject(values, value & 0xffffffffL, flags);
+        @MarshalsValue
+        public static <T extends Enum<T> & ValuedEnum> ValuedEnum toObject(Class<T> cls, int value, long flags) {
+            return AsLongMarshaler.toObject(cls, value & 0xffffffffL, flags);
         }
-        public static int toNative(Enum<?> v, long flags) {
-            return (int) ((ValuedEnum) v).value();
+        @MarshalsValue
+        public static int toNative(ValuedEnum v, long flags) {
+            return (int) v.value();
         }
     }
     
@@ -107,7 +120,9 @@ public interface ValuedEnum {
      * Marshals a {@link ValuedEnum} as a 64-bit value.
      */
     public static class AsLongMarshaler {
-        public static Enum<?> toObject(Enum<?>[] values, long value, long flags) {
+        @MarshalsValue
+        public static <T extends Enum<T> & ValuedEnum> ValuedEnum toObject(Class<T> cls, long value, long flags) {
+            T[] values = Enum.getSharedConstants(cls);
             int length = values.length;
             if (length == 0) {
                 throw new AssertionError("Enum class has no values!");
@@ -116,7 +131,7 @@ public interface ValuedEnum {
                 Enum<?> e = values[i];
                 ValuedEnum v = (ValuedEnum) e;
                 if (v.value() == value) {
-                    return e;
+                    return v;
                 }
             }
             Class<?> enumType = values[0].getClass();
@@ -125,8 +140,8 @@ public interface ValuedEnum {
                     + enumType.getName());
         }
         
-        public static long toNative(Enum<?> v, long flags) {
-            return ((ValuedEnum) v).value();
+        public static long toNative(ValuedEnum v, long flags) {
+            return v.value();
         }
     }
 }

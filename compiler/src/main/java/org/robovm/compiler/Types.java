@@ -319,6 +319,28 @@ public class Types {
         return descriptor.charAt(0) == '[';
     }
     
+    public static boolean isNativeObject(soot.Type t) {
+        if (t instanceof RefType) {
+            return isNativeObject(((RefType) t).getSootClass());
+        }
+        return false;
+    }
+    
+    public static boolean isNativeObject(SootClass sc) {
+        return isSubclass(sc, "org.robovm.rt.bro.NativeObject");
+    }
+    
+    public static boolean isStruct(soot.Type t) {
+        if (t instanceof RefType) {
+            return isStruct(((RefType) t).getSootClass());
+        }
+        return false;
+    }
+    
+    public static boolean isStruct(SootClass sc) {
+        return isSubclass(sc, "org.robovm.rt.bro.Struct");
+    }
+    
     public static boolean isPrimitiveComponentType(String descriptor) {
         if (!isArray(descriptor)) {
             throw new IllegalArgumentException("Not an array");
@@ -401,6 +423,13 @@ public class Types {
             if (className.equals(clazz.getName())) {
                 return true;
             }
+        }
+        return false;
+    }
+    
+    public static boolean isInstanceOfClass(soot.Type t, String className) {
+        if (t instanceof RefType) {
+            return isInstanceOfClass(((RefType) t).getSootClass(), className);
         }
         return false;
     }

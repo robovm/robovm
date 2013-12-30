@@ -26,15 +26,18 @@ import static org.robovm.compiler.llvm.ParameterAttribute.*;
 import static org.robovm.compiler.llvm.Type.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import org.robovm.compiler.clazz.Clazz;
+import org.robovm.compiler.Bro.MarshalerFlags;
+import org.robovm.compiler.MarshalerLookup.MarshalSite;
+import org.robovm.compiler.MarshalerLookup.MarshalerMethod;
+import org.robovm.compiler.MarshalerLookup.PointerMarshalerMethod;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.llvm.Argument;
 import org.robovm.compiler.llvm.BasicBlockRef;
+import org.robovm.compiler.llvm.Bitcast;
 import org.robovm.compiler.llvm.Br;
 import org.robovm.compiler.llvm.ConstantBitcast;
 import org.robovm.compiler.llvm.DataLayout;
@@ -43,7 +46,6 @@ import org.robovm.compiler.llvm.FunctionType;
 import org.robovm.compiler.llvm.Global;
 import org.robovm.compiler.llvm.Icmp;
 import org.robovm.compiler.llvm.Icmp.Condition;
-import org.robovm.compiler.llvm.Bitcast;
 import org.robovm.compiler.llvm.IntegerConstant;
 import org.robovm.compiler.llvm.Label;
 import org.robovm.compiler.llvm.Load;
@@ -60,11 +62,7 @@ import org.robovm.compiler.llvm.VariableRef;
 import org.robovm.compiler.trampoline.Invokestatic;
 import org.robovm.compiler.trampoline.LdcClass;
 
-import soot.LongType;
-import soot.RefType;
-import soot.SootClass;
 import soot.SootMethod;
-import soot.VoidType;
 
 /**
  * @author niklas
@@ -76,24 +74,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         super(config);
     }
 
-    private void validateBridgeMethod(SootMethod method) {
-        if (!canMarshal(method)) {
-            throw new IllegalArgumentException("No @Marshaler for return type of" 
-                    + " @Bridge annotated method '" + method.getDeclaration() + "' in class " 
-                    + method.getDeclaringClass() + " found");
-        }
-        for (int i = 0; i < method.getParameterCount(); i++) {
-            if (!canMarshal(method, i)) {
-                throw new IllegalArgumentException("No @Marshaler for parameter " + (i + 1) 
-                        + " of @Bridge annotated method '" + method.getDeclaration() + "' in class " 
-                        + method.getDeclaringClass() + " found");
-            }            
-        }
-    }
-    
     protected void doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
-        validateBridgeMethod(method);
-
         Function fn = FunctionBuilder.method(method);
         moduleBuilder.addFunction(fn);
         
@@ -115,7 +96,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             
             Arch arch = config.getArch();
             OS os = config.getOs();
-            int size = dataLayout.getAllocSize(getStructType(dataLayout, originalMethod.getReturnType()));
+            int size = dataLayout.getAllocSize(getStructType(originalMethod.getReturnType()));
             if (!os.isReturnedInRegisters(arch, size)) {
                 method = createFakeStructRetMethod(method);
                 
@@ -137,7 +118,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             }
         }
         
-        FunctionType targetFnType = getBridgeFunctionType(dataLayout, method);
+        FunctionType targetFnType = getBridgeFunctionType(method);
         if (method == originalMethod && passByValue) {
             // Returns a small struct. We need to change the return type to
             // i8/i16/i32/i64.
@@ -188,21 +169,15 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             soot.Type type = method.getParameterType(i);
             if (needsMarshaler(type)) {
 
-                String marshalerClassName = getMarshalerClassName(method, i);
+                MarshalerMethod marshalerMethod = config.getMarshalerLookup().findMarshalerMethod(new MarshalSite(method, i));
                 
                 // The return type of the marshaler's toNative() method is derived from the target function type.
                 Type nativeType = targetParameterTypes[i];
 
                 if (nativeType instanceof PrimitiveType) {
-                    if (isEnum(type)) {
-                        Value nativeValue = marshalEnumObjectToNative(fn, marshalerClassName, nativeType, env, 
-                                args.get(i).getValue(), MarshalerFlags.CALL_TYPE_BRIDGE);
-                        args.set(i, new Argument(nativeValue));
-                    } else {
-                        Value nativeValue = marshalValueObjectToNative(fn, marshalerClassName, nativeType, env, 
-                                args.get(i).getValue(), MarshalerFlags.CALL_TYPE_BRIDGE);
-                        args.set(i, new Argument(nativeValue));
-                    }
+                    Value nativeValue = marshalValueObjectToNative(fn, marshalerMethod, nativeType, env, 
+                            args.get(i).getValue(), MarshalerFlags.CALL_TYPE_BRIDGE);
+                    args.set(i, new Argument(nativeValue));
                 } else {
                     ParameterAttribute[] parameterAttributes = new ParameterAttribute[0];
                     if (isPassByValue(method, i) || isStructRet(method, i)) {
@@ -221,7 +196,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
                     MarshaledArg marshaledArg = new MarshaledArg();
                     marshaledArg.paramIndex = i;
                     marshaledArgs.add(marshaledArg);
-                    Value nativeValue = marshalObjectToNative(fn, marshalerClassName, marshaledArg, nativeType, env, args.get(i).getValue(),
+                    Value nativeValue = marshalObjectToNative(fn, marshalerMethod, marshaledArg, nativeType, env, args.get(i).getValue(),
                             MarshalerFlags.CALL_TYPE_BRIDGE);
                     args.set(i, new Argument(nativeValue, parameterAttributes));
                 }
@@ -246,7 +221,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         
         // Marshal the return value
         if (needsMarshaler(method.getReturnType())) {
-            String marshalerClassName = getMarshalerClassName(method);
+            MarshalerMethod marshalerMethod = config.getMarshalerLookup().findMarshalerMethod(new MarshalSite(method));
             String targetClassName = getInternalName(method.getReturnType());
             
             if (passByValue) {
@@ -257,18 +232,13 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
                 fn.add(new Bitcast(src, stackCopy, I8_PTR));
                 Value heapCopy = call(fn, BC_COPY_STRUCT, env, src.ref(), 
                         new IntegerConstant(dataLayout.getAllocSize(result.getType())));
-                result = marshalNativeToObject(fn, marshalerClassName, null, env, 
+                result = marshalNativeToObject(fn, marshalerMethod, null, env, 
                         targetClassName, heapCopy, MarshalerFlags.CALL_TYPE_BRIDGE);
             } else if (targetFnType.getReturnType() instanceof PrimitiveType) {
-                if (isEnum(method.getReturnType())) {
-                    result = marshalNativeToEnumObject(fn, marshalerClassName, env, 
-                            targetClassName, result, MarshalerFlags.CALL_TYPE_BRIDGE);
-                } else {
-                    result = marshalNativeToValueObject(fn, marshalerClassName, env, 
-                            targetClassName, result, MarshalerFlags.CALL_TYPE_BRIDGE);
-                }
+                result = marshalNativeToValueObject(fn, marshalerMethod, env, 
+                        targetClassName, result, MarshalerFlags.CALL_TYPE_BRIDGE);
             } else {
-                result = marshalNativeToObject(fn, marshalerClassName, null, env, 
+                result = marshalNativeToObject(fn, marshalerMethod, null, env, 
                         targetClassName, result, MarshalerFlags.CALL_TYPE_BRIDGE);
             }
         } else if (hasPointerAnnotation(method)) {
@@ -297,20 +267,18 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
 
     private void updateObject(SootMethod method, Function fn, Value env, long flags, List<MarshaledArg> marshaledArgs) {
         for (MarshaledArg value : marshaledArgs) {
-            String marshalerClassName = getMarshalerClassName(method, value.paramIndex);
-            Clazz marshalerClazz = config.getClazzes().load(marshalerClassName);
-            if (marshalerClazz != null) {
-                SootClass marshalerSootClass = marshalerClazz.getSootClass();
-                if (!marshalerSootClass.isPhantom() && marshalerSootClass.declaresMethod("updateObject", 
-                        Arrays.asList(RefType.v("java.lang.Object"), LongType.v(), LongType.v()), VoidType.v())) {
-                    // Call the Marshaler's updateObject() method
-                    Invokestatic invokestatic = new Invokestatic(
-                            getInternalName(method.getDeclaringClass()), marshalerClassName, 
-                            "updateObject", "(Ljava/lang/Object;JJ)V");
-                    trampolines.add(invokestatic);
-                    call(fn, invokestatic.getFunctionRef(), 
-                            env, value.object, value.handle, new IntegerConstant(flags));
-                }
+            MarshalerMethod marshalerMethod = config.getMarshalerLookup().findMarshalerMethod(new MarshalSite(method, value.paramIndex));
+            SootMethod afterMethod = ((PointerMarshalerMethod) marshalerMethod).getAfterBridgeCallMethod();
+            if (afterMethod != null) {
+                Invokestatic invokestatic = new Invokestatic(
+                        getInternalName(method.getDeclaringClass()),
+                        getInternalName(afterMethod.getDeclaringClass()), 
+                        afterMethod.getName(),
+                        getDescriptor(afterMethod));
+                trampolines.add(invokestatic);
+                call(fn, invokestatic.getFunctionRef(), 
+                        env, value.object, value.handle, 
+                        new IntegerConstant(flags));
             }
         }
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2013 Trillian AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.cocoatouch.foundation;
+package org.robovm.rt.bro.annotation;
 
-import org.robovm.objc.ObjCProtocol;
-import org.robovm.rt.bro.annotation.Marshaler;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import static org.robovm.rt.bro.MarshalerFlags.*;
 
 /**
- * Root interface for all protocol interfaces in the cocoatouch bindings. This
- * interface adds a {@link Marshaler} for {@link String}s to/from {@link NSString}.
+ *
+ * @version $Id$
  */
-@Marshaler(NSString.AsStringMarshaler.class)
-public interface NSObjectProtocol extends ObjCProtocol {
-
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface MarshalsPointer {
+    long[] supportedCallTypes() default { CALL_TYPE_BRIDGE, CALL_TYPE_CALLBACK, 
+        CALL_TYPE_STRUCT_MEMBER, CALL_TYPE_PTR };
 }

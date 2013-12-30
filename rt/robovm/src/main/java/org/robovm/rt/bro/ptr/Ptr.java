@@ -24,6 +24,7 @@ import org.robovm.rt.bro.BuiltinMarshalers;
 import org.robovm.rt.bro.MarshalerFlags;
 import org.robovm.rt.bro.NativeObject;
 import org.robovm.rt.bro.Struct;
+import org.robovm.rt.bro.annotation.MarshalsPointer;
 import org.robovm.rt.bro.annotation.Pointer;
 import org.robovm.rt.bro.annotation.StructMember;
 
@@ -87,64 +88,77 @@ public abstract class Ptr<S extends NativeObject, T extends Ptr<S, T>> extends S
         try {
             Method toObject = TO_OBJECT_CACHE.get(type);
             if (toObject == null) {
-                Class<?> marshaler = findMarshaler(type, type);
-                toObject = marshaler.getMethod("toObject", Class.class, long.class, long.class);
+                toObject = findMarshaler(type, type);
                 TO_OBJECT_CACHE.put(type, toObject);
             }
             return (S) toObject.invoke(null, type, handle, MarshalerFlags.CALL_TYPE_PTR);
         } catch (InvocationTargetException e) {
-            throw new Error(e);
-        } catch (NoSuchMethodException e) {
             throw new Error(e);
         } catch (IllegalAccessException e) {
             throw new Error(e);
         }
     }
     
-    private static boolean match(Class<?> findClass, Class<?> inClass, org.robovm.rt.bro.annotation.Marshaler anno) {
-        Class<?> type = anno.type();
-        return type == org.robovm.rt.bro.annotation.Marshaler.class 
-                && inClass.isAssignableFrom(findClass) || type.isAssignableFrom(findClass);
-    }
-    
-    private static Class<?> findMarshaler0(Class<?> findClass, Class<?> inClass) {
-        org.robovm.rt.bro.annotation.Marshaler anno1 = 
-                inClass.getAnnotation(org.robovm.rt.bro.annotation.Marshaler.class);
-        org.robovm.rt.bro.annotation.Marshalers anno2 = 
-                inClass.getAnnotation(org.robovm.rt.bro.annotation.Marshalers.class);
-        if (anno1 != null) {
-            if (match(findClass, inClass, anno1)) {
-                return anno1.value();
-            }
-        }
-        if (anno2 != null) {
-            for (org.robovm.rt.bro.annotation.Marshaler m : anno2.value()) {
-                if (match(findClass, inClass, m)) {
-                    return m.value();
+    private static Method find(Class<?> findClass, Class<?> inClass, org.robovm.rt.bro.annotation.Marshaler anno) {
+        Class<?> marshalerClass = anno.value();
+        for (Method method : marshalerClass.getMethods()) {
+            if (method.isAnnotationPresent(MarshalsPointer.class)) {
+                // Is this a valid marshaler method? The signature should match
+                // T toObject(Class, long, long)
+                Class<?> returnType = method.getReturnType();
+                Class<?>[] paramTypes = method.getParameterTypes();
+                if (!returnType.isPrimitive() 
+                        && paramTypes.length == 3 && paramTypes[0] == Class.class 
+                        && paramTypes[1] == long.class && paramTypes[2] == long.class) {
+                    if (returnType.isAssignableFrom(findClass)) {
+                        return method;
+                    }
                 }
             }
         }
         return null;
     }
     
-    private static Class<?> findMarshaler(Class<?> findClass, Class<?> inClass) {
+    private static Method findMarshaler0(Class<?> findClass, Class<?> inClass) {
+        org.robovm.rt.bro.annotation.Marshaler anno1 = 
+                inClass.getAnnotation(org.robovm.rt.bro.annotation.Marshaler.class);
+        org.robovm.rt.bro.annotation.Marshalers anno2 = 
+                inClass.getAnnotation(org.robovm.rt.bro.annotation.Marshalers.class);
+        if (anno1 != null) {
+            Method method = find(findClass, inClass, anno1);
+            if (method != null) {
+                return method;
+            }
+        }
+        if (anno2 != null) {
+            for (org.robovm.rt.bro.annotation.Marshaler m : anno2.value()) {
+                Method method = find(findClass, inClass, m);
+                if (method != null) {
+                    return method;
+                }
+            }
+        }
+        return null;
+    }
+    
+    private static Method findMarshaler(Class<?> findClass, Class<?> inClass) {
         // Search for a marshaler on the class and its superclasses.
         Class<?> c = inClass;
         while (c != null) {
-            Class<?> marshaler = findMarshaler0(findClass, c);
+            Method marshaler = findMarshaler0(findClass, c);
             if (marshaler != null) {
                 return marshaler;
             }
             c = c.getSuperclass();
         }
         for (Class<?> intf : inClass.getInterfaces()) {
-            Class<?> marshaler = findMarshaler(findClass, intf);
+            Method marshaler = findMarshaler(findClass, intf);
             if (marshaler != null) {
                 return marshaler;
             }
         }
         
-        Class<?> marshaler = findMarshaler0(findClass, BuiltinMarshalers.class);
+        Method marshaler = findMarshaler0(findClass, BuiltinMarshalers.class);
         if (marshaler != null) {
             return marshaler;
         }

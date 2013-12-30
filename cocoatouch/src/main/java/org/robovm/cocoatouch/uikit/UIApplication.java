@@ -382,13 +382,16 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector beginBackgroundTaskWithExpirationHandler$ = Selector.register("beginBackgroundTaskWithExpirationHandler:");
-    @Bridge private native static int objc_beginBackgroundTask(UIApplication __self__, Selector __cmd__, VoidBlock handler);
-    @Bridge private native static int objc_beginBackgroundTaskSuper(ObjCSuper __super__, Selector __cmd__, VoidBlock handler);
+    @Bridge private native static int objc_beginBackgroundTask(UIApplication __self__, Selector __cmd__, ObjCBlock handler);
+    @Bridge private native static int objc_beginBackgroundTaskSuper(ObjCSuper __super__, Selector __cmd__, ObjCBlock handler);
     /**
      * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/beginBackgroundTaskWithExpirationHandler:">- (UIBackgroundTaskIdentifier)beginBackgroundTaskWithExpirationHandler:(void (^)(void))handler</a>
      * @since Available in iOS 4.0 and later.
      */
     public int beginBackgroundTask(VoidBlock handler) {
+        return beginBackgroundTask(VoidBlock.Marshaler.toObjCBlock(handler));
+    }
+    protected int beginBackgroundTask(ObjCBlock handler) {
         if (customClass) { return objc_beginBackgroundTaskSuper(getSuper(), beginBackgroundTaskWithExpirationHandler$, handler); } else { return objc_beginBackgroundTask(this, beginBackgroundTaskWithExpirationHandler$, handler); }
     }
     
@@ -613,13 +616,16 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector setKeepAliveTimeout$handler$ = Selector.register("setKeepAliveTimeout:handler:");
-    @Bridge private native static boolean objc_setKeepAliveTimeout(UIApplication __self__, Selector __cmd__, double timeout, VoidBlock keepAliveHandler);
-    @Bridge private native static boolean objc_setKeepAliveTimeoutSuper(ObjCSuper __super__, Selector __cmd__, double timeout, VoidBlock keepAliveHandler);
+    @Bridge private native static boolean objc_setKeepAliveTimeout(UIApplication __self__, Selector __cmd__, double timeout, ObjCBlock keepAliveHandler);
+    @Bridge private native static boolean objc_setKeepAliveTimeoutSuper(ObjCSuper __super__, Selector __cmd__, double timeout, ObjCBlock keepAliveHandler);
     /**
      * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/UIApplication/setKeepAliveTimeout:handler:">- (BOOL)setKeepAliveTimeout:(NSTimeInterval)timeout handler:(void (^)(void))keepAliveHandler</a>
      * @since Available in iOS 4.0 and later.
      */
     public boolean setKeepAliveTimeout(double timeout, VoidBlock keepAliveHandler) {
+        return setKeepAliveTimeout(timeout, VoidBlock.Marshaler.toObjCBlock(keepAliveHandler));
+    }
+    protected boolean setKeepAliveTimeout(double timeout, ObjCBlock keepAliveHandler) {
         if (customClass) { return objc_setKeepAliveTimeoutSuper(getSuper(), setKeepAliveTimeout$handler$, timeout, keepAliveHandler); } else { return objc_setKeepAliveTimeout(this, setKeepAliveTimeout$handler$, timeout, keepAliveHandler); }
     }
     
@@ -706,7 +712,7 @@ import org.robovm.rt.bro.ptr.*;
         @Callback @BindSelector("setStatusBarStyle:") public static void setStatusBarStyle(UIApplication __self__, Selector __cmd__, UIStatusBarStyle statusBarStyle) { __self__.setStatusBarStyle(statusBarStyle); }
         @Callback @BindSelector("userInterfaceLayoutDirection") public static UIUserInterfaceLayoutDirection getUserInterfaceLayoutDirection(UIApplication __self__, Selector __cmd__) { return __self__.getUserInterfaceLayoutDirection(); }
         @Callback @BindSelector("windows") public static NSArray getWindows(UIApplication __self__, Selector __cmd__) { return __self__.getWindows(); }
-        @Callback @BindSelector("beginBackgroundTaskWithExpirationHandler:") public static int beginBackgroundTask(UIApplication __self__, Selector __cmd__, VoidBlock handler) { return __self__.beginBackgroundTask(handler); }
+        @Callback @BindSelector("beginBackgroundTaskWithExpirationHandler:") public static int beginBackgroundTask(UIApplication __self__, Selector __cmd__, ObjCBlock handler) { return __self__.beginBackgroundTask(handler); }
         @Callback @BindSelector("beginIgnoringInteractionEvents") public static void beginIgnoringInteractionEvents(UIApplication __self__, Selector __cmd__) { __self__.beginIgnoringInteractionEvents(); }
         @Callback @BindSelector("beginReceivingRemoteControlEvents") public static void beginReceivingRemoteControlEvents(UIApplication __self__, Selector __cmd__) { __self__.beginReceivingRemoteControlEvents(); }
         @Callback @BindSelector("canOpenURL:") public static boolean canOpenURL(UIApplication __self__, Selector __cmd__, NSURL url) { return __self__.canOpenURL(url); }
@@ -727,7 +733,7 @@ import org.robovm.rt.bro.ptr.*;
         @Callback @BindSelector("scheduleLocalNotification:") public static void scheduleLocalNotification(UIApplication __self__, Selector __cmd__, UILocalNotification notification) { __self__.scheduleLocalNotification(notification); }
         @Callback @BindSelector("sendAction:to:from:forEvent:") public static boolean sendAction(UIApplication __self__, Selector __cmd__, Selector action, NSObject target, NSObject sender, UIEvent event) { return __self__.sendAction(action, target, sender, event); }
         @Callback @BindSelector("sendEvent:") public static void sendEvent(UIApplication __self__, Selector __cmd__, UIEvent event) { __self__.sendEvent(event); }
-        @Callback @BindSelector("setKeepAliveTimeout:handler:") public static boolean setKeepAliveTimeout(UIApplication __self__, Selector __cmd__, double timeout, VoidBlock keepAliveHandler) { return __self__.setKeepAliveTimeout(timeout, keepAliveHandler); }
+        @Callback @BindSelector("setKeepAliveTimeout:handler:") public static boolean setKeepAliveTimeout(UIApplication __self__, Selector __cmd__, double timeout, ObjCBlock keepAliveHandler) { return __self__.setKeepAliveTimeout(timeout, keepAliveHandler); }
         @Callback @BindSelector("setNewsstandIconImage:") public static void setNewsstandIconImage(UIApplication __self__, Selector __cmd__, UIImage image) { __self__.setNewsstandIconImage(image); }
         @Callback @BindSelector("setStatusBarHidden:withAnimation:") public static void setStatusBarHidden(UIApplication __self__, Selector __cmd__, boolean hidden, UIStatusBarAnimation animation) { __self__.setStatusBarHidden(hidden, animation); }
         @Callback @BindSelector("setStatusBarOrientation:animated:") public static void setStatusBarOrientation(UIApplication __self__, Selector __cmd__, UIInterfaceOrientation interfaceOrientation, boolean animated) { __self__.setStatusBarOrientation(interfaceOrientation, animated); }

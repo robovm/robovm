@@ -102,13 +102,13 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector segueWithIdentifier$source$destination$performHandler$ = Selector.register("segueWithIdentifier:source:destination:performHandler:");
-    @Bridge private native static NSObject objc_getSegue(ObjCClass __self__, Selector __cmd__, String identifier, UIViewController source, UIViewController destination, VoidBlock performHandler);
+    @Bridge private native static NSObject objc_getSegue(ObjCClass __self__, Selector __cmd__, String identifier, UIViewController source, UIViewController destination, ObjCBlock performHandler);
     /**
      * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIStoryboardSegue_Class/Reference/Reference.html#//apple_ref/occ/clm/UIStoryboardSegue/segueWithIdentifier:source:destination:performHandler:">+ (id)segueWithIdentifier:(NSString *)identifier source:(UIViewController *)source destination:(UIViewController *)destination performHandler:(void (^)(void))performHandler</a>
      * @since Available in iOS 6.0 and later.
      */
     public static NSObject getSegue(String identifier, UIViewController source, UIViewController destination, VoidBlock performHandler) {
-        return objc_getSegue(objCClass, segueWithIdentifier$source$destination$performHandler$, identifier, source, destination, performHandler);
+        return objc_getSegue(objCClass, segueWithIdentifier$source$destination$performHandler$, identifier, source, destination, VoidBlock.Marshaler.toObjCBlock(performHandler));
     }
     
     private static final Selector perform = Selector.register("perform");

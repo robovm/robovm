@@ -24,6 +24,8 @@ import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Type.*;
 
 import org.robovm.compiler.Bro.MarshalerFlags;
+import org.robovm.compiler.MarshalerLookup.MarshalSite;
+import org.robovm.compiler.MarshalerLookup.MarshalerMethod;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.llvm.ArrayType;
@@ -62,7 +64,7 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
         super.reset(clazz);
         structType = null;
         if (isStruct(sootClass)) {
-            structType = getStructType(config.getDataLayout(), sootClass);
+            structType = getStructType(sootClass);
         }
     }
     
@@ -93,7 +95,7 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
         function.add(new Inttoptr(handlePtr, handleI64.ref(), handlePtr.getType()));
         
         int offset = getStructMemberOffset(method) + 1; // Add 1 since the first type in structType is the superclass type or {}.      
-        Type memberType = getStructMemberType(config.getDataLayout(), method);
+        Type memberType = getStructMemberType(method);
         Variable memberPtr = function.newVariable(new PointerType(memberType));
         if (memberType != structType.getTypeAt(offset)) {
             // Several @StructMembers of different types have this offset (union)
@@ -123,26 +125,21 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
             }
             
             if (needsMarshaler(type)) {
-                String marshalerClassName = getMarshalerClassName(method);
+                MarshalerMethod marshalerMethod = config.getMarshalerLookup().findMarshalerMethod(new MarshalSite(method));
                 String targetClassName = getInternalName(type);
                 
                 if (memberType instanceof PrimitiveType) {
-                    if (isEnum(type)) {
-                        result = marshalNativeToEnumObject(function, marshalerClassName, env, 
-                                targetClassName, result, MarshalerFlags.CALL_TYPE_STRUCT_MEMBER);
-                    } else {
-                        // Value type wrapping a primitive value (e.g. Integer and Bits)
-                        result = marshalNativeToValueObject(function, marshalerClassName, env, 
-                                targetClassName, result, MarshalerFlags.CALL_TYPE_STRUCT_MEMBER);
-                    }
+                    // Value type wrapping a primitive value (e.g. Integer and Bits)
+                    result = marshalNativeToValueObject(function, marshalerMethod, env, 
+                            targetClassName, result, MarshalerFlags.CALL_TYPE_STRUCT_MEMBER);
                 } else {
-                    if (memberType instanceof ArrayType && !isStruct(type)) {
+                    if (memberType instanceof ArrayType) {
                         // Array
-                        result = marshalNativeToArray(function, marshalerClassName, env, 
+                        result = marshalNativeToArray(function, marshalerMethod, env, 
                                 targetClassName, result, MarshalerFlags.CALL_TYPE_STRUCT_MEMBER,
                                 getArrayDimensions(method));
                     } else {
-                        result = marshalNativeToObject(function, marshalerClassName, null, env, 
+                        result = marshalNativeToObject(function, marshalerMethod, null, env, 
                                 targetClassName, result, MarshalerFlags.CALL_TYPE_STRUCT_MEMBER);
                     }
                 }
@@ -159,16 +156,11 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
             soot.Type type = method.getParameterType(0);
             
             if (needsMarshaler(type)) {
-                String marshalerClassName = getMarshalerClassName(method, 0);
+                MarshalerMethod marshalerMethod = config.getMarshalerLookup().findMarshalerMethod(new MarshalSite(method, 0));
                 
                 if (memberType instanceof PrimitiveType) {
-                    if (isEnum(type)) {
-                        nativeValue = marshalEnumObjectToNative(function, marshalerClassName, memberType, env, 
-                                nativeValue, MarshalerFlags.CALL_TYPE_STRUCT_MEMBER);
-                    } else {
-                        nativeValue = marshalValueObjectToNative(function, marshalerClassName, memberType, env, 
-                                nativeValue, MarshalerFlags.CALL_TYPE_STRUCT_MEMBER);
-                    }
+                    nativeValue = marshalValueObjectToNative(function, marshalerMethod, memberType, env, 
+                            nativeValue, MarshalerFlags.CALL_TYPE_STRUCT_MEMBER);
                 } else {
                     if (memberType instanceof StructureType || memberType instanceof ArrayType) {
                         // The parameter must not be null. We assume that Structs 
@@ -177,13 +169,13 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
                         call(function, CHECK_NULL, env, nativeValue);
                     }
                     
-                    if (memberType instanceof ArrayType && !isStruct(type)) {
+                    if (memberType instanceof ArrayType) {
                         // Array
-                        marshalArrayToNative(function, marshalerClassName, env, nativeValue, memberPtr.ref(), 
+                        marshalArrayToNative(function, marshalerMethod, env, nativeValue, memberPtr.ref(), 
                                 MarshalerFlags.CALL_TYPE_STRUCT_MEMBER, getArrayDimensions(method, 0));
                         nativeValue = null;
                     } else {
-                        nativeValue = marshalObjectToNative(function, marshalerClassName, null, memberType, env, nativeValue,
+                        nativeValue = marshalObjectToNative(function, marshalerMethod, null, memberType, env, nativeValue,
                                 MarshalerFlags.CALL_TYPE_STRUCT_MEMBER);
                     }
                 }

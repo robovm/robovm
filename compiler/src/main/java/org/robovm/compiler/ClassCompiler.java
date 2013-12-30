@@ -16,7 +16,7 @@
  */
 package org.robovm.compiler;
 
-import static org.robovm.compiler.Bro.*;
+import static org.robovm.compiler.Annotations.*;
 import static org.robovm.compiler.Functions.*;
 import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.Types.*;
@@ -195,6 +195,7 @@ public class ClassCompiler {
     private final Config config;
     private final MethodCompiler methodCompiler;
     private final BridgeMethodCompiler bridgeMethodCompiler;
+    private final CallbackMethodCompiler callbackMethodCompiler;
     private final NativeMethodCompiler nativeMethodCompiler;
     private final StructMemberMethodCompiler structMemberMethodCompiler;
     private final AttributesEncoder attributesEncoder;
@@ -206,6 +207,7 @@ public class ClassCompiler {
         this.config = config;
         this.methodCompiler = new MethodCompiler(config);
         this.bridgeMethodCompiler = new BridgeMethodCompiler(config);
+        this.callbackMethodCompiler = new CallbackMethodCompiler(config);
         this.nativeMethodCompiler = new NativeMethodCompiler(config);
         this.structMemberMethodCompiler = new StructMemberMethodCompiler(config);
         this.attributesEncoder = new AttributesEncoder();
@@ -488,6 +490,7 @@ public class ClassCompiler {
     private void compile(Clazz clazz, OutputStream out) throws IOException {
         methodCompiler.reset(clazz);
         bridgeMethodCompiler.reset(clazz);
+        callbackMethodCompiler.reset(clazz);
         nativeMethodCompiler.reset(clazz);
         structMemberMethodCompiler.reset(clazz);
         sootClass = clazz.getSootClass();
@@ -544,15 +547,18 @@ public class ClassCompiler {
         
         for (SootMethod method : sootClass.getMethods()) {
             String name = method.getName();
-            if (isBridge(method)) {
+            if (hasBridgeAnnotation(method)) {
                 bridgeMethod(method);
             } else if (isStruct(sootClass) && ("_sizeOf".equals(name) 
-                        || "sizeOf".equals(name) || isStructMember(method))) {
+                        || "sizeOf".equals(name) || hasStructMemberAnnotation(method))) {
                 structMember(method);
             } else if (method.isNative()) {
                 nativeMethod(method);
             } else if (!method.isAbstract()) {
                 method(method);
+            }
+            if (hasCallbackAnnotation(method)) {
+                callbackMethod(method);
             }
             if (!name.equals("<clinit>") && !name.equals("<init>") 
                     && !method.isPrivate() && !method.isStatic() 
@@ -949,7 +955,7 @@ public class ClassCompiler {
                 flags |= MI_VARARGS;
             }
             if (Modifier.isNative(m.getModifiers())) {
-                if (!isStruct(sootClass) && !isStructMember(m)) {
+                if (!isStruct(sootClass) && !hasStructMemberAnnotation(m)) {
                     flags |= MI_NATIVE;
                 }
             }
@@ -965,10 +971,10 @@ public class ClassCompiler {
             if (attributesEncoder.methodHasAttributes(m)) {
                 flags |= MI_ATTRIBUTES;
             }
-            if (isBridge(m)) {
+            if (hasBridgeAnnotation(m)) {
                 flags |= MI_BRO_BRIDGE;
             }
-            if (isCallback(m)) {
+            if (hasCallbackAnnotation(m)) {
                 flags |= MI_BRO_CALLBACK;
             }
             if ((t instanceof PrimType || t == VoidType.v()) && m.getParameterCount() == 0) {
@@ -1027,10 +1033,10 @@ public class ClassCompiler {
                     body.add(new ConstantBitcast(new FunctionRef(mangleMethod(m) + "_synchronized", getFunctionType(m)), I8_PTR));
                 }
             }
-            if (isBridge(m)) {
+            if (hasBridgeAnnotation(m)) {
                 body.add(new GlobalRef(BridgeMethodCompiler.getTargetFnPtrName(m), I8_PTR));
             }
-            if (isCallback(m)) {
+            if (hasCallbackAnnotation(m)) {
                 body.add(new AliasRef(mangleMethod(m) + "_callback_i8p", I8_PTR));
             }
         }
@@ -1051,6 +1057,12 @@ public class ClassCompiler {
         bridgeMethodCompiler.compile(mb, method);
         trampolines.addAll(bridgeMethodCompiler.getTrampolines());
         catches.addAll(bridgeMethodCompiler.getCatches());
+    }
+    
+    private void callbackMethod(SootMethod method) {
+        callbackMethodCompiler.compile(mb, method);
+        trampolines.addAll(callbackMethodCompiler.getTrampolines());
+        catches.addAll(callbackMethodCompiler.getCatches());
     }
     
     private void structMember(SootMethod method) {

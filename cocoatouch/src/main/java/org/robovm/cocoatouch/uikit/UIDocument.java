@@ -157,13 +157,16 @@ import org.robovm.rt.bro.ptr.*;
     /*<methods>*/
     
     private static final Selector autosaveWithCompletionHandler$ = Selector.register("autosaveWithCompletionHandler:");
-    @Bridge private native static void objc_autoSave(UIDocument __self__, Selector __cmd__, VoidBooleanBlock completionHandler);
-    @Bridge private native static void objc_autoSaveSuper(ObjCSuper __super__, Selector __cmd__, VoidBooleanBlock completionHandler);
+    @Bridge private native static void objc_autoSave(UIDocument __self__, Selector __cmd__, ObjCBlock completionHandler);
+    @Bridge private native static void objc_autoSaveSuper(ObjCSuper __super__, Selector __cmd__, ObjCBlock completionHandler);
     /**
      * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/autosaveWithCompletionHandler:">- (void)autosaveWithCompletionHandler:(void (^)(BOOL success))completionHandler</a>
      * @since Available in iOS 5.0 and later.
      */
     public void autoSave(VoidBooleanBlock completionHandler) {
+        autoSave(VoidBooleanBlock.Marshaler.toObjCBlock(completionHandler));
+    }
+    protected void autoSave(ObjCBlock completionHandler) {
         if (customClass) { objc_autoSaveSuper(getSuper(), autosaveWithCompletionHandler$, completionHandler); } else { objc_autoSave(this, autosaveWithCompletionHandler$, completionHandler); }
     }
     
@@ -179,13 +182,16 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector closeWithCompletionHandler$ = Selector.register("closeWithCompletionHandler:");
-    @Bridge private native static void objc_close(UIDocument __self__, Selector __cmd__, VoidBooleanBlock completionHandler);
-    @Bridge private native static void objc_closeSuper(ObjCSuper __super__, Selector __cmd__, VoidBooleanBlock completionHandler);
+    @Bridge private native static void objc_close(UIDocument __self__, Selector __cmd__, ObjCBlock completionHandler);
+    @Bridge private native static void objc_closeSuper(ObjCSuper __super__, Selector __cmd__, ObjCBlock completionHandler);
     /**
      * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/closeWithCompletionHandler:">- (void)closeWithCompletionHandler:(void (^)(BOOL success))completionHandler</a>
      * @since Available in iOS 5.0 and later.
      */
     public void close(VoidBooleanBlock completionHandler) {
+        close(VoidBooleanBlock.Marshaler.toObjCBlock(completionHandler));
+    }
+    protected void close(ObjCBlock completionHandler) {
         if (customClass) { objc_closeSuper(getSuper(), closeWithCompletionHandler$, completionHandler); } else { objc_close(this, closeWithCompletionHandler$, completionHandler); }
     }
     
@@ -300,24 +306,30 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector openWithCompletionHandler$ = Selector.register("openWithCompletionHandler:");
-    @Bridge private native static void objc_open(UIDocument __self__, Selector __cmd__, VoidBooleanBlock completionHandler);
-    @Bridge private native static void objc_openSuper(ObjCSuper __super__, Selector __cmd__, VoidBooleanBlock completionHandler);
+    @Bridge private native static void objc_open(UIDocument __self__, Selector __cmd__, ObjCBlock completionHandler);
+    @Bridge private native static void objc_openSuper(ObjCSuper __super__, Selector __cmd__, ObjCBlock completionHandler);
     /**
      * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/openWithCompletionHandler:">- (void)openWithCompletionHandler:(void (^)(BOOL success))completionHandler</a>
      * @since Available in iOS 5.0 and later.
      */
     public void open(VoidBooleanBlock completionHandler) {
+        open(VoidBooleanBlock.Marshaler.toObjCBlock(completionHandler));
+    }
+    protected void open(ObjCBlock completionHandler) {
         if (customClass) { objc_openSuper(getSuper(), openWithCompletionHandler$, completionHandler); } else { objc_open(this, openWithCompletionHandler$, completionHandler); }
     }
     
     private static final Selector performAsynchronousFileAccessUsingBlock$ = Selector.register("performAsynchronousFileAccessUsingBlock:");
-    @Bridge private native static void objc_performAsynchronousFileAccess(UIDocument __self__, Selector __cmd__, VoidBlock block);
-    @Bridge private native static void objc_performAsynchronousFileAccessSuper(ObjCSuper __super__, Selector __cmd__, VoidBlock block);
+    @Bridge private native static void objc_performAsynchronousFileAccess(UIDocument __self__, Selector __cmd__, ObjCBlock block);
+    @Bridge private native static void objc_performAsynchronousFileAccessSuper(ObjCSuper __super__, Selector __cmd__, ObjCBlock block);
     /**
      * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/performAsynchronousFileAccessUsingBlock:">- (void)performAsynchronousFileAccessUsingBlock:(void (^)(void))block</a>
      * @since Available in iOS 5.0 and later.
      */
     public void performAsynchronousFileAccess(VoidBlock block) {
+        performAsynchronousFileAccess(VoidBlock.Marshaler.toObjCBlock(block));
+    }
+    protected void performAsynchronousFileAccess(ObjCBlock block) {
         if (customClass) { objc_performAsynchronousFileAccessSuper(getSuper(), performAsynchronousFileAccessUsingBlock$, block); } else { objc_performAsynchronousFileAccess(this, performAsynchronousFileAccessUsingBlock$, block); }
     }
     
@@ -333,24 +345,30 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector revertToContentsOfURL$completionHandler$ = Selector.register("revertToContentsOfURL:completionHandler:");
-    @Bridge private native static void objc_revert(UIDocument __self__, Selector __cmd__, NSURL url, VoidBooleanBlock completionHandler);
-    @Bridge private native static void objc_revertSuper(ObjCSuper __super__, Selector __cmd__, NSURL url, VoidBooleanBlock completionHandler);
+    @Bridge private native static void objc_revert(UIDocument __self__, Selector __cmd__, NSURL url, ObjCBlock completionHandler);
+    @Bridge private native static void objc_revertSuper(ObjCSuper __super__, Selector __cmd__, NSURL url, ObjCBlock completionHandler);
     /**
      * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/revertToContentsOfURL:completionHandler:">- (void)revertToContentsOfURL:(NSURL *)url completionHandler:(void (^)(BOOL success))completionHandler</a>
      * @since Available in iOS 5.0 and later.
      */
     public void revert(NSURL url, VoidBooleanBlock completionHandler) {
+        revert(url, VoidBooleanBlock.Marshaler.toObjCBlock(completionHandler));
+    }
+    protected void revert(NSURL url, ObjCBlock completionHandler) {
         if (customClass) { objc_revertSuper(getSuper(), revertToContentsOfURL$completionHandler$, url, completionHandler); } else { objc_revert(this, revertToContentsOfURL$completionHandler$, url, completionHandler); }
     }
     
     private static final Selector saveToURL$forSaveOperation$completionHandler$ = Selector.register("saveToURL:forSaveOperation:completionHandler:");
-    @Bridge private native static void objc_save(UIDocument __self__, Selector __cmd__, NSURL url, UIDocumentSaveOperation saveOperation, VoidBooleanBlock completionHandler);
-    @Bridge private native static void objc_saveSuper(ObjCSuper __super__, Selector __cmd__, NSURL url, UIDocumentSaveOperation saveOperation, VoidBooleanBlock completionHandler);
+    @Bridge private native static void objc_save(UIDocument __self__, Selector __cmd__, NSURL url, UIDocumentSaveOperation saveOperation, ObjCBlock completionHandler);
+    @Bridge private native static void objc_saveSuper(ObjCSuper __super__, Selector __cmd__, NSURL url, UIDocumentSaveOperation saveOperation, ObjCBlock completionHandler);
     /**
      * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIDocument_Class/UIDocument/UIDocument.html#//apple_ref/occ/instm/UIDocument/saveToURL:forSaveOperation:completionHandler:">- (void)saveToURL:(NSURL *)url forSaveOperation:(UIDocumentSaveOperation)saveOperation completionHandler:(void (^)(BOOL success))completionHandler</a>
      * @since Available in iOS 5.0 and later.
      */
     public void save(NSURL url, UIDocumentSaveOperation saveOperation, VoidBooleanBlock completionHandler) {
+        save(url, saveOperation, VoidBooleanBlock.Marshaler.toObjCBlock(completionHandler));
+    }
+    protected void save(NSURL url, UIDocumentSaveOperation saveOperation, ObjCBlock completionHandler) {
         if (customClass) { objc_saveSuper(getSuper(), saveToURL$forSaveOperation$completionHandler$, url, saveOperation, completionHandler); } else { objc_save(this, saveToURL$forSaveOperation$completionHandler$, url, saveOperation, completionHandler); }
     }
     
@@ -419,9 +437,9 @@ import org.robovm.rt.bro.ptr.*;
         @Callback @BindSelector("localizedName") public static String getLocalizedName(UIDocument __self__, Selector __cmd__) { return __self__.getLocalizedName(); }
         @Callback @BindSelector("undoManager") public static NSUndoManager getUndoManager(UIDocument __self__, Selector __cmd__) { return __self__.getUndoManager(); }
         @Callback @BindSelector("setUndoManager:") public static void setUndoManager(UIDocument __self__, Selector __cmd__, NSUndoManager undoManager) { __self__.setUndoManager(undoManager); }
-        @Callback @BindSelector("autosaveWithCompletionHandler:") public static void autoSave(UIDocument __self__, Selector __cmd__, VoidBooleanBlock completionHandler) { __self__.autoSave(completionHandler); }
+        @Callback @BindSelector("autosaveWithCompletionHandler:") public static void autoSave(UIDocument __self__, Selector __cmd__, ObjCBlock completionHandler) { __self__.autoSave(completionHandler); }
         @Callback @BindSelector("changeCountTokenForSaveOperation:") public static NSObject changeCountTokenForSaveOperation(UIDocument __self__, Selector __cmd__, UIDocumentSaveOperation saveOperation) { return __self__.changeCountTokenForSaveOperation(saveOperation); }
-        @Callback @BindSelector("closeWithCompletionHandler:") public static void close(UIDocument __self__, Selector __cmd__, VoidBooleanBlock completionHandler) { __self__.close(completionHandler); }
+        @Callback @BindSelector("closeWithCompletionHandler:") public static void close(UIDocument __self__, Selector __cmd__, ObjCBlock completionHandler) { __self__.close(completionHandler); }
         @Callback @BindSelector("contentsForType:error:") public static NSObject contentsForType(UIDocument __self__, Selector __cmd__, String typeName, NSError.Ptr outError) { return __self__.contentsForType(typeName, outError); }
         @Callback @BindSelector("disableEditing") public static void disableEditing(UIDocument __self__, Selector __cmd__) { __self__.disableEditing(); }
         @Callback @BindSelector("enableEditing") public static void enableEditing(UIDocument __self__, Selector __cmd__) { __self__.enableEditing(); }
@@ -432,11 +450,11 @@ import org.robovm.rt.bro.ptr.*;
         @Callback @BindSelector("handleError:userInteractionPermitted:") public static void handleError(UIDocument __self__, Selector __cmd__, NSError error, boolean userInteractionPermitted) { __self__.handleError(error, userInteractionPermitted); }
         @Callback @BindSelector("hasUnsavedChanges") public static boolean hasUnsavedChanges(UIDocument __self__, Selector __cmd__) { return __self__.hasUnsavedChanges(); }
         @Callback @BindSelector("loadFromContents:ofType:error:") public static boolean loadFromContents(UIDocument __self__, Selector __cmd__, NSObject contents, String typeName, NSError.Ptr outError) { return __self__.loadFromContents(contents, typeName, outError); }
-        @Callback @BindSelector("openWithCompletionHandler:") public static void open(UIDocument __self__, Selector __cmd__, VoidBooleanBlock completionHandler) { __self__.open(completionHandler); }
-        @Callback @BindSelector("performAsynchronousFileAccessUsingBlock:") public static void performAsynchronousFileAccess(UIDocument __self__, Selector __cmd__, VoidBlock block) { __self__.performAsynchronousFileAccess(block); }
+        @Callback @BindSelector("openWithCompletionHandler:") public static void open(UIDocument __self__, Selector __cmd__, ObjCBlock completionHandler) { __self__.open(completionHandler); }
+        @Callback @BindSelector("performAsynchronousFileAccessUsingBlock:") public static void performAsynchronousFileAccess(UIDocument __self__, Selector __cmd__, ObjCBlock block) { __self__.performAsynchronousFileAccess(block); }
         @Callback @BindSelector("readFromURL:error:") public static boolean read(UIDocument __self__, Selector __cmd__, NSURL url, NSError.Ptr outError) { return __self__.read(url, outError); }
-        @Callback @BindSelector("revertToContentsOfURL:completionHandler:") public static void revert(UIDocument __self__, Selector __cmd__, NSURL url, VoidBooleanBlock completionHandler) { __self__.revert(url, completionHandler); }
-        @Callback @BindSelector("saveToURL:forSaveOperation:completionHandler:") public static void save(UIDocument __self__, Selector __cmd__, NSURL url, UIDocumentSaveOperation saveOperation, VoidBooleanBlock completionHandler) { __self__.save(url, saveOperation, completionHandler); }
+        @Callback @BindSelector("revertToContentsOfURL:completionHandler:") public static void revert(UIDocument __self__, Selector __cmd__, NSURL url, ObjCBlock completionHandler) { __self__.revert(url, completionHandler); }
+        @Callback @BindSelector("saveToURL:forSaveOperation:completionHandler:") public static void save(UIDocument __self__, Selector __cmd__, NSURL url, UIDocumentSaveOperation saveOperation, ObjCBlock completionHandler) { __self__.save(url, saveOperation, completionHandler); }
         @Callback @BindSelector("updateChangeCountWithToken:forSaveOperation:") public static void updateChangeCount(UIDocument __self__, Selector __cmd__, NSObject changeCountToken, UIDocumentSaveOperation saveOperation) { __self__.updateChangeCount(changeCountToken, saveOperation); }
         @Callback @BindSelector("updateChangeCount:") public static void updateChangeCount(UIDocument __self__, Selector __cmd__, UIDocumentChangeKind change) { __self__.updateChangeCount(change); }
         @Callback @BindSelector("userInteractionNoLongerPermittedForError:") public static void userInteractionNoLongerPermittedForError(UIDocument __self__, Selector __cmd__, NSError error) { __self__.userInteractionNoLongerPermittedForError(error); }

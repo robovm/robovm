@@ -15,14 +15,6 @@
  */
 package org.robovm.rt.bro;
 
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.DoubleBuffer;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.nio.LongBuffer;
-import java.nio.ShortBuffer;
-
 import org.robovm.rt.bro.annotation.Marshaler;
 import org.robovm.rt.bro.annotation.Marshalers;
 
@@ -31,39 +23,16 @@ import org.robovm.rt.bro.annotation.Marshalers;
  * a marshaler.
  */
 @Marshalers({ 
-    @Marshaler(type = byte[].class, value = ArrayMarshalers.ByteArrayMarshaler.class),
-    @Marshaler(type = byte[][].class, value = ArrayMarshalers.ByteArrayMarshaler.class),
-    @Marshaler(type = byte[][][].class, value = ArrayMarshalers.ByteArrayMarshaler.class),
-    @Marshaler(type = short[].class, value = ArrayMarshalers.ShortArrayMarshaler.class),
-    @Marshaler(type = short[][].class, value = ArrayMarshalers.ShortArrayMarshaler.class),
-    @Marshaler(type = short[][][].class, value = ArrayMarshalers.ShortArrayMarshaler.class),
-    @Marshaler(type = char[].class, value = ArrayMarshalers.CharArrayMarshaler.class),
-    @Marshaler(type = char[][].class, value = ArrayMarshalers.CharArrayMarshaler.class),
-    @Marshaler(type = char[][][].class, value = ArrayMarshalers.CharArrayMarshaler.class),
-    @Marshaler(type = int[].class, value = ArrayMarshalers.IntArrayMarshaler.class),
-    @Marshaler(type = int[][].class, value = ArrayMarshalers.IntArrayMarshaler.class),
-    @Marshaler(type = int[][][].class, value = ArrayMarshalers.IntArrayMarshaler.class),
-    @Marshaler(type = long[].class, value = ArrayMarshalers.LongArrayMarshaler.class),
-    @Marshaler(type = long[][].class, value = ArrayMarshalers.LongArrayMarshaler.class),
-    @Marshaler(type = long[][][].class, value = ArrayMarshalers.LongArrayMarshaler.class),
-    @Marshaler(type = float[].class, value = ArrayMarshalers.FloatArrayMarshaler.class),
-    @Marshaler(type = float[][].class, value = ArrayMarshalers.FloatArrayMarshaler.class),
-    @Marshaler(type = float[][][].class, value = ArrayMarshalers.FloatArrayMarshaler.class),
-    @Marshaler(type = double[].class, value = ArrayMarshalers.DoubleArrayMarshaler.class),
-    @Marshaler(type = double[][].class, value = ArrayMarshalers.DoubleArrayMarshaler.class),
-    @Marshaler(type = double[][][].class, value = ArrayMarshalers.DoubleArrayMarshaler.class),
-    @Marshaler(type = Struct[].class, value = Struct.StructArrayMarshaler.class),
-    @Marshaler(type = Struct[][].class, value = Struct.StructArrayMarshaler.class),
-    @Marshaler(type = Struct[][][].class, value = Struct.StructArrayMarshaler.class),
-    @Marshaler(type = ByteBuffer.class, value = BufferMarshalers.BufferMarshaler.class),
-    @Marshaler(type = ShortBuffer.class, value = BufferMarshalers.BufferMarshaler.class),
-    @Marshaler(type = CharBuffer.class, value = BufferMarshalers.BufferMarshaler.class),
-    @Marshaler(type = IntBuffer.class, value = BufferMarshalers.BufferMarshaler.class),
-    @Marshaler(type = LongBuffer.class, value = BufferMarshalers.BufferMarshaler.class),
-    @Marshaler(type = FloatBuffer.class, value = BufferMarshalers.BufferMarshaler.class),
-    @Marshaler(type = DoubleBuffer.class, value = BufferMarshalers.BufferMarshaler.class),
-    @Marshaler(type = String.class, value = StringMarshalers.AsDefaultCharsetZMarshaler.class),
-    @Marshaler(type = Enum.class, value = EnumMarshalers.AsIntMarshaler.class),
+    @Marshaler(ArrayMarshalers.ByteArrayMarshaler.class),
+    @Marshaler(ArrayMarshalers.ShortArrayMarshaler.class),
+    @Marshaler(ArrayMarshalers.CharArrayMarshaler.class),
+    @Marshaler(ArrayMarshalers.IntArrayMarshaler.class),
+    @Marshaler(ArrayMarshalers.LongArrayMarshaler.class),
+    @Marshaler(ArrayMarshalers.FloatArrayMarshaler.class),
+    @Marshaler(ArrayMarshalers.DoubleArrayMarshaler.class),
+    @Marshaler(BufferMarshalers.BufferMarshaler.class),
+    @Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class),
+    @Marshaler(EnumMarshalers.AsIntMarshaler.class),
 })
 public class BuiltinMarshalers {
 }

@@ -26,6 +26,7 @@ import java.util.TreeSet;
 
 import org.robovm.rt.VM;
 import org.robovm.rt.bro.annotation.Marshaler;
+import org.robovm.rt.bro.annotation.MarshalsValue;
 
 /**
  * 
@@ -208,11 +209,13 @@ public abstract class Bits<T extends Bits<T>> implements Iterable<T>, Comparable
      * Marshals a {@link Bits} as an 8-bit value.
      */
     public static class AsByteMarshaler {
-        public static Object toObject(Class<?> cls, byte value, long flags) {
-            return AsLongMarshaler.toObject(cls, value & 0xffffL, flags);
+        @MarshalsValue
+        public static Bits<?> toObject(Class<?> cls, byte value, long flags) {
+            return AsLongMarshaler.toObject(cls, value & 0xffL, flags);
         }
-        public static byte toNative(Object o, long flags) {
-            return (byte) ((Bits<?>) o).value;
+        @MarshalsValue
+        public static byte toNative(Bits<?> o, long flags) {
+            return (byte) o.value;
         }
     }
     
@@ -220,11 +223,13 @@ public abstract class Bits<T extends Bits<T>> implements Iterable<T>, Comparable
      * Marshals a {@link Bits} as a 16-bit value.
      */
     public static class AsShortMarshaler {
-        public static Object toObject(Class<?> cls, short value, long flags) {
+        @MarshalsValue
+        public static Bits<?> toObject(Class<?> cls, short value, long flags) {
             return AsLongMarshaler.toObject(cls, value & 0xffffL, flags);
         }
-        public static short toNative(Object o, long flags) {
-            return (short) ((Bits<?>) o).value;
+        @MarshalsValue
+        public static short toNative(Bits<?> o, long flags) {
+            return (short) o.value;
         }
     }
     
@@ -232,11 +237,13 @@ public abstract class Bits<T extends Bits<T>> implements Iterable<T>, Comparable
      * Marshals a {@link Bits} as a 32-bit value.
      */
     public static class AsIntMarshaler {
-        public static Object toObject(Class<?> cls, int value, long flags) {
+        @MarshalsValue
+        public static Bits<?> toObject(Class<?> cls, int value, long flags) {
             return AsLongMarshaler.toObject(cls, value & 0xffffffffL, flags);
         }
-        public static int toNative(Object o, long flags) {
-            return (int) ((Bits<?>) o).value;
+        @MarshalsValue
+        public static int toNative(Bits<?> o, long flags) {
+            return (int) o.value;
         }
     }
     
@@ -244,14 +251,16 @@ public abstract class Bits<T extends Bits<T>> implements Iterable<T>, Comparable
      * Marshals a {@link Bits} as a 64-bit value.
      */
     public static class AsLongMarshaler {
-        public static Object toObject(Class<?> cls, long value, long flags) {
+        @MarshalsValue
+        public static Bits<?> toObject(Class<?> cls, long value, long flags) {
             Bits<?> f = (Bits<?>) VM.allocateObject(cls);
             f.value = value;
             f.mask = f.value == 0 ? -1 : f.value;
             return f;
         }
-        public static long toNative(Object o, long flags) {
-            return ((Bits<?>) o).value;
+        @MarshalsValue
+        public static long toNative(Bits<?> o, long flags) {
+            return o.value;
         }
     }
 }

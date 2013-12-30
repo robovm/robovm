@@ -33,7 +33,7 @@ import org.robovm.rt.VM;
 import org.robovm.rt.bro.annotation.Array;
 import org.robovm.rt.bro.annotation.ByRef;
 import org.robovm.rt.bro.annotation.ByVal;
-import org.robovm.rt.bro.annotation.Pointer;
+import org.robovm.rt.bro.annotation.MarshalsPointer;
 import org.robovm.rt.bro.annotation.StructMember;
 import org.robovm.rt.bro.ptr.BytePtr;
 import org.robovm.rt.bro.ptr.CharPtr;
@@ -88,14 +88,16 @@ public class StructTest {
     
     public static class StringMarshaler {
         static List<String> calls = new ArrayList<String>();
-        public static Object toObject(Class<?> cls, long handle, long flags) {
+        @MarshalsPointer
+        public static String toObject(Class<?> cls, long handle, long flags) {
             BytePtr ptr = Struct.toStruct(BytePtr.class, handle);
-            Object o = ptr != null ? ptr.toStringAsciiZ() : null;
+            String o = ptr != null ? ptr.toStringAsciiZ() : null;
             String s = o == null ? null : "'" + o + "'";
             calls.add("toObject(" + s + ", ?, " + Long.toHexString(flags) + ")");
             return o;
         }
-        public static @Pointer long toNative(Object o, long flags) {
+        @MarshalsPointer
+        public static long toNative(String o, long flags) {
             String s = o == null ? null : "'" + o + "'";
             calls.add("toNative(" + s + ", ?, " + Long.toHexString(flags) + ")");
             if (o == null) {
@@ -166,7 +168,7 @@ public class StructTest {
         public native MixedStructUnion b2(byte b);
     }
     
-    @org.robovm.rt.bro.annotation.Marshaler(type = String.class, value = StringMarshaler.class) 
+    @org.robovm.rt.bro.annotation.Marshaler(StringMarshaler.class) 
     public static final class TestStruct extends Struct<TestStruct> {
         @StructMember(0)
         public native byte b();
@@ -258,9 +260,9 @@ public class StructTest {
 
     public static final class StructWithArray extends Struct<StructWithArray> {
         @StructMember(0)
-        public native @Array({2, 3, 4}) @ByVal BytePtr byteArrayAsPtr();
+        public native @Array({2, 3, 4}) BytePtr byteArrayAsPtr();
         @StructMember(0)
-        public native StructWithArray byteArrayAsPtr(@Array({2, 3, 4}) @ByVal BytePtr p);
+        public native StructWithArray byteArrayAsPtr(@Array({2, 3, 4}) BytePtr p);
         @StructMember(0)
         public native @Array({2, 3, 4}) ByteBuffer byteArrayAsBuffer();
         @StructMember(0)
@@ -279,9 +281,9 @@ public class StructTest {
         public native StructWithArray byteArray3D(@Array({2, 3, 4}) byte[][][] p);
 
         @StructMember(0)
-        public native @Array({2, 3, 4}) @ByVal ShortPtr shortArrayAsPtr();
+        public native @Array({2, 3, 4}) ShortPtr shortArrayAsPtr();
         @StructMember(0)
-        public native StructWithArray shortArrayAsPtr(@Array({2, 3, 4}) @ByVal ShortPtr p);
+        public native StructWithArray shortArrayAsPtr(@Array({2, 3, 4}) ShortPtr p);
         @StructMember(0)
         public native @Array({2, 3, 4}) ShortBuffer shortArrayAsBuffer();
         @StructMember(0)
@@ -300,9 +302,9 @@ public class StructTest {
         public native StructWithArray shortArray3D(@Array({2, 3, 4}) short[][][] p);
 
         @StructMember(0)
-        public native @Array({2, 3, 4}) @ByVal CharPtr charArrayAsPtr();
+        public native @Array({2, 3, 4}) CharPtr charArrayAsPtr();
         @StructMember(0)
-        public native StructWithArray charArrayAsPtr(@Array({2, 3, 4}) @ByVal CharPtr p);
+        public native StructWithArray charArrayAsPtr(@Array({2, 3, 4}) CharPtr p);
         @StructMember(0)
         public native @Array({2, 3, 4}) CharBuffer charArrayAsBuffer();
         @StructMember(0)
@@ -321,9 +323,9 @@ public class StructTest {
         public native StructWithArray charArray3D(@Array({2, 3, 4}) char[][][] p);
 
         @StructMember(0)
-        public native @Array({2, 3, 4}) @ByVal IntPtr intArrayAsPtr();
+        public native @Array({2, 3, 4}) IntPtr intArrayAsPtr();
         @StructMember(0)
-        public native StructWithArray intArrayAsPtr(@Array({2, 3, 4}) @ByVal IntPtr p);
+        public native StructWithArray intArrayAsPtr(@Array({2, 3, 4}) IntPtr p);
         @StructMember(0)
         public native @Array({2, 3, 4}) IntBuffer intArrayAsBuffer();
         @StructMember(0)
@@ -342,9 +344,9 @@ public class StructTest {
         public native StructWithArray intArray3D(@Array({2, 3, 4}) int[][][] p);
 
         @StructMember(0)
-        public native @Array({2, 3, 4}) @ByVal LongPtr longArrayAsPtr();
+        public native @Array({2, 3, 4}) LongPtr longArrayAsPtr();
         @StructMember(0)
-        public native StructWithArray longArrayAsPtr(@Array({2, 3, 4}) @ByVal LongPtr p);
+        public native StructWithArray longArrayAsPtr(@Array({2, 3, 4}) LongPtr p);
         @StructMember(0)
         public native @Array({2, 3, 4}) LongBuffer longArrayAsBuffer();
         @StructMember(0)
@@ -363,9 +365,9 @@ public class StructTest {
         public native StructWithArray longArray3D(@Array({2, 3, 4}) long[][][] p);
 
         @StructMember(0)
-        public native @Array({2, 3, 4}) @ByVal FloatPtr floatArrayAsPtr();
+        public native @Array({2, 3, 4}) FloatPtr floatArrayAsPtr();
         @StructMember(0)
-        public native StructWithArray floatArrayAsPtr(@Array({2, 3, 4}) @ByVal FloatPtr p);
+        public native StructWithArray floatArrayAsPtr(@Array({2, 3, 4}) FloatPtr p);
         @StructMember(0)
         public native @Array({2, 3, 4}) FloatBuffer floatArrayAsBuffer();
         @StructMember(0)
@@ -384,9 +386,9 @@ public class StructTest {
         public native StructWithArray floatArray3D(@Array({2, 3, 4}) float[][][] p);
 
         @StructMember(0)
-        public native @Array({2, 3, 4}) @ByVal DoublePtr doubleArrayAsPtr();
+        public native @Array({2, 3, 4}) DoublePtr doubleArrayAsPtr();
         @StructMember(0)
-        public native StructWithArray doubleArrayAsPtr(@Array({2, 3, 4}) @ByVal DoublePtr p);
+        public native StructWithArray doubleArrayAsPtr(@Array({2, 3, 4}) DoublePtr p);
         @StructMember(0)
         public native @Array({2, 3, 4}) DoubleBuffer doubleArrayAsBuffer();
         @StructMember(0)
@@ -405,9 +407,9 @@ public class StructTest {
         public native StructWithArray doubleArray3D(@Array({2, 3, 4}) double[][][] p);
         
         @StructMember(0)
-        public native @Array({2, 3, 4}) @ByVal Point pointArrayAsPtr();
+        public native @Array({2, 3, 4}) Point pointArrayAsPtr();
         @StructMember(0)
-        public native StructWithArray pointArrayAsPtr(@Array({2, 3, 4}) @ByVal Point p);
+        public native StructWithArray pointArrayAsPtr(@Array({2, 3, 4}) Point p);
         @StructMember(0)
         public native @Array(24) Point[] pointArray1D();
         @StructMember(0)

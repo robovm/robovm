@@ -640,13 +640,16 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector dismissViewControllerAnimated$completion$ = Selector.register("dismissViewControllerAnimated:completion:");
-    @Bridge private native static void objc_dismissViewController(UIViewController __self__, Selector __cmd__, boolean flag, VoidBlock completion);
-    @Bridge private native static void objc_dismissViewControllerSuper(ObjCSuper __super__, Selector __cmd__, boolean flag, VoidBlock completion);
+    @Bridge private native static void objc_dismissViewController(UIViewController __self__, Selector __cmd__, boolean flag, ObjCBlock completion);
+    @Bridge private native static void objc_dismissViewControllerSuper(ObjCSuper __super__, Selector __cmd__, boolean flag, ObjCBlock completion);
     /**
      * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/dismissViewControllerAnimated:completion:">- (void)dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion</a>
      * @since Available in iOS 5.0 and later.
      */
     public void dismissViewController(boolean flag, VoidBlock completion) {
+        dismissViewController(flag, VoidBlock.Marshaler.toObjCBlock(completion));
+    }
+    protected void dismissViewController(boolean flag, ObjCBlock completion) {
         if (customClass) { objc_dismissViewControllerSuper(getSuper(), dismissViewControllerAnimated$completion$, flag, completion); } else { objc_dismissViewController(this, dismissViewControllerAnimated$completion$, flag, completion); }
     }
     
@@ -838,13 +841,16 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector presentViewController$animated$completion$ = Selector.register("presentViewController:animated:completion:");
-    @Bridge private native static void objc_presentViewController(UIViewController __self__, Selector __cmd__, UIViewController viewControllerToPresent, boolean flag, VoidBlock completion);
-    @Bridge private native static void objc_presentViewControllerSuper(ObjCSuper __super__, Selector __cmd__, UIViewController viewControllerToPresent, boolean flag, VoidBlock completion);
+    @Bridge private native static void objc_presentViewController(UIViewController __self__, Selector __cmd__, UIViewController viewControllerToPresent, boolean flag, ObjCBlock completion);
+    @Bridge private native static void objc_presentViewControllerSuper(ObjCSuper __super__, Selector __cmd__, UIViewController viewControllerToPresent, boolean flag, ObjCBlock completion);
     /**
      * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/presentViewController:animated:completion:">- (void)presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion</a>
      * @since Available in iOS 5.0 and later.
      */
     public void presentViewController(UIViewController viewControllerToPresent, boolean flag, VoidBlock completion) {
+        presentViewController(viewControllerToPresent, flag, VoidBlock.Marshaler.toObjCBlock(completion));
+    }
+    protected void presentViewController(UIViewController viewControllerToPresent, boolean flag, ObjCBlock completion) {
         if (customClass) { objc_presentViewControllerSuper(getSuper(), presentViewController$animated$completion$, viewControllerToPresent, flag, completion); } else { objc_presentViewController(this, presentViewController$animated$completion$, viewControllerToPresent, flag, completion); }
     }
     
@@ -926,13 +932,16 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     private static final Selector transitionFromViewController$toViewController$duration$options$animations$completion$ = Selector.register("transitionFromViewController:toViewController:duration:options:animations:completion:");
-    @Bridge private native static void objc_transition(UIViewController __self__, Selector __cmd__, UIViewController fromViewController, UIViewController toViewController, double duration, UIViewAnimationOptions options, VoidBlock animations, VoidBooleanBlock completion);
-    @Bridge private native static void objc_transitionSuper(ObjCSuper __super__, Selector __cmd__, UIViewController fromViewController, UIViewController toViewController, double duration, UIViewAnimationOptions options, VoidBlock animations, VoidBooleanBlock completion);
+    @Bridge private native static void objc_transition(UIViewController __self__, Selector __cmd__, UIViewController fromViewController, UIViewController toViewController, double duration, UIViewAnimationOptions options, ObjCBlock animations, ObjCBlock completion);
+    @Bridge private native static void objc_transitionSuper(ObjCSuper __super__, Selector __cmd__, UIViewController fromViewController, UIViewController toViewController, double duration, UIViewAnimationOptions options, ObjCBlock animations, ObjCBlock completion);
     /**
      * @see <a href="https://developer.apple.com/library/ios/documentation/uikit/reference/UIKit_Framework/../UIViewController_Class/Reference/Reference.html#//apple_ref/occ/instm/UIViewController/transitionFromViewController:toViewController:duration:options:animations:completion:">- (void)transitionFromViewController:(UIViewController *)fromViewController toViewController:(UIViewController *)toViewController duration:(NSTimeInterval)duration options:(UIViewAnimationOptions)options animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion</a>
      * @since Available in iOS 5.0 and later.
      */
     public void transition(UIViewController fromViewController, UIViewController toViewController, double duration, UIViewAnimationOptions options, VoidBlock animations, VoidBooleanBlock completion) {
+        transition(fromViewController, toViewController, duration, options, VoidBlock.Marshaler.toObjCBlock(animations), VoidBooleanBlock.Marshaler.toObjCBlock(completion));
+    }
+    protected void transition(UIViewController fromViewController, UIViewController toViewController, double duration, UIViewAnimationOptions options, ObjCBlock animations, ObjCBlock completion) {
         if (customClass) { objc_transitionSuper(getSuper(), transitionFromViewController$toViewController$duration$options$animations$completion$, fromViewController, toViewController, duration, options, animations, completion); } else { objc_transition(this, transitionFromViewController$toViewController$duration$options$animations$completion$, fromViewController, toViewController, duration, options, animations, completion); }
     }
     
@@ -1110,7 +1119,7 @@ import org.robovm.rt.bro.ptr.*;
         @Callback @BindSelector("didReceiveMemoryWarning") public static void didReceiveMemoryWarning(UIViewController __self__, Selector __cmd__) { __self__.didReceiveMemoryWarning(); }
         @Callback @BindSelector("didRotateFromInterfaceOrientation:") public static void didRotate(UIViewController __self__, Selector __cmd__, UIInterfaceOrientation fromInterfaceOrientation) { __self__.didRotate(fromInterfaceOrientation); }
         @Callback @BindSelector("disablesAutomaticKeyboardDismissal") public static boolean disablesAutomaticKeyboardDismissal(UIViewController __self__, Selector __cmd__) { return __self__.disablesAutomaticKeyboardDismissal(); }
-        @Callback @BindSelector("dismissViewControllerAnimated:completion:") public static void dismissViewController(UIViewController __self__, Selector __cmd__, boolean flag, VoidBlock completion) { __self__.dismissViewController(flag, completion); }
+        @Callback @BindSelector("dismissViewControllerAnimated:completion:") public static void dismissViewController(UIViewController __self__, Selector __cmd__, boolean flag, ObjCBlock completion) { __self__.dismissViewController(flag, completion); }
         @Callback @BindSelector("encodeRestorableStateWithCoder:") public static void encodeRestorableState(UIViewController __self__, Selector __cmd__, NSCoder coder) { __self__.encodeRestorableState(coder); }
         @Callback @BindSelector("endAppearanceTransition") public static void endAppearanceTransition(UIViewController __self__, Selector __cmd__) { __self__.endAppearanceTransition(); }
         @Callback @BindSelector("editButtonItem") public static UIBarButtonItem getEditButtonItem(UIViewController __self__, Selector __cmd__) { return __self__.getEditButtonItem(); }
@@ -1128,7 +1137,7 @@ import org.robovm.rt.bro.ptr.*;
         @Callback @BindSelector("loadView") public static void loadView(UIViewController __self__, Selector __cmd__) { __self__.loadView(); }
         @Callback @BindSelector("performSegueWithIdentifier:sender:") public static void performSegue(UIViewController __self__, Selector __cmd__, String identifier, NSObject sender) { __self__.performSegue(identifier, sender); }
         @Callback @BindSelector("prepareForSegue:sender:") public static void prepareForSegue(UIViewController __self__, Selector __cmd__, UIStoryboardSegue segue, NSObject sender) { __self__.prepareForSegue(segue, sender); }
-        @Callback @BindSelector("presentViewController:animated:completion:") public static void presentViewController(UIViewController __self__, Selector __cmd__, UIViewController viewControllerToPresent, boolean flag, VoidBlock completion) { __self__.presentViewController(viewControllerToPresent, flag, completion); }
+        @Callback @BindSelector("presentViewController:animated:completion:") public static void presentViewController(UIViewController __self__, Selector __cmd__, UIViewController viewControllerToPresent, boolean flag, ObjCBlock completion) { __self__.presentViewController(viewControllerToPresent, flag, completion); }
         @Callback @BindSelector("removeFromParentViewController") public static void removeFromParentViewController(UIViewController __self__, Selector __cmd__) { __self__.removeFromParentViewController(); }
         @Callback @BindSelector("setEditing:animated:") public static void setEditing(UIViewController __self__, Selector __cmd__, boolean editing, boolean animated) { __self__.setEditing(editing, animated); }
         @Callback @BindSelector("setToolbarItems:animated:") public static void setToolbarItems(UIViewController __self__, Selector __cmd__, NSArray toolbarItems, boolean animated) { __self__.setToolbarItems(toolbarItems, animated); }
@@ -1136,7 +1145,7 @@ import org.robovm.rt.bro.ptr.*;
         @Callback @BindSelector("shouldAutomaticallyForwardRotationMethods") public static boolean shouldAutomaticallyForwardRotationMethods(UIViewController __self__, Selector __cmd__) { return __self__.shouldAutomaticallyForwardRotationMethods(); }
         @Callback @BindSelector("shouldAutorotate") public static boolean shouldAutorotate(UIViewController __self__, Selector __cmd__) { return __self__.shouldAutorotate(); }
         @Callback @BindSelector("shouldPerformSegueWithIdentifier:sender:") public static boolean shouldPerformSegue(UIViewController __self__, Selector __cmd__, String identifier, NSObject sender) { return __self__.shouldPerformSegue(identifier, sender); }
-        @Callback @BindSelector("transitionFromViewController:toViewController:duration:options:animations:completion:") public static void transition(UIViewController __self__, Selector __cmd__, UIViewController fromViewController, UIViewController toViewController, double duration, UIViewAnimationOptions options, VoidBlock animations, VoidBooleanBlock completion) { __self__.transition(fromViewController, toViewController, duration, options, animations, completion); }
+        @Callback @BindSelector("transitionFromViewController:toViewController:duration:options:animations:completion:") public static void transition(UIViewController __self__, Selector __cmd__, UIViewController fromViewController, UIViewController toViewController, double duration, UIViewAnimationOptions options, ObjCBlock animations, ObjCBlock completion) { __self__.transition(fromViewController, toViewController, duration, options, animations, completion); }
         @Callback @BindSelector("updateViewConstraints") public static void updateViewConstraints(UIViewController __self__, Selector __cmd__) { __self__.updateViewConstraints(); }
         @Callback @BindSelector("viewDidAppear:") public static void viewDidAppear(UIViewController __self__, Selector __cmd__, boolean animated) { __self__.viewDidAppear(animated); }
         @Callback @BindSelector("viewDidDisappear:") public static void viewDidDisappear(UIViewController __self__, Selector __cmd__, boolean animated) { __self__.viewDidDisappear(animated); }

@@ -16,7 +16,6 @@
  */
 package org.robovm.compiler;
 
-import static org.robovm.compiler.Bro.*;
 import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.FunctionAttribute.*;
@@ -30,7 +29,6 @@ import java.util.List;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.ClazzInfo;
 import org.robovm.compiler.clazz.ClazzInfo.MethodInfo;
-import org.robovm.compiler.llvm.DataLayout;
 import org.robovm.compiler.llvm.Function;
 import org.robovm.compiler.llvm.FunctionAttribute;
 import org.robovm.compiler.llvm.FunctionRef;
@@ -207,19 +205,6 @@ public class FunctionBuilder {
     public static Function clinitWrapper(FunctionRef targetFn) {
         return new FunctionBuilder(targetFn).suffix("_clinit")
                 .linkage(external).attribs(noinline, optsize).build();
-    }
-    
-    public static Function callback(DataLayout dataLayout, SootMethod method) {
-        return new FunctionBuilder(method)
-            .type(getCallbackFunctionType(dataLayout, method)).suffix("_callback")
-            .linkage(external).attribs(noinline, optsize).build();
-    }
-
-    public static Function callback(DataLayout dataLayout, SootMethod method, Type returnType) {
-        FunctionType ft = getCallbackFunctionType(dataLayout, method);
-        return new FunctionBuilder(method)
-            .type(new FunctionType(returnType, ft.isVarargs(), ft.getParameterTypes())).suffix("_callback")
-            .linkage(external).attribs(noinline, optsize).build();
     }
 
     public static Function lookup(SootMethod method, boolean isWeak) {

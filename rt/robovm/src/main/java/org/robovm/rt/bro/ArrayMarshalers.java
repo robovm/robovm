@@ -17,6 +17,7 @@ package org.robovm.rt.bro;
 
 import org.robovm.rt.VM;
 import org.robovm.rt.bro.annotation.MarshalsArray;
+import org.robovm.rt.bro.annotation.MarshalsPointer;
 
 /**
  * Contains marshalers for arrays of primitive types.
@@ -37,6 +38,13 @@ public class ArrayMarshalers {
     public static class ByteArrayMarshaler {
         private static final String TYPE = "byte";
         private static final int SHIFT = 0;
+        @MarshalsPointer(supportedCallTypes = MarshalerFlags.CALL_TYPE_BRIDGE)
+        public static long toNative(final byte[] o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return VM.getArrayValuesAddress(o);
+        }
         @MarshalsArray
         public static byte[] toObject(Class<?> arrayClass, long handle, long flags, int d1) {
             final byte[] o = new byte[d1];
@@ -116,6 +124,13 @@ public class ArrayMarshalers {
     public static class ShortArrayMarshaler {
         private static final String TYPE = "short";
         private static final int SHIFT = 1;
+        @MarshalsPointer(supportedCallTypes = MarshalerFlags.CALL_TYPE_BRIDGE)
+        public static long toNative(final short[] o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return VM.getArrayValuesAddress(o);
+        }
         @MarshalsArray
         public static short[] toObject(Class<?> arrayClass, long handle, long flags, int d1) {
             final short[] o = new short[d1];
@@ -195,6 +210,13 @@ public class ArrayMarshalers {
     public static class CharArrayMarshaler {
         private static final String TYPE = "char";
         private static final int SHIFT = 1;
+        @MarshalsPointer(supportedCallTypes = MarshalerFlags.CALL_TYPE_BRIDGE)
+        public static long toNative(final char[] o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return VM.getArrayValuesAddress(o);
+        }
         @MarshalsArray
         public static char[] toObject(Class<?> arrayClass, long handle, long flags, int d1) {
             final char[] o = new char[d1];
@@ -274,6 +296,13 @@ public class ArrayMarshalers {
     public static class IntArrayMarshaler {
         private static final String TYPE = "int";
         private static final int SHIFT = 2;
+        @MarshalsPointer(supportedCallTypes = MarshalerFlags.CALL_TYPE_BRIDGE)
+        public static long toNative(final int[] o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return VM.getArrayValuesAddress(o);
+        }
         @MarshalsArray
         public static int[] toObject(Class<?> arrayClass, long handle, long flags, int d1) {
             final int[] o = new int[d1];
@@ -353,6 +382,13 @@ public class ArrayMarshalers {
     public static class LongArrayMarshaler {
         private static final String TYPE = "long";
         private static final int SHIFT = 3;
+        @MarshalsPointer(supportedCallTypes = MarshalerFlags.CALL_TYPE_BRIDGE)
+        public static long toNative(final long[] o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return VM.getArrayValuesAddress(o);
+        }
         @MarshalsArray
         public static long[] toObject(Class<?> arrayClass, long handle, long flags, int d1) {
             final long[] o = new long[d1];
@@ -433,6 +469,13 @@ public class ArrayMarshalers {
     public static class FloatArrayMarshaler {
         private static final String TYPE = "float";
         private static final int SHIFT = 2;
+        @MarshalsPointer(supportedCallTypes = MarshalerFlags.CALL_TYPE_BRIDGE)
+        public static long toNative(final float[] o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return VM.getArrayValuesAddress(o);
+        }
         @MarshalsArray
         public static float[] toObject(Class<?> arrayClass, long handle, long flags, int d1) {
             final float[] o = new float[d1];
@@ -513,6 +556,13 @@ public class ArrayMarshalers {
     public static class DoubleArrayMarshaler {
         private static final String TYPE = "double";
         private static final int SHIFT = 3;
+        @MarshalsPointer(supportedCallTypes = MarshalerFlags.CALL_TYPE_BRIDGE)
+        public static long toNative(final double[] o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return VM.getArrayValuesAddress(o);
+        }
         @MarshalsArray
         public static double[] toObject(Class<?> arrayClass, long handle, long flags, int d1) {
             final double[] o = new double[d1];

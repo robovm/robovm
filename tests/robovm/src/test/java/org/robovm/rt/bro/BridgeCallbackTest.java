@@ -35,8 +35,13 @@ import org.robovm.rt.bro.annotation.MarshalsPointer;
 import org.robovm.rt.bro.annotation.StructMember;
 import org.robovm.rt.bro.annotation.StructRet;
 import org.robovm.rt.bro.ptr.BytePtr;
+import org.robovm.rt.bro.ptr.CharPtr;
+import org.robovm.rt.bro.ptr.DoublePtr;
+import org.robovm.rt.bro.ptr.FloatPtr;
+import org.robovm.rt.bro.ptr.IntPtr;
 import org.robovm.rt.bro.ptr.LongPtr;
 import org.robovm.rt.bro.ptr.Ptr;
+import org.robovm.rt.bro.ptr.ShortPtr;
 
 /**
  * Tests {@link Bridge} and {@link Callback} methods.
@@ -323,6 +328,107 @@ public class BridgeCallbackTest {
                                 b == null ? null : b.toStringAsciiZ()));
     }
 
+    @Bridge
+    public static native BytePtr marshal1DByteArrayWithDefaultMarshaler(byte[] a, byte[] b);
+    @Callback
+    public static BytePtr marshal1DByteArrayWithDefaultMarshaler_cb(BytePtr a, BytePtr b) {
+        return a == null && b == null ? null 
+                : BytePtr.toBytePtrAsciiZ(
+                        String.format("a = %s, b = %s", 
+                                a == null ? null : a.toStringAsciiZ(), 
+                                b == null ? null : b.toStringAsciiZ()));
+    }
+
+    @Bridge
+    public static native short marshal1DShortArrayWithDefaultMarshaler(short[] a);
+    @Callback
+    public static short marshal1DShortArrayWithDefaultMarshaler_cb(ShortPtr ptr) {
+        if (ptr == null) {
+            return -1;
+        }
+        short sum = 0;
+        while (ptr.get() != 0) {
+            sum += ptr.get();
+            ptr = ptr.next();
+        }
+        return sum;
+    }
+
+    @Bridge
+    public static native char marshal1DCharArrayWithDefaultMarshaler(char[] a);
+    @Callback
+    public static char marshal1DCharArrayWithDefaultMarshaler_cb(CharPtr ptr) {
+        if (ptr == null) {
+            return 0xffff;
+        }
+        char sum = 0;
+        while (ptr.get() != 0) {
+            sum += ptr.get();
+            ptr = ptr.next();
+        }
+        return sum;
+    }
+
+    @Bridge
+    public static native int marshal1DIntArrayWithDefaultMarshaler(int[] a);
+    @Callback
+    public static int marshal1DIntArrayWithDefaultMarshaler_cb(IntPtr ptr) {
+        if (ptr == null) {
+            return -1;
+        }
+        int sum = 0;
+        while (ptr.get() != 0) {
+            sum += ptr.get();
+            ptr = ptr.next();
+        }
+        return sum;
+    }
+    
+    @Bridge
+    public static native long marshal1DLongArrayWithDefaultMarshaler(long[] a);
+    @Callback
+    public static long marshal1DLongArrayWithDefaultMarshaler_cb(LongPtr ptr) {
+        if (ptr == null) {
+            return -1;
+        }
+        long sum = 0;
+        while (ptr.get() != 0) {
+            sum += ptr.get();
+            ptr = ptr.next();
+        }
+        return sum;
+    }
+
+    @Bridge
+    public static native float marshal1DFloatArrayWithDefaultMarshaler(float[] a);
+    @Callback
+    public static float marshal1DFloatArrayWithDefaultMarshaler_cb(FloatPtr ptr) {
+        if (ptr == null) {
+            return -1.0f;
+        }
+        float sum = 0.0f;
+        while (ptr.get() != 0.0f) {
+            sum += ptr.get();
+            ptr = ptr.next();
+        }
+        return sum;
+    }
+
+    @Bridge
+    public static native double marshal1DDoubleArrayWithDefaultMarshaler(double[] a);
+    @Callback
+    public static double marshal1DDoubleArrayWithDefaultMarshaler_cb(DoublePtr ptr) {
+        if (ptr == null) {
+            return -1.0;
+        }
+        double sum = 0.0;
+        while (ptr.get() != 0.0) {
+            sum += ptr.get();
+            ptr = ptr.next();
+        }
+        return sum;
+    }
+
     private static Method find(String name) {
         for (Method m : BridgeCallbackTest.class.getDeclaredMethods()) {
             if (m.getName().equals(name)) {
@@ -572,5 +678,72 @@ public class BridgeCallbackTest {
         assertEquals("a = foo, b = null", marshalBuffersWithDefaultMarshaler(
                 ByteBuffer.allocateDirect(3).put("foo".getBytes()), null).toStringAsciiZ());
         assertNull(marshalBuffersWithDefaultMarshaler(null, null));
+    }
+    
+    @Test
+    public void testMarshal1DByteArrayWithDefaultMarshaler() {
+        assertEquals("a = foo, b = bar", marshal1DByteArrayWithDefaultMarshaler(
+                new byte[] {'f', 'o', 'o', 0}, 
+                new byte[] {'b', 'a', 'r', 0}
+                ).toStringAsciiZ());
+        assertEquals("a = null, b = bar", marshal1DByteArrayWithDefaultMarshaler(
+                null, new byte[] {'b', 'a', 'r', 0}).toStringAsciiZ());
+        assertEquals("a = foo, b = null", marshal1DByteArrayWithDefaultMarshaler(
+                new byte[] {'f', 'o', 'o', 0}, null).toStringAsciiZ());
+        assertNull(marshal1DByteArrayWithDefaultMarshaler(null, null));
+    }
+
+    @Test
+    public void testMarshal1DShortArrayWithDefaultMarshaler() {
+        assertEquals(0, marshal1DShortArrayWithDefaultMarshaler(
+                new short[] {0}));
+        assertEquals(12345, marshal1DShortArrayWithDefaultMarshaler(
+                new short[] {10000, 2000, 300, 40, 5, 0}));
+        assertEquals(-1, marshal1DShortArrayWithDefaultMarshaler(null));
+    }
+
+    @Test
+    public void testMarshal1DCharArrayWithDefaultMarshaler() {
+        assertEquals(0, marshal1DCharArrayWithDefaultMarshaler(
+                new char[] {0}));
+        assertEquals(12345, marshal1DCharArrayWithDefaultMarshaler(
+                new char[] {10000, 2000, 300, 40, 5, 0}));
+        assertEquals(0xffff, marshal1DCharArrayWithDefaultMarshaler(null));
+    }
+
+    @Test
+    public void testMarshal1DIntArrayWithDefaultMarshaler() {
+        assertEquals(0, marshal1DIntArrayWithDefaultMarshaler(
+                new int[] {0}));
+        assertEquals(1000002345, marshal1DIntArrayWithDefaultMarshaler(
+                new int[] {1000000000, 2000, 300, 40, 5, 0}));
+        assertEquals(-1, marshal1DIntArrayWithDefaultMarshaler(null));
+    }
+
+    @Test
+    public void testMarshal1DLongArrayWithDefaultMarshaler() {
+        assertEquals(0, marshal1DLongArrayWithDefaultMarshaler(
+                new long[] {0}));
+        assertEquals(1000000000000002345L, marshal1DLongArrayWithDefaultMarshaler(
+                new long[] {1000000000000000000L, 2000, 300, 40, 5, 0}));
+        assertEquals(-1, marshal1DLongArrayWithDefaultMarshaler(null));
+    }
+    
+    @Test
+    public void testMarshal1DFloatArrayWithDefaultMarshaler() {
+        assertEquals(0.0f, marshal1DFloatArrayWithDefaultMarshaler(
+                new float[] {0}), 0);
+        assertEquals(1.2345f, marshal1DFloatArrayWithDefaultMarshaler(
+                new float[] {1, 0.2f, 0.03f, 0.004f, 0.0005f, 0}), 0.001f);
+        assertEquals(-1.0f, marshal1DFloatArrayWithDefaultMarshaler(null), 0);
+    }
+
+    @Test
+    public void testMarshal1DDoubleArrayWithDefaultMarshaler() {
+        assertEquals(0.0, marshal1DDoubleArrayWithDefaultMarshaler(
+                new double[] {0}), 0);
+        assertEquals(1.2345, marshal1DDoubleArrayWithDefaultMarshaler(
+                new double[] {1, 0.2, 0.03, 0.004, 0.0005, 0}), 0.001);
+        assertEquals(-1.0, marshal1DDoubleArrayWithDefaultMarshaler(null), 0);
     }
 }

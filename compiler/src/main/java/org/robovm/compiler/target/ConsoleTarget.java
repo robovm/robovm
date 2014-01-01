@@ -86,4 +86,15 @@ public class ConsoleTarget extends AbstractTarget {
             arch = Arch.getDefaultArch();
         }
     }
+    
+    @Override
+    protected void doBuild(File outFile, List<String> ccArgs,
+            List<File> objectFiles, List<String> libArgs)
+            throws IOException {
+
+        if (config.getOs() == OS.macosx) {
+            ccArgs.add("-mmacosx-version-min=10.6");
+        }
+        super.doBuild(outFile, ccArgs, objectFiles, libArgs);
+    }
 }

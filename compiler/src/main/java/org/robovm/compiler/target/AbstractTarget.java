@@ -99,12 +99,11 @@ public abstract class AbstractTarget implements Target {
             libs.add("-lrobovm-debug" + libSuffix);
         }
         libs.addAll(Arrays.asList(
-                "-lrobovm-core" + libSuffix, "-lgc" + libSuffix, "-lpthread", "-ldl", "-lm", "-lstdc++"));
+                "-lrobovm-core" + libSuffix, "-lgc" + libSuffix, "-lpthread", "-ldl", "-lm"));
         if (config.getOs().getFamily() == OS.Family.linux) {
             libs.add("-lrt");
         }
         if (config.getOs().getFamily() == OS.Family.darwin) {
-            libs.add("-lc++");
             libs.add("-liconv");
             libs.add("-lsqlite3");
             libs.add("-framework");

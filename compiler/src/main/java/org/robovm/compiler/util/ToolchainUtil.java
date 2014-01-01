@@ -43,14 +43,14 @@ public class ToolchainUtil {
 
     private static String getIOSDevClang() throws IOException {
         if (IOS_DEV_CLANG == null) {
-            IOS_DEV_CLANG = findXcodeCommand("clang", "iphoneos");
+            IOS_DEV_CLANG = findXcodeCommand("clang++", "iphoneos");
         }
         return IOS_DEV_CLANG;
     }
     
     private static String getIOSSimClang() throws IOException {
         if (IOS_SIM_CLANG == null) {
-            IOS_SIM_CLANG = findXcodeCommand("clang", "iphonesimulator");
+            IOS_SIM_CLANG = findXcodeCommand("clang++", "iphonesimulator");
         }
         return IOS_SIM_CLANG;
     }
@@ -164,7 +164,7 @@ public class ToolchainUtil {
     }
 
     private static String getCcPath(Config config) throws IOException {
-        String ccPath = config.getOs().getFamily() == OS.Family.darwin ? "clang" : "gcc";
+        String ccPath = config.getOs().getFamily() == OS.Family.darwin ? "clang++" : "g++";
         if (config.getCcBinPath() != null) {
             ccPath = config.getCcBinPath().getAbsolutePath();
         } else if (config.getOs() == OS.ios) {

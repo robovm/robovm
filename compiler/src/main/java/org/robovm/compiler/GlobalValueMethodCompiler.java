@@ -59,6 +59,10 @@ public class GlobalValueMethodCompiler extends BroMethodCompiler {
             throw new IllegalArgumentException("@GlobalValue annotated method " 
                     + method + " must be static");
         }
+        if (!method.isNative()) {
+            throw new IllegalArgumentException("@GlobalValue annotated method " 
+                    + method + " must be native");
+        }
         if (!(method.getReturnType() != VoidType.v() && method.getParameterCount() == 0 
                 || method.getReturnType() == VoidType.v() && method.getParameterCount() == 1)) {
             throw new IllegalArgumentException("Invalid signature for " 

@@ -19,6 +19,7 @@ import java.lang.reflect.Method;
 
 import org.robovm.rt.VM;
 import org.robovm.rt.bro.annotation.Bridge;
+import org.robovm.rt.bro.annotation.GlobalValue;
 import org.robovm.rt.bro.annotation.Library;
 
 /**
@@ -54,6 +55,12 @@ public class Bro {
             if (bridge != null && !VM.isBridgeMethodBound(method)) {
                 long f = Runtime.resolveBridge(library, bridge, method);
                 VM.bindBridgeMethod(method, f);
+            } else {
+                GlobalValue globalValue = method.getAnnotation(GlobalValue.class);
+                if (globalValue != null && !VM.isBridgeMethodBound(method)) {
+                    long f = Runtime.resolveGlobalValue(library, globalValue, method);
+                    VM.bindBridgeMethod(method, f);
+                }
             }
         }
     }

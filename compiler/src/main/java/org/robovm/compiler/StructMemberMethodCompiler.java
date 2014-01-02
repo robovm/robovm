@@ -17,27 +17,20 @@
 package org.robovm.compiler;
 
 
-import static org.robovm.compiler.Annotations.*;
 import static org.robovm.compiler.Bro.*;
-import static org.robovm.compiler.Functions.*;
 import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Type.*;
 
 import org.robovm.compiler.Bro.MarshalerFlags;
-import org.robovm.compiler.MarshalerLookup.MarshalSite;
-import org.robovm.compiler.MarshalerLookup.MarshalerMethod;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.config.Config;
-import org.robovm.compiler.llvm.ArrayType;
 import org.robovm.compiler.llvm.Bitcast;
 import org.robovm.compiler.llvm.Function;
 import org.robovm.compiler.llvm.Getelementptr;
 import org.robovm.compiler.llvm.Inttoptr;
 import org.robovm.compiler.llvm.Load;
 import org.robovm.compiler.llvm.PointerType;
-import org.robovm.compiler.llvm.PrimitiveType;
 import org.robovm.compiler.llvm.Ret;
-import org.robovm.compiler.llvm.Store;
 import org.robovm.compiler.llvm.StructureType;
 import org.robovm.compiler.llvm.Type;
 import org.robovm.compiler.llvm.Value;
@@ -109,82 +102,16 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
         VariableRef env = function.getParameterRef(0);
         if (method.getParameterCount() == 0) {
             // Getter
-            soot.Type type = method.getReturnType();
-            
-            Value result = null;
-            if (memberType instanceof StructureType) {
-                // The member is a child struct contained in the current struct
-                result = memberPtr.ref();
-            } else if (memberType instanceof ArrayType) {
-                // The member is an array contained in the current struct
-                result = memberPtr.ref();
-            } else {
-                Variable tmp = function.newVariable(memberType);
-                function.add(new Load(tmp, memberPtr.ref()));
-                result = tmp.ref();
-            }
-            
-            if (needsMarshaler(type)) {
-                MarshalerMethod marshalerMethod = config.getMarshalerLookup().findMarshalerMethod(new MarshalSite(method));
-                String targetClassName = getInternalName(type);
-                
-                if (memberType instanceof PrimitiveType) {
-                    // Value type wrapping a primitive value (e.g. Integer and Bits)
-                    result = marshalNativeToValueObject(function, marshalerMethod, env, 
-                            targetClassName, result, MarshalerFlags.CALL_TYPE_STRUCT_MEMBER);
-                } else {
-                    if (memberType instanceof ArrayType) {
-                        // Array
-                        result = marshalNativeToArray(function, marshalerMethod, env, 
-                                targetClassName, result, MarshalerFlags.CALL_TYPE_STRUCT_MEMBER,
-                                getArrayDimensions(method));
-                    } else {
-                        result = marshalNativeToObject(function, marshalerMethod, null, env, 
-                                targetClassName, result, MarshalerFlags.CALL_TYPE_STRUCT_MEMBER);
-                    }
-                }
-            } else if (hasPointerAnnotation(method)) {
-                // @Pointer long
-                result = marshalPointerToLong(function, result);
-            }
+            Value result = loadValueForGetter(method, function, memberType, memberPtr.ref(),
+                    function.getParameterRef(0), MarshalerFlags.CALL_TYPE_STRUCT_MEMBER);
             function.add(new Ret(result));
             
         } else {
             // Setter
             
-            Value nativeValue = function.getParameterRef(2); // 'env' is parameter 0, 'this' is at 1, the value we're interested in is at index 2
-            soot.Type type = method.getParameterType(0);
-            
-            if (needsMarshaler(type)) {
-                MarshalerMethod marshalerMethod = config.getMarshalerLookup().findMarshalerMethod(new MarshalSite(method, 0));
-                
-                if (memberType instanceof PrimitiveType) {
-                    nativeValue = marshalValueObjectToNative(function, marshalerMethod, memberType, env, 
-                            nativeValue, MarshalerFlags.CALL_TYPE_STRUCT_MEMBER);
-                } else {
-                    if (memberType instanceof StructureType || memberType instanceof ArrayType) {
-                        // The parameter must not be null. We assume that Structs 
-                        // never have a NULL handle so we just check that the Java
-                        // Object isn't null.
-                        call(function, CHECK_NULL, env, nativeValue);
-                    }
-                    
-                    if (memberType instanceof ArrayType) {
-                        // Array
-                        marshalArrayToNative(function, marshalerMethod, env, nativeValue, memberPtr.ref(), 
-                                MarshalerFlags.CALL_TYPE_STRUCT_MEMBER, getArrayDimensions(method, 0));
-                        nativeValue = null;
-                    } else {
-                        nativeValue = marshalObjectToNative(function, marshalerMethod, null, memberType, env, nativeValue,
-                                MarshalerFlags.CALL_TYPE_STRUCT_MEMBER);
-                    }
-                }
-            } else if (hasPointerAnnotation(method, 0)) {
-                nativeValue = marshalLongToPointer(function, nativeValue);
-            }
-            if (nativeValue != null) {
-                function.add(new Store(nativeValue, memberPtr.ref()));
-            }
+            Value value = function.getParameterRef(2); // 'env' is parameter 0, 'this' is at 1, the value we're interested in is at index 2
+            storeValueForSetter(method, function, memberType, memberPtr.ref(), env,
+                    value, MarshalerFlags.CALL_TYPE_STRUCT_MEMBER);
             
             if (method.getReturnType().equals(VoidType.v())) {
                 function.add(new Ret());

@@ -30,6 +30,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.robovm.rt.bro.annotation.Bridge;
+import org.robovm.rt.bro.annotation.GlobalValue;
 import org.robovm.rt.bro.annotation.Library;
 
 /**
@@ -198,13 +199,33 @@ public final class Runtime {
         }
         long f = Dl.resolve(handle, symbol);
         if (f == 0L) {
-            throw new UnsatisfiedLinkError("Failed to resolve native function " 
-                    + "for method " + method + " with bridge annotation " + bridge 
+            throw new UnsatisfiedLinkError("Failed to resolve native function '" + symbol + "' " 
+                    + "for method " + method + " with @Bridge annotation " + bridge 
                     + " in library " + library);
         }
         return f;
     }
 
+    public static long resolveGlobalValue(Library library, GlobalValue globalValue, Method method) {
+        if (library == null) {
+            throw new IllegalArgumentException("No @" + Library.class.getName() 
+                    + " annotation found on class " + method.getDeclaringClass().getName());
+        }
+        
+        long handle = getHandle(library.value());
+        String symbol = globalValue.symbol();
+        if (symbol == null || "".equals(symbol)) {
+            symbol = method.getName();
+        }
+        long f = Dl.resolve(handle, symbol);
+        if (f == 0L) {
+            throw new UnsatisfiedLinkError("Failed to resolve symbol '" + symbol + "' " 
+                    + "for method " + method + " with @GlobalValue annotation " + globalValue 
+                    + " in library " + library);
+        }
+        return f;
+    }
+    
     public static long resolveBridge(String libraryName, String symbol, Method method) {
         long handle = getHandle(libraryName);
         long f = Dl.resolve(handle, symbol);

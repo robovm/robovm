@@ -38,11 +38,12 @@ public abstract class Bro {
     public static class MarshalerFlags {
         // The constant here MUST correspond to those in org.robovm.rt.bro.MarshalerFlags in rt.
         
-        // Bit 1-2: The type of call marshaled for
+        // Bit 1-3: The type of call marshaled for
         public static final long CALL_TYPE_BRIDGE               = 0 << 0;
         public static final long CALL_TYPE_CALLBACK             = 1 << 0;
         public static final long CALL_TYPE_STRUCT_MEMBER        = 2 << 0;
-        public static final long CALL_TYPE_PTR                  = 3 << 0;
+        public static final long CALL_TYPE_GLOBAL_VALUE         = 3 << 0;
+        public static final long CALL_TYPE_PTR                  = 4 << 0;
     }
     
     public static boolean needsMarshaler(soot.Type t) {

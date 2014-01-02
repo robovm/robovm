@@ -42,6 +42,7 @@ import org.robovm.compiler.llvm.IntegerConstant;
 import org.robovm.compiler.llvm.Inttoptr;
 import org.robovm.compiler.llvm.Load;
 import org.robovm.compiler.llvm.PointerType;
+import org.robovm.compiler.llvm.PrimitiveType;
 import org.robovm.compiler.llvm.Ptrtoint;
 import org.robovm.compiler.llvm.Store;
 import org.robovm.compiler.llvm.StructureType;
@@ -452,6 +453,7 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
     }
     
     public Type getStructMemberType(SootMethod method) {
+        String methodType = hasStructMemberAnnotation(method) ? "@StructMember" : "@GlobalValue";
         SootMethod getter = method.getParameterCount() == 0 ? method : null;
         SootMethod setter = getter == null ? method: null;
         soot.Type type = getter != null 
@@ -464,12 +466,12 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
         } else if (getter != null && hasArrayAnnotation(getter) || setter != null && hasArrayAnnotation(setter, 0)) {
             int[] dimensions = getter != null ? getArrayDimensions(getter) : getArrayDimensions(setter, 0);
             if (dimensions == null || dimensions.length == 0) {
-                throw new IllegalArgumentException("No dimensions specified for @Array annotation on struct member " 
+                throw new IllegalArgumentException("No dimensions specified for @Array annotation on " + methodType + " " 
                         + (getter != null ? "getter" : "setter") + " " + method);
             }
             if (type instanceof soot.ArrayType && ((soot.ArrayType) type).numDimensions != dimensions.length) {
                 throw new IllegalArgumentException("Mismatch in number of dimennsions for @Array annotation " 
-                        + "and struct member type on struct member " 
+                        + "and type on " + methodType + " " 
                         + (getter != null ? "getter" : "setter") + " " + method);
             }
 
@@ -560,5 +562,85 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
         }
         method.addTag(vpaTag);
         return method;
+    }
+
+    protected Value loadValueForGetter(SootMethod method, Function fn, Type memberType,
+            Value memberPtr, Value env, long flags) {
+            
+        soot.Type type = method.getReturnType();
+        
+        Value result = null;
+        if (memberType instanceof StructureType) {
+            // The member is a child struct contained in the current struct
+            result = memberPtr;
+        } else if (memberType instanceof ArrayType) {
+            // The member is an array contained in the current struct
+            result = memberPtr;
+        } else {
+            Variable tmp = fn.newVariable(memberType);
+            fn.add(new Load(tmp, memberPtr));
+            result = tmp.ref();
+        }
+        
+        if (needsMarshaler(type)) {
+            MarshalerMethod marshalerMethod = config.getMarshalerLookup().findMarshalerMethod(new MarshalSite(method));
+            String targetClassName = getInternalName(type);
+            
+            if (memberType instanceof PrimitiveType) {
+                // Value type wrapping a primitive value (e.g. Enum, Integer and Bits)
+                result = marshalNativeToValueObject(fn, marshalerMethod, env, 
+                        targetClassName, result, flags);
+            } else {
+                if (memberType instanceof ArrayType) {
+                    // Array
+                    result = marshalNativeToArray(fn, marshalerMethod, env, 
+                            targetClassName, result, flags,
+                            getArrayDimensions(method));
+                } else {
+                    result = marshalNativeToObject(fn, marshalerMethod, null, env, 
+                            targetClassName, result, flags);
+                }
+            }
+        } else if (hasPointerAnnotation(method)) {
+            // @Pointer long
+            result = marshalPointerToLong(fn, result);
+        }
+        return result;
+    }
+
+    protected void storeValueForSetter(SootMethod method, Function function,
+            Type memberType, Value memberPtr, Value env, Value value, long flags) {
+        
+        soot.Type type = method.getParameterType(0);
+        if (needsMarshaler(type)) {
+            MarshalerMethod marshalerMethod = config.getMarshalerLookup().findMarshalerMethod(new MarshalSite(method, 0));
+            
+            if (memberType instanceof PrimitiveType) {
+                value = marshalValueObjectToNative(function, marshalerMethod, memberType, env, 
+                        value, flags);
+            } else {
+                if (memberType instanceof StructureType || memberType instanceof ArrayType) {
+                    // The parameter must not be null. We assume that Structs 
+                    // never have a NULL handle so we just check that the Java
+                    // Object isn't null.
+                    call(function, CHECK_NULL, env, value);
+                }
+                
+                if (memberType instanceof ArrayType) {
+                    // Array
+                    marshalArrayToNative(function, marshalerMethod, env, value, memberPtr, 
+                            flags, getArrayDimensions(method, 0));
+                    value = null;
+                } else {
+                    value = marshalObjectToNative(function, marshalerMethod, null, memberType, env, value,
+                            flags);
+                }
+            }
+        } else if (hasPointerAnnotation(method, 0)) {
+            value = marshalLongToPointer(function, value);
+        }
+        if (value != null) {
+            function.add(new Store(value, memberPtr));
+        }
     }
 }

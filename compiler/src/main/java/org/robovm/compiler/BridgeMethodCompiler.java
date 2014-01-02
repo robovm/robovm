@@ -142,7 +142,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         fn.newBasicBlock(nullLabel);
         VariableRef env = fn.getParameterRef(0);
         call(fn, BC_THROW_UNSATISIFED_LINK_ERROR, env,
-                moduleBuilder.getString(String.format("Bridge method %s.%s%s not bound", className,
+                moduleBuilder.getString(String.format("@Bridge method %s.%s%s not bound", className,
                         originalMethod.getName(), getDescriptor(originalMethod))));
         fn.add(new Unreachable());
         fn.newBasicBlock(notNullLabel);

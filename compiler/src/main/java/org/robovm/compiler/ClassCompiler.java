@@ -198,6 +198,7 @@ public class ClassCompiler {
     private final CallbackMethodCompiler callbackMethodCompiler;
     private final NativeMethodCompiler nativeMethodCompiler;
     private final StructMemberMethodCompiler structMemberMethodCompiler;
+    private final GlobalValueMethodCompiler globalValueMethodCompiler;
     private final AttributesEncoder attributesEncoder;
     private final TrampolineCompiler trampolineResolver;
     
@@ -210,6 +211,7 @@ public class ClassCompiler {
         this.callbackMethodCompiler = new CallbackMethodCompiler(config);
         this.nativeMethodCompiler = new NativeMethodCompiler(config);
         this.structMemberMethodCompiler = new StructMemberMethodCompiler(config);
+        this.globalValueMethodCompiler = new GlobalValueMethodCompiler(config);
         this.attributesEncoder = new AttributesEncoder();
         this.trampolineResolver = new TrampolineCompiler(config);
     }
@@ -493,6 +495,7 @@ public class ClassCompiler {
         callbackMethodCompiler.reset(clazz);
         nativeMethodCompiler.reset(clazz);
         structMemberMethodCompiler.reset(clazz);
+        globalValueMethodCompiler.reset(clazz);
         sootClass = clazz.getSootClass();
         mb = new ModuleBuilder();
         trampolines = new HashSet<Trampoline>();
@@ -549,6 +552,8 @@ public class ClassCompiler {
             String name = method.getName();
             if (hasBridgeAnnotation(method)) {
                 bridgeMethod(method);
+            } else if (hasGlobalValueAnnotation(method)) {
+                globalValueMethod(method);
             } else if (isStruct(sootClass) && ("_sizeOf".equals(name) 
                         || "sizeOf".equals(name) || hasStructMemberAnnotation(method))) {
                 structMember(method);
@@ -971,7 +976,7 @@ public class ClassCompiler {
             if (attributesEncoder.methodHasAttributes(m)) {
                 flags |= MI_ATTRIBUTES;
             }
-            if (hasBridgeAnnotation(m)) {
+            if (hasBridgeAnnotation(m) || hasGlobalValueAnnotation(m)) {
                 flags |= MI_BRO_BRIDGE;
             }
             if (hasCallbackAnnotation(m)) {
@@ -1035,6 +1040,8 @@ public class ClassCompiler {
             }
             if (hasBridgeAnnotation(m)) {
                 body.add(new GlobalRef(BridgeMethodCompiler.getTargetFnPtrName(m), I8_PTR));
+            } else if (hasGlobalValueAnnotation(m)) {
+                body.add(new GlobalRef(GlobalValueMethodCompiler.getGlobalValuePtrName(m), I8_PTR));
             }
             if (hasCallbackAnnotation(m)) {
                 body.add(new AliasRef(mangleMethod(m) + "_callback_i8p", I8_PTR));
@@ -1070,7 +1077,13 @@ public class ClassCompiler {
         trampolines.addAll(structMemberMethodCompiler.getTrampolines());
         catches.addAll(structMemberMethodCompiler.getCatches());
     }
-    
+
+    private void globalValueMethod(SootMethod method) {
+        globalValueMethodCompiler.compile(mb, method);
+        trampolines.addAll(globalValueMethodCompiler.getTrampolines());
+        catches.addAll(globalValueMethodCompiler.getCatches());
+    }
+
     private void method(SootMethod method) {
         methodCompiler.compile(mb, method);
         trampolines.addAll(methodCompiler.getTrampolines());

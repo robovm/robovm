@@ -255,6 +255,7 @@ public class MarshalerLookup {
                 Bro.MarshalerFlags.CALL_TYPE_BRIDGE,
                 Bro.MarshalerFlags.CALL_TYPE_CALLBACK,
                 Bro.MarshalerFlags.CALL_TYPE_STRUCT_MEMBER,
+                Bro.MarshalerFlags.CALL_TYPE_GLOBAL_VALUE,
                 Bro.MarshalerFlags.CALL_TYPE_PTR
             ));
         }
@@ -344,6 +345,11 @@ public class MarshalerLookup {
             } else if (hasStructMemberAnnotation(method)) {
                 callType = Bro.MarshalerFlags.CALL_TYPE_STRUCT_MEMBER;
                 callTypeName = "@StructMember";
+                array = paramIdx == -1 ? hasArrayAnnotation(method) 
+                        : hasArrayAnnotation(method, paramIdx);
+            } else if (hasGlobalValueAnnotation(method)) {
+                callType = Bro.MarshalerFlags.CALL_TYPE_GLOBAL_VALUE;
+                callTypeName = "@GlobalValue";
                 array = paramIdx == -1 ? hasArrayAnnotation(method) 
                         : hasArrayAnnotation(method, paramIdx);
             } else {

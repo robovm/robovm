@@ -1109,8 +1109,35 @@ extern "C" jint Java_libcore_io_Posix_sendtoBytes(JNIEnv* env, jobject, jobject 
     }
     int fd;
     const sockaddr* to = (javaInetAddress != NULL) ? reinterpret_cast<const sockaddr*>(&ss) : NULL;
+#if defined(__APPLE__)
+    // RoboVM note: sendto() fails on Darwin for connected datagram sockets if a destination address is specified even if
+    // that address is identical to the address. connected to DatagramSocket.send() and DatagramChannelImpl.send() have 
+    // already checked that the connected address and the address in the packet are identical. DatagramSocket.send() calls 
+    // PlainDatagramSocketImpl.send() which calls this function with a null address if the socket is connected.
+    // DatagramChannelImpl.send() however still passes the address into this function. When this happens we have to call
+    // sendto() with a NULL address.
+    if (to) {
+        fd = jniGetFDFromFileDescriptor(env, javaFd);
+        if (fd != -1) {
+            int type = 0;
+            socklen_t size = sizeof(type);
+            int rc = throwIfMinusOne(env, "getsockopt", TEMP_FAILURE_RETRY(getsockopt(fd, SOL_SOCKET, SO_TYPE, &type, &size)));
+            if (rc == -1) {
+                return rc;
+            }
+            if (type == SOCK_DGRAM) {
+                sockaddr_storage peer;
+                size = sizeof(peer);
+                rc = getpeername(fd, (sockaddr*) &peer, &size);
+                if (!rc) {
+                    to = NULL;
+                }
+            }
+        }
+    }
+#endif
     // RoboVM note: sendto() on Darwin is picky about the the length specified. It has to match the family type.
-    socklen_t toLength = (javaInetAddress != NULL) ? ((to->sa_family == AF_INET6) ? sizeof(sockaddr_in6) : sizeof(sockaddr_in)) : 0;
+    socklen_t toLength = (to != NULL) ? ((to->sa_family == AF_INET6) ? sizeof(sockaddr_in6) : sizeof(sockaddr_in)) : 0;
     return NET_FAILURE_RETRY("sendto", sendto(fd, bytes.get() + byteOffset, byteCount, flags, to, toLength));
 }
 

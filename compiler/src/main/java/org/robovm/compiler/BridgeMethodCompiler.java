@@ -74,7 +74,16 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         super(config);
     }
 
+    private void validateBridgeMethod(SootMethod method) {
+        if (!method.isNative()) {
+            throw new IllegalArgumentException("@Bridge annotated method " 
+                    + method + " must be native");
+        }
+    }
+
     protected void doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
+        validateBridgeMethod(method);
+        
         Function fn = FunctionBuilder.method(method);
         moduleBuilder.addFunction(fn);
         

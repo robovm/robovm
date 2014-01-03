@@ -209,26 +209,29 @@ public class MarshalerLookup {
         }
         visited.contains(internalName);
         
-        List<Marshaler> result = cache.get(sc.getName());
-        if (result != null) {
-            return result;
-        }
-        
-        result = new ArrayList<>();
-        for (AnnotationTag tag : getMarshalerAnnotations(sc)) {
-            AnnotationClassElem elem = (AnnotationClassElem) getElemByName(tag, "value");
-            String name = getInternalNameFromDescriptor(elem.getDesc());
-            if (!seen.contains(name)) {
-                seen.add(name);
+        List<Marshaler> all = cache.get(sc.getName());
+        if (all == null) {
+            all = new ArrayList<>();
+            for (AnnotationTag tag : getMarshalerAnnotations(sc)) {
+                AnnotationClassElem elem = (AnnotationClassElem) getElemByName(tag, "value");
+                String name = getInternalNameFromDescriptor(elem.getDesc());
                 Clazz marshalerClazz = config.getClazzes().load(name);
                 if (marshalerClazz != null) {
-                    result.add(new Marshaler(marshalerClazz));
+                    all.add(new Marshaler(marshalerClazz));
                 }
             }
+            cache.put(sc.getName(), all);
         }
         
-        cache.put(sc.getName(), result);
-        
+        List<Marshaler> result = new ArrayList<>();
+        for (Marshaler m : all) {
+            String name = m.clazz.getInternalName();
+            if (!seen.contains(name)) {
+                seen.add(name);
+                result.add(m);
+            }
+        }
+
         return result;
     }
     

@@ -37,6 +37,7 @@ extern jlong rvmGetTotalMemory(Env* env);
 extern jlong rvmGetMaxMemory(Env* env);
 extern void* rvmCopyMemoryAtomic(Env* env, const void* src, size_t size);
 extern void* rvmCopyMemoryAtomicZ(Env* env, const char* src);
+extern void* rvmCopyMemory(Env* env, const void* src, size_t size);
 extern Object* rvmNewDirectByteBuffer(Env* env, void* address, jlong capacity);
 extern void* rvmGetDirectBufferAddress(Env* env, Object* buf);
 extern jlong rvmGetDirectBufferCapacity(Env* env, Object* buf);

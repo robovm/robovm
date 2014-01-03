@@ -19,6 +19,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 
+import libcore.util.EmptyArray;
+
 
 /**
  *
@@ -64,6 +66,27 @@ public final class VM {
      * @return the classes.
      */
     public static native final Class<?>[] getStackClasses(int skipNum, int maxDepth);
+    
+    /**
+     * Returns all {@link Class}es known to the VM optionally filtering on
+     * the specified class or interface {@link Class}.
+     * 
+     * @param assignableToClass optional {@link Class} which all returned 
+     *        {@link Class}es must be assignment compatible with. Pass 
+     *        {@code null} to return all classes.
+     * @param classLoader the {@link ClassLoader} which the returned 
+     *        {@link Class}es must belong to. Pass {@code null} for the boot
+     *        {@link ClassLoader}.
+     * @return the matching classes.
+     */
+    public static final Class<?>[] listClasses(Class<?> assignableToClass, ClassLoader classLoader) {
+        Class<?>[] result = listClasses0(assignableToClass, classLoader);
+        if (result == null) {
+            return EmptyArray.CLASS;
+        }
+        return result;
+    }
+    private static native final Class<?>[] listClasses0(Class<?> assignableToClass, ClassLoader classLoader);
     
     public native static final long allocateMemory(int size);
     public native static final long allocateMemoryUncollectable(int size);

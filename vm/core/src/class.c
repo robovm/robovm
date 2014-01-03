@@ -495,21 +495,12 @@ jboolean rvmIsAssignableFrom(Env* env, Class* s, Class* t) {
     }
 
     if (CLASS_IS_INTERFACE(t)) {
-        uint32_t ifCount = sti->interfaceCount;
-        uint32_t* base = (uint32_t*) ((((char*) sti) + sti->offset) + sizeof(uint32_t));
-        uint32_t i;
-        for (i = 0; i < ifCount; i++) {
-            if (*base == id) goto found;
-            base++;
-        }
+        if (rvmIsInterfaceTypeInfoAssignable(env, sti, tti)) goto found;
         return FALSE;
     }
 
     // t must be a class or array class
-    if (tti->offset <= sti->offset) {
-        uint32_t* base = (uint32_t*) (((char*) sti) + tti->offset);
-        if (*base == id) goto found;
-    }
+    if (rvmIsClassTypeInfoAssignable(env, sti, tti)) goto found;
 
     // The TypeInfo of array classes doesn't give the complete information.
     if (CLASS_IS_ARRAY(t) && CLASS_IS_ARRAY(s) 
@@ -1562,3 +1553,10 @@ void rvmDumpLoadedClasses(Env* env) {
     rvmIterateLoadedClasses(env, dumpClassesIterator, NULL);
 }
 
+ObjectArray* rvmListClasses(Env* env, Class* instanceofClass, ClassLoader* classLoader) {
+    if (!classLoader || classLoader->parent == NULL) {
+        // This is the bootstrap classloader
+        return env->vm->options->listBootClasses(env, instanceofClass);
+    }
+    return env->vm->options->listUserClasses(env, instanceofClass);
+}

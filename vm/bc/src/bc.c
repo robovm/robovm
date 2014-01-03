@@ -54,6 +54,8 @@ static Method* loadMethods(Env*, Class*);
 static Class* findClassAt(Env*, void*);
 static Class* createClass(Env*, ClassInfoHeader*, ClassLoader*);
 static jboolean exceptionMatch(Env* env, TrycatchContext*);
+static ObjectArray* listBootClasses(Env*, Class*);
+static ObjectArray* listUserClasses(Env*, Class*);
 static Options options = {0};
 static VM* vm = NULL;
 static jint addressClassLookupsCount = 0;
@@ -72,6 +74,8 @@ int main(int argc, char* argv[]) {
     options.findClassAt = findClassAt;
     options.exceptionMatch = exceptionMatch;
     options.dynamicJNI = _bcDynamicJNI;
+    options.listBootClasses = listBootClasses;
+    options.listUserClasses = listUserClasses;
     if (!rvmInitOptions(argc, argv, &options, FALSE)) {
         fprintf(stderr, "rvmInitOptions(...) failed!\n");
         return 1;
@@ -143,6 +147,58 @@ static void iterateClassInfos(Env* env, jboolean (*callback)(Env*, ClassInfoHead
             }
         }
     }
+}
+
+static ObjectArray* listClasses(Env* env, Class* instanceofClazz, ClassLoader* classLoader, void* hash) {
+    if (instanceofClazz && (CLASS_IS_ARRAY(instanceofClazz) || CLASS_IS_PRIMITIVE(instanceofClazz))) {
+        return NULL;
+    }
+    ClassInfoHeader** base = getClassInfosBase(hash);
+    jint count = getClassInfosCount(hash);
+    jint i = 0;
+    jint matches = count;
+    TypeInfo* instanceofTypeInfo = instanceofClazz ? instanceofClazz->typeInfo : NULL;
+    if (instanceofTypeInfo) {
+        matches = 0;
+        for (i = 0; i < count; i++) {
+            ClassInfoHeader* header = base[i];
+            if ((header->flags & CI_ERROR) == 0) {
+                if ((!CLASS_IS_INTERFACE(instanceofClazz) 
+                    && rvmIsClassTypeInfoAssignable(env, header->typeInfo, instanceofTypeInfo))
+                    || (CLASS_IS_INTERFACE(instanceofClazz) 
+                    && rvmIsInterfaceTypeInfoAssignable(env, header->typeInfo, instanceofTypeInfo))) {
+
+                    matches++;
+                }
+            }
+        }
+    }
+
+    if (matches == 0) return NULL;
+    ObjectArray* result = rvmNewObjectArray(env, matches, java_lang_Class, NULL, NULL);
+    if (!result) return NULL;
+
+    jint j = 0;
+    for (i = 0; i < count; i++) {
+        ClassInfoHeader* header = base[i];
+        if ((header->flags & CI_ERROR) == 0) {
+            if (!instanceofTypeInfo || ((!CLASS_IS_INTERFACE(instanceofClazz) 
+                && rvmIsClassTypeInfoAssignable(env, header->typeInfo, instanceofTypeInfo))
+                || (CLASS_IS_INTERFACE(instanceofClazz) 
+                && rvmIsInterfaceTypeInfoAssignable(env, header->typeInfo, instanceofTypeInfo)))) {
+
+                result->values[j++] = (Object*) (header->clazz ? header->clazz : createClass(env, header, classLoader));
+                if (rvmExceptionOccurred(env)) return NULL;
+            }
+        }
+    }
+    return result;
+}
+static ObjectArray* listBootClasses(Env* env, Class* instanceofClazz) {
+    return listClasses(env, instanceofClazz, NULL, _bcBootClassesHash);
+}
+static ObjectArray* listUserClasses(Env* env, Class* instanceofClazz) {
+    return listClasses(env, instanceofClazz, systemClassLoader, _bcClassesHash);
 }
 
 static Class* loadClass(Env* env, const char* className, ClassLoader* classLoader, void* hash) {

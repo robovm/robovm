@@ -368,6 +368,8 @@ typedef struct Options {
     Method* (*loadMethods)(Env*, Class*);
     Class* (*findClassAt)(Env*, void*);
     jboolean (*exceptionMatch)(Env*, TrycatchContext*);
+    ObjectArray* (*listBootClasses)(Env*, Class*);
+    ObjectArray* (*listUserClasses)(Env*, Class*);
 } Options;
 
 typedef struct VM {

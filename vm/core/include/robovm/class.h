@@ -124,6 +124,26 @@ extern Class* array_J;
 extern Class* array_F;
 extern Class* array_D;
 
+static inline jboolean rvmIsInterfaceTypeInfoAssignable(Env* env, TypeInfo* sti, TypeInfo* tti) {
+    uint32_t id = tti->id;
+    uint32_t ifCount = sti->interfaceCount;
+    uint32_t* base = (uint32_t*) ((((char*) sti) + sti->offset) + sizeof(uint32_t));
+    uint32_t i;
+    for (i = 0; i < ifCount; i++) {
+        if (*base == id) return TRUE;
+        base++;
+    }
+    return FALSE;
+}
+static inline jboolean rvmIsClassTypeInfoAssignable(Env* env, TypeInfo* sti, TypeInfo* tti) {
+    uint32_t id = tti->id;
+    if (tti->offset <= sti->offset) {
+        uint32_t* base = (uint32_t*) (((char*) sti) + tti->offset);
+        if (*base == id) return TRUE;
+    }
+    return FALSE;
+}
+
 extern jboolean rvmInitClasses(Env* env);
 extern jboolean rvmInitPrimitiveWrapperClasses(Env* env);
 
@@ -199,6 +219,8 @@ extern jboolean rvmIsSamePackage(Class* c1, Class* c2);
 
 extern jboolean rvmIsAssignableFrom(Env* env, Class* sub, Class* sup);
 extern jboolean rvmIsInstanceOf(Env* env, Object* obj, Class* clazz);
+
+extern ObjectArray* rvmListClasses(Env* env, Class* instanceofClass, ClassLoader* classLoader);
 
 #endif
 

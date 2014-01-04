@@ -36,12 +36,39 @@ import org.robovm.rt.bro.annotation.Library;
 @Library("objc")
 public final class ObjCClass extends ObjCObject {
     
-    static {
-        ObjCRuntime.bind();
-    }
-    
     private static final Map<Class<? extends ObjCObject>, ObjCClass> typeToClass = new HashMap<Class<? extends ObjCObject>, ObjCClass>();
     private static final Map<String, ObjCClass> nameToClass = new HashMap<String, ObjCClass>();
+    private static final Map<String, Class<? extends ObjCObject>> allNativeClasses = new HashMap<>();
+    private static final Map<String, Class<? extends ObjCObject>> allCustomClasses = new HashMap<>();
+
+    static {
+        ObjCRuntime.bind();
+        @SuppressWarnings("unchecked")
+        Class<? extends ObjCObject>[] classes = (Class<? extends ObjCObject>[]) 
+                VM.listClasses(ObjCObject.class, ClassLoader.getSystemClassLoader());
+        for (Class<? extends ObjCObject> cls : classes) {
+            NativeClass nativeClassAnno = cls.getAnnotation(NativeClass.class);
+            if (nativeClassAnno != null) {
+                String name = nativeClassAnno.value();
+                if (name.length() == 0) {
+                    name = cls.getSimpleName();
+                }
+                allNativeClasses.put(name, cls);
+            } else {
+                CustomClass customClassAnno = cls.getAnnotation(CustomClass.class);
+                String name = cls.getName();
+                if (customClassAnno != null) {
+                    String value = customClassAnno.value();
+                    if (value.length() > 0) {
+                        name = value;
+                    }
+                } else if (name.indexOf('.') == -1) {
+                    name = "." + name;
+                }
+                allCustomClasses.put(name, cls);
+            }
+        }
+    }
 
     private final Class<? extends ObjCObject> type;
     private final String name;
@@ -75,10 +102,25 @@ public final class ObjCClass extends ObjCObject {
         synchronized (typeToClass) {
             ObjCClass c = nameToClass.get(objcClassName);
             if (c == null) {
-                throw new ObjCClassNotFoundException("Could not find Java class corresponding to Objective-C class: " + objcClassName);
+                c = getByNameNotLoaded(objcClassName);
+                if (c == null) {
+                    throw new ObjCClassNotFoundException("Could not find Java class corresponding to Objective-C class: " + objcClassName);
+                }
             }
             return c;
         }
+    }
+    
+    private static ObjCClass getByNameNotLoaded(String objcClassName) {
+        Class<? extends ObjCObject> cls = allNativeClasses.get(objcClassName);
+        if (cls != null) {
+            return getByType(cls);
+        }
+        cls = allCustomClasses.get(objcClassName);
+        if (cls != null) {
+            return getByType(cls);
+        }
+        return null;
     }
     
     public static ObjCClass getFromObject(ObjCObject id) {
@@ -110,9 +152,15 @@ public final class ObjCClass extends ObjCObject {
         ObjCClass c = null;
         long classPtr = ObjCRuntime.object_getClass(handle);
         c = ObjCObject.getPeerObject(classPtr);
+        if (c == null) {
+            c = getByNameNotLoaded(VM.newStringUTF(ObjCRuntime.object_getClassName(classPtr)));
+        }
         while (c == null && classPtr != 0L && classPtr != fallbackHandle) {
             classPtr = ObjCRuntime.class_getSuperclass(classPtr);
             c = ObjCObject.getPeerObject(classPtr);
+            if (c == null) {
+                c = getByNameNotLoaded(VM.newStringUTF(ObjCRuntime.object_getClassName(classPtr)));
+            }
         }
         if (c == null) {
             String name = VM.newStringUTF(ObjCRuntime.object_getClassName(handle));

@@ -229,7 +229,11 @@ public class IOSTarget extends AbstractTarget {
             List<File> objectFiles, List<String> libArgs)
             throws IOException {
 
-        ccArgs.add("-miphoneos-version-min=5.0");
+        if (arch == Arch.thumbv7) {
+            ccArgs.add("-miphoneos-version-min=5.0");
+        } else {
+            ccArgs.add("-mios-simulator-version-min=5.0");
+        }
         ccArgs.add("-isysroot");
         ccArgs.add(sdk.getRoot().getAbsolutePath());
         super.doBuild(outFile, ccArgs, objectFiles, libArgs);

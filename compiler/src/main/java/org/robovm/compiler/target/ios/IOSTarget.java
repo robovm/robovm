@@ -192,6 +192,7 @@ public class IOSTarget extends AbstractTarget {
             .xcodePath(ToolchainUtil.findXcodePath())
             .uploadProgressCallback(new UploadProgressCallback() {
                 boolean first = true;
+		int lastProgress = 0;
                 public void success() {
                     config.getLogger().debug("[100%%] Upload complete");
                 }
@@ -200,7 +201,10 @@ public class IOSTarget extends AbstractTarget {
                         config.getLogger().debug("[  0%%] Beginning upload...");
                     }
                     first = false;
-                    config.getLogger().debug("[%3d%%] Uploading %s...", percentComplete, path);
+		    if(percentComplete >= lastProgress + 5) {
+                        config.getLogger().debug("[%3d%%] Uploading %s...", percentComplete, path);
+			lastProgress = percentComplete;
+		    }
                 }
                 public void error(String message) {
                 }

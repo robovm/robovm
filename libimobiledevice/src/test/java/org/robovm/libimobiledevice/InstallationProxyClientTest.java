@@ -92,7 +92,7 @@ public class InstallationProxyClientTest {
         assertNotNull(safari);
     }
 
-    @Test
+    //removed as test until it can be rewritten to re-sign the ipa
     public void testUpgradeIPA() throws Exception {
         Path tmpDir = Files.createTempDirectory(getClass().getSimpleName());
         Files.copy(getClass().getResourceAsStream("/demo.ipa"), tmpDir.resolve("demo.ipa"));
@@ -131,7 +131,7 @@ public class InstallationProxyClientTest {
         assertTrue(success[0]);
     }
     
-    @Test
+    //removed as test until it can be rewritten to re-sign the ipa
     public void testUpgradeAppBundle() throws Exception {
         Path tmpDir = Files.createTempDirectory(getClass().getSimpleName());
         Path ipaFile = tmpDir.resolve("demo.ipa");
@@ -174,6 +174,7 @@ public class InstallationProxyClientTest {
         countDownLatch.await(10, TimeUnit.SECONDS);
         assertTrue(success[0]);
     }
+
     
     protected void extractZip(Path zipFile, Path outDir) throws IOException {
         try (ZipFile archive = new ZipFile(zipFile.toFile())) {

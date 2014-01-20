@@ -40,7 +40,7 @@ public final class UIControlState extends Bits<UIControlState> {
     protected UIControlState wrap(long value, long mask) {
         return new UIControlState(value, mask);
     }
-    protected UIControlState[] values() {
+    protected UIControlState[] _values() {
         return values;
     }
 }

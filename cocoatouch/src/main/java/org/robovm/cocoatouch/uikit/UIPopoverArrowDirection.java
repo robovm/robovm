@@ -32,7 +32,7 @@ public final class UIPopoverArrowDirection extends Bits<UIPopoverArrowDirection>
     protected UIPopoverArrowDirection wrap(long value, long mask) {
         return new UIPopoverArrowDirection(value, mask);
     }
-    protected UIPopoverArrowDirection[] values() {
+    protected UIPopoverArrowDirection[] _values() {
         return values;
     }
 }

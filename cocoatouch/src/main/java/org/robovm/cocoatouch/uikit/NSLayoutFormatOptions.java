@@ -40,7 +40,7 @@ public final class NSLayoutFormatOptions extends Bits<NSLayoutFormatOptions> {
     protected NSLayoutFormatOptions wrap(long value, long mask) {
         return new NSLayoutFormatOptions(value, mask);
     }
-    protected NSLayoutFormatOptions[] values() {
+    protected NSLayoutFormatOptions[] _values() {
         return values;
     }
 }

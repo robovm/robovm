@@ -31,7 +31,7 @@ public final class UIDocumentState extends Bits<UIDocumentState> {
     protected UIDocumentState wrap(long value, long mask) {
         return new UIDocumentState(value, mask);
     }
-    protected UIDocumentState[] values() {
+    protected UIDocumentState[] _values() {
         return values;
     }
 }

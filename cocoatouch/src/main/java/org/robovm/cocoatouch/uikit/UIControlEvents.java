@@ -53,7 +53,7 @@ public final class UIControlEvents extends Bits<UIControlEvents> {
     protected UIControlEvents wrap(long value, long mask) {
         return new UIControlEvents(value, mask);
     }
-    protected UIControlEvents[] values() {
+    protected UIControlEvents[] _values() {
         return values;
     }
 }

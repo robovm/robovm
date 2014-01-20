@@ -33,7 +33,7 @@ public final class UICollectionViewScrollPosition extends Bits<UICollectionViewS
     protected UICollectionViewScrollPosition wrap(long value, long mask) {
         return new UICollectionViewScrollPosition(value, mask);
     }
-    protected UICollectionViewScrollPosition[] values() {
+    protected UICollectionViewScrollPosition[] _values() {
         return values;
     }
 }

@@ -32,7 +32,7 @@ public final class UIDataDetectorTypes extends Bits<UIDataDetectorTypes> {
     protected UIDataDetectorTypes wrap(long value, long mask) {
         return new UIDataDetectorTypes(value, mask);
     }
-    protected UIDataDetectorTypes[] values() {
+    protected UIDataDetectorTypes[] _values() {
         return values;
     }
 }

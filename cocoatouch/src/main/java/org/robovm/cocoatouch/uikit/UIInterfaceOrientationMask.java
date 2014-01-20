@@ -33,7 +33,7 @@ public final class UIInterfaceOrientationMask extends Bits<UIInterfaceOrientatio
     protected UIInterfaceOrientationMask wrap(long value, long mask) {
         return new UIInterfaceOrientationMask(value, mask);
     }
-    protected UIInterfaceOrientationMask[] values() {
+    protected UIInterfaceOrientationMask[] _values() {
         return values;
     }
 }

@@ -34,7 +34,7 @@ public final class NSStringEnumerationOptions extends Bits<NSStringEnumerationOp
     protected NSStringEnumerationOptions wrap(long value, long mask) {
         return new NSStringEnumerationOptions(value, mask);
     }
-    protected NSStringEnumerationOptions[] values() {
+    protected NSStringEnumerationOptions[] _values() {
         return values;
     }
 }

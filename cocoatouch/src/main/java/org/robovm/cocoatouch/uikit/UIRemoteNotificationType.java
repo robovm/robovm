@@ -31,7 +31,7 @@ public final class UIRemoteNotificationType extends Bits<UIRemoteNotificationTyp
     protected UIRemoteNotificationType wrap(long value, long mask) {
         return new UIRemoteNotificationType(value, mask);
     }
-    protected UIRemoteNotificationType[] values() {
+    protected UIRemoteNotificationType[] _values() {
         return values;
     }
 }

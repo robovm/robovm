@@ -81,7 +81,7 @@ public class StructTest {
         }
 
         @Override
-        protected TestBits[] values() {
+        protected TestBits[] _values() {
             return VALUES;
         }
     }

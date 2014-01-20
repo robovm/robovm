@@ -31,7 +31,7 @@ public final class UIRectCorner extends Bits<UIRectCorner> {
     protected UIRectCorner wrap(long value, long mask) {
         return new UIRectCorner(value, mask);
     }
-    protected UIRectCorner[] values() {
+    protected UIRectCorner[] _values() {
         return values;
     }
 }

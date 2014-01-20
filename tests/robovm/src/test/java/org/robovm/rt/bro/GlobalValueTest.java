@@ -86,7 +86,7 @@ public class GlobalValueTest {
         }
 
         @Override
-        protected TestBits[] values() {
+        protected TestBits[] _values() {
             return VALUES;
         }
     }

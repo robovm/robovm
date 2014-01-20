@@ -32,7 +32,7 @@ public final class NSDataWritingOptions extends Bits<NSDataWritingOptions> {
     protected NSDataWritingOptions wrap(long value, long mask) {
         return new NSDataWritingOptions(value, mask);
     }
-    protected NSDataWritingOptions[] values() {
+    protected NSDataWritingOptions[] _values() {
         return values;
     }
 }

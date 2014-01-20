@@ -113,7 +113,7 @@ public class BridgeCallbackTest {
         }
 
         @Override
-        protected TestBits[] values() {
+        protected TestBits[] _values() {
             return VALUES;
         }
     }

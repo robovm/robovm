@@ -29,7 +29,7 @@ public final class NSDataReadingOptions extends Bits<NSDataReadingOptions> {
     protected NSDataReadingOptions wrap(long value, long mask) {
         return new NSDataReadingOptions(value, mask);
     }
-    protected NSDataReadingOptions[] values() {
+    protected NSDataReadingOptions[] _values() {
         return values;
     }
 }

@@ -33,7 +33,7 @@ public final class UIViewAutoresizing extends Bits<UIViewAutoresizing> {
     protected UIViewAutoresizing wrap(long value, long mask) {
         return new UIViewAutoresizing(value, mask);
     }
-    protected UIViewAutoresizing[] values() {
+    protected UIViewAutoresizing[] _values() {
         return values;
     }
 }

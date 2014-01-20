@@ -42,7 +42,7 @@ public class BitsTest {
         protected FlagsWithZero wrap(long value, long mask) {
             return new FlagsWithZero(value, mask);
         }
-        protected FlagsWithZero[] values() {
+        protected FlagsWithZero[] _values() {
             return VALUES;
         }
     }
@@ -59,7 +59,7 @@ public class BitsTest {
         protected FlagsNoZero wrap(long value, long mask) {
             return new FlagsNoZero(value, mask);
         }
-        protected FlagsNoZero[] values() {
+        protected FlagsNoZero[] _values() {
             return VALUES;
         }
     }
@@ -82,7 +82,7 @@ public class BitsTest {
         protected FlagsAndValues wrap(long value, long mask) {
             return new FlagsAndValues(value, mask);
         }
-        protected FlagsAndValues[] values() {
+        protected FlagsAndValues[] _values() {
             return VALUES;
         }
     }
@@ -93,7 +93,7 @@ public class BitsTest {
     
     @Test
     public void testValues() {
-        FlagsWithZero[] positionValues = Bits.values(FlagsWithZero.class);
+        FlagsWithZero[] positionValues = Bits._values(FlagsWithZero.class);
         assertEquals(set(FlagsWithZero.V0, FlagsWithZero.V1, FlagsWithZero.V2, FlagsWithZero.V4, FlagsWithZero.V8), set(positionValues));
     }
     

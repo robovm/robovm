@@ -47,7 +47,7 @@ public final class UIViewAnimationOptions extends Bits<UIViewAnimationOptions> {
     protected UIViewAnimationOptions wrap(long value, long mask) {
         return new UIViewAnimationOptions(value, mask);
     }
-    protected UIViewAnimationOptions[] values() {
+    protected UIViewAnimationOptions[] _values() {
         return values;
     }
 }

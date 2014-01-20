@@ -30,7 +30,7 @@ public final class UISwipeGestureRecognizerDirection extends Bits<UISwipeGesture
     protected UISwipeGestureRecognizerDirection wrap(long value, long mask) {
         return new UISwipeGestureRecognizerDirection(value, mask);
     }
-    protected UISwipeGestureRecognizerDirection[] values() {
+    protected UISwipeGestureRecognizerDirection[] _values() {
         return values;
     }
 }

@@ -29,7 +29,7 @@ public final class UITableViewCellStateMask extends Bits<UITableViewCellStateMas
     protected UITableViewCellStateMask wrap(long value, long mask) {
         return new UITableViewCellStateMask(value, mask);
     }
-    protected UITableViewCellStateMask[] values() {
+    protected UITableViewCellStateMask[] _values() {
         return values;
     }
 }

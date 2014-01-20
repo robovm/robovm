@@ -331,8 +331,9 @@ public class IOSTarget extends AbstractTarget {
     }
 
     private void strip(File dir, String executable) throws IOException {
+        File exportedSymbolsFile = new File(config.getTmpDir(), "exported_symbols");
         new Executor(config.getLogger(), "xcrun")
-            .args("strip", new File(dir, executable))
+            .args("strip", "-s", exportedSymbolsFile, new File(dir, executable))
             .exec();
     }
     

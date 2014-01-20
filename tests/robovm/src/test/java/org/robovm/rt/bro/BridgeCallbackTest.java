@@ -29,6 +29,9 @@ import org.robovm.rt.bro.annotation.AfterCallbackCall;
 import org.robovm.rt.bro.annotation.Bridge;
 import org.robovm.rt.bro.annotation.ByVal;
 import org.robovm.rt.bro.annotation.Callback;
+import org.robovm.rt.bro.annotation.MachineSizedFloat;
+import org.robovm.rt.bro.annotation.MachineSizedSInt;
+import org.robovm.rt.bro.annotation.MachineSizedUInt;
 import org.robovm.rt.bro.annotation.Marshaler;
 import org.robovm.rt.bro.annotation.Marshalers;
 import org.robovm.rt.bro.annotation.MarshalsPointer;
@@ -429,6 +432,31 @@ public class BridgeCallbackTest {
         return sum;
     }
 
+    @Bridge
+    public static native @MachineSizedFloat double marshalMachinedSizeFloatAsDouble(@MachineSizedFloat double d);
+    @Callback
+    public static @MachineSizedFloat double marshalMachinedSizeFloatAsDouble_cb(@MachineSizedFloat double d) {
+        return d;
+    }
+    @Bridge
+    public static native @MachineSizedFloat float marshalMachinedSizeFloatAsFloat(@MachineSizedFloat float f);
+    @Callback
+    public static @MachineSizedFloat float marshalMachinedSizeFloatAsFloat_cb(@MachineSizedFloat float f) {
+        return f;
+    }
+    @Bridge
+    public static native @MachineSizedSInt long marshalMachinedSizeSInt(@MachineSizedSInt long l);
+    @Callback
+    public static @MachineSizedSInt long marshalMachinedSizeSInt_cb(@MachineSizedSInt long l) {
+        return l;
+    }
+    @Bridge
+    public static native @MachineSizedUInt long marshalMachinedSizeUInt(@MachineSizedUInt long l);
+    @Callback
+    public static @MachineSizedUInt long marshalMachinedSizeUInt_cb(@MachineSizedUInt long l) {
+        return l;
+    }
+    
     private static Method find(String name) {
         for (Method m : BridgeCallbackTest.class.getDeclaredMethods()) {
             if (m.getName().equals(name)) {
@@ -745,5 +773,30 @@ public class BridgeCallbackTest {
         assertEquals(1.2345, marshal1DDoubleArrayWithDefaultMarshaler(
                 new double[] {1, 0.2, 0.03, 0.004, 0.0005, 0}), 0.001);
         assertEquals(-1.0, marshal1DDoubleArrayWithDefaultMarshaler(null), 0);
+    }
+
+    float fpi = (float) Math.PI;
+
+    @Test
+    public void testMarshalMachinedSizeFloatAsDouble() {
+        // NOTE: 32-bit specific
+        long ldpi = Double.doubleToLongBits(Math.PI);
+        long lfpi = Double.doubleToLongBits(fpi);
+        assertNotEquals(ldpi, lfpi);
+        assertEquals(lfpi, Double.doubleToLongBits(marshalMachinedSizeFloatAsDouble(Math.PI)));
+    }
+    @Test
+    public void testMarshalMachinedSizeSInt() {
+        // NOTE: 32-bit specific
+        assertEquals(-1L, marshalMachinedSizeSInt(-1L));
+        assertEquals(0xffffffff80000000L, marshalMachinedSizeSInt(0x80000000L));
+        assertEquals(0xffffffff80000000L, marshalMachinedSizeSInt(0x1234567880000000L));
+    }
+    @Test
+    public void testMarshalMachinedSizeUInt() {
+        // NOTE: 32-bit specific
+        assertEquals(0xffffffffL, marshalMachinedSizeUInt(-1L));
+        assertEquals(0x80000000L, marshalMachinedSizeUInt(0x80000000L));
+        assertEquals(0x80000000L, marshalMachinedSizeUInt(0x1234567880000000L));
     }
 }

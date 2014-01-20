@@ -34,6 +34,8 @@ import org.robovm.compiler.llvm.Alloca;
 import org.robovm.compiler.llvm.ArrayType;
 import org.robovm.compiler.llvm.ConstantBitcast;
 import org.robovm.compiler.llvm.DataLayout;
+import org.robovm.compiler.llvm.Fpext;
+import org.robovm.compiler.llvm.Fptrunc;
 import org.robovm.compiler.llvm.Function;
 import org.robovm.compiler.llvm.FunctionRef;
 import org.robovm.compiler.llvm.FunctionType;
@@ -44,15 +46,20 @@ import org.robovm.compiler.llvm.Load;
 import org.robovm.compiler.llvm.PointerType;
 import org.robovm.compiler.llvm.PrimitiveType;
 import org.robovm.compiler.llvm.Ptrtoint;
+import org.robovm.compiler.llvm.Sext;
 import org.robovm.compiler.llvm.Store;
 import org.robovm.compiler.llvm.StructureType;
+import org.robovm.compiler.llvm.Trunc;
 import org.robovm.compiler.llvm.Type;
 import org.robovm.compiler.llvm.Value;
 import org.robovm.compiler.llvm.Variable;
+import org.robovm.compiler.llvm.Zext;
 import org.robovm.compiler.trampoline.Invokestatic;
 import org.robovm.compiler.trampoline.LdcClass;
 import org.robovm.compiler.trampoline.Trampoline;
 
+import soot.DoubleType;
+import soot.FloatType;
 import soot.LongType;
 import soot.PrimType;
 import soot.RefType;
@@ -93,6 +100,70 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
         }
     }
 
+    protected Value marshalNativeToPrimitive(Function fn, SootMethod method, int paramIndex, Value value) {
+        soot.Type type = method.getParameterType(paramIndex);
+        if (hasPointerAnnotation(method, paramIndex)) {
+            value = marshalPointerToLong(fn, value);
+        } else if (hasMachineSizedFloatAnnotation(method, paramIndex) && type.equals(DoubleType.v())) {
+            value = marshalMachineSizedFloatToDouble(fn, value);
+        } else if (hasMachineSizedFloatAnnotation(method, paramIndex) && type.equals(FloatType.v())) {
+            value = marshalMachineSizedFloatToFloat(fn, value);
+        } else if (hasMachineSizedSIntAnnotation(method, paramIndex) && type.equals(LongType.v())) {
+            value = marshalMachineSizedSIntToLong(fn, value);
+        } else if (hasMachineSizedUIntAnnotation(method, paramIndex) && type.equals(LongType.v())) {
+            value = marshalMachineSizedUIntToLong(fn, value);
+        }
+        return value;
+    }
+
+    protected Value marshalPrimitiveToNative(Function fn, SootMethod method, int paramIndex, Value value) {
+        soot.Type type = method.getParameterType(paramIndex);
+        if (hasPointerAnnotation(method, paramIndex)) {
+            value = marshalLongToPointer(fn, value);
+        } else if (hasMachineSizedFloatAnnotation(method, paramIndex) && type.equals(DoubleType.v())) {
+            value = marshalDoubleToMachineSizedFloat(fn, value);
+        } else if (hasMachineSizedFloatAnnotation(method, paramIndex) && type.equals(FloatType.v())) {
+            value = marshalFloatToMachineSizedFloat(fn, value);
+        } else if (hasMachineSizedSIntAnnotation(method, paramIndex) && type.equals(LongType.v())) {
+            value = marshalLongToMachineSizedInt(fn, value);
+        } else if (hasMachineSizedUIntAnnotation(method, paramIndex) && type.equals(LongType.v())) {
+            value = marshalLongToMachineSizedInt(fn, value);
+        }
+        return value;
+    }
+    
+    protected Value marshalNativeToPrimitive(Function fn, SootMethod method, Value value) {
+        soot.Type type = method.getReturnType();
+        if (hasPointerAnnotation(method)) {
+            value = marshalPointerToLong(fn, value);
+        } else if (hasMachineSizedFloatAnnotation(method) && type.equals(DoubleType.v())) {
+            value = marshalMachineSizedFloatToDouble(fn, value);
+        } else if (hasMachineSizedFloatAnnotation(method) && type.equals(FloatType.v())) {
+            value = marshalMachineSizedFloatToFloat(fn, value);
+        } else if (hasMachineSizedSIntAnnotation(method) && type.equals(LongType.v())) {
+            value = marshalMachineSizedSIntToLong(fn, value);
+        } else if (hasMachineSizedUIntAnnotation(method) && type.equals(LongType.v())) {
+            value = marshalMachineSizedUIntToLong(fn, value);
+        }
+        return value;
+    }
+
+    protected Value marshalPrimitiveToNative(Function fn, SootMethod method, Value value) {
+        soot.Type type = method.getReturnType();
+        if (hasPointerAnnotation(method)) {
+            value = marshalLongToPointer(fn, value);
+        } else if (hasMachineSizedFloatAnnotation(method) && type.equals(DoubleType.v())) {
+            value = marshalDoubleToMachineSizedFloat(fn, value);
+        } else if (hasMachineSizedFloatAnnotation(method) && type.equals(FloatType.v())) {
+            value = marshalFloatToMachineSizedFloat(fn, value);
+        } else if (hasMachineSizedSIntAnnotation(method) && type.equals(LongType.v())) {
+            value = marshalLongToMachineSizedInt(fn, value);
+        } else if (hasMachineSizedUIntAnnotation(method) && type.equals(LongType.v())) {
+            value = marshalLongToMachineSizedInt(fn, value);
+        }
+        return value;
+    }
+    
     public static class MarshaledArg {
         public Value object;
         public Value handle;
@@ -179,7 +250,47 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
         fn.add(new Ptrtoint(result, pointer, I64));
         return result.ref();
     }
-    
+
+    protected Value marshalMachineSizedSIntToLong(Function fn, Value value) {
+        if (config.getArch().is32Bit()) {
+            Variable result = fn.newVariable(I64);
+            fn.add(new Sext(result, value, I64));
+            return result.ref();
+        } else {
+            return value;
+        }
+    }
+
+    protected Value marshalMachineSizedUIntToLong(Function fn, Value value) {
+        if (config.getArch().is32Bit()) {
+            Variable result = fn.newVariable(I64);
+            fn.add(new Zext(result, value, I64));
+            return result.ref();
+        } else {
+            return value;
+        }
+    }
+
+    protected Value marshalMachineSizedFloatToDouble(Function fn, Value value) {
+        if (config.getArch().is32Bit()) {
+            Variable result = fn.newVariable(DOUBLE);
+            fn.add(new Fpext(result, value, DOUBLE));
+            return result.ref();
+        } else {
+            return value;
+        }
+    }
+
+    protected Value marshalMachineSizedFloatToFloat(Function fn, Value value) {
+        if (!config.getArch().is32Bit()) {
+            Variable result = fn.newVariable(FLOAT);
+            fn.add(new Fptrunc(result, value, FLOAT));
+            return result.ref();
+        } else {
+            return value;
+        }
+    }
+
     protected Value marshalObjectToNative(Function fn, MarshalerMethod marshalerMethod, MarshaledArg marshaledArg, 
             Type nativeType, Value env, Value object, long flags) {
         return marshalObjectToNative(fn, marshalerMethod, marshaledArg, nativeType, env, object, flags, false);
@@ -243,15 +354,59 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
         fn.add(new Inttoptr(result, handle, I8_PTR));
         return result.ref();
     }
-    
+
+    protected Value marshalLongToMachineSizedInt(Function fn, Value value) {
+        if (config.getArch().is32Bit()) {
+            Variable result = fn.newVariable(I32);
+            fn.add(new Trunc(result, value, I32));
+            return result.ref();
+        } else {
+            return value;
+        }
+    }
+
+    protected Value marshalDoubleToMachineSizedFloat(Function fn, Value value) {
+        if (config.getArch().is32Bit()) {
+            Variable result = fn.newVariable(FLOAT);
+            fn.add(new Fptrunc(result, value, FLOAT));
+            return result.ref();
+        } else {
+            return value;
+        }
+    }
+
+    protected Value marshalFloatToMachineSizedFloat(Function fn, Value value) {
+        if (!config.getArch().is32Bit()) {
+            Variable result = fn.newVariable(DOUBLE);
+            fn.add(new Fpext(result, value, DOUBLE));
+            return result.ref();
+        } else {
+            return value;
+        }
+    }
+
     private Type getReturnType(String anno, SootMethod method) {
         soot.Type sootType = method.getReturnType();
         if (hasPointerAnnotation(method)) {
             if (!sootType.equals(LongType.v())) {
                 throw new IllegalArgumentException(anno + " annotated method " 
-                        + method.getName() + " must return long when annotated with @Pointer");
+                        + method + " must return long when annotated with @Pointer");
             }
             return I8_PTR;
+        }        
+        if (hasMachineSizedFloatAnnotation(method)) {
+            if (!sootType.equals(DoubleType.v()) && !sootType.equals(FloatType.v())) {
+                throw new IllegalArgumentException(anno + " annotated method " 
+                        + method + " must return float or double when annotated with @MachineSizedFloat");
+            }
+            return config.getArch().is32Bit() ? FLOAT : DOUBLE;
+        }        
+        if (hasMachineSizedSIntAnnotation(method) || hasMachineSizedUIntAnnotation(method)) {
+            if (!sootType.equals(LongType.v())) {
+                throw new IllegalArgumentException(anno + " annotated method " 
+                        + method + " must return long when annotated with @MachineSizedSInt or @MachineSizedUInt");
+            }
+            return config.getArch().is32Bit() ? I32 : I64;
         }        
         if (isStruct(sootType)) {
             if (!isPassByValue(method)) {
@@ -281,21 +436,38 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
         if (hasPointerAnnotation(method, i)) {
             if (!sootType.equals(LongType.v())) {
                 throw new IllegalArgumentException("Parameter " + (i + 1) 
-                        + " of " + anno + " annotated method " + method.getName() 
+                        + " of " + anno + " annotated method " + method 
                         + " must be of type long when annotated with @Pointer.");
             }
             return I8_PTR;
         }
+        if (hasMachineSizedFloatAnnotation(method, i)) {
+            if (!sootType.equals(DoubleType.v()) && !sootType.equals(FloatType.v())) {
+                throw new IllegalArgumentException("Parameter " + (i + 1) 
+                        + " of " + anno + " annotated method " + method 
+                        + " must be of type float or double when annotated with @MachineSizedFloat.");
+            }
+            return config.getArch().is32Bit() ? FLOAT : DOUBLE;
+        }
+        if (hasMachineSizedSIntAnnotation(method, i) || hasMachineSizedUIntAnnotation(method, i)) {
+            if (!sootType.equals(LongType.v())) {
+                throw new IllegalArgumentException("Parameter " + (i + 1) 
+                        + " of " + anno + " annotated method " + method 
+                        + " must be of type long when annotated with " 
+                        + "@MachineSizedSInt or @MachineSizedUInt");
+            }
+            return config.getArch().is32Bit() ? I32 : I64;
+        }        
         if (hasStructRetAnnotation(method, i)) {
             if (i > 0) {
                 throw new IllegalArgumentException("Parameter " + (i + 1) 
-                        + " of " + anno + " annotated method " + method.getName() 
+                        + " of " + anno + " annotated method " + method 
                         + " cannot be annotated with @StructRet. Only the first" 
                         + " parameter may have this annotation.");
             }
             if (!isStruct(sootType)) {
                 throw new IllegalArgumentException("Parameter " + (i + 1) 
-                        + " of " + anno + " annotated method " + method.getName() 
+                        + " of " + anno + " annotated method " + method
                         + " must be a sub class of Struct when annotated with @StructRet.");
             }
             // @StructRet implies pass by reference
@@ -375,38 +547,54 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
             if (offset != -1) {
                 if (!method.isNative() && !method.isStatic()) {
                     throw new IllegalArgumentException("@StructMember annotated method " 
-                            + method.getName() + " in class " + clazz 
-                            + " must be native and not static");
+                            + method + " must be native and not static");
                 }
                 Type type = null;
                 if (method.getParameterCount() == 0) {
+                    soot.Type sootType = method.getReturnType();
                     // Possibly a getter
-                    if (hasPointerAnnotation(method) && !method.getReturnType().equals(LongType.v())) {
-                        throw new IllegalArgumentException("@StructMember(" + offset + ") annotated getter " + method.getName() 
-                                + " in class " + clazz + " must be of type long when annotated with @Pointer");
+                    if (hasPointerAnnotation(method) && !sootType.equals(LongType.v())) {
+                        throw new IllegalArgumentException("@StructMember(" + offset + ") annotated getter " + method 
+                                + " must be of type long when annotated with @Pointer");
                     }
-                    if (method.getReturnType() instanceof soot.ArrayType && !hasArrayAnnotation(method)) {
+                    if (hasMachineSizedFloatAnnotation(method) && !sootType.equals(DoubleType.v()) && !sootType.equals(FloatType.v())) {
+                        throw new IllegalArgumentException("@StructMember(" + offset + ") annotated getter " + method
+                                + " must be of type float or double when annotated with @MachineSizedFloat");
+                    }
+                    if ((hasMachineSizedSIntAnnotation(method) || hasMachineSizedUIntAnnotation(method)) && !sootType.equals(LongType.v())) {
+                        throw new IllegalArgumentException("@StructMember(" + offset + ") annotated getter " + method
+                                + " must be of type long when annotated with @MachineSizedSInt or @MachineSizedUInt");
+                    }
+                    if (sootType instanceof soot.ArrayType && !hasArrayAnnotation(method)) {
                         throw new IllegalArgumentException("@Array annotation expected on struct member getter " + method);
                     }
                 } else if (method.getParameterCount() == 1) {
-                    if (hasPointerAnnotation(method, 0) && !method.getParameterType(0).equals(LongType.v())) {
-                        throw new IllegalArgumentException("@StructMember(" + offset + ") annotated setter " + method.getName() 
-                                + " in class " + clazz + " must be of type long when annotated with @Pointer");
+                    soot.Type sootType = method.getParameterType(0);
+                    if (hasPointerAnnotation(method, 0) && !sootType.equals(LongType.v())) {
+                        throw new IllegalArgumentException("@StructMember(" + offset + ") annotated setter " + method 
+                                + " must be of type long when annotated with @Pointer");
                     }
-                    if (method.getParameterType(0) instanceof soot.ArrayType && !hasArrayAnnotation(method, 0)) {
+                    if (hasMachineSizedFloatAnnotation(method, 0) && !sootType.equals(DoubleType.v()) && !sootType.equals(FloatType.v())) {
+                        throw new IllegalArgumentException("@StructMember(" + offset + ") annotated setter " + method
+                                + " must be of type float or double when annotated with @MachineSizedFloat");
+                    }
+                    if ((hasMachineSizedSIntAnnotation(method, 0) || hasMachineSizedUIntAnnotation(method)) && !sootType.equals(LongType.v())) {
+                        throw new IllegalArgumentException("@StructMember(" + offset + ") annotated setter " + method
+                                + " must be of type long when annotated with @MachineSizedSInt or @MachineSizedUInt");
+                    }
+                    if (sootType instanceof soot.ArrayType && !hasArrayAnnotation(method, 0)) {
                         throw new IllegalArgumentException("@Array annotation expected on first parameter of struct member setter " + method);
                     }
                     soot.Type retType = method.getReturnType();
                     // The return type of the setter must be void or this
                     if (!retType.equals(VoidType.v()) && !(retType instanceof RefType && ((RefType) retType).getSootClass().equals(clazz))) {
-                        throw new IllegalArgumentException("Setter " + method.getName() +" for " 
-                                + "@StructMember(" + offset + ") in class " + clazz 
+                        throw new IllegalArgumentException("Setter " + method +" for " 
+                                + "@StructMember(" + offset + ") "
                                 + " must either return nothing or return a " + clazz);
                     }
                 } else {
                     throw new IllegalArgumentException("@StructMember annotated method " 
-                            + method.getName() + " in class " + clazz 
-                            + " has too many parameters");
+                            + method + " has too many parameters");
                 }
                 
                 type = getStructMemberType(method);
@@ -461,6 +649,11 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
         Type memberType = null;
         if (getter != null && hasPointerAnnotation(getter) || setter != null && hasPointerAnnotation(setter, 0)) {
             memberType = I8_PTR;
+        } else if (getter != null && hasMachineSizedFloatAnnotation(getter) || setter != null && hasMachineSizedFloatAnnotation(setter, 0)) {
+            memberType = config.getArch().is32Bit() ? FLOAT : DOUBLE;
+        } else if (getter != null && (hasMachineSizedSIntAnnotation(getter) || hasMachineSizedUIntAnnotation(getter)) 
+                || setter != null && (hasMachineSizedSIntAnnotation(setter, 0) || hasMachineSizedUIntAnnotation(setter, 0))) {
+            memberType = config.getArch().is32Bit() ? I32 : I64;
         } else if (type instanceof PrimType) {
             memberType = getType(type);
         } else if (getter != null && hasArrayAnnotation(getter) || setter != null && hasArrayAnnotation(setter, 0)) {
@@ -601,9 +794,8 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
                             targetClassName, result, flags);
                 }
             }
-        } else if (hasPointerAnnotation(method)) {
-            // @Pointer long
-            result = marshalPointerToLong(fn, result);
+        } else {
+            result = marshalNativeToPrimitive(fn, method, result);
         }
         return result;
     }
@@ -636,8 +828,8 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
                             flags);
                 }
             }
-        } else if (hasPointerAnnotation(method, 0)) {
-            value = marshalLongToPointer(function, value);
+        } else {
+            value = marshalPrimitiveToNative(function, method, 0, value);
         }
         if (value != null) {
             function.add(new Store(value, memberPtr));

@@ -42,6 +42,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.ClazzInfo;
@@ -265,7 +266,7 @@ public class ClassCompiler {
     public void compile(Clazz clazz) throws IOException {
         reset();        
         
-//        File llFile = config.getLlFile(clazz);
+        File llFile = config.getLlFile(clazz);
 //        File bcFile = config.getBcFile(clazz);
 //        File sFile = config.getSFile(clazz);
         File oFile = config.getOFile(clazz);
@@ -291,7 +292,7 @@ public class ClassCompiler {
             }
             throw new RuntimeException(t);
         }
-
+FileUtils.writeByteArrayToFile(llFile, output.toByteArray());
         Context context = new Context();
         Module module = Module.parseIR(context, output.toByteArray(), clazz.getClassName());
         PassManager passManager = createPassManager();

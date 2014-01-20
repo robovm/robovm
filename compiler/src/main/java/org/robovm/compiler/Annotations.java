@@ -43,6 +43,9 @@ public class Annotations {
     public static final String BASE_TYPE = "Lorg/robovm/rt/bro/annotation/BaseType;";
     public static final String STRUCT_RET = "Lorg/robovm/rt/bro/annotation/StructRet;";
     public static final String POINTER = "Lorg/robovm/rt/bro/annotation/Pointer;";
+    public static final String MACHINE_SIZED_FLOAT = "Lorg/robovm/rt/bro/annotation/MachineSizedFloat;";
+    public static final String MACHINE_SIZED_S_INT = "Lorg/robovm/rt/bro/annotation/MachineSizedSInt;";
+    public static final String MACHINE_SIZED_U_INT = "Lorg/robovm/rt/bro/annotation/MachineSizedUInt;";
     public static final String MARSHALER = "Lorg/robovm/rt/bro/annotation/Marshaler;";
     public static final String MARSHALERS = "Lorg/robovm/rt/bro/annotation/Marshalers;";
     public static final String MARSHALS_POINTER = "Lorg/robovm/rt/bro/annotation/MarshalsPointer;";
@@ -127,6 +130,18 @@ public class Annotations {
         return hasAnnotation(method, POINTER);
     }
 
+    public static boolean hasMachineSizedFloatAnnotation(SootMethod method) {
+        return hasAnnotation(method, MACHINE_SIZED_FLOAT);
+    }
+
+    public static boolean hasMachineSizedSIntAnnotation(SootMethod method) {
+        return hasAnnotation(method, MACHINE_SIZED_S_INT);
+    }
+
+    public static boolean hasMachineSizedUIntAnnotation(SootMethod method) {
+        return hasAnnotation(method, MACHINE_SIZED_U_INT);
+    }
+
     public static boolean hasByValAnnotation(SootMethod method) {
         return hasAnnotation(method, BY_VAL);
     }
@@ -142,7 +157,19 @@ public class Annotations {
     public static boolean hasPointerAnnotation(SootMethod method, int paramIndex) {
         return hasParameterAnnotation(method, paramIndex, POINTER);
     }
-    
+
+    public static boolean hasMachineSizedFloatAnnotation(SootMethod method, int paramIndex) {
+        return hasParameterAnnotation(method, paramIndex, MACHINE_SIZED_FLOAT);
+    }
+
+    public static boolean hasMachineSizedSIntAnnotation(SootMethod method, int paramIndex) {
+        return hasParameterAnnotation(method, paramIndex, MACHINE_SIZED_S_INT);
+    }
+
+    public static boolean hasMachineSizedUIntAnnotation(SootMethod method, int paramIndex) {
+        return hasParameterAnnotation(method, paramIndex, MACHINE_SIZED_U_INT);
+    }
+
     public static boolean hasByValAnnotation(SootMethod method, int paramIndex) {
         return hasParameterAnnotation(method, paramIndex, BY_VAL);
     }

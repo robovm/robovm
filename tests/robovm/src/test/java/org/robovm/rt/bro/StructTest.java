@@ -33,6 +33,9 @@ import org.robovm.rt.VM;
 import org.robovm.rt.bro.annotation.Array;
 import org.robovm.rt.bro.annotation.ByRef;
 import org.robovm.rt.bro.annotation.ByVal;
+import org.robovm.rt.bro.annotation.MachineSizedFloat;
+import org.robovm.rt.bro.annotation.MachineSizedSInt;
+import org.robovm.rt.bro.annotation.MachineSizedUInt;
 import org.robovm.rt.bro.annotation.MarshalsPointer;
 import org.robovm.rt.bro.annotation.StructMember;
 import org.robovm.rt.bro.ptr.BytePtr;
@@ -427,6 +430,25 @@ public class StructTest {
         public native @Array(24) String byteArrayAsString();
         @StructMember(0)
         public native StructWithArray byteArrayAsString(@Array(24) String s);
+    }
+    
+    public static final class MachineSizedStruct extends Struct<MachineSizedStruct> {
+        @StructMember(0)
+        public native @MachineSizedFloat double machineSizedFloatD();
+        @StructMember(0)
+        public native MachineSizedStruct machineSizedFloatD(@MachineSizedFloat double d);
+        @StructMember(0)
+        public native @MachineSizedFloat float machineSizedFloatF();
+        @StructMember(0)
+        public native MachineSizedStruct machineSizedFloatF(@MachineSizedFloat float f);
+        @StructMember(0)
+        public native @MachineSizedSInt long machineSizedSInt();
+        @StructMember(0)
+        public native MachineSizedStruct machineSizedSInt(@MachineSizedSInt long l);
+        @StructMember(0)
+        public native @MachineSizedUInt long machineSizedUInt();
+        @StructMember(0)
+        public native MachineSizedStruct machineSizedUInt(@MachineSizedUInt long l);
     }
     
     @Test
@@ -2780,5 +2802,58 @@ public class StructTest {
         assertEquals("toObject(null, ?, 2)", StringMarshaler.calls.get(0));
         assertEquals("toNative('foobar', ?, 2)", StringMarshaler.calls.get(1));
         assertEquals("toObject('foobar', ?, 2)", StringMarshaler.calls.get(2));
+    }
+    
+    
+    float fpi = (float) Math.PI;
+    @Test
+    public void testMarshalMachineSizedFloatD() {
+        // NOTE: 32-bit specific
+        assertEquals(4, MachineSizedStruct.sizeOf());
+
+        long ldpi = Double.doubleToLongBits(Math.PI);
+        long lfpi = Double.doubleToLongBits(fpi);
+        assertNotEquals(ldpi, lfpi);
+        
+        MachineSizedStruct s = new MachineSizedStruct();
+        assertEquals(0.0, s.machineSizedFloatD(), 0);
+        s.machineSizedFloatD(Math.PI);
+        assertEquals(fpi, VM.getFloat(s.getHandle()), 0f);
+        assertEquals(fpi, s.machineSizedFloatF(), 0f);
+        assertEquals(lfpi, Double.doubleToLongBits(s.machineSizedFloatD()));
+    }
+    
+    @Test
+    public void testMachineSizedSInt() throws Exception {
+        // NOTE: 32-bit specific
+        assertEquals(4, MachineSizedStruct.sizeOf());
+        
+        MachineSizedStruct s = new MachineSizedStruct();
+        assertEquals(0, s.machineSizedSInt());
+        s.machineSizedSInt(-1);
+        assertEquals(-1, s.machineSizedSInt());
+        s.machineSizedSInt(0x80000000);
+        assertEquals(0x80000000, VM.getInt(s.getHandle()));
+        assertEquals(0xffffffff80000000L, s.machineSizedSInt());
+        s.machineSizedSInt(0x1234567880000000L);
+        assertEquals(0x80000000, VM.getInt(s.getHandle()));
+        assertEquals(0xffffffff80000000L, s.machineSizedSInt());
+    }
+    
+    @Test
+    public void testMachineSizedUInt() throws Exception {
+        // NOTE: 32-bit specific
+        assertEquals(4, MachineSizedStruct.sizeOf());
+        
+        MachineSizedStruct s = new MachineSizedStruct();
+        assertEquals(0, s.machineSizedUInt());
+        s.machineSizedUInt(-1);
+        assertEquals(0xffffffffL, s.machineSizedUInt());
+        s.machineSizedUInt(0x80000000);
+        assertEquals(0x80000000, VM.getInt(s.getHandle()));
+        assertEquals(0x80000000L, s.machineSizedUInt());
+        s.machineSizedUInt(0x1234567880000000L);
+        assertEquals(0x80000000, VM.getInt(s.getHandle()));
+        assertEquals(0x80000000L, s.machineSizedUInt());
     }
 }

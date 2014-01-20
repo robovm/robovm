@@ -16,7 +16,6 @@
  */
 package org.robovm.compiler;
 
-import static org.robovm.compiler.Annotations.*;
 import static org.robovm.compiler.Bro.*;
 import static org.robovm.compiler.Functions.*;
 import static org.robovm.compiler.Mangler.*;
@@ -210,9 +209,9 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
                     args.set(i, new Argument(nativeValue, parameterAttributes));
                 }
                 
-            } else if (hasPointerAnnotation(method, i)) {
+            } else {
                 // @Pointer long. Convert from i64 to i8*
-                args.set(i, new Argument(marshalLongToPointer(fn, args.get(i).getValue())));                    
+                args.set(i, new Argument(marshalPrimitiveToNative(fn, method, i, args.get(i).getValue())));                    
             }
         }        
         
@@ -250,8 +249,8 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
                 result = marshalNativeToObject(fn, marshalerMethod, null, env, 
                         targetClassName, result, MarshalerFlags.CALL_TYPE_BRIDGE);
             }
-        } else if (hasPointerAnnotation(method)) {
-            result = marshalPointerToLong(fn, result);
+        } else {
+            result = marshalNativeToPrimitive(fn, method, result);
         }
         
         if (method != originalMethod) {

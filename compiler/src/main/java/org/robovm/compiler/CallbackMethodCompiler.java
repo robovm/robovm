@@ -16,7 +16,6 @@
  */
 package org.robovm.compiler;
 
-import static org.robovm.compiler.Annotations.*;
 import static org.robovm.compiler.Bro.*;
 import static org.robovm.compiler.Functions.*;
 import static org.robovm.compiler.Mangler.*;
@@ -170,9 +169,9 @@ public class CallbackMethodCompiler extends BroMethodCompiler {
                     arg = marshalNativeToObject(callbackFn, marshalerMethod, marshaledArg, env, targetClassName, arg,
                             MarshalerFlags.CALL_TYPE_CALLBACK);
                 }
-            } else if (hasPointerAnnotation(method, i)) {
-                arg = marshalPointerToLong(callbackFn, arg);
-            }
+            } else {
+                arg = marshalNativeToPrimitive(callbackFn, method, i, arg);
+            } 
             args.add(arg);
         }
         
@@ -198,8 +197,6 @@ public class CallbackMethodCompiler extends BroMethodCompiler {
                 result = marshalObjectToNative(callbackFn, marshalerMethod, null, nativeType, env, result,
                         MarshalerFlags.CALL_TYPE_CALLBACK);
             }
-        } else if (hasPointerAnnotation(method)) {
-            result = marshalLongToPointer(callbackFn, result);
         } else if (originalMethod != method) {
             // The original method returns a large struct by value. The callback
             // function takes a struct allocated on the stack by the caller as
@@ -218,6 +215,8 @@ public class CallbackMethodCompiler extends BroMethodCompiler {
             
             // Make sure the callback returns void.
             result = null;
+        } else {
+            result = marshalPrimitiveToNative(callbackFn, method, result);
         }
         
         trycatchLeave(callbackFn, env);

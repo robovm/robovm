@@ -33,6 +33,9 @@ import org.robovm.rt.bro.annotation.Array;
 import org.robovm.rt.bro.annotation.ByRef;
 import org.robovm.rt.bro.annotation.ByVal;
 import org.robovm.rt.bro.annotation.GlobalValue;
+import org.robovm.rt.bro.annotation.MachineSizedFloat;
+import org.robovm.rt.bro.annotation.MachineSizedSInt;
+import org.robovm.rt.bro.annotation.MachineSizedUInt;
 import org.robovm.rt.bro.annotation.StructMember;
 import org.robovm.rt.bro.ptr.Ptr;
 
@@ -159,6 +162,14 @@ public class GlobalValueTest {
     @GlobalValue public static native void arrayAsByteBufferSetter(@Array(10) ByteBuffer b); 
     @GlobalValue public static native @Array(10) byte[] arrayAsByteArrayGetter(); 
     @GlobalValue public static native void arrayAsByteArraySetter(@Array(10) byte[] b); 
+    @GlobalValue public static native @MachineSizedFloat double machineSizedFloatGetterD(); 
+    @GlobalValue public static native void machineSizedFloatSetterD(@MachineSizedFloat double b); 
+    @GlobalValue public static native @MachineSizedFloat float machineSizedFloatGetterF(); 
+    @GlobalValue public static native void machineSizedFloatSetterF(@MachineSizedFloat float b); 
+    @GlobalValue public static native @MachineSizedSInt long machineSizedSIntGetter(); 
+    @GlobalValue public static native void machineSizedSIntSetter(@MachineSizedSInt long b); 
+    @GlobalValue public static native @MachineSizedUInt long machineSizedUIntGetter(); 
+    @GlobalValue public static native void machineSizedUIntSetter(@MachineSizedUInt long b); 
     
     @Test
     public void testByte() throws Exception {
@@ -326,5 +337,57 @@ public class GlobalValueTest {
         memory.get(bytes1); memory.clear();
         assertTrue(Arrays.equals(new byte[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, bytes1));
         assertTrue(Arrays.equals(new byte[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, arrayAsByteArrayGetter()));
+    }
+
+    float fpi = (float) Math.PI;
+    @Test
+    public void testMachineSizedFloatD() throws Exception {
+        // NOTE: 32-bit specific
+        long ldpi = Double.doubleToLongBits(Math.PI);
+        long lfpi = Double.doubleToLongBits(fpi);
+        assertNotEquals(ldpi, lfpi);
+        
+        assertEquals(0f, memory.order(ByteOrder.nativeOrder()).asFloatBuffer().get(0), 0f);
+        assertEquals(0.0, machineSizedFloatGetterD(), 0);
+        machineSizedFloatSetterD(Math.PI);
+        assertEquals(fpi, memory.order(ByteOrder.nativeOrder()).asFloatBuffer().get(0), 0f);
+        assertEquals(0, memory.order(ByteOrder.nativeOrder()).asIntBuffer().get(1));
+        assertEquals(lfpi, Double.doubleToLongBits(machineSizedFloatGetterD()));
+    }
+    @Test
+    public void testMachineSizedSInt() throws Exception {
+        // NOTE: 32-bit specific
+        assertEquals(0, memory.order(ByteOrder.nativeOrder()).asIntBuffer().get(0));
+        assertEquals(0, machineSizedSIntGetter());
+        machineSizedSIntSetter(-1);
+        assertEquals(-1, memory.order(ByteOrder.nativeOrder()).asIntBuffer().get(0));
+        assertEquals(-1, machineSizedSIntGetter());
+        assertEquals(0, memory.order(ByteOrder.nativeOrder()).asIntBuffer().get(1));
+        machineSizedSIntSetter(0x80000000);
+        assertEquals(0x80000000, memory.order(ByteOrder.nativeOrder()).asIntBuffer().get(0));
+        assertEquals(0xffffffff80000000L, machineSizedSIntGetter());
+        assertEquals(0, memory.order(ByteOrder.nativeOrder()).asIntBuffer().get(1));
+        machineSizedSIntSetter(0x1234567880000000L);
+        assertEquals(0x80000000, memory.order(ByteOrder.nativeOrder()).asIntBuffer().get(0));
+        assertEquals(0xffffffff80000000L, machineSizedSIntGetter());
+        assertEquals(0, memory.order(ByteOrder.nativeOrder()).asIntBuffer().get(1));
+    }
+    @Test
+    public void testMachineSizedUInt() throws Exception {
+        // NOTE: 32-bit specific
+        assertEquals(0, memory.order(ByteOrder.nativeOrder()).asIntBuffer().get(0));
+        assertEquals(0, machineSizedUIntGetter());
+        machineSizedUIntSetter(-1);
+        assertEquals(-1, memory.order(ByteOrder.nativeOrder()).asIntBuffer().get(0));
+        assertEquals(0xffffffffL, machineSizedUIntGetter());
+        assertEquals(0, memory.order(ByteOrder.nativeOrder()).asIntBuffer().get(1));
+        machineSizedUIntSetter(0x80000000);
+        assertEquals(0x80000000, memory.order(ByteOrder.nativeOrder()).asIntBuffer().get(0));
+        assertEquals(0x80000000L, machineSizedUIntGetter());
+        assertEquals(0, memory.order(ByteOrder.nativeOrder()).asIntBuffer().get(1));
+        machineSizedUIntSetter(0x1234567880000000L);
+        assertEquals(0x80000000, memory.order(ByteOrder.nativeOrder()).asIntBuffer().get(0));
+        assertEquals(0x80000000L, machineSizedUIntGetter());
+        assertEquals(0, memory.order(ByteOrder.nativeOrder()).asIntBuffer().get(1));
     }
 }

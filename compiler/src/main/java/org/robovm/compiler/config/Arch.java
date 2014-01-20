@@ -52,6 +52,10 @@ public enum Arch {
         }
     }
     
+    public boolean is32Bit() {
+        return true;
+    }
+    
     public static Arch getDefaultArch() {
         String hostTriple = Target.getHostTriple();
         if (hostTriple.matches("^(x86|i\\d86).*")) {

@@ -15,6 +15,8 @@
  */
 package org.robovm.rt.bro;
 
+import org.robovm.rt.bro.annotation.MachineSizedSInt;
+import org.robovm.rt.bro.annotation.MachineSizedUInt;
 import org.robovm.rt.bro.annotation.Marshaler;
 import org.robovm.rt.bro.annotation.MarshalsValue;
 
@@ -141,6 +143,36 @@ public interface ValuedEnum {
         }
         
         public static long toNative(ValuedEnum v, long flags) {
+            return v.value();
+        }
+    }
+    
+    /**
+     * Marshals a {@link ValuedEnum} as a 32-bit or 64-bit signed value 
+     * depending on the machine word size.
+     */
+    public static class AsMachineSizedSIntMarshaler {
+        @MarshalsValue
+        public static <T extends Enum<T> & ValuedEnum> ValuedEnum toObject(Class<T> cls, @MachineSizedSInt long value, long flags) {
+            return AsLongMarshaler.toObject(cls, value, flags);
+        }
+        
+        public static @MachineSizedSInt long toNative(ValuedEnum v, long flags) {
+            return v.value();
+        }
+    }
+    
+    /**
+     * Marshals a {@link ValuedEnum} as a 32-bit or 64-bit unsigned value 
+     * depending on the machine word size.
+     */
+    public static class AsMachineSizedUIntMarshaler {
+        @MarshalsValue
+        public static <T extends Enum<T> & ValuedEnum> ValuedEnum toObject(Class<T> cls, @MachineSizedUInt long value, long flags) {
+            return AsLongMarshaler.toObject(cls, value, flags);
+        }
+        
+        public static @MachineSizedUInt long toNative(ValuedEnum v, long flags) {
             return v.value();
         }
     }

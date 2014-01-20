@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.robovm.rt.VM;
+import org.robovm.rt.bro.annotation.MachineSizedUInt;
 import org.robovm.rt.bro.annotation.Marshaler;
 import org.robovm.rt.bro.annotation.MarshalsValue;
 
@@ -52,7 +53,7 @@ public abstract class Bits<T extends Bits<T>> implements Iterable<T>, Comparable
     }
     
     protected abstract T wrap(long value, long mask);
-    protected abstract T[] values();
+    protected abstract T[] _values();
     
     public T set(T bits) {
         Bits<?> bits_ = bits; // Avoids "... has private access in Bits" error with javac from OpenJDK 1.7
@@ -90,7 +91,7 @@ public abstract class Bits<T extends Bits<T>> implements Iterable<T>, Comparable
     
     @SuppressWarnings("unchecked")
     public Set<T> asSet() {
-        T[] all = values();
+        T[] all = _values();
         Arrays.sort(all, new Comparator<T>() {
             public int compare(T lhs, T rhs) {
                 Bits<?> lhs_ = lhs; // Avoids "... has private access in Bits" error with javac from OpenJDK 1.7
@@ -201,10 +202,6 @@ public abstract class Bits<T extends Bits<T>> implements Iterable<T>, Comparable
         }
     }
     
-    public static <T extends Bits<T>> T[] values(Class<T> cls) {
-        return VM.allocateObject(cls).values().clone();
-    }
-    
     /**
      * Marshals a {@link Bits} as an 8-bit value.
      */
@@ -260,6 +257,21 @@ public abstract class Bits<T extends Bits<T>> implements Iterable<T>, Comparable
         }
         @MarshalsValue
         public static long toNative(Bits<?> o, long flags) {
+            return o.value;
+        }
+    }
+    
+    /**
+     * Marshals a {@link Bits} as a 32-bit or 64-bit value depending on the
+     * machine word size.
+     */
+    public static class AsMachineSizedIntMarshaler {
+        @MarshalsValue
+        public static Bits<?> toObject(Class<?> cls, @MachineSizedUInt long value, long flags) {
+            return AsLongMarshaler.toObject(cls, value, flags);
+        }
+        @MarshalsValue
+        public static @MachineSizedUInt long toNative(Bits<?> o, long flags) {
             return o.value;
         }
     }

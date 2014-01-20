@@ -214,6 +214,8 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
     
         Value valueClass = ldcClass(fn, valueClassName, env);
         
+        nativeValue = marshalNativeToPrimitive(fn, marshalerMethod.getMethod(), 1, nativeValue);
+        
         return call(fn, invokeToObject.getFunctionRef(), env, valueClass, nativeValue, new IntegerConstant(flags));
     }
 
@@ -327,7 +329,8 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
         Invokestatic invokestatic = marshalerMethod.getInvokeStatic(
                 sootMethod.getDeclaringClass());
         trampolines.add(invokestatic);
-        return call(fn, invokestatic.getFunctionRef(), env, object, new IntegerConstant(flags));
+        Value result = call(fn, invokestatic.getFunctionRef(), env, object, new IntegerConstant(flags));
+        return marshalPrimitiveToNative(fn, marshalerMethod.getMethod(), result);
     }
     
     protected void marshalArrayToNative(Function fn, MarshalerMethod marshalerMethod, 
@@ -425,7 +428,7 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
 
         MarshalerMethod marshalerMethod = config.getMarshalerLookup().findMarshalerMethod(new MarshalSite(method));
         if (marshalerMethod instanceof ValueMarshalerMethod) {
-            return ((ValueMarshalerMethod) marshalerMethod).getNativeType();
+            return ((ValueMarshalerMethod) marshalerMethod).getNativeType(config.getArch());
         } else {
             return I8_PTR;
         }
@@ -491,7 +494,7 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
         
         MarshalerMethod marshalerMethod = config.getMarshalerLookup().findMarshalerMethod(new MarshalSite(method, i));
         if (marshalerMethod instanceof ValueMarshalerMethod) {
-            return ((ValueMarshalerMethod) marshalerMethod).getNativeType();
+            return ((ValueMarshalerMethod) marshalerMethod).getNativeType(config.getArch());
         } else {
             return I8_PTR;
         }
@@ -721,7 +724,7 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
             MarshalerMethod marshalerMethod = config.getMarshalerLookup()
                     .findMarshalerMethod(getter != null ? new MarshalSite(getter) : new MarshalSite(setter, 0));
             if (marshalerMethod instanceof ValueMarshalerMethod) {
-                memberType = ((ValueMarshalerMethod) marshalerMethod).getNativeType();
+                memberType = ((ValueMarshalerMethod) marshalerMethod).getNativeType(config.getArch());
             } else {
                 memberType = I8_PTR;
             }

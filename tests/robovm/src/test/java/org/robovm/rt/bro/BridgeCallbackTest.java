@@ -121,6 +121,26 @@ public class BridgeCallbackTest {
         }
     }
     
+    public static final class MoreTestBits extends Bits<MoreTestBits> {
+        public static final MoreTestBits V1 = new MoreTestBits(-1);
+        public static final MoreTestBits V2 = new MoreTestBits(0x80000000L);
+        public static final MoreTestBits V3 = new MoreTestBits(0x1234567880000000L);
+        
+        private static final MoreTestBits[] VALUES = _values(MoreTestBits.class);
+        
+        private MoreTestBits(long value) { super(value); }
+        private MoreTestBits(long value, long mask) { super(value, mask); }
+
+        @Override
+        protected MoreTestBits wrap(long value, long mask) {
+            return new MoreTestBits(value, mask);
+        }
+
+        @Override
+        protected MoreTestBits[] _values() {
+            return VALUES;
+        }    }
+    
     public static class StringMarshaler {
         static List<String> calls = new ArrayList<String>();
         @MarshalsPointer
@@ -455,6 +475,19 @@ public class BridgeCallbackTest {
     @Callback
     public static @MachineSizedUInt long marshalMachinedSizeUInt_cb(@MachineSizedUInt long l) {
         return l;
+    }
+    
+    @Bridge
+    public static native long marshalBitsAsMachineSizedInt1(@Marshaler(Bits.AsMachineSizedIntMarshaler.class) MoreTestBits v);
+    @Callback
+    public static long marshalBitsAsMachineSizedInt1_cb(@MachineSizedUInt long l) {
+        return l;
+    }
+    @Bridge
+    public static native @Marshaler(Bits.AsMachineSizedIntMarshaler.class) MoreTestBits marshalBitsAsMachineSizedInt2(long v);
+    @Callback
+    public static @MachineSizedUInt long marshalBitsAsMachineSizedInt2_cb(long v) {
+        return v;
     }
     
     private static Method find(String name) {
@@ -798,5 +831,20 @@ public class BridgeCallbackTest {
         assertEquals(0xffffffffL, marshalMachinedSizeUInt(-1L));
         assertEquals(0x80000000L, marshalMachinedSizeUInt(0x80000000L));
         assertEquals(0x80000000L, marshalMachinedSizeUInt(0x1234567880000000L));
+    }
+
+    @Test
+    public void testMarshalBitsAsMachineSizedIntToNative() {
+        // NOTE: 32-bit specific
+        assertEquals(0xffffffffL, marshalBitsAsMachineSizedInt1(MoreTestBits.V1));
+        assertEquals(0x80000000L, marshalBitsAsMachineSizedInt1(MoreTestBits.V2));
+        assertEquals(0x80000000L, marshalBitsAsMachineSizedInt1(MoreTestBits.V3));
+    }
+    @Test
+    public void testMarshalBitsAsMachineSizedIntFromNative() {
+        // NOTE: 32-bit specific
+        assertEquals(new MoreTestBits(0xffffffffL), marshalBitsAsMachineSizedInt2(-1));
+        assertEquals(MoreTestBits.V2, marshalBitsAsMachineSizedInt2(0xffffffff80000000L));
+        assertEquals(MoreTestBits.V2, marshalBitsAsMachineSizedInt2(0x1234567880000000L));
     }
 }

@@ -18,6 +18,7 @@ package org.robovm.compiler;
 
 import static org.robovm.compiler.Annotations.*;
 import static org.robovm.compiler.Types.*;
+import static org.robovm.compiler.llvm.Type.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.robovm.compiler.clazz.Clazz;
+import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.llvm.Type;
 import org.robovm.compiler.trampoline.Invokestatic;
@@ -454,9 +456,38 @@ public class MarshalerLookup {
         ValueMarshalerMethod(SootMethod method, Set<Long> supportedCallTypes) {
             super(method, supportedCallTypes);
         }
-        public Type getNativeType() {
-            return Types.getType(method.getReturnType() instanceof PrimType 
-                    ? method.getReturnType() : method.getParameterType(1));
+        public Type getNativeType(Arch arch) {
+            if (method.getReturnType() instanceof PrimType) {
+                if (hasPointerAnnotation(method)) {
+                    return I8_PTR;
+                }
+                if (arch.is32Bit() && (hasMachineSizedSIntAnnotation(method) 
+                        || hasMachineSizedUIntAnnotation(method))) {
+                    return I32;
+                }
+                if (arch.is32Bit() && (hasMachineSizedFloatAnnotation(method))) {
+                    return FLOAT;
+                }
+                if (!arch.is32Bit() && (hasMachineSizedFloatAnnotation(method))) {
+                    return DOUBLE;
+                }
+                return Types.getType(method.getReturnType());
+            } else {
+                if (hasPointerAnnotation(method, 1)) {
+                    return I8_PTR;
+                }
+                if (arch.is32Bit() && (hasMachineSizedSIntAnnotation(method, 1) 
+                        || hasMachineSizedUIntAnnotation(method, 1))) {
+                    return I32;
+                }
+                if (arch.is32Bit() && (hasMachineSizedFloatAnnotation(method, 1))) {
+                    return FLOAT;
+                }
+                if (!arch.is32Bit() && (hasMachineSizedFloatAnnotation(method, 1))) {
+                    return DOUBLE;
+                }
+                return Types.getType(method.getParameterType(1));
+            }
         }
     }
     public class ArrayMarshalerMethod extends MarshalerMethod {
@@ -531,6 +562,19 @@ public class MarshalerLookup {
                 if (paramTypes.size() == 3) {
                     if (paramTypes.get(1) instanceof PrimType 
                             && paramTypes.get(2) == LongType.v()) {
+                        if (hasPointerAnnotation(m, 1)) {
+                            return paramTypes.get(1).equals(LongType.v());
+                        }
+                        if (hasMachineSizedFloatAnnotation(m, 1)) {
+                            return paramTypes.get(1).equals(FloatType.v()) 
+                                || paramTypes.get(1).equals(DoubleType.v());
+                        }
+                        if (hasMachineSizedSIntAnnotation(m, 1)) {
+                            return paramTypes.get(1).equals(LongType.v());
+                        }
+                        if (hasMachineSizedUIntAnnotation(m, 1)) {
+                            return paramTypes.get(1).equals(LongType.v());
+                        }
                         return true;
                     }
                 }
@@ -602,6 +646,19 @@ public class MarshalerLookup {
                 }
                 if (paramTypes.size() == 2) {
                     if (paramTypes.get(1) == LongType.v()) {
+                        if (hasPointerAnnotation(m)) {
+                            return returnType.equals(LongType.v());
+                        }
+                        if (hasMachineSizedFloatAnnotation(m)) {
+                            return returnType.equals(FloatType.v()) 
+                                || returnType.equals(DoubleType.v());
+                        }
+                        if (hasMachineSizedSIntAnnotation(m)) {
+                            return returnType.equals(LongType.v());
+                        }
+                        if (hasMachineSizedUIntAnnotation(m)) {
+                            return returnType.equals(LongType.v());
+                        }
                         return true;
                     }
                 }

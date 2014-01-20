@@ -35,7 +35,11 @@ public abstract class Struct<T extends Struct<T>> extends NativeObject implement
     protected Struct() {
         setHandle(VM.allocateMemory(_sizeOf()));
     }
-    
+
+    protected Struct(long handle) {
+        setHandle(handle);
+    }
+
     public T copy() {
         return copy(1);
     }

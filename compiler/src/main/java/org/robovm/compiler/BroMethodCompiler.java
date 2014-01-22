@@ -477,10 +477,7 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
             return new PointerType(getStructType(sootType));
         }        
         if (isStruct(sootType)) {
-            if (isPassByValue(method, i) && "@Callback".equals(anno)) {
-                return getStructType(sootType);
-            }
-            // For @Bridge methods Structs are always passed as pointers. The LLVM 
+            // Structs are always passed as pointers. The LLVM 
             // byval attribute  will be added to the parameter when making the 
             // call if @ByVal has been specified to get the desired pass by 
             // value semantics.

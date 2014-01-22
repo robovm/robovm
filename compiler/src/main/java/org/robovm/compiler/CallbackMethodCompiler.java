@@ -162,6 +162,9 @@ public class CallbackMethodCompiler extends BroMethodCompiler {
             if (argIdx == receiverIdx) {
                 argIdx++;
             }
+            if (isPassByValue(method, i)) {
+                callbackFn.setParameterAttributes(argIdx, ParameterAttribute.byval);
+            }
             Value arg = callbackFn.getParameterRef(argIdx);
             soot.Type type = method.getParameterType(i);
             

@@ -294,6 +294,44 @@ public class BridgeCallbackTest {
         }
     }
     
+    // This must be small enough to always be returned in registers on all supported platforms
+    public static class SmallStruct extends Struct<SmallStruct> {
+        @StructMember(0) public native byte v1();
+        @StructMember(0) public native SmallStruct v1(byte v1);
+        @StructMember(1) public native byte v2();
+        @StructMember(1) public native SmallStruct v2(byte v2);
+    }
+
+    // This must be large enough to never be returned in registers on all supported platforms
+    public static class LargeStruct extends Struct<LargeStruct> {
+        @StructMember(0) public native long v1();
+        @StructMember(0) public native LargeStruct v1(long v1);
+        @StructMember(1) public native long v2();
+        @StructMember(1) public native LargeStruct v2(long v2);
+        @StructMember(2) public native long v3();
+        @StructMember(2) public native LargeStruct v3(long v3);
+        @StructMember(3) public native long v4();
+        @StructMember(3) public native LargeStruct v4(long v4);
+    }
+
+    public static class NativeObj extends NativeObject {
+        @Bridge public native int simpleInstanceMethod(int x, LongPtr l);
+        @Callback public int simpleInstanceMethod_cb(int x, LongPtr l) {
+            l.set(getHandle());
+            return x * x;
+        }
+        @Bridge public native @ByVal SmallStruct returnSmallStructInstanceMethod(@ByVal SmallStruct s, LongPtr l);
+        @Callback public @ByVal SmallStruct returnSmallStructInstanceMethod_cb(@ByVal SmallStruct s, LongPtr l) {
+            l.set(getHandle());
+            return s;
+        }
+        @Bridge public native @ByVal LargeStruct returnLargeStructInstanceMethod(@ByVal LargeStruct s, LongPtr l);
+        @Callback public @ByVal LargeStruct returnLargeStructInstanceMethod_cb(@ByVal LargeStruct s, LongPtr l) {
+            l.set(getHandle());
+            return s;
+        }
+    }
+    
     @Bridge
     public static native SimpleEnum marshalSimpleEnum(SimpleEnum v);
     @Callback
@@ -490,8 +528,8 @@ public class BridgeCallbackTest {
         return v;
     }
     
-    private static Method find(String name) {
-        for (Method m : BridgeCallbackTest.class.getDeclaredMethods()) {
+    private static Method find(Class<?> cls, String name) {
+        for (Method m : cls.getDeclaredMethods()) {
             if (m.getName().equals(name)) {
                 return m;
             }
@@ -502,7 +540,7 @@ public class BridgeCallbackTest {
     private static void bind(Class<?> cls) {
         for (Method m : cls.getDeclaredMethods()) {
             if (m.getAnnotation(Bridge.class) != null) {
-                Method callbackMethod = find(m.getName() + "_cb");
+                Method callbackMethod = find(cls, m.getName() + "_cb");
                 if (callbackMethod != null) {
                     VM.bindBridgeMethod(m, VM.getCallbackMethodImpl(callbackMethod));
                 }
@@ -515,6 +553,7 @@ public class BridgeCallbackTest {
         bind(BridgeCallbackTest.Inner1.class);
         bind(BridgeCallbackTest.Inner2.class);
         bind(BridgeCallbackTest.Inner3.Inner4.class);
+        bind(BridgeCallbackTest.NativeObj.class);
     }
     
     @Test
@@ -846,5 +885,31 @@ public class BridgeCallbackTest {
         assertEquals(new MoreTestBits(0xffffffffL), marshalBitsAsMachineSizedInt2(-1));
         assertEquals(MoreTestBits.V2, marshalBitsAsMachineSizedInt2(0xffffffff80000000L));
         assertEquals(MoreTestBits.V2, marshalBitsAsMachineSizedInt2(0x1234567880000000L));
+    }
+    
+    @Test
+    public void testInstanceMethods() {
+        NativeObj obj = new NativeObj();
+        obj.setHandle(0x12345678);
+        LongPtr l = new LongPtr();
+        
+        assertEquals(100 * 100, obj.simpleInstanceMethod(100, l));
+        assertEquals(obj.getHandle(), l.get());
+        
+        SmallStruct ss1 = new SmallStruct().v1((byte) 64).v2((byte) 128);
+        SmallStruct ss2 = obj.returnSmallStructInstanceMethod(ss1, l);
+        assertNotEquals(ss1.getHandle(), ss2.getHandle());
+        assertEquals(64, ss2.v1() & 0xff);
+        assertEquals(128, ss2.v2() & 0xff);
+        assertEquals(obj.getHandle(), l.get());
+
+        LargeStruct ls1 = new LargeStruct().v1(0x12).v2(0x1234).v3(0x12345678).v4(0x123456789abcdef0L);
+        LargeStruct ls2 = obj.returnLargeStructInstanceMethod(ls1, l);
+        assertNotEquals(ls1.getHandle(), ls2.getHandle());
+        assertEquals(0x12, ls2.v1());
+        assertEquals(0x1234, ls2.v2());
+        assertEquals(0x12345678, ls2.v3());
+        assertEquals(0x123456789abcdef0L, ls2.v4());
+        assertEquals(obj.getHandle(), l.get());
     }
 }

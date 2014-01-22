@@ -73,13 +73,6 @@ public class CallbackMethodCompiler extends BroMethodCompiler {
     protected void doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
         compileCallback(moduleBuilder, method);
     }
-
-    private void validateCallbackMethod(SootMethod method) {
-        if (!method.isStatic()) {
-            throw new IllegalArgumentException("@Callback annotated method " 
-                    + method.getName() + " must be static");
-        }
-    }
     
     private Function callback(SootMethod method) {
         return new FunctionBuilder(method)
@@ -95,8 +88,6 @@ public class CallbackMethodCompiler extends BroMethodCompiler {
     }
     
     private void compileCallback(ModuleBuilder moduleBuilder, SootMethod method) {
-        validateCallbackMethod(method);
-
         DataLayout dataLayout = config.getDataLayout();
         SootMethod originalMethod = method;
         boolean passByValue = isPassByValue(originalMethod);
@@ -148,11 +139,30 @@ public class CallbackMethodCompiler extends BroMethodCompiler {
         ArrayList<Value> args = new ArrayList<Value>();
         args.add(env);
         
+        int receiverIdx = -1;
+        if (!method.isStatic()) {
+            MarshalerMethod marshalerMethod = config.getMarshalerLookup().findMarshalerMethod(new MarshalSite(method, MarshalSite.RECEIVER));
+            MarshaledArg marshaledArg = new MarshaledArg();
+            marshaledArg.paramIndex = MarshalSite.RECEIVER;
+            marshaledArgs.add(marshaledArg);
+            // The receiver is either at index 0 or 1 in args depending on whether this method returns
+            // a large struct by value or not.
+            receiverIdx = method == originalMethod ? 0 : 1;
+            Value arg = callbackFn.getParameterRef(receiverIdx);
+            String targetClassName = getInternalName(originalMethod.getDeclaringClass());
+            arg = marshalNativeToObject(callbackFn, marshalerMethod, marshaledArg, env, targetClassName, arg,
+                    MarshalerFlags.CALL_TYPE_BRIDGE);
+            args.add(arg);
+        }
+        
         // Skip the first parameter if we're returning a large struct by value.
         int start = originalMethod == method ? 0 : 1;
         
-        for (int i = start; i < method.getParameterCount(); i++) {
-            Value arg = callbackFn.getParameterRef(i);
+        for (int i = start, argIdx = start; i < method.getParameterCount(); i++, argIdx++) {
+            if (argIdx == receiverIdx) {
+                argIdx++;
+            }
+            Value arg = callbackFn.getParameterRef(argIdx);
             soot.Type type = method.getParameterType(i);
             
             if (needsMarshaler(type)) {

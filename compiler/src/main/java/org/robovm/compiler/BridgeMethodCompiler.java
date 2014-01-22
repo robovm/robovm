@@ -121,8 +121,8 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
                 trampolines.add(invokestatic);
                 structObj = call(fn, invokestatic.getFunctionRef(), env, cls);
     
-                // Insert the allocated struct as arg 1 or 2 (first arg is always the Env*)
-                args.add(method.isStatic() ? 1 : 2, new Argument(structObj));
+                // Insert the allocated struct as arg 1 (first arg is always the Env*)
+                args.add(1, new Argument(structObj));
             }
         }
         
@@ -159,10 +159,6 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         
         // Remove Env* from args
         args.remove(0);
-        if (!method.isStatic()) {
-            // Remove receiver from args
-            args.remove(0);
-        }
 
         // Save the Object->handle mapping for each marshaled object. We need it
         // after the native call to call updateObject() on the marshaler for 
@@ -173,26 +169,46 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         List<MarshaledArg> marshaledArgs = new ArrayList<MarshaledArg>();
         
         Type[] targetParameterTypes = targetFnType.getParameterTypes();
-        for (int i = 0; i < method.getParameterCount(); i++) {
+        
+        int receiverIdx = -1;
+        if (!method.isStatic()) {
+            MarshalerMethod marshalerMethod = config.getMarshalerLookup().findMarshalerMethod(new MarshalSite(method, MarshalSite.RECEIVER));
+            MarshaledArg marshaledArg = new MarshaledArg();
+            marshaledArg.paramIndex = MarshalSite.RECEIVER;
+            marshaledArgs.add(marshaledArg);
+            // The receiver is either at index 0 or 1 in args depending on whether this method returns
+            // a large struct by value or not.
+            receiverIdx = method == originalMethod ? 0 : 1;
+            Type nativeType = targetParameterTypes[receiverIdx];
+            Value nativeValue = marshalObjectToNative(fn, marshalerMethod, marshaledArg, nativeType, env, args.get(receiverIdx).getValue(),
+                    MarshalerFlags.CALL_TYPE_BRIDGE);
+            args.set(receiverIdx, new Argument(nativeValue));
+        }
+        
+        for (int i = 0, argIdx = 0; i < method.getParameterCount(); i++, argIdx++) {
+            if (argIdx == receiverIdx) {
+                // Skip the receiver in args. It doesn't correspond to a parameter.
+                argIdx++;
+            }
             soot.Type type = method.getParameterType(i);
             if (needsMarshaler(type)) {
 
                 MarshalerMethod marshalerMethod = config.getMarshalerLookup().findMarshalerMethod(new MarshalSite(method, i));
                 
                 // The return type of the marshaler's toNative() method is derived from the target function type.
-                Type nativeType = targetParameterTypes[i];
+                Type nativeType = targetParameterTypes[argIdx];
 
                 if (nativeType instanceof PrimitiveType) {
                     Value nativeValue = marshalValueObjectToNative(fn, marshalerMethod, nativeType, env, 
-                            args.get(i).getValue(), MarshalerFlags.CALL_TYPE_BRIDGE);
-                    args.set(i, new Argument(nativeValue));
+                            args.get(argIdx).getValue(), MarshalerFlags.CALL_TYPE_BRIDGE);
+                    args.set(argIdx, new Argument(nativeValue));
                 } else {
                     ParameterAttribute[] parameterAttributes = new ParameterAttribute[0];
                     if (isPassByValue(method, i) || isStructRet(method, i)) {
                         // The parameter must not be null. We assume that Structs 
                         // never have a NULL handle so we just check that the Java
                         // Object isn't null.
-                        call(fn, CHECK_NULL, env, args.get(i).getValue());
+                        call(fn, CHECK_NULL, env, args.get(argIdx).getValue());
                         parameterAttributes = new ParameterAttribute[1];
                         if (isStructRet(method, i)) {
                             parameterAttributes[0] = sret;
@@ -204,14 +220,13 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
                     MarshaledArg marshaledArg = new MarshaledArg();
                     marshaledArg.paramIndex = i;
                     marshaledArgs.add(marshaledArg);
-                    Value nativeValue = marshalObjectToNative(fn, marshalerMethod, marshaledArg, nativeType, env, args.get(i).getValue(),
+                    Value nativeValue = marshalObjectToNative(fn, marshalerMethod, marshaledArg, nativeType, env, args.get(argIdx).getValue(),
                             MarshalerFlags.CALL_TYPE_BRIDGE);
-                    args.set(i, new Argument(nativeValue, parameterAttributes));
+                    args.set(argIdx, new Argument(nativeValue, parameterAttributes));
                 }
                 
             } else {
-                // @Pointer long. Convert from i64 to i8*
-                args.set(i, new Argument(marshalPrimitiveToNative(fn, method, i, args.get(i).getValue())));                    
+                args.set(argIdx, new Argument(marshalPrimitiveToNative(fn, method, i, args.get(argIdx).getValue())));                    
             }
         }        
         

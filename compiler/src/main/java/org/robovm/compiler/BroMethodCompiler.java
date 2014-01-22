@@ -511,12 +511,26 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
     private FunctionType getBridgeOrCallbackFunctionType(String anno, SootMethod method) {
         Type returnType = getReturnType(anno, method);
         
-        Type[] paramTypes = new Type[method.getParameterTypes().size()];
-        for (int i = 0; i < paramTypes.length; i++) {
-            paramTypes[i] = getParameterType(anno, method, i);
+        List<Type> paramTypes = new ArrayList<>();
+        for (int i = 0; i < method.getParameterCount(); i++) {
+            paramTypes.add(getParameterType(anno, method, i));
+        }
+        if (!method.isStatic()) {
+            int idx = hasStructRetAnnotation(method, 0) ? 1 : 0;
+            soot.Type sootType = method.getDeclaringClass().getType();
+            if (isStruct(sootType)) {
+                paramTypes.add(idx, new PointerType(getStructType(sootType)));
+            } else if (isNativeObject(sootType)) {
+                // NativeObjects are always passed by reference.
+                paramTypes.add(idx, I8_PTR);
+            } else {
+                throw new IllegalArgumentException("Receiver of non static " 
+                        + anno + " method " + method 
+                        + " must either be a Struct or a NativeObject");
+            }
         }
 
-        return new FunctionType(returnType, paramTypes);
+        return new FunctionType(returnType, paramTypes.toArray(new Type[paramTypes.size()]));
     }
     
 

@@ -136,36 +136,40 @@ public class MarshalerLookup {
 
     public MarshalerMethod findMarshalerMethod(MarshalSite marshalSite) {
         int pidx = marshalSite.paramIdx;
-        // Use @Marshaler annotation on method or parameter at paramIndex if there is one 
-        AnnotationTag anno = pidx == -1
-                ? getMarshalerAnnotation(marshalSite.method) 
-                : getMarshalerAnnotation(marshalSite.method, pidx);
-        if (anno != null) {
-            AnnotationClassElem elem = (AnnotationClassElem) getElemByName(anno, "value");
-            String name = getInternalNameFromDescriptor(elem.getDesc());
-            Clazz marshalerClazz = config.getClazzes().load(name);
-            if (marshalerClazz != null) {
-                Marshaler marshaler = new Marshaler(marshalerClazz);
-                if (marshaler.canMarshal(marshalSite)) {
-                    return marshaler.getMarshalerMethod(marshalSite);
+        if (pidx != MarshalSite.RECEIVER) {
+            // Use @Marshaler annotation on method or parameter at paramIndex if there is one 
+            AnnotationTag anno = pidx == MarshalSite.RETURN_TYPE
+                    ? getMarshalerAnnotation(marshalSite.method) 
+                    : getMarshalerAnnotation(marshalSite.method, pidx);
+            if (anno != null) {
+                AnnotationClassElem elem = (AnnotationClassElem) getElemByName(anno, "value");
+                String name = getInternalNameFromDescriptor(elem.getDesc());
+                Clazz marshalerClazz = config.getClazzes().load(name);
+                if (marshalerClazz != null) {
+                    Marshaler marshaler = new Marshaler(marshalerClazz);
+                    if (marshaler.canMarshal(marshalSite)) {
+                        return marshaler.getMarshalerMethod(marshalSite);
+                    }
                 }
+                throw new IllegalArgumentException(String.format(
+                        "@Marshaler %s specified for %s of %s method %s can " 
+                                + "not be used to marshal %s",
+                        name.replace('/', '.'), 
+                        (pidx == MarshalSite.RETURN_TYPE ? "return type" : "parameter " + (pidx + 1)), 
+                        marshalSite.callTypeName, marshalSite.method, marshalSite.type));
             }
-            throw new IllegalArgumentException(String.format(
-                    "@Marshaler %s specified for %s of %s method %s can " 
-                            + "not be used to marshal %s",
-                    name.replace('/', '.'), 
-                    (pidx == -1 ? "return type" : "parameter " + (pidx + 1)), 
-                    marshalSite.callTypeName, marshalSite.method, marshalSite.type));
-        } else {
-            Marshaler marshaler = findMarshalers(marshalSite);
-            if (marshaler != null) {
-                return marshaler.getMarshalerMethod(marshalSite);
-            }
-            throw new IllegalArgumentException(String.format(
-                    "No @Marshaler found for %s of %s method %s",
-                    (pidx == -1 ? "return type" : "parameter " + (pidx + 1)),
-                    marshalSite.callTypeName, marshalSite.method));
         }
+        
+        Marshaler marshaler = findMarshalers(marshalSite);
+        if (marshaler != null) {
+            return marshaler.getMarshalerMethod(marshalSite);
+        }
+        throw new IllegalArgumentException(String.format(
+                "No @Marshaler found for %s of %s method %s",
+                (pidx == MarshalSite.RECEIVER ? "receiver" 
+                        : (pidx == MarshalSite.RETURN_TYPE ? "return type" 
+                                : "parameter " + (pidx + 1))),
+                marshalSite.callTypeName, marshalSite.method));
     }
     
     private void findMarshalersOnClasses(SootClass sc, List<Marshaler> result, 
@@ -322,6 +326,9 @@ public class MarshalerLookup {
     }
     
     public static class MarshalSite {
+        public static final int RETURN_TYPE = -1;
+        public static final int RECEIVER = -2;
+        
         private final SootMethod method;
         private final int paramIdx;
         private final long callType;
@@ -330,14 +337,15 @@ public class MarshalerLookup {
         private final boolean array;
         
         public MarshalSite(SootMethod method) {
-            this(method, -1);
+            this(method, RETURN_TYPE);
         }
         
         public MarshalSite(SootMethod method, int paramIdx) {
             this.method = method;
             this.paramIdx = paramIdx;
-            this.type = paramIdx == -1 ? method.getReturnType() 
-                    : method.getParameterType(paramIdx);
+            this.type = paramIdx == RETURN_TYPE ? method.getReturnType() :
+                    (paramIdx == RECEIVER ? method.getDeclaringClass().getType()
+                    : method.getParameterType(paramIdx));
             
             if (hasBridgeAnnotation(method)) {
                 callType = Bro.MarshalerFlags.CALL_TYPE_BRIDGE;
@@ -350,12 +358,12 @@ public class MarshalerLookup {
             } else if (hasStructMemberAnnotation(method)) {
                 callType = Bro.MarshalerFlags.CALL_TYPE_STRUCT_MEMBER;
                 callTypeName = "@StructMember";
-                array = paramIdx == -1 ? hasArrayAnnotation(method) 
+                array = paramIdx == RETURN_TYPE ? hasArrayAnnotation(method) 
                         : hasArrayAnnotation(method, paramIdx);
             } else if (hasGlobalValueAnnotation(method)) {
                 callType = Bro.MarshalerFlags.CALL_TYPE_GLOBAL_VALUE;
                 callTypeName = "@GlobalValue";
-                array = paramIdx == -1 ? hasArrayAnnotation(method) 
+                array = paramIdx == RETURN_TYPE ? hasArrayAnnotation(method) 
                         : hasArrayAnnotation(method, paramIdx);
             } else {
                 throw new IllegalArgumentException();
@@ -376,9 +384,9 @@ public class MarshalerLookup {
         
         public boolean isToNative() {
             if (callType == Bro.MarshalerFlags.CALL_TYPE_CALLBACK) {
-                return paramIdx == -1;
+                return paramIdx == RETURN_TYPE;
             } else {
-                return paramIdx != -1;
+                return paramIdx != RETURN_TYPE;
             }
         }
         

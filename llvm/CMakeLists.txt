@@ -101,7 +101,7 @@ if(LINUX)
 elseif(WINDOWS)
   set(LLVM_LDFLAGS
     -L"${CMAKE_BINARY_DIR}/llvm/lib"
-    -ldbghelp
+    -ldbghelp -static-libgcc -static-libstdc++
   )
 elseif(MACOSX)
   set(LLVM_LDFLAGS

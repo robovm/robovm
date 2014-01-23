@@ -38,10 +38,16 @@ public class NativeLibrary {
     static {
         String osProp = System.getProperty("os.name").toLowerCase();
         String archProp = System.getProperty("os.arch").toLowerCase();
+        String ext = null;
         if (osProp.startsWith("mac") || osProp.startsWith("darwin")) {
             os = "macosx";
+            ext = "dylib";
         } else if (osProp.startsWith("linux")) {
             os = "linux";
+            ext = "so";
+        } else if (osProp.startsWith("windows")) {
+            os = "windows";
+            ext = "dll";
         } else {
             throw new Error("Unsupported OS: " + System.getProperty("os.name"));
         }
@@ -53,7 +59,7 @@ public class NativeLibrary {
             throw new Error("Unsupported arch: " + System.getProperty("os.arch"));
         }
         
-        libName = "librobovm-llvm" + (os.equals("macosx") ? ".dylib" : ".so");
+        libName = "librobovm-llvm." + ext;
     }
     
     public static synchronized void load() {

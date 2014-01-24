@@ -346,6 +346,13 @@ typedef struct Env Env;
 struct TrycatchContext;
 typedef struct TrycatchContext TrycatchContext;
 
+typedef struct SystemProperty SystemProperty;
+struct SystemProperty {
+  char* key;
+  char* value;
+  SystemProperty* next;
+};
+
 typedef struct Options {
     char* mainClass;
     char** commandLineArgs;
@@ -357,6 +364,7 @@ typedef struct Options {
     char executablePath[PATH_MAX];
     char** rawBootclasspath; 
     char** rawClasspath; 
+    SystemProperty* properties;
     ClasspathEntry* bootclasspath;
     ClasspathEntry* classpath;
     jboolean dynamicJNI;

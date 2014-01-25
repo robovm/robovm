@@ -12,18 +12,14 @@ endif()
 
 if (WINDOWS)
   # set(CMAKE_CROSSCOMPILING TRUE) 
-  # set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "")
-  # set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
   set(CMAKE_SYSTEM_NAME Windows)
+
+  #should be passed from build.sh, just here to prevent warning
   set(CMAKE_RC_COMPILER "/usr/bin/x86_64-w64-mingw32-windres")
- 
+  
+  #these are not actually used by robovm but find_package does not always resolve them, use JAVA_HOME env var to prevent paths?
   set(JAVA_AWT_LIBRARY "/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/libawt.so")
   set(JAVA_JVM_LIBRARY "/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/server/libjvm.so")
-
-  # here is the target environment located
-  # SET(CMAKE_FIND_ROOT_PATH /usr/x86_64-w64-mingw32/) 
-  # SET(ENV{GF2X_CONFIGURE_EXTRA_FLAGS} "--host=x86_64-w64-mingw32")
-  # SET(ENV{PREFIX} "$ENV{HOME}/mingw-w64/usr/local/")
 
   # adjust the default behaviour of the FIND_XXX() commands:
   # search headers and libraries in the target environment, search

@@ -11,6 +11,7 @@ function usage {
 Usage: $SELF [options]
 Options:
   --clean                 Cleans the build dir before starting the build.
+  --windows               Cross compile for windows.
   --help                  Displays this information and exits.
 EOF
   exit $1

@@ -290,10 +290,12 @@ jboolean rvmRun(Env* env) {
     Options* options = env->vm->options;
     Class* clazz = NULL;
 
+    bool errorDuringSetup = false;
+
     //If our options has any properties, let's set them before we call our main.
     if(options->properties) {
         //First, find java.lang.System, which has the setProperty method.
-        clazz = rvmFindClassUsingLoader(env, "java.lang.System", systemClassLoader);
+        clazz = rvmFindClassUsingLoader(env, "java/lang/System", NULL);
         if(clazz) {
             //Get the setProperty method.
             Method* method = rvmGetClassMethod(env, clazz, "setProperty", "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;");
@@ -304,32 +306,61 @@ jboolean rvmRun(Env* env) {
 
                 //Go through all of our properties and add each one in turn by calling setProperty.
                 while(property != NULL) {
-                    key = rvmNewStringUTF(env, property->key, -1);
-                    value = rvmNewStringUTF(env, property->value, -1);
-                    rvmCallObjectClassMethod(env, clazz, method, key, value);
+                    //The key is not allowed to be an empty string, so don't set it if we don't get a key.
+                    if(property->key && strlen(property->key) > 0) {
+                        key = rvmNewStringUTF(env, property->key, -1);
+                    }
+                    else
+                    {
+                        FATAL("Cannot have empty key in system property.");
+                        errorDuringSetup = true;
+                        break;
+                    }
+                    if(property->value) {
+                        value = rvmNewStringUTF(env, property->value, -1);
+                    } else {
+                        value = rvmNewStringUTF(env, "", -1);
+                    }
+
+                    if(key && value) {
+                        rvmCallObjectClassMethod(env, clazz, method, key, value);
+                    } else {
+                        if(!key) {
+                            FATALF("Error creating string from system property key: %s", property->key);
+                        }
+                        if(!value) {
+                            FATALF("Error creating string from system property value: %s", property->value);
+                        }
+                        errorDuringSetup = true;
+                        break;
+                    }
+                    //Reset the values for the next pass.
+                    key = NULL;
+                    value = NULL;
                     property = property->next; //Advance to the next property.
                 }
             }
         }
     }
 
-
-    clazz = rvmFindClassUsingLoader(env, options->mainClass, systemClassLoader);
-    if (clazz) {
-        Method* method = rvmGetClassMethod(env, clazz, "main", "([Ljava/lang/String;)V");
-        if (method) {
-            ObjectArray* args = rvmNewObjectArray(env, options->commandLineArgsCount, java_lang_String, NULL, NULL);
-            if (args) {
-                jint i = 0;
-                for (i = 0; i < args->length; i++) {
-                    // TODO: Don't assume modified UTF-8
-                    args->values[i] = rvmNewStringUTF(env, options->commandLineArgs[i], -1);
-                    if (!args->values[i]) {
-                        args = NULL;
-                        break;
+    if(!errorDuringSetup) {
+        clazz = rvmFindClassUsingLoader(env, options->mainClass, systemClassLoader);
+        if (clazz) {
+            Method* method = rvmGetClassMethod(env, clazz, "main", "([Ljava/lang/String;)V");
+            if (method) {
+                ObjectArray* args = rvmNewObjectArray(env, options->commandLineArgsCount, java_lang_String, NULL, NULL);
+                if (args) {
+                    jint i = 0;
+                    for (i = 0; i < args->length; i++) {
+                        // TODO: Don't assume modified UTF-8
+                        args->values[i] = rvmNewStringUTF(env, options->commandLineArgs[i], -1);
+                        if (!args->values[i]) {
+                            args = NULL;
+                            break;
+                        }
                     }
+                    if (args) rvmCallVoidClassMethod(env, clazz, method, args);
                 }
-                if (args) rvmCallVoidClassMethod(env, clazz, method, args);
             }
         }
     }

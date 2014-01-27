@@ -277,10 +277,12 @@ public class IOSTarget extends AbstractTarget {
     }
     
     private void codesign(SigningIdentity identity, File entitlementsPList, File appDir) throws IOException {
+        config.getLogger().debug("Code signing using identity '%s' with fingerprint %s", identity.getName(), 
+                identity.getFingerprint());
         List<Object> args = new ArrayList<Object>();
         args.add("-f");
         args.add("-s");
-        args.add(identity.getName());
+        args.add(identity.getFingerprint());
         if (entitlementsPList != null) {
             args.add("--entitlements");
             args.add(entitlementsPList);

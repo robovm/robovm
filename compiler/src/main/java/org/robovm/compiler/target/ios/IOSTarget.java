@@ -246,12 +246,8 @@ public class IOSTarget extends AbstractTarget {
             strip(installDir, getExecutable());
             copyResourcesPList(installDir);
             // Copy the provisioning profile
-            config.getLogger().debug("Copying %s provisioning profile: %s (%s)",
-                    provisioningProfile.getType(),
-                    provisioningProfile.getName(), 
-                    provisioningProfile.getEntitlements().objectForKey("application-identifier"));
+            copyProvisioningProfile(provisioningProfile, installDir);
             boolean getTaskAllow = provisioningProfile.getType() == Type.Development;
-            FileUtils.copyFile(provisioningProfile.getFile(), new File(installDir, "embedded.mobileprovision"));
             codesign(signIdentity, getOrCreateEntitlementsPList(getTaskAllow), installDir);
             // For some odd reason there needs to be a symbolic link in the root of
             // the app bundle named CodeResources pointing at _CodeSignature/CodeResources
@@ -260,6 +256,14 @@ public class IOSTarget extends AbstractTarget {
                 .exec();
         }
     }
+
+    private void copyProvisioningProfile(ProvisioningProfile profile, File destDir) throws IOException {
+        config.getLogger().debug("Copying %s provisioning profile: %s (%s)",
+                profile.getType(),
+                profile.getName(), 
+                profile.getEntitlements().objectForKey("application-identifier"));
+        FileUtils.copyFile(profile.getFile(), new File(destDir, "embedded.mobileprovision"));
+    }
     
     protected void prepareLaunch(File appDir) throws IOException {
         super.doInstall(appDir, getExecutable());
@@ -267,6 +271,7 @@ public class IOSTarget extends AbstractTarget {
         generateDsym(appDir, getExecutable());
         if (arch == Arch.thumbv7) {
             copyResourcesPList(appDir);
+            copyProvisioningProfile(provisioningProfile, appDir);
             codesign(signIdentity, getOrCreateEntitlementsPList(true), appDir);
         }
     }

@@ -2838,13 +2838,13 @@ public class LLVM implements LLVMConstants {
     LLVMJNI.TargetOptionsSetNoFramePointerElim(TargetOptionsRef.getCPtr(O), V);
   }
 
-  public static boolean TargetOptionsGetNoFramePointerElimNonLeaf(TargetOptionsRef O) {
+  /*public static boolean TargetOptionsGetNoFramePointerElimNonLeaf(TargetOptionsRef O) {
     return LLVMJNI.TargetOptionsGetNoFramePointerElimNonLeaf(TargetOptionsRef.getCPtr(O));
   }
 
   public static void TargetOptionsSetNoFramePointerElimNonLeaf(TargetOptionsRef O, boolean V) {
     LLVMJNI.TargetOptionsSetNoFramePointerElimNonLeaf(TargetOptionsRef.getCPtr(O), V);
-  }
+  }*/
 
   public static boolean TargetOptionsGetLessPreciseFPMADOption(TargetOptionsRef O) {
     return LLVMJNI.TargetOptionsGetLessPreciseFPMADOption(TargetOptionsRef.getCPtr(O));
@@ -2942,22 +2942,22 @@ public class LLVM implements LLVMConstants {
     LLVMJNI.TargetOptionsSetStackAlignmentOverride(TargetOptionsRef.getCPtr(O), V);
   }
 
-  public static boolean TargetOptionsGetRealignStack(TargetOptionsRef O) {
+  /*public static boolean TargetOptionsGetRealignStack(TargetOptionsRef O) {
     return LLVMJNI.TargetOptionsGetRealignStack(TargetOptionsRef.getCPtr(O));
   }
 
   public static void TargetOptionsSetRealignStack(TargetOptionsRef O, boolean V) {
     LLVMJNI.TargetOptionsSetRealignStack(TargetOptionsRef.getCPtr(O), V);
-  }
+  }*/
 
-  public static int TargetOptionsGetSSPBufferSize(TargetOptionsRef O) {
+  /*public static int TargetOptionsGetSSPBufferSize(TargetOptionsRef O) {
     return LLVMJNI.TargetOptionsGetSSPBufferSize(TargetOptionsRef.getCPtr(O));
   }
 
   public static void TargetOptionsSetSSPBufferSize(TargetOptionsRef O, int V) {
     LLVMJNI.TargetOptionsSetSSPBufferSize(TargetOptionsRef.getCPtr(O), V);
   }
-
+*/
   public static boolean TargetOptionsGetEnableFastISel(TargetOptionsRef O) {
     return LLVMJNI.TargetOptionsGetEnableFastISel(TargetOptionsRef.getCPtr(O));
   }

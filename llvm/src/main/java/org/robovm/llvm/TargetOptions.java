@@ -47,13 +47,13 @@ public class TargetOptions {
         LLVM.TargetOptionsSetNoFramePointerElim(ref, value);
     }
 
-    public boolean getNoFramePointerElimNonLeaf() {
+    /*public boolean getNoFramePointerElimNonLeaf() {
         return LLVM.TargetOptionsGetNoFramePointerElimNonLeaf(ref);
     }
 
     public void setNoFramePointerElimNonLeaf(boolean value) {
         LLVM.TargetOptionsSetNoFramePointerElimNonLeaf(ref, value);
-    }
+    }*/
 
     public boolean getLessPreciseFPMADOption() {
         return LLVM.TargetOptionsGetLessPreciseFPMADOption(ref);
@@ -151,7 +151,7 @@ public class TargetOptions {
         LLVM.TargetOptionsSetStackAlignmentOverride(ref, value);
     }
 
-    public boolean getRealignStack() {
+    /*public boolean getRealignStack() {
         return LLVM.TargetOptionsGetRealignStack(ref);
     }
 
@@ -166,7 +166,7 @@ public class TargetOptions {
     public void setSSPBufferSize(int value) {
         LLVM.TargetOptionsSetSSPBufferSize(ref, value);
     }
-
+*/
     public boolean getEnableFastISel() {
         return LLVM.TargetOptionsGetEnableFastISel(ref);
     }

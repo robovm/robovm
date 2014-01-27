@@ -101,6 +101,8 @@ public class Config {
     private ArrayList<String> frameworks;
     @ElementList(required = false, entry = "framework")
     private ArrayList<String> weakFrameworks;
+    @ElementList(required = false, entry = "path")
+    private ArrayList<File> frameworkPaths;
     @ElementList(required = false, entry = "resource")
     private ArrayList<Resource> resources;
     @ElementList(required = false, entry = "classpathentry")
@@ -274,7 +276,12 @@ public class Config {
         return weakFrameworks == null ? Collections.<String>emptyList() 
                 : Collections.unmodifiableList(weakFrameworks);
     }
-    
+
+    public List<File> getFrameworkPaths() {
+        return frameworkPaths == null ? Collections.<File>emptyList() 
+                : Collections.unmodifiableList(frameworkPaths);
+    }
+
     public List<Resource> getResources() {
         return resources == null ? Collections.<Resource>emptyList() 
                 : Collections.unmodifiableList(resources);
@@ -861,6 +868,21 @@ public class Config {
                 config.weakFrameworks = new ArrayList<String>();
             }
             config.weakFrameworks.add(framework);
+            return this;
+        }
+
+        public Builder clearFrameworkPaths() {
+            if (config.frameworkPaths != null) {
+                config.frameworkPaths.clear();
+            }
+            return this;
+        }
+        
+        public Builder addFrameworkPath(File frameworkPath) {
+            if (config.frameworkPaths == null) {
+                config.frameworkPaths = new ArrayList<File>();
+            }
+            config.frameworkPaths.add(frameworkPath);
             return this;
         }
 

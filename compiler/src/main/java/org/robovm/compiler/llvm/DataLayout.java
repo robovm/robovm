@@ -28,14 +28,13 @@ import org.robovm.llvm.TargetMachine;
 public class DataLayout {
     
     private final String triple;
-    private final Target target;
     
     public DataLayout(String triple) {
         this.triple = triple;
-        this.target = Target.lookupTarget(triple);
     }
     
     private <T> T runTypeQuery(Type type, TypeCallback<T> cb) {
+        final Target target = Target.lookupTarget(triple);
         Context context = null;
         Module module = null;
         TargetMachine targetMachine = null;

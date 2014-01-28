@@ -81,10 +81,10 @@ static Method* getMethod(Env* env, Class* clazz, const char* name, const char* d
      * TODO: Should we really do this? Does the JNI GetMethodID() function do this?
      */
     for (c = clazz; c != NULL; c = c->superclass) {
-        Interface* interface = rvmGetInterfaces(env, c);
+        Interface* interf = rvmGetInterfaces(env, c);
         if (rvmExceptionCheck(env)) return NULL;
-        for (; interface != NULL; interface = interface->next) {
-            Method* method = getMethod(env, interface->interface, name, desc);
+        for (; interf != NULL; interf = interf->next) {
+            Method* method = getMethod(env, interf->interfaceClass, name, desc);
             if (rvmExceptionCheck(env)) return NULL;
             if (method) return method;
         }

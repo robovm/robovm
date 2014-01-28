@@ -205,7 +205,6 @@ Env* rvmStartup(Options* options) {
 
     TRACE("Initializing GC");
     if (!initGC(options)) return NULL;
-
     // Ignore SIGPIPE signals. SIGPIPE interrupts write() calls which we don't
     // want. Dalvik does this too in dalvikvm/Main.cpp.
     if (!ignoreSignal(SIGPIPE)) return NULL;

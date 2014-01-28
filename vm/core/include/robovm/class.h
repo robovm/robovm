@@ -157,7 +157,7 @@ extern BridgeMethod* rvmAllocateBridgeMethod(Env* env, Class* clazz, const char*
         void* synchronizedImpl, void** targetFnPtr, void* attributes);
 extern CallbackMethod* rvmAllocateCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, jint vitableIndex, jint access, jint size, void* impl, 
 		void* synchronizedImpl, void* callbackImpl, void* attributes);
-extern jboolean rvmAddInterface(Env* env, Class* clazz, Class* interface);
+extern jboolean rvmAddInterface(Env* env, Class* clazz, Class* interf);
 extern Field* rvmAddField(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint offset, void* attributes);
 extern Method* rvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc, jint vitableIndex, jint access, jint size, void* impl, void* synchronizedImpl, void* attributes);
 extern BridgeMethod* rvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, jint vitableIndex, jint access, jint size, void* impl, 

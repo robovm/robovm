@@ -198,7 +198,8 @@ public class ProvisioningProfile implements Comparable<ProvisioningProfile> {
 
     public static ProvisioningProfile find(List<ProvisioningProfile> profiles, String search) {
         for (ProvisioningProfile p : profiles) {
-            if (p.uuid.equals(search) || p.appIdPrefix.equals(search) || p.appIdName != null && p.appIdName.equals(search)) {
+            if (p.uuid.equals(search) || p.appIdPrefix.equals(search) || p.appIdName != null && p.appIdName.equals(search)
+                    || p.name.equals(search)) {
                 return p;
             }
         }        

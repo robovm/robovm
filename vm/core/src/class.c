@@ -1534,6 +1534,10 @@ Object* rvmCloneObject(Env* env, Object* obj) {
     if (!copy) return NULL;
     memcpy(copy, obj, size);
     copy->lock = 0;
+    if (CLASS_IS_FINALIZABLE(copy->clazz)) {
+        rvmRegisterFinalizer(env, copy);
+        if (rvmExceptionCheck(env)) return NULL;
+    }
     return copy;
 }
 

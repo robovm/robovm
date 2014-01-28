@@ -25,11 +25,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -41,7 +39,6 @@ import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.config.Resource;
 import org.robovm.compiler.config.Resource.Walker;
-import org.robovm.compiler.util.Executor;
 import org.robovm.compiler.util.ToolchainUtil;
 import org.simpleframework.xml.Transient;
 
@@ -117,6 +114,7 @@ public abstract class AbstractTarget implements Target {
             ccArgs.add("-Wl,--gc-sections");
 //            ccArgs.add("-Wl,--print-gc-sections");
         } else if (config.getOs().getFamily() == OS.Family.darwin) {
+            ccArgs.add("-ObjC");
             File exportedSymbolsFile = new File(config.getTmpDir(), "exported_symbols");
             List<String> exportedSymbols = new ArrayList<String>();
             if (config.isSkipInstall()) {
@@ -145,6 +143,11 @@ public abstract class AbstractTarget implements Target {
             for (String p : config.getWeakFrameworks()) {
                 libs.add("-weak_framework");
                 libs.add(p);
+            }
+        }
+        if (config.getOs().getFamily() == OS.Family.darwin && !config.getFrameworkPaths().isEmpty()) {
+            for (File p : config.getFrameworkPaths()) {
+                ccArgs.add("-F" + p.getAbsolutePath());
             }
         }
         

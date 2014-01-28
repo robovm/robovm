@@ -46,7 +46,7 @@ public abstract class Clazz implements Comparable<Clazz> {
     Clazz(Clazzes clazzes, String fileName, AbstractPath path) {
         this.clazzes = clazzes;
         this.fileName = fileName;
-        this.className = fileName.replace(File.separatorChar, '.').substring(0, fileName.lastIndexOf(".class"));
+        this.className = fileName.replace('/', '.').replace('\\', '.').substring(0, fileName.lastIndexOf(".class"));
         this.internalName = className.replace('.', '/');
         this.path = path;
     }

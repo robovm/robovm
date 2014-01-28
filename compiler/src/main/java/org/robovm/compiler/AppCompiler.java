@@ -561,6 +561,9 @@ public class AppCompiler {
         System.err.println("  -weakframeworks <list>\n" 
                          + "                        : separated list of frameworks that should be weakly linked\n" 
                          + "                        into the final executable.");
+        System.err.println("  -frameworkpaths <list>\n" 
+                         + "                        : separated list of framework search paths used when searching" 
+                         + "                        for custom frameworks.");
         System.err.println("  -resources <list>     : separated list of files and directories that should be\n"
                          + "                        copied to the install dir. Accepts Ant-style patterns.\n" 
                          + "                        If a pattern is specified the left-most path before the\n" 

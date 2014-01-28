@@ -290,60 +290,55 @@ jboolean rvmRun(Env* env) {
     Options* options = env->vm->options;
     Class* clazz = NULL;
 
-    bool errorDuringSetup = false;
+    jboolean errorDuringSetup = FALSE;
 
     //If our options has any properties, let's set them before we call our main.
-    if(options->properties) {
+    if (options->properties) {
         //First, find java.lang.System, which has the setProperty method.
         clazz = rvmFindClassUsingLoader(env, "java/lang/System", NULL);
-        if(clazz) {
+        if (clazz) {
             //Get the setProperty method.
             Method* method = rvmGetClassMethod(env, clazz, "setProperty", "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;");
-            if(method) {
-                Object* key = NULL;
-                Object* value = NULL;
+            if (method) {
                 SystemProperty* property = options->properties;
 
                 //Go through all of our properties and add each one in turn by calling setProperty.
-                while(property != NULL) {
+                while (property != NULL) {
+                    Object* key = NULL;
+                    Object* value = NULL;
                     //The key is not allowed to be an empty string, so don't set it if we don't get a key.
                     if(property->key && strlen(property->key) > 0) {
                         key = rvmNewStringUTF(env, property->key, -1);
-                    }
-                    else
-                    {
+                    } else {
                         FATAL("Cannot have empty key in system property.");
-                        errorDuringSetup = true;
+                        errorDuringSetup = TRUE;
                         break;
                     }
-                    if(property->value) {
+                    if (property->value) {
                         value = rvmNewStringUTF(env, property->value, -1);
                     } else {
                         value = rvmNewStringUTF(env, "", -1);
                     }
 
-                    if(key && value) {
+                    if (key && value) {
                         rvmCallObjectClassMethod(env, clazz, method, key, value);
                     } else {
-                        if(!key) {
+                        if (!key) {
                             FATALF("Error creating string from system property key: %s", property->key);
                         }
-                        if(!value) {
+                        if (!value) {
                             FATALF("Error creating string from system property value: %s", property->value);
                         }
-                        errorDuringSetup = true;
+                        errorDuringSetup = TRUE;
                         break;
                     }
-                    //Reset the values for the next pass.
-                    key = NULL;
-                    value = NULL;
                     property = property->next; //Advance to the next property.
                 }
             }
         }
     }
 
-    if(!errorDuringSetup) {
+    if (!errorDuringSetup) {
         clazz = rvmFindClassUsingLoader(env, options->mainClass, systemClassLoader);
         if (clazz) {
             Method* method = rvmGetClassMethod(env, clazz, "main", "([Ljava/lang/String;)V");

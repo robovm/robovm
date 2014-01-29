@@ -25,10 +25,10 @@ static Field* getField(Env* env, Class* clazz, char* name, char* desc) {
         }
     }
 
-    Interface* interface = rvmGetInterfaces(env, clazz);
+    Interface* interf = rvmGetInterfaces(env, clazz);
     if (rvmExceptionCheck(env)) return NULL;
-    for (; interface != NULL; interface = interface->next) {
-        field = getField(env, interface->interface, name, desc);
+    for (; interf != NULL; interf = interf->next) {
+        field = getField(env, interf->interfaceClass, name, desc);
         if (rvmExceptionCheck(env)) return NULL;
         if (field) return field;
     }

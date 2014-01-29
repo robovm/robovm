@@ -198,10 +198,11 @@ static jboolean addProxyMethods(Env* env, Class* proxyClass, Class* clazz, Proxy
  * {@link #addProxyMethods()} which will override all methods defined by the proxy's
  * ancestor classes (abstract or concrete).
  */
-static jboolean implementAbstractInterfaceMethods(Env* env, Class* proxyClass, Interface* interface, ProxyClassData* proxyClassData) {
-    if (!interface) return TRUE;
 
-    Method* method = rvmGetMethods(env, interface->interface);
+static jboolean implementAbstractInterfaceMethods(Env* env, Class* proxyClass, Interface* interf, ProxyClassData* proxyClassData) {
+    if (!interf) return TRUE;
+
+    Method* method = rvmGetMethods(env, interf->interfaceClass);
     if (rvmExceptionOccurred(env)) return FALSE;
     for (; method != NULL; method = method->next) {
         if (!METHOD_IS_CLASS_INITIALIZER(method)) {
@@ -211,11 +212,11 @@ static jboolean implementAbstractInterfaceMethods(Env* env, Class* proxyClass, I
     }
 
     // Interfaces are implemented depth-first so call recursively with the super interfaces of the current interface first
-    Interface* interfaceInterfaces = rvmGetInterfaces(env, interface->interface);
+    Interface* interfaceInterfaces = rvmGetInterfaces(env, interf->interfaceClass);
     if (rvmExceptionCheck(env)) return FALSE;
     if (!implementAbstractInterfaceMethods(env, proxyClass, interfaceInterfaces, proxyClassData)) return FALSE;
     // Now proceed with the next interface
-    if (!implementAbstractInterfaceMethods(env, proxyClass, interface->next, proxyClassData)) return FALSE;
+    if (!implementAbstractInterfaceMethods(env, proxyClass, interf->next, proxyClassData)) return FALSE;
 
     return TRUE;
 }
@@ -279,27 +280,27 @@ static VITable* createVTable(Env* env, Class* superclass) {
     return vtable;
 }
 
-static ITable* createITable(Env* env, Class* interfaze) {
+static ITable* createITable(Env* env, Class* interf) {
     ITable* itable = rvmAllocateMemoryAtomic(env, offsetof(ITable, table) 
-        + offsetof(VITable, table) + sizeof(void*) * interfaze->vitable->size);
+        + offsetof(VITable, table) + sizeof(void*) * interf->vitable->size);
     if (!itable) return NULL;
 
-    itable->typeInfo = interfaze->typeInfo;
-    itable->table.size = interfaze->vitable->size;
+    itable->typeInfo = interf->typeInfo;
+    itable->table.size = interf->vitable->size;
 
     jint i = 0;
-    for (i = 0; i < interfaze->vitable->size; i++) {
+    for (i = 0; i < interf->vitable->size; i++) {
         itable->table.table[i] = _proxy0;
     }
     return itable;
 }
 
 static uint32_t countInterfacesForITables(Env* env, Class* c) {
-    Interface* ifs = rvmGetInterfaces(env, c);
+    Interface* interf = rvmGetInterfaces(env, c);
     if (rvmExceptionOccurred(env)) return 0;
     uint32_t count = c->vitable->size;
-    for (; ifs; ifs = ifs->next) {
-        count += countInterfacesForITables(env, ifs->interface);
+    for (; interf; interf = interf->next) {
+        count += countInterfacesForITables(env, interf->interfaceClass);
         if (rvmExceptionOccurred(env)) return 0;
     }
     return count;
@@ -312,10 +313,10 @@ static void initITableArray(Env* env, Class* c, jint* index, ITable** array) {
         array[*index] = itable;
         (*index)++;
     }
-    Interface* ifs = rvmGetInterfaces(env, c);
+    Interface* interf = rvmGetInterfaces(env, c);
     if (rvmExceptionOccurred(env)) return;
-    for (; ifs; ifs = ifs->next) {
-        initITableArray(env, ifs->interface, index, array);
+    for (; interf; interf = interf->next) {
+        initITableArray(env, interf->interfaceClass, index, array);
         if (rvmExceptionOccurred(env)) return;
     }
 }
@@ -374,9 +375,9 @@ Class* rvmProxyCreateProxyClass(Env* env, Class* superclass, ClassLoader* classL
 
     Class* c = proxyClass;
     while (c) {
-        Interface* interface = rvmGetInterfaces(env, c);
+        Interface* interf = rvmGetInterfaces(env, c);
         if (rvmExceptionCheck(env)) return NULL;
-        if (!implementAbstractInterfaceMethods(env, proxyClass, interface, proxyClassData)) return NULL;
+        if (!implementAbstractInterfaceMethods(env, proxyClass, interf, proxyClassData)) return NULL;
         c = c->superclass;
     }
 

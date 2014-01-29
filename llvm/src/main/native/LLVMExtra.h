@@ -26,11 +26,11 @@ extern const char *llvmHostTriple;
 LLVMBool LLVMParseIR(LLVMMemoryBufferRef MemBuf,
                           LLVMModuleRef *OutModule, char **OutMessage);
 
-LLVMBool LLVMParseIRInContext(LLVMContextRef ContextRef,
+/*LLVMBool LLVMParseIRInContext(LLVMContextRef ContextRef,
                                    LLVMMemoryBufferRef MemBuf,
                                    LLVMModuleRef *OutModule,
                                    char **OutMessage);
-
+*/
 LLVMTargetRef LLVMLookupTarget(const char *Triple, char **ErrorMessage);
 
 LLVMBool LLVMTargetMachineHasMCRelaxAll(LLVMTargetMachineRef T);
@@ -58,8 +58,8 @@ LLVMBool LLVMTargetOptionsGetPrintMachineCode(LLVMTargetOptionsRef O);
 void LLVMTargetOptionsSetPrintMachineCode(LLVMTargetOptionsRef O, LLVMBool V);
 LLVMBool LLVMTargetOptionsGetNoFramePointerElim(LLVMTargetOptionsRef O);
 void LLVMTargetOptionsSetNoFramePointerElim(LLVMTargetOptionsRef O, LLVMBool V);
-LLVMBool LLVMTargetOptionsGetNoFramePointerElimNonLeaf(LLVMTargetOptionsRef O);
-void LLVMTargetOptionsSetNoFramePointerElimNonLeaf(LLVMTargetOptionsRef O, LLVMBool V);
+//LLVMBool LLVMTargetOptionsGetNoFramePointerElimNonLeaf(LLVMTargetOptionsRef O);
+//void LLVMTargetOptionsSetNoFramePointerElimNonLeaf(LLVMTargetOptionsRef O, LLVMBool V);
 LLVMBool LLVMTargetOptionsGetLessPreciseFPMADOption(LLVMTargetOptionsRef O);
 void LLVMTargetOptionsSetLessPreciseFPMADOption(LLVMTargetOptionsRef O, LLVMBool V);
 LLVMBool LLVMTargetOptionsGetUnsafeFPMath(LLVMTargetOptionsRef O);
@@ -84,10 +84,10 @@ LLVMBool LLVMTargetOptionsGetDisableTailCalls(LLVMTargetOptionsRef O);
 void LLVMTargetOptionsSetDisableTailCalls(LLVMTargetOptionsRef O, LLVMBool V);
 unsigned LLVMTargetOptionsGetStackAlignmentOverride(LLVMTargetOptionsRef O);
 void LLVMTargetOptionsSetStackAlignmentOverride(LLVMTargetOptionsRef O, unsigned V);
-LLVMBool LLVMTargetOptionsGetRealignStack(LLVMTargetOptionsRef O);
-void LLVMTargetOptionsSetRealignStack(LLVMTargetOptionsRef O, LLVMBool V);
-unsigned LLVMTargetOptionsGetSSPBufferSize(LLVMTargetOptionsRef O);
-void LLVMTargetOptionsSetSSPBufferSize(LLVMTargetOptionsRef O, unsigned V);
+//LLVMBool LLVMTargetOptionsGetRealignStack(LLVMTargetOptionsRef O);
+//void LLVMTargetOptionsSetRealignStack(LLVMTargetOptionsRef O, LLVMBool V);
+//unsigned LLVMTargetOptionsGetSSPBufferSize(LLVMTargetOptionsRef O);
+//void LLVMTargetOptionsSetSSPBufferSize(LLVMTargetOptionsRef O, unsigned V);
 LLVMBool LLVMTargetOptionsGetEnableFastISel(LLVMTargetOptionsRef O);
 void LLVMTargetOptionsSetEnableFastISel(LLVMTargetOptionsRef O, LLVMBool V);
 LLVMBool LLVMTargetOptionsGetPositionIndependentExecutable(LLVMTargetOptionsRef O);

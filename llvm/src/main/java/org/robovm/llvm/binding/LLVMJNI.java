@@ -662,8 +662,8 @@ public class LLVMJNI {
   public final static native void TargetOptionsSetPrintMachineCode(long jarg1, boolean jarg2);
   public final static native boolean TargetOptionsGetNoFramePointerElim(long jarg1);
   public final static native void TargetOptionsSetNoFramePointerElim(long jarg1, boolean jarg2);
-  public final static native boolean TargetOptionsGetNoFramePointerElimNonLeaf(long jarg1);
-  public final static native void TargetOptionsSetNoFramePointerElimNonLeaf(long jarg1, boolean jarg2);
+  //public final static native boolean TargetOptionsGetNoFramePointerElimNonLeaf(long jarg1);
+  //public final static native void TargetOptionsSetNoFramePointerElimNonLeaf(long jarg1, boolean jarg2);
   public final static native boolean TargetOptionsGetLessPreciseFPMADOption(long jarg1);
   public final static native void TargetOptionsSetLessPreciseFPMADOption(long jarg1, boolean jarg2);
   public final static native boolean TargetOptionsGetUnsafeFPMath(long jarg1);
@@ -688,10 +688,10 @@ public class LLVMJNI {
   public final static native void TargetOptionsSetDisableTailCalls(long jarg1, boolean jarg2);
   public final static native int TargetOptionsGetStackAlignmentOverride(long jarg1);
   public final static native void TargetOptionsSetStackAlignmentOverride(long jarg1, int jarg2);
-  public final static native boolean TargetOptionsGetRealignStack(long jarg1);
-  public final static native void TargetOptionsSetRealignStack(long jarg1, boolean jarg2);
-  public final static native int TargetOptionsGetSSPBufferSize(long jarg1);
-  public final static native void TargetOptionsSetSSPBufferSize(long jarg1, int jarg2);
+  //public final static native boolean TargetOptionsGetRealignStack(long jarg1);
+  //public final static native void TargetOptionsSetRealignStack(long jarg1, boolean jarg2);
+  //public final static native int TargetOptionsGetSSPBufferSize(long jarg1);
+  //public final static native void TargetOptionsSetSSPBufferSize(long jarg1, int jarg2);
   public final static native boolean TargetOptionsGetEnableFastISel(long jarg1);
   public final static native void TargetOptionsSetEnableFastISel(long jarg1, boolean jarg2);
   public final static native boolean TargetOptionsGetPositionIndependentExecutable(long jarg1);

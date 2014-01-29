@@ -118,7 +118,7 @@ struct ProxyMethodException {
 
 struct Interface {
   Interface* next;
-  Class* interface;
+  Class* interfaze;
 };
 
 struct Object {

@@ -850,10 +850,10 @@ Class* rvmAllocateClass(Env* env, const char* className, Class* superclass, Clas
 }
 
 Interface* rvmAllocateInterface(Env* env, Class* interf) {
-    Interface* interface = rvmAllocateMemoryAtomicUncollectable(env, sizeof(Interface));
-    if (!interface) return NULL;
-    interface->interface = interf;
-    return interface;
+    Interface* interfaze = rvmAllocateMemoryAtomicUncollectable(env, sizeof(Interface));
+    if (!interfaze) return NULL;
+    interfaze->interfaze = interf;
+    return interfaze;
 }
 
 jboolean rvmAddInterface(Env* env, Class* clazz, Class* interf) {
@@ -863,12 +863,12 @@ jboolean rvmAddInterface(Env* env, Class* clazz, Class* interf) {
         rvmThrowIncompatibleClassChangeError(env, "");
         return FALSE;
     }
-    Interface* interface = rvmAllocateInterface(env, interf);
-    if (!interface) return FALSE;
+    Interface* interfaze = rvmAllocateInterface(env, interf);
+    if (!interfaze) return FALSE;
     if (clazz->_interfaces == &INTERFACES_NOT_LOADED) {
         clazz->_interfaces = NULL;
     }
-    LL_APPEND(clazz->_interfaces, interface);
+    LL_APPEND(clazz->_interfaces, interfaze);
     return TRUE;
 }
 

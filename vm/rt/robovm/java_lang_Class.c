@@ -119,16 +119,16 @@ Object* Java_java_lang_Class_getEnclosingConstructor(Env* env, Class* thiz) {
 ObjectArray* Java_java_lang_Class_getInterfaces(Env* env, Class* thiz) {
     Interface* interfaces = rvmGetInterfaces(env, thiz);
     if (rvmExceptionCheck(env)) return NULL;
-    Interface* interface;
+    Interface* interfaze;
     jint length = 0;
-    LL_FOREACH(interfaces, interface) {
+    LL_FOREACH(interfaces, interfaze) {
         length++;
     }
     ObjectArray* result = rvmNewObjectArray(env, length, java_lang_Class, NULL, NULL);
     if (!result) return NULL;
     jint i = 0;
-    LL_FOREACH(interfaces, interface) {
-        result->values[i++] = (Object*) interface->interface;
+    LL_FOREACH(interfaces, interfaze) {
+        result->values[i++] = (Object*) interfaze->interfaze;
     }
     return result;
 }

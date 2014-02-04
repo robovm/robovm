@@ -413,6 +413,12 @@ public class IOSTarget extends AbstractTarget {
         return config.getMainClass() != null ? config.getMainClass() : config.getExecutableName();
     }
     
+    private void putIfAbsent(NSDictionary dict, String key, String value) {
+        if (dict.objectForKey(key) == null) {
+            dict.put(key, value);
+        }
+    }
+
     protected void customizeInfoPList(NSDictionary dict) {
         if (arch == Arch.x86) {
             dict.put("CFBundleSupportedPlatforms", new NSArray(new NSString("iPhoneSimulator")));
@@ -422,9 +428,9 @@ public class IOSTarget extends AbstractTarget {
             dict.put("DTPlatformVersion", sdk.getPlatformVersion());
             dict.put("DTPlatformBuild", sdk.getPlatformBuild());
             dict.put("DTSDKBuild", sdk.getBuild());
-            // Validation fails without these. Let's pretend the app was built with Xcode 4.6.3
-            dict.put("DTXcode", "0463");
-            dict.put("DTXcodeBuild", "4H1503");
+            // Validation fails without these. Let's pretend the app was built with Xcode 5.0.2
+            putIfAbsent(dict, "DTXcode", "0502");
+            putIfAbsent(dict, "DTXcodeBuild", "5A3005");
         }
     }
     

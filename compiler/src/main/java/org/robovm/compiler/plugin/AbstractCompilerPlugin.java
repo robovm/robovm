@@ -22,7 +22,7 @@ import org.robovm.compiler.config.Config;
 import soot.SootMethod;
 
 /**
- * Abstract implementation for {@link CompilerPlugin} which empty 
+ * Abstract implementation for {@link CompilerPlugin} with empty 
  * implementations for all methods.
  */
 public abstract class AbstractCompilerPlugin implements CompilerPlugin {

@@ -43,6 +43,7 @@ import org.robovm.compiler.clazz.Clazzes;
 import org.robovm.compiler.clazz.Path;
 import org.robovm.compiler.llvm.DataLayout;
 import org.robovm.compiler.log.Logger;
+import org.robovm.compiler.plugin.CompilerPlugin;
 import org.robovm.compiler.target.ConsoleTarget;
 import org.robovm.compiler.target.Target;
 import org.robovm.compiler.target.ios.IOSTarget;
@@ -146,6 +147,7 @@ public class Config {
     private List<Path> resourcesPaths = new ArrayList<Path>();
     private DataLayout dataLayout;
     private MarshalerLookup marshalerLookup;
+    private List<CompilerPlugin> compilerPlugins = new ArrayList<>();
 
     protected Config() {
     }
@@ -305,6 +307,10 @@ public class Config {
     
     public MarshalerLookup getMarshalerLookup() {
         return marshalerLookup;
+    }
+    
+    public List<CompilerPlugin> getCompilerPlugins() {
+        return compilerPlugins;
     }
     
     public List<File> getBootclasspath() {
@@ -969,6 +975,11 @@ public class Config {
             return this;
         }
 
+        public Builder addCompilerPlugin(CompilerPlugin compilerPlugin) {
+            config.compilerPlugins.add(compilerPlugin);
+            return this;
+        }
+        
         public Config build() throws IOException {
             return config.build();
         }

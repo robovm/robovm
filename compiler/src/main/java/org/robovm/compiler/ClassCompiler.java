@@ -80,6 +80,7 @@ import org.robovm.compiler.llvm.StructureType;
 import org.robovm.compiler.llvm.Value;
 import org.robovm.compiler.llvm.Variable;
 import org.robovm.compiler.llvm.VariableRef;
+import org.robovm.compiler.plugin.CompilerPlugin;
 import org.robovm.compiler.trampoline.FieldAccessor;
 import org.robovm.compiler.trampoline.Invoke;
 import org.robovm.compiler.trampoline.LdcString;
@@ -496,6 +497,11 @@ public class ClassCompiler {
         nativeMethodCompiler.reset(clazz);
         structMemberMethodCompiler.reset(clazz);
         globalValueMethodCompiler.reset(clazz);
+        
+        for (CompilerPlugin compilerPlugin : config.getCompilerPlugins()) {
+            compilerPlugin.beforeClass(config, clazz);
+        }
+        
         sootClass = clazz.getSootClass();
         mb = new ModuleBuilder();
         trampolines = new HashSet<Trampoline>();
@@ -549,6 +555,11 @@ public class ClassCompiler {
         }
         
         for (SootMethod method : sootClass.getMethods()) {
+            
+            for (CompilerPlugin compilerPlugin : config.getCompilerPlugins()) {
+                compilerPlugin.beforeMethod(config, clazz, method);
+            }
+            
             String name = method.getName();
             if (hasBridgeAnnotation(method)) {
                 bridgeMethod(method);

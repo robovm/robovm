@@ -28,7 +28,7 @@ public final class MachineSizedUIntPtr extends Struct<MachineSizedUIntPtr> {
     /**
      * Pointer to {@link MachineSizedUIntPtr} (<code>unsigned long **</code> in C)
      */
-    public static class Ptr extends org.robovm.rt.bro.ptr.Ptr<MachineSizedUIntPtr, Ptr> {}
+    public static class MachineSizedUIntPtrPtr extends org.robovm.rt.bro.ptr.Ptr<MachineSizedUIntPtr, MachineSizedUIntPtrPtr> {}
     
     /**
      * Creates a new {@link MachineSizedUIntPtr} with a value of 0.

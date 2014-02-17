@@ -29,7 +29,7 @@ public final class VoidPtr extends Struct<VoidPtr> {
     /**
      * Pointer to {@link VoidPtr} (<code>void **</code> in C)
      */
-    public static class Ptr extends org.robovm.rt.bro.ptr.Ptr<VoidPtr, Ptr> {}
+    public static class VoidPtrPtr extends org.robovm.rt.bro.ptr.Ptr<VoidPtr, VoidPtrPtr> {}
     
     /**
      * Creates a new {@link VoidPtr} with a value of NULL.

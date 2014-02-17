@@ -31,7 +31,7 @@ public final class FunctionPtr extends Struct<FunctionPtr> {
     /**
      * Pointer to {@link FunctionPtr}.
      */
-    public static class Ptr extends org.robovm.rt.bro.ptr.Ptr<FunctionPtr, Ptr> {}
+    public static class FunctionPtrPtr extends org.robovm.rt.bro.ptr.Ptr<FunctionPtr, FunctionPtrPtr> {}
     
     /**
      * Creates a new {@link FunctionPtr} which points to the specified

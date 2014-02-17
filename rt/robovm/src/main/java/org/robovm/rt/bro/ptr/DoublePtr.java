@@ -29,7 +29,7 @@ public final class DoublePtr extends Struct<DoublePtr> {
     /**
      * Pointer to {@link DoublePtr} (<code>double **</code> in C)
      */
-    public static class Ptr extends org.robovm.rt.bro.ptr.Ptr<DoublePtr, Ptr> {}
+    public static class DoublePtrPtr extends org.robovm.rt.bro.ptr.Ptr<DoublePtr, DoublePtrPtr> {}
     
     /**
      * Creates a new {@link DoublePtr} with a value of 0.0.

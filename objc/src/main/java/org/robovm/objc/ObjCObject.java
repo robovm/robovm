@@ -32,6 +32,7 @@ import org.robovm.rt.bro.annotation.Marshaler;
 import org.robovm.rt.bro.annotation.MarshalsPointer;
 import org.robovm.rt.bro.annotation.Pointer;
 import org.robovm.rt.bro.annotation.StructMember;
+import org.robovm.rt.bro.ptr.Ptr;
 
 /**
  *
@@ -41,7 +42,7 @@ import org.robovm.rt.bro.annotation.StructMember;
 @Marshaler(ObjCObject.Marshaler.class)
 public abstract class ObjCObject extends NativeObject {
 
-    public static class Ptr extends org.robovm.rt.bro.ptr.Ptr<ObjCObject, Ptr> {}
+    public static class ObjCObjectPtr extends Ptr<ObjCObject, ObjCObjectPtr> {}
     
     static {
         ObjCRuntime.bind();

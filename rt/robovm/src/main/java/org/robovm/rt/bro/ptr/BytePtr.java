@@ -30,7 +30,7 @@ public final class BytePtr extends Struct<BytePtr> {
     /**
      * Pointer to {@link BytePtr} (<code>char **</code> in C)
      */
-    public static class Ptr extends org.robovm.rt.bro.ptr.Ptr<BytePtr, Ptr> {}
+    public static class BytePtrPtr extends org.robovm.rt.bro.ptr.Ptr<BytePtr, BytePtrPtr> {}
     
     /**
      * Creates a new {@link BytePtr} with a value of 0.

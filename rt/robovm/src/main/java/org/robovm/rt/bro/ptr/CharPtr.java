@@ -30,7 +30,7 @@ public final class CharPtr extends Struct<CharPtr> {
     /**
      * Pointer to {@link CharPtr} (<code>unsigned short **</code> in C)
      */
-    public static class Ptr extends org.robovm.rt.bro.ptr.Ptr<CharPtr, Ptr> {}
+    public static class CharPtrPtr extends org.robovm.rt.bro.ptr.Ptr<CharPtr, CharPtrPtr> {}
 
     /**
      * Creates a new {@link CharPtr} with a value of 0.

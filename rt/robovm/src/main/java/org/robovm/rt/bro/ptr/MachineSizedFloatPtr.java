@@ -28,7 +28,7 @@ public final class MachineSizedFloatPtr extends Struct<MachineSizedFloatPtr> {
     /**
      * Pointer to {@link MachineSizedFloatPtr}.
      */
-    public static class Ptr extends org.robovm.rt.bro.ptr.Ptr<MachineSizedFloatPtr, Ptr> {}
+    public static class MachineSizedFloatPtrPtr extends org.robovm.rt.bro.ptr.Ptr<MachineSizedFloatPtr, MachineSizedFloatPtrPtr> {}
     
     /**
      * Creates a new {@link MachineSizedFloatPtr} with a value of 0.0.

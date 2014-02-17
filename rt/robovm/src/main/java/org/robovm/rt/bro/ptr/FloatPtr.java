@@ -29,7 +29,7 @@ public final class FloatPtr extends Struct<FloatPtr> {
     /**
      * Pointer to {@link FloatPtr} (<code>float **</code> in C)
      */
-    public static class Ptr extends org.robovm.rt.bro.ptr.Ptr<FloatPtr, Ptr> {}
+    public static class FloatPtrPtr extends org.robovm.rt.bro.ptr.Ptr<FloatPtr, FloatPtrPtr> {}
     
     /**
      * Creates a new {@link FloatPtr} with a value of 0.0f.

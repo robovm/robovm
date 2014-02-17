@@ -29,7 +29,7 @@ public final class IntPtr extends Struct<IntPtr> {
     /**
      * Pointer to {@link IntPtr} (<code>int32_t **</code> in C)
      */
-    public static class Ptr extends org.robovm.rt.bro.ptr.Ptr<IntPtr, Ptr> {}
+    public static class IntPtrPtr extends org.robovm.rt.bro.ptr.Ptr<IntPtr, IntPtrPtr> {}
 
     /**
      * Creates a new {@link IntPtr} with a value of 0.

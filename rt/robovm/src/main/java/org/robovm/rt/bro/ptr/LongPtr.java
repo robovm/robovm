@@ -29,7 +29,7 @@ public final class LongPtr extends Struct<LongPtr> {
     /**
      * Pointer to {@link LongPtr} (<code>int64_t **</code> in C)
      */
-    public static class Ptr extends org.robovm.rt.bro.ptr.Ptr<LongPtr, Ptr> {}
+    public static class LongPtrPtr extends org.robovm.rt.bro.ptr.Ptr<LongPtr, LongPtrPtr> {}
     
     /**
      * Creates a new {@link LongPtr} with a value of 0.

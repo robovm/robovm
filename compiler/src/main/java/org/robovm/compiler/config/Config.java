@@ -412,6 +412,17 @@ public class Config {
         }
     }
     
+    /**
+     * Returns the directory where generated classes are stored for the specified
+     * {@link Path}. Generated classes are stored in the cache directory in a dir
+     * at the same level as the cache dir for the {@link Path} with 
+     * <code>.generated</code> appended to the dir name.
+     */
+    public File getGeneratedClassDir(Path path) {
+        File pathCacheDir = getCacheDir(path);
+        return new File(pathCacheDir.getParentFile(), pathCacheDir.getName() + ".generated");
+    }
+    
     private static Map<Object, Object> getManifestAttributes(File jarFile) throws IOException {
         JarFile jf = null;
         try {
@@ -469,7 +480,6 @@ public class Config {
             realBootclasspath.add(0, home.rtPath);
         }
 
-        this.clazzes = new Clazzes(this, realBootclasspath, classpath);
         this.vtableCache = new VTable.Cache();
         this.itableCache = new ITable.Cache();
         this.marshalerLookup = new MarshalerLookup(this);
@@ -506,7 +516,9 @@ public class Config {
         File archDir = new File(osDir, arch.toString());
         cacheDir = new File(archDir, "default");
         cacheDir.mkdirs();
-        
+
+        this.clazzes = new Clazzes(this, realBootclasspath, classpath);
+
         return this;
     }
 

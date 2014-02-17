@@ -130,7 +130,17 @@ public class Clazzes {
     }
     
     public Clazz load(String internalName) {
-        return cache.get(internalName);
+        Clazz clazz = cache.get(internalName);
+        if (clazz == null) {
+            // Could be a generated class
+            for (Path p : paths) {
+                clazz = p.loadGeneratedClass(internalName);
+                if (clazz != null) {
+                    break;
+                }
+            }
+        }
+        return clazz;
     }
     
     public List<Path> getBootclasspathPaths() {
@@ -165,6 +175,8 @@ public class Clazzes {
             }
             try {
                 sb.append(path.getFile().getCanonicalPath());
+                sb.append(File.pathSeparator);
+                sb.append(clazzes.config.getGeneratedClassDir(path).getCanonicalPath());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

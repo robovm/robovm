@@ -41,7 +41,7 @@ public class DirectoryPath extends AbstractPath {
     protected Set<Clazz> doListClasses() {
         Set<Clazz> s = new TreeSet<Clazz>();
         for (File f : listClassFiles()) {
-            s.add(new DirectoryPathClazz(f));
+            s.add(new DirectoryPathClazz(clazzes, this, file, f));
         }
         return s;
     }
@@ -73,14 +73,14 @@ public class DirectoryPath extends AbstractPath {
         return hasChangedSince(file, timestamp);
     }
     
-    private class DirectoryPathClazz extends Clazz {
+    static class DirectoryPathClazz extends Clazz {
         private final File f;
         private byte[] bytes = null;
         
-        DirectoryPathClazz(File f) {
-            super(DirectoryPath.this.clazzes, 
-                    f.getAbsolutePath().substring(file.getAbsolutePath().length() + 1), 
-                    DirectoryPath.this);
+        DirectoryPathClazz(Clazzes clazzes, AbstractPath path, File dir, File f) {
+            super(clazzes, 
+                    f.getAbsolutePath().substring(dir.getAbsolutePath().length() + 1), 
+                    path);
             this.f = f;
         }
 

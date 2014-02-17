@@ -27,6 +27,22 @@ public interface Path {
     int getIndex();
     File getFile();
     Set<Clazz> listClasses();
+    
+    /**
+     * Loads a generated class associated with this {@link Path}.
+     * 
+     * @return the {@link Clazz} or {@code null} if not found.
+     */
+    Clazz loadGeneratedClass(String internalName);
+    
+    /**
+     * Returns the {@link File} with the path where the generated
+     * class file with the specified internal name should be saved.
+     * 
+     * @return the {@link File} for the specified generated class.
+     */
+    File getGeneratedClassFile(String internalName);
+    
     boolean hasChangedSince(long timestamp);
     boolean isInBootClasspath();
 }

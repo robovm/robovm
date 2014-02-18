@@ -192,7 +192,12 @@ public class AugEvalFunction implements IEvalFunction
 		else if ( expr instanceof NewExpr )
 			return ((NewExpr)expr).getBaseType();
 		else if ( expr instanceof FieldRef )
+		    // RoboVM note: Fix for field resolution failures
+                    try {
 			return ((FieldRef)expr).getField().getType();
+		    } catch (ResolutionFailedException e) {
+		        return ((FieldRef)expr).getType();
+		    }
 		else if ( expr instanceof DoubleConstant )
 			return DoubleType.v();
 		else if ( expr instanceof FloatConstant )

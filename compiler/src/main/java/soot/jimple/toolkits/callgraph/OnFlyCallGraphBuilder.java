@@ -57,7 +57,7 @@ import soot.Transform;
 import soot.Type;
 import soot.Unit;
 import soot.Value;
-import soot.LocalGenerator;
+import soot.javaToJimple.LocalGenerator;
 import soot.jimple.AssignStmt;
 import soot.jimple.FieldRef;
 import soot.jimple.InstanceInvokeExpr;
@@ -403,11 +403,11 @@ public final class OnFlyCallGraphBuilder
             G.v().out.println( "[Call Graph] For information on where the call graph may be incomplete, use the verbose option to the cg phase." );
         }
         
-        if(options.reflection_log()==null || options.reflection_log().length()==0) {
+//        if(options.reflection_log()==null || options.reflection_log().length()==0) {
         	reflectionModel = new DefaultReflectionModel();
-        } else {
-        	reflectionModel = new TraceBasedReflectionModel();
-        }
+//        } else {
+//        	reflectionModel = new TraceBasedReflectionModel();
+//        }
     }
     public OnFlyCallGraphBuilder( ContextManager cm, ReachableMethods rm, boolean appOnly ) {
         this( cm, rm );
@@ -439,10 +439,15 @@ public final class OnFlyCallGraphBuilder
                 continue;
 
             if( site.iie() instanceof SpecialInvokeExpr && site.kind != Kind.THREAD ) {
-            	targetsQueue.add( VirtualCalls.v().resolveSpecial( 
+            	SootMethod target = VirtualCalls.v().resolveSpecial( 
                             (SpecialInvokeExpr) site.iie(),
                             site.subSig(),
-                            site.container() ) );
+                            site.container() );
+            	//if the call target resides in a phantom class then "target" will be null;
+            	//simply do not add the target in that case
+            	if(target!=null) {
+            		targetsQueue.add( target );            		
+            	} 
             } else {
                 VirtualCalls.v().resolve( type,
                         receiver.getType(),

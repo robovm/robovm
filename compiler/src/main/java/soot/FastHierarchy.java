@@ -103,7 +103,8 @@ public class FastHierarchy
         if( c.isInterface() ) {
             throw new RuntimeException( "Attempt to dfs visit interface "+c );
         }
-        classToInterval.put( c, r );
+        if(!classToInterval.containsKey(c))
+        	classToInterval.put( c, r );
         return start;
     }
 
@@ -131,6 +132,13 @@ public class FastHierarchy
 
         /* Now do a dfs traversal to get the Interval numbers. */
         dfsVisit( 0, Scene.v().getSootClass( "java.lang.Object" ) );
+        /* also have to traverse for all phantom classes because they also
+         * can be roots of the type hierarchy
+         */
+        for(SootClass phantomClass: Scene.v().getPhantomClasses()) {
+        	if(!phantomClass.isInterface())
+        		dfsVisit( 0, phantomClass );
+        }
     }
 
     /** Return true if class child is a subclass of class parent, neither of
@@ -483,7 +491,9 @@ public class FastHierarchy
             if( !concreteType.hasSuperclass() ) break;
             concreteType = concreteType.getSuperclass();
         }
-        throw new RuntimeException("could not resolve concrete dispatch!\nType: "+concreteType+"\nMethod: "+m);
+     // When there is no proper dispatch found, we simply return null to let the caller decide what to do 
+        return null;
+//        throw new RuntimeException("could not resolve concrete dispatch!\nType: "+concreteType+"\nMethod: "+m);
     }
 
     /** Returns the target for the given SpecialInvokeExpr. */

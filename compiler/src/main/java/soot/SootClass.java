@@ -71,6 +71,8 @@ public class SootClass extends AbstractHost implements Numberable
 
     protected boolean isPhantom;
     
+    public final static String INVOKEDYNAMIC_DUMMY_CLASS_NAME = "soot.dummy.InvokeDynamic";
+    
     
     /**
         Constructs an empty SootClass with the given name and modifiers.
@@ -85,6 +87,8 @@ public class SootClass extends AbstractHost implements Numberable
         refType.setSootClass(this);
         if(Options.v().debug_resolver()) G.v().out.println("created "+name+" with modifiers "+modifiers);
         setResolvingLevel(BODIES);
+        
+        Scene.v().getClassNumberer().add(this);
     }
 
     /**
@@ -714,8 +718,6 @@ public class SootClass extends AbstractHost implements Numberable
         checkLevel(HIERARCHY);
         if(superClass == null && !isPhantom()) 
             throw new RuntimeException("no superclass for "+getName());
-        else if (isPhantom())
-        	return null;
         else
             return superClass;
     }
@@ -759,11 +761,13 @@ public class SootClass extends AbstractHost implements Numberable
 
     public String getJavaStyleName()
     {
+
 	return shortName;
     }
 
     public String getShortJavaStyleName()
     {
+
 	return shortName;
     }
 
@@ -782,6 +786,7 @@ public class SootClass extends AbstractHost implements Numberable
 
     public String getJavaPackageName()
     {
+
 	return packageName;
     }
 
@@ -823,6 +828,7 @@ public class SootClass extends AbstractHost implements Numberable
     {
         return Modifier.isPublic(this.getModifiers());
     }
+
     
     private RefType refType;
     
@@ -924,6 +930,25 @@ public class SootClass extends AbstractHost implements Numberable
         isPhantom = false;
     }
 
+    /**
+     * Sometimes we need to know which class is a JDK class.
+     * There is no simple way to distinguish a user class and a JDK class, here we use the package prefix as the heuristic.
+     * @author xiao
+     */
+    public boolean isJavaLibraryClass()
+    {
+    	if ( name.startsWith("java.") ||
+   			 name.startsWith("sun.")  ||
+   			 name.startsWith("javax.") ||
+   			 name.startsWith("com.sun.") || 
+   			 name.startsWith("org.omg.") ||
+   			 name.startsWith("org.xml.")
+   			 ) 
+    		return true;
+    	
+    	return false;
+    }
+    
     /** Convenience method returning true if this class is a phantom class.
      *
      * @see Scene#getPhantomClasses() */

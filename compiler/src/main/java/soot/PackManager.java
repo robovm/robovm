@@ -24,7 +24,15 @@ import java.util.zip.*;
 import soot.util.*;
 import soot.util.queue.*;
 import soot.jimple.*;
+import soot.shimple.*;
+import soot.grimp.*;
+import soot.baf.*;
+import soot.jimple.toolkits.invoke.*;
 import soot.jimple.toolkits.base.*;
+import soot.shimple.toolkits.scalar.*;
+import soot.sootify.TemplatePrinter;
+import soot.grimp.toolkits.base.*;
+import soot.baf.toolkits.base.*;
 import soot.jimple.toolkits.typing.*;
 import soot.jimple.toolkits.scalar.*;
 import soot.jimple.toolkits.scalar.pre.*;
@@ -45,10 +53,21 @@ import soot.jimple.toolkits.annotation.purity.*; // [AM]
 import soot.jimple.toolkits.annotation.*;
 import soot.jimple.toolkits.pointer.*;
 import soot.jimple.toolkits.callgraph.*;
+import soot.jimple.toolkits.thread.mhp.MhpTransformer;
+import soot.jimple.toolkits.thread.synchronization.LockAllocator;
 import soot.tagkit.*;
 import soot.options.Options;
 import soot.toolkits.scalar.*;
+import soot.jimple.spark.SparkTransformer;
+import soot.jimple.paddle.PaddleHook;
 import soot.jimple.toolkits.callgraph.CHATransformer;
+import soot.jimple.spark.fieldrw.*;
+import soot.dava.*;
+import soot.dava.toolkits.base.AST.interProcedural.InterProceduralAnalyses;
+import soot.dava.toolkits.base.AST.transformations.RemoveEmptyBodyDefaultConstructor;
+import soot.dava.toolkits.base.AST.transformations.VoidReturnRemover;
+import soot.dava.toolkits.base.misc.*;
+import soot.xml.*;
 import soot.toolkits.graph.interaction.*;
 
 /** Manages the Packs containing the various phases and their options. */
@@ -83,7 +102,84 @@ public class PackManager {
             p.add(new Transform("jb.ne", NopEliminator.v()));
             p.add(new Transform("jb.uce", UnreachableCodeEliminator.v()));
         }
+
+        // Java to Jimple - Jimple body creation
+        addPack(p = new JavaToJimpleBodyPack());
+        {
+            p.add(new Transform("jj.ls", LocalSplitter.v()));
+            p.add(new Transform("jj.a", Aggregator.v()));
+            p.add(new Transform("jj.ule", UnusedLocalEliminator.v()));
+            p.add(new Transform("jj.ne", NopEliminator.v()));
+            p.add(new Transform("jj.tr", TypeAssigner.v()));
+            //p.add(new Transform("jj.ct", CondTransformer.v()));
+            p.add(new Transform("jj.ulp", LocalPacker.v()));
+            p.add(new Transform("jj.lns", LocalNameStandardizer.v()));
+            p.add(new Transform("jj.cp", CopyPropagator.v()));
+            p.add(new Transform("jj.dae", DeadAssignmentEliminator.v()));
+            p.add(new Transform("jj.cp-ule", UnusedLocalEliminator.v()));
+            p.add(new Transform("jj.lp", LocalPacker.v()));
+            p.add(new Transform("jj.uce", UnreachableCodeEliminator.v()));
         
+        }
+
+        //Whole-Jimple Pre-processing Pack
+        addPack(p = new ScenePack("wjpp"));
+
+        //Whole-Shimple Pre-processing Pack
+        addPack(p = new ScenePack("wspp"));
+
+        // Call graph pack
+        addPack(p = new CallGraphPack("cg"));
+        {
+            p.add(new Transform("cg.cha", CHATransformer.v()));
+            p.add(new Transform("cg.spark", SparkTransformer.v()));
+            p.add(new Transform("cg.paddle", PaddleHook.v()));
+        }
+
+        // Whole-Shimple transformation pack
+        addPack(p = new ScenePack("wstp"));
+
+        // Whole-Shimple Optimization pack
+        addPack(p = new ScenePack("wsop"));
+
+        // Whole-Jimple transformation pack 
+        addPack(p = new ScenePack("wjtp"));
+        {
+	    	p.add(new Transform("wjtp.mhp", MhpTransformer.v()));
+	    	p.add(new Transform("wjtp.tn", LockAllocator.v()));
+        }
+
+        // Whole-Jimple Optimization pack
+        addPack(p = new ScenePack("wjop"));
+        {
+            p.add(new Transform("wjop.smb", StaticMethodBinder.v()));
+            p.add(new Transform("wjop.si", StaticInliner.v()));
+        }
+
+        // Give another chance to do Whole-Jimple transformation
+        // The RectangularArrayFinder will be put into this package.
+        addPack(p = new ScenePack("wjap"));
+        {
+            p.add(new Transform("wjap.ra", RectangularArrayFinder.v()));
+            p.add(new Transform("wjap.umt", UnreachableMethodsTagger.v()));
+            p.add(new Transform("wjap.uft", UnreachableFieldsTagger.v()));
+            p.add(new Transform("wjap.tqt", TightestQualifiersTagger.v()));
+            p.add(new Transform("wjap.cgg", CallGraphGrapher.v()));
+            p.add(new Transform("wjap.purity", PurityAnalysis.v())); // [AM]
+        }
+
+        // Shimple pack
+        addPack(p = new BodyPack(Shimple.PHASE));
+        
+        // Shimple transformation pack
+        addPack(p = new BodyPack("stp"));
+            
+        // Shimple optimization pack
+        addPack(p = new BodyPack("sop"));
+        {
+            p.add(new Transform("sop.cpf", SConstantPropagatorAndFolder.v()));
+        }
+
         // Jimple transformation pack
         addPack(p = new BodyPack("jtp"));
         
@@ -113,6 +209,7 @@ public class PackManager {
             p.add(new Transform("jap.abc", ArrayBoundsChecker.v()));
             p.add(new Transform("jap.profiling", ProfilingGenerator.v()));
             p.add(new Transform("jap.sea", SideEffectTagger.v()));
+            p.add(new Transform("jap.fieldrw", FieldTagger.v()));
             p.add(new Transform("jap.cgtagger", CallGraphTagger.v()));
             p.add(new Transform("jap.parity", ParityTagger.v()));
             p.add(new Transform("jap.pat", ParameterAliasTagger.v()));
@@ -132,15 +229,56 @@ public class PackManager {
             p.add(new Transform("cfg.output", CFGPrinter.v()));
         }*/
         
-        // Code attribute tag aggregation pack
-//        addPack(p = new BodyPack("tag"));
-//        {
-//            p.add(new Transform("tag.ln", LineNumberTagAggregator.v()));
-//            p.add(new Transform("tag.an", ArrayNullTagAggregator.v()));
-//            p.add(new Transform("tag.dep", DependenceTagAggregator.v()));
-//            p.add(new Transform("tag.fieldrw", FieldTagAggregator.v()));
-//        }
+        // Grimp body creation
+        addPack(p = new BodyPack("gb"));
+        {
+            p.add(new Transform("gb.a1", Aggregator.v()));
+            p.add(new Transform("gb.cf", ConstructorFolder.v()));
+            p.add(new Transform("gb.a2", Aggregator.v()));
+            p.add(new Transform("gb.ule", UnusedLocalEliminator.v()));
+        }
 
+        // Grimp optimization pack
+        addPack(p = new BodyPack("gop"));
+
+        // Baf body creation
+        addPack(p = new BodyPack("bb"));
+        {
+            p.add(new Transform("bb.lso", LoadStoreOptimizer.v()));
+            p.add(new Transform("bb.pho", PeepholeOptimizer.v()));
+            p.add(new Transform("bb.ule", UnusedLocalEliminator.v()));
+            p.add(new Transform("bb.lp", LocalPacker.v()));
+        }
+
+        // Baf optimization pack
+        addPack(p = new BodyPack("bop"));
+
+        // Code attribute tag aggregation pack
+        addPack(p = new BodyPack("tag"));
+        {
+            p.add(new Transform("tag.ln", LineNumberTagAggregator.v()));
+            p.add(new Transform("tag.an", ArrayNullTagAggregator.v()));
+            p.add(new Transform("tag.dep", DependenceTagAggregator.v()));
+            p.add(new Transform("tag.fieldrw", FieldTagAggregator.v()));
+        }
+
+        // Dummy Dava Phase
+        /*
+         * Nomair A. Naeem 13th Feb 2006
+         * Added so that Dava Options can be added as phase options rather
+         * than main soot options since they only make sense when decompiling
+         * The db phase options are added in soot_options.xml
+         */
+        addPack(p = new BodyPack("db"));
+        {
+        	p.add(new Transform("db.transformations", null));
+        	p.add(new Transform("db.renamer", null));
+        	p.add(new Transform("db.deobfuscate", null));
+        	p.add(new Transform("db.force-recompile", null));
+        }
+
+       
+        
         onlyStandardPacks = true;
     }
 
@@ -194,8 +332,18 @@ public class PackManager {
             lineNumAdder.internalTransform("", null);
         }
         
+        if (Options.v().whole_program() || Options.v().whole_shimple()) {
+            runWholeProgramPacks();
+        }
         retrieveAllBodies();
         
+        // if running coffi cfg metrics, print out results and exit
+        if (soot.jbco.Main.metrics) {
+          coffiMetrics();
+          System.exit(0);
+        }
+        
+        preProcessDAVA();
         if (Options.v().interactive_mode()){
             if (InteractionHandler.v().getInteractionListener() == null){
                 G.v().out.println("Cannot run in interactive mode. No listeners available. Continuing in regular mode.");
@@ -232,6 +380,83 @@ public class PackManager {
         runBodyPacks( reachableClasses() );
     }
 
+    private ZipOutputStream jarFile = null;
+    public void writeOutput() {
+        if( Options.v().output_jar() ) {
+            String outFileName = SourceLocator.v().getOutputDir();
+            try {
+                jarFile = new ZipOutputStream(new FileOutputStream(outFileName));
+            } catch( FileNotFoundException e ) {
+                throw new CompilationDeathException("Cannot open output Jar file " + outFileName);
+            }
+        } else {
+            jarFile = null;
+        }
+        if(Options.v().verbose())
+            PhaseDumper.v().dumpBefore("output");
+            if( Options.v().output_format() == Options.output_format_dava ) {
+                postProcessDAVA();
+            } else {
+                writeOutput( reachableClasses() );
+            }
+            postProcessXML( reachableClasses() );
+            releaseBodies( reachableClasses() );
+        if(Options.v().verbose())
+            PhaseDumper.v().dumpAfter("output");
+    }
+
+    private void runWholeProgramPacks() {
+        if (Options.v().whole_shimple()) {
+            ShimpleTransformer.v().transform();
+            getPack("wspp").apply();
+            getPack("cg").apply();
+            getPack("wstp").apply();
+            getPack("wsop").apply();
+        } else {
+            getPack("wjpp").apply();
+            getPack("cg").apply();
+            getPack("wjtp").apply();
+            getPack("wjop").apply();
+            getPack("wjap").apply();
+        }
+        PaddleHook.v().finishPhases();
+    }
+
+    /* preprocess classes for DAVA */
+    private void preProcessDAVA() {
+        if (Options.v().output_format() == Options.output_format_dava) {
+
+            Map options = PhaseOptions.v().getPhaseOptions("db");
+            boolean isSourceJavac = PhaseOptions.getBoolean(options, "source-is-javac"); 
+        	if(!isSourceJavac){
+        		/*
+        		 * It turns out that the exception attributes of a method i.e. those exceptions that
+        		 * a method can throw are only checked by the Java compiler and not the JVM
+        		 * 
+        		 * Javac does place this information into the attributes but other compilers dont
+        		 * hence if the source is not javac then we have to do this fancy analysis
+        		 * to find all the potential exceptions that might get thrown
+        		 * 
+        		 * BY DEFAULT the option javac of db is set to true so we assume that the source is javac
+        		 * 
+        		 * See ThrowFinder for more details
+        		 */
+        		if(DEBUG)
+        			System.out.println("Source is not Javac hence invoking ThrowFinder");
+        			
+        		ThrowFinder.v().find();
+        	}
+        	else{
+        		if(DEBUG)
+        			System.out.println("Source is javac hence we dont need to invoke ThrowFinder");
+        	}
+
+            PackageNamer.v().fixNames();
+
+            G.v().out.println();
+        }
+    }
+
     private void runBodyPacks( Iterator classes ) {
         while( classes.hasNext() ) {
             SootClass cl = (SootClass) classes.next();
@@ -244,6 +469,18 @@ public class PackManager {
        agg.internalTransform("", null);
     }
 
+    private void writeOutput( Iterator classes ) {
+        while( classes.hasNext() ) {
+            SootClass cl = (SootClass) classes.next();
+            writeClass( cl );
+        }
+        try {
+            if(jarFile != null) jarFile.close();
+        } catch( IOException e ) {
+            throw new CompilationDeathException( "Error closing output jar: "+e );
+        }
+    }
+
     private void releaseBodies( Iterator classes ) {
         while( classes.hasNext() ) {
             SootClass cl = (SootClass) classes.next();
@@ -252,28 +489,252 @@ public class PackManager {
     }
 
     private Iterator reachableClasses() {
-        if( false && (Options.v().whole_program() ||
-                      Options.v().whole_shimple())) {
-            QueueReader methods = Scene.v().getReachableMethods().listener();
-            HashSet reachableClasses = new HashSet();
+        return Scene.v().getApplicationClasses().iterator();
+    }
+
+    /* post process for DAVA */
+    private void postProcessDAVA() {
+        G.v().out.println();
+
+        Chain appClasses = Scene.v().getApplicationClasses();
+
+        Map options = PhaseOptions.v().getPhaseOptions("db.transformations");
+        boolean transformations = PhaseOptions.getBoolean(options, "enabled");
+        /*
+         * apply analyses etc 
+         */
+        Iterator classIt = appClasses.iterator();
+        while (classIt.hasNext()) {
+            SootClass s = (SootClass) classIt.next();
+            String fileName = SourceLocator.v().getFileNameFor(s, Options.v().output_format());
             
-            while(true) {
-                    SootMethod m = (SootMethod) methods.next();
-                    if(m == null) break;
-                    SootClass c = m.getDeclaringClass();
-                    if( !c.isApplicationClass() ) continue;
-                    reachableClasses.add( c );
-            }
-            return reachableClasses.iterator();
-        } else {
-            return Scene.v().getApplicationClasses().iterator();
+            /*
+             * Nomair A. Naeem 5-Jun-2005
+             * Added to remove the *final* bug in Dava (often seen in AspectJ programs)
+             */ 
+            DavaStaticBlockCleaner.v().staticBlockInlining(s);
+
+            //remove returns from void methods
+    		VoidReturnRemover.cleanClass(s);
+    		
+            //remove the default constructor if this is the only one present
+			RemoveEmptyBodyDefaultConstructor.checkAndRemoveDefault(s);
+
+
+	    
+    		/*
+    		 * Nomair A. Naeem 1st March 2006
+    		 * Check if we want to apply transformations
+    		 * one reason we might not want to do this is when gathering old metrics data!!
+    		 */
+
+            	//debug("analyzeAST","Advanced Analyses ALL DISABLED");
+            	
+            	G.v().out.println("Analyzing " + fileName + "... ");	 
+    	            
+            	/*
+            	 * Nomair A. Naeem 29th Jan 2006
+            	 * Added hook into going through each decompiled method again
+            	 * Need it for all the implemented AST analyses
+            	 */
+            	Iterator methodIt = s.methodIterator();
+            	while (methodIt.hasNext()) {
+            		
+            		SootMethod m = (SootMethod) methodIt.next();
+            		//System.out.println("SootMethod:"+m.getName().toString());
+            		
+            		/*
+            		 * 3rd April 2006
+            		 * Fixing RuntimeException caused when you
+            		 * retrieve an active body when one is not present
+            		 * 
+            		 */
+            		if(m.hasActiveBody()){
+            			DavaBody body = (DavaBody)m.getActiveBody();
+                		//System.out.println("body"+body.toString());
+                        if(transformations){
+                        	body.analyzeAST();
+                        } //if tansformations are enabled
+                        else{
+                        	body.applyBugFixes();
+                        }
+            		}
+            		else
+            			continue;
+            	}
+            
+        } //going through all classes
+    		
+
+        
+        
+        /*
+         * Nomair A. Naeem March 6th, 2006
+         * 
+         * SHOULD BE INVOKED ONLY ONCE!!!
+         * If interprocedural analyses are turned off they are checked within this
+         * method.
+         * 
+         * HAVE TO invoke this analysis since this invokes the renamer!!
+         */
+        if(transformations){
+        	InterProceduralAnalyses.applyInterProceduralAnalyses();
         }
+    	        	
+
+        
+        outputDava();
+    }
+            
+    private void outputDava(){    
+        Chain appClasses = Scene.v().getApplicationClasses();
+
+     
+         /*
+          * Generate decompiled code
+          */   
+    	String pathForBuild=null;
+    	ArrayList<String> decompiledClasses = new ArrayList<String>();
+        Iterator classIt = appClasses.iterator();
+        while (classIt.hasNext()) {
+            SootClass s = (SootClass) classIt.next();
+            
+            OutputStream streamOut = null;
+            PrintWriter writerOut = null;
+            String fileName = SourceLocator.v().getFileNameFor(s, Options.v().output_format());
+            decompiledClasses.add(fileName.substring(fileName.lastIndexOf('/')+1));
+            if(pathForBuild == null){
+            	pathForBuild =fileName.substring(0,fileName.lastIndexOf('/')+1);
+            	//System.out.println(pathForBuild);
+            }
+            if( Options.v().gzip() ) 
+            	fileName = fileName+".gz";
+
+            try {
+                if( jarFile != null ) {
+                    ZipEntry entry = new ZipEntry(soot.util.StringTools.replaceAll(fileName,"\\","/"));
+                    jarFile.putNextEntry(entry);
+                    streamOut = jarFile;
+                } else {
+                    streamOut = new FileOutputStream(fileName);
+                }
+                if( Options.v().gzip() ) 
+                    streamOut = new GZIPOutputStream(streamOut);
+                writerOut =
+                    new PrintWriter(new OutputStreamWriter(streamOut));
+            } catch (IOException e) {
+                throw new CompilationDeathException("Cannot output file " + fileName,e);
+            }
+
+           	
+
+            G.v().out.print("Generating " + fileName + "... ");
+            
+            G.v().out.flush();
+
+            DavaPrinter.v().printTo(s, writerOut);
+
+            G.v().out.println();
+            G.v().out.flush();
+
+            {
+                try {
+                    writerOut.flush();
+                    if(jarFile == null) streamOut.close();
+                } catch (IOException e) {
+                    throw new CompilationDeathException("Cannot close output file " + fileName);
+                }
+            }
+        } //going through all classes
+        G.v().out.println();
+
+        
+        /*
+         * Create the build.xml for Dava
+         */
+        {
+        	//path for build is probably ending in sootoutput/dava/src
+        	//definetly remove the src
+        	if(pathForBuild.endsWith("src/"))
+        		pathForBuild=pathForBuild.substring(0,pathForBuild.length()-4);
+        	
+        	String fileName = pathForBuild +"build.xml";
+        
+           	try{
+        		OutputStream streamOut = new FileOutputStream(fileName);
+        		PrintWriter writerOut = new PrintWriter(new OutputStreamWriter(streamOut));
+        		DavaBuildFile.generate(writerOut,decompiledClasses);
+        		writerOut.flush();
+        		streamOut.close();
+        	} catch (IOException e) {
+                throw new CompilationDeathException("Cannot output file " + fileName,e);
+        	}
+        }
+
+        
+        
     }
 
     private void runBodyPacks(SootClass c) {
-        boolean produceJimple = true;
+        final int format = Options.v().output_format();
+        if (format == Options.output_format_dava) {
+            G.v().out.print("Decompiling ");
 
-        Iterator methodIt = c.methodIterator();
+	     //January 13th, 2006  SootMethodAddedByDava is set to false for SuperFirstStmtHandler
+	    G.v().SootMethodAddedByDava=false;
+        } else {
+            G.v().out.print("Transforming ");
+        }
+        G.v().out.println(c.getName() + "... ");
+
+        boolean produceBaf = false, produceGrimp = false, produceDava = false,
+            produceJimple = true, produceShimple = false;
+
+        switch (format) {
+            case Options.output_format_none :
+            case Options.output_format_xml :
+            case Options.output_format_jimple :
+            case Options.output_format_jimp :
+            case Options.output_format_template :
+                break;
+            case Options.output_format_shimp:
+            case Options.output_format_shimple:
+                produceShimple = true;
+                // FLIP produceJimple
+                produceJimple = false;
+                break;
+            case Options.output_format_dava :
+                produceDava = true;
+                // FALL THROUGH
+            case Options.output_format_grimp :
+            case Options.output_format_grimple :
+                produceGrimp = true;
+                break;
+            case Options.output_format_baf :
+            case Options.output_format_b :
+                produceBaf = true;
+                break;
+            case Options.output_format_jasmin :
+            case Options.output_format_class :
+                produceGrimp = Options.v().via_grimp();
+                produceBaf = !produceGrimp;
+                break;
+            default :
+                throw new RuntimeException();
+        }
+
+        soot.xml.TagCollector tc = new soot.xml.TagCollector();
+        
+        boolean wholeShimple = Options.v().whole_shimple();
+        if( Options.v().via_shimple() ) produceShimple = true;
+
+        //here we create a copy of the methods so that transformers are able
+        //to add method bodies during the following iteration;
+        //such adding of methods happens in rare occasions: for instance when
+        //resolving a method reference to a non-existing method, then this
+        //method is created as a phantom method when phantom-refs are enabled
+        LinkedList<SootMethod> methodsCopy = new LinkedList<SootMethod>(c.getMethods());
+        Iterator methodIt = methodsCopy.iterator();
         while (methodIt.hasNext()) {
             SootMethod m = (SootMethod) methodIt.next();
             
@@ -284,6 +745,31 @@ public class PackManager {
             
             if (!m.isConcrete()) continue;
 
+            if (produceShimple || wholeShimple) {
+                ShimpleBody sBody = null;
+
+                // whole shimple or not?
+                {
+                    Body body = m.retrieveActiveBody();
+
+                    if(body instanceof ShimpleBody){
+                        sBody = (ShimpleBody) body;
+                        if(!sBody.isSSA())
+                            sBody.rebuild();
+                    }
+                    else{
+                        sBody = Shimple.v().newBody(body);
+                    }
+                }
+                
+                m.setActiveBody(sBody);
+                PackManager.v().getPack("stp").apply(sBody);
+                PackManager.v().getPack("sop").apply(sBody);
+
+                if( produceJimple || (wholeShimple && !produceShimple) )
+                    m.setActiveBody(sBody.toJimpleBody());
+            }
+
             if (produceJimple) {
                 JimpleBody body =(JimpleBody) m.retrieveActiveBody();
                 PackManager.v().getPack("jtp").apply(body);
@@ -292,11 +778,172 @@ public class PackManager {
                 }
                 PackManager.v().getPack("jop").apply(body);
                 PackManager.v().getPack("jap").apply(body);
+                if (Options.v().xml_attributes() && Options.v().output_format() != Options.output_format_jimple) {
+                    //System.out.println("collecting body tags");
+                    tc.collectBodyTags(body);
+                }
             }
             
             //PackManager.v().getPack("cfg").apply(m.retrieveActiveBody());
+
+            if (produceGrimp) {
+                m.setActiveBody(Grimp.v().newBody(m.getActiveBody(), "gb"));
+                PackManager.v().getPack("gop").apply(m.getActiveBody());
+            } else if (produceBaf) {
+                m.setActiveBody(Baf.v().newBody((JimpleBody) m.getActiveBody()));
+                PackManager.v().getPack("bop").apply(m.getActiveBody());
+                PackManager.v().getPack("tag").apply(m.getActiveBody());
+                if( Options.v().validate() ) {
+                    m.getActiveBody().validate();
+                }
+            }
         }
             
+        if (Options.v().xml_attributes() && Options.v().output_format() != Options.output_format_jimple) {
+            processXMLForClass(c, tc);
+            //System.out.println("processed xml for class");
+        }
+
+        if (produceDava) {
+            methodIt = c.methodIterator();
+            while (methodIt.hasNext()) {
+                SootMethod m = (SootMethod) methodIt.next();
+                if (!m.isConcrete()) 
+                	continue;
+                //all the work done in decompilation is done in DavaBody which is invoked from within newBody
+                m.setActiveBody(Dava.v().newBody(m.getActiveBody()));
+            }
+
+            /*
+             * January 13th, 2006
+             * SuperFirstStmtHandler might have set SootMethodAddedByDava if it needs to create a new
+             * method. 
+             */
+            //could use G to add new method...................
+            if(G.v().SootMethodAddedByDava){
+            	//System.out.println("PACKMANAGER SAYS:----------------Have to add the new method(s)");
+            	ArrayList sootMethodsAdded = G.v().SootMethodsAdded;
+            	Iterator it = sootMethodsAdded.iterator();	
+            	while(it.hasNext()){
+            		c.addMethod((SootMethod)it.next());
+            	}
+            	G.v().SootMethodsAdded = new ArrayList();
+            	G.v().SootMethodAddedByDava=false;
+            }
+
+        }//end if produceDava
+    }
+
+    public void writeClass(SootClass c) {
+        final int format = Options.v().output_format();
+        if( format == Options.output_format_none ) return;
+        if( format == Options.output_format_dava ) return;
+
+        OutputStream streamOut = null;
+        PrintWriter writerOut = null;
+
+        String fileName = SourceLocator.v().getFileNameFor(c, format);
+        if( Options.v().gzip() ) fileName = fileName+".gz";
+
+        OutputStream fileOutputStream = null;
+        try {
+            if( jarFile != null ) {
+                ZipEntry entry = new ZipEntry(fileName);
+                jarFile.putNextEntry(entry);
+                streamOut = jarFile;
+            } else {
+                new File(fileName).getParentFile().mkdirs();
+                streamOut = new FileOutputStream(fileName);
+                fileOutputStream = streamOut;
+            }
+            if( Options.v().gzip() ) {
+                streamOut = new GZIPOutputStream(streamOut);
+            }
+            if(format == Options.output_format_class) {
+                streamOut = new JasminOutputStream(streamOut);
+            }
+            writerOut = new PrintWriter(new OutputStreamWriter(streamOut));
+            G.v().out.println( "Writing to "+fileName );
+        } catch (IOException e) {
+            throw new CompilationDeathException("Cannot output file " + fileName,e);
+        }
+
+        if (Options.v().xml_attributes()) {
+            Printer.v().setOption(Printer.ADD_JIMPLE_LN);
+        }
+        switch (format) {
+            case Options.output_format_class :
+            case Options.output_format_jasmin :
+                if (c.containsBafBody())
+                    new soot.baf.JasminClass(c).print(writerOut);
+                else
+                    new soot.jimple.JasminClass(c).print(writerOut);
+                break;
+            case Options.output_format_jimp :
+            case Options.output_format_shimp :
+            case Options.output_format_b :
+            case Options.output_format_grimp :
+                Printer.v().setOption(Printer.USE_ABBREVIATIONS);
+                Printer.v().printTo(c, writerOut);
+                break;
+            case Options.output_format_baf :
+            case Options.output_format_jimple :
+            case Options.output_format_shimple :
+            case Options.output_format_grimple :
+                writerOut =
+                    new PrintWriter(
+                        new EscapedWriter(new OutputStreamWriter(streamOut)));
+                Printer.v().printTo(c, writerOut);
+                break;
+            case Options.output_format_xml :
+                writerOut =
+                    new PrintWriter(
+                        new EscapedWriter(new OutputStreamWriter(streamOut)));
+                XMLPrinter.v().printJimpleStyleTo(c, writerOut);
+                break;
+            case Options.output_format_template :
+                writerOut =
+                    new PrintWriter(
+                        new OutputStreamWriter(streamOut));
+                TemplatePrinter.v().printTo(c, writerOut);
+            	break;
+            default :
+                throw new RuntimeException();
+        }
+
+        try {
+            writerOut.flush();
+            streamOut.close();
+            //close file output stream because there's a limited number of file handles on the OS
+            if(fileOutputStream!=null) fileOutputStream.close();
+        } catch (IOException e) {
+            throw new CompilationDeathException("Cannot close output file " + fileName);
+        }
+    }
+
+    private void postProcessXML( Iterator classes ) {
+        if (!Options.v().xml_attributes()) return;
+        if (Options.v().output_format() != Options.output_format_jimple) return;
+        while( classes.hasNext() ) {
+            SootClass c = (SootClass) classes.next();
+            processXMLForClass(c);
+        }
+    }
+
+    private void processXMLForClass(SootClass c, TagCollector tc){
+        final int format = Options.v().output_format();
+        String fileName = SourceLocator.v().getFileNameFor(c, format);
+        XMLAttributesPrinter xap = new XMLAttributesPrinter(fileName,
+               SourceLocator.v().getOutputDir());
+        xap.printAttrs(c, tc);
+    }
+    
+    private void processXMLForClass(SootClass c){
+        final int format = Options.v().output_format();
+        String fileName = SourceLocator.v().getFileNameFor(c, format);
+        XMLAttributesPrinter xap = new XMLAttributesPrinter(fileName,
+               SourceLocator.v().getOutputDir());
+        xap.printAttrs(c);
     }
 
     private void releaseBodies( SootClass cl ) {

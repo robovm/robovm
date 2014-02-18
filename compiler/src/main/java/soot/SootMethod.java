@@ -25,9 +25,17 @@
  */
 
 package soot;
-import soot.tagkit.*;
-import soot.util.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.StringTokenizer;
+
+import soot.jimple.toolkits.callgraph.VirtualCalls;
+import soot.tagkit.AbstractHost;
+import soot.util.IterableSet;
+import soot.util.Numberable;
+import soot.util.NumberedString;
 
 /**
     Soot representation of a Java method.  Can be declared to belong to a SootClass. 
@@ -282,6 +290,7 @@ public class SootMethod
             throw new RuntimeException(
                 "cannot get active body for phantom class: " + getSignature());
 
+		// ignore empty body exceptions if we are just computing coffi metrics
         if (!hasActiveBody())
             throw new RuntimeException(
                 "no active body present for method " + getSignature());
@@ -446,6 +455,53 @@ public class SootMethod
     public boolean isSynchronized() {
         return Modifier.isSynchronized(this.getModifiers());
     }
+    
+    /**
+	 * 
+	 * @return yes if this is the main method
+	 */
+	public boolean isMain()
+	{
+		if ( isPublic() && isStatic() ) {
+			NumberedString main_sig = Scene.v().getSubSigNumberer().findOrAdd( "void main(java.lang.String[])" );
+			if ( main_sig.equals( subsignature ) )
+				return true;
+		}
+		
+		return false;
+	}
+
+	/**
+	 * 
+	 * @return yes, if this function is a constructor.
+	 */
+	public boolean isConstructor()
+	{
+		return name.equals(constructorName);
+	}
+	
+	/**
+	 * @return yes, if this is a class initializer or main function.
+	 */
+	public boolean isEntryMethod()
+	{
+		if ( isStatic() &&
+				subsignature.equals( VirtualCalls.v().sigClinit ) )
+			return true;
+		
+		return isMain();
+	}
+	
+	/**
+	 * We rely on the JDK class recognition to decide if a method is JDK method.
+	 */
+	public boolean isJavaLibraryMethod()
+	{
+		SootClass cl = getDeclaringClass();
+		return cl.isJavaLibraryClass();
+	}
+    
+
 
     /**
         Returns the Soot signature of this method.  Used to refer to methods unambiguously.
@@ -490,6 +546,8 @@ public class SootMethod
         StringBuffer buffer = new StringBuffer();
         Type t = returnType;
 
+        // RoboVM note: Optimization
+        //buffer.append(t.toString() + " " + Scene.v().quotedNameOf(name) + "(");
         buffer.append(t.toString());
         buffer.append(' ');
         buffer.append(Scene.v().quotedNameOf(name) + "(");
@@ -510,6 +568,8 @@ public class SootMethod
         }
         buffer.append(")");
 
+        // RoboVM note: Optimization
+        //return buffer.toString().intern();
         return buffer.toString();
     }
 
@@ -537,6 +597,12 @@ public class SootMethod
         if (st.hasMoreTokens())
             buffer.append(st.nextToken());
 
+        // RoboVM note: optimization
+//        while (st.hasMoreTokens())
+//            buffer.append(" " + st.nextToken());
+//
+//        if (buffer.length() != 0)
+//            buffer.append(" ");
         while (st.hasMoreTokens())
             buffer.append(' ').append(st.nextToken());
 
@@ -545,6 +611,11 @@ public class SootMethod
 
         // return type + name
 
+        // RoboVM note: optimization
+//        buffer.append(this.getReturnType() + " ");
+//        buffer.append(Scene.v().quotedNameOf(this.getName()));
+//
+//        buffer.append("(");
         buffer.append(this.getReturnType()).append(' ');
         buffer.append(Scene.v().quotedNameOf(this.getName()));
 
@@ -569,6 +640,16 @@ public class SootMethod
         if (exceptions != null) {
             Iterator<SootClass> exceptionIt = this.getExceptions().iterator();
 
+            // RoboVM note: optimization
+//            if (exceptionIt.hasNext()) {
+//                buffer.append(
+//                    " throws " + exceptionIt.next().getName());
+//
+//                while (exceptionIt.hasNext()) {
+//                    buffer.append(
+//                        ", " + exceptionIt.next().getName());
+//                }
+//            }
             if (exceptionIt.hasNext()) {
                 buffer.append(
                     " throws ").append(exceptionIt.next().getName());
@@ -580,7 +661,9 @@ public class SootMethod
             }
         }
 
-        return buffer.toString();
+        // RoboVM note: Optimization
+        //return buffer.toString().intern();
+        return buffer.toString().intern();
     }
     public final int getNumber() {
         return number;

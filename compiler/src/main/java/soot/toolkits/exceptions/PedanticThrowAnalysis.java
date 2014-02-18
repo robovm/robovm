@@ -66,6 +66,9 @@ public class PedanticThrowAnalysis extends AbstractThrowAnalysis {
 	return ThrowableSet.Manager.v().ALL_THROWABLES;
     }
 
+
+
+
     /**
      * Returns the set of all <code>Throwable</code>s as the set
      * of types that a <code>throw</code> statement may throw implicitly, 

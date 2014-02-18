@@ -121,10 +121,7 @@ public class TypeResolver
 				new Typing(this.jb.getLocals()), ef, bh);
 			tg = this.minCasts(sigma, bh, castCount);
 		}
-		// RoboVM note: Don't insert casts. The output will not behave the same as the input.
-		// Dalvik's 069-field-type test throws a ClassCastException instead of the expected
-		// IncompatibleClassChangeError if we call insertCasts().
-		//this.insertCasts(tg, bh, false);
+		this.insertCasts(tg, bh, false);
 		
 		for ( Local v : this.jb.getLocals() )
 		{
@@ -525,6 +522,7 @@ public class TypeResolver
 								{
 									Local newlocal = Jimple.v().newLocal(
 										"tmp", null);
+									newlocal.setName("tmp$" + System.identityHashCode(newlocal));
 									this.jb.getLocals().add(newlocal);
 									
 									special.setBase(newlocal);

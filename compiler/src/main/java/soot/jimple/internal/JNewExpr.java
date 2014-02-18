@@ -39,6 +39,8 @@ public class JNewExpr extends AbstractNewExpr
 {
     public JNewExpr(RefType type) { this.type = type; }
 
+
+
     public Object clone() 
     {
         return new JNewExpr(type);

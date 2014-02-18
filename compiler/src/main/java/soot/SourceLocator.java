@@ -18,10 +18,24 @@
  */
 
 package soot;
-import soot.options.*;
-import java.util.*;
-import java.util.zip.*;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+
+import soot.options.Options;
 
 /** Provides utility methods to retrieve an input stream for a class name, given
  * a classfile, or jimple or baf output files. */
@@ -31,10 +45,19 @@ public class SourceLocator
     public static SourceLocator v() { return G.v().soot_SourceLocator(); }
 
     protected Set<ClassLoader> additionalClassLoaders = new HashSet<ClassLoader>();
+	protected Set<String> classesToLoad;
     
     /** Given a class name, uses the soot-class-path to return a ClassSource for the given class. */
-    public ClassSource getClassSource(String className) 
+	public ClassSource getClassSource(String className) 
     {
+		if(classesToLoad==null) {
+			classesToLoad = new HashSet<String>();
+			classesToLoad.addAll(Scene.v().getBasicClasses());
+			for(SootClass c: Scene.v().getApplicationClasses()) {
+				classesToLoad.add(c.getName());
+			}
+		}
+    	
         if( classPath == null ) {
             classPath = explodeClassPath(Scene.v().getSootClassPath());
         }
@@ -42,19 +65,28 @@ public class SourceLocator
             setupClassProviders();
         }
         for (ClassProvider cp : classProviders) {
-        	ClassSource ret = cp.find(className);
-            if( ret != null ) return ret;
+	        	ClassSource ret = cp.find(className);
+	            if( ret != null ) return ret;
         }
         for(final ClassLoader cl: additionalClassLoaders) {
-        	ClassSource ret = new ClassProvider() {
-				
-				public ClassSource find(String className) {
-			        String fileName = className.replace('.', '/') + ".class";
-					return new CoffiClassSource(className, cl.getResourceAsStream(fileName));
-				}
+            	ClassSource ret = new ClassProvider() {
+					
+					public ClassSource find(String className) {
+				        String fileName = className.replace('.', '/') + ".class";
+						InputStream stream = cl.getResourceAsStream(fileName);
+						if(stream==null) return null;
+						return new CoffiClassSource(className, stream);
+					}
 
-        	}.find(className);
-            if( ret != null ) return ret;
+            	}.find(className);
+	            if( ret != null ) return ret;
+        }
+        if(className.startsWith("soot.rtlib.tamiflex.")) {
+	        String fileName = className.replace('.', '/') + ".class";
+        	InputStream stream = getClass().getClassLoader().getResourceAsStream(fileName);
+        	if(stream!=null) {
+				return new CoffiClassSource(className, stream);
+        	}
         }
         return null;
     }
@@ -65,7 +97,7 @@ public class SourceLocator
 
     private void setupClassProviders() {
         classProviders = new LinkedList<ClassProvider>();
-        classProviders.add(new CoffiClassProvider());
+                classProviders.add(new CoffiClassProvider());
     }
 
     private List<ClassProvider> classProviders;
@@ -190,6 +222,9 @@ public class SourceLocator
         if (rep != Options.output_format_dava) {
             if(rep == Options.output_format_class) {
                 b.append(c.getName().replace('.', File.separatorChar));
+            } else if(rep == Options.output_format_template) {
+                b.append(c.getName().replace('.', '_'));
+                b.append("_Maker");
             } else {
                 b.append(c.getName());
             }
@@ -198,7 +233,11 @@ public class SourceLocator
             return b.toString();
         }
 
-        b.append("dava");
+        return getDavaFilenameFor(c, b);
+    }
+    
+	private String getDavaFilenameFor(SootClass c, StringBuffer b) {
+		b.append("dava");
         b.append(File.separatorChar);
         {
             String classPath = b.toString() + "classes";
@@ -239,7 +278,7 @@ public class SourceLocator
         b.append(".java");
 
         return b.toString();
-    }
+	}
 
     /* This is called after sootClassPath has been defined. */
     public Set<String> classesInDynamicPackage(String str) {
@@ -285,6 +324,7 @@ public class SourceLocator
             case Options.output_format_dava:     return ".java";
             case Options.output_format_jasmin:   return ".jasmin";
             case Options.output_format_xml:      return ".xml";
+            case Options.output_format_template: return ".java";
             default:
                 throw new RuntimeException();
         }

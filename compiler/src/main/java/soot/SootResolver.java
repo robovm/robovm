@@ -26,12 +26,14 @@
 
 
 package soot;
-import soot.IInitialResolver.Dependencies;
+import soot.javaToJimple.IInitialResolver.Dependencies;
 import soot.options.*;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+
+
 
 /** Loads symbols for SootClasses from either class files or jimple files. */
 public class SootResolver 
@@ -45,10 +47,13 @@ public class SootResolver
     /** SootClasses waiting to be resolved. */
     private final LinkedList/*SootClass*/[] worklist = new LinkedList[4];
 
+
     public SootResolver (Singletons.Global g) {
         worklist[SootClass.HIERARCHY] = new LinkedList();
         worklist[SootClass.SIGNATURES] = new LinkedList();
         worklist[SootClass.BODIES] = new LinkedList();
+        
+        
     }
 
     public static SootResolver v() { return G.v().soot_SootResolver();}
@@ -96,8 +101,23 @@ public class SootResolver
             while( !worklist[i].isEmpty() ) {
                 SootClass sc = (SootClass) worklist[i].removeFirst();
                 if( resolveEverything() ) {
-                    if( sc.isPhantom() ) bringToSignatures(sc);
-                    else bringToBodies(sc);
+                    boolean onlySignatures = sc.isPhantom() || (
+	            			Options.v().no_bodies_for_excluded() &&
+	            			Scene.v().isExcluded(sc) &&
+	            			!Scene.v().getBasicClasses().contains(sc.getName())
+            			);
+					if( onlySignatures ) {
+						bringToSignatures(sc);
+						sc.setPhantomClass();
+				        if(sc.isPhantom()) {
+				        	for( SootMethod m: sc.getMethods() ) {
+				        		m.setPhantom(true);
+				        	}
+				        	for( SootField f: sc.getFields() ) {
+				        		f.setPhantom(true);
+				        	}
+				        }
+			        } else bringToBodies(sc);
                 } else {
                     switch(i) {
                         case SootClass.BODIES: bringToBodies(sc); break;
@@ -134,7 +154,13 @@ public class SootResolver
 
         String className = sc.getName();
         ClassSource is = SourceLocator.v().getClassSource(className);
-        if( is == null ) {
+        boolean modelAsPhantomRef = is == null;
+//        || (
+//        		Options.v().no_jrl() &&
+//        		Scene.v().isExcluded(sc) &&
+//        		!Scene.v().getBasicClasses().contains(sc.getName())
+//    		);        
+		if( modelAsPhantomRef ) {
             if(!Scene.v().allowsPhantomRefs()) {
             	String suffix="";
             	if(className.equals("java.lang.Object")) {
@@ -173,7 +199,6 @@ public class SootResolver
             final SootClass iface = (SootClass) ifaceIt.next();
             addToResolveWorklist(iface, SootClass.HIERARCHY);
         }
-
     }
 
     /** Signatures - we know the signatures of all methods and fields

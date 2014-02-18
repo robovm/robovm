@@ -22,6 +22,7 @@ package soot.toolkits.exceptions;
 import java.util.Iterator;
 import soot.*;
 import soot.jimple.*;
+import soot.grimp.*;
 
 /**
  * A {@link ThrowAnalysis} which returns the set of runtime exceptions
@@ -74,6 +75,9 @@ public class UnitThrowAnalysis extends AbstractThrowAnalysis {
 	return sw.getResult();
     }
 
+
+	
+    
     public ThrowableSet mightThrowImplicitly(ThrowStmt t) {
 	return implicitThrowExceptions;
     }
@@ -331,6 +335,10 @@ public class UnitThrowAnalysis extends AbstractThrowAnalysis {
 	public void caseVirtualInvokeExpr(VirtualInvokeExpr expr) {
 	    caseInstanceInvokeExpr(expr);
 	}
+	//INSERTED for invokedynamic UnitThrowAnalysis.java
+	public void caseDynamicInvokeExpr(DynamicInvokeExpr expr) {
+		//caseInstanceInvokeExpr(expr);
+	}
 
 	public void caseCastExpr(CastExpr expr) {
 	    result = result.add(mgr.RESOLVE_CLASS_ERRORS);
@@ -432,6 +440,7 @@ public class UnitThrowAnalysis extends AbstractThrowAnalysis {
 	public void caseNewInvokeExpr(NewInvokeExpr e) {
 	    caseStaticInvokeExpr(e);
 	}
+
 
 	public void defaultCase(Object obj) {
 	}

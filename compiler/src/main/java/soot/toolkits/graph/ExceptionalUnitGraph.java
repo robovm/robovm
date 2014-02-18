@@ -280,6 +280,7 @@ public class ExceptionalUnitGraph extends UnitGraph implements ExceptionalGraph<
 
         if(Options.v().time())
             Timers.v().graphTimer.end();        
+
     }
 
 

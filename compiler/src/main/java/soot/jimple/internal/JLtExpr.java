@@ -39,8 +39,6 @@ public class JLtExpr extends AbstractJimpleIntBinopExpr implements LtExpr
     public JLtExpr(Value op1, Value op2) { super(op1, op2); }
     public final String getSymbol() { return " < "; }
     public void apply(Switch sw) { ((ExprSwitch) sw).caseLtExpr(this); }
-    Object makeBafInst(Type opType) { throw new RuntimeException("unsupported conversion: "+this); }
-    //    Object makeBafInst(Type opType) { return Baf.v().newLtInst(this.getOp1().getType()); }
 
     public Object clone() 
     {

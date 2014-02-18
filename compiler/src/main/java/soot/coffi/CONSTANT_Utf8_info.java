@@ -26,8 +26,11 @@
 
 package soot.coffi;
 import soot.*;
+import soot.jimple.StringConstant;
 
 import java.io.*;
+
+import javax.naming.OperationNotSupportedException;
 
 /** A constant pool entry of type CONSTANT_Utf8; note this is <b>not</b>
  * multithread safe.  It is, however, immutable.
@@ -178,4 +181,8 @@ public class CONSTANT_Utf8_info extends cp_info {
     * @see cp_info#typeName
     */
    public String typeName() { return "utf8"; }
+
+   public Value createJimpleConstantValue(cp_info[] constant_pool) {
+		return StringConstant.v(convert());
+   }
 }

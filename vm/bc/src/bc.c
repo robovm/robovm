@@ -41,6 +41,7 @@ typedef struct {
 
 const char* __attribute__ ((weak)) _bcMainClass = NULL;
 extern jboolean _bcDynamicJNI;
+extern char** _bcStaticLibs;
 extern char** _bcBootclasspath;
 extern char** _bcClasspath;
 extern void* _bcBootClassesHash;
@@ -74,6 +75,7 @@ int main(int argc, char* argv[]) {
     options.findClassAt = findClassAt;
     options.exceptionMatch = exceptionMatch;
     options.dynamicJNI = _bcDynamicJNI;
+    options.staticLibs = _bcStaticLibs;
     options.listBootClasses = listBootClasses;
     options.listUserClasses = listUserClasses;
     if (!rvmInitOptions(argc, argv, &options, FALSE)) {

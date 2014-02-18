@@ -133,6 +133,21 @@ public class Linker {
         mb.addInclude(getClass().getClassLoader().getResource("header.ll"));
 
         mb.addGlobal(new Global("_bcDynamicJNI", new IntegerConstant(config.isUseDynamicJni() ? (byte) 1 : (byte) 0)));
+        ArrayConstantBuilder staticLibs = new ArrayConstantBuilder(I8_PTR);
+        if (!config.isUseDynamicJni()) {
+            for (String lib : config.getLibs()) {
+                if (lib.endsWith(".a")) {
+                    lib = new File(lib).getName();
+                    String libName = lib.substring(0, lib.length() - 2);
+                    if (libName.startsWith("lib")) {
+                        libName = libName.substring(3);
+                    }
+                    staticLibs.add(mb.getString(libName));
+                }
+            }
+        }
+        staticLibs.add(new NullConstant(Type.I8_PTR));
+        mb.addGlobal(new Global("_bcStaticLibs", new ConstantGetelementptr(mb.newGlobal(staticLibs.build()).ref(), 0, 0)));
 
         HashTableGenerator<String, Constant> bcpHashGen = new HashTableGenerator<String, Constant>(new ModifiedUtf8HashFunction());
         HashTableGenerator<String, Constant> cpHashGen = new HashTableGenerator<String, Constant>(new ModifiedUtf8HashFunction());

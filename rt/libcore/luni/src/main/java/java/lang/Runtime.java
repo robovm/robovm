@@ -33,6 +33,7 @@
 package java.lang;
 
 import dalvik.system.VMStack;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,6 +44,9 @@ import java.lang.ref.FinalizerReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+
+import org.robovm.rt.VM;
+
 import libcore.io.Libcore;
 import static libcore.io.OsConstants._SC_NPROCESSORS_ONLN;
 
@@ -360,6 +364,13 @@ public class Runtime {
             throw new NullPointerException("libraryName");
         }
 
+        // RoboVM note: First check if the library has been statically linked in.
+        for (String l : VM.staticLibs()) {
+            if (libraryName.equals(l)) {
+                return;
+            }
+        }
+        
         if (loader != null) {
             String filename = loader.findLibrary(libraryName);
             if (filename == null) {

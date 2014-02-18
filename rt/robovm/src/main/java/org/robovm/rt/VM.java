@@ -49,6 +49,12 @@ public final class VM {
     public static native String basePath();
     
     /**
+     * Returns the names of any static libraries that have been linked into
+     * the executable.
+     */
+    public static native String[] staticLibs();
+    
+    /**
      * Returns the VM's version.
      */
     public static String vmVersion() {

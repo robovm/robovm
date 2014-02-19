@@ -40,6 +40,9 @@ public class JLengthExpr extends AbstractLengthExpr
 {
     public JLengthExpr(Value op) { super(Jimple.v().newImmediateBox(op)); }
 
+
+  
+
   public Object clone() 
   {
     return new JLengthExpr(Jimple.cloneIfNecessary(getOp()));

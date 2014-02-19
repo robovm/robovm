@@ -20,69 +20,9 @@
  */
 package soot.jimple.toolkits.typing.fast;
 
-import java.util.Collection;
-import java.util.Iterator;
-
-import soot.ArrayType;
-import soot.BooleanType;
-import soot.ByteType;
-import soot.CharType;
-import soot.DoubleType;
-import soot.FloatType;
-import soot.IntType;
-import soot.IntegerType;
-import soot.Local;
-import soot.LongType;
-import soot.NullType;
-import soot.RefType;
-import soot.ResolutionFailedException;
-import soot.ShortType;
-import soot.TrapManager;
-import soot.Type;
-import soot.Value;
-import soot.jimple.AddExpr;
-import soot.jimple.AndExpr;
-import soot.jimple.ArrayRef;
-import soot.jimple.BinopExpr;
-import soot.jimple.CastExpr;
-import soot.jimple.CaughtExceptionRef;
-import soot.jimple.ClassConstant;
-import soot.jimple.CmpExpr;
-import soot.jimple.CmpgExpr;
-import soot.jimple.CmplExpr;
-import soot.jimple.DivExpr;
-import soot.jimple.DoubleConstant;
-import soot.jimple.EqExpr;
-import soot.jimple.FieldRef;
-import soot.jimple.FloatConstant;
-import soot.jimple.GeExpr;
-import soot.jimple.GtExpr;
-import soot.jimple.InstanceOfExpr;
-import soot.jimple.IntConstant;
-import soot.jimple.InvokeExpr;
-import soot.jimple.JimpleBody;
-import soot.jimple.LeExpr;
-import soot.jimple.LengthExpr;
-import soot.jimple.LongConstant;
-import soot.jimple.LtExpr;
-import soot.jimple.MulExpr;
-import soot.jimple.NeExpr;
-import soot.jimple.NegExpr;
-import soot.jimple.NewArrayExpr;
-import soot.jimple.NewExpr;
-import soot.jimple.NewMultiArrayExpr;
-import soot.jimple.NullConstant;
-import soot.jimple.OrExpr;
-import soot.jimple.ParameterRef;
-import soot.jimple.RemExpr;
-import soot.jimple.ShlExpr;
-import soot.jimple.ShrExpr;
-import soot.jimple.Stmt;
-import soot.jimple.StringConstant;
-import soot.jimple.SubExpr;
-import soot.jimple.ThisRef;
-import soot.jimple.UshrExpr;
-import soot.jimple.XorExpr;
+import java.util.*;
+import soot.*;
+import soot.jimple.*;
 
 /**
  * @author Ben Bellamy

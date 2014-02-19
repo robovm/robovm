@@ -101,6 +101,7 @@ public class JGotoStmt extends AbstractStmt implements GotoStmt
         ((StmtSwitch) sw).caseGotoStmt(this);
     }    
     
+    
     public boolean fallsThrough(){return false;}        
     public boolean branches() { return true;}
     

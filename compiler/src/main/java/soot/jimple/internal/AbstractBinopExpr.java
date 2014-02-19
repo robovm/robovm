@@ -29,6 +29,7 @@ package soot.jimple.internal;
 import soot.*;
 import soot.jimple.*;
 import java.util.*;
+import soot.grimp.PrecedenceTest;
 
 public abstract class AbstractBinopExpr implements Expr
 {

@@ -85,6 +85,7 @@ public class CoffiMethodSource implements MethodSource
                     "]     Building Coffi CFG...");
 
              new soot.coffi.CFG(coffiMethod);
+             
          }
 
          if(Options.v().verbose())
@@ -95,7 +96,7 @@ public class CoffiMethodSource implements MethodSource
 
          Scene.v().setPhantomRefs(true);
          coffiMethod.cfg.jimplify(coffiClass.constant_pool,
-             coffiClass.this_class, jb);
+             coffiClass.this_class, coffiClass.bootstrap_methods_attribute, jb);
          Scene.v().setPhantomRefs(oldPhantomValue);
 
         if(Options.v().time())

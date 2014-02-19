@@ -167,5 +167,4 @@ public abstract class AbstractNewMultiArrayExpr implements NewMultiArrayExpr
     {
         ((ExprSwitch) sw).caseNewMultiArrayExpr(this);
     }
-
 }

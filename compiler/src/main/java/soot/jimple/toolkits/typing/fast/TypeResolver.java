@@ -525,6 +525,7 @@ public class TypeResolver
 								{
 									Local newlocal = Jimple.v().newLocal(
 										"tmp", null);
+									newlocal.setName("tmp$" + System.identityHashCode(newlocal));
 									this.jb.getLocals().add(newlocal);
 									
 									special.setBase(newlocal);

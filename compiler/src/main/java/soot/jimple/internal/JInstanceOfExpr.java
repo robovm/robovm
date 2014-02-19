@@ -36,11 +36,15 @@ import soot.jimple.*;
 import java.util.*;
 
 public class JInstanceOfExpr extends AbstractInstanceOfExpr
+  
 {
     public JInstanceOfExpr(Value op, Type checkType)
     {
         super(Jimple.v().newImmediateBox(op), checkType);
     }
+
+
+    
 
   
     public Object clone() 

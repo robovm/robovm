@@ -82,6 +82,7 @@ public class JIdentityStmt extends AbstractDefinitionStmt
     {
         ((StmtSwitch) sw).caseIdentityStmt(this);
     }    
+    
 
 
 }

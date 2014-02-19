@@ -99,7 +99,7 @@ public class JInvokeStmt extends AbstractStmt implements InvokeStmt
     {
         ((StmtSwitch) sw).caseInvokeStmt(this);
     }
-
+   
     public boolean fallsThrough() {return true;}
     public boolean branches() {return false;}
 

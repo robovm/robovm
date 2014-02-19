@@ -1,5 +1,5 @@
 /* Soot - a J*va Optimization Framework
- * Copyright (C) 1999 Patrick Lam
+ * Copyright (C) 2008 Eric Bodden
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,21 +16,27 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+package soot.javaToJimple;
 
-/*
- * Modified by the Sable Research Group and others 1997-1999.  
- * See the 'credits' file distributed with Soot for the complete list of
- * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
- */
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+import soot.SootClass;
+import soot.Type;
 
+public interface IInitialResolver {
+	
+	public void formAst(String fullPath, List<String> locations, String className);
+	
+	public Dependencies resolveFromJavaFile(SootClass sc);
+	
+	public class Dependencies {
+		public final Set<Type> typesToHierarchy, typesToSignature;
+		public Dependencies() {
+			typesToHierarchy = new HashSet<Type>();
+			typesToSignature = new HashSet<Type>();
+		}
+	}
 
-
-
-
-package soot;
-
-public interface Precedence
-{
-    public abstract int getPrecedence();
 }

@@ -17,8 +17,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-package soot;
+package soot.javaToJimple;
 
+import soot.*;
 import java.util.*;
 
 public class LocalGenerator{

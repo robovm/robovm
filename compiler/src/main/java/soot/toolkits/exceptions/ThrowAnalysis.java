@@ -50,6 +50,7 @@ public interface ThrowAnalysis {
      */
     ThrowableSet mightThrow(Unit u);
 
+
     /**
      * Returns a set representing the {@link Throwable} types that
      * the specified throw statement might throw explicitly, that is,
@@ -62,6 +63,7 @@ public interface ThrowAnalysis {
      * <code>t</code>'s <code>Throwable</code> operand.
      */
     ThrowableSet mightThrowExplicitly(ThrowStmt t);
+
 
     /**
      * Returns a set representing the {@link Throwable} types that

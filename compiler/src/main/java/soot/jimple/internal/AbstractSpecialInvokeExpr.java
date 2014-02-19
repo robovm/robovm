@@ -114,5 +114,4 @@ public abstract class AbstractSpecialInvokeExpr extends AbstractInstanceInvokeEx
     {
         ((ExprSwitch) sw).caseSpecialInvokeExpr(this);
     }
-
 }

@@ -78,9 +78,14 @@ public class SootField extends AbstractHost implements ClassMember, Numberable
     {
         StringBuffer buffer = new StringBuffer();
 
+        // RoboVM note: Optimization
+//        buffer.append("<" + Scene.v().quotedNameOf(cl.getName()) + ": ");
+//        buffer.append(type + " " + Scene.v().quotedNameOf(name) + ">");
         buffer.append('<').append(Scene.v().quotedNameOf(cl.getName())).append(": ");
         buffer.append(type).append(' ').append(Scene.v().quotedNameOf(name)).append('>');
 
+        // RoboVM note: Optimization
+//        return buffer.toString().intern();
         return buffer.toString();
 
     }
@@ -88,6 +93,9 @@ public class SootField extends AbstractHost implements ClassMember, Numberable
     public String getSubSignature()
     {
         StringBuffer buffer = new StringBuffer();
+        // RoboVM note: Optimization
+//        buffer.append(getType() + " " + Scene.v().quotedNameOf(getName()));
+//        return buffer.toString().intern();
         buffer.append(getType()).append(' ').append(Scene.v().quotedNameOf(getName()));
         return buffer.toString();
     }

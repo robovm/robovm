@@ -24,6 +24,7 @@ import java.util.zip.*;
 import soot.util.*;
 import soot.util.queue.*;
 import soot.jimple.*;
+import soot.grimp.*;
 import soot.jimple.toolkits.base.*;
 import soot.jimple.toolkits.typing.*;
 import soot.jimple.toolkits.scalar.*;
@@ -83,7 +84,8 @@ public class PackManager {
             p.add(new Transform("jb.ne", NopEliminator.v()));
             p.add(new Transform("jb.uce", UnreachableCodeEliminator.v()));
         }
-        
+
+
         // Jimple transformation pack
         addPack(p = new BodyPack("jtp"));
         
@@ -132,15 +134,9 @@ public class PackManager {
             p.add(new Transform("cfg.output", CFGPrinter.v()));
         }*/
         
-        // Code attribute tag aggregation pack
-//        addPack(p = new BodyPack("tag"));
-//        {
-//            p.add(new Transform("tag.ln", LineNumberTagAggregator.v()));
-//            p.add(new Transform("tag.an", ArrayNullTagAggregator.v()));
-//            p.add(new Transform("tag.dep", DependenceTagAggregator.v()));
-//            p.add(new Transform("tag.fieldrw", FieldTagAggregator.v()));
-//        }
 
+       
+        
         onlyStandardPacks = true;
     }
 
@@ -232,6 +228,7 @@ public class PackManager {
         runBodyPacks( reachableClasses() );
     }
 
+
     private void runBodyPacks( Iterator classes ) {
         while( classes.hasNext() ) {
             SootClass cl = (SootClass) classes.next();
@@ -244,6 +241,7 @@ public class PackManager {
        agg.internalTransform("", null);
     }
 
+
     private void releaseBodies( Iterator classes ) {
         while( classes.hasNext() ) {
             SootClass cl = (SootClass) classes.next();
@@ -252,28 +250,20 @@ public class PackManager {
     }
 
     private Iterator reachableClasses() {
-        if( false && (Options.v().whole_program() ||
-                      Options.v().whole_shimple())) {
-            QueueReader methods = Scene.v().getReachableMethods().listener();
-            HashSet reachableClasses = new HashSet();
-            
-            while(true) {
-                    SootMethod m = (SootMethod) methods.next();
-                    if(m == null) break;
-                    SootClass c = m.getDeclaringClass();
-                    if( !c.isApplicationClass() ) continue;
-                    reachableClasses.add( c );
-            }
-            return reachableClasses.iterator();
-        } else {
-            return Scene.v().getApplicationClasses().iterator();
-        }
+        return Scene.v().getApplicationClasses().iterator();
     }
+
 
     private void runBodyPacks(SootClass c) {
         boolean produceJimple = true;
 
-        Iterator methodIt = c.methodIterator();
+        //here we create a copy of the methods so that transformers are able
+        //to add method bodies during the following iteration;
+        //such adding of methods happens in rare occasions: for instance when
+        //resolving a method reference to a non-existing method, then this
+        //method is created as a phantom method when phantom-refs are enabled
+        LinkedList<SootMethod> methodsCopy = new LinkedList<SootMethod>(c.getMethods());
+        Iterator methodIt = methodsCopy.iterator();
         while (methodIt.hasNext()) {
             SootMethod m = (SootMethod) methodIt.next();
             
@@ -283,6 +273,7 @@ public class PackManager {
             }
             
             if (!m.isConcrete()) continue;
+
 
             if (produceJimple) {
                 JimpleBody body =(JimpleBody) m.retrieveActiveBody();
@@ -295,9 +286,12 @@ public class PackManager {
             }
             
             //PackManager.v().getPack("cfg").apply(m.retrieveActiveBody());
+
         }
             
+
     }
+
 
     private void releaseBodies( SootClass cl ) {
         Iterator methodIt = cl.methodIterator();

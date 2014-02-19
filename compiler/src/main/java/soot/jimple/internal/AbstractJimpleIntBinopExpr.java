@@ -36,10 +36,13 @@ import soot.jimple.*;
 import java.util.*;
 
 abstract public class AbstractJimpleIntBinopExpr extends AbstractIntBinopExpr
+                                          
 {
     protected AbstractJimpleIntBinopExpr(Value op1, Value op2)
     {
         this.op1Box = Jimple.v().newArgBox(op1);
         this.op2Box = Jimple.v().newArgBox(op2);
     }
+
+
 }

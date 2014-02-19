@@ -31,11 +31,19 @@
 
 package soot.coffi;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import soot.Scene;
+import soot.Type;
+import soot.Value;
+import soot.jimple.Jimple;
+
 /** A constant pool entry of type CONSTANT_InterfaceMethodref
  * @see cp_info
  * @author Clark Verbrugge
  */
-class CONSTANT_InterfaceMethodref_info extends cp_info {
+class CONSTANT_InterfaceMethodref_info extends cp_info implements ICONSTANT_Methodref_info {
    /** Constant pool index of a CONSTANT_Class object.
     * @see CONSTANT_Class_info
     */
@@ -84,4 +92,14 @@ class CONSTANT_InterfaceMethodref_info extends cp_info {
          compareTo(constant_pool,cp_constant_pool[cu.name_and_type_index],
                    cp_constant_pool);
    }
+
+   public Value createJimpleConstantValue(cp_info[] constant_pool) {
+	   throw new UnsupportedOperationException("cannot convert to Jimple: "+typeName());
+   }
+	public int getClassIndex() {
+		return class_index;
+	}
+	public int getNameAndTypeIndex() {
+		return name_and_type_index;
+	}
 }

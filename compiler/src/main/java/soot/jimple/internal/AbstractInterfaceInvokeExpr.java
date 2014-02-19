@@ -141,6 +141,5 @@ public abstract class AbstractInterfaceInvokeExpr extends AbstractInstanceInvoke
 
         return argCount;
     }
-
 }
 

@@ -39,6 +39,8 @@ public class JXorExpr extends AbstractJimpleIntLongBinopExpr implements XorExpr
     public JXorExpr(Value op1, Value op2) { super(op1, op2); }
     public final String getSymbol() { return " ^ "; }
     public void apply(Switch sw) { ((ExprSwitch) sw).caseXorExpr(this); }
+
+
     
     public Object clone() 
     {

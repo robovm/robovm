@@ -1,5 +1,5 @@
 /* Soot - a J*va Optimization Framework
- * Copyright (C) 1997-1999 Raja Vallee-Rai
+ * Copyright (C) 2012 Eric Bodden
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,17 +23,21 @@
  * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
  */
 
+package soot.tagkit;
 
-package soot.jimple;
+public class AnnotationBooleanElem extends AnnotationElem{
+    boolean value;
 
-import soot.*;
+    public AnnotationBooleanElem(boolean v, char kind, String name){
+        super(kind, name);
+        this.value = v;
+    }
 
-public interface NewInvokeExpr extends StaticInvokeExpr
-{
-    public RefType getBaseType();
-    public void setBaseType(RefType type);
+    public String toString(){
+        return super.toString()+" value: " +value;
+    }
+
+    public boolean getValue(){
+        return value;
+    }
 }
-
-
-
-

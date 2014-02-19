@@ -26,8 +26,8 @@ import soot.Unit;
 import soot.UnknownType;
 import soot.NullType;
 import soot.Value;
+import soot.grimp.NewInvokeExpr;
 import soot.jimple.ThrowStmt;
-import soot.jimple.NewInvokeExpr;
 
 /**
  * Abstract class implementing parts of the {@link ThrowAnalysis}
@@ -42,6 +42,9 @@ import soot.jimple.NewInvokeExpr;
 public abstract class AbstractThrowAnalysis implements ThrowAnalysis {
 
     abstract public ThrowableSet mightThrow(Unit u);
+
+
+
 
     public ThrowableSet mightThrowExplicitly(ThrowStmt t) {
 	Value thrownExpression = t.getOp();
@@ -68,6 +71,9 @@ public abstract class AbstractThrowAnalysis implements ThrowAnalysis {
 	}
     }
 
+
+	
+    
     abstract public ThrowableSet mightThrowImplicitly(ThrowStmt t);
 }
 

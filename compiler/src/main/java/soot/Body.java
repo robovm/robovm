@@ -49,6 +49,7 @@ import soot.jimple.ParameterRef;
 import soot.jimple.ThisRef;
 import soot.options.Options;
 import soot.tagkit.AbstractHost;
+import soot.tagkit.Tag;
 import soot.toolkits.exceptions.PedanticThrowAnalysis;
 import soot.toolkits.graph.ExceptionalUnitGraph;
 import soot.toolkits.graph.UnitGraph;
@@ -433,6 +434,7 @@ public abstract class Body extends AbstractHost implements Serializable
             }
         }
 
+
         return unitBoxList;
     }
 
@@ -481,6 +483,7 @@ public abstract class Body extends AbstractHost implements Serializable
                 unitBoxList.addAll(item.getUnitBoxes());
             }
         }
+
 
         return unitBoxList;
     }
@@ -631,6 +634,13 @@ public abstract class Body extends AbstractHost implements Serializable
 	
 	if(leftType instanceof ArrayType || rightType instanceof ArrayType) {
 	    if(leftType instanceof ArrayType && rightType instanceof ArrayType) return;
+	    //it is legal to assign arrays to variables of type Serializable, Cloneable or Object
+	    if(rightType instanceof ArrayType) {
+	    	if(leftType.equals(RefType.v("java.io.Serializable")) ||
+	    			leftType.equals(RefType.v("java.lang.Cloneable")) ||
+	    			leftType.equals(RefType.v("java.lang.Object")))
+	    		return;
+	    }
 
 	    throw new RuntimeException("Warning: Bad use of array type"+errorSuffix+" in "+getMethod());
 	}
@@ -638,6 +648,9 @@ public abstract class Body extends AbstractHost implements Serializable
 	if(leftType instanceof RefType && rightType instanceof RefType) {
 	    SootClass leftClass=((RefType) leftType).getSootClass();
 	    SootClass rightClass=((RefType) rightType).getSootClass();
+	    if(leftClass.isPhantom() || rightClass.isPhantom()) {
+	    	return;
+	    }
 	    
 	    if(leftClass.isInterface()) {
 		if(rightClass.isInterface()) {

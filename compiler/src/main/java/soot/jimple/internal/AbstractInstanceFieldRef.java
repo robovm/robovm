@@ -32,6 +32,7 @@ import soot.tagkit.*;
 import soot.jimple.*;
 import soot.util.*;
 import java.util.*;
+import soot.grimp.PrecedenceTest;
 
 public abstract class AbstractInstanceFieldRef implements InstanceFieldRef
 {
@@ -124,5 +125,4 @@ public abstract class AbstractInstanceFieldRef implements InstanceFieldRef
     {
         return getField().equivHashCode() * 101 + baseBox.getValue().equivHashCode() + 17;
     }
-
 }

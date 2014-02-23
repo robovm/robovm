@@ -107,7 +107,11 @@ public class ArrayBoundsChecker extends BodyTransformer
             
             Iterator unitIt = units.snapshotIterator();
             
-            while (unitIt.hasNext())
+            /*
+             * RoboVM note: Added "analysis != null" here to prevent an NPE
+             * inside this loop if analysis == null. This fixes issue #275.
+             */
+            while (analysis != null && unitIt.hasNext())
             {
                 Stmt stmt = (Stmt)unitIt.next();
 	   

@@ -109,8 +109,9 @@ public abstract class ObjCObject extends NativeObject {
         return AssociatedObjectHelper.getPeerObject(handle);
     }
     
-    public void addStrongRef(ObjCObject to) {
+    public <T extends ObjCObject> T addStrongRef(T to) {
         AssociatedObjectHelper.addStrongRef(this, to);
+        return to;
     }
     
     public void removeStrongRef(ObjCObject to) {

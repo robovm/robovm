@@ -229,8 +229,9 @@ public class SootMethod
     /** Sets the modifiers of this method.
      * @see soot.Modifier */
     public void setModifiers(int modifiers) {
-        if ((declaringClass != null) && (!declaringClass.isApplicationClass()))
-            throw new RuntimeException("Cannot set modifiers of a method from a non-app class!");
+        // RoboVM note: We allow all classes to be modified
+//        if ((declaringClass != null) && (!declaringClass.isApplicationClass()))
+//            throw new RuntimeException("Cannot set modifiers of a method from a non-app class!");
         this.modifiers = modifiers;
     }
 

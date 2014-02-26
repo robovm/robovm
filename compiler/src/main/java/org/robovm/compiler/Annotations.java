@@ -17,7 +17,6 @@
 package org.robovm.compiler;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import soot.SootClass;
@@ -25,8 +24,10 @@ import soot.SootMethod;
 import soot.tagkit.AnnotationAnnotationElem;
 import soot.tagkit.AnnotationArrayElem;
 import soot.tagkit.AnnotationElem;
+import soot.tagkit.AnnotationStringElem;
 import soot.tagkit.AnnotationTag;
 import soot.tagkit.Host;
+import soot.tagkit.Tag;
 import soot.tagkit.VisibilityAnnotationTag;
 import soot.tagkit.VisibilityParameterAnnotationTag;
 
@@ -65,11 +66,13 @@ public class Annotations {
     }
 
     public static List<AnnotationTag> getAnnotations(Host host) {
-        VisibilityAnnotationTag vatag = (VisibilityAnnotationTag) host.getTag("VisibilityAnnotationTag");
-        if (vatag != null) {
-            return vatag.getAnnotations();
+        List<AnnotationTag> result = new ArrayList<>();
+        for (Tag tag : host.getTags()) {
+            if (tag instanceof VisibilityAnnotationTag) {
+                result.addAll(((VisibilityAnnotationTag) tag).getAnnotations());
+            }
         }
-        return Collections.emptyList();
+        return result;
     }
     
     public static AnnotationTag getAnnotation(Host host, String annotationType) {
@@ -82,15 +85,17 @@ public class Annotations {
     }
     
     public static List<AnnotationTag> getParameterAnnotations(SootMethod method, int paramIndex) {
-        VisibilityParameterAnnotationTag vpatag = (VisibilityParameterAnnotationTag) method.getTag("VisibilityParameterAnnotationTag");
-        if (vpatag != null) {
-            List<VisibilityAnnotationTag> tags = vpatag.getVisibilityAnnotations();
-            List<AnnotationTag> annotations = tags.get(paramIndex).getAnnotations();
-            if (annotations != null) {
-                return annotations;
+        List<AnnotationTag> result = new ArrayList<>();
+        for (Tag tag : method.getTags()) {
+            if (tag instanceof VisibilityParameterAnnotationTag) {
+                ArrayList<VisibilityAnnotationTag> l = 
+                        ((VisibilityParameterAnnotationTag) tag).getVisibilityAnnotations();
+                if (l != null && paramIndex < l.size()) {
+                    result.addAll(l.get(paramIndex).getAnnotations());
+                }
             }
         }
-        return Collections.emptyList();
+        return result;
     }
 
     public static AnnotationTag getParameterAnnotation(SootMethod method, int paramIndex, String annotationType) {
@@ -274,5 +279,10 @@ public class Annotations {
             }
         }
         return null;
+    }
+    
+    public static String readStringElem(AnnotationTag annotation, String name, String def) {
+        AnnotationStringElem elem = (AnnotationStringElem) getElemByName(annotation, name);
+        return elem != null ? elem.getValue() : def;
     }
 }

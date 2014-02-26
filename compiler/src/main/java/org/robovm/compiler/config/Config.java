@@ -25,6 +25,7 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +45,7 @@ import org.robovm.compiler.clazz.Path;
 import org.robovm.compiler.llvm.DataLayout;
 import org.robovm.compiler.log.Logger;
 import org.robovm.compiler.plugin.CompilerPlugin;
+import org.robovm.compiler.plugin.objc.ObjCMemberPlugin;
 import org.robovm.compiler.target.ConsoleTarget;
 import org.robovm.compiler.target.Target;
 import org.robovm.compiler.target.ios.IOSTarget;
@@ -519,6 +521,11 @@ public class Config {
 
         this.clazzes = new Clazzes(this, realBootclasspath, classpath);
 
+        // Add standard plugins
+        compilerPlugins.addAll(0, Arrays.asList(
+            new ObjCMemberPlugin()
+        ));
+        
         return this;
     }
 

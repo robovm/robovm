@@ -76,6 +76,9 @@ public abstract class ObjCObject extends NativeObject {
     }
     
     protected void initObject(long handle) {
+        if (handle == 0) {
+            throw new RuntimeException("Objective-C initialization method returned nil");
+        }
         setHandle(handle);
         AssociatedObjectHelper.setPeerObject(handle, this);
     }
@@ -109,12 +112,12 @@ public abstract class ObjCObject extends NativeObject {
         return AssociatedObjectHelper.getPeerObject(handle);
     }
     
-    public <T extends ObjCObject> T addStrongRef(T to) {
+    public <T extends Object> T addStrongRef(T to) {
         AssociatedObjectHelper.addStrongRef(this, to);
         return to;
     }
     
-    public void removeStrongRef(ObjCObject to) {
+    public void removeStrongRef(Object to) {
         AssociatedObjectHelper.removeStrongRef(this, to);
     }
     
@@ -310,7 +313,7 @@ public abstract class ObjCObject extends NativeObject {
         }
 
         @SuppressWarnings({ "rawtypes", "unchecked" })
-        public static void addStrongRef(ObjCObject from, ObjCObject to) {
+        public static void addStrongRef(ObjCObject from, Object to) {
             if (to == null) {
                 throw new NullPointerException();
             }
@@ -325,7 +328,7 @@ public abstract class ObjCObject extends NativeObject {
         }
 
         @SuppressWarnings("rawtypes")
-        public static void removeStrongRef(ObjCObject from, ObjCObject to) {
+        public static void removeStrongRef(ObjCObject from, Object to) {
             if (to == null) {
                 throw new NullPointerException();
             }

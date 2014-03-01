@@ -91,7 +91,10 @@ public class Annotations {
                 ArrayList<VisibilityAnnotationTag> l = 
                         ((VisibilityParameterAnnotationTag) tag).getVisibilityAnnotations();
                 if (l != null && paramIndex < l.size()) {
-                    result.addAll(l.get(paramIndex).getAnnotations());
+                    ArrayList<AnnotationTag> annotations = l.get(paramIndex).getAnnotations();
+                    if (annotations != null) {
+                        result.addAll(annotations);
+                    }
                 }
             }
         }

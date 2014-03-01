@@ -48,6 +48,7 @@ import soot.Type;
 import soot.Unit;
 import soot.Value;
 import soot.VoidType;
+import soot.jimple.ClassConstant;
 import soot.jimple.IntConstant;
 import soot.jimple.InvokeExpr;
 import soot.jimple.Jimple;
@@ -82,9 +83,11 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     private SootClass org_robovm_objc_ObjCObject = null;
     private SootClass org_robovm_objc_Selector = null;
     private SootClass java_lang_String = null;
+    private SootClass java_lang_Class = null;
     private SootMethodRef org_robovm_objc_Selector_register = null;
     private SootMethodRef org_robovm_objc_ObjCObject_getSuper = null;
     private SootFieldRef org_robovm_objc_ObjCObject_customClass = null;
+    private SootMethodRef org_robovm_objc_ObjCClass_getByType = null;
     
     private SootMethod getOrCreateStaticInitializer(SootClass sootClass) {
         for (SootMethod m : sootClass.getMethods()) {
@@ -180,6 +183,36 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         return getMsgSendMethod(selectorName, method, true);
     }
 
+    private void addObjCClassField(SootClass sootClass) {
+        Jimple j = Jimple.v();
+        
+        SootMethod clinit = getOrCreateStaticInitializer(sootClass);
+        Body body = clinit.retrieveActiveBody();
+        
+        Local objCClass = Jimple.v().newLocal("$objCClass", org_robovm_objc_ObjCClass.getType());
+        body.getLocals().add(objCClass);
+
+        Chain<Unit> units = body.getUnits();
+        
+        SootField f = new SootField("$objCClass", org_robovm_objc_ObjCClass.getType(), 
+                STATIC | PRIVATE | FINAL);
+        sootClass.addField(f);
+
+        units.insertBefore(
+            Arrays.<Unit>asList(
+                j.newAssignStmt(
+                    objCClass,
+                    j.newStaticInvokeExpr(
+                        org_robovm_objc_ObjCClass_getByType,
+                        ClassConstant.v(sootClass.getName().replace('.', '/')))),
+                j.newAssignStmt(
+                    j.newStaticFieldRef(f.makeRef()), 
+                    objCClass)
+            ),
+            units.getLast()
+        );
+    }
+    
     private void registerSelectors(SootClass sootClass, List<String> selectors) {
         Jimple j = Jimple.v();
         
@@ -221,6 +254,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         org_robovm_objc_ObjCObject = r.makeClassRef(OBJC_OBJECT);
         org_robovm_objc_Selector = r.makeClassRef(SELECTOR);
         java_lang_String = r.makeClassRef("java.lang.String");
+        java_lang_Class = r.makeClassRef("java.lang.Class");
         org_robovm_objc_Selector_register =
             Scene.v().makeMethodRef(
                 org_robovm_objc_Selector,
@@ -233,6 +267,12 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                 "getSuper", 
                 Collections.<Type>emptyList(), 
                 org_robovm_objc_ObjCSuper.getType(), false);
+        org_robovm_objc_ObjCClass_getByType =
+            Scene.v().makeMethodRef(
+                org_robovm_objc_ObjCClass,
+                "getByType",
+                Arrays.<Type>asList(java_lang_Class.getType()),
+                org_robovm_objc_ObjCClass.getType(), true);
         org_robovm_objc_ObjCObject_customClass =
             Scene.v().makeFieldRef(
                 org_robovm_objc_ObjCObject, 
@@ -262,6 +302,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                     transformMethod(config, clazz, sootClass, method, selectors);
                 }
             }
+            addObjCClassField(sootClass);
             registerSelectors(sootClass, selectors);
         }
     }

@@ -135,10 +135,11 @@ public class Linker {
         mb.addGlobal(new Global("_bcDynamicJNI", new IntegerConstant(config.isUseDynamicJni() ? (byte) 1 : (byte) 0)));
         ArrayConstantBuilder staticLibs = new ArrayConstantBuilder(I8_PTR);
         if (!config.isUseDynamicJni()) {
-            for (String lib : config.getLibs()) {
-                if (lib.endsWith(".a")) {
-                    lib = new File(lib).getName();
-                    String libName = lib.substring(0, lib.length() - 2);
+            for (Config.Lib lib : config.getLibs()) {
+                String p = lib.getValue();
+                if (p.endsWith(".a")) {
+                    p = new File(p).getName();
+                    String libName = p.substring(0, p.length() - 2);
                     if (libName.startsWith("lib")) {
                         libName = libName.substring(3);
                     }

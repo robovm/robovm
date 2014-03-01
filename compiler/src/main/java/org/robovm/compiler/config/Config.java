@@ -261,14 +261,9 @@ public class Config {
                 : Collections.unmodifiableList(exportedSymbols);
     }
     
-    public List<String> getLibs() {
-        List<String> result = new ArrayList<String>();
-        if (libs != null) {
-            for (Lib lib : libs) {
-                result.add(lib.getValue());
-            }
-        }
-        return Collections.unmodifiableList(result);
+    public List<Lib> getLibs() {
+        return libs == null ? Collections.<Lib>emptyList() 
+                : Collections.unmodifiableList(libs);
     }
     
     public List<String> getFrameworks() {
@@ -858,11 +853,11 @@ public class Config {
             return this;
         }
 
-        public Builder addLib(String lib) {
+        public Builder addLib(Lib lib) {
             if (config.libs == null) {
                 config.libs = new ArrayList<Lib>();
             }
-            config.libs.add(new Lib(lib));
+            config.libs.add(lib);
             return this;
         }
         
@@ -1063,15 +1058,60 @@ public class Config {
         }
     }
 
-    private static final class Lib {
+    public static final class Lib {
         private final String value;
+        private final boolean force;
 
-        public Lib(String value) {
+        public Lib(String value, boolean force) {
             this.value = value;
+            this.force = force;
         }
         
         public String getValue() {
             return value;
+        }
+        
+        public boolean isForce() {
+            return force;
+        }
+
+        @Override
+        public String toString() {
+            return "Lib [value=" + value + ", force=" + force + "]";
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + (force ? 1231 : 1237);
+            result = prime * result + ((value == null) ? 0 : value.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            Lib other = (Lib) obj;
+            if (force != other.force) {
+                return false;
+            }
+            if (value == null) {
+                if (other.value != null) {
+                    return false;
+                }
+            } else if (!value.equals(other.value)) {
+                return false;
+            }
+            return true;
         }
     }
     
@@ -1088,20 +1128,26 @@ public class Config {
             if (value == null) {
                 return null;
             }
+            InputNode forceNode = node.getAttribute("force");
+            boolean force = forceNode == null || Boolean.valueOf(forceNode.getValue());
             if (value.endsWith(".a") || value.endsWith(".o")) {
-                return new Lib(fileConverter.read(value).getAbsolutePath());
+                return new Lib(fileConverter.read(value).getAbsolutePath(), force);
             } else {
-                return new Lib(value);
+                return new Lib(value, force);
             }
         }
 
         @Override
         public void write(OutputNode node, Lib lib) throws Exception {
             String value = lib.getValue();
+            boolean force = lib.isForce();
             if (value.endsWith(".a") || value.endsWith(".o")) {
                 fileConverter.write(node, new File(value));
             } else {
                 node.setValue(value);
+            }
+            if (!force) {
+                node.setAttribute("force", "false");
             }
         }
     }

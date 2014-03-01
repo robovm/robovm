@@ -57,7 +57,12 @@ public class ConfigTest {
         Config config = builder.config;
         assertEquals(Arrays.asList(new File(wd, "foo1.jar"), new File(tmp, "foo2.jar")), config.getClasspath());
         assertEquals(Arrays.asList("Foundation", "AppKit"), config.getFrameworks());
-        assertEquals(Arrays.asList("dl", "/tmp/wd/libs/libmy.a", "/tmp/wd/libs/foo.o", "/usr/lib/libbar.a"), config.getLibs());
+        assertEquals(Arrays.asList(
+                new Config.Lib("dl", true),
+                new Config.Lib("/tmp/wd/libs/libmy.a", true),
+                new Config.Lib("/tmp/wd/libs/foo.o", true),
+                new Config.Lib("/usr/lib/libbar.a", false)
+                ), config.getLibs());
         assertEquals(Arrays.asList(
                 new Resource(new File(wd, "resources")), 
                 new Resource(new File("/usr/share/resources")),
@@ -80,7 +85,12 @@ public class ConfigTest {
         Config config = builder.config;
         assertEquals(Arrays.asList(new File(wd, "foo1.jar"), new File(tmp, "foo2.jar")), config.getClasspath());
         assertEquals(Arrays.asList("Foundation", "AppKit"), config.getFrameworks());
-        assertEquals(Arrays.asList("dl", "/tmp/wd/libs/libmy.a", "/tmp/wd/libs/foo.o", "/usr/lib/libbar.a"), config.getLibs());
+        assertEquals(Arrays.asList(
+                new Config.Lib("dl", true),
+                new Config.Lib("/tmp/wd/libs/libmy.a", true),
+                new Config.Lib("/tmp/wd/libs/foo.o", true),
+                new Config.Lib("/usr/lib/libbar.a", false)
+                ), config.getLibs());
         assertEquals(Arrays.asList(new Resource(new File("/tmp/wd/resources")), 
                 new Resource(new File("/usr/share/resources"))),
                 config.getResources());
@@ -96,10 +106,10 @@ public class ConfigTest {
         builder.addClasspathEntry(new File(tmp, "foo2.jar"));
         builder.addFramework("Foundation");
         builder.addFramework("AppKit");
-        builder.addLib("dl");
-        builder.addLib("libs/libmy.a");
-        builder.addLib("libs/foo.o");
-        builder.addLib("/usr/lib/libbar.a");
+        builder.addLib(new Config.Lib("dl", true));
+        builder.addLib(new Config.Lib("libs/libmy.a", true));
+        builder.addLib(new Config.Lib("libs/foo.o", true));
+        builder.addLib(new Config.Lib("/usr/lib/libbar.a", false));
         builder.addResource(new Resource(new File("/tmp/wd/resources")));
         builder.addResource(new Resource(new File("/usr/share/resources")));
         builder.addResource(new Resource(new File("/tmp/wd"), null).include("data/**/*"));

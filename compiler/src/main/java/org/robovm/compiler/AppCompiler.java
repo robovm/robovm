@@ -318,7 +318,7 @@ public class AppCompiler {
                     }
                 } else if ("-libs".equals(args[i])) {
                     for (String p : args[++i].split(":")) {
-                        builder.addLib(p);
+                        builder.addLib(new Config.Lib(p, true));
                     }
                 } else if ("-exportedsymbols".equals(args[i])) {
                     for (String p : args[++i].split(":")) {

@@ -54,6 +54,7 @@ import soot.jimple.Jimple;
 import soot.jimple.StaticInvokeExpr;
 import soot.jimple.Stmt;
 import soot.jimple.StringConstant;
+import soot.tagkit.AnnotationStringElem;
 import soot.tagkit.AnnotationTag;
 import soot.tagkit.Tag;
 import soot.tagkit.VisibilityAnnotationTag;
@@ -69,6 +70,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     public static final String OBJC_ANNOTATIONS_PACKAGE = "org/robovm/objc/annotation";
     public static final String METHOD = "L" + OBJC_ANNOTATIONS_PACKAGE + "/Method;";
     public static final String PROPERTY = "L" + OBJC_ANNOTATIONS_PACKAGE + "/Property;";
+    public static final String BIND_SELECTOR = "L" + OBJC_ANNOTATIONS_PACKAGE + "/BindSelector;";
     public static final String SELECTOR = "org.robovm.objc.Selector";
     public static final String OBJC_SUPER = "org.robovm.objc.ObjCSuper";
     public static final String OBJC_CLASS = "org.robovm.objc.ObjCClass";
@@ -354,6 +356,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         SootMethod callbackMethod = getCallbackMethod(selectorName, method);
         sootClass.addMethod(callbackMethod);
         addCallbackAnnotation(callbackMethod);
+        addBindSelectorAnnotation(callbackMethod, selectorName);
         
         Body body = j.newBody(callbackMethod);
         callbackMethod.setActiveBody(body);
@@ -549,6 +552,13 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     private void addCallbackAnnotation(SootMethod method) {
         VisibilityAnnotationTag tag = getOrCreateRuntimeVisibilityAnnotationTag(method);
         tag.addAnnotation(new AnnotationTag(CALLBACK, 0));
+    }
+
+    private void addBindSelectorAnnotation(SootMethod method, String selectorName) {
+        VisibilityAnnotationTag vaTag = getOrCreateRuntimeVisibilityAnnotationTag(method);
+        AnnotationTag annotationTag = new AnnotationTag(BIND_SELECTOR, 1);
+        annotationTag.addElem(new AnnotationStringElem(selectorName, 's', "value"));
+        vaTag.addAnnotation(annotationTag);
     }
 
 }

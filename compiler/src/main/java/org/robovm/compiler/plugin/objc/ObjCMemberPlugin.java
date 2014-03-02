@@ -51,6 +51,7 @@ import soot.VoidType;
 import soot.jimple.ClassConstant;
 import soot.jimple.IntConstant;
 import soot.jimple.InvokeExpr;
+import soot.jimple.InvokeStmt;
 import soot.jimple.Jimple;
 import soot.jimple.StaticInvokeExpr;
 import soot.jimple.Stmt;
@@ -76,11 +77,13 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     public static final String OBJC_SUPER = "org.robovm.objc.ObjCSuper";
     public static final String OBJC_CLASS = "org.robovm.objc.ObjCClass";
     public static final String OBJC_OBJECT = "org.robovm.objc.ObjCObject";
+    public static final String OBJC_RUNTIME = "org.robovm.objc.ObjCRuntime";
 
     private boolean initialized = false;
     private SootClass org_robovm_objc_ObjCClass = null;
     private SootClass org_robovm_objc_ObjCSuper = null;
     private SootClass org_robovm_objc_ObjCObject = null;
+    private SootClass org_robovm_objc_ObjCRuntime = null;
     private SootClass org_robovm_objc_Selector = null;
     private SootClass java_lang_String = null;
     private SootClass java_lang_Class = null;
@@ -88,6 +91,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     private SootMethodRef org_robovm_objc_ObjCObject_getSuper = null;
     private SootFieldRef org_robovm_objc_ObjCObject_customClass = null;
     private SootMethodRef org_robovm_objc_ObjCClass_getByType = null;
+    private SootMethodRef org_robovm_objc_ObjCRuntime_bind = null;
     
     private SootMethod getOrCreateStaticInitializer(SootClass sootClass) {
         for (SootMethod m : sootClass.getMethods()) {
@@ -183,6 +187,44 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         return getMsgSendMethod(selectorName, method, true);
     }
 
+    private void addBindCall(SootClass sootClass) {
+        Jimple j = Jimple.v();
+        
+        SootMethod clinit = getOrCreateStaticInitializer(sootClass);
+        Body body = clinit.retrieveActiveBody();
+        
+        String internalName = sootClass.getName().replace('.', '/');
+        ClassConstant c = ClassConstant.v(internalName);
+        
+        Chain<Unit> units = body.getUnits();
+        
+        // Don't call bind if there's already a call in the static initializer
+        for (Unit unit : units) {
+            if (unit instanceof InvokeStmt) {
+                InvokeStmt stmt = (InvokeStmt) unit;
+                if (stmt.getInvokeExpr() instanceof StaticInvokeExpr) {
+                    StaticInvokeExpr expr = (StaticInvokeExpr) stmt.getInvokeExpr();
+                    SootMethodRef ref = expr.getMethodRef();
+                    if (ref.isStatic() && ref.declaringClass().equals(org_robovm_objc_ObjCRuntime) 
+                            && ref.name().equals("bind")) {
+                        if (ref.parameterTypes().isEmpty() || expr.getArg(0).equals(c)) {
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Call ObjCRuntime.bind(<class>)
+        units.insertBefore(
+            j.newInvokeStmt(
+                j.newStaticInvokeExpr(
+                    org_robovm_objc_ObjCRuntime_bind, 
+                    ClassConstant.v(internalName))),
+            units.getLast()
+        );
+    }
+    
     private void addObjCClassField(SootClass sootClass) {
         Jimple j = Jimple.v();
         
@@ -252,6 +294,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         org_robovm_objc_ObjCClass = r.makeClassRef(OBJC_CLASS);
         org_robovm_objc_ObjCSuper = r.makeClassRef(OBJC_SUPER);
         org_robovm_objc_ObjCObject = r.makeClassRef(OBJC_OBJECT);
+        org_robovm_objc_ObjCRuntime = r.makeClassRef(OBJC_RUNTIME);
         org_robovm_objc_Selector = r.makeClassRef(SELECTOR);
         java_lang_String = r.makeClassRef("java.lang.String");
         java_lang_Class = r.makeClassRef("java.lang.Class");
@@ -273,6 +316,12 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                 "getByType",
                 Arrays.<Type>asList(java_lang_Class.getType()),
                 org_robovm_objc_ObjCClass.getType(), true);
+        org_robovm_objc_ObjCRuntime_bind =
+            Scene.v().makeMethodRef(
+                org_robovm_objc_ObjCRuntime,
+                "bind",
+                Arrays.<Type>asList(java_lang_Class.getType()),
+                VoidType.v(), true);
         org_robovm_objc_ObjCObject_customClass =
             Scene.v().makeFieldRef(
                 org_robovm_objc_ObjCObject, 
@@ -302,6 +351,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                     transformMethod(config, clazz, sootClass, method, selectors);
                 }
             }
+            addBindCall(sootClass);
             addObjCClassField(sootClass);
             registerSelectors(sootClass, selectors);
         }

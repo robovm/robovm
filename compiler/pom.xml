@@ -52,6 +52,11 @@
       <version>20131018</version>
     </dependency>
     <dependency>
+      <groupId>org.ow2.asm</groupId>
+      <artifactId>asm-all</artifactId>
+      <version>4.2</version>
+    </dependency>
+    <dependency>
       <groupId>org.robovm</groupId>
       <artifactId>robovm-llvm</artifactId>
       <version>${project.version}</version>

@@ -37,6 +37,7 @@ import soot.BooleanType;
 import soot.Local;
 import soot.Modifier;
 import soot.PatchingChain;
+import soot.RefType;
 import soot.Scene;
 import soot.SootClass;
 import soot.SootField;
@@ -117,12 +118,12 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     }
     
     @SuppressWarnings("unchecked")
-    private SootMethod getMsgSendMethod(String selectorName, SootMethod method, boolean isCallback) {
+    private SootMethod getMsgSendMethod(String selectorName, SootMethod method, boolean isCallback, Type receiverType) {
         List<Type> paramTypes = new ArrayList<>();
         if (method.isStatic()) {
             paramTypes.add(org_robovm_objc_ObjCClass.getType());
         } else {
-            paramTypes.add(method.getDeclaringClass().getType());
+            paramTypes.add(receiverType == null ? method.getDeclaringClass().getType() : receiverType);
         }
         paramTypes.add(org_robovm_objc_Selector.getType());
         paramTypes.addAll(method.getParameterTypes());
@@ -133,7 +134,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     }
 
     private SootMethod getMsgSendMethod(String selectorName, SootMethod method) {
-        return getMsgSendMethod(selectorName, method, false);
+        return getMsgSendMethod(selectorName, method, false, null);
     }
     
     @SuppressWarnings("unchecked")
@@ -183,8 +184,8 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         }
     }
 
-    private SootMethod getCallbackMethod(String selectorName, SootMethod method) {
-        return getMsgSendMethod(selectorName, method, true);
+    private SootMethod getCallbackMethod(String selectorName, SootMethod method, Type receiverType) {
+        return getMsgSendMethod(selectorName, method, true, receiverType);
     }
 
     private void addBindCall(SootClass sootClass) {
@@ -381,7 +382,10 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
             }
 
             // Create the @Bridge and @Callback methods needed for this selector
-            createCallback(sootClass, method, selectorName);
+            Type receiverType = ObjCProtocolProxyPlugin.isObjCProxy(sootClass) 
+                    ? sootClass.getInterfaces().getFirst().getType()
+                    : sootClass.getType();
+            createCallback(sootClass, method, selectorName, receiverType);
             if (method.isNative()) {
                 selectors.add(selectorName);
                 createBridge(sootClass, method, selectorName);
@@ -432,7 +436,10 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                 }
 
                 // Create the @Bridge and @Callback methods needed for this selector
-                createCallback(sootClass, method, selectorName);
+                Type receiverType = ObjCProtocolProxyPlugin.isObjCProxy(sootClass) 
+                        ? sootClass.getInterfaces().getFirst().getType()
+                        : sootClass.getType();
+                createCallback(sootClass, method, selectorName, receiverType);
                 if (method.isNative()) {
                     selectors.add(selectorName);
                     createBridge(sootClass, method, selectorName);
@@ -441,10 +448,10 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         }
     }
 
-    private void createCallback(SootClass sootClass, SootMethod method, String selectorName) {
+    private void createCallback(SootClass sootClass, SootMethod method, String selectorName, Type receiverType) {
         Jimple j = Jimple.v();
         
-        SootMethod callbackMethod = getCallbackMethod(selectorName, method);
+        SootMethod callbackMethod = getCallbackMethod(selectorName, method, receiverType);
         sootClass.addMethod(callbackMethod);
         addCallbackAnnotation(callbackMethod);
         addBindSelectorAnnotation(callbackMethod, selectorName);
@@ -455,9 +462,9 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
 
         Local thiz = null;
         if (!method.isStatic()) {
-            thiz = j.newLocal("$this", sootClass.getType());
+            thiz = j.newLocal("$this", receiverType);
             body.getLocals().add(thiz);
-            units.add(j.newIdentityStmt(thiz, j.newParameterRef(sootClass.getType(), 0)));
+            units.add(j.newIdentityStmt(thiz, j.newParameterRef(receiverType, 0)));
         }
         LinkedList<Value> args = new LinkedList<>();
         for (int i = 0; i < method.getParameterCount(); i++) {
@@ -474,9 +481,22 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
             body.getLocals().add(ret);
         }
 
+        SootMethodRef targetMethod = method.makeRef();
+        if (((RefType) receiverType).getSootClass().isInterface()) {
+            @SuppressWarnings("unchecked")
+            List<Type> parameterTypes = method.getParameterTypes();
+            targetMethod = Scene.v().makeMethodRef(
+                    ((RefType) receiverType).getSootClass(),
+                    method.getName(),
+                    parameterTypes,
+                    method.getReturnType(), false);
+        }
+        
         InvokeExpr expr = method.isStatic()
-            ? j.newStaticInvokeExpr(method.makeRef(), args)
-            : j.newVirtualInvokeExpr(thiz, method.makeRef(), args);
+            ? j.newStaticInvokeExpr(targetMethod, args)
+            : (((RefType) receiverType).getSootClass().isInterface() 
+                ? j.newInterfaceInvokeExpr(thiz, targetMethod, args) 
+                : j.newVirtualInvokeExpr(thiz, targetMethod, args));
         units.add(
             ret == null
                 ? j.newInvokeStmt(expr)

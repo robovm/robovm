@@ -498,6 +498,8 @@ public class ClassCompiler {
         structMemberMethodCompiler.reset(clazz);
         globalValueMethodCompiler.reset(clazz);
         
+        ClazzInfo ci = clazz.resetClazzInfo();
+
         for (CompilerPlugin compilerPlugin : config.getCompilerPlugins()) {
             compilerPlugin.beforeClass(config, clazz);
         }
@@ -618,8 +620,6 @@ public class ClassCompiler {
         mb.addFunction(infoFn);
         
         out.write(mb.build().toString().getBytes("UTF-8"));
-        
-        ClazzInfo ci = clazz.resetClazzInfo();
         
         ci.setCatchNames(catches);
         ci.setTrampolines(trampolines);

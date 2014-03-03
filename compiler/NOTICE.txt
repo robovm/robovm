@@ -49,3 +49,8 @@ copyright 2002-2013 by several authors and released under the Apache License
 The RoboVM compiler includes the JSON.org JSON library which is copyright 2002,
 JSON.org and released under the JSON License.
 http://www.json.org/
+
+The RoboVM compiler includes the ASM Java bytecode manipulation framework which
+is copyright 2000-2011 INRIA, France Telecom and released under the 3-clause BSD
+license.
+http://asm.ow2.org/

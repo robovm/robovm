@@ -40,7 +40,10 @@ public final class ObjCClass extends ObjCObject {
     private static final Map<String, ObjCClass> nameToClass = new HashMap<String, ObjCClass>();
     private static final Map<String, Class<? extends ObjCObject>> allNativeClasses = new HashMap<>();
     private static final Map<String, Class<? extends ObjCObject>> allCustomClasses = new HashMap<>();
+    private static final Map<String, Class<? extends ObjCObject>> allObjCProxyClasses = new HashMap<>();
 
+    private static final int ACC_SYNTHETIC = 0x1000;
+    
     static {
         ObjCRuntime.bind();
         @SuppressWarnings("unchecked")
@@ -67,9 +70,20 @@ public final class ObjCClass extends ObjCObject {
                 }
                 allCustomClasses.put(name, cls);
             }
+            
+            if (isObjCProxy(cls)) {
+                // Map protocol interface names to ObjC protocol proxy classes
+                String name = cls.getName();
+                String protocolName = name.substring(0, name.length() - 10);
+                allObjCProxyClasses.put(protocolName, cls);
+            }
         }
     }
 
+    static boolean isObjCProxy(Class<?> cls) {
+        return (cls.getModifiers() & ACC_SYNTHETIC) > 0 && cls.getName().endsWith("$ObjCProxy");
+    }
+    
     private final Class<? extends ObjCObject> type;
     private final String name;
     private final boolean custom;
@@ -300,6 +314,11 @@ public final class ObjCClass extends ObjCObject {
             // No need to search interfaces since interfaces cannot have 
             // static methods and callbacks must be static.
             classes.add(type);
+        } else {
+            Class<?> objCProxy = allObjCProxyClasses.get(type.getName());
+            if (objCProxy != null) {
+                classes.add(objCProxy);
+            }
         }
         try {
             classes.add(Class.forName(type.getName() + "$Callbacks", true, type.getClassLoader()));

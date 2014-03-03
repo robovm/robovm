@@ -46,6 +46,7 @@ import org.robovm.compiler.llvm.DataLayout;
 import org.robovm.compiler.log.Logger;
 import org.robovm.compiler.plugin.CompilerPlugin;
 import org.robovm.compiler.plugin.objc.ObjCMemberPlugin;
+import org.robovm.compiler.plugin.objc.ObjCProtocolProxyPlugin;
 import org.robovm.compiler.target.ConsoleTarget;
 import org.robovm.compiler.target.Target;
 import org.robovm.compiler.target.ios.IOSTarget;
@@ -518,6 +519,7 @@ public class Config {
 
         // Add standard plugins
         compilerPlugins.addAll(0, Arrays.asList(
+            new ObjCProtocolProxyPlugin(),
             new ObjCMemberPlugin()
         ));
         

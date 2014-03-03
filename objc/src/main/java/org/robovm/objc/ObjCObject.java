@@ -138,14 +138,11 @@ public abstract class ObjCObject extends NativeObject {
         if (o != null) {
             return o;
         }
-        ObjCClass fallback = ObjCClass.getByType(cls.isInterface() ? ObjCObject.class : cls);
+        ObjCClass fallback = ObjCClass.getByType(cls);
         ObjCClass objCClass = ObjCClass.getFromObject(handle, fallback);
         Class<T> c = (Class<T>) objCClass.getType();
         if (c == ObjCClass.class) {
             return (T) objCClass;
-        }
-        if (c == ObjCObject.class && cls.isInterface()) {
-            throw new ObjCClassNotFoundException("Could not create a Java object for interface: " + cls.getName());
         }
 
         o = VM.allocateObject(c);
@@ -172,8 +169,12 @@ public abstract class ObjCObject extends NativeObject {
             return o.getHandle();
         }
         @MarshalsPointer
-        public static ObjCProtocol protocolToObject(Class<? extends ObjCObject> cls, long handle, long flags) {
-            ObjCObject o = ObjCObject.toObjCObject(cls, handle);
+        public static ObjCProtocol protocolToObject(Class<?> cls, long handle, long flags) {
+            Class<? extends ObjCObject> proxyClass = ObjCClass.allObjCProxyClasses.get(cls.getName());
+            if (proxyClass == null) {
+                proxyClass = ObjCObject.class;
+            }
+            ObjCObject o = ObjCObject.toObjCObject(proxyClass, handle);
             return (ObjCProtocol) o;
         }
         @MarshalsPointer

@@ -40,7 +40,7 @@ public final class ObjCClass extends ObjCObject {
     private static final Map<String, ObjCClass> nameToClass = new HashMap<String, ObjCClass>();
     private static final Map<String, Class<? extends ObjCObject>> allNativeClasses = new HashMap<>();
     private static final Map<String, Class<? extends ObjCObject>> allCustomClasses = new HashMap<>();
-    private static final Map<String, Class<? extends ObjCObject>> allObjCProxyClasses = new HashMap<>();
+    static final Map<String, Class<? extends ObjCObject>> allObjCProxyClasses = new HashMap<>();
 
     private static final int ACC_SYNTHETIC = 0x1000;
     

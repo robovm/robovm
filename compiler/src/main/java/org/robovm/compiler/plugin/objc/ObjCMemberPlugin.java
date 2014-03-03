@@ -600,7 +600,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
             );
             StaticInvokeExpr invokeMsgSendSuperExpr = 
                 j.newStaticInvokeExpr(
-                    msgSendMethod.makeRef(),
+                    msgSendSuperMethod.makeRef(),
                     l(zuper, args));
             units.add(
                 ret == null

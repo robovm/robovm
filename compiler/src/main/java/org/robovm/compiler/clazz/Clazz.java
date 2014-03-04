@@ -101,6 +101,8 @@ public abstract class Clazz implements Comparable<Clazz> {
             throw new IllegalStateException();
         }
         File infoFile = clazzes.getConfig().getInfoFile(this);
+        infoFile.getParentFile().mkdirs();
+
         ObjectOutputStream oos = null;
         try {
             oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(infoFile)));

@@ -18,12 +18,16 @@ package org.robovm.compiler;
 
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -33,6 +37,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.exec.ExecuteException;
 import org.apache.commons.io.FileUtils;
@@ -195,7 +202,14 @@ public class AppCompiler {
     
     private void compile(Clazz clazz, Set<Clazz> compileQueue, Set<Clazz> compiled) throws IOException {
         if (config.isClean() || classCompiler.mustCompile(clazz)) {
-            classCompiler.compile(clazz);
+        	if (config.produceIntermediate())
+        	{
+        		classCompiler.genLLFile(clazz);
+        	}
+        	else
+        	{
+            	classCompiler.compile(clazz);
+        	}
         }
         for (Dependency dep : clazz.getClazzInfo().getDependencies()) {
             Clazz depClazz = config.getClazzes().load(dep.getClassName());
@@ -208,29 +222,111 @@ public class AppCompiler {
     public void compile() throws IOException {
         updateCheck();
         
-        TreeSet<Clazz> compileQueue = getRootClasses();
-        Set<Clazz> linkClasses = new HashSet<Clazz>();
-        while (!compileQueue.isEmpty() && !Thread.currentThread().isInterrupted()) {
-            Clazz clazz = compileQueue.pollFirst();
-            if (!linkClasses.contains(clazz)) {
-                compile(clazz, compileQueue, linkClasses);
-                linkClasses.add(clazz);
-            }
-        }
-        if (Thread.currentThread().isInterrupted()) {
-            return;
-        }
+        if (!config.consumeIntermediate())
+        {
+	        TreeSet<Clazz> compileQueue = getRootClasses();
+    	    Set<Clazz> linkClasses = new HashSet<Clazz>();
+        	while (!compileQueue.isEmpty() && !Thread.currentThread().isInterrupted()) {
+            	Clazz clazz = compileQueue.pollFirst();
+	            if (!linkClasses.contains(clazz)) {
+    	            compile(clazz, compileQueue, linkClasses);
+        	        linkClasses.add(clazz);
+            	}
+	        }
+    	    if (Thread.currentThread().isInterrupted()) {
+        	    return;
+	        }
         
-        if (linkClasses.contains(config.getClazzes().load(TRUSTED_CERTIFICATE_STORE_CLASS))) {
-            if (config.getCacerts() != null) {
-                config.addResourcesPath(config.getClazzes().createResourcesBootclasspathPath(
-                        config.getHome().getCacertsPath(config.getCacerts())));
-            }
-        }
+    	    if (linkClasses.contains(config.getClazzes().load(TRUSTED_CERTIFICATE_STORE_CLASS))) {
+        	    if (config.getCacerts() != null) {
+            	    config.addResourcesPath(config.getClazzes().createResourcesBootclasspathPath(
+                	        config.getHome().getCacertsPath(config.getCacerts())));
+	            }
+    	    }
         
+			if (config.produceIntermediate()) 
+			{
+				String linker_ir = linker.genLL(linkClasses);
+				
+				File intermediate = new File("intermediate-" + config.getExecutableName() + ".zip");
+				FileOutputStream fos = new FileOutputStream(intermediate);
+				ZipOutputStream zos = new ZipOutputStream(fos);
+
+				zos.putNextEntry(new ZipEntry(Linker.LINKER_FILENAME));
+				zos.write(linker_ir.getBytes(Charset.forName("utf-8")));
+				zos.closeEntry();
+
+				for (Clazz clazz : linkClasses) 
+				{
+					File ll = config.getLlFile(clazz);
+					zos.putNextEntry(new ZipEntry(clazz.getInternalName() + Config.LL_EXTENSION));
+					FileInputStream fis = new FileInputStream(ll);
+					IOUtils.copy(fis, zos);
+					fis.close();
+					zos.closeEntry();
+				}
+
+				zos.close();
+			}
+			else
+			{
         linker.link(linkClasses);
     }
+		} 
+        else 
+        {
+			compileFromIntermediate();
+		}
+	}
+
+    private void compileFromIntermediate() throws IOException {
+    	File intermediateFile = config.getIntermediateFile();
+    	if (!intermediateFile.exists()) throw new FileNotFoundException("Intermediate file not found");
+    	
+        List<File> objectFiles = new ArrayList<File>();
+    	String linker_ir = null;
+
+    	FileInputStream fis = new FileInputStream(intermediateFile);
+    	ZipInputStream zis = new ZipInputStream(fis);
+    	ZipEntry ze = null;
+    	while ((ze = zis.getNextEntry()) != null)
+    	{
+    		if (Linker.LINKER_FILENAME.equals(ze.getName()))
+    		{
+    			linker_ir = IOUtils.toString(zis, "utf-8");
+    		}
+    		else
+    		{
+    			File llf = File.createTempFile(ze.getName().replace(".ll", "").replace('/', '.'), ".ll");
+    			byte[] ll = IOUtils.toByteArray(zis);
+    			FileOutputStream fos = new FileOutputStream(llf);
+    			fos.write(ll);
+    			fos.close();
+    			
+    			File oFile = File.createTempFile(ze.getName().replace(".ll", "").replace('/', '.'), ".o");
+                objectFiles.add(oFile);
+                classCompiler.compileFromIntermediate(ll, llf.getName().replace(".class.ll", ""), oFile,readMethodsFormFirstLine(ll));
+    		}
+    		zis.closeEntry();
+    	}
+        zis.close();
         
+    	linker.linkFromIntermediate(linker_ir, objectFiles);
+    }
+    
+    private Set<String> readMethodsFormFirstLine(byte[] ll) 
+    {
+    	int i = 0;
+		for (; i < ll.length; i++) if (ll[i] == '\n') break; 
+		String[] methodNames = new String(ll,1,i).split(",");
+		
+		Set<String> retval = new HashSet<String>();
+		for (String name : methodNames) {
+			retval.add(name);
+		}
+		return retval;
+	}
+
     public static void main(String[] args) throws IOException {
         
         AppCompiler compiler = null;
@@ -311,6 +407,10 @@ public class AppCompiler {
                 } else if ("-target".equals(args[i])) {
                     String s = args[++i];
                     builder.targetType("auto".equals(s) ? null : TargetType.valueOf(s));
+                } else if ("-produce-intermediate".equals(args[i])) {
+                    builder.produceIntermediate();
+                } else if ("-intermediate".equals(args[i])) {
+                    builder.setIntermediateFile(new File(args[++i]));
                 } else if ("-forcelinkclasses".equals(args[i])) {
                     for (String p : args[++i].split(":")) {
                         p = p.replace('#', '*');
@@ -468,6 +568,8 @@ public class AppCompiler {
                 process.waitFor();
             } else if (createIpa) {
                 ((IOSTarget) compiler.config.getTarget()).createIpa();
+            } else if (compiler.config.produceIntermediate()) {
+            	compiler.config.getLogger().info("Created intermediate");
             } else {
                 compiler.config.getTarget().install();
             }
@@ -520,15 +622,21 @@ public class AppCompiler {
                          + "                        archive.");
         System.err.println("  -o <name>             The name of the target executable");
         System.err.println("  -os <name>            The name of the OS to build for. Allowed values are \n" 
-                         + "                        'auto', 'linux', 'macosx' and 'ios'. Default is 'auto' which\n" 
-                         + "                        means use the LLVM deafult.");
+                         + "                        'auto', 'linux', 'windows', 'macosx' and 'ios'. Default is \n" 
+                         + "                        'auto' which means use the LLVM deafult. Windows will only\n"
+        				 + "                        work with -produce-intermediate since linking on windows\n"
+        				 + "						is not supported.");
         System.err.println("  -arch <name>          The name of the LLVM arch to compile for. Allowed values\n" 
                          + "                        are 'auto', 'x86', 'thumbv7'. Default is 'auto' which means\n" 
                          + "                        use the LLVM default.");
-        System.err.println("  -cpu <name>           The name of the LLVM cpu to compile for. The LLVM default\n" 
-                         + "                        is used if not specified. Use llc to determine allowed values.");
+//        System.err.println("  -cpu <name>           The name of the LLVM cpu to compile for. The LLVM default\n" 
+//                         + "                        is used if not specified. Use llc to determine allowed values.");
         System.err.println("  -target <name>        The target to build for. Either 'auto', 'console' or 'ios'.\n" 
                          + "                        The default is 'auto' which means use -os to decide.");
+        System.err.println("  -produce-intermediate To split the compile and link as two separate phases, an \n" 
+        				 + "                        intermediate result can be produced. see option -intermediate");
+        System.err.println("  -intermediate <file>  Passes the previously produced intermediate to execute\n" 
+        				 + "                        linking phase. see option -produce-intermediate");
         System.err.println("  -forcelinkclasses <list>\n" 
                          + "                        : separated list of class patterns matching\n" 
                          + "                        classes that must be linked in even if not referenced\n" 

@@ -18,6 +18,7 @@ package org.robovm.compiler.config;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -72,7 +73,9 @@ import org.simpleframework.xml.stream.OutputNode;
 @Root
 public class Config {
     
-    public enum Cacerts { full };
+    public static final String LL_EXTENSION = ".class.ll";
+
+	public enum Cacerts { full };
     public enum TargetType { console, ios };
     
     @Element(required = false)
@@ -141,7 +144,11 @@ public class Config {
     private boolean skipLinking = false;
     private boolean skipInstall = false;
     
-    private File osArchDepLibDir;
+	private boolean produceIntermediate = false;
+	private File intermediateFile;
+	private boolean consumeIntermediate = false;
+
+	private File osArchDepLibDir;
     private File tmpDir;
     private Clazzes clazzes;
     private VTable.Cache vtableCache;
@@ -354,7 +361,19 @@ public class Config {
     public ProvisioningProfile getIosProvisioningProfile() {
         return iosProvisioningProfile;
     }
+
+    public boolean produceIntermediate() {
+		return produceIntermediate;
+	}
+	
+    public File getIntermediateFile() {
+		return intermediateFile;
+	}
     
+    public boolean consumeIntermediate() {
+		return consumeIntermediate;
+	}
+
     private static File makeFileRelativeTo(File dir, File f) {
         if (f.getParentFile() == null) {
             return dir;
@@ -369,10 +388,10 @@ public class Config {
             return "classes" + path.getIndex() + ".jar";
         }
     }
-    
+
     public File getLlFile(Clazz clazz) {
         String baseName = clazz.getInternalName().replace('/', File.separatorChar);
-        return new File(getCacheDir(clazz.getPath()), baseName + ".class.ll");
+        return new File(getCacheDir(clazz.getPath()), baseName + LL_EXTENSION);
     }
     
     public File getBcFile(Clazz clazz) {
@@ -424,10 +443,11 @@ public class Config {
     private static Map<Object, Object> getManifestAttributes(File jarFile) throws IOException {
         JarFile jf = null;
         try {
+        	if (!jarFile.exists()) throw new FileNotFoundException("Main jar not found");
             jf = new JarFile(jarFile);
             return new HashMap<Object, Object>(jf.getManifest().getMainAttributes());
         } finally {
-            jf.close();
+            if (jf != null) jf.close();
         }
     }
     
@@ -456,11 +476,18 @@ public class Config {
             classpath.add(mainJar);
         }
         
-        if (!skipLinking && executableName == null && mainClass == null) {
-            throw new IllegalArgumentException("No target and no main class specified");
+        if (!skipLinking && executableName == null) {
+        	if (mainClass == null && !consumeIntermediate)
+        	{
+        		throw new IllegalArgumentException("No target executable and no main class specified");
+        	}
+        	else
+        	{
+        		throw new IllegalArgumentException("No target executable specified");
+        	}
         }
 
-        if (!skipLinking && classpath.isEmpty()) {
+        if (!skipLinking && classpath.isEmpty() && !consumeIntermediate) {
             throw new IllegalArgumentException("No classpath specified");
         }
         
@@ -1058,6 +1085,17 @@ public class Config {
             
             return serializer;
         }
+
+		public void produceIntermediate() 
+		{
+			config.produceIntermediate = true;
+		}
+
+		public void setIntermediateFile(File file) 
+		{
+			config.consumeIntermediate = true;
+			config.intermediateFile = file;
+		}
     }
 
     public static final class Lib {

@@ -73,6 +73,7 @@ import org.robovm.llvm.binding.CodeGenFileType;
 public class Linker {
     
     private static final TypeInfo[] EMPTY_TYPE_INFOS = new TypeInfo[0];
+    public static final String LINKER_FILENAME = "linker.ll";
     
     private static class TypeInfo implements Comparable<TypeInfo> {
         boolean error;
@@ -124,7 +125,7 @@ public class Linker {
         this.config = config;
     }
     
-    public void link(Set<Clazz> classes) throws IOException {
+    String genLL(Set<Clazz> classes) throws IOException {
         Set<Clazz> linkClasses = new TreeSet<Clazz>(classes);
         config.getLogger().info("Linking %d classes", linkClasses.size());
 
@@ -259,11 +260,27 @@ public class Linker {
             mb.addFunction(createInstanceof(mb, clazz, typeInfo));
         }
         
+        return mb.build().toString();
+    }
+    
+    public void link(Set<Clazz> linkClasses) throws IOException {
+    	String linker_ir = genLL(linkClasses);
+
+    	List<File> objectFiles = new ArrayList<File>();
+        for (Clazz clazz : linkClasses) {
+            objectFiles.add(config.getOFile(clazz));
+        }
+        linkFromIntermediate(linker_ir, objectFiles);
+    }
+    
+    void linkFromIntermediate(String linker_ir, List<File> objectFiles) throws IOException {
         Arch arch = config.getArch();
         OS os = config.getOs();
         
+    	//invoke LLVM to produce object files
         Context context = new Context();
-        Module module = Module.parseIR(context, mb.build().toString(), "linker.ll");
+        Module module = Module.parseIR(context, linker_ir , LINKER_FILENAME);
+        
         PassManager passManager = new PassManager();
         passManager.addAlwaysInlinerPass();
         passManager.addPromoteMemoryToRegisterPass();
@@ -277,7 +294,7 @@ public class Linker {
         targetMachine.setFunctionSections(true);
         targetMachine.setDataSections(true);
         targetMachine.getOptions().setNoFramePointerElim(true);
-        File linkerO = new File(config.getTmpDir(), "linker.o");
+        File linkerO = File.createTempFile("linker",".o");
         linkerO.getParentFile().mkdirs();
         OutputStream outO = null;
         try {
@@ -290,12 +307,8 @@ public class Linker {
         module.dispose();
         context.dispose();
         
-        List<File> objectFiles = new ArrayList<File>();
         objectFiles.add(linkerO);
         
-        for (Clazz clazz : linkClasses) {
-            objectFiles.add(config.getOFile(clazz));
-        }
         config.getTarget().build(objectFiles);
     }
 

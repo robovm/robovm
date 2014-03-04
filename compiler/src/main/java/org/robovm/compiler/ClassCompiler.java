@@ -42,6 +42,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.ClazzInfo;
@@ -263,24 +264,35 @@ public class ClassCompiler {
         return dependencies.isEmpty();
     }
     
-    public void compile(Clazz clazz) throws IOException {
+    public Set<String> genLLFile(Clazz clazz) throws IOException {
         reset();        
         
-//        File llFile = config.getLlFile(clazz);
-//        File bcFile = config.getBcFile(clazz);
-//        File sFile = config.getSFile(clazz);
         File oFile = config.getOFile(clazz);
-//        llFile.getParentFile().mkdirs();
-//        bcFile.getParentFile().mkdirs();
-//        sFile.getParentFile().mkdirs();
         oFile.getParentFile().mkdirs();
+        File llFile = config.getLlFile(clazz);
 
         Arch arch = config.getArch();
         OS os = config.getOs();
 
+        Set<String> functionNames = new HashSet<String>();
         try {
             config.getLogger().debug("Compiling %s (%s %s)", clazz, os, arch);
             output.reset();
+
+            output.write(';');
+            for (SootMethod method : clazz.getSootClass().getMethods()) {
+                if (!method.isAbstract()) {
+                    String name = mangleMethod(method);
+                    if (config.getOs().getFamily() == OS.Family.darwin) {
+                        name = "_" + name;
+                    }                
+                    functionNames.add(name);
+                    output.write(name.getBytes("UTF-8"));
+                    output.write(',');
+                }
+            }
+            output.write('\n');
+
             compile(clazz, output);
         } catch (Throwable t) {
 //            FileUtils.deleteQuietly(llFile);
@@ -292,13 +304,25 @@ public class ClassCompiler {
             }
             throw new RuntimeException(t);
         }
-
+    	FileUtils.writeByteArrayToFile(llFile, output.toByteArray());
+    	return functionNames;
+    }
+    
+    public void compile(Clazz clazz) throws IOException {
+    	File oFile = config.getOFile(clazz);
+    	oFile.getParentFile().mkdirs();
+    	Set<String> functionNames = genLLFile(clazz);
+    	compileFromIntermediate(output.toByteArray(), clazz.getClassName(), oFile,functionNames);
+    }
+    
+    public void compileFromIntermediate(byte[] ir,String classname, File oFile, Set<String> functionNames) throws IOException {
         Context context = new Context();
-        Module module = Module.parseIR(context, output.toByteArray(), clazz.getClassName());
+        Module module = Module.parseIR(context, ir, classname);
         PassManager passManager = createPassManager();
         passManager.run(module);
         passManager.dispose();
 
+        //generate assembly
         String triple = config.getTriple();
         Target target = Target.lookupTarget(triple);
         TargetMachine targetMachine = target.createTargetMachine(triple);
@@ -312,13 +336,15 @@ public class ClassCompiler {
         module.dispose();
         context.dispose();
         
+        //patch assembly
         byte[] asm = output.toByteArray();
         output.reset();
-        patchAsmWithFunctionSizes(clazz, new ByteArrayInputStream(asm), output);
+        patchAsmWithFunctionSizes(classname.replace('.', '/'),functionNames, new ByteArrayInputStream(asm), output);
         asm = output.toByteArray();
 
+        //produce object code
         BufferedOutputStream oOut = new BufferedOutputStream(new FileOutputStream(oFile));
-        targetMachine.assemble(asm, clazz.getClassName(), oOut);
+        targetMachine.assemble(asm, classname, oOut);
         oOut.close();
         
         targetMachine.dispose();
@@ -394,20 +420,10 @@ public class ClassCompiler {
         return passManager;
     }
     
-    private void patchAsmWithFunctionSizes(Clazz clazz, InputStream inStream, OutputStream outStream) throws IOException {
-        Set<String> functionNames = new HashSet<String>();
-        for (SootMethod method : clazz.getSootClass().getMethods()) {
-            if (!method.isAbstract()) {
-                String name = mangleMethod(method);
-                if (config.getOs().getFamily() == OS.Family.darwin) {
-                    name = "_" + name;
-                }                
-                functionNames.add(name);
-            }
-        }
+    private void patchAsmWithFunctionSizes(String internalClassname,Set<String> functionNames, InputStream inStream, OutputStream outStream) throws IOException {
         
         String localLabelPrefix = ".L";
-        String prefix = mangleClass(clazz.getInternalName());
+        String prefix = mangleClass(internalClassname);
         if (config.getOs().getFamily() == OS.Family.darwin) {
             localLabelPrefix = "L";
             prefix = "_" + prefix;
@@ -422,6 +438,8 @@ public class ClassCompiler {
             out = new BufferedWriter(new OutputStreamWriter(outStream, "UTF-8"));
             String line = null;
             String currentFunction = null;
+
+            //insert some "_end" labels
             while ((line = in.readLine()) != null) {
                 if (currentFunction == null) {
                     out.write(line);
@@ -435,7 +453,7 @@ public class ClassCompiler {
                         if (functionNames.contains(label)) {
                             currentFunction = label;
                         } else if (label.equals(infoStructLabel)) {
-                            break;
+                            break; // break when reaching _info_struct part 
                         }
                     }
                 } else if (line.trim().equals(".cfi_endproc") || line.trim().startsWith(".section") || line.trim().startsWith(".globl")) {
@@ -451,6 +469,7 @@ public class ClassCompiler {
                 }
             }
             
+            //replace the dummy function size as endlabel minus startlabel
             while ((line = in.readLine()) != null) {
                 out.write(line);
                 out.write('\n');

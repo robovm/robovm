@@ -23,9 +23,9 @@ import org.robovm.llvm.Target;
  *
  */
 public enum OS {
-    linux, macosx, ios;
+    linux, windows, macosx, ios;
     
-    public enum Family {linux, darwin}
+    public enum Family {linux, windows, darwin}
 
     /**
      * Returns whether aggregate types of the specified size can be returned
@@ -46,6 +46,7 @@ public enum OS {
             // On Darwin structs of size 1, 2, 4 and 8 bytes are returned in eax:edx.
             // On Linux no structs are returned in registers.
             switch (this) {
+            case windows:
             case macosx:
             case ios:
                 return size == 1 || size == 2 || size == 4 || size == 8;
@@ -57,7 +58,7 @@ public enum OS {
     }
     
     public Family getFamily() {
-        return this == linux ? Family.linux : Family.darwin;
+        return (this == linux ? Family.linux : (this == windows ? Family.windows : Family.darwin));
     }
     
     public static OS getDefaultOS() {
@@ -67,6 +68,9 @@ public enum OS {
         }
         if (hostTriple.contains("darwin") || hostTriple.contains("apple")) {
             return OS.macosx;
+        }
+        if (hostTriple.contains("windows")) {
+            return OS.windows;
         }
         throw new IllegalArgumentException("Unrecognized OS in host triple: " + hostTriple);
     }

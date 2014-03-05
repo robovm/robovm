@@ -317,8 +317,9 @@ public class AppCompiler {
     private Set<String> readMethodsFormFirstLine(byte[] ll) 
     {
     	int i = 0;
-		for (; i < ll.length; i++) if (ll[i] == '\n') break; 
-		String[] methodNames = new String(ll,1,i).split(",");
+		for (; i < ll.length; i++) if (ll[i] == '\n') break;
+		String firstLine = new String(ll,1,i);
+		String[] methodNames = firstLine.split(",");
 		
 		Set<String> retval = new HashSet<String>();
 		for (String name : methodNames) {

@@ -481,7 +481,7 @@ public class Config {
         	{
         		throw new IllegalArgumentException("No target executable and no main class specified");
         	}
-        	else
+        	else if(!produceIntermediate)
         	{
         		throw new IllegalArgumentException("No target executable specified");
         	}

@@ -25,6 +25,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.robovm.compiler.CompilerException;
 import org.robovm.compiler.clazz.Clazz;
@@ -256,7 +258,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         );
     }
     
-    private void registerSelectors(SootClass sootClass, List<String> selectors) {
+    private void registerSelectors(SootClass sootClass, Set<String> selectors) {
         Jimple j = Jimple.v();
         
         SootMethod clinit = getOrCreateStaticInitializer(sootClass);
@@ -346,7 +348,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         init();
         SootClass sootClass = clazz.getSootClass();
         if (!sootClass.isInterface() && isObjCObject(sootClass)) {
-            List<String> selectors = new ArrayList<>();
+            Set<String> selectors = new TreeSet<>();
             for (SootMethod method : sootClass.getMethods()) {
                 if (!"<clinit>".equals(method.getName()) && !"<init>".equals(method.getName())) {
                     transformMethod(config, clazz, sootClass, method, selectors);
@@ -365,7 +367,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     }
     
     private void transformMethod(Config config, Clazz clazz, SootClass sootClass, 
-            SootMethod method, List<String> selectors) {
+            SootMethod method, Set<String> selectors) {
         
         AnnotationTag methodAnno = getAnnotation(method, METHOD);
         if (methodAnno != null) {

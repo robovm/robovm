@@ -30,10 +30,6 @@ import java.lang.annotation.Target;
  * For {@link Bridge} parameters that are marshaled from Java objects to native 
  * pointers the method must have a signature matching:
  * <pre>public static void afterJavaToNative(T before, long after, long flags)</pre>
- * <p>
- * For {@link Callback} parameters that are marshaled from native pointers to 
- * Java objects the method must have a signature matching:
- * <pre>public static void afterNativeToJava(long before, T after, long flags)</pre>
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

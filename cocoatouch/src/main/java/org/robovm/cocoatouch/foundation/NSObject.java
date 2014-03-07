@@ -59,19 +59,11 @@ import org.robovm.rt.bro.ptr.*;
     }
     
     @Override
-    protected final void finalize() throws Throwable {
-        dispose(true);
-    }
-    
-    public final void dispose() throws Throwable {
-        dispose(false);
-    }
-    
-    protected void dispose(boolean finalizing) throws Throwable {
-        release();
-        if (finalizing) {
-            super.finalize();
+    protected void doDispose () {
+        if (getHandle() != 0) {
+            release();
         }
+        super.doDispose();
     }
     
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ NSObject /*</name>*/.class);

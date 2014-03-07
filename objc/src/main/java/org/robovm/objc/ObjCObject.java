@@ -61,7 +61,11 @@ public abstract class ObjCObject extends NativeObject {
     protected final boolean customClass;
     
     protected ObjCObject() {
-        setHandle(alloc());
+        long handle = alloc();
+        setHandle(handle);
+        // Make sure the peer is set immediately even if a different handle
+        // is set later with initObject().
+        AssociatedObjectHelper.setPeerObject(handle, this);
         customClass = getObjCClass().isCustom();
     }
     
@@ -85,6 +89,34 @@ public abstract class ObjCObject extends NativeObject {
     
     protected long alloc() {
         throw new UnsupportedOperationException("Cannot create instances of " + getClass().getName());
+    }
+    
+    @Override
+    protected final void finalize() throws Throwable {
+        dispose(true);
+    }
+    
+    public final void dispose() {
+        dispose(false);
+    }
+    
+    protected void doDispose() {
+    }
+    
+    protected void dispose(boolean finalizing) {
+        long handle = getHandle();
+        if (handle != 0) {
+            AssociatedObjectHelper.setPeerObject(handle, null);
+            doDispose();
+            setHandle(0);
+        }
+        if (finalizing) {
+            try {
+                super.finalize();
+            } catch (Throwable e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
     
     @SuppressWarnings("unchecked")
@@ -135,7 +167,7 @@ public abstract class ObjCObject extends NativeObject {
             return null;
         }
         T o = getPeerObject(handle);
-        if (o != null) {
+        if (o != null && o.getHandle() != 0) {
             return o;
         }
         ObjCClass fallback = ObjCClass.getByType(cls);

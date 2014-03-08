@@ -245,7 +245,10 @@ public class IOSTarget extends AbstractTarget {
         if (arch == Arch.thumbv7) {
             strip(installDir, getExecutable());
             copyResourcesPList(installDir);
-            if (!config.isSkipSigning()) {
+            if (config.isSkipSigning()) {
+                config.getLogger().warn("SkipSigning is activated. " +
+                "The resulting Application will be unsigned and will not run on unjailbroken Devices");
+            } else {
                 // Copy the provisioning profile
                 copyProvisioningProfile(provisioningProfile, installDir);
                 boolean getTaskAllow = provisioningProfile.getType() == Type.Development;
@@ -273,7 +276,10 @@ public class IOSTarget extends AbstractTarget {
         generateDsym(appDir, getExecutable());
         if (arch == Arch.thumbv7) {
             copyResourcesPList(appDir);
-            if (!config.isSkipSigning()) {
+            if (config.isSkipSigning()) {
+                config.getLogger().warn("SkipSigning is activated. " +
+                "The resulting Application will be unsigned and will not run on unjailbroken Devices");
+            } else {
                 copyProvisioningProfile(provisioningProfile, appDir);
                 codesign(signIdentity, getOrCreateEntitlementsPList(true), appDir);
             }

@@ -292,6 +292,8 @@ public class AppCompiler {
                     builder.useDynamicJni(true);
                 } else if ("-skiprt".equals(args[i])) {
                     builder.skipRuntimeLib(true);
+                } else if ("-skipsign".equals(args[i])) {
+                    builder.skipSigning(true);
                 } else if ("-clean".equals(args[i])) {
                     builder.clean(true);
                 } else if ("-help".equals(args[i]) || "-?".equals(args[i])) {

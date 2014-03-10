@@ -245,10 +245,15 @@ public class IOSTarget extends AbstractTarget {
         if (arch == Arch.thumbv7) {
             strip(installDir, getExecutable());
             copyResourcesPList(installDir);
-            // Copy the provisioning profile
-            copyProvisioningProfile(provisioningProfile, installDir);
-            boolean getTaskAllow = provisioningProfile.getType() == Type.Development;
-            codesign(signIdentity, getOrCreateEntitlementsPList(getTaskAllow), installDir);
+            if (config.isSkipSigning()) {
+                config.getLogger().warn("SkipSigning is activated. " +
+                "The resulting Application will be unsigned and will not run on unjailbroken Devices");
+            } else {
+                // Copy the provisioning profile
+                copyProvisioningProfile(provisioningProfile, installDir);
+                boolean getTaskAllow = provisioningProfile.getType() == Type.Development;
+                codesign(signIdentity, getOrCreateEntitlementsPList(getTaskAllow), installDir);
+            }
             // For some odd reason there needs to be a symbolic link in the root of
             // the app bundle named CodeResources pointing at _CodeSignature/CodeResources
             new Executor(config.getLogger(), "ln")
@@ -271,8 +276,13 @@ public class IOSTarget extends AbstractTarget {
         generateDsym(appDir, getExecutable());
         if (arch == Arch.thumbv7) {
             copyResourcesPList(appDir);
-            copyProvisioningProfile(provisioningProfile, appDir);
-            codesign(signIdentity, getOrCreateEntitlementsPList(true), appDir);
+            if (config.isSkipSigning()) {
+                config.getLogger().warn("SkipSigning is activated. " +
+                "The resulting Application will be unsigned and will not run on unjailbroken Devices");
+            } else {
+                copyProvisioningProfile(provisioningProfile, appDir);
+                codesign(signIdentity, getOrCreateEntitlementsPList(true), appDir);
+            }
         }
     }
     
@@ -514,9 +524,11 @@ public class IOSTarget extends AbstractTarget {
         }
 
         if (arch == Arch.thumbv7) {
-            signIdentity = config.getIosSignIdentity();
-            if (signIdentity == null) {
-                signIdentity = SigningIdentity.find(SigningIdentity.list(), "iPhone Developer");
+            if (!config.isSkipSigning()) {
+                signIdentity = config.getIosSignIdentity();
+                if (signIdentity == null) {
+                    signIdentity = SigningIdentity.find(SigningIdentity.list(), "iPhone Developer");
+                }
             }
         }
         
@@ -530,13 +542,15 @@ public class IOSTarget extends AbstractTarget {
         }
 
         if (arch == Arch.thumbv7) {
-            provisioningProfile = config.getIosProvisioningProfile();
-            if (provisioningProfile == null) {
-                NSString bundleId = infoPListDict != null ? (NSString) infoPListDict.objectForKey("CFBundleIdentifier") : null;
-                if (bundleId == null) {
-                    bundleId = new NSString("*");
+            if (!config.isSkipSigning()) {
+                provisioningProfile = config.getIosProvisioningProfile();
+                if (provisioningProfile == null) {
+                    NSString bundleId = infoPListDict != null ? (NSString) infoPListDict.objectForKey("CFBundleIdentifier") : null;
+                    if (bundleId == null) {
+                        bundleId = new NSString("*");
+                    }
+                    provisioningProfile = ProvisioningProfile.find(ProvisioningProfile.list(), signIdentity, bundleId.toString());
                 }
-                provisioningProfile = ProvisioningProfile.find(ProvisioningProfile.list(), signIdentity, bundleId.toString());
             }
         }
 

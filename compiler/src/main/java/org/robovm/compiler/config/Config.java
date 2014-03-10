@@ -71,7 +71,7 @@ import org.simpleframework.xml.stream.OutputNode;
  */
 @Root
 public class Config {
-    
+
     public enum Cacerts { full };
     public enum TargetType { console, ios };
     
@@ -83,6 +83,8 @@ public class Config {
     private Boolean useDynamicJni = null;
     @Element(required = false)
     private Boolean skipRuntimeLib = null;
+    @Element(required = false)
+    private Boolean skipSigning = null;
     @Element(required = false)
     private File mainJar;
     @Element(required = false)
@@ -205,6 +207,10 @@ public class Config {
     
     public boolean isSkipRuntimeLib() {
         return skipRuntimeLib != null && skipRuntimeLib.booleanValue();
+    }
+
+    public boolean isSkipSigning() {
+        return skipSigning != null && skipSigning.booleanValue();
     }
 
     public boolean isSkipLinking() {
@@ -785,6 +791,11 @@ public class Config {
         
         public Builder skipRuntimeLib(boolean b) {
             config.skipRuntimeLib = b;
+            return this;
+        }
+
+        public Builder skipSigning(boolean b) {
+            config.skipSigning = b;
             return this;
         }
 

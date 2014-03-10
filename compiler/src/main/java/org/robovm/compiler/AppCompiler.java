@@ -146,7 +146,7 @@ public class AppCompiler {
      * 
      * The classes matching {@link #ROOT_CLASS_PATTERNS} and {@link #ROOT_CLASSES} will always be 
      * included. If a main class has been specified it will also become a root. Any root class 
-     * pattern specified on the command line (as returned by {@link Config#getRoots()} will also be 
+     * pattern specified on the command line (as returned by {@link Config#getRoots()} will also be
      * used to find root classes. If no main class has been specified and {@link Config#getRoots()} 
      * returns an empty set all classes available on the bootclasspath and the classpath will become 
      * roots.
@@ -292,6 +292,8 @@ public class AppCompiler {
                     builder.useDynamicJni(true);
                 } else if ("-skiprt".equals(args[i])) {
                     builder.skipRuntimeLib(true);
+                } else if ("-skipsign".equals(args[i])) {
+                    builder.skipSigning(true);
                 } else if ("-clean".equals(args[i])) {
                     builder.clean(true);
                 } else if ("-help".equals(args[i]) || "-?".equals(args[i])) {
@@ -597,6 +599,8 @@ public class AppCompiler {
         System.err.println("  -resourcerules <file> (iOS) Property list (.plist) file containing resource rules\n" 
                          + "                        passed to codesign when signing the app.");
         System.err.println("  -signidentity <id>    (iOS) Sign using this identity. Default is 'iPhone Developer'.");
+        System.err.println("  -skipsign             (iOS) Skips signing of the compiled Application. Can be used\n"
+                         + "                        to create unsigned packages for testing on a jailbroken Device.");
         System.err.println("  -provisioningprofile <file>\n" 
                          + "                        (iOS) Provisioning profile to use when building for a device.\n" 
                          + "                        Either a UUID, an app name or app id prefix. If not specified\n" 

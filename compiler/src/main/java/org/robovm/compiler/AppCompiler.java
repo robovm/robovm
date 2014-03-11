@@ -293,7 +293,7 @@ public class AppCompiler {
                 } else if ("-skiprt".equals(args[i])) {
                     builder.skipRuntimeLib(true);
                 } else if ("-skipsign".equals(args[i])) {
-                    builder.skipSigning(true);
+                    builder.iosSkipSigning(true);
                 } else if ("-clean".equals(args[i])) {
                     builder.clean(true);
                 } else if ("-help".equals(args[i]) || "-?".equals(args[i])) {

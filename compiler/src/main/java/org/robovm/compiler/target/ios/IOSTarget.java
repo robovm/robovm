@@ -245,7 +245,7 @@ public class IOSTarget extends AbstractTarget {
         if (arch == Arch.thumbv7) {
             strip(installDir, getExecutable());
             copyResourcesPList(installDir);
-            if (config.isSkipSigning()) {
+            if (config.isIosSkipSigning()) {
                 config.getLogger().warn("SkipSigning is activated. " +
                 "The resulting Application will be unsigned and will not run on unjailbroken Devices");
             } else {
@@ -276,7 +276,7 @@ public class IOSTarget extends AbstractTarget {
         generateDsym(appDir, getExecutable());
         if (arch == Arch.thumbv7) {
             copyResourcesPList(appDir);
-            if (config.isSkipSigning()) {
+            if (config.isIosSkipSigning()) {
                 config.getLogger().warn("SkipSigning is activated. " +
                 "The resulting Application will be unsigned and will not run on unjailbroken Devices");
             } else {
@@ -524,7 +524,7 @@ public class IOSTarget extends AbstractTarget {
         }
 
         if (arch == Arch.thumbv7) {
-            if (!config.isSkipSigning()) {
+            if (!config.isIosSkipSigning()) {
                 signIdentity = config.getIosSignIdentity();
                 if (signIdentity == null) {
                     signIdentity = SigningIdentity.find(SigningIdentity.list(), "iPhone Developer");
@@ -542,7 +542,7 @@ public class IOSTarget extends AbstractTarget {
         }
 
         if (arch == Arch.thumbv7) {
-            if (!config.isSkipSigning()) {
+            if (!config.isIosSkipSigning()) {
                 provisioningProfile = config.getIosProvisioningProfile();
                 if (provisioningProfile == null) {
                     NSString bundleId = infoPListDict != null ? (NSString) infoPListDict.objectForKey("CFBundleIdentifier") : null;

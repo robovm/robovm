@@ -75,4 +75,61 @@ public final class CharPtr extends Struct<CharPtr> {
     public CharBuffer asCharBuffer(int n) {
         return as(BytePtr.class).asByteBuffer(n << 1).order(ByteOrder.nativeOrder()).asCharBuffer();
     }
+    
+    /**
+     * Copies {@code n} chars from the memory pointed to by this {@link CharPtr}
+     * to a new {@code char[]} instance.
+     * 
+     * @param n the number of chars to copy.
+     * @return the {@code char[]}.
+     */
+    public char[] toCharArray(int n) {
+        char[] result = new char[n];
+        get(result);
+        return result;
+    }
+
+    /**
+     * Copies {@code dst.length} chars from the memory pointed to by this 
+     * {@link CharPtr} to {@code dst}.
+     * 
+     * @param dst the destination.
+     */
+    public void get(char[] dst) {
+        get(dst, 0, dst.length);
+    }
+
+    /**
+     * Copies {@code count} chars from the memory pointed to by this 
+     * {@link CharPtr} to {@code dst} starting at offset {@code offset}.
+     * 
+     * @param dst the destination.
+     * @param offset the offset within the destination array to start copying to.
+     * @param count the number of elements to copy.
+     */
+    public void get(char[] dst, int offset, int count) {
+        asCharBuffer(count).get(dst, offset, count);
+    }
+
+    /**
+     * Copies {@code src.length} chars from {@code src} to the memory pointed to by
+     * this {@link CharPtr}.
+     * 
+     * @param src the source.
+     */
+    public void set(char[] src) {
+        set(src, 0, src.length);
+    }
+    
+    /**
+     * Copies {@code count} chars from {@code src} starting at offset {@code offset}
+     * to the memory pointed to by this {@link CharPtr}.
+     * 
+     * @param src the source.
+     * @param offset the offset within the source array to start copying from.
+     * @param count the number of elements to copy.
+     */
+    public void set(char[] src, int offset, int count) {
+        asCharBuffer(count).put(src, offset, count);
+    }
 }

@@ -1,0 +1,114 @@
+/*
+ * Copyright (C) 2014 Trillian AB
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.robovm.apple.foundation;
+
+/*<imports>*/
+import java.io.*;
+import java.nio.*;
+import java.util.*;
+import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
+import org.robovm.objc.block.*;
+import org.robovm.rt.*;
+import org.robovm.rt.bro.*;
+import org.robovm.rt.bro.annotation.*;
+import org.robovm.rt.bro.ptr.*;
+import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.security.*;
+/*</imports>*/
+
+/**
+ *
+ * <div class="javadoc"></div>
+ */
+/*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSExpression/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
+
+    /*<ptr>*/public static class NSExpressionPtr extends Ptr<NSExpression, NSExpressionPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(NSExpression.class); }/*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<constructors>*/
+    public NSExpression() {}
+    protected NSExpression(SkipInit skipInit) { super(skipInit); }
+    public NSExpression(NSExpressionType type) { super((SkipInit) null); initObject(initWithExpressionType$(type)); }
+    /*</constructors>*/
+    /*<properties>*/
+    
+    /*</properties>*/
+    /*<members>*//*</members>*/
+    /*<methods>*/
+    @Method(selector = "initWithExpressionType:")
+    protected native @Pointer long initWithExpressionType$(NSExpressionType type);
+    @Method(selector = "expressionType")
+    public native NSExpressionType expressionType();
+    @Method(selector = "constantValue")
+    public native NSObject constantValue();
+    @Method(selector = "keyPath")
+    public native String keyPath();
+    @Method(selector = "function")
+    public native String function();
+    @Method(selector = "variable")
+    public native String variable();
+    @Method(selector = "operand")
+    public native NSExpression operand();
+    @Method(selector = "arguments")
+    public native NSArray<?> arguments();
+    @Method(selector = "collection")
+    public native NSObject collection();
+    @Method(selector = "predicate")
+    public native NSPredicate predicate();
+    @Method(selector = "leftExpression")
+    public native NSExpression leftExpression();
+    @Method(selector = "rightExpression")
+    public native NSExpression rightExpression();
+    @Method(selector = "expressionBlock")
+    public native ObjCBlock expressionBlock(NSObject p0, NSArray<?> p1, NSMutableDictionary<?, ?> p2);
+    @Method(selector = "expressionValueWithObject:context:")
+    public native NSObject expressionValueWithObject$context$(NSObject object, NSMutableDictionary<?, ?> context);
+    @Method(selector = "allowEvaluation")
+    public native void allowEvaluation();
+    @Method(selector = "expressionWithFormat:argumentArray:")
+    public static native NSExpression expressionWithFormat$argumentArray$(String expressionFormat, NSArray<?> arguments);
+    @Method(selector = "expressionForConstantValue:")
+    public static native NSExpression expressionForConstantValue$(NSObject obj);
+    @Method(selector = "expressionForEvaluatedObject")
+    public static native NSExpression expressionForEvaluatedObject();
+    @Method(selector = "expressionForVariable:")
+    public static native NSExpression expressionForVariable$(String string);
+    @Method(selector = "expressionForKeyPath:")
+    public static native NSExpression expressionForKeyPath$(String keyPath);
+    @Method(selector = "expressionForFunction:arguments:")
+    public static native NSExpression expressionForFunction$arguments$(String name, NSArray<?> parameters);
+    @Method(selector = "expressionForAggregate:")
+    public static native NSExpression expressionForAggregate$(NSArray<?> subexpressions);
+    @Method(selector = "expressionForUnionSet:with:")
+    public static native NSExpression expressionForUnionSet$with$(NSExpression left, NSExpression right);
+    @Method(selector = "expressionForIntersectSet:with:")
+    public static native NSExpression expressionForIntersectSet$with$(NSExpression left, NSExpression right);
+    @Method(selector = "expressionForMinusSet:with:")
+    public static native NSExpression expressionForMinusSet$with$(NSExpression left, NSExpression right);
+    @Method(selector = "expressionForSubquery:usingIteratorVariable:predicate:")
+    public static native NSExpression expressionForSubquery$usingIteratorVariable$predicate$(NSExpression expression, String variable, NSObject predicate);
+    @Method(selector = "expressionForFunction:selectorName:arguments:")
+    public static native NSExpression expressionForFunction$selectorName$arguments$(NSExpression target, String name, NSArray<?> parameters);
+    @Method(selector = "expressionForAnyKey")
+    public static native NSExpression expressionForAnyKey();
+    @Method(selector = "expressionForBlock:arguments:")
+    public static native NSExpression expressionForBlock$arguments$(ObjCBlock block, NSArray<?> arguments);
+    /*</methods>*/
+}

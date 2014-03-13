@@ -74,4 +74,61 @@ public final class FloatPtr extends Struct<FloatPtr> {
     public FloatBuffer asFloatBuffer(int n) {
         return as(BytePtr.class).asByteBuffer(n << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
     }
+    
+    /**
+     * Copies {@code n} floats from the memory pointed to by this {@link FloatPtr}
+     * to a new {@code float[]} instance.
+     * 
+     * @param n the number of floats to copy.
+     * @return the {@code float[]}.
+     */
+    public float[] toFloatArray(int n) {
+        float[] result = new float[n];
+        get(result);
+        return result;
+    }
+
+    /**
+     * Copies {@code dst.length} floats from the memory pointed to by this 
+     * {@link FloatPtr} to {@code dst}.
+     * 
+     * @param dst the destination.
+     */
+    public void get(float[] dst) {
+        get(dst, 0, dst.length);
+    }
+
+    /**
+     * Copies {@code count} floats from the memory pointed to by this 
+     * {@link FloatPtr} to {@code dst} starting at offset {@code offset}.
+     * 
+     * @param dst the destination.
+     * @param offset the offset within the destination array to start copying to.
+     * @param count the number of elements to copy.
+     */
+    public void get(float[] dst, int offset, int count) {
+        asFloatBuffer(count).get(dst, offset, count);
+    }
+
+    /**
+     * Copies {@code src.length} floats from {@code src} to the memory pointed to by
+     * this {@link FloatPtr}.
+     * 
+     * @param src the source.
+     */
+    public void set(float[] src) {
+        set(src, 0, src.length);
+    }
+    
+    /**
+     * Copies {@code count} floats from {@code src} starting at offset {@code offset}
+     * to the memory pointed to by this {@link FloatPtr}.
+     * 
+     * @param src the source.
+     * @param offset the offset within the source array to start copying from.
+     * @param count the number of elements to copy.
+     */
+    public void set(float[] src, int offset, int count) {
+        asFloatBuffer(count).put(src, offset, count);
+    }
 }

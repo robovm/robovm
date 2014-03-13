@@ -137,6 +137,63 @@ public final class BytePtr extends Struct<BytePtr> {
     }
     
     /**
+     * Copies {@code n} bytes from the memory pointed to by this {@link BytePtr}
+     * to a new {@code byte[]} instance.
+     * 
+     * @param n the number of bytes to copy.
+     * @return the {@code byte[]}.
+     */
+    public byte[] toByteArray(int n) {
+        byte[] result = new byte[n];
+        get(result);
+        return result;
+    }
+
+    /**
+     * Copies {@code dst.length} bytes from the memory pointed to by this 
+     * {@link BytePtr} to {@code dst}.
+     * 
+     * @param dst the destination.
+     */
+    public void get(byte[] dst) {
+        get(dst, 0, dst.length);
+    }
+
+    /**
+     * Copies {@code count} bytes from the memory pointed to by this 
+     * {@link BytePtr} to {@code dst} starting at offset {@code offset}.
+     * 
+     * @param dst the destination.
+     * @param offset the offset within the destination array to start copying to.
+     * @param count the number of elements to copy.
+     */
+    public void get(byte[] dst, int offset, int count) {
+        asByteBuffer(count).get(dst, offset, count);
+    }
+
+    /**
+     * Copies {@code src.length} bytes from {@code src} to the memory pointed to by
+     * this {@link BytePtr}.
+     * 
+     * @param src the source.
+     */
+    public void set(byte[] src) {
+        set(src, 0, src.length);
+    }
+    
+    /**
+     * Copies {@code count} bytes from {@code src} starting at offset {@code offset}
+     * to the memory pointed to by this {@link BytePtr}.
+     * 
+     * @param src the source.
+     * @param offset the offset within the source array to start copying from.
+     * @param count the number of elements to copy.
+     */
+    public void set(byte[] src, int offset, int count) {
+        asByteBuffer(count).put(src, offset, count);
+    }
+    
+    /**
      * Converts the specified {@link String} to a NUL-terminated C string of 
      * ASCII characters. Non ASCII characters will be replaced with '?' in the 
      * result. The memory will be allocated on the GCed heaped. This method is 

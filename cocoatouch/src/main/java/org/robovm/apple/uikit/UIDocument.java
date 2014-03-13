@@ -1,0 +1,122 @@
+/*
+ * Copyright (C) 2014 Trillian AB
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.robovm.apple.uikit;
+
+/*<imports>*/
+import java.io.*;
+import java.nio.*;
+import java.util.*;
+import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
+import org.robovm.objc.block.*;
+import org.robovm.rt.*;
+import org.robovm.rt.bro.*;
+import org.robovm.rt.bro.annotation.*;
+import org.robovm.rt.bro.ptr.*;
+import org.robovm.apple.foundation.*;
+import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.coredata.*;
+import org.robovm.apple.coreimage.*;
+/*</imports>*/
+
+/**
+ *
+ * <div class="javadoc"></div>
+ */
+/*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/UIDocument/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
+
+    /*<ptr>*/public static class UIDocumentPtr extends Ptr<UIDocument, UIDocumentPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(UIDocument.class); }/*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<constructors>*/
+    public UIDocument() {}
+    protected UIDocument(SkipInit skipInit) { super(skipInit); }
+    public UIDocument(NSURL url) { super((SkipInit) null); initObject(initWithFileURL$(url)); }
+    /*</constructors>*/
+    /*<properties>*/
+    @Property(selector = "fileURL")
+    public native NSURL getFileURL();
+    @Property(selector = "localizedName")
+    public native String getLocalizedName();
+    @Property(selector = "fileType")
+    public native String getFileType();
+    @Property(selector = "fileModificationDate")
+    public native NSDate getFileModificationDate();
+    @Property(selector = "setFileModificationDate:")
+    public native void setFileModificationDate(NSDate v);
+    @Property(selector = "documentState")
+    public native UIDocumentState getDocumentState();
+    @Property(selector = "undoManager")
+    public native NSUndoManager getUndoManager();
+    @Property(selector = "setUndoManager:")
+    public native void setUndoManager(NSUndoManager v);
+    /*</properties>*/
+    /*<members>*//*</members>*/
+    /*<methods>*/
+    @Method(selector = "initWithFileURL:")
+    protected native @Pointer long initWithFileURL$(NSURL url);
+    @Method(selector = "openWithCompletionHandler:")
+    public native void open(ObjCBlock completionHandler);
+    @Method(selector = "closeWithCompletionHandler:")
+    public native void close(ObjCBlock completionHandler);
+    @Method(selector = "loadFromContents:ofType:error:")
+    public native boolean loadFromContents$ofType$error$(NSObject contents, String typeName, NSError.NSErrorPtr outError);
+    @Method(selector = "contentsForType:error:")
+    public native NSObject contentsForType$error$(String typeName, NSError.NSErrorPtr outError);
+    @Method(selector = "disableEditing")
+    public native void disableEditing();
+    @Method(selector = "enableEditing")
+    public native void enableEditing();
+    @Method(selector = "hasUnsavedChanges")
+    public native boolean hasUnsavedChanges();
+    @Method(selector = "updateChangeCount:")
+    public native void updateChangeCount$(UIDocumentChangeKind change);
+    @Method(selector = "changeCountTokenForSaveOperation:")
+    public native NSObject changeCountTokenForSaveOperation$(UIDocumentSaveOperation saveOperation);
+    @Method(selector = "updateChangeCountWithToken:forSaveOperation:")
+    public native void updateChangeCount(NSObject changeCountToken, UIDocumentSaveOperation saveOperation);
+    @Method(selector = "saveToURL:forSaveOperation:completionHandler:")
+    public native void save(NSURL url, UIDocumentSaveOperation saveOperation, ObjCBlock completionHandler);
+    @Method(selector = "autosaveWithCompletionHandler:")
+    public native void autoSave(ObjCBlock completionHandler);
+    @Method(selector = "savingFileType")
+    public native String getSavingFileType();
+    @Method(selector = "fileNameExtensionForType:saveOperation:")
+    public native String getFileNameExtension(String typeName, UIDocumentSaveOperation saveOperation);
+    @Method(selector = "writeContents:andAttributes:safelyToURL:forSaveOperation:error:")
+    public native boolean writeContents$andAttributes$safelyToURL$forSaveOperation$error$(NSObject contents, NSDictionary<?, ?> additionalFileAttributes, NSURL url, UIDocumentSaveOperation saveOperation, NSError.NSErrorPtr outError);
+    @Method(selector = "writeContents:toURL:forSaveOperation:originalContentsURL:error:")
+    public native boolean writeContents$toURL$forSaveOperation$originalContentsURL$error$(NSObject contents, NSURL url, UIDocumentSaveOperation saveOperation, NSURL originalContentsURL, NSError.NSErrorPtr outError);
+    @Method(selector = "fileAttributesToWriteToURL:forSaveOperation:error:")
+    public native NSDictionary<?, ?> getFileAttributesToWrite(NSURL url, UIDocumentSaveOperation saveOperation, NSError.NSErrorPtr outError);
+    @Method(selector = "readFromURL:error:")
+    public native boolean read(NSURL url, NSError.NSErrorPtr outError);
+    @Method(selector = "performAsynchronousFileAccessUsingBlock:")
+    public native void performAsynchronousFileAccess(ObjCBlock block);
+    @Method(selector = "handleError:userInteractionPermitted:")
+    public native void handleError$userInteractionPermitted$(NSError error, boolean userInteractionPermitted);
+    @Method(selector = "finishedHandlingError:recovered:")
+    public native void finishedHandlingError$recovered$(NSError error, boolean recovered);
+    @Method(selector = "userInteractionNoLongerPermittedForError:")
+    public native void userInteractionNoLongerPermittedForError$(NSError error);
+    @Method(selector = "revertToContentsOfURL:completionHandler:")
+    public native void revert(NSURL url, ObjCBlock completionHandler);
+    /*</methods>*/
+}

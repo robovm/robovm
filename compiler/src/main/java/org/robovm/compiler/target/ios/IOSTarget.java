@@ -120,7 +120,7 @@ public class IOSTarget extends AbstractTarget {
         List<Object> args = new ArrayList<Object>();
         args.add("launch");
         args.add(dir);
-        args.add("--unbuffered");
+        //args.add("--unbuffered");
         if (((IOSSimulatorLaunchParameters) launchParameters).getSdk() != null) {
             args.add("--sdk");
             args.add(((IOSSimulatorLaunchParameters) launchParameters).getSdk());

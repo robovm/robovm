@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.coreanimation;
+package org.robovm.apple.opengles;
 
 /*<imports>*/
 import java.io.*;
@@ -26,32 +26,31 @@ import org.robovm.rt.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.opengles.*;
 /*</imports>*/
 
 /**
- *
  * <div class="javadoc"></div>
  */
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CAActionAdapter/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements CAAction/*</implements>*/ {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/EAGLRenderingAPI/*</name>*/ implements ValuedEnum {
+    /*<values>*/
+    OpenGLES1(1L),
+    OpenGLES2(2L),
+    OpenGLES3(3L);
+    /*</values>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*/
-    
-    /*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*/
-    @NotImplemented("runActionForKey:object:arguments:")
-    public void runActionForKey$object$arguments$(String event, NSObject anObject, NSDictionary<?, ?> dict) { throw new UnsupportedOperationException(); }
-    /*</methods>*/
+    private final long n;
+
+    private /*<name>*/EAGLRenderingAPI/*</name>*/(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/EAGLRenderingAPI/*</name>*/ valueOf(long n) {
+        for (/*<name>*/EAGLRenderingAPI/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/EAGLRenderingAPI/*</name>*/.class.getName());
+    }
 }

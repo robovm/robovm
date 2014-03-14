@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.coreanimation;
+package org.robovm.apple.opengles;
 
 /*<imports>*/
 import java.io.*;
@@ -26,9 +26,7 @@ import org.robovm.rt.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.opengles.*;
 /*</imports>*/
 
 /**
@@ -36,22 +34,23 @@ import org.robovm.apple.opengles.*;
  * <div class="javadoc"></div>
  */
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CAActionAdapter/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements CAAction/*</implements>*/ {
+/*<visibility>*/public/*</visibility>*/ interface /*<name>*/EAGLDrawable/*</name>*/ 
+    /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "drawableProperties")
+    NSDictionary<?, ?> getDrawableProperties();
+    @Property(selector = "setDrawableProperties:")
+    void setDrawableProperties(NSDictionary<?, ?> v);
     /*</properties>*/
-    /*<members>*//*</members>*/
     /*<methods>*/
-    @NotImplemented("runActionForKey:object:arguments:")
-    public void runActionForKey$object$arguments$(String event, NSObject anObject, NSDictionary<?, ?> dict) { throw new UnsupportedOperationException(); }
+    
     /*</methods>*/
+    /*<adapter>*/
+    /*</adapter>*/
 }

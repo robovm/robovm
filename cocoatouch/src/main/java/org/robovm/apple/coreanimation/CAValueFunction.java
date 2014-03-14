@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.opengles.*;
 /*</imports>*/
 
 /**
@@ -37,7 +38,7 @@ import org.robovm.apple.foundation.*;
 /*<annotations>*/@Library("QuartzCore") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CAValueFunction/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class CAValueFunctionPtr extends Ptr<CAValueFunction, CAValueFunctionPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(CAValueFunction.class); }/*</bind>*/
@@ -77,5 +78,7 @@ import org.robovm.apple.foundation.*;
     
     @Method(selector = "functionWithName:")
     public static native NSObject functionWithName$(String name);
+    @Method(selector = "encodeWithCoder:")
+    public native void encodeWithCoder$(NSCoder aCoder);
     /*</methods>*/
 }

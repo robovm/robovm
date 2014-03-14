@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.coreanimation;
+package org.robovm.apple.opengles;
 
 /*<imports>*/
 import java.io.*;
@@ -26,32 +26,42 @@ import org.robovm.rt.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.opengles.*;
 /*</imports>*/
 
 /**
  *
  * <div class="javadoc"></div>
  */
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CAActionAdapter/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements CAAction/*</implements>*/ {
+/*<annotations>*/@Library("OpenGLES")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/OpenGLES/*</name>*/ 
+    extends /*<extends>*/Object/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<bind>*/static { Bro.bind(OpenGLES.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
-    /*<properties>*/
-    
-    /*</properties>*/
+    /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    
+    public static int getMajorVersion() {
+        IntPtr major = new IntPtr();
+        IntPtr minor = new IntPtr();
+        getVersion(major, minor);
+        return major.get();
+    }
+
+    public static int getMinorVersion() {
+        IntPtr major = new IntPtr();
+        IntPtr minor = new IntPtr();
+        getVersion(major, minor);
+        return minor.get();
+    }
+    
     /*<methods>*/
-    @NotImplemented("runActionForKey:object:arguments:")
-    public void runActionForKey$object$arguments$(String event, NSObject anObject, NSDictionary<?, ?> dict) { throw new UnsupportedOperationException(); }
+    @Bridge(symbol="EAGLGetVersion")
+    protected static native void getVersion(IntPtr major, IntPtr minor);
     /*</methods>*/
 }

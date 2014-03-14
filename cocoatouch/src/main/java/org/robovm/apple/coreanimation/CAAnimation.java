@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.opengles.*;
 /*</imports>*/
 
 /**
@@ -37,7 +38,7 @@ import org.robovm.apple.foundation.*;
 /*<annotations>*/@Library("QuartzCore") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CAAnimation/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements CAMediaTiming, CAAction/*</implements>*/ {
+    /*<implements>*/implements NSCoding, CAMediaTiming, CAAction/*</implements>*/ {
 
     /*<ptr>*/public static class CAAnimationPtr extends Ptr<CAAnimation, CAAnimationPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(CAAnimation.class); }/*</bind>*/
@@ -100,6 +101,8 @@ import org.robovm.apple.foundation.*;
     public static native NSObject animation();
     @Method(selector = "defaultValueForKey:")
     public static native NSObject defaultValueForKey$(String key);
+    @Method(selector = "encodeWithCoder:")
+    public native void encodeWithCoder$(NSCoder aCoder);
     @Method(selector = "runActionForKey:object:arguments:")
     public native void runActionForKey$object$arguments$(String event, NSObject anObject, NSDictionary<?, ?> dict);
     /*</methods>*/

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.coreanimation;
+package org.robovm.apple.opengles;
 
 /*<imports>*/
 import java.io.*;
@@ -26,32 +26,29 @@ import org.robovm.rt.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.opengles.*;
 /*</imports>*/
 
 /**
  *
  * <div class="javadoc"></div>
  */
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CAActionAdapter/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements CAAction/*</implements>*/ {
+/*<annotations>*/@Library("OpenGLES")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/EAGLDrawableProperty/*</name>*/ 
+    extends /*<extends>*/Object/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<bind>*/static { Bro.bind(EAGLDrawableProperty.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
-    /*<properties>*/
-    
-    /*</properties>*/
+    /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @NotImplemented("runActionForKey:object:arguments:")
-    public void runActionForKey$object$arguments$(String event, NSObject anObject, NSDictionary<?, ?> dict) { throw new UnsupportedOperationException(); }
+    @GlobalValue(symbol="kEAGLDrawablePropertyRetainedBacking")
+    public static native NSString RetainedBacking();
+    @GlobalValue(symbol="kEAGLDrawablePropertyColorFormat")
+    public static native NSString ColorFormat();
     /*</methods>*/
 }

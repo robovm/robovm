@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.opengles.*;
 /*</imports>*/
 
 /**
@@ -37,7 +38,7 @@ import org.robovm.apple.foundation.*;
 /*<annotations>*/@Library("QuartzCore") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CAMediaTimingFunction/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class CAMediaTimingFunctionPtr extends Ptr<CAMediaTimingFunction, CAMediaTimingFunctionPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(CAMediaTimingFunction.class); }/*</bind>*/
@@ -71,5 +72,7 @@ import org.robovm.apple.foundation.*;
     public static native NSObject functionWithName$(String name);
     @Method(selector = "functionWithControlPoints::::")
     public static native NSObject functionWithControlPoints$$$$(float c1x, float c1y, float c2x, float c2y);
+    @Method(selector = "encodeWithCoder:")
+    public native void encodeWithCoder$(NSCoder aCoder);
     /*</methods>*/
 }

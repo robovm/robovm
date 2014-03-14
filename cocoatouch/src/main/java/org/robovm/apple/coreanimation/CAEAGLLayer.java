@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.opengles.*;
 /*</imports>*/
 
 /**
@@ -37,7 +38,7 @@ import org.robovm.apple.foundation.*;
 /*<annotations>*/@Library("QuartzCore") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CAEAGLLayer/*</name>*/ 
     extends /*<extends>*/CALayer/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements EAGLDrawable/*</implements>*/ {
 
     /*<ptr>*/public static class CAEAGLLayerPtr extends Ptr<CAEAGLLayer, CAEAGLLayerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(CAEAGLLayer.class); }/*</bind>*/
@@ -47,7 +48,10 @@ import org.robovm.apple.foundation.*;
     protected CAEAGLLayer(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "drawableProperties")
+    public native NSDictionary<?, ?> getDrawableProperties();
+    @Property(selector = "setDrawableProperties:")
+    public native void setDrawableProperties(NSDictionary<?, ?> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

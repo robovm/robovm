@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.coreanimation;
+package org.robovm.apple.opengles;
 
 /*<imports>*/
 import java.io.*;
@@ -26,40 +26,30 @@ import org.robovm.rt.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.opengles.*;
 /*</imports>*/
 
 /**
  *
  * <div class="javadoc"></div>
  */
-/*<annotations>*/@Library("QuartzCore") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CABasicAnimation/*</name>*/ 
-    extends /*<extends>*/CAPropertyAnimation/*</extends>*/ 
+/*<annotations>*/@Library("OpenGLES") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/EAGLSharegroup/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class CABasicAnimationPtr extends Ptr<CABasicAnimation, CABasicAnimationPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(CABasicAnimation.class); }/*</bind>*/
+    /*<ptr>*/public static class EAGLSharegroupPtr extends Ptr<EAGLSharegroup, EAGLSharegroupPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(EAGLSharegroup.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public CABasicAnimation() {}
-    protected CABasicAnimation(SkipInit skipInit) { super(skipInit); }
+    public EAGLSharegroup() {}
+    protected EAGLSharegroup(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "fromValue")
-    public native NSObject getFromValue();
-    @Property(selector = "setFromValue:")
-    public native void setFromValue(NSObject v);
-    @Property(selector = "toValue")
-    public native NSObject getToValue();
-    @Property(selector = "setToValue:")
-    public native void setToValue(NSObject v);
-    @Property(selector = "byValue")
-    public native NSObject getByValue();
-    @Property(selector = "setByValue:")
-    public native void setByValue(NSObject v);
+    @Property(selector = "debugLabel")
+    public native String getDebugLabel();
+    @Property(selector = "setDebugLabel:")
+    public native void setDebugLabel(String v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

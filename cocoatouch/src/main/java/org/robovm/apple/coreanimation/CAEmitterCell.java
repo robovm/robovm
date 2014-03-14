@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.opengles.*;
 /*</imports>*/
 
 /**
@@ -37,7 +38,7 @@ import org.robovm.apple.foundation.*;
 /*<annotations>*/@Library("QuartzCore") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CAEmitterCell/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements CAMediaTiming/*</implements>*/ {
+    /*<implements>*/implements NSCoding, CAMediaTiming/*</implements>*/ {
 
     /*<ptr>*/public static class CAEmitterCellPtr extends Ptr<CAEmitterCell, CAEmitterCellPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(CAEmitterCell.class); }/*</bind>*/
@@ -224,5 +225,7 @@ import org.robovm.apple.foundation.*;
     public static native NSObject emitterCell();
     @Method(selector = "defaultValueForKey:")
     public static native NSObject defaultValueForKey$(String key);
+    @Method(selector = "encodeWithCoder:")
+    public native void encodeWithCoder$(NSCoder aCoder);
     /*</methods>*/
 }

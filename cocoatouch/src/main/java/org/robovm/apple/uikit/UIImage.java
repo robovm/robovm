@@ -40,7 +40,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIImage/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements UIAccessibilityIdentification/*</implements>*/ {
+    /*<implements>*/implements NSCoding, UIAccessibilityIdentification/*</implements>*/ {
 
     /*<ptr>*/public static class UIImagePtr extends Ptr<UIImage, UIImagePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIImage.class); }/*</bind>*/
@@ -104,8 +104,6 @@ import org.robovm.apple.coreimage.*;
     protected native @Pointer long initWithCIImage$(CIImage ciImage);
     @Method(selector = "initWithCIImage:scale:orientation:")
     protected native @Pointer long initWithCIImage$scale$orientation$(CIImage ciImage, @MachineSizedFloat double scale, UIImageOrientation orientation);
-    @Method(selector = "CGImage")
-    public native CGImage CGImage();
     @Method(selector = "drawAtPoint:")
     public native void draw(@ByVal CGPoint point);
     @Method(selector = "drawAtPoint:blendMode:alpha:")
@@ -150,5 +148,7 @@ import org.robovm.apple.coreimage.*;
     public static native UIImage createAnimated(NSArray<?> images, double duration);
     @Method(selector = "stretchableImageWithLeftCapWidth:topCapHeight:")
     public native UIImage stretchableImageWithLeftCapWidth$topCapHeight$(@MachineSizedSInt long leftCapWidth, @MachineSizedSInt long topCapHeight);
+    @Method(selector = "encodeWithCoder:")
+    public native void encodeWithCoder$(NSCoder aCoder);
     /*</methods>*/
 }

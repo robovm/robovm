@@ -38,7 +38,7 @@ import org.robovm.apple.opengles.*;
 /*<annotations>*/@Library("CoreImage") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CIColor/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class CIColorPtr extends Ptr<CIColor, CIColorPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(CIColor.class); }/*</bind>*/
@@ -98,5 +98,7 @@ import org.robovm.apple.opengles.*;
     protected static native @Pointer long colorWithRed$green$blue$(@MachineSizedFloat double r, @MachineSizedFloat double g, @MachineSizedFloat double b);
     @Method(selector = "colorWithString:")
     protected static native @Pointer long colorWithString$(String representation);
+    @Method(selector = "encodeWithCoder:")
+    public native void encodeWithCoder$(NSCoder aCoder);
     /*</methods>*/
 }

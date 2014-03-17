@@ -45,7 +45,6 @@ import org.robovm.apple.security.*;
     /*<constructors>*/
     public NSTextCheckingResult() {}
     protected NSTextCheckingResult(SkipInit skipInit) { super(skipInit); }
-    public NSTextCheckingResult(NSCoder aDecoder) { super((SkipInit) null); initObject(initWithCoder$(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "resultType")
@@ -140,7 +139,5 @@ import org.robovm.apple.security.*;
     public static native NSTextCheckingResult transitInformationCheckingResultWithRange$components$(@ByVal NSRange range, NSDictionary<?, ?> components);
     @Method(selector = "encodeWithCoder:")
     public native void encodeWithCoder$(NSCoder aCoder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long initWithCoder$(NSCoder aDecoder);
     /*</methods>*/
 }

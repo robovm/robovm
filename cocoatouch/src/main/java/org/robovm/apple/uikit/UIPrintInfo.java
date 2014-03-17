@@ -40,7 +40,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIPrintInfo/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class UIPrintInfoPtr extends Ptr<UIPrintInfo, UIPrintInfoPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIPrintInfo.class); }/*</bind>*/
@@ -79,5 +79,7 @@ import org.robovm.apple.coreimage.*;
     public static native UIPrintInfo getPrintInfo();
     @Method(selector = "printInfoWithDictionary:")
     public static native UIPrintInfo fromDictionary(NSDictionary<?, ?> dictionary);
+    @Method(selector = "encodeWithCoder:")
+    public native void encodeWithCoder$(NSCoder aCoder);
     /*</methods>*/
 }

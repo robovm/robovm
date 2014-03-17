@@ -56,8 +56,8 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("startInteractiveTransition:")
     public void startInteractiveTransition$(UIViewControllerContextTransitioning transitionContext) { throw new UnsupportedOperationException(); }
     @NotImplemented("completionSpeed")
-    public @MachineSizedFloat double completionSpeed() { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getCompletionSpeed() { throw new UnsupportedOperationException(); }
     @NotImplemented("completionCurve")
-    public UIViewAnimationCurve completionCurve() { throw new UnsupportedOperationException(); }
+    public UIViewAnimationCurve getCompletionCurve() { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

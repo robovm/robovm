@@ -174,8 +174,6 @@ import org.robovm.apple.security.*;
     public native boolean linkItemAtURL$toURL$error$(NSURL srcURL, NSURL dstURL, NSError.NSErrorPtr error);
     @Method(selector = "removeItemAtURL:error:")
     public native boolean removeItemAtURL$error$(NSURL URL, NSError.NSErrorPtr error);
-    @Method(selector = "trashItemAtURL:resultingItemURL:error:")
-    public native boolean trashItemAtURL$resultingItemURL$error$(NSURL url, NSURL.NSURLPtr outResultingURL, NSError.NSErrorPtr error);
     @Method(selector = "fileAttributesAtPath:traverseLink:")
     public native NSDictionary<?, ?> fileAttributesAtPath$traverseLink$(String path, boolean yorn);
     @Method(selector = "changeFileAttributes:atPath:")

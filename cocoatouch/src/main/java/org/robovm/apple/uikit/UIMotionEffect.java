@@ -40,7 +40,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIMotionEffect/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class UIMotionEffectPtr extends Ptr<UIMotionEffect, UIMotionEffectPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIMotionEffect.class); }/*</bind>*/
@@ -56,5 +56,7 @@ import org.robovm.apple.coreimage.*;
     /*<methods>*/
     @Method(selector = "keyPathsAndRelativeValuesForViewerOffset:")
     public native NSDictionary<?, ?> keyPathsAndRelativeValuesForViewerOffset$(@ByVal UIOffset viewerOffset);
+    @Method(selector = "encodeWithCoder:")
+    public native void encodeWithCoder$(NSCoder aCoder);
     /*</methods>*/
 }

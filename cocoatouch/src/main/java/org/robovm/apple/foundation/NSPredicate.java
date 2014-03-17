@@ -63,8 +63,6 @@ import org.robovm.apple.security.*;
     public native void allowEvaluation();
     @Method(selector = "predicateWithFormat:argumentArray:")
     public static native NSPredicate predicateWithFormat$argumentArray$(String predicateFormat, NSArray<?> arguments);
-    @Method(selector = "predicateFromMetadataQueryString:")
-    public static native NSPredicate predicateFromMetadataQueryString$(String queryString);
     @Method(selector = "predicateWithValue:")
     public static native NSPredicate predicateWithValue$(boolean value);
     @Method(selector = "predicateWithBlock:")

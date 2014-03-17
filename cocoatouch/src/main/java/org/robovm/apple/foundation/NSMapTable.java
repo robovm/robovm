@@ -47,7 +47,6 @@ import org.robovm.apple.security.*;
     protected NSMapTable(SkipInit skipInit) { super(skipInit); }
     public NSMapTable(NSPointerFunctionsOptions keyOptions, NSPointerFunctionsOptions valueOptions, @MachineSizedUInt long initialCapacity) { super((SkipInit) null); initObject(initWithKeyOptions$valueOptions$capacity$(keyOptions, valueOptions, initialCapacity)); }
     public NSMapTable(NSPointerFunctions keyFunctions, NSPointerFunctions valueFunctions, @MachineSizedUInt long initialCapacity) { super((SkipInit) null); initObject(initWithKeyPointerFunctions$valuePointerFunctions$capacity$(keyFunctions, valueFunctions, initialCapacity)); }
-    public NSMapTable(NSCoder aDecoder) { super((SkipInit) null); initObject(initWithCoder$(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -90,7 +89,5 @@ import org.robovm.apple.security.*;
     public static native NSObject weakToWeakObjectsMapTable();
     @Method(selector = "encodeWithCoder:")
     public native void encodeWithCoder$(NSCoder aCoder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long initWithCoder$(NSCoder aDecoder);
     /*</methods>*/
 }

@@ -46,7 +46,6 @@ import org.robovm.apple.security.*;
     public NSOrthography() {}
     protected NSOrthography(SkipInit skipInit) { super(skipInit); }
     public NSOrthography(String script, NSDictionary<?, ?> map) { super((SkipInit) null); initObject(initWithDominantScript$languageMap$(script, map)); }
-    public NSOrthography(NSCoder aDecoder) { super((SkipInit) null); initObject(initWithCoder$(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "dominantScript")
@@ -72,7 +71,5 @@ import org.robovm.apple.security.*;
     public static native NSObject orthographyWithDominantScript$languageMap$(String script, NSDictionary<?, ?> map);
     @Method(selector = "encodeWithCoder:")
     public native void encodeWithCoder$(NSCoder aCoder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long initWithCoder$(NSCoder aDecoder);
     /*</methods>*/
 }

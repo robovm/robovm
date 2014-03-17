@@ -45,7 +45,6 @@ import org.robovm.apple.security.*;
     /*<constructors>*/
     public NSFormatter() {}
     protected NSFormatter(SkipInit skipInit) { super(skipInit); }
-    public NSFormatter(NSCoder aDecoder) { super((SkipInit) null); initObject(initWithCoder$(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -66,7 +65,5 @@ import org.robovm.apple.security.*;
     public native boolean isPartialStringValid$proposedSelectedRange$originalString$originalSelectedRange$errorDescription$(NSString.NSStringPtr partialStringPtr, NSRange proposedSelRangePtr, String origString, @ByVal NSRange origSelRange, NSString.NSStringPtr error);
     @Method(selector = "encodeWithCoder:")
     public native void encodeWithCoder$(NSCoder aCoder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long initWithCoder$(NSCoder aDecoder);
     /*</methods>*/
 }

@@ -40,7 +40,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIBarButtonItem/*</name>*/ 
     extends /*<extends>*/UIBarItem/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class UIBarButtonItemPtr extends Ptr<UIBarButtonItem, UIBarButtonItemPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIBarButtonItem.class); }/*</bind>*/
@@ -124,5 +124,7 @@ import org.robovm.apple.coreimage.*;
     public native void setBackButtonBackgroundVerticalPositionAdjustment$forBarMetrics$(@MachineSizedFloat double adjustment, UIBarMetrics barMetrics);
     @Method(selector = "backButtonBackgroundVerticalPositionAdjustmentForBarMetrics:")
     public native @MachineSizedFloat double getBackButtonBackgroundVerticalPositionAdjustment(UIBarMetrics barMetrics);
+    @Method(selector = "encodeWithCoder:")
+    public native void encodeWithCoder$(NSCoder aCoder);
     /*</methods>*/
 }

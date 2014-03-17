@@ -37,7 +37,7 @@ import org.robovm.apple.security.*;
 public enum /*<name>*/NSNumberFormatterBehavior/*</name>*/ implements ValuedEnum {
     /*<values>*/
     Default(0L),
-    V10_4(1040L);
+    _10_4(1040L);
     /*</values>*/
 
     private final long n;

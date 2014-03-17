@@ -38,7 +38,7 @@ import org.robovm.apple.opengles.*;
 /*<annotations>*/@Library("CoreImage") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CIVector/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class CIVectorPtr extends Ptr<CIVector, CIVectorPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(CIVector.class); }/*</bind>*/
@@ -119,5 +119,7 @@ import org.robovm.apple.opengles.*;
     public native @ByVal CGAffineTransform getCGAffineTransformValue();
     @Method(selector = "stringRepresentation")
     public native String getStringRepresentation();
+    @Method(selector = "encodeWithCoder:")
+    public native void encodeWithCoder$(NSCoder aCoder);
     /*</methods>*/
 }

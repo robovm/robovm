@@ -46,7 +46,6 @@ import org.robovm.apple.security.*;
     public NSRegularExpression() {}
     protected NSRegularExpression(SkipInit skipInit) { super(skipInit); }
     public NSRegularExpression(String pattern, NSRegularExpressionOptions options, NSError.NSErrorPtr error) { super((SkipInit) null); initObject(initWithPattern$options$error$(pattern, options, error)); }
-    public NSRegularExpression(NSCoder aDecoder) { super((SkipInit) null); initObject(initWithCoder$(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "pattern")
@@ -84,7 +83,5 @@ import org.robovm.apple.security.*;
     public static native String escapedTemplateForString$(String string);
     @Method(selector = "encodeWithCoder:")
     public native void encodeWithCoder$(NSCoder aCoder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long initWithCoder$(NSCoder aDecoder);
     /*</methods>*/
 }

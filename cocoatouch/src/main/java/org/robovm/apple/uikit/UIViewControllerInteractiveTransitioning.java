@@ -53,9 +53,9 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "startInteractiveTransition:")
     void startInteractiveTransition$(UIViewControllerContextTransitioning transitionContext);
     @Method(selector = "completionSpeed")
-    @MachineSizedFloat double completionSpeed();
+    @MachineSizedFloat double getCompletionSpeed();
     @Method(selector = "completionCurve")
-    UIViewAnimationCurve completionCurve();
+    UIViewAnimationCurve getCompletionCurve();
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

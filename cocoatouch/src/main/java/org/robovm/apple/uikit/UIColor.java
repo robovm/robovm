@@ -77,8 +77,6 @@ import org.robovm.apple.coreimage.*;
     public native boolean getRGBA(MachineSizedFloatPtr red, MachineSizedFloatPtr green, MachineSizedFloatPtr blue, MachineSizedFloatPtr alpha);
     @Method(selector = "colorWithAlphaComponent:")
     public native UIColor colorWithAlpha(@MachineSizedFloat double alpha);
-    @Method(selector = "CGColor")
-    public native CGColor CGColor();
     @Method(selector = "colorWithWhite:alpha:")
     public static native UIColor fromWhiteAlpha(@MachineSizedFloat double white, @MachineSizedFloat double alpha);
     @Method(selector = "colorWithHue:saturation:brightness:alpha:")

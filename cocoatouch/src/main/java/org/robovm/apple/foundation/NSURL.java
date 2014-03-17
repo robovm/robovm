@@ -332,10 +332,6 @@ import org.robovm.apple.security.*;
     public native void removeAllCachedResourceValues();
     @Method(selector = "setTemporaryResourceValue:forKey:")
     public native void setTemporaryResourceValue$forKey$(NSObject value, String key);
-    @Method(selector = "startAccessingSecurityScopedResource")
-    public native boolean startAccessingSecurityScopedResource();
-    @Method(selector = "stopAccessingSecurityScopedResource")
-    public native void stopAccessingSecurityScopedResource();
     @Method(selector = "resourceValuesForKeys:fromBookmarkData:")
     public static native NSDictionary<?, ?> resourceValuesForKeys$fromBookmarkData$(NSArray<?> keys, NSData bookmarkData);
     @Method(selector = "pathComponents")

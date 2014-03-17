@@ -48,7 +48,6 @@ import org.robovm.apple.security.*;
     public NSIndexSet(@ByVal NSRange range) { super((SkipInit) null); initObject(initWithIndexesInRange$(range)); }
     public NSIndexSet(NSIndexSet indexSet) { super((SkipInit) null); initObject(initWithIndexSet$(indexSet)); }
     public NSIndexSet(@MachineSizedUInt long value) { super((SkipInit) null); initObject(initWithIndex$(value)); }
-    public NSIndexSet(NSCoder aDecoder) { super((SkipInit) null); initObject(initWithCoder$(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -121,7 +120,5 @@ import org.robovm.apple.security.*;
     public static native NSIndexSet indexSetWithIndexesInRange$(@ByVal NSRange range);
     @Method(selector = "encodeWithCoder:")
     public native void encodeWithCoder$(NSCoder aCoder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long initWithCoder$(NSCoder aDecoder);
     /*</methods>*/
 }

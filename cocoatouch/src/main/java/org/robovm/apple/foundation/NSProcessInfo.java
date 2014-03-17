@@ -79,24 +79,12 @@ import org.robovm.apple.security.*;
     public native long physicalMemory();
     @Method(selector = "systemUptime")
     public native double systemUptime();
-    @Method(selector = "disableSuddenTermination")
-    public native void disableSuddenTermination();
-    @Method(selector = "enableSuddenTermination")
-    public native void enableSuddenTermination();
-    @Method(selector = "disableAutomaticTermination:")
-    public native void disableAutomaticTermination$(String reason);
-    @Method(selector = "enableAutomaticTermination:")
-    public native void enableAutomaticTermination$(String reason);
-    @Method(selector = "setAutomaticTerminationSupportEnabled:")
-    public native void setAutomaticTerminationSupportEnabled$(boolean flag);
-    @Method(selector = "automaticTerminationSupportEnabled")
-    public native boolean automaticTerminationSupportEnabled();
     @Method(selector = "processInfo")
     public static native NSProcessInfo processInfo();
     @Method(selector = "beginActivityWithOptions:reason:")
-    public native NSObjectProtocol beginActivityWithOptions$reason$(NSActivityOptions options, String reason);
+    public native NSObject beginActivityWithOptions$reason$(NSActivityOptions options, String reason);
     @Method(selector = "endActivity:")
-    public native void endActivity$(NSObjectProtocol activity);
+    public native void endActivity$(NSObject activity);
     @Method(selector = "performActivityWithOptions:reason:usingBlock:")
     public native void performActivityWithOptions$reason$usingBlock$(NSActivityOptions options, String reason, ObjCBlock block);
     /*</methods>*/

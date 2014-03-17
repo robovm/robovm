@@ -40,7 +40,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIWebView/*</name>*/ 
     extends /*<extends>*/UIView/*</extends>*/ 
-    /*<implements>*/implements UIScrollViewDelegate/*</implements>*/ {
+    /*<implements>*/implements NSCoding, UIScrollViewDelegate/*</implements>*/ {
 
     /*<ptr>*/public static class UIWebViewPtr extends Ptr<UIWebView, UIWebViewPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIWebView.class); }/*</bind>*/

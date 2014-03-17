@@ -48,7 +48,6 @@ import org.robovm.apple.security.*;
     public NSAttributedString(String str) { super((SkipInit) null); initObject(initWithString$(str)); }
     public NSAttributedString(String str, NSDictionary<?, ?> attrs) { super((SkipInit) null); initObject(initWithString$attributes$(str, attrs)); }
     public NSAttributedString(NSAttributedString attrStr) { super((SkipInit) null); initObject(initWithAttributedString$(attrStr)); }
-    public NSAttributedString(NSCoder aDecoder) { super((SkipInit) null); initObject(initWithCoder$(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -83,7 +82,5 @@ import org.robovm.apple.security.*;
     public native void enumerateAttribute$inRange$options$usingBlock$(String attrName, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, ObjCBlock block);
     @Method(selector = "encodeWithCoder:")
     public native void encodeWithCoder$(NSCoder aCoder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long initWithCoder$(NSCoder aDecoder);
     /*</methods>*/
 }

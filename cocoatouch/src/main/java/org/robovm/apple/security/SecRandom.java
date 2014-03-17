@@ -42,7 +42,9 @@ import org.robovm.apple.corefoundation.*;
     /*<ptr>*/public static class SecRandomPtr extends Ptr<SecRandom, SecRandomPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(SecRandom.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
+    /*<constructors>*/
+    protected SecRandom() {}
+    /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

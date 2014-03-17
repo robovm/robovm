@@ -47,7 +47,6 @@ import org.robovm.apple.security.*;
     protected NSIndexPath(SkipInit skipInit) { super(skipInit); }
     public NSIndexPath(MachineSizedUIntPtr indexes, @MachineSizedUInt long length) { super((SkipInit) null); initObject(initWithIndexes$length$(indexes, length)); }
     public NSIndexPath(@MachineSizedUInt long index) { super((SkipInit) null); initObject(initWithIndex$(index)); }
-    public NSIndexPath(NSCoder aDecoder) { super((SkipInit) null); initObject(initWithCoder$(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -76,7 +75,5 @@ import org.robovm.apple.security.*;
     public static native NSIndexPath indexPathWithIndexes$length$(MachineSizedUIntPtr indexes, @MachineSizedUInt long length);
     @Method(selector = "encodeWithCoder:")
     public native void encodeWithCoder$(NSCoder aCoder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long initWithCoder$(NSCoder aDecoder);
     /*</methods>*/
 }

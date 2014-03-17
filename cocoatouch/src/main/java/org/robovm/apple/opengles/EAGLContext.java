@@ -56,6 +56,10 @@ import org.robovm.apple.foundation.*;
     public native String getDebugLabel();
     @Property(selector = "setDebugLabel:")
     public native void setDebugLabel(String v);
+    @Property(selector = "isMultiThreaded")
+    public native boolean isMultiThreaded();
+    @Property(selector = "setMultiThreaded:")
+    public native void setMultiThreaded(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

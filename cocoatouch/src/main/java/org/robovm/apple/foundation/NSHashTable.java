@@ -47,7 +47,6 @@ import org.robovm.apple.security.*;
     protected NSHashTable(SkipInit skipInit) { super(skipInit); }
     public NSHashTable(NSPointerFunctionsOptions options, @MachineSizedUInt long initialCapacity) { super((SkipInit) null); initObject(initWithOptions$capacity$(options, initialCapacity)); }
     public NSHashTable(NSPointerFunctions functions, @MachineSizedUInt long initialCapacity) { super((SkipInit) null); initObject(initWithPointerFunctions$capacity$(functions, initialCapacity)); }
-    public NSHashTable(NSCoder aDecoder) { super((SkipInit) null); initObject(initWithCoder$(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -98,7 +97,5 @@ import org.robovm.apple.security.*;
     public static native NSObject weakObjectsHashTable();
     @Method(selector = "encodeWithCoder:")
     public native void encodeWithCoder$(NSCoder aCoder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long initWithCoder$(NSCoder aDecoder);
     /*</methods>*/
 }

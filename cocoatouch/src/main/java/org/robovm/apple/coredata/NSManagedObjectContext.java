@@ -36,7 +36,7 @@ import org.robovm.apple.foundation.*;
 /*<annotations>*/@Library("CoreData") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSManagedObjectContext/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSCoding, NSLocking/*</implements>*/ {
 
     /*<ptr>*/public static class NSManagedObjectContextPtr extends Ptr<NSManagedObjectContext, NSManagedObjectContextPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSManagedObjectContext.class); }/*</bind>*/
@@ -162,5 +162,7 @@ import org.robovm.apple.foundation.*;
     public native boolean obtainPermanentIDsForObjects$error$(NSArray<?> objects, NSError.NSErrorPtr error);
     @Method(selector = "mergeChangesFromContextDidSaveNotification:")
     public native void mergeChangesFromContextDidSaveNotification$(NSNotification notification);
+    @Method(selector = "encodeWithCoder:")
+    public native void encodeWithCoder$(NSCoder aCoder);
     /*</methods>*/
 }

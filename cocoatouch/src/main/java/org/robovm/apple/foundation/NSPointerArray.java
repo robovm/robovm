@@ -47,7 +47,6 @@ import org.robovm.apple.security.*;
     protected NSPointerArray(SkipInit skipInit) { super(skipInit); }
     public NSPointerArray(NSPointerFunctionsOptions options) { super((SkipInit) null); initObject(initWithOptions$(options)); }
     public NSPointerArray(NSPointerFunctions functions) { super((SkipInit) null); initObject(initWithPointerFunctions$(functions)); }
-    public NSPointerArray(NSCoder aDecoder) { super((SkipInit) null); initObject(initWithCoder$(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -88,7 +87,5 @@ import org.robovm.apple.security.*;
     public static native NSObject weakObjectsPointerArray();
     @Method(selector = "encodeWithCoder:")
     public native void encodeWithCoder$(NSCoder aCoder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long initWithCoder$(NSCoder aDecoder);
     /*</methods>*/
 }

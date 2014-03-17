@@ -48,7 +48,34 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<methods>*/
-    
+    @Method(selector = "isEqual:")
+    boolean isEqual(NSObject object);
+    @Method(selector = "hash")
+    @MachineSizedUInt long hash();
+    @Method(selector = "performSelector:")
+    NSObject performSelector(Selector aSelector);
+    @Method(selector = "performSelector:withObject:")
+    NSObject performSelector(Selector aSelector, NSObject object);
+    @Method(selector = "performSelector:withObject:withObject:")
+    NSObject performSelector(Selector aSelector, NSObject object1, NSObject object2);
+    @Method(selector = "isKindOfClass:")
+    boolean isKindOfClass(ObjCClass aClass);
+    @Method(selector = "isMemberOfClass:")
+    boolean isMemberOfClass(ObjCClass aClass);
+    @Method(selector = "conformsToProtocol:")
+    boolean conformsToProtocol(ObjCProtocol aProtocol);
+    @Method(selector = "respondsToSelector:")
+    boolean respondsToSelector(Selector aSelector);
+    @Method(selector = "retain")
+    NSObject retain();
+    @Method(selector = "release")
+    void release();
+    @Method(selector = "autorelease")
+    NSObject autorelease();
+    @Method(selector = "retainCount")
+    @MachineSizedUInt long retainCount();
+    @Method(selector = "description")
+    String description();
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

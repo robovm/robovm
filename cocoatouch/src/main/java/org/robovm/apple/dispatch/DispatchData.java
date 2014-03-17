@@ -16,11 +16,13 @@
 package org.robovm.apple.dispatch;
 
 /*<imports>*/
+import java.io.*;
 import java.nio.*;
 import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -38,7 +40,9 @@ import org.robovm.rt.bro.ptr.*;
     /*<ptr>*/public static class DispatchDataPtr extends Ptr<DispatchData, DispatchDataPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(DispatchData.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
+    /*<constructors>*/
+    protected DispatchData() {}
+    /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

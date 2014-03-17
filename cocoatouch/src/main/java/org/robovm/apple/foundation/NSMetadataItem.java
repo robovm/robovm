@@ -45,7 +45,6 @@ import org.robovm.apple.security.*;
     /*<constructors>*/
     public NSMetadataItem() {}
     protected NSMetadataItem(SkipInit skipInit) { super(skipInit); }
-    public NSMetadataItem(NSURL url) { super((SkipInit) null); initObject(initWithURL$(url)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -389,8 +388,6 @@ import org.robovm.apple.security.*;
     @GlobalValue(symbol="NSMetadataItemIsApplicationManagedKey")
     public static native NSString KeyIsApplicationManaged();
     
-    @Method(selector = "initWithURL:")
-    protected native @Pointer long initWithURL$(NSURL url);
     @Method(selector = "valueForAttribute:")
     public native NSObject valueForAttribute$(String key);
     @Method(selector = "valuesForAttributes:")

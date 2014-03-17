@@ -45,7 +45,6 @@ import org.robovm.apple.security.*;
     /*<constructors>*/
     public NSPort() {}
     protected NSPort(SkipInit skipInit) { super(skipInit); }
-    public NSPort(NSCoder aDecoder) { super((SkipInit) null); initObject(initWithCoder$(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -77,7 +76,5 @@ import org.robovm.apple.security.*;
     public static native NSPort port();
     @Method(selector = "encodeWithCoder:")
     public native void encodeWithCoder$(NSCoder aCoder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long initWithCoder$(NSCoder aDecoder);
     /*</methods>*/
 }

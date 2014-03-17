@@ -40,7 +40,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIDatePicker/*</name>*/ 
     extends /*<extends>*/UIControl/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class UIDatePickerPtr extends Ptr<UIDatePicker, UIDatePickerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIDatePicker.class); }/*</bind>*/

@@ -40,7 +40,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIFontDescriptor/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class UIFontDescriptorPtr extends Ptr<UIFontDescriptor, UIFontDescriptorPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIFontDescriptor.class); }/*</bind>*/
@@ -90,5 +90,7 @@ import org.robovm.apple.coreimage.*;
     public static native UIFontDescriptor fontDescriptorWithName$matrix$(String fontName, @ByVal CGAffineTransform matrix);
     @Method(selector = "preferredFontDescriptorWithTextStyle:")
     public static native UIFontDescriptor preferredFontDescriptorWithTextStyle$(String style);
+    @Method(selector = "encodeWithCoder:")
+    public native void encodeWithCoder$(NSCoder aCoder);
     /*</methods>*/
 }

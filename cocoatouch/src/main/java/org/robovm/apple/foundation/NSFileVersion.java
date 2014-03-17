@@ -82,10 +82,6 @@ import org.robovm.apple.security.*;
     public static native NSArray<?> unresolvedConflictVersionsOfItemAtURL$(NSURL url);
     @Method(selector = "versionOfItemAtURL:forPersistentIdentifier:")
     public static native NSFileVersion versionOfItemAtURL$forPersistentIdentifier$(NSURL url, NSObject persistentIdentifier);
-    @Method(selector = "addVersionOfItemAtURL:withContentsOfURL:options:error:")
-    public static native NSFileVersion addVersionOfItemAtURL$withContentsOfURL$options$error$(NSURL url, NSURL contentsURL, NSFileVersionAddingOptions options, NSError.NSErrorPtr outError);
-    @Method(selector = "temporaryDirectoryURLForNewVersionOfItemAtURL:")
-    public static native NSURL temporaryDirectoryURLForNewVersionOfItemAtURL$(NSURL url);
     @Method(selector = "removeOtherVersionsOfItemAtURL:error:")
     public static native boolean removeOtherVersionsOfItemAtURL$error$(NSURL url, NSError.NSErrorPtr outError);
     /*</methods>*/

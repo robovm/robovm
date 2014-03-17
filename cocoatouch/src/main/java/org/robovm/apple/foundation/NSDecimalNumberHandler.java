@@ -46,7 +46,6 @@ import org.robovm.apple.security.*;
     public NSDecimalNumberHandler() {}
     protected NSDecimalNumberHandler(SkipInit skipInit) { super(skipInit); }
     public NSDecimalNumberHandler(NSRoundingMode roundingMode, short scale, boolean exact, boolean overflow, boolean underflow, boolean divideByZero) { super((SkipInit) null); initObject(initWithRoundingMode$scale$raiseOnExactness$raiseOnOverflow$raiseOnUnderflow$raiseOnDivideByZero$(roundingMode, scale, exact, overflow, underflow, divideByZero)); }
-    public NSDecimalNumberHandler(NSCoder aDecoder) { super((SkipInit) null); initObject(initWithCoder$(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -67,7 +66,5 @@ import org.robovm.apple.security.*;
     public native NSDecimalNumber exceptionDuringOperation$error$leftOperand$rightOperand$(Selector operation, NSCalculationError error, NSDecimalNumber leftOperand, NSDecimalNumber rightOperand);
     @Method(selector = "encodeWithCoder:")
     public native void encodeWithCoder$(NSCoder aCoder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long initWithCoder$(NSCoder aDecoder);
     /*</methods>*/
 }

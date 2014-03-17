@@ -42,7 +42,7 @@ public enum /*<name>*/UIImagePickerControllerQualityType/*</name>*/ implements V
     High(0L),
     Medium(1L),
     Low(2L),
-    V640x480(3L),
+    _640x480(3L),
     IFrame1280x720(4L),
     IFrame960x540(5L);
     /*</values>*/

@@ -40,7 +40,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UITextField/*</name>*/ 
     extends /*<extends>*/UIControl/*</extends>*/ 
-    /*<implements>*/implements UITextInput/*</implements>*/ {
+    /*<implements>*/implements UITextInput, NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class UITextFieldPtr extends Ptr<UITextField, UITextFieldPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UITextField.class); }/*</bind>*/

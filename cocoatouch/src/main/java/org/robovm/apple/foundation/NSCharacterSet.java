@@ -47,7 +47,6 @@ import org.robovm.apple.security.*;
     /*<constructors>*/
     public NSCharacterSet() {}
     protected NSCharacterSet(SkipInit skipInit) { super(skipInit); }
-    public NSCharacterSet(NSCoder aDecoder) { super((SkipInit) null); initObject(initWithCoder$(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -118,7 +117,5 @@ import org.robovm.apple.security.*;
     public static native NSObject URLFragmentAllowedCharacterSet();
     @Method(selector = "encodeWithCoder:")
     public native void encodeWithCoder$(NSCoder aCoder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long initWithCoder$(NSCoder aDecoder);
     /*</methods>*/
 }

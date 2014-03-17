@@ -36,7 +36,7 @@ import org.robovm.apple.foundation.*;
 /*<annotations>*/@Library("CoreData") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSEntityDescription/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class NSEntityDescriptionPtr extends Ptr<NSEntityDescription, NSEntityDescriptionPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSEntityDescription.class); }/*</bind>*/
@@ -108,5 +108,7 @@ import org.robovm.apple.foundation.*;
     public static native NSEntityDescription entityForName$inManagedObjectContext$(String entityName, NSManagedObjectContext context);
     @Method(selector = "insertNewObjectForEntityForName:inManagedObjectContext:")
     public static native NSObject insertNewObjectForEntityForName$inManagedObjectContext$(String entityName, NSManagedObjectContext context);
+    @Method(selector = "encodeWithCoder:")
+    public native void encodeWithCoder$(NSCoder aCoder);
     /*</methods>*/
 }

@@ -119,7 +119,7 @@ import org.robovm.apple.security.*;
         if (!(obj instanceof NSObject)) {
             return false;
         }
-        return isEqual$((NSObject) obj);
+        return isEqual((NSObject) obj);
     }
     
     @Override
@@ -159,8 +159,6 @@ import org.robovm.apple.security.*;
     public native NSObject copy();
     @Method(selector = "mutableCopy")
     public native NSObject mutableCopy();
-    @Method(selector = "retainWeakReference")
-    public native boolean retainWeakReference();
     @Method(selector = "valueForKey:")
     public native NSObject getValueForKey(String key);
     @Method(selector = "setValue:forKey:")
@@ -211,24 +209,12 @@ import org.robovm.apple.security.*;
     public native void willChangeValue(String key, NSKeyValueSetMutationKind mutationKind, NSSet<?> objects);
     @Method(selector = "didChangeValueForKey:withSetMutation:usingObjects:")
     public native void didChangeValue(String key, NSKeyValueSetMutationKind mutationKind, NSSet<?> objects);
-    @Method(selector = "performSelector:withObject:afterDelay:inModes:")
-    public native void performSelector(Selector aSelector, NSObject anArgument, double delay, NSArray<?> modes);
-    @Method(selector = "performSelector:withObject:afterDelay:")
-    public native void performSelector(Selector aSelector, NSObject anArgument, double delay);
-    @Method(selector = "performSelectorOnMainThread:withObject:waitUntilDone:modes:")
-    public native void performSelector(Selector aSelector, NSObject arg, boolean wait, NSArray<?> array);
-    @Method(selector = "performSelectorOnMainThread:withObject:waitUntilDone:")
-    public native void performSelector(Selector aSelector, NSObject arg, boolean wait);
-    @Method(selector = "performSelector:onThread:withObject:waitUntilDone:modes:")
-    public native void performSelector(Selector aSelector, NSThread thr, NSObject arg, boolean wait, NSArray<?> array);
-    @Method(selector = "performSelector:onThread:withObject:waitUntilDone:")
-    public native void performSelector(Selector aSelector, NSThread thr, NSObject arg, boolean wait);
     @Method(selector = "performSelectorInBackground:withObject:")
     public native void performSelectorInBackground(Selector aSelector, NSObject arg);
     @Method(selector = "isEqual:")
-    protected native boolean isEqual$(NSObject object);
+    public native boolean isEqual(NSObject object);
     @Method(selector = "hash")
-    protected native @MachineSizedUInt long hash();
+    public native @MachineSizedUInt long hash();
     @Method(selector = "performSelector:")
     public native NSObject performSelector(Selector aSelector);
     @Method(selector = "performSelector:withObject:")
@@ -252,6 +238,6 @@ import org.robovm.apple.security.*;
     @Method(selector = "retainCount")
     public native @MachineSizedUInt long retainCount();
     @Method(selector = "description")
-    protected native String description();
+    public native String description();
     /*</methods>*/
 }

@@ -47,7 +47,6 @@ import org.robovm.apple.security.*;
     protected NSCachedURLResponse(SkipInit skipInit) { super(skipInit); }
     public NSCachedURLResponse(NSURLResponse response, NSData data) { super((SkipInit) null); initObject(initWithResponse$data$(response, data)); }
     public NSCachedURLResponse(NSURLResponse response, NSData data, NSDictionary<?, ?> userInfo, NSURLCacheStoragePolicy storagePolicy) { super((SkipInit) null); initObject(initWithResponse$data$userInfo$storagePolicy$(response, data, userInfo, storagePolicy)); }
-    public NSCachedURLResponse(NSCoder aDecoder) { super((SkipInit) null); initObject(initWithCoder$(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -68,7 +67,5 @@ import org.robovm.apple.security.*;
     public native NSURLCacheStoragePolicy storagePolicy();
     @Method(selector = "encodeWithCoder:")
     public native void encodeWithCoder$(NSCoder aCoder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long initWithCoder$(NSCoder aDecoder);
     /*</methods>*/
 }

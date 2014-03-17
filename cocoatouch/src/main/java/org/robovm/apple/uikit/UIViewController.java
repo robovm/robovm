@@ -40,7 +40,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIViewController/*</name>*/ 
     extends /*<extends>*/UIResponder/*</extends>*/ 
-    /*<implements>*/implements UIStateRestoring/*</implements>*/ {
+    /*<implements>*/implements NSCoding, UIStateRestoring/*</implements>*/ {
 
     /*<ptr>*/public static class UIViewControllerPtr extends Ptr<UIViewController, UIViewControllerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIViewController.class); }/*</bind>*/
@@ -304,5 +304,7 @@ import org.robovm.apple.coreimage.*;
     public native void setToolbarItems$animated$(NSArray<?> toolbarItems, boolean animated);
     @Method(selector = "transitionCoordinator")
     public native UIViewControllerTransitionCoordinator transitionCoordinator();
+    @Method(selector = "encodeWithCoder:")
+    public native void encodeWithCoder$(NSCoder aCoder);
     /*</methods>*/
 }

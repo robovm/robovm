@@ -40,7 +40,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UINavigationItem/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class UINavigationItemPtr extends Ptr<UINavigationItem, UINavigationItemPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UINavigationItem.class); }/*</bind>*/
@@ -106,5 +106,7 @@ import org.robovm.apple.coreimage.*;
     public native void setLeftBarButtonItem$animated$(UIBarButtonItem item, boolean animated);
     @Method(selector = "setRightBarButtonItem:animated:")
     public native void setRightBarButtonItem$animated$(UIBarButtonItem item, boolean animated);
+    @Method(selector = "encodeWithCoder:")
+    public native void encodeWithCoder$(NSCoder aCoder);
     /*</methods>*/
 }

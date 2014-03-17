@@ -40,7 +40,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIPickerView/*</name>*/ 
     extends /*<extends>*/UIView/*</extends>*/ 
-    /*<implements>*/implements UITableViewDataSource/*</implements>*/ {
+    /*<implements>*/implements NSCoding, UITableViewDataSource/*</implements>*/ {
 
     /*<ptr>*/public static class UIPickerViewPtr extends Ptr<UIPickerView, UIPickerViewPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIPickerView.class); }/*</bind>*/

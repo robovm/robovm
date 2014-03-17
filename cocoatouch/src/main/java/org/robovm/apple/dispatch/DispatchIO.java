@@ -16,11 +16,13 @@
 package org.robovm.apple.dispatch;
 
 /*<imports>*/
+import java.io.*;
 import java.nio.*;
 import java.util.*;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
+import org.robovm.rt.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
@@ -43,7 +45,9 @@ import org.robovm.rt.bro.ptr.*;
     public static final int STOP = 0x1;
     public static final int STRICT_INTERVAL = 0x1;
     /*</constants>*/
-    /*<constructors>*//*</constructors>*/
+    /*<constructors>*/
+    protected DispatchIO() {}
+    /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

@@ -36,7 +36,7 @@ import org.robovm.apple.foundation.*;
 /*<annotations>*/@Library("CoreData") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSFetchRequest/*</name>*/ 
     extends /*<extends>*/NSPersistentStoreRequest/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class NSFetchRequestPtr extends Ptr<NSFetchRequest, NSFetchRequestPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSFetchRequest.class); }/*</bind>*/
@@ -129,5 +129,7 @@ import org.robovm.apple.foundation.*;
     public native void setHavingPredicate$(NSPredicate predicate);
     @Method(selector = "fetchRequestWithEntityName:")
     public static native NSFetchRequest fetchRequestWithEntityName$(String entityName);
+    @Method(selector = "encodeWithCoder:")
+    public native void encodeWithCoder$(NSCoder aCoder);
     /*</methods>*/
 }

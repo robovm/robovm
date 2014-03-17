@@ -49,7 +49,6 @@ import org.robovm.apple.security.*;
     public NSFileWrapper(NSDictionary<?, ?> childrenByPreferredName) { super((SkipInit) null); initObject(initDirectoryWithFileWrappers$(childrenByPreferredName)); }
     public NSFileWrapper(NSData contents) { super((SkipInit) null); initObject(initRegularFileWithContents$(contents)); }
     public NSFileWrapper(NSURL url) { super((SkipInit) null); initObject(initSymbolicLinkWithDestinationURL$(url)); }
-    public NSFileWrapper(NSCoder aDecoder) { super((SkipInit) null); initObject(initWithCoder$(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -119,7 +118,5 @@ import org.robovm.apple.security.*;
     public native NSURL symbolicLinkDestinationURL();
     @Method(selector = "encodeWithCoder:")
     public native void encodeWithCoder$(NSCoder aCoder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long initWithCoder$(NSCoder aDecoder);
     /*</methods>*/
 }

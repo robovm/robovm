@@ -42,7 +42,9 @@ import org.robovm.apple.corefoundation.*;
     /*<ptr>*/public static class SecCertificatePtr extends Ptr<SecCertificate, SecCertificatePtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(SecCertificate.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
+    /*<constructors>*/
+    protected SecCertificate() {}
+    /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

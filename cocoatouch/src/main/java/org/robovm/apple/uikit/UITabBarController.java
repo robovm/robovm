@@ -40,7 +40,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UITabBarController/*</name>*/ 
     extends /*<extends>*/UIViewController/*</extends>*/ 
-    /*<implements>*/implements UITabBarDelegate/*</implements>*/ {
+    /*<implements>*/implements UITabBarDelegate, NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class UITabBarControllerPtr extends Ptr<UITabBarController, UITabBarControllerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UITabBarController.class); }/*</bind>*/

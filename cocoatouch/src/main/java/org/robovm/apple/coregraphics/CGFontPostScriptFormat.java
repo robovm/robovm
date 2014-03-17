@@ -37,9 +37,9 @@ import org.robovm.apple.foundation.*;
 /*</annotations>*/
 public enum /*<name>*/CGFontPostScriptFormat/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    V1(1L),
-    V3(3L),
-    V42(42L);
+    _1(1L),
+    _3(3L),
+    _42(42L);
     /*</values>*/
 
     private final long n;

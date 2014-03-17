@@ -40,7 +40,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSLayoutManager/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class NSLayoutManagerPtr extends Ptr<NSLayoutManager, NSLayoutManagerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSLayoutManager.class); }/*</bind>*/
@@ -221,5 +221,7 @@ import org.robovm.apple.coreimage.*;
     public native void drawStrikethroughForGlyphRange$strikethroughType$baselineOffset$lineFragmentRect$lineFragmentGlyphRange$containerOrigin$(@ByVal NSRange glyphRange, NSUnderlineStyle strikethroughVal, @MachineSizedFloat double baselineOffset, @ByVal CGRect lineRect, @ByVal NSRange lineGlyphRange, @ByVal CGPoint containerOrigin);
     @Method(selector = "strikethroughGlyphRange:strikethroughType:lineFragmentRect:lineFragmentGlyphRange:containerOrigin:")
     public native void strikethroughGlyphRange$strikethroughType$lineFragmentRect$lineFragmentGlyphRange$containerOrigin$(@ByVal NSRange glyphRange, NSUnderlineStyle strikethroughVal, @ByVal CGRect lineRect, @ByVal NSRange lineGlyphRange, @ByVal CGPoint containerOrigin);
+    @Method(selector = "encodeWithCoder:")
+    public native void encodeWithCoder$(NSCoder aCoder);
     /*</methods>*/
 }

@@ -39,7 +39,7 @@ import org.robovm.apple.coreimage.*;
  */
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ interface /*<name>*/UITextViewDelegate/*</name>*/ 
-    /*<implements>*/extends UIScrollViewDelegate/*</implements>*/ {
+    /*<implements>*/extends NSObjectProtocol, UIScrollViewDelegate/*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/

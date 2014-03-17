@@ -42,7 +42,9 @@ import org.robovm.apple.corefoundation.*;
     /*<ptr>*/public static class SecPolicyPtr extends Ptr<SecPolicy, SecPolicyPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(SecPolicy.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
+    /*<constructors>*/
+    protected SecPolicy() {}
+    /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

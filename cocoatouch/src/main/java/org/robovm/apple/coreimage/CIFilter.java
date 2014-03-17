@@ -38,7 +38,7 @@ import org.robovm.apple.opengles.*;
 /*<annotations>*/@Library("CoreImage") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CIFilter/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class CIFilterPtr extends Ptr<CIFilter, CIFilterPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(CIFilter.class); }/*</bind>*/
@@ -225,5 +225,7 @@ import org.robovm.apple.opengles.*;
     public static native NSData serializeToXMP(NSArray<CIFilter> filters, @ByVal CGRect extent);
     @Method(selector = "filterArrayFromSerializedXMP:inputImageExtent:error:")
     public static native NSArray<CIFilter> deserializeFromXMP(NSData xmpData, @ByVal CGRect extent, NSError.NSErrorPtr outError);
+    @Method(selector = "encodeWithCoder:")
+    public native void encodeWithCoder$(NSCoder aCoder);
     /*</methods>*/
 }

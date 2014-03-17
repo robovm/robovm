@@ -40,7 +40,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIDocument/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSFilePresenter/*</implements>*/ {
 
     /*<ptr>*/public static class UIDocumentPtr extends Ptr<UIDocument, UIDocumentPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIDocument.class); }/*</bind>*/
@@ -67,6 +67,12 @@ import org.robovm.apple.coreimage.*;
     public native NSUndoManager getUndoManager();
     @Property(selector = "setUndoManager:")
     public native void setUndoManager(NSUndoManager v);
+    @Property(selector = "presentedItemURL")
+    public native NSURL getPresentedItemURL();
+    @Property(selector = "presentedItemOperationQueue")
+    public native NSOperationQueue getPresentedItemOperationQueue();
+    @Property(selector = "primaryPresentedItemURL")
+    public native NSURL getPrimaryPresentedItemURL();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -118,5 +124,37 @@ import org.robovm.apple.coreimage.*;
     public native void userInteractionNoLongerPermittedForError$(NSError error);
     @Method(selector = "revertToContentsOfURL:completionHandler:")
     public native void revert(NSURL url, ObjCBlock completionHandler);
+    @Method(selector = "relinquishPresentedItemToReader:")
+    public native void relinquishPresentedItemToReader$(ObjCBlock reader);
+    @Method(selector = "relinquishPresentedItemToWriter:")
+    public native void relinquishPresentedItemToWriter$(ObjCBlock writer);
+    @Method(selector = "savePresentedItemChangesWithCompletionHandler:")
+    public native void savePresentedItemChangesWithCompletionHandler$(ObjCBlock completionHandler);
+    @Method(selector = "accommodatePresentedItemDeletionWithCompletionHandler:")
+    public native void accommodatePresentedItemDeletionWithCompletionHandler$(ObjCBlock completionHandler);
+    @Method(selector = "presentedItemDidMoveToURL:")
+    public native void presentedItemDidMoveToURL$(NSURL newURL);
+    @Method(selector = "presentedItemDidChange")
+    public native void presentedItemDidChange();
+    @Method(selector = "presentedItemDidGainVersion:")
+    public native void presentedItemDidGainVersion$(NSFileVersion version);
+    @Method(selector = "presentedItemDidLoseVersion:")
+    public native void presentedItemDidLoseVersion$(NSFileVersion version);
+    @Method(selector = "presentedItemDidResolveConflictVersion:")
+    public native void presentedItemDidResolveConflictVersion$(NSFileVersion version);
+    @Method(selector = "accommodatePresentedSubitemDeletionAtURL:completionHandler:")
+    public native void accommodatePresentedSubitemDeletionAtURL$completionHandler$(NSURL url, ObjCBlock completionHandler);
+    @Method(selector = "presentedSubitemDidAppearAtURL:")
+    public native void presentedSubitemDidAppearAtURL$(NSURL url);
+    @Method(selector = "presentedSubitemAtURL:didMoveToURL:")
+    public native void presentedSubitemAtURL$didMoveToURL$(NSURL oldURL, NSURL newURL);
+    @Method(selector = "presentedSubitemDidChangeAtURL:")
+    public native void presentedSubitemDidChangeAtURL$(NSURL url);
+    @Method(selector = "presentedSubitemAtURL:didGainVersion:")
+    public native void presentedSubitemAtURL$didGainVersion$(NSURL url, NSFileVersion version);
+    @Method(selector = "presentedSubitemAtURL:didLoseVersion:")
+    public native void presentedSubitemAtURL$didLoseVersion$(NSURL url, NSFileVersion version);
+    @Method(selector = "presentedSubitemAtURL:didResolveConflictVersion:")
+    public native void presentedSubitemAtURL$didResolveConflictVersion$(NSURL url, NSFileVersion version);
     /*</methods>*/
 }

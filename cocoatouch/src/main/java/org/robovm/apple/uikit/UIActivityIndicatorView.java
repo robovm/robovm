@@ -40,7 +40,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIActivityIndicatorView/*</name>*/ 
     extends /*<extends>*/UIView/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class UIActivityIndicatorViewPtr extends Ptr<UIActivityIndicatorView, UIActivityIndicatorViewPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIActivityIndicatorView.class); }/*</bind>*/

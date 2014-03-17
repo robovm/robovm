@@ -40,7 +40,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSParagraphStyle/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class NSParagraphStylePtr extends Ptr<NSParagraphStyle, NSParagraphStylePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSParagraphStyle.class); }/*</bind>*/
@@ -87,5 +87,7 @@ import org.robovm.apple.coreimage.*;
     public static native NSParagraphStyle defaultParagraphStyle();
     @Method(selector = "defaultWritingDirectionForLanguage:")
     public static native NSWritingDirection defaultWritingDirectionForLanguage$(String languageName);
+    @Method(selector = "encodeWithCoder:")
+    public native void encodeWithCoder$(NSCoder aCoder);
     /*</methods>*/
 }

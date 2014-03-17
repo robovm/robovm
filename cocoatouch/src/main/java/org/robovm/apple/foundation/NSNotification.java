@@ -46,7 +46,6 @@ import org.robovm.apple.security.*;
     public NSNotification() {}
     protected NSNotification(SkipInit skipInit) { super(skipInit); }
     public NSNotification(String name, NSNotification object, NSDictionary<?, ?> userInfo) { super((SkipInit) null); initObject(initWithName$object$userInfo$(name, object, userInfo)); }
-    public NSNotification(NSCoder aDecoder) { super((SkipInit) null); initObject(initWithCoder$(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -67,7 +66,5 @@ import org.robovm.apple.security.*;
     public static native NSNotification notificationWithName$object$userInfo$(String aName, NSObject anObject, NSDictionary<?, ?> aUserInfo);
     @Method(selector = "encodeWithCoder:")
     public native void encodeWithCoder$(NSCoder aCoder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long initWithCoder$(NSCoder aDecoder);
     /*</methods>*/
 }

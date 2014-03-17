@@ -40,7 +40,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSTextContainer/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements NSTextLayoutOrientationProvider/*</implements>*/ {
+    /*<implements>*/implements NSCoding, NSTextLayoutOrientationProvider/*</implements>*/ {
 
     /*<ptr>*/public static class NSTextContainerPtr extends Ptr<NSTextContainer, NSTextContainerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSTextContainer.class); }/*</bind>*/
@@ -94,5 +94,7 @@ import org.robovm.apple.coreimage.*;
     protected native @Pointer long initWithSize$(@ByVal CGSize size);
     @Method(selector = "lineFragmentRectForProposedRect:atIndex:writingDirection:remainingRect:")
     public native @ByVal CGRect lineFragmentRectForProposedRect$atIndex$writingDirection$remainingRect$(@ByVal CGRect proposedRect, @MachineSizedUInt long characterIndex, NSWritingDirection baseWritingDirection, CGRect remainingRect);
+    @Method(selector = "encodeWithCoder:")
+    public native void encodeWithCoder$(NSCoder aCoder);
     /*</methods>*/
 }

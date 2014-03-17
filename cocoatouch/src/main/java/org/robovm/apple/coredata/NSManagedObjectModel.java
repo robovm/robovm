@@ -36,7 +36,7 @@ import org.robovm.apple.foundation.*;
 /*<annotations>*/@Library("CoreData") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSManagedObjectModel/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class NSManagedObjectModelPtr extends Ptr<NSManagedObjectModel, NSManagedObjectModelPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSManagedObjectModel.class); }/*</bind>*/
@@ -93,5 +93,7 @@ import org.robovm.apple.foundation.*;
     public static native NSManagedObjectModel mergedModelFromBundles$forStoreMetadata$(NSArray<?> bundles, NSDictionary<?, ?> metadata);
     @Method(selector = "modelByMergingModels:forStoreMetadata:")
     public static native NSManagedObjectModel modelByMergingModels$forStoreMetadata$(NSArray<?> models, NSDictionary<?, ?> metadata);
+    @Method(selector = "encodeWithCoder:")
+    public native void encodeWithCoder$(NSCoder aCoder);
     /*</methods>*/
 }

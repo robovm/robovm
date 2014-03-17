@@ -140,17 +140,9 @@ import org.robovm.apple.security.*;
     public native void pause();
     @Method(selector = "userInfo")
     public native NSDictionary<?, ?> userInfo();
-    @Method(selector = "publish")
-    public native void publish();
-    @Method(selector = "unpublish")
-    public native void unpublish();
     @Method(selector = "currentProgress")
     public static native NSProgress currentProgress();
     @Method(selector = "progressWithTotalUnitCount:")
     public static native NSProgress progressWithTotalUnitCount$(long unitCount);
-    @Method(selector = "addSubscriberForFileURL:withPublishingHandler:")
-    public static native NSObject addSubscriberForFileURL$withPublishingHandler$(NSURL url, FunctionPtr publishingHandler);
-    @Method(selector = "removeSubscriber:")
-    public static native void removeSubscriber$(NSObject subscriber);
     /*</methods>*/
 }

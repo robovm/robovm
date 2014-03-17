@@ -46,7 +46,6 @@ import org.robovm.apple.security.*;
     public NSException() {}
     protected NSException(SkipInit skipInit) { super(skipInit); }
     public NSException(String aName, String aReason, NSDictionary<?, ?> aUserInfo) { super((SkipInit) null); initObject(initWithName$reason$userInfo$(aName, aReason, aUserInfo)); }
-    public NSException(NSCoder aDecoder) { super((SkipInit) null); initObject(initWithCoder$(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -76,7 +75,5 @@ import org.robovm.apple.security.*;
     public static native NSException exceptionWithName$reason$userInfo$(String name, String reason, NSDictionary<?, ?> userInfo);
     @Method(selector = "encodeWithCoder:")
     public native void encodeWithCoder$(NSCoder aCoder);
-    @Method(selector = "initWithCoder:")
-    protected native @Pointer long initWithCoder$(NSCoder aDecoder);
     /*</methods>*/
 }

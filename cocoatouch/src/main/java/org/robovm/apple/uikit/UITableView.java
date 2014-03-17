@@ -40,7 +40,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UITableView/*</name>*/ 
     extends /*<extends>*/UIScrollView/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class UITableViewPtr extends Ptr<UITableView, UITableViewPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UITableView.class); }/*</bind>*/

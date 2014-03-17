@@ -40,7 +40,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIImagePickerController/*</name>*/ 
     extends /*<extends>*/UINavigationController/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class UIImagePickerControllerPtr extends Ptr<UIImagePickerController, UIImagePickerControllerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIImagePickerController.class); }/*</bind>*/

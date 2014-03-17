@@ -40,7 +40,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UINavigationBar/*</name>*/ 
     extends /*<extends>*/UIView/*</extends>*/ 
-    /*<implements>*/implements UIBarPositioning/*</implements>*/ {
+    /*<implements>*/implements NSCoding, UIBarPositioning/*</implements>*/ {
 
     /*<ptr>*/public static class UINavigationBarPtr extends Ptr<UINavigationBar, UINavigationBarPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UINavigationBar.class); }/*</bind>*/

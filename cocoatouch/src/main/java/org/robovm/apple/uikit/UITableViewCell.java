@@ -40,7 +40,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UITableViewCell/*</name>*/ 
     extends /*<extends>*/UIView/*</extends>*/ 
-    /*<implements>*/implements UIGestureRecognizerDelegate/*</implements>*/ {
+    /*<implements>*/implements NSCoding, UIGestureRecognizerDelegate/*</implements>*/ {
 
     /*<ptr>*/public static class UITableViewCellPtr extends Ptr<UITableViewCell, UITableViewCellPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UITableViewCell.class); }/*</bind>*/

@@ -45,11 +45,11 @@ import org.robovm.apple.security.*;
     /*<constants>*//*</constants>*/
     /*<properties>*/
     @Property(selector = "presentedItemURL")
-    public NSURL getPresentedItemURL();
+    NSURL getPresentedItemURL();
     @Property(selector = "presentedItemOperationQueue")
-    public NSOperationQueue getPresentedItemOperationQueue();
+    NSOperationQueue getPresentedItemOperationQueue();
     @Property(selector = "primaryPresentedItemURL")
-    public NSURL getPrimaryPresentedItemURL();
+    NSURL getPrimaryPresentedItemURL();
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "relinquishPresentedItemToReader:")

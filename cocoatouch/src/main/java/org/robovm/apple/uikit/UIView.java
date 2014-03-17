@@ -40,7 +40,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIView/*</name>*/ 
     extends /*<extends>*/UIResponder/*</extends>*/ 
-    /*<implements>*/implements UIDynamicItem, UIAccessibilityIdentification/*</implements>*/ {
+    /*<implements>*/implements NSCoding, UIDynamicItem, UIAccessibilityIdentification/*</implements>*/ {
 
     /*<ptr>*/public static class UIViewPtr extends Ptr<UIView, UIViewPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIView.class); }/*</bind>*/
@@ -356,5 +356,7 @@ import org.robovm.apple.coreimage.*;
     public native UIViewPrintFormatter getViewPrintFormatter();
     @Method(selector = "drawRect:forViewPrintFormatter:")
     public native void drawRect$forViewPrintFormatter$(@ByVal CGRect rect, UIViewPrintFormatter formatter);
+    @Method(selector = "encodeWithCoder:")
+    public native void encodeWithCoder$(NSCoder aCoder);
     /*</methods>*/
 }

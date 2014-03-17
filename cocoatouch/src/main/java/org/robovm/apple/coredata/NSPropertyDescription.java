@@ -36,7 +36,7 @@ import org.robovm.apple.foundation.*;
 /*<annotations>*/@Library("CoreData") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSPropertyDescription/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class NSPropertyDescriptionPtr extends Ptr<NSPropertyDescription, NSPropertyDescriptionPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSPropertyDescription.class); }/*</bind>*/
@@ -96,5 +96,7 @@ import org.robovm.apple.foundation.*;
     public native String renamingIdentifier();
     @Method(selector = "setRenamingIdentifier:")
     public native void setRenamingIdentifier$(String value);
+    @Method(selector = "encodeWithCoder:")
+    public native void encodeWithCoder$(NSCoder aCoder);
     /*</methods>*/
 }

@@ -40,7 +40,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UICollectionViewLayout/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class UICollectionViewLayoutPtr extends Ptr<UICollectionViewLayout, UICollectionViewLayoutPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UICollectionViewLayout.class); }/*</bind>*/
@@ -121,5 +121,7 @@ import org.robovm.apple.coreimage.*;
     public native NSArray<?> indexPathsToInsertForSupplementaryViewOfKind$(String kind);
     @Method(selector = "indexPathsToInsertForDecorationViewOfKind:")
     public native NSArray<?> indexPathsToInsertForDecorationViewOfKind$(String kind);
+    @Method(selector = "encodeWithCoder:")
+    public native void encodeWithCoder$(NSCoder aCoder);
     /*</methods>*/
 }

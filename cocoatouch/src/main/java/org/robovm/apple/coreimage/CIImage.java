@@ -38,7 +38,7 @@ import org.robovm.apple.opengles.*;
 /*<annotations>*/@Library("CoreImage") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CIImage/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSCoding/*</implements>*/ {
 
     /*<ptr>*/public static class CIImagePtr extends Ptr<CIImage, CIImagePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(CIImage.class); }/*</bind>*/
@@ -118,5 +118,7 @@ import org.robovm.apple.opengles.*;
     public native NSArray<CIFilter> getAutoAdjustmentFilters();
     @Method(selector = "autoAdjustmentFiltersWithOptions:")
     public native NSArray<CIFilter> getAutoAdjustmentFilters(NSDictionary<?, ?> dict);
+    @Method(selector = "encodeWithCoder:")
+    public native void encodeWithCoder$(NSCoder aCoder);
     /*</methods>*/
 }

@@ -121,7 +121,7 @@ public class IOSTarget extends AbstractTarget {
         args.add("launch");
         args.add(dir);
         args.add("--timeout");
-        args.add("60");
+        args.add("90");
         args.add("--unbuffered");
         if (((IOSSimulatorLaunchParameters) launchParameters).getSdk() != null) {
             args.add("--sdk");

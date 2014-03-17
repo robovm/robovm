@@ -245,19 +245,20 @@ public class IOSTarget extends AbstractTarget {
             strip(installDir, getExecutable());
             copyResourcesPList(installDir);
             if (config.isIosSkipSigning()) {
-                config.getLogger().warn("SkipSigning is activated. " +
-                "The resulting Application will be unsigned and will not run on unjailbroken Devices");
+                config.getLogger().warn("Skiping code signing. The resulting app will "
+                        + "be unsigned and will not run on unjailbroken devices");
+                ldid(entitlementsPList, installDir);
             } else {
                 // Copy the provisioning profile
                 copyProvisioningProfile(provisioningProfile, installDir);
                 boolean getTaskAllow = provisioningProfile.getType() == Type.Development;
                 codesign(signIdentity, getOrCreateEntitlementsPList(getTaskAllow), installDir);
+                // For some odd reason there needs to be a symbolic link in the root of
+                // the app bundle named CodeResources pointing at _CodeSignature/CodeResources
+                new Executor(config.getLogger(), "ln")
+                    .args("-f", "-s", "_CodeSignature/CodeResources", new File(installDir, "CodeResources"))
+                    .exec();
             }
-            // For some odd reason there needs to be a symbolic link in the root of
-            // the app bundle named CodeResources pointing at _CodeSignature/CodeResources
-            new Executor(config.getLogger(), "ln")
-                .args("-f", "-s", "_CodeSignature/CodeResources", new File(installDir, "CodeResources"))
-                .exec();
         }
     }
 
@@ -276,8 +277,9 @@ public class IOSTarget extends AbstractTarget {
         if (arch == Arch.thumbv7) {
             copyResourcesPList(appDir);
             if (config.isIosSkipSigning()) {
-                config.getLogger().warn("SkipSigning is activated. " +
-                "The resulting Application will be unsigned and will not run on unjailbroken Devices");
+                config.getLogger().warn("Skiping code signing. The resulting app will "
+                        + "be unsigned and will not run on unjailbroken devices");
+                ldid(getOrCreateEntitlementsPList(true), appDir);
             } else {
                 copyProvisioningProfile(provisioningProfile, appDir);
                 codesign(signIdentity, getOrCreateEntitlementsPList(true), appDir);
@@ -302,7 +304,22 @@ public class IOSTarget extends AbstractTarget {
             .args(args)
             .exec();
     }
-    
+
+    private void ldid(File entitlementsPList, File appDir) throws IOException {
+        File executableFile = new File(appDir, getExecutable());
+        config.getLogger().debug("Pseudo-signing %s", executableFile.getAbsolutePath());
+        List<Object> args = new ArrayList<Object>();
+        if (entitlementsPList != null) {
+            args.add("-S" + entitlementsPList.getAbsolutePath());
+        } else {
+            args.add("-S");
+        }
+        args.add(executableFile);
+        new Executor(config.getLogger(), new File(config.getHome().getBinDir(), "ldid"))
+            .args(args)
+            .exec();
+    }
+
     private void copyResourcesPList(File destDir) throws IOException {
         File destFile = new File(destDir, "ResourceRules.plist");
         if (resourceRulesPList != null) {
@@ -321,13 +338,15 @@ public class IOSTarget extends AbstractTarget {
             } else {
                 dict = (NSDictionary) PropertyListParser.parse(IOUtils.toByteArray(getClass().getResourceAsStream("/Entitlements.plist")));
             }
-            NSDictionary profileEntitlements = provisioningProfile.getEntitlements();
-            for (String key : profileEntitlements.allKeys()) {
-                if (dict.objectForKey(key) == null) {
-                    dict.put(key, profileEntitlements.objectForKey(key));
+            if (provisioningProfile != null) {
+                NSDictionary profileEntitlements = provisioningProfile.getEntitlements();
+                for (String key : profileEntitlements.allKeys()) {
+                    if (dict.objectForKey(key) == null) {
+                        dict.put(key, profileEntitlements.objectForKey(key));
+                    }
                 }
+                dict.put("application-identifier", provisioningProfile.getAppIdPrefix() + "." + getBundleId());
             }
-            dict.put("application-identifier", provisioningProfile.getAppIdPrefix() + "." + getBundleId());
             dict.put("get-task-allow", getTaskAllow);
             PropertyListParser.saveAsXML(dict, destFile);
             return destFile;

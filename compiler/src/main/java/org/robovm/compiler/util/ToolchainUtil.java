@@ -39,6 +39,7 @@ public class ToolchainUtil {
     private static String IOS_DEV_CLANG; 
     private static String IOS_SIM_CLANG; 
     private static String PNGCRUSH;
+    private static String PLUTIL;
     private static String PACKAGE_APPLICATION;
 
     private static String getIOSDevClang() throws IOException {
@@ -60,6 +61,13 @@ public class ToolchainUtil {
             PNGCRUSH = findXcodeCommand("pngcrush", "iphoneos");
         }
         return PNGCRUSH;
+    }
+
+    private static String getPlutil() throws IOException {
+        if (PLUTIL == null) {
+            PLUTIL = findXcodeCommand("plutil", "iphoneos");
+        }
+        return PLUTIL;
     }
 
     private static String getPackageApplication() throws IOException {
@@ -113,6 +121,12 @@ public class ToolchainUtil {
     public static void pngcrush(Config config, File inFile, File outFile) throws IOException {
         new Executor(config.getLogger(), getPngCrush())
             .args("-q", "-iphone", "-f", "0", inFile, outFile)
+            .exec();
+    }
+
+    public static void compileStrings(Config config, File inFile, File outFile) throws IOException {
+        new Executor(config.getLogger(), getPlutil())
+            .args("-convert", "binary1", inFile, "-o", outFile)
             .exec();
     }
 

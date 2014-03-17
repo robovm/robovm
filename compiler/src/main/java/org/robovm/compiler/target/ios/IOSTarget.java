@@ -405,6 +405,10 @@ public class IOSTarget extends AbstractTarget {
             destDir.mkdirs();
             File outFile = new File(destDir, file.getName());
             ToolchainUtil.pngcrush(config, file, outFile);
+        } else if (file.getName().toLowerCase().endsWith(".strings")) {
+            destDir.mkdirs();
+            File outFile = new File(destDir, file.getName());
+            ToolchainUtil.compileStrings(config, file, outFile);
         } else {
             super.copyFile(resource, file, destDir);
         }

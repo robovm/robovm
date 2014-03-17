@@ -128,7 +128,7 @@ public class Config {
     private SigningIdentity iosSignIdentity;
     private ProvisioningProfile iosProvisioningProfile;
 
-    private Boolean iosSkipSigning = null;
+    private boolean iosSkipSigning = false;
     
     private Target target = null;
     private Properties properties = new Properties();
@@ -358,7 +358,7 @@ public class Config {
     }
 
     public boolean isIosSkipSigning() {
-        return iosSkipSigning != null && iosSkipSigning.booleanValue();
+        return iosSkipSigning;
     }
     
     private static File makeFileRelativeTo(File dir, File f) {

@@ -84,8 +84,6 @@ public class Config {
     @Element(required = false)
     private Boolean skipRuntimeLib = null;
     @Element(required = false)
-    private Boolean skipSigning = null;
-    @Element(required = false)
     private File mainJar;
     @Element(required = false)
     private String mainClass;
@@ -129,6 +127,8 @@ public class Config {
 
     private SigningIdentity iosSignIdentity;
     private ProvisioningProfile iosProvisioningProfile;
+
+    private Boolean iosSkipSigning = null;
     
     private Target target = null;
     private Properties properties = new Properties();
@@ -207,10 +207,6 @@ public class Config {
     
     public boolean isSkipRuntimeLib() {
         return skipRuntimeLib != null && skipRuntimeLib.booleanValue();
-    }
-
-    public boolean isSkipSigning() {
-        return skipSigning != null && skipSigning.booleanValue();
     }
 
     public boolean isSkipLinking() {
@@ -359,6 +355,10 @@ public class Config {
 
     public ProvisioningProfile getIosProvisioningProfile() {
         return iosProvisioningProfile;
+    }
+
+    public boolean isIosSkipSigning() {
+        return iosSkipSigning != null && iosSkipSigning.booleanValue();
     }
     
     private static File makeFileRelativeTo(File dir, File f) {
@@ -794,11 +794,6 @@ public class Config {
             return this;
         }
 
-        public Builder skipSigning(boolean b) {
-            config.skipSigning = b;
-            return this;
-        }
-
         public Builder skipLinking(boolean b) {
             config.skipLinking = b;
             return this;
@@ -999,6 +994,11 @@ public class Config {
 
         public Builder iosProvisioningProfile(ProvisioningProfile iosProvisioningProfile) {
             config.iosProvisioningProfile = iosProvisioningProfile;
+            return this;
+        }
+
+        public Builder iosSkipSigning(boolean b) {
+            config.iosSkipSigning = b;
             return this;
         }
 

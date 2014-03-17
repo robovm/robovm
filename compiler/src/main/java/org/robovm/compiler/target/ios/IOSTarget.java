@@ -120,6 +120,8 @@ public class IOSTarget extends AbstractTarget {
         List<Object> args = new ArrayList<Object>();
         args.add("launch");
         args.add(dir);
+        args.add("--timeout");
+        args.add("60");
         args.add("--unbuffered");
         if (((IOSSimulatorLaunchParameters) launchParameters).getSdk() != null) {
             args.add("--sdk");

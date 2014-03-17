@@ -125,8 +125,7 @@ public class IOSTarget extends AbstractTarget {
             args.add("--sdk");
             args.add(((IOSSimulatorLaunchParameters) launchParameters).getSdk());
         }
-        args.add("--family");
-        args.add(((IOSSimulatorLaunchParameters) launchParameters).getFamily().toString().toLowerCase());
+        args.addAll(((IOSSimulatorLaunchParameters) launchParameters).getFamily().getIosSimArgs());
         if (launchParameters.getStdoutFifo() != null) {
             args.add("--stdout");
             args.add(launchParameters.getStdoutFifo());
@@ -141,9 +140,7 @@ public class IOSTarget extends AbstractTarget {
         }
         
         File xcodePath = new File(ToolchainUtil.findXcodePath());
-        Map<String, String> env = Collections.singletonMap("DYLD_FRAMEWORK_PATH", 
-                new File(xcodePath, "Platforms/iPhoneSimulator.platform/Developer/Library/PrivateFrameworks").getAbsolutePath() + ":" +
-                new File(xcodePath, "../OtherFrameworks").getAbsolutePath());
+        Map<String, String> env = Collections.singletonMap("DEVELOPER_DIR", xcodePath.getAbsolutePath());
         return new Executor(config.getLogger(), iosSimPath)
             .args(args)
             .wd(launchParameters.getWorkingDirectory())

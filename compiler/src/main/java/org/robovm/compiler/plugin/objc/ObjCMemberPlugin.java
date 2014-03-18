@@ -81,12 +81,14 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     public static final String OBJC_CLASS = "org.robovm.objc.ObjCClass";
     public static final String OBJC_OBJECT = "org.robovm.objc.ObjCObject";
     public static final String OBJC_RUNTIME = "org.robovm.objc.ObjCRuntime";
+    public static final String OBJC_EXTENSIONS = "org.robovm.objc.ObjCExtensions";
 
     private boolean initialized = false;
     private SootClass org_robovm_objc_ObjCClass = null;
     private SootClass org_robovm_objc_ObjCSuper = null;
     private SootClass org_robovm_objc_ObjCObject = null;
     private SootClass org_robovm_objc_ObjCRuntime = null;
+    private SootClass org_robovm_objc_ObjCExtensions = null;
     private SootClass org_robovm_objc_Selector = null;
     private SootClass java_lang_String = null;
     private SootClass java_lang_Class = null;
@@ -120,23 +122,31 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     }
     
     @SuppressWarnings("unchecked")
-    private SootMethod getMsgSendMethod(String selectorName, SootMethod method, boolean isCallback, Type receiverType) {
+    private SootMethod getMsgSendMethod(String selectorName, SootMethod method, boolean isCallback, 
+            Type receiverType, boolean extensions) {
+        
         List<Type> paramTypes = new ArrayList<>();
-        if (method.isStatic()) {
+        if (extensions) {
+            paramTypes.add(method.getParameterType(0));
+        } else if (method.isStatic()) {
             paramTypes.add(org_robovm_objc_ObjCClass.getType());
         } else {
             paramTypes.add(receiverType == null ? method.getDeclaringClass().getType() : receiverType);
         }
         paramTypes.add(org_robovm_objc_Selector.getType());
-        paramTypes.addAll(method.getParameterTypes());
+        if (extensions) {
+            paramTypes.addAll(method.getParameterTypes().subList(1, method.getParameterTypes().size()));
+        } else {
+            paramTypes.addAll(method.getParameterTypes());
+        }
         SootMethod m = new SootMethod((isCallback ? "$cb$": "$m$") + selectorName.replace(':', '$'), 
                 paramTypes, method.getReturnType(), STATIC | PRIVATE | (isCallback ? 0 : NATIVE));
         copyAnnotations(method, m, 2);
         return m;
     }
 
-    private SootMethod getMsgSendMethod(String selectorName, SootMethod method) {
-        return getMsgSendMethod(selectorName, method, false, null);
+    private SootMethod getMsgSendMethod(String selectorName, SootMethod method, boolean extensions) {
+        return getMsgSendMethod(selectorName, method, false, null, extensions);
     }
     
     @SuppressWarnings("unchecked")
@@ -187,7 +197,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     }
 
     private SootMethod getCallbackMethod(String selectorName, SootMethod method, Type receiverType) {
-        return getMsgSendMethod(selectorName, method, true, receiverType);
+        return getMsgSendMethod(selectorName, method, true, receiverType, false);
     }
 
     private void addBindCall(SootClass sootClass) {
@@ -298,6 +308,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         org_robovm_objc_ObjCSuper = r.makeClassRef(OBJC_SUPER);
         org_robovm_objc_ObjCObject = r.makeClassRef(OBJC_OBJECT);
         org_robovm_objc_ObjCRuntime = r.makeClassRef(OBJC_RUNTIME);
+        org_robovm_objc_ObjCExtensions = r.makeClassRef(OBJC_EXTENSIONS);
         org_robovm_objc_Selector = r.makeClassRef(SELECTOR);
         java_lang_String = r.makeClassRef("java.lang.String");
         java_lang_Class = r.makeClassRef("java.lang.Class");
@@ -341,21 +352,35 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         }
         return cls == org_robovm_objc_ObjCObject;
     }
-    
-    
+
+    private boolean isObjCExtensions(SootClass cls) {
+        if (org_robovm_objc_ObjCExtensions.isPhantom()) {
+            return false;
+        }
+        while (cls != org_robovm_objc_ObjCExtensions && cls.hasSuperclass()) {
+            cls = cls.getSuperclass();
+        }
+        return cls == org_robovm_objc_ObjCExtensions;
+    }
+
     @Override
     public void beforeClass(Config config, Clazz clazz) {
         init();
         SootClass sootClass = clazz.getSootClass();
-        if (!sootClass.isInterface() && isObjCObject(sootClass)) {
+        boolean extensions = false;
+        if (!sootClass.isInterface() 
+                && (isObjCObject(sootClass) || (extensions = isObjCExtensions(sootClass)))) {
+            
             Set<String> selectors = new TreeSet<>();
             for (SootMethod method : sootClass.getMethods()) {
                 if (!"<clinit>".equals(method.getName()) && !"<init>".equals(method.getName())) {
-                    transformMethod(config, clazz, sootClass, method, selectors);
+                    transformMethod(config, clazz, sootClass, method, selectors, extensions);
                 }
             }
             addBindCall(sootClass);
-            addObjCClassField(sootClass);
+            if (!extensions) {
+                addObjCClassField(sootClass);
+            }
             registerSelectors(sootClass, selectors);
         }
     }
@@ -367,10 +392,15 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     }
     
     private void transformMethod(Config config, Clazz clazz, SootClass sootClass, 
-            SootMethod method, Set<String> selectors) {
+            SootMethod method, Set<String> selectors, boolean extensions) {
         
         AnnotationTag methodAnno = getAnnotation(method, METHOD);
         if (methodAnno != null) {
+            
+            if (extensions && !(method.isStatic() && method.isNative())) {
+                throw new CompilerException("Objective-C @Method method " 
+                        + method + " in extension class must be static and native.");
+            }
             
             // Determine the selector
             String selectorName = readStringElem(methodAnno, "selector", "").trim();
@@ -384,13 +414,15 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
             }
 
             // Create the @Bridge and @Callback methods needed for this selector
-            Type receiverType = ObjCProtocolProxyPlugin.isObjCProxy(sootClass) 
-                    ? sootClass.getInterfaces().getFirst().getType()
-                    : sootClass.getType();
-            createCallback(sootClass, method, selectorName, receiverType);
+            if (!extensions) {
+                Type receiverType = ObjCProtocolProxyPlugin.isObjCProxy(sootClass) 
+                        ? sootClass.getInterfaces().getFirst().getType()
+                        : sootClass.getType();
+                createCallback(sootClass, method, selectorName, receiverType);
+            }
             if (method.isNative()) {
                 selectors.add(selectorName);
-                createBridge(sootClass, method, selectorName);
+                createBridge(sootClass, method, selectorName, extensions);
             }
         } else {
             AnnotationTag propertyAnno = getAnnotation(method, PROPERTY);
@@ -404,18 +436,34 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                     throw new CompilerException("Invalid Objective-C @Property method name " + method);
                 }
                 
+                if (extensions && !(method.isStatic() && method.isNative())) {
+                    throw new CompilerException("Objective-C @Property method " 
+                            + method + " in extension class must be static and native.");
+                }
+                
                 boolean isGetter = !methodName.startsWith("set");
-                if (isGetter && method.getParameterCount() != 0) {
-                    throw new CompilerException("Objective-C @Property getter method " + method 
-                            + " must take 0 arguments");
+                if (!extensions) {
+                    if (isGetter && method.getParameterCount() != 0) {
+                        throw new CompilerException("Objective-C @Property getter method " + method 
+                                + " must take 0 arguments");
+                    }
+                    if (!isGetter && method.getParameterCount() != 1) {
+                        throw new CompilerException("Objective-C @Property setter method " + method 
+                                + " must take 1 argument");
+                    }
+                } else {
+                    if (isGetter && method.getParameterCount() != 1) {
+                        throw new CompilerException("Objective-C @Property getter method " + method 
+                                + " in extension class must take 1 argument (this)");
+                    }
+                    if (!isGetter && method.getParameterCount() != 2) {
+                        throw new CompilerException("Objective-C @Property setter method " + method 
+                                + " in extension class must take 2 arguments");
+                    }
                 }
                 if (isGetter && method.getReturnType() == VoidType.v()) {
                     throw new CompilerException("Objective-C @Property getter method " + method 
                             + " must not return void");
-                }
-                if (!isGetter && method.getParameterCount() != 1) {
-                    throw new CompilerException("Objective-C @Property setter method " + method 
-                            + " must take 1 argument");
                 }
                 if (!isGetter && method.getReturnType() != VoidType.v()) {
                     throw new CompilerException("Objective-C @Property setter method " + method 
@@ -438,13 +486,15 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                 }
 
                 // Create the @Bridge and @Callback methods needed for this selector
-                Type receiverType = ObjCProtocolProxyPlugin.isObjCProxy(sootClass) 
-                        ? sootClass.getInterfaces().getFirst().getType()
-                        : sootClass.getType();
-                createCallback(sootClass, method, selectorName, receiverType);
+                if (!extensions) {
+                    Type receiverType = ObjCProtocolProxyPlugin.isObjCProxy(sootClass) 
+                            ? sootClass.getInterfaces().getFirst().getType()
+                            : sootClass.getType();
+                    createCallback(sootClass, method, selectorName, receiverType);
+                }
                 if (method.isNative()) {
                     selectors.add(selectorName);
-                    createBridge(sootClass, method, selectorName);
+                    createBridge(sootClass, method, selectorName, extensions);
                 }
             }
         }
@@ -512,15 +562,15 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         }
     }
 
-    private void createBridge(SootClass sootClass, SootMethod method, String selectorName) {
+    private void createBridge(SootClass sootClass, SootMethod method, String selectorName, boolean extensions) {
         Jimple j = Jimple.v();
         
-        SootMethod msgSendMethod = getMsgSendMethod(selectorName, method);
+        SootMethod msgSendMethod = getMsgSendMethod(selectorName, method, extensions);
         sootClass.addMethod(msgSendMethod);
         addBridgeAnnotation(msgSendMethod);
         
         SootMethod msgSendSuperMethod = null;
-        if (!method.isStatic()) {
+        if (!extensions && !method.isStatic()) {
             msgSendSuperMethod = getMsgSendSuperMethod(selectorName, method);
             sootClass.addMethod(msgSendSuperMethod);
             addBridgeAnnotation(msgSendSuperMethod);
@@ -531,13 +581,18 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         Body body = j.newBody(method);
         method.setActiveBody(body);
         PatchingChain<Unit> units = body.getUnits();
-        if (!method.isStatic()) {
-            Local thiz = j.newLocal("$this", sootClass.getType());
+        Local thiz = null;
+        if (extensions) {
+            thiz = j.newLocal("$this", sootClass.getType());
+            body.getLocals().add(thiz);
+            units.add(j.newIdentityStmt(thiz, j.newParameterRef(method.getParameterType(0), 0)));
+        } else if (!method.isStatic()) {
+            thiz = j.newLocal("$this", sootClass.getType());
             body.getLocals().add(thiz);
             units.add(j.newIdentityStmt(thiz, j.newThisRef(sootClass.getType())));
         }
         LinkedList<Value> args = new LinkedList<>();
-        for (int i = 0; i < method.getParameterCount(); i++) {
+        for (int i = extensions ? 1 : 0; i < method.getParameterCount(); i++) {
             Type t = method.getParameterType(i);
             Local p = j.newLocal("$p" + i, t);
             body.getLocals().add(p);
@@ -560,7 +615,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         args.addFirst(sel);
         
         Local objCClass = null;
-        if (method.isStatic()) {
+        if (!extensions && method.isStatic()) {
             objCClass = j.newLocal("$objCClass", org_robovm_objc_ObjCClass.getType());
             body.getLocals().add(objCClass);
             units.add(
@@ -575,14 +630,14 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         }
         
         Local customClass = null;
-        if (!Modifier.isFinal(sootClass.getModifiers()) && !method.isStatic()) {
+        if (!extensions && !Modifier.isFinal(sootClass.getModifiers()) && !method.isStatic()) {
             customClass = j.newLocal("$customClass", BooleanType.v());
             body.getLocals().add(customClass);
             units.add(
                 j.newAssignStmt(
                     customClass,
                     j.newInstanceFieldRef(
-                        body.getThisLocal(), 
+                        thiz, 
                         org_robovm_objc_ObjCObject_customClass)
                 )
             );
@@ -597,7 +652,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         StaticInvokeExpr invokeMsgSendExpr = 
             j.newStaticInvokeExpr(
                 msgSendMethod.makeRef(),
-                l(method.isStatic() ? objCClass : body.getThisLocal(), args));
+                l(thiz != null ? thiz : objCClass, args));
         Stmt invokeMsgSendStmt = ret == null 
                 ? j.newInvokeStmt(invokeMsgSendExpr) 
                 : j.newAssignStmt(ret, invokeMsgSendExpr);
@@ -642,6 +697,8 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         } else {
             units.add(j.newReturnVoidStmt());
         }
+        
+        System.out.println(body);
     }
 
     private VisibilityAnnotationTag getOrCreateRuntimeVisibilityAnnotationTag(SootMethod m) {

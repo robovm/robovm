@@ -141,7 +141,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         }
         SootMethod m = new SootMethod((isCallback ? "$cb$": "$m$") + selectorName.replace(':', '$'), 
                 paramTypes, method.getReturnType(), STATIC | PRIVATE | (isCallback ? 0 : NATIVE));
-        copyAnnotations(method, m, 2);
+        copyAnnotations(method, m, extensions ? 1 : 2);
         return m;
     }
 

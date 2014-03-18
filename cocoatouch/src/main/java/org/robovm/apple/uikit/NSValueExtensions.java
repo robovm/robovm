@@ -39,7 +39,7 @@ import org.robovm.apple.coreimage.*;
  */
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
 /*<visibility>*/public final/*</visibility>*/ class /*<name>*/NSValueExtensions/*</name>*/ 
-    extends /*<extends>*/NSCategory/*</extends>*/ 
+    extends /*<extends>*/NSExtensions/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/

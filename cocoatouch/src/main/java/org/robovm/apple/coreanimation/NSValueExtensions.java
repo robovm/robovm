@@ -37,7 +37,7 @@ import org.robovm.apple.opengles.*;
  */
 /*<annotations>*/@Library("QuartzCore")/*</annotations>*/
 /*<visibility>*/public final/*</visibility>*/ class /*<name>*/NSValueExtensions/*</name>*/ 
-    extends /*<extends>*/NSCategory/*</extends>*/ 
+    extends /*<extends>*/NSExtensions/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/

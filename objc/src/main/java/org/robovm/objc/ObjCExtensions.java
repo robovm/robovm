@@ -13,15 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.foundation;
-
-import org.robovm.objc.ObjCCategory;
-import org.robovm.rt.bro.annotation.Marshaler;
+package org.robovm.objc;
 
 /**
- * Base class for all categories in the Cocoa/CocoaTouch bindings. This
- * class adds a {@link Marshaler} for {@link String}s to/from {@link NSString}.
+ * Base class for all Objective-C extension classes (categories). Note that
+ * it is not possible to create new categories in Java which adds methods to
+ * Objective-C classes. 
  */
-@Marshaler(NSString.AsStringMarshaler.class)
-public abstract class NSCategory extends ObjCCategory {
+public abstract class ObjCExtensions {
+
 }

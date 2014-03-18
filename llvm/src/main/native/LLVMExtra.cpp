@@ -105,26 +105,6 @@ LLVMBool LLVMParseIR(LLVMMemoryBufferRef MemBuf,
   return LLVMParseIRInContext(wrap(&getGlobalContext()), MemBuf, OutModule, OutMessage);
 }
 
-LLVMBool LLVMParseIRInContext(LLVMContextRef ContextRef,
-                                   LLVMMemoryBufferRef MemBuf,
-                                   LLVMModuleRef *OutModule,
-                                   char **OutMessage) {
-
-  SMDiagnostic Err;
-  *OutModule = wrap(ParseIR(unwrap(MemBuf), Err, *unwrap(ContextRef)));
-  if (!*OutModule) {
-    if (OutMessage) {
-      std::string s("");
-      raw_string_ostream os(s);
-      Err.print(NULL, os, false);
-      *OutMessage = strdup(os.str().data());
-    }
-    return 1;
-  }
-
-  return 0;
-}
-
 LLVMTargetRef LLVMLookupTarget(const char *Triple, char **ErrorMessage) {
   std::string Error;
   const Target *TheTarget = TargetRegistry::lookupTarget(std::string(Triple), Error);

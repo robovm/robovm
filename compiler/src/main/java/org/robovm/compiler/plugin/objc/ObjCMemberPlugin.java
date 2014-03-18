@@ -697,8 +697,6 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         } else {
             units.add(j.newReturnVoidStmt());
         }
-        
-        System.out.println(body);
     }
 
     private VisibilityAnnotationTag getOrCreateRuntimeVisibilityAnnotationTag(SootMethod m) {

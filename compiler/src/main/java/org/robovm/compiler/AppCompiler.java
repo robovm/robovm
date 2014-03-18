@@ -293,7 +293,7 @@ public class AppCompiler {
                 } else if ("-skiprt".equals(args[i])) {
                     builder.skipRuntimeLib(true);
                 } else if ("-skipsign".equals(args[i])) {
-                    builder.skipSigning(true);
+                    builder.iosSkipSigning(true);
                 } else if ("-clean".equals(args[i])) {
                     builder.clean(true);
                 } else if ("-help".equals(args[i]) || "-?".equals(args[i])) {
@@ -446,6 +446,11 @@ public class AppCompiler {
                         if (launchParameters instanceof IOSSimulatorLaunchParameters) {
                             String name = launchArgs.get(i++);
                             try {
+                                if (name.equals("iphone")) {
+                                    name = Family.iPhoneRetina4Inch.name();
+                                } else if (name.equals("ipad")) {
+                                    name = Family.iPadRetina.name();
+                                }
                                 ((IOSSimulatorLaunchParameters) launchParameters).setFamily(Family.valueOf(name));
                             } catch (IllegalArgumentException e) {
                                 throw new IllegalArgumentException("Illegal -ios-sim-family value: " + name);
@@ -610,7 +615,9 @@ public class AppCompiler {
                          + "                        specified the latest SDK that can be found will be used.");
         System.err.println("iOS simulator launch options:");
         System.err.println("  -ios-sim-family <fam> The device type that should be simulated. Valid values are\n" 
-                         + "                        'iphone' (default) and 'ipad'.");
+                         + "                        'iPhoneRetina35Inch', 'iPhoneRetina4Inch' (default), 'iPad' and\n"
+                         + "                        'iPadRetina'. Accepts aliases 'iphone' ('iPhoneRetina4Inch')\n"
+                         + "                        and 'ipad' ('iPadRetina').");
         System.err.println("  -ios-sim-sdk <sdk>    The iOS SDK version to run the application on (defaults to\n" 
                          + "                        the latest).");
         

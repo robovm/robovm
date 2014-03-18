@@ -9,18 +9,13 @@
 package org.robovm.llvm.binding;
 
 public interface LLVMConstants {
-  public final static String _DEFAULT_TARGET_TRIPLE = "x86_64-unknown-linux-gnu";
+  public final static String _DEFAULT_TARGET_TRIPLE = "x86_64-apple-darwin13.1.0";
   public final static int _ENABLE_THREADS = 1;
   public final static int _HAS_ATOMICS = 1;
-  public final static String _HOST_TRIPLE = "x86_64-unknown-linux-gnu";
+  public final static String _HOST_TRIPLE = "x86_64-apple-darwin13.1.0";
   public final static int _ON_UNIX = 1;
-  public final static String _PATH_CIRCO = "/usr/bin/circo";
-  public final static String _PATH_DOT = "/usr/bin/dot";
-  public final static String _PATH_DOTTY = "/usr/bin/dotty";
-  public final static String _PATH_FDP = "/usr/bin/fdp";
-  public final static String _PATH_NEATO = "/usr/bin/neato";
-  public final static String _PATH_TWOPI = "/usr/bin/twopi";
-  public final static String _PREFIX = "/home/niklas/Projects/robovm-llvm/target/build/linux-x86_64/llvm";
+  public final static String _PREFIX = "/Users/niklas/Projects/robovm/llvm/target/build/macosx-x86_64/llvm";
   public final static int _VERSION_MAJOR = 3;
-  public final static int _VERSION_MINOR = 3;
+  public final static int _VERSION_MINOR = 4;
+  public final static int HAVE_SANITIZER_MSAN_INTERFACE_H = 1;
 }

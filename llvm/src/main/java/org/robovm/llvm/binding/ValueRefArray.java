@@ -35,6 +35,15 @@ public class ValueRefArray {
     }
   }
 
+  public void setValue(ValueRef value) {
+    LLVMJNI.ValueRefArray_value_set(swigCPtr, this, ValueRef.getCPtr(value));
+  }
+
+  public ValueRef getValue() {
+    long cPtr = LLVMJNI.ValueRefArray_value_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new ValueRef(cPtr, false);
+  }
+
   public ValueRefArray(int nelements) {
     this(LLVMJNI.new_ValueRefArray(nelements), true);
   }

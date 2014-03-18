@@ -26,7 +26,7 @@
 /* #undef LLVM_DATADIR */
 
 /* Target triple LLVM will generate code for by default */
-#define LLVM_DEFAULT_TARGET_TRIPLE "x86_64-unknown-linux-gnu"
+#define LLVM_DEFAULT_TARGET_TRIPLE "x86_64-apple-darwin13.1.0"
 
 /* Installation directory for documentation */
 /* #undef LLVM_DOCSDIR */
@@ -41,16 +41,13 @@
 #define LLVM_HAS_ATOMICS 1
 
 /* Host triple LLVM will be executed on */
-#define LLVM_HOST_TRIPLE "x86_64-unknown-linux-gnu"
+#define LLVM_HOST_TRIPLE "x86_64-apple-darwin13.1.0"
 
 /* Installation directory for include files */
 /* #undef LLVM_INCLUDEDIR */
 
 /* Installation directory for .info files */
 /* #undef LLVM_INFODIR */
-
-/* Installation directory for libraries */
-/* #undef LLVM_LIBDIR */
 
 /* Installation directory for man pages */
 /* #undef LLVM_MANDIR */
@@ -83,16 +80,16 @@
 /* #undef LLVM_ON_WIN32 */
 
 /* Define to path to circo program if found or 'echo circo' otherwise */
-#define LLVM_PATH_CIRCO "/usr/bin/circo"
+/* #undef LLVM_PATH_CIRCO */
 
 /* Define to path to dot program if found or 'echo dot' otherwise */
-#define LLVM_PATH_DOT "/usr/bin/dot"
+/* #undef LLVM_PATH_DOT */
 
 /* Define to path to dotty program if found or 'echo dotty' otherwise */
-#define LLVM_PATH_DOTTY "/usr/bin/dotty"
+/* #undef LLVM_PATH_DOTTY */
 
 /* Define to path to fdp program if found or 'echo fdp' otherwise */
-#define LLVM_PATH_FDP "/usr/bin/fdp"
+/* #undef LLVM_PATH_FDP */
 
 /* Define to path to Graphviz program if found or 'echo Graphviz' otherwise */
 /* #undef LLVM_PATH_GRAPHVIZ */
@@ -101,16 +98,16 @@
 /* #undef LLVM_PATH_GV */
 
 /* Define to path to neato program if found or 'echo neato' otherwise */
-#define LLVM_PATH_NEATO "/usr/bin/neato"
+/* #undef LLVM_PATH_NEATO */
 
 /* Define to path to twopi program if found or 'echo twopi' otherwise */
-#define LLVM_PATH_TWOPI "/usr/bin/twopi"
+/* #undef LLVM_PATH_TWOPI */
 
 /* Define to path to xdot.py program if found or 'echo xdot.py' otherwise */
 /* #undef LLVM_PATH_XDOT_PY */
 
 /* Installation prefix directory */
-#define LLVM_PREFIX "/home/niklas/Projects/robovm-llvm/target/build/linux-x86_64/llvm"
+#define LLVM_PREFIX "/Users/niklas/Projects/robovm/llvm/target/build/macosx-x86_64/llvm"
 
 /* Define if we have the Intel JIT API runtime support library */
 /* #undef LLVM_USE_INTEL_JITEVENTS */
@@ -122,9 +119,9 @@
 #define LLVM_VERSION_MAJOR 3
 
 /* Minor version of the LLVM API */
-#define LLVM_VERSION_MINOR 3
+#define LLVM_VERSION_MINOR 4
 
 /* Define to 1 if you have the <sanitizer/msan_interface.h> header file. */
-/* #undef HAVE_SANITIZER_MSAN_INTERFACE_H */
+#define HAVE_SANITIZER_MSAN_INTERFACE_H 1
 
 #endif

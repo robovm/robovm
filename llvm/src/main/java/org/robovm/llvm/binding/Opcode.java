@@ -49,6 +49,7 @@ public enum Opcode {
   PtrToInt(39),
   IntToPtr(40),
   BitCast(41),
+  AddrSpaceCast(60),
   ICmp(42),
   FCmp(43),
   PHI(44),

@@ -17,8 +17,16 @@ public class LLVM implements LLVMConstants {
     LLVMJNI.Shutdown();
   }
 
+  public static String CreateMessage(String Message) {
+    return LLVMJNI.CreateMessage(Message);
+  }
+
   public static void DisposeMessage(String Message) {
     LLVMJNI.DisposeMessage(Message);
+  }
+
+  public static void EnablePrettyStackTrace() {
+    LLVMJNI.EnablePrettyStackTrace();
   }
 
   public static ContextRef ContextCreate() {
@@ -79,6 +87,10 @@ public class LLVM implements LLVMConstants {
 
   public static boolean PrintModuleToFile(ModuleRef M, String Filename, StringOut ErrorMessage) {
     return LLVMJNI.PrintModuleToFile(ModuleRef.getCPtr(M), Filename, StringOut.getCPtr(ErrorMessage), ErrorMessage);
+  }
+
+  public static String PrintModuleToString(ModuleRef M) {
+    return LLVMJNI.PrintModuleToString(ModuleRef.getCPtr(M));
   }
 
   public static void SetModuleInlineAsm(ModuleRef M, String Asm) {
@@ -148,6 +160,14 @@ public class LLVM implements LLVMConstants {
   public static ContextRef GetTypeContext(TypeRef Ty) {
     long cPtr = LLVMJNI.GetTypeContext(TypeRef.getCPtr(Ty));
     return (cPtr == 0) ? null : new ContextRef(cPtr, false);
+  }
+
+  public static void DumpType(TypeRef Val) {
+    LLVMJNI.DumpType(TypeRef.getCPtr(Val));
+  }
+
+  public static String PrintTypeToString(TypeRef Val) {
+    return LLVMJNI.PrintTypeToString(TypeRef.getCPtr(Val));
   }
 
   public static TypeRef Int1TypeInContext(ContextRef C) {
@@ -414,6 +434,10 @@ public class LLVM implements LLVMConstants {
     LLVMJNI.DumpValue(ValueRef.getCPtr(Val));
   }
 
+  public static String PrintValueToString(ValueRef Val) {
+    return LLVMJNI.PrintValueToString(ValueRef.getCPtr(Val));
+  }
+
   public static void ReplaceAllUsesWith(ValueRef OldVal, ValueRef NewVal) {
     LLVMJNI.ReplaceAllUsesWith(ValueRef.getCPtr(OldVal), ValueRef.getCPtr(NewVal));
   }
@@ -473,6 +497,21 @@ public class LLVM implements LLVMConstants {
 
   public static ValueRef IsAConstantArray(ValueRef Val) {
     long cPtr = LLVMJNI.IsAConstantArray(ValueRef.getCPtr(Val));
+    return (cPtr == 0) ? null : new ValueRef(cPtr, false);
+  }
+
+  public static ValueRef IsAConstantDataSequential(ValueRef Val) {
+    long cPtr = LLVMJNI.IsAConstantDataSequential(ValueRef.getCPtr(Val));
+    return (cPtr == 0) ? null : new ValueRef(cPtr, false);
+  }
+
+  public static ValueRef IsAConstantDataArray(ValueRef Val) {
+    long cPtr = LLVMJNI.IsAConstantDataArray(ValueRef.getCPtr(Val));
+    return (cPtr == 0) ? null : new ValueRef(cPtr, false);
+  }
+
+  public static ValueRef IsAConstantDataVector(ValueRef Val) {
+    long cPtr = LLVMJNI.IsAConstantDataVector(ValueRef.getCPtr(Val));
     return (cPtr == 0) ? null : new ValueRef(cPtr, false);
   }
 
@@ -693,6 +732,11 @@ public class LLVM implements LLVMConstants {
 
   public static ValueRef IsACastInst(ValueRef Val) {
     long cPtr = LLVMJNI.IsACastInst(ValueRef.getCPtr(Val));
+    return (cPtr == 0) ? null : new ValueRef(cPtr, false);
+  }
+
+  public static ValueRef IsAAddrSpaceCastInst(ValueRef Val) {
+    long cPtr = LLVMJNI.IsAAddrSpaceCastInst(ValueRef.getCPtr(Val));
     return (cPtr == 0) ? null : new ValueRef(cPtr, false);
   }
 
@@ -1140,6 +1184,11 @@ public class LLVM implements LLVMConstants {
     return (cPtr == 0) ? null : new ValueRef(cPtr, false);
   }
 
+  public static ValueRef ConstAddrSpaceCast(ValueRef ConstantVal, TypeRef ToType) {
+    long cPtr = LLVMJNI.ConstAddrSpaceCast(ValueRef.getCPtr(ConstantVal), TypeRef.getCPtr(ToType));
+    return (cPtr == 0) ? null : new ValueRef(cPtr, false);
+  }
+
   public static ValueRef ConstZExtOrBitCast(ValueRef ConstantVal, TypeRef ToType) {
     long cPtr = LLVMJNI.ConstZExtOrBitCast(ValueRef.getCPtr(ConstantVal), TypeRef.getCPtr(ToType));
     return (cPtr == 0) ? null : new ValueRef(cPtr, false);
@@ -1243,12 +1292,12 @@ public class LLVM implements LLVMConstants {
     LLVMJNI.SetVisibility(ValueRef.getCPtr(Global), Viz.swigValue());
   }
 
-  public static int GetAlignment(ValueRef Global) {
-    return LLVMJNI.GetAlignment(ValueRef.getCPtr(Global));
+  public static int GetAlignment(ValueRef V) {
+    return LLVMJNI.GetAlignment(ValueRef.getCPtr(V));
   }
 
-  public static void SetAlignment(ValueRef Global, int Bytes) {
-    LLVMJNI.SetAlignment(ValueRef.getCPtr(Global), Bytes);
+  public static void SetAlignment(ValueRef V, int Bytes) {
+    LLVMJNI.SetAlignment(ValueRef.getCPtr(V), Bytes);
   }
 
   public static ValueRef AddGlobal(ModuleRef M, TypeRef Ty, String Name) {
@@ -2066,6 +2115,11 @@ public class LLVM implements LLVMConstants {
     return (cPtr == 0) ? null : new ValueRef(cPtr, false);
   }
 
+  public static ValueRef BuildAddrSpaceCast(BuilderRef arg0, ValueRef Val, TypeRef DestTy, String Name) {
+    long cPtr = LLVMJNI.BuildAddrSpaceCast(BuilderRef.getCPtr(arg0), ValueRef.getCPtr(Val), TypeRef.getCPtr(DestTy), Name);
+    return (cPtr == 0) ? null : new ValueRef(cPtr, false);
+  }
+
   public static ValueRef BuildZExtOrBitCast(BuilderRef arg0, ValueRef Val, TypeRef DestTy, String Name) {
     long cPtr = LLVMJNI.BuildZExtOrBitCast(BuilderRef.getCPtr(arg0), ValueRef.getCPtr(Val), TypeRef.getCPtr(DestTy), Name);
     return (cPtr == 0) ? null : new ValueRef(cPtr, false);
@@ -2436,6 +2490,10 @@ public class LLVM implements LLVMConstants {
     LLVMJNI.AddLoopRotatePass(PassManagerRef.getCPtr(PM));
   }
 
+  public static void AddLoopRerollPass(PassManagerRef PM) {
+    LLVMJNI.AddLoopRerollPass(PassManagerRef.getCPtr(PM));
+  }
+
   public static void AddLoopUnrollPass(PassManagerRef PM) {
     LLVMJNI.AddLoopUnrollPass(PassManagerRef.getCPtr(PM));
   }
@@ -2446,6 +2504,10 @@ public class LLVM implements LLVMConstants {
 
   public static void AddMemCpyOptPass(PassManagerRef PM) {
     LLVMJNI.AddMemCpyOptPass(PassManagerRef.getCPtr(PM));
+  }
+
+  public static void AddPartiallyInlineLibCallsPass(PassManagerRef PM) {
+    LLVMJNI.AddPartiallyInlineLibCallsPass(PassManagerRef.getCPtr(PM));
   }
 
   public static void AddPromoteMemoryToRegisterPass(PassManagerRef PM) {
@@ -2580,83 +2642,105 @@ public class LLVM implements LLVMConstants {
     LLVMJNI.InitializeAllDisassemblers();
   }
 
+  public static boolean InitializeNativeAsmParser() {
+    return LLVMJNI.InitializeNativeAsmParser();
+  }
+
+  public static boolean InitializeNativeAsmPrinter() {
+    return LLVMJNI.InitializeNativeAsmPrinter();
+  }
+
+  public static boolean InitializeNativeDisassembler() {
+    return LLVMJNI.InitializeNativeDisassembler();
+  }
+
   public static TargetDataRef CreateTargetData(String StringRep) {
     long cPtr = LLVMJNI.CreateTargetData(StringRep);
     return (cPtr == 0) ? null : new TargetDataRef(cPtr, false);
   }
 
-  public static void AddTargetData(TargetDataRef arg0, PassManagerRef arg1) {
-    LLVMJNI.AddTargetData(TargetDataRef.getCPtr(arg0), PassManagerRef.getCPtr(arg1));
+  public static void AddTargetData(TargetDataRef TD, PassManagerRef PM) {
+    LLVMJNI.AddTargetData(TargetDataRef.getCPtr(TD), PassManagerRef.getCPtr(PM));
   }
 
-  public static void AddTargetLibraryInfo(TargetLibraryInfoRef arg0, PassManagerRef arg1) {
-    LLVMJNI.AddTargetLibraryInfo(TargetLibraryInfoRef.getCPtr(arg0), PassManagerRef.getCPtr(arg1));
+  public static void AddTargetLibraryInfo(TargetLibraryInfoRef TLI, PassManagerRef PM) {
+    LLVMJNI.AddTargetLibraryInfo(TargetLibraryInfoRef.getCPtr(TLI), PassManagerRef.getCPtr(PM));
   }
 
-  public static String CopyStringRepOfTargetData(TargetDataRef arg0) {
-    return LLVMJNI.CopyStringRepOfTargetData(TargetDataRef.getCPtr(arg0));
+  public static String CopyStringRepOfTargetData(TargetDataRef TD) {
+    return LLVMJNI.CopyStringRepOfTargetData(TargetDataRef.getCPtr(TD));
   }
 
-  public static ByteOrdering ByteOrder(TargetDataRef arg0) {
-    return ByteOrdering.swigToEnum(LLVMJNI.ByteOrder(TargetDataRef.getCPtr(arg0)));
+  public static ByteOrdering ByteOrder(TargetDataRef TD) {
+    return ByteOrdering.swigToEnum(LLVMJNI.ByteOrder(TargetDataRef.getCPtr(TD)));
   }
 
-  public static int PointerSize(TargetDataRef arg0) {
-    return LLVMJNI.PointerSize(TargetDataRef.getCPtr(arg0));
+  public static int PointerSize(TargetDataRef TD) {
+    return LLVMJNI.PointerSize(TargetDataRef.getCPtr(TD));
   }
 
-  public static int PointerSizeForAS(TargetDataRef arg0, int AS) {
-    return LLVMJNI.PointerSizeForAS(TargetDataRef.getCPtr(arg0), AS);
+  public static int PointerSizeForAS(TargetDataRef TD, int AS) {
+    return LLVMJNI.PointerSizeForAS(TargetDataRef.getCPtr(TD), AS);
   }
 
-  public static TypeRef IntPtrType(TargetDataRef arg0) {
-    long cPtr = LLVMJNI.IntPtrType(TargetDataRef.getCPtr(arg0));
+  public static TypeRef IntPtrType(TargetDataRef TD) {
+    long cPtr = LLVMJNI.IntPtrType(TargetDataRef.getCPtr(TD));
     return (cPtr == 0) ? null : new TypeRef(cPtr, false);
   }
 
-  public static TypeRef IntPtrTypeForAS(TargetDataRef arg0, int AS) {
-    long cPtr = LLVMJNI.IntPtrTypeForAS(TargetDataRef.getCPtr(arg0), AS);
+  public static TypeRef IntPtrTypeForAS(TargetDataRef TD, int AS) {
+    long cPtr = LLVMJNI.IntPtrTypeForAS(TargetDataRef.getCPtr(TD), AS);
     return (cPtr == 0) ? null : new TypeRef(cPtr, false);
   }
 
-  public static java.math.BigInteger SizeOfTypeInBits(TargetDataRef arg0, TypeRef arg1) {
-    return LLVMJNI.SizeOfTypeInBits(TargetDataRef.getCPtr(arg0), TypeRef.getCPtr(arg1));
+  public static TypeRef IntPtrTypeInContext(ContextRef C, TargetDataRef TD) {
+    long cPtr = LLVMJNI.IntPtrTypeInContext(ContextRef.getCPtr(C), TargetDataRef.getCPtr(TD));
+    return (cPtr == 0) ? null : new TypeRef(cPtr, false);
   }
 
-  public static java.math.BigInteger StoreSizeOfType(TargetDataRef arg0, TypeRef arg1) {
-    return LLVMJNI.StoreSizeOfType(TargetDataRef.getCPtr(arg0), TypeRef.getCPtr(arg1));
+  public static TypeRef IntPtrTypeForASInContext(ContextRef C, TargetDataRef TD, int AS) {
+    long cPtr = LLVMJNI.IntPtrTypeForASInContext(ContextRef.getCPtr(C), TargetDataRef.getCPtr(TD), AS);
+    return (cPtr == 0) ? null : new TypeRef(cPtr, false);
   }
 
-  public static java.math.BigInteger ABISizeOfType(TargetDataRef arg0, TypeRef arg1) {
-    return LLVMJNI.ABISizeOfType(TargetDataRef.getCPtr(arg0), TypeRef.getCPtr(arg1));
+  public static java.math.BigInteger SizeOfTypeInBits(TargetDataRef TD, TypeRef Ty) {
+    return LLVMJNI.SizeOfTypeInBits(TargetDataRef.getCPtr(TD), TypeRef.getCPtr(Ty));
   }
 
-  public static int ABIAlignmentOfType(TargetDataRef arg0, TypeRef arg1) {
-    return LLVMJNI.ABIAlignmentOfType(TargetDataRef.getCPtr(arg0), TypeRef.getCPtr(arg1));
+  public static java.math.BigInteger StoreSizeOfType(TargetDataRef TD, TypeRef Ty) {
+    return LLVMJNI.StoreSizeOfType(TargetDataRef.getCPtr(TD), TypeRef.getCPtr(Ty));
   }
 
-  public static int CallFrameAlignmentOfType(TargetDataRef arg0, TypeRef arg1) {
-    return LLVMJNI.CallFrameAlignmentOfType(TargetDataRef.getCPtr(arg0), TypeRef.getCPtr(arg1));
+  public static java.math.BigInteger ABISizeOfType(TargetDataRef TD, TypeRef Ty) {
+    return LLVMJNI.ABISizeOfType(TargetDataRef.getCPtr(TD), TypeRef.getCPtr(Ty));
   }
 
-  public static int PreferredAlignmentOfType(TargetDataRef arg0, TypeRef arg1) {
-    return LLVMJNI.PreferredAlignmentOfType(TargetDataRef.getCPtr(arg0), TypeRef.getCPtr(arg1));
+  public static int ABIAlignmentOfType(TargetDataRef TD, TypeRef Ty) {
+    return LLVMJNI.ABIAlignmentOfType(TargetDataRef.getCPtr(TD), TypeRef.getCPtr(Ty));
   }
 
-  public static int PreferredAlignmentOfGlobal(TargetDataRef arg0, ValueRef GlobalVar) {
-    return LLVMJNI.PreferredAlignmentOfGlobal(TargetDataRef.getCPtr(arg0), ValueRef.getCPtr(GlobalVar));
+  public static int CallFrameAlignmentOfType(TargetDataRef TD, TypeRef Ty) {
+    return LLVMJNI.CallFrameAlignmentOfType(TargetDataRef.getCPtr(TD), TypeRef.getCPtr(Ty));
   }
 
-  public static int ElementAtOffset(TargetDataRef arg0, TypeRef StructTy, java.math.BigInteger Offset) {
-    return LLVMJNI.ElementAtOffset(TargetDataRef.getCPtr(arg0), TypeRef.getCPtr(StructTy), Offset);
+  public static int PreferredAlignmentOfType(TargetDataRef TD, TypeRef Ty) {
+    return LLVMJNI.PreferredAlignmentOfType(TargetDataRef.getCPtr(TD), TypeRef.getCPtr(Ty));
   }
 
-  public static java.math.BigInteger OffsetOfElement(TargetDataRef arg0, TypeRef StructTy, int Element) {
-    return LLVMJNI.OffsetOfElement(TargetDataRef.getCPtr(arg0), TypeRef.getCPtr(StructTy), Element);
+  public static int PreferredAlignmentOfGlobal(TargetDataRef TD, ValueRef GlobalVar) {
+    return LLVMJNI.PreferredAlignmentOfGlobal(TargetDataRef.getCPtr(TD), ValueRef.getCPtr(GlobalVar));
   }
 
-  public static void DisposeTargetData(TargetDataRef arg0) {
-    LLVMJNI.DisposeTargetData(TargetDataRef.getCPtr(arg0));
+  public static int ElementAtOffset(TargetDataRef TD, TypeRef StructTy, java.math.BigInteger Offset) {
+    return LLVMJNI.ElementAtOffset(TargetDataRef.getCPtr(TD), TypeRef.getCPtr(StructTy), Offset);
+  }
+
+  public static java.math.BigInteger OffsetOfElement(TargetDataRef TD, TypeRef StructTy, int Element) {
+    return LLVMJNI.OffsetOfElement(TargetDataRef.getCPtr(TD), TypeRef.getCPtr(StructTy), Element);
+  }
+
+  public static void DisposeTargetData(TargetDataRef TD) {
+    LLVMJNI.DisposeTargetData(TargetDataRef.getCPtr(TD));
   }
 
   public static TargetRef GetFirstTarget() {
@@ -2667,6 +2751,15 @@ public class LLVM implements LLVMConstants {
   public static TargetRef GetNextTarget(TargetRef T) {
     long cPtr = LLVMJNI.GetNextTarget(TargetRef.getCPtr(T));
     return (cPtr == 0) ? null : new TargetRef(cPtr, false);
+  }
+
+  public static TargetRef GetTargetFromName(String Name) {
+    long cPtr = LLVMJNI.GetTargetFromName(Name);
+    return (cPtr == 0) ? null : new TargetRef(cPtr, false);
+  }
+
+  public static boolean GetTargetFromTriple(String Triple, TargetRefOut T, StringOut ErrorMessage) {
+    return LLVMJNI.GetTargetFromTriple(Triple, TargetRefOut.getCPtr(T), T, StringOut.getCPtr(ErrorMessage), ErrorMessage);
   }
 
   public static String GetTargetName(TargetRef T) {
@@ -2720,12 +2813,20 @@ public class LLVM implements LLVMConstants {
     return (cPtr == 0) ? null : new TargetDataRef(cPtr, false);
   }
 
+  public static void SetTargetMachineAsmVerbosity(TargetMachineRef T, boolean VerboseAsm) {
+    LLVMJNI.SetTargetMachineAsmVerbosity(TargetMachineRef.getCPtr(T), VerboseAsm);
+  }
+
   public static boolean TargetMachineEmitToFile(TargetMachineRef T, ModuleRef M, String Filename, CodeGenFileType codegen, StringOut ErrorMessage) {
     return LLVMJNI.TargetMachineEmitToFile(TargetMachineRef.getCPtr(T), ModuleRef.getCPtr(M), Filename, codegen.swigValue(), StringOut.getCPtr(ErrorMessage), ErrorMessage);
   }
 
   public static boolean TargetMachineEmitToMemoryBuffer(TargetMachineRef T, ModuleRef M, CodeGenFileType codegen, StringOut ErrorMessage, MemoryBufferRefOut OutMemBuf) {
     return LLVMJNI.TargetMachineEmitToMemoryBuffer(TargetMachineRef.getCPtr(T), ModuleRef.getCPtr(M), codegen.swigValue(), StringOut.getCPtr(ErrorMessage), ErrorMessage, MemoryBufferRefOut.getCPtr(OutMemBuf), OutMemBuf);
+  }
+
+  public static String GetDefaultTargetTriple() {
+    return LLVMJNI.GetDefaultTargetTriple();
   }
 
   public static String getLlvmHostTriple() {
@@ -2838,14 +2939,6 @@ public class LLVM implements LLVMConstants {
     LLVMJNI.TargetOptionsSetNoFramePointerElim(TargetOptionsRef.getCPtr(O), V);
   }
 
-  public static boolean TargetOptionsGetNoFramePointerElimNonLeaf(TargetOptionsRef O) {
-    return LLVMJNI.TargetOptionsGetNoFramePointerElimNonLeaf(TargetOptionsRef.getCPtr(O));
-  }
-
-  public static void TargetOptionsSetNoFramePointerElimNonLeaf(TargetOptionsRef O, boolean V) {
-    LLVMJNI.TargetOptionsSetNoFramePointerElimNonLeaf(TargetOptionsRef.getCPtr(O), V);
-  }
-
   public static boolean TargetOptionsGetLessPreciseFPMADOption(TargetOptionsRef O) {
     return LLVMJNI.TargetOptionsGetLessPreciseFPMADOption(TargetOptionsRef.getCPtr(O));
   }
@@ -2940,22 +3033,6 @@ public class LLVM implements LLVMConstants {
 
   public static void TargetOptionsSetStackAlignmentOverride(TargetOptionsRef O, int V) {
     LLVMJNI.TargetOptionsSetStackAlignmentOverride(TargetOptionsRef.getCPtr(O), V);
-  }
-
-  public static boolean TargetOptionsGetRealignStack(TargetOptionsRef O) {
-    return LLVMJNI.TargetOptionsGetRealignStack(TargetOptionsRef.getCPtr(O));
-  }
-
-  public static void TargetOptionsSetRealignStack(TargetOptionsRef O, boolean V) {
-    LLVMJNI.TargetOptionsSetRealignStack(TargetOptionsRef.getCPtr(O), V);
-  }
-
-  public static int TargetOptionsGetSSPBufferSize(TargetOptionsRef O) {
-    return LLVMJNI.TargetOptionsGetSSPBufferSize(TargetOptionsRef.getCPtr(O));
-  }
-
-  public static void TargetOptionsSetSSPBufferSize(TargetOptionsRef O, int V) {
-    LLVMJNI.TargetOptionsSetSSPBufferSize(TargetOptionsRef.getCPtr(O), V);
   }
 
   public static boolean TargetOptionsGetEnableFastISel(TargetOptionsRef O) {

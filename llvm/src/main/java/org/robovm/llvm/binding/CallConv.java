@@ -12,6 +12,8 @@ public enum CallConv {
   CCallConv(0),
   FastCallConv(8),
   ColdCallConv(9),
+  WebKitJSCallConv(12),
+  AnyRegCallConv(13),
   X86StdcallCallConv(64),
   X86FastcallCallConv(65);
 

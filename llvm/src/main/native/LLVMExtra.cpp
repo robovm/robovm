@@ -222,9 +222,6 @@ void LLVMTargetOptionsSetPrintMachineCode(LLVMTargetOptionsRef O, LLVMBool V) { 
 LLVMBool LLVMTargetOptionsGetNoFramePointerElim(LLVMTargetOptionsRef O) { return (LLVMBool) unwrap(O)->NoFramePointerElim; }
 void LLVMTargetOptionsSetNoFramePointerElim(LLVMTargetOptionsRef O, LLVMBool V) { unwrap(O)->NoFramePointerElim = V; }
 
-LLVMBool LLVMTargetOptionsGetNoFramePointerElimNonLeaf(LLVMTargetOptionsRef O) { return (LLVMBool) unwrap(O)->NoFramePointerElimNonLeaf; }
-void LLVMTargetOptionsSetNoFramePointerElimNonLeaf(LLVMTargetOptionsRef O, LLVMBool V) { unwrap(O)->NoFramePointerElimNonLeaf = V; }
-
 LLVMBool LLVMTargetOptionsGetLessPreciseFPMADOption(LLVMTargetOptionsRef O) { return (LLVMBool) unwrap(O)->LessPreciseFPMADOption; }
 void LLVMTargetOptionsSetLessPreciseFPMADOption(LLVMTargetOptionsRef O, LLVMBool V) { unwrap(O)->LessPreciseFPMADOption = V; }
 
@@ -260,12 +257,6 @@ void LLVMTargetOptionsSetDisableTailCalls(LLVMTargetOptionsRef O, LLVMBool V) { 
 
 unsigned LLVMTargetOptionsGetStackAlignmentOverride(LLVMTargetOptionsRef O) { return (unsigned) unwrap(O)->StackAlignmentOverride; }
 void LLVMTargetOptionsSetStackAlignmentOverride(LLVMTargetOptionsRef O, unsigned V) { unwrap(O)->StackAlignmentOverride = V; }
-
-LLVMBool LLVMTargetOptionsGetRealignStack(LLVMTargetOptionsRef O) { return (LLVMBool) unwrap(O)->RealignStack; }
-void LLVMTargetOptionsSetRealignStack(LLVMTargetOptionsRef O, LLVMBool V) { unwrap(O)->RealignStack = V; }
-
-unsigned LLVMTargetOptionsGetSSPBufferSize(LLVMTargetOptionsRef O) { return (unsigned) unwrap(O)->SSPBufferSize; }
-void LLVMTargetOptionsSetSSPBufferSize(LLVMTargetOptionsRef O, unsigned V) { unwrap(O)->SSPBufferSize = V; }
 
 LLVMBool LLVMTargetOptionsGetEnableFastISel(LLVMTargetOptionsRef O) { return (LLVMBool) unwrap(O)->EnableFastISel; }
 void LLVMTargetOptionsSetEnableFastISel(LLVMTargetOptionsRef O, LLVMBool V) { unwrap(O)->EnableFastISel = V; }
@@ -319,10 +310,10 @@ int LLVMTargetMachineAssembleToOutputStream(LLVMTargetMachineRef TM, LLVMMemoryB
   // it later.
 //  SrcMgr.setIncludeDirs(IncludeDirs);
 
-  OwningPtr<MCAsmInfo> MAI(TheTarget->createMCAsmInfo(TripleName));
   OwningPtr<MCRegisterInfo> MRI(TheTarget->createMCRegInfo(TripleName));
+  OwningPtr<MCAsmInfo> MAI(TheTarget->createMCAsmInfo(*MRI, TripleName));
   OwningPtr<MCObjectFileInfo> MOFI(new MCObjectFileInfo());
-  MCContext Ctx(*MAI, *MRI, MOFI.get(), &SrcMgr);
+  MCContext Ctx(MAI.get(), MRI.get(), MOFI.get(), &SrcMgr);
   MOFI->InitMCObjectFileInfo(TripleName, RelocModel, CMModel, Ctx);
 
   OwningPtr<MCInstrInfo> MCII(TheTarget->createMCInstrInfo());
@@ -332,14 +323,14 @@ int LLVMTargetMachineAssembleToOutputStream(LLVMTargetMachineRef TM, LLVMMemoryB
 
   OwningPtr<MCStreamer> Str;
   MCCodeEmitter *CE = TheTarget->createMCCodeEmitter(*MCII, *MRI, *STI, Ctx);
-  MCAsmBackend *MAB = TheTarget->createMCAsmBackend(TripleName, MCPU);
+  MCAsmBackend *MAB = TheTarget->createMCAsmBackend(*MRI, TripleName, MCPU);
   Str.reset(TheTarget->createMCObjectStreamer(TripleName, Ctx, *MAB,
                                               Out, CE, RelaxAll != 0,
                                               NoExecStack != 0));
 
 
   OwningPtr<MCAsmParser> Parser(createMCAsmParser(SrcMgr, Ctx, *Str, *MAI));
-  OwningPtr<MCTargetAsmParser> TAP(TheTarget->createMCAsmParser(*STI, *Parser));
+  OwningPtr<MCTargetAsmParser> TAP(TheTarget->createMCAsmParser(*STI, *Parser, *MCII));
   if (!TAP) {
     *ErrorMessage = strdup("this target does not support assembly parsing");
     goto done;

@@ -35,6 +35,15 @@ public class TypeRefArray {
     }
   }
 
+  public void setValue(TypeRef value) {
+    LLVMJNI.TypeRefArray_value_set(swigCPtr, this, TypeRef.getCPtr(value));
+  }
+
+  public TypeRef getValue() {
+    long cPtr = LLVMJNI.TypeRefArray_value_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new TypeRef(cPtr, false);
+  }
+
   public TypeRefArray(int nelements) {
     this(LLVMJNI.new_TypeRefArray(nelements), true);
   }

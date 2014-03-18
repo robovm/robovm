@@ -35,14 +35,15 @@ import org.robovm.apple.dispatch.*;
  */
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFMutableAttributedString/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CFAttributedString/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
+    /*<ptr>*/public static class CFMutableAttributedStringPtr extends Ptr<CFMutableAttributedString, CFMutableAttributedStringPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFMutableAttributedString.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
+    /*<constructors>*/
+    protected CFMutableAttributedString() {}
+    /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -51,20 +52,20 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFAttributedStringCreateMutable")
     public static native CFMutableAttributedString createMutable(CFAllocator alloc, @MachineSizedSInt long maxLength);
     @Bridge(symbol="CFAttributedStringReplaceString")
-    public static native void replaceString(CFAttributedString aStr, @ByVal CFRange range, CFString replacement);
+    public native void replaceString(@ByVal CFRange range, CFString replacement);
     @Bridge(symbol="CFAttributedStringGetMutableString")
-    public static native CFString getMutableString(CFAttributedString aStr);
+    public native CFMutableString getMutableString();
     @Bridge(symbol="CFAttributedStringSetAttributes")
-    public static native void setAttributes(CFAttributedString aStr, @ByVal CFRange range, CFDictionary replacement, boolean clearOtherAttributes);
+    public native void setAttributes(@ByVal CFRange range, CFDictionary replacement, boolean clearOtherAttributes);
     @Bridge(symbol="CFAttributedStringSetAttribute")
-    public static native void setAttribute(CFAttributedString aStr, @ByVal CFRange range, CFString attrName, CFType value);
+    public native void setAttribute(@ByVal CFRange range, CFString attrName, CFType value);
     @Bridge(symbol="CFAttributedStringRemoveAttribute")
-    public static native void removeAttribute(CFAttributedString aStr, @ByVal CFRange range, CFString attrName);
+    public native void removeAttribute(@ByVal CFRange range, CFString attrName);
     @Bridge(symbol="CFAttributedStringReplaceAttributedString")
-    public static native void replaceAttributedString(CFAttributedString aStr, @ByVal CFRange range, CFAttributedString replacement);
+    public native void replaceAttributedString(@ByVal CFRange range, CFAttributedString replacement);
     @Bridge(symbol="CFAttributedStringBeginEditing")
-    public static native void beginEditing(CFAttributedString aStr);
+    public native void beginEditing();
     @Bridge(symbol="CFAttributedStringEndEditing")
-    public static native void endEditing(CFAttributedString aStr);
+    public native void endEditing();
     /*</methods>*/
 }

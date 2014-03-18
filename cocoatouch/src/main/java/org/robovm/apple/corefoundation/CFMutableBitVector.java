@@ -35,14 +35,15 @@ import org.robovm.apple.dispatch.*;
  */
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFMutableBitVector/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CFBitVector/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
+    /*<ptr>*/public static class CFMutableBitVectorPtr extends Ptr<CFMutableBitVector, CFMutableBitVectorPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFMutableBitVector.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
+    /*<constructors>*/
+    protected CFMutableBitVector() {}
+    /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -51,16 +52,16 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFBitVectorCreateMutableCopy")
     public static native CFMutableBitVector createMutableCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFBitVector bv);
     @Bridge(symbol="CFBitVectorSetCount")
-    public static native void setCount(CFBitVector bv, @MachineSizedSInt long count);
+    public native void setCount(@MachineSizedSInt long count);
     @Bridge(symbol="CFBitVectorFlipBitAtIndex")
-    public static native void flipBitAtIndex(CFBitVector bv, @MachineSizedSInt long idx);
+    public native void flipBitAtIndex(@MachineSizedSInt long idx);
     @Bridge(symbol="CFBitVectorFlipBits")
-    public static native void flipBits(CFBitVector bv, @ByVal CFRange range);
+    public native void flipBits(@ByVal CFRange range);
     @Bridge(symbol="CFBitVectorSetBitAtIndex")
-    public static native void setBitAtIndex(CFBitVector bv, @MachineSizedSInt long idx, int value);
+    public native void setBitAtIndex(@MachineSizedSInt long idx, int value);
     @Bridge(symbol="CFBitVectorSetBits")
-    public static native void setBits(CFBitVector bv, @ByVal CFRange range, int value);
+    public native void setBits(@ByVal CFRange range, int value);
     @Bridge(symbol="CFBitVectorSetAllBits")
-    public static native void setAllBits(CFBitVector bv, int value);
+    public native void setAllBits(int value);
     /*</methods>*/
 }

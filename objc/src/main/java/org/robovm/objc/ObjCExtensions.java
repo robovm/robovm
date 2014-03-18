@@ -22,4 +22,8 @@ package org.robovm.objc;
  */
 public abstract class ObjCExtensions {
 
+    protected static void initObject(ObjCObject o, long handle) {
+        o.initObject(handle);
+    }
+
 }

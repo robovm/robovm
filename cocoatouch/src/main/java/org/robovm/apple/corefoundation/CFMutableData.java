@@ -35,14 +35,15 @@ import org.robovm.apple.dispatch.*;
  */
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFMutableData/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CFData/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
+    /*<ptr>*/public static class CFMutableDataPtr extends Ptr<CFMutableData, CFMutableDataPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFMutableData.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
+    /*<constructors>*/
+    protected CFMutableData() {}
+    /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -51,16 +52,16 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFDataCreateMutableCopy")
     public static native CFMutableData createMutableCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFData theData);
     @Bridge(symbol="CFDataGetMutableBytePtr")
-    public static native BytePtr getMutableBytePtr(CFData theData);
+    public native BytePtr getMutableBytePtr();
     @Bridge(symbol="CFDataSetLength")
-    public static native void setLength(CFData theData, @MachineSizedSInt long length);
+    public native void setLength(@MachineSizedSInt long length);
     @Bridge(symbol="CFDataIncreaseLength")
-    public static native void increaseLength(CFData theData, @MachineSizedSInt long extraLength);
+    public native void increaseLength(@MachineSizedSInt long extraLength);
     @Bridge(symbol="CFDataAppendBytes")
-    public static native void appendBytes(CFData theData, BytePtr bytes, @MachineSizedSInt long length);
+    public native void appendBytes(BytePtr bytes, @MachineSizedSInt long length);
     @Bridge(symbol="CFDataReplaceBytes")
-    public static native void replaceBytes(CFData theData, @ByVal CFRange range, BytePtr newBytes, @MachineSizedSInt long newLength);
+    public native void replaceBytes(@ByVal CFRange range, BytePtr newBytes, @MachineSizedSInt long newLength);
     @Bridge(symbol="CFDataDeleteBytes")
-    public static native void deleteBytes(CFData theData, @ByVal CFRange range);
+    public native void deleteBytes(@ByVal CFRange range);
     /*</methods>*/
 }

@@ -35,14 +35,15 @@ import org.robovm.apple.dispatch.*;
  */
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFMutableDictionary/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CFDictionary/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
+    /*<ptr>*/public static class CFMutableDictionaryPtr extends Ptr<CFMutableDictionary, CFMutableDictionaryPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFMutableDictionary.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
+    /*<constructors>*/
+    protected CFMutableDictionary() {}
+    /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

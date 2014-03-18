@@ -35,14 +35,15 @@ import org.robovm.apple.dispatch.*;
  */
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFMutableString/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CFString/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
+    /*<ptr>*/public static class CFMutableStringPtr extends Ptr<CFMutableString, CFMutableStringPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFMutableString.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
+    /*<constructors>*/
+    protected CFMutableString() {}
+    /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -94,42 +95,42 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFStringFindCharacterFromSet")
     public static native boolean findCharacterFromSet(CFString theString, CFCharacterSet theSet, @ByVal CFRange rangeToSearch, CFStringCompareFlags searchOptions, CFRange result);
     @Bridge(symbol="CFStringAppend")
-    public static native void append(CFString theString, CFString appendedString);
+    public native void append(CFString appendedString);
     @Bridge(symbol="CFStringAppendCharacters")
-    public static native void appendCharacters(CFString theString, ShortPtr chars, @MachineSizedSInt long numChars);
+    public native void appendCharacters(ShortPtr chars, @MachineSizedSInt long numChars);
     @Bridge(symbol="CFStringAppendPascalString")
-    public static native void appendPascalString(CFString theString, BytePtr pStr, int encoding);
+    public native void appendPascalString(BytePtr pStr, int encoding);
     @Bridge(symbol="CFStringAppendCString")
-    public static native void appendCString(CFString theString, BytePtr cStr, int encoding);
+    public native void appendCString(BytePtr cStr, int encoding);
     @Bridge(symbol="CFStringInsert")
-    public static native void insert(CFString str, @MachineSizedSInt long idx, CFString insertedStr);
+    public native void insert(@MachineSizedSInt long idx, CFString insertedStr);
     @Bridge(symbol="CFStringDelete")
-    public static native void delete(CFString theString, @ByVal CFRange range);
+    public native void delete(@ByVal CFRange range);
     @Bridge(symbol="CFStringReplace")
-    public static native void replace(CFString theString, @ByVal CFRange range, CFString replacement);
+    public native void replace(@ByVal CFRange range, CFString replacement);
     @Bridge(symbol="CFStringReplaceAll")
-    public static native void replaceAll(CFString theString, CFString replacement);
+    public native void replaceAll(CFString replacement);
     @Bridge(symbol="CFStringFindAndReplace")
-    public static native @MachineSizedSInt long findAndReplace(CFString theString, CFString stringToFind, CFString replacementString, @ByVal CFRange rangeToSearch, CFStringCompareFlags compareOptions);
+    public native @MachineSizedSInt long findAndReplace(CFString stringToFind, CFString replacementString, @ByVal CFRange rangeToSearch, CFStringCompareFlags compareOptions);
     @Bridge(symbol="CFStringSetExternalCharactersNoCopy")
-    public static native void setExternalCharactersNoCopy(CFString theString, ShortPtr chars, @MachineSizedSInt long length, @MachineSizedSInt long capacity);
+    public native void setExternalCharactersNoCopy(ShortPtr chars, @MachineSizedSInt long length, @MachineSizedSInt long capacity);
     @Bridge(symbol="CFStringPad")
-    public static native void pad(CFString theString, CFString padString, @MachineSizedSInt long length, @MachineSizedSInt long indexIntoPad);
+    public native void pad(CFString padString, @MachineSizedSInt long length, @MachineSizedSInt long indexIntoPad);
     @Bridge(symbol="CFStringTrim")
-    public static native void trim(CFString theString, CFString trimString);
+    public native void trim(CFString trimString);
     @Bridge(symbol="CFStringTrimWhitespace")
-    public static native void trimWhitespace(CFString theString);
+    public native void trimWhitespace();
     @Bridge(symbol="CFStringLowercase")
-    public static native void lowercase(CFString theString, CFLocale locale);
+    public native void lowercase(CFLocale locale);
     @Bridge(symbol="CFStringUppercase")
-    public static native void uppercase(CFString theString, CFLocale locale);
+    public native void uppercase(CFLocale locale);
     @Bridge(symbol="CFStringCapitalize")
-    public static native void capitalize(CFString theString, CFLocale locale);
+    public native void capitalize(CFLocale locale);
     @Bridge(symbol="CFStringNormalize")
-    public static native void normalize(CFString theString, CFStringNormalizationForm theForm);
+    public native void normalize(CFStringNormalizationForm theForm);
     @Bridge(symbol="CFStringFold")
-    public static native void fold(CFString theString, CFStringCompareFlags theFlags, CFLocale theLocale);
+    public native void fold(CFStringCompareFlags theFlags, CFLocale theLocale);
     @Bridge(symbol="CFStringTransform")
-    public static native boolean transform(CFString string, CFRange range, CFString transform, boolean reverse);
+    public native boolean transform(CFRange range, CFString transform, boolean reverse);
     /*</methods>*/
 }

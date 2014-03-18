@@ -67,7 +67,7 @@ import org.robovm.apple.opengles.*;
     @Method(selector = "initWithControlPoints::::")
     protected native @Pointer long initWithControlPoints$$$$(float c1x, float c1y, float c2x, float c2y);
     @Method(selector = "getControlPointAtIndex:values:")
-    public native void getControlPointAtIndex$values$(@MachineSizedUInt long idx, @Array({2}) FloatBuffer ptr);
+    public native void getControlPointAtIndex$values$(@MachineSizedUInt long idx, FloatPtr ptr);
     @Method(selector = "functionWithName:")
     public static native NSObject functionWithName$(String name);
     @Method(selector = "functionWithControlPoints::::")

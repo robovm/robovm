@@ -15,7 +15,9 @@
  */
 package org.robovm.apple.foundation;
 
+import org.robovm.objc.ObjCClass;
 import org.robovm.objc.ObjCExtensions;
+import org.robovm.objc.ObjCObject;
 import org.robovm.rt.bro.annotation.Marshaler;
 
 /**
@@ -26,4 +28,10 @@ import org.robovm.rt.bro.annotation.Marshaler;
  */
 @Marshaler(NSString.AsStringMarshaler.class)
 public abstract class NSExtensions extends ObjCExtensions {
+    
+    protected static <T extends NSObject> T alloc(Class<T> c) {
+        long h = NSObject.alloc(ObjCClass.getByType(c));
+        return ObjCObject.toObjCObject(c, h);
+    }
+
 }

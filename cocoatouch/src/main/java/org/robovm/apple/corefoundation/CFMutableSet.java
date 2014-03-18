@@ -35,14 +35,15 @@ import org.robovm.apple.dispatch.*;
  */
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFMutableSet/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CFSet/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
+    /*<ptr>*/public static class CFMutableSetPtr extends Ptr<CFMutableSet, CFMutableSetPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFMutableSet.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
+    /*<constructors>*/
+    protected CFMutableSet() {}
+    /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -51,14 +52,14 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFSetCreateMutableCopy")
     public static native CFMutableSet createMutableCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFSet theSet);
     @Bridge(symbol="CFSetAddValue")
-    public static native void addValue(CFSet theSet, VoidPtr value);
+    public native void addValue(VoidPtr value);
     @Bridge(symbol="CFSetReplaceValue")
-    public static native void replaceValue(CFSet theSet, VoidPtr value);
+    public native void replaceValue(VoidPtr value);
     @Bridge(symbol="CFSetSetValue")
-    public static native void setValue(CFSet theSet, VoidPtr value);
+    public native void setValue(VoidPtr value);
     @Bridge(symbol="CFSetRemoveValue")
-    public static native void removeValue(CFSet theSet, VoidPtr value);
+    public native void removeValue(VoidPtr value);
     @Bridge(symbol="CFSetRemoveAllValues")
-    public static native void removeAllValues(CFSet theSet);
+    public native void removeAllValues();
     /*</methods>*/
 }

@@ -35,14 +35,15 @@ import org.robovm.apple.dispatch.*;
  */
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFMutableBag/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CFBag/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
+    /*<ptr>*/public static class CFMutableBagPtr extends Ptr<CFMutableBag, CFMutableBagPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFMutableBag.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
+    /*<constructors>*/
+    protected CFMutableBag() {}
+    /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -51,14 +52,14 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFBagCreateMutableCopy")
     public static native CFMutableBag createMutableCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFBag theBag);
     @Bridge(symbol="CFBagAddValue")
-    public static native void addValue(CFBag theBag, VoidPtr value);
+    public native void addValue(VoidPtr value);
     @Bridge(symbol="CFBagReplaceValue")
-    public static native void replaceValue(CFBag theBag, VoidPtr value);
+    public native void replaceValue(VoidPtr value);
     @Bridge(symbol="CFBagSetValue")
-    public static native void setValue(CFBag theBag, VoidPtr value);
+    public native void setValue(VoidPtr value);
     @Bridge(symbol="CFBagRemoveValue")
-    public static native void removeValue(CFBag theBag, VoidPtr value);
+    public native void removeValue(VoidPtr value);
     @Bridge(symbol="CFBagRemoveAllValues")
-    public static native void removeAllValues(CFBag theBag);
+    public native void removeAllValues();
     /*</methods>*/
 }

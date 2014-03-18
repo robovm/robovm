@@ -53,11 +53,24 @@ import org.robovm.apple.coreimage.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    public static NSAttributedString createFromURL(NSURL url, NSDictionary<?, ?> options, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error) {
+        NSAttributedString thiz = alloc(NSAttributedString.class);
+        initObject(thiz, initWithFileURL$options$documentAttributes$error$(thiz, url, options, dict, error));
+        return thiz;
+    }
+
+    public static NSAttributedString createFromData(NSData data, NSDictionary<?, ?> options, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error) {
+        NSAttributedString thiz = alloc(NSAttributedString.class);
+        initObject(thiz, initWithData$options$documentAttributes$error$(thiz, data, options, dict, error));
+        return thiz;
+    }
+
     /*<methods>*/
     @Method(selector = "initWithFileURL:options:documentAttributes:error:")
-    public static native NSAttributedStringExtensions initWithFileURL$options$documentAttributes$error$(NSAttributedString thiz, NSURL url, NSDictionary<?, ?> options, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
+    protected static native @Pointer long initWithFileURL$options$documentAttributes$error$(NSAttributedString thiz, NSURL url, NSDictionary<?, ?> options, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
     @Method(selector = "initWithData:options:documentAttributes:error:")
-    public static native NSAttributedStringExtensions initWithData$options$documentAttributes$error$(NSAttributedString thiz, NSData data, NSDictionary<?, ?> options, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
+    protected static native @Pointer long initWithData$options$documentAttributes$error$(NSAttributedString thiz, NSData data, NSDictionary<?, ?> options, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
     @Method(selector = "dataFromRange:documentAttributes:error:")
     public static native NSData dataFromRange$documentAttributes$error$(NSAttributedString thiz, @ByVal NSRange range, NSDictionary<?, ?> dict, NSError.NSErrorPtr error);
     @Method(selector = "fileWrapperFromRange:documentAttributes:error:")

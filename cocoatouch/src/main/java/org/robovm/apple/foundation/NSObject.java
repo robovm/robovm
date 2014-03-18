@@ -106,7 +106,7 @@ import org.robovm.apple.security.*;
     }
 
     private static final Selector alloc = Selector.register("alloc");
-    private static long alloc(ObjCClass c) {
+    static long alloc(ObjCClass c) {
         long h = ObjCRuntime.ptr_objc_msgSend(c.getHandle(), alloc.getHandle());
         if (h == 0L) {
             throw new OutOfMemoryError();

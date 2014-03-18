@@ -65,6 +65,6 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CGDataProviderCreateWithFilename")
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGDataProvider createWithFilename(@Pointer long filename);
     @Bridge(symbol="CGDataProviderCopyData")
-    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) NSData getData();
+    public native NSData getData();
     /*</methods>*/
 }

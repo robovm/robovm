@@ -215,6 +215,9 @@ public class ObjCProtocolProxyPlugin extends AbstractCompilerPlugin {
                 
                 File f = clazz.getPath().getGeneratedClassFile(proxyInternalName);
                 FileUtils.writeByteArrayToFile(f, cw.toByteArray());
+                // The proxy class is created after the interface is compiled.
+                // This prevents the triggering of a recompile of the interface.
+                f.setLastModified(clazz.lastModified());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

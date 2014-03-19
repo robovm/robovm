@@ -15,6 +15,8 @@
  */
 package org.robovm.objc;
 
+import org.robovm.objc.annotation.Property;
+
 /**
  * Base class for all Objective-C extension classes (categories). Note that
  * it is not possible to create new categories in Java which adds methods to
@@ -26,4 +28,20 @@ public abstract class ObjCExtensions {
         o.initObject(handle);
     }
 
+    /**
+     * Updates a strong reference handling {@code null} values properly. This
+     * is only meant to be used internally for {@link Property} setter methods 
+     * with {@code strongRef=true}.
+     * 
+     * @param thiz the owner of the property.
+     * @param before the previous value for the property. If not {@code null}
+     *        and not equal to {@code after} {@link #removeStrongRef(Object)}
+     *        will be called on this value.
+     * @param after the new value for the property. If not {@code null}
+     *        and not equal to {@code after} {@link #addStrongRef(Object)}
+     *        will be called on this value.
+     */
+    protected static void updateStrongRef(ObjCObject o, Object before, Object after) {
+        o.updateStrongRef(before, after);
+    }
 }

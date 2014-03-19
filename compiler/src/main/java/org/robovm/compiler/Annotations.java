@@ -24,6 +24,7 @@ import soot.SootMethod;
 import soot.tagkit.AnnotationAnnotationElem;
 import soot.tagkit.AnnotationArrayElem;
 import soot.tagkit.AnnotationElem;
+import soot.tagkit.AnnotationIntElem;
 import soot.tagkit.AnnotationStringElem;
 import soot.tagkit.AnnotationTag;
 import soot.tagkit.Host;
@@ -287,5 +288,10 @@ public class Annotations {
     public static String readStringElem(AnnotationTag annotation, String name, String def) {
         AnnotationStringElem elem = (AnnotationStringElem) getElemByName(annotation, name);
         return elem != null ? elem.getValue() : def;
+    }
+
+    public static boolean readBooleanElem(AnnotationTag annotation, String name, boolean def) {
+        AnnotationIntElem elem = (AnnotationIntElem) getElemByName(annotation, name);
+        return elem != null ? elem.getValue() == 1 : def;
     }
 }

@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.robovm.objc.annotation.NativeClass;
+import org.robovm.objc.annotation.Property;
 import org.robovm.rt.VM;
 import org.robovm.rt.bro.NativeObject;
 import org.robovm.rt.bro.Struct;
@@ -150,7 +151,36 @@ public abstract class ObjCObject extends NativeObject {
     }
     
     public void removeStrongRef(Object to) {
-        AssociatedObjectHelper.removeStrongRef(this, to);
+        AssociatedObjectHelper.removeStrongRef(this, to, false);
+    }
+    
+    /**
+     * Updates a strong reference handling {@code null} values properly. This
+     * is only meant to be used internally for {@link Property} setter methods 
+     * with {@code strongRef=true}.
+     * 
+     * @param before the previous value for the property. If not {@code null}
+     *        and not equal to {@code after} {@link #removeStrongRef(Object)}
+     *        will be called on this value.
+     * @param after the new value for the property. If not {@code null}
+     *        and not equal to {@code after} {@link #addStrongRef(Object)}
+     *        will be called on this value.
+     */
+    protected void updateStrongRef(Object before, Object after) {
+        if (before == after) {
+            // Either both are null or they reference the same object.
+            // If not null we assume that the property has already been set so 
+            // that there already exists a strong reference.
+            return;
+        }
+        if (before != null) {
+            // Don't fail if the before value didn't have a strong reference.
+            // It could have been set from within ObjC.
+            AssociatedObjectHelper.removeStrongRef(this, before, true);
+        }
+        if (after != null) {
+            AssociatedObjectHelper.addStrongRef(this, after);
+        }
     }
     
     public Object getAssociatedObject(Object key) {
@@ -361,18 +391,18 @@ public abstract class ObjCObject extends NativeObject {
         }
 
         @SuppressWarnings("rawtypes")
-        public static void removeStrongRef(ObjCObject from, Object to) {
+        public static void removeStrongRef(ObjCObject from, Object to, boolean ignoreNotExists) {
             if (to == null) {
                 throw new NullPointerException();
             }
             synchronized (ASSOCIATED_OBJECTS) {
                 List l = (List) getAssociatedObject(from, STRONG_REFS_KEY);
-                if (l == null || !l.remove(to)) {
+                if (!ignoreNotExists && (l == null || !l.remove(to))) {
                     throw new IllegalArgumentException("No strong ref exists from " + from 
                             + " (a " + from.getClass().getName() + ") to " + to 
                             + " a (" + to.getClass().getName() + ")");
                 }
-                if (l.isEmpty()) {
+                if (l != null && l.isEmpty()) {
                     setAssociatedObject(from, STRONG_REFS_KEY, null);
                 }
             }

@@ -39,6 +39,7 @@ import soot.BooleanType;
 import soot.Local;
 import soot.Modifier;
 import soot.PatchingChain;
+import soot.RefLikeType;
 import soot.RefType;
 import soot.Scene;
 import soot.SootClass;
@@ -97,6 +98,8 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     private SootFieldRef org_robovm_objc_ObjCObject_customClass = null;
     private SootMethodRef org_robovm_objc_ObjCClass_getByType = null;
     private SootMethodRef org_robovm_objc_ObjCRuntime_bind = null;
+    private SootMethodRef org_robovm_objc_ObjCObject_updateStrongRef = null;
+    private SootMethodRef org_robovm_objc_ObjCExtensions_updateStrongRef = null;
     
     private SootMethod getOrCreateStaticInitializer(SootClass sootClass) {
         for (SootMethod m : sootClass.getMethods()) {
@@ -310,6 +313,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         org_robovm_objc_ObjCRuntime = r.makeClassRef(OBJC_RUNTIME);
         org_robovm_objc_ObjCExtensions = r.makeClassRef(OBJC_EXTENSIONS);
         org_robovm_objc_Selector = r.makeClassRef(SELECTOR);
+        SootClass java_lang_Object = r.makeClassRef("java.lang.Object");
         java_lang_String = r.makeClassRef("java.lang.String");
         java_lang_Class = r.makeClassRef("java.lang.Class");
         org_robovm_objc_Selector_register =
@@ -324,6 +328,14 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                 "getSuper", 
                 Collections.<Type>emptyList(), 
                 org_robovm_objc_ObjCSuper.getType(), false);
+        org_robovm_objc_ObjCObject_updateStrongRef = 
+            Scene.v().makeMethodRef(
+                org_robovm_objc_ObjCObject, 
+                "updateStrongRef", 
+                Arrays.<Type>asList(
+                    java_lang_Object.getType(), 
+                    java_lang_Object.getType()),
+                VoidType.v(), false);
         org_robovm_objc_ObjCClass_getByType =
             Scene.v().makeMethodRef(
                 org_robovm_objc_ObjCClass,
@@ -340,6 +352,15 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
             Scene.v().makeFieldRef(
                 org_robovm_objc_ObjCObject, 
                 "customClass", BooleanType.v(), false);
+        org_robovm_objc_ObjCExtensions_updateStrongRef = 
+            Scene.v().makeMethodRef(
+                org_robovm_objc_ObjCExtensions, 
+                "updateStrongRef", 
+                Arrays.<Type>asList(
+                    org_robovm_objc_ObjCObject.getType(),
+                    java_lang_Object.getType(), 
+                    java_lang_Object.getType()),
+                VoidType.v(), true);
         initialized = true;
     }
     
@@ -422,7 +443,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
             }
             if (method.isNative()) {
                 selectors.add(selectorName);
-                createBridge(sootClass, method, selectorName, extensions);
+                createBridge(sootClass, method, selectorName, false, extensions);
             }
         } else {
             AnnotationTag propertyAnno = getAnnotation(method, PROPERTY);
@@ -494,7 +515,8 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                 }
                 if (method.isNative()) {
                     selectors.add(selectorName);
-                    createBridge(sootClass, method, selectorName, extensions);
+                    boolean strongRefSetter = !isGetter && readBooleanElem(propertyAnno, "strongRef", false);
+                    createBridge(sootClass, method, selectorName, strongRefSetter, extensions);
                 }
             }
         }
@@ -562,7 +584,9 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         }
     }
 
-    private void createBridge(SootClass sootClass, SootMethod method, String selectorName, boolean extensions) {
+    private void createBridge(SootClass sootClass, SootMethod method, String selectorName, 
+            boolean strongRefSetter, boolean extensions) {
+
         Jimple j = Jimple.v();
         
         SootMethod msgSendMethod = getMsgSendMethod(selectorName, method, extensions);
@@ -583,7 +607,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         PatchingChain<Unit> units = body.getUnits();
         Local thiz = null;
         if (extensions) {
-            thiz = j.newLocal("$this", sootClass.getType());
+            thiz = j.newLocal("$this", method.getParameterType(0));
             body.getLocals().add(thiz);
             units.add(j.newIdentityStmt(thiz, j.newParameterRef(method.getParameterType(0), 0)));
         } else if (!method.isStatic()) {
@@ -598,6 +622,44 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
             body.getLocals().add(p);
             units.add(j.newIdentityStmt(p, j.newParameterRef(t, i)));
             args.add(p);
+        }
+        
+        if (strongRefSetter) {
+            Type propType = method.getParameterType(extensions ? 1 : 0);
+            if (propType instanceof RefLikeType) {
+                SootMethodRef getter = Scene.v().makeMethodRef(
+                        method.getDeclaringClass(),
+                        "get" + method.getName().substring(3),
+                        extensions ? Arrays.asList(thiz.getType()) : Collections.<Type>emptyList(),
+                        propType, extensions);
+                Local before = j.newLocal("$before", propType);
+                body.getLocals().add(before);
+                units.add(
+                    j.newAssignStmt(
+                        before, 
+                        extensions
+                            ? j.newStaticInvokeExpr(getter, thiz)
+                            : j.newVirtualInvokeExpr(thiz, getter)
+                    )
+                );
+                Value after = args.get(0);
+                if (extensions) {
+                    units.add(
+                        j.newInvokeStmt(
+                            j.newStaticInvokeExpr(
+                                org_robovm_objc_ObjCExtensions_updateStrongRef,
+                                Arrays.asList(thiz, before, after)))
+                    );
+                } else {
+                    units.add(
+                        j.newInvokeStmt(
+                            j.newVirtualInvokeExpr(
+                                thiz,
+                                org_robovm_objc_ObjCObject_updateStrongRef,
+                                before, after))
+                    );
+                }
+            }
         }
         
         Local sel = j.newLocal("$sel", org_robovm_objc_Selector.getType());

@@ -20,6 +20,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.robovm.objc.ObjCObject;
+
 /**
  * Used to mark a class or interface method as an Objective-C property getter
  * or setter method. If the method is a member of a class it must have the 
@@ -47,4 +49,20 @@ public @interface Property {
      * the first character downcased.
      */
     String name() default "";
+    
+    /**
+     * Specifies that when a property is set a strong reference from the 
+     * Objective-C object the property belongs to to the Java instance being set
+     * should be created. This prevents the Java instance from being GCed until 
+     * the Objective-C object instance is deallocated. This is typically used 
+     * for Objective-C properties which don't retain their values (either 
+     * specified as {@code assign} or {@code weak} in Objective-C).
+     * <p>
+     * This attribute is only meaningful when set on a setter method. If 
+     * specified on a getter method it will be ignored.
+     * 
+     * @see ObjCObject#addStrongRef(Object)
+     * @see ObjCObject#removeStrongRef(Object)
+     */
+    boolean strongRef() default false;
 }

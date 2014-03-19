@@ -53,7 +53,7 @@ import org.robovm.apple.coreimage.*;
     /*<properties>*/
     @Property(selector = "delegate")
     public native UITextViewDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UITextViewDelegate v);
     @Property(selector = "text")
     public native String getText();
@@ -141,7 +141,7 @@ import org.robovm.apple.coreimage.*;
     public native UITextPosition getEndOfDocument();
     @Property(selector = "inputDelegate")
     public native UITextInputDelegate getInputDelegate();
-    @Property(selector = "setInputDelegate:")
+    @Property(selector = "setInputDelegate:", strongRef = true)
     public native void setInputDelegate(UITextInputDelegate v);
     @Property(selector = "tokenizer")
     public native UITextInputTokenizer getTokenizer();

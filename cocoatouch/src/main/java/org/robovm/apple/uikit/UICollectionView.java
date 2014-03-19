@@ -57,11 +57,11 @@ import org.robovm.apple.coreimage.*;
     public native void setCollectionViewLayout(UICollectionViewLayout v);
     @Property(selector = "delegate")
     public native UICollectionViewDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UICollectionViewDelegate v);
     @Property(selector = "dataSource")
     public native UICollectionViewDataSource getDataSource();
-    @Property(selector = "setDataSource:")
+    @Property(selector = "setDataSource:", strongRef = true)
     public native void setDataSource(UICollectionViewDataSource v);
     @Property(selector = "backgroundView")
     public native UIView getBackgroundView();

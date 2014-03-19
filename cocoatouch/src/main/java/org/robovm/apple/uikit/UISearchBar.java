@@ -56,7 +56,7 @@ import org.robovm.apple.coreimage.*;
     public native void setBarStyle(UIBarStyle v);
     @Property(selector = "delegate")
     public native UISearchBarDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UISearchBarDelegate v);
     @Property(selector = "text")
     public native String getText();

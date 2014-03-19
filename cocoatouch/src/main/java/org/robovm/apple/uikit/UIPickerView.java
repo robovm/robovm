@@ -52,11 +52,11 @@ import org.robovm.apple.coreimage.*;
     /*<properties>*/
     @Property(selector = "dataSource")
     public native UIPickerViewDataSource getDataSource();
-    @Property(selector = "setDataSource:")
+    @Property(selector = "setDataSource:", strongRef = true)
     public native void setDataSource(UIPickerViewDataSource v);
     @Property(selector = "delegate")
     public native UIPickerViewDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UIPickerViewDelegate v);
     @Property(selector = "showsSelectionIndicator")
     public native boolean isShowsSelectionIndicator();

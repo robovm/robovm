@@ -77,7 +77,7 @@ import org.robovm.apple.coreimage.*;
     public native void setAction(Selector v);
     @Property(selector = "target")
     public native NSObject getTarget();
-    @Property(selector = "setTarget:")
+    @Property(selector = "setTarget:", strongRef = true)
     public native void setTarget(NSObject v);
     @Property(selector = "tintColor")
     public native UIColor getTintColor();

@@ -56,7 +56,7 @@ import org.robovm.apple.coreimage.*;
     public native void setUpdateInterval(double v);
     @Property(selector = "delegate")
     public native UIAccelerometerDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UIAccelerometerDelegate v);
     /*</properties>*/
     /*<members>*//*</members>*/

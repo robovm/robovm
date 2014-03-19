@@ -53,11 +53,11 @@ import org.robovm.apple.coreimage.*;
     /*<properties>*/
     @Property(selector = "delegate")
     public native UIPageViewControllerDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UIPageViewControllerDelegate v);
     @Property(selector = "dataSource")
     public native UIPageViewControllerDataSource getDataSource();
-    @Property(selector = "setDataSource:")
+    @Property(selector = "setDataSource:", strongRef = true)
     public native void setDataSource(UIPageViewControllerDataSource v);
     @Property(selector = "transitionStyle")
     public native UIPageViewControllerTransitionStyle getTransitionStyle();

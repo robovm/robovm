@@ -53,7 +53,7 @@ import org.robovm.apple.coreimage.*;
     /*<properties>*/
     @Property(selector = "delegate")
     public native UISearchDisplayDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UISearchDisplayDelegate v);
     @Property(selector = "isActive")
     public native boolean isActive();
@@ -67,11 +67,11 @@ import org.robovm.apple.coreimage.*;
     public native UITableView getSearchResultsTableView();
     @Property(selector = "searchResultsDataSource")
     public native UITableViewDataSource getSearchResultsDataSource();
-    @Property(selector = "setSearchResultsDataSource:")
+    @Property(selector = "setSearchResultsDataSource:", strongRef = true)
     public native void setSearchResultsDataSource(UITableViewDataSource v);
     @Property(selector = "searchResultsDelegate")
     public native UITableViewDelegate getSearchResultsDelegate();
-    @Property(selector = "setSearchResultsDelegate:")
+    @Property(selector = "setSearchResultsDelegate:", strongRef = true)
     public native void setSearchResultsDelegate(UITableViewDelegate v);
     @Property(selector = "searchResultsTitle")
     public native String getSearchResultsTitle();

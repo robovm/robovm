@@ -52,13 +52,13 @@ import org.robovm.apple.coreimage.*;
     /*<properties>*/
     @Property(selector = "textStorage")
     public native NSTextStorage getTextStorage();
-    @Property(selector = "setTextStorage:")
+    @Property(selector = "setTextStorage:", strongRef = true)
     public native void setTextStorage(NSTextStorage v);
     @Property(selector = "textContainers")
     public native NSArray<?> getTextContainers();
     @Property(selector = "delegate")
     public native NSLayoutManagerDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(NSLayoutManagerDelegate v);
     @Property(selector = "showsInvisibleCharacters")
     public native boolean isShowsInvisibleCharacters();

@@ -65,7 +65,7 @@ import org.robovm.apple.coreimage.*;
     public native NSArray<?> getBoundaryIdentifiers();
     @Property(selector = "collisionDelegate")
     public native UICollisionBehaviorDelegate getCollisionDelegate();
-    @Property(selector = "setCollisionDelegate:")
+    @Property(selector = "setCollisionDelegate:", strongRef = true)
     public native void setCollisionDelegate(UICollisionBehaviorDelegate v);
     /*</properties>*/
     /*<members>*//*</members>*/

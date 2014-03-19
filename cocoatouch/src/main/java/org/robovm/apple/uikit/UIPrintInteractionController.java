@@ -56,7 +56,7 @@ import org.robovm.apple.coreimage.*;
     public native void setPrintInfo(UIPrintInfo v);
     @Property(selector = "delegate")
     public native UIPrintInteractionControllerDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UIPrintInteractionControllerDelegate v);
     @Property(selector = "showsPageRange")
     public native boolean isShowsPageRange();

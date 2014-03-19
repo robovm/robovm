@@ -100,7 +100,7 @@ import org.robovm.apple.coreimage.*;
     public native void setMinimumFontSize(@MachineSizedFloat double v);
     @Property(selector = "delegate")
     public native UITextFieldDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UITextFieldDelegate v);
     @Property(selector = "background")
     public native UIImage getBackground();
@@ -168,7 +168,7 @@ import org.robovm.apple.coreimage.*;
     public native UITextPosition getEndOfDocument();
     @Property(selector = "inputDelegate")
     public native UITextInputDelegate getInputDelegate();
-    @Property(selector = "setInputDelegate:")
+    @Property(selector = "setInputDelegate:", strongRef = true)
     public native void setInputDelegate(UITextInputDelegate v);
     @Property(selector = "tokenizer")
     public native UITextInputTokenizer getTokenizer();

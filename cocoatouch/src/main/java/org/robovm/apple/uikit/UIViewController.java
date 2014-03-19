@@ -129,11 +129,11 @@ import org.robovm.apple.coreimage.*;
     public native void setRestorationIdentifier(String v);
     @Property(selector = "restorationClass")
     public native ObjCClass getRestorationClass();
-    @Property(selector = "setRestorationClass:")
+    @Property(selector = "setRestorationClass:", strongRef = true)
     public native void setRestorationClass(ObjCClass v);
     @Property(selector = "transitioningDelegate")
     public native UIViewControllerTransitioningDelegate getTransitioningDelegate();
-    @Property(selector = "setTransitioningDelegate:")
+    @Property(selector = "setTransitioningDelegate:", strongRef = true)
     public native void setTransitioningDelegate(UIViewControllerTransitioningDelegate v);
     @Property(selector = "topLayoutGuide")
     public native UILayoutSupport getTopLayoutGuide();

@@ -52,7 +52,7 @@ import org.robovm.apple.coreimage.*;
     /*<properties>*/
     @Property(selector = "delegate")
     public native UIActionSheetDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UIActionSheetDelegate v);
     @Property(selector = "title")
     public native String getTitle();

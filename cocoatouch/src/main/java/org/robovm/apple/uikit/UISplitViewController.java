@@ -56,7 +56,7 @@ import org.robovm.apple.coreimage.*;
     public native void setViewControllers(NSArray<?> v);
     @Property(selector = "delegate")
     public native UISplitViewControllerDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UISplitViewControllerDelegate v);
     @Property(selector = "presentsWithGesture")
     public native boolean isPresentsWithGesture();

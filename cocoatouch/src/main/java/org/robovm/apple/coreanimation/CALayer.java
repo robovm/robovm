@@ -233,7 +233,7 @@ import org.robovm.apple.opengles.*;
     public native void setName(String v);
     @Property(selector = "delegate")
     public native CALayerDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(CALayerDelegate v);
     @Property(selector = "style")
     public native NSDictionary<?, ?> getStyle();

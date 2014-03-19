@@ -66,7 +66,7 @@ import org.robovm.apple.coreimage.*;
     public native void setChangeInLength(@MachineSizedSInt long v);
     @Property(selector = "delegate")
     public native NSTextStorageDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(NSTextStorageDelegate v);
     @Property(selector = "fixesAttributesLazily")
     public native boolean isFixesAttributesLazily();

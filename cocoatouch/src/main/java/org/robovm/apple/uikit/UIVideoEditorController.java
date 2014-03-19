@@ -52,7 +52,7 @@ import org.robovm.apple.coreimage.*;
     /*<properties>*/
     @Property(selector = "delegate")
     public native UIVideoEditorControllerDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UIVideoEditorControllerDelegate v);
     @Property(selector = "videoPath")
     public native String getVideoPath();

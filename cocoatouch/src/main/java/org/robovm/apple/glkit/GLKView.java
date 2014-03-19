@@ -54,7 +54,7 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*/
     @Property(selector = "delegate")
     public native GLKViewDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(GLKViewDelegate v);
     @Property(selector = "context")
     public native EAGLContext getContext();

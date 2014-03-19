@@ -51,7 +51,7 @@ import org.robovm.apple.security.*;
     /*<properties>*/
     @Property(selector = "delegate")
     public native NSNetServiceDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(NSNetServiceDelegate v);
     @Property(selector = "includesPeerToPeer")
     public native boolean isIncludesPeerToPeer();

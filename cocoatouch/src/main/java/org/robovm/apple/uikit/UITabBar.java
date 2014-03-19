@@ -52,7 +52,7 @@ import org.robovm.apple.coreimage.*;
     /*<properties>*/
     @Property(selector = "delegate")
     public native UITabBarDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UITabBarDelegate v);
     @Property(selector = "items")
     public native NSArray<?> getItems();
@@ -60,7 +60,7 @@ import org.robovm.apple.coreimage.*;
     public native void setItems(NSArray<?> v);
     @Property(selector = "selectedItem")
     public native UITabBarItem getSelectedItem();
-    @Property(selector = "setSelectedItem:")
+    @Property(selector = "setSelectedItem:", strongRef = true)
     public native void setSelectedItem(UITabBarItem v);
     @Property(selector = "tintColor")
     public native UIColor getTintColor();

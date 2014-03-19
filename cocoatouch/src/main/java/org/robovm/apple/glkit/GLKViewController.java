@@ -53,7 +53,7 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*/
     @Property(selector = "delegate")
     public native GLKViewControllerDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(GLKViewControllerDelegate v);
     @Property(selector = "preferredFramesPerSecond")
     public native @MachineSizedSInt long getPreferredFramesPerSecond();

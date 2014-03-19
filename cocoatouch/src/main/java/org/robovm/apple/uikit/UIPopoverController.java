@@ -53,7 +53,7 @@ import org.robovm.apple.coreimage.*;
     /*<properties>*/
     @Property(selector = "delegate")
     public native UIPopoverControllerDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UIPopoverControllerDelegate v);
     @Property(selector = "contentViewController")
     public native UIViewController getContentViewController();

@@ -56,7 +56,7 @@ import org.robovm.apple.coreimage.*;
     public native void setViewControllers(NSArray<?> v);
     @Property(selector = "selectedViewController")
     public native UIViewController getSelectedViewController();
-    @Property(selector = "setSelectedViewController:")
+    @Property(selector = "setSelectedViewController:", strongRef = true)
     public native void setSelectedViewController(UIViewController v);
     @Property(selector = "selectedIndex")
     public native @MachineSizedUInt long getSelectedIndex();
@@ -72,7 +72,7 @@ import org.robovm.apple.coreimage.*;
     public native UITabBar getTabBar();
     @Property(selector = "delegate")
     public native UITabBarControllerDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UITabBarControllerDelegate v);
     /*</properties>*/
     /*<members>*//*</members>*/

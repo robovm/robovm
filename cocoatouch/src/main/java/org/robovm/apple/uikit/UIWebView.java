@@ -52,7 +52,7 @@ import org.robovm.apple.coreimage.*;
     /*<properties>*/
     @Property(selector = "delegate")
     public native UIWebViewDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UIWebViewDelegate v);
     @Property(selector = "scrollView")
     public native UIScrollView getScrollView();

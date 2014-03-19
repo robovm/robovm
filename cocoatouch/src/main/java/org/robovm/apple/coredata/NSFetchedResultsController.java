@@ -57,7 +57,7 @@ import org.robovm.apple.foundation.*;
     public native String getCacheName();
     @Property(selector = "delegate")
     public native NSFetchedResultsControllerDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(NSFetchedResultsControllerDelegate v);
     @Property(selector = "fetchedObjects")
     public native NSArray<?> getFetchedObjects();

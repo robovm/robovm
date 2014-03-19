@@ -74,7 +74,7 @@ import org.robovm.apple.coreimage.*;
     public native UIToolbar getToolbar();
     @Property(selector = "delegate")
     public native UINavigationControllerDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UINavigationControllerDelegate v);
     @Property(selector = "interactivePopGestureRecognizer")
     public native UIGestureRecognizer getInteractivePopGestureRecognizer();

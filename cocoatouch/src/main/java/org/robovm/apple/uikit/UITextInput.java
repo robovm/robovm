@@ -63,7 +63,7 @@ import org.robovm.apple.coreimage.*;
     UITextPosition getEndOfDocument();
     @Property(selector = "inputDelegate")
     UITextInputDelegate getInputDelegate();
-    @Property(selector = "setInputDelegate:")
+    @Property(selector = "setInputDelegate:", strongRef = true)
     void setInputDelegate(UITextInputDelegate v);
     @Property(selector = "tokenizer")
     UITextInputTokenizer getTokenizer();

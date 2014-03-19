@@ -64,7 +64,7 @@ import org.robovm.apple.coreimage.*;
     public native void setContentInset(@ByVal UIEdgeInsets v);
     @Property(selector = "delegate")
     public native UIScrollViewDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UIScrollViewDelegate v);
     @Property(selector = "isDirectionalLockEnabled")
     public native boolean isDirectionalLockEnabled();

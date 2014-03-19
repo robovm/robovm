@@ -60,7 +60,7 @@ import org.robovm.apple.coreimage.*;
     public native boolean isRunning();
     @Property(selector = "delegate")
     public native UIDynamicAnimatorDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UIDynamicAnimatorDelegate v);
     /*</properties>*/
     /*<members>*//*</members>*/

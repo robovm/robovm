@@ -55,11 +55,11 @@ import org.robovm.apple.coreimage.*;
     public native UITableViewStyle getStyle();
     @Property(selector = "dataSource")
     public native UITableViewDataSource getDataSource();
-    @Property(selector = "setDataSource:")
+    @Property(selector = "setDataSource:", strongRef = true)
     public native void setDataSource(UITableViewDataSource v);
     @Property(selector = "delegate")
     public native UITableViewDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UITableViewDelegate v);
     @Property(selector = "rowHeight")
     public native @MachineSizedFloat double getRowHeight();

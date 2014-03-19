@@ -53,7 +53,7 @@ import org.robovm.apple.coreimage.*;
     /*<properties>*/
     @Property(selector = "accessibilityContainer")
     public native NSObject getAccessibilityContainer();
-    @Property(selector = "setAccessibilityContainer:")
+    @Property(selector = "setAccessibilityContainer:", strongRef = true)
     public native void setAccessibilityContainer(NSObject v);
     @Property(selector = "isAccessibilityElement")
     public native boolean isIsAccessibilityElement();

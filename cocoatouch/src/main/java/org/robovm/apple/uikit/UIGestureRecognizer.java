@@ -55,7 +55,7 @@ import org.robovm.apple.coreimage.*;
     public native UIGestureRecognizerState getState();
     @Property(selector = "delegate")
     public native UIGestureRecognizerDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UIGestureRecognizerDelegate v);
     @Property(selector = "isEnabled")
     public native boolean isEnabled();

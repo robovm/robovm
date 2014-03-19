@@ -53,7 +53,7 @@ import org.robovm.apple.coreimage.*;
     /*<properties>*/
     @Property(selector = "layoutManager")
     public native NSLayoutManager getLayoutManager();
-    @Property(selector = "setLayoutManager:")
+    @Property(selector = "setLayoutManager:", strongRef = true)
     public native void setLayoutManager(NSLayoutManager v);
     @Property(selector = "size")
     public native @ByVal CGSize getSize();

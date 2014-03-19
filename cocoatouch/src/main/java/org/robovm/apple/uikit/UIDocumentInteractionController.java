@@ -52,7 +52,7 @@ import org.robovm.apple.coreimage.*;
     /*<properties>*/
     @Property(selector = "delegate")
     public native UIDocumentInteractionControllerDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UIDocumentInteractionControllerDelegate v);
     @Property(selector = "URL")
     public native NSURL getURL();

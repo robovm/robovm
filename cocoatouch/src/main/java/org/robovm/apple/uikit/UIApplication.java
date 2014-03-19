@@ -52,7 +52,7 @@ import org.robovm.apple.coreimage.*;
     /*<properties>*/
     @Property(selector = "delegate")
     public native UIApplicationDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UIApplicationDelegate v);
     @Property(selector = "isIdleTimerDisabled")
     public native boolean isIdleTimerDisabled();

@@ -72,7 +72,7 @@ import org.robovm.apple.coreimage.*;
     public native void setBarTintColor(UIColor v);
     @Property(selector = "delegate")
     public native UIToolbarDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UIToolbarDelegate v);
     @Property(selector = "barPosition")
     public native UIBarPosition getBarPosition();

@@ -52,7 +52,7 @@ import org.robovm.apple.coreimage.*;
     /*<properties>*/
     @Property(selector = "delegate")
     public native UIImagePickerControllerDelegate getDelegate();
-    @Property(selector = "setDelegate:")
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UIImagePickerControllerDelegate v);
     @Property(selector = "sourceType")
     public native UIImagePickerControllerSourceType getSourceType();

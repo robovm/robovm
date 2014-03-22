@@ -21,6 +21,7 @@ import java.util.List;
 
 import soot.SootClass;
 import soot.SootMethod;
+import soot.SootResolver;
 import soot.tagkit.AnnotationAnnotationElem;
 import soot.tagkit.AnnotationArrayElem;
 import soot.tagkit.AnnotationElem;
@@ -67,6 +68,9 @@ public class Annotations {
     }
 
     public static List<AnnotationTag> getAnnotations(Host host) {
+        if (host instanceof SootClass) {
+            SootResolver.v().bringToHierarchy((SootClass) host);
+        }
         List<AnnotationTag> result = new ArrayList<>();
         for (Tag tag : host.getTags()) {
             if (tag instanceof VisibilityAnnotationTag) {

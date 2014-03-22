@@ -46,9 +46,11 @@ import soot.LongType;
 import soot.PrimType;
 import soot.RefLikeType;
 import soot.RefType;
+import soot.Scene;
 import soot.ShortType;
 import soot.SootClass;
 import soot.SootMethod;
+import soot.SootResolver;
 import soot.VoidType;
 import soot.tagkit.AnnotationArrayElem;
 import soot.tagkit.AnnotationClassElem;
@@ -171,10 +173,12 @@ public class MarshalerLookup {
                                 : "parameter " + (pidx + 1))),
                 marshalSite.callTypeName, marshalSite.method));
     }
-    
+
     private void findMarshalersOnClasses(SootClass sc, List<Marshaler> result, 
             Set<String> visited, Set<String> seen) {
 
+        SootResolver.v().bringToHierarchy(sc);
+        
         result.addAll(findMarshalersOn(sc, visited, seen));
         if (sc.hasSuperclass()) {
             findMarshalersOnClasses(sc.getSuperclass(), result, visited, seen);
@@ -183,6 +187,8 @@ public class MarshalerLookup {
     
     private void findMarshalersOnInterfaces(SootClass sc, List<Marshaler> result, 
             Set<String> visited, Set<String> seen) {
+        
+        SootResolver.v().bringToHierarchy(sc);
         
         for (SootClass ifs : sc.getInterfaces()) {
             result.addAll(findMarshalersOn(ifs, visited, seen));
@@ -210,7 +216,7 @@ public class MarshalerLookup {
     private List<Marshaler> findMarshalersOn(SootClass sc, Set<String> visited, Set<String> seen) {
         
         String internalName = getInternalName(sc);
-        if (visited.contains(getInternalName(sc))) {
+        if (visited.contains(internalName)) {
             return Collections.emptyList();
         }
         visited.contains(internalName);

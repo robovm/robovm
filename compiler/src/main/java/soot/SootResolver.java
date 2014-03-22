@@ -146,7 +146,8 @@ public class SootResolver
     /** Hierarchy - we know the hierarchy of the class and that's it
      * requires at least Hierarchy for all supertypes and enclosing types.
      * */
-    private void bringToHierarchy(SootClass sc) {
+    // RoboVM note: Made this method public
+    public void bringToHierarchy(SootClass sc) {
         if(sc.resolvingLevel() >= SootClass.HIERARCHY ) return;
         if(Options.v().debug_resolver())
             G.v().out.println("bringing to HIERARCHY: "+sc);
@@ -204,7 +205,8 @@ public class SootResolver
     /** Signatures - we know the signatures of all methods and fields
     * requires at least Hierarchy for all referred to types in these signatures.
     * */
-    private void bringToSignatures(SootClass sc) {
+    // RoboVM note: Made this method public
+    public void bringToSignatures(SootClass sc) {
         if(sc.resolvingLevel() >= SootClass.SIGNATURES ) return;
         bringToHierarchy(sc);
         if(Options.v().debug_resolver()) 

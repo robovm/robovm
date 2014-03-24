@@ -627,6 +627,21 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
             args.add(p);
         }
         
+        Local objCClass = null;
+        if (!extensions && method.isStatic()) {
+            objCClass = j.newLocal("$objCClass", org_robovm_objc_ObjCClass.getType());
+            body.getLocals().add(objCClass);
+            units.add(
+                j.newAssignStmt(
+                    objCClass,
+                    j.newStaticFieldRef( 
+                        Scene.v().makeFieldRef(
+                            sootClass, 
+                            "$objCClass", org_robovm_objc_ObjCClass.getType(), true))
+                )
+            );
+        }
+        
         if (strongRefSetter) {
             Type propType = method.getParameterType(extensions ? 1 : 0);
             if (propType instanceof RefLikeType) {
@@ -634,7 +649,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                         method.getDeclaringClass(),
                         "get" + method.getName().substring(3),
                         extensions ? Arrays.asList(thiz.getType()) : Collections.<Type>emptyList(),
-                        propType, extensions);
+                        propType, extensions || method.isStatic());
                 Local before = j.newLocal("$before", propType);
                 body.getLocals().add(before);
                 units.add(
@@ -642,7 +657,9 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                         before, 
                         extensions
                             ? j.newStaticInvokeExpr(getter, thiz)
-                            : j.newVirtualInvokeExpr(thiz, getter)
+                            : (objCClass != null 
+                                ? j.newStaticInvokeExpr(getter) 
+                                : j.newVirtualInvokeExpr(thiz, getter))
                     )
                 );
                 Value after = args.get(0);
@@ -657,7 +674,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                     units.add(
                         j.newInvokeStmt(
                             j.newVirtualInvokeExpr(
-                                thiz,
+                                objCClass != null ? objCClass : thiz,
                                 org_robovm_objc_ObjCObject_updateStrongRef,
                                 before, after))
                     );
@@ -678,21 +695,6 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                         org_robovm_objc_Selector.getType(), true)))
         );
         args.addFirst(sel);
-        
-        Local objCClass = null;
-        if (!extensions && method.isStatic()) {
-            objCClass = j.newLocal("$objCClass", org_robovm_objc_ObjCClass.getType());
-            body.getLocals().add(objCClass);
-            units.add(
-                j.newAssignStmt(
-                    objCClass,
-                    j.newStaticFieldRef( 
-                        Scene.v().makeFieldRef(
-                            sootClass, 
-                            "$objCClass", org_robovm_objc_ObjCClass.getType(), true))
-                )
-            );
-        }
         
         Local customClass = null;
         if (!extensions && !Modifier.isFinal(sootClass.getModifiers()) && !method.isStatic()) {

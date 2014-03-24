@@ -156,8 +156,8 @@ public abstract class ObjCObject extends NativeObject {
     
     /**
      * Updates a strong reference handling {@code null} values properly. This
-     * is only meant to be used internally for {@link Property} setter methods 
-     * with {@code strongRef=true}.
+     * is meant to be used for {@link Property} setter methods with 
+     * {@code strongRef=true}.
      * 
      * @param before the previous value for the property. If not {@code null}
      *        and not equal to {@code after} {@link #removeStrongRef(Object)}
@@ -166,7 +166,7 @@ public abstract class ObjCObject extends NativeObject {
      *        and not equal to {@code after} {@link #addStrongRef(Object)}
      *        will be called on this value.
      */
-    protected void updateStrongRef(Object before, Object after) {
+    public void updateStrongRef(Object before, Object after) {
         if (before == after) {
             // Either both are null or they reference the same object.
             // If not null we assume that the property has already been set so 

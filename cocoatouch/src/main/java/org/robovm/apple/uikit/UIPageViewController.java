@@ -79,6 +79,6 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "initWithTransitionStyle:navigationOrientation:options:")
     protected native @Pointer long initWithTransitionStyle$navigationOrientation$options$(UIPageViewControllerTransitionStyle style, UIPageViewControllerNavigationOrientation navigationOrientation, NSDictionary<?, ?> options);
     @Method(selector = "setViewControllers:direction:animated:completion:")
-    public native void setViewControllers$direction$animated$completion$(NSArray<?> viewControllers, UIPageViewControllerNavigationDirection direction, boolean animated, ObjCBlock completion);
+    public native void setViewControllers$direction$animated$completion$(NSArray<?> viewControllers, UIPageViewControllerNavigationDirection direction, boolean animated, @Block VoidBooleanBlock completion);
     /*</methods>*/
 }

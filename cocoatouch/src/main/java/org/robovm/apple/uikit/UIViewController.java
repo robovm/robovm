@@ -273,7 +273,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "removeFromParentViewController")
     public native void removeFromParentViewController();
     @Method(selector = "transitionFromViewController:toViewController:duration:options:animations:completion:")
-    public native void transition(UIViewController fromViewController, UIViewController toViewController, double duration, UIViewAnimationOptions options, @Block Runnable animations, ObjCBlock completion);
+    public native void transition(UIViewController fromViewController, UIViewController toViewController, double duration, UIViewAnimationOptions options, @Block Runnable animations, @Block VoidBooleanBlock completion);
     @Method(selector = "beginAppearanceTransition:animated:")
     public native void beginAppearanceTransition$animated$(boolean isAppearing, boolean animated);
     @Method(selector = "endAppearanceTransition")

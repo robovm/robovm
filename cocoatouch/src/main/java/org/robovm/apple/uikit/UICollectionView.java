@@ -103,7 +103,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "setCollectionViewLayout:animated:")
     public native void setCollectionViewLayout$animated$(UICollectionViewLayout layout, boolean animated);
     @Method(selector = "setCollectionViewLayout:animated:completion:")
-    public native void setCollectionViewLayout$animated$completion$(UICollectionViewLayout layout, boolean animated, ObjCBlock completion);
+    public native void setCollectionViewLayout$animated$completion$(UICollectionViewLayout layout, boolean animated, @Block VoidBooleanBlock completion);
     @Method(selector = "startInteractiveTransitionToCollectionViewLayout:completion:")
     public native UICollectionViewTransitionLayout startInteractiveTransitionToCollectionViewLayout$completion$(UICollectionViewLayout layout, FunctionPtr completion);
     @Method(selector = "finishInteractiveTransition")
@@ -147,6 +147,6 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "moveItemAtIndexPath:toIndexPath:")
     public native void moveItem(NSIndexPath indexPath, NSIndexPath newIndexPath);
     @Method(selector = "performBatchUpdates:completion:")
-    public native void performBatchUpdates$completion$(@Block Runnable updates, ObjCBlock completion);
+    public native void performBatchUpdates$completion$(@Block Runnable updates, @Block VoidBooleanBlock completion);
     /*</methods>*/
 }

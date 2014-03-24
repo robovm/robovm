@@ -79,9 +79,9 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "initWithFileURL:")
     protected native @Pointer long initWithFileURL$(NSURL url);
     @Method(selector = "openWithCompletionHandler:")
-    public native void open(ObjCBlock completionHandler);
+    public native void open(@Block VoidBooleanBlock completionHandler);
     @Method(selector = "closeWithCompletionHandler:")
-    public native void close(ObjCBlock completionHandler);
+    public native void close(@Block VoidBooleanBlock completionHandler);
     @Method(selector = "loadFromContents:ofType:error:")
     public native boolean loadFromContents$ofType$error$(NSObject contents, String typeName, NSError.NSErrorPtr outError);
     @Method(selector = "contentsForType:error:")
@@ -99,9 +99,9 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "updateChangeCountWithToken:forSaveOperation:")
     public native void updateChangeCount(NSObject changeCountToken, UIDocumentSaveOperation saveOperation);
     @Method(selector = "saveToURL:forSaveOperation:completionHandler:")
-    public native void save(NSURL url, UIDocumentSaveOperation saveOperation, ObjCBlock completionHandler);
+    public native void save(NSURL url, UIDocumentSaveOperation saveOperation, @Block VoidBooleanBlock completionHandler);
     @Method(selector = "autosaveWithCompletionHandler:")
-    public native void autoSave(ObjCBlock completionHandler);
+    public native void autoSave(@Block VoidBooleanBlock completionHandler);
     @Method(selector = "savingFileType")
     public native String getSavingFileType();
     @Method(selector = "fileNameExtensionForType:saveOperation:")
@@ -123,7 +123,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "userInteractionNoLongerPermittedForError:")
     public native void userInteractionNoLongerPermittedForError$(NSError error);
     @Method(selector = "revertToContentsOfURL:completionHandler:")
-    public native void revert(NSURL url, ObjCBlock completionHandler);
+    public native void revert(NSURL url, @Block VoidBooleanBlock completionHandler);
     @Method(selector = "relinquishPresentedItemToReader:")
     public native void relinquishPresentedItemToReader$(ObjCBlock reader);
     @Method(selector = "relinquishPresentedItemToWriter:")

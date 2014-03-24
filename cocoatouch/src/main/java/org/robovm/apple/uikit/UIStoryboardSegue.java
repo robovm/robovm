@@ -65,6 +65,6 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "perform")
     public native void perform();
     @Method(selector = "segueWithIdentifier:source:destination:performHandler:")
-    public static native NSObject getSegue(String identifier, UIViewController source, UIViewController destination, ObjCBlock performHandler);
+    public static native NSObject getSegue(String identifier, UIViewController source, UIViewController destination, @Block Runnable performHandler);
     /*</methods>*/
 }

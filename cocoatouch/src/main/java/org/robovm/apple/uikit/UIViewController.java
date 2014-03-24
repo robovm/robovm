@@ -221,9 +221,9 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "isMovingFromParentViewController")
     public native boolean isMovingFromParentViewController();
     @Method(selector = "presentViewController:animated:completion:")
-    public native void presentViewController$animated$completion$(UIViewController viewControllerToPresent, boolean flag, ObjCBlock completion);
+    public native void presentViewController$animated$completion$(UIViewController viewControllerToPresent, boolean flag, @Block Runnable completion);
     @Method(selector = "dismissViewControllerAnimated:completion:")
-    public native void dismissViewController(boolean flag, ObjCBlock completion);
+    public native void dismissViewController(boolean flag, @Block Runnable completion);
     @Method(selector = "presentModalViewController:animated:")
     public native void presentModalViewController$animated$(UIViewController modalViewController, boolean animated);
     @Method(selector = "dismissModalViewControllerAnimated:")
@@ -273,7 +273,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "removeFromParentViewController")
     public native void removeFromParentViewController();
     @Method(selector = "transitionFromViewController:toViewController:duration:options:animations:completion:")
-    public native void transition(UIViewController fromViewController, UIViewController toViewController, double duration, UIViewAnimationOptions options, ObjCBlock animations, ObjCBlock completion);
+    public native void transition(UIViewController fromViewController, UIViewController toViewController, double duration, UIViewAnimationOptions options, @Block Runnable animations, ObjCBlock completion);
     @Method(selector = "beginAppearanceTransition:animated:")
     public native void beginAppearanceTransition$animated$(boolean isAppearing, boolean animated);
     @Method(selector = "endAppearanceTransition")

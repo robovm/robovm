@@ -53,9 +53,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "childBehaviors")
     public native NSArray<?> getChildBehaviors();
     @Property(selector = "action")
-    public native ObjCBlock getAction();
+    public native @Block Runnable getAction();
     @Property(selector = "setAction:")
-    public native void setAction(ObjCBlock v);
+    public native void setAction(@Block Runnable v);
     @Property(selector = "dynamicAnimator")
     public native UIDynamicAnimator getDynamicAnimator();
     /*</properties>*/

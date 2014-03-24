@@ -58,7 +58,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "addOperations:waitUntilFinished:")
     public native void addOperations$waitUntilFinished$(NSArray<?> ops, boolean wait);
     @Method(selector = "addOperationWithBlock:")
-    public native void addOperationWithBlock$(ObjCBlock block);
+    public native void addOperationWithBlock$(@Block Runnable block);
     @Method(selector = "operations")
     public native NSArray<?> operations();
     @Method(selector = "operationCount")

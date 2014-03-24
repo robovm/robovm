@@ -86,6 +86,6 @@ import org.robovm.apple.security.*;
     @Method(selector = "endActivity:")
     public native void endActivity$(NSObject activity);
     @Method(selector = "performActivityWithOptions:reason:usingBlock:")
-    public native void performActivityWithOptions$reason$usingBlock$(NSActivityOptions options, String reason, ObjCBlock block);
+    public native void performActivityWithOptions$reason$usingBlock$(NSActivityOptions options, String reason, @Block Runnable block);
     /*</methods>*/
 }

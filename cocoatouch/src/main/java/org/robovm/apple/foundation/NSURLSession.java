@@ -72,9 +72,9 @@ import org.robovm.apple.security.*;
     @Method(selector = "invalidateAndCancel")
     public native void invalidateAndCancel();
     @Method(selector = "resetWithCompletionHandler:")
-    public native void resetWithCompletionHandler$(ObjCBlock completionHandler);
+    public native void resetWithCompletionHandler$(@Block Runnable completionHandler);
     @Method(selector = "flushWithCompletionHandler:")
-    public native void flushWithCompletionHandler$(ObjCBlock completionHandler);
+    public native void flushWithCompletionHandler$(@Block Runnable completionHandler);
     @Method(selector = "getTasksWithCompletionHandler:")
     public native void getTasksWithCompletionHandler$(ObjCBlock completionHandler);
     @Method(selector = "dataTaskWithRequest:")

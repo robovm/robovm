@@ -49,13 +49,13 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge(symbol="dispatch_group_create")
     public static native DispatchGroup create();
     @Bridge(symbol="dispatch_group_async")
-    public native void async(DispatchQueue queue, ObjCBlock block);
+    public native void async(DispatchQueue queue, @Block Runnable block);
     @Bridge(symbol="dispatch_group_async_f")
     public native void asyncF(DispatchQueue queue, VoidPtr context, FunctionPtr work);
     @Bridge(symbol="dispatch_group_wait")
     public native @MachineSizedSInt long await(long timeout);
     @Bridge(symbol="dispatch_group_notify")
-    public native void notify(DispatchQueue queue, ObjCBlock block);
+    public native void notify(DispatchQueue queue, @Block Runnable block);
     @Bridge(symbol="dispatch_group_notify_f")
     public native void notifyF(DispatchQueue queue, VoidPtr context, FunctionPtr work);
     @Bridge(symbol="dispatch_group_enter")

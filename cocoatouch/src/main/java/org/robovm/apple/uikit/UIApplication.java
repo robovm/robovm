@@ -136,15 +136,15 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "supportedInterfaceOrientationsForWindow:")
     public native @MachineSizedUInt long getSupportedInterfaceOrientations(UIWindow window);
     @Method(selector = "beginBackgroundTaskWithExpirationHandler:")
-    public native @MachineSizedUInt long beginBackgroundTask(ObjCBlock handler);
+    public native @MachineSizedUInt long beginBackgroundTask(@Block Runnable handler);
     @Method(selector = "beginBackgroundTaskWithName:expirationHandler:")
-    public native @MachineSizedUInt long beginBackgroundTaskWithName$expirationHandler$(String taskName, ObjCBlock handler);
+    public native @MachineSizedUInt long beginBackgroundTaskWithName$expirationHandler$(String taskName, @Block Runnable handler);
     @Method(selector = "endBackgroundTask:")
     public native void endBackgroundTask$(@MachineSizedUInt long identifier);
     @Method(selector = "setMinimumBackgroundFetchInterval:")
     public native void setMinimumBackgroundFetchInterval$(double minimumBackgroundFetchInterval);
     @Method(selector = "setKeepAliveTimeout:handler:")
-    public native boolean setKeepAliveTimeout$handler$(double timeout, ObjCBlock keepAliveHandler);
+    public native boolean setKeepAliveTimeout$handler$(double timeout, @Block Runnable keepAliveHandler);
     @Method(selector = "clearKeepAliveTimeout")
     public native void clearKeepAliveTimeout();
     @Method(selector = "sharedApplication")

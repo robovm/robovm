@@ -259,25 +259,25 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "areAnimationsEnabled")
     public static native boolean areAnimationsEnabled();
     @Method(selector = "performWithoutAnimation:")
-    public static native void performWithoutAnimation$(ObjCBlock actionsWithoutAnimation);
+    public static native void performWithoutAnimation$(@Block Runnable actionsWithoutAnimation);
     @Method(selector = "animateWithDuration:delay:options:animations:completion:")
-    public static native void animate(double duration, double delay, UIViewAnimationOptions options, ObjCBlock animations, ObjCBlock completion);
+    public static native void animate(double duration, double delay, UIViewAnimationOptions options, @Block Runnable animations, ObjCBlock completion);
     @Method(selector = "animateWithDuration:animations:completion:")
-    public static native void animate(double duration, ObjCBlock animations, ObjCBlock completion);
+    public static native void animate(double duration, @Block Runnable animations, ObjCBlock completion);
     @Method(selector = "animateWithDuration:animations:")
-    public static native void animate(double duration, ObjCBlock animations);
+    public static native void animate(double duration, @Block Runnable animations);
     @Method(selector = "animateWithDuration:delay:usingSpringWithDamping:initialSpringVelocity:options:animations:completion:")
-    public static native void animateWithDuration$delay$usingSpringWithDamping$initialSpringVelocity$options$animations$completion$(double duration, double delay, @MachineSizedFloat double dampingRatio, @MachineSizedFloat double velocity, UIViewAnimationOptions options, ObjCBlock animations, ObjCBlock completion);
+    public static native void animateWithDuration$delay$usingSpringWithDamping$initialSpringVelocity$options$animations$completion$(double duration, double delay, @MachineSizedFloat double dampingRatio, @MachineSizedFloat double velocity, UIViewAnimationOptions options, @Block Runnable animations, ObjCBlock completion);
     @Method(selector = "transitionWithView:duration:options:animations:completion:")
-    public static native void transition(UIView view, double duration, UIViewAnimationOptions options, ObjCBlock animations, ObjCBlock completion);
+    public static native void transition(UIView view, double duration, UIViewAnimationOptions options, @Block Runnable animations, ObjCBlock completion);
     @Method(selector = "transitionFromView:toView:duration:options:completion:")
     public static native void transition(UIView fromView, UIView toView, double duration, UIViewAnimationOptions options, ObjCBlock completion);
     @Method(selector = "performSystemAnimation:onViews:options:animations:completion:")
-    public static native void performSystemAnimation$onViews$options$animations$completion$(UISystemAnimation animation, NSArray<?> views, UIViewAnimationOptions options, ObjCBlock parallelAnimations, ObjCBlock completion);
+    public static native void performSystemAnimation$onViews$options$animations$completion$(UISystemAnimation animation, NSArray<?> views, UIViewAnimationOptions options, @Block Runnable parallelAnimations, ObjCBlock completion);
     @Method(selector = "animateKeyframesWithDuration:delay:options:animations:completion:")
-    public static native void animateKeyframesWithDuration$delay$options$animations$completion$(double duration, double delay, UIViewKeyframeAnimationOptions options, ObjCBlock animations, ObjCBlock completion);
+    public static native void animateKeyframesWithDuration$delay$options$animations$completion$(double duration, double delay, UIViewKeyframeAnimationOptions options, @Block Runnable animations, ObjCBlock completion);
     @Method(selector = "addKeyframeWithRelativeStartTime:relativeDuration:animations:")
-    public static native void addKeyframeWithRelativeStartTime$relativeDuration$animations$(double frameStartTime, double frameDuration, ObjCBlock animations);
+    public static native void addKeyframeWithRelativeStartTime$relativeDuration$animations$(double frameStartTime, double frameDuration, @Block Runnable animations);
     @Method(selector = "addGestureRecognizer:")
     public native void addGestureRecognizer$(UIGestureRecognizer gestureRecognizer);
     @Method(selector = "removeGestureRecognizer:")

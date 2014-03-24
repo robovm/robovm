@@ -147,6 +147,6 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "moveItemAtIndexPath:toIndexPath:")
     public native void moveItem(NSIndexPath indexPath, NSIndexPath newIndexPath);
     @Method(selector = "performBatchUpdates:completion:")
-    public native void performBatchUpdates$completion$(ObjCBlock updates, ObjCBlock completion);
+    public native void performBatchUpdates$completion$(@Block Runnable updates, ObjCBlock completion);
     /*</methods>*/
 }

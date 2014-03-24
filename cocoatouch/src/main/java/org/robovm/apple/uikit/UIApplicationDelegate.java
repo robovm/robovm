@@ -94,7 +94,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "application:performFetchWithCompletionHandler:")
     void application$performFetchWithCompletionHandler$(UIApplication application, ObjCBlock completionHandler);
     @Method(selector = "application:handleEventsForBackgroundURLSession:completionHandler:")
-    void application$handleEventsForBackgroundURLSession$completionHandler$(UIApplication application, String identifier, ObjCBlock completionHandler);
+    void application$handleEventsForBackgroundURLSession$completionHandler$(UIApplication application, String identifier, @Block Runnable completionHandler);
     @Method(selector = "applicationDidEnterBackground:")
     void didEnterBackground(UIApplication application);
     @Method(selector = "applicationWillEnterForeground:")

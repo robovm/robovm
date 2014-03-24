@@ -78,9 +78,9 @@ import org.robovm.apple.security.*;
     @Method(selector = "setQueuePriority:")
     public native void setQueuePriority$(NSOperationQueuePriority p);
     @Method(selector = "completionBlock")
-    public native ObjCBlock completionBlock();
+    public native @Block Runnable completionBlock();
     @Method(selector = "setCompletionBlock:")
-    public native void setCompletionBlock$(ObjCBlock block);
+    public native void setCompletionBlock$(@Block Runnable block);
     @Method(selector = "waitUntilFinished")
     public native void waitUntilFinished();
     @Method(selector = "threadPriority")

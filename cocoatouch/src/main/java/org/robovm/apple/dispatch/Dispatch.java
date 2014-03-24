@@ -58,7 +58,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge(symbol="dispatch_get_specific")
     public static native VoidPtr getSpecific(VoidPtr key);
     @Bridge(symbol="dispatch_once")
-    public static native void once(MachineSizedSIntPtr predicate, ObjCBlock block);
+    public static native void once(MachineSizedSIntPtr predicate, @Block Runnable block);
     @Bridge(symbol="dispatch_once_f")
     public static native void onceF(MachineSizedSIntPtr predicate, VoidPtr context, FunctionPtr function);
     @Bridge(symbol="dispatch_read")

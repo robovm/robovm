@@ -115,7 +115,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "readFromURL:error:")
     public native boolean read(NSURL url, NSError.NSErrorPtr outError);
     @Method(selector = "performAsynchronousFileAccessUsingBlock:")
-    public native void performAsynchronousFileAccess(ObjCBlock block);
+    public native void performAsynchronousFileAccess(@Block Runnable block);
     @Method(selector = "handleError:userInteractionPermitted:")
     public native void handleError$userInteractionPermitted$(NSError error, boolean userInteractionPermitted);
     @Method(selector = "finishedHandlingError:recovered:")

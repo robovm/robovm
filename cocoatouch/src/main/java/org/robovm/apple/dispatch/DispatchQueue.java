@@ -55,11 +55,11 @@ import org.robovm.rt.bro.ptr.*;
     public static native DispatchQueue getMainQueue();
     
     @Bridge(symbol="dispatch_async")
-    public native void async(ObjCBlock block);
+    public native void async(@Block Runnable block);
     @Bridge(symbol="dispatch_async_f")
     public native void asyncF(VoidPtr context, FunctionPtr work);
     @Bridge(symbol="dispatch_sync")
-    public native void sync(ObjCBlock block);
+    public native void sync(@Block Runnable block);
     @Bridge(symbol="dispatch_sync_f")
     public native void syncF(VoidPtr context, FunctionPtr work);
     @Bridge(symbol="dispatch_apply")
@@ -75,15 +75,15 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge(symbol="dispatch_queue_get_label")
     public native BytePtr getLabel();
     @Bridge(symbol="dispatch_after")
-    public static native void after(long when, DispatchQueue queue, ObjCBlock block);
+    public static native void after(long when, DispatchQueue queue, @Block Runnable block);
     @Bridge(symbol="dispatch_after_f")
     public static native void afterF(long when, DispatchQueue queue, VoidPtr context, FunctionPtr work);
     @Bridge(symbol="dispatch_barrier_async")
-    public native void barrierAsync(ObjCBlock block);
+    public native void barrierAsync(@Block Runnable block);
     @Bridge(symbol="dispatch_barrier_async_f")
     public native void barrierAsyncF(VoidPtr context, FunctionPtr work);
     @Bridge(symbol="dispatch_barrier_sync")
-    public native void barrierSync(ObjCBlock block);
+    public native void barrierSync(@Block Runnable block);
     @Bridge(symbol="dispatch_barrier_sync_f")
     public native void barrierSyncF(VoidPtr context, FunctionPtr work);
     @Bridge(symbol="dispatch_queue_set_specific")

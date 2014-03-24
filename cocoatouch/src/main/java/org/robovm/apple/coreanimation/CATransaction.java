@@ -84,9 +84,9 @@ import org.robovm.apple.opengles.*;
     @Method(selector = "setDisableActions:")
     public static native void setDisableActions$(boolean flag);
     @Method(selector = "completionBlock")
-    public static native ObjCBlock completionBlock();
+    public static native @Block Runnable completionBlock();
     @Method(selector = "setCompletionBlock:")
-    public static native void setCompletionBlock$(ObjCBlock block);
+    public static native void setCompletionBlock$(@Block Runnable block);
     @Method(selector = "valueForKey:")
     public static native NSObject valueForKey$(String key);
     @Method(selector = "setValue:forKey:")

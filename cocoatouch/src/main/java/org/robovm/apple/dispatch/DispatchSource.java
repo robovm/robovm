@@ -66,11 +66,11 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge(symbol="dispatch_source_create")
     public static native DispatchSource create(DispatchSourceType type, @MachineSizedUInt long handle, @MachineSizedUInt long mask, DispatchQueue queue);
     @Bridge(symbol="dispatch_source_set_event_handler")
-    public native void setEventHandler(ObjCBlock handler);
+    public native void setEventHandler(@Block Runnable handler);
     @Bridge(symbol="dispatch_source_set_event_handler_f")
     public native void setEventHandlerF(FunctionPtr handler);
     @Bridge(symbol="dispatch_source_set_cancel_handler")
-    public native void setCancelHandler(ObjCBlock cancel_handler);
+    public native void setCancelHandler(@Block Runnable cancel_handler);
     @Bridge(symbol="dispatch_source_set_cancel_handler_f")
     public native void setCancelHandlerF(FunctionPtr cancel_handler);
     @Bridge(symbol="dispatch_source_cancel")
@@ -88,7 +88,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge(symbol="dispatch_source_set_timer")
     public native void setTimer(long start, long interval, long leeway);
     @Bridge(symbol="dispatch_source_set_registration_handler")
-    public native void setRegistrationHandler(ObjCBlock registration_handler);
+    public native void setRegistrationHandler(@Block Runnable registration_handler);
     @Bridge(symbol="dispatch_source_set_registration_handler_f")
     public native void setRegistrationHandlerF(FunctionPtr registration_handler);
     /*</methods>*/

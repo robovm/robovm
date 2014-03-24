@@ -77,7 +77,7 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFRunLoopStop")
     public native void stop();
     @Bridge(symbol="CFRunLoopPerformBlock")
-    public native void performBlock(CFType mode, ObjCBlock block);
+    public native void performBlock(CFType mode, @Block Runnable block);
     @Bridge(symbol="CFRunLoopContainsSource")
     public native boolean containsSource(CFRunLoopSource source, CFString mode);
     @Bridge(symbol="CFRunLoopAddSource")

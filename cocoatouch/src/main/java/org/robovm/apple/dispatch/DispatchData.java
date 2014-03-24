@@ -56,7 +56,7 @@ import org.robovm.rt.bro.ptr.*;
     public static native DispatchData DestructorMunmap();
     
     @Bridge(symbol="dispatch_data_create")
-    public static native DispatchData create(VoidPtr buffer, @MachineSizedUInt long size, DispatchQueue queue, ObjCBlock destructor);
+    public static native DispatchData create(VoidPtr buffer, @MachineSizedUInt long size, DispatchQueue queue, @Block Runnable destructor);
     @Bridge(symbol="dispatch_data_get_size")
     public native @MachineSizedUInt long getSize();
     @Bridge(symbol="dispatch_data_create_map")

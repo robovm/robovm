@@ -73,9 +73,9 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "initWithConcurrencyType:")
     protected native @Pointer long initWithConcurrencyType$(NSManagedObjectContextConcurrencyType ct);
     @Method(selector = "performBlock:")
-    public native void performBlock$(ObjCBlock block);
+    public native void performBlock$(@Block Runnable block);
     @Method(selector = "performBlockAndWait:")
-    public native void performBlockAndWait$(ObjCBlock block);
+    public native void performBlockAndWait$(@Block Runnable block);
     @Method(selector = "setPersistentStoreCoordinator:")
     public native void setPersistentStoreCoordinator$(NSPersistentStoreCoordinator coordinator);
     @Method(selector = "persistentStoreCoordinator")

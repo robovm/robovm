@@ -77,13 +77,13 @@ import org.robovm.apple.security.*;
     @Property(selector = "isPaused")
     public native boolean isPaused();
     @Property(selector = "cancellationHandler")
-    public native ObjCBlock getCancellationHandler();
+    public native @Block Runnable getCancellationHandler();
     @Property(selector = "setCancellationHandler:")
-    public native void setCancellationHandler(ObjCBlock v);
+    public native void setCancellationHandler(@Block Runnable v);
     @Property(selector = "pausingHandler")
-    public native ObjCBlock getPausingHandler();
+    public native @Block Runnable getPausingHandler();
     @Property(selector = "setPausingHandler:")
-    public native void setPausingHandler(ObjCBlock v);
+    public native void setPausingHandler(@Block Runnable v);
     @Property(selector = "isIndeterminate")
     public native boolean isIndeterminate();
     @Property(selector = "fractionCompleted")

@@ -64,7 +64,7 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge(symbol="dispatch_io_close")
     public native void close(@MachineSizedUInt long flags);
     @Bridge(symbol="dispatch_io_barrier")
-    public native void barrier(ObjCBlock barrier);
+    public native void barrier(@Block Runnable barrier);
     @Bridge(symbol="dispatch_io_get_descriptor")
     public native int getDescriptor();
     @Bridge(symbol="dispatch_io_set_high_water")

@@ -23,6 +23,7 @@ import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Linkage.*;
 import static org.robovm.compiler.llvm.ParameterAttribute.*;
 import static org.robovm.compiler.llvm.Type.*;
+import static org.robovm.compiler.Annotations.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +62,9 @@ import org.robovm.compiler.llvm.VariableRef;
 import org.robovm.compiler.trampoline.Invokestatic;
 import org.robovm.compiler.trampoline.LdcClass;
 
+import soot.LongType;
 import soot.SootMethod;
+import soot.tagkit.AnnotationTag;
 
 /**
  * @author niklas
@@ -77,6 +80,15 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         if (!method.isNative()) {
             throw new IllegalArgumentException("@Bridge annotated method " 
                     + method + " must be native");
+        }
+        AnnotationTag bridgeAnnotation = getAnnotation(method, BRIDGE);
+        if (readBooleanElem(bridgeAnnotation, "dynamic", false)) {
+            if (method.getParameterCount() == 0
+                    || method.getParameterType(0) != LongType.v()
+                    || !hasParameterAnnotation(method, 0, POINTER)) {
+                throw new IllegalArgumentException("Dynamic @Bridge annotated method " 
+                        + method + " must take a @Pointer long as first parameter");
+            }
         }
     }
 

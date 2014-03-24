@@ -28,4 +28,11 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface Bridge {
     public String symbol() default "";
+
+    /**
+     * Specifies that this {@link Bridge} method is bound dynamically for each
+     * invocation. The function pointer must be passed in as the first parameter
+     * to the {@link Bridge} annotated method as a {@link Pointer} {@code long}.
+     */
+    boolean dynamic() default false;
 }

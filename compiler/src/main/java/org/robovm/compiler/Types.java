@@ -259,13 +259,17 @@ public class Types {
     
     @SuppressWarnings("unchecked")
     public static String getDescriptor(SootMethodRef methodRef) {
+        return getDescriptor(methodRef.parameterTypes(), methodRef.returnType());
+    }
+    
+    public static String getDescriptor(List<soot.Type> paramTypes, soot.Type returnType) {
         StringBuilder sb = new StringBuilder();
         sb.append('(');
-        for (soot.Type t : (List<soot.Type>) methodRef.parameterTypes()) {
+        for (soot.Type t : paramTypes) {
             sb.append(getDescriptor(t));
         }
         sb.append(')');
-        sb.append(getDescriptor(methodRef.returnType()));
+        sb.append(getDescriptor(returnType));
         return sb.toString();
     }
     

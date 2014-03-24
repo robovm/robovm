@@ -16,7 +16,10 @@
  */
 package org.robovm.compiler;
 
+import static soot.tagkit.AnnotationConstants.*;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import soot.SootClass;
@@ -298,4 +301,97 @@ public class Annotations {
         AnnotationIntElem elem = (AnnotationIntElem) getElemByName(annotation, name);
         return elem != null ? elem.getValue() == 1 : def;
     }
+    
+    public static VisibilityAnnotationTag getOrCreateRuntimeVisibilityAnnotationTag(Host host) {
+        for (Tag tag : host.getTags()) {
+            if (tag instanceof VisibilityAnnotationTag) {
+                if (((VisibilityAnnotationTag) tag).getVisibility() == RUNTIME_VISIBLE) {
+                    return (VisibilityAnnotationTag) tag;
+                }
+            }
+        }
+        VisibilityAnnotationTag tag = new VisibilityAnnotationTag(RUNTIME_VISIBLE);
+        host.addTag(tag);
+        return tag;
+    }
+    
+    public static void addRuntimeVisibleAnnotation(Host host, String annotationType) {
+        if (!hasAnnotation(host, annotationType)) {
+            VisibilityAnnotationTag tag = getOrCreateRuntimeVisibilityAnnotationTag(host);
+            tag.addAnnotation(new AnnotationTag(annotationType, 0));
+        }
+    }
+
+    public static void addRuntimeVisibleAnnotation(Host host, AnnotationTag annoTag) {
+        removeAnnotation(host, annoTag.getType());
+        VisibilityAnnotationTag tag = getOrCreateRuntimeVisibilityAnnotationTag(host);
+        tag.addAnnotation(annoTag);
+    }
+
+    public static void removeAnnotation(Host host, String annotationType) {
+        for (Tag tag : host.getTags()) {
+            if (tag instanceof VisibilityAnnotationTag) {
+                ArrayList<AnnotationTag> l = ((VisibilityAnnotationTag) tag).getAnnotations();
+                for (Iterator<AnnotationTag> it = l.iterator(); it.hasNext();) {
+                    AnnotationTag annoTag = it.next();
+                    if (annoTag.getType().equals(annotationType)) {
+                        it.remove();
+                    }
+                }
+            }
+        }
+    }
+
+    public static void removeParameterAnnotation(SootMethod method, int paramIndex, String annotationType) {
+        for (Tag tag : method.getTags()) {
+            if (tag instanceof VisibilityParameterAnnotationTag) {
+                ArrayList<VisibilityAnnotationTag> l = 
+                        ((VisibilityParameterAnnotationTag) tag).getVisibilityAnnotations();
+                if (l != null && paramIndex < l.size()) {
+                    for (Iterator<AnnotationTag> it = l.get(paramIndex).getAnnotations().iterator(); it.hasNext();) {
+                        AnnotationTag annoTag = it.next();
+                        if (annoTag.getType().equals(annotationType)) {
+                            it.remove();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static VisibilityAnnotationTag getOrCreateRuntimeVisibilityAnnotationTag(SootMethod method, int paramIndex) {
+        for (Tag tag : method.getTags()) {
+            if (tag instanceof VisibilityParameterAnnotationTag) {
+                ArrayList<VisibilityAnnotationTag> l = 
+                        ((VisibilityParameterAnnotationTag) tag).getVisibilityAnnotations();
+                if (l != null && paramIndex < l.size()) {
+                    if ((l.get(paramIndex)).getVisibility() == RUNTIME_VISIBLE) {
+                        return l.get(paramIndex);
+                    }
+                }
+            }
+        }
+        VisibilityParameterAnnotationTag ptag = 
+                new VisibilityParameterAnnotationTag(method.getParameterCount(), RUNTIME_VISIBLE);
+        ArrayList<VisibilityAnnotationTag> l = new ArrayList<VisibilityAnnotationTag>();
+        for (int i = 0; i < method.getParameterCount(); i++) {
+            l.add(new VisibilityAnnotationTag(RUNTIME_VISIBLE));
+        }
+        method.addTag(ptag);
+        return l.get(paramIndex);
+    }
+    
+    public static void addRuntimeVisibleParameterAnnotation(SootMethod method, int paramIndex, String annotationType) {
+        if (!hasParameterAnnotation(method, paramIndex, annotationType)) {
+            VisibilityAnnotationTag tag = getOrCreateRuntimeVisibilityAnnotationTag(method, paramIndex);
+            tag.addAnnotation(new AnnotationTag(annotationType, 0));
+        }
+    }
+
+    public static void addRuntimeVisibleParameterAnnotation(SootMethod method, int paramIndex, AnnotationTag annoTag) {
+        removeParameterAnnotation(method, paramIndex, annoTag.getType());
+        VisibilityAnnotationTag tag = getOrCreateRuntimeVisibilityAnnotationTag(method, paramIndex);
+        tag.addAnnotation(annoTag);
+    }
+
 }

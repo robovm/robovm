@@ -16,6 +16,8 @@
  */
 package org.robovm.compiler.plugin;
 
+import java.io.IOException;
+
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.config.Config;
 
@@ -36,7 +38,7 @@ public interface CompilerPlugin {
      * @param config the current {@link Config}.
      * @param clazz the {@link Clazz} being compiled.
      */
-    void beforeClass(Config config, Clazz clazz);
+    void beforeClass(Config config, Clazz clazz) throws IOException;
     
     /**
      * Called just before a method is about to be compiled. Modifications to the 
@@ -46,6 +48,6 @@ public interface CompilerPlugin {
      * @param clazz the {@link Clazz} being compiled.
      * @param method the method being compiled.
      */
-    void beforeMethod(Config config, Clazz clazz, SootMethod method);
+    void beforeMethod(Config config, Clazz clazz, SootMethod method) throws IOException;
     
 }

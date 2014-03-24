@@ -101,7 +101,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     private SootMethodRef org_robovm_objc_ObjCObject_updateStrongRef = null;
     private SootMethodRef org_robovm_objc_ObjCExtensions_updateStrongRef = null;
     
-    private SootMethod getOrCreateStaticInitializer(SootClass sootClass) {
+    static SootMethod getOrCreateStaticInitializer(SootClass sootClass) {
         for (SootMethod m : sootClass.getMethods()) {
             if ("<clinit>".equals(m.getName())) {
                 return m;
@@ -164,7 +164,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         return m;
     }
 
-    private void copyAnnotations(SootMethod fromMethod, SootMethod toMethod, int shift) {
+    static void copyAnnotations(SootMethod fromMethod, SootMethod toMethod, int shift) {
         // Copy annotations
         for (Tag tag : fromMethod.getTags()) {
             if (tag instanceof VisibilityAnnotationTag 
@@ -307,15 +307,18 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
             return;
         }
         SootResolver r = SootResolver.v();
+        // These have to be resolved to HIERARCHY so that isPhantom() works properly
+        org_robovm_objc_ObjCObject = r.resolveClass(OBJC_OBJECT, SootClass.HIERARCHY);
+        org_robovm_objc_ObjCExtensions = r.resolveClass(OBJC_EXTENSIONS, SootClass.HIERARCHY);
+        // These only have to be DANGLING
         org_robovm_objc_ObjCClass = r.makeClassRef(OBJC_CLASS);
         org_robovm_objc_ObjCSuper = r.makeClassRef(OBJC_SUPER);
-        org_robovm_objc_ObjCObject = r.makeClassRef(OBJC_OBJECT);
         org_robovm_objc_ObjCRuntime = r.makeClassRef(OBJC_RUNTIME);
-        org_robovm_objc_ObjCExtensions = r.makeClassRef(OBJC_EXTENSIONS);
         org_robovm_objc_Selector = r.makeClassRef(SELECTOR);
         SootClass java_lang_Object = r.makeClassRef("java.lang.Object");
         java_lang_String = r.makeClassRef("java.lang.String");
         java_lang_Class = r.makeClassRef("java.lang.Class");
+        
         org_robovm_objc_Selector_register =
             Scene.v().makeMethodRef(
                 org_robovm_objc_Selector,
@@ -761,34 +764,18 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         }
     }
 
-    private VisibilityAnnotationTag getOrCreateRuntimeVisibilityAnnotationTag(SootMethod m) {
-        for (Tag tag : m.getTags()) {
-            if (tag instanceof VisibilityAnnotationTag) {
-                if (((VisibilityAnnotationTag) tag).getVisibility() == RUNTIME_VISIBLE) {
-                    return (VisibilityAnnotationTag) tag;
-                }
-            }
-        }
-        VisibilityAnnotationTag tag = new VisibilityAnnotationTag(RUNTIME_VISIBLE);
-        m.addTag(tag);
-        return tag;
-    }
-    
-    private void addBridgeAnnotation(SootMethod method) {
-        VisibilityAnnotationTag tag = getOrCreateRuntimeVisibilityAnnotationTag(method);
-        tag.addAnnotation(new AnnotationTag(BRIDGE, 0));
+    static void addBridgeAnnotation(SootMethod method) {
+        addRuntimeVisibleAnnotation(method, BRIDGE);
     }
 
-    private void addCallbackAnnotation(SootMethod method) {
-        VisibilityAnnotationTag tag = getOrCreateRuntimeVisibilityAnnotationTag(method);
-        tag.addAnnotation(new AnnotationTag(CALLBACK, 0));
+    static void addCallbackAnnotation(SootMethod method) {
+        addRuntimeVisibleAnnotation(method, CALLBACK);
     }
 
-    private void addBindSelectorAnnotation(SootMethod method, String selectorName) {
-        VisibilityAnnotationTag vaTag = getOrCreateRuntimeVisibilityAnnotationTag(method);
+    static void addBindSelectorAnnotation(SootMethod method, String selectorName) {
         AnnotationTag annotationTag = new AnnotationTag(BIND_SELECTOR, 1);
         annotationTag.addElem(new AnnotationStringElem(selectorName, 's', "value"));
-        vaTag.addAnnotation(annotationTag);
+        addRuntimeVisibleAnnotation(method, annotationTag);
     }
 
 }

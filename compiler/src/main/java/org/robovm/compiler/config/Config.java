@@ -45,6 +45,7 @@ import org.robovm.compiler.clazz.Path;
 import org.robovm.compiler.llvm.DataLayout;
 import org.robovm.compiler.log.Logger;
 import org.robovm.compiler.plugin.CompilerPlugin;
+import org.robovm.compiler.plugin.objc.ObjCBlockPlugin;
 import org.robovm.compiler.plugin.objc.ObjCMemberPlugin;
 import org.robovm.compiler.plugin.objc.ObjCProtocolProxyPlugin;
 import org.robovm.compiler.target.ConsoleTarget;
@@ -526,6 +527,7 @@ public class Config {
         // Add standard plugins
         compilerPlugins.addAll(0, Arrays.asList(
             new ObjCProtocolProxyPlugin(),
+            new ObjCBlockPlugin(),
             new ObjCMemberPlugin()
         ));
         

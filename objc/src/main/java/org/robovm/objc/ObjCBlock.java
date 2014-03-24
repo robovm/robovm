@@ -15,6 +15,7 @@
  */
 package org.robovm.objc;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.IdentityHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -97,6 +98,10 @@ public final class ObjCBlock extends Struct<ObjCBlock> {
         return this;
     }
     
+    public boolean hasObject() {
+        return descriptor().getHandle() == Wrapper.DESCRIPTOR.getHandle();
+    }
+    
     public static final class Descriptor extends Struct<Descriptor> {
         @StructMember(0)
         public native int reserved();
@@ -156,27 +161,72 @@ public final class ObjCBlock extends Struct<ObjCBlock> {
                 new IdentityHashMap<Object, AtomicInteger>();
         
         public Wrapper(Class<?> callbacks) {
+            this(findCallback(callbacks), false);
+        }
+
+        public Wrapper(Method method) {
+            this(method, true);
+        }
+
+        public Wrapper(Class<?> cls, String methodName) {
+            this(findCallback(cls, methodName), true);
+        }
+
+        private Wrapper(Method method, boolean validate) {
+            if (validate && method.getAnnotation(Callback.class) == null) {
+                throw new IllegalArgumentException("Method " + method 
+                        + " is not a @Callback method");
+            }
+            callbackImpl = VM.getCallbackMethodImpl(method);
+            int flags = BLOCK_HAS_COPY_DISPOSE | BLOCK_HAS_SIGNATURE;
+            if (ObjCRuntime.isStret(method)) {
+                flags |= BLOCK_HAS_STRET;
+            }
+            this.flags = flags;
+        }
+
+        private static Method findCallback(Class<?> cls, String methodName) {
+            for (Method m : cls.getDeclaredMethods()) {
+                if (m.getName().equals(methodName)) {
+                    return m;
+                }
+            }
+            throw new NoSuchMethodError(methodName);
+        }
+        
+        private static Method findCallback(Class<?> cls) {
             Method method = null;
-            for (Method m : callbacks.getDeclaredMethods()) {
+            for (Method m : cls.getDeclaredMethods()) {
                 if (m.getAnnotation(Callback.class) != null) {
                     if (method != null) {
                         throw new IllegalArgumentException("Several @Callback " 
-                                + "methods found in class " + callbacks.getName());
+                                + "methods found in class " + cls.getName());
                     }
                     method = m;
                 }
             }
             if (method == null) {
                 throw new IllegalArgumentException("No @Callback method found " 
-                            + "in class " + callbacks.getName());
+                            + "in class " + cls.getName());
             }
-            callbackImpl = VM.getCallbackMethodImpl(method);
-            
-            int flags = BLOCK_HAS_COPY_DISPOSE | BLOCK_HAS_SIGNATURE;
-            if (ObjCRuntime.isStret(method)) {
-                flags |= BLOCK_HAS_STRET;
+            return method;
+        }
+        
+        public static void initWrappers(Class<?> cls) {
+            // The ObjCBlockPlugin generates @Callback methods named $cb$block$<id>
+            // which each have a matching Wrapper static field named 
+            // $cb$block$<id>$wrapper.
+            try {
+                for (Method m : cls.getDeclaredMethods()) {
+                    if (m.getName().startsWith("$cb$block$")) {
+                        Field f = cls.getDeclaredField(m.getName() + "$wrapper");
+                        f.setAccessible(true);
+                        f.set(null, new Wrapper(m, true));
+                    }
+                }
+            } catch (Throwable t) {
+                throw new Error(t);
             }
-            this.flags = flags;
         }
         
         public Object toObject(long handle) {
@@ -209,7 +259,6 @@ public final class ObjCBlock extends Struct<ObjCBlock> {
             return block;
         }
         
-        @SuppressWarnings("unused")
         @Callback
         private static void copy(ObjCBlock dst, ObjCBlock src) {
             // Called from the Objective-C side every time the block is copied.
@@ -228,7 +277,6 @@ public final class ObjCBlock extends Struct<ObjCBlock> {
             }
         }
         
-        @SuppressWarnings("unused")
         @Callback
         private static void dispose(ObjCBlock block) {
             // Called from the Objective-C side when a previously copied block

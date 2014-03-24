@@ -14,27 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
  */
-package org.robovm.compiler.plugin;
-
-import java.io.IOException;
-
-import org.robovm.compiler.clazz.Clazz;
-import org.robovm.compiler.config.Config;
-
-import soot.SootMethod;
+package org.robovm.compiler.util.generic;
 
 /**
- * Abstract implementation for {@link CompilerPlugin} with empty 
- * implementations for all methods.
+ * Replaces {@link java.lang.reflect.Type}.
  */
-public abstract class AbstractCompilerPlugin implements CompilerPlugin {
+public interface Type {
 
-    @Override
-    public void beforeClass(Config config, Clazz clazz) throws IOException {
-    }
-    
-    @Override
-    public void beforeMethod(Config config, Clazz clazz, SootMethod method) throws IOException {
-    }
-    
 }

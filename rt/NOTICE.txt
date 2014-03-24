@@ -5,7 +5,7 @@
    =========================================================================
 
 RoboVM Runtime Library
-Copyright (C) 2012 Trillian AB
+Copyright (C) 2012 Trillian Mobile AB
 
 The RoboVM Runtime Library includes software developed as part of the dalvik
 module of The Android Open Source Project which is copyright 2005-2012, The

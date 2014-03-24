@@ -5,7 +5,7 @@
    =========================================================================
 
 RoboVM VM Library
-Copyright (C) 2012 Trillian AB
+Copyright (C) 2012 Trillian Mobile AB
 
 The RoboVM VM Library includes software developed as part of The Android Open
 Source Project which is copyright 2005-2012, The Android Open Source Project and

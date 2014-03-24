@@ -30,7 +30,7 @@
  * limitations under the License.
  */
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2012 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

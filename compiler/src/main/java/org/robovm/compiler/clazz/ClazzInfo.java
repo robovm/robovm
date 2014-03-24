@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 RoboVM
+ * Copyright (C) 2012 Trillian Mobile AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

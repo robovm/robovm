@@ -14,7 +14,7 @@
   <artifactId>robovm-parent</artifactId>
   <name>RoboVM</name>
   <packaging>pom</packaging>
-  <url>http://www.robovm.org</url>
+  <url>http://www.robovm.com</url>
   <description>
     The RoboVM compiler translates Java bytecode into native ARM or x86 code. Apps run directly on the CPU.
     No interpreter or virtual machine involved.
@@ -23,7 +23,7 @@
 
   <organization>
     <name>Trillian Mobile AB</name>
-    <url>http://www.robovm.org</url>
+    <url>http://www.robovm.com</url>
   </organization>
 
   <developers>

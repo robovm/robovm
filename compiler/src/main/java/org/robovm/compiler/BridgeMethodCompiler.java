@@ -47,6 +47,7 @@ import org.robovm.compiler.llvm.Global;
 import org.robovm.compiler.llvm.Icmp;
 import org.robovm.compiler.llvm.Icmp.Condition;
 import org.robovm.compiler.llvm.IntegerConstant;
+import org.robovm.compiler.llvm.Inttoptr;
 import org.robovm.compiler.llvm.Label;
 import org.robovm.compiler.llvm.Load;
 import org.robovm.compiler.llvm.NullConstant;
@@ -83,17 +84,20 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         }
         AnnotationTag bridgeAnnotation = getAnnotation(method, BRIDGE);
         if (readBooleanElem(bridgeAnnotation, "dynamic", false)) {
-            if (method.getParameterCount() == 0
+            if (!method.isStatic() || method.getParameterCount() == 0
                     || method.getParameterType(0) != LongType.v()
                     || !hasParameterAnnotation(method, 0, POINTER)) {
                 throw new IllegalArgumentException("Dynamic @Bridge annotated method " 
-                        + method + " must take a @Pointer long as first parameter");
+                        + method + " must be static and take a @Pointer long as first parameter");
             }
         }
     }
 
     protected void doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
         validateBridgeMethod(method);
+
+        AnnotationTag bridgeAnnotation = getAnnotation(method, BRIDGE);
+        boolean dynamic = readBooleanElem(bridgeAnnotation, "dynamic", false);
         
         Function fn = FunctionBuilder.method(method);
         moduleBuilder.addFunction(fn);
@@ -138,7 +142,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             }
         }
         
-        FunctionType targetFnType = getBridgeFunctionType(method);
+        FunctionType targetFnType = getBridgeFunctionType(method, dynamic);
         if (method == originalMethod && passByValue) {
             // Returns a small struct. We need to change the return type to
             // i8/i16/i32/i64.
@@ -147,25 +151,33 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             targetFnType = new FunctionType(t, targetFnType.isVarargs(), targetFnType.getParameterTypes());
         }
 
+        VariableRef env = fn.getParameterRef(0);
+        
         // Load the address of the resolved @Bridge method
         Variable targetFn = fn.newVariable(targetFnType);
-        Global targetFnPtr = new Global(getTargetFnPtrName(originalMethod), 
-                _private, new NullConstant(I8_PTR));
-        moduleBuilder.addGlobal(targetFnPtr);
-        fn.add(new Load(targetFn, new ConstantBitcast(targetFnPtr.ref(), new PointerType(targetFnType))));
-
-        Label nullLabel = new Label();
-        Label notNullLabel = new Label();
-        Variable nullCheck = fn.newVariable(I1);
-        fn.add(new Icmp(nullCheck, Condition.eq, targetFn.ref(), new NullConstant(targetFnType)));
-        fn.add(new Br(nullCheck.ref(), fn.newBasicBlockRef(nullLabel), fn.newBasicBlockRef(notNullLabel)));
-        fn.newBasicBlock(nullLabel);
-        VariableRef env = fn.getParameterRef(0);
-        call(fn, BC_THROW_UNSATISIFED_LINK_ERROR, env,
-                moduleBuilder.getString(String.format("@Bridge method %s.%s%s not bound", className,
-                        originalMethod.getName(), getDescriptor(originalMethod))));
-        fn.add(new Unreachable());
-        fn.newBasicBlock(notNullLabel);
+        if (!dynamic) {
+            Global targetFnPtr = new Global(getTargetFnPtrName(originalMethod), 
+                    _private, new NullConstant(I8_PTR));
+            moduleBuilder.addGlobal(targetFnPtr);
+            fn.add(new Load(targetFn, new ConstantBitcast(targetFnPtr.ref(), new PointerType(targetFnType))));
+    
+            Label nullLabel = new Label();
+            Label notNullLabel = new Label();
+            Variable nullCheck = fn.newVariable(I1);
+            fn.add(new Icmp(nullCheck, Condition.eq, targetFn.ref(), new NullConstant(targetFnType)));
+            fn.add(new Br(nullCheck.ref(), fn.newBasicBlockRef(nullLabel), fn.newBasicBlockRef(notNullLabel)));
+            fn.newBasicBlock(nullLabel);
+            call(fn, BC_THROW_UNSATISIFED_LINK_ERROR, env,
+                    moduleBuilder.getString(String.format("@Bridge method %s.%s%s not bound", className,
+                            originalMethod.getName(), getDescriptor(originalMethod))));
+            fn.add(new Unreachable());
+            fn.newBasicBlock(notNullLabel);
+        } else {
+            // Dynamic @Bridge methods pass the target function pointer as a
+            // long in the first parameter.
+            fn.add(new Inttoptr(targetFn, fn.getParameterRef(1), targetFn.getType()));
+            args.remove(1);
+        }
         
         // Marshal args
         
@@ -197,7 +209,11 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             args.set(receiverIdx, new Argument(nativeValue));
         }
         
-        for (int i = 0, argIdx = 0; i < method.getParameterCount(); i++, argIdx++) {
+        for (int i = 0, argIdx = 0; i < method.getParameterCount(); i++) {
+            if (dynamic && (method == originalMethod && i == 0 || method != originalMethod && i == 1)) {
+                // Skip the target function pointer for dynamic bridge methods.
+                continue;
+            }
             if (argIdx == receiverIdx) {
                 // Skip the receiver in args. It doesn't correspond to a parameter.
                 argIdx++;
@@ -240,6 +256,8 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             } else {
                 args.set(argIdx, new Argument(marshalPrimitiveToNative(fn, method, i, args.get(argIdx).getValue())));                    
             }
+            
+            argIdx++;
         }        
         
         // Execute the call to native code

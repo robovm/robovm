@@ -497,19 +497,19 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
         }
     }
 
-    public FunctionType getBridgeFunctionType(SootMethod method) {
-        return getBridgeOrCallbackFunctionType("@Bridge", method);
+    public FunctionType getBridgeFunctionType(SootMethod method, boolean dynamic) {
+        return getBridgeOrCallbackFunctionType("@Bridge", method, dynamic);
     }
     
     public FunctionType getCallbackFunctionType(SootMethod method) {
-        return getBridgeOrCallbackFunctionType("@Callback", method);
+        return getBridgeOrCallbackFunctionType("@Callback", method, false);
     }
     
-    private FunctionType getBridgeOrCallbackFunctionType(String anno, SootMethod method) {
+    private FunctionType getBridgeOrCallbackFunctionType(String anno, SootMethod method, boolean dynamic) {
         Type returnType = getReturnType(anno, method);
         
         List<Type> paramTypes = new ArrayList<>();
-        for (int i = 0; i < method.getParameterCount(); i++) {
+        for (int i = dynamic ? 1 : 0; i < method.getParameterCount(); i++) {
             paramTypes.add(getParameterType(anno, method, i));
         }
         if (!method.isStatic()) {

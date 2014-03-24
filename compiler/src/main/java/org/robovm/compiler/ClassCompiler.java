@@ -1050,7 +1050,11 @@ public class ClassCompiler {
                 }
             }
             if (hasBridgeAnnotation(m)) {
-                body.add(new GlobalRef(BridgeMethodCompiler.getTargetFnPtrName(m), I8_PTR));
+                if (!readBooleanElem(getAnnotation(m, BRIDGE), "dynamic", false)) {
+                    body.add(new GlobalRef(BridgeMethodCompiler.getTargetFnPtrName(m), I8_PTR));
+                } else {
+                    body.add(new NullConstant(I8_PTR));
+                }
             } else if (hasGlobalValueAnnotation(m)) {
                 body.add(new GlobalRef(GlobalValueMethodCompiler.getGlobalValuePtrName(m), I8_PTR));
             }

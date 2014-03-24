@@ -35,6 +35,7 @@ import org.robovm.rt.bro.annotation.MachineSizedUInt;
 import org.robovm.rt.bro.annotation.Marshaler;
 import org.robovm.rt.bro.annotation.Marshalers;
 import org.robovm.rt.bro.annotation.MarshalsPointer;
+import org.robovm.rt.bro.annotation.Pointer;
 import org.robovm.rt.bro.annotation.StructMember;
 import org.robovm.rt.bro.annotation.StructRet;
 import org.robovm.rt.bro.ptr.BytePtr;
@@ -527,6 +528,13 @@ public class BridgeCallbackTest {
     public static @MachineSizedUInt long marshalBitsAsMachineSizedInt2_cb(long v) {
         return v;
     }
+
+    @Bridge(dynamic = true)
+    public static native int dynamicBridge(@Pointer long targetFunction, int a, int b);
+    @Callback
+    public static int dynamicBridge_target(int a, int b) {
+        return a + b;
+    }
     
     private static Method find(Class<?> cls, String name) {
         for (Method m : cls.getDeclaredMethods()) {
@@ -911,5 +919,11 @@ public class BridgeCallbackTest {
         assertEquals(0x12345678, ls2.v3());
         assertEquals(0x123456789abcdef0L, ls2.v4());
         assertEquals(obj.getHandle(), l.get());
+    }
+    
+    @Test
+    public void testDynamicBridge() throws Exception {
+        long targetFnPtr = VM.getCallbackMethodImpl(this.getClass().getDeclaredMethod("dynamicBridge_target", int.class, int.class));
+        assertEquals(10, dynamicBridge(targetFnPtr, 2, 8));
     }
 }

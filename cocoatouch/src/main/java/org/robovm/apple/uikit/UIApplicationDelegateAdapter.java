@@ -93,9 +93,9 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("application:didReceiveLocalNotification:")
     public void didReceiveLocalNotification(UIApplication application, UILocalNotification notification) { throw new UnsupportedOperationException(); }
     @NotImplemented("application:didReceiveRemoteNotification:fetchCompletionHandler:")
-    public void application$didReceiveRemoteNotification$fetchCompletionHandler$(UIApplication application, NSDictionary<?, ?> userInfo, ObjCBlock completionHandler) { throw new UnsupportedOperationException(); }
+    public void application$didReceiveRemoteNotification$fetchCompletionHandler$(UIApplication application, NSDictionary<?, ?> userInfo, @Block VoidBlock1<UIBackgroundFetchResult> completionHandler) { throw new UnsupportedOperationException(); }
     @NotImplemented("application:performFetchWithCompletionHandler:")
-    public void application$performFetchWithCompletionHandler$(UIApplication application, ObjCBlock completionHandler) { throw new UnsupportedOperationException(); }
+    public void application$performFetchWithCompletionHandler$(UIApplication application, @Block VoidBlock1<UIBackgroundFetchResult> completionHandler) { throw new UnsupportedOperationException(); }
     @NotImplemented("application:handleEventsForBackgroundURLSession:completionHandler:")
     public void application$handleEventsForBackgroundURLSession$completionHandler$(UIApplication application, String identifier, @Block Runnable completionHandler) { throw new UnsupportedOperationException(); }
     @NotImplemented("applicationDidEnterBackground:")

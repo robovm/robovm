@@ -56,13 +56,13 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("relinquishPresentedItemToReader:")
-    public void relinquishPresentedItemToReader$(ObjCBlock reader) { throw new UnsupportedOperationException(); }
+    public void relinquishPresentedItemToReader$(@Block("(@Block)") VoidBlock1<Runnable> reader) { throw new UnsupportedOperationException(); }
     @NotImplemented("relinquishPresentedItemToWriter:")
-    public void relinquishPresentedItemToWriter$(ObjCBlock writer) { throw new UnsupportedOperationException(); }
+    public void relinquishPresentedItemToWriter$(@Block("(@Block)") VoidBlock1<Runnable> writer) { throw new UnsupportedOperationException(); }
     @NotImplemented("savePresentedItemChangesWithCompletionHandler:")
-    public void savePresentedItemChangesWithCompletionHandler$(ObjCBlock completionHandler) { throw new UnsupportedOperationException(); }
+    public void savePresentedItemChangesWithCompletionHandler$(@Block VoidBlock1<NSError> completionHandler) { throw new UnsupportedOperationException(); }
     @NotImplemented("accommodatePresentedItemDeletionWithCompletionHandler:")
-    public void accommodatePresentedItemDeletionWithCompletionHandler$(ObjCBlock completionHandler) { throw new UnsupportedOperationException(); }
+    public void accommodatePresentedItemDeletionWithCompletionHandler$(@Block VoidBlock1<NSError> completionHandler) { throw new UnsupportedOperationException(); }
     @NotImplemented("presentedItemDidMoveToURL:")
     public void presentedItemDidMoveToURL$(NSURL newURL) { throw new UnsupportedOperationException(); }
     @NotImplemented("presentedItemDidChange")
@@ -74,7 +74,7 @@ import org.robovm.apple.security.*;
     @NotImplemented("presentedItemDidResolveConflictVersion:")
     public void presentedItemDidResolveConflictVersion$(NSFileVersion version) { throw new UnsupportedOperationException(); }
     @NotImplemented("accommodatePresentedSubitemDeletionAtURL:completionHandler:")
-    public void accommodatePresentedSubitemDeletionAtURL$completionHandler$(NSURL url, ObjCBlock completionHandler) { throw new UnsupportedOperationException(); }
+    public void accommodatePresentedSubitemDeletionAtURL$completionHandler$(NSURL url, @Block VoidBlock1<NSError> completionHandler) { throw new UnsupportedOperationException(); }
     @NotImplemented("presentedSubitemDidAppearAtURL:")
     public void presentedSubitemDidAppearAtURL$(NSURL url) { throw new UnsupportedOperationException(); }
     @NotImplemented("presentedSubitemAtURL:didMoveToURL:")

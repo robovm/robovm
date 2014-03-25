@@ -53,13 +53,13 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "relinquishPresentedItemToReader:")
-    void relinquishPresentedItemToReader$(ObjCBlock reader);
+    void relinquishPresentedItemToReader$(@Block("(@Block)") VoidBlock1<Runnable> reader);
     @Method(selector = "relinquishPresentedItemToWriter:")
-    void relinquishPresentedItemToWriter$(ObjCBlock writer);
+    void relinquishPresentedItemToWriter$(@Block("(@Block)") VoidBlock1<Runnable> writer);
     @Method(selector = "savePresentedItemChangesWithCompletionHandler:")
-    void savePresentedItemChangesWithCompletionHandler$(ObjCBlock completionHandler);
+    void savePresentedItemChangesWithCompletionHandler$(@Block VoidBlock1<NSError> completionHandler);
     @Method(selector = "accommodatePresentedItemDeletionWithCompletionHandler:")
-    void accommodatePresentedItemDeletionWithCompletionHandler$(ObjCBlock completionHandler);
+    void accommodatePresentedItemDeletionWithCompletionHandler$(@Block VoidBlock1<NSError> completionHandler);
     @Method(selector = "presentedItemDidMoveToURL:")
     void presentedItemDidMoveToURL$(NSURL newURL);
     @Method(selector = "presentedItemDidChange")
@@ -71,7 +71,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "presentedItemDidResolveConflictVersion:")
     void presentedItemDidResolveConflictVersion$(NSFileVersion version);
     @Method(selector = "accommodatePresentedSubitemDeletionAtURL:completionHandler:")
-    void accommodatePresentedSubitemDeletionAtURL$completionHandler$(NSURL url, ObjCBlock completionHandler);
+    void accommodatePresentedSubitemDeletionAtURL$completionHandler$(NSURL url, @Block VoidBlock1<NSError> completionHandler);
     @Method(selector = "presentedSubitemDidAppearAtURL:")
     void presentedSubitemDidAppearAtURL$(NSURL url);
     @Method(selector = "presentedSubitemAtURL:didMoveToURL:")

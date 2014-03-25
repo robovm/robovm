@@ -202,9 +202,9 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "getLineFragmentInsertionPointsForCharacterAtIndex:alternatePositions:inDisplayOrder:positions:characterIndexes:")
     public native @MachineSizedUInt long getLineFragmentInsertionPointsForCharacterAtIndex$alternatePositions$inDisplayOrder$positions$characterIndexes$(@MachineSizedUInt long charIndex, boolean aFlag, boolean dFlag, MachineSizedFloatPtr positions, MachineSizedUIntPtr charIndexes);
     @Method(selector = "enumerateLineFragmentsForGlyphRange:usingBlock:")
-    public native void enumerateLineFragmentsForGlyphRange$usingBlock$(@ByVal NSRange glyphRange, ObjCBlock block);
+    public native void enumerateLineFragmentsForGlyphRange$usingBlock$(@ByVal NSRange glyphRange, @Block("(@ByVal, @ByVal, , @ByVal, )") VoidBlock5<CGRect, CGRect, NSTextContainer, NSRange, BytePtr> block);
     @Method(selector = "enumerateEnclosingRectsForGlyphRange:withinSelectedGlyphRange:inTextContainer:usingBlock:")
-    public native void enumerateEnclosingRectsForGlyphRange$withinSelectedGlyphRange$inTextContainer$usingBlock$(@ByVal NSRange glyphRange, @ByVal NSRange selectedRange, NSTextContainer textContainer, ObjCBlock block);
+    public native void enumerateEnclosingRectsForGlyphRange$withinSelectedGlyphRange$inTextContainer$usingBlock$(@ByVal NSRange glyphRange, @ByVal NSRange selectedRange, NSTextContainer textContainer, @Block("(@ByVal, )") VoidBlock2<CGRect, BytePtr> block);
     @Method(selector = "drawBackgroundForGlyphRange:atPoint:")
     public native void drawBackgroundForGlyphRange$atPoint$(@ByVal NSRange glyphsToShow, @ByVal CGPoint origin);
     @Method(selector = "drawGlyphsForGlyphRange:atPoint:")

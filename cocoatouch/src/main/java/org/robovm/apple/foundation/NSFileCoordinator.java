@@ -63,7 +63,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "coordinateWritingItemAtURL:options:writingItemAtURL:options:error:byAccessor:")
     public native void coordinateWritingItemAtURL$options$writingItemAtURL$options$error$byAccessor$(NSURL url1, NSFileCoordinatorWritingOptions options1, NSURL url2, NSFileCoordinatorWritingOptions options2, NSError.NSErrorPtr outError, ObjCBlock writer);
     @Method(selector = "prepareForReadingItemsAtURLs:options:writingItemsAtURLs:options:error:byAccessor:")
-    public native void prepareForReadingItemsAtURLs$options$writingItemsAtURLs$options$error$byAccessor$(NSArray<?> readingURLs, NSFileCoordinatorReadingOptions readingOptions, NSArray<?> writingURLs, NSFileCoordinatorWritingOptions writingOptions, NSError.NSErrorPtr outError, ObjCBlock batchAccessor);
+    public native void prepareForReadingItemsAtURLs$options$writingItemsAtURLs$options$error$byAccessor$(NSArray<?> readingURLs, NSFileCoordinatorReadingOptions readingOptions, NSArray<?> writingURLs, NSFileCoordinatorWritingOptions writingOptions, NSError.NSErrorPtr outError, @Block("(@Block)") VoidBlock1<Runnable> batchAccessor);
     @Method(selector = "itemAtURL:willMoveToURL:")
     public native void itemAtURL$willMoveToURL$(NSURL oldURL, NSURL newURL);
     @Method(selector = "itemAtURL:didMoveToURL:")

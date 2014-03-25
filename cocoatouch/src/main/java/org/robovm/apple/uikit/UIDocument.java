@@ -125,13 +125,13 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "revertToContentsOfURL:completionHandler:")
     public native void revert(NSURL url, @Block VoidBooleanBlock completionHandler);
     @Method(selector = "relinquishPresentedItemToReader:")
-    public native void relinquishPresentedItemToReader$(ObjCBlock reader);
+    public native void relinquishPresentedItemToReader$(@Block("(@Block)") VoidBlock1<Runnable> reader);
     @Method(selector = "relinquishPresentedItemToWriter:")
-    public native void relinquishPresentedItemToWriter$(ObjCBlock writer);
+    public native void relinquishPresentedItemToWriter$(@Block("(@Block)") VoidBlock1<Runnable> writer);
     @Method(selector = "savePresentedItemChangesWithCompletionHandler:")
-    public native void savePresentedItemChangesWithCompletionHandler$(ObjCBlock completionHandler);
+    public native void savePresentedItemChangesWithCompletionHandler$(@Block VoidBlock1<NSError> completionHandler);
     @Method(selector = "accommodatePresentedItemDeletionWithCompletionHandler:")
-    public native void accommodatePresentedItemDeletionWithCompletionHandler$(ObjCBlock completionHandler);
+    public native void accommodatePresentedItemDeletionWithCompletionHandler$(@Block VoidBlock1<NSError> completionHandler);
     @Method(selector = "presentedItemDidMoveToURL:")
     public native void presentedItemDidMoveToURL$(NSURL newURL);
     @Method(selector = "presentedItemDidChange")
@@ -143,7 +143,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "presentedItemDidResolveConflictVersion:")
     public native void presentedItemDidResolveConflictVersion$(NSFileVersion version);
     @Method(selector = "accommodatePresentedSubitemDeletionAtURL:completionHandler:")
-    public native void accommodatePresentedSubitemDeletionAtURL$completionHandler$(NSURL url, ObjCBlock completionHandler);
+    public native void accommodatePresentedSubitemDeletionAtURL$completionHandler$(NSURL url, @Block VoidBlock1<NSError> completionHandler);
     @Method(selector = "presentedSubitemDidAppearAtURL:")
     public native void presentedSubitemDidAppearAtURL$(NSURL url);
     @Method(selector = "presentedSubitemAtURL:didMoveToURL:")

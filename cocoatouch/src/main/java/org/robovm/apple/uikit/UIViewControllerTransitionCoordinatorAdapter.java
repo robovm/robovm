@@ -54,10 +54,10 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("animateAlongsideTransition:completion:")
-    public boolean animateAlongsideTransition$completion$(ObjCBlock animation, ObjCBlock completion) { throw new UnsupportedOperationException(); }
+    public boolean animateAlongsideTransition$completion$(@Block VoidBlock1<UIViewControllerTransitionCoordinatorContext> animation, @Block VoidBlock1<UIViewControllerTransitionCoordinatorContext> completion) { throw new UnsupportedOperationException(); }
     @NotImplemented("animateAlongsideTransitionInView:animation:completion:")
-    public boolean animateAlongsideTransitionInView$animation$completion$(UIView view, ObjCBlock animation, ObjCBlock completion) { throw new UnsupportedOperationException(); }
+    public boolean animateAlongsideTransitionInView$animation$completion$(UIView view, @Block VoidBlock1<UIViewControllerTransitionCoordinatorContext> animation, @Block VoidBlock1<UIViewControllerTransitionCoordinatorContext> completion) { throw new UnsupportedOperationException(); }
     @NotImplemented("notifyWhenInteractionEndsUsingBlock:")
-    public void notifyWhenInteractionEndsUsingBlock$(ObjCBlock handler) { throw new UnsupportedOperationException(); }
+    public void notifyWhenInteractionEndsUsingBlock$(@Block VoidBlock1<UIViewControllerTransitionCoordinatorContext> handler) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

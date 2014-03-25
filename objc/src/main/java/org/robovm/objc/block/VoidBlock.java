@@ -22,7 +22,10 @@ import org.robovm.rt.bro.annotation.Callback;
 /**
  * Block which takes no arguments and returns no value. This is used to map the
  * Objective-C {@code void (^)(void)} block type.
+ * 
+ * @deprecated Use {@link Runnable} instead.
  */
+@Deprecated
 public interface VoidBlock {
 
     /**

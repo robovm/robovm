@@ -17,6 +17,8 @@
 package org.robovm.compiler.plugin.objc;
 
 import static org.junit.Assert.*;
+import static org.robovm.compiler.Annotations.*;
+import static org.robovm.compiler.plugin.objc.ObjCBlockPlugin.*;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -207,5 +209,59 @@ public class ObjCBlockPluginTest {
         testResolveTargetMethodSignature("runner10", toSootType("java.lang.Object"), 
                 toSootType("java.lang.Number"), toSootType("java.lang.Number"),
                 BooleanType.v());
+    }
+    
+    @Test
+    public void testParseTargetMethodAnnotations() throws Exception {
+        SootMethod m = toSootClass(Runners.class).getMethodByName("runner1");
+        
+        assertArrayEquals(new String[][] {{}}, ObjCBlockPlugin.parseTargetMethodAnnotations(m, 0, ""));
+        assertArrayEquals(new String[][] {{}}, ObjCBlockPlugin.parseTargetMethodAnnotations(m, 0, "  "));
+        assertArrayEquals(new String[][] {{}}, ObjCBlockPlugin.parseTargetMethodAnnotations(m, 0, "()"));
+        assertArrayEquals(new String[][] {{BY_VAL, POINTER}}, 
+                ObjCBlockPlugin.parseTargetMethodAnnotations(m, 0, "@Pointer@ByVal"));
+        assertArrayEquals(new String[][] {{BY_VAL, POINTER}}, 
+                ObjCBlockPlugin.parseTargetMethodAnnotations(m, 0, "@Pointer  @ByVal ()"));
+
+        assertArrayEquals(new String[][] {{BY_VAL, POINTER}, {BY_REF}}, 
+                ObjCBlockPlugin.parseTargetMethodAnnotations(m, 1, "@Pointer  @ByVal (@ByRef)"));
+        assertArrayEquals(new String[][] {{BY_VAL, POINTER}, {BY_REF, POINTER}}, 
+                ObjCBlockPlugin.parseTargetMethodAnnotations(m, 1, "@Pointer  @ByVal (  @ByRef  @Pointer  )"));
+        assertArrayEquals(new String[][] {{BY_VAL, POINTER}, {BY_REF, POINTER}, {MACHINE_SIZED_S_INT}, {}}, 
+                ObjCBlockPlugin.parseTargetMethodAnnotations(m, 3, "@Pointer  @ByVal (  @ByRef  @Pointer , @MachineSizedSInt , )"));
+        assertArrayEquals(new String[][] {{BY_VAL, POINTER}, {}, {BY_REF, POINTER}}, 
+                ObjCBlockPlugin.parseTargetMethodAnnotations(m, 2, "@Pointer @ByVal(,@ByRef @Pointer)"));
+        assertArrayEquals(new String[][] {{}, {BY_REF, POINTER}}, 
+                ObjCBlockPlugin.parseTargetMethodAnnotations(m, 1, "(@ByRef @Pointer)  "));
+
+        assertArrayEquals(new String[][] {{}, {BLOCK, BY_REF, BY_VAL, MACHINE_SIZED_FLOAT, 
+                MACHINE_SIZED_S_INT, MACHINE_SIZED_U_INT, POINTER}}, 
+                ObjCBlockPlugin.parseTargetMethodAnnotations(m, 1, 
+                        "(@ByRef @ByVal @Pointer @MachineSizedFloat @MachineSizedSInt " 
+                                + "@MachineSizedUInt @Block)  "));
+    }
+    
+    @Test(expected = CompilerException.class)
+    public void testParseTargetMethodAnnotationsInvalid1() throws Exception {
+        SootMethod m = toSootClass(Runners.class).getMethodByName("runner1");
+        ObjCBlockPlugin.parseTargetMethodAnnotations(m, 0, "(");
+    }
+
+    @Test(expected = CompilerException.class)
+    public void testParseTargetMethodAnnotationsInvalid2() throws Exception {
+        SootMethod m = toSootClass(Runners.class).getMethodByName("runner1");
+        ObjCBlockPlugin.parseTargetMethodAnnotations(m, 0, "@Yada");
+    }
+
+    @Test(expected = CompilerException.class)
+    public void testParseTargetMethodAnnotationsInvalid3() throws Exception {
+        SootMethod m = toSootClass(Runners.class).getMethodByName("runner1");
+        ObjCBlockPlugin.parseTargetMethodAnnotations(m, 0, "garbage");
+    }
+
+    @Test(expected = CompilerException.class)
+    public void testParseTargetMethodAnnotationsInvalid4() throws Exception {
+        SootMethod m = toSootClass(Runners.class).getMethodByName("runner1");
+        ObjCBlockPlugin.parseTargetMethodAnnotations(m, 0, "@ByVal(");
     }
 }

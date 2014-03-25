@@ -31,6 +31,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.objectweb.asm.AnnotationVisitor;
@@ -83,6 +86,19 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
     public static final String RUNNABLE_AS_OBJC_BLOCK_MARSHALER = 
             OBJC_PACKAGE + "/RunnableAsObjCBlockMarshaler";
 
+    static Pattern BLOCK_ANNOTATION_PATTERN = Pattern.compile("@[\\w\\d_]+\\s*");
+    static Map<String, String> BLOCK_ANNOTATIONS = new HashMap<>();
+
+    static {
+        BLOCK_ANNOTATIONS.put("@ByVal", BY_VAL);
+        BLOCK_ANNOTATIONS.put("@ByRef", BY_REF);
+        BLOCK_ANNOTATIONS.put("@Pointer", POINTER);
+        BLOCK_ANNOTATIONS.put("@MachineSizedFloat", MACHINE_SIZED_FLOAT);
+        BLOCK_ANNOTATIONS.put("@MachineSizedSInt", MACHINE_SIZED_S_INT);
+        BLOCK_ANNOTATIONS.put("@MachineSizedUInt", MACHINE_SIZED_U_INT);
+        BLOCK_ANNOTATIONS.put("@Block", BLOCK);
+    }
+    
     private SootClass org_robovm_objc_ObjCBlock = null;
     private SootClass java_lang_Boolean = null;
     private SootClass java_lang_Byte = null;
@@ -165,10 +181,15 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
                 soot.Type[] actualTypes = resolveTargetMethodSignature(
                         blockMethod, targetMethod, genericParameterTypes[idx]);
                 soot.Type[] unboxedTypes = unboxTypes(actualTypes);
+                String[][] targetMethodAnnotations = 
+                    parseTargetMethodAnnotations(targetMethod, 
+                        readStringElem(
+                            getParameterAnnotation(blockMethod, idx, BLOCK), "value", ""));
                 
                 // Create the marshaler class associated with this block type
                 String marshaler = createBlockMarshaler(config, clazz, 
-                        targetMethod, actualTypes, unboxedTypes, blockTypeIds);
+                        targetMethod, actualTypes, unboxedTypes, blockTypeIds, 
+                        targetMethodAnnotations);
                 addMarshalerAnnotation(blockMethod, idx, marshaler);
             }
         }
@@ -177,12 +198,99 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
             soot.Type[] actualTypes = resolveTargetMethodSignature(
                     blockMethod, targetMethod, blockMethodType.getGenericReturnType());
             soot.Type[] unboxedTypes = unboxTypes(actualTypes);
+            String[][] targetMethodAnnotations = 
+                    parseTargetMethodAnnotations(targetMethod, 
+                        readStringElem(
+                            getAnnotation(blockMethod, BLOCK), "value", ""));
             String marshaler = createBlockMarshaler(config, clazz, targetMethod, 
-                    actualTypes, unboxedTypes, blockTypeIds);
+                    actualTypes, unboxedTypes, blockTypeIds, targetMethodAnnotations);
             addMarshalerAnnotation(blockMethod, marshaler);
         }
     }
+
+    private static int parseAnnotations(SootMethod m, String originalValue, String value, TreeSet<String> values) {
+        Matcher matcher = BLOCK_ANNOTATION_PATTERN.matcher(value);
+        int pos = 0;
+        while (matcher.find()) {
+            if (matcher.start() != pos) {
+                break;
+            }
+            String anno = BLOCK_ANNOTATIONS.get(matcher.group().trim());
+            if (anno == null) {
+                throw new CompilerException("Unsupported annotation \"" 
+                        + matcher.group().trim() + "\" in @Block annotation value \"" 
+                        + originalValue + "\" on method " + m);
+            }
+            values.add(anno);
+            pos = matcher.end();
+        }
+        return pos;
+    }
     
+    protected static String[][] parseTargetMethodAnnotations(SootMethod m, String value) {
+        return parseTargetMethodAnnotations(m, m.getParameterCount(), value);
+    }
+    
+    protected static String[][] parseTargetMethodAnnotations(SootMethod m, int paramCount, String value) {
+        String originalValue = value;
+        value = value.trim();
+        String[][] result = new String[paramCount + 1][];
+        if (value.length() == 0) {
+            Arrays.fill(result, new String[0]);
+        } else {
+            TreeSet<String> values = new TreeSet<>();
+            int pos = parseAnnotations(m, originalValue, value, values);
+            result[0] = new String[values.size()];
+            values.toArray(result[0]);
+            
+            if (pos < value.length()) {
+                if (value.charAt(pos) != '(') {
+                    throw new CompilerException("Error in @Block annotation value \"" 
+                            + originalValue + "\" on method " + m 
+                            + ". Expected '(' but got '" 
+                            + value.charAt(pos) + "'.");
+                }
+                if (pos + 1 == value.length()) {
+                    throw new CompilerException("Error in @Block annotation value \"" 
+                            + originalValue + "\" on method " + m 
+                            + ". Expected a ')' at end of value but "
+                            + "got end of string.");
+                }
+                value = value.substring(pos + 1).trim();
+                if (value.charAt(value.length() - 1) != ')') {
+                    throw new CompilerException("Error in @Block annotation value \"" 
+                            + originalValue + "\" on method " + m 
+                            + ". Expected a ')' at end of value but got '" 
+                            + value.charAt(value.length() - 1) + "'.");
+                }
+                value = value.substring(0, value.length() - 1).trim();
+                
+                if (value.length() > 0 || paramCount > 0) {
+                    String[] parts = value.split(",", paramCount + 1);
+                    if (parts.length != paramCount) {
+                        throw new CompilerException("Error in @Block annotation value \"" 
+                                + originalValue + "\" on method " + m 
+                                + ". Expected " + paramCount + " parameters");                    
+                    }
+                    for (int i = 0; i < parts.length; i++) {
+                        String p = parts[i].trim();
+                        values = new TreeSet<>();
+                        pos = parseAnnotations(m, originalValue, p, values);
+                        if (pos != p.length()) {
+                            throw new CompilerException("Error in @Block annotation value \"" 
+                                    + originalValue + "\" on method " + m 
+                                    + ". Expected a ',' after parameter " 
+                                    + (i + 1) + " but got '" + p.charAt(pos) + "'.");
+                        }
+                        result[i + 1] = new String[values.size()];
+                        values.toArray(result[i + 1]);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
     static void addMarshalerAnnotation(SootMethod method, String marshalerName) {
         AnnotationTag annotationTag = new AnnotationTag(MARSHALER, 1);
         annotationTag.addElem(new AnnotationClassElem("L" + marshalerName + ";", 'c', "value"));
@@ -201,14 +309,15 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
 
     private String createBlockMarshaler(Config config, Clazz clazz,
             final SootMethod targetMethod, soot.Type[] actualTypes, soot.Type[] unboxedTypes,
-            Map<String, Integer> blockTypeIds) throws IOException {
+            Map<String, Integer> blockTypeIds, String[][] targetMethodAnnotations) throws IOException {
         
         if (targetMethod.getDeclaringClass().getName().equals("java.lang.Runnable") 
                 && targetMethod.getName().equals("run")) {
             return RUNNABLE_AS_OBJC_BLOCK_MARSHALER;
         }
         
-        String targetMethodKey = getTargetMethodKey(targetMethod, actualTypes);
+        String targetMethodKey = getTargetMethodKey(targetMethod, actualTypes, 
+                targetMethodAnnotations);
         Integer id = blockTypeIds.get(targetMethodKey);
         if (id != null) {
             // Already generated
@@ -230,9 +339,9 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
         ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
         generateTargetMethod(blockMarshalerName, targetMethod, actualTypes, 
                 unboxedTypes, usedBoxMethods, usedUnboxMethods, cw);
-        generateBridgeMethod(unboxedTypes, cw);
+        generateBridgeMethod(unboxedTypes, targetMethodAnnotations, cw);
         generateCallbackMethod(blockMarshalerName, targetMethod, actualTypes, 
-                unboxedTypes, usedBoxMethods, usedUnboxMethods, cw);
+                unboxedTypes, usedBoxMethods, usedUnboxMethods, targetMethodAnnotations, cw);
         ClassReader classReader = new ClassReader(templateMarshaler.getBytes());
         classReader.accept(new ClassVisitor(ASM4, cw) {
             @Override
@@ -348,7 +457,8 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
         return blockMarshalerName;
     }
 
-    private void generateBridgeMethod(soot.Type[] unboxedTypes, ClassWriter cw) {
+    private void generateBridgeMethod(soot.Type[] unboxedTypes, 
+            String[][] targetMethodAnnotations, ClassWriter cw) {
         
         List<soot.Type> paramTypes = new ArrayList<>();
         paramTypes.add(LongType.v());
@@ -362,6 +472,16 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
         AnnotationVisitor av = mv.visitAnnotation(BRIDGE, true);
         av.visit("dynamic", true);
         av.visitEnd();
+        for (String s : targetMethodAnnotations[0]) {
+            mv.visitAnnotation(s, true).visitEnd();
+        }
+        for (int i = 1; i < targetMethodAnnotations.length; i++) {
+            for (String s : targetMethodAnnotations[i]) {
+                // We add 2 parameters first so annotations for the first 
+                // parameter must be added at index 2.
+                mv.visitParameterAnnotation(i + 1, s, true);
+            }
+        }
 
         mv.visitParameterAnnotation(0, POINTER, true).visitEnd();
         mv.visitEnd();
@@ -369,7 +489,8 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
     
     private void generateCallbackMethod(String owner, SootMethod targetMethod, 
             soot.Type[] actualTypes, soot.Type[] unboxedTypes, 
-            Set<String> usedBoxMethods, Set<String> usedUnboxMethods, ClassWriter cw) {
+            Set<String> usedBoxMethods, Set<String> usedUnboxMethods,
+            String[][] targetMethodAnnotations, ClassWriter cw) {
         
         String targetInterfaceName = Types.getInternalName(targetMethod.getDeclaringClass());
 
@@ -382,6 +503,18 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
         
         MethodVisitor mv = cw.visitMethod(ACC_PRIVATE | ACC_STATIC, name, desc, null, null);
         mv.visitAnnotation(CALLBACK, true).visitEnd();
+
+        for (String s : targetMethodAnnotations[0]) {
+            mv.visitAnnotation(s, true).visitEnd();
+        }
+        for (int i = 1; i < targetMethodAnnotations.length; i++) {
+            for (String s : targetMethodAnnotations[i]) {
+                // We add 1 parameter first so annotations for the first 
+                // parameter should be added at index 1.
+                mv.visitParameterAnnotation(i, s, true);
+            }
+        }
+
         mv.visitCode();
         
         mv.visitVarInsn(ALOAD, 0);
@@ -527,10 +660,22 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
         mv.visitEnd();
     }
     
-    protected String getTargetMethodKey(SootMethod targetMethod, soot.Type[] actualTypes) {
-        return Mangler.mangleMethod(Types.getInternalName(targetMethod.getDeclaringClass()), 
+    protected String getTargetMethodKey(SootMethod targetMethod, soot.Type[] actualTypes, 
+            String[][] targetMethodAnnotations) {
+        
+        StringBuilder key = new StringBuilder(
+            Mangler.mangleMethod(Types.getInternalName(targetMethod.getDeclaringClass()), 
                 targetMethod.getName(), 
-                Arrays.asList(actualTypes).subList(1, actualTypes.length), actualTypes[0]);
+                Arrays.asList(actualTypes).subList(1, actualTypes.length), actualTypes[0]));
+        
+        for (String[] a : targetMethodAnnotations) {
+            key.append(',');
+            for (String s : a) {
+                key.append(s);
+            }
+        }
+        
+        return key.toString();
     }
     
     private soot.Type unboxType(soot.Type t) {

@@ -176,7 +176,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             // Dynamic @Bridge methods pass the target function pointer as a
             // long in the first parameter.
             fn.add(new Inttoptr(targetFn, fn.getParameterRef(1), targetFn.getType()));
-            args.remove(1);
+            args.remove(originalMethod == method ? 1 : 2);
         }
         
         // Marshal args

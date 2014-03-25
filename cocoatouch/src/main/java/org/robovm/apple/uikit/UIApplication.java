@@ -112,7 +112,35 @@ import org.robovm.apple.coreimage.*;
     public native void setProximitySensingEnabled(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    public static <P extends UIApplication, D extends NSObject & UIApplicationDelegate> 
+        void main(String[] args, Class<P> principalClass, Class<D> delegateClass) {
+        
+        int argc = args.length;
+        BytePtr.BytePtrPtr argv = null;
+        if (argc > 0) {
+            argv = Struct.allocate(BytePtr.BytePtrPtr.class, argc);
+            for (int i = 0; i < argc; i++) {
+                // TODO: Encoding?
+                BytePtr arg = BytePtr.toBytePtrAsciiZ(args[i]);
+                argv.next(i).set(arg);
+            }
+        }
+        String principalClassName = null;
+        if (principalClass != null) {
+            principalClassName = ObjCClass.getByType(principalClass).getName();
+        }
+        String delegateClassName = null;
+        if (delegateClass != null) {
+            delegateClassName = ObjCClass.getByType(delegateClass).getName();            
+        }
+        main(argc, argv, principalClassName, delegateClassName);
+    }
+    
     /*<methods>*/
+    @Bridge(symbol="UIApplicationMain")
+    protected static native int main(int argc, BytePtr.BytePtrPtr argv, String principalClassName, String delegateClassName);
+    
     @Method(selector = "beginIgnoringInteractionEvents")
     public native void beginIgnoringInteractionEvents();
     @Method(selector = "endIgnoringInteractionEvents")

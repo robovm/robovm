@@ -581,8 +581,6 @@ import org.robovm.apple.coreimage.*;
     public static native boolean function__UIAccessibilityIsGuidedAccessEnabled();
     @Bridge(symbol="UIAccessibilityRequestGuidedAccessSession")
     public static native void function__UIAccessibilityRequestGuidedAccessSession(boolean enable, @Block VoidBooleanBlock completionHandler);
-    @Bridge(symbol="UIApplicationMain")
-    public static native int function__UIApplicationMain(int argc, CharPtr.CharPtrPtr argv, String principalClassName, String delegateClassName);
     @Bridge(symbol="UIGraphicsGetCurrentContext")
     public static native CGContext function__UIGraphicsGetCurrentContext();
     @Bridge(symbol="UIGraphicsPushContext")

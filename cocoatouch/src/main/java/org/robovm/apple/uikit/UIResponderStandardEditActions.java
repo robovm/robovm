@@ -51,31 +51,31 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "cut:")
-    void cut$(NSObject sender);
+    void cut(NSObject sender);
     @Method(selector = "copy:")
-    void copy$(NSObject sender);
+    void copy(NSObject sender);
     @Method(selector = "paste:")
-    void paste$(NSObject sender);
+    void paste(NSObject sender);
     @Method(selector = "select:")
-    void select$(NSObject sender);
+    void select(NSObject sender);
     @Method(selector = "selectAll:")
-    void selectAll$(NSObject sender);
+    void selectAll(NSObject sender);
     @Method(selector = "delete:")
-    void delete$(NSObject sender);
+    void delete(NSObject sender);
     @Method(selector = "makeTextWritingDirectionLeftToRight:")
-    void makeTextWritingDirectionLeftToRight$(NSObject sender);
+    void makeTextWritingDirectionLeftToRight(NSObject sender);
     @Method(selector = "makeTextWritingDirectionRightToLeft:")
-    void makeTextWritingDirectionRightToLeft$(NSObject sender);
+    void makeTextWritingDirectionRightToLeft(NSObject sender);
     @Method(selector = "toggleBoldface:")
-    void toggleBoldface$(NSObject sender);
+    void toggleBoldface(NSObject sender);
     @Method(selector = "toggleItalics:")
-    void toggleItalics$(NSObject sender);
+    void toggleItalics(NSObject sender);
     @Method(selector = "toggleUnderline:")
-    void toggleUnderline$(NSObject sender);
+    void toggleUnderline(NSObject sender);
     @Method(selector = "increaseSize:")
-    void increaseSize$(NSObject sender);
+    void increaseSize(NSObject sender);
     @Method(selector = "decreaseSize:")
-    void decreaseSize$(NSObject sender);
+    void decreaseSize(NSObject sender);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

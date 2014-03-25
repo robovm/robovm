@@ -83,7 +83,7 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("replaceRange:withText:")
     public void replaceText(UITextRange range, String text) { throw new UnsupportedOperationException(); }
     @NotImplemented("setMarkedText:selectedRange:")
-    public void setMarkedText$selectedRange$(String markedText, @ByVal NSRange selectedRange) { throw new UnsupportedOperationException(); }
+    public void setMarkedText(String markedText, @ByVal NSRange selectedRange) { throw new UnsupportedOperationException(); }
     @NotImplemented("unmarkText")
     public void unmarkText() { throw new UnsupportedOperationException(); }
     @NotImplemented("textRangeFromPosition:toPosition:")
@@ -103,7 +103,7 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("baseWritingDirectionForPosition:inDirection:")
     public UITextWritingDirection getBaseWritingDirection(UITextPosition position, UITextStorageDirection direction) { throw new UnsupportedOperationException(); }
     @NotImplemented("setBaseWritingDirection:forRange:")
-    public void setBaseWritingDirection$forRange$(UITextWritingDirection writingDirection, UITextRange range) { throw new UnsupportedOperationException(); }
+    public void setBaseWritingDirection(UITextWritingDirection writingDirection, UITextRange range) { throw new UnsupportedOperationException(); }
     @NotImplemented("firstRectForRange:")
     public @ByVal CGRect getFirstRect(UITextRange range) { throw new UnsupportedOperationException(); }
     @NotImplemented("caretRectForPosition:")
@@ -125,16 +125,16 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("characterOffsetOfPosition:withinRange:")
     public @MachineSizedSInt long getCharacterOffset(UITextPosition position, UITextRange range) { throw new UnsupportedOperationException(); }
     @NotImplemented("insertDictationResult:")
-    public void insertDictationResult$(NSArray<?> dictationResult) { throw new UnsupportedOperationException(); }
+    public void insertDictationResult(NSArray<?> dictationResult) { throw new UnsupportedOperationException(); }
     @NotImplemented("dictationRecordingDidEnd")
     public void dictationRecordingDidEnd() { throw new UnsupportedOperationException(); }
     @NotImplemented("dictationRecognitionFailed")
     public void dictationRecognitionFailed() { throw new UnsupportedOperationException(); }
     @NotImplemented("insertDictationResultPlaceholder")
-    public NSObject insertDictationResultPlaceholder() { throw new UnsupportedOperationException(); }
+    public NSObject getInsertDictationResultPlaceholder() { throw new UnsupportedOperationException(); }
     @NotImplemented("frameForDictationResultPlaceholder:")
     public @ByVal CGRect getDictationResultPlaceholderFrame(NSObject placeholder) { throw new UnsupportedOperationException(); }
     @NotImplemented("removeDictationResultPlaceholder:willInsertResult:")
-    public void removeDictationResultPlaceholder$willInsertResult$(NSObject placeholder, boolean willInsertResult) { throw new UnsupportedOperationException(); }
+    public void removeDictationResultPlaceholder(NSObject placeholder, boolean willInsertResult) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

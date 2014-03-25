@@ -55,13 +55,13 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "navigationController:didShowViewController:animated:")
     void didShowViewController(UINavigationController navigationController, UIViewController viewController, boolean animated);
     @Method(selector = "navigationControllerSupportedInterfaceOrientations:")
-    @MachineSizedUInt long navigationControllerSupportedInterfaceOrientations$(UINavigationController navigationController);
+    @MachineSizedUInt long getSupportedInterfaceOrientations(UINavigationController navigationController);
     @Method(selector = "navigationControllerPreferredInterfaceOrientationForPresentation:")
-    UIInterfaceOrientation navigationControllerPreferredInterfaceOrientationForPresentation$(UINavigationController navigationController);
+    UIInterfaceOrientation getPreferredInterfaceOrientation(UINavigationController navigationController);
     @Method(selector = "navigationController:interactionControllerForAnimationController:")
-    UIViewControllerInteractiveTransitioning navigationController$interactionControllerForAnimationController$(UINavigationController navigationController, UIViewControllerAnimatedTransitioning animationController);
+    UIViewControllerInteractiveTransitioning getInteractionController(UINavigationController navigationController, UIViewControllerAnimatedTransitioning animationController);
     @Method(selector = "navigationController:animationControllerForOperation:fromViewController:toViewController:")
-    UIViewControllerAnimatedTransitioning navigationController$animationControllerForOperation$fromViewController$toViewController$(UINavigationController navigationController, UINavigationControllerOperation operation, UIViewController fromVC, UIViewController toVC);
+    UIViewControllerAnimatedTransitioning getAnimationController(UINavigationController navigationController, UINavigationControllerOperation operation, UIViewController fromVC, UIViewController toVC);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

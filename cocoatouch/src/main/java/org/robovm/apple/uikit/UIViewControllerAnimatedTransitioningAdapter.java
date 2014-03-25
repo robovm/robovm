@@ -54,10 +54,10 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("transitionDuration:")
-    public double transitionDuration$(UIViewControllerContextTransitioning transitionContext) { throw new UnsupportedOperationException(); }
+    public double getTransitionDuration(UIViewControllerContextTransitioning transitionContext) { throw new UnsupportedOperationException(); }
     @NotImplemented("animateTransition:")
-    public void animateTransition$(UIViewControllerContextTransitioning transitionContext) { throw new UnsupportedOperationException(); }
+    public void animateTransition(UIViewControllerContextTransitioning transitionContext) { throw new UnsupportedOperationException(); }
     @NotImplemented("animationEnded:")
-    public void animationEnded$(boolean transitionCompleted) { throw new UnsupportedOperationException(); }
+    public void animationEnded(boolean transitionCompleted) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

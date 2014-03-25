@@ -80,7 +80,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "replaceRange:withText:")
     void replaceText(UITextRange range, String text);
     @Method(selector = "setMarkedText:selectedRange:")
-    void setMarkedText$selectedRange$(String markedText, @ByVal NSRange selectedRange);
+    void setMarkedText(String markedText, @ByVal NSRange selectedRange);
     @Method(selector = "unmarkText")
     void unmarkText();
     @Method(selector = "textRangeFromPosition:toPosition:")
@@ -100,7 +100,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "baseWritingDirectionForPosition:inDirection:")
     UITextWritingDirection getBaseWritingDirection(UITextPosition position, UITextStorageDirection direction);
     @Method(selector = "setBaseWritingDirection:forRange:")
-    void setBaseWritingDirection$forRange$(UITextWritingDirection writingDirection, UITextRange range);
+    void setBaseWritingDirection(UITextWritingDirection writingDirection, UITextRange range);
     @Method(selector = "firstRectForRange:")
     @ByVal CGRect getFirstRect(UITextRange range);
     @Method(selector = "caretRectForPosition:")
@@ -122,17 +122,17 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "characterOffsetOfPosition:withinRange:")
     @MachineSizedSInt long getCharacterOffset(UITextPosition position, UITextRange range);
     @Method(selector = "insertDictationResult:")
-    void insertDictationResult$(NSArray<?> dictationResult);
+    void insertDictationResult(NSArray<?> dictationResult);
     @Method(selector = "dictationRecordingDidEnd")
     void dictationRecordingDidEnd();
     @Method(selector = "dictationRecognitionFailed")
     void dictationRecognitionFailed();
     @Method(selector = "insertDictationResultPlaceholder")
-    NSObject insertDictationResultPlaceholder();
+    NSObject getInsertDictationResultPlaceholder();
     @Method(selector = "frameForDictationResultPlaceholder:")
     @ByVal CGRect getDictationResultPlaceholderFrame(NSObject placeholder);
     @Method(selector = "removeDictationResultPlaceholder:willInsertResult:")
-    void removeDictationResultPlaceholder$willInsertResult$(NSObject placeholder, boolean willInsertResult);
+    void removeDictationResultPlaceholder(NSObject placeholder, boolean willInsertResult);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

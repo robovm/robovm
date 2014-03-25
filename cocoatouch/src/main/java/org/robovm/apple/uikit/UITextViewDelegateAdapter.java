@@ -68,8 +68,8 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("textViewDidChangeSelection:")
     public void didChangeSelection(UITextView textView) { throw new UnsupportedOperationException(); }
     @NotImplemented("textView:shouldInteractWithURL:inRange:")
-    public boolean textView$shouldInteractWithURL$inRange$(UITextView textView, NSURL URL, @ByVal NSRange characterRange) { throw new UnsupportedOperationException(); }
+    public boolean shouldInteractWithURL(UITextView textView, NSURL URL, @ByVal NSRange characterRange) { throw new UnsupportedOperationException(); }
     @NotImplemented("textView:shouldInteractWithTextAttachment:inRange:")
-    public boolean textView$shouldInteractWithTextAttachment$inRange$(UITextView textView, NSTextAttachment textAttachment, @ByVal NSRange characterRange) { throw new UnsupportedOperationException(); }
+    public boolean shouldInteractWithTextAttachment(UITextView textView, NSTextAttachment textAttachment, @ByVal NSRange characterRange) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

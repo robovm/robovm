@@ -54,12 +54,12 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("selectionWillChange:")
-    public void selectionWillChange$(UITextInput textInput) { throw new UnsupportedOperationException(); }
+    public void selectionWillChange(UITextInput textInput) { throw new UnsupportedOperationException(); }
     @NotImplemented("selectionDidChange:")
-    public void selectionDidChange$(UITextInput textInput) { throw new UnsupportedOperationException(); }
+    public void selectionDidChange(UITextInput textInput) { throw new UnsupportedOperationException(); }
     @NotImplemented("textWillChange:")
-    public void textWillChange$(UITextInput textInput) { throw new UnsupportedOperationException(); }
+    public void textWillChange(UITextInput textInput) { throw new UnsupportedOperationException(); }
     @NotImplemented("textDidChange:")
-    public void textDidChange$(UITextInput textInput) { throw new UnsupportedOperationException(); }
+    public void textDidChange(UITextInput textInput) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

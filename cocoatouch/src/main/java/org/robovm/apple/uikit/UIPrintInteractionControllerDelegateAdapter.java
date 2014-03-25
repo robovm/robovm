@@ -70,6 +70,6 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("printInteractionControllerDidFinishJob:")
     public void didFinishJob(UIPrintInteractionController printInteractionController) { throw new UnsupportedOperationException(); }
     @NotImplemented("printInteractionController:cutLengthForPaper:")
-    public @MachineSizedFloat double printInteractionController$cutLengthForPaper$(UIPrintInteractionController printInteractionController, UIPrintPaper paper) { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getCutLength(UIPrintInteractionController printInteractionController, UIPrintPaper paper) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

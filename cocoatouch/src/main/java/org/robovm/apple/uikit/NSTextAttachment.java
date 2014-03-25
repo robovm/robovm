@@ -79,9 +79,9 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "initWithData:ofType:")
     protected native @Pointer long initWithData$ofType$(NSData contentData, String uti);
     @Method(selector = "imageForBounds:textContainer:characterIndex:")
-    public native UIImage imageForBounds$textContainer$characterIndex$(@ByVal CGRect imageBounds, NSTextContainer textContainer, @MachineSizedUInt long charIndex);
+    public native UIImage getImageForBounds(@ByVal CGRect imageBounds, NSTextContainer textContainer, @MachineSizedUInt long charIndex);
     @Method(selector = "attachmentBoundsForTextContainer:proposedLineFragment:glyphPosition:characterIndex:")
-    public native @ByVal CGRect attachmentBoundsForTextContainer$proposedLineFragment$glyphPosition$characterIndex$(NSTextContainer textContainer, @ByVal CGRect lineFrag, @ByVal CGPoint position, @MachineSizedUInt long charIndex);
+    public native @ByVal CGRect getAttachmentBounds(NSTextContainer textContainer, @ByVal CGRect lineFrag, @ByVal CGPoint position, @MachineSizedUInt long charIndex);
     @Method(selector = "encodeWithCoder:")
     public native void encodeWithCoder$(NSCoder aCoder);
     /*</methods>*/

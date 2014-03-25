@@ -51,11 +51,11 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "animateAlongsideTransition:completion:")
-    boolean animateAlongsideTransition$completion$(@Block VoidBlock1<UIViewControllerTransitionCoordinatorContext> animation, @Block VoidBlock1<UIViewControllerTransitionCoordinatorContext> completion);
+    boolean animateAlongsideTransition(@Block VoidBlock1<UIViewControllerTransitionCoordinatorContext> animation, @Block VoidBlock1<UIViewControllerTransitionCoordinatorContext> completion);
     @Method(selector = "animateAlongsideTransitionInView:animation:completion:")
-    boolean animateAlongsideTransitionInView$animation$completion$(UIView view, @Block VoidBlock1<UIViewControllerTransitionCoordinatorContext> animation, @Block VoidBlock1<UIViewControllerTransitionCoordinatorContext> completion);
+    boolean animateAlongsideTransition(UIView view, @Block VoidBlock1<UIViewControllerTransitionCoordinatorContext> animation, @Block VoidBlock1<UIViewControllerTransitionCoordinatorContext> completion);
     @Method(selector = "notifyWhenInteractionEndsUsingBlock:")
-    void notifyWhenInteractionEndsUsingBlock$(@Block VoidBlock1<UIViewControllerTransitionCoordinatorContext> handler);
+    void notifyWhenInteractionEnds(@Block VoidBlock1<UIViewControllerTransitionCoordinatorContext> handler);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

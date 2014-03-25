@@ -51,9 +51,9 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "textStorage:willProcessEditing:range:changeInLength:")
-    void textStorage$willProcessEditing$range$changeInLength$(NSTextStorage textStorage, NSTextStorageEditActions editedMask, @ByVal NSRange editedRange, @MachineSizedSInt long delta);
+    void willProcessEditing(NSTextStorage textStorage, NSTextStorageEditActions editedMask, @ByVal NSRange editedRange, @MachineSizedSInt long delta);
     @Method(selector = "textStorage:didProcessEditing:range:changeInLength:")
-    void textStorage$didProcessEditing$range$changeInLength$(NSTextStorage textStorage, NSTextStorageEditActions editedMask, @ByVal NSRange editedRange, @MachineSizedSInt long delta);
+    void didProcessEditing(NSTextStorage textStorage, NSTextStorageEditActions editedMask, @ByVal NSRange editedRange, @MachineSizedSInt long delta);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

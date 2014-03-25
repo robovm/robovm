@@ -56,24 +56,24 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("isAnimated")
     public boolean isAnimated() { throw new UnsupportedOperationException(); }
     @NotImplemented("presentationStyle")
-    public UIModalPresentationStyle presentationStyle() { throw new UnsupportedOperationException(); }
+    public UIModalPresentationStyle getPresentationStyle() { throw new UnsupportedOperationException(); }
     @NotImplemented("initiallyInteractive")
-    public boolean initiallyInteractive() { throw new UnsupportedOperationException(); }
+    public boolean isInitiallyInteractive() { throw new UnsupportedOperationException(); }
     @NotImplemented("isInteractive")
     public boolean isInteractive() { throw new UnsupportedOperationException(); }
     @NotImplemented("isCancelled")
     public boolean isCancelled() { throw new UnsupportedOperationException(); }
     @NotImplemented("transitionDuration")
-    public double transitionDuration() { throw new UnsupportedOperationException(); }
+    public double getTransitionDuration() { throw new UnsupportedOperationException(); }
     @NotImplemented("percentComplete")
-    public @MachineSizedFloat double percentComplete() { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getPercentComplete() { throw new UnsupportedOperationException(); }
     @NotImplemented("completionVelocity")
-    public @MachineSizedFloat double completionVelocity() { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getCompletionVelocity() { throw new UnsupportedOperationException(); }
     @NotImplemented("completionCurve")
-    public UIViewAnimationCurve completionCurve() { throw new UnsupportedOperationException(); }
+    public UIViewAnimationCurve getCompletionCurve() { throw new UnsupportedOperationException(); }
     @NotImplemented("viewControllerForKey:")
-    public UIViewController viewControllerForKey$(String key) { throw new UnsupportedOperationException(); }
+    public UIViewController getViewController(String key) { throw new UnsupportedOperationException(); }
     @NotImplemented("containerView")
-    public UIView containerView() { throw new UnsupportedOperationException(); }
+    public UIView getContainerView() { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

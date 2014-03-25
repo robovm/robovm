@@ -60,7 +60,7 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("accessibilityDecrement")
     public void accessibilityDecrement() { throw new UnsupportedOperationException(); }
     @NotImplemented("accessibilityScroll:")
-    public boolean accessibilityScroll$(UIAccessibilityScrollDirection direction) { throw new UnsupportedOperationException(); }
+    public boolean accessibilityScroll(UIAccessibilityScrollDirection direction) { throw new UnsupportedOperationException(); }
     @NotImplemented("accessibilityPerformEscape")
     public boolean accessibilityPerformEscape() { throw new UnsupportedOperationException(); }
     @NotImplemented("accessibilityPerformMagicTap")

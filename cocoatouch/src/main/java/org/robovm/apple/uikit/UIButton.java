@@ -121,17 +121,17 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "setTitle:forState:")
-    public native void setTitle$forState$(String title, UIControlState state);
+    public native void setTitle(String title, UIControlState state);
     @Method(selector = "setTitleColor:forState:")
-    public native void setTitleColor$forState$(UIColor color, UIControlState state);
+    public native void setTitleColor(UIColor color, UIControlState state);
     @Method(selector = "setTitleShadowColor:forState:")
-    public native void setTitleShadowColor$forState$(UIColor color, UIControlState state);
+    public native void setTitleShadowColor(UIColor color, UIControlState state);
     @Method(selector = "setImage:forState:")
-    public native void setImage$forState$(UIImage image, UIControlState state);
+    public native void setImage(UIImage image, UIControlState state);
     @Method(selector = "setBackgroundImage:forState:")
-    public native void setBackgroundImage$forState$(UIImage image, UIControlState state);
+    public native void setBackgroundImage(UIImage image, UIControlState state);
     @Method(selector = "setAttributedTitle:forState:")
-    public native void setAttributedTitle$forState$(NSAttributedString title, UIControlState state);
+    public native void setAttributedTitle(NSAttributedString title, UIControlState state);
     @Method(selector = "titleForState:")
     public native String getTitle(UIControlState state);
     @Method(selector = "titleColorForState:")
@@ -153,6 +153,6 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "imageRectForContentRect:")
     public native @ByVal CGRect getImageRect(@ByVal CGRect contentRect);
     @Method(selector = "buttonWithType:")
-    public static native UIButton fromType(UIButtonType buttonType);
+    public static native UIButton create(UIButtonType buttonType);
     /*</methods>*/
 }

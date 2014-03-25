@@ -241,7 +241,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "replaceRange:withText:")
     public native void replaceText(UITextRange range, String text);
     @Method(selector = "setMarkedText:selectedRange:")
-    public native void setMarkedText$selectedRange$(String markedText, @ByVal NSRange selectedRange);
+    public native void setMarkedText(String markedText, @ByVal NSRange selectedRange);
     @Method(selector = "unmarkText")
     public native void unmarkText();
     @Method(selector = "textRangeFromPosition:toPosition:")
@@ -261,7 +261,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "baseWritingDirectionForPosition:inDirection:")
     public native UITextWritingDirection getBaseWritingDirection(UITextPosition position, UITextStorageDirection direction);
     @Method(selector = "setBaseWritingDirection:forRange:")
-    public native void setBaseWritingDirection$forRange$(UITextWritingDirection writingDirection, UITextRange range);
+    public native void setBaseWritingDirection(UITextWritingDirection writingDirection, UITextRange range);
     @Method(selector = "firstRectForRange:")
     public native @ByVal CGRect getFirstRect(UITextRange range);
     @Method(selector = "caretRectForPosition:")
@@ -283,21 +283,21 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "characterOffsetOfPosition:withinRange:")
     public native @MachineSizedSInt long getCharacterOffset(UITextPosition position, UITextRange range);
     @Method(selector = "insertDictationResult:")
-    public native void insertDictationResult$(NSArray<?> dictationResult);
+    public native void insertDictationResult(NSArray<?> dictationResult);
     @Method(selector = "dictationRecordingDidEnd")
     public native void dictationRecordingDidEnd();
     @Method(selector = "dictationRecognitionFailed")
     public native void dictationRecognitionFailed();
     @Method(selector = "insertDictationResultPlaceholder")
-    public native NSObject insertDictationResultPlaceholder();
+    public native NSObject getInsertDictationResultPlaceholder();
     @Method(selector = "frameForDictationResultPlaceholder:")
     public native @ByVal CGRect getDictationResultPlaceholderFrame(NSObject placeholder);
     @Method(selector = "removeDictationResultPlaceholder:willInsertResult:")
-    public native void removeDictationResultPlaceholder$willInsertResult$(NSObject placeholder, boolean willInsertResult);
+    public native void removeDictationResultPlaceholder(NSObject placeholder, boolean willInsertResult);
     @Method(selector = "hasText")
     public native boolean hasText();
     @Method(selector = "insertText:")
-    public native void insertText$(String text);
+    public native void insertText(String text);
     @Method(selector = "deleteBackward")
     public native void deleteBackward();
     /*</methods>*/

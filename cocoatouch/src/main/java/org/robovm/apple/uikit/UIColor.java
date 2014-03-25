@@ -48,6 +48,9 @@ import org.robovm.apple.coreimage.*;
     /*<constructors>*/
     public UIColor() {}
     protected UIColor(SkipInit skipInit) { super(skipInit); }
+    public UIColor(@MachineSizedFloat double red, @MachineSizedFloat double green, @MachineSizedFloat double blue, @MachineSizedFloat double alpha) { super((SkipInit) null); initObject(initWithRed$green$blue$alpha$(red, green, blue, alpha)); }
+    public UIColor(CGColor cgColor) { super((SkipInit) null); initObject(initWithCGColor$(cgColor)); }
+    public UIColor(CIColor ciColor) { super((SkipInit) null); initObject(initWithCIColor$(ciColor)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "CGColor")
@@ -56,13 +59,67 @@ import org.robovm.apple.coreimage.*;
     public native CIColor getCIColor();
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    public boolean getWhiteAlpha(double[] whiteAlpha) {
+        if (whiteAlpha == null) {
+            throw new NullPointerException("whiteAlpha");
+        }
+        if (whiteAlpha.length != 2) {
+            throw new IllegalArgumentException("whiteAlpha.length != 2");
+        }
+        MachineSizedFloatPtr white = new MachineSizedFloatPtr();
+        MachineSizedFloatPtr alpha = new MachineSizedFloatPtr();
+        boolean ret = getWhiteAlpha(white, alpha);
+        whiteAlpha[0] = white.get();
+        whiteAlpha[1] = alpha.get();
+        return ret;
+    }
+
+    public boolean getHSBA(double[] hsba) {
+        if (hsba == null) {
+            throw new NullPointerException("hsba");
+        }
+        if (hsba.length != 4) {
+            throw new IllegalArgumentException("hsba.length != 4");
+        }
+        MachineSizedFloatPtr hue = new MachineSizedFloatPtr();
+        MachineSizedFloatPtr saturation = new MachineSizedFloatPtr();
+        MachineSizedFloatPtr brightness = new MachineSizedFloatPtr();
+        MachineSizedFloatPtr alpha = new MachineSizedFloatPtr();
+        boolean ret = getHSBA(hue, saturation, brightness, alpha);
+        hsba[0] = hue.get();
+        hsba[1] = saturation.get();
+        hsba[2] = brightness.get();
+        hsba[3] = alpha.get();
+        return ret;
+    }
+
+    public boolean getRGBA(double[] rgba) {
+        if (rgba == null) {
+            throw new NullPointerException("rgba");
+        }
+        if (rgba.length != 4) {
+            throw new IllegalArgumentException("rgba.length != 4");
+        }
+        MachineSizedFloatPtr red = new MachineSizedFloatPtr();
+        MachineSizedFloatPtr green = new MachineSizedFloatPtr();
+        MachineSizedFloatPtr blue = new MachineSizedFloatPtr();
+        MachineSizedFloatPtr alpha = new MachineSizedFloatPtr();
+        boolean ret = getRGBA(red, green, blue, alpha);
+        rgba[0] = red.get();
+        rgba[1] = green.get();
+        rgba[2] = blue.get();
+        rgba[3] = alpha.get();
+        return ret;
+    }
+    
     /*<methods>*/
     @Method(selector = "initWithRed:green:blue:alpha:")
-    public native UIColor initWithRed$green$blue$alpha$(@MachineSizedFloat double red, @MachineSizedFloat double green, @MachineSizedFloat double blue, @MachineSizedFloat double alpha);
+    protected native @Pointer long initWithRed$green$blue$alpha$(@MachineSizedFloat double red, @MachineSizedFloat double green, @MachineSizedFloat double blue, @MachineSizedFloat double alpha);
     @Method(selector = "initWithCGColor:")
-    public native UIColor initWithCGColor$(CGColor cgColor);
+    protected native @Pointer long initWithCGColor$(CGColor cgColor);
     @Method(selector = "initWithCIColor:")
-    public native UIColor initWithCIColor$(CIColor ciColor);
+    protected native @Pointer long initWithCIColor$(CIColor ciColor);
     @Method(selector = "set")
     public native void setFillAndStroke();
     @Method(selector = "setFill")
@@ -70,25 +127,25 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "setStroke")
     public native void setStroke();
     @Method(selector = "getWhite:alpha:")
-    public native boolean getWhiteAlpha(MachineSizedFloatPtr white, MachineSizedFloatPtr alpha);
+    protected native boolean getWhiteAlpha(MachineSizedFloatPtr white, MachineSizedFloatPtr alpha);
     @Method(selector = "getHue:saturation:brightness:alpha:")
-    public native boolean getHSBA(MachineSizedFloatPtr hue, MachineSizedFloatPtr saturation, MachineSizedFloatPtr brightness, MachineSizedFloatPtr alpha);
+    protected native boolean getHSBA(MachineSizedFloatPtr hue, MachineSizedFloatPtr saturation, MachineSizedFloatPtr brightness, MachineSizedFloatPtr alpha);
     @Method(selector = "getRed:green:blue:alpha:")
-    public native boolean getRGBA(MachineSizedFloatPtr red, MachineSizedFloatPtr green, MachineSizedFloatPtr blue, MachineSizedFloatPtr alpha);
+    protected native boolean getRGBA(MachineSizedFloatPtr red, MachineSizedFloatPtr green, MachineSizedFloatPtr blue, MachineSizedFloatPtr alpha);
     @Method(selector = "colorWithAlphaComponent:")
-    public native UIColor colorWithAlpha(@MachineSizedFloat double alpha);
+    public native UIColor addAlpha(@MachineSizedFloat double alpha);
     @Method(selector = "colorWithWhite:alpha:")
-    public static native UIColor fromWhiteAlpha(@MachineSizedFloat double white, @MachineSizedFloat double alpha);
+    public static native UIColor createFromWhiteAlpha(@MachineSizedFloat double white, @MachineSizedFloat double alpha);
     @Method(selector = "colorWithHue:saturation:brightness:alpha:")
-    public static native UIColor fromHSBA(@MachineSizedFloat double hue, @MachineSizedFloat double saturation, @MachineSizedFloat double brightness, @MachineSizedFloat double alpha);
+    public static native UIColor createFromHSBA(@MachineSizedFloat double hue, @MachineSizedFloat double saturation, @MachineSizedFloat double brightness, @MachineSizedFloat double alpha);
     @Method(selector = "colorWithRed:green:blue:alpha:")
-    public static native UIColor fromRGBA(@MachineSizedFloat double red, @MachineSizedFloat double green, @MachineSizedFloat double blue, @MachineSizedFloat double alpha);
+    public static native UIColor createFromRGBA(@MachineSizedFloat double red, @MachineSizedFloat double green, @MachineSizedFloat double blue, @MachineSizedFloat double alpha);
     @Method(selector = "colorWithCGColor:")
-    public static native UIColor fromCGColor(CGColor cgColor);
+    public static native UIColor createFromCGColor(CGColor cgColor);
     @Method(selector = "colorWithPatternImage:")
-    public static native UIColor fromPatternImage(UIImage image);
+    public static native UIColor createFromPatternImage(UIImage image);
     @Method(selector = "colorWithCIColor:")
-    public static native UIColor fromCIColor(CIColor ciColor);
+    public static native UIColor createFromCIColor(CIColor ciColor);
     @Method(selector = "blackColor")
     public static native UIColor blackColor();
     @Method(selector = "darkGrayColor")

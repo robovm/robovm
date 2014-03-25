@@ -54,10 +54,10 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("popoverControllerShouldDismissPopover:")
-    public boolean shouldDismissPopover(UIPopoverController popoverController) { throw new UnsupportedOperationException(); }
+    public boolean shouldDismiss(UIPopoverController popoverController) { throw new UnsupportedOperationException(); }
     @NotImplemented("popoverControllerDidDismissPopover:")
-    public void didDismissPopover(UIPopoverController popoverController) { throw new UnsupportedOperationException(); }
+    public void didDismiss(UIPopoverController popoverController) { throw new UnsupportedOperationException(); }
     @NotImplemented("popoverController:willRepositionPopoverToRect:inView:")
-    public void popoverController$willRepositionPopoverToRect$inView$(UIPopoverController popoverController, CGRect rect, UIView.UIViewPtr view) { throw new UnsupportedOperationException(); }
+    public void willReposition(UIPopoverController popoverController, CGRect rect, UIView.UIViewPtr view) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

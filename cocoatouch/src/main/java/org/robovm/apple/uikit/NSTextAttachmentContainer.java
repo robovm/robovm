@@ -51,9 +51,9 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "imageForBounds:textContainer:characterIndex:")
-    UIImage imageForBounds$textContainer$characterIndex$(@ByVal CGRect imageBounds, NSTextContainer textContainer, @MachineSizedUInt long charIndex);
+    UIImage getImageForBounds(@ByVal CGRect imageBounds, NSTextContainer textContainer, @MachineSizedUInt long charIndex);
     @Method(selector = "attachmentBoundsForTextContainer:proposedLineFragment:glyphPosition:characterIndex:")
-    @ByVal CGRect attachmentBoundsForTextContainer$proposedLineFragment$glyphPosition$characterIndex$(NSTextContainer textContainer, @ByVal CGRect lineFrag, @ByVal CGPoint position, @MachineSizedUInt long charIndex);
+    @ByVal CGRect getAttachmentBounds(NSTextContainer textContainer, @ByVal CGRect lineFrag, @ByVal CGPoint position, @MachineSizedUInt long charIndex);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

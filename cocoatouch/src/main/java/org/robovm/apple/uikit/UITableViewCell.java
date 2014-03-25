@@ -207,9 +207,9 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:")
     public native boolean shouldRecognizeSimultaneously(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer);
     @Method(selector = "gestureRecognizer:shouldRequireFailureOfGestureRecognizer:")
-    public native boolean gestureRecognizer$shouldRequireFailureOfGestureRecognizer$(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer);
+    public native boolean shouldRequireFailure(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer);
     @Method(selector = "gestureRecognizer:shouldBeRequiredToFailByGestureRecognizer:")
-    public native boolean gestureRecognizer$shouldBeRequiredToFailByGestureRecognizer$(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer);
+    public native boolean shouldBeRequiredToFail(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer);
     @Method(selector = "gestureRecognizer:shouldReceiveTouch:")
     public native boolean shouldReceiveTouch(UIGestureRecognizer gestureRecognizer, UITouch touch);
     /*</methods>*/

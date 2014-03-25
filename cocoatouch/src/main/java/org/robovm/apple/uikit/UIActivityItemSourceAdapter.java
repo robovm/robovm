@@ -58,10 +58,10 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("activityViewController:itemForActivityType:")
     public NSObject getItem(UIActivityViewController activityViewController, String activityType) { throw new UnsupportedOperationException(); }
     @NotImplemented("activityViewController:subjectForActivityType:")
-    public String activityViewController$subjectForActivityType$(UIActivityViewController activityViewController, String activityType) { throw new UnsupportedOperationException(); }
+    public String getSubject(UIActivityViewController activityViewController, String activityType) { throw new UnsupportedOperationException(); }
     @NotImplemented("activityViewController:dataTypeIdentifierForActivityType:")
-    public String activityViewController$dataTypeIdentifierForActivityType$(UIActivityViewController activityViewController, String activityType) { throw new UnsupportedOperationException(); }
+    public String getDataTypeIdentifier(UIActivityViewController activityViewController, String activityType) { throw new UnsupportedOperationException(); }
     @NotImplemented("activityViewController:thumbnailImageForActivityType:suggestedSize:")
-    public UIImage activityViewController$thumbnailImageForActivityType$suggestedSize$(UIActivityViewController activityViewController, String activityType, @ByVal CGSize size) { throw new UnsupportedOperationException(); }
+    public UIImage getThumbnailImage(UIActivityViewController activityViewController, String activityType, @ByVal CGSize size) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

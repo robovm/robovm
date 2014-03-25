@@ -51,13 +51,13 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "collisionBehavior:beganContactForItem:withItem:atPoint:")
-    void collisionBehavior$beganContactForItem$withItem$atPoint$(UICollisionBehavior behavior, UIDynamicItem item1, UIDynamicItem item2, @ByVal CGPoint p);
+    void beganContact(UICollisionBehavior behavior, UIDynamicItem item1, UIDynamicItem item2, @ByVal CGPoint p);
     @Method(selector = "collisionBehavior:endedContactForItem:withItem:")
-    void collisionBehavior$endedContactForItem$withItem$(UICollisionBehavior behavior, UIDynamicItem item1, UIDynamicItem item2);
+    void endedContact(UICollisionBehavior behavior, UIDynamicItem item1, UIDynamicItem item2);
     @Method(selector = "collisionBehavior:beganContactForItem:withBoundaryIdentifier:atPoint:")
-    void collisionBehavior$beganContactForItem$withBoundaryIdentifier$atPoint$(UICollisionBehavior behavior, UIDynamicItem item, NSObject identifier, @ByVal CGPoint p);
+    void beganBoundaryContact(UICollisionBehavior behavior, UIDynamicItem item, NSObject identifier, @ByVal CGPoint p);
     @Method(selector = "collisionBehavior:endedContactForItem:withBoundaryIdentifier:")
-    void collisionBehavior$endedContactForItem$withBoundaryIdentifier$(UICollisionBehavior behavior, UIDynamicItem item, NSObject identifier);
+    void endedBoundaryContact(UICollisionBehavior behavior, UIDynamicItem item, NSObject identifier);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

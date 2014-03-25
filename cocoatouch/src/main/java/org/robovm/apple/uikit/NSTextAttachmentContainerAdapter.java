@@ -54,8 +54,8 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("imageForBounds:textContainer:characterIndex:")
-    public UIImage imageForBounds$textContainer$characterIndex$(@ByVal CGRect imageBounds, NSTextContainer textContainer, @MachineSizedUInt long charIndex) { throw new UnsupportedOperationException(); }
+    public UIImage getImageForBounds(@ByVal CGRect imageBounds, NSTextContainer textContainer, @MachineSizedUInt long charIndex) { throw new UnsupportedOperationException(); }
     @NotImplemented("attachmentBoundsForTextContainer:proposedLineFragment:glyphPosition:characterIndex:")
-    public @ByVal CGRect attachmentBoundsForTextContainer$proposedLineFragment$glyphPosition$characterIndex$(NSTextContainer textContainer, @ByVal CGRect lineFrag, @ByVal CGPoint position, @MachineSizedUInt long charIndex) { throw new UnsupportedOperationException(); }
+    public @ByVal CGRect getAttachmentBounds(NSTextContainer textContainer, @ByVal CGRect lineFrag, @ByVal CGPoint position, @MachineSizedUInt long charIndex) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

@@ -64,12 +64,12 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("tabBarController:didEndCustomizingViewControllers:changed:")
     public void didEndCustomizingViewControllers(UITabBarController tabBarController, NSArray<?> viewControllers, boolean changed) { throw new UnsupportedOperationException(); }
     @NotImplemented("tabBarControllerSupportedInterfaceOrientations:")
-    public @MachineSizedUInt long tabBarControllerSupportedInterfaceOrientations$(UITabBarController tabBarController) { throw new UnsupportedOperationException(); }
+    public @MachineSizedUInt long getSupportedInterfaceOrientations(UITabBarController tabBarController) { throw new UnsupportedOperationException(); }
     @NotImplemented("tabBarControllerPreferredInterfaceOrientationForPresentation:")
-    public UIInterfaceOrientation tabBarControllerPreferredInterfaceOrientationForPresentation$(UITabBarController tabBarController) { throw new UnsupportedOperationException(); }
+    public UIInterfaceOrientation getPreferredInterfaceOrientation(UITabBarController tabBarController) { throw new UnsupportedOperationException(); }
     @NotImplemented("tabBarController:interactionControllerForAnimationController:")
-    public UIViewControllerInteractiveTransitioning tabBarController$interactionControllerForAnimationController$(UITabBarController tabBarController, UIViewControllerAnimatedTransitioning animationController) { throw new UnsupportedOperationException(); }
+    public UIViewControllerInteractiveTransitioning getInteractionController(UITabBarController tabBarController, UIViewControllerAnimatedTransitioning animationController) { throw new UnsupportedOperationException(); }
     @NotImplemented("tabBarController:animationControllerForTransitionFromViewController:toViewController:")
-    public UIViewControllerAnimatedTransitioning tabBarController$animationControllerForTransitionFromViewController$toViewController$(UITabBarController tabBarController, UIViewController fromVC, UIViewController toVC) { throw new UnsupportedOperationException(); }
+    public UIViewControllerAnimatedTransitioning getAnimationController(UITabBarController tabBarController, UIViewController fromVC, UIViewController toVC) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

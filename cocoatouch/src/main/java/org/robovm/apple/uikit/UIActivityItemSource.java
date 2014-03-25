@@ -55,11 +55,11 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "activityViewController:itemForActivityType:")
     NSObject getItem(UIActivityViewController activityViewController, String activityType);
     @Method(selector = "activityViewController:subjectForActivityType:")
-    String activityViewController$subjectForActivityType$(UIActivityViewController activityViewController, String activityType);
+    String getSubject(UIActivityViewController activityViewController, String activityType);
     @Method(selector = "activityViewController:dataTypeIdentifierForActivityType:")
-    String activityViewController$dataTypeIdentifierForActivityType$(UIActivityViewController activityViewController, String activityType);
+    String getDataTypeIdentifier(UIActivityViewController activityViewController, String activityType);
     @Method(selector = "activityViewController:thumbnailImageForActivityType:suggestedSize:")
-    UIImage activityViewController$thumbnailImageForActivityType$suggestedSize$(UIActivityViewController activityViewController, String activityType, @ByVal CGSize size);
+    UIImage getThumbnailImage(UIActivityViewController activityViewController, String activityType, @ByVal CGSize size);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

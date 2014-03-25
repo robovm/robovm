@@ -72,6 +72,6 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "finishInteractiveTransition")
     public native void finishInteractiveTransition();
     @Method(selector = "startInteractiveTransition:")
-    public native void startInteractiveTransition$(UIViewControllerContextTransitioning transitionContext);
+    public native void startInteractiveTransition(UIViewControllerContextTransitioning transitionContext);
     /*</methods>*/
 }

@@ -54,8 +54,8 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("textStorage:willProcessEditing:range:changeInLength:")
-    public void textStorage$willProcessEditing$range$changeInLength$(NSTextStorage textStorage, NSTextStorageEditActions editedMask, @ByVal NSRange editedRange, @MachineSizedSInt long delta) { throw new UnsupportedOperationException(); }
+    public void willProcessEditing(NSTextStorage textStorage, NSTextStorageEditActions editedMask, @ByVal NSRange editedRange, @MachineSizedSInt long delta) { throw new UnsupportedOperationException(); }
     @NotImplemented("textStorage:didProcessEditing:range:changeInLength:")
-    public void textStorage$didProcessEditing$range$changeInLength$(NSTextStorage textStorage, NSTextStorageEditActions editedMask, @ByVal NSRange editedRange, @MachineSizedSInt long delta) { throw new UnsupportedOperationException(); }
+    public void didProcessEditing(NSTextStorage textStorage, NSTextStorageEditActions editedMask, @ByVal NSRange editedRange, @MachineSizedSInt long delta) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

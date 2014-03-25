@@ -75,7 +75,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "collectionView:performAction:forItemAtIndexPath:withSender:")
     void performAction(UICollectionView collectionView, Selector action, NSIndexPath indexPath, NSObject sender);
     @Method(selector = "collectionView:transitionLayoutForOldLayout:newLayout:")
-    UICollectionViewTransitionLayout collectionView$transitionLayoutForOldLayout$newLayout$(UICollectionView collectionView, UICollectionViewLayout fromLayout, UICollectionViewLayout toLayout);
+    UICollectionViewTransitionLayout getTransitionLayout(UICollectionView collectionView, UICollectionViewLayout fromLayout, UICollectionViewLayout toLayout);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

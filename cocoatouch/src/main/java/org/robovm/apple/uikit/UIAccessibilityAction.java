@@ -57,7 +57,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "accessibilityDecrement")
     void accessibilityDecrement();
     @Method(selector = "accessibilityScroll:")
-    boolean accessibilityScroll$(UIAccessibilityScrollDirection direction);
+    boolean accessibilityScroll(UIAccessibilityScrollDirection direction);
     @Method(selector = "accessibilityPerformEscape")
     boolean accessibilityPerformEscape();
     @Method(selector = "accessibilityPerformMagicTap")

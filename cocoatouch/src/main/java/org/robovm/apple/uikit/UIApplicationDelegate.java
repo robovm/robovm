@@ -90,11 +90,11 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "application:didReceiveLocalNotification:")
     void didReceiveLocalNotification(UIApplication application, UILocalNotification notification);
     @Method(selector = "application:didReceiveRemoteNotification:fetchCompletionHandler:")
-    void application$didReceiveRemoteNotification$fetchCompletionHandler$(UIApplication application, NSDictionary<?, ?> userInfo, @Block VoidBlock1<UIBackgroundFetchResult> completionHandler);
+    void didReceiveRemoteNotification(UIApplication application, NSDictionary<?, ?> userInfo, @Block VoidBlock1<UIBackgroundFetchResult> completionHandler);
     @Method(selector = "application:performFetchWithCompletionHandler:")
-    void application$performFetchWithCompletionHandler$(UIApplication application, @Block VoidBlock1<UIBackgroundFetchResult> completionHandler);
+    void performFetch(UIApplication application, @Block VoidBlock1<UIBackgroundFetchResult> completionHandler);
     @Method(selector = "application:handleEventsForBackgroundURLSession:completionHandler:")
-    void application$handleEventsForBackgroundURLSession$completionHandler$(UIApplication application, String identifier, @Block Runnable completionHandler);
+    void handleEventsForBackgroundURLSession(UIApplication application, String identifier, @Block Runnable completionHandler);
     @Method(selector = "applicationDidEnterBackground:")
     void didEnterBackground(UIApplication application);
     @Method(selector = "applicationWillEnterForeground:")

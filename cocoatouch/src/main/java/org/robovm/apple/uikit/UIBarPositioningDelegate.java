@@ -51,7 +51,7 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "positionForBar:")
-    UIBarPosition positionForBar$(UIBarPositioning bar);
+    UIBarPosition getPosition(UIBarPositioning bar);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

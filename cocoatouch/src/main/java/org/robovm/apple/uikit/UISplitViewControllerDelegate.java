@@ -59,9 +59,9 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "splitViewController:shouldHideViewController:inOrientation:")
     boolean shouldHideViewController(UISplitViewController svc, UIViewController vc, UIInterfaceOrientation orientation);
     @Method(selector = "splitViewControllerSupportedInterfaceOrientations:")
-    @MachineSizedUInt long splitViewControllerSupportedInterfaceOrientations$(UISplitViewController splitViewController);
+    @MachineSizedUInt long getSupportedInterfaceOrientations(UISplitViewController splitViewController);
     @Method(selector = "splitViewControllerPreferredInterfaceOrientationForPresentation:")
-    UIInterfaceOrientation splitViewControllerPreferredInterfaceOrientationForPresentation$(UISplitViewController splitViewController);
+    UIInterfaceOrientation name(UISplitViewController splitViewController);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

@@ -65,9 +65,9 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "textViewDidChangeSelection:")
     void didChangeSelection(UITextView textView);
     @Method(selector = "textView:shouldInteractWithURL:inRange:")
-    boolean textView$shouldInteractWithURL$inRange$(UITextView textView, NSURL URL, @ByVal NSRange characterRange);
+    boolean shouldInteractWithURL(UITextView textView, NSURL URL, @ByVal NSRange characterRange);
     @Method(selector = "textView:shouldInteractWithTextAttachment:inRange:")
-    boolean textView$shouldInteractWithTextAttachment$inRange$(UITextView textView, NSTextAttachment textAttachment, @ByVal NSRange characterRange);
+    boolean shouldInteractWithTextAttachment(UITextView textView, NSTextAttachment textAttachment, @ByVal NSRange characterRange);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

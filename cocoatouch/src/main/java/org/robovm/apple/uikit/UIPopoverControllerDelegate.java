@@ -51,11 +51,11 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "popoverControllerShouldDismissPopover:")
-    boolean shouldDismissPopover(UIPopoverController popoverController);
+    boolean shouldDismiss(UIPopoverController popoverController);
     @Method(selector = "popoverControllerDidDismissPopover:")
-    void didDismissPopover(UIPopoverController popoverController);
+    void didDismiss(UIPopoverController popoverController);
     @Method(selector = "popoverController:willRepositionPopoverToRect:inView:")
-    void popoverController$willRepositionPopoverToRect$inView$(UIPopoverController popoverController, CGRect rect, UIView.UIViewPtr view);
+    void willReposition(UIPopoverController popoverController, CGRect rect, UIView.UIViewPtr view);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

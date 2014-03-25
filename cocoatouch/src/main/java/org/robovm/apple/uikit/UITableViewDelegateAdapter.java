@@ -72,17 +72,17 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("tableView:heightForFooterInSection:")
     public @MachineSizedFloat double getSectionFooterHeight(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:estimatedHeightForRowAtIndexPath:")
-    public @MachineSizedFloat double tableView$estimatedHeightForRowAtIndexPath$(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getEstimatedRowHeight(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:estimatedHeightForHeaderInSection:")
-    public @MachineSizedFloat double tableView$estimatedHeightForHeaderInSection$(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getEstimatedSectionHeaderHeight(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:estimatedHeightForFooterInSection:")
-    public @MachineSizedFloat double tableView$estimatedHeightForFooterInSection$(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getEstimatedSectionFooterHeight(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:viewForHeaderInSection:")
     public UIView getSectionHeaderView(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:viewForFooterInSection:")
     public UIView getSectionFooterView(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:accessoryTypeForRowWithIndexPath:")
-    public UITableViewCellAccessoryType tableView$accessoryTypeForRowWithIndexPath$(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public UITableViewCellAccessoryType getRowAccessoryType(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:accessoryButtonTappedForRowWithIndexPath:")
     public void accessoryButtonTapped(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:shouldHighlightRowAtIndexPath:")

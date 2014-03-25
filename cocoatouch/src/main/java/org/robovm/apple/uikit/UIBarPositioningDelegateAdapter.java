@@ -54,6 +54,6 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("positionForBar:")
-    public UIBarPosition positionForBar$(UIBarPositioning bar) { throw new UnsupportedOperationException(); }
+    public UIBarPosition getPosition(UIBarPositioning bar) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

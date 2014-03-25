@@ -69,17 +69,17 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "tableView:heightForFooterInSection:")
     @MachineSizedFloat double getSectionFooterHeight(UITableView tableView, @MachineSizedSInt long section);
     @Method(selector = "tableView:estimatedHeightForRowAtIndexPath:")
-    @MachineSizedFloat double tableView$estimatedHeightForRowAtIndexPath$(UITableView tableView, NSIndexPath indexPath);
+    @MachineSizedFloat double getEstimatedRowHeight(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "tableView:estimatedHeightForHeaderInSection:")
-    @MachineSizedFloat double tableView$estimatedHeightForHeaderInSection$(UITableView tableView, @MachineSizedSInt long section);
+    @MachineSizedFloat double getEstimatedSectionHeaderHeight(UITableView tableView, @MachineSizedSInt long section);
     @Method(selector = "tableView:estimatedHeightForFooterInSection:")
-    @MachineSizedFloat double tableView$estimatedHeightForFooterInSection$(UITableView tableView, @MachineSizedSInt long section);
+    @MachineSizedFloat double getEstimatedSectionFooterHeight(UITableView tableView, @MachineSizedSInt long section);
     @Method(selector = "tableView:viewForHeaderInSection:")
     UIView getSectionHeaderView(UITableView tableView, @MachineSizedSInt long section);
     @Method(selector = "tableView:viewForFooterInSection:")
     UIView getSectionFooterView(UITableView tableView, @MachineSizedSInt long section);
     @Method(selector = "tableView:accessoryTypeForRowWithIndexPath:")
-    UITableViewCellAccessoryType tableView$accessoryTypeForRowWithIndexPath$(UITableView tableView, NSIndexPath indexPath);
+    UITableViewCellAccessoryType getRowAccessoryType(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "tableView:accessoryButtonTappedForRowWithIndexPath:")
     void accessoryButtonTapped(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "tableView:shouldHighlightRowAtIndexPath:")

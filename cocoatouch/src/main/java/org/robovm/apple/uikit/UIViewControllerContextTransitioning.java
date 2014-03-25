@@ -51,7 +51,7 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "containerView")
-    UIView containerView();
+    UIView getContainerView();
     @Method(selector = "isAnimated")
     boolean isAnimated();
     @Method(selector = "isInteractive")
@@ -59,21 +59,21 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "transitionWasCancelled")
     boolean transitionWasCancelled();
     @Method(selector = "presentationStyle")
-    UIModalPresentationStyle presentationStyle();
+    UIModalPresentationStyle getPresentationStyle();
     @Method(selector = "updateInteractiveTransition:")
-    void updateInteractiveTransition$(@MachineSizedFloat double percentComplete);
+    void updateInteractiveTransition(@MachineSizedFloat double percentComplete);
     @Method(selector = "finishInteractiveTransition")
     void finishInteractiveTransition();
     @Method(selector = "cancelInteractiveTransition")
     void cancelInteractiveTransition();
     @Method(selector = "completeTransition:")
-    void completeTransition$(boolean didComplete);
+    void completeTransition(boolean didComplete);
     @Method(selector = "viewControllerForKey:")
-    UIViewController viewControllerForKey$(String key);
+    UIViewController getViewController(String key);
     @Method(selector = "initialFrameForViewController:")
-    @ByVal CGRect initialFrameForViewController$(UIViewController vc);
+    @ByVal CGRect getInitialFrame(UIViewController vc);
     @Method(selector = "finalFrameForViewController:")
-    @ByVal CGRect finalFrameForViewController$(UIViewController vc);
+    @ByVal CGRect getFinalFrame(UIViewController vc);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

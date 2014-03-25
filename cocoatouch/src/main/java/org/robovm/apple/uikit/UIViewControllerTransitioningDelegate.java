@@ -51,13 +51,13 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "animationControllerForPresentedController:presentingController:sourceController:")
-    UIViewControllerAnimatedTransitioning animationControllerForPresentedController$presentingController$sourceController$(UIViewController presented, UIViewController presenting, UIViewController source);
+    UIViewControllerAnimatedTransitioning getAnimationControllerForPresentedController(UIViewController presented, UIViewController presenting, UIViewController source);
     @Method(selector = "animationControllerForDismissedController:")
-    UIViewControllerAnimatedTransitioning animationControllerForDismissedController$(UIViewController dismissed);
+    UIViewControllerAnimatedTransitioning getAnimationControllerForDismissedController(UIViewController dismissed);
     @Method(selector = "interactionControllerForPresentation:")
-    UIViewControllerInteractiveTransitioning interactionControllerForPresentation$(UIViewControllerAnimatedTransitioning animator);
+    UIViewControllerInteractiveTransitioning getInteractionControllerForPresentation(UIViewControllerAnimatedTransitioning animator);
     @Method(selector = "interactionControllerForDismissal:")
-    UIViewControllerInteractiveTransitioning interactionControllerForDismissal$(UIViewControllerAnimatedTransitioning animator);
+    UIViewControllerInteractiveTransitioning getInteractionControllerForDismissal(UIViewControllerAnimatedTransitioning animator);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

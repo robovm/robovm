@@ -87,17 +87,17 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "tableView:heightForFooterInSection:")
     public native @MachineSizedFloat double getSectionFooterHeight(UITableView tableView, @MachineSizedSInt long section);
     @Method(selector = "tableView:estimatedHeightForRowAtIndexPath:")
-    public native @MachineSizedFloat double tableView$estimatedHeightForRowAtIndexPath$(UITableView tableView, NSIndexPath indexPath);
+    public native @MachineSizedFloat double getEstimatedRowHeight(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "tableView:estimatedHeightForHeaderInSection:")
-    public native @MachineSizedFloat double tableView$estimatedHeightForHeaderInSection$(UITableView tableView, @MachineSizedSInt long section);
+    public native @MachineSizedFloat double getEstimatedSectionHeaderHeight(UITableView tableView, @MachineSizedSInt long section);
     @Method(selector = "tableView:estimatedHeightForFooterInSection:")
-    public native @MachineSizedFloat double tableView$estimatedHeightForFooterInSection$(UITableView tableView, @MachineSizedSInt long section);
+    public native @MachineSizedFloat double getEstimatedSectionFooterHeight(UITableView tableView, @MachineSizedSInt long section);
     @Method(selector = "tableView:viewForHeaderInSection:")
     public native UIView getSectionHeaderView(UITableView tableView, @MachineSizedSInt long section);
     @Method(selector = "tableView:viewForFooterInSection:")
     public native UIView getSectionFooterView(UITableView tableView, @MachineSizedSInt long section);
     @Method(selector = "tableView:accessoryTypeForRowWithIndexPath:")
-    public native UITableViewCellAccessoryType tableView$accessoryTypeForRowWithIndexPath$(UITableView tableView, NSIndexPath indexPath);
+    public native UITableViewCellAccessoryType getRowAccessoryType(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "tableView:accessoryButtonTappedForRowWithIndexPath:")
     public native void accessoryButtonTapped(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "tableView:shouldHighlightRowAtIndexPath:")

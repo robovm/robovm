@@ -95,7 +95,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "collectionView:performAction:forItemAtIndexPath:withSender:")
     public native void performAction(UICollectionView collectionView, Selector action, NSIndexPath indexPath, NSObject sender);
     @Method(selector = "collectionView:transitionLayoutForOldLayout:newLayout:")
-    public native UICollectionViewTransitionLayout collectionView$transitionLayoutForOldLayout$newLayout$(UICollectionView collectionView, UICollectionViewLayout fromLayout, UICollectionViewLayout toLayout);
+    public native UICollectionViewTransitionLayout getTransitionLayout(UICollectionView collectionView, UICollectionViewLayout fromLayout, UICollectionViewLayout toLayout);
     @Method(selector = "scrollViewDidScroll:")
     public native void didScroll(UIScrollView scrollView);
     @Method(selector = "scrollViewDidZoom:")

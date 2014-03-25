@@ -51,27 +51,27 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "layoutManager:shouldGenerateGlyphs:properties:characterIndexes:font:forGlyphRange:")
-    @MachineSizedUInt long layoutManager$shouldGenerateGlyphs$properties$characterIndexes$font$forGlyphRange$(NSLayoutManager layoutManager, ShortPtr glyphs, MachineSizedSIntPtr props, MachineSizedUIntPtr charIndexes, UIFont aFont, @ByVal NSRange glyphRange);
+    @MachineSizedUInt long shouldGenerateGlyphs(NSLayoutManager layoutManager, ShortPtr glyphs, MachineSizedSIntPtr props, MachineSizedUIntPtr charIndexes, UIFont aFont, @ByVal NSRange glyphRange);
     @Method(selector = "layoutManager:lineSpacingAfterGlyphAtIndex:withProposedLineFragmentRect:")
-    @MachineSizedFloat double layoutManager$lineSpacingAfterGlyphAtIndex$withProposedLineFragmentRect$(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, @ByVal CGRect rect);
+    @MachineSizedFloat double getLineSpacingAfterGlyph(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, @ByVal CGRect rect);
     @Method(selector = "layoutManager:paragraphSpacingBeforeGlyphAtIndex:withProposedLineFragmentRect:")
-    @MachineSizedFloat double layoutManager$paragraphSpacingBeforeGlyphAtIndex$withProposedLineFragmentRect$(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, @ByVal CGRect rect);
+    @MachineSizedFloat double getParagraphSpacingBeforeGlyph(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, @ByVal CGRect rect);
     @Method(selector = "layoutManager:paragraphSpacingAfterGlyphAtIndex:withProposedLineFragmentRect:")
-    @MachineSizedFloat double layoutManager$paragraphSpacingAfterGlyphAtIndex$withProposedLineFragmentRect$(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, @ByVal CGRect rect);
+    @MachineSizedFloat double getParagraphSpacingAfterGlyph(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, @ByVal CGRect rect);
     @Method(selector = "layoutManager:shouldUseAction:forControlCharacterAtIndex:")
-    NSControlCharacterAction layoutManager$shouldUseAction$forControlCharacterAtIndex$(NSLayoutManager layoutManager, NSControlCharacterAction action, @MachineSizedUInt long charIndex);
+    NSControlCharacterAction shouldUseAction(NSLayoutManager layoutManager, NSControlCharacterAction action, @MachineSizedUInt long charIndex);
     @Method(selector = "layoutManager:shouldBreakLineByWordBeforeCharacterAtIndex:")
-    boolean layoutManager$shouldBreakLineByWordBeforeCharacterAtIndex$(NSLayoutManager layoutManager, @MachineSizedUInt long charIndex);
+    boolean shouldBreakLineByWordBeforeCharacter(NSLayoutManager layoutManager, @MachineSizedUInt long charIndex);
     @Method(selector = "layoutManager:shouldBreakLineByHyphenatingBeforeCharacterAtIndex:")
-    boolean layoutManager$shouldBreakLineByHyphenatingBeforeCharacterAtIndex$(NSLayoutManager layoutManager, @MachineSizedUInt long charIndex);
+    boolean shouldBreakLineByHyphenatingBeforeCharacter(NSLayoutManager layoutManager, @MachineSizedUInt long charIndex);
     @Method(selector = "layoutManager:boundingBoxForControlGlyphAtIndex:forTextContainer:proposedLineFragment:glyphPosition:characterIndex:")
-    @ByVal CGRect layoutManager$boundingBoxForControlGlyphAtIndex$forTextContainer$proposedLineFragment$glyphPosition$characterIndex$(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, NSTextContainer textContainer, @ByVal CGRect proposedRect, @ByVal CGPoint glyphPosition, @MachineSizedUInt long charIndex);
+    @ByVal CGRect getBoundingBoxForControlGlyph(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, NSTextContainer textContainer, @ByVal CGRect proposedRect, @ByVal CGPoint glyphPosition, @MachineSizedUInt long charIndex);
     @Method(selector = "layoutManagerDidInvalidateLayout:")
-    void layoutManagerDidInvalidateLayout$(NSLayoutManager sender);
+    void didInvalidateLayout(NSLayoutManager sender);
     @Method(selector = "layoutManager:didCompleteLayoutForTextContainer:atEnd:")
-    void layoutManager$didCompleteLayoutForTextContainer$atEnd$(NSLayoutManager layoutManager, NSTextContainer textContainer, boolean layoutFinishedFlag);
+    void didCompleteLayout(NSLayoutManager layoutManager, NSTextContainer textContainer, boolean layoutFinishedFlag);
     @Method(selector = "layoutManager:textContainer:didChangeGeometryFromSize:")
-    void layoutManager$textContainer$didChangeGeometryFromSize$(NSLayoutManager layoutManager, NSTextContainer textContainer, @ByVal CGSize oldSize);
+    void didChangeGeometry(NSLayoutManager layoutManager, NSTextContainer textContainer, @ByVal CGSize oldSize);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

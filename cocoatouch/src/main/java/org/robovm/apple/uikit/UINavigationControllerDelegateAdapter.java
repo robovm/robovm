@@ -58,12 +58,12 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("navigationController:didShowViewController:animated:")
     public void didShowViewController(UINavigationController navigationController, UIViewController viewController, boolean animated) { throw new UnsupportedOperationException(); }
     @NotImplemented("navigationControllerSupportedInterfaceOrientations:")
-    public @MachineSizedUInt long navigationControllerSupportedInterfaceOrientations$(UINavigationController navigationController) { throw new UnsupportedOperationException(); }
+    public @MachineSizedUInt long getSupportedInterfaceOrientations(UINavigationController navigationController) { throw new UnsupportedOperationException(); }
     @NotImplemented("navigationControllerPreferredInterfaceOrientationForPresentation:")
-    public UIInterfaceOrientation navigationControllerPreferredInterfaceOrientationForPresentation$(UINavigationController navigationController) { throw new UnsupportedOperationException(); }
+    public UIInterfaceOrientation getPreferredInterfaceOrientation(UINavigationController navigationController) { throw new UnsupportedOperationException(); }
     @NotImplemented("navigationController:interactionControllerForAnimationController:")
-    public UIViewControllerInteractiveTransitioning navigationController$interactionControllerForAnimationController$(UINavigationController navigationController, UIViewControllerAnimatedTransitioning animationController) { throw new UnsupportedOperationException(); }
+    public UIViewControllerInteractiveTransitioning getInteractionController(UINavigationController navigationController, UIViewControllerAnimatedTransitioning animationController) { throw new UnsupportedOperationException(); }
     @NotImplemented("navigationController:animationControllerForOperation:fromViewController:toViewController:")
-    public UIViewControllerAnimatedTransitioning navigationController$animationControllerForOperation$fromViewController$toViewController$(UINavigationController navigationController, UINavigationControllerOperation operation, UIViewController fromVC, UIViewController toVC) { throw new UnsupportedOperationException(); }
+    public UIViewControllerAnimatedTransitioning getAnimationController(UINavigationController navigationController, UINavigationControllerOperation operation, UIViewController fromVC, UIViewController toVC) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

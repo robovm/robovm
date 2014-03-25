@@ -57,9 +57,9 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "pageViewController:spineLocationForInterfaceOrientation:")
     UIPageViewControllerSpineLocation getSpineLocation(UIPageViewController pageViewController, UIInterfaceOrientation orientation);
     @Method(selector = "pageViewControllerSupportedInterfaceOrientations:")
-    @MachineSizedUInt long pageViewControllerSupportedInterfaceOrientations$(UIPageViewController pageViewController);
+    @MachineSizedUInt long getSupportedInterfaceOrientations(UIPageViewController pageViewController);
     @Method(selector = "pageViewControllerPreferredInterfaceOrientationForPresentation:")
-    UIInterfaceOrientation pageViewControllerPreferredInterfaceOrientationForPresentation$(UIPageViewController pageViewController);
+    UIInterfaceOrientation getPreferredInterfaceOrientation(UIPageViewController pageViewController);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

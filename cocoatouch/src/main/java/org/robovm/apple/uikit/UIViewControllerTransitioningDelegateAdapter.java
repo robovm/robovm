@@ -54,12 +54,12 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("animationControllerForPresentedController:presentingController:sourceController:")
-    public UIViewControllerAnimatedTransitioning animationControllerForPresentedController$presentingController$sourceController$(UIViewController presented, UIViewController presenting, UIViewController source) { throw new UnsupportedOperationException(); }
+    public UIViewControllerAnimatedTransitioning getAnimationControllerForPresentedController(UIViewController presented, UIViewController presenting, UIViewController source) { throw new UnsupportedOperationException(); }
     @NotImplemented("animationControllerForDismissedController:")
-    public UIViewControllerAnimatedTransitioning animationControllerForDismissedController$(UIViewController dismissed) { throw new UnsupportedOperationException(); }
+    public UIViewControllerAnimatedTransitioning getAnimationControllerForDismissedController(UIViewController dismissed) { throw new UnsupportedOperationException(); }
     @NotImplemented("interactionControllerForPresentation:")
-    public UIViewControllerInteractiveTransitioning interactionControllerForPresentation$(UIViewControllerAnimatedTransitioning animator) { throw new UnsupportedOperationException(); }
+    public UIViewControllerInteractiveTransitioning getInteractionControllerForPresentation(UIViewControllerAnimatedTransitioning animator) { throw new UnsupportedOperationException(); }
     @NotImplemented("interactionControllerForDismissal:")
-    public UIViewControllerInteractiveTransitioning interactionControllerForDismissal$(UIViewControllerAnimatedTransitioning animator) { throw new UnsupportedOperationException(); }
+    public UIViewControllerInteractiveTransitioning getInteractionControllerForDismissal(UIViewControllerAnimatedTransitioning animator) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

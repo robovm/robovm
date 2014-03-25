@@ -51,13 +51,13 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "selectionWillChange:")
-    void selectionWillChange$(UITextInput textInput);
+    void selectionWillChange(UITextInput textInput);
     @Method(selector = "selectionDidChange:")
-    void selectionDidChange$(UITextInput textInput);
+    void selectionDidChange(UITextInput textInput);
     @Method(selector = "textWillChange:")
-    void textWillChange$(UITextInput textInput);
+    void textWillChange(UITextInput textInput);
     @Method(selector = "textDidChange:")
-    void textDidChange$(UITextInput textInput);
+    void textDidChange(UITextInput textInput);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

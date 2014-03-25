@@ -51,9 +51,9 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "dynamicAnimatorWillResume:")
-    void dynamicAnimatorWillResume$(UIDynamicAnimator animator);
+    void willResume(UIDynamicAnimator animator);
     @Method(selector = "dynamicAnimatorDidPause:")
-    void dynamicAnimatorDidPause$(UIDynamicAnimator animator);
+    void didPause(UIDynamicAnimator animator);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

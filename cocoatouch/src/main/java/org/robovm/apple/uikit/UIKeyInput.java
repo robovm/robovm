@@ -53,7 +53,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "hasText")
     boolean hasText();
     @Method(selector = "insertText:")
-    void insertText$(String text);
+    void insertText(String text);
     @Method(selector = "deleteBackward")
     void deleteBackward();
     /*</methods>*/

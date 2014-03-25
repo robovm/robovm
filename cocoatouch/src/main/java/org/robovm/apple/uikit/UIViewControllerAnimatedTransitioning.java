@@ -51,11 +51,11 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "transitionDuration:")
-    double transitionDuration$(UIViewControllerContextTransitioning transitionContext);
+    double getTransitionDuration(UIViewControllerContextTransitioning transitionContext);
     @Method(selector = "animateTransition:")
-    void animateTransition$(UIViewControllerContextTransitioning transitionContext);
+    void animateTransition(UIViewControllerContextTransitioning transitionContext);
     @Method(selector = "animationEnded:")
-    void animationEnded$(boolean transitionCompleted);
+    void animationEnded(boolean transitionCompleted);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

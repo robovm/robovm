@@ -56,7 +56,7 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("hasText")
     public boolean hasText() { throw new UnsupportedOperationException(); }
     @NotImplemented("insertText:")
-    public void insertText$(String text) { throw new UnsupportedOperationException(); }
+    public void insertText(String text) { throw new UnsupportedOperationException(); }
     @NotImplemented("deleteBackward")
     public void deleteBackward() { throw new UnsupportedOperationException(); }
     /*</methods>*/

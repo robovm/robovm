@@ -78,6 +78,6 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("collectionView:performAction:forItemAtIndexPath:withSender:")
     public void performAction(UICollectionView collectionView, Selector action, NSIndexPath indexPath, NSObject sender) { throw new UnsupportedOperationException(); }
     @NotImplemented("collectionView:transitionLayoutForOldLayout:newLayout:")
-    public UICollectionViewTransitionLayout collectionView$transitionLayoutForOldLayout$newLayout$(UICollectionView collectionView, UICollectionViewLayout fromLayout, UICollectionViewLayout toLayout) { throw new UnsupportedOperationException(); }
+    public UICollectionViewTransitionLayout getTransitionLayout(UICollectionView collectionView, UICollectionViewLayout fromLayout, UICollectionViewLayout toLayout) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

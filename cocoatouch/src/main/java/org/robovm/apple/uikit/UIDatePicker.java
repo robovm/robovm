@@ -95,6 +95,6 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "setDate:animated:")
-    public native void setDate$animated$(NSDate date, boolean animated);
+    public native void setDate(NSDate date, boolean animated);
     /*</methods>*/
 }

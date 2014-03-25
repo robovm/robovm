@@ -54,7 +54,7 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("containerView")
-    public UIView containerView() { throw new UnsupportedOperationException(); }
+    public UIView getContainerView() { throw new UnsupportedOperationException(); }
     @NotImplemented("isAnimated")
     public boolean isAnimated() { throw new UnsupportedOperationException(); }
     @NotImplemented("isInteractive")
@@ -62,20 +62,20 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("transitionWasCancelled")
     public boolean transitionWasCancelled() { throw new UnsupportedOperationException(); }
     @NotImplemented("presentationStyle")
-    public UIModalPresentationStyle presentationStyle() { throw new UnsupportedOperationException(); }
+    public UIModalPresentationStyle getPresentationStyle() { throw new UnsupportedOperationException(); }
     @NotImplemented("updateInteractiveTransition:")
-    public void updateInteractiveTransition$(@MachineSizedFloat double percentComplete) { throw new UnsupportedOperationException(); }
+    public void updateInteractiveTransition(@MachineSizedFloat double percentComplete) { throw new UnsupportedOperationException(); }
     @NotImplemented("finishInteractiveTransition")
     public void finishInteractiveTransition() { throw new UnsupportedOperationException(); }
     @NotImplemented("cancelInteractiveTransition")
     public void cancelInteractiveTransition() { throw new UnsupportedOperationException(); }
     @NotImplemented("completeTransition:")
-    public void completeTransition$(boolean didComplete) { throw new UnsupportedOperationException(); }
+    public void completeTransition(boolean didComplete) { throw new UnsupportedOperationException(); }
     @NotImplemented("viewControllerForKey:")
-    public UIViewController viewControllerForKey$(String key) { throw new UnsupportedOperationException(); }
+    public UIViewController getViewController(String key) { throw new UnsupportedOperationException(); }
     @NotImplemented("initialFrameForViewController:")
-    public @ByVal CGRect initialFrameForViewController$(UIViewController vc) { throw new UnsupportedOperationException(); }
+    public @ByVal CGRect getInitialFrame(UIViewController vc) { throw new UnsupportedOperationException(); }
     @NotImplemented("finalFrameForViewController:")
-    public @ByVal CGRect finalFrameForViewController$(UIViewController vc) { throw new UnsupportedOperationException(); }
+    public @ByVal CGRect getFinalFrame(UIViewController vc) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

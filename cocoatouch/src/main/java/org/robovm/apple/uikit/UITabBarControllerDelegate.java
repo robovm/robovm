@@ -61,13 +61,13 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "tabBarController:didEndCustomizingViewControllers:changed:")
     void didEndCustomizingViewControllers(UITabBarController tabBarController, NSArray<?> viewControllers, boolean changed);
     @Method(selector = "tabBarControllerSupportedInterfaceOrientations:")
-    @MachineSizedUInt long tabBarControllerSupportedInterfaceOrientations$(UITabBarController tabBarController);
+    @MachineSizedUInt long getSupportedInterfaceOrientations(UITabBarController tabBarController);
     @Method(selector = "tabBarControllerPreferredInterfaceOrientationForPresentation:")
-    UIInterfaceOrientation tabBarControllerPreferredInterfaceOrientationForPresentation$(UITabBarController tabBarController);
+    UIInterfaceOrientation getPreferredInterfaceOrientation(UITabBarController tabBarController);
     @Method(selector = "tabBarController:interactionControllerForAnimationController:")
-    UIViewControllerInteractiveTransitioning tabBarController$interactionControllerForAnimationController$(UITabBarController tabBarController, UIViewControllerAnimatedTransitioning animationController);
+    UIViewControllerInteractiveTransitioning getInteractionController(UITabBarController tabBarController, UIViewControllerAnimatedTransitioning animationController);
     @Method(selector = "tabBarController:animationControllerForTransitionFromViewController:toViewController:")
-    UIViewControllerAnimatedTransitioning tabBarController$animationControllerForTransitionFromViewController$toViewController$(UITabBarController tabBarController, UIViewController fromVC, UIViewController toVC);
+    UIViewControllerAnimatedTransitioning getAnimationController(UITabBarController tabBarController, UIViewController fromVC, UIViewController toVC);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

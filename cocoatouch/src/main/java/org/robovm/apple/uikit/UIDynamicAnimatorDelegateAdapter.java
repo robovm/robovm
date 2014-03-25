@@ -54,8 +54,8 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("dynamicAnimatorWillResume:")
-    public void dynamicAnimatorWillResume$(UIDynamicAnimator animator) { throw new UnsupportedOperationException(); }
+    public void willResume(UIDynamicAnimator animator) { throw new UnsupportedOperationException(); }
     @NotImplemented("dynamicAnimatorDidPause:")
-    public void dynamicAnimatorDidPause$(UIDynamicAnimator animator) { throw new UnsupportedOperationException(); }
+    public void didPause(UIDynamicAnimator animator) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

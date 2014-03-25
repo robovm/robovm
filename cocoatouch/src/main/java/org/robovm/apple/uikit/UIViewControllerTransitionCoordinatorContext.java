@@ -53,25 +53,25 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "isAnimated")
     boolean isAnimated();
     @Method(selector = "presentationStyle")
-    UIModalPresentationStyle presentationStyle();
+    UIModalPresentationStyle getPresentationStyle();
     @Method(selector = "initiallyInteractive")
-    boolean initiallyInteractive();
+    boolean isInitiallyInteractive();
     @Method(selector = "isInteractive")
     boolean isInteractive();
     @Method(selector = "isCancelled")
     boolean isCancelled();
     @Method(selector = "transitionDuration")
-    double transitionDuration();
+    double getTransitionDuration();
     @Method(selector = "percentComplete")
-    @MachineSizedFloat double percentComplete();
+    @MachineSizedFloat double getPercentComplete();
     @Method(selector = "completionVelocity")
-    @MachineSizedFloat double completionVelocity();
+    @MachineSizedFloat double getCompletionVelocity();
     @Method(selector = "completionCurve")
-    UIViewAnimationCurve completionCurve();
+    UIViewAnimationCurve getCompletionCurve();
     @Method(selector = "viewControllerForKey:")
-    UIViewController viewControllerForKey$(String key);
+    UIViewController getViewController(String key);
     @Method(selector = "containerView")
-    UIView containerView();
+    UIView getContainerView();
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

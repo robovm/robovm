@@ -54,12 +54,12 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("collisionBehavior:beganContactForItem:withItem:atPoint:")
-    public void collisionBehavior$beganContactForItem$withItem$atPoint$(UICollisionBehavior behavior, UIDynamicItem item1, UIDynamicItem item2, @ByVal CGPoint p) { throw new UnsupportedOperationException(); }
+    public void beganContact(UICollisionBehavior behavior, UIDynamicItem item1, UIDynamicItem item2, @ByVal CGPoint p) { throw new UnsupportedOperationException(); }
     @NotImplemented("collisionBehavior:endedContactForItem:withItem:")
-    public void collisionBehavior$endedContactForItem$withItem$(UICollisionBehavior behavior, UIDynamicItem item1, UIDynamicItem item2) { throw new UnsupportedOperationException(); }
+    public void endedContact(UICollisionBehavior behavior, UIDynamicItem item1, UIDynamicItem item2) { throw new UnsupportedOperationException(); }
     @NotImplemented("collisionBehavior:beganContactForItem:withBoundaryIdentifier:atPoint:")
-    public void collisionBehavior$beganContactForItem$withBoundaryIdentifier$atPoint$(UICollisionBehavior behavior, UIDynamicItem item, NSObject identifier, @ByVal CGPoint p) { throw new UnsupportedOperationException(); }
+    public void beganBoundaryContact(UICollisionBehavior behavior, UIDynamicItem item, NSObject identifier, @ByVal CGPoint p) { throw new UnsupportedOperationException(); }
     @NotImplemented("collisionBehavior:endedContactForItem:withBoundaryIdentifier:")
-    public void collisionBehavior$endedContactForItem$withBoundaryIdentifier$(UICollisionBehavior behavior, UIDynamicItem item, NSObject identifier) { throw new UnsupportedOperationException(); }
+    public void endedBoundaryContact(UICollisionBehavior behavior, UIDynamicItem item, NSObject identifier) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

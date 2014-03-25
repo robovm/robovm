@@ -58,9 +58,9 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:")
     public boolean shouldRecognizeSimultaneously(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer) { throw new UnsupportedOperationException(); }
     @NotImplemented("gestureRecognizer:shouldRequireFailureOfGestureRecognizer:")
-    public boolean gestureRecognizer$shouldRequireFailureOfGestureRecognizer$(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer) { throw new UnsupportedOperationException(); }
+    public boolean shouldRequireFailure(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer) { throw new UnsupportedOperationException(); }
     @NotImplemented("gestureRecognizer:shouldBeRequiredToFailByGestureRecognizer:")
-    public boolean gestureRecognizer$shouldBeRequiredToFailByGestureRecognizer$(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer) { throw new UnsupportedOperationException(); }
+    public boolean shouldBeRequiredToFail(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer) { throw new UnsupportedOperationException(); }
     @NotImplemented("gestureRecognizer:shouldReceiveTouch:")
     public boolean shouldReceiveTouch(UIGestureRecognizer gestureRecognizer, UITouch touch) { throw new UnsupportedOperationException(); }
     /*</methods>*/

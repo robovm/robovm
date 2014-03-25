@@ -54,26 +54,26 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("layoutManager:shouldGenerateGlyphs:properties:characterIndexes:font:forGlyphRange:")
-    public @MachineSizedUInt long layoutManager$shouldGenerateGlyphs$properties$characterIndexes$font$forGlyphRange$(NSLayoutManager layoutManager, ShortPtr glyphs, MachineSizedSIntPtr props, MachineSizedUIntPtr charIndexes, UIFont aFont, @ByVal NSRange glyphRange) { throw new UnsupportedOperationException(); }
+    public @MachineSizedUInt long shouldGenerateGlyphs(NSLayoutManager layoutManager, ShortPtr glyphs, MachineSizedSIntPtr props, MachineSizedUIntPtr charIndexes, UIFont aFont, @ByVal NSRange glyphRange) { throw new UnsupportedOperationException(); }
     @NotImplemented("layoutManager:lineSpacingAfterGlyphAtIndex:withProposedLineFragmentRect:")
-    public @MachineSizedFloat double layoutManager$lineSpacingAfterGlyphAtIndex$withProposedLineFragmentRect$(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, @ByVal CGRect rect) { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getLineSpacingAfterGlyph(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, @ByVal CGRect rect) { throw new UnsupportedOperationException(); }
     @NotImplemented("layoutManager:paragraphSpacingBeforeGlyphAtIndex:withProposedLineFragmentRect:")
-    public @MachineSizedFloat double layoutManager$paragraphSpacingBeforeGlyphAtIndex$withProposedLineFragmentRect$(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, @ByVal CGRect rect) { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getParagraphSpacingBeforeGlyph(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, @ByVal CGRect rect) { throw new UnsupportedOperationException(); }
     @NotImplemented("layoutManager:paragraphSpacingAfterGlyphAtIndex:withProposedLineFragmentRect:")
-    public @MachineSizedFloat double layoutManager$paragraphSpacingAfterGlyphAtIndex$withProposedLineFragmentRect$(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, @ByVal CGRect rect) { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getParagraphSpacingAfterGlyph(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, @ByVal CGRect rect) { throw new UnsupportedOperationException(); }
     @NotImplemented("layoutManager:shouldUseAction:forControlCharacterAtIndex:")
-    public NSControlCharacterAction layoutManager$shouldUseAction$forControlCharacterAtIndex$(NSLayoutManager layoutManager, NSControlCharacterAction action, @MachineSizedUInt long charIndex) { throw new UnsupportedOperationException(); }
+    public NSControlCharacterAction shouldUseAction(NSLayoutManager layoutManager, NSControlCharacterAction action, @MachineSizedUInt long charIndex) { throw new UnsupportedOperationException(); }
     @NotImplemented("layoutManager:shouldBreakLineByWordBeforeCharacterAtIndex:")
-    public boolean layoutManager$shouldBreakLineByWordBeforeCharacterAtIndex$(NSLayoutManager layoutManager, @MachineSizedUInt long charIndex) { throw new UnsupportedOperationException(); }
+    public boolean shouldBreakLineByWordBeforeCharacter(NSLayoutManager layoutManager, @MachineSizedUInt long charIndex) { throw new UnsupportedOperationException(); }
     @NotImplemented("layoutManager:shouldBreakLineByHyphenatingBeforeCharacterAtIndex:")
-    public boolean layoutManager$shouldBreakLineByHyphenatingBeforeCharacterAtIndex$(NSLayoutManager layoutManager, @MachineSizedUInt long charIndex) { throw new UnsupportedOperationException(); }
+    public boolean shouldBreakLineByHyphenatingBeforeCharacter(NSLayoutManager layoutManager, @MachineSizedUInt long charIndex) { throw new UnsupportedOperationException(); }
     @NotImplemented("layoutManager:boundingBoxForControlGlyphAtIndex:forTextContainer:proposedLineFragment:glyphPosition:characterIndex:")
-    public @ByVal CGRect layoutManager$boundingBoxForControlGlyphAtIndex$forTextContainer$proposedLineFragment$glyphPosition$characterIndex$(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, NSTextContainer textContainer, @ByVal CGRect proposedRect, @ByVal CGPoint glyphPosition, @MachineSizedUInt long charIndex) { throw new UnsupportedOperationException(); }
+    public @ByVal CGRect getBoundingBoxForControlGlyph(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, NSTextContainer textContainer, @ByVal CGRect proposedRect, @ByVal CGPoint glyphPosition, @MachineSizedUInt long charIndex) { throw new UnsupportedOperationException(); }
     @NotImplemented("layoutManagerDidInvalidateLayout:")
-    public void layoutManagerDidInvalidateLayout$(NSLayoutManager sender) { throw new UnsupportedOperationException(); }
+    public void didInvalidateLayout(NSLayoutManager sender) { throw new UnsupportedOperationException(); }
     @NotImplemented("layoutManager:didCompleteLayoutForTextContainer:atEnd:")
-    public void layoutManager$didCompleteLayoutForTextContainer$atEnd$(NSLayoutManager layoutManager, NSTextContainer textContainer, boolean layoutFinishedFlag) { throw new UnsupportedOperationException(); }
+    public void didCompleteLayout(NSLayoutManager layoutManager, NSTextContainer textContainer, boolean layoutFinishedFlag) { throw new UnsupportedOperationException(); }
     @NotImplemented("layoutManager:textContainer:didChangeGeometryFromSize:")
-    public void layoutManager$textContainer$didChangeGeometryFromSize$(NSLayoutManager layoutManager, NSTextContainer textContainer, @ByVal CGSize oldSize) { throw new UnsupportedOperationException(); }
+    public void didChangeGeometry(NSLayoutManager layoutManager, NSTextContainer textContainer, @ByVal CGSize oldSize) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

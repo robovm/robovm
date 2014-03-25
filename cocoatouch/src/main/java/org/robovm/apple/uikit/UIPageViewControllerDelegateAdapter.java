@@ -60,8 +60,8 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("pageViewController:spineLocationForInterfaceOrientation:")
     public UIPageViewControllerSpineLocation getSpineLocation(UIPageViewController pageViewController, UIInterfaceOrientation orientation) { throw new UnsupportedOperationException(); }
     @NotImplemented("pageViewControllerSupportedInterfaceOrientations:")
-    public @MachineSizedUInt long pageViewControllerSupportedInterfaceOrientations$(UIPageViewController pageViewController) { throw new UnsupportedOperationException(); }
+    public @MachineSizedUInt long getSupportedInterfaceOrientations(UIPageViewController pageViewController) { throw new UnsupportedOperationException(); }
     @NotImplemented("pageViewControllerPreferredInterfaceOrientationForPresentation:")
-    public UIInterfaceOrientation pageViewControllerPreferredInterfaceOrientationForPresentation$(UIPageViewController pageViewController) { throw new UnsupportedOperationException(); }
+    public UIInterfaceOrientation getPreferredInterfaceOrientation(UIPageViewController pageViewController) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

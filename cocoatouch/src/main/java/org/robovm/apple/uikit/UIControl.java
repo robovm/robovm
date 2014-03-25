@@ -208,7 +208,7 @@ import org.robovm.apple.coreimage.*;
         synchronized (listeners) {
             listeners.add(wrapper);
         }
-        addTarget$action$forControlEvents$(wrapper, handleEvent, controlEvent);
+        addTarget(wrapper, handleEvent, controlEvent);
     }
     
     public void removeListener(Listener listener) {
@@ -220,7 +220,7 @@ import org.robovm.apple.coreimage.*;
             for (Iterator<ListenerWrapper> it = listeners.iterator(); it.hasNext();) {
                 ListenerWrapper wrapper = it.next();
                 if (wrapper.listener == listener) {
-                    removeTarget$action$forControlEvents$(wrapper, handleEvent, wrapper.controlEvent);
+                    removeTarget(wrapper, handleEvent, wrapper.controlEvent);
                     it.remove();
                     break;
                 }
@@ -238,9 +238,9 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "cancelTrackingWithEvent:")
     public native void cancelTracking(UIEvent event);
     @Method(selector = "addTarget:action:forControlEvents:")
-    public native void addTarget$action$forControlEvents$(NSObject target, Selector action, UIControlEvents controlEvents);
+    public native void addTarget(NSObject target, Selector action, UIControlEvents controlEvents);
     @Method(selector = "removeTarget:action:forControlEvents:")
-    public native void removeTarget$action$forControlEvents$(NSObject target, Selector action, UIControlEvents controlEvents);
+    public native void removeTarget(NSObject target, Selector action, UIControlEvents controlEvents);
     @Method(selector = "allTargets")
     public native NSSet<?> getAllTargets();
     @Method(selector = "allControlEvents")
@@ -248,7 +248,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "actionsForTarget:forControlEvent:")
     public native NSArray<?> getActions(NSObject target, UIControlEvents controlEvent);
     @Method(selector = "sendAction:to:forEvent:")
-    public native void sendAction$to$forEvent$(Selector action, NSObject target, UIEvent event);
+    public native void sendAction(Selector action, NSObject target, UIEvent event);
     @Method(selector = "sendActionsForControlEvents:")
     public native void sendControlEventsActions(UIControlEvents controlEvents);
     /*</methods>*/

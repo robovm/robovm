@@ -54,12 +54,12 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("guidedAccessRestrictionIdentifiers")
-    public NSArray<?> guidedAccessRestrictionIdentifiers() { throw new UnsupportedOperationException(); }
+    public NSArray<?> getIdentifiers() { throw new UnsupportedOperationException(); }
     @NotImplemented("guidedAccessRestrictionWithIdentifier:didChangeState:")
-    public void guidedAccessRestrictionWithIdentifier$didChangeState$(String restrictionIdentifier, UIGuidedAccessRestrictionState newRestrictionState) { throw new UnsupportedOperationException(); }
+    public void didChangeState(String restrictionIdentifier, UIGuidedAccessRestrictionState newRestrictionState) { throw new UnsupportedOperationException(); }
     @NotImplemented("textForGuidedAccessRestrictionWithIdentifier:")
-    public String textForGuidedAccessRestrictionWithIdentifier$(String restrictionIdentifier) { throw new UnsupportedOperationException(); }
+    public String getText(String restrictionIdentifier) { throw new UnsupportedOperationException(); }
     @NotImplemented("detailTextForGuidedAccessRestrictionWithIdentifier:")
-    public String detailTextForGuidedAccessRestrictionWithIdentifier$(String restrictionIdentifier) { throw new UnsupportedOperationException(); }
+    public String getDetailText(String restrictionIdentifier) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

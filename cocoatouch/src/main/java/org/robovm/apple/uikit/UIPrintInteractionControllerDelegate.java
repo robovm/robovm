@@ -67,7 +67,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "printInteractionControllerDidFinishJob:")
     void didFinishJob(UIPrintInteractionController printInteractionController);
     @Method(selector = "printInteractionController:cutLengthForPaper:")
-    @MachineSizedFloat double printInteractionController$cutLengthForPaper$(UIPrintInteractionController printInteractionController, UIPrintPaper paper);
+    @MachineSizedFloat double getCutLength(UIPrintInteractionController printInteractionController, UIPrintPaper paper);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

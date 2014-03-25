@@ -74,9 +74,9 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "fontWithSize:")
     public native UIFont getFontWithSize(@MachineSizedFloat double fontSize);
     @Method(selector = "fontDescriptor")
-    public native UIFontDescriptor fontDescriptor();
+    public native UIFontDescriptor getFontDescriptor();
     @Method(selector = "preferredFontForTextStyle:")
-    public static native UIFont preferredFontForTextStyle$(String style);
+    public static native UIFont getPreferredFontForTextStyle(String style);
     @Method(selector = "fontWithName:size:")
     public static native UIFont getFont(String fontName, @MachineSizedFloat double fontSize);
     @Method(selector = "familyNames")
@@ -90,7 +90,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "italicSystemFontOfSize:")
     public static native UIFont getItalicSystemFont(@MachineSizedFloat double fontSize);
     @Method(selector = "fontWithDescriptor:size:")
-    public static native UIFont fontWithDescriptor$size$(UIFontDescriptor descriptor, @MachineSizedFloat double pointSize);
+    public static native UIFont getFont(UIFontDescriptor descriptor, @MachineSizedFloat double pointSize);
     @Method(selector = "labelFontSize")
     public static native @MachineSizedFloat double getLabelFontSize();
     @Method(selector = "buttonFontSize")

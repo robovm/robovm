@@ -62,8 +62,8 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("splitViewController:shouldHideViewController:inOrientation:")
     public boolean shouldHideViewController(UISplitViewController svc, UIViewController vc, UIInterfaceOrientation orientation) { throw new UnsupportedOperationException(); }
     @NotImplemented("splitViewControllerSupportedInterfaceOrientations:")
-    public @MachineSizedUInt long splitViewControllerSupportedInterfaceOrientations$(UISplitViewController splitViewController) { throw new UnsupportedOperationException(); }
+    public @MachineSizedUInt long getSupportedInterfaceOrientations(UISplitViewController splitViewController) { throw new UnsupportedOperationException(); }
     @NotImplemented("splitViewControllerPreferredInterfaceOrientationForPresentation:")
-    public UIInterfaceOrientation splitViewControllerPreferredInterfaceOrientationForPresentation$(UISplitViewController splitViewController) { throw new UnsupportedOperationException(); }
+    public UIInterfaceOrientation name(UISplitViewController splitViewController) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

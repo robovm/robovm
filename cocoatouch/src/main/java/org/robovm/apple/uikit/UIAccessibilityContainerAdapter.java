@@ -54,10 +54,10 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("accessibilityElementCount")
-    public @MachineSizedSInt long accessibilityElementCount() { throw new UnsupportedOperationException(); }
+    public @MachineSizedSInt long getAccessibilityElementCount() { throw new UnsupportedOperationException(); }
     @NotImplemented("accessibilityElementAtIndex:")
-    public NSObject accessibilityElementAtIndex$(@MachineSizedSInt long index) { throw new UnsupportedOperationException(); }
+    public NSObject getAccessibilityElement(@MachineSizedSInt long index) { throw new UnsupportedOperationException(); }
     @NotImplemented("indexOfAccessibilityElement:")
-    public @MachineSizedSInt long indexOfAccessibilityElement$(NSObject element) { throw new UnsupportedOperationException(); }
+    public @MachineSizedSInt long indexOfAccessibilityElement(NSObject element) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

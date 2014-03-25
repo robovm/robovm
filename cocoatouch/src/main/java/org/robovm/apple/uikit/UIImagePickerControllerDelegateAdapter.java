@@ -54,7 +54,7 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("imagePickerController:didFinishPickingImage:editingInfo:")
-    public void imagePickerController$didFinishPickingImage$editingInfo$(UIImagePickerController picker, UIImage image, NSDictionary<?, ?> editingInfo) { throw new UnsupportedOperationException(); }
+    public void didFinishPickingImage(UIImagePickerController picker, UIImage image, NSDictionary<?, ?> editingInfo) { throw new UnsupportedOperationException(); }
     @NotImplemented("imagePickerController:didFinishPickingMediaWithInfo:")
     public void didFinishPickingMedia(UIImagePickerController picker, NSDictionary<?, ?> info) { throw new UnsupportedOperationException(); }
     @NotImplemented("imagePickerControllerDidCancel:")

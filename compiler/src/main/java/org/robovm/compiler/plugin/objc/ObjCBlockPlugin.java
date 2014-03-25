@@ -243,6 +243,11 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
             }
             
             @Override
+            public void visitInnerClass(String name, String outerName, String innerName, int access) {
+                // Ignore
+            }
+
+            @Override
             public void visitSource(String source, String debug) {
                 // Ignore
             }
@@ -328,6 +333,10 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
             }
         }, 0);
         
+        cw.visitInnerClass(blockMarshalerName, clazz.getInternalName(), 
+                blockMarshalerName.substring(clazz.getInternalName().length() + 1), 
+                ACC_PUBLIC + ACC_STATIC);
+
         cw.visitEnd();
         
         File f = clazz.getPath().getGeneratedClassFile(blockMarshalerName);

@@ -49,6 +49,12 @@ import org.robovm.apple.foundation.*;
         this.size(size);
     }
     /*</constructors>*/
+    
+    public CGRect(double x, double y, double width, double height) {
+        origin().x(x).y(y);
+        size().width(width).height(height);
+    }
+    
     /*<properties>*//*</properties>*/
     /*<members>*/
     @StructMember(0) public native @ByVal CGPoint origin();

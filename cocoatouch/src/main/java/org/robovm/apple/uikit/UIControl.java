@@ -19,6 +19,7 @@ package org.robovm.apple.uikit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -78,6 +79,151 @@ import org.robovm.apple.coreimage.*;
     public native boolean isTouchInside();
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    private static final Selector handleEvent = Selector.register("handleEvent");
+    private static class ListenerWrapper extends NSObject {
+        private final Listener listener;
+        private final UIControlEvents controlEvent;
+        private ListenerWrapper(Listener listener, UIControlEvents controlEvent) {
+            this.listener = listener;
+            this.controlEvent = controlEvent;
+        }
+        @Method(selector = "handleEvent")
+        private void handleEvent(UIControl control, UIEvent event) {
+            if (controlEvent == UIControlEvents.TouchDown) {
+                ((OnTouchDownListener) listener).onTouchDown(control, event);
+            } else if (controlEvent == UIControlEvents.TouchUpInside) {
+                ((OnTouchUpInsideListener) listener).onTouchUpInside(control, event);
+            } else if (controlEvent == UIControlEvents.TouchUpOutside) {
+                ((OnTouchUpOutsideListener) listener).onTouchUpOutside(control, event);
+            }
+        }
+    }
+    public interface Listener {}
+    public interface OnTouchDownListener extends Listener {
+        void onTouchDown(UIControl control, UIEvent event);
+    }
+    public interface OnTouchDownRepeatListener extends Listener {
+        void onTouchDownRepeat(UIControl control, UIEvent event);
+    }
+    public interface OnTouchDragInsideListener extends Listener {
+        void onTouchDragInside(UIControl control, UIEvent event);
+    }
+    public interface OnTouchDragOutsideListener extends Listener {
+        void onTouchDragOutside(UIControl control, UIEvent event);
+    }
+    public interface OnTouchDragEnterListener extends Listener {
+        void onTouchDragEnter(UIControl control, UIEvent event);
+    }
+    public interface OnTouchDragExitListener extends Listener {
+        void onTouchDragExit(UIControl control, UIEvent event);
+    }
+    public interface OnTouchUpInsideListener extends Listener {
+        void onTouchUpInside(UIControl control, UIEvent event);
+    }
+    public interface OnTouchUpOutsideListener extends Listener {
+        void onTouchUpOutside(UIControl control, UIEvent event);
+    }
+    public interface OnTouchCancelListener extends Listener {
+        void onTouchCancel(UIControl control, UIEvent event);
+    }
+    public interface OnValueChangedListener extends Listener {
+        void onValueChanged(UIControl control, UIEvent event);
+    }
+    public interface OnEditingDidBeginListener extends Listener {
+        void onEditingDidBegin(UIControl control, UIEvent event);
+    }
+    public interface OnEditingChangedListener extends Listener {
+        void onEditingChanged(UIControl control, UIEvent event);
+    }
+    public interface OnEditingDidEndListener extends Listener {
+        void onEditingDidEnd(UIControl control, UIEvent event);
+    }
+    public interface OnEditingDidEndOnExitListener extends Listener {
+        void onEditingDidEndOnExit(UIControl control, UIEvent event);
+    }
+    
+    public void addOnTouchDownListener(OnTouchDownListener l) {
+        addListener(l, UIControlEvents.TouchDown);
+    }
+    public void addOnTouchDownRepeatListener(OnTouchDownRepeatListener l) {
+        addListener(l, UIControlEvents.TouchDownRepeat);
+    }
+    public void addOnTouchDragInsideListener(OnTouchDragInsideListener l) {
+        addListener(l, UIControlEvents.TouchDragInside);
+    }
+    public void addOnTouchDragOutsideListener(OnTouchDragOutsideListener l) {
+        addListener(l, UIControlEvents.TouchDragOutside);
+    }
+    public void addOnTouchDragEnterListener(OnTouchDragEnterListener l) {
+        addListener(l, UIControlEvents.TouchDragEnter);
+    }
+    public void addOnTouchDragExitListener(OnTouchDragExitListener l) {
+        addListener(l, UIControlEvents.TouchDragExit);
+    }
+    public void addOnTouchUpInsideListener(OnTouchUpInsideListener l) {
+        addListener(l, UIControlEvents.TouchUpInside);
+    }
+    public void addOnTouchUpOutsideListener(OnTouchUpOutsideListener l) {
+        addListener(l, UIControlEvents.TouchUpOutside);
+    }
+    public void addOnTouchCancelListener(OnTouchCancelListener l) {
+        addListener(l, UIControlEvents.TouchCancel);
+    }
+    public void addOnValueChangedListener(OnValueChangedListener l) {
+        addListener(l, UIControlEvents.ValueChanged);
+    }
+    public void addOnEditingDidBegin(OnEditingDidBeginListener l) {
+        addListener(l, UIControlEvents.EditingDidBegin);
+    }
+    public void addOnEditingChangedListener(OnEditingChangedListener l) {
+        addListener(l, UIControlEvents.EditingChanged);
+    }
+    public void addOnEditingDidEndListener(OnEditingDidEndListener l) {
+        addListener(l, UIControlEvents.EditingDidEnd);
+    }
+    public void addOnEditingDidEndOnExitListener(OnEditingDidEndOnExitListener l) {
+        addListener(l, UIControlEvents.EditingDidEndOnExit);
+    }
+    
+    @SuppressWarnings("unchecked")
+    private List<ListenerWrapper> getListeners(boolean create) {
+        synchronized (UIControl.class) {
+            List<ListenerWrapper> listeners = 
+                    (List<ListenerWrapper>) getAssociatedObject(UIControl.class.getName() + ".listeners");
+            if (listeners == null && create) {
+                listeners = new LinkedList<ListenerWrapper>();
+                setAssociatedObject(UIControl.class.getName() + ".listeners", listeners);
+            }
+            return listeners;
+        }
+    }
+    private void addListener(Listener listener, UIControlEvents controlEvent) {
+        ListenerWrapper wrapper = new ListenerWrapper(listener, controlEvent);
+        List<ListenerWrapper> listeners = getListeners(true);
+        synchronized (listeners) {
+            listeners.add(wrapper);
+        }
+        addTarget$action$forControlEvents$(wrapper, handleEvent, controlEvent);
+    }
+    
+    public void removeListener(Listener listener) {
+        List<ListenerWrapper> listeners = getListeners(false);
+        if (listeners == null) {
+            return;
+        }
+        synchronized (listeners) {
+            for (Iterator<ListenerWrapper> it = listeners.iterator(); it.hasNext();) {
+                ListenerWrapper wrapper = it.next();
+                if (wrapper.listener == listener) {
+                    removeTarget$action$forControlEvents$(wrapper, handleEvent, wrapper.controlEvent);
+                    it.remove();
+                    break;
+                }
+            }
+        }        
+    }
+    
     /*<methods>*/
     @Method(selector = "beginTrackingWithTouch:withEvent:")
     public native boolean beginTracking(UITouch touch, UIEvent event);

@@ -49,6 +49,11 @@ import org.robovm.apple.coreimage.*;
     public UIStepper() {}
     protected UIStepper(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    
+    public UIStepper(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "isContinuous")
     public native boolean isContinuous();

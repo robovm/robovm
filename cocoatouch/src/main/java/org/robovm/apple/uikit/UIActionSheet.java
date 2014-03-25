@@ -49,6 +49,11 @@ import org.robovm.apple.coreimage.*;
     public UIActionSheet() {}
     protected UIActionSheet(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    
+    public UIActionSheet(CGRect frame) {
+        super(frame);
+    }
+
     /*<properties>*/
     @Property(selector = "delegate")
     public native UIActionSheetDelegate getDelegate();

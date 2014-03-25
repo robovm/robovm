@@ -49,6 +49,11 @@ import org.robovm.apple.coreimage.*;
     public UICollectionReusableView() {}
     protected UICollectionReusableView(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    
+    public UICollectionReusableView(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "reuseIdentifier")
     public native String getReuseIdentifier();

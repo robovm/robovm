@@ -49,6 +49,11 @@ import org.robovm.apple.coreimage.*;
     public UIWindow() {}
     protected UIWindow(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    
+    public UIWindow(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "screen")
     public native UIScreen getScreen();

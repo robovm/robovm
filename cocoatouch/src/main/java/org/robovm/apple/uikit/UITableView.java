@@ -50,6 +50,11 @@ import org.robovm.apple.coreimage.*;
     protected UITableView(SkipInit skipInit) { super(skipInit); }
     public UITableView(@ByVal CGRect frame, UITableViewStyle style) { super((SkipInit) null); initObject(initWithFrame$style$(frame, style)); }
     /*</constructors>*/
+    
+    public UITableView(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "style")
     public native UITableViewStyle getStyle();

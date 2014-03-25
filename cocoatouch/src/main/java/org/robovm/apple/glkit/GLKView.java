@@ -51,6 +51,11 @@ import org.robovm.apple.dispatch.*;
     protected GLKView(SkipInit skipInit) { super(skipInit); }
     public GLKView(@ByVal CGRect frame, EAGLContext context) { super((SkipInit) null); initObject(initWithFrame$context$(frame, context)); }
     /*</constructors>*/
+
+    public GLKView(CGRect frame) {
+        super(frame);
+    }
+
     /*<properties>*/
     @Property(selector = "delegate")
     public native GLKViewDelegate getDelegate();

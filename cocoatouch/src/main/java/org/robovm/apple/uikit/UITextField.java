@@ -49,6 +49,11 @@ import org.robovm.apple.coreimage.*;
     public UITextField() {}
     protected UITextField(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    
+    public UITextField(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "text")
     public native String getText();

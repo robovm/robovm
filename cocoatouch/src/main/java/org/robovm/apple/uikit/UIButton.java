@@ -49,6 +49,11 @@ import org.robovm.apple.coreimage.*;
     public UIButton() {}
     protected UIButton(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    
+    public UIButton(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "contentEdgeInsets")
     public native @ByVal UIEdgeInsets getContentEdgeInsets();

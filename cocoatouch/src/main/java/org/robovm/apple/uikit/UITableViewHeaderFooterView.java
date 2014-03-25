@@ -50,6 +50,11 @@ import org.robovm.apple.coreimage.*;
     protected UITableViewHeaderFooterView(SkipInit skipInit) { super(skipInit); }
     public UITableViewHeaderFooterView(String reuseIdentifier) { super((SkipInit) null); initObject(initWithReuseIdentifier$(reuseIdentifier)); }
     /*</constructors>*/
+    
+    public UITableViewHeaderFooterView(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "tintColor")
     public native UIColor getTintColor();

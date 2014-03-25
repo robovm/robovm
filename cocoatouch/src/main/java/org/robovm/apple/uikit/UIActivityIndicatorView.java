@@ -50,6 +50,11 @@ import org.robovm.apple.coreimage.*;
     protected UIActivityIndicatorView(SkipInit skipInit) { super(skipInit); }
     public UIActivityIndicatorView(UIActivityIndicatorViewStyle style) { super((SkipInit) null); initObject(initWithActivityIndicatorStyle$(style)); }
     /*</constructors>*/
+    
+    public UIActivityIndicatorView(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "activityIndicatorViewStyle")
     public native UIActivityIndicatorViewStyle getActivityIndicatorViewStyle();

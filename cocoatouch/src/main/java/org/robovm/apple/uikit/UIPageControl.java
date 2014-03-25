@@ -49,6 +49,11 @@ import org.robovm.apple.coreimage.*;
     public UIPageControl() {}
     protected UIPageControl(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    
+    public UIPageControl(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "numberOfPages")
     public native @MachineSizedSInt long getNumberOfPages();

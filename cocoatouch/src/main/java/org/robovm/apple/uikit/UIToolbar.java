@@ -49,6 +49,11 @@ import org.robovm.apple.coreimage.*;
     public UIToolbar() {}
     protected UIToolbar(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    
+    public UIToolbar(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "barStyle")
     public native UIBarStyle getBarStyle();

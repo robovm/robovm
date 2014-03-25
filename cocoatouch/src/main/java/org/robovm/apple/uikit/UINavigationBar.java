@@ -49,6 +49,11 @@ import org.robovm.apple.coreimage.*;
     public UINavigationBar() {}
     protected UINavigationBar(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    
+    public UINavigationBar(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "barStyle")
     public native UIBarStyle getBarStyle();

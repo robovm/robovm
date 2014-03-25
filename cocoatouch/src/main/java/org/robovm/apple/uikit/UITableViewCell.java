@@ -51,6 +51,11 @@ import org.robovm.apple.coreimage.*;
     public UITableViewCell(UITableViewCellStyle style, String reuseIdentifier) { super((SkipInit) null); initObject(initWithStyle$reuseIdentifier$(style, reuseIdentifier)); }
     public UITableViewCell(@ByVal CGRect frame, String reuseIdentifier) { super((SkipInit) null); initObject(initWithFrame$reuseIdentifier$(frame, reuseIdentifier)); }
     /*</constructors>*/
+    
+    public UITableViewCell(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "imageView")
     public native UIImageView getImageView();

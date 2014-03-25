@@ -49,6 +49,11 @@ import org.robovm.apple.coreimage.*;
     public UICollectionViewCell() {}
     protected UICollectionViewCell(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    
+    public UICollectionViewCell(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "contentView")
     public native UIView getContentView();

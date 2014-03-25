@@ -49,6 +49,11 @@ import org.robovm.apple.coreimage.*;
     public UIWebView() {}
     protected UIWebView(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    
+    public UIWebView(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "delegate")
     public native UIWebViewDelegate getDelegate();

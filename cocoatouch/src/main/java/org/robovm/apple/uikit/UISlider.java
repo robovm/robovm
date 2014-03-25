@@ -49,6 +49,11 @@ import org.robovm.apple.coreimage.*;
     public UISlider() {}
     protected UISlider(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    
+    public UISlider(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "value")
     public native float getValue();

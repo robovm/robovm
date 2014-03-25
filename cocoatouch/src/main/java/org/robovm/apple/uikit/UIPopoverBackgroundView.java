@@ -49,6 +49,11 @@ import org.robovm.apple.coreimage.*;
     public UIPopoverBackgroundView() {}
     protected UIPopoverBackgroundView(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    
+    public UIPopoverBackgroundView(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "arrowOffset")
     public native @MachineSizedFloat double getArrowOffset();

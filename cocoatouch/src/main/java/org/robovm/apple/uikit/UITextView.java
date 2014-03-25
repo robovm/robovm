@@ -50,6 +50,11 @@ import org.robovm.apple.coreimage.*;
     protected UITextView(SkipInit skipInit) { super(skipInit); }
     public UITextView(@ByVal CGRect frame, NSTextContainer textContainer) { super((SkipInit) null); initObject(initWithFrame$textContainer$(frame, textContainer)); }
     /*</constructors>*/
+    
+    public UITextView(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "delegate")
     public native UITextViewDelegate getDelegate();

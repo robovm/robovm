@@ -49,6 +49,11 @@ import org.robovm.apple.coreimage.*;
     public UIDatePicker() {}
     protected UIDatePicker(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    
+    public UIDatePicker(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "datePickerMode")
     public native UIDatePickerMode getDatePickerMode();

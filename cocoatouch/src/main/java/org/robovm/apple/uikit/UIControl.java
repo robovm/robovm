@@ -19,7 +19,6 @@ package org.robovm.apple.uikit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -50,6 +49,11 @@ import org.robovm.apple.coreimage.*;
     public UIControl() {}
     protected UIControl(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    
+    public UIControl(CGRect frame) {
+        super(frame);
+    }    
+    
     /*<properties>*/
     @Property(selector = "isEnabled")
     public native boolean isEnabled();

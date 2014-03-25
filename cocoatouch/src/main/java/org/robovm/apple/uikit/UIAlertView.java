@@ -49,6 +49,11 @@ import org.robovm.apple.coreimage.*;
     public UIAlertView() {}
     protected UIAlertView(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    
+    public UIAlertView(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "delegate")
     public native UIAlertViewDelegate getDelegate();

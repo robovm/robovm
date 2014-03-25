@@ -50,6 +50,11 @@ import org.robovm.apple.coreimage.*;
     protected UIProgressView(SkipInit skipInit) { super(skipInit); }
     public UIProgressView(UIProgressViewStyle style) { super((SkipInit) null); initObject(initWithProgressViewStyle$(style)); }
     /*</constructors>*/
+    
+    public UIProgressView(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "progressViewStyle")
     public native UIProgressViewStyle getProgressViewStyle();

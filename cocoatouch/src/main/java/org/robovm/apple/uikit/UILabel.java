@@ -49,6 +49,11 @@ import org.robovm.apple.coreimage.*;
     public UILabel() {}
     protected UILabel(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    
+    public UILabel(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "text")
     public native String getText();

@@ -49,6 +49,11 @@ import org.robovm.apple.coreimage.*;
     public UISearchBar() {}
     protected UISearchBar(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    
+    public UISearchBar(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "barStyle")
     public native UIBarStyle getBarStyle();

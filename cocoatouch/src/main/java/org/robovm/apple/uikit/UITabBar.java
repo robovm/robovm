@@ -49,6 +49,11 @@ import org.robovm.apple.coreimage.*;
     public UITabBar() {}
     protected UITabBar(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    
+    public UITabBar(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "delegate")
     public native UITabBarDelegate getDelegate();

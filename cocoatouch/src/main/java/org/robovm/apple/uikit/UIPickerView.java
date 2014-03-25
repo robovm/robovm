@@ -49,6 +49,11 @@ import org.robovm.apple.coreimage.*;
     public UIPickerView() {}
     protected UIPickerView(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    
+    public UIPickerView(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "dataSource")
     public native UIPickerViewDataSource getDataSource();

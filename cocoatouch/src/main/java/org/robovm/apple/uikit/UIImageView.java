@@ -51,6 +51,11 @@ import org.robovm.apple.coreimage.*;
     public UIImageView(UIImage image) { super((SkipInit) null); initObject(initWithImage$(image)); }
     public UIImageView(UIImage image, UIImage highlightedImage) { super((SkipInit) null); initObject(initWithImage$highlightedImage$(image, highlightedImage)); }
     /*</constructors>*/
+    
+    public UIImageView(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "image")
     public native UIImage getImage();

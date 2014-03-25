@@ -52,6 +52,11 @@ import org.robovm.apple.coreimage.*;
     protected UISegmentedControl(SkipInit skipInit) { super(skipInit); }
     public UISegmentedControl(NSArray<?> items) { super((SkipInit) null); initObject(initWithItems$(items)); }
     /*</constructors>*/
+    
+    public UISegmentedControl(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "segmentedControlStyle")
     public native UISegmentedControlStyle getControlStyle();

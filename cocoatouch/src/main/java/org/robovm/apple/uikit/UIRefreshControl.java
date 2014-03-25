@@ -49,6 +49,11 @@ import org.robovm.apple.coreimage.*;
     public UIRefreshControl() {}
     protected UIRefreshControl(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    
+    public UIRefreshControl(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "isRefreshing")
     public native boolean isRefreshing();

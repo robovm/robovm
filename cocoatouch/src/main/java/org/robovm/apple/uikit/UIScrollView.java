@@ -49,6 +49,11 @@ import org.robovm.apple.coreimage.*;
     public UIScrollView() {}
     protected UIScrollView(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    
+    public UIScrollView(CGRect frame) {
+        super(frame);
+    }
+    
     /*<properties>*/
     @Property(selector = "contentOffset")
     public native @ByVal CGPoint getContentOffset();

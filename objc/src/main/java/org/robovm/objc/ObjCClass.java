@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -278,19 +277,17 @@ public final class ObjCClass extends ObjCObject {
         Map<String, Method> notImplemented = new HashMap<String, Method>();
         findNotImplemented(type, notImplemented);
         Map<String, Method> callbacks = new HashMap<String, Method>();
-        Class<?> c = type;
-        while (c != null && c != Object.class) {
-            findCallbacks(c, callbacks);
-            c = c.getSuperclass();
-        }
+        findCallbacksOnClasses(type, callbacks);
+        findCallbacksOnInterfaces(type, callbacks);
         // Remove callbacks which have a corresponding @NotImplemented method
         callbacks.keySet().removeAll(notImplemented.keySet());
         return callbacks;
     }
 
     private static void findNotImplemented(Class<?> type, Map<String, Method> result) {
-        if (type.getSuperclass() != null) {
-            findNotImplemented(type.getSuperclass(), result);
+        Class<?> superclass = type.getSuperclass();
+        if (superclass != null) {
+            findNotImplemented(superclass, result);
         }
         for (Method m : type.getDeclaredMethods()) {
             NotImplemented ni = m.getAnnotation(NotImplemented.class);
@@ -309,7 +306,7 @@ public final class ObjCClass extends ObjCObject {
     }
     
     private static void findCallbacks(Class<?> type, Map<String, Method> result) {
-        List<Class<?>> classes = new ArrayList<Class<?>>();
+        ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
         if (!type.isInterface()) {
             // No need to search interfaces since interfaces cannot have 
             // static methods and callbacks must be static.
@@ -335,8 +332,26 @@ public final class ObjCClass extends ObjCObject {
                 }
             }
         }
+    }
+
+    private static void findCallbacksOnClasses(Class<?> type, Map<String, Method> result) {
+        Class<?> superclass = type.getSuperclass();
+        if (superclass != null) {
+            findCallbacksOnClasses(superclass, result);
+            findCallbacks(type, result);
+        }
+    }
+    
+    private static void findCallbacksOnInterfaces(Class<?> type, Map<String, Method> result) {
+        Class<?> superclass = type.getSuperclass();
+        if (superclass != null) {
+            findCallbacksOnInterfaces(superclass, result);
+        }
         for (Class<?> iface : type.getInterfaces()) {
-            findCallbacks(iface, result);
+            findCallbacksOnInterfaces(iface, result);
+        }
+        if (type.isInterface()) {
+            findCallbacks(type, result);
         }
     }
 }

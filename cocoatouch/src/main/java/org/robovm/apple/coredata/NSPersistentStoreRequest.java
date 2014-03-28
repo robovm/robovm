@@ -53,7 +53,7 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "affectedStores")
     public native NSArray<?> affectedStores();
     @Method(selector = "setAffectedStores:")
-    public native void setAffectedStores$(NSArray<?> stores);
+    public native void setAffectedStores(NSArray<?> stores);
     @Method(selector = "requestType")
     public native NSPersistentStoreRequestType requestType();
     /*</methods>*/

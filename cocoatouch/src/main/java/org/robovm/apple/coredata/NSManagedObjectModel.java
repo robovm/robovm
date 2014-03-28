@@ -58,7 +58,7 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "entities")
     public native NSArray<?> entities();
     @Method(selector = "setEntities:")
-    public native void setEntities$(NSArray<?> entities);
+    public native void setEntities(NSArray<?> entities);
     @Method(selector = "configurations")
     public native NSArray<?> configurations();
     @Method(selector = "entitiesForConfiguration:")
@@ -74,13 +74,13 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "localizationDictionary")
     public native NSDictionary<?, ?> localizationDictionary();
     @Method(selector = "setLocalizationDictionary:")
-    public native void setLocalizationDictionary$(NSDictionary<?, ?> localizationDictionary);
+    public native void setLocalizationDictionary(NSDictionary<?, ?> localizationDictionary);
     @Method(selector = "fetchRequestTemplatesByName")
     public native NSDictionary<?, ?> fetchRequestTemplatesByName();
     @Method(selector = "versionIdentifiers")
     public native NSSet<?> versionIdentifiers();
     @Method(selector = "setVersionIdentifiers:")
-    public native void setVersionIdentifiers$(NSSet<?> identifiers);
+    public native void setVersionIdentifiers(NSSet<?> identifiers);
     @Method(selector = "isConfiguration:compatibleWithStoreMetadata:")
     public native boolean isConfiguration$compatibleWithStoreMetadata$(String configuration, NSDictionary<?, ?> metadata);
     @Method(selector = "entityVersionHashesByName")

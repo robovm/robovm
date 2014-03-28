@@ -53,46 +53,46 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "name")
     public native String name();
     @Method(selector = "setName:")
-    public native void setName$(String name);
+    public native void setName(String name);
     @Method(selector = "mappingType")
     public native NSEntityMappingType mappingType();
     @Method(selector = "setMappingType:")
-    public native void setMappingType$(NSEntityMappingType type);
+    public native void setMappingType(NSEntityMappingType type);
     @Method(selector = "sourceEntityName")
     public native String sourceEntityName();
     @Method(selector = "setSourceEntityName:")
-    public native void setSourceEntityName$(String name);
+    public native void setSourceEntityName(String name);
     @Method(selector = "sourceEntityVersionHash")
     public native NSData sourceEntityVersionHash();
     @Method(selector = "setSourceEntityVersionHash:")
-    public native void setSourceEntityVersionHash$(NSData vhash);
+    public native void setSourceEntityVersionHash(NSData vhash);
     @Method(selector = "destinationEntityName")
     public native String destinationEntityName();
     @Method(selector = "setDestinationEntityName:")
-    public native void setDestinationEntityName$(String name);
+    public native void setDestinationEntityName(String name);
     @Method(selector = "destinationEntityVersionHash")
     public native NSData destinationEntityVersionHash();
     @Method(selector = "setDestinationEntityVersionHash:")
-    public native void setDestinationEntityVersionHash$(NSData vhash);
+    public native void setDestinationEntityVersionHash(NSData vhash);
     @Method(selector = "attributeMappings")
     public native NSArray<?> attributeMappings();
     @Method(selector = "setAttributeMappings:")
-    public native void setAttributeMappings$(NSArray<?> mappings);
+    public native void setAttributeMappings(NSArray<?> mappings);
     @Method(selector = "relationshipMappings")
     public native NSArray<?> relationshipMappings();
     @Method(selector = "setRelationshipMappings:")
-    public native void setRelationshipMappings$(NSArray<?> mappings);
+    public native void setRelationshipMappings(NSArray<?> mappings);
     @Method(selector = "sourceExpression")
     public native NSExpression sourceExpression();
     @Method(selector = "setSourceExpression:")
-    public native void setSourceExpression$(NSExpression source);
+    public native void setSourceExpression(NSExpression source);
     @Method(selector = "userInfo")
     public native NSDictionary<?, ?> userInfo();
     @Method(selector = "setUserInfo:")
-    public native void setUserInfo$(NSDictionary<?, ?> dict);
+    public native void setUserInfo(NSDictionary<?, ?> dict);
     @Method(selector = "entityMigrationPolicyClassName")
     public native String entityMigrationPolicyClassName();
     @Method(selector = "setEntityMigrationPolicyClassName:")
-    public native void setEntityMigrationPolicyClassName$(String name);
+    public native void setEntityMigrationPolicyClassName(String name);
     /*</methods>*/
 }

@@ -53,24 +53,24 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "attributeType")
     public native NSAttributeType attributeType();
     @Method(selector = "setAttributeType:")
-    public native void setAttributeType$(NSAttributeType type);
+    public native void setAttributeType(NSAttributeType type);
     @Method(selector = "attributeValueClassName")
     public native String attributeValueClassName();
     @Method(selector = "defaultValue")
     public native NSObject defaultValue();
     @Method(selector = "setDefaultValue:")
-    public native void setDefaultValue$(NSObject value);
+    public native void setDefaultValue(NSObject value);
     @Method(selector = "setAttributeValueClassName:")
-    public native void setAttributeValueClassName$(String className);
+    public native void setAttributeValueClassName(String className);
     @Method(selector = "versionHash")
     public native NSData versionHash();
     @Method(selector = "valueTransformerName")
     public native String valueTransformerName();
     @Method(selector = "setValueTransformerName:")
-    public native void setValueTransformerName$(String string);
+    public native void setValueTransformerName(String string);
     @Method(selector = "allowsExternalBinaryDataStorage")
     public native boolean allowsExternalBinaryDataStorage();
     @Method(selector = "setAllowsExternalBinaryDataStorage:")
-    public native void setAllowsExternalBinaryDataStorage$(boolean flag);
+    public native void setAllowsExternalBinaryDataStorage(boolean flag);
     /*</methods>*/
 }

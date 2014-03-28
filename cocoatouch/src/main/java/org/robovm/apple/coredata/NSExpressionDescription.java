@@ -53,10 +53,10 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "expression")
     public native NSExpression expression();
     @Method(selector = "setExpression:")
-    public native void setExpression$(NSExpression expression);
+    public native void setExpression(NSExpression expression);
     @Method(selector = "expressionResultType")
     public native NSAttributeType expressionResultType();
     @Method(selector = "setExpressionResultType:")
-    public native void setExpressionResultType$(NSAttributeType type);
+    public native void setExpressionResultType(NSAttributeType type);
     /*</methods>*/
 }

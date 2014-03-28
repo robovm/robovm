@@ -56,77 +56,77 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "entity")
     public native NSEntityDescription entity();
     @Method(selector = "setEntity:")
-    public native void setEntity$(NSEntityDescription entity);
+    public native void setEntity(NSEntityDescription entity);
     @Method(selector = "entityName")
     public native String entityName();
     @Method(selector = "predicate")
     public native NSPredicate predicate();
     @Method(selector = "setPredicate:")
-    public native void setPredicate$(NSPredicate predicate);
+    public native void setPredicate(NSPredicate predicate);
     @Method(selector = "sortDescriptors")
     public native NSArray<?> sortDescriptors();
     @Method(selector = "setSortDescriptors:")
-    public native void setSortDescriptors$(NSArray<?> sortDescriptors);
+    public native void setSortDescriptors(NSArray<?> sortDescriptors);
     @Method(selector = "fetchLimit")
     public native @MachineSizedUInt long fetchLimit();
     @Method(selector = "setFetchLimit:")
-    public native void setFetchLimit$(@MachineSizedUInt long limit);
+    public native void setFetchLimit(@MachineSizedUInt long limit);
     @Method(selector = "affectedStores")
     public native NSArray<?> affectedStores();
     @Method(selector = "setAffectedStores:")
-    public native void setAffectedStores$(NSArray<?> stores);
+    public native void setAffectedStores(NSArray<?> stores);
     @Method(selector = "resultType")
     public native NSFetchRequestResultType resultType();
     @Method(selector = "setResultType:")
-    public native void setResultType$(NSFetchRequestResultType type);
+    public native void setResultType(NSFetchRequestResultType type);
     @Method(selector = "includesSubentities")
     public native boolean includesSubentities();
     @Method(selector = "setIncludesSubentities:")
-    public native void setIncludesSubentities$(boolean yesNo);
+    public native void setIncludesSubentities(boolean yesNo);
     @Method(selector = "includesPropertyValues")
     public native boolean includesPropertyValues();
     @Method(selector = "setIncludesPropertyValues:")
-    public native void setIncludesPropertyValues$(boolean yesNo);
+    public native void setIncludesPropertyValues(boolean yesNo);
     @Method(selector = "returnsObjectsAsFaults")
     public native boolean returnsObjectsAsFaults();
     @Method(selector = "setReturnsObjectsAsFaults:")
-    public native void setReturnsObjectsAsFaults$(boolean yesNo);
+    public native void setReturnsObjectsAsFaults(boolean yesNo);
     @Method(selector = "relationshipKeyPathsForPrefetching")
     public native NSArray<?> relationshipKeyPathsForPrefetching();
     @Method(selector = "setRelationshipKeyPathsForPrefetching:")
-    public native void setRelationshipKeyPathsForPrefetching$(NSArray<?> keys);
+    public native void setRelationshipKeyPathsForPrefetching(NSArray<?> keys);
     @Method(selector = "includesPendingChanges")
     public native boolean includesPendingChanges();
     @Method(selector = "setIncludesPendingChanges:")
-    public native void setIncludesPendingChanges$(boolean flag);
+    public native void setIncludesPendingChanges(boolean flag);
     @Method(selector = "returnsDistinctResults")
     public native boolean returnsDistinctResults();
     @Method(selector = "setReturnsDistinctResults:")
-    public native void setReturnsDistinctResults$(boolean flag);
+    public native void setReturnsDistinctResults(boolean flag);
     @Method(selector = "propertiesToFetch")
     public native NSArray<?> propertiesToFetch();
     @Method(selector = "setPropertiesToFetch:")
-    public native void setPropertiesToFetch$(NSArray<?> values);
+    public native void setPropertiesToFetch(NSArray<?> values);
     @Method(selector = "fetchOffset")
     public native @MachineSizedUInt long fetchOffset();
     @Method(selector = "setFetchOffset:")
-    public native void setFetchOffset$(@MachineSizedUInt long offset);
+    public native void setFetchOffset(@MachineSizedUInt long offset);
     @Method(selector = "fetchBatchSize")
     public native @MachineSizedUInt long fetchBatchSize();
     @Method(selector = "setFetchBatchSize:")
-    public native void setFetchBatchSize$(@MachineSizedUInt long bsize);
+    public native void setFetchBatchSize(@MachineSizedUInt long bsize);
     @Method(selector = "shouldRefreshRefetchedObjects")
     public native boolean shouldRefreshRefetchedObjects();
     @Method(selector = "setShouldRefreshRefetchedObjects:")
-    public native void setShouldRefreshRefetchedObjects$(boolean flag);
+    public native void setShouldRefreshRefetchedObjects(boolean flag);
     @Method(selector = "propertiesToGroupBy")
     public native NSArray<?> propertiesToGroupBy();
     @Method(selector = "setPropertiesToGroupBy:")
-    public native void setPropertiesToGroupBy$(NSArray<?> array);
+    public native void setPropertiesToGroupBy(NSArray<?> array);
     @Method(selector = "havingPredicate")
     public native NSPredicate havingPredicate();
     @Method(selector = "setHavingPredicate:")
-    public native void setHavingPredicate$(NSPredicate predicate);
+    public native void setHavingPredicate(NSPredicate predicate);
     @Method(selector = "fetchRequestWithEntityName:")
     public static native NSFetchRequest fetchRequestWithEntityName$(String entityName);
     @Method(selector = "encodeWithCoder:")

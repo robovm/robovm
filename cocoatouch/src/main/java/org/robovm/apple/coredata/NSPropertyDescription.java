@@ -55,15 +55,15 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "name")
     public native String name();
     @Method(selector = "setName:")
-    public native void setName$(String name);
+    public native void setName(String name);
     @Method(selector = "isOptional")
     public native boolean isOptional();
     @Method(selector = "setOptional:")
-    public native void setOptional$(boolean flag);
+    public native void setOptional(boolean flag);
     @Method(selector = "isTransient")
     public native boolean isTransient();
     @Method(selector = "setTransient:")
-    public native void setTransient$(boolean flag);
+    public native void setTransient(boolean flag);
     @Method(selector = "validationPredicates")
     public native NSArray<?> validationPredicates();
     @Method(selector = "validationWarnings")
@@ -73,29 +73,29 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "userInfo")
     public native NSDictionary<?, ?> userInfo();
     @Method(selector = "setUserInfo:")
-    public native void setUserInfo$(NSDictionary<?, ?> dictionary);
+    public native void setUserInfo(NSDictionary<?, ?> dictionary);
     @Method(selector = "isIndexed")
     public native boolean isIndexed();
     @Method(selector = "setIndexed:")
-    public native void setIndexed$(boolean flag);
+    public native void setIndexed(boolean flag);
     @Method(selector = "versionHash")
     public native NSData versionHash();
     @Method(selector = "versionHashModifier")
     public native String versionHashModifier();
     @Method(selector = "setVersionHashModifier:")
-    public native void setVersionHashModifier$(String modifierString);
+    public native void setVersionHashModifier(String modifierString);
     @Method(selector = "isIndexedBySpotlight")
     public native boolean isIndexedBySpotlight();
     @Method(selector = "setIndexedBySpotlight:")
-    public native void setIndexedBySpotlight$(boolean flag);
+    public native void setIndexedBySpotlight(boolean flag);
     @Method(selector = "isStoredInExternalRecord")
     public native boolean isStoredInExternalRecord();
     @Method(selector = "setStoredInExternalRecord:")
-    public native void setStoredInExternalRecord$(boolean flag);
+    public native void setStoredInExternalRecord(boolean flag);
     @Method(selector = "renamingIdentifier")
     public native String renamingIdentifier();
     @Method(selector = "setRenamingIdentifier:")
-    public native void setRenamingIdentifier$(String value);
+    public native void setRenamingIdentifier(String value);
     @Method(selector = "encodeWithCoder:")
     public native void encodeWithCoder$(NSCoder aCoder);
     /*</methods>*/

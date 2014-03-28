@@ -77,15 +77,15 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "performBlockAndWait:")
     public native void performBlockAndWait$(@Block Runnable block);
     @Method(selector = "setPersistentStoreCoordinator:")
-    public native void setPersistentStoreCoordinator$(NSPersistentStoreCoordinator coordinator);
+    public native void setPersistentStoreCoordinator(NSPersistentStoreCoordinator coordinator);
     @Method(selector = "persistentStoreCoordinator")
     public native NSPersistentStoreCoordinator persistentStoreCoordinator();
     @Method(selector = "setParentContext:")
-    public native void setParentContext$(NSManagedObjectContext parent);
+    public native void setParentContext(NSManagedObjectContext parent);
     @Method(selector = "parentContext")
     public native NSManagedObjectContext parentContext();
     @Method(selector = "setUndoManager:")
-    public native void setUndoManager$(NSUndoManager undoManager);
+    public native void setUndoManager(NSUndoManager undoManager);
     @Method(selector = "undoManager")
     public native NSUndoManager undoManager();
     @Method(selector = "hasChanges")
@@ -145,17 +145,17 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "propagatesDeletesAtEndOfEvent")
     public native boolean propagatesDeletesAtEndOfEvent();
     @Method(selector = "setPropagatesDeletesAtEndOfEvent:")
-    public native void setPropagatesDeletesAtEndOfEvent$(boolean flag);
+    public native void setPropagatesDeletesAtEndOfEvent(boolean flag);
     @Method(selector = "retainsRegisteredObjects")
     public native boolean retainsRegisteredObjects();
     @Method(selector = "setRetainsRegisteredObjects:")
-    public native void setRetainsRegisteredObjects$(boolean flag);
+    public native void setRetainsRegisteredObjects(boolean flag);
     @Method(selector = "stalenessInterval")
     public native double stalenessInterval();
     @Method(selector = "setStalenessInterval:")
-    public native void setStalenessInterval$(double expiration);
+    public native void setStalenessInterval(double expiration);
     @Method(selector = "setMergePolicy:")
-    public native void setMergePolicy$(NSObject mergePolicy);
+    public native void setMergePolicy(NSObject mergePolicy);
     @Method(selector = "mergePolicy")
     public native NSObject mergePolicy();
     @Method(selector = "obtainPermanentIDsForObjects:error:")

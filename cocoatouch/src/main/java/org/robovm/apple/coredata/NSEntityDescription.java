@@ -55,21 +55,21 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "managedObjectClassName")
     public native String managedObjectClassName();
     @Method(selector = "setManagedObjectClassName:")
-    public native void setManagedObjectClassName$(String name);
+    public native void setManagedObjectClassName(String name);
     @Method(selector = "name")
     public native String name();
     @Method(selector = "setName:")
-    public native void setName$(String name);
+    public native void setName(String name);
     @Method(selector = "isAbstract")
     public native boolean isAbstract();
     @Method(selector = "setAbstract:")
-    public native void setAbstract$(boolean flag);
+    public native void setAbstract(boolean flag);
     @Method(selector = "subentitiesByName")
     public native NSDictionary<?, ?> subentitiesByName();
     @Method(selector = "subentities")
     public native NSArray<?> subentities();
     @Method(selector = "setSubentities:")
-    public native void setSubentities$(NSArray<?> array);
+    public native void setSubentities(NSArray<?> array);
     @Method(selector = "superentity")
     public native NSEntityDescription superentity();
     @Method(selector = "propertiesByName")
@@ -77,11 +77,11 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "properties")
     public native NSArray<?> properties();
     @Method(selector = "setProperties:")
-    public native void setProperties$(NSArray<?> properties);
+    public native void setProperties(NSArray<?> properties);
     @Method(selector = "userInfo")
     public native NSDictionary<?, ?> userInfo();
     @Method(selector = "setUserInfo:")
-    public native void setUserInfo$(NSDictionary<?, ?> dictionary);
+    public native void setUserInfo(NSDictionary<?, ?> dictionary);
     @Method(selector = "attributesByName")
     public native NSDictionary<?, ?> attributesByName();
     @Method(selector = "relationshipsByName")
@@ -95,15 +95,15 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "versionHashModifier")
     public native String versionHashModifier();
     @Method(selector = "setVersionHashModifier:")
-    public native void setVersionHashModifier$(String modifierString);
+    public native void setVersionHashModifier(String modifierString);
     @Method(selector = "renamingIdentifier")
     public native String renamingIdentifier();
     @Method(selector = "setRenamingIdentifier:")
-    public native void setRenamingIdentifier$(String value);
+    public native void setRenamingIdentifier(String value);
     @Method(selector = "compoundIndexes")
     public native NSArray<?> compoundIndexes();
     @Method(selector = "setCompoundIndexes:")
-    public native void setCompoundIndexes$(NSArray<?> value);
+    public native void setCompoundIndexes(NSArray<?> value);
     @Method(selector = "entityForName:inManagedObjectContext:")
     public static native NSEntityDescription entityForName$inManagedObjectContext$(String entityName, NSManagedObjectContext context);
     @Method(selector = "insertNewObjectForEntityForName:inManagedObjectContext:")

@@ -53,14 +53,14 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "name")
     public native String name();
     @Method(selector = "setName:")
-    public native void setName$(String name);
+    public native void setName(String name);
     @Method(selector = "valueExpression")
     public native NSExpression valueExpression();
     @Method(selector = "setValueExpression:")
-    public native void setValueExpression$(NSExpression expression);
+    public native void setValueExpression(NSExpression expression);
     @Method(selector = "userInfo")
     public native NSDictionary<?, ?> userInfo();
     @Method(selector = "setUserInfo:")
-    public native void setUserInfo$(NSDictionary<?, ?> userInfo);
+    public native void setUserInfo(NSDictionary<?, ?> userInfo);
     /*</methods>*/
 }

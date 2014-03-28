@@ -64,21 +64,21 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "URL")
     public native NSURL URL();
     @Method(selector = "setURL:")
-    public native void setURL$(NSURL url);
+    public native void setURL(NSURL url);
     @Method(selector = "identifier")
     public native String identifier();
     @Method(selector = "setIdentifier:")
-    public native void setIdentifier$(String identifier);
+    public native void setIdentifier(String identifier);
     @Method(selector = "type")
     public native String type();
     @Method(selector = "isReadOnly")
     public native boolean isReadOnly();
     @Method(selector = "setReadOnly:")
-    public native void setReadOnly$(boolean flag);
+    public native void setReadOnly(boolean flag);
     @Method(selector = "metadata")
     public native NSDictionary<?, ?> metadata();
     @Method(selector = "setMetadata:")
-    public native void setMetadata$(NSDictionary<?, ?> storeMetadata);
+    public native void setMetadata(NSDictionary<?, ?> storeMetadata);
     @Method(selector = "didAddToPersistentStoreCoordinator:")
     public native void didAddToPersistentStoreCoordinator$(NSPersistentStoreCoordinator coordinator);
     @Method(selector = "willRemoveFromPersistentStoreCoordinator:")

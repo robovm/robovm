@@ -86,7 +86,7 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "didChangeValueForKey:withSetMutation:usingObjects:")
     public native void didChangeValueForKey$withSetMutation$usingObjects$(String inKey, NSKeyValueSetMutationKind inMutationKind, NSSet<?> inObjects);
     @Method(selector = "setObservationInfo:")
-    public native void setObservationInfo$(NSObject inObservationInfo);
+    public native void setObservationInfo(NSObject inObservationInfo);
     @Method(selector = "observationInfo")
     public native NSObject observationInfo();
     @Method(selector = "awakeFromFetch")

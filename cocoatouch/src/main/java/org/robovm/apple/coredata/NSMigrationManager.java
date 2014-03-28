@@ -56,7 +56,7 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "migrateStoreFromURL:type:options:withMappingModel:toDestinationURL:destinationType:destinationOptions:error:")
     public native boolean migrateStoreFromURL$type$options$withMappingModel$toDestinationURL$destinationType$destinationOptions$error$(NSURL sourceURL, String sStoreType, NSDictionary<?, ?> sOptions, NSMappingModel mappings, NSURL dURL, String dStoreType, NSDictionary<?, ?> dOptions, NSError.NSErrorPtr error);
     @Method(selector = "setUsesStoreSpecificMigrationManager:")
-    public native void setUsesStoreSpecificMigrationManager$(boolean flag);
+    public native void setUsesStoreSpecificMigrationManager(boolean flag);
     @Method(selector = "usesStoreSpecificMigrationManager")
     public native boolean usesStoreSpecificMigrationManager();
     @Method(selector = "reset")
@@ -88,7 +88,7 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "userInfo")
     public native NSDictionary<?, ?> userInfo();
     @Method(selector = "setUserInfo:")
-    public native void setUserInfo$(NSDictionary<?, ?> dict);
+    public native void setUserInfo(NSDictionary<?, ?> dict);
     @Method(selector = "cancelMigrationWithError:")
     public native void cancelMigrationWithError$(NSError error);
     /*</methods>*/

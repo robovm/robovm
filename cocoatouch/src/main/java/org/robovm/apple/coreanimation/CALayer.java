@@ -324,7 +324,7 @@ import org.robovm.apple.opengles.*;
     @Method(selector = "affineTransform")
     public native @ByVal CGAffineTransform affineTransform();
     @Method(selector = "setAffineTransform:")
-    public native void setAffineTransform$(@ByVal CGAffineTransform m);
+    public native void setAffineTransform(@ByVal CGAffineTransform m);
     @Method(selector = "contentsAreFlipped")
     public native boolean contentsAreFlipped();
     @Method(selector = "removeFromSuperlayer")
@@ -360,7 +360,7 @@ import org.robovm.apple.opengles.*;
     @Method(selector = "setNeedsDisplay")
     public native void setNeedsDisplay();
     @Method(selector = "setNeedsDisplayInRect:")
-    public native void setNeedsDisplayInRect$(@ByVal CGRect r);
+    public native void setNeedsDisplayInRect(@ByVal CGRect r);
     @Method(selector = "needsDisplay")
     public native boolean needsDisplay();
     @Method(selector = "displayIfNeeded")

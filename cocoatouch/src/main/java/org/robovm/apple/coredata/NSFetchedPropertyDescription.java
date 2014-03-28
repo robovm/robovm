@@ -53,6 +53,6 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "fetchRequest")
     public native NSFetchRequest fetchRequest();
     @Method(selector = "setFetchRequest:")
-    public native void setFetchRequest$(NSFetchRequest fetchRequest);
+    public native void setFetchRequest(NSFetchRequest fetchRequest);
     /*</methods>*/
 }

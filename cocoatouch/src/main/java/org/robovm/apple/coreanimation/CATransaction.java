@@ -74,19 +74,19 @@ import org.robovm.apple.opengles.*;
     @Method(selector = "animationDuration")
     public static native double animationDuration();
     @Method(selector = "setAnimationDuration:")
-    public static native void setAnimationDuration$(double dur);
+    public static native void setAnimationDuration(double dur);
     @Method(selector = "animationTimingFunction")
     public static native CAMediaTimingFunction animationTimingFunction();
     @Method(selector = "setAnimationTimingFunction:")
-    public static native void setAnimationTimingFunction$(CAMediaTimingFunction function);
+    public static native void setAnimationTimingFunction(CAMediaTimingFunction function);
     @Method(selector = "disableActions")
     public static native boolean disableActions();
     @Method(selector = "setDisableActions:")
-    public static native void setDisableActions$(boolean flag);
+    public static native void setDisableActions(boolean flag);
     @Method(selector = "completionBlock")
     public static native @Block Runnable completionBlock();
     @Method(selector = "setCompletionBlock:")
-    public static native void setCompletionBlock$(@Block Runnable block);
+    public static native void setCompletionBlock(@Block Runnable block);
     @Method(selector = "valueForKey:")
     public static native NSObject valueForKey$(String key);
     @Method(selector = "setValue:forKey:")

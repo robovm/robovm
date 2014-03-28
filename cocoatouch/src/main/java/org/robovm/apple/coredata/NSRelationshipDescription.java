@@ -53,29 +53,29 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "destinationEntity")
     public native NSEntityDescription destinationEntity();
     @Method(selector = "setDestinationEntity:")
-    public native void setDestinationEntity$(NSEntityDescription entity);
+    public native void setDestinationEntity(NSEntityDescription entity);
     @Method(selector = "inverseRelationship")
     public native NSRelationshipDescription inverseRelationship();
     @Method(selector = "setInverseRelationship:")
-    public native void setInverseRelationship$(NSRelationshipDescription relationship);
+    public native void setInverseRelationship(NSRelationshipDescription relationship);
     @Method(selector = "maxCount")
     public native @MachineSizedUInt long maxCount();
     @Method(selector = "setMaxCount:")
-    public native void setMaxCount$(@MachineSizedUInt long maxCount);
+    public native void setMaxCount(@MachineSizedUInt long maxCount);
     @Method(selector = "minCount")
     public native @MachineSizedUInt long minCount();
     @Method(selector = "setMinCount:")
-    public native void setMinCount$(@MachineSizedUInt long minCount);
+    public native void setMinCount(@MachineSizedUInt long minCount);
     @Method(selector = "deleteRule")
     public native NSDeleteRule deleteRule();
     @Method(selector = "setDeleteRule:")
-    public native void setDeleteRule$(NSDeleteRule rule);
+    public native void setDeleteRule(NSDeleteRule rule);
     @Method(selector = "isToMany")
     public native boolean isToMany();
     @Method(selector = "versionHash")
     public native NSData versionHash();
     @Method(selector = "setOrdered:")
-    public native void setOrdered$(boolean flag);
+    public native void setOrdered(boolean flag);
     @Method(selector = "isOrdered")
     public native boolean isOrdered();
     /*</methods>*/

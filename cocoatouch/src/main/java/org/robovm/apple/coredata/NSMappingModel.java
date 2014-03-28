@@ -56,7 +56,7 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "entityMappings")
     public native NSArray<?> entityMappings();
     @Method(selector = "setEntityMappings:")
-    public native void setEntityMappings$(NSArray<?> mappings);
+    public native void setEntityMappings(NSArray<?> mappings);
     @Method(selector = "entityMappingsByName")
     public native NSDictionary<?, ?> entityMappingsByName();
     @Method(selector = "mappingModelFromBundles:forSourceModel:destinationModel:")

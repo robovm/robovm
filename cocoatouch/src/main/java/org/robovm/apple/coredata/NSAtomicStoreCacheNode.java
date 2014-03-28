@@ -58,7 +58,7 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "propertyCache")
     public native NSMutableDictionary<?, ?> propertyCache();
     @Method(selector = "setPropertyCache:")
-    public native void setPropertyCache$(NSMutableDictionary<?, ?> propertyCache);
+    public native void setPropertyCache(NSMutableDictionary<?, ?> propertyCache);
     @Method(selector = "valueForKey:")
     public native NSObject valueForKey$(String key);
     @Method(selector = "setValue:forKey:")

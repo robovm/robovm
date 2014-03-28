@@ -63,7 +63,12 @@ import org.robovm.rt.bro.ptr.*;
     
     /*</properties>*/
     /*<methods>*/
-    
+    //- (NSString *)absoluteString
+    private static final Selector absoluteString$ = Selector.register("absoluteString");
+	@Bridge private native static String objc_absoluteString(NSURL __self__, Selector __cmd__);
+	public String absoluteString() {
+		return objc_absoluteString(this, absoluteString$);
+	}
     /*</methods>*/
     /*<callbacks>*/
     /*</callbacks>*/

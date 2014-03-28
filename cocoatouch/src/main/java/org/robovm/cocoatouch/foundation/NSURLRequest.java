@@ -48,12 +48,23 @@ import org.robovm.rt.bro.ptr.*;
     protected NSURLRequest(SkipInit skipInit) { super(skipInit); }
     public NSURLRequest() {}
     
+    //+ (id)requestWithURL:(NSURL *)URL;
+  	private static final Selector requestWithURL$ = Selector.register("requestWithURL:");
+  	@Bridge private native static NSURLRequest objc_requestWithURL(ObjCClass __self__, Selector __cmd__, NSURL URL);
+  	public static NSURLRequest requestWithURL(NSURL url) {
+  		return objc_requestWithURL(objCClass, requestWithURL$, url);
+  	}
     /*</constructors>*/
     /*<properties>*/
     
     /*</properties>*/
     /*<methods>*/
-    
+  	//- (NSURL *)URL
+  	private static final Selector URL$ = Selector.register("URL");
+  	@Bridge private native static NSURL objc_URL(NSURLRequest __self__, Selector __cmd__);
+  	public NSURL getURL() {
+  		return objc_URL(this, URL$);
+  	}
     /*</methods>*/
     /*<callbacks>*/
     /*</callbacks>*/

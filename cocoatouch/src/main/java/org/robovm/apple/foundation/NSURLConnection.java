@@ -70,7 +70,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "unscheduleFromRunLoop:forMode:")
     public native void unscheduleFromRunLoop$forMode$(NSRunLoop aRunLoop, String mode);
     @Method(selector = "setDelegateQueue:")
-    public native void setDelegateQueue$(NSOperationQueue queue);
+    public native void setDelegateQueue(NSOperationQueue queue);
     @Method(selector = "connectionWithRequest:delegate:")
     public static native NSURLConnection connectionWithRequest$delegate$(NSURLRequest request, NSObject delegate);
     @Method(selector = "canHandleRequest:")

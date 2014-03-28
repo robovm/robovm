@@ -59,7 +59,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "isValid")
     public native boolean isValid();
     @Method(selector = "setDelegate:")
-    public native void setDelegate$(NSPortDelegate anObject);
+    public native void setDelegate(NSPortDelegate anObject);
     @Method(selector = "delegate")
     public native NSPortDelegate delegate();
     @Method(selector = "scheduleInRunLoop:forMode:")

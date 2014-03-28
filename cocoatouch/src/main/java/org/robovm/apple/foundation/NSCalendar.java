@@ -88,19 +88,19 @@ import org.robovm.apple.security.*;
     @Method(selector = "calendarIdentifier")
     public native String calendarIdentifier();
     @Method(selector = "setLocale:")
-    public native void setLocale$(NSLocale locale);
+    public native void setLocale(NSLocale locale);
     @Method(selector = "locale")
     public native NSLocale locale();
     @Method(selector = "setTimeZone:")
-    public native void setTimeZone$(NSTimeZone tz);
+    public native void setTimeZone(NSTimeZone tz);
     @Method(selector = "timeZone")
     public native NSTimeZone timeZone();
     @Method(selector = "setFirstWeekday:")
-    public native void setFirstWeekday$(@MachineSizedUInt long weekday);
+    public native void setFirstWeekday(@MachineSizedUInt long weekday);
     @Method(selector = "firstWeekday")
     public native @MachineSizedUInt long firstWeekday();
     @Method(selector = "setMinimumDaysInFirstWeek:")
-    public native void setMinimumDaysInFirstWeek$(@MachineSizedUInt long mdw);
+    public native void setMinimumDaysInFirstWeek(@MachineSizedUInt long mdw);
     @Method(selector = "minimumDaysInFirstWeek")
     public native @MachineSizedUInt long minimumDaysInFirstWeek();
     @Method(selector = "eraSymbols")

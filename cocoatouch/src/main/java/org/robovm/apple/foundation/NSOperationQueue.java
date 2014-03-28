@@ -66,13 +66,13 @@ import org.robovm.apple.security.*;
     @Method(selector = "maxConcurrentOperationCount")
     public native @MachineSizedSInt long maxConcurrentOperationCount();
     @Method(selector = "setMaxConcurrentOperationCount:")
-    public native void setMaxConcurrentOperationCount$(@MachineSizedSInt long cnt);
+    public native void setMaxConcurrentOperationCount(@MachineSizedSInt long cnt);
     @Method(selector = "setSuspended:")
-    public native void setSuspended$(boolean b);
+    public native void setSuspended(boolean b);
     @Method(selector = "isSuspended")
     public native boolean isSuspended();
     @Method(selector = "setName:")
-    public native void setName$(String n);
+    public native void setName(String n);
     @Method(selector = "name")
     public native String name();
     @Method(selector = "cancelAllOperations")

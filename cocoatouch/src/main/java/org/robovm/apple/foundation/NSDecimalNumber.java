@@ -118,7 +118,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "notANumber")
     public static native NSDecimalNumber notANumber();
     @Method(selector = "setDefaultBehavior:")
-    public static native void setDefaultBehavior$(NSDecimalNumberBehaviors behavior);
+    public static native void setDefaultBehavior(NSDecimalNumberBehaviors behavior);
     @Method(selector = "defaultBehavior")
     public static native NSDecimalNumberBehaviors defaultBehavior();
     /*</methods>*/

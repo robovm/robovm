@@ -139,7 +139,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "createSymbolicLinkAtURL:withDestinationURL:error:")
     public native boolean createSymbolicLinkAtURL$withDestinationURL$error$(NSURL url, NSURL destURL, NSError.NSErrorPtr error);
     @Method(selector = "setDelegate:")
-    public native void setDelegate$(NSObject delegate);
+    public native void setDelegate(NSObject delegate);
     @Method(selector = "delegate")
     public native NSObject delegate();
     @Method(selector = "setAttributes:ofItemAtPath:error:")

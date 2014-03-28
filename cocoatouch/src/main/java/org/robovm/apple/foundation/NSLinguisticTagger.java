@@ -134,7 +134,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "tagSchemes")
     public native NSArray<?> tagSchemes();
     @Method(selector = "setString:")
-    public native void setString$(String string);
+    public native void setString(String string);
     @Method(selector = "string")
     public native String string();
     @Method(selector = "setOrthography:range:")

@@ -90,41 +90,41 @@ import org.robovm.apple.security.*;
     @Method(selector = "isLeapMonth")
     public native boolean isLeapMonth();
     @Method(selector = "setCalendar:")
-    public native void setCalendar$(NSCalendar cal);
+    public native void setCalendar(NSCalendar cal);
     @Method(selector = "setTimeZone:")
-    public native void setTimeZone$(NSTimeZone tz);
+    public native void setTimeZone(NSTimeZone tz);
     @Method(selector = "setEra:")
-    public native void setEra$(@MachineSizedSInt long v);
+    public native void setEra(@MachineSizedSInt long v);
     @Method(selector = "setYear:")
-    public native void setYear$(@MachineSizedSInt long v);
+    public native void setYear(@MachineSizedSInt long v);
     @Method(selector = "setMonth:")
-    public native void setMonth$(@MachineSizedSInt long v);
+    public native void setMonth(@MachineSizedSInt long v);
     @Method(selector = "setDay:")
-    public native void setDay$(@MachineSizedSInt long v);
+    public native void setDay(@MachineSizedSInt long v);
     @Method(selector = "setHour:")
-    public native void setHour$(@MachineSizedSInt long v);
+    public native void setHour(@MachineSizedSInt long v);
     @Method(selector = "setMinute:")
-    public native void setMinute$(@MachineSizedSInt long v);
+    public native void setMinute(@MachineSizedSInt long v);
     @Method(selector = "setSecond:")
-    public native void setSecond$(@MachineSizedSInt long v);
+    public native void setSecond(@MachineSizedSInt long v);
     @Method(selector = "setNanosecond:")
-    public native void setNanosecond$(@MachineSizedSInt long value);
+    public native void setNanosecond(@MachineSizedSInt long value);
     @Method(selector = "setWeek:")
-    public native void setWeek$(@MachineSizedSInt long v);
+    public native void setWeek(@MachineSizedSInt long v);
     @Method(selector = "setWeekday:")
-    public native void setWeekday$(@MachineSizedSInt long v);
+    public native void setWeekday(@MachineSizedSInt long v);
     @Method(selector = "setWeekdayOrdinal:")
-    public native void setWeekdayOrdinal$(@MachineSizedSInt long v);
+    public native void setWeekdayOrdinal(@MachineSizedSInt long v);
     @Method(selector = "setQuarter:")
-    public native void setQuarter$(@MachineSizedSInt long v);
+    public native void setQuarter(@MachineSizedSInt long v);
     @Method(selector = "setWeekOfMonth:")
-    public native void setWeekOfMonth$(@MachineSizedSInt long w);
+    public native void setWeekOfMonth(@MachineSizedSInt long w);
     @Method(selector = "setWeekOfYear:")
-    public native void setWeekOfYear$(@MachineSizedSInt long w);
+    public native void setWeekOfYear(@MachineSizedSInt long w);
     @Method(selector = "setYearForWeekOfYear:")
-    public native void setYearForWeekOfYear$(@MachineSizedSInt long y);
+    public native void setYearForWeekOfYear(@MachineSizedSInt long y);
     @Method(selector = "setLeapMonth:")
-    public native void setLeapMonth$(boolean lm);
+    public native void setLeapMonth(boolean lm);
     @Method(selector = "date")
     public native NSDate date();
     /*</methods>*/

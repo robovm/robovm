@@ -82,7 +82,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "decodeBytesWithReturnedLength:")
     public native VoidPtr decodeBytesWithReturnedLength$(MachineSizedUIntPtr lengthp);
     @Method(selector = "setObjectZone:")
-    public native void setObjectZone$(NSZone zone);
+    public native void setObjectZone(NSZone zone);
     @Method(selector = "objectZone")
     public native NSZone objectZone();
     @Method(selector = "systemVersion")

@@ -93,7 +93,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "defaultTimeZone")
     public static native NSTimeZone defaultTimeZone();
     @Method(selector = "setDefaultTimeZone:")
-    public static native void setDefaultTimeZone$(NSTimeZone aTimeZone);
+    public static native void setDefaultTimeZone(NSTimeZone aTimeZone);
     @Method(selector = "localTimeZone")
     public static native NSTimeZone localTimeZone();
     @Method(selector = "knownTimeZoneNames")
@@ -101,7 +101,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "abbreviationDictionary")
     public static native NSDictionary<?, ?> abbreviationDictionary();
     @Method(selector = "setAbbreviationDictionary:")
-    public static native void setAbbreviationDictionary$(NSDictionary<?, ?> dict);
+    public static native void setAbbreviationDictionary(NSDictionary<?, ?> dict);
     @Method(selector = "timeZoneDataVersion")
     public static native String timeZoneDataVersion();
     @Method(selector = "initWithName:")

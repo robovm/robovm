@@ -62,7 +62,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "processIdentifier")
     public native int processIdentifier();
     @Method(selector = "setProcessName:")
-    public native void setProcessName$(String newName);
+    public native void setProcessName(String newName);
     @Method(selector = "globallyUniqueString")
     public native String globallyUniqueString();
     @Method(selector = "operatingSystem")

@@ -67,9 +67,9 @@ import org.robovm.apple.security.*;
     @Method(selector = "diskCapacity")
     public native @MachineSizedUInt long diskCapacity();
     @Method(selector = "setMemoryCapacity:")
-    public native void setMemoryCapacity$(@MachineSizedUInt long memoryCapacity);
+    public native void setMemoryCapacity(@MachineSizedUInt long memoryCapacity);
     @Method(selector = "setDiskCapacity:")
-    public native void setDiskCapacity$(@MachineSizedUInt long diskCapacity);
+    public native void setDiskCapacity(@MachineSizedUInt long diskCapacity);
     @Method(selector = "currentMemoryUsage")
     public native @MachineSizedUInt long currentMemoryUsage();
     @Method(selector = "currentDiskUsage")
@@ -77,6 +77,6 @@ import org.robovm.apple.security.*;
     @Method(selector = "sharedURLCache")
     public static native NSURLCache sharedURLCache();
     @Method(selector = "setSharedURLCache:")
-    public static native void setSharedURLCache$(NSURLCache cache);
+    public static native void setSharedURLCache(NSURLCache cache);
     /*</methods>*/
 }

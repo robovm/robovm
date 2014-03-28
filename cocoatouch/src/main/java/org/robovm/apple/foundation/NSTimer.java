@@ -59,13 +59,13 @@ import org.robovm.apple.security.*;
     @Method(selector = "fireDate")
     public native NSDate fireDate();
     @Method(selector = "setFireDate:")
-    public native void setFireDate$(NSDate date);
+    public native void setFireDate(NSDate date);
     @Method(selector = "timeInterval")
     public native double timeInterval();
     @Method(selector = "tolerance")
     public native double tolerance();
     @Method(selector = "setTolerance:")
-    public native void setTolerance$(double tolerance);
+    public native void setTolerance(double tolerance);
     @Method(selector = "invalidate")
     public native void invalidate();
     @Method(selector = "isValid")

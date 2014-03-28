@@ -55,7 +55,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "initForReadingWithData:")
     protected native @Pointer long initForReadingWithData$(NSData data);
     @Method(selector = "setDelegate:")
-    public native void setDelegate$(NSKeyedUnarchiverDelegate delegate);
+    public native void setDelegate(NSKeyedUnarchiverDelegate delegate);
     @Method(selector = "delegate")
     public native NSKeyedUnarchiverDelegate delegate();
     @Method(selector = "finishDecoding")
@@ -83,7 +83,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "decodeBytesForKey:returnedLength:")
     public native BytePtr decodeBytesForKey$returnedLength$(String key, MachineSizedUIntPtr lengthp);
     @Method(selector = "setRequiresSecureCoding:")
-    public native void setRequiresSecureCoding$(boolean b);
+    public native void setRequiresSecureCoding(boolean b);
     @Method(selector = "unarchiveObjectWithData:")
     public static native NSObject unarchiveObjectWithData$(NSData data);
     @Method(selector = "unarchiveObjectWithFile:")

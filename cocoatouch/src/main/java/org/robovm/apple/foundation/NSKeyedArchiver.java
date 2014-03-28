@@ -58,11 +58,11 @@ import org.robovm.apple.security.*;
     @Method(selector = "initForWritingWithMutableData:")
     protected native @Pointer long initForWritingWithMutableData$(NSMutableData data);
     @Method(selector = "setDelegate:")
-    public native void setDelegate$(NSKeyedArchiverDelegate delegate);
+    public native void setDelegate(NSKeyedArchiverDelegate delegate);
     @Method(selector = "delegate")
     public native NSKeyedArchiverDelegate delegate();
     @Method(selector = "setOutputFormat:")
-    public native void setOutputFormat$(NSPropertyListFormat format);
+    public native void setOutputFormat(NSPropertyListFormat format);
     @Method(selector = "outputFormat")
     public native NSPropertyListFormat outputFormat();
     @Method(selector = "finishEncoding")
@@ -90,7 +90,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "encodeBytes:length:forKey:")
     public native void encodeBytes$length$forKey$(BytePtr bytesp, @MachineSizedUInt long lenv, String key);
     @Method(selector = "setRequiresSecureCoding:")
-    public native void setRequiresSecureCoding$(boolean b);
+    public native void setRequiresSecureCoding(boolean b);
     @Method(selector = "archivedDataWithRootObject:")
     public static native NSData archivedDataWithRootObject$(NSObject rootObject);
     @Method(selector = "archiveRootObject:toFile:")

@@ -74,7 +74,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "count")
     public native @MachineSizedUInt long count();
     @Method(selector = "setCount:")
-    public native void setCount$(@MachineSizedUInt long count);
+    public native void setCount(@MachineSizedUInt long count);
     @Method(selector = "pointerArrayWithOptions:")
     public static native NSObject pointerArrayWithOptions$(NSPointerFunctionsOptions options);
     @Method(selector = "pointerArrayWithPointerFunctions:")

@@ -56,7 +56,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "lockBeforeDate:")
     public native boolean lockBeforeDate$(NSDate limit);
     @Method(selector = "setName:")
-    public native void setName$(String n);
+    public native void setName(String n);
     @Method(selector = "name")
     public native String name();
     @Method(selector = "lock")

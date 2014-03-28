@@ -60,7 +60,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "broadcast")
     public native void broadcast();
     @Method(selector = "setName:")
-    public native void setName$(String n);
+    public native void setName(String n);
     @Method(selector = "name")
     public native String name();
     @Method(selector = "lock")

@@ -87,13 +87,13 @@ import org.robovm.apple.security.*;
     @Method(selector = "groupsByEvent")
     public native boolean groupsByEvent();
     @Method(selector = "setGroupsByEvent:")
-    public native void setGroupsByEvent$(boolean groupsByEvent);
+    public native void setGroupsByEvent(boolean groupsByEvent);
     @Method(selector = "setLevelsOfUndo:")
-    public native void setLevelsOfUndo$(@MachineSizedUInt long levels);
+    public native void setLevelsOfUndo(@MachineSizedUInt long levels);
     @Method(selector = "levelsOfUndo")
     public native @MachineSizedUInt long levelsOfUndo();
     @Method(selector = "setRunLoopModes:")
-    public native void setRunLoopModes$(NSArray<?> runLoopModes);
+    public native void setRunLoopModes(NSArray<?> runLoopModes);
     @Method(selector = "runLoopModes")
     public native NSArray<?> runLoopModes();
     @Method(selector = "undo")
@@ -119,7 +119,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "prepareWithInvocationTarget:")
     public native NSObject prepareWithInvocationTarget$(NSObject target);
     @Method(selector = "setActionIsDiscardable:")
-    public native void setActionIsDiscardable$(boolean discardable);
+    public native void setActionIsDiscardable(boolean discardable);
     @Method(selector = "undoActionIsDiscardable")
     public native boolean undoActionIsDiscardable();
     @Method(selector = "redoActionIsDiscardable")
@@ -129,7 +129,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "redoActionName")
     public native String redoActionName();
     @Method(selector = "setActionName:")
-    public native void setActionName$(String actionName);
+    public native void setActionName(String actionName);
     @Method(selector = "undoMenuItemTitle")
     public native String undoMenuItemTitle();
     @Method(selector = "redoMenuItemTitle")

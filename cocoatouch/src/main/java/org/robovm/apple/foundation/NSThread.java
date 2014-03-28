@@ -64,15 +64,15 @@ import org.robovm.apple.security.*;
     @Method(selector = "threadPriority")
     public native double threadPriority();
     @Method(selector = "setThreadPriority:")
-    public native void setThreadPriority$(double p);
+    public native void setThreadPriority(double p);
     @Method(selector = "setName:")
-    public native void setName$(String n);
+    public native void setName(String n);
     @Method(selector = "name")
     public native String name();
     @Method(selector = "stackSize")
     public native @MachineSizedUInt long stackSize();
     @Method(selector = "setStackSize:")
-    public native void setStackSize$(@MachineSizedUInt long s);
+    public native void setStackSize(@MachineSizedUInt long s);
     @Method(selector = "isMainThread")
     public native boolean isMainThread();
     @Method(selector = "initWithTarget:selector:object:")

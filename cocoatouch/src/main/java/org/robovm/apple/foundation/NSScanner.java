@@ -57,13 +57,13 @@ import org.robovm.apple.security.*;
     @Method(selector = "scanLocation")
     public native @MachineSizedUInt long scanLocation();
     @Method(selector = "setScanLocation:")
-    public native void setScanLocation$(@MachineSizedUInt long pos);
+    public native void setScanLocation(@MachineSizedUInt long pos);
     @Method(selector = "setCharactersToBeSkipped:")
-    public native void setCharactersToBeSkipped$(NSCharacterSet set);
+    public native void setCharactersToBeSkipped(NSCharacterSet set);
     @Method(selector = "setCaseSensitive:")
-    public native void setCaseSensitive$(boolean flag);
+    public native void setCaseSensitive(boolean flag);
     @Method(selector = "setLocale:")
-    public native void setLocale$(NSObject locale);
+    public native void setLocale(NSObject locale);
     @Method(selector = "charactersToBeSkipped")
     public native NSCharacterSet charactersToBeSkipped();
     @Method(selector = "caseSensitive")

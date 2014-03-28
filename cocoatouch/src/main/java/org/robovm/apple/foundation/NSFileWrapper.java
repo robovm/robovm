@@ -83,15 +83,15 @@ import org.robovm.apple.security.*;
     @Method(selector = "isSymbolicLink")
     public native boolean isSymbolicLink();
     @Method(selector = "setPreferredFilename:")
-    public native void setPreferredFilename$(String fileName);
+    public native void setPreferredFilename(String fileName);
     @Method(selector = "preferredFilename")
     public native String preferredFilename();
     @Method(selector = "setFilename:")
-    public native void setFilename$(String fileName);
+    public native void setFilename(String fileName);
     @Method(selector = "filename")
     public native String filename();
     @Method(selector = "setFileAttributes:")
-    public native void setFileAttributes$(NSDictionary<?, ?> fileAttributes);
+    public native void setFileAttributes(NSDictionary<?, ?> fileAttributes);
     @Method(selector = "fileAttributes")
     public native NSDictionary<?, ?> fileAttributes();
     @Method(selector = "matchesContentsOfURL:")

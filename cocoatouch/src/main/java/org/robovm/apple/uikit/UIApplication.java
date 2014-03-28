@@ -61,7 +61,7 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "keyWindow")
     public native UIWindow getKeyWindow();
     @Property(selector = "windows")
-    public native NSArray<?> getWindows();
+    public native NSArray<UIWindow> getWindows();
     @Property(selector = "isNetworkActivityIndicatorVisible")
     public native boolean isNetworkActivityIndicatorVisible();
     @Property(selector = "setNetworkActivityIndicatorVisible:")
@@ -103,9 +103,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "preferredContentSizeCategory")
     public native String getPreferredContentSizeCategory();
     @Property(selector = "scheduledLocalNotifications")
-    public native NSArray<?> getScheduledLocalNotifications();
+    public native NSArray<UILocalNotification> getScheduledLocalNotifications();
     @Property(selector = "setScheduledLocalNotifications:")
-    public native void setScheduledLocalNotifications(NSArray<?> v);
+    public native void setScheduledLocalNotifications(NSArray<UILocalNotification> v);
     @Property(selector = "isProximitySensingEnabled")
     public native boolean isProximitySensingEnabled();
     @Property(selector = "setProximitySensingEnabled:")
@@ -148,47 +148,47 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "isIgnoringInteractionEvents")
     public native boolean isIgnoringInteractionEvents();
     @Method(selector = "openURL:")
-    public native boolean openURL$(NSURL url);
+    public native boolean openURL(NSURL url);
     @Method(selector = "canOpenURL:")
-    public native boolean canOpenURL$(NSURL url);
+    public native boolean canOpenURL(NSURL url);
     @Method(selector = "sendEvent:")
-    public native void sendEvent$(UIEvent event);
+    public native void sendEvent(UIEvent event);
     @Method(selector = "sendAction:to:from:forEvent:")
-    public native boolean sendAction$to$from$forEvent$(Selector action, NSObject target, NSObject sender, UIEvent event);
+    public native boolean sendAction(Selector action, NSObject target, NSObject sender, UIEvent event);
     @Method(selector = "setStatusBarStyle:animated:")
-    public native void setStatusBarStyle$animated$(UIStatusBarStyle statusBarStyle, boolean animated);
+    public native void setStatusBarStyle(UIStatusBarStyle statusBarStyle, boolean animated);
     @Method(selector = "setStatusBarHidden:withAnimation:")
-    public native void setStatusBarHidden$withAnimation$(boolean hidden, UIStatusBarAnimation animation);
+    public native void setStatusBarHidden(boolean hidden, UIStatusBarAnimation animation);
     @Method(selector = "setStatusBarOrientation:animated:")
-    public native void setStatusBarOrientation$animated$(UIInterfaceOrientation interfaceOrientation, boolean animated);
+    public native void setStatusBarOrientation(UIInterfaceOrientation interfaceOrientation, boolean animated);
     @Method(selector = "supportedInterfaceOrientationsForWindow:")
     public native @MachineSizedUInt long getSupportedInterfaceOrientations(UIWindow window);
     @Method(selector = "beginBackgroundTaskWithExpirationHandler:")
     public native @MachineSizedUInt long beginBackgroundTask(@Block Runnable handler);
     @Method(selector = "beginBackgroundTaskWithName:expirationHandler:")
-    public native @MachineSizedUInt long beginBackgroundTaskWithName$expirationHandler$(String taskName, @Block Runnable handler);
+    public native @MachineSizedUInt long beginBackgroundTask(String taskName, @Block Runnable handler);
     @Method(selector = "endBackgroundTask:")
-    public native void endBackgroundTask$(@MachineSizedUInt long identifier);
+    public native void endBackgroundTask(@MachineSizedUInt long identifier);
     @Method(selector = "setMinimumBackgroundFetchInterval:")
-    public native void setMinimumBackgroundFetchInterval$(double minimumBackgroundFetchInterval);
+    public native void setMinimumBackgroundFetchInterval(double minimumBackgroundFetchInterval);
     @Method(selector = "setKeepAliveTimeout:handler:")
-    public native boolean setKeepAliveTimeout$handler$(double timeout, @Block Runnable keepAliveHandler);
+    public native boolean setKeepAliveTimeout(double timeout, @Block Runnable keepAliveHandler);
     @Method(selector = "clearKeepAliveTimeout")
     public native void clearKeepAliveTimeout();
     @Method(selector = "sharedApplication")
     public static native UIApplication getSharedApplication();
     @Method(selector = "registerForRemoteNotificationTypes:")
-    public native void registerForRemoteNotificationTypes$(UIRemoteNotificationType types);
+    public native void registerForRemoteNotificationTypes(UIRemoteNotificationType types);
     @Method(selector = "unregisterForRemoteNotifications")
     public native void unregisterForRemoteNotifications();
     @Method(selector = "enabledRemoteNotificationTypes")
     public native UIRemoteNotificationType getEnabledRemoteNotificationTypes();
     @Method(selector = "presentLocalNotificationNow:")
-    public native void presentLocalNotificationNow$(UILocalNotification notification);
+    public native void presentLocalNotificationNow(UILocalNotification notification);
     @Method(selector = "scheduleLocalNotification:")
-    public native void scheduleLocalNotification$(UILocalNotification notification);
+    public native void scheduleLocalNotification(UILocalNotification notification);
     @Method(selector = "cancelLocalNotification:")
-    public native void cancelLocalNotification$(UILocalNotification notification);
+    public native void cancelLocalNotification(UILocalNotification notification);
     @Method(selector = "cancelAllLocalNotifications")
     public native void cancelAllLocalNotifications();
     @Method(selector = "beginReceivingRemoteControlEvents")
@@ -196,7 +196,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "endReceivingRemoteControlEvents")
     public native void endReceivingRemoteControlEvents();
     @Method(selector = "setNewsstandIconImage:")
-    public native void setNewsstandIconImage$(UIImage image);
+    public native void setNewsstandIconImage(UIImage image);
     @Method(selector = "extendStateRestoration")
     public native void extendStateRestoration();
     @Method(selector = "completeStateRestoration")
@@ -204,9 +204,9 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "ignoreSnapshotOnNextApplicationLaunch")
     public native void ignoreSnapshotOnNextApplicationLaunch();
     @Method(selector = "registerObjectForStateRestoration:restorationIdentifier:")
-    public static native void registerObjectForStateRestoration$restorationIdentifier$(UIStateRestoring object, String restorationIdentifier);
+    public static native void registerObjectForStateRestoration(UIStateRestoring object, String restorationIdentifier);
     @Method(selector = "setStatusBarHidden:animated:")
-    public native void setStatusBarHidden$animated$(boolean hidden, boolean animated);
+    public native void setStatusBarHidden(boolean hidden, boolean animated);
     @Method(selector = "actionSheet:clickedButtonAtIndex:")
     public native void clicked(UIActionSheet actionSheet, @MachineSizedSInt long buttonIndex);
     @Method(selector = "actionSheetCancel:")

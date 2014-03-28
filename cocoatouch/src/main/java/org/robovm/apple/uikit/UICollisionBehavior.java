@@ -77,7 +77,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "removeItem:")
     public native void removeItem$(UIDynamicItem item);
     @Method(selector = "setTranslatesReferenceBoundsIntoBoundaryWithInsets:")
-    public native void setTranslatesReferenceBoundsIntoBoundaryWithInsets$(@ByVal UIEdgeInsets insets);
+    public native void setTranslatesReferenceBoundsIntoBoundaryWithInsets(@ByVal UIEdgeInsets insets);
     @Method(selector = "addBoundaryWithIdentifier:forPath:")
     public native void addBoundaryWithIdentifier$forPath$(NSObject identifier, UIBezierPath bezierPath);
     @Method(selector = "addBoundaryWithIdentifier:fromPoint:toPoint:")

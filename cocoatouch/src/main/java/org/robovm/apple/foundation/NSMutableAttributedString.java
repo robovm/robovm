@@ -72,7 +72,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "deleteCharactersInRange:")
     public native void deleteCharactersInRange$(@ByVal NSRange range);
     @Method(selector = "setAttributedString:")
-    public native void setAttributedString$(NSAttributedString attrString);
+    public native void setAttributedString(NSAttributedString attrString);
     @Method(selector = "beginEditing")
     public native void beginEditing();
     @Method(selector = "endEditing")

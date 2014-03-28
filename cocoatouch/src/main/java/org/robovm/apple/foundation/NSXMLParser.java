@@ -66,13 +66,13 @@ import org.robovm.apple.security.*;
     @Method(selector = "delegate")
     public native NSXMLParserDelegate delegate();
     @Method(selector = "setDelegate:")
-    public native void setDelegate$(NSXMLParserDelegate delegate);
+    public native void setDelegate(NSXMLParserDelegate delegate);
     @Method(selector = "setShouldProcessNamespaces:")
-    public native void setShouldProcessNamespaces$(boolean shouldProcessNamespaces);
+    public native void setShouldProcessNamespaces(boolean shouldProcessNamespaces);
     @Method(selector = "setShouldReportNamespacePrefixes:")
-    public native void setShouldReportNamespacePrefixes$(boolean shouldReportNamespacePrefixes);
+    public native void setShouldReportNamespacePrefixes(boolean shouldReportNamespacePrefixes);
     @Method(selector = "setShouldResolveExternalEntities:")
-    public native void setShouldResolveExternalEntities$(boolean shouldResolveExternalEntities);
+    public native void setShouldResolveExternalEntities(boolean shouldResolveExternalEntities);
     @Method(selector = "shouldProcessNamespaces")
     public native boolean shouldProcessNamespaces();
     @Method(selector = "shouldReportNamespacePrefixes")

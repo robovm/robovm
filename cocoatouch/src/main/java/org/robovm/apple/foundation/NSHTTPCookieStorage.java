@@ -59,7 +59,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "cookies")
     public native NSArray<?> cookies();
     @Method(selector = "setCookie:")
-    public native void setCookie$(NSHTTPCookie cookie);
+    public native void setCookie(NSHTTPCookie cookie);
     @Method(selector = "deleteCookie:")
     public native void deleteCookie$(NSHTTPCookie cookie);
     @Method(selector = "cookiesForURL:")
@@ -69,7 +69,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "cookieAcceptPolicy")
     public native NSHTTPCookieAcceptPolicy cookieAcceptPolicy();
     @Method(selector = "setCookieAcceptPolicy:")
-    public native void setCookieAcceptPolicy$(NSHTTPCookieAcceptPolicy cookieAcceptPolicy);
+    public native void setCookieAcceptPolicy(NSHTTPCookieAcceptPolicy cookieAcceptPolicy);
     @Method(selector = "sortedCookiesUsingDescriptors:")
     public native NSArray<?> sortedCookiesUsingDescriptors$(NSArray<?> sortOrder);
     @Method(selector = "sharedHTTPCookieStorage")

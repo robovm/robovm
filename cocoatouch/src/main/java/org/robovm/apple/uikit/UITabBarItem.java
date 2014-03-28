@@ -77,7 +77,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "finishedUnselectedImage")
     public native UIImage getFinishedUnselectedImage();
     @Method(selector = "setTitlePositionAdjustment:")
-    public native void setTitlePositionAdjustment$(@ByVal UIOffset adjustment);
+    public native void setTitlePositionAdjustment(@ByVal UIOffset adjustment);
     @Method(selector = "titlePositionAdjustment")
     public native @ByVal UIOffset getTitlePositionAdjustment();
     /*</methods>*/

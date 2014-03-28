@@ -61,7 +61,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "appendString:")
     public native void appendString$(String aString);
     @Method(selector = "setString:")
-    public native void setString$(String aString);
+    public native void setString(String aString);
     @Method(selector = "initWithCapacity:")
     protected native @Pointer long initWithCapacity$(@MachineSizedUInt long capacity);
     @Method(selector = "replaceOccurrencesOfString:withString:options:range:")

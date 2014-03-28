@@ -105,7 +105,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "delegate")
     public native NSStreamDelegate delegate();
     @Method(selector = "setDelegate:")
-    public native void setDelegate$(NSStreamDelegate delegate);
+    public native void setDelegate(NSStreamDelegate delegate);
     @Method(selector = "propertyForKey:")
     public native NSObject propertyForKey$(String key);
     @Method(selector = "setProperty:forKey:")

@@ -53,7 +53,7 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "undoManager")
     public native NSUndoManager getUndoManager();
     @Property(selector = "keyCommands")
-    public native NSArray<?> getKeyCommands();
+    public native NSArray<UIKeyCommand> getKeyCommands();
     @Property(selector = "inputView")
     public native UIView getInputView();
     @Property(selector = "inputAccessoryView")
@@ -78,28 +78,28 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "isFirstResponder")
     public native boolean isFirstResponder();
     @Method(selector = "touchesBegan:withEvent:")
-    public native void touchesBegan$withEvent$(NSSet<?> touches, UIEvent event);
+    public native void touchesBegan(NSSet<UITouch> touches, UIEvent event);
     @Method(selector = "touchesMoved:withEvent:")
-    public native void touchesMoved$withEvent$(NSSet<?> touches, UIEvent event);
+    public native void touchesMoved(NSSet<UITouch> touches, UIEvent event);
     @Method(selector = "touchesEnded:withEvent:")
-    public native void touchesEnded$withEvent$(NSSet<?> touches, UIEvent event);
+    public native void touchesEnded(NSSet<UITouch> touches, UIEvent event);
     @Method(selector = "touchesCancelled:withEvent:")
-    public native void touchesCancelled$withEvent$(NSSet<?> touches, UIEvent event);
+    public native void touchesCancelled(NSSet<UITouch> touches, UIEvent event);
     @Method(selector = "motionBegan:withEvent:")
-    public native void motionBegan$withEvent$(UIEventSubtype motion, UIEvent event);
+    public native void motionBegan(UIEventSubtype motion, UIEvent event);
     @Method(selector = "motionEnded:withEvent:")
-    public native void motionEnded$withEvent$(UIEventSubtype motion, UIEvent event);
+    public native void motionEnded(UIEventSubtype motion, UIEvent event);
     @Method(selector = "motionCancelled:withEvent:")
-    public native void motionCancelled$withEvent$(UIEventSubtype motion, UIEvent event);
+    public native void motionCancelled(UIEventSubtype motion, UIEvent event);
     @Method(selector = "remoteControlReceivedWithEvent:")
     public native void remoteControlReceived(UIEvent event);
     @Method(selector = "canPerformAction:withSender:")
-    public native boolean canPerformAction$withSender$(Selector action, NSObject sender);
+    public native boolean canPerformAction(Selector action, NSObject sender);
     @Method(selector = "targetForAction:withSender:")
-    public native NSObject targetForAction$withSender$(Selector action, NSObject sender);
+    public native NSObject getActionTarget(Selector action, NSObject sender);
     @Method(selector = "reloadInputViews")
     public native void reloadInputViews();
     @Method(selector = "clearTextInputContextIdentifier:")
-    public static native void clearTextInputContextIdentifier$(String identifier);
+    public static native void clearTextInputContextIdentifier(String identifier);
     /*</methods>*/
 }

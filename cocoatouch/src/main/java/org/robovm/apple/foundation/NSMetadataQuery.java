@@ -85,39 +85,39 @@ import org.robovm.apple.security.*;
     @Method(selector = "delegate")
     public native NSMetadataQueryDelegate delegate();
     @Method(selector = "setDelegate:")
-    public native void setDelegate$(NSMetadataQueryDelegate delegate);
+    public native void setDelegate(NSMetadataQueryDelegate delegate);
     @Method(selector = "predicate")
     public native NSPredicate predicate();
     @Method(selector = "setPredicate:")
-    public native void setPredicate$(NSPredicate predicate);
+    public native void setPredicate(NSPredicate predicate);
     @Method(selector = "sortDescriptors")
     public native NSArray<?> sortDescriptors();
     @Method(selector = "setSortDescriptors:")
-    public native void setSortDescriptors$(NSArray<?> descriptors);
+    public native void setSortDescriptors(NSArray<?> descriptors);
     @Method(selector = "valueListAttributes")
     public native NSArray<?> valueListAttributes();
     @Method(selector = "setValueListAttributes:")
-    public native void setValueListAttributes$(NSArray<?> attrs);
+    public native void setValueListAttributes(NSArray<?> attrs);
     @Method(selector = "groupingAttributes")
     public native NSArray<?> groupingAttributes();
     @Method(selector = "setGroupingAttributes:")
-    public native void setGroupingAttributes$(NSArray<?> attrs);
+    public native void setGroupingAttributes(NSArray<?> attrs);
     @Method(selector = "notificationBatchingInterval")
     public native double notificationBatchingInterval();
     @Method(selector = "setNotificationBatchingInterval:")
-    public native void setNotificationBatchingInterval$(double ti);
+    public native void setNotificationBatchingInterval(double ti);
     @Method(selector = "searchScopes")
     public native NSArray<?> searchScopes();
     @Method(selector = "setSearchScopes:")
-    public native void setSearchScopes$(NSArray<?> scopes);
+    public native void setSearchScopes(NSArray<?> scopes);
     @Method(selector = "searchItems")
     public native NSArray<?> searchItems();
     @Method(selector = "setSearchItems:")
-    public native void setSearchItems$(NSArray<?> items);
+    public native void setSearchItems(NSArray<?> items);
     @Method(selector = "operationQueue")
     public native NSOperationQueue operationQueue();
     @Method(selector = "setOperationQueue:")
-    public native void setOperationQueue$(NSOperationQueue operationQueue);
+    public native void setOperationQueue(NSOperationQueue operationQueue);
     @Method(selector = "startQuery")
     public native boolean startQuery();
     @Method(selector = "stopQuery")

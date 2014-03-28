@@ -233,29 +233,29 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "commitAnimations")
     public static native void commitAnimations();
     @Method(selector = "setAnimationDelegate:")
-    public static native void setAnimationDelegate$(NSObject delegate);
+    public static native void setAnimationDelegate(NSObject delegate);
     @Method(selector = "setAnimationWillStartSelector:")
-    public static native void setAnimationWillStartSelector$(Selector selector);
+    public static native void setAnimationWillStartSelector(Selector selector);
     @Method(selector = "setAnimationDidStopSelector:")
-    public static native void setAnimationDidStopSelector$(Selector selector);
+    public static native void setAnimationDidStopSelector(Selector selector);
     @Method(selector = "setAnimationDuration:")
     public static native void setDurationForAnimation(double duration);
     @Method(selector = "setAnimationDelay:")
-    public static native void setAnimationDelay$(double delay);
+    public static native void setAnimationDelay(double delay);
     @Method(selector = "setAnimationStartDate:")
-    public static native void setAnimationStartDate$(NSDate startDate);
+    public static native void setAnimationStartDate(NSDate startDate);
     @Method(selector = "setAnimationCurve:")
-    public static native void setAnimationCurve$(UIViewAnimationCurve curve);
+    public static native void setAnimationCurve(UIViewAnimationCurve curve);
     @Method(selector = "setAnimationRepeatCount:")
-    public static native void setAnimationRepeatCount$(float repeatCount);
+    public static native void setAnimationRepeatCount(float repeatCount);
     @Method(selector = "setAnimationRepeatAutoreverses:")
-    public static native void setAnimationRepeatAutoreverses$(boolean repeatAutoreverses);
+    public static native void setAnimationRepeatAutoreverses(boolean repeatAutoreverses);
     @Method(selector = "setAnimationBeginsFromCurrentState:")
-    public static native void setAnimationBeginsFromCurrentState$(boolean fromCurrentState);
+    public static native void setAnimationBeginsFromCurrentState(boolean fromCurrentState);
     @Method(selector = "setAnimationTransition:forView:cache:")
     public static native void setAnimationTransition$forView$cache$(UIViewAnimationTransition transition, UIView view, boolean cache);
     @Method(selector = "setAnimationsEnabled:")
-    public static native void setAnimationsEnabled$(boolean enabled);
+    public static native void setAnimationsEnabled(boolean enabled);
     @Method(selector = "areAnimationsEnabled")
     public static native boolean areAnimationsEnabled();
     @Method(selector = "performWithoutAnimation:")
@@ -309,7 +309,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "translatesAutoresizingMaskIntoConstraints")
     public native boolean isTranslatesAutoresizingMaskIntoConstraints();
     @Method(selector = "setTranslatesAutoresizingMaskIntoConstraints:")
-    public native void setTranslatesAutoresizingMaskIntoConstraints$(boolean flag);
+    public native void setTranslatesAutoresizingMaskIntoConstraints(boolean flag);
     @Method(selector = "requiresConstraintBasedLayout")
     public static native boolean requiresConstraintBasedLayout();
     @Method(selector = "alignmentRectForFrame:")

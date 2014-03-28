@@ -277,6 +277,10 @@ import org.robovm.apple.security.*;
         return dictionaryWithContentsOfFile$(file.getAbsolutePath());
     }
 
+    public boolean write(java.io.File file, boolean useAuxiliaryFile) {
+        return writeToFile$atomically$(file.getAbsolutePath(), useAuxiliaryFile);
+    }
+    
     /*<methods>*/
     @Method(selector = "count")
     protected native @MachineSizedUInt long count();

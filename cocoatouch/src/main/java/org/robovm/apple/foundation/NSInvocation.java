@@ -60,15 +60,15 @@ import org.robovm.apple.security.*;
     @Method(selector = "target")
     public native NSObject target();
     @Method(selector = "setTarget:")
-    public native void setTarget$(NSObject target);
+    public native void setTarget(NSObject target);
     @Method(selector = "selector")
     public native Selector selector();
     @Method(selector = "setSelector:")
-    public native void setSelector$(Selector selector);
+    public native void setSelector(Selector selector);
     @Method(selector = "getReturnValue:")
     public native void getReturnValue$(VoidPtr retLoc);
     @Method(selector = "setReturnValue:")
-    public native void setReturnValue$(VoidPtr retLoc);
+    public native void setReturnValue(VoidPtr retLoc);
     @Method(selector = "getArgument:atIndex:")
     public native void getArgument$atIndex$(VoidPtr argumentLocation, @MachineSizedSInt long idx);
     @Method(selector = "setArgument:atIndex:")

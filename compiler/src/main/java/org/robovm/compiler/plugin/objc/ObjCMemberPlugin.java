@@ -438,7 +438,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
             }
 
             // Create the @Bridge and @Callback methods needed for this selector
-            if (!extensions) {
+            if (!extensions && (method.getModifiers() & Modifier.FINAL) == 0) {
                 Type receiverType = ObjCProtocolProxyPlugin.isObjCProxy(sootClass) 
                         ? sootClass.getInterfaces().getFirst().getType()
                         : sootClass.getType();
@@ -510,7 +510,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                 }
 
                 // Create the @Bridge and @Callback methods needed for this selector
-                if (!extensions) {
+                if (!extensions && (method.getModifiers() & Modifier.FINAL) == 0) {
                     Type receiverType = ObjCProtocolProxyPlugin.isObjCProxy(sootClass) 
                             ? sootClass.getInterfaces().getFirst().getType()
                             : sootClass.getType();

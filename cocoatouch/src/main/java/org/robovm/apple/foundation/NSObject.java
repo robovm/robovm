@@ -37,7 +37,7 @@ import org.robovm.apple.security.*;
  * <div class="javadoc"></div>
  */
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
-@Marshaler(NSString.AsStringMarshaler.class)    
+@Marshalers({@Marshaler(NSObject.Marshaler.class), @Marshaler(NSString.AsStringMarshaler.class)})
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSObject/*</name>*/ 
     extends /*<extends>*/ObjCObject/*</extends>*/ 
     /*<implements>*/implements NSObjectProtocol/*</implements>*/, AutoCloseable {
@@ -151,6 +151,52 @@ import org.robovm.apple.security.*;
     protected static void release(long handle) {
         ObjCRuntime.void_objc_msgSend(handle, release.getHandle());
     }
+
+    // The methods below are defined in the NSObject protocol. We define them here
+    // instead. The performSelector methods in particular must be defined here since
+    // we need them to be final. If not final calls to these methods on Java classes
+    // subclassing an ObjC class will be routed through Java and the marshalers will
+    // try to marshal the return value to an NSObject even if the target method 
+    // returns void. If there's garbage in the register used to return values the
+    // marshaler is likely to cause a crash.
+
+    @Method(selector = "performSelector:")
+    public native final NSObject performSelector(Selector aSelector);
+    @Method(selector = "performSelector:withObject:")
+    public native final NSObject performSelector(Selector aSelector, NSObject object);
+    @Method(selector = "performSelector:withObject:withObject:")
+    public native final NSObject performSelector(Selector aSelector, NSObject object1, NSObject object2);
+    @Method(selector = "isEqual:")
+    public native boolean isEqual(NSObject object);
+    @Method(selector = "hash")
+    public native @MachineSizedUInt long hash();
+    @Method(selector = "isKindOfClass:")
+    public native boolean isKindOfClass(ObjCClass aClass);
+    @Method(selector = "isMemberOfClass:")
+    public native boolean isMemberOfClass(ObjCClass aClass);
+    @Method(selector = "conformsToProtocol:")
+    public native boolean conformsToProtocol(ObjCProtocol aProtocol);
+    @Method(selector = "respondsToSelector:")
+    public native boolean respondsToSelector(Selector aSelector);
+    @Method(selector = "retain")
+    public native NSObject retain();
+    @Method(selector = "release")
+    public native void release();
+    @Method(selector = "autorelease")
+    public native NSObject autorelease();
+    @Method(selector = "retainCount")
+    public native @MachineSizedUInt long retainCount();
+    @Method(selector = "description")
+    public native String description();
+    
+    // Versions of the performSelector methods which must be used when calling
+    // methods which don't return any value.
+    @Method(selector = "performSelector:")
+    public native final void performSelectorV(Selector aSelector);
+    @Method(selector = "performSelector:withObject:")
+    public native final void performSelectorV(Selector aSelector, NSObject object);
+    @Method(selector = "performSelector:withObject:withObject:")
+    public native final void performSelectorV(Selector aSelector, NSObject object1, NSObject object2);
     
     /*<methods>*/
     @Method(selector = "init")
@@ -210,34 +256,6 @@ import org.robovm.apple.security.*;
     @Method(selector = "didChangeValueForKey:withSetMutation:usingObjects:")
     public native void didChangeValue(String key, NSKeyValueSetMutationKind mutationKind, NSSet<?> objects);
     @Method(selector = "performSelectorInBackground:withObject:")
-    public native void performSelectorInBackground(Selector aSelector, NSObject arg);
-    @Method(selector = "isEqual:")
-    public native boolean isEqual(NSObject object);
-    @Method(selector = "hash")
-    public native @MachineSizedUInt long hash();
-    @Method(selector = "performSelector:")
-    public native NSObject performSelector(Selector aSelector);
-    @Method(selector = "performSelector:withObject:")
-    public native NSObject performSelector(Selector aSelector, NSObject object);
-    @Method(selector = "performSelector:withObject:withObject:")
-    public native NSObject performSelector(Selector aSelector, NSObject object1, NSObject object2);
-    @Method(selector = "isKindOfClass:")
-    public native boolean isKindOfClass(ObjCClass aClass);
-    @Method(selector = "isMemberOfClass:")
-    public native boolean isMemberOfClass(ObjCClass aClass);
-    @Method(selector = "conformsToProtocol:")
-    public native boolean conformsToProtocol(ObjCProtocol aProtocol);
-    @Method(selector = "respondsToSelector:")
-    public native boolean respondsToSelector(Selector aSelector);
-    @Method(selector = "retain")
-    public native NSObject retain();
-    @Method(selector = "release")
-    public native void release();
-    @Method(selector = "autorelease")
-    public native NSObject autorelease();
-    @Method(selector = "retainCount")
-    public native @MachineSizedUInt long retainCount();
-    @Method(selector = "description")
-    public native String description();
+    public final native void performSelectorInBackground(Selector aSelector, NSObject arg);
     /*</methods>*/
 }

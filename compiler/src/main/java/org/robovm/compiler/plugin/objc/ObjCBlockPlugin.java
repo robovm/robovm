@@ -136,9 +136,9 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
             for (SootMethod method : sootClass.getMethods()) {
                 if (method.isNative() 
                     && (hasBridgeAnnotation(method)
-                        || hasCallbackAnnotation(method)        
                         || hasAnnotation(method, ObjCMemberPlugin.METHOD)
-                        || hasAnnotation(method, ObjCMemberPlugin.PROPERTY))) {
+                        || hasAnnotation(method, ObjCMemberPlugin.PROPERTY))
+                    || hasCallbackAnnotation(method)) {
                     
                     int[] indexes = getBlockParameterIndexes(method);
                     if (indexes != null || hasAnnotation(method, BLOCK)) {
@@ -479,7 +479,7 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
             for (String s : targetMethodAnnotations[i]) {
                 // We add 2 parameters first so annotations for the first 
                 // parameter must be added at index 2.
-                mv.visitParameterAnnotation(i + 1, s, true);
+                mv.visitParameterAnnotation(i + 1, s, true).visitEnd();
             }
         }
 
@@ -511,7 +511,7 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
             for (String s : targetMethodAnnotations[i]) {
                 // We add 1 parameter first so annotations for the first 
                 // parameter should be added at index 1.
-                mv.visitParameterAnnotation(i, s, true);
+                mv.visitParameterAnnotation(i, s, true).visitEnd();
             }
         }
 

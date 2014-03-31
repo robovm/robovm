@@ -59,9 +59,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setSourceType:")
     public native void setSourceType(UIImagePickerControllerSourceType v);
     @Property(selector = "mediaTypes")
-    public native NSArray<?> getMediaTypes();
+    public native NSArray<NSString> getMediaTypes();
     @Property(selector = "setMediaTypes:")
-    public native void setMediaTypes(NSArray<?> v);
+    public native void setMediaTypes(NSArray<NSString> v);
     @Property(selector = "allowsEditing")
     public native boolean isAllowsEditing();
     @Property(selector = "setAllowsEditing:")
@@ -112,14 +112,14 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "stopVideoCapture")
     public native void stopVideoCapture();
     @Method(selector = "isSourceTypeAvailable:")
-    public static native boolean isSourceTypeAvailable$(UIImagePickerControllerSourceType sourceType);
+    public static native boolean isSourceTypeAvailable(UIImagePickerControllerSourceType sourceType);
     @Method(selector = "availableMediaTypesForSourceType:")
-    public static native NSArray<?> getAvailableMediaTypes(UIImagePickerControllerSourceType sourceType);
+    public static native NSArray<NSString> getAvailableMediaTypes(UIImagePickerControllerSourceType sourceType);
     @Method(selector = "isCameraDeviceAvailable:")
-    public static native boolean isCameraDeviceAvailable$(UIImagePickerControllerCameraDevice cameraDevice);
+    public static native boolean isCameraDeviceAvailable(UIImagePickerControllerCameraDevice cameraDevice);
     @Method(selector = "isFlashAvailableForCameraDevice:")
-    public static native boolean isFlashAvailableForCameraDevice$(UIImagePickerControllerCameraDevice cameraDevice);
+    public static native boolean isFlashAvailableForCameraDevice(UIImagePickerControllerCameraDevice cameraDevice);
     @Method(selector = "availableCaptureModesForCameraDevice:")
-    public static native NSArray<?> getAvailableCaptureModes(UIImagePickerControllerCameraDevice cameraDevice);
+    public static native NSArray<NSNumber> getAvailableCaptureModes(UIImagePickerControllerCameraDevice cameraDevice);
     /*</methods>*/
 }

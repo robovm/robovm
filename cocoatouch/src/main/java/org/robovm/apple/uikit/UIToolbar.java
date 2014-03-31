@@ -60,9 +60,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setBarStyle:")
     public native void setBarStyle(UIBarStyle v);
     @Property(selector = "items")
-    public native NSArray<?> getItems();
+    public native NSArray<UIBarButtonItem> getItems();
     @Property(selector = "setItems:")
-    public native void setItems(NSArray<?> v);
+    public native void setItems(NSArray<UIBarButtonItem> v);
     @Property(selector = "isTranslucent")
     public native boolean isTranslucent();
     @Property(selector = "setTranslucent:")
@@ -85,13 +85,13 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "setItems:animated:")
-    public native void setItems$animated$(NSArray<?> items, boolean animated);
+    public native void setItems(NSArray<UIBarButtonItem> items, boolean animated);
     @Method(selector = "setBackgroundImage:forToolbarPosition:barMetrics:")
-    public native void setBackgroundImage$forToolbarPosition$barMetrics$(UIImage backgroundImage, UIBarPosition topOrBottom, UIBarMetrics barMetrics);
+    public native void setBackgroundImage(UIImage backgroundImage, UIBarPosition topOrBottom, UIBarMetrics barMetrics);
     @Method(selector = "backgroundImageForToolbarPosition:barMetrics:")
     public native UIImage getBackgroundImage(UIBarPosition topOrBottom, UIBarMetrics barMetrics);
     @Method(selector = "setShadowImage:forToolbarPosition:")
-    public native void setShadowImage$forToolbarPosition$(UIImage shadowImage, UIBarPosition topOrBottom);
+    public native void setShadowImage(UIImage shadowImage, UIBarPosition topOrBottom);
     @Method(selector = "shadowImageForToolbarPosition:")
     public native UIImage getShadowImage(UIBarPosition topOrBottom);
     /*</methods>*/

@@ -57,9 +57,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "visibleViewController")
     public native UIViewController getVisibleViewController();
     @Property(selector = "viewControllers")
-    public native NSArray<?> getViewControllers();
+    public native NSArray<UIViewController> getViewControllers();
     @Property(selector = "setViewControllers:")
-    public native void setViewControllers(NSArray<?> v);
+    public native void setViewControllers(NSArray<UIViewController> v);
     @Property(selector = "isNavigationBarHidden")
     public native boolean isNavigationBarHidden();
     @Property(selector = "setNavigationBarHidden:")
@@ -86,18 +86,18 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "initWithRootViewController:")
     protected native @Pointer long initWithRootViewController$(UIViewController rootViewController);
     @Method(selector = "pushViewController:animated:")
-    public native void pushViewController$animated$(UIViewController viewController, boolean animated);
+    public native void pushViewController(UIViewController viewController, boolean animated);
     @Method(selector = "popViewControllerAnimated:")
-    public native UIViewController popViewControllerAnimated$(boolean animated);
+    public native UIViewController popViewController(boolean animated);
     @Method(selector = "popToViewController:animated:")
-    public native NSArray<?> popToViewController$animated$(UIViewController viewController, boolean animated);
+    public native NSArray<UIViewController> popToViewController(UIViewController viewController, boolean animated);
     @Method(selector = "popToRootViewControllerAnimated:")
-    public native NSArray<?> popToRootViewController(boolean animated);
+    public native NSArray<UIViewController> popToRootViewController(boolean animated);
     @Method(selector = "setViewControllers:animated:")
-    public native void setViewControllers$animated$(NSArray<?> viewControllers, boolean animated);
+    public native void setViewControllers(NSArray<UIViewController> viewControllers, boolean animated);
     @Method(selector = "setNavigationBarHidden:animated:")
-    public native void setNavigationBarHidden$animated$(boolean hidden, boolean animated);
+    public native void setNavigationBarHidden(boolean hidden, boolean animated);
     @Method(selector = "setToolbarHidden:animated:")
-    public native void setToolbarHidden$animated$(boolean hidden, boolean animated);
+    public native void setToolbarHidden(boolean hidden, boolean animated);
     /*</methods>*/
 }

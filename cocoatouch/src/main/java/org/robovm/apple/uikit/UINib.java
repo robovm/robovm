@@ -55,10 +55,10 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "instantiateWithOwner:options:")
-    public native NSArray<?> instantiate(NSObject ownerOrNil, NSDictionary<?, ?> optionsOrNil);
+    public native NSArray<?> instantiate(NSObject ownerOrNil, NSDictionary<NSString, ?> optionsOrNil);
     @Method(selector = "nibWithNibName:bundle:")
-    public static native UINib fromName(String name, NSBundle bundleOrNil);
+    public static native UINib createFromName(String name, NSBundle bundleOrNil);
     @Method(selector = "nibWithData:bundle:")
-    public static native UINib fromData(NSData data, NSBundle bundleOrNil);
+    public static native UINib createFromData(NSData data, NSBundle bundleOrNil);
     /*</methods>*/
 }

@@ -59,6 +59,6 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "instantiateViewControllerWithIdentifier:")
     public native NSObject instantiateViewController(String identifier);
     @Method(selector = "storyboardWithName:bundle:")
-    public static native UIStoryboard fromName(String name, NSBundle storyboardBundleOrNil);
+    public static native UIStoryboard createFromName(String name, NSBundle storyboardBundleOrNil);
     /*</methods>*/
 }

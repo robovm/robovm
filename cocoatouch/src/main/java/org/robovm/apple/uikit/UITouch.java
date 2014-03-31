@@ -61,7 +61,7 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "view")
     public native UIView getView();
     @Property(selector = "gestureRecognizers")
-    public native NSArray<?> getGestureRecognizers();
+    public native NSArray<UIGestureRecognizer> getGestureRecognizers();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

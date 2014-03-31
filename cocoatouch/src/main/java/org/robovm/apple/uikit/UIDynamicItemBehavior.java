@@ -48,11 +48,11 @@ import org.robovm.apple.coreimage.*;
     /*<constructors>*/
     public UIDynamicItemBehavior() {}
     protected UIDynamicItemBehavior(SkipInit skipInit) { super(skipInit); }
-    public UIDynamicItemBehavior(NSArray<?> items) { super((SkipInit) null); initObject(initWithItems$(items)); }
+    public UIDynamicItemBehavior(List<UIDynamicItem> items) { super((SkipInit) null); initObject(initWithItems$(items)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "items")
-    public native NSArray<?> getItems();
+    public native List<UIDynamicItem> getItems();
     @Property(selector = "elasticity")
     public native @MachineSizedFloat double getElasticity();
     @Property(selector = "setElasticity:")
@@ -81,18 +81,18 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithItems:")
-    protected native @Pointer long initWithItems$(NSArray<?> items);
+    protected native @Pointer long initWithItems$(List<UIDynamicItem> items);
     @Method(selector = "addItem:")
-    public native void addItem$(UIDynamicItem item);
+    public native void addItem(UIDynamicItem item);
     @Method(selector = "removeItem:")
-    public native void removeItem$(UIDynamicItem item);
+    public native void removeItem(UIDynamicItem item);
     @Method(selector = "addLinearVelocity:forItem:")
-    public native void addLinearVelocity$forItem$(@ByVal CGPoint velocity, UIDynamicItem item);
+    public native void addLinearVelocityForItem(@ByVal CGPoint velocity, UIDynamicItem item);
     @Method(selector = "linearVelocityForItem:")
-    public native @ByVal CGPoint linearVelocityForItem$(UIDynamicItem item);
+    public native @ByVal CGPoint getLinearVelocityForItem(UIDynamicItem item);
     @Method(selector = "addAngularVelocity:forItem:")
-    public native void addAngularVelocity$forItem$(@MachineSizedFloat double velocity, UIDynamicItem item);
+    public native void addAngularVelocityForItem(@MachineSizedFloat double velocity, UIDynamicItem item);
     @Method(selector = "angularVelocityForItem:")
-    public native @MachineSizedFloat double angularVelocityForItem$(UIDynamicItem item);
+    public native @MachineSizedFloat double getAngularVelocityForItem(UIDynamicItem item);
     /*</methods>*/
 }

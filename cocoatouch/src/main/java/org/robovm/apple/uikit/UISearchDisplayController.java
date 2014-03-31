@@ -89,6 +89,6 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "initWithSearchBar:contentsController:")
     protected native @Pointer long initWithSearchBar$contentsController$(UISearchBar searchBar, UIViewController viewController);
     @Method(selector = "setActive:animated:")
-    public native void setActive$animated$(boolean visible, boolean animated);
+    public native void setActive(boolean visible, boolean animated);
     /*</methods>*/
 }

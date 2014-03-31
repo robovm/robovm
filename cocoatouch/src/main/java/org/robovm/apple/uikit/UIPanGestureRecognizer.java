@@ -64,7 +64,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "translationInView:")
     public native @ByVal CGPoint getTranslation(UIView view);
     @Method(selector = "setTranslation:inView:")
-    public native void setTranslation$inView$(@ByVal CGPoint translation, UIView view);
+    public native void setTranslation(@ByVal CGPoint translation, UIView view);
     @Method(selector = "velocityInView:")
     public native @ByVal CGPoint getVelocity(UIView view);
     /*</methods>*/

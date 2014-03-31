@@ -117,6 +117,6 @@ import org.robovm.apple.security.*;
     @Method(selector = "symbolicLinkDestinationURL")
     public native NSURL symbolicLinkDestinationURL();
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

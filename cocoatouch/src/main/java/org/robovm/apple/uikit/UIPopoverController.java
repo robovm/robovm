@@ -68,9 +68,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "popoverArrowDirection")
     public native UIPopoverArrowDirection getPopoverArrowDirection();
     @Property(selector = "passthroughViews")
-    public native NSArray<?> getPassthroughViews();
+    public native NSArray<UIView> getPassthroughViews();
     @Property(selector = "setPassthroughViews:")
-    public native void setPassthroughViews(NSArray<?> v);
+    public native void setPassthroughViews(NSArray<UIView> v);
     @Property(selector = "backgroundColor")
     public native UIColor getBackgroundColor();
     @Property(selector = "setBackgroundColor:")
@@ -89,9 +89,9 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "initWithContentViewController:")
     protected native @Pointer long initWithContentViewController$(UIViewController viewController);
     @Method(selector = "setContentViewController:animated:")
-    public native void setContentViewController$animated$(UIViewController viewController, boolean animated);
+    public native void setContentViewController(UIViewController viewController, boolean animated);
     @Method(selector = "setPopoverContentSize:animated:")
-    public native void setPopoverContentSize$animated$(@ByVal CGSize size, boolean animated);
+    public native void setPopoverContentSize(@ByVal CGSize size, boolean animated);
     @Method(selector = "presentPopoverFromRect:inView:permittedArrowDirections:animated:")
     public native void presentFromRectInView(@ByVal CGRect rect, UIView view, UIPopoverArrowDirection arrowDirections, boolean animated);
     @Method(selector = "presentPopoverFromBarButtonItem:permittedArrowDirections:animated:")

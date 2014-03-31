@@ -74,13 +74,13 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setHighlighted:")
     public native void setHighlighted(boolean v);
     @Property(selector = "animationImages")
-    public native NSArray<?> getAnimationImages();
+    public native NSArray<UIImage> getAnimationImages();
     @Property(selector = "setAnimationImages:")
-    public native void setAnimationImages(NSArray<?> v);
+    public native void setAnimationImages(NSArray<UIImage> v);
     @Property(selector = "highlightedAnimationImages")
-    public native NSArray<?> getHighlightedAnimationImages();
+    public native NSArray<UIImage> getHighlightedAnimationImages();
     @Property(selector = "setHighlightedAnimationImages:")
-    public native void setHighlightedAnimationImages(NSArray<?> v);
+    public native void setHighlightedAnimationImages(NSArray<UIImage> v);
     @Property(selector = "animationDuration")
     public native double getAnimationDuration();
     @Property(selector = "setAnimationDuration:")

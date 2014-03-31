@@ -81,7 +81,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "makeKeyAndVisible")
     public native void makeKeyAndVisible();
     @Method(selector = "sendEvent:")
-    public native void sendEvent$(UIEvent event);
+    public native void sendEvent(UIEvent event);
     @Method(selector = "convertPoint:toWindow:")
     public native @ByVal CGPoint convertPointToWindow(@ByVal CGPoint point, UIWindow window);
     @Method(selector = "convertPoint:fromWindow:")

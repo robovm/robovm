@@ -48,11 +48,11 @@ import org.robovm.apple.coreimage.*;
     /*<constructors>*/
     public UIGravityBehavior() {}
     protected UIGravityBehavior(SkipInit skipInit) { super(skipInit); }
-    public UIGravityBehavior(NSArray<?> items) { super((SkipInit) null); initObject(initWithItems$(items)); }
+    public UIGravityBehavior(List<UIDynamicItem> items) { super((SkipInit) null); initObject(initWithItems$(items)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "items")
-    public native NSArray<?> getItems();
+    public native List<UIDynamicItem> getItems();
     @Property(selector = "gravityDirection")
     public native @ByVal CGVector getGravityDirection();
     @Property(selector = "setGravityDirection:")
@@ -69,12 +69,12 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithItems:")
-    protected native @Pointer long initWithItems$(NSArray<?> items);
+    protected native @Pointer long initWithItems$(List<UIDynamicItem> items);
     @Method(selector = "addItem:")
-    public native void addItem$(UIDynamicItem item);
+    public native void addItem(UIDynamicItem item);
     @Method(selector = "removeItem:")
-    public native void removeItem$(UIDynamicItem item);
+    public native void removeItem(UIDynamicItem item);
     @Method(selector = "setAngle:magnitude:")
-    public native void setAngle$magnitude$(@MachineSizedFloat double angle, @MachineSizedFloat double magnitude);
+    public native void setAngle(@MachineSizedFloat double angle, @MachineSizedFloat double magnitude);
     /*</methods>*/
 }

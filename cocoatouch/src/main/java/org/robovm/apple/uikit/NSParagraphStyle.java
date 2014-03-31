@@ -77,17 +77,17 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "hyphenationFactor")
     public native float getHyphenationFactor();
     @Property(selector = "tabStops")
-    public native NSArray<?> getTabStops();
+    public native NSArray<NSTextTab> getTabStops();
     @Property(selector = "defaultTabInterval")
     public native @MachineSizedFloat double getDefaultTabInterval();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "defaultParagraphStyle")
-    public static native NSParagraphStyle defaultParagraphStyle();
+    public static native NSParagraphStyle getDefaultParagraphStyle();
     @Method(selector = "defaultWritingDirectionForLanguage:")
-    public static native NSWritingDirection defaultWritingDirectionForLanguage$(String languageName);
+    public static native NSWritingDirection getDefaultWritingDirection(String languageName);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

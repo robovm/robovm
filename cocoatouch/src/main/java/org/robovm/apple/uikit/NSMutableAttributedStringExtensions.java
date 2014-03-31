@@ -55,10 +55,10 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "fixAttributesInRange:")
-    public static native void fixAttributesInRange$(NSMutableAttributedString thiz, @ByVal NSRange range);
+    public static native void fixAttributesInRange(NSMutableAttributedString thiz, @ByVal NSRange range);
     @Method(selector = "readFromFileURL:options:documentAttributes:error:")
-    public static native boolean readFromFileURL$options$documentAttributes$error$(NSMutableAttributedString thiz, NSURL url, NSDictionary<?, ?> opts, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
+    public static native boolean readFromFileURL(NSMutableAttributedString thiz, NSURL url, NSDictionary<NSString, ?> opts, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
     @Method(selector = "readFromData:options:documentAttributes:error:")
-    public static native boolean readFromData$options$documentAttributes$error$(NSMutableAttributedString thiz, NSData data, NSDictionary<?, ?> opts, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
+    public static native boolean readFromData(NSMutableAttributedString thiz, NSData data, NSDictionary<NSString, ?> opts, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
     /*</methods>*/
 }

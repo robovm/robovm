@@ -101,9 +101,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setAttributedText:")
     public native void setAttributedText(NSAttributedString v);
     @Property(selector = "typingAttributes")
-    public native NSDictionary<?, ?> getTypingAttributes();
+    public native NSDictionary<NSString, ?> getTypingAttributes();
     @Property(selector = "setTypingAttributes:")
-    public native void setTypingAttributes(NSDictionary<?, ?> v);
+    public native void setTypingAttributes(NSDictionary<NSString, ?> v);
     @Property(selector = "inputView")
     public native UIView getInputView();
     @Property(selector = "setInputView:")
@@ -127,9 +127,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "textStorage")
     public native NSTextStorage getTextStorage();
     @Property(selector = "linkTextAttributes")
-    public native NSDictionary<?, ?> getLinkTextAttributes();
+    public native NSDictionary<NSString, ?> getLinkTextAttributes();
     @Property(selector = "setLinkTextAttributes:")
-    public native void setLinkTextAttributes(NSDictionary<?, ?> v);
+    public native void setLinkTextAttributes(NSDictionary<NSString, ?> v);
     @Property(selector = "selectedTextRange")
     public native UITextRange getSelectedTextRange();
     @Property(selector = "setSelectedTextRange:")
@@ -192,7 +192,7 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "scrollRangeToVisible:")
-    public native void scrollRangeToVisible$(@ByVal NSRange range);
+    public native void scrollRangeToVisible(@ByVal NSRange range);
     @Method(selector = "initWithFrame:textContainer:")
     protected native @Pointer long initWithFrame$textContainer$(@ByVal CGRect frame, NSTextContainer textContainer);
     @Method(selector = "textInRange:")

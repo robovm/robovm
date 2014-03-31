@@ -65,6 +65,6 @@ import org.robovm.apple.security.*;
     @Method(selector = "exceptionDuringOperation:error:leftOperand:rightOperand:")
     public native NSDecimalNumber exceptionDuringOperation$error$leftOperand$rightOperand$(Selector operation, NSCalculationError error, NSDecimalNumber leftOperand, NSDecimalNumber rightOperand);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

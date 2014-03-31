@@ -58,6 +58,6 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "initWithTerm:")
     protected native @Pointer long initWithTerm$(String term);
     @Method(selector = "dictionaryHasDefinitionForTerm:")
-    public static native boolean dictionaryHasDefinitionForTerm$(String term);
+    public static native boolean dictionaryHasDefinitionForTerm(String term);
     /*</methods>*/
 }

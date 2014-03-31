@@ -77,7 +77,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "rowSizeForComponent:")
     public native @ByVal CGSize getRowSize(@MachineSizedSInt long component);
     @Method(selector = "viewForRow:forComponent:")
-    public native UIView getRowView(@MachineSizedSInt long row, @MachineSizedSInt long component);
+    public native UIView getViewForRow(@MachineSizedSInt long row, @MachineSizedSInt long component);
     @Method(selector = "reloadAllComponents")
     public native void reloadAllComponents();
     @Method(selector = "reloadComponent:")

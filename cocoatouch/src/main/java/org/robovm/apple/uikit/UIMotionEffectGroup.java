@@ -51,9 +51,9 @@ import org.robovm.apple.coreimage.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "motionEffects")
-    public native NSArray<?> getMotionEffects();
+    public native NSArray<UIMotionEffect> getMotionEffects();
     @Property(selector = "setMotionEffects:")
-    public native void setMotionEffects(NSArray<?> v);
+    public native void setMotionEffects(NSArray<UIMotionEffect> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

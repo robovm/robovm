@@ -164,29 +164,29 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "numberOfRowsInSection:")
     public native @MachineSizedSInt long getNumberOfRowsInSection(@MachineSizedSInt long section);
     @Method(selector = "rectForSection:")
-    public native @ByVal CGRect getSectionRect(@MachineSizedSInt long section);
+    public native @ByVal CGRect getRectForSection(@MachineSizedSInt long section);
     @Method(selector = "rectForHeaderInSection:")
-    public native @ByVal CGRect getSectionHeaderRect(@MachineSizedSInt long section);
+    public native @ByVal CGRect getRectForHeaderInSection(@MachineSizedSInt long section);
     @Method(selector = "rectForFooterInSection:")
-    public native @ByVal CGRect getSectionFooterRect(@MachineSizedSInt long section);
+    public native @ByVal CGRect getRectForFooterInSection(@MachineSizedSInt long section);
     @Method(selector = "rectForRowAtIndexPath:")
-    public native @ByVal CGRect getRowRect(NSIndexPath indexPath);
+    public native @ByVal CGRect getRectForRow(NSIndexPath indexPath);
     @Method(selector = "indexPathForRowAtPoint:")
-    public native NSIndexPath getRowIndexPath(@ByVal CGPoint point);
+    public native NSIndexPath getIndexPathForRow(@ByVal CGPoint point);
     @Method(selector = "indexPathForCell:")
-    public native NSIndexPath getCellIndexPath(UITableViewCell cell);
+    public native NSIndexPath getIndexPathForCell(UITableViewCell cell);
     @Method(selector = "indexPathsForRowsInRect:")
-    public native NSArray<?> getRowsIndexPaths(@ByVal CGRect rect);
+    public native NSArray<NSIndexPath> getIndexPathsForRowsInRect(@ByVal CGRect rect);
     @Method(selector = "cellForRowAtIndexPath:")
-    public native UITableViewCell getRowCell(NSIndexPath indexPath);
+    public native UITableViewCell getCellForRow(NSIndexPath indexPath);
     @Method(selector = "visibleCells")
-    public native NSArray<?> getVisibleCells();
+    public native NSArray<UITableViewCell> getVisibleCells();
     @Method(selector = "indexPathsForVisibleRows")
-    public native NSArray<?> getVisibleRowsIndexPaths();
+    public native NSArray<NSIndexPath> getIndexPathsForVisibleRows();
     @Method(selector = "headerViewForSection:")
-    public native UITableViewHeaderFooterView getSectionHeaderView(@MachineSizedSInt long section);
+    public native UITableViewHeaderFooterView getHeaderViewForSection(@MachineSizedSInt long section);
     @Method(selector = "footerViewForSection:")
-    public native UITableViewHeaderFooterView getSectionFooterView(@MachineSizedSInt long section);
+    public native UITableViewHeaderFooterView getFooterViewForSection(@MachineSizedSInt long section);
     @Method(selector = "scrollToRowAtIndexPath:atScrollPosition:animated:")
     public native void scrollToRow(NSIndexPath indexPath, UITableViewScrollPosition scrollPosition, boolean animated);
     @Method(selector = "scrollToNearestSelectedRowAtScrollPosition:animated:")
@@ -196,27 +196,27 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "endUpdates")
     public native void endUpdates();
     @Method(selector = "insertSections:withRowAnimation:")
-    public native void insertSections$withRowAnimation$(NSIndexSet sections, UITableViewRowAnimation animation);
+    public native void insertSections(NSIndexSet sections, UITableViewRowAnimation animation);
     @Method(selector = "deleteSections:withRowAnimation:")
-    public native void deleteSections$withRowAnimation$(NSIndexSet sections, UITableViewRowAnimation animation);
+    public native void deleteSections(NSIndexSet sections, UITableViewRowAnimation animation);
     @Method(selector = "reloadSections:withRowAnimation:")
-    public native void reloadSections$withRowAnimation$(NSIndexSet sections, UITableViewRowAnimation animation);
+    public native void reloadSections(NSIndexSet sections, UITableViewRowAnimation animation);
     @Method(selector = "moveSection:toSection:")
-    public native void moveSection$toSection$(@MachineSizedSInt long section, @MachineSizedSInt long newSection);
+    public native void moveSection(@MachineSizedSInt long section, @MachineSizedSInt long newSection);
     @Method(selector = "insertRowsAtIndexPaths:withRowAnimation:")
-    public native void insertRows(NSArray<?> indexPaths, UITableViewRowAnimation animation);
+    public native void insertRows(NSArray<NSIndexPath> indexPaths, UITableViewRowAnimation animation);
     @Method(selector = "deleteRowsAtIndexPaths:withRowAnimation:")
-    public native void deleteRows(NSArray<?> indexPaths, UITableViewRowAnimation animation);
+    public native void deleteRows(NSArray<NSIndexPath> indexPaths, UITableViewRowAnimation animation);
     @Method(selector = "reloadRowsAtIndexPaths:withRowAnimation:")
-    public native void reloadRows(NSArray<?> indexPaths, UITableViewRowAnimation animation);
+    public native void reloadRows(NSArray<NSIndexPath> indexPaths, UITableViewRowAnimation animation);
     @Method(selector = "moveRowAtIndexPath:toIndexPath:")
     public native void moveRow(NSIndexPath indexPath, NSIndexPath newIndexPath);
     @Method(selector = "setEditing:animated:")
-    public native void setEditing$animated$(boolean editing, boolean animated);
+    public native void setEditing(boolean editing, boolean animated);
     @Method(selector = "indexPathForSelectedRow")
-    public native NSIndexPath getSelectedRowIndexPath();
+    public native NSIndexPath getIndexPathForSelectedRow();
     @Method(selector = "indexPathsForSelectedRows")
-    public native NSArray<?> getSelectedRowsIndexPaths();
+    public native NSArray<NSIndexPath> getIndexPathsForSelectedRows();
     @Method(selector = "selectRowAtIndexPath:animated:scrollPosition:")
     public native void selectRow(NSIndexPath indexPath, boolean animated, UITableViewScrollPosition scrollPosition);
     @Method(selector = "deselectRowAtIndexPath:animated:")

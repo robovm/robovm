@@ -48,11 +48,11 @@ import org.robovm.apple.coreimage.*;
     /*<constructors>*/
     public UICollisionBehavior() {}
     protected UICollisionBehavior(SkipInit skipInit) { super(skipInit); }
-    public UICollisionBehavior(NSArray<?> items) { super((SkipInit) null); initObject(initWithItems$(items)); }
+    public UICollisionBehavior(List<UIDynamicItem> items) { super((SkipInit) null); initObject(initWithItems$(items)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "items")
-    public native NSArray<?> getItems();
+    public native List<UIDynamicItem> getItems();
     @Property(selector = "collisionMode")
     public native UICollisionBehaviorMode getCollisionMode();
     @Property(selector = "setCollisionMode:")
@@ -71,21 +71,21 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithItems:")
-    protected native @Pointer long initWithItems$(NSArray<?> items);
+    protected native @Pointer long initWithItems$(List<UIDynamicItem> items);
     @Method(selector = "addItem:")
-    public native void addItem$(UIDynamicItem item);
+    public native void addItem(UIDynamicItem item);
     @Method(selector = "removeItem:")
-    public native void removeItem$(UIDynamicItem item);
+    public native void removeItem(UIDynamicItem item);
     @Method(selector = "setTranslatesReferenceBoundsIntoBoundaryWithInsets:")
     public native void setTranslatesReferenceBoundsIntoBoundaryWithInsets(@ByVal UIEdgeInsets insets);
     @Method(selector = "addBoundaryWithIdentifier:forPath:")
-    public native void addBoundaryWithIdentifier$forPath$(NSObject identifier, UIBezierPath bezierPath);
+    public native void addBoundary(NSObject identifier, UIBezierPath bezierPath);
     @Method(selector = "addBoundaryWithIdentifier:fromPoint:toPoint:")
-    public native void addBoundaryWithIdentifier$fromPoint$toPoint$(NSObject identifier, @ByVal CGPoint p1, @ByVal CGPoint p2);
+    public native void addBoundary(NSObject identifier, @ByVal CGPoint p1, @ByVal CGPoint p2);
     @Method(selector = "boundaryWithIdentifier:")
-    public native UIBezierPath boundaryWithIdentifier$(NSObject identifier);
+    public native UIBezierPath getBoundary(NSObject identifier);
     @Method(selector = "removeBoundaryWithIdentifier:")
-    public native void removeBoundaryWithIdentifier$(NSObject identifier);
+    public native void removeBoundary(NSObject identifier);
     @Method(selector = "removeAllBoundaries")
     public native void removeAllBoundaries();
     /*</methods>*/

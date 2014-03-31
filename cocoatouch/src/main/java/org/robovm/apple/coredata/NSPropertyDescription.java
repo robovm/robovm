@@ -97,6 +97,6 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "setRenamingIdentifier:")
     public native void setRenamingIdentifier(String value);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

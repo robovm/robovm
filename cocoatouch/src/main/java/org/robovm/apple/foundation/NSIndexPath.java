@@ -74,6 +74,6 @@ import org.robovm.apple.security.*;
     @Method(selector = "indexPathWithIndexes:length:")
     public static native NSIndexPath indexPathWithIndexes$length$(MachineSizedUIntPtr indexes, @MachineSizedUInt long length);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

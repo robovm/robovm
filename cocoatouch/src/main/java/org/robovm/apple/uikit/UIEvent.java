@@ -60,12 +60,12 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "allTouches")
-    public native NSSet<?> getAllTouches();
+    public native NSSet<UITouch> getAllTouches();
     @Method(selector = "touchesForWindow:")
-    public native NSSet<?> getTouches(UIWindow window);
+    public native NSSet<UITouch> getTouches(UIWindow window);
     @Method(selector = "touchesForView:")
-    public native NSSet<?> getTouches(UIView view);
+    public native NSSet<UITouch> getTouches(UIView view);
     @Method(selector = "touchesForGestureRecognizer:")
-    public native NSSet<?> getTouches(UIGestureRecognizer gesture);
+    public native NSSet<UITouch> getTouches(UIGestureRecognizer gesture);
     /*</methods>*/
 }

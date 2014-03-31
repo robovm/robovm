@@ -67,13 +67,13 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setName:")
     public native void setName(String v);
     @Property(selector = "icons")
-    public native NSArray<?> getIcons();
+    public native NSArray<UIImage> getIcons();
     @Property(selector = "annotation")
     public native NSObject getAnnotation();
     @Property(selector = "setAnnotation:")
     public native void setAnnotation(NSObject v);
     @Property(selector = "gestureRecognizers")
-    public native NSArray<?> getGestureRecognizers();
+    public native NSArray<UIGestureRecognizer> getGestureRecognizers();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -92,7 +92,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "dismissMenuAnimated:")
     public native void dismissMenu(boolean animated);
     @Method(selector = "interactionControllerWithURL:")
-    public static native UIDocumentInteractionController fromURL(NSURL url);
+    public static native UIDocumentInteractionController createFromURL(NSURL url);
     @Method(selector = "actionSheet:clickedButtonAtIndex:")
     public native void clicked(UIActionSheet actionSheet, @MachineSizedSInt long buttonIndex);
     @Method(selector = "actionSheetCancel:")

@@ -54,6 +54,19 @@ import org.robovm.apple.coreimage.*;
         super(frame);
     }
 
+    public UIActionSheet(String title, UIActionSheetDelegate delegate, String cancelButtonTitle, 
+            String destructiveButtonTitle, String ... otherButtonTitles) {
+        super((SkipInit) null);
+        initObject(initWithTitle$delegate$cancelButtonTitle$destructiveButtonTitle$otherButtonTitles$(title, delegate, cancelButtonTitle, destructiveButtonTitle));
+        for (String otherButtonTitle : otherButtonTitles) {
+            addButton(otherButtonTitle);
+        }
+        updateStrongRef(null, delegate);
+    }
+    
+    @Method(selector = "initWithTitle:delegate:cancelButtonTitle:destructiveButtonTitle:otherButtonTitles:")
+    protected native @Pointer long initWithTitle$delegate$cancelButtonTitle$destructiveButtonTitle$otherButtonTitles$(String title, UIActionSheetDelegate delegate, String cancelButtonTitle, String destructiveButtonTitle);
+    
     /*<properties>*/
     @Property(selector = "delegate")
     public native UIActionSheetDelegate getDelegate();
@@ -97,7 +110,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "showFromRect:inView:animated:")
     public native void showFrom(@ByVal CGRect rect, UIView view, boolean animated);
     @Method(selector = "showInView:")
-    public native void showInView$(UIView view);
+    public native void showIn(UIView view);
     @Method(selector = "dismissWithClickedButtonIndex:animated:")
     public native void dismiss(@MachineSizedSInt long buttonIndex, boolean animated);
     /*</methods>*/

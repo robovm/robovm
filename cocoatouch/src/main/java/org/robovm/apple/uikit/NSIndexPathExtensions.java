@@ -60,8 +60,10 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "indexPathForRow:inSection:")
-    public static native NSIndexPath indexPathForRow$inSection$(NSIndexPath thiz, @MachineSizedSInt long row, @MachineSizedSInt long section);
+    protected static native NSIndexPath createIndexPathForRowInSection(ObjCClass clazz, @MachineSizedSInt long row, @MachineSizedSInt long section);
+    public static NSIndexPath createIndexPathForRowInSection(@MachineSizedSInt long row, @MachineSizedSInt long section) { return createIndexPathForRowInSection(ObjCClass.getByType(NSIndexPath.class), row, section); }
     @Method(selector = "indexPathForItem:inSection:")
-    public static native NSIndexPath indexPathForItem$inSection$(NSIndexPath thiz, @MachineSizedSInt long item, @MachineSizedSInt long section);
+    protected static native NSIndexPath createIndexPathForItemInSection(ObjCClass clazz, @MachineSizedSInt long item, @MachineSizedSInt long section);
+    public static NSIndexPath createIndexPathForItemInSection(@MachineSizedSInt long item, @MachineSizedSInt long section) { return createIndexPathForItemInSection(ObjCClass.getByType(NSIndexPath.class), item, section); }
     /*</methods>*/
 }

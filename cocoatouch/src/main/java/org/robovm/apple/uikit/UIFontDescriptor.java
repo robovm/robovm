@@ -48,7 +48,7 @@ import org.robovm.apple.coreimage.*;
     /*<constructors>*/
     public UIFontDescriptor() {}
     protected UIFontDescriptor(SkipInit skipInit) { super(skipInit); }
-    public UIFontDescriptor(NSDictionary<?, ?> attributes) { super((SkipInit) null); initObject(initWithFontAttributes$(attributes)); }
+    public UIFontDescriptor(NSDictionary<NSString, ?> attributes) { super((SkipInit) null); initObject(initWithFontAttributes$(attributes)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "postscriptName")
@@ -63,34 +63,34 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "objectForKey:")
-    public native NSObject objectForKey$(String anAttribute);
+    public native NSObject getObject(String anAttribute);
     @Method(selector = "fontAttributes")
-    public native NSDictionary<?, ?> fontAttributes();
+    public native NSDictionary<NSString, ?> getFontAttributes();
     @Method(selector = "matchingFontDescriptorsWithMandatoryKeys:")
-    public native NSArray<?> matchingFontDescriptorsWithMandatoryKeys$(NSSet<?> mandatoryKeys);
+    public native NSArray<UIFontDescriptor> getMatchingFontDescriptors(NSSet<NSString> mandatoryKeys);
     @Method(selector = "initWithFontAttributes:")
-    protected native @Pointer long initWithFontAttributes$(NSDictionary<?, ?> attributes);
+    protected native @Pointer long initWithFontAttributes$(NSDictionary<NSString, ?> attributes);
     @Method(selector = "fontDescriptorByAddingAttributes:")
-    public native UIFontDescriptor fontDescriptorByAddingAttributes$(NSDictionary<?, ?> attributes);
+    public native UIFontDescriptor createWithAttributes(NSDictionary<NSString, ?> attributes);
     @Method(selector = "fontDescriptorWithSymbolicTraits:")
-    public native UIFontDescriptor fontDescriptorWithSymbolicTraits$(UIFontDescriptorSymbolicTraits symbolicTraits);
+    public native UIFontDescriptor newWithSymbolicTraits(UIFontDescriptorSymbolicTraits symbolicTraits);
     @Method(selector = "fontDescriptorWithSize:")
-    public native UIFontDescriptor fontDescriptorWithSize$(@MachineSizedFloat double newPointSize);
+    public native UIFontDescriptor newWithSize(@MachineSizedFloat double newPointSize);
     @Method(selector = "fontDescriptorWithMatrix:")
-    public native UIFontDescriptor fontDescriptorWithMatrix$(@ByVal CGAffineTransform matrix);
+    public native UIFontDescriptor newWithMatrix(@ByVal CGAffineTransform matrix);
     @Method(selector = "fontDescriptorWithFace:")
-    public native UIFontDescriptor fontDescriptorWithFace$(String newFace);
+    public native UIFontDescriptor newWithFace(String newFace);
     @Method(selector = "fontDescriptorWithFamily:")
-    public native UIFontDescriptor fontDescriptorWithFamily$(String newFamily);
+    public native UIFontDescriptor newWithFamily(String newFamily);
     @Method(selector = "fontDescriptorWithFontAttributes:")
-    public static native UIFontDescriptor fontDescriptorWithFontAttributes$(NSDictionary<?, ?> attributes);
+    public static native UIFontDescriptor create(NSDictionary<NSString, ?> attributes);
     @Method(selector = "fontDescriptorWithName:size:")
-    public static native UIFontDescriptor fontDescriptorWithName$size$(String fontName, @MachineSizedFloat double size);
+    public static native UIFontDescriptor create(String fontName, @MachineSizedFloat double size);
     @Method(selector = "fontDescriptorWithName:matrix:")
-    public static native UIFontDescriptor fontDescriptorWithName$matrix$(String fontName, @ByVal CGAffineTransform matrix);
+    public static native UIFontDescriptor create(String fontName, @ByVal CGAffineTransform matrix);
     @Method(selector = "preferredFontDescriptorWithTextStyle:")
-    public static native UIFontDescriptor preferredFontDescriptorWithTextStyle$(String style);
+    public static native UIFontDescriptor getPreferredFontDescriptor(String style);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

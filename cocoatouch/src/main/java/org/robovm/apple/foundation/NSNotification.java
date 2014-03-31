@@ -65,6 +65,6 @@ import org.robovm.apple.security.*;
     @Method(selector = "notificationWithName:object:userInfo:")
     public static native NSNotification notificationWithName$object$userInfo$(String aName, NSObject anObject, NSDictionary<?, ?> aUserInfo);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

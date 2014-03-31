@@ -74,6 +74,6 @@ import org.robovm.apple.security.*;
     @Method(selector = "exceptionWithName:reason:userInfo:")
     public static native NSException exceptionWithName$reason$userInfo$(String name, String reason, NSDictionary<?, ?> userInfo);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

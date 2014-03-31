@@ -64,9 +64,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setWidth:")
     public native void setWidth(@MachineSizedFloat double v);
     @Property(selector = "possibleTitles")
-    public native NSSet<?> getPossibleTitles();
+    public native NSArray<NSString> getPossibleTitles();
     @Property(selector = "setPossibleTitles:")
-    public native void setPossibleTitles(NSSet<?> v);
+    public native void setPossibleTitles(NSArray<NSString> v);
     @Property(selector = "customView")
     public native UIView getCustomView();
     @Property(selector = "setCustomView:")
@@ -97,34 +97,34 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "initWithCustomView:")
     protected native @Pointer long initWithCustomView$(UIView customView);
     @Method(selector = "setBackgroundImage:forState:barMetrics:")
-    public native void setBackgroundImage$forState$barMetrics$(UIImage backgroundImage, UIControlState state, UIBarMetrics barMetrics);
+    public native void setBackgroundImage(UIImage backgroundImage, UIControlState state, UIBarMetrics barMetrics);
     @Method(selector = "backgroundImageForState:barMetrics:")
     public native UIImage getBackgroundImage(UIControlState state, UIBarMetrics barMetrics);
     @Method(selector = "setBackgroundImage:forState:style:barMetrics:")
-    public native void setBackgroundImage$forState$style$barMetrics$(UIImage backgroundImage, UIControlState state, UIBarButtonItemStyle style, UIBarMetrics barMetrics);
+    public native void setBackgroundImage(UIImage backgroundImage, UIControlState state, UIBarButtonItemStyle style, UIBarMetrics barMetrics);
     @Method(selector = "backgroundImageForState:style:barMetrics:")
     public native UIImage getBackgroundImage(UIControlState state, UIBarButtonItemStyle style, UIBarMetrics barMetrics);
     @Method(selector = "setBackgroundVerticalPositionAdjustment:forBarMetrics:")
-    public native void setBackgroundVerticalPositionAdjustment$forBarMetrics$(@MachineSizedFloat double adjustment, UIBarMetrics barMetrics);
+    public native void setBackgroundVerticalPositionAdjustment(@MachineSizedFloat double adjustment, UIBarMetrics barMetrics);
     @Method(selector = "backgroundVerticalPositionAdjustmentForBarMetrics:")
     public native @MachineSizedFloat double getBackgroundVerticalPositionAdjustment(UIBarMetrics barMetrics);
     @Method(selector = "setTitlePositionAdjustment:forBarMetrics:")
-    public native void setTitlePositionAdjustment$forBarMetrics$(@ByVal UIOffset adjustment, UIBarMetrics barMetrics);
+    public native void setTitlePositionAdjustment(@ByVal UIOffset adjustment, UIBarMetrics barMetrics);
     @Method(selector = "titlePositionAdjustmentForBarMetrics:")
     public native @ByVal UIOffset getTitlePositionAdjustment(UIBarMetrics barMetrics);
     @Method(selector = "setBackButtonBackgroundImage:forState:barMetrics:")
-    public native void setBackButtonBackgroundImage$forState$barMetrics$(UIImage backgroundImage, UIControlState state, UIBarMetrics barMetrics);
+    public native void setBackButtonBackgroundImage(UIImage backgroundImage, UIControlState state, UIBarMetrics barMetrics);
     @Method(selector = "backButtonBackgroundImageForState:barMetrics:")
     public native UIImage getBackButtonBackgroundImage(UIControlState state, UIBarMetrics barMetrics);
     @Method(selector = "setBackButtonTitlePositionAdjustment:forBarMetrics:")
-    public native void setBackButtonTitlePositionAdjustment$forBarMetrics$(@ByVal UIOffset adjustment, UIBarMetrics barMetrics);
+    public native void setBackButtonTitlePositionAdjustment(@ByVal UIOffset adjustment, UIBarMetrics barMetrics);
     @Method(selector = "backButtonTitlePositionAdjustmentForBarMetrics:")
     public native @ByVal UIOffset getBackButtonTitlePositionAdjustment(UIBarMetrics barMetrics);
     @Method(selector = "setBackButtonBackgroundVerticalPositionAdjustment:forBarMetrics:")
-    public native void setBackButtonBackgroundVerticalPositionAdjustment$forBarMetrics$(@MachineSizedFloat double adjustment, UIBarMetrics barMetrics);
+    public native void setBackButtonBackgroundVerticalPositionAdjustment(@MachineSizedFloat double adjustment, UIBarMetrics barMetrics);
     @Method(selector = "backButtonBackgroundVerticalPositionAdjustmentForBarMetrics:")
     public native @MachineSizedFloat double getBackButtonBackgroundVerticalPositionAdjustment(UIBarMetrics barMetrics);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

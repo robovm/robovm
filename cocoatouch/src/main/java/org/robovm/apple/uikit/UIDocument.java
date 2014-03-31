@@ -83,9 +83,9 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "closeWithCompletionHandler:")
     public native void close(@Block VoidBooleanBlock completionHandler);
     @Method(selector = "loadFromContents:ofType:error:")
-    public native boolean loadFromContents$ofType$error$(NSObject contents, String typeName, NSError.NSErrorPtr outError);
+    public native boolean loadFromContents(NSObject contents, String typeName, NSError.NSErrorPtr outError);
     @Method(selector = "contentsForType:error:")
-    public native NSObject contentsForType$error$(String typeName, NSError.NSErrorPtr outError);
+    public native NSObject contentsForType(String typeName, NSError.NSErrorPtr outError);
     @Method(selector = "disableEditing")
     public native void disableEditing();
     @Method(selector = "enableEditing")
@@ -93,9 +93,9 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "hasUnsavedChanges")
     public native boolean hasUnsavedChanges();
     @Method(selector = "updateChangeCount:")
-    public native void updateChangeCount$(UIDocumentChangeKind change);
+    public native void updateChangeCount(UIDocumentChangeKind change);
     @Method(selector = "changeCountTokenForSaveOperation:")
-    public native NSObject changeCountTokenForSaveOperation$(UIDocumentSaveOperation saveOperation);
+    public native NSObject getChangeCountToken(UIDocumentSaveOperation saveOperation);
     @Method(selector = "updateChangeCountWithToken:forSaveOperation:")
     public native void updateChangeCount(NSObject changeCountToken, UIDocumentSaveOperation saveOperation);
     @Method(selector = "saveToURL:forSaveOperation:completionHandler:")
@@ -107,21 +107,21 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "fileNameExtensionForType:saveOperation:")
     public native String getFileNameExtension(String typeName, UIDocumentSaveOperation saveOperation);
     @Method(selector = "writeContents:andAttributes:safelyToURL:forSaveOperation:error:")
-    public native boolean writeContents$andAttributes$safelyToURL$forSaveOperation$error$(NSObject contents, NSDictionary<?, ?> additionalFileAttributes, NSURL url, UIDocumentSaveOperation saveOperation, NSError.NSErrorPtr outError);
+    public native boolean writeContents(NSObject contents, NSDictionary<NSString, ?> additionalFileAttributes, NSURL url, UIDocumentSaveOperation saveOperation, NSError.NSErrorPtr outError);
     @Method(selector = "writeContents:toURL:forSaveOperation:originalContentsURL:error:")
-    public native boolean writeContents$toURL$forSaveOperation$originalContentsURL$error$(NSObject contents, NSURL url, UIDocumentSaveOperation saveOperation, NSURL originalContentsURL, NSError.NSErrorPtr outError);
+    public native boolean writeContents(NSObject contents, NSURL url, UIDocumentSaveOperation saveOperation, NSURL originalContentsURL, NSError.NSErrorPtr outError);
     @Method(selector = "fileAttributesToWriteToURL:forSaveOperation:error:")
-    public native NSDictionary<?, ?> getFileAttributesToWrite(NSURL url, UIDocumentSaveOperation saveOperation, NSError.NSErrorPtr outError);
+    public native NSDictionary<NSString, ?> getFileAttributesToWrite(NSURL url, UIDocumentSaveOperation saveOperation, NSError.NSErrorPtr outError);
     @Method(selector = "readFromURL:error:")
     public native boolean read(NSURL url, NSError.NSErrorPtr outError);
     @Method(selector = "performAsynchronousFileAccessUsingBlock:")
     public native void performAsynchronousFileAccess(@Block Runnable block);
     @Method(selector = "handleError:userInteractionPermitted:")
-    public native void handleError$userInteractionPermitted$(NSError error, boolean userInteractionPermitted);
+    public native void handleError(NSError error, boolean userInteractionPermitted);
     @Method(selector = "finishedHandlingError:recovered:")
-    public native void finishedHandlingError$recovered$(NSError error, boolean recovered);
+    public native void finishedHandlingError(NSError error, boolean recovered);
     @Method(selector = "userInteractionNoLongerPermittedForError:")
-    public native void userInteractionNoLongerPermittedForError$(NSError error);
+    public native void userInteractionNoLongerPermittedForError(NSError error);
     @Method(selector = "revertToContentsOfURL:completionHandler:")
     public native void revert(NSURL url, @Block VoidBooleanBlock completionHandler);
     @Method(selector = "relinquishPresentedItemToReader:")

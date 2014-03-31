@@ -103,9 +103,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setHyphenationFactor:")
     public native void setHyphenationFactor(float v);
     @Property(selector = "tabStops")
-    public native NSArray<?> getTabStops();
+    public native NSArray<NSTextTab> getTabStops();
     @Property(selector = "setTabStops:")
-    public native void setTabStops(NSArray<?> v);
+    public native void setTabStops(NSArray<NSTextTab> v);
     @Property(selector = "defaultTabInterval")
     public native @MachineSizedFloat double getDefaultTabInterval();
     @Property(selector = "setDefaultTabInterval:")

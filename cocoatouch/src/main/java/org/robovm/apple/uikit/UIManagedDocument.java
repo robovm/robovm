@@ -55,9 +55,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "managedObjectModel")
     public native NSManagedObjectModel getManagedObjectModel();
     @Property(selector = "persistentStoreOptions")
-    public native NSDictionary<?, ?> getPersistentStoreOptions();
+    public native NSDictionary<NSString, ?> getPersistentStoreOptions();
     @Property(selector = "setPersistentStoreOptions:")
-    public native void setPersistentStoreOptions(NSDictionary<?, ?> v);
+    public native void setPersistentStoreOptions(NSDictionary<NSString, ?> v);
     @Property(selector = "modelConfiguration")
     public native String getModelConfiguration();
     @Property(selector = "setModelConfiguration:")
@@ -66,7 +66,7 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "configurePersistentStoreCoordinatorForURL:ofType:modelConfiguration:storeOptions:error:")
-    public native boolean configurePersistentStoreCoordinator(NSURL storeURL, String fileType, String configuration, NSDictionary<?, ?> storeOptions, NSError.NSErrorPtr error);
+    public native boolean configurePersistentStoreCoordinator(NSURL storeURL, String fileType, String configuration, NSDictionary<NSString, ?> storeOptions, NSError.NSErrorPtr error);
     @Method(selector = "persistentStoreTypeForFileType:")
     public native String getPersistentStoreType(String fileType);
     @Method(selector = "readAdditionalContentFromURL:error:")
@@ -74,7 +74,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "additionalContentForURL:error:")
     public native NSObject getAdditionalContent(NSURL absoluteURL, NSError.NSErrorPtr error);
     @Method(selector = "writeAdditionalContent:toURL:originalContentsURL:error:")
-    public native boolean writeAdditionalContent$toURL$originalContentsURL$error$(NSObject content, NSURL absoluteURL, NSURL absoluteOriginalContentsURL, NSError.NSErrorPtr error);
+    public native boolean writeAdditionalContent(NSObject content, NSURL absoluteURL, NSURL absoluteOriginalContentsURL, NSError.NSErrorPtr error);
     @Method(selector = "persistentStoreName")
     public static native String getPersistentStoreName();
     /*</methods>*/

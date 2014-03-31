@@ -59,18 +59,18 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setArrowDirection:")
     public native void setArrowDirection(UIMenuControllerArrowDirection v);
     @Property(selector = "menuItems")
-    public native NSArray<?> getMenuItems();
+    public native NSArray<UIMenuItem> getMenuItems();
     @Property(selector = "setMenuItems:")
-    public native void setMenuItems(NSArray<?> v);
+    public native void setMenuItems(NSArray<UIMenuItem> v);
     @Property(selector = "menuFrame")
     public native @ByVal CGRect getMenuFrame();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "setMenuVisible:animated:")
-    public native void setMenuVisible$animated$(boolean menuVisible, boolean animated);
+    public native void setMenuVisible(boolean menuVisible, boolean animated);
     @Method(selector = "setTargetRect:inView:")
-    public native void setTargetRect$inView$(@ByVal CGRect targetRect, UIView targetView);
+    public native void setTargetRect(@ByVal CGRect targetRect, UIView targetView);
     @Method(selector = "update")
     public native void update();
     @Method(selector = "sharedMenuController")

@@ -38,32 +38,33 @@ import org.robovm.apple.coreimage.*;
  * <div class="javadoc"></div>
  */
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/UILocalizedIndexedCollation/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSTextTab/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSCoding/*</implements>*/ {
 
-    /*<ptr>*/public static class UILocalizedIndexedCollationPtr extends Ptr<UILocalizedIndexedCollation, UILocalizedIndexedCollationPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(UILocalizedIndexedCollation.class); }/*</bind>*/
+    /*<ptr>*/public static class NSTextTabPtr extends Ptr<NSTextTab, NSTextTabPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(NSTextTab.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public UILocalizedIndexedCollation() {}
-    protected UILocalizedIndexedCollation(SkipInit skipInit) { super(skipInit); }
+    public NSTextTab() {}
+    protected NSTextTab(SkipInit skipInit) { super(skipInit); }
+    public NSTextTab(NSTextAlignment alignment, @MachineSizedFloat double loc, NSDictionary<NSString, ?> options) { super((SkipInit) null); initObject(initWithTextAlignment$location$options$(alignment, loc, options)); }
     /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "sectionTitles")
-    public native NSArray<NSString> getSectionTitles();
-    @Property(selector = "sectionIndexTitles")
-    public native NSArray<NSString> getSectionIndexTitles();
+    @Property(selector = "alignment")
+    public native NSTextAlignment getAlignment();
+    @Property(selector = "location")
+    public native @MachineSizedFloat double getLocation();
+    @Property(selector = "options")
+    public native NSDictionary<NSString, ?> getOptions();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "sectionForSectionIndexTitleAtIndex:")
-    public native @MachineSizedSInt long getSectionForSectionIndexTitle(@MachineSizedSInt long indexTitleIndex);
-    @Method(selector = "sectionForObject:collationStringSelector:")
-    public native @MachineSizedSInt long getSectionForObject(NSObject object, Selector selector);
-    @Method(selector = "sortedArrayFromArray:collationStringSelector:")
-    public native NSArray<?> sortArray(NSArray<?> array, Selector selector);
-    @Method(selector = "currentCollation")
-    public static native NSObject getCurrentCollation();
+    @Method(selector = "initWithTextAlignment:location:options:")
+    protected native @Pointer long initWithTextAlignment$location$options$(NSTextAlignment alignment, @MachineSizedFloat double loc, NSDictionary<NSString, ?> options);
+    @Method(selector = "columnTerminatorsForLocale:")
+    public static native NSCharacterSet getColumnTerminators(NSLocale aLocale);
+    @Method(selector = "encodeWithCoder:")
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

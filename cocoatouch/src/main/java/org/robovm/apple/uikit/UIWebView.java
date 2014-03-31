@@ -123,11 +123,11 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "loadRequest:")
-    public native void loadRequest$(NSURLRequest request);
+    public native void loadRequest(NSURLRequest request);
     @Method(selector = "loadHTMLString:baseURL:")
     public native void loadHTML(String string, NSURL baseURL);
     @Method(selector = "loadData:MIMEType:textEncodingName:baseURL:")
-    public native void loadData$MIMEType$textEncodingName$baseURL$(NSData data, String MIMEType, String textEncodingName, NSURL baseURL);
+    public native void loadData(NSData data, String MIMEType, String textEncodingName, NSURL baseURL);
     @Method(selector = "reload")
     public native void reload();
     @Method(selector = "stopLoading")

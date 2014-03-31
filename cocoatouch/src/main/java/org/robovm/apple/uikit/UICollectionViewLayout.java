@@ -58,7 +58,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "invalidateLayout")
     public native void invalidateLayout();
     @Method(selector = "invalidateLayoutWithContext:")
-    public native void invalidateLayoutWithContext$(UICollectionViewLayoutInvalidationContext context);
+    public native void invalidateLayout(UICollectionViewLayoutInvalidationContext context);
     @Method(selector = "registerClass:forDecorationViewOfKind:")
     public native void registerDecorationViewClass(ObjCClass viewClass, String decorationViewKind);
     @Method(selector = "registerNib:forDecorationViewOfKind:")
@@ -74,31 +74,31 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "layoutAttributesForDecorationViewOfKind:atIndexPath:")
     public native UICollectionViewLayoutAttributes getLayoutAttributesForDecorationView(String decorationViewKind, NSIndexPath indexPath);
     @Method(selector = "shouldInvalidateLayoutForBoundsChange:")
-    public native boolean shouldInvalidateLayoutForBoundsChange$(@ByVal CGRect newBounds);
+    public native boolean shouldInvalidateLayoutForBoundsChange(@ByVal CGRect newBounds);
     @Method(selector = "invalidationContextForBoundsChange:")
-    public native UICollectionViewLayoutInvalidationContext invalidationContextForBoundsChange$(@ByVal CGRect newBounds);
+    public native UICollectionViewLayoutInvalidationContext getInvalidationContextForBoundsChange(@ByVal CGRect newBounds);
     @Method(selector = "targetContentOffsetForProposedContentOffset:withScrollingVelocity:")
     public native @ByVal CGPoint getTargetContentOffset(@ByVal CGPoint proposedContentOffset, @ByVal CGPoint velocity);
     @Method(selector = "targetContentOffsetForProposedContentOffset:")
-    public native @ByVal CGPoint targetContentOffsetForProposedContentOffset$(@ByVal CGPoint proposedContentOffset);
+    public native @ByVal CGPoint getTargetContentOffset(@ByVal CGPoint proposedContentOffset);
     @Method(selector = "collectionViewContentSize")
     public native @ByVal CGSize getCollectionViewContentSize();
     @Method(selector = "layoutAttributesClass")
     public static native ObjCClass getLayoutAttributesClass();
     @Method(selector = "invalidationContextClass")
-    public static native ObjCClass invalidationContextClass();
+    public static native ObjCClass getInvalidationContextClass();
     @Method(selector = "prepareForCollectionViewUpdates:")
-    public native void prepareForCollectionViewUpdates$(NSArray<?> updateItems);
+    public native void prepareForCollectionViewUpdates(NSArray<UICollectionViewUpdateItem> updateItems);
     @Method(selector = "finalizeCollectionViewUpdates")
     public native void finalizeCollectionViewUpdates();
     @Method(selector = "prepareForAnimatedBoundsChange:")
-    public native void prepareForAnimatedBoundsChange$(@ByVal CGRect oldBounds);
+    public native void prepareForAnimatedBoundsChange(@ByVal CGRect oldBounds);
     @Method(selector = "finalizeAnimatedBoundsChange")
     public native void finalizeAnimatedBoundsChange();
     @Method(selector = "prepareForTransitionToLayout:")
-    public native void prepareForTransitionToLayout$(UICollectionViewLayout newLayout);
+    public native void prepareForTransitionToLayout(UICollectionViewLayout newLayout);
     @Method(selector = "prepareForTransitionFromLayout:")
-    public native void prepareForTransitionFromLayout$(UICollectionViewLayout oldLayout);
+    public native void prepareForTransitionFromLayout(UICollectionViewLayout oldLayout);
     @Method(selector = "finalizeLayoutTransition")
     public native void finalizeLayoutTransition();
     @Method(selector = "initialLayoutAttributesForAppearingItemAtIndexPath:")
@@ -114,14 +114,14 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "finalLayoutAttributesForDisappearingDecorationElementOfKind:atIndexPath:")
     public native UICollectionViewLayoutAttributes getFinalLayoutAttributesForDisappearingDecorationElement(String elementKind, NSIndexPath decorationIndexPath);
     @Method(selector = "indexPathsToDeleteForSupplementaryViewOfKind:")
-    public native NSArray<?> indexPathsToDeleteForSupplementaryViewOfKind$(String kind);
+    public native NSArray<NSIndexPath> getIndexPathsToDeleteForSupplementaryView(String kind);
     @Method(selector = "indexPathsToDeleteForDecorationViewOfKind:")
-    public native NSArray<?> indexPathsToDeleteForDecorationViewOfKind$(String kind);
+    public native NSArray<NSIndexPath> getIndexPathsToDeleteForDecorationView(String kind);
     @Method(selector = "indexPathsToInsertForSupplementaryViewOfKind:")
-    public native NSArray<?> indexPathsToInsertForSupplementaryViewOfKind$(String kind);
+    public native NSArray<NSIndexPath> getIndexPathsToInsertForSupplementaryView(String kind);
     @Method(selector = "indexPathsToInsertForDecorationViewOfKind:")
-    public native NSArray<?> indexPathsToInsertForDecorationViewOfKind$(String kind);
+    public native NSArray<NSIndexPath> getIndexPathsToInsertForDecorationView(String kind);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

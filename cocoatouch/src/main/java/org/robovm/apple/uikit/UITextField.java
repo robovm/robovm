@@ -80,9 +80,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setBorderStyle:")
     public native void setBorderStyle(UITextBorderStyle v);
     @Property(selector = "defaultTextAttributes")
-    public native NSDictionary<?, ?> getDefaultTextAttributes();
+    public native NSDictionary<NSString, ?> getDefaultTextAttributes();
     @Property(selector = "setDefaultTextAttributes:")
-    public native void setDefaultTextAttributes(NSDictionary<?, ?> v);
+    public native void setDefaultTextAttributes(NSDictionary<NSString, ?> v);
     @Property(selector = "placeholder")
     public native String getPlaceholder();
     @Property(selector = "setPlaceholder:")
@@ -122,9 +122,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setAllowsEditingTextAttributes:")
     public native void setAllowsEditingTextAttributes(boolean v);
     @Property(selector = "typingAttributes")
-    public native NSDictionary<?, ?> getTypingAttributes();
+    public native NSDictionary<NSString, ?> getTypingAttributes();
     @Property(selector = "setTypingAttributes:")
-    public native void setTypingAttributes(NSDictionary<?, ?> v);
+    public native void setTypingAttributes(NSDictionary<NSString, ?> v);
     @Property(selector = "clearButtonMode")
     public native UITextFieldViewMode getClearButtonMode();
     @Property(selector = "setClearButtonMode:")
@@ -227,7 +227,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "editingRectForBounds:")
     public native @ByVal CGRect getEditingRect(@ByVal CGRect bounds);
     @Method(selector = "clearButtonRectForBounds:")
-    public native @ByVal CGRect clearButtonRect(@ByVal CGRect bounds);
+    public native @ByVal CGRect getClearButtonRect(@ByVal CGRect bounds);
     @Method(selector = "leftViewRectForBounds:")
     public native @ByVal CGRect getLeftViewRect(@ByVal CGRect bounds);
     @Method(selector = "rightViewRectForBounds:")

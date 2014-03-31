@@ -58,6 +58,6 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "currentInputMode")
     public static native UITextInputMode getCurrentInputMode();
     @Method(selector = "activeInputModes")
-    public static native NSArray<?> getActiveInputModes();
+    public static native NSArray<UITextInputMode> getActiveInputModes();
     /*</methods>*/
 }

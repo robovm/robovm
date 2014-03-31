@@ -48,7 +48,7 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "encodeWithCoder:")
-    void encodeWithCoder$(NSCoder aCoder);
+    void encode(NSCoder aCoder);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

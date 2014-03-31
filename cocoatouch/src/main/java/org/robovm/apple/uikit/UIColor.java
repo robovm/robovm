@@ -147,46 +147,46 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "colorWithCIColor:")
     public static native UIColor createFromCIColor(CIColor ciColor);
     @Method(selector = "blackColor")
-    public static native UIColor blackColor();
+    public static native UIColor colorBlack();
     @Method(selector = "darkGrayColor")
-    public static native UIColor darkGrayColor();
+    public static native UIColor colorDarkGray();
     @Method(selector = "lightGrayColor")
-    public static native UIColor lightGrayColor();
+    public static native UIColor colorLightGray();
     @Method(selector = "whiteColor")
-    public static native UIColor whiteColor();
+    public static native UIColor colorWhite();
     @Method(selector = "grayColor")
-    public static native UIColor grayColor();
+    public static native UIColor colorGray();
     @Method(selector = "redColor")
-    public static native UIColor redColor();
+    public static native UIColor colorRed();
     @Method(selector = "greenColor")
-    public static native UIColor greenColor();
+    public static native UIColor colorGreen();
     @Method(selector = "blueColor")
-    public static native UIColor blueColor();
+    public static native UIColor colorBlue();
     @Method(selector = "cyanColor")
-    public static native UIColor cyanColor();
+    public static native UIColor colorCyan();
     @Method(selector = "yellowColor")
-    public static native UIColor yellowColor();
+    public static native UIColor colorYellow();
     @Method(selector = "magentaColor")
-    public static native UIColor magentaColor();
+    public static native UIColor colorMagenta();
     @Method(selector = "orangeColor")
-    public static native UIColor orangeColor();
+    public static native UIColor colorOrange();
     @Method(selector = "purpleColor")
-    public static native UIColor purpleColor();
+    public static native UIColor colorPurple();
     @Method(selector = "brownColor")
-    public static native UIColor brownColor();
+    public static native UIColor colorBrown();
     @Method(selector = "clearColor")
-    public static native UIColor clearColor();
+    public static native UIColor colorClear();
     @Method(selector = "lightTextColor")
-    public static native UIColor lightTextColor();
+    public static native UIColor colorLightText();
     @Method(selector = "darkTextColor")
-    public static native UIColor darkTextColor();
+    public static native UIColor colorDarkText();
     @Method(selector = "groupTableViewBackgroundColor")
-    public static native UIColor groupTableViewBackgroundColor();
+    public static native UIColor colorGroupTableViewBackground();
     @Method(selector = "viewFlipsideBackgroundColor")
-    public static native UIColor viewFlipsideBackgroundColor();
+    public static native UIColor colorViewFlipsideBackground();
     @Method(selector = "scrollViewTexturedBackgroundColor")
-    public static native UIColor scrollViewTexturedBackgroundColor();
+    public static native UIColor colorScrollViewTexturedBackground();
     @Method(selector = "underPageBackgroundColor")
-    public static native UIColor underPageBackgroundColor();
+    public static native UIColor colorUnderPageBackground();
     /*</methods>*/
 }

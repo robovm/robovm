@@ -87,12 +87,18 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @Method(selector = "presentAnimated:completionHandler:")
+    public native boolean present(boolean animated, @Block VoidBlock3<UIPrintInteractionController, Boolean, NSError> completion);
+    @Method(selector = "presentFromRect:inView:animated:completionHandler:")
+    public native boolean presentFromRectInView(@ByVal CGRect rect, UIView view, boolean animated, @Block VoidBlock3<UIPrintInteractionController, Boolean, NSError> completion);
+    @Method(selector = "presentFromBarButtonItem:animated:completionHandler:")
+    public native boolean presentFromBarButtonItem(UIBarButtonItem item, boolean animated, @Block VoidBlock3<UIPrintInteractionController, Boolean, NSError> completion);
     @Method(selector = "dismissAnimated:")
     public native void dismiss(boolean animated);
     @Method(selector = "isPrintingAvailable")
     public static native boolean isPrintingAvailable();
     @Method(selector = "printableUTIs")
-    public static native NSSet<?> getPrintableUTIs();
+    public static native NSArray<NSString> getPrintableUTIs();
     @Method(selector = "canPrintURL:")
     public static native boolean canPrint(NSURL url);
     @Method(selector = "canPrintData:")

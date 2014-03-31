@@ -71,6 +71,6 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "activityDidFinish:")
     public native void didFinish(boolean completed);
     @Method(selector = "activityCategory")
-    public static native UIActivityCategory activityCategory();
+    public static native UIActivityCategory getActivityCategory();
     /*</methods>*/
 }

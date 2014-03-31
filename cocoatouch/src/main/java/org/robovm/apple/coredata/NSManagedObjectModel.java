@@ -94,6 +94,6 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "modelByMergingModels:forStoreMetadata:")
     public static native NSManagedObjectModel modelByMergingModels$forStoreMetadata$(NSArray<?> models, NSDictionary<?, ?> metadata);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

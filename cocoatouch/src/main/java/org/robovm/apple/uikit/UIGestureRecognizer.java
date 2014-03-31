@@ -81,16 +81,16 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "initWithTarget:action:")
     protected native @Pointer long initWithTarget$action$(UIGestureRecognizer target, Selector action);
     @Method(selector = "addTarget:action:")
-    public native void addTarget$action$(NSObject target, Selector action);
+    public native void addTarget(NSObject target, Selector action);
     @Method(selector = "removeTarget:action:")
-    public native void removeTarget$action$(NSObject target, Selector action);
+    public native void removeTarget(NSObject target, Selector action);
     @Method(selector = "requireGestureRecognizerToFail:")
-    public native void requireGestureRecognizerToFail$(UIGestureRecognizer otherGestureRecognizer);
+    public native void requireGestureRecognizerToFail(UIGestureRecognizer otherGestureRecognizer);
     @Method(selector = "locationInView:")
-    public native @ByVal CGPoint getLocation(UIView view);
+    public native @ByVal CGPoint getLocationInView(UIView view);
     @Method(selector = "numberOfTouches")
     public native @MachineSizedUInt long getNumberOfTouches();
     @Method(selector = "locationOfTouch:inView:")
-    public native @ByVal CGPoint getLocation(@MachineSizedUInt long touchIndex, UIView view);
+    public native @ByVal CGPoint getLocationOfTouch(@MachineSizedUInt long touchIndex, UIView view);
     /*</methods>*/
 }

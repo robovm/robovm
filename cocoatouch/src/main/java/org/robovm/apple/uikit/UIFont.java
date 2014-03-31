@@ -80,9 +80,9 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "fontWithName:size:")
     public static native UIFont getFont(String fontName, @MachineSizedFloat double fontSize);
     @Method(selector = "familyNames")
-    public static native NSArray<?> getFamilyNames();
+    public static native NSArray<NSString> getFamilyNames();
     @Method(selector = "fontNamesForFamilyName:")
-    public static native NSArray<?> getFontNamesForFamilyName(String familyName);
+    public static native NSArray<NSString> getFontNamesForFamilyName(String familyName);
     @Method(selector = "systemFontOfSize:")
     public static native UIFont getSystemFont(@MachineSizedFloat double fontSize);
     @Method(selector = "boldSystemFontOfSize:")

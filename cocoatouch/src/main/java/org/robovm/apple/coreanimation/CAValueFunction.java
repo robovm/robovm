@@ -79,6 +79,6 @@ import org.robovm.apple.opengles.*;
     @Method(selector = "functionWithName:")
     public static native NSObject functionWithName$(String name);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

@@ -54,13 +54,13 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     
-    public static NSAttributedString createFromURL(NSURL url, NSDictionary<?, ?> options, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error) {
+    public static NSAttributedString createFromURL(NSURL url, NSDictionary<NSString, ?> options, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error) {
         NSAttributedString thiz = alloc(NSAttributedString.class);
         initObject(thiz, initWithFileURL$options$documentAttributes$error$(thiz, url, options, dict, error));
         return thiz;
     }
 
-    public static NSAttributedString createFromData(NSData data, NSDictionary<?, ?> options, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error) {
+    public static NSAttributedString createFromData(NSData data, NSDictionary<NSString, ?> options, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error) {
         NSAttributedString thiz = alloc(NSAttributedString.class);
         initObject(thiz, initWithData$options$documentAttributes$error$(thiz, data, options, dict, error));
         return thiz;
@@ -68,24 +68,25 @@ import org.robovm.apple.coreimage.*;
 
     /*<methods>*/
     @Method(selector = "initWithFileURL:options:documentAttributes:error:")
-    protected static native @Pointer long initWithFileURL$options$documentAttributes$error$(NSAttributedString thiz, NSURL url, NSDictionary<?, ?> options, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
+    protected static native @Pointer long initWithFileURL$options$documentAttributes$error$(NSAttributedString thiz, NSURL url, NSDictionary<NSString, ?> options, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
     @Method(selector = "initWithData:options:documentAttributes:error:")
-    protected static native @Pointer long initWithData$options$documentAttributes$error$(NSAttributedString thiz, NSData data, NSDictionary<?, ?> options, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
+    protected static native @Pointer long initWithData$options$documentAttributes$error$(NSAttributedString thiz, NSData data, NSDictionary<NSString, ?> options, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
     @Method(selector = "dataFromRange:documentAttributes:error:")
-    public static native NSData dataFromRange$documentAttributes$error$(NSAttributedString thiz, @ByVal NSRange range, NSDictionary<?, ?> dict, NSError.NSErrorPtr error);
+    public static native NSData getData(NSAttributedString thiz, @ByVal NSRange range, NSDictionary<?, ?> dict, NSError.NSErrorPtr error);
     @Method(selector = "fileWrapperFromRange:documentAttributes:error:")
-    public static native NSFileWrapper fileWrapperFromRange$documentAttributes$error$(NSAttributedString thiz, @ByVal NSRange range, NSDictionary<?, ?> dict, NSError.NSErrorPtr error);
+    public static native NSFileWrapper getFileWrapper(NSAttributedString thiz, @ByVal NSRange range, NSDictionary<?, ?> dict, NSError.NSErrorPtr error);
     @Method(selector = "size")
-    public static native @ByVal CGSize size(NSAttributedString thiz);
+    public static native @ByVal CGSize getSize(NSAttributedString thiz);
     @Method(selector = "drawAtPoint:")
-    public static native void drawAtPoint$(NSAttributedString thiz, @ByVal CGPoint point);
+    public static native void draw(NSAttributedString thiz, @ByVal CGPoint point);
     @Method(selector = "drawInRect:")
-    public static native void drawInRect$(NSAttributedString thiz, @ByVal CGRect rect);
+    public static native void draw(NSAttributedString thiz, @ByVal CGRect rect);
     @Method(selector = "drawWithRect:options:context:")
-    public static native void drawWithRect$options$context$(NSAttributedString thiz, @ByVal CGRect rect, NSStringDrawingOptions options, NSStringDrawingContext context);
+    public static native void draw(NSAttributedString thiz, @ByVal CGRect rect, NSStringDrawingOptions options, NSStringDrawingContext context);
     @Method(selector = "boundingRectWithSize:options:context:")
-    public static native @ByVal CGRect boundingRectWithSize$options$context$(NSAttributedString thiz, @ByVal CGSize size, NSStringDrawingOptions options, NSStringDrawingContext context);
+    public static native @ByVal CGRect getBoundingRect(NSAttributedString thiz, @ByVal CGSize size, NSStringDrawingOptions options, NSStringDrawingContext context);
     @Method(selector = "attributedStringWithAttachment:")
-    public static native NSAttributedString attributedStringWithAttachment$(NSAttributedString thiz, NSTextAttachment attachment);
+    protected static native NSAttributedString createWithAttachment(ObjCClass clazz, NSTextAttachment attachment);
+    public static NSAttributedString createWithAttachment(NSTextAttachment attachment) { return createWithAttachment(ObjCClass.getByType(NSAttributedString.class), attachment); }
     /*</methods>*/
 }

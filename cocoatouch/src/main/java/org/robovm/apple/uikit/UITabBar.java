@@ -60,9 +60,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UITabBarDelegate v);
     @Property(selector = "items")
-    public native NSArray<?> getItems();
+    public native NSArray<UITabBarItem> getItems();
     @Property(selector = "setItems:")
-    public native void setItems(NSArray<?> v);
+    public native void setItems(NSArray<UITabBarItem> v);
     @Property(selector = "selectedItem")
     public native UITabBarItem getSelectedItem();
     @Property(selector = "setSelectedItem:", strongRef = true)
@@ -115,9 +115,9 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "setItems:animated:")
-    public native void setItems$animated$(NSArray<?> items, boolean animated);
+    public native void setItems(NSArray<UITabBarItem> items, boolean animated);
     @Method(selector = "beginCustomizingItems:")
-    public native void beginCustomizing(NSArray<?> items);
+    public native void beginCustomizing(NSArray<UITabBarItem> items);
     @Method(selector = "endCustomizingAnimated:")
     public native boolean endCustomizing(boolean animated);
     @Method(selector = "isCustomizing")

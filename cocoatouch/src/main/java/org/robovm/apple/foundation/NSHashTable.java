@@ -96,6 +96,6 @@ import org.robovm.apple.security.*;
     @Method(selector = "weakObjectsHashTable")
     public static native NSObject weakObjectsHashTable();
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

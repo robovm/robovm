@@ -58,6 +58,6 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "keyCommandWithInput:modifierFlags:action:")
-    public static native UIKeyCommand keyCommandWithInput$modifierFlags$action$(String input, UIKeyModifierFlags modifierFlags, Selector action);
+    public static native UIKeyCommand create(String input, UIKeyModifierFlags modifierFlags, Selector action);
     /*</methods>*/
 }

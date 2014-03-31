@@ -41,6 +41,27 @@ import org.robovm.apple.security.*;
 
     public static class NSArrayPtr<T extends NSObject> extends Ptr<NSArray<T>, NSArrayPtr<T>> {}
     
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<?> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            return (NSArray<?>) NSObject.Marshaler.toObject(cls, handle, flags);
+        }
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static long toNative(List<?> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<?> o = null;
+            if (l instanceof NSArray) {
+                o = (NSArray<?>) l;
+            } else {
+                o = new NSArray<NSObject>((List<NSObject>) l);
+            }
+            return NSObject.Marshaler.toNative(o, flags);
+        }
+    }
+    
     static class ListAdapter<U extends NSObject> extends AbstractList<U> {
         protected final NSArray<U> array;
 

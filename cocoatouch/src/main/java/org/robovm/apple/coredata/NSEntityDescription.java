@@ -109,6 +109,6 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "insertNewObjectForEntityForName:inManagedObjectContext:")
     public static native NSObject insertNewObjectForEntityForName$inManagedObjectContext$(String entityName, NSManagedObjectContext context);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

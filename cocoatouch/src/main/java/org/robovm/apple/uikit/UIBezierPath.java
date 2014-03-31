@@ -86,6 +86,49 @@ import org.robovm.apple.coreimage.*;
     public native void setUsesEvenOddFillRule(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    public void setLineDash(double[] pattern, double phase) {
+        if (pattern == null) {
+            throw new NullPointerException("pattern");
+        }
+        MachineSizedFloatPtr patternPtr = Struct.allocate(MachineSizedFloatPtr.class, pattern.length);
+        patternPtr.set(pattern);
+        setLineDash$count$phase$(patternPtr, pattern.length, phase);
+    }
+
+    public void setLineDash(float[] pattern, double phase) {
+        if (pattern == null) {
+            throw new NullPointerException("pattern");
+        }
+        MachineSizedFloatPtr patternPtr = Struct.allocate(MachineSizedFloatPtr.class, pattern.length);
+        patternPtr.set(pattern);
+        setLineDash$count$phase$(patternPtr, pattern.length, phase);
+    }
+
+    public double[] getLineDashD() {
+        MachineSizedSIntPtr countPtr = new MachineSizedSIntPtr();
+        getLineDash$count$phase$(null, countPtr, null);
+        int count = (int) countPtr.get();
+        MachineSizedFloatPtr patternPtr = Struct.allocate(MachineSizedFloatPtr.class, count);
+        getLineDash$count$phase$(patternPtr, null, null);
+        return patternPtr.toDoubleArray(count);
+    }
+    
+    public float[] getLineDashF() {
+        MachineSizedSIntPtr countPtr = new MachineSizedSIntPtr();
+        getLineDash$count$phase$(null, countPtr, null);
+        int count = (int) countPtr.get();
+        MachineSizedFloatPtr patternPtr = Struct.allocate(MachineSizedFloatPtr.class, count);
+        getLineDash$count$phase$(patternPtr, null, null);
+        return patternPtr.toFloatArray(count);
+    }
+
+    public double getLineDashPhase() {
+        MachineSizedFloatPtr phasePtr = new MachineSizedFloatPtr();
+        getLineDash$count$phase$(null, null, phasePtr);
+        return phasePtr.get();
+    }
+
     /*<methods>*/
     @Method(selector = "moveToPoint:")
     public native void move(@ByVal CGPoint point);
@@ -102,17 +145,17 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "removeAllPoints")
     public native void removeAllPoints();
     @Method(selector = "appendPath:")
-    public native void appendPath$(UIBezierPath bezierPath);
+    public native void appendPath(UIBezierPath bezierPath);
     @Method(selector = "bezierPathByReversingPath")
     public native UIBezierPath reverse();
     @Method(selector = "applyTransform:")
-    public native void applyTransform$(@ByVal CGAffineTransform transform);
+    public native void applyTransform(@ByVal CGAffineTransform transform);
     @Method(selector = "containsPoint:")
-    public native boolean containsPoint$(@ByVal CGPoint point);
+    public native boolean containsPoint(@ByVal CGPoint point);
     @Method(selector = "setLineDash:count:phase:")
-    public native void setLineDash$count$phase$(MachineSizedFloatPtr pattern, @MachineSizedSInt long count, @MachineSizedFloat double phase);
+    protected native void setLineDash$count$phase$(MachineSizedFloatPtr pattern, @MachineSizedSInt long count, @MachineSizedFloat double phase);
     @Method(selector = "getLineDash:count:phase:")
-    public native void getLineDash$count$phase$(MachineSizedFloatPtr pattern, MachineSizedSIntPtr count, MachineSizedFloatPtr phase);
+    protected native void getLineDash$count$phase$(MachineSizedFloatPtr pattern, MachineSizedSIntPtr count, MachineSizedFloatPtr phase);
     @Method(selector = "fill")
     public native void fill();
     @Method(selector = "stroke")
@@ -123,21 +166,19 @@ import org.robovm.apple.coreimage.*;
     public native void stroke(CGBlendMode blendMode, @MachineSizedFloat double alpha);
     @Method(selector = "addClip")
     public native void addClip();
-    @Method(selector = "bezierPath")
-    public static native UIBezierPath create();
     @Method(selector = "bezierPathWithRect:")
-    public static native UIBezierPath fromRect(@ByVal CGRect rect);
+    public static native UIBezierPath createFromRect(@ByVal CGRect rect);
     @Method(selector = "bezierPathWithOvalInRect:")
-    public static native UIBezierPath fromOval(@ByVal CGRect rect);
+    public static native UIBezierPath createFromOval(@ByVal CGRect rect);
     @Method(selector = "bezierPathWithRoundedRect:cornerRadius:")
-    public static native UIBezierPath fromRoundedRect(@ByVal CGRect rect, @MachineSizedFloat double cornerRadius);
+    public static native UIBezierPath createFromRoundedRect(@ByVal CGRect rect, @MachineSizedFloat double cornerRadius);
     @Method(selector = "bezierPathWithRoundedRect:byRoundingCorners:cornerRadii:")
-    public static native UIBezierPath fromRoundedRect(@ByVal CGRect rect, UIRectCorner corners, @ByVal CGSize cornerRadii);
+    public static native UIBezierPath createFromRoundedRect(@ByVal CGRect rect, UIRectCorner corners, @ByVal CGSize cornerRadii);
     @Method(selector = "bezierPathWithArcCenter:radius:startAngle:endAngle:clockwise:")
-    public static native UIBezierPath fromArc(@ByVal CGPoint center, @MachineSizedFloat double radius, @MachineSizedFloat double startAngle, @MachineSizedFloat double endAngle, boolean clockwise);
+    public static native UIBezierPath createFromArc(@ByVal CGPoint center, @MachineSizedFloat double radius, @MachineSizedFloat double startAngle, @MachineSizedFloat double endAngle, boolean clockwise);
     @Method(selector = "bezierPathWithCGPath:")
-    public static native UIBezierPath fromPath(CGPath CGPath);
+    public static native UIBezierPath createFromPath(CGPath CGPath);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

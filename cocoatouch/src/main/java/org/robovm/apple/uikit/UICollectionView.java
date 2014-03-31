@@ -93,7 +93,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "dequeueReusableSupplementaryViewOfKind:withReuseIdentifier:forIndexPath:")
     public native NSObject dequeueReusableSupplementaryView(String elementKind, String identifier, NSIndexPath indexPath);
     @Method(selector = "indexPathsForSelectedItems")
-    public native NSArray<?> getSelectedItemsIndexPaths();
+    public native NSArray<NSIndexPath> getIndexPathsForSelectedItems();
     @Method(selector = "selectItemAtIndexPath:animated:scrollPosition:")
     public native void selectItem(NSIndexPath indexPath, boolean animated, UICollectionViewScrollPosition scrollPosition);
     @Method(selector = "deselectItemAtIndexPath:animated:")
@@ -101,11 +101,11 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "reloadData")
     public native void reloadData();
     @Method(selector = "setCollectionViewLayout:animated:")
-    public native void setCollectionViewLayout$animated$(UICollectionViewLayout layout, boolean animated);
+    public native void setCollectionViewLayout(UICollectionViewLayout layout, boolean animated);
     @Method(selector = "setCollectionViewLayout:animated:completion:")
-    public native void setCollectionViewLayout$animated$completion$(UICollectionViewLayout layout, boolean animated, @Block VoidBooleanBlock completion);
+    public native void setCollectionViewLayout(UICollectionViewLayout layout, boolean animated, @Block VoidBooleanBlock completion);
     @Method(selector = "startInteractiveTransitionToCollectionViewLayout:completion:")
-    public native UICollectionViewTransitionLayout startInteractiveTransitionToCollectionViewLayout$completion$(UICollectionViewLayout layout, FunctionPtr completion);
+    public native UICollectionViewTransitionLayout startInteractiveTransition(UICollectionViewLayout layout, FunctionPtr completion);
     @Method(selector = "finishInteractiveTransition")
     public native void finishInteractiveTransition();
     @Method(selector = "cancelInteractiveTransition")
@@ -115,38 +115,38 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "numberOfItemsInSection:")
     public native @MachineSizedSInt long getNumberOfItemsInSection(@MachineSizedSInt long section);
     @Method(selector = "layoutAttributesForItemAtIndexPath:")
-    public native UICollectionViewLayoutAttributes getItemLayoutAttributes(NSIndexPath indexPath);
+    public native UICollectionViewLayoutAttributes getLayoutAttributesForItem(NSIndexPath indexPath);
     @Method(selector = "layoutAttributesForSupplementaryElementOfKind:atIndexPath:")
-    public native UICollectionViewLayoutAttributes getSupplementaryElementLayoutAttributes(String kind, NSIndexPath indexPath);
+    public native UICollectionViewLayoutAttributes getLayoutAttributesForSupplementaryElement(String kind, NSIndexPath indexPath);
     @Method(selector = "indexPathForItemAtPoint:")
-    public native NSIndexPath getItemIndexPath(@ByVal CGPoint point);
+    public native NSIndexPath getIndexPathForItem(@ByVal CGPoint point);
     @Method(selector = "indexPathForCell:")
-    public native NSIndexPath getCellIndexPath(UICollectionViewCell cell);
+    public native NSIndexPath getIndexPathForCell(UICollectionViewCell cell);
     @Method(selector = "cellForItemAtIndexPath:")
-    public native UICollectionViewCell getItemCell(NSIndexPath indexPath);
+    public native UICollectionViewCell getCellForItem(NSIndexPath indexPath);
     @Method(selector = "visibleCells")
-    public native NSArray<?> getVisibleCells();
+    public native NSArray<UICollectionViewCell> getVisibleCells();
     @Method(selector = "indexPathsForVisibleItems")
-    public native NSArray<?> getVisibleItemsIndexPaths();
+    public native NSArray<NSIndexPath> getIndexPathsForVisibleItems();
     @Method(selector = "scrollToItemAtIndexPath:atScrollPosition:animated:")
     public native void scrollToItem(NSIndexPath indexPath, UICollectionViewScrollPosition scrollPosition, boolean animated);
     @Method(selector = "insertSections:")
-    public native void insertSections$(NSIndexSet sections);
+    public native void insertSections(NSIndexSet sections);
     @Method(selector = "deleteSections:")
-    public native void deleteSections$(NSIndexSet sections);
+    public native void deleteSections(NSIndexSet sections);
     @Method(selector = "reloadSections:")
-    public native void reloadSections$(NSIndexSet sections);
+    public native void reloadSections(NSIndexSet sections);
     @Method(selector = "moveSection:toSection:")
-    public native void moveSection$toSection$(@MachineSizedSInt long section, @MachineSizedSInt long newSection);
+    public native void moveSection(@MachineSizedSInt long section, @MachineSizedSInt long newSection);
     @Method(selector = "insertItemsAtIndexPaths:")
-    public native void insertItems(NSArray<?> indexPaths);
+    public native void insertItems(NSArray<NSIndexPath> indexPaths);
     @Method(selector = "deleteItemsAtIndexPaths:")
-    public native void deleteItems(NSArray<?> indexPaths);
+    public native void deleteItems(NSArray<NSIndexPath> indexPaths);
     @Method(selector = "reloadItemsAtIndexPaths:")
-    public native void reloadItems(NSArray<?> indexPaths);
+    public native void reloadItems(NSArray<NSIndexPath> indexPaths);
     @Method(selector = "moveItemAtIndexPath:toIndexPath:")
     public native void moveItem(NSIndexPath indexPath, NSIndexPath newIndexPath);
     @Method(selector = "performBatchUpdates:completion:")
-    public native void performBatchUpdates$completion$(@Block Runnable updates, @Block VoidBooleanBlock completion);
+    public native void performBatchUpdates(@Block Runnable updates, @Block VoidBooleanBlock completion);
     /*</methods>*/
 }

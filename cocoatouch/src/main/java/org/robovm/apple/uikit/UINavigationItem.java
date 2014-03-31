@@ -72,13 +72,13 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setHidesBackButton:")
     public native void setHidesBackButton(boolean v);
     @Property(selector = "leftBarButtonItems")
-    public native NSArray<?> getLeftBarButtonItems();
+    public native NSArray<UIBarButtonItem> getLeftBarButtonItems();
     @Property(selector = "setLeftBarButtonItems:")
-    public native void setLeftBarButtonItems(NSArray<?> v);
+    public native void setLeftBarButtonItems(NSArray<UIBarButtonItem> v);
     @Property(selector = "rightBarButtonItems")
-    public native NSArray<?> getRightBarButtonItems();
+    public native NSArray<UIBarButtonItem> getRightBarButtonItems();
     @Property(selector = "setRightBarButtonItems:")
-    public native void setRightBarButtonItems(NSArray<?> v);
+    public native void setRightBarButtonItems(NSArray<UIBarButtonItem> v);
     @Property(selector = "leftItemsSupplementBackButton")
     public native boolean isLeftItemsSupplementBackButton();
     @Property(selector = "setLeftItemsSupplementBackButton:")
@@ -97,16 +97,16 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "initWithTitle:")
     protected native @Pointer long initWithTitle$(String title);
     @Method(selector = "setHidesBackButton:animated:")
-    public native void setHidesBackButton$animated$(boolean hidesBackButton, boolean animated);
+    public native void setHidesBackButton(boolean hidesBackButton, boolean animated);
     @Method(selector = "setLeftBarButtonItems:animated:")
-    public native void setLeftBarButtonItems$animated$(NSArray<?> items, boolean animated);
+    public native void setLeftBarButtonItems(NSArray<UIBarButtonItem> items, boolean animated);
     @Method(selector = "setRightBarButtonItems:animated:")
-    public native void setRightBarButtonItems$animated$(NSArray<?> items, boolean animated);
+    public native void setRightBarButtonItems(NSArray<UIBarButtonItem> items, boolean animated);
     @Method(selector = "setLeftBarButtonItem:animated:")
-    public native void setLeftBarButtonItem$animated$(UIBarButtonItem item, boolean animated);
+    public native void setLeftBarButtonItem(UIBarButtonItem item, boolean animated);
     @Method(selector = "setRightBarButtonItem:animated:")
-    public native void setRightBarButtonItem$animated$(UIBarButtonItem item, boolean animated);
+    public native void setRightBarButtonItem(UIBarButtonItem item, boolean animated);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

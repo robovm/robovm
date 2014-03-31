@@ -55,7 +55,7 @@ import org.robovm.apple.coreimage.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "items")
-    public native NSArray<?> getItems();
+    public native List<UIDynamicItem> getItems();
     @Property(selector = "attachedBehaviorType")
     public native UIAttachmentBehaviorType getAttachedBehaviorType();
     @Property(selector = "anchorPoint")

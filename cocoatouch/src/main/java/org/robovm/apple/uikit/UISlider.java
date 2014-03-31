@@ -101,13 +101,13 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "setValue:animated:")
-    public native void setValue$animated$(float value, boolean animated);
+    public native void setValue(float value, boolean animated);
     @Method(selector = "setThumbImage:forState:")
-    public native void setThumbImage$forState$(UIImage image, UIControlState state);
+    public native void setThumbImage(UIImage image, UIControlState state);
     @Method(selector = "setMinimumTrackImage:forState:")
-    public native void setMinimumTrackImage$forState$(UIImage image, UIControlState state);
+    public native void setMinimumTrackImage(UIImage image, UIControlState state);
     @Method(selector = "setMaximumTrackImage:forState:")
-    public native void setMaximumTrackImage$forState$(UIImage image, UIControlState state);
+    public native void setMaximumTrackImage(UIImage image, UIControlState state);
     @Method(selector = "thumbImageForState:")
     public native UIImage getThumbImage(UIControlState state);
     @Method(selector = "minimumTrackImageForState:")

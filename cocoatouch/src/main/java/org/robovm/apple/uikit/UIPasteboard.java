@@ -59,74 +59,74 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "changeCount")
     public native @MachineSizedSInt long getChangeCount();
     @Property(selector = "numberOfItems")
-    public native @MachineSizedSInt long getCount();
+    public native @MachineSizedSInt long getNumberOfItems();
     @Property(selector = "items")
-    public native NSArray<?> getItems();
+    public native NSArray<NSDictionary<NSString, ?>> getItems();
     @Property(selector = "setItems:")
-    public native void setItems(NSArray<?> v);
+    public native void setItems(NSArray<NSDictionary<NSString, ?>> v);
     @Property(selector = "string")
     public native String getString();
     @Property(selector = "setString:")
     public native void setString(String v);
     @Property(selector = "strings")
-    public native NSArray<?> getStrings();
+    public native NSArray<NSString> getStrings();
     @Property(selector = "setStrings:")
-    public native void setStrings(NSArray<?> v);
+    public native void setStrings(NSArray<NSString> v);
     @Property(selector = "URL")
     public native NSURL getURL();
     @Property(selector = "setURL:")
     public native void setURL(NSURL v);
     @Property(selector = "URLs")
-    public native NSArray<?> getURLs();
+    public native NSArray<NSURL> getURLs();
     @Property(selector = "setURLs:")
-    public native void setURLs(NSArray<?> v);
+    public native void setURLs(NSArray<NSURL> v);
     @Property(selector = "image")
     public native UIImage getImage();
     @Property(selector = "setImage:")
     public native void setImage(UIImage v);
     @Property(selector = "images")
-    public native NSArray<?> getImages();
+    public native NSArray<UIImage> getImages();
     @Property(selector = "setImages:")
-    public native void setImages(NSArray<?> v);
+    public native void setImages(NSArray<UIImage> v);
     @Property(selector = "color")
     public native UIColor getColor();
     @Property(selector = "setColor:")
     public native void setColor(UIColor v);
     @Property(selector = "colors")
-    public native NSArray<?> getColors();
+    public native NSArray<UIColor> getColors();
     @Property(selector = "setColors:")
-    public native void setColors(NSArray<?> v);
+    public native void setColors(NSArray<UIColor> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "pasteboardTypes")
-    public native NSArray<?> getTypes();
+    public native NSArray<NSString> getTypes();
     @Method(selector = "containsPasteboardTypes:")
-    public native boolean contains(NSArray<?> pasteboardTypes);
+    public native boolean contains(NSArray<NSString> pasteboardTypes);
     @Method(selector = "dataForPasteboardType:")
     public native NSData getData(String pasteboardType);
     @Method(selector = "valueForPasteboardType:")
     public native NSObject getValue(String pasteboardType);
     @Method(selector = "setValue:forPasteboardType:")
-    public native void setValue$forPasteboardType$(NSObject value, String pasteboardType);
+    public native void setValue(NSObject value, String pasteboardType);
     @Method(selector = "setData:forPasteboardType:")
-    public native void setData$forPasteboardType$(NSData data, String pasteboardType);
+    public native void setData(NSData data, String pasteboardType);
     @Method(selector = "pasteboardTypesForItemSet:")
-    public native NSArray<?> getTypes(NSIndexSet itemSet);
+    public native NSArray<NSArray<NSString>> getTypes(NSIndexSet itemSet);
     @Method(selector = "containsPasteboardTypes:inItemSet:")
-    public native boolean contains(NSArray<?> pasteboardTypes, NSIndexSet itemSet);
+    public native boolean contains(NSArray<NSString> pasteboardTypes, NSIndexSet itemSet);
     @Method(selector = "itemSetWithPasteboardTypes:")
-    public native NSIndexSet getItemsWithTypes(NSArray<?> pasteboardTypes);
+    public native NSIndexSet getItemsWithTypes(NSArray<NSString> pasteboardTypes);
     @Method(selector = "valuesForPasteboardType:inItemSet:")
     public native NSArray<?> getValues(String pasteboardType, NSIndexSet itemSet);
     @Method(selector = "dataForPasteboardType:inItemSet:")
-    public native NSArray<?> getData(String pasteboardType, NSIndexSet itemSet);
+    public native NSArray<NSData> getData(String pasteboardType, NSIndexSet itemSet);
     @Method(selector = "addItems:")
-    public native void addItems$(NSArray<?> items);
+    public native void addItems(NSArray<NSDictionary<NSString, ?>> items);
     @Method(selector = "generalPasteboard")
     public static native UIPasteboard getGeneral();
     @Method(selector = "pasteboardWithName:create:")
-    public static native UIPasteboard fromName(String pasteboardName, boolean create);
+    public static native UIPasteboard createFromName(String pasteboardName, boolean create);
     @Method(selector = "pasteboardWithUniqueName")
     public static native UIPasteboard getUnique();
     @Method(selector = "removePasteboardWithName:")

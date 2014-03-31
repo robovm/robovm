@@ -88,6 +88,6 @@ import org.robovm.apple.security.*;
     @Method(selector = "weakToWeakObjectsMapTable")
     public static native NSObject weakToWeakObjectsMapTable();
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

@@ -66,7 +66,7 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "updateInteractiveTransition:")
-    public native void updateInteractiveTransition$(@MachineSizedFloat double percentComplete);
+    public native void updateInteractiveTransition(@MachineSizedFloat double percentComplete);
     @Method(selector = "cancelInteractiveTransition")
     public native void cancelInteractiveTransition();
     @Method(selector = "finishInteractiveTransition")

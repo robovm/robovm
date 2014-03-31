@@ -82,8 +82,8 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "setTitleTextAttributes:forState:")
-    public native void setTitleTextAttributes(NSDictionary<?, ?> attributes, UIControlState state);
+    public native void setTitleTextAttributes(NSDictionary<NSString, ?> attributes, UIControlState state);
     @Method(selector = "titleTextAttributesForState:")
-    public native NSDictionary<?, ?> getTitleTextAttributes(UIControlState state);
+    public native NSDictionary<NSString, ?> getTitleTextAttributes(UIControlState state);
     /*</methods>*/
 }

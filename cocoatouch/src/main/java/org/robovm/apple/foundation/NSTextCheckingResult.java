@@ -138,6 +138,6 @@ import org.robovm.apple.security.*;
     @Method(selector = "transitInformationCheckingResultWithRange:components:")
     public static native NSTextCheckingResult transitInformationCheckingResultWithRange$components$(@ByVal NSRange range, NSDictionary<?, ?> components);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

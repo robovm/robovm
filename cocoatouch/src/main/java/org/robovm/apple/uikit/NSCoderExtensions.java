@@ -55,28 +55,28 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "encodeCGPoint:forKey:")
-    public static native void encodeCGPoint$forKey$(NSCoder thiz, @ByVal CGPoint point, String key);
+    public static native void encodeCGPoint(NSCoder thiz, @ByVal CGPoint point, String key);
     @Method(selector = "encodeCGSize:forKey:")
-    public static native void encodeCGSize$forKey$(NSCoder thiz, @ByVal CGSize size, String key);
+    public static native void encodeCGSize(NSCoder thiz, @ByVal CGSize size, String key);
     @Method(selector = "encodeCGRect:forKey:")
-    public static native void encodeCGRect$forKey$(NSCoder thiz, @ByVal CGRect rect, String key);
+    public static native void encodeCGRect(NSCoder thiz, @ByVal CGRect rect, String key);
     @Method(selector = "encodeCGAffineTransform:forKey:")
-    public static native void encodeCGAffineTransform$forKey$(NSCoder thiz, @ByVal CGAffineTransform transform, String key);
+    public static native void encodeCGAffineTransform(NSCoder thiz, @ByVal CGAffineTransform transform, String key);
     @Method(selector = "encodeUIEdgeInsets:forKey:")
-    public static native void encodeUIEdgeInsets$forKey$(NSCoder thiz, @ByVal UIEdgeInsets insets, String key);
+    public static native void encodeUIEdgeInsets(NSCoder thiz, @ByVal UIEdgeInsets insets, String key);
     @Method(selector = "encodeUIOffset:forKey:")
-    public static native void encodeUIOffset$forKey$(NSCoder thiz, @ByVal UIOffset offset, String key);
+    public static native void encodeUIOffset(NSCoder thiz, @ByVal UIOffset offset, String key);
     @Method(selector = "decodeCGPointForKey:")
-    public static native @ByVal CGPoint decodeCGPointForKey$(NSCoder thiz, String key);
+    public static native @ByVal CGPoint decodeCGPoint(NSCoder thiz, String key);
     @Method(selector = "decodeCGSizeForKey:")
-    public static native @ByVal CGSize decodeCGSizeForKey$(NSCoder thiz, String key);
+    public static native @ByVal CGSize decodeCGSize(NSCoder thiz, String key);
     @Method(selector = "decodeCGRectForKey:")
-    public static native @ByVal CGRect decodeCGRectForKey$(NSCoder thiz, String key);
+    public static native @ByVal CGRect decodeCGRect(NSCoder thiz, String key);
     @Method(selector = "decodeCGAffineTransformForKey:")
-    public static native @ByVal CGAffineTransform decodeCGAffineTransformForKey$(NSCoder thiz, String key);
+    public static native @ByVal CGAffineTransform decodeCGAffineTransform(NSCoder thiz, String key);
     @Method(selector = "decodeUIEdgeInsetsForKey:")
-    public static native @ByVal UIEdgeInsets decodeUIEdgeInsetsForKey$(NSCoder thiz, String key);
+    public static native @ByVal UIEdgeInsets decodeUIEdgeInsets(NSCoder thiz, String key);
     @Method(selector = "decodeUIOffsetForKey:")
-    public static native @ByVal UIOffset decodeUIOffsetForKey$(NSCoder thiz, String key);
+    public static native @ByVal UIOffset decodeUIOffset(NSCoder thiz, String key);
     /*</methods>*/
 }

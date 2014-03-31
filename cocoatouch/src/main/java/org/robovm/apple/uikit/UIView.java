@@ -100,7 +100,7 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "superview")
     public native UIView getSuperview();
     @Property(selector = "subviews")
-    public native NSArray<?> getSubviews();
+    public native NSArray<UIView> getSubviews();
     @Property(selector = "window")
     public native UIWindow getWindow();
     @Property(selector = "clipsToBounds")
@@ -144,13 +144,13 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setTintAdjustmentMode:")
     public native void setTintAdjustmentMode(UIViewTintAdjustmentMode v);
     @Property(selector = "gestureRecognizers")
-    public native NSArray<?> getGestureRecognizers();
+    public native NSArray<UIGestureRecognizer> getGestureRecognizers();
     @Property(selector = "setGestureRecognizers:")
-    public native void setGestureRecognizers(NSArray<?> v);
+    public native void setGestureRecognizers(NSArray<UIGestureRecognizer> v);
     @Property(selector = "motionEffects")
-    public native NSArray<?> getMotionEffects();
+    public native NSArray<UIMotionEffect> getMotionEffects();
     @Property(selector = "setMotionEffects:")
-    public native void setMotionEffects(NSArray<?> v);
+    public native void setMotionEffects(NSArray<UIMotionEffect> v);
     @Property(selector = "restorationIdentifier")
     public native String getRestorationIdentifier();
     @Property(selector = "setRestorationIdentifier:")
@@ -167,9 +167,9 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "layerClass")
     public static native ObjCClass getLayerClass();
     @Method(selector = "hitTest:withEvent:")
-    public native UIView hitTest$withEvent$(@ByVal CGPoint point, UIEvent event);
+    public native UIView hitTest(@ByVal CGPoint point, UIEvent event);
     @Method(selector = "pointInside:withEvent:")
-    public native boolean pointInside$withEvent$(@ByVal CGPoint point, UIEvent event);
+    public native boolean isPointInside(@ByVal CGPoint point, UIEvent event);
     @Method(selector = "convertPoint:toView:")
     public native @ByVal CGPoint convertPointToView(@ByVal CGPoint point, UIView view);
     @Method(selector = "convertPoint:fromView:")
@@ -185,29 +185,29 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "removeFromSuperview")
     public native void removeFromSuperview();
     @Method(selector = "insertSubview:atIndex:")
-    public native void insertSubview$atIndex$(UIView view, @MachineSizedSInt long index);
+    public native void insertSubview(UIView view, @MachineSizedSInt long index);
     @Method(selector = "exchangeSubviewAtIndex:withSubviewAtIndex:")
     public native void exchangeSubview(@MachineSizedSInt long index1, @MachineSizedSInt long index2);
     @Method(selector = "addSubview:")
-    public native void addSubview$(UIView view);
+    public native void addSubview(UIView view);
     @Method(selector = "insertSubview:belowSubview:")
     public native void insertSubviewBelow(UIView view, UIView siblingSubview);
     @Method(selector = "insertSubview:aboveSubview:")
     public native void insertSubviewAbove(UIView view, UIView siblingSubview);
     @Method(selector = "bringSubviewToFront:")
-    public native void bringSubviewToFront$(UIView view);
+    public native void bringSubviewToFront(UIView view);
     @Method(selector = "sendSubviewToBack:")
-    public native void sendSubviewToBack$(UIView view);
+    public native void sendSubviewToBack(UIView view);
     @Method(selector = "didAddSubview:")
-    public native void didAddSubview$(UIView subview);
+    public native void didAddSubview(UIView subview);
     @Method(selector = "willRemoveSubview:")
-    public native void willRemoveSubview$(UIView subview);
+    public native void willRemoveSubview(UIView subview);
     @Method(selector = "willMoveToSuperview:")
-    public native void willMoveToSuperview$(UIView newSuperview);
+    public native void willMoveToSuperview(UIView newSuperview);
     @Method(selector = "didMoveToSuperview")
     public native void didMoveToSuperview();
     @Method(selector = "willMoveToWindow:")
-    public native void willMoveToWindow$(UIWindow newWindow);
+    public native void willMoveToWindow(UIWindow newWindow);
     @Method(selector = "didMoveToWindow")
     public native void didMoveToWindow();
     @Method(selector = "isDescendantOfView:")
@@ -229,7 +229,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "tintColorDidChange")
     public native void tintColorDidChange();
     @Method(selector = "beginAnimations:context:")
-    public static native void beginAnimations$context$(String animationID, VoidPtr context);
+    public static native void beginAnimations(String animationID, VoidPtr context);
     @Method(selector = "commitAnimations")
     public static native void commitAnimations();
     @Method(selector = "setAnimationDelegate:")
@@ -253,13 +253,13 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "setAnimationBeginsFromCurrentState:")
     public static native void setAnimationBeginsFromCurrentState(boolean fromCurrentState);
     @Method(selector = "setAnimationTransition:forView:cache:")
-    public static native void setAnimationTransition$forView$cache$(UIViewAnimationTransition transition, UIView view, boolean cache);
+    public static native void setAnimationTransition(UIViewAnimationTransition transition, UIView view, boolean cache);
     @Method(selector = "setAnimationsEnabled:")
     public static native void setAnimationsEnabled(boolean enabled);
     @Method(selector = "areAnimationsEnabled")
     public static native boolean areAnimationsEnabled();
     @Method(selector = "performWithoutAnimation:")
-    public static native void performWithoutAnimation$(@Block Runnable actionsWithoutAnimation);
+    public static native void performWithoutAnimation(@Block Runnable actionsWithoutAnimation);
     @Method(selector = "animateWithDuration:delay:options:animations:completion:")
     public static native void animate(double duration, double delay, UIViewAnimationOptions options, @Block Runnable animations, @Block VoidBooleanBlock completion);
     @Method(selector = "animateWithDuration:animations:completion:")
@@ -267,37 +267,37 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "animateWithDuration:animations:")
     public static native void animate(double duration, @Block Runnable animations);
     @Method(selector = "animateWithDuration:delay:usingSpringWithDamping:initialSpringVelocity:options:animations:completion:")
-    public static native void animateWithDuration$delay$usingSpringWithDamping$initialSpringVelocity$options$animations$completion$(double duration, double delay, @MachineSizedFloat double dampingRatio, @MachineSizedFloat double velocity, UIViewAnimationOptions options, @Block Runnable animations, @Block VoidBooleanBlock completion);
+    public static native void animateWithDuration(double duration, double delay, @MachineSizedFloat double dampingRatio, @MachineSizedFloat double velocity, UIViewAnimationOptions options, @Block Runnable animations, @Block VoidBooleanBlock completion);
     @Method(selector = "transitionWithView:duration:options:animations:completion:")
     public static native void transition(UIView view, double duration, UIViewAnimationOptions options, @Block Runnable animations, @Block VoidBooleanBlock completion);
     @Method(selector = "transitionFromView:toView:duration:options:completion:")
     public static native void transition(UIView fromView, UIView toView, double duration, UIViewAnimationOptions options, @Block VoidBooleanBlock completion);
     @Method(selector = "performSystemAnimation:onViews:options:animations:completion:")
-    public static native void performSystemAnimation$onViews$options$animations$completion$(UISystemAnimation animation, NSArray<?> views, UIViewAnimationOptions options, @Block Runnable parallelAnimations, @Block VoidBooleanBlock completion);
+    public static native void performSystemAnimation(UISystemAnimation animation, NSArray<UIView> views, UIViewAnimationOptions options, @Block Runnable parallelAnimations, @Block VoidBooleanBlock completion);
     @Method(selector = "animateKeyframesWithDuration:delay:options:animations:completion:")
-    public static native void animateKeyframesWithDuration$delay$options$animations$completion$(double duration, double delay, UIViewKeyframeAnimationOptions options, @Block Runnable animations, @Block VoidBooleanBlock completion);
+    public static native void animateKeyframes(double duration, double delay, UIViewKeyframeAnimationOptions options, @Block Runnable animations, @Block VoidBooleanBlock completion);
     @Method(selector = "addKeyframeWithRelativeStartTime:relativeDuration:animations:")
-    public static native void addKeyframeWithRelativeStartTime$relativeDuration$animations$(double frameStartTime, double frameDuration, @Block Runnable animations);
+    public static native void addKeyframe(double frameStartTime, double frameDuration, @Block Runnable animations);
     @Method(selector = "addGestureRecognizer:")
-    public native void addGestureRecognizer$(UIGestureRecognizer gestureRecognizer);
+    public native void addGestureRecognizer(UIGestureRecognizer gestureRecognizer);
     @Method(selector = "removeGestureRecognizer:")
-    public native void removeGestureRecognizer$(UIGestureRecognizer gestureRecognizer);
+    public native void removeGestureRecognizer(UIGestureRecognizer gestureRecognizer);
     @Method(selector = "gestureRecognizerShouldBegin:")
-    public native boolean gestureRecognizerShouldBegin$(UIGestureRecognizer gestureRecognizer);
+    public native boolean gestureRecognizerShouldBegin(UIGestureRecognizer gestureRecognizer);
     @Method(selector = "addMotionEffect:")
-    public native void addMotionEffect$(UIMotionEffect effect);
+    public native void addMotionEffect(UIMotionEffect effect);
     @Method(selector = "removeMotionEffect:")
-    public native void removeMotionEffect$(UIMotionEffect effect);
+    public native void removeMotionEffect(UIMotionEffect effect);
     @Method(selector = "constraints")
-    public native NSArray<?> getConstraints();
+    public native NSArray<NSLayoutConstraint> getConstraints();
     @Method(selector = "addConstraint:")
-    public native void addConstraint$(NSLayoutConstraint constraint);
+    public native void addConstraint(NSLayoutConstraint constraint);
     @Method(selector = "addConstraints:")
-    public native void addConstraints$(NSArray<?> constraints);
+    public native void addConstraints(NSArray<NSLayoutConstraint> constraints);
     @Method(selector = "removeConstraint:")
-    public native void removeConstraint$(NSLayoutConstraint constraint);
+    public native void removeConstraint(NSLayoutConstraint constraint);
     @Method(selector = "removeConstraints:")
-    public native void removeConstraints$(NSArray<?> constraints);
+    public native void removeConstraints(NSArray<NSLayoutConstraint> constraints);
     @Method(selector = "updateConstraintsIfNeeded")
     public native void updateConstraintsIfNeeded();
     @Method(selector = "updateConstraints")
@@ -307,19 +307,19 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "setNeedsUpdateConstraints")
     public native void setNeedsUpdateConstraints();
     @Method(selector = "translatesAutoresizingMaskIntoConstraints")
-    public native boolean isTranslatesAutoresizingMaskIntoConstraints();
+    public native boolean translatesAutoresizingMaskIntoConstraints();
     @Method(selector = "setTranslatesAutoresizingMaskIntoConstraints:")
     public native void setTranslatesAutoresizingMaskIntoConstraints(boolean flag);
     @Method(selector = "requiresConstraintBasedLayout")
     public static native boolean requiresConstraintBasedLayout();
     @Method(selector = "alignmentRectForFrame:")
-    public native @ByVal CGRect getFrameAlignmentRect(@ByVal CGRect frame);
+    public native @ByVal CGRect getAlignmentRectForFrame(@ByVal CGRect frame);
     @Method(selector = "frameForAlignmentRect:")
-    public native @ByVal CGRect getAlignmentRectFrame(@ByVal CGRect alignmentRect);
+    public native @ByVal CGRect getFrameForAlignmentRect(@ByVal CGRect alignmentRect);
     @Method(selector = "alignmentRectInsets")
     public native @ByVal UIEdgeInsets getAlignmentRectInsets();
     @Method(selector = "viewForBaselineLayout")
-    public native UIView getBaselineLayoutView();
+    public native UIView getViewForBaselineLayout();
     @Method(selector = "intrinsicContentSize")
     public native @ByVal CGSize getIntrinsicContentSize();
     @Method(selector = "invalidateIntrinsicContentSize")
@@ -327,36 +327,36 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "contentHuggingPriorityForAxis:")
     public native float getContentHuggingPriority(UILayoutConstraintAxis axis);
     @Method(selector = "setContentHuggingPriority:forAxis:")
-    public native void setContentHuggingPriority$forAxis$(float priority, UILayoutConstraintAxis axis);
+    public native void setContentHuggingPriority(float priority, UILayoutConstraintAxis axis);
     @Method(selector = "contentCompressionResistancePriorityForAxis:")
     public native float getContentCompressionResistancePriority(UILayoutConstraintAxis axis);
     @Method(selector = "setContentCompressionResistancePriority:forAxis:")
-    public native void setContentCompressionResistancePriority$forAxis$(float priority, UILayoutConstraintAxis axis);
+    public native void setContentCompressionResistancePriority(float priority, UILayoutConstraintAxis axis);
     @Method(selector = "systemLayoutSizeFittingSize:")
     public native @ByVal CGSize getSystemLayoutSizeFittingSize(@ByVal CGSize targetSize);
     @Method(selector = "constraintsAffectingLayoutForAxis:")
-    public native NSArray<?> getConstraintsAffectingLayout(UILayoutConstraintAxis axis);
+    public native NSArray<NSLayoutConstraint> getConstraintsAffectingLayout(UILayoutConstraintAxis axis);
     @Method(selector = "hasAmbiguousLayout")
     public native boolean hasAmbiguousLayout();
     @Method(selector = "exerciseAmbiguityInLayout")
     public native void exerciseAmbiguityInLayout();
     @Method(selector = "encodeRestorableStateWithCoder:")
-    public native void encodeRestorableStateWithCoder$(NSCoder coder);
+    public native void encodeRestorableState(NSCoder coder);
     @Method(selector = "decodeRestorableStateWithCoder:")
-    public native void decodeRestorableStateWithCoder$(NSCoder coder);
+    public native void decodeRestorableState(NSCoder coder);
     @Method(selector = "snapshotViewAfterScreenUpdates:")
-    public native UIView snapshotViewAfterScreenUpdates$(boolean afterUpdates);
+    public native UIView snapshotView(boolean afterUpdates);
     @Method(selector = "resizableSnapshotViewFromRect:afterScreenUpdates:withCapInsets:")
-    public native UIView resizableSnapshotViewFromRect$afterScreenUpdates$withCapInsets$(@ByVal CGRect rect, boolean afterUpdates, @ByVal UIEdgeInsets capInsets);
+    public native UIView resizableSnapshotView(@ByVal CGRect rect, boolean afterUpdates, @ByVal UIEdgeInsets capInsets);
     @Method(selector = "drawViewHierarchyInRect:afterScreenUpdates:")
-    public native boolean drawViewHierarchyInRect$afterScreenUpdates$(@ByVal CGRect rect, boolean afterUpdates);
+    public native boolean drawViewHierarchy(@ByVal CGRect rect, boolean afterUpdates);
     @Method(selector = "endEditing:")
-    public native boolean endEditing$(boolean force);
+    public native boolean endEditing(boolean force);
     @Method(selector = "viewPrintFormatter")
     public native UIViewPrintFormatter getViewPrintFormatter();
     @Method(selector = "drawRect:forViewPrintFormatter:")
-    public native void drawRect$forViewPrintFormatter$(@ByVal CGRect rect, UIViewPrintFormatter formatter);
+    public native void draw(@ByVal CGRect rect, UIViewPrintFormatter formatter);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

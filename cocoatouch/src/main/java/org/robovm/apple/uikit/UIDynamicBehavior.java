@@ -51,7 +51,7 @@ import org.robovm.apple.coreimage.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "childBehaviors")
-    public native NSArray<?> getChildBehaviors();
+    public native NSArray<UIDynamicBehavior> getChildBehaviors();
     @Property(selector = "action")
     public native @Block Runnable getAction();
     @Property(selector = "setAction:")
@@ -62,10 +62,10 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "addChildBehavior:")
-    public native void addChildBehavior$(UIDynamicBehavior behavior);
+    public native void addChildBehavior(UIDynamicBehavior behavior);
     @Method(selector = "removeChildBehavior:")
-    public native void removeChildBehavior$(UIDynamicBehavior behavior);
+    public native void removeChildBehavior(UIDynamicBehavior behavior);
     @Method(selector = "willMoveToAnimator:")
-    public native void willMoveToAnimator$(UIDynamicAnimator dynamicAnimator);
+    public native void willMoveToAnimator(UIDynamicAnimator dynamicAnimator);
     /*</methods>*/
 }

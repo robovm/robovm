@@ -75,6 +75,6 @@ import org.robovm.apple.security.*;
     @Method(selector = "port")
     public static native NSPort port();
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

@@ -51,9 +51,9 @@ import org.robovm.apple.coreimage.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "viewControllers")
-    public native NSArray<?> getViewControllers();
+    public native NSArray<UIViewController> getViewControllers();
     @Property(selector = "setViewControllers:")
-    public native void setViewControllers(NSArray<?> v);
+    public native void setViewControllers(NSArray<UIViewController> v);
     @Property(selector = "selectedViewController")
     public native UIViewController getSelectedViewController();
     @Property(selector = "setSelectedViewController:", strongRef = true)
@@ -78,7 +78,7 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "setViewControllers:animated:")
-    public native void setViewControllers$animated$(NSArray<?> viewControllers, boolean animated);
+    public native void setViewControllers(NSArray<UIViewController> viewControllers, boolean animated);
     @Method(selector = "tabBar:didSelectItem:")
     public native void didSelectItem(UITabBar tabBar, UITabBarItem item);
     @Method(selector = "tabBar:willBeginCustomizingItems:")

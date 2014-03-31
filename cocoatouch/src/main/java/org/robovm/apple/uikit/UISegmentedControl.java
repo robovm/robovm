@@ -90,44 +90,44 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "insertSegmentWithImage:atIndex:animated:")
     public native void insertSegment(UIImage image, @MachineSizedUInt long segment, boolean animated);
     @Method(selector = "removeSegmentAtIndex:animated:")
-    public native void removeSegmentAtIndex$animated$(@MachineSizedUInt long segment, boolean animated);
+    public native void removeSegment(@MachineSizedUInt long segment, boolean animated);
     @Method(selector = "removeAllSegments")
     public native void removeAllSegments();
     @Method(selector = "setTitle:forSegmentAtIndex:")
-    public native void setTitle$forSegmentAtIndex$(String title, @MachineSizedUInt long segment);
+    public native void setTitle(String title, @MachineSizedUInt long segment);
     @Method(selector = "titleForSegmentAtIndex:")
-    public native String getSegmentTitle(@MachineSizedUInt long segment);
+    public native String getTitle(@MachineSizedUInt long segment);
     @Method(selector = "setImage:forSegmentAtIndex:")
-    public native void setImage$forSegmentAtIndex$(UIImage image, @MachineSizedUInt long segment);
+    public native void setImage(UIImage image, @MachineSizedUInt long segment);
     @Method(selector = "imageForSegmentAtIndex:")
-    public native UIImage getSegmentImage(@MachineSizedUInt long segment);
+    public native UIImage getImage(@MachineSizedUInt long segment);
     @Method(selector = "setWidth:forSegmentAtIndex:")
-    public native void setWidth$forSegmentAtIndex$(@MachineSizedFloat double width, @MachineSizedUInt long segment);
+    public native void setWidth(@MachineSizedFloat double width, @MachineSizedUInt long segment);
     @Method(selector = "widthForSegmentAtIndex:")
-    public native @MachineSizedFloat double getSegmentWidth(@MachineSizedUInt long segment);
+    public native @MachineSizedFloat double getWidth(@MachineSizedUInt long segment);
     @Method(selector = "setContentOffset:forSegmentAtIndex:")
-    public native void setContentOffset$forSegmentAtIndex$(@ByVal CGSize offset, @MachineSizedUInt long segment);
+    public native void setContentOffset(@ByVal CGSize offset, @MachineSizedUInt long segment);
     @Method(selector = "contentOffsetForSegmentAtIndex:")
-    public native @ByVal CGSize getSegmentContentOffset(@MachineSizedUInt long segment);
+    public native @ByVal CGSize getContentOffset(@MachineSizedUInt long segment);
     @Method(selector = "setEnabled:forSegmentAtIndex:")
-    public native void setEnabled$forSegmentAtIndex$(boolean enabled, @MachineSizedUInt long segment);
+    public native void setEnabled(boolean enabled, @MachineSizedUInt long segment);
     @Method(selector = "isEnabledForSegmentAtIndex:")
-    public native boolean isSegmentEnabled(@MachineSizedUInt long segment);
+    public native boolean isEnabled(@MachineSizedUInt long segment);
     @Method(selector = "setBackgroundImage:forState:barMetrics:")
-    public native void setBackgroundImage$forState$barMetrics$(UIImage backgroundImage, UIControlState state, UIBarMetrics barMetrics);
+    public native void setBackgroundImage(UIImage backgroundImage, UIControlState state, UIBarMetrics barMetrics);
     @Method(selector = "backgroundImageForState:barMetrics:")
     public native UIImage getBackgroundImage(UIControlState state, UIBarMetrics barMetrics);
     @Method(selector = "setDividerImage:forLeftSegmentState:rightSegmentState:barMetrics:")
-    public native void setDividerImage$forLeftSegmentState$rightSegmentState$barMetrics$(UIImage dividerImage, UIControlState leftState, UIControlState rightState, UIBarMetrics barMetrics);
+    public native void setDividerImage(UIImage dividerImage, UIControlState leftState, UIControlState rightState, UIBarMetrics barMetrics);
     @Method(selector = "dividerImageForLeftSegmentState:rightSegmentState:barMetrics:")
     public native UIImage getDividerImage(UIControlState leftState, UIControlState rightState, UIBarMetrics barMetrics);
     @Method(selector = "setTitleTextAttributes:forState:")
-    public native void setTitleTextAttributes$forState$(NSDictionary<?, ?> attributes, UIControlState state);
+    public native void setTitleTextAttributes(NSDictionary<NSString, ?> attributes, UIControlState state);
     @Method(selector = "titleTextAttributesForState:")
-    public native NSDictionary<?, ?> getTitleTextAttributes(UIControlState state);
+    public native NSDictionary<NSString, ?> getTitleTextAttributes(UIControlState state);
     @Method(selector = "setContentPositionAdjustment:forSegmentType:barMetrics:")
-    public native void setContentPositionAdjustment$forSegmentType$barMetrics$(@ByVal UIOffset adjustment, UISegmentedControlSegment leftCenterRightOrAlone, UIBarMetrics barMetrics);
+    public native void setContentPositionAdjustment(@ByVal UIOffset adjustment, UISegmentedControlSegment leftCenterRightOrAlone, UIBarMetrics barMetrics);
     @Method(selector = "contentPositionAdjustmentForSegmentType:barMetrics:")
-    public native @ByVal UIOffset getSegmentContentPositionAdjustment(UISegmentedControlSegment leftCenterRightOrAlone, UIBarMetrics barMetrics);
+    public native @ByVal UIOffset getContentPositionAdjustment(UISegmentedControlSegment leftCenterRightOrAlone, UIBarMetrics barMetrics);
     /*</methods>*/
 }

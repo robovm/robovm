@@ -72,9 +72,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "backItem")
     public native UINavigationItem getBackItem();
     @Property(selector = "items")
-    public native NSArray<?> getItems();
+    public native NSArray<UINavigationItem> getItems();
     @Property(selector = "setItems:")
-    public native void setItems(NSArray<?> v);
+    public native void setItems(NSArray<UINavigationItem> v);
     @Property(selector = "tintColor")
     public native UIColor getTintColor();
     @Property(selector = "setTintColor:")
@@ -88,9 +88,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setShadowImage:")
     public native void setShadowImage(UIImage v);
     @Property(selector = "titleTextAttributes")
-    public native NSDictionary<?, ?> getTitleTextAttributes();
+    public native NSDictionary<NSString, ?> getTitleTextAttributes();
     @Property(selector = "setTitleTextAttributes:")
-    public native void setTitleTextAttributes(NSDictionary<?, ?> v);
+    public native void setTitleTextAttributes(NSDictionary<NSString, ?> v);
     @Property(selector = "backIndicatorImage")
     public native UIImage getBackIndicatorImage();
     @Property(selector = "setBackIndicatorImage:")
@@ -105,21 +105,21 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "pushNavigationItem:animated:")
-    public native void pushNavigationItem$animated$(UINavigationItem item, boolean animated);
+    public native void pushNavigationItem(UINavigationItem item, boolean animated);
     @Method(selector = "popNavigationItemAnimated:")
     public native UINavigationItem popNavigationItem(boolean animated);
     @Method(selector = "setItems:animated:")
-    public native void setItems$animated$(NSArray<?> items, boolean animated);
+    public native void setItems(NSArray<UINavigationItem> items, boolean animated);
     @Method(selector = "setBackgroundImage:forBarPosition:barMetrics:")
-    public native void setBackgroundImage$forBarPosition$barMetrics$(UIImage backgroundImage, UIBarPosition barPosition, UIBarMetrics barMetrics);
+    public native void setBackgroundImage(UIImage backgroundImage, UIBarPosition barPosition, UIBarMetrics barMetrics);
     @Method(selector = "backgroundImageForBarPosition:barMetrics:")
-    public native UIImage backgroundImageForBarPosition$barMetrics$(UIBarPosition barPosition, UIBarMetrics barMetrics);
+    public native UIImage getBackgroundImage(UIBarPosition barPosition, UIBarMetrics barMetrics);
     @Method(selector = "setBackgroundImage:forBarMetrics:")
-    public native void setBackgroundImage$forBarMetrics$(UIImage backgroundImage, UIBarMetrics barMetrics);
+    public native void setBackgroundImage(UIImage backgroundImage, UIBarMetrics barMetrics);
     @Method(selector = "backgroundImageForBarMetrics:")
     public native UIImage getBackgroundImage(UIBarMetrics barMetrics);
     @Method(selector = "setTitleVerticalPositionAdjustment:forBarMetrics:")
-    public native void setTitleVerticalPositionAdjustment$forBarMetrics$(@MachineSizedFloat double adjustment, UIBarMetrics barMetrics);
+    public native void setTitleVerticalPositionAdjustment(@MachineSizedFloat double adjustment, UIBarMetrics barMetrics);
     @Method(selector = "titleVerticalPositionAdjustmentForBarMetrics:")
     public native @MachineSizedFloat double getTitleVerticalPositionAdjustment(UIBarMetrics barMetrics);
     /*</methods>*/

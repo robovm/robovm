@@ -124,9 +124,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setKeyboardType:")
     public native void setKeyboardType(UIKeyboardType v);
     @Property(selector = "scopeButtonTitles")
-    public native NSArray<?> getScopeButtonTitles();
+    public native NSArray<NSString> getScopeButtonTitles();
     @Property(selector = "setScopeButtonTitles:")
-    public native void setScopeButtonTitles(NSArray<?> v);
+    public native void setScopeButtonTitles(NSArray<NSString> v);
     @Property(selector = "selectedScopeButtonIndex")
     public native @MachineSizedSInt long getSelectedScopeButtonIndex();
     @Property(selector = "setSelectedScopeButtonIndex:")
@@ -161,13 +161,13 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "setShowsCancelButton:animated:")
-    public native void setShowsCancelButton$animated$(boolean showsCancelButton, boolean animated);
+    public native void setShowsCancelButton(boolean showsCancelButton, boolean animated);
     @Method(selector = "setBackgroundImage:forBarPosition:barMetrics:")
-    public native void setBackgroundImage$forBarPosition$barMetrics$(UIImage backgroundImage, UIBarPosition barPosition, UIBarMetrics barMetrics);
+    public native void setBackgroundImage(UIImage backgroundImage, UIBarPosition barPosition, UIBarMetrics barMetrics);
     @Method(selector = "backgroundImageForBarPosition:barMetrics:")
-    public native UIImage backgroundImageForBarPosition$barMetrics$(UIBarPosition barPosition, UIBarMetrics barMetrics);
+    public native UIImage getBackgroundImage(UIBarPosition barPosition, UIBarMetrics barMetrics);
     @Method(selector = "setSearchFieldBackgroundImage:forState:")
-    public native void setSearchFieldBackgroundImage$forState$(UIImage backgroundImage, UIControlState state);
+    public native void setSearchFieldBackgroundImage(UIImage backgroundImage, UIControlState state);
     @Method(selector = "searchFieldBackgroundImageForState:")
     public native UIImage getSearchFieldBackgroundImage(UIControlState state);
     @Method(selector = "setImage:forSearchBarIcon:state:")
@@ -175,17 +175,17 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "imageForSearchBarIcon:state:")
     public native UIImage getImageForSearchBarIcon(UISearchBarIcon icon, UIControlState state);
     @Method(selector = "setScopeBarButtonBackgroundImage:forState:")
-    public native void setScopeBarButtonBackgroundImage$forState$(UIImage backgroundImage, UIControlState state);
+    public native void setScopeBarButtonBackgroundImage(UIImage backgroundImage, UIControlState state);
     @Method(selector = "scopeBarButtonBackgroundImageForState:")
     public native UIImage getScopeBarButtonBackgroundImage(UIControlState state);
     @Method(selector = "setScopeBarButtonDividerImage:forLeftSegmentState:rightSegmentState:")
-    public native void setScopeBarButtonDividerImage$forLeftSegmentState$rightSegmentState$(UIImage dividerImage, UIControlState leftState, UIControlState rightState);
+    public native void setScopeBarButtonDividerImage(UIImage dividerImage, UIControlState leftState, UIControlState rightState);
     @Method(selector = "scopeBarButtonDividerImageForLeftSegmentState:rightSegmentState:")
     public native UIImage getScopeBarButtonDividerImage(UIControlState leftState, UIControlState rightState);
     @Method(selector = "setScopeBarButtonTitleTextAttributes:forState:")
-    public native void setScopeBarButtonTitleTextAttributes$forState$(NSDictionary<?, ?> attributes, UIControlState state);
+    public native void setScopeBarButtonTitleTextAttributes(NSDictionary<NSString, ?> attributes, UIControlState state);
     @Method(selector = "scopeBarButtonTitleTextAttributesForState:")
-    public native NSDictionary<?, ?> getScopeBarButtonTitleTextAttributes(UIControlState state);
+    public native NSDictionary<NSString, ?> getScopeBarButtonTitleTextAttributes(UIControlState state);
     @Method(selector = "setPositionAdjustment:forSearchBarIcon:")
     public native void setPositionAdjustmentForSearchBarIcon(@ByVal UIOffset adjustment, UISearchBarIcon icon);
     @Method(selector = "positionAdjustmentForSearchBarIcon:")

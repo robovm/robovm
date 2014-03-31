@@ -130,6 +130,6 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "fetchRequestWithEntityName:")
     public static native NSFetchRequest fetchRequestWithEntityName$(String entityName);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

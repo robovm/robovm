@@ -63,7 +63,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "prepareForReuse")
     public native void prepareForReuse();
     @Method(selector = "applyLayoutAttributes:")
-    public native void applyLayoutAttributes$(UICollectionViewLayoutAttributes layoutAttributes);
+    public native void applyLayoutAttributes(UICollectionViewLayoutAttributes layoutAttributes);
     @Method(selector = "willTransitionFromLayout:toLayout:")
     public native void willTransition(UICollectionViewLayout oldLayout, UICollectionViewLayout newLayout);
     @Method(selector = "didTransitionFromLayout:toLayout:")

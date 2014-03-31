@@ -64,6 +64,6 @@ import org.robovm.apple.security.*;
     @Method(selector = "isPartialStringValid:proposedSelectedRange:originalString:originalSelectedRange:errorDescription:")
     public native boolean isPartialStringValid$proposedSelectedRange$originalString$originalSelectedRange$errorDescription$(NSString.NSStringPtr partialStringPtr, NSRange proposedSelRangePtr, String origString, @ByVal NSRange origSelRange, NSString.NSStringPtr error);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

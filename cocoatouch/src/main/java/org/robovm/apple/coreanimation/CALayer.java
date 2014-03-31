@@ -404,6 +404,6 @@ import org.robovm.apple.opengles.*;
     @Method(selector = "scrollRectToVisible:")
     public native void scrollRectToVisible$(@ByVal CGRect r);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

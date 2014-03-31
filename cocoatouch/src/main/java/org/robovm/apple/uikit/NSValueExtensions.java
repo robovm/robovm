@@ -67,16 +67,22 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "UIOffsetValue")
     public static native @ByVal UIOffset UIOffsetValue(NSValue thiz);
     @Method(selector = "valueWithCGPoint:")
-    public static native NSValue valueWithCGPoint$(NSValue thiz, @ByVal CGPoint point);
+    protected static native NSValue valueOf(ObjCClass clazz, @ByVal CGPoint point);
+    public static NSValue valueOf(@ByVal CGPoint point) { return valueOf(ObjCClass.getByType(NSValue.class), point); }
     @Method(selector = "valueWithCGSize:")
-    public static native NSValue valueWithCGSize$(NSValue thiz, @ByVal CGSize size);
+    protected static native NSValue valueOf(ObjCClass clazz, @ByVal CGSize size);
+    public static NSValue valueOf(@ByVal CGSize size) { return valueOf(ObjCClass.getByType(NSValue.class), size); }
     @Method(selector = "valueWithCGRect:")
-    public static native NSValue valueWithCGRect$(NSValue thiz, @ByVal CGRect rect);
+    protected static native NSValue valueOf(ObjCClass clazz, @ByVal CGRect rect);
+    public static NSValue valueOf(@ByVal CGRect rect) { return valueOf(ObjCClass.getByType(NSValue.class), rect); }
     @Method(selector = "valueWithCGAffineTransform:")
-    public static native NSValue valueWithCGAffineTransform$(NSValue thiz, @ByVal CGAffineTransform transform);
+    protected static native NSValue valueOf(ObjCClass clazz, @ByVal CGAffineTransform transform);
+    public static NSValue valueOf(@ByVal CGAffineTransform transform) { return valueOf(ObjCClass.getByType(NSValue.class), transform); }
     @Method(selector = "valueWithUIEdgeInsets:")
-    public static native NSValue valueWithUIEdgeInsets$(NSValue thiz, @ByVal UIEdgeInsets insets);
+    protected static native NSValue valueOf(ObjCClass clazz, @ByVal UIEdgeInsets insets);
+    public static NSValue valueOf(@ByVal UIEdgeInsets insets) { return valueOf(ObjCClass.getByType(NSValue.class), insets); }
     @Method(selector = "valueWithUIOffset:")
-    public static native NSValue valueWithUIOffset$(NSValue thiz, @ByVal UIOffset insets);
+    protected static native NSValue valueOf(ObjCClass clazz, @ByVal UIOffset insets);
+    public static NSValue valueOf(@ByVal UIOffset insets) { return valueOf(ObjCClass.getByType(NSValue.class), insets); }
     /*</methods>*/
 }

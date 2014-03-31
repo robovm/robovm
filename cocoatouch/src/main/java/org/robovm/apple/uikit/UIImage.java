@@ -48,7 +48,6 @@ import org.robovm.apple.coreimage.*;
     /*<constructors>*/
     public UIImage() {}
     protected UIImage(SkipInit skipInit) { super(skipInit); }
-    public UIImage(String path) { super((SkipInit) null); initObject(initWithContentsOfFile$(path)); }
     public UIImage(NSData data) { super((SkipInit) null); initObject(initWithData$(data)); }
     public UIImage(NSData data, @MachineSizedFloat double scale) { super((SkipInit) null); initObject(initWithData$scale$(data, scale)); }
     public UIImage(CGImage cgImage) { super((SkipInit) null); initObject(initWithCGImage$(cgImage)); }
@@ -56,6 +55,12 @@ import org.robovm.apple.coreimage.*;
     public UIImage(CIImage ciImage) { super((SkipInit) null); initObject(initWithCIImage$(ciImage)); }
     public UIImage(CIImage ciImage, @MachineSizedFloat double scale, UIImageOrientation orientation) { super((SkipInit) null); initObject(initWithCIImage$scale$orientation$(ciImage, scale, orientation)); }
     /*</constructors>*/
+
+    public UIImage(File file) {
+        super((SkipInit) null);
+        initObject(initWithContentsOfFile$(file.getAbsolutePath()));
+    }
+    
     /*<properties>*/
     @Property(selector = "size")
     public native @ByVal CGSize getSize();
@@ -68,7 +73,7 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "scale")
     public native @MachineSizedFloat double getScale();
     @Property(selector = "images")
-    public native NSArray<?> getImages();
+    public native NSArray<UIImage> getImages();
     @Property(selector = "duration")
     public native double getDuration();
     @Property(selector = "capInsets")
@@ -115,29 +120,29 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "drawAsPatternInRect:")
     public native void drawAsPattern(@ByVal CGRect rect);
     @Method(selector = "resizableImageWithCapInsets:")
-    public native UIImage copyWithCapInsets(@ByVal UIEdgeInsets capInsets);
+    public native UIImage newResizable(@ByVal UIEdgeInsets capInsets);
     @Method(selector = "resizableImageWithCapInsets:resizingMode:")
-    public native UIImage copyWithCapInsets(@ByVal UIEdgeInsets capInsets, UIImageResizingMode resizingMode);
+    public native UIImage newResizable(@ByVal UIEdgeInsets capInsets, UIImageResizingMode resizingMode);
     @Method(selector = "imageWithAlignmentRectInsets:")
-    public native UIImage copyWithAlignmentRectInsets(@ByVal UIEdgeInsets alignmentInsets);
+    public native UIImage newWithAlignment(@ByVal UIEdgeInsets alignmentInsets);
     @Method(selector = "imageWithRenderingMode:")
-    public native UIImage imageWithRenderingMode$(UIImageRenderingMode renderingMode);
+    public native UIImage newWithRenderingMode(UIImageRenderingMode renderingMode);
     @Method(selector = "imageNamed:")
-    public static native UIImage fromBundle(String name);
+    public static native UIImage createFromBundle(String name);
     @Method(selector = "imageWithContentsOfFile:")
-    public static native UIImage fromFile(String path);
+    public static native UIImage createFromFile(String path);
     @Method(selector = "imageWithData:")
-    public static native UIImage fromData(NSData data);
+    public static native UIImage createFromData(NSData data);
     @Method(selector = "imageWithData:scale:")
-    public static native UIImage fromData(NSData data, @MachineSizedFloat double scale);
+    public static native UIImage createFromData(NSData data, @MachineSizedFloat double scale);
     @Method(selector = "imageWithCGImage:")
-    public static native UIImage fromImage(CGImage cgImage);
+    public static native UIImage createFromImage(CGImage cgImage);
     @Method(selector = "imageWithCGImage:scale:orientation:")
-    public static native UIImage fromImage(CGImage cgImage, @MachineSizedFloat double scale, UIImageOrientation orientation);
+    public static native UIImage createFromImage(CGImage cgImage, @MachineSizedFloat double scale, UIImageOrientation orientation);
     @Method(selector = "imageWithCIImage:")
-    public static native UIImage fromImage(CIImage ciImage);
+    public static native UIImage createFromImage(CIImage ciImage);
     @Method(selector = "imageWithCIImage:scale:orientation:")
-    public static native UIImage fromImage(CIImage ciImage, @MachineSizedFloat double scale, UIImageOrientation orientation);
+    public static native UIImage createFromImage(CIImage ciImage, @MachineSizedFloat double scale, UIImageOrientation orientation);
     @Method(selector = "animatedImageNamed:duration:")
     public static native UIImage createAnimated(String name, double duration);
     @Method(selector = "animatedResizableImageNamed:capInsets:duration:")
@@ -145,10 +150,10 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "animatedResizableImageNamed:capInsets:resizingMode:duration:")
     public static native UIImage createAnimatedResizable(String name, @ByVal UIEdgeInsets capInsets, UIImageResizingMode resizingMode, double duration);
     @Method(selector = "animatedImageWithImages:duration:")
-    public static native UIImage createAnimated(NSArray<?> images, double duration);
+    public static native UIImage createAnimated(NSArray<UIImage> images, double duration);
     @Method(selector = "stretchableImageWithLeftCapWidth:topCapHeight:")
-    public native UIImage stretchableImageWithLeftCapWidth$topCapHeight$(@MachineSizedSInt long leftCapWidth, @MachineSizedSInt long topCapHeight);
+    public native UIImage newStretchable(@MachineSizedSInt long leftCapWidth, @MachineSizedSInt long topCapHeight);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

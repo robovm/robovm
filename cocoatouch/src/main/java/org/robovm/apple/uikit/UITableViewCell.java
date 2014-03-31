@@ -191,15 +191,15 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "prepareForReuse")
     public native void prepareForReuse();
     @Method(selector = "setSelected:animated:")
-    public native void setSelected$animated$(boolean selected, boolean animated);
+    public native void setSelected(boolean selected, boolean animated);
     @Method(selector = "setHighlighted:animated:")
-    public native void setHighlighted$animated$(boolean highlighted, boolean animated);
+    public native void setHighlighted(boolean highlighted, boolean animated);
     @Method(selector = "setEditing:animated:")
-    public native void setEditing$animated$(boolean editing, boolean animated);
+    public native void setEditing(boolean editing, boolean animated);
     @Method(selector = "willTransitionToState:")
-    public native void willTransitionToState$(UITableViewCellStateMask state);
+    public native void willTransitionToState(UITableViewCellStateMask state);
     @Method(selector = "didTransitionToState:")
-    public native void didTransitionToState$(UITableViewCellStateMask state);
+    public native void didTransitionToState(UITableViewCellStateMask state);
     @Method(selector = "initWithFrame:reuseIdentifier:")
     protected native @Pointer long initWithFrame$reuseIdentifier$(@ByVal CGRect frame, String reuseIdentifier);
     @Method(selector = "gestureRecognizerShouldBegin:")

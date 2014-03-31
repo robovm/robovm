@@ -70,15 +70,15 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setDoubleSided:")
     public native void setDoubleSided(boolean v);
     @Property(selector = "gestureRecognizers")
-    public native NSArray<?> getGestureRecognizers();
+    public native NSArray<UIGestureRecognizer> getGestureRecognizers();
     @Property(selector = "viewControllers")
-    public native NSArray<?> getViewControllers();
+    public native NSArray<UIViewController> getViewControllers();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithTransitionStyle:navigationOrientation:options:")
     protected native @Pointer long initWithTransitionStyle$navigationOrientation$options$(UIPageViewControllerTransitionStyle style, UIPageViewControllerNavigationOrientation navigationOrientation, NSDictionary<?, ?> options);
     @Method(selector = "setViewControllers:direction:animated:completion:")
-    public native void setViewControllers$direction$animated$completion$(NSArray<?> viewControllers, UIPageViewControllerNavigationDirection direction, boolean animated, @Block VoidBooleanBlock completion);
+    public native void setViewControllers(NSArray<UIViewController> viewControllers, UIPageViewControllerNavigationDirection direction, boolean animated, @Block VoidBooleanBlock completion);
     /*</methods>*/
 }

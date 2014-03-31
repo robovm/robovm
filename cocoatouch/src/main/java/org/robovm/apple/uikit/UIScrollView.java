@@ -165,18 +165,18 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "setContentOffset:animated:")
-    public native void setContentOffset$animated$(@ByVal CGPoint contentOffset, boolean animated);
+    public native void setContentOffset(@ByVal CGPoint contentOffset, boolean animated);
     @Method(selector = "scrollRectToVisible:animated:")
-    public native void scrollRectToVisible$animated$(@ByVal CGRect rect, boolean animated);
+    public native void scrollRectToVisible(@ByVal CGRect rect, boolean animated);
     @Method(selector = "flashScrollIndicators")
     public native void flashScrollIndicators();
     @Method(selector = "touchesShouldBegin:withEvent:inContentView:")
-    public native boolean touchesShouldBegin$withEvent$inContentView$(NSSet<?> touches, UIEvent event, UIView view);
+    public native boolean touchesShouldBegin(NSSet<UITouch> touches, UIEvent event, UIView view);
     @Method(selector = "touchesShouldCancelInContentView:")
-    public native boolean touchesShouldCancelInContentView$(UIView view);
+    public native boolean touchesShouldCancelInContentView(UIView view);
     @Method(selector = "setZoomScale:animated:")
-    public native void setZoomScale$animated$(@MachineSizedFloat double scale, boolean animated);
+    public native void setZoomScale(@MachineSizedFloat double scale, boolean animated);
     @Method(selector = "zoomToRect:animated:")
-    public native void zoomToRect$animated$(@ByVal CGRect rect, boolean animated);
+    public native void zoomToRect(@ByVal CGRect rect, boolean animated);
     /*</methods>*/
 }

@@ -99,6 +99,6 @@ import org.robovm.apple.opengles.*;
     @Method(selector = "colorWithString:")
     protected static native @Pointer long colorWithString$(String representation);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

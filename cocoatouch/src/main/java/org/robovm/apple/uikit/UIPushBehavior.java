@@ -48,11 +48,11 @@ import org.robovm.apple.coreimage.*;
     /*<constructors>*/
     public UIPushBehavior() {}
     protected UIPushBehavior(SkipInit skipInit) { super(skipInit); }
-    public UIPushBehavior(NSArray<?> items, UIPushBehaviorMode mode) { super((SkipInit) null); initObject(initWithItems$mode$(items, mode)); }
+    public UIPushBehavior(List<UIDynamicItem> items, UIPushBehaviorMode mode) { super((SkipInit) null); initObject(initWithItems$mode$(items, mode)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "items")
-    public native NSArray<?> getItems();
+    public native List<UIDynamicItem> getItems();
     @Property(selector = "mode")
     public native UIPushBehaviorMode getMode();
     @Property(selector = "active")
@@ -75,16 +75,16 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithItems:mode:")
-    protected native @Pointer long initWithItems$mode$(NSArray<?> items, UIPushBehaviorMode mode);
+    protected native @Pointer long initWithItems$mode$(List<UIDynamicItem> items, UIPushBehaviorMode mode);
     @Method(selector = "addItem:")
-    public native void addItem$(UIDynamicItem item);
+    public native void addItem(UIDynamicItem item);
     @Method(selector = "removeItem:")
-    public native void removeItem$(UIDynamicItem item);
+    public native void removeItem(UIDynamicItem item);
     @Method(selector = "targetOffsetFromCenterForItem:")
-    public native @ByVal UIOffset targetOffsetFromCenterForItem$(UIDynamicItem item);
+    public native @ByVal UIOffset getTargetOffsetFromCenterForItem(UIDynamicItem item);
     @Method(selector = "setTargetOffsetFromCenter:forItem:")
-    public native void setTargetOffsetFromCenter$forItem$(@ByVal UIOffset o, UIDynamicItem item);
+    public native void setTargetOffsetFromCenter(@ByVal UIOffset o, UIDynamicItem item);
     @Method(selector = "setAngle:magnitude:")
-    public native void setAngle$magnitude$(@MachineSizedFloat double angle, @MachineSizedFloat double magnitude);
+    public native void setAngleAndMagnitude(@MachineSizedFloat double angle, @MachineSizedFloat double magnitude);
     /*</methods>*/
 }

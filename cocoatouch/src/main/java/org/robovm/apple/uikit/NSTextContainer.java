@@ -60,9 +60,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setSize:")
     public native void setSize(@ByVal CGSize v);
     @Property(selector = "exclusionPaths")
-    public native NSArray<?> getExclusionPaths();
+    public native NSArray<UIBezierPath> getExclusionPaths();
     @Property(selector = "setExclusionPaths:")
-    public native void setExclusionPaths(NSArray<?> v);
+    public native void setExclusionPaths(NSArray<UIBezierPath> v);
     @Property(selector = "lineBreakMode")
     public native NSLineBreakMode getLineBreakMode();
     @Property(selector = "setLineBreakMode:")
@@ -93,8 +93,8 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "initWithSize:")
     protected native @Pointer long initWithSize$(@ByVal CGSize size);
     @Method(selector = "lineFragmentRectForProposedRect:atIndex:writingDirection:remainingRect:")
-    public native @ByVal CGRect lineFragmentRectForProposedRect$atIndex$writingDirection$remainingRect$(@ByVal CGRect proposedRect, @MachineSizedUInt long characterIndex, NSWritingDirection baseWritingDirection, CGRect remainingRect);
+    public native @ByVal CGRect getLineFragmentRect(@ByVal CGRect proposedRect, @MachineSizedUInt long characterIndex, NSWritingDirection baseWritingDirection, CGRect remainingRect);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

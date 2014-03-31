@@ -119,6 +119,6 @@ import org.robovm.apple.security.*;
     @Method(selector = "indexSetWithIndexesInRange:")
     public static native NSIndexSet indexSetWithIndexesInRange$(@ByVal NSRange range);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

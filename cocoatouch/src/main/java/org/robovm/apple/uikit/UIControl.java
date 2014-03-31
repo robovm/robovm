@@ -246,7 +246,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "allControlEvents")
     public native UIControlEvents getAllControlEvents();
     @Method(selector = "actionsForTarget:forControlEvent:")
-    public native NSArray<?> getActions(NSObject target, UIControlEvents controlEvent);
+    public native NSArray<NSString> getActions(NSObject target, UIControlEvents controlEvent);
     @Method(selector = "sendAction:to:forEvent:")
     public native void sendAction(Selector action, NSObject target, UIEvent event);
     @Method(selector = "sendActionsForControlEvents:")

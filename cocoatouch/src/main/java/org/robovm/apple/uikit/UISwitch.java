@@ -81,6 +81,6 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "initWithFrame:")
     protected native @Pointer long initWithFrame$(@ByVal CGRect frame);
     @Method(selector = "setOn:animated:")
-    public native void setOn$animated$(boolean on, boolean animated);
+    public native void setOn(boolean on, boolean animated);
     /*</methods>*/
 }

@@ -58,8 +58,8 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "bestPaperForPageSize:withPapersFromArray:")
-    public static native UIPrintPaper forPageSize(@ByVal CGSize contentSize, NSArray<?> paperList);
+    public static native UIPrintPaper createBestForPageSize(@ByVal CGSize contentSize, NSArray<UIPrintPaper> paperList);
     @Method(selector = "printRect")
-    public native @ByVal CGRect printRect();
+    public native @ByVal CGRect getPrintRect();
     /*</methods>*/
 }

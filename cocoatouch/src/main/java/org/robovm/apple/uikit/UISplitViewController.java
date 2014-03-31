@@ -51,9 +51,9 @@ import org.robovm.apple.coreimage.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "viewControllers")
-    public native NSArray<?> getViewControllers();
+    public native NSArray<UIViewController> getViewControllers();
     @Property(selector = "setViewControllers:")
-    public native void setViewControllers(NSArray<?> v);
+    public native void setViewControllers(NSArray<UIViewController> v);
     @Property(selector = "delegate")
     public native UISplitViewControllerDelegate getDelegate();
     @Property(selector = "setDelegate:", strongRef = true)

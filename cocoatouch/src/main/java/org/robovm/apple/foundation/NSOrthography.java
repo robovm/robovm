@@ -70,6 +70,6 @@ import org.robovm.apple.security.*;
     @Method(selector = "orthographyWithDominantScript:languageMap:")
     public static native NSObject orthographyWithDominantScript$languageMap$(String script, NSDictionary<?, ?> map);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

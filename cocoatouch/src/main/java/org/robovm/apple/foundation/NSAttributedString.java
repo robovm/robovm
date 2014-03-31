@@ -81,6 +81,6 @@ import org.robovm.apple.security.*;
     @Method(selector = "enumerateAttribute:inRange:options:usingBlock:")
     public native void enumerateAttribute$inRange$options$usingBlock$(String attrName, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, ObjCBlock block);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

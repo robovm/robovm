@@ -86,6 +86,6 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "initWithProgressViewStyle:")
     protected native @Pointer long initWithProgressViewStyle$(UIProgressViewStyle style);
     @Method(selector = "setProgress:animated:")
-    public native void setProgress$animated$(float progress, boolean animated);
+    public native void setProgress(float progress, boolean animated);
     /*</methods>*/
 }

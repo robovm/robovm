@@ -55,38 +55,38 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "sizeWithFont:")
-    public static native @ByVal CGSize sizeWithFont$(NSString thiz, UIFont font);
+    public static native @ByVal CGSize getSize(NSString thiz, UIFont font);
     @Method(selector = "sizeWithFont:forWidth:lineBreakMode:")
-    public static native @ByVal CGSize sizeWithFont$forWidth$lineBreakMode$(NSString thiz, UIFont font, @MachineSizedFloat double width, NSLineBreakMode lineBreakMode);
+    public static native @ByVal CGSize getSize(NSString thiz, UIFont font, @MachineSizedFloat double width, NSLineBreakMode lineBreakMode);
     @Method(selector = "drawAtPoint:withFont:")
-    public static native @ByVal CGSize drawAtPoint$withFont$(NSString thiz, @ByVal CGPoint point, UIFont font);
+    public static native @ByVal CGSize draw(NSString thiz, @ByVal CGPoint point, UIFont font);
     @Method(selector = "drawAtPoint:forWidth:withFont:lineBreakMode:")
-    public static native @ByVal CGSize drawAtPoint$forWidth$withFont$lineBreakMode$(NSString thiz, @ByVal CGPoint point, @MachineSizedFloat double width, UIFont font, NSLineBreakMode lineBreakMode);
+    public static native @ByVal CGSize draw(NSString thiz, @ByVal CGPoint point, @MachineSizedFloat double width, UIFont font, NSLineBreakMode lineBreakMode);
     @Method(selector = "sizeWithFont:constrainedToSize:")
-    public static native @ByVal CGSize sizeWithFont$constrainedToSize$(NSString thiz, UIFont font, @ByVal CGSize size);
+    public static native @ByVal CGSize getSize(NSString thiz, UIFont font, @ByVal CGSize size);
     @Method(selector = "sizeWithFont:constrainedToSize:lineBreakMode:")
-    public static native @ByVal CGSize sizeWithFont$constrainedToSize$lineBreakMode$(NSString thiz, UIFont font, @ByVal CGSize size, NSLineBreakMode lineBreakMode);
+    public static native @ByVal CGSize getSize(NSString thiz, UIFont font, @ByVal CGSize size, NSLineBreakMode lineBreakMode);
     @Method(selector = "drawInRect:withFont:")
-    public static native @ByVal CGSize drawInRect$withFont$(NSString thiz, @ByVal CGRect rect, UIFont font);
+    public static native @ByVal CGSize draw(NSString thiz, @ByVal CGRect rect, UIFont font);
     @Method(selector = "drawInRect:withFont:lineBreakMode:")
-    public static native @ByVal CGSize drawInRect$withFont$lineBreakMode$(NSString thiz, @ByVal CGRect rect, UIFont font, NSLineBreakMode lineBreakMode);
+    public static native @ByVal CGSize draw(NSString thiz, @ByVal CGRect rect, UIFont font, NSLineBreakMode lineBreakMode);
     @Method(selector = "drawInRect:withFont:lineBreakMode:alignment:")
-    public static native @ByVal CGSize drawInRect$withFont$lineBreakMode$alignment$(NSString thiz, @ByVal CGRect rect, UIFont font, NSLineBreakMode lineBreakMode, NSTextAlignment alignment);
+    public static native @ByVal CGSize draw(NSString thiz, @ByVal CGRect rect, UIFont font, NSLineBreakMode lineBreakMode, NSTextAlignment alignment);
     @Method(selector = "sizeWithFont:minFontSize:actualFontSize:forWidth:lineBreakMode:")
-    public static native @ByVal CGSize sizeWithFont$minFontSize$actualFontSize$forWidth$lineBreakMode$(NSString thiz, UIFont font, @MachineSizedFloat double minFontSize, MachineSizedFloatPtr actualFontSize, @MachineSizedFloat double width, NSLineBreakMode lineBreakMode);
+    public static native @ByVal CGSize getSize(NSString thiz, UIFont font, @MachineSizedFloat double minFontSize, MachineSizedFloatPtr actualFontSize, @MachineSizedFloat double width, NSLineBreakMode lineBreakMode);
     @Method(selector = "drawAtPoint:forWidth:withFont:fontSize:lineBreakMode:baselineAdjustment:")
-    public static native @ByVal CGSize drawAtPoint$forWidth$withFont$fontSize$lineBreakMode$baselineAdjustment$(NSString thiz, @ByVal CGPoint point, @MachineSizedFloat double width, UIFont font, @MachineSizedFloat double fontSize, NSLineBreakMode lineBreakMode, UIBaselineAdjustment baselineAdjustment);
+    public static native @ByVal CGSize draw(NSString thiz, @ByVal CGPoint point, @MachineSizedFloat double width, UIFont font, @MachineSizedFloat double fontSize, NSLineBreakMode lineBreakMode, UIBaselineAdjustment baselineAdjustment);
     @Method(selector = "drawAtPoint:forWidth:withFont:minFontSize:actualFontSize:lineBreakMode:baselineAdjustment:")
-    public static native @ByVal CGSize drawAtPoint$forWidth$withFont$minFontSize$actualFontSize$lineBreakMode$baselineAdjustment$(NSString thiz, @ByVal CGPoint point, @MachineSizedFloat double width, UIFont font, @MachineSizedFloat double minFontSize, MachineSizedFloatPtr actualFontSize, NSLineBreakMode lineBreakMode, UIBaselineAdjustment baselineAdjustment);
+    public static native @ByVal CGSize draw(NSString thiz, @ByVal CGPoint point, @MachineSizedFloat double width, UIFont font, @MachineSizedFloat double minFontSize, MachineSizedFloatPtr actualFontSize, NSLineBreakMode lineBreakMode, UIBaselineAdjustment baselineAdjustment);
     @Method(selector = "sizeWithAttributes:")
-    public static native @ByVal CGSize sizeWithAttributes$(NSString thiz, NSDictionary<?, ?> attrs);
+    public static native @ByVal CGSize getSize(NSString thiz, NSDictionary<NSString, ?> attrs);
     @Method(selector = "drawAtPoint:withAttributes:")
-    public static native void drawAtPoint$withAttributes$(NSString thiz, @ByVal CGPoint point, NSDictionary<?, ?> attrs);
+    public static native void draw(NSString thiz, @ByVal CGPoint point, NSDictionary<NSString, ?> attrs);
     @Method(selector = "drawInRect:withAttributes:")
-    public static native void drawInRect$withAttributes$(NSString thiz, @ByVal CGRect rect, NSDictionary<?, ?> attrs);
+    public static native void draw(NSString thiz, @ByVal CGRect rect, NSDictionary<NSString, ?> attrs);
     @Method(selector = "drawWithRect:options:attributes:context:")
-    public static native void drawWithRect$options$attributes$context$(NSString thiz, @ByVal CGRect rect, NSStringDrawingOptions options, NSDictionary<?, ?> attributes, NSStringDrawingContext context);
+    public static native void draw(NSString thiz, @ByVal CGRect rect, NSStringDrawingOptions options, NSDictionary<NSString, ?> attributes, NSStringDrawingContext context);
     @Method(selector = "boundingRectWithSize:options:attributes:context:")
-    public static native @ByVal CGRect boundingRectWithSize$options$attributes$context$(NSString thiz, @ByVal CGSize size, NSStringDrawingOptions options, NSDictionary<?, ?> attributes, NSStringDrawingContext context);
+    public static native @ByVal CGRect getBoundingRect(NSString thiz, @ByVal CGSize size, NSStringDrawingOptions options, NSDictionary<NSString, ?> attributes, NSStringDrawingContext context);
     /*</methods>*/
 }

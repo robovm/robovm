@@ -53,7 +53,7 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "text")
     public native String getText();
     @Property(selector = "alternativeInterpretations")
-    public native NSArray<?> getAlternativeInterpretations();
+    public native NSArray<NSString> getAlternativeInterpretations();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

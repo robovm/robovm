@@ -73,6 +73,6 @@ import org.robovm.apple.opengles.*;
     @Method(selector = "functionWithControlPoints::::")
     public static native NSObject functionWithControlPoints$$$$(float c1x, float c1y, float c2x, float c2y);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

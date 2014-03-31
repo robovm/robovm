@@ -122,7 +122,7 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "searchDisplayController")
     public native UISearchDisplayController getSearchDisplayController();
     @Property(selector = "childViewControllers")
-    public native NSArray<?> getChildViewControllers();
+    public native NSArray<UIViewController> getChildViewControllers();
     @Property(selector = "restorationIdentifier")
     public native String getRestorationIdentifier();
     @Property(selector = "setRestorationIdentifier:")
@@ -148,9 +148,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "navigationController")
     public native UINavigationController getNavigationController();
     @Property(selector = "toolbarItems")
-    public native NSArray<?> getToolbarItems();
+    public native NSArray<UIBarButtonItem> getToolbarItems();
     @Property(selector = "setToolbarItems:")
-    public native void setToolbarItems(NSArray<?> v);
+    public native void setToolbarItems(NSArray<UIBarButtonItem> v);
     @Property(selector = "isModalInPopover")
     public native boolean isModalInPopover();
     @Property(selector = "setModalInPopover:")
@@ -191,21 +191,21 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "shouldPerformSegueWithIdentifier:sender:")
     public native boolean shouldPerformSegue(String identifier, NSObject sender);
     @Method(selector = "prepareForSegue:sender:")
-    public native void prepareForSegue$sender$(UIStoryboardSegue segue, NSObject sender);
+    public native void prepareForSegue(UIStoryboardSegue segue, NSObject sender);
     @Method(selector = "canPerformUnwindSegueAction:fromViewController:withSender:")
-    public native boolean canPerformUnwindSegueAction$fromViewController$withSender$(Selector action, UIViewController fromViewController, NSObject sender);
+    public native boolean canPerformUnwind(Selector action, UIViewController fromViewController, NSObject sender);
     @Method(selector = "viewControllerForUnwindSegueAction:fromViewController:withSender:")
-    public native UIViewController getUnwindSegueActionViewController(Selector action, UIViewController fromViewController, NSObject sender);
+    public native UIViewController getViewControllerForUnwind(Selector action, UIViewController fromViewController, NSObject sender);
     @Method(selector = "segueForUnwindingToViewController:fromViewController:identifier:")
-    public native UIStoryboardSegue getUnwindSegue(UIViewController toViewController, UIViewController fromViewController, String identifier);
+    public native UIStoryboardSegue getSegueForUnwinding(UIViewController toViewController, UIViewController fromViewController, String identifier);
     @Method(selector = "viewWillAppear:")
-    public native void viewWillAppear$(boolean animated);
+    public native void viewWillAppear(boolean animated);
     @Method(selector = "viewDidAppear:")
-    public native void viewDidAppear$(boolean animated);
+    public native void viewDidAppear(boolean animated);
     @Method(selector = "viewWillDisappear:")
-    public native void viewWillDisappear$(boolean animated);
+    public native void viewWillDisappear(boolean animated);
     @Method(selector = "viewDidDisappear:")
-    public native void viewDidDisappear$(boolean animated);
+    public native void viewDidDisappear(boolean animated);
     @Method(selector = "viewWillLayoutSubviews")
     public native void viewWillLayoutSubviews();
     @Method(selector = "viewDidLayoutSubviews")
@@ -221,11 +221,11 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "isMovingFromParentViewController")
     public native boolean isMovingFromParentViewController();
     @Method(selector = "presentViewController:animated:completion:")
-    public native void presentViewController$animated$completion$(UIViewController viewControllerToPresent, boolean flag, @Block Runnable completion);
+    public native void presentViewController(UIViewController viewControllerToPresent, boolean flag, @Block Runnable completion);
     @Method(selector = "dismissViewControllerAnimated:completion:")
     public native void dismissViewController(boolean flag, @Block Runnable completion);
     @Method(selector = "presentModalViewController:animated:")
-    public native void presentModalViewController$animated$(UIViewController modalViewController, boolean animated);
+    public native void presentModalViewController(UIViewController modalViewController, boolean animated);
     @Method(selector = "dismissModalViewControllerAnimated:")
     public native void dismissModalViewController(boolean animated);
     @Method(selector = "disablesAutomaticKeyboardDismissal")
@@ -239,7 +239,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "setNeedsStatusBarAppearanceUpdate")
     public native void setNeedsStatusBarAppearanceUpdate();
     @Method(selector = "shouldAutorotateToInterfaceOrientation:")
-    public native boolean shouldAutorotateToInterfaceOrientation$(UIInterfaceOrientation toInterfaceOrientation);
+    public native boolean shouldAutorotate(UIInterfaceOrientation toInterfaceOrientation);
     @Method(selector = "shouldAutorotate")
     public native boolean shouldAutorotate();
     @Method(selector = "supportedInterfaceOrientations")
@@ -257,25 +257,25 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "willAnimateRotationToInterfaceOrientation:duration:")
     public native void willAnimateRotation(UIInterfaceOrientation toInterfaceOrientation, double duration);
     @Method(selector = "willAnimateFirstHalfOfRotationToInterfaceOrientation:duration:")
-    public native void willAnimateFirstHalfOfRotationToInterfaceOrientation$duration$(UIInterfaceOrientation toInterfaceOrientation, double duration);
+    public native void willAnimateFirstHalfOfRotation(UIInterfaceOrientation toInterfaceOrientation, double duration);
     @Method(selector = "didAnimateFirstHalfOfRotationToInterfaceOrientation:")
-    public native void didAnimateFirstHalfOfRotationToInterfaceOrientation$(UIInterfaceOrientation toInterfaceOrientation);
+    public native void didAnimateFirstHalfOfRotation(UIInterfaceOrientation toInterfaceOrientation);
     @Method(selector = "willAnimateSecondHalfOfRotationFromInterfaceOrientation:duration:")
-    public native void willAnimateSecondHalfOfRotationFromInterfaceOrientation$duration$(UIInterfaceOrientation fromInterfaceOrientation, double duration);
+    public native void willAnimateSecondHalfOfRotation(UIInterfaceOrientation fromInterfaceOrientation, double duration);
     @Method(selector = "attemptRotationToDeviceOrientation")
     public static native void attemptRotationToDeviceOrientation();
     @Method(selector = "setEditing:animated:")
-    public native void setEditing$animated$(boolean editing, boolean animated);
+    public native void setEditing(boolean editing, boolean animated);
     @Method(selector = "editButtonItem")
     public native UIBarButtonItem getEditButtonItem();
     @Method(selector = "addChildViewController:")
-    public native void addChildViewController$(UIViewController childController);
+    public native void addChildViewController(UIViewController childController);
     @Method(selector = "removeFromParentViewController")
     public native void removeFromParentViewController();
     @Method(selector = "transitionFromViewController:toViewController:duration:options:animations:completion:")
     public native void transition(UIViewController fromViewController, UIViewController toViewController, double duration, UIViewAnimationOptions options, @Block Runnable animations, @Block VoidBooleanBlock completion);
     @Method(selector = "beginAppearanceTransition:animated:")
-    public native void beginAppearanceTransition$animated$(boolean isAppearing, boolean animated);
+    public native void beginAppearanceTransition(boolean isAppearing, boolean animated);
     @Method(selector = "endAppearanceTransition")
     public native void endAppearanceTransition();
     @Method(selector = "childViewControllerForStatusBarStyle")
@@ -289,9 +289,9 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "shouldAutomaticallyForwardAppearanceMethods")
     public native boolean shouldAutomaticallyForwardAppearanceMethods();
     @Method(selector = "willMoveToParentViewController:")
-    public native void willMoveToParent(UIViewController parent);
+    public native void willMoveToParentViewController(UIViewController parent);
     @Method(selector = "didMoveToParentViewController:")
-    public native void didMoveToParentViewController$(UIViewController parent);
+    public native void didMoveToParentViewController(UIViewController parent);
     @Method(selector = "encodeRestorableStateWithCoder:")
     public native void encodeRestorableState(NSCoder coder);
     @Method(selector = "decodeRestorableStateWithCoder:")
@@ -301,10 +301,10 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "updateViewConstraints")
     public native void updateViewConstraints();
     @Method(selector = "setToolbarItems:animated:")
-    public native void setToolbarItems$animated$(NSArray<?> toolbarItems, boolean animated);
+    public native void setToolbarItems(NSArray<UIBarButtonItem> toolbarItems, boolean animated);
     @Method(selector = "transitionCoordinator")
     public native UIViewControllerTransitionCoordinator transitionCoordinator();
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

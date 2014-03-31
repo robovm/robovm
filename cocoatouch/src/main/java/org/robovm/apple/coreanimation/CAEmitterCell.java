@@ -226,6 +226,6 @@ import org.robovm.apple.opengles.*;
     @Method(selector = "defaultValueForKey:")
     public static native NSObject defaultValueForKey$(String key);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

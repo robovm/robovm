@@ -66,6 +66,6 @@ import org.robovm.apple.security.*;
     @Method(selector = "storagePolicy")
     public native NSURLCacheStoragePolicy storagePolicy();
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

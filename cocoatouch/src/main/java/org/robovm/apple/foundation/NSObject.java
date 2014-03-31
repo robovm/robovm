@@ -37,7 +37,11 @@ import org.robovm.apple.security.*;
  * <div class="javadoc"></div>
  */
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
-@Marshalers({@Marshaler(NSObject.Marshaler.class), @Marshaler(NSString.AsStringMarshaler.class)})
+@Marshalers({
+    @Marshaler(NSString.AsStringMarshaler.class),
+    @Marshaler(NSArray.AsListMarshaler.class),
+    @Marshaler(NSObject.Marshaler.class)
+})
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSObject/*</name>*/ 
     extends /*<extends>*/ObjCObject/*</extends>*/ 
     /*<implements>*/implements NSObjectProtocol/*</implements>*/, AutoCloseable {

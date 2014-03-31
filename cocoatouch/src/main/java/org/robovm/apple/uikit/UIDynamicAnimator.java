@@ -55,7 +55,7 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "referenceView")
     public native UIView getReferenceView();
     @Property(selector = "behaviors")
-    public native NSArray<?> getBehaviors();
+    public native NSArray<UIDynamicBehavior> getBehaviors();
     @Property(selector = "isRunning")
     public native boolean isRunning();
     @Property(selector = "delegate")
@@ -68,24 +68,24 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "initWithReferenceView:")
     protected native @Pointer long initWithReferenceView$(UIView view);
     @Method(selector = "addBehavior:")
-    public native void addBehavior$(UIDynamicBehavior behavior);
+    public native void addBehavior(UIDynamicBehavior behavior);
     @Method(selector = "removeBehavior:")
-    public native void removeBehavior$(UIDynamicBehavior behavior);
+    public native void removeBehavior(UIDynamicBehavior behavior);
     @Method(selector = "removeAllBehaviors")
     public native void removeAllBehaviors();
     @Method(selector = "itemsInRect:")
-    public native NSArray<?> itemsInRect$(@ByVal CGRect rect);
+    public native List<UIDynamicItem> getItemsInRect(@ByVal CGRect rect);
     @Method(selector = "updateItemUsingCurrentState:")
-    public native void updateItemUsingCurrentState$(UIDynamicItem item);
+    public native void updateItemUsingCurrentState(UIDynamicItem item);
     @Method(selector = "elapsedTime")
-    public native double elapsedTime();
+    public native double getElapsedTime();
     @Method(selector = "initWithCollectionViewLayout:")
     protected native @Pointer long initWithCollectionViewLayout$(UICollectionViewLayout layout);
     @Method(selector = "layoutAttributesForCellAtIndexPath:")
-    public native UICollectionViewLayoutAttributes layoutAttributesForCellAtIndexPath$(NSIndexPath indexPath);
+    public native UICollectionViewLayoutAttributes getLayoutAttributesForCell(NSIndexPath indexPath);
     @Method(selector = "layoutAttributesForSupplementaryViewOfKind:atIndexPath:")
-    public native UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind$atIndexPath$(String kind, NSIndexPath indexPath);
+    public native UICollectionViewLayoutAttributes getLayoutAttributesForSupplementaryView(String kind, NSIndexPath indexPath);
     @Method(selector = "layoutAttributesForDecorationViewOfKind:atIndexPath:")
-    public native UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind$atIndexPath$(String decorationViewKind, NSIndexPath indexPath);
+    public native UICollectionViewLayoutAttributes getLayoutAttributesForDecorationView(String decorationViewKind, NSIndexPath indexPath);
     /*</methods>*/
 }

@@ -65,8 +65,8 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "initWithCurrentLayout:nextLayout:")
     protected native @Pointer long initWithCurrentLayout$nextLayout$(UICollectionViewLayout currentLayout, UICollectionViewLayout newLayout);
     @Method(selector = "updateValue:forAnimatedKey:")
-    public native void updateValue$forAnimatedKey$(@MachineSizedFloat double value, String key);
+    public native void updateValue(@MachineSizedFloat double value, String key);
     @Method(selector = "valueForAnimatedKey:")
-    public native @MachineSizedFloat double valueForAnimatedKey$(String key);
+    public native @MachineSizedFloat double getValue(String key);
     /*</methods>*/
 }

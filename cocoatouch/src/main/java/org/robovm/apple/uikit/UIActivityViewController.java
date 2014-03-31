@@ -48,21 +48,21 @@ import org.robovm.apple.coreimage.*;
     /*<constructors>*/
     public UIActivityViewController() {}
     protected UIActivityViewController(SkipInit skipInit) { super(skipInit); }
-    public UIActivityViewController(NSArray<?> activityItems, NSArray<?> applicationActivities) { super((SkipInit) null); initObject(initWithActivityItems$applicationActivities$(activityItems, applicationActivities)); }
+    public UIActivityViewController(NSArray<?> activityItems, NSArray<UIActivity> applicationActivities) { super((SkipInit) null); initObject(initWithActivityItems$applicationActivities$(activityItems, applicationActivities)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "completionHandler")
-    public native FunctionPtr getCompletionHandler();
+    public native @Block VoidBlock2<String, Boolean> getCompletionHandler();
     @Property(selector = "setCompletionHandler:")
-    public native void setCompletionHandler(FunctionPtr v);
+    public native void setCompletionHandler(@Block VoidBlock2<String, Boolean> v);
     @Property(selector = "excludedActivityTypes")
-    public native NSArray<?> getExcludedActivityTypes();
+    public native NSArray<NSString> getExcludedActivityTypes();
     @Property(selector = "setExcludedActivityTypes:")
-    public native void setExcludedActivityTypes(NSArray<?> v);
+    public native void setExcludedActivityTypes(NSArray<NSString> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithActivityItems:applicationActivities:")
-    protected native @Pointer long initWithActivityItems$applicationActivities$(NSArray<?> activityItems, NSArray<?> applicationActivities);
+    protected native @Pointer long initWithActivityItems$applicationActivities$(NSArray<?> activityItems, NSArray<UIActivity> applicationActivities);
     /*</methods>*/
 }

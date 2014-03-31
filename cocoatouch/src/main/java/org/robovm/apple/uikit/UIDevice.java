@@ -63,7 +63,7 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "orientation")
     public native UIDeviceOrientation getOrientation();
     @Property(selector = "identifierForVendor")
-    public native NSUUID getVendorIdentifier();
+    public native NSUUID getIdentifierForVendor();
     @Property(selector = "isGeneratingDeviceOrientationNotifications")
     public native boolean isGeneratesDeviceOrientationNotifications();
     @Property(selector = "isBatteryMonitoringEnabled")

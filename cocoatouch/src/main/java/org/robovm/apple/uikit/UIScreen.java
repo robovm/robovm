@@ -57,7 +57,7 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "scale")
     public native @MachineSizedFloat double getScale();
     @Property(selector = "availableModes")
-    public native NSArray<?> getAvailableModes();
+    public native NSArray<UIScreenMode> getAvailableModes();
     @Property(selector = "preferredMode")
     public native UIScreenMode getPreferredMode();
     @Property(selector = "currentMode")
@@ -84,10 +84,10 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "displayLinkWithTarget:selector:")
     public native CADisplayLink createDisplayLink(NSObject target, Selector sel);
     @Method(selector = "screens")
-    public static native NSArray<?> getScreens();
+    public static native NSArray<UIScreen> getScreens();
     @Method(selector = "mainScreen")
     public static native UIScreen getMainScreen();
     @Method(selector = "snapshotViewAfterScreenUpdates:")
-    public native UIView snapshotViewAfterScreenUpdates$(boolean afterUpdates);
+    public native UIView snapshotView(boolean afterUpdates);
     /*</methods>*/
 }

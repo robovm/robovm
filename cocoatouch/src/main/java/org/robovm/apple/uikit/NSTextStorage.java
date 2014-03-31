@@ -51,7 +51,7 @@ import org.robovm.apple.coreimage.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "layoutManagers")
-    public native NSArray<?> getLayoutManagers();
+    public native NSArray<NSLayoutManager> getLayoutManagers();
     @Property(selector = "editedMask")
     public native NSTextStorageEditActions getEditedMask();
     @Property(selector = "setEditedMask:")
@@ -74,16 +74,16 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "addLayoutManager:")
-    public native void addLayoutManager$(NSLayoutManager aLayoutManager);
+    public native void addLayoutManager(NSLayoutManager aLayoutManager);
     @Method(selector = "removeLayoutManager:")
-    public native void removeLayoutManager$(NSLayoutManager aLayoutManager);
+    public native void removeLayoutManager(NSLayoutManager aLayoutManager);
     @Method(selector = "edited:range:changeInLength:")
-    public native void edited$range$changeInLength$(NSTextStorageEditActions editedMask, @ByVal NSRange editedRange, @MachineSizedSInt long delta);
+    public native void edited(NSTextStorageEditActions editedMask, @ByVal NSRange editedRange, @MachineSizedSInt long delta);
     @Method(selector = "processEditing")
     public native void processEditing();
     @Method(selector = "invalidateAttributesInRange:")
-    public native void invalidateAttributesInRange$(@ByVal NSRange range);
+    public native void invalidateAttributes(@ByVal NSRange range);
     @Method(selector = "ensureAttributesAreFixedInRange:")
-    public native void ensureAttributesAreFixedInRange$(@ByVal NSRange range);
+    public native void ensureAttributesAreFixed(@ByVal NSRange range);
     /*</methods>*/
 }

@@ -55,8 +55,8 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "keyPathsAndRelativeValuesForViewerOffset:")
-    public native NSDictionary<?, ?> keyPathsAndRelativeValuesForViewerOffset$(@ByVal UIOffset viewerOffset);
+    public native NSDictionary<?, ?> getKeyPathsAndRelativeValues(@ByVal UIOffset viewerOffset);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

@@ -226,6 +226,6 @@ import org.robovm.apple.opengles.*;
     @Method(selector = "filterArrayFromSerializedXMP:inputImageExtent:error:")
     public static native NSArray<CIFilter> deserializeFromXMP(NSData xmpData, @ByVal CGRect extent, NSError.NSErrorPtr outError);
     @Method(selector = "encodeWithCoder:")
-    public native void encodeWithCoder$(NSCoder aCoder);
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

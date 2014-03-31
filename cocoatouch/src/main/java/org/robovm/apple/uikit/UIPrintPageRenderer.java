@@ -63,20 +63,20 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "printableRect")
     public native @ByVal CGRect getPrintableRect();
     @Property(selector = "printFormatters")
-    public native NSArray<?> getPrintFormatters();
+    public native NSArray<UIPrintFormatter> getPrintFormatters();
     @Property(selector = "setPrintFormatters:")
-    public native void setPrintFormatters(NSArray<?> v);
+    public native void setPrintFormatters(NSArray<UIPrintFormatter> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "printFormattersForPageAtIndex:")
-    public native NSArray<?> getPrintFormatters(@MachineSizedSInt long pageIndex);
+    public native NSArray<UIPrintFormatter> getPrintFormatters(@MachineSizedSInt long pageIndex);
     @Method(selector = "addPrintFormatter:startingAtPageAtIndex:")
-    public native void addPrintFormatter$startingAtPageAtIndex$(UIPrintFormatter formatter, @MachineSizedSInt long pageIndex);
+    public native void addPrintFormatter(UIPrintFormatter formatter, @MachineSizedSInt long pageIndex);
     @Method(selector = "numberOfPages")
     public native @MachineSizedSInt long getNumberOfPages();
     @Method(selector = "prepareForDrawingPages:")
-    public native void prepareForDrawingPages$(@ByVal NSRange range);
+    public native void prepareForDrawingPages(@ByVal NSRange range);
     @Method(selector = "drawPageAtIndex:inRect:")
     public native void drawPage(@MachineSizedSInt long pageIndex, @ByVal CGRect printableRect);
     @Method(selector = "drawPrintFormatter:forPageAtIndex:")

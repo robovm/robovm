@@ -51,6 +51,6 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("encodeWithCoder:")
-    public void encodeWithCoder$(NSCoder aCoder) { throw new UnsupportedOperationException(); }
+    public void encode(NSCoder aCoder) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

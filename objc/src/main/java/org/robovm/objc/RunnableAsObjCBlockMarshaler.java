@@ -125,7 +125,7 @@ public class RunnableAsObjCBlockMarshaler implements Runnable {
     private static native void invoke(@Pointer long target, ObjCBlock block);
     
     @Callback
-    private static void invoked(ObjCBlock block, long l, int i) {
+    private static void invoked(ObjCBlock block) {
         ((Runnable) block.object()).run();
     }
 }

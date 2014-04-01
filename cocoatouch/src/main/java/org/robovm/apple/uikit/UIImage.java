@@ -95,6 +95,13 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @Bridge(symbol="UIImagePNGRepresentation")
+    public native NSData toPNGData();
+    @Bridge(symbol="UIImageJPEGRepresentation")
+    public native NSData toJPEGData(@MachineSizedFloat double compressionQuality);
+    @Bridge(symbol="UIImageWriteToSavedPhotosAlbum")
+    public native void saveToPhotosAlbum(NSObject completionTarget, Selector completionSelector, VoidPtr contextInfo);
+    
     @Method(selector = "initWithContentsOfFile:")
     protected native @Pointer long initWithContentsOfFile$(String path);
     @Method(selector = "initWithData:")

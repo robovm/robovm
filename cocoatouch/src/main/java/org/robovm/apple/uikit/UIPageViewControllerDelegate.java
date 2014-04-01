@@ -51,9 +51,9 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "pageViewController:willTransitionToViewControllers:")
-    void willTransition(UIPageViewController pageViewController, NSArray<?> pendingViewControllers);
+    void willTransition(UIPageViewController pageViewController, NSArray<UIViewController> pendingViewControllers);
     @Method(selector = "pageViewController:didFinishAnimating:previousViewControllers:transitionCompleted:")
-    void didFinishAnimating(UIPageViewController pageViewController, boolean finished, NSArray<?> previousViewControllers, boolean completed);
+    void didFinishAnimating(UIPageViewController pageViewController, boolean finished, NSArray<UIViewController> previousViewControllers, boolean completed);
     @Method(selector = "pageViewController:spineLocationForInterfaceOrientation:")
     UIPageViewControllerSpineLocation getSpineLocation(UIPageViewController pageViewController, UIInterfaceOrientation orientation);
     @Method(selector = "pageViewControllerSupportedInterfaceOrientations:")

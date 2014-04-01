@@ -138,6 +138,99 @@ import org.robovm.apple.coreimage.*;
     }
     
     /*<methods>*/
+    @GlobalValue(symbol="UIBackgroundTaskInvalid")
+    public static native @MachineSizedUInt long BackgroundTaskInvalid();
+    @GlobalValue(symbol="UIMinimumKeepAliveTimeout")
+    public static native double MinimumKeepAliveTimeout();
+    @GlobalValue(symbol="UIApplicationBackgroundFetchIntervalMinimum")
+    public static native double BackgroundFetchIntervalMinimum();
+    @GlobalValue(symbol="UIApplicationBackgroundFetchIntervalNever")
+    public static native double BackgroundFetchIntervalNever();
+    @GlobalValue(symbol="UITrackingRunLoopMode")
+    public static native String RunLoopModeTracking();
+    @GlobalValue(symbol="UIApplicationDidEnterBackgroundNotification")
+    public static native String NotificationApplicationDidEnterBackground();
+    @GlobalValue(symbol="UIApplicationWillEnterForegroundNotification")
+    public static native String NotificationApplicationWillEnterForeground();
+    @GlobalValue(symbol="UIApplicationDidFinishLaunchingNotification")
+    public static native String NotificationApplicationDidFinishLaunching();
+    @GlobalValue(symbol="UIApplicationDidBecomeActiveNotification")
+    public static native String NotificationApplicationDidBecomeActive();
+    @GlobalValue(symbol="UIApplicationWillResignActiveNotification")
+    public static native String NotificationApplicationWillResignActive();
+    @GlobalValue(symbol="UIApplicationDidReceiveMemoryWarningNotification")
+    public static native String NotificationApplicationDidReceiveMemoryWarning();
+    @GlobalValue(symbol="UIApplicationWillTerminateNotification")
+    public static native String NotificationApplicationWillTerminate();
+    @GlobalValue(symbol="UIApplicationSignificantTimeChangeNotification")
+    public static native String NotificationSignificantTimeChange();
+    @GlobalValue(symbol="UIApplicationWillChangeStatusBarOrientationNotification")
+    public static native String NotificationApplicationWillChangeStatusBarOrientation();
+    @GlobalValue(symbol="UIApplicationDidChangeStatusBarOrientationNotification")
+    public static native String NotificationApplicationDidChangeStatusBarOrientation();
+    @GlobalValue(symbol="UIApplicationStatusBarOrientationUserInfoKey")
+    public static native NSString UserInfoKeyStatusBarOrientation();
+    @GlobalValue(symbol="UIApplicationWillChangeStatusBarFrameNotification")
+    public static native String NotificationApplicationWillChangeStatusBarFrame();
+    @GlobalValue(symbol="UIApplicationDidChangeStatusBarFrameNotification")
+    public static native String NotificationApplicationDidChangeStatusBarFrame();
+    @GlobalValue(symbol="UIApplicationStatusBarFrameUserInfoKey")
+    public static native NSString UserInfoKeyStatusBarFrame();
+    @GlobalValue(symbol="UIApplicationBackgroundRefreshStatusDidChangeNotification")
+    public static native String NotificationBackgroundRefreshStatusDidChange();
+    @GlobalValue(symbol="UIApplicationLaunchOptionsURLKey")
+    public static native NSString LaunchOptionsURLKey();
+    @GlobalValue(symbol="UIApplicationLaunchOptionsSourceApplicationKey")
+    public static native NSString LaunchOptionsSourceApplicationKey();
+    @GlobalValue(symbol="UIApplicationLaunchOptionsRemoteNotificationKey")
+    public static native NSString LaunchOptionsRemoteNotificationKey();
+    @GlobalValue(symbol="UIApplicationLaunchOptionsLocalNotificationKey")
+    public static native NSString LaunchOptionsLocalNotificationKey();
+    @GlobalValue(symbol="UIApplicationLaunchOptionsAnnotationKey")
+    public static native NSString LaunchOptionsAnnotationKey();
+    @GlobalValue(symbol="UIApplicationProtectedDataWillBecomeUnavailable")
+    public static native String NotificationProtectedDataWillBecomeUnavailable();
+    @GlobalValue(symbol="UIApplicationProtectedDataDidBecomeAvailable")
+    public static native String NotificationProtectedDataDidBecomeAvailable();
+    @GlobalValue(symbol="UIApplicationLaunchOptionsLocationKey")
+    public static native NSString LaunchOptionsLocationKey();
+    @GlobalValue(symbol="UIApplicationLaunchOptionsNewsstandDownloadsKey")
+    public static native NSString LaunchOptionsNewsstandDownloadsKey();
+    @GlobalValue(symbol="UIApplicationLaunchOptionsBluetoothCentralsKey")
+    public static native NSString LaunchOptionsBluetoothCentralsKey();
+    @GlobalValue(symbol="UIApplicationLaunchOptionsBluetoothPeripheralsKey")
+    public static native NSString LaunchOptionsBluetoothPeripheralsKey();
+    @GlobalValue(symbol="UIContentSizeCategoryExtraSmall")
+    public static native String ContentSizeCategoryExtraSmall();
+    @GlobalValue(symbol="UIContentSizeCategorySmall")
+    public static native String ContentSizeCategorySmall();
+    @GlobalValue(symbol="UIContentSizeCategoryMedium")
+    public static native String ContentSizeCategoryMedium();
+    @GlobalValue(symbol="UIContentSizeCategoryLarge")
+    public static native String ContentSizeCategoryLarge();
+    @GlobalValue(symbol="UIContentSizeCategoryExtraLarge")
+    public static native String ContentSizeCategoryExtraLarge();
+    @GlobalValue(symbol="UIContentSizeCategoryExtraExtraLarge")
+    public static native String ContentSizeCategoryExtraExtraLarge();
+    @GlobalValue(symbol="UIContentSizeCategoryExtraExtraExtraLarge")
+    public static native String ContentSizeCategoryExtraExtraExtraLarge();
+    @GlobalValue(symbol="UIContentSizeCategoryAccessibilityMedium")
+    public static native String ContentSizeCategoryAccessibilityMedium();
+    @GlobalValue(symbol="UIContentSizeCategoryAccessibilityLarge")
+    public static native String ContentSizeCategoryAccessibilityLarge();
+    @GlobalValue(symbol="UIContentSizeCategoryAccessibilityExtraLarge")
+    public static native String ContentSizeCategoryAccessibilityExtraLarge();
+    @GlobalValue(symbol="UIContentSizeCategoryAccessibilityExtraExtraLarge")
+    public static native String ContentSizeCategoryAccessibilityExtraExtraLarge();
+    @GlobalValue(symbol="UIContentSizeCategoryAccessibilityExtraExtraExtraLarge")
+    public static native String ContentSizeCategoryAccessibilityExtraExtraExtraLarge();
+    @GlobalValue(symbol="UIContentSizeCategoryDidChangeNotification")
+    public static native String NotificationContentSizeCategoryDidChange();
+    @GlobalValue(symbol="UIContentSizeCategoryNewValueKey")
+    public static native NSString UserInfoKeyContentSizeCategoryNewValue();
+    @GlobalValue(symbol="UIApplicationUserDidTakeScreenshotNotification")
+    public static native String NotificationUserDidTakeScreenshot();
+    
     @Bridge(symbol="UIApplicationMain")
     protected static native int main(int argc, BytePtr.BytePtrPtr argv, String principalClassName, String delegateClassName);
     

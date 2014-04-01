@@ -53,7 +53,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "printInteractionControllerParentViewController:")
     UIViewController getParentViewController(UIPrintInteractionController printInteractionController);
     @Method(selector = "printInteractionController:choosePaper:")
-    UIPrintPaper choosePaper(UIPrintInteractionController printInteractionController, NSArray<?> paperList);
+    UIPrintPaper choosePaper(UIPrintInteractionController printInteractionController, NSArray<UIPrintPaper> paperList);
     @Method(selector = "printInteractionControllerWillPresentPrinterOptions:")
     void willPresentPrinterOptions(UIPrintInteractionController printInteractionController);
     @Method(selector = "printInteractionControllerDidPresentPrinterOptions:")

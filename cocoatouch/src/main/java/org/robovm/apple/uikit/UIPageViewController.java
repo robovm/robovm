@@ -48,7 +48,7 @@ import org.robovm.apple.coreimage.*;
     /*<constructors>*/
     public UIPageViewController() {}
     protected UIPageViewController(SkipInit skipInit) { super(skipInit); }
-    public UIPageViewController(UIPageViewControllerTransitionStyle style, UIPageViewControllerNavigationOrientation navigationOrientation, NSDictionary<?, ?> options) { super((SkipInit) null); initObject(initWithTransitionStyle$navigationOrientation$options$(style, navigationOrientation, options)); }
+    public UIPageViewController(UIPageViewControllerTransitionStyle style, UIPageViewControllerNavigationOrientation navigationOrientation, NSDictionary<NSString, ?> options) { super((SkipInit) null); initObject(initWithTransitionStyle$navigationOrientation$options$(style, navigationOrientation, options)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "delegate")
@@ -76,8 +76,13 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="UIPageViewControllerOptionSpineLocationKey")
+    public static native NSString OptionKeySpineLocation();
+    @GlobalValue(symbol="UIPageViewControllerOptionInterPageSpacingKey")
+    public static native NSString OptionKeyInterPageSpacing();
+    
     @Method(selector = "initWithTransitionStyle:navigationOrientation:options:")
-    protected native @Pointer long initWithTransitionStyle$navigationOrientation$options$(UIPageViewControllerTransitionStyle style, UIPageViewControllerNavigationOrientation navigationOrientation, NSDictionary<?, ?> options);
+    protected native @Pointer long initWithTransitionStyle$navigationOrientation$options$(UIPageViewControllerTransitionStyle style, UIPageViewControllerNavigationOrientation navigationOrientation, NSDictionary<NSString, ?> options);
     @Method(selector = "setViewControllers:direction:animated:completion:")
     public native void setViewControllers(NSArray<UIViewController> viewControllers, UIPageViewControllerNavigationDirection direction, boolean animated, @Block VoidBooleanBlock completion);
     /*</methods>*/

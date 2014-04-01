@@ -55,6 +55,9 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="UITextInputCurrentInputModeDidChangeNotification")
+    public static native String NotificationCurrentInputModeDidChange();
+    
     @Method(selector = "currentInputMode")
     public static native UITextInputMode getCurrentInputMode();
     @Method(selector = "activeInputModes")

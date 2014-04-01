@@ -81,6 +81,15 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="UIScreenDidConnectNotification")
+    public static native String NotificationScreenDidConnect();
+    @GlobalValue(symbol="UIScreenDidDisconnectNotification")
+    public static native String NotificationScreenDidDisconnect();
+    @GlobalValue(symbol="UIScreenModeDidChangeNotification")
+    public static native String NotificationScreenModeDidChange();
+    @GlobalValue(symbol="UIScreenBrightnessDidChangeNotification")
+    public static native String NotificationScreenBrightnessDidChange();
+    
     @Method(selector = "displayLinkWithTarget:selector:")
     public native CADisplayLink createDisplayLink(NSObject target, Selector sel);
     @Method(selector = "screens")

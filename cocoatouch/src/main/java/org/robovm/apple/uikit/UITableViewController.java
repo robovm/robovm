@@ -175,7 +175,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "tableView:canMoveRowAtIndexPath:")
     public native boolean canMoveRow(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "sectionIndexTitlesForTableView:")
-    public native NSArray<?> getSectionIndexTitles(UITableView tableView);
+    public native NSArray<NSString> getSectionIndexTitles(UITableView tableView);
     @Method(selector = "tableView:sectionForSectionIndexTitle:atIndex:")
     public native @MachineSizedSInt long getSectionForSectionIndexTitle(UITableView tableView, String title, @MachineSizedSInt long index);
     @Method(selector = "tableView:commitEditingStyle:forRowAtIndexPath:")

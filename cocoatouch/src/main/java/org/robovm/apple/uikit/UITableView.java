@@ -153,6 +153,13 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="UITableViewIndexSearch")
+    public static native NSString SectionIndexSearch();
+    @GlobalValue(symbol="UITableViewAutomaticDimension")
+    public static native @MachineSizedFloat double AutomaticDimension();
+    @GlobalValue(symbol="UITableViewSelectionDidChangeNotification")
+    public static native String NotificationSelectionDidChange();
+    
     @Method(selector = "initWithFrame:style:")
     protected native @Pointer long initWithFrame$style$(@ByVal CGRect frame, UITableViewStyle style);
     @Method(selector = "reloadData")

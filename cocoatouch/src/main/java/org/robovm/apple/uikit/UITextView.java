@@ -137,9 +137,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "markedTextRange")
     public native UITextRange getMarkedTextRange();
     @Property(selector = "markedTextStyle")
-    public native NSDictionary<?, ?> getMarkedTextStyle();
+    public native NSDictionary<NSString, ?> getMarkedTextStyle();
     @Property(selector = "setMarkedTextStyle:")
-    public native void setMarkedTextStyle(NSDictionary<?, ?> v);
+    public native void setMarkedTextStyle(NSDictionary<NSString, ?> v);
     @Property(selector = "beginningOfDocument")
     public native UITextPosition getBeginningOfDocument();
     @Property(selector = "endOfDocument")
@@ -191,6 +191,13 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="UITextViewTextDidBeginEditingNotification")
+    public static native String NotificationTextDidBeginEditing();
+    @GlobalValue(symbol="UITextViewTextDidChangeNotification")
+    public static native String NotificationTextDidChange();
+    @GlobalValue(symbol="UITextViewTextDidEndEditingNotification")
+    public static native String NotificationTextDidEndEditing();
+    
     @Method(selector = "scrollRangeToVisible:")
     public native void scrollRangeToVisible(@ByVal NSRange range);
     @Method(selector = "initWithFrame:textContainer:")
@@ -226,7 +233,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "caretRectForPosition:")
     public native @ByVal CGRect getCaretRect(UITextPosition position);
     @Method(selector = "selectionRectsForRange:")
-    public native NSArray<?> getSelectionRects(UITextRange range);
+    public native NSArray<UITextSelectionRect> getSelectionRects(UITextRange range);
     @Method(selector = "closestPositionToPoint:")
     public native UITextPosition getClosestPosition(@ByVal CGPoint point);
     @Method(selector = "closestPositionToPoint:withinRange:")
@@ -236,13 +243,13 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "shouldChangeTextInRange:replacementText:")
     public native boolean shouldChangeText(UITextRange range, String text);
     @Method(selector = "textStylingAtPosition:inDirection:")
-    public native NSDictionary<?, ?> getTextStyling(UITextPosition position, UITextStorageDirection direction);
+    public native NSDictionary<NSString, ?> getTextStyling(UITextPosition position, UITextStorageDirection direction);
     @Method(selector = "positionWithinRange:atCharacterOffset:")
     public native UITextPosition getPosition(UITextRange range, @MachineSizedSInt long offset);
     @Method(selector = "characterOffsetOfPosition:withinRange:")
     public native @MachineSizedSInt long getCharacterOffset(UITextPosition position, UITextRange range);
     @Method(selector = "insertDictationResult:")
-    public native void insertDictationResult(NSArray<?> dictationResult);
+    public native void insertDictationResult(NSArray<UIDictationPhrase> dictationResult);
     @Method(selector = "dictationRecordingDidEnd")
     public native void dictationRecordingDidEnd();
     @Method(selector = "dictationRecognitionFailed")

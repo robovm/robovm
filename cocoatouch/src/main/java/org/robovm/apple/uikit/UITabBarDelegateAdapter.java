@@ -56,12 +56,12 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("tabBar:didSelectItem:")
     public void didSelectItem(UITabBar tabBar, UITabBarItem item) { throw new UnsupportedOperationException(); }
     @NotImplemented("tabBar:willBeginCustomizingItems:")
-    public void willBeginCustomizingItems(UITabBar tabBar, NSArray<?> items) { throw new UnsupportedOperationException(); }
+    public void willBeginCustomizingItems(UITabBar tabBar, NSArray<UITabBarItem> items) { throw new UnsupportedOperationException(); }
     @NotImplemented("tabBar:didBeginCustomizingItems:")
-    public void didBeginCustomizingItems(UITabBar tabBar, NSArray<?> items) { throw new UnsupportedOperationException(); }
+    public void didBeginCustomizingItems(UITabBar tabBar, NSArray<UITabBarItem> items) { throw new UnsupportedOperationException(); }
     @NotImplemented("tabBar:willEndCustomizingItems:changed:")
-    public void willEndCustomizingItems(UITabBar tabBar, NSArray<?> items, boolean changed) { throw new UnsupportedOperationException(); }
+    public void willEndCustomizingItems(UITabBar tabBar, NSArray<UITabBarItem> items, boolean changed) { throw new UnsupportedOperationException(); }
     @NotImplemented("tabBar:didEndCustomizingItems:changed:")
-    public void didEndCustomizingItems(UITabBar tabBar, NSArray<?> items, boolean changed) { throw new UnsupportedOperationException(); }
+    public void didEndCustomizingItems(UITabBar tabBar, NSArray<UITabBarItem> items, boolean changed) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

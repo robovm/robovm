@@ -54,6 +54,11 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="UINibExternalObjects")
+    public static native NSString OptionKeyExternalObjects();
+    @GlobalValue(symbol="UINibProxiedObjectsKey")
+    public static native NSString OptionKeyProxiedObjects();
+    
     @Method(selector = "loadNibNamed:owner:options:")
     public static native NSArray<?> loadNib(NSBundle thiz, String name, NSObject owner, NSDictionary<NSString, ?> options);
     /*</methods>*/

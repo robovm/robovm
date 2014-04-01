@@ -105,7 +105,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "setCollectionViewLayout:animated:completion:")
     public native void setCollectionViewLayout(UICollectionViewLayout layout, boolean animated, @Block VoidBooleanBlock completion);
     @Method(selector = "startInteractiveTransitionToCollectionViewLayout:completion:")
-    public native UICollectionViewTransitionLayout startInteractiveTransition(UICollectionViewLayout layout, FunctionPtr completion);
+    public native UICollectionViewTransitionLayout startInteractiveTransition(UICollectionViewLayout layout, @Block VoidBlock2<Boolean, Boolean> completion);
     @Method(selector = "finishInteractiveTransition")
     public native void finishInteractiveTransition();
     @Method(selector = "cancelInteractiveTransition")

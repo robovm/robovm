@@ -105,6 +105,21 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="UIImagePickerControllerMediaType")
+    public static native NSString EditingInfoMediaType();
+    @GlobalValue(symbol="UIImagePickerControllerOriginalImage")
+    public static native NSString EditingInfoOriginalImage();
+    @GlobalValue(symbol="UIImagePickerControllerEditedImage")
+    public static native NSString EditingInfoEditedImage();
+    @GlobalValue(symbol="UIImagePickerControllerCropRect")
+    public static native NSString EditingInfoCropRect();
+    @GlobalValue(symbol="UIImagePickerControllerMediaURL")
+    public static native NSString EditingInfoMediaURL();
+    @GlobalValue(symbol="UIImagePickerControllerReferenceURL")
+    public static native NSString EditingInfoReferenceURL();
+    @GlobalValue(symbol="UIImagePickerControllerMediaMetadata")
+    public static native NSString EditingInfoMediaMetadata();
+    
     @Method(selector = "takePicture")
     public native void takePicture();
     @Method(selector = "startVideoCapture")

@@ -72,6 +72,47 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="UIWindowLevelNormal")
+    public static native @MachineSizedFloat double WindowLevelNormal();
+    @GlobalValue(symbol="UIWindowLevelAlert")
+    public static native @MachineSizedFloat double WindowLevelAlert();
+    @GlobalValue(symbol="UIWindowLevelStatusBar")
+    public static native @MachineSizedFloat double WindowLevelStatusBar();
+    @GlobalValue(symbol="UIWindowDidBecomeVisibleNotification")
+    public static native String NotificationWindowDidBecomeVisible();
+    @GlobalValue(symbol="UIWindowDidBecomeHiddenNotification")
+    public static native String NotificationWindowDidBecomeHidden();
+    @GlobalValue(symbol="UIWindowDidBecomeKeyNotification")
+    public static native String NotificationWindowDidBecomeKey();
+    @GlobalValue(symbol="UIWindowDidResignKeyNotification")
+    public static native String NotificationWindowDidResignKey();
+    @GlobalValue(symbol="UIKeyboardWillShowNotification")
+    public static native String NotificationKeyboardWillShow();
+    @GlobalValue(symbol="UIKeyboardDidShowNotification")
+    public static native String NotificationKeyboardDidShow();
+    @GlobalValue(symbol="UIKeyboardWillHideNotification")
+    public static native String NotificationKeyboardWillHide();
+    @GlobalValue(symbol="UIKeyboardDidHideNotification")
+    public static native String NotificationKeyboardDidHide();
+    @GlobalValue(symbol="UIKeyboardFrameBeginUserInfoKey")
+    public static native NSString UserInfoKeyKeyboardFrameBegin();
+    @GlobalValue(symbol="UIKeyboardFrameEndUserInfoKey")
+    public static native NSString UserInfoKeyKeyboardFrameEnd();
+    @GlobalValue(symbol="UIKeyboardAnimationDurationUserInfoKey")
+    public static native NSString UserInfoKeyKeyboardAnimationDuration();
+    @GlobalValue(symbol="UIKeyboardAnimationCurveUserInfoKey")
+    public static native NSString UserInfoKeyKeyboardAnimationCurve();
+    @GlobalValue(symbol="UIKeyboardWillChangeFrameNotification")
+    public static native String NotificationKeyboardWillChangeFrame();
+    @GlobalValue(symbol="UIKeyboardDidChangeFrameNotification")
+    public static native String NotificationKeyboardDidChangeFrame();
+    @GlobalValue(symbol="UIKeyboardCenterBeginUserInfoKey")
+    public static native NSString UserInfoKeyKeyboardCenterBegin();
+    @GlobalValue(symbol="UIKeyboardCenterEndUserInfoKey")
+    public static native NSString UserInfoKeyKeyboardCenterEnd();
+    @GlobalValue(symbol="UIKeyboardBoundsUserInfoKey")
+    public static native NSString UserInfoKeyKeyboardBounds();
+    
     @Method(selector = "becomeKeyWindow")
     public native void becomeKeyWindow();
     @Method(selector = "resignKeyWindow")

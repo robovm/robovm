@@ -162,6 +162,13 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="UIViewNoIntrinsicMetric")
+    public static native @MachineSizedFloat double NoIntrinsicMetric();
+    @GlobalValue(symbol="UILayoutFittingCompressedSize")
+    public static native @ByVal CGSize LayoutFittingCompressedSize();
+    @GlobalValue(symbol="UILayoutFittingExpandedSize")
+    public static native @ByVal CGSize LayoutFittingExpandedSize();
+    
     @Method(selector = "initWithFrame:")
     protected native @Pointer long initWithFrame$(@ByVal CGRect frame);
     @Method(selector = "layerClass")

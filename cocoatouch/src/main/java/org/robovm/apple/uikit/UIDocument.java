@@ -76,6 +76,9 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="UIDocumentStateChangedNotification")
+    public static native String NotificationDocumentStateChanged();
+    
     @Method(selector = "initWithFileURL:")
     protected native @Pointer long initWithFileURL$(NSURL url);
     @Method(selector = "openWithCompletionHandler:")

@@ -56,9 +56,9 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("markedTextRange")
     public UITextRange getMarkedTextRange() { throw new UnsupportedOperationException(); }
     @NotImplemented("markedTextStyle")
-    public NSDictionary<?, ?> getMarkedTextStyle() { throw new UnsupportedOperationException(); }
+    public NSDictionary<NSString, ?> getMarkedTextStyle() { throw new UnsupportedOperationException(); }
     @NotImplemented("setMarkedTextStyle:")
-    public void setMarkedTextStyle(NSDictionary<?, ?> v) { throw new UnsupportedOperationException(); }
+    public void setMarkedTextStyle(NSDictionary<NSString, ?> v) { throw new UnsupportedOperationException(); }
     @NotImplemented("beginningOfDocument")
     public UITextPosition getBeginningOfDocument() { throw new UnsupportedOperationException(); }
     @NotImplemented("endOfDocument")
@@ -109,7 +109,7 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("caretRectForPosition:")
     public @ByVal CGRect getCaretRect(UITextPosition position) { throw new UnsupportedOperationException(); }
     @NotImplemented("selectionRectsForRange:")
-    public NSArray<?> getSelectionRects(UITextRange range) { throw new UnsupportedOperationException(); }
+    public NSArray<UITextSelectionRect> getSelectionRects(UITextRange range) { throw new UnsupportedOperationException(); }
     @NotImplemented("closestPositionToPoint:")
     public UITextPosition getClosestPosition(@ByVal CGPoint point) { throw new UnsupportedOperationException(); }
     @NotImplemented("closestPositionToPoint:withinRange:")
@@ -119,13 +119,13 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("shouldChangeTextInRange:replacementText:")
     public boolean shouldChangeText(UITextRange range, String text) { throw new UnsupportedOperationException(); }
     @NotImplemented("textStylingAtPosition:inDirection:")
-    public NSDictionary<?, ?> getTextStyling(UITextPosition position, UITextStorageDirection direction) { throw new UnsupportedOperationException(); }
+    public NSDictionary<NSString, ?> getTextStyling(UITextPosition position, UITextStorageDirection direction) { throw new UnsupportedOperationException(); }
     @NotImplemented("positionWithinRange:atCharacterOffset:")
     public UITextPosition getPosition(UITextRange range, @MachineSizedSInt long offset) { throw new UnsupportedOperationException(); }
     @NotImplemented("characterOffsetOfPosition:withinRange:")
     public @MachineSizedSInt long getCharacterOffset(UITextPosition position, UITextRange range) { throw new UnsupportedOperationException(); }
     @NotImplemented("insertDictationResult:")
-    public void insertDictationResult(NSArray<?> dictationResult) { throw new UnsupportedOperationException(); }
+    public void insertDictationResult(NSArray<UIDictationPhrase> dictationResult) { throw new UnsupportedOperationException(); }
     @NotImplemented("dictationRecordingDidEnd")
     public void dictationRecordingDidEnd() { throw new UnsupportedOperationException(); }
     @NotImplemented("dictationRecognitionFailed")

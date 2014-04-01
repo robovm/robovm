@@ -34,7 +34,10 @@ import org.robovm.apple.security.*;
  * Root interface for all protocol interfaces in the Cocoa/CocoaTouch bindings. This
  * interface adds a {@link Marshaler} for {@link String}s to/from {@link NSString}.
  */
-@Marshaler(NSString.AsStringMarshaler.class)
+@Marshalers({
+    @Marshaler(NSString.AsStringMarshaler.class),
+    @Marshaler(NSArray.AsListMarshaler.class),
+})
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ interface /*<name>*/NSObjectProtocol/*</name>*/ 
     /*<implements>*/extends ObjCProtocol/*</implements>*/ {

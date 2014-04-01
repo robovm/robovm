@@ -54,6 +54,35 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="UIActivityTypePostToFacebook")
+    public static native String TypePostToFacebook();
+    @GlobalValue(symbol="UIActivityTypePostToTwitter")
+    public static native String TypePostToTwitter();
+    @GlobalValue(symbol="UIActivityTypePostToWeibo")
+    public static native String TypePostToWeibo();
+    @GlobalValue(symbol="UIActivityTypeMessage")
+    public static native String TypeMessage();
+    @GlobalValue(symbol="UIActivityTypeMail")
+    public static native String TypeMail();
+    @GlobalValue(symbol="UIActivityTypePrint")
+    public static native String TypePrint();
+    @GlobalValue(symbol="UIActivityTypeCopyToPasteboard")
+    public static native String TypeCopyToPasteboard();
+    @GlobalValue(symbol="UIActivityTypeAssignToContact")
+    public static native String TypeAssignToContact();
+    @GlobalValue(symbol="UIActivityTypeSaveToCameraRoll")
+    public static native String TypeSaveToCameraRoll();
+    @GlobalValue(symbol="UIActivityTypeAddToReadingList")
+    public static native String TypeAddToReadingList();
+    @GlobalValue(symbol="UIActivityTypePostToFlickr")
+    public static native String TypePostToFlickr();
+    @GlobalValue(symbol="UIActivityTypePostToVimeo")
+    public static native String TypePostToVimeo();
+    @GlobalValue(symbol="UIActivityTypePostToTencentWeibo")
+    public static native String TypePostToTencentWeibo();
+    @GlobalValue(symbol="UIActivityTypeAirDrop")
+    public static native String TypeAirDrop();
+    
     @Method(selector = "activityType")
     public native String getType();
     @Method(selector = "activityTitle")

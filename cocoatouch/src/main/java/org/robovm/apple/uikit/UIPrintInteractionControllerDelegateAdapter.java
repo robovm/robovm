@@ -56,7 +56,7 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("printInteractionControllerParentViewController:")
     public UIViewController getParentViewController(UIPrintInteractionController printInteractionController) { throw new UnsupportedOperationException(); }
     @NotImplemented("printInteractionController:choosePaper:")
-    public UIPrintPaper choosePaper(UIPrintInteractionController printInteractionController, NSArray<?> paperList) { throw new UnsupportedOperationException(); }
+    public UIPrintPaper choosePaper(UIPrintInteractionController printInteractionController, NSArray<UIPrintPaper> paperList) { throw new UnsupportedOperationException(); }
     @NotImplemented("printInteractionControllerWillPresentPrinterOptions:")
     public void willPresentPrinterOptions(UIPrintInteractionController printInteractionController) { throw new UnsupportedOperationException(); }
     @NotImplemented("printInteractionControllerDidPresentPrinterOptions:")

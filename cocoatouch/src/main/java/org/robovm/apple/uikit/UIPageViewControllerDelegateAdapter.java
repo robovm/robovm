@@ -54,9 +54,9 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("pageViewController:willTransitionToViewControllers:")
-    public void willTransition(UIPageViewController pageViewController, NSArray<?> pendingViewControllers) { throw new UnsupportedOperationException(); }
+    public void willTransition(UIPageViewController pageViewController, NSArray<UIViewController> pendingViewControllers) { throw new UnsupportedOperationException(); }
     @NotImplemented("pageViewController:didFinishAnimating:previousViewControllers:transitionCompleted:")
-    public void didFinishAnimating(UIPageViewController pageViewController, boolean finished, NSArray<?> previousViewControllers, boolean completed) { throw new UnsupportedOperationException(); }
+    public void didFinishAnimating(UIPageViewController pageViewController, boolean finished, NSArray<UIViewController> previousViewControllers, boolean completed) { throw new UnsupportedOperationException(); }
     @NotImplemented("pageViewController:spineLocationForInterfaceOrientation:")
     public UIPageViewControllerSpineLocation getSpineLocation(UIPageViewController pageViewController, UIInterfaceOrientation orientation) { throw new UnsupportedOperationException(); }
     @NotImplemented("pageViewControllerSupportedInterfaceOrientations:")

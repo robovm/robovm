@@ -37,27 +37,35 @@ import org.robovm.apple.coreimage.*;
  *
  * <div class="javadoc"></div>
  */
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/UIImagePickerControllerDelegateAdapter/*</name>*/ 
-    extends /*<extends>*/UINavigationControllerDelegateAdapter/*</extends>*/ 
-    /*<implements>*/implements UIImagePickerControllerDelegate/*</implements>*/ {
+/*<annotations>*/@Library("UIKit")/*</annotations>*/
+@Marshaler(NSString.AsStringMarshaler.class)
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/UIGeometry/*</name>*/ 
+    extends /*<extends>*/Object/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<bind>*/static { Bro.bind(UIGeometry.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
-    /*<properties>*/
-    
-    /*</properties>*/
+    /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @NotImplemented("imagePickerController:didFinishPickingImage:editingInfo:")
-    public void didFinishPickingImage(UIImagePickerController picker, UIImage image, NSDictionary<NSString, ?> editingInfo) { throw new UnsupportedOperationException(); }
-    @NotImplemented("imagePickerController:didFinishPickingMediaWithInfo:")
-    public void didFinishPickingMedia(UIImagePickerController picker, NSDictionary<NSString, ?> info) { throw new UnsupportedOperationException(); }
-    @NotImplemented("imagePickerControllerDidCancel:")
-    public void didCancel(UIImagePickerController picker) { throw new UnsupportedOperationException(); }
+    @Bridge(symbol="NSStringFromCGPoint")
+    public static native String toString(@ByVal CGPoint point);
+    @Bridge(symbol="NSStringFromCGSize")
+    public static native String toString(@ByVal CGSize size);
+    @Bridge(symbol="NSStringFromCGRect")
+    public static native String toString(@ByVal CGRect rect);
+    @Bridge(symbol="NSStringFromCGAffineTransform")
+    public static native String toString(@ByVal CGAffineTransform transform);
+    @Bridge(symbol="CGPointFromString")
+    public static native @ByVal CGPoint stringToCGPoint(String string);
+    @Bridge(symbol="CGSizeFromString")
+    public static native @ByVal CGSize stringToCGSize(String string);
+    @Bridge(symbol="CGRectFromString")
+    public static native @ByVal CGRect stringToCGRect(String string);
+    @Bridge(symbol="CGAffineTransformFromString")
+    public static native @ByVal CGAffineTransform stringToCGAffineTransform(String string);
     /*</methods>*/
 }

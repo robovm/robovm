@@ -57,6 +57,17 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="UIKeyInputUpArrow")
+    public static native String KeyInputUpArrow();
+    @GlobalValue(symbol="UIKeyInputDownArrow")
+    public static native String KeyInputDownArrow();
+    @GlobalValue(symbol="UIKeyInputLeftArrow")
+    public static native String KeyInputLeftArrow();
+    @GlobalValue(symbol="UIKeyInputRightArrow")
+    public static native String KeyInputRightArrow();
+    @GlobalValue(symbol="UIKeyInputEscape")
+    public static native String KeyInputEscape();
+    
     @Method(selector = "keyCommandWithInput:modifierFlags:action:")
     public static native UIKeyCommand create(String input, UIKeyModifierFlags modifierFlags, Selector action);
     /*</methods>*/

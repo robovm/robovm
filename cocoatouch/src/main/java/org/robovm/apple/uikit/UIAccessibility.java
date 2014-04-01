@@ -43,8 +43,7 @@ import org.robovm.apple.coreimage.*;
 
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<bind>/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<properties>*/
     @Property(selector = "isAccessibilityElement")

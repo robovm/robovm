@@ -59,9 +59,9 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("applicationDidFinishLaunching:")
     public void didFinishLaunching(UIApplication application) { throw new UnsupportedOperationException(); }
     @NotImplemented("application:willFinishLaunchingWithOptions:")
-    public boolean willFinishLaunching(UIApplication application, NSDictionary<?, ?> launchOptions) { throw new UnsupportedOperationException(); }
+    public boolean willFinishLaunching(UIApplication application, NSDictionary<NSString, ?> launchOptions) { throw new UnsupportedOperationException(); }
     @NotImplemented("application:didFinishLaunchingWithOptions:")
-    public boolean didFinishLaunching(UIApplication application, NSDictionary<?, ?> launchOptions) { throw new UnsupportedOperationException(); }
+    public boolean didFinishLaunching(UIApplication application, NSDictionary<NSString, ?> launchOptions) { throw new UnsupportedOperationException(); }
     @NotImplemented("applicationDidBecomeActive:")
     public void didBecomeActive(UIApplication application) { throw new UnsupportedOperationException(); }
     @NotImplemented("applicationWillResignActive:")
@@ -109,7 +109,7 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("application:supportedInterfaceOrientationsForWindow:")
     public @MachineSizedUInt long getSupportedInterfaceOrientations(UIApplication application, UIWindow window) { throw new UnsupportedOperationException(); }
     @NotImplemented("application:viewControllerWithRestorationIdentifierPath:coder:")
-    public UIViewController getViewController(UIApplication application, NSArray<?> identifierComponents, NSCoder coder) { throw new UnsupportedOperationException(); }
+    public UIViewController getViewController(UIApplication application, NSArray<NSString> identifierComponents, NSCoder coder) { throw new UnsupportedOperationException(); }
     @NotImplemented("application:shouldSaveApplicationState:")
     public boolean shouldSaveApplicationState(UIApplication application, NSCoder coder) { throw new UnsupportedOperationException(); }
     @NotImplemented("application:shouldRestoreApplicationState:")

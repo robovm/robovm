@@ -62,6 +62,55 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="UIFontDescriptorFamilyAttribute")
+    public static native NSString AttributeFamily();
+    @GlobalValue(symbol="UIFontDescriptorNameAttribute")
+    public static native NSString AttributeName();
+    @GlobalValue(symbol="UIFontDescriptorFaceAttribute")
+    public static native NSString AttributeFace();
+    @GlobalValue(symbol="UIFontDescriptorSizeAttribute")
+    public static native NSString AttributeSize();
+    @GlobalValue(symbol="UIFontDescriptorVisibleNameAttribute")
+    public static native NSString AttributeVisibleName();
+    @GlobalValue(symbol="UIFontDescriptorMatrixAttribute")
+    public static native NSString AttributeMatrix();
+    @GlobalValue(symbol="UIFontDescriptorCharacterSetAttribute")
+    public static native NSString AttributeCharacterSet();
+    @GlobalValue(symbol="UIFontDescriptorCascadeListAttribute")
+    public static native NSString AttributeCascadeList();
+    @GlobalValue(symbol="UIFontDescriptorTraitsAttribute")
+    public static native NSString AttributeTraits();
+    @GlobalValue(symbol="UIFontDescriptorFixedAdvanceAttribute")
+    public static native NSString AttributeFixedAdvance();
+    @GlobalValue(symbol="UIFontDescriptorFeatureSettingsAttribute")
+    public static native NSString AttributeFeatureSettings();
+    @GlobalValue(symbol="UIFontDescriptorTextStyleAttribute")
+    public static native NSString AttributeTextStyle();
+    @GlobalValue(symbol="UIFontSymbolicTrait")
+    public static native NSString TraitSymbolic();
+    @GlobalValue(symbol="UIFontWeightTrait")
+    public static native NSString TraitWeight();
+    @GlobalValue(symbol="UIFontWidthTrait")
+    public static native NSString TraitWidth();
+    @GlobalValue(symbol="UIFontSlantTrait")
+    public static native NSString TraitSlant();
+    @GlobalValue(symbol="UIFontFeatureTypeIdentifierKey")
+    public static native NSString FeatureTypeIdentifierKey();
+    @GlobalValue(symbol="UIFontFeatureSelectorIdentifierKey")
+    public static native NSString FeatureSelectorIdentifierKey();
+    @GlobalValue(symbol="UIFontTextStyleHeadline")
+    public static native String TextStyleHeadline();
+    @GlobalValue(symbol="UIFontTextStyleBody")
+    public static native String TextStyleBody();
+    @GlobalValue(symbol="UIFontTextStyleSubheadline")
+    public static native String TextStyleSubheadline();
+    @GlobalValue(symbol="UIFontTextStyleFootnote")
+    public static native String TextStyleFootnote();
+    @GlobalValue(symbol="UIFontTextStyleCaption1")
+    public static native String TextStyleCaption1();
+    @GlobalValue(symbol="UIFontTextStyleCaption2")
+    public static native String TextStyleCaption2();
+    
     @Method(selector = "objectForKey:")
     public native NSObject getObject(String anAttribute);
     @Method(selector = "fontAttributes")

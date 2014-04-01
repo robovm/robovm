@@ -55,11 +55,11 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "tabBarController:didSelectViewController:")
     void didSelectViewController(UITabBarController tabBarController, UIViewController viewController);
     @Method(selector = "tabBarController:willBeginCustomizingViewControllers:")
-    void willBeginCustomizingViewControllers(UITabBarController tabBarController, NSArray<?> viewControllers);
+    void willBeginCustomizingViewControllers(UITabBarController tabBarController, NSArray<UIViewController> viewControllers);
     @Method(selector = "tabBarController:willEndCustomizingViewControllers:changed:")
-    void willEndCustomizingViewControllers(UITabBarController tabBarController, NSArray<?> viewControllers, boolean changed);
+    void willEndCustomizingViewControllers(UITabBarController tabBarController, NSArray<UIViewController> viewControllers, boolean changed);
     @Method(selector = "tabBarController:didEndCustomizingViewControllers:changed:")
-    void didEndCustomizingViewControllers(UITabBarController tabBarController, NSArray<?> viewControllers, boolean changed);
+    void didEndCustomizingViewControllers(UITabBarController tabBarController, NSArray<UIViewController> viewControllers, boolean changed);
     @Method(selector = "tabBarControllerSupportedInterfaceOrientations:")
     @MachineSizedUInt long getSupportedInterfaceOrientations(UITabBarController tabBarController);
     @Method(selector = "tabBarControllerPreferredInterfaceOrientationForPresentation:")

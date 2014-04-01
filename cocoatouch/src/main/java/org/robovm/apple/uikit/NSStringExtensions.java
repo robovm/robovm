@@ -54,6 +54,15 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="UITextAttributeFont")
+    public static native NSString AttributeFont();
+    @GlobalValue(symbol="UITextAttributeTextColor")
+    public static native NSString AttributeTextColor();
+    @GlobalValue(symbol="UITextAttributeTextShadowColor")
+    public static native NSString AttributeTextShadowColor();
+    @GlobalValue(symbol="UITextAttributeTextShadowOffset")
+    public static native NSString AttributeTextShadowOffset();
+    
     @Method(selector = "sizeWithFont:")
     public static native @ByVal CGSize getSize(NSString thiz, UIFont font);
     @Method(selector = "sizeWithFont:forWidth:lineBreakMode:")

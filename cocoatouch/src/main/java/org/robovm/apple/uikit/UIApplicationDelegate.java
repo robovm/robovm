@@ -56,9 +56,9 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "applicationDidFinishLaunching:")
     void didFinishLaunching(UIApplication application);
     @Method(selector = "application:willFinishLaunchingWithOptions:")
-    boolean willFinishLaunching(UIApplication application, NSDictionary<?, ?> launchOptions);
+    boolean willFinishLaunching(UIApplication application, NSDictionary<NSString, ?> launchOptions);
     @Method(selector = "application:didFinishLaunchingWithOptions:")
-    boolean didFinishLaunching(UIApplication application, NSDictionary<?, ?> launchOptions);
+    boolean didFinishLaunching(UIApplication application, NSDictionary<NSString, ?> launchOptions);
     @Method(selector = "applicationDidBecomeActive:")
     void didBecomeActive(UIApplication application);
     @Method(selector = "applicationWillResignActive:")
@@ -106,7 +106,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "application:supportedInterfaceOrientationsForWindow:")
     @MachineSizedUInt long getSupportedInterfaceOrientations(UIApplication application, UIWindow window);
     @Method(selector = "application:viewControllerWithRestorationIdentifierPath:coder:")
-    UIViewController getViewController(UIApplication application, NSArray<?> identifierComponents, NSCoder coder);
+    UIViewController getViewController(UIApplication application, NSArray<NSString> identifierComponents, NSCoder coder);
     @Method(selector = "application:shouldSaveApplicationState:")
     boolean shouldSaveApplicationState(UIApplication application, NSCoder coder);
     @Method(selector = "application:shouldRestoreApplicationState:")

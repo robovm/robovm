@@ -54,9 +54,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "markedTextRange")
     UITextRange getMarkedTextRange();
     @Property(selector = "markedTextStyle")
-    NSDictionary<?, ?> getMarkedTextStyle();
+    NSDictionary<NSString, ?> getMarkedTextStyle();
     @Property(selector = "setMarkedTextStyle:")
-    void setMarkedTextStyle(NSDictionary<?, ?> v);
+    void setMarkedTextStyle(NSDictionary<NSString, ?> v);
     @Property(selector = "beginningOfDocument")
     UITextPosition getBeginningOfDocument();
     @Property(selector = "endOfDocument")
@@ -106,7 +106,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "caretRectForPosition:")
     @ByVal CGRect getCaretRect(UITextPosition position);
     @Method(selector = "selectionRectsForRange:")
-    NSArray<?> getSelectionRects(UITextRange range);
+    NSArray<UITextSelectionRect> getSelectionRects(UITextRange range);
     @Method(selector = "closestPositionToPoint:")
     UITextPosition getClosestPosition(@ByVal CGPoint point);
     @Method(selector = "closestPositionToPoint:withinRange:")
@@ -116,13 +116,13 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "shouldChangeTextInRange:replacementText:")
     boolean shouldChangeText(UITextRange range, String text);
     @Method(selector = "textStylingAtPosition:inDirection:")
-    NSDictionary<?, ?> getTextStyling(UITextPosition position, UITextStorageDirection direction);
+    NSDictionary<NSString, ?> getTextStyling(UITextPosition position, UITextStorageDirection direction);
     @Method(selector = "positionWithinRange:atCharacterOffset:")
     UITextPosition getPosition(UITextRange range, @MachineSizedSInt long offset);
     @Method(selector = "characterOffsetOfPosition:withinRange:")
     @MachineSizedSInt long getCharacterOffset(UITextPosition position, UITextRange range);
     @Method(selector = "insertDictationResult:")
-    void insertDictationResult(NSArray<?> dictationResult);
+    void insertDictationResult(NSArray<UIDictationPhrase> dictationResult);
     @Method(selector = "dictationRecordingDidEnd")
     void dictationRecordingDidEnd();
     @Method(selector = "dictationRecognitionFailed")

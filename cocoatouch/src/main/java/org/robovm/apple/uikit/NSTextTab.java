@@ -60,6 +60,9 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="NSTabColumnTerminatorsAttributeName")
+    public static native NSString AttributeTabColumnTerminators();
+    
     @Method(selector = "initWithTextAlignment:location:options:")
     protected native @Pointer long initWithTextAlignment$location$options$(NSTextAlignment alignment, @MachineSizedFloat double loc, NSDictionary<NSString, ?> options);
     @Method(selector = "columnTerminatorsForLocale:")

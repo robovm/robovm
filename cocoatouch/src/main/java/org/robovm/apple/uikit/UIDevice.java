@@ -87,6 +87,15 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="UIDeviceOrientationDidChangeNotification")
+    public static native String NotificationDeviceOrientationDidChange();
+    @GlobalValue(symbol="UIDeviceBatteryStateDidChangeNotification")
+    public static native String NotificationDeviceBatteryStateDidChange();
+    @GlobalValue(symbol="UIDeviceBatteryLevelDidChangeNotification")
+    public static native String NotificationDeviceBatteryLevelDidChange();
+    @GlobalValue(symbol="UIDeviceProximityStateDidChangeNotification")
+    public static native String NotificationDeviceProximityStateDidChange();
+    
     @Method(selector = "beginGeneratingDeviceOrientationNotifications")
     public native void beginGeneratingDeviceOrientationNotifications();
     @Method(selector = "endGeneratingDeviceOrientationNotifications")

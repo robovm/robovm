@@ -58,11 +58,11 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("tabBarController:didSelectViewController:")
     public void didSelectViewController(UITabBarController tabBarController, UIViewController viewController) { throw new UnsupportedOperationException(); }
     @NotImplemented("tabBarController:willBeginCustomizingViewControllers:")
-    public void willBeginCustomizingViewControllers(UITabBarController tabBarController, NSArray<?> viewControllers) { throw new UnsupportedOperationException(); }
+    public void willBeginCustomizingViewControllers(UITabBarController tabBarController, NSArray<UIViewController> viewControllers) { throw new UnsupportedOperationException(); }
     @NotImplemented("tabBarController:willEndCustomizingViewControllers:changed:")
-    public void willEndCustomizingViewControllers(UITabBarController tabBarController, NSArray<?> viewControllers, boolean changed) { throw new UnsupportedOperationException(); }
+    public void willEndCustomizingViewControllers(UITabBarController tabBarController, NSArray<UIViewController> viewControllers, boolean changed) { throw new UnsupportedOperationException(); }
     @NotImplemented("tabBarController:didEndCustomizingViewControllers:changed:")
-    public void didEndCustomizingViewControllers(UITabBarController tabBarController, NSArray<?> viewControllers, boolean changed) { throw new UnsupportedOperationException(); }
+    public void didEndCustomizingViewControllers(UITabBarController tabBarController, NSArray<UIViewController> viewControllers, boolean changed) { throw new UnsupportedOperationException(); }
     @NotImplemented("tabBarControllerSupportedInterfaceOrientations:")
     public @MachineSizedUInt long getSupportedInterfaceOrientations(UITabBarController tabBarController) { throw new UnsupportedOperationException(); }
     @NotImplemented("tabBarControllerPreferredInterfaceOrientationForPresentation:")

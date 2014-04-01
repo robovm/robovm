@@ -81,6 +81,9 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="UINavigationControllerHideShowBarDuration")
+    public static native @MachineSizedFloat double HideShowBarDuration();
+    
     @Method(selector = "initWithNavigationBarClass:toolbarClass:")
     protected native @Pointer long initWithNavigationBarClass$toolbarClass$(ObjCClass navigationBarClass, ObjCClass toolbarClass);
     @Method(selector = "initWithRootViewController:")

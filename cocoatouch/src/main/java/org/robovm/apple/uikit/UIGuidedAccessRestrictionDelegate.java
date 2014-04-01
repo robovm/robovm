@@ -51,7 +51,7 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "guidedAccessRestrictionIdentifiers")
-    NSArray<?> getIdentifiers();
+    NSArray<NSString> getIdentifiers();
     @Method(selector = "guidedAccessRestrictionWithIdentifier:didChangeState:")
     void didChangeState(String restrictionIdentifier, UIGuidedAccessRestrictionState newRestrictionState);
     @Method(selector = "textForGuidedAccessRestrictionWithIdentifier:")

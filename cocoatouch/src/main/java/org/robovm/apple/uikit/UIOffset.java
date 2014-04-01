@@ -37,14 +37,13 @@ import org.robovm.apple.coreimage.*;
  *
  * <div class="javadoc"></div>
  */
-/*<annotations>*//*</annotations>*/
+/*<annotations>*/@Library("UIKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIOffset/*</name>*/ 
     extends /*<extends>*/Struct<UIOffset>/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class UIOffsetPtr extends Ptr<UIOffset, UIOffsetPtr> {}/*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<bind>*/static { Bro.bind(UIOffset.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public UIOffset() {}
@@ -60,5 +59,19 @@ import org.robovm.apple.coreimage.*;
     @StructMember(1) public native @MachineSizedFloat double vertical();
     @StructMember(1) public native UIOffset vertical(@MachineSizedFloat double vertical);
     /*</members>*/
-    /*<methods>*//*</methods>*/
+    
+    @Override
+    public String toString() {
+        return toString(this);
+    }
+    
+    /*<methods>*/
+    @GlobalValue(symbol="UIOffsetZero")
+    public static native @ByVal UIOffset Zero();
+    
+    @Bridge(symbol="NSStringFromUIOffset")
+    protected static native String toString(@ByVal UIOffset offset);
+    @Bridge(symbol="UIOffsetFromString")
+    public static native @ByVal UIOffset fromString(String string);
+    /*</methods>*/
 }

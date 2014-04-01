@@ -37,27 +37,29 @@ import org.robovm.apple.coreimage.*;
  *
  * <div class="javadoc"></div>
  */
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/UIImagePickerControllerDelegateAdapter/*</name>*/ 
-    extends /*<extends>*/UINavigationControllerDelegateAdapter/*</extends>*/ 
-    /*<implements>*/implements UIImagePickerControllerDelegate/*</implements>*/ {
+/*<annotations>*/@Library("UIKit")/*</annotations>*/
+@Marshaler(NSString.AsStringMarshaler.class)
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/UIStateRestoration/*</name>*/ 
+    extends /*<extends>*/Object/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<bind>*/static { Bro.bind(UIStateRestoration.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
-    /*<properties>*/
-    
-    /*</properties>*/
+    /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @NotImplemented("imagePickerController:didFinishPickingImage:editingInfo:")
-    public void didFinishPickingImage(UIImagePickerController picker, UIImage image, NSDictionary<NSString, ?> editingInfo) { throw new UnsupportedOperationException(); }
-    @NotImplemented("imagePickerController:didFinishPickingMediaWithInfo:")
-    public void didFinishPickingMedia(UIImagePickerController picker, NSDictionary<NSString, ?> info) { throw new UnsupportedOperationException(); }
-    @NotImplemented("imagePickerControllerDidCancel:")
-    public void didCancel(UIImagePickerController picker) { throw new UnsupportedOperationException(); }
+    @GlobalValue(symbol="UIStateRestorationViewControllerStoryboardKey")
+    public static native NSString StateRestorationKeyViewControllerStoryboard();
+    @GlobalValue(symbol="UIApplicationStateRestorationBundleVersionKey")
+    public static native NSString StateRestorationKeyBundleVersion();
+    @GlobalValue(symbol="UIApplicationStateRestorationUserInterfaceIdiomKey")
+    public static native NSString StateRestorationKeyUserInterfaceIdiom();
+    @GlobalValue(symbol="UIApplicationStateRestorationTimestampKey")
+    public static native NSString StateRestorationKeyTimestamp();
+    @GlobalValue(symbol="UIApplicationStateRestorationSystemVersionKey")
+    public static native NSString StateRestorationKeySystemVersion();
     /*</methods>*/
 }

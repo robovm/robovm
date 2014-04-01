@@ -37,14 +37,13 @@ import org.robovm.apple.coreimage.*;
  *
  * <div class="javadoc"></div>
  */
-/*<annotations>*//*</annotations>*/
+/*<annotations>*/@Library("UIKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIEdgeInsets/*</name>*/ 
     extends /*<extends>*/Struct<UIEdgeInsets>/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class UIEdgeInsetsPtr extends Ptr<UIEdgeInsets, UIEdgeInsetsPtr> {}/*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<bind>*/static { Bro.bind(UIEdgeInsets.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public UIEdgeInsets() {}
@@ -66,5 +65,19 @@ import org.robovm.apple.coreimage.*;
     @StructMember(3) public native @MachineSizedFloat double right();
     @StructMember(3) public native UIEdgeInsets right(@MachineSizedFloat double right);
     /*</members>*/
-    /*<methods>*//*</methods>*/
+    
+    @Override
+    public String toString() {
+        return toString(this);
+    }
+    
+    /*<methods>*/
+    @GlobalValue(symbol="UIEdgeInsetsZero")
+    public static native @ByVal UIEdgeInsets Zero();
+    
+    @Bridge(symbol="NSStringFromUIEdgeInsets")
+    protected static native String toString(@ByVal UIEdgeInsets insets);
+    @Bridge(symbol="UIEdgeInsetsFromString")
+    public static native @ByVal UIEdgeInsets fromString(String string);
+    /*</methods>*/
 }

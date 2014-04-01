@@ -65,7 +65,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "tableView:canMoveRowAtIndexPath:")
     boolean canMoveRow(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "sectionIndexTitlesForTableView:")
-    NSArray<?> getSectionIndexTitles(UITableView tableView);
+    NSArray<NSString> getSectionIndexTitles(UITableView tableView);
     @Method(selector = "tableView:sectionForSectionIndexTitle:atIndex:")
     @MachineSizedSInt long getSectionForSectionIndexTitle(UITableView tableView, String title, @MachineSizedSInt long index);
     @Method(selector = "tableView:commitEditingStyle:forRowAtIndexPath:")

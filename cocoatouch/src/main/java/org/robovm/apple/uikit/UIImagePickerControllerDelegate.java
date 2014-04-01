@@ -51,9 +51,9 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "imagePickerController:didFinishPickingImage:editingInfo:")
-    void didFinishPickingImage(UIImagePickerController picker, UIImage image, NSDictionary<?, ?> editingInfo);
+    void didFinishPickingImage(UIImagePickerController picker, UIImage image, NSDictionary<NSString, ?> editingInfo);
     @Method(selector = "imagePickerController:didFinishPickingMediaWithInfo:")
-    void didFinishPickingMedia(UIImagePickerController picker, NSDictionary<?, ?> info);
+    void didFinishPickingMedia(UIImagePickerController picker, NSDictionary<NSString, ?> info);
     @Method(selector = "imagePickerControllerDidCancel:")
     void didCancel(UIImagePickerController picker);
     /*</methods>*/

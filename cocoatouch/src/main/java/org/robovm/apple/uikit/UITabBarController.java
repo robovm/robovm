@@ -82,12 +82,12 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "tabBar:didSelectItem:")
     public native void didSelectItem(UITabBar tabBar, UITabBarItem item);
     @Method(selector = "tabBar:willBeginCustomizingItems:")
-    public native void willBeginCustomizingItems(UITabBar tabBar, NSArray<?> items);
+    public native void willBeginCustomizingItems(UITabBar tabBar, NSArray<UITabBarItem> items);
     @Method(selector = "tabBar:didBeginCustomizingItems:")
-    public native void didBeginCustomizingItems(UITabBar tabBar, NSArray<?> items);
+    public native void didBeginCustomizingItems(UITabBar tabBar, NSArray<UITabBarItem> items);
     @Method(selector = "tabBar:willEndCustomizingItems:changed:")
-    public native void willEndCustomizingItems(UITabBar tabBar, NSArray<?> items, boolean changed);
+    public native void willEndCustomizingItems(UITabBar tabBar, NSArray<UITabBarItem> items, boolean changed);
     @Method(selector = "tabBar:didEndCustomizingItems:changed:")
-    public native void didEndCustomizingItems(UITabBar tabBar, NSArray<?> items, boolean changed);
+    public native void didEndCustomizingItems(UITabBar tabBar, NSArray<UITabBarItem> items, boolean changed);
     /*</methods>*/
 }

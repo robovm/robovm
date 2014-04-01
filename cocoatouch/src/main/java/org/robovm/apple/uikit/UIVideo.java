@@ -37,27 +37,32 @@ import org.robovm.apple.coreimage.*;
  *
  * <div class="javadoc"></div>
  */
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/UIImagePickerControllerDelegateAdapter/*</name>*/ 
-    extends /*<extends>*/UINavigationControllerDelegateAdapter/*</extends>*/ 
-    /*<implements>*/implements UIImagePickerControllerDelegate/*</implements>*/ {
+/*<annotations>*/@Library("UIKit")/*</annotations>*/
+@Marshaler(NSString.AsStringMarshaler.class)
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/UIVideo/*</name>*/ 
+    extends /*<extends>*/Object/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<bind>*/static { Bro.bind(UIVideo.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
-    /*<properties>*/
-    
-    /*</properties>*/
+    /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    
+    public static boolean isCompatibleWithSavedPhotosAlbum(File videoPath) {
+        return isCompatibleWithSavedPhotosAlbum(videoPath.getAbsolutePath());
+    }
+    
+    public static void saveToPhotosAlbum(File videoPath, NSObject completionTarget, Selector completionSelector, VoidPtr contextInfo) {
+        saveToPhotosAlbum(videoPath.getAbsolutePath(), completionTarget, completionSelector, contextInfo);
+    }
+    
     /*<methods>*/
-    @NotImplemented("imagePickerController:didFinishPickingImage:editingInfo:")
-    public void didFinishPickingImage(UIImagePickerController picker, UIImage image, NSDictionary<NSString, ?> editingInfo) { throw new UnsupportedOperationException(); }
-    @NotImplemented("imagePickerController:didFinishPickingMediaWithInfo:")
-    public void didFinishPickingMedia(UIImagePickerController picker, NSDictionary<NSString, ?> info) { throw new UnsupportedOperationException(); }
-    @NotImplemented("imagePickerControllerDidCancel:")
-    public void didCancel(UIImagePickerController picker) { throw new UnsupportedOperationException(); }
+    @Bridge(symbol="UIVideoAtPathIsCompatibleWithSavedPhotosAlbum")
+    protected static native boolean isCompatibleWithSavedPhotosAlbum(String videoPath);
+    @Bridge(symbol="UISaveVideoAtPathToSavedPhotosAlbum")
+    protected static native void saveToPhotosAlbum(String videoPath, NSObject completionTarget, Selector completionSelector, VoidPtr contextInfo);
     /*</methods>*/
 }

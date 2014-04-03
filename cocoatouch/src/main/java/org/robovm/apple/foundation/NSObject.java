@@ -202,6 +202,29 @@ import org.robovm.apple.security.*;
     @Method(selector = "performSelector:withObject:withObject:")
     public native final void performSelectorV(Selector aSelector, NSObject object1, NSObject object2);
     
+    public void addObserver(NSObject observer, String keyPath, NSKeyValueObservingOptions options) {
+        if (observer.customClass) {
+            updateStrongRef(null, observer);
+        }
+        addObserver$forKeyPath$options$context$(observer, keyPath, options, null);
+    }
+    
+    public void removeObserver(NSObject observer, String keyPath) {
+        removeObserver$forKeyPath$context$(observer, keyPath, null);
+        if (observer.customClass) {
+            updateStrongRef(observer, null);
+        }
+    }
+    
+    protected void observeValue(String keyPath, NSObject object, NSDictionary<?, ?> change) {
+        
+    }
+    
+    @Method(selector = "observeValueForKeyPath:ofObject:change:context:")
+    private void observeValueForKeyPath$ofObject$change$context$(String keyPath, NSObject object, NSDictionary<?, ?> change, VoidPtr context) {
+        observeValue(keyPath, object, change);
+    }
+
     /*<methods>*/
     @Method(selector = "init")
     private native @Pointer long init();
@@ -243,10 +266,10 @@ import org.robovm.apple.security.*;
     public native NSDictionary<?, ?> getDictionaryWithValuesForKeys(NSArray<?> keys);
     @Method(selector = "setValuesForKeysWithDictionary:")
     public native void setValuesForKeys(NSDictionary<?, ?> keyedValues);
-    @Method(selector = "observeValueForKeyPath:ofObject:change:context:")
-    public native void observeValue(String keyPath, NSObject object, NSDictionary<?, ?> change, VoidPtr context);
+    @Method(selector = "addObserver:forKeyPath:options:context:")
+    private native void addObserver$forKeyPath$options$context$(NSObject observer, String keyPath, NSKeyValueObservingOptions options, VoidPtr context);
     @Method(selector = "removeObserver:forKeyPath:context:")
-    public native void removeObserver(NSObject observer, String keyPath, VoidPtr context);
+    private native void removeObserver$forKeyPath$context$(NSObject observer, String keyPath, VoidPtr context);
     @Method(selector = "willChangeValueForKey:")
     public native void willChangeValue(String key);
     @Method(selector = "didChangeValueForKey:")
@@ -259,6 +282,18 @@ import org.robovm.apple.security.*;
     public native void willChangeValue(String key, NSKeyValueSetMutationKind mutationKind, NSSet<?> objects);
     @Method(selector = "didChangeValueForKey:withSetMutation:usingObjects:")
     public native void didChangeValue(String key, NSKeyValueSetMutationKind mutationKind, NSSet<?> objects);
+    @Method(selector = "performSelector:withObject:afterDelay:inModes:")
+    public final native void performSelector(Selector aSelector, NSObject anArgument, double delay, NSArray<?> modes);
+    @Method(selector = "performSelector:withObject:afterDelay:")
+    public final native void performSelector(Selector aSelector, NSObject anArgument, double delay);
+    @Method(selector = "performSelectorOnMainThread:withObject:waitUntilDone:modes:")
+    public final native void performSelectorOnMainThread(Selector aSelector, NSObject arg, boolean wait, NSArray<?> array);
+    @Method(selector = "performSelectorOnMainThread:withObject:waitUntilDone:")
+    public final native void performSelectorOnMainThread(Selector aSelector, NSObject arg, boolean wait);
+    @Method(selector = "performSelector:onThread:withObject:waitUntilDone:modes:")
+    public final native void performSelector(Selector aSelector, NSThread thr, NSObject arg, boolean wait, NSArray<?> array);
+    @Method(selector = "performSelector:onThread:withObject:waitUntilDone:")
+    public final native void performSelector(Selector aSelector, NSThread thr, NSObject arg, boolean wait);
     @Method(selector = "performSelectorInBackground:withObject:")
     public final native void performSelectorInBackground(Selector aSelector, NSObject arg);
     /*</methods>*/

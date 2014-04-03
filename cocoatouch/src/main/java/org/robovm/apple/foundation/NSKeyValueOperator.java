@@ -35,7 +35,7 @@ import org.robovm.apple.security.*;
  * <div class="javadoc"></div>
  */
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
-/*<visibility>*/public abstract/*</visibility>*/ class /*<name>*/NSKeyValueOperator/*</name>*/ 
+/*<visibility>*/public final/*</visibility>*/ class /*<name>*/NSKeyValueOperator/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 

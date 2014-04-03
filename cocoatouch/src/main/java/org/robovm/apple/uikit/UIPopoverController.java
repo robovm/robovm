@@ -40,7 +40,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIPopoverController/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements UIAppearanceContainer/*</implements>*/ {
 
     /*<ptr>*/public static class UIPopoverControllerPtr extends Ptr<UIPopoverController, UIPopoverControllerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIPopoverController.class); }/*</bind>*/

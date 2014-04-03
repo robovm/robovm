@@ -191,17 +191,25 @@ public abstract class ObjCObject extends NativeObject {
         AssociatedObjectHelper.setAssociatedObject(this, key, value);
     }
     
-    @SuppressWarnings("unchecked")
     public static <T extends ObjCObject> T toObjCObject(Class<T> cls, long handle) {
+        return toObjCObject(cls, handle, false);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static <T extends ObjCObject> T toObjCObject(Class<T> cls, long handle, boolean forceType) {
         if (handle == 0L) {
             return null;
         }
         T o = getPeerObject(handle);
         if (o != null && o.getHandle() != 0) {
+            if (forceType && !cls.isAssignableFrom(o.getClass())) {
+                throw new IllegalStateException("The peer object type " + o.getClass().getName() 
+                        + " is not compatible with the forced type " + cls.getName());
+            }
             return o;
         }
         ObjCClass fallback = ObjCClass.getByType(cls);
-        ObjCClass objCClass = ObjCClass.getFromObject(handle, fallback);
+        ObjCClass objCClass = forceType ? ObjCClass.getByType(cls) : ObjCClass.getFromObject(handle, fallback);
         Class<T> c = (Class<T>) objCClass.getType();
         if (c == ObjCClass.class) {
             return (T) objCClass;

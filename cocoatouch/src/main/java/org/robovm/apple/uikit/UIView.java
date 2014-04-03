@@ -40,7 +40,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIView/*</name>*/ 
     extends /*<extends>*/UIResponder/*</extends>*/ 
-    /*<implements>*/implements NSCoding, UIDynamicItem, UIAccessibilityIdentification/*</implements>*/ {
+    /*<implements>*/implements NSCoding, UIAppearanceContainer, UIDynamicItem, UIAccessibilityIdentification/*</implements>*/ {
 
     /*<ptr>*/public static class UIViewPtr extends Ptr<UIView, UIViewPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIView.class); }/*</bind>*/

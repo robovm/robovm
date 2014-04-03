@@ -40,7 +40,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIViewController/*</name>*/ 
     extends /*<extends>*/UIResponder/*</extends>*/ 
-    /*<implements>*/implements NSCoding, UIStateRestoring/*</implements>*/ {
+    /*<implements>*/implements NSCoding, UIAppearanceContainer, UIStateRestoring/*</implements>*/ {
 
     /*<ptr>*/public static class UIViewControllerPtr extends Ptr<UIViewController, UIViewControllerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIViewController.class); }/*</bind>*/

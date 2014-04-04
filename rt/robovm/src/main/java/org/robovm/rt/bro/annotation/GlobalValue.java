@@ -20,6 +20,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.robovm.rt.bro.Bro;
+
 /**
  *
  * @version $Id$
@@ -28,4 +30,12 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface GlobalValue {
     public String symbol() default "";
+
+    /**
+     * Set to {@code true} to make this {@link GlobalValue} optional. If
+     * {@code true} the binding process ({@link Bro#bind()}) will not fail even
+     * if the symbol of this {@link GlobalValue} isn't available. Instead
+     * a call to the method will throw {@link UnsatisfiedLinkError}. 
+     */
+    boolean optional() default false;
 }

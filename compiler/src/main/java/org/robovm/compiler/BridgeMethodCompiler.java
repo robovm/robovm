@@ -98,6 +98,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
 
         AnnotationTag bridgeAnnotation = getAnnotation(method, BRIDGE);
         boolean dynamic = readBooleanElem(bridgeAnnotation, "dynamic", false);
+        boolean optional = readBooleanElem(bridgeAnnotation, "optional", false);
         
         Function fn = FunctionBuilder.method(method);
         moduleBuilder.addFunction(fn);
@@ -168,7 +169,8 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             fn.add(new Br(nullCheck.ref(), fn.newBasicBlockRef(nullLabel), fn.newBasicBlockRef(notNullLabel)));
             fn.newBasicBlock(nullLabel);
             call(fn, BC_THROW_UNSATISIFED_LINK_ERROR, env,
-                    moduleBuilder.getString(String.format("@Bridge method %s.%s%s not bound", className,
+                    moduleBuilder.getString(String.format((optional ? "Optional " : "")
+                            + "@Bridge method %s.%s%s not bound", className,
                             originalMethod.getName(), getDescriptor(originalMethod))));
             fn.add(new Unreachable());
             fn.newBasicBlock(notNullLabel);

@@ -54,12 +54,16 @@ public class Bro {
             Bridge bridge = method.getAnnotation(Bridge.class);
             if (bridge != null && !bridge.dynamic() && !VM.isBridgeMethodBound(method)) {
                 long f = Runtime.resolveBridge(library, bridge, method);
-                VM.bindBridgeMethod(method, f);
+                if (f != 0L) {
+                    VM.bindBridgeMethod(method, f);
+                }
             } else {
                 GlobalValue globalValue = method.getAnnotation(GlobalValue.class);
                 if (globalValue != null && !VM.isBridgeMethodBound(method)) {
                     long f = Runtime.resolveGlobalValue(library, globalValue, method);
-                    VM.bindBridgeMethod(method, f);
+                    if (f != 0L) {
+                        VM.bindBridgeMethod(method, f);
+                    }
                 }
             }
         }

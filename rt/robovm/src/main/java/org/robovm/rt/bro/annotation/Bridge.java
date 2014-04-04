@@ -20,6 +20,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.robovm.rt.bro.Bro;
+
 /**
  *
  * @version $Id$
@@ -35,4 +37,12 @@ public @interface Bridge {
      * to the {@link Bridge} annotated method as a {@link Pointer} {@code long}.
      */
     boolean dynamic() default false;
+
+    /**
+     * Set to {@code true} to make this {@link Bridge} method optional. If
+     * {@code true} the binding process ({@link Bro#bind()}) will not fail even
+     * if the symbol of this {@link Bridge} method isn't available. Instead
+     * a call to the method will throw {@link UnsatisfiedLinkError}. 
+     */
+    boolean optional() default false;
 }

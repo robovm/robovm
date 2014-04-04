@@ -214,7 +214,7 @@ jboolean rvmThrowNegativeArraySizeException(Env* env) {
 }
 
 jboolean rvmThrowUnsatisfiedLinkError(Env* env, const char* message) {
-    return rvmThrowNew(env, java_lang_UnsatisfiedLinkError, "");
+    return rvmThrowNew(env, java_lang_UnsatisfiedLinkError, message);
 }
 
 jboolean rvmThrowIllegalArgumentException(Env* env, const char* message) {

@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.robovm</groupId>
     <artifactId>robovm-parent</artifactId>
-    <version>0.0.11</version>
+    <version>0.0.12-SNAPSHOT</version>
   </parent>
 
   <artifactId>robovm-llvm</artifactId>

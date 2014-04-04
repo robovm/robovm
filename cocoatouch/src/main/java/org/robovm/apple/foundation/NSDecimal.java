@@ -59,27 +59,27 @@ import org.robovm.apple.security.*;
     }
     
     /*<methods>*/
-    @Bridge(symbol="NSDecimalCompact")
+    @Bridge(symbol="NSDecimalCompact", optional=true)
     public static native void compact(NSDecimal number);
-    @Bridge(symbol="NSDecimalCompare")
+    @Bridge(symbol="NSDecimalCompare", optional=true)
     public static native NSComparisonResult compare(NSDecimal leftOperand, NSDecimal rightOperand);
-    @Bridge(symbol="NSDecimalRound")
+    @Bridge(symbol="NSDecimalRound", optional=true)
     public static native void round(NSDecimal result, NSDecimal number, @MachineSizedSInt long scale, NSRoundingMode roundingMode);
-    @Bridge(symbol="NSDecimalNormalize")
+    @Bridge(symbol="NSDecimalNormalize", optional=true)
     public static native NSCalculationError normalize(NSDecimal number1, NSDecimal number2, NSRoundingMode roundingMode);
-    @Bridge(symbol="NSDecimalAdd")
+    @Bridge(symbol="NSDecimalAdd", optional=true)
     public static native NSCalculationError add(NSDecimal result, NSDecimal leftOperand, NSDecimal rightOperand, NSRoundingMode roundingMode);
-    @Bridge(symbol="NSDecimalSubtract")
+    @Bridge(symbol="NSDecimalSubtract", optional=true)
     public static native NSCalculationError subtract(NSDecimal result, NSDecimal leftOperand, NSDecimal rightOperand, NSRoundingMode roundingMode);
-    @Bridge(symbol="NSDecimalMultiply")
+    @Bridge(symbol="NSDecimalMultiply", optional=true)
     public static native NSCalculationError multiply(NSDecimal result, NSDecimal leftOperand, NSDecimal rightOperand, NSRoundingMode roundingMode);
-    @Bridge(symbol="NSDecimalDivide")
+    @Bridge(symbol="NSDecimalDivide", optional=true)
     public static native NSCalculationError divide(NSDecimal result, NSDecimal leftOperand, NSDecimal rightOperand, NSRoundingMode roundingMode);
-    @Bridge(symbol="NSDecimalPower")
+    @Bridge(symbol="NSDecimalPower", optional=true)
     public static native NSCalculationError power(NSDecimal result, NSDecimal number, @MachineSizedUInt long power, NSRoundingMode roundingMode);
-    @Bridge(symbol="NSDecimalMultiplyByPowerOf10")
+    @Bridge(symbol="NSDecimalMultiplyByPowerOf10", optional=true)
     public static native NSCalculationError multiplyByPowerOf10(NSDecimal result, NSDecimal number, short power, NSRoundingMode roundingMode);
-    @Bridge(symbol="NSDecimalString")
+    @Bridge(symbol="NSDecimalString", optional=true)
     protected static native String toString(NSDecimal dcm, NSObject locale);
     /*</methods>*/
 }

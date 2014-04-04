@@ -47,20 +47,20 @@ import org.robovm.apple.corefoundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kSecImportExportPassphrase")
+    @GlobalValue(symbol="kSecImportExportPassphrase", optional=true)
     public static native CFString KeyPassphrase();
-    @GlobalValue(symbol="kSecImportItemLabel")
+    @GlobalValue(symbol="kSecImportItemLabel", optional=true)
     public static native CFString KeyItemLabel();
-    @GlobalValue(symbol="kSecImportItemKeyID")
+    @GlobalValue(symbol="kSecImportItemKeyID", optional=true)
     public static native CFString KeyItemKeyID();
-    @GlobalValue(symbol="kSecImportItemTrust")
+    @GlobalValue(symbol="kSecImportItemTrust", optional=true)
     public static native CFString KeyItemTrust();
-    @GlobalValue(symbol="kSecImportItemCertChain")
+    @GlobalValue(symbol="kSecImportItemCertChain", optional=true)
     public static native CFString KeyItemCertChain();
-    @GlobalValue(symbol="kSecImportItemIdentity")
+    @GlobalValue(symbol="kSecImportItemIdentity", optional=true)
     public static native CFString KeyItemIdentity();
     
-    @Bridge(symbol="SecPKCS12Import")
+    @Bridge(symbol="SecPKCS12Import", optional=true)
     public static native int importPKCS12(CFData pkcs12_data, CFDictionary options, CFArray.CFArrayPtr items);
     /*</methods>*/
 }

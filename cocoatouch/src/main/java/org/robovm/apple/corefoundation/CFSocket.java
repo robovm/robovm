@@ -47,72 +47,72 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFSocketCommandKey")
+    @GlobalValue(symbol="kCFSocketCommandKey", optional=true)
     public static native CFString KeyCommand();
-    @GlobalValue(symbol="kCFSocketNameKey")
+    @GlobalValue(symbol="kCFSocketNameKey", optional=true)
     public static native CFString KeyName();
-    @GlobalValue(symbol="kCFSocketValueKey")
+    @GlobalValue(symbol="kCFSocketValueKey", optional=true)
     public static native CFString KeyValue();
-    @GlobalValue(symbol="kCFSocketResultKey")
+    @GlobalValue(symbol="kCFSocketResultKey", optional=true)
     public static native CFString KeyResult();
-    @GlobalValue(symbol="kCFSocketErrorKey")
+    @GlobalValue(symbol="kCFSocketErrorKey", optional=true)
     public static native CFString KeyError();
-    @GlobalValue(symbol="kCFSocketRegisterCommand")
+    @GlobalValue(symbol="kCFSocketRegisterCommand", optional=true)
     public static native CFString CommandRegister();
-    @GlobalValue(symbol="kCFSocketRetrieveCommand")
+    @GlobalValue(symbol="kCFSocketRetrieveCommand", optional=true)
     public static native CFString CommandRetrieve();
     
-    @Bridge(symbol="CFSocketGetTypeID")
+    @Bridge(symbol="CFSocketGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFSocketCreate")
+    @Bridge(symbol="CFSocketCreate", optional=true)
     public static native CFSocket create(CFAllocator allocator, int protocolFamily, int socketType, int protocol, CFSocketCallBackType callBackTypes, FunctionPtr callout, CFSocketContext context);
-    @Bridge(symbol="CFSocketCreateWithNative")
+    @Bridge(symbol="CFSocketCreateWithNative", optional=true)
     public static native CFSocket createWithNative(CFAllocator allocator, int sock, CFSocketCallBackType callBackTypes, FunctionPtr callout, CFSocketContext context);
-    @Bridge(symbol="CFSocketCreateWithSocketSignature")
+    @Bridge(symbol="CFSocketCreateWithSocketSignature", optional=true)
     public static native CFSocket createWithSocketSignature(CFAllocator allocator, CFSocketSignature signature, CFSocketCallBackType callBackTypes, FunctionPtr callout, CFSocketContext context);
-    @Bridge(symbol="CFSocketCreateConnectedToSocketSignature")
+    @Bridge(symbol="CFSocketCreateConnectedToSocketSignature", optional=true)
     public static native CFSocket createConnectedToSocketSignature(CFAllocator allocator, CFSocketSignature signature, CFSocketCallBackType callBackTypes, FunctionPtr callout, CFSocketContext context, double timeout);
-    @Bridge(symbol="CFSocketSetAddress")
+    @Bridge(symbol="CFSocketSetAddress", optional=true)
     public native CFSocketError setAddress(CFData address);
-    @Bridge(symbol="CFSocketConnectToAddress")
+    @Bridge(symbol="CFSocketConnectToAddress", optional=true)
     public native CFSocketError connectToAddress(CFData address, double timeout);
-    @Bridge(symbol="CFSocketInvalidate")
+    @Bridge(symbol="CFSocketInvalidate", optional=true)
     public native void invalidate();
-    @Bridge(symbol="CFSocketIsValid")
+    @Bridge(symbol="CFSocketIsValid", optional=true)
     public native boolean isValid();
-    @Bridge(symbol="CFSocketCopyAddress")
+    @Bridge(symbol="CFSocketCopyAddress", optional=true)
     public native CFData copyAddress();
-    @Bridge(symbol="CFSocketCopyPeerAddress")
+    @Bridge(symbol="CFSocketCopyPeerAddress", optional=true)
     public native CFData copyPeerAddress();
-    @Bridge(symbol="CFSocketGetContext")
+    @Bridge(symbol="CFSocketGetContext", optional=true)
     public native void getContext(CFSocketContext context);
-    @Bridge(symbol="CFSocketGetNative")
+    @Bridge(symbol="CFSocketGetNative", optional=true)
     public native int getNative();
-    @Bridge(symbol="CFSocketCreateRunLoopSource")
+    @Bridge(symbol="CFSocketCreateRunLoopSource", optional=true)
     public static native CFRunLoopSource createRunLoopSource(CFAllocator allocator, CFSocket s, @MachineSizedSInt long order);
-    @Bridge(symbol="CFSocketGetSocketFlags")
+    @Bridge(symbol="CFSocketGetSocketFlags", optional=true)
     public native CFSocketFlags getSocketFlags();
-    @Bridge(symbol="CFSocketSetSocketFlags")
+    @Bridge(symbol="CFSocketSetSocketFlags", optional=true)
     public native void setSocketFlags(CFSocketFlags flags);
-    @Bridge(symbol="CFSocketDisableCallBacks")
+    @Bridge(symbol="CFSocketDisableCallBacks", optional=true)
     public native void disableCallBacks(CFSocketCallBackType callBackTypes);
-    @Bridge(symbol="CFSocketEnableCallBacks")
+    @Bridge(symbol="CFSocketEnableCallBacks", optional=true)
     public native void enableCallBacks(CFSocketCallBackType callBackTypes);
-    @Bridge(symbol="CFSocketSendData")
+    @Bridge(symbol="CFSocketSendData", optional=true)
     public native CFSocketError sendData(CFData address, CFData data, double timeout);
-    @Bridge(symbol="CFSocketRegisterValue")
+    @Bridge(symbol="CFSocketRegisterValue", optional=true)
     public static native CFSocketError registerValue(CFSocketSignature nameServerSignature, double timeout, CFString name, CFType value);
-    @Bridge(symbol="CFSocketCopyRegisteredValue")
+    @Bridge(symbol="CFSocketCopyRegisteredValue", optional=true)
     public static native CFSocketError copyRegisteredValue(CFSocketSignature nameServerSignature, double timeout, CFString name, CFType.CFTypePtr value, CFData.CFDataPtr nameServerAddress);
-    @Bridge(symbol="CFSocketRegisterSocketSignature")
+    @Bridge(symbol="CFSocketRegisterSocketSignature", optional=true)
     public static native CFSocketError registerSocketSignature(CFSocketSignature nameServerSignature, double timeout, CFString name, CFSocketSignature signature);
-    @Bridge(symbol="CFSocketCopyRegisteredSocketSignature")
+    @Bridge(symbol="CFSocketCopyRegisteredSocketSignature", optional=true)
     public static native CFSocketError copyRegisteredSocketSignature(CFSocketSignature nameServerSignature, double timeout, CFString name, CFSocketSignature signature, CFData.CFDataPtr nameServerAddress);
-    @Bridge(symbol="CFSocketUnregister")
+    @Bridge(symbol="CFSocketUnregister", optional=true)
     public static native CFSocketError unregister(CFSocketSignature nameServerSignature, double timeout, CFString name);
-    @Bridge(symbol="CFSocketSetDefaultNameRegistryPortNumber")
+    @Bridge(symbol="CFSocketSetDefaultNameRegistryPortNumber", optional=true)
     public static native void setDefaultNameRegistryPortNumber(short port);
-    @Bridge(symbol="CFSocketGetDefaultNameRegistryPortNumber")
+    @Bridge(symbol="CFSocketGetDefaultNameRegistryPortNumber", optional=true)
     public static native short getDefaultNameRegistryPortNumber();
     /*</methods>*/
 }

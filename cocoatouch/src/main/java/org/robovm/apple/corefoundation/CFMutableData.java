@@ -47,21 +47,21 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFDataCreateMutable")
+    @Bridge(symbol="CFDataCreateMutable", optional=true)
     public static native CFMutableData createMutable(CFAllocator allocator, @MachineSizedSInt long capacity);
-    @Bridge(symbol="CFDataCreateMutableCopy")
+    @Bridge(symbol="CFDataCreateMutableCopy", optional=true)
     public static native CFMutableData createMutableCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFData theData);
-    @Bridge(symbol="CFDataGetMutableBytePtr")
+    @Bridge(symbol="CFDataGetMutableBytePtr", optional=true)
     public native BytePtr getMutableBytePtr();
-    @Bridge(symbol="CFDataSetLength")
+    @Bridge(symbol="CFDataSetLength", optional=true)
     public native void setLength(@MachineSizedSInt long length);
-    @Bridge(symbol="CFDataIncreaseLength")
+    @Bridge(symbol="CFDataIncreaseLength", optional=true)
     public native void increaseLength(@MachineSizedSInt long extraLength);
-    @Bridge(symbol="CFDataAppendBytes")
+    @Bridge(symbol="CFDataAppendBytes", optional=true)
     public native void appendBytes(BytePtr bytes, @MachineSizedSInt long length);
-    @Bridge(symbol="CFDataReplaceBytes")
+    @Bridge(symbol="CFDataReplaceBytes", optional=true)
     public native void replaceBytes(@ByVal CFRange range, BytePtr newBytes, @MachineSizedSInt long newLength);
-    @Bridge(symbol="CFDataDeleteBytes")
+    @Bridge(symbol="CFDataDeleteBytes", optional=true)
     public native void deleteBytes(@ByVal CFRange range);
     /*</methods>*/
 }

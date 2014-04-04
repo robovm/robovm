@@ -67,12 +67,12 @@ import org.robovm.apple.foundation.*;
     }
     
     /*<methods>*/
-    @GlobalValue(symbol="CGSizeZero")
+    @GlobalValue(symbol="CGSizeZero", optional=true)
     public static native @ByVal CGSize Zero();
     
-    @Bridge(symbol="CGSizeEqualToSize")
+    @Bridge(symbol="CGSizeEqualToSize", optional=true)
     protected static native boolean equalToSize(@ByVal CGSize size1, @ByVal CGSize size2);
-    @Bridge(symbol="CGSizeApplyAffineTransform")
+    @Bridge(symbol="CGSizeApplyAffineTransform", optional=true)
     protected static native @ByVal CGSize applyAffineTransform(@ByVal CGSize size, @ByVal CGAffineTransform t);
     /*</methods>*/
 }

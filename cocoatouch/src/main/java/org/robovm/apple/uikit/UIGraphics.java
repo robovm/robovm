@@ -51,47 +51,47 @@ import org.robovm.apple.coreimage.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="UIGraphicsGetCurrentContext")
+    @Bridge(symbol="UIGraphicsGetCurrentContext", optional=true)
     public static native CGContext getCurrentContext();
-    @Bridge(symbol="UIGraphicsPushContext")
+    @Bridge(symbol="UIGraphicsPushContext", optional=true)
     public static native void pushContext(CGContext context);
-    @Bridge(symbol="UIGraphicsPopContext")
+    @Bridge(symbol="UIGraphicsPopContext", optional=true)
     public static native void popContext();
-    @Bridge(symbol="UIRectFillUsingBlendMode")
+    @Bridge(symbol="UIRectFillUsingBlendMode", optional=true)
     public static native void rectFillUsingBlendMode(@ByVal CGRect rect, CGBlendMode blendMode);
-    @Bridge(symbol="UIRectFill")
+    @Bridge(symbol="UIRectFill", optional=true)
     public static native void rectFill(@ByVal CGRect rect);
-    @Bridge(symbol="UIRectFrameUsingBlendMode")
+    @Bridge(symbol="UIRectFrameUsingBlendMode", optional=true)
     public static native void rectFrameUsingBlendMode(@ByVal CGRect rect, CGBlendMode blendMode);
-    @Bridge(symbol="UIRectFrame")
+    @Bridge(symbol="UIRectFrame", optional=true)
     public static native void rectFrame(@ByVal CGRect rect);
-    @Bridge(symbol="UIRectClip")
+    @Bridge(symbol="UIRectClip", optional=true)
     public static native void rectClip(@ByVal CGRect rect);
-    @Bridge(symbol="UIGraphicsBeginImageContext")
+    @Bridge(symbol="UIGraphicsBeginImageContext", optional=true)
     public static native void beginImageContext(@ByVal CGSize size);
-    @Bridge(symbol="UIGraphicsBeginImageContextWithOptions")
+    @Bridge(symbol="UIGraphicsBeginImageContextWithOptions", optional=true)
     public static native void beginImageContextWithOptions(@ByVal CGSize size, boolean opaque, @MachineSizedFloat double scale);
-    @Bridge(symbol="UIGraphicsGetImageFromCurrentImageContext")
+    @Bridge(symbol="UIGraphicsGetImageFromCurrentImageContext", optional=true)
     public static native UIImage getImageFromCurrentImageContext();
-    @Bridge(symbol="UIGraphicsEndImageContext")
+    @Bridge(symbol="UIGraphicsEndImageContext", optional=true)
     public static native void endImageContext();
-    @Bridge(symbol="UIGraphicsBeginPDFContextToFile")
+    @Bridge(symbol="UIGraphicsBeginPDFContextToFile", optional=true)
     public static native boolean beginPDFContextToFile(String path, @ByVal CGRect bounds, NSDictionary<NSString, ?> documentInfo);
-    @Bridge(symbol="UIGraphicsBeginPDFContextToData")
+    @Bridge(symbol="UIGraphicsBeginPDFContextToData", optional=true)
     public static native void beginPDFContextToData(NSMutableData data, @ByVal CGRect bounds, NSDictionary<NSString, ?> documentInfo);
-    @Bridge(symbol="UIGraphicsEndPDFContext")
+    @Bridge(symbol="UIGraphicsEndPDFContext", optional=true)
     public static native void endPDFContext();
-    @Bridge(symbol="UIGraphicsBeginPDFPage")
+    @Bridge(symbol="UIGraphicsBeginPDFPage", optional=true)
     public static native void beginPDFPage();
-    @Bridge(symbol="UIGraphicsBeginPDFPageWithInfo")
+    @Bridge(symbol="UIGraphicsBeginPDFPageWithInfo", optional=true)
     public static native void beginPDFPageWithInfo(@ByVal CGRect bounds, NSDictionary<NSString, ?> pageInfo);
-    @Bridge(symbol="UIGraphicsGetPDFContextBounds")
+    @Bridge(symbol="UIGraphicsGetPDFContextBounds", optional=true)
     public static native @ByVal CGRect getPDFContextBounds();
-    @Bridge(symbol="UIGraphicsSetPDFContextURLForRect")
+    @Bridge(symbol="UIGraphicsSetPDFContextURLForRect", optional=true)
     public static native void setPDFContextURLForRect(NSURL url, @ByVal CGRect rect);
-    @Bridge(symbol="UIGraphicsAddPDFContextDestinationAtPoint")
+    @Bridge(symbol="UIGraphicsAddPDFContextDestinationAtPoint", optional=true)
     public static native void addPDFContextDestinationAtPoint(String name, @ByVal CGPoint point);
-    @Bridge(symbol="UIGraphicsSetPDFContextDestinationForRect")
+    @Bridge(symbol="UIGraphicsSetPDFContextDestinationForRect", optional=true)
     public static native void setPDFContextDestinationForRect(String name, @ByVal CGRect rect);
     /*</methods>*/
 }

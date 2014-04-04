@@ -47,27 +47,27 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFArrayCreateMutable")
+    @Bridge(symbol="CFArrayCreateMutable", optional=true)
     public static native CFMutableArray createMutable(CFAllocator allocator, @MachineSizedSInt long capacity, CFArrayCallBacks callBacks);
-    @Bridge(symbol="CFArrayCreateMutableCopy")
+    @Bridge(symbol="CFArrayCreateMutableCopy", optional=true)
     public static native CFMutableArray createMutableCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFArray theArray);
-    @Bridge(symbol="CFArrayAppendValue")
+    @Bridge(symbol="CFArrayAppendValue", optional=true)
     public native void appendValue(VoidPtr value);
-    @Bridge(symbol="CFArrayInsertValueAtIndex")
+    @Bridge(symbol="CFArrayInsertValueAtIndex", optional=true)
     public native void insertValueAtIndex(@MachineSizedSInt long idx, VoidPtr value);
-    @Bridge(symbol="CFArraySetValueAtIndex")
+    @Bridge(symbol="CFArraySetValueAtIndex", optional=true)
     public native void setValueAtIndex(@MachineSizedSInt long idx, VoidPtr value);
-    @Bridge(symbol="CFArrayRemoveValueAtIndex")
+    @Bridge(symbol="CFArrayRemoveValueAtIndex", optional=true)
     public native void removeValueAtIndex(@MachineSizedSInt long idx);
-    @Bridge(symbol="CFArrayRemoveAllValues")
+    @Bridge(symbol="CFArrayRemoveAllValues", optional=true)
     public native void removeAllValues();
-    @Bridge(symbol="CFArrayReplaceValues")
+    @Bridge(symbol="CFArrayReplaceValues", optional=true)
     public native void replaceValues(@ByVal CFRange range, VoidPtr.VoidPtrPtr newValues, @MachineSizedSInt long newCount);
-    @Bridge(symbol="CFArrayExchangeValuesAtIndices")
+    @Bridge(symbol="CFArrayExchangeValuesAtIndices", optional=true)
     public native void exchangeValuesAtIndices(@MachineSizedSInt long idx1, @MachineSizedSInt long idx2);
-    @Bridge(symbol="CFArraySortValues")
+    @Bridge(symbol="CFArraySortValues", optional=true)
     public native void sortValues(@ByVal CFRange range, FunctionPtr comparator, VoidPtr context);
-    @Bridge(symbol="CFArrayAppendArray")
+    @Bridge(symbol="CFArrayAppendArray", optional=true)
     public native void appendArray(CFArray otherArray, @ByVal CFRange otherRange);
     /*</methods>*/
 }

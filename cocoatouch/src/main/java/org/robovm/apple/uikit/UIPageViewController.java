@@ -76,9 +76,9 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="UIPageViewControllerOptionSpineLocationKey")
+    @GlobalValue(symbol="UIPageViewControllerOptionSpineLocationKey", optional=true)
     public static native NSString OptionKeySpineLocation();
-    @GlobalValue(symbol="UIPageViewControllerOptionInterPageSpacingKey")
+    @GlobalValue(symbol="UIPageViewControllerOptionInterPageSpacingKey", optional=true)
     public static native NSString OptionKeyInterPageSpacing();
     
     @Method(selector = "initWithTransitionStyle:navigationOrientation:options:")

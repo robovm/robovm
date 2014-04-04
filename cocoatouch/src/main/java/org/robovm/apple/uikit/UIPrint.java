@@ -51,7 +51,7 @@ import org.robovm.apple.coreimage.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="UIPrintErrorDomain")
+    @GlobalValue(symbol="UIPrintErrorDomain", optional=true)
     public static native String ErrorDomain();
     /*</methods>*/
 }

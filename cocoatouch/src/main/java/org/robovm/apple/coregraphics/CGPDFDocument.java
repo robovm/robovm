@@ -63,39 +63,39 @@ import org.robovm.apple.foundation.*;
     }
 
     /*<methods>*/
-    @Bridge(symbol="CGPDFDocumentCreateWithProvider")
+    @Bridge(symbol="CGPDFDocumentCreateWithProvider", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPDFDocument createWithProvider(CGDataProvider provider);
-    @Bridge(symbol="CGPDFDocumentCreateWithURL")
+    @Bridge(symbol="CGPDFDocumentCreateWithURL", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPDFDocument createWithURL(NSURL url);
-    @Bridge(symbol="CGPDFDocumentGetVersion")
+    @Bridge(symbol="CGPDFDocumentGetVersion", optional=true)
     protected native void getVersion(IntPtr majorVersion, IntPtr minorVersion);
-    @Bridge(symbol="CGPDFDocumentIsEncrypted")
+    @Bridge(symbol="CGPDFDocumentIsEncrypted", optional=true)
     public native boolean isEncrypted();
-    @Bridge(symbol="CGPDFDocumentUnlockWithPassword")
+    @Bridge(symbol="CGPDFDocumentUnlockWithPassword", optional=true)
     public native boolean unlockWithPassword(@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String password);
-    @Bridge(symbol="CGPDFDocumentIsUnlocked")
+    @Bridge(symbol="CGPDFDocumentIsUnlocked", optional=true)
     public native boolean isUnlocked();
-    @Bridge(symbol="CGPDFDocumentAllowsPrinting")
+    @Bridge(symbol="CGPDFDocumentAllowsPrinting", optional=true)
     public native boolean allowsPrinting();
-    @Bridge(symbol="CGPDFDocumentAllowsCopying")
+    @Bridge(symbol="CGPDFDocumentAllowsCopying", optional=true)
     public native boolean allowsCopying();
-    @Bridge(symbol="CGPDFDocumentGetNumberOfPages")
+    @Bridge(symbol="CGPDFDocumentGetNumberOfPages", optional=true)
     public native @MachineSizedUInt long getNumberOfPages();
-    @Bridge(symbol="CGPDFDocumentGetPage")
+    @Bridge(symbol="CGPDFDocumentGetPage", optional=true)
     public native CGPDFPage getPage(@MachineSizedUInt long pageNumber);
-    @Bridge(symbol="CGPDFDocumentGetTypeID")
+    @Bridge(symbol="CGPDFDocumentGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CGPDFDocumentGetMediaBox")
+    @Bridge(symbol="CGPDFDocumentGetMediaBox", optional=true)
     public native @ByVal CGRect getMediaBox(int page);
-    @Bridge(symbol="CGPDFDocumentGetCropBox")
+    @Bridge(symbol="CGPDFDocumentGetCropBox", optional=true)
     public native @ByVal CGRect getCropBox(int page);
-    @Bridge(symbol="CGPDFDocumentGetBleedBox")
+    @Bridge(symbol="CGPDFDocumentGetBleedBox", optional=true)
     public native @ByVal CGRect getBleedBox(int page);
-    @Bridge(symbol="CGPDFDocumentGetTrimBox")
+    @Bridge(symbol="CGPDFDocumentGetTrimBox", optional=true)
     public native @ByVal CGRect getTrimBox(int page);
-    @Bridge(symbol="CGPDFDocumentGetArtBox")
+    @Bridge(symbol="CGPDFDocumentGetArtBox", optional=true)
     public native @ByVal CGRect getArtBox(int page);
-    @Bridge(symbol="CGPDFDocumentGetRotationAngle")
+    @Bridge(symbol="CGPDFDocumentGetRotationAngle", optional=true)
     public native int getRotationAngle(int page);
     /*</methods>*/
 }

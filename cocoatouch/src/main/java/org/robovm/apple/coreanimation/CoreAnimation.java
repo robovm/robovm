@@ -48,7 +48,7 @@ import org.robovm.apple.opengles.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CACurrentMediaTime")
+    @Bridge(symbol="CACurrentMediaTime", optional=true)
     public static native double getCurrentMediaTime();
     /*</methods>*/
 }

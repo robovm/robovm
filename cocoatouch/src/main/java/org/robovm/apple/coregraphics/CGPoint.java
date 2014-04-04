@@ -67,12 +67,12 @@ import org.robovm.apple.foundation.*;
     }
     
     /*<methods>*/
-    @GlobalValue(symbol="CGPointZero")
+    @GlobalValue(symbol="CGPointZero", optional=true)
     public static native @ByVal CGPoint Zero();
     
-    @Bridge(symbol="CGPointEqualToPoint")
+    @Bridge(symbol="CGPointEqualToPoint", optional=true)
     protected static native boolean equalToPoint(@ByVal CGPoint point1, @ByVal CGPoint point2);
-    @Bridge(symbol="CGPointApplyAffineTransform")
+    @Bridge(symbol="CGPointApplyAffineTransform", optional=true)
     protected static native @ByVal CGPoint applyAffineTransform(@ByVal CGPoint point, @ByVal CGAffineTransform t);
     /*</methods>*/
 }

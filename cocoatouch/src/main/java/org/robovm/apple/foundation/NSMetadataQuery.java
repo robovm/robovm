@@ -51,35 +51,35 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSMetadataQueryDidStartGatheringNotification")
+    @GlobalValue(symbol="NSMetadataQueryDidStartGatheringNotification", optional=true)
     public static native String NotificationDidStartGathering();
-    @GlobalValue(symbol="NSMetadataQueryGatheringProgressNotification")
+    @GlobalValue(symbol="NSMetadataQueryGatheringProgressNotification", optional=true)
     public static native String NotificationGatheringProgress();
-    @GlobalValue(symbol="NSMetadataQueryDidFinishGatheringNotification")
+    @GlobalValue(symbol="NSMetadataQueryDidFinishGatheringNotification", optional=true)
     public static native String NotificationDidFinishGathering();
-    @GlobalValue(symbol="NSMetadataQueryDidUpdateNotification")
+    @GlobalValue(symbol="NSMetadataQueryDidUpdateNotification", optional=true)
     public static native String NotificationDidUpdate();
-    @GlobalValue(symbol="NSMetadataQueryUpdateAddedItemsKey")
+    @GlobalValue(symbol="NSMetadataQueryUpdateAddedItemsKey", optional=true)
     public static native NSString KeyUpdateAddedItems();
-    @GlobalValue(symbol="NSMetadataQueryUpdateChangedItemsKey")
+    @GlobalValue(symbol="NSMetadataQueryUpdateChangedItemsKey", optional=true)
     public static native NSString KeyUpdateChangedItems();
-    @GlobalValue(symbol="NSMetadataQueryUpdateRemovedItemsKey")
+    @GlobalValue(symbol="NSMetadataQueryUpdateRemovedItemsKey", optional=true)
     public static native NSString KeyUpdateRemovedItems();
-    @GlobalValue(symbol="NSMetadataQueryResultContentRelevanceAttribute")
+    @GlobalValue(symbol="NSMetadataQueryResultContentRelevanceAttribute", optional=true)
     public static native NSString KeyResultContentRelevanceAttribute();
-    @GlobalValue(symbol="NSMetadataQueryUserHomeScope")
+    @GlobalValue(symbol="NSMetadataQueryUserHomeScope", optional=true)
     public static native NSString ScopeUserHome();
-    @GlobalValue(symbol="NSMetadataQueryLocalComputerScope")
+    @GlobalValue(symbol="NSMetadataQueryLocalComputerScope", optional=true)
     public static native NSString ScopeLocalComputer();
-    @GlobalValue(symbol="NSMetadataQueryNetworkScope")
+    @GlobalValue(symbol="NSMetadataQueryNetworkScope", optional=true)
     public static native NSString ScopeNetwork();
-    @GlobalValue(symbol="NSMetadataQueryIndexedLocalComputerScope")
+    @GlobalValue(symbol="NSMetadataQueryIndexedLocalComputerScope", optional=true)
     public static native NSString ScopeIndexedLocalComputer();
-    @GlobalValue(symbol="NSMetadataQueryIndexedNetworkScope")
+    @GlobalValue(symbol="NSMetadataQueryIndexedNetworkScope", optional=true)
     public static native NSString ScopeIndexedNetwork();
-    @GlobalValue(symbol="NSMetadataQueryUbiquitousDocumentsScope")
+    @GlobalValue(symbol="NSMetadataQueryUbiquitousDocumentsScope", optional=true)
     public static native NSString ScopeUbiquitousDocuments();
-    @GlobalValue(symbol="NSMetadataQueryUbiquitousDataScope")
+    @GlobalValue(symbol="NSMetadataQueryUbiquitousDataScope", optional=true)
     public static native NSString ScopeUbiquitousData();
     
     @Method(selector = "delegate")

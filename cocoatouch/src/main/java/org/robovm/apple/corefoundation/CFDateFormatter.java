@@ -47,92 +47,92 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFDateFormatterIsLenient")
+    @GlobalValue(symbol="kCFDateFormatterIsLenient", optional=true)
     public static native CFString KeyIsLenient();
-    @GlobalValue(symbol="kCFDateFormatterTimeZone")
+    @GlobalValue(symbol="kCFDateFormatterTimeZone", optional=true)
     public static native CFString KeyTimeZone();
-    @GlobalValue(symbol="kCFDateFormatterCalendarName")
+    @GlobalValue(symbol="kCFDateFormatterCalendarName", optional=true)
     public static native CFString KeyCalendarName();
-    @GlobalValue(symbol="kCFDateFormatterDefaultFormat")
+    @GlobalValue(symbol="kCFDateFormatterDefaultFormat", optional=true)
     public static native CFString KeyDefaultFormat();
-    @GlobalValue(symbol="kCFDateFormatterTwoDigitStartDate")
+    @GlobalValue(symbol="kCFDateFormatterTwoDigitStartDate", optional=true)
     public static native CFString KeyTwoDigitStartDate();
-    @GlobalValue(symbol="kCFDateFormatterDefaultDate")
+    @GlobalValue(symbol="kCFDateFormatterDefaultDate", optional=true)
     public static native CFString KeyDefaultDate();
-    @GlobalValue(symbol="kCFDateFormatterCalendar")
+    @GlobalValue(symbol="kCFDateFormatterCalendar", optional=true)
     public static native CFString KeyCalendar();
-    @GlobalValue(symbol="kCFDateFormatterEraSymbols")
+    @GlobalValue(symbol="kCFDateFormatterEraSymbols", optional=true)
     public static native CFString KeyEraSymbols();
-    @GlobalValue(symbol="kCFDateFormatterMonthSymbols")
+    @GlobalValue(symbol="kCFDateFormatterMonthSymbols", optional=true)
     public static native CFString KeyMonthSymbols();
-    @GlobalValue(symbol="kCFDateFormatterShortMonthSymbols")
+    @GlobalValue(symbol="kCFDateFormatterShortMonthSymbols", optional=true)
     public static native CFString KeyShortMonthSymbols();
-    @GlobalValue(symbol="kCFDateFormatterWeekdaySymbols")
+    @GlobalValue(symbol="kCFDateFormatterWeekdaySymbols", optional=true)
     public static native CFString KeyWeekdaySymbols();
-    @GlobalValue(symbol="kCFDateFormatterShortWeekdaySymbols")
+    @GlobalValue(symbol="kCFDateFormatterShortWeekdaySymbols", optional=true)
     public static native CFString KeyShortWeekdaySymbols();
-    @GlobalValue(symbol="kCFDateFormatterAMSymbol")
+    @GlobalValue(symbol="kCFDateFormatterAMSymbol", optional=true)
     public static native CFString KeyAMSymbol();
-    @GlobalValue(symbol="kCFDateFormatterPMSymbol")
+    @GlobalValue(symbol="kCFDateFormatterPMSymbol", optional=true)
     public static native CFString KeyPMSymbol();
-    @GlobalValue(symbol="kCFDateFormatterLongEraSymbols")
+    @GlobalValue(symbol="kCFDateFormatterLongEraSymbols", optional=true)
     public static native CFString KeyLongEraSymbols();
-    @GlobalValue(symbol="kCFDateFormatterVeryShortMonthSymbols")
+    @GlobalValue(symbol="kCFDateFormatterVeryShortMonthSymbols", optional=true)
     public static native CFString KeyVeryShortMonthSymbols();
-    @GlobalValue(symbol="kCFDateFormatterStandaloneMonthSymbols")
+    @GlobalValue(symbol="kCFDateFormatterStandaloneMonthSymbols", optional=true)
     public static native CFString KeyStandaloneMonthSymbols();
-    @GlobalValue(symbol="kCFDateFormatterShortStandaloneMonthSymbols")
+    @GlobalValue(symbol="kCFDateFormatterShortStandaloneMonthSymbols", optional=true)
     public static native CFString KeyShortStandaloneMonthSymbols();
-    @GlobalValue(symbol="kCFDateFormatterVeryShortStandaloneMonthSymbols")
+    @GlobalValue(symbol="kCFDateFormatterVeryShortStandaloneMonthSymbols", optional=true)
     public static native CFString KeyVeryShortStandaloneMonthSymbols();
-    @GlobalValue(symbol="kCFDateFormatterVeryShortWeekdaySymbols")
+    @GlobalValue(symbol="kCFDateFormatterVeryShortWeekdaySymbols", optional=true)
     public static native CFString KeyVeryShortWeekdaySymbols();
-    @GlobalValue(symbol="kCFDateFormatterStandaloneWeekdaySymbols")
+    @GlobalValue(symbol="kCFDateFormatterStandaloneWeekdaySymbols", optional=true)
     public static native CFString KeyStandaloneWeekdaySymbols();
-    @GlobalValue(symbol="kCFDateFormatterShortStandaloneWeekdaySymbols")
+    @GlobalValue(symbol="kCFDateFormatterShortStandaloneWeekdaySymbols", optional=true)
     public static native CFString KeyShortStandaloneWeekdaySymbols();
-    @GlobalValue(symbol="kCFDateFormatterVeryShortStandaloneWeekdaySymbols")
+    @GlobalValue(symbol="kCFDateFormatterVeryShortStandaloneWeekdaySymbols", optional=true)
     public static native CFString KeyVeryShortStandaloneWeekdaySymbols();
-    @GlobalValue(symbol="kCFDateFormatterQuarterSymbols")
+    @GlobalValue(symbol="kCFDateFormatterQuarterSymbols", optional=true)
     public static native CFString KeyQuarterSymbols();
-    @GlobalValue(symbol="kCFDateFormatterShortQuarterSymbols")
+    @GlobalValue(symbol="kCFDateFormatterShortQuarterSymbols", optional=true)
     public static native CFString KeyShortQuarterSymbols();
-    @GlobalValue(symbol="kCFDateFormatterStandaloneQuarterSymbols")
+    @GlobalValue(symbol="kCFDateFormatterStandaloneQuarterSymbols", optional=true)
     public static native CFString KeyStandaloneQuarterSymbols();
-    @GlobalValue(symbol="kCFDateFormatterShortStandaloneQuarterSymbols")
+    @GlobalValue(symbol="kCFDateFormatterShortStandaloneQuarterSymbols", optional=true)
     public static native CFString KeyShortStandaloneQuarterSymbols();
-    @GlobalValue(symbol="kCFDateFormatterGregorianStartDate")
+    @GlobalValue(symbol="kCFDateFormatterGregorianStartDate", optional=true)
     public static native CFString KeyGregorianStartDate();
-    @GlobalValue(symbol="kCFDateFormatterDoesRelativeDateFormattingKey")
+    @GlobalValue(symbol="kCFDateFormatterDoesRelativeDateFormattingKey", optional=true)
     public static native CFString KeyDoesRelativeDateFormattingKey();
     
-    @Bridge(symbol="CFDateFormatterCreateDateFormatFromTemplate")
+    @Bridge(symbol="CFDateFormatterCreateDateFormatFromTemplate", optional=true)
     public static native CFString createDateFormatFromTemplate(CFAllocator allocator, CFString tmplate, @MachineSizedUInt long options, CFLocale locale);
-    @Bridge(symbol="CFDateFormatterGetTypeID")
+    @Bridge(symbol="CFDateFormatterGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFDateFormatterCreate")
+    @Bridge(symbol="CFDateFormatterCreate", optional=true)
     public static native CFDateFormatter create(CFAllocator allocator, CFLocale locale, CFDateFormatterStyle dateStyle, CFDateFormatterStyle timeStyle);
-    @Bridge(symbol="CFDateFormatterGetLocale")
+    @Bridge(symbol="CFDateFormatterGetLocale", optional=true)
     public native CFLocale getLocale();
-    @Bridge(symbol="CFDateFormatterGetDateStyle")
+    @Bridge(symbol="CFDateFormatterGetDateStyle", optional=true)
     public native CFDateFormatterStyle getDateStyle();
-    @Bridge(symbol="CFDateFormatterGetTimeStyle")
+    @Bridge(symbol="CFDateFormatterGetTimeStyle", optional=true)
     public native CFDateFormatterStyle getTimeStyle();
-    @Bridge(symbol="CFDateFormatterGetFormat")
+    @Bridge(symbol="CFDateFormatterGetFormat", optional=true)
     public native CFString getFormat();
-    @Bridge(symbol="CFDateFormatterSetFormat")
+    @Bridge(symbol="CFDateFormatterSetFormat", optional=true)
     public native void setFormat(CFString formatString);
-    @Bridge(symbol="CFDateFormatterCreateStringWithDate")
+    @Bridge(symbol="CFDateFormatterCreateStringWithDate", optional=true)
     public static native CFString createStringWithDate(CFAllocator allocator, CFDateFormatter formatter, CFDate date);
-    @Bridge(symbol="CFDateFormatterCreateStringWithAbsoluteTime")
+    @Bridge(symbol="CFDateFormatterCreateStringWithAbsoluteTime", optional=true)
     public static native CFString createStringWithAbsoluteTime(CFAllocator allocator, CFDateFormatter formatter, double at);
-    @Bridge(symbol="CFDateFormatterCreateDateFromString")
+    @Bridge(symbol="CFDateFormatterCreateDateFromString", optional=true)
     public static native CFDate createDateFromString(CFAllocator allocator, CFDateFormatter formatter, CFString string, CFRange rangep);
-    @Bridge(symbol="CFDateFormatterGetAbsoluteTimeFromString")
+    @Bridge(symbol="CFDateFormatterGetAbsoluteTimeFromString", optional=true)
     public native boolean getAbsoluteTimeFromString(CFString string, CFRange rangep, DoublePtr atp);
-    @Bridge(symbol="CFDateFormatterSetProperty")
+    @Bridge(symbol="CFDateFormatterSetProperty", optional=true)
     public native void setProperty(CFString key, CFType value);
-    @Bridge(symbol="CFDateFormatterCopyProperty")
+    @Bridge(symbol="CFDateFormatterCopyProperty", optional=true)
     public native CFType copyProperty(CFString key);
     /*</methods>*/
 }

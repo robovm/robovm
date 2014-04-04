@@ -46,21 +46,21 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="dispatch_retain")
+    @Bridge(symbol="dispatch_retain", optional=true)
     public native void retain();
-    @Bridge(symbol="dispatch_release")
+    @Bridge(symbol="dispatch_release", optional=true)
     public native void release();
-    @Bridge(symbol="dispatch_get_context")
+    @Bridge(symbol="dispatch_get_context", optional=true)
     public native VoidPtr getContext();
-    @Bridge(symbol="dispatch_set_context")
+    @Bridge(symbol="dispatch_set_context", optional=true)
     public native void setContext(VoidPtr context);
-    @Bridge(symbol="dispatch_set_finalizer_f")
+    @Bridge(symbol="dispatch_set_finalizer_f", optional=true)
     public native void setFinalizerF(FunctionPtr finalizer);
-    @Bridge(symbol="dispatch_suspend")
+    @Bridge(symbol="dispatch_suspend", optional=true)
     public native void suspend();
-    @Bridge(symbol="dispatch_resume")
+    @Bridge(symbol="dispatch_resume", optional=true)
     public native void resume();
-    @Bridge(symbol="dispatch_set_target_queue")
+    @Bridge(symbol="dispatch_set_target_queue", optional=true)
     public native void setTargetQueue(DispatchQueue queue);
     /*</methods>*/
 }

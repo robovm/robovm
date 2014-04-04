@@ -48,11 +48,11 @@ import org.robovm.apple.foundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CGShadingGetTypeID")
+    @Bridge(symbol="CGShadingGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CGShadingCreateAxial")
+    @Bridge(symbol="CGShadingCreateAxial", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGShading createAxial(CGColorSpace space, @ByVal CGPoint start, @ByVal CGPoint end, CGFunction function, boolean extendStart, boolean extendEnd);
-    @Bridge(symbol="CGShadingCreateRadial")
+    @Bridge(symbol="CGShadingCreateRadial", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGShading createRadial(CGColorSpace space, @ByVal CGPoint start, @MachineSizedFloat double startRadius, @ByVal CGPoint end, @MachineSizedFloat double endRadius, CGFunction function, boolean extendStart, boolean extendEnd);
     /*</methods>*/
 }

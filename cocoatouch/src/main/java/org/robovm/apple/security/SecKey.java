@@ -48,24 +48,24 @@ import org.robovm.apple.corefoundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kSecPrivateKeyAttrs")
+    @GlobalValue(symbol="kSecPrivateKeyAttrs", optional=true)
     public static native CFType PrivateKeyAttrs();
-    @GlobalValue(symbol="kSecPublicKeyAttrs")
+    @GlobalValue(symbol="kSecPublicKeyAttrs", optional=true)
     public static native CFType PublicKeyAttrs();
     
-    @Bridge(symbol="SecKeyGetTypeID")
+    @Bridge(symbol="SecKeyGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="SecKeyGeneratePair")
+    @Bridge(symbol="SecKeyGeneratePair", optional=true)
     public static native int generatePair(CFDictionary parameters, SecKey.SecKeyPtr publicKey, SecKey.SecKeyPtr privateKey);
-    @Bridge(symbol="SecKeyRawSign")
+    @Bridge(symbol="SecKeyRawSign", optional=true)
     public native int rawSign(SecPadding padding, BytePtr dataToSign, @MachineSizedUInt long dataToSignLen, BytePtr sig, MachineSizedUIntPtr sigLen);
-    @Bridge(symbol="SecKeyRawVerify")
+    @Bridge(symbol="SecKeyRawVerify", optional=true)
     public native int rawVerify(SecPadding padding, BytePtr signedData, @MachineSizedUInt long signedDataLen, BytePtr sig, @MachineSizedUInt long sigLen);
-    @Bridge(symbol="SecKeyEncrypt")
+    @Bridge(symbol="SecKeyEncrypt", optional=true)
     public native int encrypt(SecPadding padding, BytePtr plainText, @MachineSizedUInt long plainTextLen, BytePtr cipherText, MachineSizedUIntPtr cipherTextLen);
-    @Bridge(symbol="SecKeyDecrypt")
+    @Bridge(symbol="SecKeyDecrypt", optional=true)
     public native int decrypt(SecPadding padding, BytePtr cipherText, @MachineSizedUInt long cipherTextLen, BytePtr plainText, MachineSizedUIntPtr plainTextLen);
-    @Bridge(symbol="SecKeyGetBlockSize")
+    @Bridge(symbol="SecKeyGetBlockSize", optional=true)
     public native @MachineSizedUInt long getBlockSize();
     /*</methods>*/
 }

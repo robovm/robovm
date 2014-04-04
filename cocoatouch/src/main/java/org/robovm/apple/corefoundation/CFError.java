@@ -47,46 +47,46 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFErrorDomainPOSIX")
+    @GlobalValue(symbol="kCFErrorDomainPOSIX", optional=true)
     public static native CFString DomainPOSIX();
-    @GlobalValue(symbol="kCFErrorDomainOSStatus")
+    @GlobalValue(symbol="kCFErrorDomainOSStatus", optional=true)
     public static native CFString DomainOSStatus();
-    @GlobalValue(symbol="kCFErrorDomainMach")
+    @GlobalValue(symbol="kCFErrorDomainMach", optional=true)
     public static native CFString DomainMach();
-    @GlobalValue(symbol="kCFErrorDomainCocoa")
+    @GlobalValue(symbol="kCFErrorDomainCocoa", optional=true)
     public static native CFString DomainCocoa();
-    @GlobalValue(symbol="kCFErrorLocalizedDescriptionKey")
+    @GlobalValue(symbol="kCFErrorLocalizedDescriptionKey", optional=true)
     public static native CFString KeyLocalizedDescription();
-    @GlobalValue(symbol="kCFErrorLocalizedFailureReasonKey")
+    @GlobalValue(symbol="kCFErrorLocalizedFailureReasonKey", optional=true)
     public static native CFString KeyLocalizedFailureReason();
-    @GlobalValue(symbol="kCFErrorLocalizedRecoverySuggestionKey")
+    @GlobalValue(symbol="kCFErrorLocalizedRecoverySuggestionKey", optional=true)
     public static native CFString KeyLocalizedRecoverySuggestion();
-    @GlobalValue(symbol="kCFErrorDescriptionKey")
+    @GlobalValue(symbol="kCFErrorDescriptionKey", optional=true)
     public static native CFString KeyDescription();
-    @GlobalValue(symbol="kCFErrorUnderlyingErrorKey")
+    @GlobalValue(symbol="kCFErrorUnderlyingErrorKey", optional=true)
     public static native CFString KeyUnderlyingError();
-    @GlobalValue(symbol="kCFErrorURLKey")
+    @GlobalValue(symbol="kCFErrorURLKey", optional=true)
     public static native CFString KeyURL();
-    @GlobalValue(symbol="kCFErrorFilePathKey")
+    @GlobalValue(symbol="kCFErrorFilePathKey", optional=true)
     public static native CFString KeyFilePath();
     
-    @Bridge(symbol="CFErrorGetTypeID")
+    @Bridge(symbol="CFErrorGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFErrorCreate")
+    @Bridge(symbol="CFErrorCreate", optional=true)
     public static native CFError create(CFAllocator allocator, CFString domain, @MachineSizedSInt long code, CFDictionary userInfo);
-    @Bridge(symbol="CFErrorCreateWithUserInfoKeysAndValues")
+    @Bridge(symbol="CFErrorCreateWithUserInfoKeysAndValues", optional=true)
     public static native CFError createWithUserInfoKeysAndValues(CFAllocator allocator, CFString domain, @MachineSizedSInt long code, VoidPtr.VoidPtrPtr userInfoKeys, VoidPtr.VoidPtrPtr userInfoValues, @MachineSizedSInt long numUserInfoValues);
-    @Bridge(symbol="CFErrorGetDomain")
+    @Bridge(symbol="CFErrorGetDomain", optional=true)
     public native CFString getDomain();
-    @Bridge(symbol="CFErrorGetCode")
+    @Bridge(symbol="CFErrorGetCode", optional=true)
     public native @MachineSizedSInt long getCode();
-    @Bridge(symbol="CFErrorCopyUserInfo")
+    @Bridge(symbol="CFErrorCopyUserInfo", optional=true)
     public native CFDictionary copyUserInfo();
-    @Bridge(symbol="CFErrorCopyDescription")
+    @Bridge(symbol="CFErrorCopyDescription", optional=true)
     public native CFString copyDescription();
-    @Bridge(symbol="CFErrorCopyFailureReason")
+    @Bridge(symbol="CFErrorCopyFailureReason", optional=true)
     public native CFString copyFailureReason();
-    @Bridge(symbol="CFErrorCopyRecoverySuggestion")
+    @Bridge(symbol="CFErrorCopyRecoverySuggestion", optional=true)
     public native CFString copyRecoverySuggestion();
     /*</methods>*/
 }

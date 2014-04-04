@@ -51,9 +51,9 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSURLCredentialStorageChangedNotification")
+    @GlobalValue(symbol="NSURLCredentialStorageChangedNotification", optional=true)
     public static native String NotificationChanged();
-    @GlobalValue(symbol="NSURLCredentialStorageRemoveSynchronizableCredentials")
+    @GlobalValue(symbol="NSURLCredentialStorageRemoveSynchronizableCredentials", optional=true)
     public static native NSString KeyRemoveSynchronizableCredentials();
     
     @Method(selector = "credentialsForProtectionSpace:")

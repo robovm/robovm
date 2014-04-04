@@ -51,15 +51,15 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSNegateBooleanTransformerName")
+    @GlobalValue(symbol="NSNegateBooleanTransformerName", optional=true)
     public static native String NameNegateBooleanTransformer();
-    @GlobalValue(symbol="NSIsNilTransformerName")
+    @GlobalValue(symbol="NSIsNilTransformerName", optional=true)
     public static native String NameIsNilTransformer();
-    @GlobalValue(symbol="NSIsNotNilTransformerName")
+    @GlobalValue(symbol="NSIsNotNilTransformerName", optional=true)
     public static native String NameIsNotNilTransformer();
-    @GlobalValue(symbol="NSUnarchiveFromDataTransformerName")
+    @GlobalValue(symbol="NSUnarchiveFromDataTransformerName", optional=true)
     public static native String NameUnarchiveFromDataTransformer();
-    @GlobalValue(symbol="NSKeyedUnarchiveFromDataTransformerName")
+    @GlobalValue(symbol="NSKeyedUnarchiveFromDataTransformerName", optional=true)
     public static native String NameKeyedUnarchiveFromDataTransformer();
     
     @Method(selector = "transformedValue:")

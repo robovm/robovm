@@ -48,13 +48,13 @@ import org.robovm.apple.foundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CGLayerCreateWithContext")
+    @Bridge(symbol="CGLayerCreateWithContext", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGLayer create(CGContext context, @ByVal CGSize size, NSDictionary<?, ?> auxiliaryInfo);
-    @Bridge(symbol="CGLayerGetSize")
+    @Bridge(symbol="CGLayerGetSize", optional=true)
     public native @ByVal CGSize getSize();
-    @Bridge(symbol="CGLayerGetContext")
+    @Bridge(symbol="CGLayerGetContext", optional=true)
     public native CGContext getContext();
-    @Bridge(symbol="CGLayerGetTypeID")
+    @Bridge(symbol="CGLayerGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     /*</methods>*/
 }

@@ -47,36 +47,36 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFAllocatorDefault")
+    @GlobalValue(symbol="kCFAllocatorDefault", optional=true)
     public static native CFAllocator AllocatorDefault();
-    @GlobalValue(symbol="kCFAllocatorSystemDefault")
+    @GlobalValue(symbol="kCFAllocatorSystemDefault", optional=true)
     public static native CFAllocator AllocatorSystemDefault();
-    @GlobalValue(symbol="kCFAllocatorMalloc")
+    @GlobalValue(symbol="kCFAllocatorMalloc", optional=true)
     public static native CFAllocator AllocatorMalloc();
-    @GlobalValue(symbol="kCFAllocatorMallocZone")
+    @GlobalValue(symbol="kCFAllocatorMallocZone", optional=true)
     public static native CFAllocator AllocatorMallocZone();
-    @GlobalValue(symbol="kCFAllocatorNull")
+    @GlobalValue(symbol="kCFAllocatorNull", optional=true)
     public static native CFAllocator AllocatorNull();
-    @GlobalValue(symbol="kCFAllocatorUseContext")
+    @GlobalValue(symbol="kCFAllocatorUseContext", optional=true)
     public static native CFAllocator AllocatorUseContext();
     
-    @Bridge(symbol="CFAllocatorGetTypeID")
+    @Bridge(symbol="CFAllocatorGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFAllocatorSetDefault")
+    @Bridge(symbol="CFAllocatorSetDefault", optional=true)
     public native void setDefault();
-    @Bridge(symbol="CFAllocatorGetDefault")
+    @Bridge(symbol="CFAllocatorGetDefault", optional=true)
     public static native CFAllocator getDefault();
-    @Bridge(symbol="CFAllocatorCreate")
+    @Bridge(symbol="CFAllocatorCreate", optional=true)
     public native CFAllocator create(CFAllocatorContext context);
-    @Bridge(symbol="CFAllocatorAllocate")
+    @Bridge(symbol="CFAllocatorAllocate", optional=true)
     public native VoidPtr allocate(@MachineSizedSInt long size, @MachineSizedSInt long hint);
-    @Bridge(symbol="CFAllocatorReallocate")
+    @Bridge(symbol="CFAllocatorReallocate", optional=true)
     public native VoidPtr reallocate(VoidPtr ptr, @MachineSizedSInt long newsize, @MachineSizedSInt long hint);
-    @Bridge(symbol="CFAllocatorDeallocate")
+    @Bridge(symbol="CFAllocatorDeallocate", optional=true)
     public native void deallocate(VoidPtr ptr);
-    @Bridge(symbol="CFAllocatorGetPreferredSizeForSize")
+    @Bridge(symbol="CFAllocatorGetPreferredSizeForSize", optional=true)
     public native @MachineSizedSInt long getPreferredSizeForSize(@MachineSizedSInt long size, @MachineSizedSInt long hint);
-    @Bridge(symbol="CFAllocatorGetContext")
+    @Bridge(symbol="CFAllocatorGetContext", optional=true)
     public native void getContext(CFAllocatorContext context);
     /*</methods>*/
 }

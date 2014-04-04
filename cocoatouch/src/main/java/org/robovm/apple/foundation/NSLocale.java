@@ -76,67 +76,67 @@ import org.robovm.apple.security.*;
     }
     
     /*<methods>*/
-    @GlobalValue(symbol="NSCurrentLocaleDidChangeNotification")
+    @GlobalValue(symbol="NSCurrentLocaleDidChangeNotification", optional=true)
     public static native String NotificationCurrentLocaleDidChange();
-    @GlobalValue(symbol="NSLocaleIdentifier")
+    @GlobalValue(symbol="NSLocaleIdentifier", optional=true)
     public static native NSString KeyIdentifier();
-    @GlobalValue(symbol="NSLocaleLanguageCode")
+    @GlobalValue(symbol="NSLocaleLanguageCode", optional=true)
     public static native NSString KeyLanguageCode();
-    @GlobalValue(symbol="NSLocaleCountryCode")
+    @GlobalValue(symbol="NSLocaleCountryCode", optional=true)
     public static native NSString KeyCountryCode();
-    @GlobalValue(symbol="NSLocaleScriptCode")
+    @GlobalValue(symbol="NSLocaleScriptCode", optional=true)
     public static native NSString KeyScriptCode();
-    @GlobalValue(symbol="NSLocaleVariantCode")
+    @GlobalValue(symbol="NSLocaleVariantCode", optional=true)
     public static native NSString KeyVariantCode();
-    @GlobalValue(symbol="NSLocaleExemplarCharacterSet")
+    @GlobalValue(symbol="NSLocaleExemplarCharacterSet", optional=true)
     public static native NSString KeyExemplarCharacterSet();
-    @GlobalValue(symbol="NSLocaleCalendar")
+    @GlobalValue(symbol="NSLocaleCalendar", optional=true)
     public static native String CalendarIdentifierLocale();
-    @GlobalValue(symbol="NSLocaleCollationIdentifier")
+    @GlobalValue(symbol="NSLocaleCollationIdentifier", optional=true)
     public static native NSString KeyCollationIdentifier();
-    @GlobalValue(symbol="NSLocaleUsesMetricSystem")
+    @GlobalValue(symbol="NSLocaleUsesMetricSystem", optional=true)
     public static native NSString KeyUsesMetricSystem();
-    @GlobalValue(symbol="NSLocaleMeasurementSystem")
+    @GlobalValue(symbol="NSLocaleMeasurementSystem", optional=true)
     public static native NSString KeyMeasurementSystem();
-    @GlobalValue(symbol="NSLocaleDecimalSeparator")
+    @GlobalValue(symbol="NSLocaleDecimalSeparator", optional=true)
     public static native NSString KeyDecimalSeparator();
-    @GlobalValue(symbol="NSLocaleGroupingSeparator")
+    @GlobalValue(symbol="NSLocaleGroupingSeparator", optional=true)
     public static native NSString KeyGroupingSeparator();
-    @GlobalValue(symbol="NSLocaleCurrencySymbol")
+    @GlobalValue(symbol="NSLocaleCurrencySymbol", optional=true)
     public static native NSString KeyCurrencySymbol();
-    @GlobalValue(symbol="NSLocaleCurrencyCode")
+    @GlobalValue(symbol="NSLocaleCurrencyCode", optional=true)
     public static native NSString KeyCurrencyCode();
-    @GlobalValue(symbol="NSLocaleCollatorIdentifier")
+    @GlobalValue(symbol="NSLocaleCollatorIdentifier", optional=true)
     public static native NSString KeyCollatorIdentifier();
-    @GlobalValue(symbol="NSLocaleQuotationBeginDelimiterKey")
+    @GlobalValue(symbol="NSLocaleQuotationBeginDelimiterKey", optional=true)
     public static native NSString KeyQuotationBeginDelimiter();
-    @GlobalValue(symbol="NSLocaleQuotationEndDelimiterKey")
+    @GlobalValue(symbol="NSLocaleQuotationEndDelimiterKey", optional=true)
     public static native NSString KeyQuotationEndDelimiter();
-    @GlobalValue(symbol="NSLocaleAlternateQuotationBeginDelimiterKey")
+    @GlobalValue(symbol="NSLocaleAlternateQuotationBeginDelimiterKey", optional=true)
     public static native NSString KeyAlternateQuotationBeginDelimiter();
-    @GlobalValue(symbol="NSLocaleAlternateQuotationEndDelimiterKey")
+    @GlobalValue(symbol="NSLocaleAlternateQuotationEndDelimiterKey", optional=true)
     public static native NSString KeyAlternateQuotationEndDelimiter();
-    @GlobalValue(symbol="NSGregorianCalendar")
+    @GlobalValue(symbol="NSGregorianCalendar", optional=true)
     public static native String CalendarIdentifierGregorian();
-    @GlobalValue(symbol="NSBuddhistCalendar")
+    @GlobalValue(symbol="NSBuddhistCalendar", optional=true)
     public static native String CalendarIdentifierBuddhist();
-    @GlobalValue(symbol="NSChineseCalendar")
+    @GlobalValue(symbol="NSChineseCalendar", optional=true)
     public static native String CalendarIdentifierChinese();
-    @GlobalValue(symbol="NSHebrewCalendar")
+    @GlobalValue(symbol="NSHebrewCalendar", optional=true)
     public static native String CalendarIdentifierHebrew();
-    @GlobalValue(symbol="NSIslamicCalendar")
+    @GlobalValue(symbol="NSIslamicCalendar", optional=true)
     public static native String CalendarIdentifierIslamic();
-    @GlobalValue(symbol="NSIslamicCivilCalendar")
+    @GlobalValue(symbol="NSIslamicCivilCalendar", optional=true)
     public static native String CalendarIdentifierIslamicCivil();
-    @GlobalValue(symbol="NSJapaneseCalendar")
+    @GlobalValue(symbol="NSJapaneseCalendar", optional=true)
     public static native String CalendarIdentifierJapanese();
-    @GlobalValue(symbol="NSRepublicOfChinaCalendar")
+    @GlobalValue(symbol="NSRepublicOfChinaCalendar", optional=true)
     public static native String CalendarIdentifierRepublicOfChina();
-    @GlobalValue(symbol="NSPersianCalendar")
+    @GlobalValue(symbol="NSPersianCalendar", optional=true)
     public static native String CalendarIdentifierPersian();
-    @GlobalValue(symbol="NSIndianCalendar")
+    @GlobalValue(symbol="NSIndianCalendar", optional=true)
     public static native String CalendarIdentifierIndian();
-    @GlobalValue(symbol="NSISO8601Calendar")
+    @GlobalValue(symbol="NSISO8601Calendar", optional=true)
     public static native String CalendarIdentifierISO8601();
     
     @Method(selector = "objectForKey:")

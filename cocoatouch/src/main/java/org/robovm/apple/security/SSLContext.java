@@ -48,85 +48,85 @@ import org.robovm.apple.corefoundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="SSLContextGetTypeID")
+    @Bridge(symbol="SSLContextGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="SSLCreateContext")
+    @Bridge(symbol="SSLCreateContext", optional=true)
     public static native SSLContext createContext(CFAllocator alloc, SSLProtocolSide protocolSide, SSLConnectionType connectionType);
-    @Bridge(symbol="SSLGetSessionState")
+    @Bridge(symbol="SSLGetSessionState", optional=true)
     public native int getSessionState(IntPtr state);
-    @Bridge(symbol="SSLSetSessionOption")
+    @Bridge(symbol="SSLSetSessionOption", optional=true)
     public native int setSessionOption(SSLSessionOption option, boolean value);
-    @Bridge(symbol="SSLGetSessionOption")
+    @Bridge(symbol="SSLGetSessionOption", optional=true)
     public native int getSessionOption(SSLSessionOption option, BytePtr value);
-    @Bridge(symbol="SSLSetIOFuncs")
+    @Bridge(symbol="SSLSetIOFuncs", optional=true)
     public native int setIOFuncs(FunctionPtr readFunc, FunctionPtr writeFunc);
-    @Bridge(symbol="SSLSetProtocolVersionMin")
+    @Bridge(symbol="SSLSetProtocolVersionMin", optional=true)
     public native int setProtocolVersionMin(SSLProtocol minVersion);
-    @Bridge(symbol="SSLGetProtocolVersionMin")
+    @Bridge(symbol="SSLGetProtocolVersionMin", optional=true)
     public native int getProtocolVersionMin(IntPtr minVersion);
-    @Bridge(symbol="SSLSetProtocolVersionMax")
+    @Bridge(symbol="SSLSetProtocolVersionMax", optional=true)
     public native int setProtocolVersionMax(SSLProtocol maxVersion);
-    @Bridge(symbol="SSLGetProtocolVersionMax")
+    @Bridge(symbol="SSLGetProtocolVersionMax", optional=true)
     public native int getProtocolVersionMax(IntPtr maxVersion);
-    @Bridge(symbol="SSLSetCertificate")
+    @Bridge(symbol="SSLSetCertificate", optional=true)
     public native int setCertificate(CFArray certRefs);
-    @Bridge(symbol="SSLSetConnection")
+    @Bridge(symbol="SSLSetConnection", optional=true)
     public native int setConnection(VoidPtr connection);
-    @Bridge(symbol="SSLGetConnection")
+    @Bridge(symbol="SSLGetConnection", optional=true)
     public native int getConnection(VoidPtr.VoidPtrPtr connection);
-    @Bridge(symbol="SSLSetPeerDomainName")
+    @Bridge(symbol="SSLSetPeerDomainName", optional=true)
     public native int setPeerDomainName(BytePtr peerName, @MachineSizedUInt long peerNameLen);
-    @Bridge(symbol="SSLGetPeerDomainNameLength")
+    @Bridge(symbol="SSLGetPeerDomainNameLength", optional=true)
     public native int getPeerDomainNameLength(MachineSizedUIntPtr peerNameLen);
-    @Bridge(symbol="SSLGetPeerDomainName")
+    @Bridge(symbol="SSLGetPeerDomainName", optional=true)
     public native int getPeerDomainName(BytePtr peerName, MachineSizedUIntPtr peerNameLen);
-    @Bridge(symbol="SSLSetDatagramHelloCookie")
+    @Bridge(symbol="SSLSetDatagramHelloCookie", optional=true)
     public native int setDatagramHelloCookie(VoidPtr cookie, @MachineSizedUInt long cookieLen);
-    @Bridge(symbol="SSLSetMaxDatagramRecordSize")
+    @Bridge(symbol="SSLSetMaxDatagramRecordSize", optional=true)
     public native int setMaxDatagramRecordSize(@MachineSizedUInt long maxSize);
-    @Bridge(symbol="SSLGetMaxDatagramRecordSize")
+    @Bridge(symbol="SSLGetMaxDatagramRecordSize", optional=true)
     public native int getMaxDatagramRecordSize(MachineSizedUIntPtr maxSize);
-    @Bridge(symbol="SSLGetNegotiatedProtocolVersion")
+    @Bridge(symbol="SSLGetNegotiatedProtocolVersion", optional=true)
     public native int getNegotiatedProtocolVersion(IntPtr protocol);
-    @Bridge(symbol="SSLGetNumberSupportedCiphers")
+    @Bridge(symbol="SSLGetNumberSupportedCiphers", optional=true)
     public native int getNumberSupportedCiphers(MachineSizedUIntPtr numCiphers);
-    @Bridge(symbol="SSLGetSupportedCiphers")
+    @Bridge(symbol="SSLGetSupportedCiphers", optional=true)
     public native int getSupportedCiphers(ShortPtr ciphers, MachineSizedUIntPtr numCiphers);
-    @Bridge(symbol="SSLSetEnabledCiphers")
+    @Bridge(symbol="SSLSetEnabledCiphers", optional=true)
     public native int setEnabledCiphers(ShortPtr ciphers, @MachineSizedUInt long numCiphers);
-    @Bridge(symbol="SSLGetNumberEnabledCiphers")
+    @Bridge(symbol="SSLGetNumberEnabledCiphers", optional=true)
     public native int getNumberEnabledCiphers(MachineSizedUIntPtr numCiphers);
-    @Bridge(symbol="SSLGetEnabledCiphers")
+    @Bridge(symbol="SSLGetEnabledCiphers", optional=true)
     public native int getEnabledCiphers(ShortPtr ciphers, MachineSizedUIntPtr numCiphers);
-    @Bridge(symbol="SSLCopyPeerTrust")
+    @Bridge(symbol="SSLCopyPeerTrust", optional=true)
     public native int copyPeerTrust(SecTrust.SecTrustPtr trust);
-    @Bridge(symbol="SSLSetPeerID")
+    @Bridge(symbol="SSLSetPeerID", optional=true)
     public native int setPeerID(VoidPtr peerID, @MachineSizedUInt long peerIDLen);
-    @Bridge(symbol="SSLGetPeerID")
+    @Bridge(symbol="SSLGetPeerID", optional=true)
     public native int getPeerID(VoidPtr.VoidPtrPtr peerID, MachineSizedUIntPtr peerIDLen);
-    @Bridge(symbol="SSLGetNegotiatedCipher")
+    @Bridge(symbol="SSLGetNegotiatedCipher", optional=true)
     public native int getNegotiatedCipher(ShortPtr cipherSuite);
-    @Bridge(symbol="SSLSetEncryptionCertificate")
+    @Bridge(symbol="SSLSetEncryptionCertificate", optional=true)
     public native int setEncryptionCertificate(CFArray certRefs);
-    @Bridge(symbol="SSLSetClientSideAuthenticate")
+    @Bridge(symbol="SSLSetClientSideAuthenticate", optional=true)
     public native int setClientSideAuthenticate(SSLAuthenticate auth);
-    @Bridge(symbol="SSLAddDistinguishedName")
+    @Bridge(symbol="SSLAddDistinguishedName", optional=true)
     public native int addDistinguishedName(VoidPtr derDN, @MachineSizedUInt long derDNLen);
-    @Bridge(symbol="SSLCopyDistinguishedNames")
+    @Bridge(symbol="SSLCopyDistinguishedNames", optional=true)
     public native int copyDistinguishedNames(CFArray.CFArrayPtr names);
-    @Bridge(symbol="SSLGetClientCertificateState")
+    @Bridge(symbol="SSLGetClientCertificateState", optional=true)
     public native int getClientCertificateState(IntPtr clientState);
-    @Bridge(symbol="SSLHandshake")
+    @Bridge(symbol="SSLHandshake", optional=true)
     public native int handshake();
-    @Bridge(symbol="SSLWrite")
+    @Bridge(symbol="SSLWrite", optional=true)
     public native int write(VoidPtr data, @MachineSizedUInt long dataLength, MachineSizedUIntPtr processed);
-    @Bridge(symbol="SSLRead")
+    @Bridge(symbol="SSLRead", optional=true)
     public native int read(VoidPtr data, @MachineSizedUInt long dataLength, MachineSizedUIntPtr processed);
-    @Bridge(symbol="SSLGetBufferedReadSize")
+    @Bridge(symbol="SSLGetBufferedReadSize", optional=true)
     public native int getBufferedReadSize(MachineSizedUIntPtr bufSize);
-    @Bridge(symbol="SSLGetDatagramWriteSize")
+    @Bridge(symbol="SSLGetDatagramWriteSize", optional=true)
     public native int getDatagramWriteSize(MachineSizedUIntPtr bufSize);
-    @Bridge(symbol="SSLClose")
+    @Bridge(symbol="SSLClose", optional=true)
     public native int closeContext();
     /*</methods>*/
 }

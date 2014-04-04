@@ -47,19 +47,19 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFSetCreateMutable")
+    @Bridge(symbol="CFSetCreateMutable", optional=true)
     public static native CFMutableSet createMutable(CFAllocator allocator, @MachineSizedSInt long capacity, CFSetCallBacks callBacks);
-    @Bridge(symbol="CFSetCreateMutableCopy")
+    @Bridge(symbol="CFSetCreateMutableCopy", optional=true)
     public static native CFMutableSet createMutableCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFSet theSet);
-    @Bridge(symbol="CFSetAddValue")
+    @Bridge(symbol="CFSetAddValue", optional=true)
     public native void addValue(VoidPtr value);
-    @Bridge(symbol="CFSetReplaceValue")
+    @Bridge(symbol="CFSetReplaceValue", optional=true)
     public native void replaceValue(VoidPtr value);
-    @Bridge(symbol="CFSetSetValue")
+    @Bridge(symbol="CFSetSetValue", optional=true)
     public native void setValue(VoidPtr value);
-    @Bridge(symbol="CFSetRemoveValue")
+    @Bridge(symbol="CFSetRemoveValue", optional=true)
     public native void removeValue(VoidPtr value);
-    @Bridge(symbol="CFSetRemoveAllValues")
+    @Bridge(symbol="CFSetRemoveAllValues", optional=true)
     public native void removeAllValues();
     /*</methods>*/
 }

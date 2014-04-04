@@ -46,11 +46,11 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="dispatch_semaphore_create")
+    @Bridge(symbol="dispatch_semaphore_create", optional=true)
     public static native DispatchSemaphore create(@MachineSizedSInt long value);
-    @Bridge(symbol="dispatch_semaphore_wait")
+    @Bridge(symbol="dispatch_semaphore_wait", optional=true)
     public native @MachineSizedSInt long await(long timeout);
-    @Bridge(symbol="dispatch_semaphore_signal")
+    @Bridge(symbol="dispatch_semaphore_signal", optional=true)
     public native @MachineSizedSInt long signal();
     /*</methods>*/
 }

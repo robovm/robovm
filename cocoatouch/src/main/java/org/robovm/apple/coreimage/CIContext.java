@@ -63,11 +63,11 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCIContextOutputColorSpace")
+    @GlobalValue(symbol="kCIContextOutputColorSpace", optional=true)
     public static native NSString KeyOutputColorSpace();
-    @GlobalValue(symbol="kCIContextWorkingColorSpace")
+    @GlobalValue(symbol="kCIContextWorkingColorSpace", optional=true)
     public static native NSString KeyWorkingColorSpace();
-    @GlobalValue(symbol="kCIContextUseSoftwareRenderer")
+    @GlobalValue(symbol="kCIContextUseSoftwareRenderer", optional=true)
     public static native NSString KeyUseSoftwareRenderer();
     
     @Method(selector = "drawImage:atPoint:fromRect:")

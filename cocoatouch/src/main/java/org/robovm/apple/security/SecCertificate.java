@@ -48,18 +48,18 @@ import org.robovm.apple.corefoundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kSecPropertyTypeTitle")
+    @GlobalValue(symbol="kSecPropertyTypeTitle", optional=true)
     public static native CFType PropertyTypeTitle();
-    @GlobalValue(symbol="kSecPropertyTypeError")
+    @GlobalValue(symbol="kSecPropertyTypeError", optional=true)
     public static native CFType PropertyTypeError();
     
-    @Bridge(symbol="SecCertificateGetTypeID")
+    @Bridge(symbol="SecCertificateGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="SecCertificateCreateWithData")
+    @Bridge(symbol="SecCertificateCreateWithData", optional=true)
     public static native SecCertificate createWithData(CFAllocator allocator, CFData data);
-    @Bridge(symbol="SecCertificateCopyData")
+    @Bridge(symbol="SecCertificateCopyData", optional=true)
     public native CFData copyData();
-    @Bridge(symbol="SecCertificateCopySubjectSummary")
+    @Bridge(symbol="SecCertificateCopySubjectSummary", optional=true)
     public native CFString copySubjectSummary();
     /*</methods>*/
 }

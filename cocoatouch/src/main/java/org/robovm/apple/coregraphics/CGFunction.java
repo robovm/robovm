@@ -155,9 +155,9 @@ import org.robovm.apple.foundation.*;
     }
     
     /*<methods>*/
-    @Bridge(symbol="CGFunctionGetTypeID")
+    @Bridge(symbol="CGFunctionGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CGFunctionCreate")
+    @Bridge(symbol="CGFunctionCreate", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGFunction create(@Pointer long info, @MachineSizedUInt long domainDimension, MachineSizedFloatPtr domain, @MachineSizedUInt long rangeDimension, MachineSizedFloatPtr range, CGFunctionCallbacks callbacks);
     /*</methods>*/
 }

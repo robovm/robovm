@@ -47,30 +47,30 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFTypeBagCallBacks")
+    @GlobalValue(symbol="kCFTypeBagCallBacks", optional=true)
     public static native @ByVal CFBagCallBacks BagCallBacks();
-    @GlobalValue(symbol="kCFCopyStringBagCallBacks")
+    @GlobalValue(symbol="kCFCopyStringBagCallBacks", optional=true)
     public static native @ByVal CFBagCallBacks CopyStringBagCallBacks();
     
-    @Bridge(symbol="CFBagGetTypeID")
+    @Bridge(symbol="CFBagGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFBagCreate")
+    @Bridge(symbol="CFBagCreate", optional=true)
     public static native CFBag create(CFAllocator allocator, VoidPtr.VoidPtrPtr values, @MachineSizedSInt long numValues, CFBagCallBacks callBacks);
-    @Bridge(symbol="CFBagCreateCopy")
+    @Bridge(symbol="CFBagCreateCopy", optional=true)
     public static native CFBag createCopy(CFAllocator allocator, CFBag theBag);
-    @Bridge(symbol="CFBagGetCount")
+    @Bridge(symbol="CFBagGetCount", optional=true)
     public native @MachineSizedSInt long getCount();
-    @Bridge(symbol="CFBagGetCountOfValue")
+    @Bridge(symbol="CFBagGetCountOfValue", optional=true)
     public native @MachineSizedSInt long getCountOfValue(VoidPtr value);
-    @Bridge(symbol="CFBagContainsValue")
+    @Bridge(symbol="CFBagContainsValue", optional=true)
     public native boolean containsValue(VoidPtr value);
-    @Bridge(symbol="CFBagGetValue")
+    @Bridge(symbol="CFBagGetValue", optional=true)
     public native VoidPtr getValue(VoidPtr value);
-    @Bridge(symbol="CFBagGetValueIfPresent")
+    @Bridge(symbol="CFBagGetValueIfPresent", optional=true)
     public native boolean getValueIfPresent(VoidPtr candidate, VoidPtr.VoidPtrPtr value);
-    @Bridge(symbol="CFBagGetValues")
+    @Bridge(symbol="CFBagGetValues", optional=true)
     public native void getValues(VoidPtr.VoidPtrPtr values);
-    @Bridge(symbol="CFBagApplyFunction")
+    @Bridge(symbol="CFBagApplyFunction", optional=true)
     public native void applyFunction(FunctionPtr applier, VoidPtr context);
     /*</methods>*/
 }

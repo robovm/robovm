@@ -47,31 +47,31 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFRunLoopTimerGetTypeID")
+    @Bridge(symbol="CFRunLoopTimerGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFRunLoopTimerCreate")
+    @Bridge(symbol="CFRunLoopTimerCreate", optional=true)
     public static native CFRunLoopTimer create(CFAllocator allocator, double fireDate, double interval, @MachineSizedUInt long flags, @MachineSizedSInt long order, FunctionPtr callout, CFRunLoopTimerContext context);
-    @Bridge(symbol="CFRunLoopTimerCreateWithHandler")
+    @Bridge(symbol="CFRunLoopTimerCreateWithHandler", optional=true)
     public static native CFRunLoopTimer createWithHandler(CFAllocator allocator, double fireDate, double interval, @MachineSizedUInt long flags, @MachineSizedSInt long order, ObjCBlock block);
-    @Bridge(symbol="CFRunLoopTimerGetNextFireDate")
+    @Bridge(symbol="CFRunLoopTimerGetNextFireDate", optional=true)
     public native double getNextFireDate();
-    @Bridge(symbol="CFRunLoopTimerSetNextFireDate")
+    @Bridge(symbol="CFRunLoopTimerSetNextFireDate", optional=true)
     public native void setNextFireDate(double fireDate);
-    @Bridge(symbol="CFRunLoopTimerGetInterval")
+    @Bridge(symbol="CFRunLoopTimerGetInterval", optional=true)
     public native double getInterval();
-    @Bridge(symbol="CFRunLoopTimerDoesRepeat")
+    @Bridge(symbol="CFRunLoopTimerDoesRepeat", optional=true)
     public native boolean doesRepeat();
-    @Bridge(symbol="CFRunLoopTimerGetOrder")
+    @Bridge(symbol="CFRunLoopTimerGetOrder", optional=true)
     public native @MachineSizedSInt long getOrder();
-    @Bridge(symbol="CFRunLoopTimerInvalidate")
+    @Bridge(symbol="CFRunLoopTimerInvalidate", optional=true)
     public native void invalidate();
-    @Bridge(symbol="CFRunLoopTimerIsValid")
+    @Bridge(symbol="CFRunLoopTimerIsValid", optional=true)
     public native boolean isValid();
-    @Bridge(symbol="CFRunLoopTimerGetContext")
+    @Bridge(symbol="CFRunLoopTimerGetContext", optional=true)
     public native void getContext(CFRunLoopTimerContext context);
-    @Bridge(symbol="CFRunLoopTimerGetTolerance")
+    @Bridge(symbol="CFRunLoopTimerGetTolerance", optional=true)
     public native double getTolerance();
-    @Bridge(symbol="CFRunLoopTimerSetTolerance")
+    @Bridge(symbol="CFRunLoopTimerSetTolerance", optional=true)
     public native void setTolerance(double tolerance);
     /*</methods>*/
 }

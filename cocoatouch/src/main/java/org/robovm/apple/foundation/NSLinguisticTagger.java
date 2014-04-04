@@ -52,81 +52,81 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSLinguisticTagSchemeTokenType")
+    @GlobalValue(symbol="NSLinguisticTagSchemeTokenType", optional=true)
     public static native NSString TagSchemeTokenType();
-    @GlobalValue(symbol="NSLinguisticTagSchemeLexicalClass")
+    @GlobalValue(symbol="NSLinguisticTagSchemeLexicalClass", optional=true)
     public static native NSString TagSchemeLexicalClass();
-    @GlobalValue(symbol="NSLinguisticTagSchemeNameType")
+    @GlobalValue(symbol="NSLinguisticTagSchemeNameType", optional=true)
     public static native NSString TagSchemeNameType();
-    @GlobalValue(symbol="NSLinguisticTagSchemeNameTypeOrLexicalClass")
+    @GlobalValue(symbol="NSLinguisticTagSchemeNameTypeOrLexicalClass", optional=true)
     public static native NSString TagSchemeNameTypeOrLexicalClass();
-    @GlobalValue(symbol="NSLinguisticTagSchemeLemma")
+    @GlobalValue(symbol="NSLinguisticTagSchemeLemma", optional=true)
     public static native NSString TagSchemeLemma();
-    @GlobalValue(symbol="NSLinguisticTagSchemeLanguage")
+    @GlobalValue(symbol="NSLinguisticTagSchemeLanguage", optional=true)
     public static native NSString TagSchemeLanguage();
-    @GlobalValue(symbol="NSLinguisticTagSchemeScript")
+    @GlobalValue(symbol="NSLinguisticTagSchemeScript", optional=true)
     public static native NSString TagSchemeScript();
-    @GlobalValue(symbol="NSLinguisticTagWord")
+    @GlobalValue(symbol="NSLinguisticTagWord", optional=true)
     public static native NSString TokenTypeWord();
-    @GlobalValue(symbol="NSLinguisticTagPunctuation")
+    @GlobalValue(symbol="NSLinguisticTagPunctuation", optional=true)
     public static native NSString TokenTypePunctuation();
-    @GlobalValue(symbol="NSLinguisticTagWhitespace")
+    @GlobalValue(symbol="NSLinguisticTagWhitespace", optional=true)
     public static native NSString TokenTypeWhitespace();
-    @GlobalValue(symbol="NSLinguisticTagOther")
+    @GlobalValue(symbol="NSLinguisticTagOther", optional=true)
     public static native NSString TokenTypeOther();
-    @GlobalValue(symbol="NSLinguisticTagNoun")
+    @GlobalValue(symbol="NSLinguisticTagNoun", optional=true)
     public static native NSString LexicalClassNoun();
-    @GlobalValue(symbol="NSLinguisticTagVerb")
+    @GlobalValue(symbol="NSLinguisticTagVerb", optional=true)
     public static native NSString LexicalClassVerb();
-    @GlobalValue(symbol="NSLinguisticTagAdjective")
+    @GlobalValue(symbol="NSLinguisticTagAdjective", optional=true)
     public static native NSString LexicalClassAdjective();
-    @GlobalValue(symbol="NSLinguisticTagAdverb")
+    @GlobalValue(symbol="NSLinguisticTagAdverb", optional=true)
     public static native NSString LexicalClassAdverb();
-    @GlobalValue(symbol="NSLinguisticTagPronoun")
+    @GlobalValue(symbol="NSLinguisticTagPronoun", optional=true)
     public static native NSString LexicalClassPronoun();
-    @GlobalValue(symbol="NSLinguisticTagDeterminer")
+    @GlobalValue(symbol="NSLinguisticTagDeterminer", optional=true)
     public static native NSString LexicalClassDeterminer();
-    @GlobalValue(symbol="NSLinguisticTagParticle")
+    @GlobalValue(symbol="NSLinguisticTagParticle", optional=true)
     public static native NSString LexicalClassParticle();
-    @GlobalValue(symbol="NSLinguisticTagPreposition")
+    @GlobalValue(symbol="NSLinguisticTagPreposition", optional=true)
     public static native NSString LexicalClassPreposition();
-    @GlobalValue(symbol="NSLinguisticTagNumber")
+    @GlobalValue(symbol="NSLinguisticTagNumber", optional=true)
     public static native NSString LexicalClassNumber();
-    @GlobalValue(symbol="NSLinguisticTagConjunction")
+    @GlobalValue(symbol="NSLinguisticTagConjunction", optional=true)
     public static native NSString LexicalClassConjunction();
-    @GlobalValue(symbol="NSLinguisticTagInterjection")
+    @GlobalValue(symbol="NSLinguisticTagInterjection", optional=true)
     public static native NSString LexicalClassInterjection();
-    @GlobalValue(symbol="NSLinguisticTagClassifier")
+    @GlobalValue(symbol="NSLinguisticTagClassifier", optional=true)
     public static native NSString LexicalClassClassifier();
-    @GlobalValue(symbol="NSLinguisticTagIdiom")
+    @GlobalValue(symbol="NSLinguisticTagIdiom", optional=true)
     public static native NSString LexicalClassIdiom();
-    @GlobalValue(symbol="NSLinguisticTagOtherWord")
+    @GlobalValue(symbol="NSLinguisticTagOtherWord", optional=true)
     public static native NSString LexicalClassOtherWord();
-    @GlobalValue(symbol="NSLinguisticTagSentenceTerminator")
+    @GlobalValue(symbol="NSLinguisticTagSentenceTerminator", optional=true)
     public static native NSString LexicalClassSentenceTerminator();
-    @GlobalValue(symbol="NSLinguisticTagOpenQuote")
+    @GlobalValue(symbol="NSLinguisticTagOpenQuote", optional=true)
     public static native NSString LexicalClassOpenQuote();
-    @GlobalValue(symbol="NSLinguisticTagCloseQuote")
+    @GlobalValue(symbol="NSLinguisticTagCloseQuote", optional=true)
     public static native NSString LexicalClassCloseQuote();
-    @GlobalValue(symbol="NSLinguisticTagOpenParenthesis")
+    @GlobalValue(symbol="NSLinguisticTagOpenParenthesis", optional=true)
     public static native NSString LexicalClassOpenParenthesis();
-    @GlobalValue(symbol="NSLinguisticTagCloseParenthesis")
+    @GlobalValue(symbol="NSLinguisticTagCloseParenthesis", optional=true)
     public static native NSString LexicalClassCloseParenthesis();
-    @GlobalValue(symbol="NSLinguisticTagWordJoiner")
+    @GlobalValue(symbol="NSLinguisticTagWordJoiner", optional=true)
     public static native NSString LexicalClassWordJoiner();
-    @GlobalValue(symbol="NSLinguisticTagDash")
+    @GlobalValue(symbol="NSLinguisticTagDash", optional=true)
     public static native NSString LexicalClassDash();
-    @GlobalValue(symbol="NSLinguisticTagOtherPunctuation")
+    @GlobalValue(symbol="NSLinguisticTagOtherPunctuation", optional=true)
     public static native NSString LexicalClassOtherPunctuation();
-    @GlobalValue(symbol="NSLinguisticTagParagraphBreak")
+    @GlobalValue(symbol="NSLinguisticTagParagraphBreak", optional=true)
     public static native NSString LexicalClassParagraphBreak();
-    @GlobalValue(symbol="NSLinguisticTagOtherWhitespace")
+    @GlobalValue(symbol="NSLinguisticTagOtherWhitespace", optional=true)
     public static native NSString LexicalClassOtherWhitespace();
-    @GlobalValue(symbol="NSLinguisticTagPersonalName")
+    @GlobalValue(symbol="NSLinguisticTagPersonalName", optional=true)
     public static native NSString NameTypePersonal();
-    @GlobalValue(symbol="NSLinguisticTagPlaceName")
+    @GlobalValue(symbol="NSLinguisticTagPlaceName", optional=true)
     public static native NSString NameTypePlace();
-    @GlobalValue(symbol="NSLinguisticTagOrganizationName")
+    @GlobalValue(symbol="NSLinguisticTagOrganizationName", optional=true)
     public static native NSString NameTypeOrganization();
     
     @Method(selector = "initWithTagSchemes:options:")

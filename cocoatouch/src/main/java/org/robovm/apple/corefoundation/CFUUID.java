@@ -47,21 +47,21 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFUUIDGetTypeID")
+    @Bridge(symbol="CFUUIDGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFUUIDCreate")
+    @Bridge(symbol="CFUUIDCreate", optional=true)
     public static native CFUUID create(CFAllocator alloc);
-    @Bridge(symbol="CFUUIDCreateWithBytes")
+    @Bridge(symbol="CFUUIDCreateWithBytes", optional=true)
     public static native CFUUID createWithBytes(CFAllocator alloc, byte byte0, byte byte1, byte byte2, byte byte3, byte byte4, byte byte5, byte byte6, byte byte7, byte byte8, byte byte9, byte byte10, byte byte11, byte byte12, byte byte13, byte byte14, byte byte15);
-    @Bridge(symbol="CFUUIDCreateFromString")
+    @Bridge(symbol="CFUUIDCreateFromString", optional=true)
     public static native CFUUID createFromString(CFAllocator alloc, CFString uuidStr);
-    @Bridge(symbol="CFUUIDCreateString")
+    @Bridge(symbol="CFUUIDCreateString", optional=true)
     public static native CFString createString(CFAllocator alloc, CFUUID uuid);
-    @Bridge(symbol="CFUUIDGetConstantUUIDWithBytes")
+    @Bridge(symbol="CFUUIDGetConstantUUIDWithBytes", optional=true)
     public static native CFUUID getConstantUUIDWithBytes(CFAllocator alloc, byte byte0, byte byte1, byte byte2, byte byte3, byte byte4, byte byte5, byte byte6, byte byte7, byte byte8, byte byte9, byte byte10, byte byte11, byte byte12, byte byte13, byte byte14, byte byte15);
-    @Bridge(symbol="CFUUIDGetUUIDBytes")
+    @Bridge(symbol="CFUUIDGetUUIDBytes", optional=true)
     public native @ByVal CFUUIDBytes getUUIDBytes();
-    @Bridge(symbol="CFUUIDCreateFromUUIDBytes")
+    @Bridge(symbol="CFUUIDCreateFromUUIDBytes", optional=true)
     public static native CFUUID createFromUUIDBytes(CFAllocator alloc, @ByVal CFUUIDBytes bytes);
     /*</methods>*/
 }

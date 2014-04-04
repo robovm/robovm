@@ -51,44 +51,44 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="_dispatch_main_q")
+    @GlobalValue(symbol="_dispatch_main_q", optional=true)
     public static native DispatchQueue getMainQueue();
     
-    @Bridge(symbol="dispatch_async")
+    @Bridge(symbol="dispatch_async", optional=true)
     public native void async(@Block Runnable block);
-    @Bridge(symbol="dispatch_async_f")
+    @Bridge(symbol="dispatch_async_f", optional=true)
     public native void asyncF(VoidPtr context, FunctionPtr work);
-    @Bridge(symbol="dispatch_sync")
+    @Bridge(symbol="dispatch_sync", optional=true)
     public native void sync(@Block Runnable block);
-    @Bridge(symbol="dispatch_sync_f")
+    @Bridge(symbol="dispatch_sync_f", optional=true)
     public native void syncF(VoidPtr context, FunctionPtr work);
-    @Bridge(symbol="dispatch_apply")
+    @Bridge(symbol="dispatch_apply", optional=true)
     public static native void apply(@MachineSizedUInt long iterations, DispatchQueue queue, ObjCBlock block);
-    @Bridge(symbol="dispatch_apply_f")
+    @Bridge(symbol="dispatch_apply_f", optional=true)
     public static native void applyF(@MachineSizedUInt long iterations, DispatchQueue queue, VoidPtr context, FunctionPtr work);
-    @Bridge(symbol="dispatch_get_current_queue")
+    @Bridge(symbol="dispatch_get_current_queue", optional=true)
     public static native DispatchQueue getCurrentQueue();
-    @Bridge(symbol="dispatch_get_global_queue")
+    @Bridge(symbol="dispatch_get_global_queue", optional=true)
     public static native DispatchQueue getGlobalQueue(@MachineSizedSInt long priority, @MachineSizedUInt long flags);
-    @Bridge(symbol="dispatch_queue_create")
+    @Bridge(symbol="dispatch_queue_create", optional=true)
     public static native DispatchQueue create(BytePtr label, DispatchQueueAttr attr);
-    @Bridge(symbol="dispatch_queue_get_label")
+    @Bridge(symbol="dispatch_queue_get_label", optional=true)
     public native BytePtr getLabel();
-    @Bridge(symbol="dispatch_after")
+    @Bridge(symbol="dispatch_after", optional=true)
     public static native void after(long when, DispatchQueue queue, @Block Runnable block);
-    @Bridge(symbol="dispatch_after_f")
+    @Bridge(symbol="dispatch_after_f", optional=true)
     public static native void afterF(long when, DispatchQueue queue, VoidPtr context, FunctionPtr work);
-    @Bridge(symbol="dispatch_barrier_async")
+    @Bridge(symbol="dispatch_barrier_async", optional=true)
     public native void barrierAsync(@Block Runnable block);
-    @Bridge(symbol="dispatch_barrier_async_f")
+    @Bridge(symbol="dispatch_barrier_async_f", optional=true)
     public native void barrierAsyncF(VoidPtr context, FunctionPtr work);
-    @Bridge(symbol="dispatch_barrier_sync")
+    @Bridge(symbol="dispatch_barrier_sync", optional=true)
     public native void barrierSync(@Block Runnable block);
-    @Bridge(symbol="dispatch_barrier_sync_f")
+    @Bridge(symbol="dispatch_barrier_sync_f", optional=true)
     public native void barrierSyncF(VoidPtr context, FunctionPtr work);
-    @Bridge(symbol="dispatch_queue_set_specific")
+    @Bridge(symbol="dispatch_queue_set_specific", optional=true)
     public native void setSpecific(VoidPtr key, VoidPtr context, FunctionPtr destructor);
-    @Bridge(symbol="dispatch_queue_get_specific")
+    @Bridge(symbol="dispatch_queue_get_specific", optional=true)
     public native VoidPtr getSpecific(VoidPtr key);
     /*</methods>*/
 }

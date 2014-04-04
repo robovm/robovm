@@ -129,7 +129,7 @@ import org.robovm.apple.security.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSFoundationVersionNumber")
+    @GlobalValue(symbol="NSFoundationVersionNumber", optional=true)
     public static native double VersionNumber();
     /*</methods>*/
 }

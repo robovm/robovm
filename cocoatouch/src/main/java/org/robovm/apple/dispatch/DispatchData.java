@@ -46,28 +46,28 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="_dispatch_data_empty")
+    @GlobalValue(symbol="_dispatch_data_empty", optional=true)
     public static native DispatchData Empty();
-    @GlobalValue(symbol="_dispatch_data_empty")
+    @GlobalValue(symbol="_dispatch_data_empty", optional=true)
     public static native void Empty(DispatchData v);
-    @GlobalValue(symbol="_dispatch_data_destructor_free")
+    @GlobalValue(symbol="_dispatch_data_destructor_free", optional=true)
     public static native DispatchData DestructorFree();
-    @GlobalValue(symbol="_dispatch_data_destructor_munmap")
+    @GlobalValue(symbol="_dispatch_data_destructor_munmap", optional=true)
     public static native DispatchData DestructorMunmap();
     
-    @Bridge(symbol="dispatch_data_create")
+    @Bridge(symbol="dispatch_data_create", optional=true)
     public static native DispatchData create(VoidPtr buffer, @MachineSizedUInt long size, DispatchQueue queue, @Block Runnable destructor);
-    @Bridge(symbol="dispatch_data_get_size")
+    @Bridge(symbol="dispatch_data_get_size", optional=true)
     public native @MachineSizedUInt long getSize();
-    @Bridge(symbol="dispatch_data_create_map")
+    @Bridge(symbol="dispatch_data_create_map", optional=true)
     public native DispatchData createMap(VoidPtr.VoidPtrPtr buffer_ptr, MachineSizedUIntPtr size_ptr);
-    @Bridge(symbol="dispatch_data_create_concat")
+    @Bridge(symbol="dispatch_data_create_concat", optional=true)
     public native DispatchData createConcat(DispatchData data2);
-    @Bridge(symbol="dispatch_data_create_subrange")
+    @Bridge(symbol="dispatch_data_create_subrange", optional=true)
     public native DispatchData createSubrange(@MachineSizedUInt long offset, @MachineSizedUInt long length);
-    @Bridge(symbol="dispatch_data_apply")
+    @Bridge(symbol="dispatch_data_apply", optional=true)
     public native boolean apply(FunctionPtr applier);
-    @Bridge(symbol="dispatch_data_copy_region")
+    @Bridge(symbol="dispatch_data_copy_region", optional=true)
     public native DispatchData copyRegion(@MachineSizedUInt long location, MachineSizedUIntPtr offset_ptr);
     /*</methods>*/
 }

@@ -80,43 +80,43 @@ import org.robovm.apple.foundation.*;
     }
     
     /*<methods>*/
-    @Bridge(symbol="CGFontGetTypeID")
+    @Bridge(symbol="CGFontGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CGFontCreateWithDataProvider")
+    @Bridge(symbol="CGFontCreateWithDataProvider", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGFont create(CGDataProvider provider);
-    @Bridge(symbol="CGFontCreateWithFontName")
+    @Bridge(symbol="CGFontCreateWithFontName", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGFont create(String name);
-    @Bridge(symbol="CGFontGetNumberOfGlyphs")
+    @Bridge(symbol="CGFontGetNumberOfGlyphs", optional=true)
     public native @MachineSizedUInt long getNumberOfGlyphs();
-    @Bridge(symbol="CGFontGetUnitsPerEm")
+    @Bridge(symbol="CGFontGetUnitsPerEm", optional=true)
     public native int getUnitsPerEm();
-    @Bridge(symbol="CGFontCopyPostScriptName")
+    @Bridge(symbol="CGFontCopyPostScriptName", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getPostScriptName();
-    @Bridge(symbol="CGFontCopyFullName")
+    @Bridge(symbol="CGFontCopyFullName", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getFullName();
-    @Bridge(symbol="CGFontGetAscent")
+    @Bridge(symbol="CGFontGetAscent", optional=true)
     public native int getAscent();
-    @Bridge(symbol="CGFontGetDescent")
+    @Bridge(symbol="CGFontGetDescent", optional=true)
     public native int getDescent();
-    @Bridge(symbol="CGFontGetLeading")
+    @Bridge(symbol="CGFontGetLeading", optional=true)
     public native int getLeading();
-    @Bridge(symbol="CGFontGetCapHeight")
+    @Bridge(symbol="CGFontGetCapHeight", optional=true)
     public native int getCapHeight();
-    @Bridge(symbol="CGFontGetXHeight")
+    @Bridge(symbol="CGFontGetXHeight", optional=true)
     public native int getXHeight();
-    @Bridge(symbol="CGFontGetFontBBox")
+    @Bridge(symbol="CGFontGetFontBBox", optional=true)
     public native @ByVal CGRect getFontBBox();
-    @Bridge(symbol="CGFontGetItalicAngle")
+    @Bridge(symbol="CGFontGetItalicAngle", optional=true)
     public native @MachineSizedFloat double getItalicAngle();
-    @Bridge(symbol="CGFontGetStemV")
+    @Bridge(symbol="CGFontGetStemV", optional=true)
     public native @MachineSizedFloat double getStemV();
-    @Bridge(symbol="CGFontGetGlyphAdvances")
+    @Bridge(symbol="CGFontGetGlyphAdvances", optional=true)
     protected native boolean getGlyphAdvances(ShortPtr glyphs, @MachineSizedUInt long count, IntPtr advances);
-    @Bridge(symbol="CGFontGetGlyphBBoxes")
+    @Bridge(symbol="CGFontGetGlyphBBoxes", optional=true)
     protected native boolean getGlyphBBoxes(ShortPtr glyphs, @MachineSizedUInt long count, CGRect bboxes);
-    @Bridge(symbol="CGFontGetGlyphWithGlyphName")
+    @Bridge(symbol="CGFontGetGlyphWithGlyphName", optional=true)
     public native char getGlyphWithGlyphName(String name);
-    @Bridge(symbol="CGFontCopyGlyphNameForGlyph")
+    @Bridge(symbol="CGFontCopyGlyphNameForGlyph", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getGlyphNameForGlyph(char glyph);
     /*</methods>*/
 }

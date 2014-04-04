@@ -47,21 +47,21 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFNotificationCenterGetTypeID")
+    @Bridge(symbol="CFNotificationCenterGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFNotificationCenterGetLocalCenter")
+    @Bridge(symbol="CFNotificationCenterGetLocalCenter", optional=true)
     public static native CFNotificationCenter getLocalCenter();
-    @Bridge(symbol="CFNotificationCenterGetDarwinNotifyCenter")
+    @Bridge(symbol="CFNotificationCenterGetDarwinNotifyCenter", optional=true)
     public static native CFNotificationCenter getDarwinNotifyCenter();
-    @Bridge(symbol="CFNotificationCenterAddObserver")
+    @Bridge(symbol="CFNotificationCenterAddObserver", optional=true)
     public native void addObserver(VoidPtr observer, FunctionPtr callBack, CFString name, VoidPtr object, CFNotificationSuspensionBehavior suspensionBehavior);
-    @Bridge(symbol="CFNotificationCenterRemoveObserver")
+    @Bridge(symbol="CFNotificationCenterRemoveObserver", optional=true)
     public native void removeObserver(VoidPtr observer, CFString name, VoidPtr object);
-    @Bridge(symbol="CFNotificationCenterRemoveEveryObserver")
+    @Bridge(symbol="CFNotificationCenterRemoveEveryObserver", optional=true)
     public native void removeEveryObserver(VoidPtr observer);
-    @Bridge(symbol="CFNotificationCenterPostNotification")
+    @Bridge(symbol="CFNotificationCenterPostNotification", optional=true)
     public native void postNotification(CFString name, VoidPtr object, CFDictionary userInfo, boolean deliverImmediately);
-    @Bridge(symbol="CFNotificationCenterPostNotificationWithOptions")
+    @Bridge(symbol="CFNotificationCenterPostNotificationWithOptions", optional=true)
     public native void postNotificationWithOptions(CFString name, VoidPtr object, CFDictionary userInfo, CFNotificationPostingOptions options);
     /*</methods>*/
 }

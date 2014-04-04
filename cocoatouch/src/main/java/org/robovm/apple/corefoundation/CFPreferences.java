@@ -46,48 +46,48 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFPreferencesAnyApplication")
+    @GlobalValue(symbol="kCFPreferencesAnyApplication", optional=true)
     public static native CFString KeyAnyApplication();
-    @GlobalValue(symbol="kCFPreferencesCurrentApplication")
+    @GlobalValue(symbol="kCFPreferencesCurrentApplication", optional=true)
     public static native CFString KeyCurrentApplication();
-    @GlobalValue(symbol="kCFPreferencesAnyHost")
+    @GlobalValue(symbol="kCFPreferencesAnyHost", optional=true)
     public static native CFString KeyAnyHost();
-    @GlobalValue(symbol="kCFPreferencesCurrentHost")
+    @GlobalValue(symbol="kCFPreferencesCurrentHost", optional=true)
     public static native CFString KeyCurrentHost();
-    @GlobalValue(symbol="kCFPreferencesAnyUser")
+    @GlobalValue(symbol="kCFPreferencesAnyUser", optional=true)
     public static native CFString KeyAnyUser();
-    @GlobalValue(symbol="kCFPreferencesCurrentUser")
+    @GlobalValue(symbol="kCFPreferencesCurrentUser", optional=true)
     public static native CFString KeyCurrentUser();
     
-    @Bridge(symbol="CFPreferencesCopyAppValue")
+    @Bridge(symbol="CFPreferencesCopyAppValue", optional=true)
     public static native CFType copyAppValue(CFString key, CFString applicationID);
-    @Bridge(symbol="CFPreferencesGetAppBooleanValue")
+    @Bridge(symbol="CFPreferencesGetAppBooleanValue", optional=true)
     public static native boolean getAppBooleanValue(CFString key, CFString applicationID, BytePtr keyExistsAndHasValidFormat);
-    @Bridge(symbol="CFPreferencesGetAppIntegerValue")
+    @Bridge(symbol="CFPreferencesGetAppIntegerValue", optional=true)
     public static native @MachineSizedSInt long getAppIntegerValue(CFString key, CFString applicationID, BytePtr keyExistsAndHasValidFormat);
-    @Bridge(symbol="CFPreferencesSetAppValue")
+    @Bridge(symbol="CFPreferencesSetAppValue", optional=true)
     public static native void setAppValue(CFString key, CFType value, CFString applicationID);
-    @Bridge(symbol="CFPreferencesAddSuitePreferencesToApp")
+    @Bridge(symbol="CFPreferencesAddSuitePreferencesToApp", optional=true)
     public static native void addSuitePreferencesToApp(CFString applicationID, CFString suiteID);
-    @Bridge(symbol="CFPreferencesRemoveSuitePreferencesFromApp")
+    @Bridge(symbol="CFPreferencesRemoveSuitePreferencesFromApp", optional=true)
     public static native void removeSuitePreferencesFromApp(CFString applicationID, CFString suiteID);
-    @Bridge(symbol="CFPreferencesAppSynchronize")
+    @Bridge(symbol="CFPreferencesAppSynchronize", optional=true)
     public static native boolean appSynchronize(CFString applicationID);
-    @Bridge(symbol="CFPreferencesCopyValue")
+    @Bridge(symbol="CFPreferencesCopyValue", optional=true)
     public static native CFType copyValue(CFString key, CFString applicationID, CFString userName, CFString hostName);
-    @Bridge(symbol="CFPreferencesCopyMultiple")
+    @Bridge(symbol="CFPreferencesCopyMultiple", optional=true)
     public static native CFDictionary copyMultiple(CFArray keysToFetch, CFString applicationID, CFString userName, CFString hostName);
-    @Bridge(symbol="CFPreferencesSetValue")
+    @Bridge(symbol="CFPreferencesSetValue", optional=true)
     public static native void setValue(CFString key, CFType value, CFString applicationID, CFString userName, CFString hostName);
-    @Bridge(symbol="CFPreferencesSetMultiple")
+    @Bridge(symbol="CFPreferencesSetMultiple", optional=true)
     public static native void setMultiple(CFDictionary keysToSet, CFArray keysToRemove, CFString applicationID, CFString userName, CFString hostName);
-    @Bridge(symbol="CFPreferencesSynchronize")
+    @Bridge(symbol="CFPreferencesSynchronize", optional=true)
     public static native boolean synchronize(CFString applicationID, CFString userName, CFString hostName);
-    @Bridge(symbol="CFPreferencesCopyApplicationList")
+    @Bridge(symbol="CFPreferencesCopyApplicationList", optional=true)
     public static native CFArray copyApplicationList(CFString userName, CFString hostName);
-    @Bridge(symbol="CFPreferencesCopyKeyList")
+    @Bridge(symbol="CFPreferencesCopyKeyList", optional=true)
     public static native CFArray copyKeyList(CFString applicationID, CFString userName, CFString hostName);
-    @Bridge(symbol="CFPreferencesAppValueIsForced")
+    @Bridge(symbol="CFPreferencesAppValueIsForced", optional=true)
     public static native boolean appValueIsForced(CFString key, CFString applicationID);
     /*</methods>*/
 }

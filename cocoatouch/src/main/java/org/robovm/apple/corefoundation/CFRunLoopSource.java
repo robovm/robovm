@@ -47,19 +47,19 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFRunLoopSourceGetTypeID")
+    @Bridge(symbol="CFRunLoopSourceGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFRunLoopSourceCreate")
+    @Bridge(symbol="CFRunLoopSourceCreate", optional=true)
     public static native CFRunLoopSource create(CFAllocator allocator, @MachineSizedSInt long order, CFRunLoopSourceContext context);
-    @Bridge(symbol="CFRunLoopSourceGetOrder")
+    @Bridge(symbol="CFRunLoopSourceGetOrder", optional=true)
     public native @MachineSizedSInt long getOrder();
-    @Bridge(symbol="CFRunLoopSourceInvalidate")
+    @Bridge(symbol="CFRunLoopSourceInvalidate", optional=true)
     public native void invalidate();
-    @Bridge(symbol="CFRunLoopSourceIsValid")
+    @Bridge(symbol="CFRunLoopSourceIsValid", optional=true)
     public native boolean isValid();
-    @Bridge(symbol="CFRunLoopSourceGetContext")
+    @Bridge(symbol="CFRunLoopSourceGetContext", optional=true)
     public native void getContext(CFRunLoopSourceContext context);
-    @Bridge(symbol="CFRunLoopSourceSignal")
+    @Bridge(symbol="CFRunLoopSourceSignal", optional=true)
     public native void signal();
     /*</methods>*/
 }

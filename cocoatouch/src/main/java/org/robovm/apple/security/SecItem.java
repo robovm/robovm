@@ -47,252 +47,252 @@ import org.robovm.apple.corefoundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kSecClass")
+    @GlobalValue(symbol="kSecClass", optional=true)
     public static native CFType Class();
-    @GlobalValue(symbol="kSecClassGenericPassword")
+    @GlobalValue(symbol="kSecClassGenericPassword", optional=true)
     public static native CFType ClassGenericPassword();
-    @GlobalValue(symbol="kSecClassInternetPassword")
+    @GlobalValue(symbol="kSecClassInternetPassword", optional=true)
     public static native CFType ClassInternetPassword();
-    @GlobalValue(symbol="kSecClassCertificate")
+    @GlobalValue(symbol="kSecClassCertificate", optional=true)
     public static native CFType ClassCertificate();
-    @GlobalValue(symbol="kSecClassKey")
+    @GlobalValue(symbol="kSecClassKey", optional=true)
     public static native CFType ClassKey();
-    @GlobalValue(symbol="kSecClassIdentity")
+    @GlobalValue(symbol="kSecClassIdentity", optional=true)
     public static native CFType ClassIdentity();
-    @GlobalValue(symbol="kSecAttrAccessible")
+    @GlobalValue(symbol="kSecAttrAccessible", optional=true)
     public static native CFType AttrAccessible();
-    @GlobalValue(symbol="kSecAttrAccessGroup")
+    @GlobalValue(symbol="kSecAttrAccessGroup", optional=true)
     public static native CFType AttrAccessGroup();
-    @GlobalValue(symbol="kSecAttrSynchronizable")
+    @GlobalValue(symbol="kSecAttrSynchronizable", optional=true)
     public static native CFType AttrSynchronizable();
-    @GlobalValue(symbol="kSecAttrSynchronizableAny")
+    @GlobalValue(symbol="kSecAttrSynchronizableAny", optional=true)
     public static native CFType AttrSynchronizableAny();
-    @GlobalValue(symbol="kSecAttrCreationDate")
+    @GlobalValue(symbol="kSecAttrCreationDate", optional=true)
     public static native CFType AttrCreationDate();
-    @GlobalValue(symbol="kSecAttrModificationDate")
+    @GlobalValue(symbol="kSecAttrModificationDate", optional=true)
     public static native CFType AttrModificationDate();
-    @GlobalValue(symbol="kSecAttrDescription")
+    @GlobalValue(symbol="kSecAttrDescription", optional=true)
     public static native CFType AttrDescription();
-    @GlobalValue(symbol="kSecAttrComment")
+    @GlobalValue(symbol="kSecAttrComment", optional=true)
     public static native CFType AttrComment();
-    @GlobalValue(symbol="kSecAttrCreator")
+    @GlobalValue(symbol="kSecAttrCreator", optional=true)
     public static native CFType AttrCreator();
-    @GlobalValue(symbol="kSecAttrType")
+    @GlobalValue(symbol="kSecAttrType", optional=true)
     public static native CFType AttrType();
-    @GlobalValue(symbol="kSecAttrLabel")
+    @GlobalValue(symbol="kSecAttrLabel", optional=true)
     public static native CFType AttrLabel();
-    @GlobalValue(symbol="kSecAttrIsInvisible")
+    @GlobalValue(symbol="kSecAttrIsInvisible", optional=true)
     public static native CFType AttrIsInvisible();
-    @GlobalValue(symbol="kSecAttrIsNegative")
+    @GlobalValue(symbol="kSecAttrIsNegative", optional=true)
     public static native CFType AttrIsNegative();
-    @GlobalValue(symbol="kSecAttrAccount")
+    @GlobalValue(symbol="kSecAttrAccount", optional=true)
     public static native CFType AttrAccount();
-    @GlobalValue(symbol="kSecAttrService")
+    @GlobalValue(symbol="kSecAttrService", optional=true)
     public static native CFType AttrService();
-    @GlobalValue(symbol="kSecAttrGeneric")
+    @GlobalValue(symbol="kSecAttrGeneric", optional=true)
     public static native CFType AttrGeneric();
-    @GlobalValue(symbol="kSecAttrSecurityDomain")
+    @GlobalValue(symbol="kSecAttrSecurityDomain", optional=true)
     public static native CFType AttrSecurityDomain();
-    @GlobalValue(symbol="kSecAttrServer")
+    @GlobalValue(symbol="kSecAttrServer", optional=true)
     public static native CFType AttrServer();
-    @GlobalValue(symbol="kSecAttrProtocol")
+    @GlobalValue(symbol="kSecAttrProtocol", optional=true)
     public static native CFType AttrProtocol();
-    @GlobalValue(symbol="kSecAttrAuthenticationType")
+    @GlobalValue(symbol="kSecAttrAuthenticationType", optional=true)
     public static native CFType AttrAuthenticationType();
-    @GlobalValue(symbol="kSecAttrPort")
+    @GlobalValue(symbol="kSecAttrPort", optional=true)
     public static native CFType AttrPort();
-    @GlobalValue(symbol="kSecAttrPath")
+    @GlobalValue(symbol="kSecAttrPath", optional=true)
     public static native CFType AttrPath();
-    @GlobalValue(symbol="kSecAttrSubject")
+    @GlobalValue(symbol="kSecAttrSubject", optional=true)
     public static native CFType AttrSubject();
-    @GlobalValue(symbol="kSecAttrIssuer")
+    @GlobalValue(symbol="kSecAttrIssuer", optional=true)
     public static native CFType AttrIssuer();
-    @GlobalValue(symbol="kSecAttrSerialNumber")
+    @GlobalValue(symbol="kSecAttrSerialNumber", optional=true)
     public static native CFType AttrSerialNumber();
-    @GlobalValue(symbol="kSecAttrSubjectKeyID")
+    @GlobalValue(symbol="kSecAttrSubjectKeyID", optional=true)
     public static native CFType AttrSubjectKeyID();
-    @GlobalValue(symbol="kSecAttrPublicKeyHash")
+    @GlobalValue(symbol="kSecAttrPublicKeyHash", optional=true)
     public static native CFType AttrPublicKeyHash();
-    @GlobalValue(symbol="kSecAttrCertificateType")
+    @GlobalValue(symbol="kSecAttrCertificateType", optional=true)
     public static native CFType AttrCertificateType();
-    @GlobalValue(symbol="kSecAttrCertificateEncoding")
+    @GlobalValue(symbol="kSecAttrCertificateEncoding", optional=true)
     public static native CFType AttrCertificateEncoding();
-    @GlobalValue(symbol="kSecAttrKeyClass")
+    @GlobalValue(symbol="kSecAttrKeyClass", optional=true)
     public static native CFType AttrKeyClass();
-    @GlobalValue(symbol="kSecAttrApplicationLabel")
+    @GlobalValue(symbol="kSecAttrApplicationLabel", optional=true)
     public static native CFType AttrApplicationLabel();
-    @GlobalValue(symbol="kSecAttrIsPermanent")
+    @GlobalValue(symbol="kSecAttrIsPermanent", optional=true)
     public static native CFType AttrIsPermanent();
-    @GlobalValue(symbol="kSecAttrApplicationTag")
+    @GlobalValue(symbol="kSecAttrApplicationTag", optional=true)
     public static native CFType AttrApplicationTag();
-    @GlobalValue(symbol="kSecAttrKeyType")
+    @GlobalValue(symbol="kSecAttrKeyType", optional=true)
     public static native CFType AttrKeyType();
-    @GlobalValue(symbol="kSecAttrKeySizeInBits")
+    @GlobalValue(symbol="kSecAttrKeySizeInBits", optional=true)
     public static native CFType AttrKeySizeInBits();
-    @GlobalValue(symbol="kSecAttrEffectiveKeySize")
+    @GlobalValue(symbol="kSecAttrEffectiveKeySize", optional=true)
     public static native CFType AttrEffectiveKeySize();
-    @GlobalValue(symbol="kSecAttrCanEncrypt")
+    @GlobalValue(symbol="kSecAttrCanEncrypt", optional=true)
     public static native CFType AttrCanEncrypt();
-    @GlobalValue(symbol="kSecAttrCanDecrypt")
+    @GlobalValue(symbol="kSecAttrCanDecrypt", optional=true)
     public static native CFType AttrCanDecrypt();
-    @GlobalValue(symbol="kSecAttrCanDerive")
+    @GlobalValue(symbol="kSecAttrCanDerive", optional=true)
     public static native CFType AttrCanDerive();
-    @GlobalValue(symbol="kSecAttrCanSign")
+    @GlobalValue(symbol="kSecAttrCanSign", optional=true)
     public static native CFType AttrCanSign();
-    @GlobalValue(symbol="kSecAttrCanVerify")
+    @GlobalValue(symbol="kSecAttrCanVerify", optional=true)
     public static native CFType AttrCanVerify();
-    @GlobalValue(symbol="kSecAttrCanWrap")
+    @GlobalValue(symbol="kSecAttrCanWrap", optional=true)
     public static native CFType AttrCanWrap();
-    @GlobalValue(symbol="kSecAttrCanUnwrap")
+    @GlobalValue(symbol="kSecAttrCanUnwrap", optional=true)
     public static native CFType AttrCanUnwrap();
-    @GlobalValue(symbol="kSecAttrAccessibleWhenUnlocked")
+    @GlobalValue(symbol="kSecAttrAccessibleWhenUnlocked", optional=true)
     public static native CFType AttrAccessibleWhenUnlocked();
-    @GlobalValue(symbol="kSecAttrAccessibleAfterFirstUnlock")
+    @GlobalValue(symbol="kSecAttrAccessibleAfterFirstUnlock", optional=true)
     public static native CFType AttrAccessibleAfterFirstUnlock();
-    @GlobalValue(symbol="kSecAttrAccessibleAlways")
+    @GlobalValue(symbol="kSecAttrAccessibleAlways", optional=true)
     public static native CFType AttrAccessibleAlways();
-    @GlobalValue(symbol="kSecAttrAccessibleWhenUnlockedThisDeviceOnly")
+    @GlobalValue(symbol="kSecAttrAccessibleWhenUnlockedThisDeviceOnly", optional=true)
     public static native CFType AttrAccessibleWhenUnlockedThisDeviceOnly();
-    @GlobalValue(symbol="kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly")
+    @GlobalValue(symbol="kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly", optional=true)
     public static native CFType AttrAccessibleAfterFirstUnlockThisDeviceOnly();
-    @GlobalValue(symbol="kSecAttrAccessibleAlwaysThisDeviceOnly")
+    @GlobalValue(symbol="kSecAttrAccessibleAlwaysThisDeviceOnly", optional=true)
     public static native CFType AttrAccessibleAlwaysThisDeviceOnly();
-    @GlobalValue(symbol="kSecAttrProtocolFTP")
+    @GlobalValue(symbol="kSecAttrProtocolFTP", optional=true)
     public static native CFType AttrProtocolFTP();
-    @GlobalValue(symbol="kSecAttrProtocolFTPAccount")
+    @GlobalValue(symbol="kSecAttrProtocolFTPAccount", optional=true)
     public static native CFType AttrProtocolFTPAccount();
-    @GlobalValue(symbol="kSecAttrProtocolHTTP")
+    @GlobalValue(symbol="kSecAttrProtocolHTTP", optional=true)
     public static native CFType AttrProtocolHTTP();
-    @GlobalValue(symbol="kSecAttrProtocolIRC")
+    @GlobalValue(symbol="kSecAttrProtocolIRC", optional=true)
     public static native CFType AttrProtocolIRC();
-    @GlobalValue(symbol="kSecAttrProtocolNNTP")
+    @GlobalValue(symbol="kSecAttrProtocolNNTP", optional=true)
     public static native CFType AttrProtocolNNTP();
-    @GlobalValue(symbol="kSecAttrProtocolPOP3")
+    @GlobalValue(symbol="kSecAttrProtocolPOP3", optional=true)
     public static native CFType AttrProtocolPOP3();
-    @GlobalValue(symbol="kSecAttrProtocolSMTP")
+    @GlobalValue(symbol="kSecAttrProtocolSMTP", optional=true)
     public static native CFType AttrProtocolSMTP();
-    @GlobalValue(symbol="kSecAttrProtocolSOCKS")
+    @GlobalValue(symbol="kSecAttrProtocolSOCKS", optional=true)
     public static native CFType AttrProtocolSOCKS();
-    @GlobalValue(symbol="kSecAttrProtocolIMAP")
+    @GlobalValue(symbol="kSecAttrProtocolIMAP", optional=true)
     public static native CFType AttrProtocolIMAP();
-    @GlobalValue(symbol="kSecAttrProtocolLDAP")
+    @GlobalValue(symbol="kSecAttrProtocolLDAP", optional=true)
     public static native CFType AttrProtocolLDAP();
-    @GlobalValue(symbol="kSecAttrProtocolAppleTalk")
+    @GlobalValue(symbol="kSecAttrProtocolAppleTalk", optional=true)
     public static native CFType AttrProtocolAppleTalk();
-    @GlobalValue(symbol="kSecAttrProtocolAFP")
+    @GlobalValue(symbol="kSecAttrProtocolAFP", optional=true)
     public static native CFType AttrProtocolAFP();
-    @GlobalValue(symbol="kSecAttrProtocolTelnet")
+    @GlobalValue(symbol="kSecAttrProtocolTelnet", optional=true)
     public static native CFType AttrProtocolTelnet();
-    @GlobalValue(symbol="kSecAttrProtocolSSH")
+    @GlobalValue(symbol="kSecAttrProtocolSSH", optional=true)
     public static native CFType AttrProtocolSSH();
-    @GlobalValue(symbol="kSecAttrProtocolFTPS")
+    @GlobalValue(symbol="kSecAttrProtocolFTPS", optional=true)
     public static native CFType AttrProtocolFTPS();
-    @GlobalValue(symbol="kSecAttrProtocolHTTPS")
+    @GlobalValue(symbol="kSecAttrProtocolHTTPS", optional=true)
     public static native CFType AttrProtocolHTTPS();
-    @GlobalValue(symbol="kSecAttrProtocolHTTPProxy")
+    @GlobalValue(symbol="kSecAttrProtocolHTTPProxy", optional=true)
     public static native CFType AttrProtocolHTTPProxy();
-    @GlobalValue(symbol="kSecAttrProtocolHTTPSProxy")
+    @GlobalValue(symbol="kSecAttrProtocolHTTPSProxy", optional=true)
     public static native CFType AttrProtocolHTTPSProxy();
-    @GlobalValue(symbol="kSecAttrProtocolFTPProxy")
+    @GlobalValue(symbol="kSecAttrProtocolFTPProxy", optional=true)
     public static native CFType AttrProtocolFTPProxy();
-    @GlobalValue(symbol="kSecAttrProtocolSMB")
+    @GlobalValue(symbol="kSecAttrProtocolSMB", optional=true)
     public static native CFType AttrProtocolSMB();
-    @GlobalValue(symbol="kSecAttrProtocolRTSP")
+    @GlobalValue(symbol="kSecAttrProtocolRTSP", optional=true)
     public static native CFType AttrProtocolRTSP();
-    @GlobalValue(symbol="kSecAttrProtocolRTSPProxy")
+    @GlobalValue(symbol="kSecAttrProtocolRTSPProxy", optional=true)
     public static native CFType AttrProtocolRTSPProxy();
-    @GlobalValue(symbol="kSecAttrProtocolDAAP")
+    @GlobalValue(symbol="kSecAttrProtocolDAAP", optional=true)
     public static native CFType AttrProtocolDAAP();
-    @GlobalValue(symbol="kSecAttrProtocolEPPC")
+    @GlobalValue(symbol="kSecAttrProtocolEPPC", optional=true)
     public static native CFType AttrProtocolEPPC();
-    @GlobalValue(symbol="kSecAttrProtocolIPP")
+    @GlobalValue(symbol="kSecAttrProtocolIPP", optional=true)
     public static native CFType AttrProtocolIPP();
-    @GlobalValue(symbol="kSecAttrProtocolNNTPS")
+    @GlobalValue(symbol="kSecAttrProtocolNNTPS", optional=true)
     public static native CFType AttrProtocolNNTPS();
-    @GlobalValue(symbol="kSecAttrProtocolLDAPS")
+    @GlobalValue(symbol="kSecAttrProtocolLDAPS", optional=true)
     public static native CFType AttrProtocolLDAPS();
-    @GlobalValue(symbol="kSecAttrProtocolTelnetS")
+    @GlobalValue(symbol="kSecAttrProtocolTelnetS", optional=true)
     public static native CFType AttrProtocolTelnetS();
-    @GlobalValue(symbol="kSecAttrProtocolIMAPS")
+    @GlobalValue(symbol="kSecAttrProtocolIMAPS", optional=true)
     public static native CFType AttrProtocolIMAPS();
-    @GlobalValue(symbol="kSecAttrProtocolIRCS")
+    @GlobalValue(symbol="kSecAttrProtocolIRCS", optional=true)
     public static native CFType AttrProtocolIRCS();
-    @GlobalValue(symbol="kSecAttrProtocolPOP3S")
+    @GlobalValue(symbol="kSecAttrProtocolPOP3S", optional=true)
     public static native CFType AttrProtocolPOP3S();
-    @GlobalValue(symbol="kSecAttrAuthenticationTypeNTLM")
+    @GlobalValue(symbol="kSecAttrAuthenticationTypeNTLM", optional=true)
     public static native CFType AttrAuthenticationTypeNTLM();
-    @GlobalValue(symbol="kSecAttrAuthenticationTypeMSN")
+    @GlobalValue(symbol="kSecAttrAuthenticationTypeMSN", optional=true)
     public static native CFType AttrAuthenticationTypeMSN();
-    @GlobalValue(symbol="kSecAttrAuthenticationTypeDPA")
+    @GlobalValue(symbol="kSecAttrAuthenticationTypeDPA", optional=true)
     public static native CFType AttrAuthenticationTypeDPA();
-    @GlobalValue(symbol="kSecAttrAuthenticationTypeRPA")
+    @GlobalValue(symbol="kSecAttrAuthenticationTypeRPA", optional=true)
     public static native CFType AttrAuthenticationTypeRPA();
-    @GlobalValue(symbol="kSecAttrAuthenticationTypeHTTPBasic")
+    @GlobalValue(symbol="kSecAttrAuthenticationTypeHTTPBasic", optional=true)
     public static native CFType AttrAuthenticationTypeHTTPBasic();
-    @GlobalValue(symbol="kSecAttrAuthenticationTypeHTTPDigest")
+    @GlobalValue(symbol="kSecAttrAuthenticationTypeHTTPDigest", optional=true)
     public static native CFType AttrAuthenticationTypeHTTPDigest();
-    @GlobalValue(symbol="kSecAttrAuthenticationTypeHTMLForm")
+    @GlobalValue(symbol="kSecAttrAuthenticationTypeHTMLForm", optional=true)
     public static native CFType AttrAuthenticationTypeHTMLForm();
-    @GlobalValue(symbol="kSecAttrAuthenticationTypeDefault")
+    @GlobalValue(symbol="kSecAttrAuthenticationTypeDefault", optional=true)
     public static native CFType AttrAuthenticationTypeDefault();
-    @GlobalValue(symbol="kSecAttrKeyClassPublic")
+    @GlobalValue(symbol="kSecAttrKeyClassPublic", optional=true)
     public static native CFType AttrKeyClassPublic();
-    @GlobalValue(symbol="kSecAttrKeyClassPrivate")
+    @GlobalValue(symbol="kSecAttrKeyClassPrivate", optional=true)
     public static native CFType AttrKeyClassPrivate();
-    @GlobalValue(symbol="kSecAttrKeyClassSymmetric")
+    @GlobalValue(symbol="kSecAttrKeyClassSymmetric", optional=true)
     public static native CFType AttrKeyClassSymmetric();
-    @GlobalValue(symbol="kSecAttrKeyTypeRSA")
+    @GlobalValue(symbol="kSecAttrKeyTypeRSA", optional=true)
     public static native CFType AttrKeyTypeRSA();
-    @GlobalValue(symbol="kSecAttrKeyTypeEC")
+    @GlobalValue(symbol="kSecAttrKeyTypeEC", optional=true)
     public static native CFType AttrKeyTypeEC();
-    @GlobalValue(symbol="kSecMatchPolicy")
+    @GlobalValue(symbol="kSecMatchPolicy", optional=true)
     public static native CFType MatchPolicy();
-    @GlobalValue(symbol="kSecMatchItemList")
+    @GlobalValue(symbol="kSecMatchItemList", optional=true)
     public static native CFType MatchItemList();
-    @GlobalValue(symbol="kSecMatchSearchList")
+    @GlobalValue(symbol="kSecMatchSearchList", optional=true)
     public static native CFType MatchSearchList();
-    @GlobalValue(symbol="kSecMatchIssuers")
+    @GlobalValue(symbol="kSecMatchIssuers", optional=true)
     public static native CFType MatchIssuers();
-    @GlobalValue(symbol="kSecMatchEmailAddressIfPresent")
+    @GlobalValue(symbol="kSecMatchEmailAddressIfPresent", optional=true)
     public static native CFType MatchEmailAddressIfPresent();
-    @GlobalValue(symbol="kSecMatchSubjectContains")
+    @GlobalValue(symbol="kSecMatchSubjectContains", optional=true)
     public static native CFType MatchSubjectContains();
-    @GlobalValue(symbol="kSecMatchCaseInsensitive")
+    @GlobalValue(symbol="kSecMatchCaseInsensitive", optional=true)
     public static native CFType MatchCaseInsensitive();
-    @GlobalValue(symbol="kSecMatchTrustedOnly")
+    @GlobalValue(symbol="kSecMatchTrustedOnly", optional=true)
     public static native CFType MatchTrustedOnly();
-    @GlobalValue(symbol="kSecMatchValidOnDate")
+    @GlobalValue(symbol="kSecMatchValidOnDate", optional=true)
     public static native CFType MatchValidOnDate();
-    @GlobalValue(symbol="kSecMatchLimit")
+    @GlobalValue(symbol="kSecMatchLimit", optional=true)
     public static native CFType MatchLimit();
-    @GlobalValue(symbol="kSecMatchLimitOne")
+    @GlobalValue(symbol="kSecMatchLimitOne", optional=true)
     public static native CFType MatchLimitOne();
-    @GlobalValue(symbol="kSecMatchLimitAll")
+    @GlobalValue(symbol="kSecMatchLimitAll", optional=true)
     public static native CFType MatchLimitAll();
-    @GlobalValue(symbol="kSecReturnData")
+    @GlobalValue(symbol="kSecReturnData", optional=true)
     public static native CFType ReturnData();
-    @GlobalValue(symbol="kSecReturnAttributes")
+    @GlobalValue(symbol="kSecReturnAttributes", optional=true)
     public static native CFType ReturnAttributes();
-    @GlobalValue(symbol="kSecReturnRef")
+    @GlobalValue(symbol="kSecReturnRef", optional=true)
     public static native CFType ReturnRef();
-    @GlobalValue(symbol="kSecReturnPersistentRef")
+    @GlobalValue(symbol="kSecReturnPersistentRef", optional=true)
     public static native CFType ReturnPersistentRef();
-    @GlobalValue(symbol="kSecValueData")
+    @GlobalValue(symbol="kSecValueData", optional=true)
     public static native CFType ValueData();
-    @GlobalValue(symbol="kSecValueRef")
+    @GlobalValue(symbol="kSecValueRef", optional=true)
     public static native CFType ValueRef();
-    @GlobalValue(symbol="kSecValuePersistentRef")
+    @GlobalValue(symbol="kSecValuePersistentRef", optional=true)
     public static native CFType ValuePersistentRef();
-    @GlobalValue(symbol="kSecUseItemList")
+    @GlobalValue(symbol="kSecUseItemList", optional=true)
     public static native CFType UseItemList();
     
-    @Bridge(symbol="SecItemCopyMatching")
+    @Bridge(symbol="SecItemCopyMatching", optional=true)
     public static native int copyMatching(CFDictionary query, CFType.CFTypePtr result);
-    @Bridge(symbol="SecItemAdd")
+    @Bridge(symbol="SecItemAdd", optional=true)
     public static native int add(CFDictionary attributes, CFType.CFTypePtr result);
-    @Bridge(symbol="SecItemUpdate")
+    @Bridge(symbol="SecItemUpdate", optional=true)
     public static native int update(CFDictionary query, CFDictionary attributesToUpdate);
-    @Bridge(symbol="SecItemDelete")
+    @Bridge(symbol="SecItemDelete", optional=true)
     public static native int delete(CFDictionary query);
     /*</methods>*/
 }

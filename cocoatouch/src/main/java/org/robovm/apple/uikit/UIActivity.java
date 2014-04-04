@@ -54,33 +54,33 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="UIActivityTypePostToFacebook")
+    @GlobalValue(symbol="UIActivityTypePostToFacebook", optional=true)
     public static native String TypePostToFacebook();
-    @GlobalValue(symbol="UIActivityTypePostToTwitter")
+    @GlobalValue(symbol="UIActivityTypePostToTwitter", optional=true)
     public static native String TypePostToTwitter();
-    @GlobalValue(symbol="UIActivityTypePostToWeibo")
+    @GlobalValue(symbol="UIActivityTypePostToWeibo", optional=true)
     public static native String TypePostToWeibo();
-    @GlobalValue(symbol="UIActivityTypeMessage")
+    @GlobalValue(symbol="UIActivityTypeMessage", optional=true)
     public static native String TypeMessage();
-    @GlobalValue(symbol="UIActivityTypeMail")
+    @GlobalValue(symbol="UIActivityTypeMail", optional=true)
     public static native String TypeMail();
-    @GlobalValue(symbol="UIActivityTypePrint")
+    @GlobalValue(symbol="UIActivityTypePrint", optional=true)
     public static native String TypePrint();
-    @GlobalValue(symbol="UIActivityTypeCopyToPasteboard")
+    @GlobalValue(symbol="UIActivityTypeCopyToPasteboard", optional=true)
     public static native String TypeCopyToPasteboard();
-    @GlobalValue(symbol="UIActivityTypeAssignToContact")
+    @GlobalValue(symbol="UIActivityTypeAssignToContact", optional=true)
     public static native String TypeAssignToContact();
-    @GlobalValue(symbol="UIActivityTypeSaveToCameraRoll")
+    @GlobalValue(symbol="UIActivityTypeSaveToCameraRoll", optional=true)
     public static native String TypeSaveToCameraRoll();
-    @GlobalValue(symbol="UIActivityTypeAddToReadingList")
+    @GlobalValue(symbol="UIActivityTypeAddToReadingList", optional=true)
     public static native String TypeAddToReadingList();
-    @GlobalValue(symbol="UIActivityTypePostToFlickr")
+    @GlobalValue(symbol="UIActivityTypePostToFlickr", optional=true)
     public static native String TypePostToFlickr();
-    @GlobalValue(symbol="UIActivityTypePostToVimeo")
+    @GlobalValue(symbol="UIActivityTypePostToVimeo", optional=true)
     public static native String TypePostToVimeo();
-    @GlobalValue(symbol="UIActivityTypePostToTencentWeibo")
+    @GlobalValue(symbol="UIActivityTypePostToTencentWeibo", optional=true)
     public static native String TypePostToTencentWeibo();
-    @GlobalValue(symbol="UIActivityTypeAirDrop")
+    @GlobalValue(symbol="UIActivityTypeAirDrop", optional=true)
     public static native String TypeAirDrop();
     
     @Method(selector = "activityType")

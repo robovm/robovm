@@ -132,7 +132,7 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFCoreFoundationVersionNumber")
+    @GlobalValue(symbol="kCFCoreFoundationVersionNumber", optional=true)
     public static native double VersionNumber();
     /*</methods>*/
 }

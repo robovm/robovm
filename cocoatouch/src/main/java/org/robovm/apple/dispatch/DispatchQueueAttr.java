@@ -46,7 +46,7 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="_dispatch_queue_attr_concurrent")
+    @GlobalValue(symbol="_dispatch_queue_attr_concurrent", optional=true)
     public static native DispatchQueueAttr Concurrent();
     /*</methods>*/
 }

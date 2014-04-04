@@ -48,41 +48,41 @@ import org.robovm.apple.security.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="NSDefaultMallocZone")
+    @Bridge(symbol="NSDefaultMallocZone", optional=true)
     public static native NSZone getDefaultMallocZone();
-    @Bridge(symbol="NSCreateZone")
+    @Bridge(symbol="NSCreateZone", optional=true)
     public static native NSZone create(@MachineSizedUInt long startSize, @MachineSizedUInt long granularity, boolean canFree);
-    @Bridge(symbol="NSRecycleZone")
+    @Bridge(symbol="NSRecycleZone", optional=true)
     public native void recycle();
-    @Bridge(symbol="NSSetZoneName")
+    @Bridge(symbol="NSSetZoneName", optional=true)
     public native void setName(String name);
-    @Bridge(symbol="NSZoneName")
+    @Bridge(symbol="NSZoneName", optional=true)
     public native String getName();
-    @Bridge(symbol="NSZoneFromPointer")
+    @Bridge(symbol="NSZoneFromPointer", optional=true)
     public static native NSZone fromPointer(VoidPtr ptr);
-    @Bridge(symbol="NSZoneMalloc")
+    @Bridge(symbol="NSZoneMalloc", optional=true)
     public native VoidPtr malloc(@MachineSizedUInt long size);
-    @Bridge(symbol="NSZoneCalloc")
+    @Bridge(symbol="NSZoneCalloc", optional=true)
     public native VoidPtr calloc(@MachineSizedUInt long numElems, @MachineSizedUInt long byteSize);
-    @Bridge(symbol="NSZoneRealloc")
+    @Bridge(symbol="NSZoneRealloc", optional=true)
     public native VoidPtr realloc(VoidPtr ptr, @MachineSizedUInt long size);
-    @Bridge(symbol="NSZoneFree")
+    @Bridge(symbol="NSZoneFree", optional=true)
     public native void free(VoidPtr ptr);
-    @Bridge(symbol="NSPageSize")
+    @Bridge(symbol="NSPageSize", optional=true)
     public static native @MachineSizedUInt long getPageSize();
-    @Bridge(symbol="NSLogPageSize")
+    @Bridge(symbol="NSLogPageSize", optional=true)
     public static native @MachineSizedUInt long getLogPageSize();
-    @Bridge(symbol="NSRoundUpToMultipleOfPageSize")
+    @Bridge(symbol="NSRoundUpToMultipleOfPageSize", optional=true)
     public static native @MachineSizedUInt long roundUpToMultipleOfPageSize(@MachineSizedUInt long bytes);
-    @Bridge(symbol="NSRoundDownToMultipleOfPageSize")
+    @Bridge(symbol="NSRoundDownToMultipleOfPageSize", optional=true)
     public static native @MachineSizedUInt long roundDownToMultipleOfPageSize(@MachineSizedUInt long bytes);
-    @Bridge(symbol="NSAllocateMemoryPages")
+    @Bridge(symbol="NSAllocateMemoryPages", optional=true)
     public static native VoidPtr allocateMemoryPages(@MachineSizedUInt long bytes);
-    @Bridge(symbol="NSDeallocateMemoryPages")
+    @Bridge(symbol="NSDeallocateMemoryPages", optional=true)
     public static native void deallocateMemoryPages(VoidPtr ptr, @MachineSizedUInt long bytes);
-    @Bridge(symbol="NSCopyMemoryPages")
+    @Bridge(symbol="NSCopyMemoryPages", optional=true)
     public static native void copyMemoryPages(VoidPtr source, VoidPtr dest, @MachineSizedUInt long bytes);
-    @Bridge(symbol="NSRealMemoryAvailable")
+    @Bridge(symbol="NSRealMemoryAvailable", optional=true)
     public static native @MachineSizedUInt long getRealMemoryAvailable();
     /*</methods>*/
 }

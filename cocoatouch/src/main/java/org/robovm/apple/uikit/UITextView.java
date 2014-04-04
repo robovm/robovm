@@ -191,11 +191,11 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="UITextViewTextDidBeginEditingNotification")
+    @GlobalValue(symbol="UITextViewTextDidBeginEditingNotification", optional=true)
     public static native String NotificationTextDidBeginEditing();
-    @GlobalValue(symbol="UITextViewTextDidChangeNotification")
+    @GlobalValue(symbol="UITextViewTextDidChangeNotification", optional=true)
     public static native String NotificationTextDidChange();
-    @GlobalValue(symbol="UITextViewTextDidEndEditingNotification")
+    @GlobalValue(symbol="UITextViewTextDidEndEditingNotification", optional=true)
     public static native String NotificationTextDidEndEditing();
     
     @Method(selector = "scrollRangeToVisible:")

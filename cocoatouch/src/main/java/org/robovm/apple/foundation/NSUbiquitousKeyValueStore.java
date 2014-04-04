@@ -51,11 +51,11 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSUbiquitousKeyValueStoreDidChangeExternallyNotification")
+    @GlobalValue(symbol="NSUbiquitousKeyValueStoreDidChangeExternallyNotification", optional=true)
     public static native String NotificationDidChangeExternally();
-    @GlobalValue(symbol="NSUbiquitousKeyValueStoreChangeReasonKey")
+    @GlobalValue(symbol="NSUbiquitousKeyValueStoreChangeReasonKey", optional=true)
     public static native NSString KeyChangeReason();
-    @GlobalValue(symbol="NSUbiquitousKeyValueStoreChangedKeysKey")
+    @GlobalValue(symbol="NSUbiquitousKeyValueStoreChangedKeysKey", optional=true)
     public static native NSString KeyChangedKeys();
     
     @Method(selector = "objectForKey:")

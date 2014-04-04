@@ -57,23 +57,23 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="CIDetectorTypeFace")
+    @GlobalValue(symbol="CIDetectorTypeFace", optional=true)
     public static native String TypeFace();
-    @GlobalValue(symbol="CIDetectorAccuracy")
+    @GlobalValue(symbol="CIDetectorAccuracy", optional=true)
     public static native NSString ConfigKeyAccuracy();
-    @GlobalValue(symbol="CIDetectorAccuracyLow")
+    @GlobalValue(symbol="CIDetectorAccuracyLow", optional=true)
     public static native NSString AccuracyLow();
-    @GlobalValue(symbol="CIDetectorAccuracyHigh")
+    @GlobalValue(symbol="CIDetectorAccuracyHigh", optional=true)
     public static native NSString AccuracyHigh();
-    @GlobalValue(symbol="CIDetectorTracking")
+    @GlobalValue(symbol="CIDetectorTracking", optional=true)
     public static native NSString ConfigKeyTracking();
-    @GlobalValue(symbol="CIDetectorMinFeatureSize")
+    @GlobalValue(symbol="CIDetectorMinFeatureSize", optional=true)
     public static native NSString ConfigKeyMinFeatureSize();
-    @GlobalValue(symbol="CIDetectorImageOrientation")
+    @GlobalValue(symbol="CIDetectorImageOrientation", optional=true)
     public static native NSString FeatureKeyImageOrientation();
-    @GlobalValue(symbol="CIDetectorEyeBlink")
+    @GlobalValue(symbol="CIDetectorEyeBlink", optional=true)
     public static native NSString FeatureKeyEyeBlink();
-    @GlobalValue(symbol="CIDetectorSmile")
+    @GlobalValue(symbol="CIDetectorSmile", optional=true)
     public static native NSString FeatureKeySmile();
     
     @Method(selector = "featuresInImage:")

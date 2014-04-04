@@ -98,9 +98,9 @@ import org.robovm.apple.foundation.*;
     }
     
     /*<methods>*/
-    @Bridge(symbol="CGPatternGetTypeID")
+    @Bridge(symbol="CGPatternGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CGPatternCreate")
+    @Bridge(symbol="CGPatternCreate", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPattern create(@Pointer long info, @ByVal CGRect bounds, @ByVal CGAffineTransform matrix, @MachineSizedFloat double xStep, @MachineSizedFloat double yStep, CGPatternTiling tiling, boolean isColored, CGPatternCallbacks callbacks);
     /*</methods>*/
 }

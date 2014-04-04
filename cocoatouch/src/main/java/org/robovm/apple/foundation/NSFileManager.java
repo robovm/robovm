@@ -53,77 +53,77 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSUbiquityIdentityDidChangeNotification")
+    @GlobalValue(symbol="NSUbiquityIdentityDidChangeNotification", optional=true)
     public static native String NotificationUbiquityIdentityDidChange();
-    @GlobalValue(symbol="NSFileType")
+    @GlobalValue(symbol="NSFileType", optional=true)
     public static native NSString KeyType();
-    @GlobalValue(symbol="NSFileTypeDirectory")
+    @GlobalValue(symbol="NSFileTypeDirectory", optional=true)
     public static native NSString FileTypeDirectory();
-    @GlobalValue(symbol="NSFileTypeRegular")
+    @GlobalValue(symbol="NSFileTypeRegular", optional=true)
     public static native NSString FileTypeRegular();
-    @GlobalValue(symbol="NSFileTypeSymbolicLink")
+    @GlobalValue(symbol="NSFileTypeSymbolicLink", optional=true)
     public static native NSString FileTypeSymbolicLink();
-    @GlobalValue(symbol="NSFileTypeSocket")
+    @GlobalValue(symbol="NSFileTypeSocket", optional=true)
     public static native NSString FileTypeSocket();
-    @GlobalValue(symbol="NSFileTypeCharacterSpecial")
+    @GlobalValue(symbol="NSFileTypeCharacterSpecial", optional=true)
     public static native NSString FileTypeCharacterSpecial();
-    @GlobalValue(symbol="NSFileTypeBlockSpecial")
+    @GlobalValue(symbol="NSFileTypeBlockSpecial", optional=true)
     public static native NSString FileTypeBlockSpecial();
-    @GlobalValue(symbol="NSFileTypeUnknown")
+    @GlobalValue(symbol="NSFileTypeUnknown", optional=true)
     public static native NSString FileTypeUnknown();
-    @GlobalValue(symbol="NSFileSize")
+    @GlobalValue(symbol="NSFileSize", optional=true)
     public static native NSString KeySize();
-    @GlobalValue(symbol="NSFileModificationDate")
+    @GlobalValue(symbol="NSFileModificationDate", optional=true)
     public static native NSString KeyModificationDate();
-    @GlobalValue(symbol="NSFileReferenceCount")
+    @GlobalValue(symbol="NSFileReferenceCount", optional=true)
     public static native NSString KeyReferenceCount();
-    @GlobalValue(symbol="NSFileDeviceIdentifier")
+    @GlobalValue(symbol="NSFileDeviceIdentifier", optional=true)
     public static native NSString KeyDeviceIdentifier();
-    @GlobalValue(symbol="NSFileOwnerAccountName")
+    @GlobalValue(symbol="NSFileOwnerAccountName", optional=true)
     public static native NSString KeyOwnerAccountName();
-    @GlobalValue(symbol="NSFileGroupOwnerAccountName")
+    @GlobalValue(symbol="NSFileGroupOwnerAccountName", optional=true)
     public static native NSString KeyGroupOwnerAccountName();
-    @GlobalValue(symbol="NSFilePosixPermissions")
+    @GlobalValue(symbol="NSFilePosixPermissions", optional=true)
     public static native NSString KeyPosixPermissions();
-    @GlobalValue(symbol="NSFileSystemNumber")
+    @GlobalValue(symbol="NSFileSystemNumber", optional=true)
     public static native NSString KeySystemNumber();
-    @GlobalValue(symbol="NSFileSystemFileNumber")
+    @GlobalValue(symbol="NSFileSystemFileNumber", optional=true)
     public static native NSString KeySystemFileNumber();
-    @GlobalValue(symbol="NSFileExtensionHidden")
+    @GlobalValue(symbol="NSFileExtensionHidden", optional=true)
     public static native NSString KeyExtensionHidden();
-    @GlobalValue(symbol="NSFileHFSCreatorCode")
+    @GlobalValue(symbol="NSFileHFSCreatorCode", optional=true)
     public static native NSString KeyHFSCreatorCode();
-    @GlobalValue(symbol="NSFileHFSTypeCode")
+    @GlobalValue(symbol="NSFileHFSTypeCode", optional=true)
     public static native NSString KeyHFSTypeCode();
-    @GlobalValue(symbol="NSFileImmutable")
+    @GlobalValue(symbol="NSFileImmutable", optional=true)
     public static native NSString KeyImmutable();
-    @GlobalValue(symbol="NSFileAppendOnly")
+    @GlobalValue(symbol="NSFileAppendOnly", optional=true)
     public static native NSString KeyAppendOnly();
-    @GlobalValue(symbol="NSFileCreationDate")
+    @GlobalValue(symbol="NSFileCreationDate", optional=true)
     public static native NSString KeyCreationDate();
-    @GlobalValue(symbol="NSFileOwnerAccountID")
+    @GlobalValue(symbol="NSFileOwnerAccountID", optional=true)
     public static native NSString KeyOwnerAccountID();
-    @GlobalValue(symbol="NSFileGroupOwnerAccountID")
+    @GlobalValue(symbol="NSFileGroupOwnerAccountID", optional=true)
     public static native NSString KeyGroupOwnerAccountID();
-    @GlobalValue(symbol="NSFileBusy")
+    @GlobalValue(symbol="NSFileBusy", optional=true)
     public static native NSString KeyBusy();
-    @GlobalValue(symbol="NSFileProtectionKey")
+    @GlobalValue(symbol="NSFileProtectionKey", optional=true)
     public static native NSString KeyProtection();
-    @GlobalValue(symbol="NSFileProtectionNone")
+    @GlobalValue(symbol="NSFileProtectionNone", optional=true)
     public static native NSString FileProtectionNone();
-    @GlobalValue(symbol="NSFileProtectionComplete")
+    @GlobalValue(symbol="NSFileProtectionComplete", optional=true)
     public static native NSString FileProtectionComplete();
-    @GlobalValue(symbol="NSFileProtectionCompleteUnlessOpen")
+    @GlobalValue(symbol="NSFileProtectionCompleteUnlessOpen", optional=true)
     public static native NSString FileProtectionCompleteUnlessOpen();
-    @GlobalValue(symbol="NSFileProtectionCompleteUntilFirstUserAuthentication")
+    @GlobalValue(symbol="NSFileProtectionCompleteUntilFirstUserAuthentication", optional=true)
     public static native NSString FileProtectionCompleteUntilFirstUserAuthentication();
-    @GlobalValue(symbol="NSFileSystemSize")
+    @GlobalValue(symbol="NSFileSystemSize", optional=true)
     public static native NSString FileSystemSize();
-    @GlobalValue(symbol="NSFileSystemFreeSize")
+    @GlobalValue(symbol="NSFileSystemFreeSize", optional=true)
     public static native NSString FileSystemFreeSize();
-    @GlobalValue(symbol="NSFileSystemNodes")
+    @GlobalValue(symbol="NSFileSystemNodes", optional=true)
     public static native NSString FileSystemNodes();
-    @GlobalValue(symbol="NSFileSystemFreeNodes")
+    @GlobalValue(symbol="NSFileSystemFreeNodes", optional=true)
     public static native NSString FileSystemFreeNodes();
     
     @Method(selector = "mountedVolumeURLsIncludingResourceValuesForKeys:options:")

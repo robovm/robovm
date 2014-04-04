@@ -67,87 +67,87 @@ import org.robovm.apple.coreimage.*;
     }
 
     /*<methods>*/
-    @GlobalValue(symbol="NSFontAttributeName")
+    @GlobalValue(symbol="NSFontAttributeName", optional=true)
     public static native NSString AttributeFont();
-    @GlobalValue(symbol="NSParagraphStyleAttributeName")
+    @GlobalValue(symbol="NSParagraphStyleAttributeName", optional=true)
     public static native NSString AttributeParagraphStyle();
-    @GlobalValue(symbol="NSForegroundColorAttributeName")
+    @GlobalValue(symbol="NSForegroundColorAttributeName", optional=true)
     public static native NSString AttributeForegroundColor();
-    @GlobalValue(symbol="NSBackgroundColorAttributeName")
+    @GlobalValue(symbol="NSBackgroundColorAttributeName", optional=true)
     public static native NSString AttributeBackgroundColor();
-    @GlobalValue(symbol="NSLigatureAttributeName")
+    @GlobalValue(symbol="NSLigatureAttributeName", optional=true)
     public static native NSString AttributeLigature();
-    @GlobalValue(symbol="NSKernAttributeName")
+    @GlobalValue(symbol="NSKernAttributeName", optional=true)
     public static native NSString AttributeKern();
-    @GlobalValue(symbol="NSStrikethroughStyleAttributeName")
+    @GlobalValue(symbol="NSStrikethroughStyleAttributeName", optional=true)
     public static native NSString AttributeStrikethroughStyle();
-    @GlobalValue(symbol="NSUnderlineStyleAttributeName")
+    @GlobalValue(symbol="NSUnderlineStyleAttributeName", optional=true)
     public static native NSString AttributeUnderlineStyle();
-    @GlobalValue(symbol="NSStrokeColorAttributeName")
+    @GlobalValue(symbol="NSStrokeColorAttributeName", optional=true)
     public static native NSString AttributeStrokeColor();
-    @GlobalValue(symbol="NSStrokeWidthAttributeName")
+    @GlobalValue(symbol="NSStrokeWidthAttributeName", optional=true)
     public static native NSString AttributeStrokeWidth();
-    @GlobalValue(symbol="NSShadowAttributeName")
+    @GlobalValue(symbol="NSShadowAttributeName", optional=true)
     public static native NSString AttributeShadow();
-    @GlobalValue(symbol="NSTextEffectAttributeName")
+    @GlobalValue(symbol="NSTextEffectAttributeName", optional=true)
     public static native NSString AttributeTextEffect();
-    @GlobalValue(symbol="NSAttachmentAttributeName")
+    @GlobalValue(symbol="NSAttachmentAttributeName", optional=true)
     public static native NSString AttributeAttachment();
-    @GlobalValue(symbol="NSLinkAttributeName")
+    @GlobalValue(symbol="NSLinkAttributeName", optional=true)
     public static native NSString AttributeLink();
-    @GlobalValue(symbol="NSBaselineOffsetAttributeName")
+    @GlobalValue(symbol="NSBaselineOffsetAttributeName", optional=true)
     public static native NSString AttributeBaselineOffset();
-    @GlobalValue(symbol="NSUnderlineColorAttributeName")
+    @GlobalValue(symbol="NSUnderlineColorAttributeName", optional=true)
     public static native NSString AttributeUnderlineColor();
-    @GlobalValue(symbol="NSStrikethroughColorAttributeName")
+    @GlobalValue(symbol="NSStrikethroughColorAttributeName", optional=true)
     public static native NSString AttributeStrikethroughColor();
-    @GlobalValue(symbol="NSObliquenessAttributeName")
+    @GlobalValue(symbol="NSObliquenessAttributeName", optional=true)
     public static native NSString AttributeObliqueness();
-    @GlobalValue(symbol="NSExpansionAttributeName")
+    @GlobalValue(symbol="NSExpansionAttributeName", optional=true)
     public static native NSString AttributeExpansion();
-    @GlobalValue(symbol="NSWritingDirectionAttributeName")
+    @GlobalValue(symbol="NSWritingDirectionAttributeName", optional=true)
     public static native NSString AttributeWritingDirection();
-    @GlobalValue(symbol="NSVerticalGlyphFormAttributeName")
+    @GlobalValue(symbol="NSVerticalGlyphFormAttributeName", optional=true)
     public static native NSString AttributeVerticalGlyphForm();
-    @GlobalValue(symbol="NSTextEffectLetterpressStyle")
+    @GlobalValue(symbol="NSTextEffectLetterpressStyle", optional=true)
     public static native NSString TextEffectLetterpressStyle();
-    @GlobalValue(symbol="NSPlainTextDocumentType")
+    @GlobalValue(symbol="NSPlainTextDocumentType", optional=true)
     public static native NSString DocumentTypePlainText();
-    @GlobalValue(symbol="NSRTFTextDocumentType")
+    @GlobalValue(symbol="NSRTFTextDocumentType", optional=true)
     public static native NSString DocumentTypeRTFText();
-    @GlobalValue(symbol="NSRTFDTextDocumentType")
+    @GlobalValue(symbol="NSRTFDTextDocumentType", optional=true)
     public static native NSString DocumentTypeRTFDText();
-    @GlobalValue(symbol="NSHTMLTextDocumentType")
+    @GlobalValue(symbol="NSHTMLTextDocumentType", optional=true)
     public static native NSString DocumentTypeHTMLText();
-    @GlobalValue(symbol="NSTextLayoutSectionOrientation")
+    @GlobalValue(symbol="NSTextLayoutSectionOrientation", optional=true)
     public static native NSString TextLayoutSectionOrientation();
-    @GlobalValue(symbol="NSTextLayoutSectionRange")
+    @GlobalValue(symbol="NSTextLayoutSectionRange", optional=true)
     public static native NSString TextLayoutSectionRange();
-    @GlobalValue(symbol="NSDocumentTypeDocumentAttribute")
+    @GlobalValue(symbol="NSDocumentTypeDocumentAttribute", optional=true)
     public static native NSString DocumentAttributeDocumentType();
-    @GlobalValue(symbol="NSCharacterEncodingDocumentAttribute")
+    @GlobalValue(symbol="NSCharacterEncodingDocumentAttribute", optional=true)
     public static native NSString DocumentAttributeCharacterEncoding();
-    @GlobalValue(symbol="NSDefaultAttributesDocumentAttribute")
+    @GlobalValue(symbol="NSDefaultAttributesDocumentAttribute", optional=true)
     public static native NSString DocumentAttributeDefaultAttributes();
-    @GlobalValue(symbol="NSPaperSizeDocumentAttribute")
+    @GlobalValue(symbol="NSPaperSizeDocumentAttribute", optional=true)
     public static native NSString DocumentAttributePaperSize();
-    @GlobalValue(symbol="NSPaperMarginDocumentAttribute")
+    @GlobalValue(symbol="NSPaperMarginDocumentAttribute", optional=true)
     public static native NSString DocumentAttributePaperMargin();
-    @GlobalValue(symbol="NSViewSizeDocumentAttribute")
+    @GlobalValue(symbol="NSViewSizeDocumentAttribute", optional=true)
     public static native NSString DocumentAttributeViewSize();
-    @GlobalValue(symbol="NSViewZoomDocumentAttribute")
+    @GlobalValue(symbol="NSViewZoomDocumentAttribute", optional=true)
     public static native NSString DocumentAttributeViewZoom();
-    @GlobalValue(symbol="NSViewModeDocumentAttribute")
+    @GlobalValue(symbol="NSViewModeDocumentAttribute", optional=true)
     public static native NSString DocumentAttributeViewMode();
-    @GlobalValue(symbol="NSReadOnlyDocumentAttribute")
+    @GlobalValue(symbol="NSReadOnlyDocumentAttribute", optional=true)
     public static native NSString DocumentAttributeReadOnly();
-    @GlobalValue(symbol="NSBackgroundColorDocumentAttribute")
+    @GlobalValue(symbol="NSBackgroundColorDocumentAttribute", optional=true)
     public static native NSString DocumentAttributeBackgroundColor();
-    @GlobalValue(symbol="NSHyphenationFactorDocumentAttribute")
+    @GlobalValue(symbol="NSHyphenationFactorDocumentAttribute", optional=true)
     public static native NSString DocumentAttributeHyphenationFactor();
-    @GlobalValue(symbol="NSDefaultTabIntervalDocumentAttribute")
+    @GlobalValue(symbol="NSDefaultTabIntervalDocumentAttribute", optional=true)
     public static native NSString DocumentAttributeDefaultTabInterval();
-    @GlobalValue(symbol="NSTextLayoutSectionsAttribute")
+    @GlobalValue(symbol="NSTextLayoutSectionsAttribute", optional=true)
     public static native NSString DocumentAttributeTextLayoutSections();
     
     @Method(selector = "initWithFileURL:options:documentAttributes:error:")

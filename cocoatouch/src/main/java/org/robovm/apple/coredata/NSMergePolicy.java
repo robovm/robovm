@@ -52,15 +52,15 @@ import org.robovm.apple.foundation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSErrorMergePolicy")
+    @GlobalValue(symbol="NSErrorMergePolicy", optional=true)
     public static native NSObject PolicyError();
-    @GlobalValue(symbol="NSMergeByPropertyStoreTrumpMergePolicy")
+    @GlobalValue(symbol="NSMergeByPropertyStoreTrumpMergePolicy", optional=true)
     public static native NSObject PolicyMergeByPropertyStoreTrump();
-    @GlobalValue(symbol="NSMergeByPropertyObjectTrumpMergePolicy")
+    @GlobalValue(symbol="NSMergeByPropertyObjectTrumpMergePolicy", optional=true)
     public static native NSObject PolicyMergeByPropertyObjectTrump();
-    @GlobalValue(symbol="NSOverwriteMergePolicy")
+    @GlobalValue(symbol="NSOverwriteMergePolicy", optional=true)
     public static native NSObject PolicyOverwrite();
-    @GlobalValue(symbol="NSRollbackMergePolicy")
+    @GlobalValue(symbol="NSRollbackMergePolicy", optional=true)
     public static native NSObject PolicyRollback();
     
     @Method(selector = "initWithMergeType:")

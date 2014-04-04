@@ -60,19 +60,19 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSFileHandleReadCompletionNotification")
+    @GlobalValue(symbol="NSFileHandleReadCompletionNotification", optional=true)
     public static native String NotificationReadCompletion();
-    @GlobalValue(symbol="NSFileHandleReadToEndOfFileCompletionNotification")
+    @GlobalValue(symbol="NSFileHandleReadToEndOfFileCompletionNotification", optional=true)
     public static native String NotificationReadToEndOfFileCompletion();
-    @GlobalValue(symbol="NSFileHandleConnectionAcceptedNotification")
+    @GlobalValue(symbol="NSFileHandleConnectionAcceptedNotification", optional=true)
     public static native String NotificationConnectionAccepted();
-    @GlobalValue(symbol="NSFileHandleDataAvailableNotification")
+    @GlobalValue(symbol="NSFileHandleDataAvailableNotification", optional=true)
     public static native String NotificationDataAvailable();
-    @GlobalValue(symbol="NSFileHandleNotificationDataItem")
+    @GlobalValue(symbol="NSFileHandleNotificationDataItem", optional=true)
     public static native String NotificationDataItem();
-    @GlobalValue(symbol="NSFileHandleNotificationFileHandleItem")
+    @GlobalValue(symbol="NSFileHandleNotificationFileHandleItem", optional=true)
     public static native String NotificationFileHandleItem();
-    @GlobalValue(symbol="NSFileHandleNotificationMonitorModes")
+    @GlobalValue(symbol="NSFileHandleNotificationMonitorModes", optional=true)
     public static native String NotificationMonitorModes();
     
     @Method(selector = "availableData")

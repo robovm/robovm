@@ -51,7 +51,7 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSPortDidBecomeInvalidNotification")
+    @GlobalValue(symbol="NSPortDidBecomeInvalidNotification", optional=true)
     public static native String NotificationDidBecomeInvalid();
     
     @Method(selector = "invalidate")

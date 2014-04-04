@@ -153,58 +153,58 @@ import org.robovm.apple.foundation.*;
     }
     
     /*<methods>*/
-    @GlobalValue(symbol="CGRectZero")
+    @GlobalValue(symbol="CGRectZero", optional=true)
     public static native @ByVal CGRect Zero();
-    @GlobalValue(symbol="CGRectNull")
+    @GlobalValue(symbol="CGRectNull", optional=true)
     public static native @ByVal CGRect Null();
-    @GlobalValue(symbol="CGRectInfinite")
+    @GlobalValue(symbol="CGRectInfinite", optional=true)
     public static native @ByVal CGRect Infinite();
     
-    @Bridge(symbol="CGRectGetMinX")
+    @Bridge(symbol="CGRectGetMinX", optional=true)
     protected static native @MachineSizedFloat double getMinX(@ByVal CGRect rect);
-    @Bridge(symbol="CGRectGetMidX")
+    @Bridge(symbol="CGRectGetMidX", optional=true)
     protected static native @MachineSizedFloat double getMidX(@ByVal CGRect rect);
-    @Bridge(symbol="CGRectGetMaxX")
+    @Bridge(symbol="CGRectGetMaxX", optional=true)
     protected static native @MachineSizedFloat double getMaxX(@ByVal CGRect rect);
-    @Bridge(symbol="CGRectGetMinY")
+    @Bridge(symbol="CGRectGetMinY", optional=true)
     protected static native @MachineSizedFloat double getMinY(@ByVal CGRect rect);
-    @Bridge(symbol="CGRectGetMidY")
+    @Bridge(symbol="CGRectGetMidY", optional=true)
     protected static native @MachineSizedFloat double getMidY(@ByVal CGRect rect);
-    @Bridge(symbol="CGRectGetMaxY")
+    @Bridge(symbol="CGRectGetMaxY", optional=true)
     protected static native @MachineSizedFloat double getMaxY(@ByVal CGRect rect);
-    @Bridge(symbol="CGRectGetWidth")
+    @Bridge(symbol="CGRectGetWidth", optional=true)
     protected static native @MachineSizedFloat double getWidth(@ByVal CGRect rect);
-    @Bridge(symbol="CGRectGetHeight")
+    @Bridge(symbol="CGRectGetHeight", optional=true)
     protected static native @MachineSizedFloat double getHeight(@ByVal CGRect rect);
-    @Bridge(symbol="CGRectEqualToRect")
+    @Bridge(symbol="CGRectEqualToRect", optional=true)
     protected static native boolean equalToRect(@ByVal CGRect rect1, @ByVal CGRect rect2);
-    @Bridge(symbol="CGRectStandardize")
+    @Bridge(symbol="CGRectStandardize", optional=true)
     protected static native @ByVal CGRect standardize(@ByVal CGRect rect);
-    @Bridge(symbol="CGRectIsEmpty")
+    @Bridge(symbol="CGRectIsEmpty", optional=true)
     protected static native boolean isEmpty(@ByVal CGRect rect);
-    @Bridge(symbol="CGRectIsNull")
+    @Bridge(symbol="CGRectIsNull", optional=true)
     protected static native boolean isNull(@ByVal CGRect rect);
-    @Bridge(symbol="CGRectIsInfinite")
+    @Bridge(symbol="CGRectIsInfinite", optional=true)
     protected static native boolean isInfinite(@ByVal CGRect rect);
-    @Bridge(symbol="CGRectInset")
+    @Bridge(symbol="CGRectInset", optional=true)
     protected static native @ByVal CGRect inset(@ByVal CGRect rect, @MachineSizedFloat double dx, @MachineSizedFloat double dy);
-    @Bridge(symbol="CGRectIntegral")
+    @Bridge(symbol="CGRectIntegral", optional=true)
     protected static native @ByVal CGRect integral(@ByVal CGRect rect);
-    @Bridge(symbol="CGRectUnion")
+    @Bridge(symbol="CGRectUnion", optional=true)
     protected static native @ByVal CGRect union(@ByVal CGRect r1, @ByVal CGRect r2);
-    @Bridge(symbol="CGRectIntersection")
+    @Bridge(symbol="CGRectIntersection", optional=true)
     protected static native @ByVal CGRect intersection(@ByVal CGRect r1, @ByVal CGRect r2);
-    @Bridge(symbol="CGRectOffset")
+    @Bridge(symbol="CGRectOffset", optional=true)
     protected static native @ByVal CGRect offset(@ByVal CGRect rect, @MachineSizedFloat double dx, @MachineSizedFloat double dy);
-    @Bridge(symbol="CGRectDivide")
+    @Bridge(symbol="CGRectDivide", optional=true)
     public static native void divide(@ByVal CGRect rect, CGRect slice, CGRect remainder, @MachineSizedFloat double amount, CGRectEdge edge);
-    @Bridge(symbol="CGRectContainsPoint")
+    @Bridge(symbol="CGRectContainsPoint", optional=true)
     protected static native boolean containsPoint(@ByVal CGRect rect, @ByVal CGPoint point);
-    @Bridge(symbol="CGRectContainsRect")
+    @Bridge(symbol="CGRectContainsRect", optional=true)
     protected static native boolean containsRect(@ByVal CGRect rect1, @ByVal CGRect rect2);
-    @Bridge(symbol="CGRectIntersectsRect")
+    @Bridge(symbol="CGRectIntersectsRect", optional=true)
     protected static native boolean intersectsRect(@ByVal CGRect rect1, @ByVal CGRect rect2);
-    @Bridge(symbol="CGRectApplyAffineTransform")
+    @Bridge(symbol="CGRectApplyAffineTransform", optional=true)
     protected static native @ByVal CGRect applyAffineTransform(@ByVal CGRect rect, @ByVal CGAffineTransform t);
     /*</methods>*/
 }

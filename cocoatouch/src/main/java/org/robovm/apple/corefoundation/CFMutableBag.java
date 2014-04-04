@@ -47,19 +47,19 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFBagCreateMutable")
+    @Bridge(symbol="CFBagCreateMutable", optional=true)
     public static native CFMutableBag createMutable(CFAllocator allocator, @MachineSizedSInt long capacity, CFBagCallBacks callBacks);
-    @Bridge(symbol="CFBagCreateMutableCopy")
+    @Bridge(symbol="CFBagCreateMutableCopy", optional=true)
     public static native CFMutableBag createMutableCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFBag theBag);
-    @Bridge(symbol="CFBagAddValue")
+    @Bridge(symbol="CFBagAddValue", optional=true)
     public native void addValue(VoidPtr value);
-    @Bridge(symbol="CFBagReplaceValue")
+    @Bridge(symbol="CFBagReplaceValue", optional=true)
     public native void replaceValue(VoidPtr value);
-    @Bridge(symbol="CFBagSetValue")
+    @Bridge(symbol="CFBagSetValue", optional=true)
     public native void setValue(VoidPtr value);
-    @Bridge(symbol="CFBagRemoveValue")
+    @Bridge(symbol="CFBagRemoveValue", optional=true)
     public native void removeValue(VoidPtr value);
-    @Bridge(symbol="CFBagRemoveAllValues")
+    @Bridge(symbol="CFBagRemoveAllValues", optional=true)
     public native void removeAllValues();
     /*</methods>*/
 }

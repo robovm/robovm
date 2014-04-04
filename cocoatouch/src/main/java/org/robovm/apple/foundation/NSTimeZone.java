@@ -53,7 +53,7 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSSystemTimeZoneDidChangeNotification")
+    @GlobalValue(symbol="NSSystemTimeZoneDidChangeNotification", optional=true)
     public static native String NotificationSystemTimeZoneDidChange();
     
     @Method(selector = "name")

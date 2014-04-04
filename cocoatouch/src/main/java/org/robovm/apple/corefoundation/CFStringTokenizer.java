@@ -47,23 +47,23 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFStringTokenizerCopyBestStringLanguage")
+    @Bridge(symbol="CFStringTokenizerCopyBestStringLanguage", optional=true)
     public static native CFString copyBestStringLanguage(CFString string, @ByVal CFRange range);
-    @Bridge(symbol="CFStringTokenizerGetTypeID")
+    @Bridge(symbol="CFStringTokenizerGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFStringTokenizerCreate")
+    @Bridge(symbol="CFStringTokenizerCreate", optional=true)
     public static native CFStringTokenizer create(CFAllocator alloc, CFString string, @ByVal CFRange range, CFStringTokenizerUnitOptions options, CFLocale locale);
-    @Bridge(symbol="CFStringTokenizerSetString")
+    @Bridge(symbol="CFStringTokenizerSetString", optional=true)
     public native void setString(CFString string, @ByVal CFRange range);
-    @Bridge(symbol="CFStringTokenizerGoToTokenAtIndex")
+    @Bridge(symbol="CFStringTokenizerGoToTokenAtIndex", optional=true)
     public native CFStringTokenizerTokenType goToTokenAtIndex(@MachineSizedSInt long index);
-    @Bridge(symbol="CFStringTokenizerAdvanceToNextToken")
+    @Bridge(symbol="CFStringTokenizerAdvanceToNextToken", optional=true)
     public native CFStringTokenizerTokenType advanceToNextToken();
-    @Bridge(symbol="CFStringTokenizerGetCurrentTokenRange")
+    @Bridge(symbol="CFStringTokenizerGetCurrentTokenRange", optional=true)
     public native @ByVal CFRange getCurrentTokenRange();
-    @Bridge(symbol="CFStringTokenizerCopyCurrentTokenAttribute")
+    @Bridge(symbol="CFStringTokenizerCopyCurrentTokenAttribute", optional=true)
     public native CFType copyCurrentTokenAttribute(CFStringTokenizerUnitOptions attribute);
-    @Bridge(symbol="CFStringTokenizerGetCurrentSubTokens")
+    @Bridge(symbol="CFStringTokenizerGetCurrentSubTokens", optional=true)
     public native @MachineSizedSInt long getCurrentSubTokens(CFRange ranges, @MachineSizedSInt long maxRangeLength, CFMutableArray derivedSubTokens);
     /*</methods>*/
 }

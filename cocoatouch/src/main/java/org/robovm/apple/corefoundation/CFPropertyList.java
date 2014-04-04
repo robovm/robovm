@@ -46,25 +46,25 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFPropertyListCreateFromXMLData")
+    @Bridge(symbol="CFPropertyListCreateFromXMLData", optional=true)
     public static native CFType createFromXMLData(CFAllocator allocator, CFData xmlData, CFPropertyListMutabilityOptions mutabilityOption, CFString.CFStringPtr errorString);
-    @Bridge(symbol="CFPropertyListCreateXMLData")
+    @Bridge(symbol="CFPropertyListCreateXMLData", optional=true)
     public static native CFData createXMLData(CFAllocator allocator, CFType propertyList);
-    @Bridge(symbol="CFPropertyListCreateDeepCopy")
+    @Bridge(symbol="CFPropertyListCreateDeepCopy", optional=true)
     public static native CFType createDeepCopy(CFAllocator allocator, CFType propertyList, CFPropertyListMutabilityOptions mutabilityOption);
-    @Bridge(symbol="CFPropertyListIsValid")
+    @Bridge(symbol="CFPropertyListIsValid", optional=true)
     public static native boolean isValid(CFType plist, CFPropertyListFormat format);
-    @Bridge(symbol="CFPropertyListWriteToStream")
+    @Bridge(symbol="CFPropertyListWriteToStream", optional=true)
     public static native @MachineSizedSInt long writeToStream(CFType propertyList, CFWriteStream stream, CFPropertyListFormat format, CFString.CFStringPtr errorString);
-    @Bridge(symbol="CFPropertyListCreateFromStream")
+    @Bridge(symbol="CFPropertyListCreateFromStream", optional=true)
     public static native CFType createFromStream(CFAllocator allocator, CFReadStream stream, @MachineSizedSInt long streamLength, CFPropertyListMutabilityOptions mutabilityOption, MachineSizedSIntPtr format, CFString.CFStringPtr errorString);
-    @Bridge(symbol="CFPropertyListCreateWithData")
+    @Bridge(symbol="CFPropertyListCreateWithData", optional=true)
     public static native CFType createWithData(CFAllocator allocator, CFData data, CFPropertyListMutabilityOptions options, MachineSizedSIntPtr format, CFError.CFErrorPtr error);
-    @Bridge(symbol="CFPropertyListCreateWithStream")
+    @Bridge(symbol="CFPropertyListCreateWithStream", optional=true)
     public static native CFType createWithStream(CFAllocator allocator, CFReadStream stream, @MachineSizedSInt long streamLength, CFPropertyListMutabilityOptions options, MachineSizedSIntPtr format, CFError.CFErrorPtr error);
-    @Bridge(symbol="CFPropertyListWrite")
+    @Bridge(symbol="CFPropertyListWrite", optional=true)
     public static native @MachineSizedSInt long write(CFType propertyList, CFWriteStream stream, CFPropertyListFormat format, CFPropertyListMutabilityOptions options, CFError.CFErrorPtr error);
-    @Bridge(symbol="CFPropertyListCreateData")
+    @Bridge(symbol="CFPropertyListCreateData", optional=true)
     public static native CFData createData(CFAllocator allocator, CFType propertyList, CFPropertyListFormat format, CFPropertyListMutabilityOptions options, CFError.CFErrorPtr error);
     /*</methods>*/
 }

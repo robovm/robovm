@@ -48,11 +48,11 @@ import org.robovm.apple.corefoundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="SecIdentityGetTypeID")
+    @Bridge(symbol="SecIdentityGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="SecIdentityCopyCertificate")
+    @Bridge(symbol="SecIdentityCopyCertificate", optional=true)
     public native int copyCertificate(SecCertificate.SecCertificatePtr certificateRef);
-    @Bridge(symbol="SecIdentityCopyPrivateKey")
+    @Bridge(symbol="SecIdentityCopyPrivateKey", optional=true)
     public native int copyPrivateKey(SecKey.SecKeyPtr privateKeyRef);
     /*</methods>*/
 }

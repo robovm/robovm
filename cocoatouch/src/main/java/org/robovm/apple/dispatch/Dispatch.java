@@ -49,21 +49,21 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="dispatch_time")
+    @Bridge(symbol="dispatch_time", optional=true)
     public static native long time(long when, long delta);
-    @Bridge(symbol="dispatch_walltime")
+    @Bridge(symbol="dispatch_walltime", optional=true)
     public static native long walltime(timespec when, long delta);
-    @Bridge(symbol="dispatch_main")
+    @Bridge(symbol="dispatch_main", optional=true)
     public static native void main();
-    @Bridge(symbol="dispatch_get_specific")
+    @Bridge(symbol="dispatch_get_specific", optional=true)
     public static native VoidPtr getSpecific(VoidPtr key);
-    @Bridge(symbol="dispatch_once")
+    @Bridge(symbol="dispatch_once", optional=true)
     public static native void once(MachineSizedSIntPtr predicate, @Block Runnable block);
-    @Bridge(symbol="dispatch_once_f")
+    @Bridge(symbol="dispatch_once_f", optional=true)
     public static native void onceF(MachineSizedSIntPtr predicate, VoidPtr context, FunctionPtr function);
-    @Bridge(symbol="dispatch_read")
+    @Bridge(symbol="dispatch_read", optional=true)
     public static native void read(int fd, @MachineSizedUInt long length, DispatchQueue queue, ObjCBlock handler);
-    @Bridge(symbol="dispatch_write")
+    @Bridge(symbol="dispatch_write", optional=true)
     public static native void write(int fd, DispatchData data, DispatchQueue queue, ObjCBlock handler);
     /*</methods>*/
 }

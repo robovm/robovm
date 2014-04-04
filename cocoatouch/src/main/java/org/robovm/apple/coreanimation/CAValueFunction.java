@@ -53,27 +53,27 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCAValueFunctionRotateX")
+    @GlobalValue(symbol="kCAValueFunctionRotateX", optional=true)
     public static native String FunctionRotateX();
-    @GlobalValue(symbol="kCAValueFunctionRotateY")
+    @GlobalValue(symbol="kCAValueFunctionRotateY", optional=true)
     public static native String FunctionRotateY();
-    @GlobalValue(symbol="kCAValueFunctionRotateZ")
+    @GlobalValue(symbol="kCAValueFunctionRotateZ", optional=true)
     public static native String FunctionRotateZ();
-    @GlobalValue(symbol="kCAValueFunctionScale")
+    @GlobalValue(symbol="kCAValueFunctionScale", optional=true)
     public static native String FunctionScale();
-    @GlobalValue(symbol="kCAValueFunctionScaleX")
+    @GlobalValue(symbol="kCAValueFunctionScaleX", optional=true)
     public static native String FunctionScaleX();
-    @GlobalValue(symbol="kCAValueFunctionScaleY")
+    @GlobalValue(symbol="kCAValueFunctionScaleY", optional=true)
     public static native String FunctionScaleY();
-    @GlobalValue(symbol="kCAValueFunctionScaleZ")
+    @GlobalValue(symbol="kCAValueFunctionScaleZ", optional=true)
     public static native String FunctionScaleZ();
-    @GlobalValue(symbol="kCAValueFunctionTranslate")
+    @GlobalValue(symbol="kCAValueFunctionTranslate", optional=true)
     public static native String FunctionTranslate();
-    @GlobalValue(symbol="kCAValueFunctionTranslateX")
+    @GlobalValue(symbol="kCAValueFunctionTranslateX", optional=true)
     public static native String FunctionTranslateX();
-    @GlobalValue(symbol="kCAValueFunctionTranslateY")
+    @GlobalValue(symbol="kCAValueFunctionTranslateY", optional=true)
     public static native String FunctionTranslateY();
-    @GlobalValue(symbol="kCAValueFunctionTranslateZ")
+    @GlobalValue(symbol="kCAValueFunctionTranslateZ", optional=true)
     public static native String FunctionTranslateZ();
     
     @Method(selector = "functionWithName:")

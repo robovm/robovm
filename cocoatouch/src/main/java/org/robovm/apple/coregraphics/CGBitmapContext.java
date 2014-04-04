@@ -52,29 +52,29 @@ import org.robovm.apple.foundation.*;
     }
     
     /*<methods>*/
-    @Bridge(symbol="CGBitmapContextCreateWithData")
+    @Bridge(symbol="CGBitmapContextCreateWithData", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGBitmapContext create(VoidPtr data, @MachineSizedUInt long width, @MachineSizedUInt long height, @MachineSizedUInt long bitsPerComponent, @MachineSizedUInt long bytesPerRow, CGColorSpace space, CGBitmapInfo bitmapInfo, FunctionPtr releaseCallback, VoidPtr releaseInfo);
-    @Bridge(symbol="CGBitmapContextCreate")
+    @Bridge(symbol="CGBitmapContextCreate", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGBitmapContext create(VoidPtr data, @MachineSizedUInt long width, @MachineSizedUInt long height, @MachineSizedUInt long bitsPerComponent, @MachineSizedUInt long bytesPerRow, CGColorSpace space, CGBitmapInfo bitmapInfo);
-    @Bridge(symbol="CGBitmapContextGetData")
+    @Bridge(symbol="CGBitmapContextGetData", optional=true)
     public native VoidPtr getData();
-    @Bridge(symbol="CGBitmapContextGetWidth")
+    @Bridge(symbol="CGBitmapContextGetWidth", optional=true)
     public native @MachineSizedUInt long getWidth();
-    @Bridge(symbol="CGBitmapContextGetHeight")
+    @Bridge(symbol="CGBitmapContextGetHeight", optional=true)
     public native @MachineSizedUInt long getHeight();
-    @Bridge(symbol="CGBitmapContextGetBitsPerComponent")
+    @Bridge(symbol="CGBitmapContextGetBitsPerComponent", optional=true)
     public native @MachineSizedUInt long getBitsPerComponent();
-    @Bridge(symbol="CGBitmapContextGetBitsPerPixel")
+    @Bridge(symbol="CGBitmapContextGetBitsPerPixel", optional=true)
     public native @MachineSizedUInt long getBitsPerPixel();
-    @Bridge(symbol="CGBitmapContextGetBytesPerRow")
+    @Bridge(symbol="CGBitmapContextGetBytesPerRow", optional=true)
     public native @MachineSizedUInt long getBytesPerRow();
-    @Bridge(symbol="CGBitmapContextGetColorSpace")
+    @Bridge(symbol="CGBitmapContextGetColorSpace", optional=true)
     public native CGColorSpace getColorSpace();
-    @Bridge(symbol="CGBitmapContextGetAlphaInfo")
+    @Bridge(symbol="CGBitmapContextGetAlphaInfo", optional=true)
     public native CGImageAlphaInfo getAlphaInfo();
-    @Bridge(symbol="CGBitmapContextGetBitmapInfo")
+    @Bridge(symbol="CGBitmapContextGetBitmapInfo", optional=true)
     public native CGBitmapInfo getBitmapInfo();
-    @Bridge(symbol="CGBitmapContextCreateImage")
+    @Bridge(symbol="CGBitmapContextCreateImage", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage toImage();
     /*</methods>*/
 }

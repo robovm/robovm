@@ -78,42 +78,42 @@ import org.robovm.apple.foundation.*;
     }
 
     /*<methods>*/
-    @GlobalValue(symbol="kCGColorWhite")
+    @GlobalValue(symbol="kCGColorWhite", optional=true)
     public static native String ColorWhite();
-    @GlobalValue(symbol="kCGColorBlack")
+    @GlobalValue(symbol="kCGColorBlack", optional=true)
     public static native String ColorBlack();
-    @GlobalValue(symbol="kCGColorClear")
+    @GlobalValue(symbol="kCGColorClear", optional=true)
     public static native String ColorClear();
     
-    @Bridge(symbol="CGColorCreate")
+    @Bridge(symbol="CGColorCreate", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColor create(CGColorSpace space, @Pointer long components);
-    @Bridge(symbol="CGColorCreateGenericGray")
+    @Bridge(symbol="CGColorCreateGenericGray", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColor createGenericGray(@MachineSizedFloat double gray, @MachineSizedFloat double alpha);
-    @Bridge(symbol="CGColorCreateGenericRGB")
+    @Bridge(symbol="CGColorCreateGenericRGB", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColor createGenericRGB(@MachineSizedFloat double red, @MachineSizedFloat double green, @MachineSizedFloat double blue, @MachineSizedFloat double alpha);
-    @Bridge(symbol="CGColorCreateGenericCMYK")
+    @Bridge(symbol="CGColorCreateGenericCMYK", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColor createGenericCMYK(@MachineSizedFloat double cyan, @MachineSizedFloat double magenta, @MachineSizedFloat double yellow, @MachineSizedFloat double black, @MachineSizedFloat double alpha);
-    @Bridge(symbol="CGColorGetConstantColor")
+    @Bridge(symbol="CGColorGetConstantColor", optional=true)
     public static native CGColor getConstantColor(String colorName);
-    @Bridge(symbol="CGColorCreateWithPattern")
+    @Bridge(symbol="CGColorCreateWithPattern", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColor createWithPattern(CGColorSpace space, CGPattern pattern, @Pointer long components);
-    @Bridge(symbol="CGColorCreateCopy")
+    @Bridge(symbol="CGColorCreateCopy", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColor createCopy(CGColor color);
-    @Bridge(symbol="CGColorCreateCopyWithAlpha")
+    @Bridge(symbol="CGColorCreateCopyWithAlpha", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColor createCopyWithAlpha(CGColor color, @MachineSizedFloat double alpha);
-    @Bridge(symbol="CGColorEqualToColor")
+    @Bridge(symbol="CGColorEqualToColor", optional=true)
     public native boolean equalToColor(CGColor color2);
-    @Bridge(symbol="CGColorGetNumberOfComponents")
+    @Bridge(symbol="CGColorGetNumberOfComponents", optional=true)
     public native @MachineSizedUInt long getNumberOfComponents();
-    @Bridge(symbol="CGColorGetComponents")
+    @Bridge(symbol="CGColorGetComponents", optional=true)
     protected static native MachineSizedFloatPtr getComponents(CGColor color);
-    @Bridge(symbol="CGColorGetAlpha")
+    @Bridge(symbol="CGColorGetAlpha", optional=true)
     public native @MachineSizedFloat double getAlpha();
-    @Bridge(symbol="CGColorGetColorSpace")
+    @Bridge(symbol="CGColorGetColorSpace", optional=true)
     public native CGColorSpace getColorSpace();
-    @Bridge(symbol="CGColorGetPattern")
+    @Bridge(symbol="CGColorGetPattern", optional=true)
     public native CGPattern getPattern();
-    @Bridge(symbol="CGColorGetTypeID")
+    @Bridge(symbol="CGColorGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     /*</methods>*/
 }

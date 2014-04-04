@@ -51,51 +51,51 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSStreamSocketSecurityLevelKey")
+    @GlobalValue(symbol="NSStreamSocketSecurityLevelKey", optional=true)
     public static native NSString KeySocketSecurityLevel();
-    @GlobalValue(symbol="NSStreamSocketSecurityLevelNone")
+    @GlobalValue(symbol="NSStreamSocketSecurityLevelNone", optional=true)
     public static native NSString SocketSecurityLevelNone();
-    @GlobalValue(symbol="NSStreamSocketSecurityLevelSSLv2")
+    @GlobalValue(symbol="NSStreamSocketSecurityLevelSSLv2", optional=true)
     public static native NSString SocketSecurityLevelSSLv2();
-    @GlobalValue(symbol="NSStreamSocketSecurityLevelSSLv3")
+    @GlobalValue(symbol="NSStreamSocketSecurityLevelSSLv3", optional=true)
     public static native NSString SocketSecurityLevelSSLv3();
-    @GlobalValue(symbol="NSStreamSocketSecurityLevelTLSv1")
+    @GlobalValue(symbol="NSStreamSocketSecurityLevelTLSv1", optional=true)
     public static native NSString SocketSecurityLevelTLSv1();
-    @GlobalValue(symbol="NSStreamSocketSecurityLevelNegotiatedSSL")
+    @GlobalValue(symbol="NSStreamSocketSecurityLevelNegotiatedSSL", optional=true)
     public static native NSString SocketSecurityLevelNegotiatedSSL();
-    @GlobalValue(symbol="NSStreamSOCKSProxyConfigurationKey")
+    @GlobalValue(symbol="NSStreamSOCKSProxyConfigurationKey", optional=true)
     public static native NSString KeySOCKSProxyConfiguration();
-    @GlobalValue(symbol="NSStreamSOCKSProxyHostKey")
+    @GlobalValue(symbol="NSStreamSOCKSProxyHostKey", optional=true)
     public static native NSString KeySOCKSProxyHost();
-    @GlobalValue(symbol="NSStreamSOCKSProxyPortKey")
+    @GlobalValue(symbol="NSStreamSOCKSProxyPortKey", optional=true)
     public static native NSString KeySOCKSProxyPort();
-    @GlobalValue(symbol="NSStreamSOCKSProxyVersionKey")
+    @GlobalValue(symbol="NSStreamSOCKSProxyVersionKey", optional=true)
     public static native NSString KeySOCKSProxyVersion();
-    @GlobalValue(symbol="NSStreamSOCKSProxyUserKey")
+    @GlobalValue(symbol="NSStreamSOCKSProxyUserKey", optional=true)
     public static native NSString KeySOCKSProxyUser();
-    @GlobalValue(symbol="NSStreamSOCKSProxyPasswordKey")
+    @GlobalValue(symbol="NSStreamSOCKSProxyPasswordKey", optional=true)
     public static native NSString KeySOCKSProxyPassword();
-    @GlobalValue(symbol="NSStreamSOCKSProxyVersion4")
+    @GlobalValue(symbol="NSStreamSOCKSProxyVersion4", optional=true)
     public static native NSString SOCKSProxyVersion4();
-    @GlobalValue(symbol="NSStreamSOCKSProxyVersion5")
+    @GlobalValue(symbol="NSStreamSOCKSProxyVersion5", optional=true)
     public static native NSString SOCKSProxyVersion5();
-    @GlobalValue(symbol="NSStreamDataWrittenToMemoryStreamKey")
+    @GlobalValue(symbol="NSStreamDataWrittenToMemoryStreamKey", optional=true)
     public static native NSString KeyDataWrittenToMemoryStream();
-    @GlobalValue(symbol="NSStreamFileCurrentOffsetKey")
+    @GlobalValue(symbol="NSStreamFileCurrentOffsetKey", optional=true)
     public static native NSString KeyFileCurrentOffset();
-    @GlobalValue(symbol="NSStreamSocketSSLErrorDomain")
+    @GlobalValue(symbol="NSStreamSocketSSLErrorDomain", optional=true)
     public static native String ErrorDomainSocketSSL();
-    @GlobalValue(symbol="NSStreamSOCKSErrorDomain")
+    @GlobalValue(symbol="NSStreamSOCKSErrorDomain", optional=true)
     public static native String ErrorDomainSOCKS();
-    @GlobalValue(symbol="NSStreamNetworkServiceType")
+    @GlobalValue(symbol="NSStreamNetworkServiceType", optional=true)
     public static native NSString KeyNetworkServiceType();
-    @GlobalValue(symbol="NSStreamNetworkServiceTypeVoIP")
+    @GlobalValue(symbol="NSStreamNetworkServiceTypeVoIP", optional=true)
     public static native NSString NetworkServiceTypeVoIP();
-    @GlobalValue(symbol="NSStreamNetworkServiceTypeVideo")
+    @GlobalValue(symbol="NSStreamNetworkServiceTypeVideo", optional=true)
     public static native NSString NetworkServiceTypeVideo();
-    @GlobalValue(symbol="NSStreamNetworkServiceTypeBackground")
+    @GlobalValue(symbol="NSStreamNetworkServiceTypeBackground", optional=true)
     public static native NSString NetworkServiceTypeBackground();
-    @GlobalValue(symbol="NSStreamNetworkServiceTypeVoice")
+    @GlobalValue(symbol="NSStreamNetworkServiceTypeVoice", optional=true)
     public static native NSString NetworkServiceTypeVoice();
     
     @Method(selector = "open")

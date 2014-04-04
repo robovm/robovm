@@ -47,21 +47,21 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFDataGetTypeID")
+    @Bridge(symbol="CFDataGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFDataCreate")
+    @Bridge(symbol="CFDataCreate", optional=true)
     public static native CFData create(CFAllocator allocator, BytePtr bytes, @MachineSizedSInt long length);
-    @Bridge(symbol="CFDataCreateWithBytesNoCopy")
+    @Bridge(symbol="CFDataCreateWithBytesNoCopy", optional=true)
     public static native CFData createWithBytesNoCopy(CFAllocator allocator, BytePtr bytes, @MachineSizedSInt long length, CFAllocator bytesDeallocator);
-    @Bridge(symbol="CFDataCreateCopy")
+    @Bridge(symbol="CFDataCreateCopy", optional=true)
     public static native CFData createCopy(CFAllocator allocator, CFData theData);
-    @Bridge(symbol="CFDataGetLength")
+    @Bridge(symbol="CFDataGetLength", optional=true)
     public native @MachineSizedSInt long getLength();
-    @Bridge(symbol="CFDataGetBytePtr")
+    @Bridge(symbol="CFDataGetBytePtr", optional=true)
     public native BytePtr getBytePtr();
-    @Bridge(symbol="CFDataGetBytes")
+    @Bridge(symbol="CFDataGetBytes", optional=true)
     public native void getBytes(@ByVal CFRange range, BytePtr buffer);
-    @Bridge(symbol="CFDataFind")
+    @Bridge(symbol="CFDataFind", optional=true)
     public native @ByVal CFRange find(CFData dataToFind, @ByVal CFRange searchRange, CFDataSearchFlags compareOptions);
     /*</methods>*/
 }

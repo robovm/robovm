@@ -66,12 +66,12 @@ import org.robovm.apple.coreimage.*;
     }
     
     /*<methods>*/
-    @GlobalValue(symbol="UIOffsetZero")
+    @GlobalValue(symbol="UIOffsetZero", optional=true)
     public static native @ByVal UIOffset Zero();
     
-    @Bridge(symbol="NSStringFromUIOffset")
+    @Bridge(symbol="NSStringFromUIOffset", optional=true)
     protected static native String toString(@ByVal UIOffset offset);
-    @Bridge(symbol="UIOffsetFromString")
+    @Bridge(symbol="UIOffsetFromString", optional=true)
     public static native @ByVal UIOffset fromString(String string);
     /*</methods>*/
 }

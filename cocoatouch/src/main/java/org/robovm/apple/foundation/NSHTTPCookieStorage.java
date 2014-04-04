@@ -51,9 +51,9 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSHTTPCookieManagerAcceptPolicyChangedNotification")
+    @GlobalValue(symbol="NSHTTPCookieManagerAcceptPolicyChangedNotification", optional=true)
     public static native String NotificationAcceptPolicyChanged();
-    @GlobalValue(symbol="NSHTTPCookieManagerCookiesChangedNotification")
+    @GlobalValue(symbol="NSHTTPCookieManagerCookiesChangedNotification", optional=true)
     public static native String NotificationCookiesChanged();
     
     @Method(selector = "cookies")

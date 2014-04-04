@@ -46,11 +46,11 @@ import org.robovm.apple.foundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kEAGLColorFormatRGBA8")
+    @GlobalValue(symbol="kEAGLColorFormatRGBA8", optional=true)
     public static native NSString RGBA8();
-    @GlobalValue(symbol="kEAGLColorFormatRGB565")
+    @GlobalValue(symbol="kEAGLColorFormatRGB565", optional=true)
     public static native NSString RGB565();
-    @GlobalValue(symbol="kEAGLColorFormatSRGBA8")
+    @GlobalValue(symbol="kEAGLColorFormatSRGBA8", optional=true)
     public static native NSString SRGBA8();
     /*</methods>*/
 }

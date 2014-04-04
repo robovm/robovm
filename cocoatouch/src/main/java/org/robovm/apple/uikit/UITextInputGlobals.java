@@ -51,11 +51,11 @@ import org.robovm.apple.coreimage.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="UITextInputTextBackgroundColorKey")
+    @GlobalValue(symbol="UITextInputTextBackgroundColorKey", optional=true)
     public static native NSString StyleKeyBackgroundColor();
-    @GlobalValue(symbol="UITextInputTextColorKey")
+    @GlobalValue(symbol="UITextInputTextColorKey", optional=true)
     public static native NSString StyleKeyColor();
-    @GlobalValue(symbol="UITextInputTextFontKey")
+    @GlobalValue(symbol="UITextInputTextFontKey", optional=true)
     public static native NSString StyleKeyFont();
     /*</methods>*/
 }

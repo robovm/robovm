@@ -47,34 +47,34 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFStringBinaryHeapCallBacks")
+    @GlobalValue(symbol="kCFStringBinaryHeapCallBacks", optional=true)
     public static native @ByVal CFBinaryHeapCallBacks StringBinaryHeapCallBacks();
     
-    @Bridge(symbol="CFBinaryHeapGetTypeID")
+    @Bridge(symbol="CFBinaryHeapGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFBinaryHeapCreate")
+    @Bridge(symbol="CFBinaryHeapCreate", optional=true)
     public static native CFBinaryHeap create(CFAllocator allocator, @MachineSizedSInt long capacity, CFBinaryHeapCallBacks callBacks, CFBinaryHeapCompareContext compareContext);
-    @Bridge(symbol="CFBinaryHeapCreateCopy")
+    @Bridge(symbol="CFBinaryHeapCreateCopy", optional=true)
     public static native CFBinaryHeap createCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFBinaryHeap heap);
-    @Bridge(symbol="CFBinaryHeapGetCount")
+    @Bridge(symbol="CFBinaryHeapGetCount", optional=true)
     public native @MachineSizedSInt long getCount();
-    @Bridge(symbol="CFBinaryHeapGetCountOfValue")
+    @Bridge(symbol="CFBinaryHeapGetCountOfValue", optional=true)
     public native @MachineSizedSInt long getCountOfValue(VoidPtr value);
-    @Bridge(symbol="CFBinaryHeapContainsValue")
+    @Bridge(symbol="CFBinaryHeapContainsValue", optional=true)
     public native boolean containsValue(VoidPtr value);
-    @Bridge(symbol="CFBinaryHeapGetMinimum")
+    @Bridge(symbol="CFBinaryHeapGetMinimum", optional=true)
     public native VoidPtr getMinimum();
-    @Bridge(symbol="CFBinaryHeapGetMinimumIfPresent")
+    @Bridge(symbol="CFBinaryHeapGetMinimumIfPresent", optional=true)
     public native boolean getMinimumIfPresent(VoidPtr.VoidPtrPtr value);
-    @Bridge(symbol="CFBinaryHeapGetValues")
+    @Bridge(symbol="CFBinaryHeapGetValues", optional=true)
     public native void getValues(VoidPtr.VoidPtrPtr values);
-    @Bridge(symbol="CFBinaryHeapApplyFunction")
+    @Bridge(symbol="CFBinaryHeapApplyFunction", optional=true)
     public native void applyFunction(FunctionPtr applier, VoidPtr context);
-    @Bridge(symbol="CFBinaryHeapAddValue")
+    @Bridge(symbol="CFBinaryHeapAddValue", optional=true)
     public native void addValue(VoidPtr value);
-    @Bridge(symbol="CFBinaryHeapRemoveMinimumValue")
+    @Bridge(symbol="CFBinaryHeapRemoveMinimumValue", optional=true)
     public native void removeMinimumValue();
-    @Bridge(symbol="CFBinaryHeapRemoveAllValues")
+    @Bridge(symbol="CFBinaryHeapRemoveAllValues", optional=true)
     public native void removeAllValues();
     /*</methods>*/
 }

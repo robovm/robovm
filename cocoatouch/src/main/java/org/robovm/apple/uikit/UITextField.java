@@ -218,11 +218,11 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="UITextFieldTextDidBeginEditingNotification")
+    @GlobalValue(symbol="UITextFieldTextDidBeginEditingNotification", optional=true)
     public static native String NotificationTextDidBeginEditing();
-    @GlobalValue(symbol="UITextFieldTextDidEndEditingNotification")
+    @GlobalValue(symbol="UITextFieldTextDidEndEditingNotification", optional=true)
     public static native String NotificationTextDidEndEditing();
-    @GlobalValue(symbol="UITextFieldTextDidChangeNotification")
+    @GlobalValue(symbol="UITextFieldTextDidChangeNotification", optional=true)
     public static native String NotificationTextDidChange();
     
     @Method(selector = "borderRectForBounds:")

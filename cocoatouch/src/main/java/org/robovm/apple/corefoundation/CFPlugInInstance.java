@@ -47,17 +47,17 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFPlugInInstanceCreate")
+    @Bridge(symbol="CFPlugInInstanceCreate", optional=true)
     public static native VoidPtr create(CFAllocator allocator, CFUUID factoryUUID, CFUUID typeUUID);
-    @Bridge(symbol="CFPlugInInstanceGetInterfaceFunctionTable")
+    @Bridge(symbol="CFPlugInInstanceGetInterfaceFunctionTable", optional=true)
     public native boolean getInterfaceFunctionTable(CFString interfaceName, VoidPtr.VoidPtrPtr ftbl);
-    @Bridge(symbol="CFPlugInInstanceGetFactoryName")
+    @Bridge(symbol="CFPlugInInstanceGetFactoryName", optional=true)
     public native CFString getFactoryName();
-    @Bridge(symbol="CFPlugInInstanceGetInstanceData")
+    @Bridge(symbol="CFPlugInInstanceGetInstanceData", optional=true)
     public native VoidPtr getInstanceData();
-    @Bridge(symbol="CFPlugInInstanceGetTypeID")
+    @Bridge(symbol="CFPlugInInstanceGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFPlugInInstanceCreateWithInstanceDataSize")
+    @Bridge(symbol="CFPlugInInstanceCreateWithInstanceDataSize", optional=true)
     public static native CFPlugInInstance createWithInstanceDataSize(CFAllocator allocator, @MachineSizedSInt long instanceDataSize, FunctionPtr deallocateInstanceFunction, CFString factoryName, FunctionPtr getInterfaceFunction);
     /*</methods>*/
 }

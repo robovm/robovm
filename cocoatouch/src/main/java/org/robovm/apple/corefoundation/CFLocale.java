@@ -47,116 +47,116 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFLocaleCurrentLocaleDidChangeNotification")
+    @GlobalValue(symbol="kCFLocaleCurrentLocaleDidChangeNotification", optional=true)
     public static native CFString NotificationCurrentLocaleDidChange();
-    @GlobalValue(symbol="kCFLocaleIdentifier")
+    @GlobalValue(symbol="kCFLocaleIdentifier", optional=true)
     public static native CFString KeyIdentifier();
-    @GlobalValue(symbol="kCFLocaleLanguageCode")
+    @GlobalValue(symbol="kCFLocaleLanguageCode", optional=true)
     public static native CFString KeyLanguageCode();
-    @GlobalValue(symbol="kCFLocaleCountryCode")
+    @GlobalValue(symbol="kCFLocaleCountryCode", optional=true)
     public static native CFString KeyCountryCode();
-    @GlobalValue(symbol="kCFLocaleScriptCode")
+    @GlobalValue(symbol="kCFLocaleScriptCode", optional=true)
     public static native CFString KeyScriptCode();
-    @GlobalValue(symbol="kCFLocaleVariantCode")
+    @GlobalValue(symbol="kCFLocaleVariantCode", optional=true)
     public static native CFString KeyVariantCode();
-    @GlobalValue(symbol="kCFLocaleExemplarCharacterSet")
+    @GlobalValue(symbol="kCFLocaleExemplarCharacterSet", optional=true)
     public static native CFString KeyExemplarCharacterSet();
-    @GlobalValue(symbol="kCFLocaleCalendarIdentifier")
+    @GlobalValue(symbol="kCFLocaleCalendarIdentifier", optional=true)
     public static native CFString KeyCalendarIdentifier();
-    @GlobalValue(symbol="kCFLocaleCalendar")
+    @GlobalValue(symbol="kCFLocaleCalendar", optional=true)
     public static native CFString CalendarIdentifierLocaleCalendar();
-    @GlobalValue(symbol="kCFLocaleCollationIdentifier")
+    @GlobalValue(symbol="kCFLocaleCollationIdentifier", optional=true)
     public static native CFString KeyCollationIdentifier();
-    @GlobalValue(symbol="kCFLocaleUsesMetricSystem")
+    @GlobalValue(symbol="kCFLocaleUsesMetricSystem", optional=true)
     public static native CFString KeyUsesMetricSystem();
-    @GlobalValue(symbol="kCFLocaleMeasurementSystem")
+    @GlobalValue(symbol="kCFLocaleMeasurementSystem", optional=true)
     public static native CFString KeyMeasurementSystem();
-    @GlobalValue(symbol="kCFLocaleDecimalSeparator")
+    @GlobalValue(symbol="kCFLocaleDecimalSeparator", optional=true)
     public static native CFString KeyDecimalSeparator();
-    @GlobalValue(symbol="kCFLocaleGroupingSeparator")
+    @GlobalValue(symbol="kCFLocaleGroupingSeparator", optional=true)
     public static native CFString KeyGroupingSeparator();
-    @GlobalValue(symbol="kCFLocaleCurrencySymbol")
+    @GlobalValue(symbol="kCFLocaleCurrencySymbol", optional=true)
     public static native CFString KeyCurrencySymbol();
-    @GlobalValue(symbol="kCFLocaleCurrencyCode")
+    @GlobalValue(symbol="kCFLocaleCurrencyCode", optional=true)
     public static native CFString KeyCurrencyCode();
-    @GlobalValue(symbol="kCFLocaleCollatorIdentifier")
+    @GlobalValue(symbol="kCFLocaleCollatorIdentifier", optional=true)
     public static native CFString KeyCollatorIdentifier();
-    @GlobalValue(symbol="kCFLocaleQuotationBeginDelimiterKey")
+    @GlobalValue(symbol="kCFLocaleQuotationBeginDelimiterKey", optional=true)
     public static native CFString KeyQuotationBeginDelimiterKey();
-    @GlobalValue(symbol="kCFLocaleQuotationEndDelimiterKey")
+    @GlobalValue(symbol="kCFLocaleQuotationEndDelimiterKey", optional=true)
     public static native CFString KeyQuotationEndDelimiterKey();
-    @GlobalValue(symbol="kCFLocaleAlternateQuotationBeginDelimiterKey")
+    @GlobalValue(symbol="kCFLocaleAlternateQuotationBeginDelimiterKey", optional=true)
     public static native CFString KeyAlternateQuotationBeginDelimiterKey();
-    @GlobalValue(symbol="kCFLocaleAlternateQuotationEndDelimiterKey")
+    @GlobalValue(symbol="kCFLocaleAlternateQuotationEndDelimiterKey", optional=true)
     public static native CFString KeyAlternateQuotationEndDelimiterKey();
-    @GlobalValue(symbol="kCFGregorianCalendar")
+    @GlobalValue(symbol="kCFGregorianCalendar", optional=true)
     public static native CFString CalendarIdentifierGregorianCalendar();
-    @GlobalValue(symbol="kCFBuddhistCalendar")
+    @GlobalValue(symbol="kCFBuddhistCalendar", optional=true)
     public static native CFString CalendarIdentifierBuddhistCalendar();
-    @GlobalValue(symbol="kCFChineseCalendar")
+    @GlobalValue(symbol="kCFChineseCalendar", optional=true)
     public static native CFString CalendarIdentifierChineseCalendar();
-    @GlobalValue(symbol="kCFHebrewCalendar")
+    @GlobalValue(symbol="kCFHebrewCalendar", optional=true)
     public static native CFString CalendarIdentifierHebrewCalendar();
-    @GlobalValue(symbol="kCFIslamicCalendar")
+    @GlobalValue(symbol="kCFIslamicCalendar", optional=true)
     public static native CFString CalendarIdentifierIslamicCalendar();
-    @GlobalValue(symbol="kCFIslamicCivilCalendar")
+    @GlobalValue(symbol="kCFIslamicCivilCalendar", optional=true)
     public static native CFString CalendarIdentifierIslamicCivilCalendar();
-    @GlobalValue(symbol="kCFJapaneseCalendar")
+    @GlobalValue(symbol="kCFJapaneseCalendar", optional=true)
     public static native CFString CalendarIdentifierJapaneseCalendar();
-    @GlobalValue(symbol="kCFRepublicOfChinaCalendar")
+    @GlobalValue(symbol="kCFRepublicOfChinaCalendar", optional=true)
     public static native CFString CalendarIdentifierRepublicOfChinaCalendar();
-    @GlobalValue(symbol="kCFPersianCalendar")
+    @GlobalValue(symbol="kCFPersianCalendar", optional=true)
     public static native CFString CalendarIdentifierPersianCalendar();
-    @GlobalValue(symbol="kCFIndianCalendar")
+    @GlobalValue(symbol="kCFIndianCalendar", optional=true)
     public static native CFString CalendarIdentifierIndianCalendar();
-    @GlobalValue(symbol="kCFISO8601Calendar")
+    @GlobalValue(symbol="kCFISO8601Calendar", optional=true)
     public static native CFString CalendarIdentifierISO8601Calendar();
     
-    @Bridge(symbol="CFLocaleGetTypeID")
+    @Bridge(symbol="CFLocaleGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFLocaleGetSystem")
+    @Bridge(symbol="CFLocaleGetSystem", optional=true)
     public static native CFLocale getSystem();
-    @Bridge(symbol="CFLocaleCopyCurrent")
+    @Bridge(symbol="CFLocaleCopyCurrent", optional=true)
     public static native CFLocale copyCurrent();
-    @Bridge(symbol="CFLocaleCopyAvailableLocaleIdentifiers")
+    @Bridge(symbol="CFLocaleCopyAvailableLocaleIdentifiers", optional=true)
     public static native CFArray copyAvailableLocaleIdentifiers();
-    @Bridge(symbol="CFLocaleCopyISOLanguageCodes")
+    @Bridge(symbol="CFLocaleCopyISOLanguageCodes", optional=true)
     public static native CFArray copyISOLanguageCodes();
-    @Bridge(symbol="CFLocaleCopyISOCountryCodes")
+    @Bridge(symbol="CFLocaleCopyISOCountryCodes", optional=true)
     public static native CFArray copyISOCountryCodes();
-    @Bridge(symbol="CFLocaleCopyISOCurrencyCodes")
+    @Bridge(symbol="CFLocaleCopyISOCurrencyCodes", optional=true)
     public static native CFArray copyISOCurrencyCodes();
-    @Bridge(symbol="CFLocaleCopyCommonISOCurrencyCodes")
+    @Bridge(symbol="CFLocaleCopyCommonISOCurrencyCodes", optional=true)
     public static native CFArray copyCommonISOCurrencyCodes();
-    @Bridge(symbol="CFLocaleCopyPreferredLanguages")
+    @Bridge(symbol="CFLocaleCopyPreferredLanguages", optional=true)
     public static native CFArray copyPreferredLanguages();
-    @Bridge(symbol="CFLocaleCreateCanonicalLanguageIdentifierFromString")
+    @Bridge(symbol="CFLocaleCreateCanonicalLanguageIdentifierFromString", optional=true)
     public static native CFString createCanonicalLanguageIdentifierFromString(CFAllocator allocator, CFString localeIdentifier);
-    @Bridge(symbol="CFLocaleCreateCanonicalLocaleIdentifierFromString")
+    @Bridge(symbol="CFLocaleCreateCanonicalLocaleIdentifierFromString", optional=true)
     public static native CFString createCanonicalLocaleIdentifierFromString(CFAllocator allocator, CFString localeIdentifier);
-    @Bridge(symbol="CFLocaleCreateCanonicalLocaleIdentifierFromScriptManagerCodes")
+    @Bridge(symbol="CFLocaleCreateCanonicalLocaleIdentifierFromScriptManagerCodes", optional=true)
     public static native CFString createCanonicalLocaleIdentifierFromScriptManagerCodes(CFAllocator allocator, short lcode, short rcode);
-    @Bridge(symbol="CFLocaleCreateLocaleIdentifierFromWindowsLocaleCode")
+    @Bridge(symbol="CFLocaleCreateLocaleIdentifierFromWindowsLocaleCode", optional=true)
     public static native CFString createLocaleIdentifierFromWindowsLocaleCode(CFAllocator allocator, int lcid);
-    @Bridge(symbol="CFLocaleGetWindowsLocaleCodeFromLocaleIdentifier")
+    @Bridge(symbol="CFLocaleGetWindowsLocaleCodeFromLocaleIdentifier", optional=true)
     public static native int getWindowsLocaleCodeFromLocaleIdentifier(CFString localeIdentifier);
-    @Bridge(symbol="CFLocaleGetLanguageCharacterDirection")
+    @Bridge(symbol="CFLocaleGetLanguageCharacterDirection", optional=true)
     public static native CFLocaleLanguageDirection getLanguageCharacterDirection(CFString isoLangCode);
-    @Bridge(symbol="CFLocaleGetLanguageLineDirection")
+    @Bridge(symbol="CFLocaleGetLanguageLineDirection", optional=true)
     public static native CFLocaleLanguageDirection getLanguageLineDirection(CFString isoLangCode);
-    @Bridge(symbol="CFLocaleCreateComponentsFromLocaleIdentifier")
+    @Bridge(symbol="CFLocaleCreateComponentsFromLocaleIdentifier", optional=true)
     public static native CFDictionary createComponentsFromLocaleIdentifier(CFAllocator allocator, CFString localeID);
-    @Bridge(symbol="CFLocaleCreateLocaleIdentifierFromComponents")
+    @Bridge(symbol="CFLocaleCreateLocaleIdentifierFromComponents", optional=true)
     public static native CFString createLocaleIdentifierFromComponents(CFAllocator allocator, CFDictionary dictionary);
-    @Bridge(symbol="CFLocaleCreate")
+    @Bridge(symbol="CFLocaleCreate", optional=true)
     public static native CFLocale create(CFAllocator allocator, CFString localeIdentifier);
-    @Bridge(symbol="CFLocaleCreateCopy")
+    @Bridge(symbol="CFLocaleCreateCopy", optional=true)
     public static native CFLocale createCopy(CFAllocator allocator, CFLocale locale);
-    @Bridge(symbol="CFLocaleGetIdentifier")
+    @Bridge(symbol="CFLocaleGetIdentifier", optional=true)
     public native CFString getIdentifier();
-    @Bridge(symbol="CFLocaleGetValue")
+    @Bridge(symbol="CFLocaleGetValue", optional=true)
     public native CFType getValue(CFString key);
-    @Bridge(symbol="CFLocaleCopyDisplayNameForPropertyValue")
+    @Bridge(symbol="CFLocaleCopyDisplayNameForPropertyValue", optional=true)
     public native CFString copyDisplayNameForPropertyValue(CFString key, CFString value);
     /*</methods>*/
 }

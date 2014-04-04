@@ -47,14 +47,14 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFNumberPositiveInfinity")
+    @GlobalValue(symbol="kCFNumberPositiveInfinity", optional=true)
     public static native CFNumber PositiveInfinity();
-    @GlobalValue(symbol="kCFNumberNegativeInfinity")
+    @GlobalValue(symbol="kCFNumberNegativeInfinity", optional=true)
     public static native CFNumber NegativeInfinity();
-    @GlobalValue(symbol="kCFNumberNaN")
+    @GlobalValue(symbol="kCFNumberNaN", optional=true)
     public static native CFNumber NaN();
     
-    @Bridge(symbol="CFNumberGetTypeID")
+    @Bridge(symbol="CFNumberGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     /*</methods>*/
 }

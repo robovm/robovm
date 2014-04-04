@@ -47,25 +47,25 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFAttributedStringCreateMutableCopy")
+    @Bridge(symbol="CFAttributedStringCreateMutableCopy", optional=true)
     public static native CFMutableAttributedString createMutableCopy(CFAllocator alloc, @MachineSizedSInt long maxLength, CFAttributedString aStr);
-    @Bridge(symbol="CFAttributedStringCreateMutable")
+    @Bridge(symbol="CFAttributedStringCreateMutable", optional=true)
     public static native CFMutableAttributedString createMutable(CFAllocator alloc, @MachineSizedSInt long maxLength);
-    @Bridge(symbol="CFAttributedStringReplaceString")
+    @Bridge(symbol="CFAttributedStringReplaceString", optional=true)
     public native void replaceString(@ByVal CFRange range, CFString replacement);
-    @Bridge(symbol="CFAttributedStringGetMutableString")
+    @Bridge(symbol="CFAttributedStringGetMutableString", optional=true)
     public native CFMutableString getMutableString();
-    @Bridge(symbol="CFAttributedStringSetAttributes")
+    @Bridge(symbol="CFAttributedStringSetAttributes", optional=true)
     public native void setAttributes(@ByVal CFRange range, CFDictionary replacement, boolean clearOtherAttributes);
-    @Bridge(symbol="CFAttributedStringSetAttribute")
+    @Bridge(symbol="CFAttributedStringSetAttribute", optional=true)
     public native void setAttribute(@ByVal CFRange range, CFString attrName, CFType value);
-    @Bridge(symbol="CFAttributedStringRemoveAttribute")
+    @Bridge(symbol="CFAttributedStringRemoveAttribute", optional=true)
     public native void removeAttribute(@ByVal CFRange range, CFString attrName);
-    @Bridge(symbol="CFAttributedStringReplaceAttributedString")
+    @Bridge(symbol="CFAttributedStringReplaceAttributedString", optional=true)
     public native void replaceAttributedString(@ByVal CFRange range, CFAttributedString replacement);
-    @Bridge(symbol="CFAttributedStringBeginEditing")
+    @Bridge(symbol="CFAttributedStringBeginEditing", optional=true)
     public native void beginEditing();
-    @Bridge(symbol="CFAttributedStringEndEditing")
+    @Bridge(symbol="CFAttributedStringEndEditing", optional=true)
     public native void endEditing();
     /*</methods>*/
 }

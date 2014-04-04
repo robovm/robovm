@@ -47,38 +47,38 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFAbsoluteTimeIntervalSince1970")
+    @GlobalValue(symbol="kCFAbsoluteTimeIntervalSince1970", optional=true)
     public static native double AbsoluteTimeIntervalSince1970();
-    @GlobalValue(symbol="kCFAbsoluteTimeIntervalSince1904")
+    @GlobalValue(symbol="kCFAbsoluteTimeIntervalSince1904", optional=true)
     public static native double AbsoluteTimeIntervalSince1904();
     
-    @Bridge(symbol="CFAbsoluteTimeGetCurrent")
+    @Bridge(symbol="CFAbsoluteTimeGetCurrent", optional=true)
     public static native double absoluteTimeGetCurrent();
-    @Bridge(symbol="CFDateGetTypeID")
+    @Bridge(symbol="CFDateGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFDateCreate")
+    @Bridge(symbol="CFDateCreate", optional=true)
     public static native CFDate create(CFAllocator allocator, double at);
-    @Bridge(symbol="CFDateGetAbsoluteTime")
+    @Bridge(symbol="CFDateGetAbsoluteTime", optional=true)
     public native double getAbsoluteTime();
-    @Bridge(symbol="CFDateGetTimeIntervalSinceDate")
+    @Bridge(symbol="CFDateGetTimeIntervalSinceDate", optional=true)
     public native double getTimeIntervalSinceDate(CFDate otherDate);
-    @Bridge(symbol="CFDateCompare")
+    @Bridge(symbol="CFDateCompare", optional=true)
     public native CFComparisonResult compare(CFDate otherDate, VoidPtr context);
-    @Bridge(symbol="CFGregorianDateIsValid")
+    @Bridge(symbol="CFGregorianDateIsValid", optional=true)
     public static native boolean gregorianDateIsValid(@ByVal CFGregorianDate gdate, CFGregorianUnitFlags unitFlags);
-    @Bridge(symbol="CFGregorianDateGetAbsoluteTime")
+    @Bridge(symbol="CFGregorianDateGetAbsoluteTime", optional=true)
     public static native double gregorianDateGetAbsoluteTime(@ByVal CFGregorianDate gdate, CFTimeZone tz);
-    @Bridge(symbol="CFAbsoluteTimeGetGregorianDate")
+    @Bridge(symbol="CFAbsoluteTimeGetGregorianDate", optional=true)
     public static native @ByVal CFGregorianDate absoluteTimeGetGregorianDate(double at, CFTimeZone tz);
-    @Bridge(symbol="CFAbsoluteTimeAddGregorianUnits")
+    @Bridge(symbol="CFAbsoluteTimeAddGregorianUnits", optional=true)
     public static native double absoluteTimeAddGregorianUnits(double at, CFTimeZone tz, @ByVal CFGregorianUnits units);
-    @Bridge(symbol="CFAbsoluteTimeGetDifferenceAsGregorianUnits")
+    @Bridge(symbol="CFAbsoluteTimeGetDifferenceAsGregorianUnits", optional=true)
     public static native @ByVal CFGregorianUnits absoluteTimeGetDifferenceAsGregorianUnits(double at1, double at2, CFTimeZone tz, CFGregorianUnitFlags unitFlags);
-    @Bridge(symbol="CFAbsoluteTimeGetDayOfWeek")
+    @Bridge(symbol="CFAbsoluteTimeGetDayOfWeek", optional=true)
     public static native int absoluteTimeGetDayOfWeek(double at, CFTimeZone tz);
-    @Bridge(symbol="CFAbsoluteTimeGetDayOfYear")
+    @Bridge(symbol="CFAbsoluteTimeGetDayOfYear", optional=true)
     public static native int absoluteTimeGetDayOfYear(double at, CFTimeZone tz);
-    @Bridge(symbol="CFAbsoluteTimeGetWeekOfYear")
+    @Bridge(symbol="CFAbsoluteTimeGetWeekOfYear", optional=true)
     public static native int absoluteTimeGetWeekOfYear(double at, CFTimeZone tz);
     /*</methods>*/
 }

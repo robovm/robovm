@@ -47,33 +47,33 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFMessagePortGetTypeID")
+    @Bridge(symbol="CFMessagePortGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFMessagePortCreateLocal")
+    @Bridge(symbol="CFMessagePortCreateLocal", optional=true)
     public static native CFMessagePort createLocal(CFAllocator allocator, CFString name, FunctionPtr callout, CFMessagePortContext context, BytePtr shouldFreeInfo);
-    @Bridge(symbol="CFMessagePortCreateRemote")
+    @Bridge(symbol="CFMessagePortCreateRemote", optional=true)
     public static native CFMessagePort createRemote(CFAllocator allocator, CFString name);
-    @Bridge(symbol="CFMessagePortIsRemote")
+    @Bridge(symbol="CFMessagePortIsRemote", optional=true)
     public native boolean isRemote();
-    @Bridge(symbol="CFMessagePortGetName")
+    @Bridge(symbol="CFMessagePortGetName", optional=true)
     public native CFString getName();
-    @Bridge(symbol="CFMessagePortSetName")
+    @Bridge(symbol="CFMessagePortSetName", optional=true)
     public native boolean setName(CFString newName);
-    @Bridge(symbol="CFMessagePortGetContext")
+    @Bridge(symbol="CFMessagePortGetContext", optional=true)
     public native void getContext(CFMessagePortContext context);
-    @Bridge(symbol="CFMessagePortInvalidate")
+    @Bridge(symbol="CFMessagePortInvalidate", optional=true)
     public native void invalidate();
-    @Bridge(symbol="CFMessagePortIsValid")
+    @Bridge(symbol="CFMessagePortIsValid", optional=true)
     public native boolean isValid();
-    @Bridge(symbol="CFMessagePortGetInvalidationCallBack")
+    @Bridge(symbol="CFMessagePortGetInvalidationCallBack", optional=true)
     public native FunctionPtr getInvalidationCallBack();
-    @Bridge(symbol="CFMessagePortSetInvalidationCallBack")
+    @Bridge(symbol="CFMessagePortSetInvalidationCallBack", optional=true)
     public native void setInvalidationCallBack(FunctionPtr callout);
-    @Bridge(symbol="CFMessagePortSendRequest")
+    @Bridge(symbol="CFMessagePortSendRequest", optional=true)
     public native int sendRequest(int msgid, CFData data, double sendTimeout, double rcvTimeout, CFString replyMode, CFData.CFDataPtr returnData);
-    @Bridge(symbol="CFMessagePortCreateRunLoopSource")
+    @Bridge(symbol="CFMessagePortCreateRunLoopSource", optional=true)
     public static native CFRunLoopSource createRunLoopSource(CFAllocator allocator, CFMessagePort local, @MachineSizedSInt long order);
-    @Bridge(symbol="CFMessagePortSetDispatchQueue")
+    @Bridge(symbol="CFMessagePortSetDispatchQueue", optional=true)
     public native void setDispatchQueue(DispatchQueue queue);
     /*</methods>*/
 }

@@ -47,41 +47,41 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFTreeGetTypeID")
+    @Bridge(symbol="CFTreeGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFTreeCreate")
+    @Bridge(symbol="CFTreeCreate", optional=true)
     public static native CFTree create(CFAllocator allocator, CFTreeContext context);
-    @Bridge(symbol="CFTreeGetParent")
+    @Bridge(symbol="CFTreeGetParent", optional=true)
     public native CFTree getParent();
-    @Bridge(symbol="CFTreeGetNextSibling")
+    @Bridge(symbol="CFTreeGetNextSibling", optional=true)
     public native CFTree getNextSibling();
-    @Bridge(symbol="CFTreeGetFirstChild")
+    @Bridge(symbol="CFTreeGetFirstChild", optional=true)
     public native CFTree getFirstChild();
-    @Bridge(symbol="CFTreeGetContext")
+    @Bridge(symbol="CFTreeGetContext", optional=true)
     public native void getContext(CFTreeContext context);
-    @Bridge(symbol="CFTreeGetChildCount")
+    @Bridge(symbol="CFTreeGetChildCount", optional=true)
     public native @MachineSizedSInt long getChildCount();
-    @Bridge(symbol="CFTreeGetChildAtIndex")
+    @Bridge(symbol="CFTreeGetChildAtIndex", optional=true)
     public native CFTree getChildAtIndex(@MachineSizedSInt long idx);
-    @Bridge(symbol="CFTreeGetChildren")
+    @Bridge(symbol="CFTreeGetChildren", optional=true)
     public native void getChildren(CFTree.CFTreePtr children);
-    @Bridge(symbol="CFTreeApplyFunctionToChildren")
+    @Bridge(symbol="CFTreeApplyFunctionToChildren", optional=true)
     public native void applyFunctionToChildren(FunctionPtr applier, VoidPtr context);
-    @Bridge(symbol="CFTreeFindRoot")
+    @Bridge(symbol="CFTreeFindRoot", optional=true)
     public native CFTree findRoot();
-    @Bridge(symbol="CFTreeSetContext")
+    @Bridge(symbol="CFTreeSetContext", optional=true)
     public native void setContext(CFTreeContext context);
-    @Bridge(symbol="CFTreePrependChild")
+    @Bridge(symbol="CFTreePrependChild", optional=true)
     public native void prependChild(CFTree newChild);
-    @Bridge(symbol="CFTreeAppendChild")
+    @Bridge(symbol="CFTreeAppendChild", optional=true)
     public native void appendChild(CFTree newChild);
-    @Bridge(symbol="CFTreeInsertSibling")
+    @Bridge(symbol="CFTreeInsertSibling", optional=true)
     public native void insertSibling(CFTree newSibling);
-    @Bridge(symbol="CFTreeRemove")
+    @Bridge(symbol="CFTreeRemove", optional=true)
     public native void remove();
-    @Bridge(symbol="CFTreeRemoveAllChildren")
+    @Bridge(symbol="CFTreeRemoveAllChildren", optional=true)
     public native void removeAllChildren();
-    @Bridge(symbol="CFTreeSortChildren")
+    @Bridge(symbol="CFTreeSortChildren", optional=true)
     public native void sortChildren(FunctionPtr comparator, VoidPtr context);
     /*</methods>*/
 }

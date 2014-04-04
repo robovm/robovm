@@ -189,243 +189,243 @@ import org.robovm.apple.foundation.*;
 
     
     /*<methods>*/
-    @Bridge(symbol="CGContextGetTypeID")
+    @Bridge(symbol="CGContextGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CGContextSaveGState")
+    @Bridge(symbol="CGContextSaveGState", optional=true)
     public native void saveGState();
-    @Bridge(symbol="CGContextRestoreGState")
+    @Bridge(symbol="CGContextRestoreGState", optional=true)
     public native void restoreGState();
-    @Bridge(symbol="CGContextScaleCTM")
+    @Bridge(symbol="CGContextScaleCTM", optional=true)
     public native void scaleCTM(@MachineSizedFloat double sx, @MachineSizedFloat double sy);
-    @Bridge(symbol="CGContextTranslateCTM")
+    @Bridge(symbol="CGContextTranslateCTM", optional=true)
     public native void translateCTM(@MachineSizedFloat double tx, @MachineSizedFloat double ty);
-    @Bridge(symbol="CGContextRotateCTM")
+    @Bridge(symbol="CGContextRotateCTM", optional=true)
     public native void rotateCTM(@MachineSizedFloat double angle);
-    @Bridge(symbol="CGContextConcatCTM")
+    @Bridge(symbol="CGContextConcatCTM", optional=true)
     public native void concatCTM(@ByVal CGAffineTransform transform);
-    @Bridge(symbol="CGContextGetCTM")
+    @Bridge(symbol="CGContextGetCTM", optional=true)
     public native @ByVal CGAffineTransform getCTM();
-    @Bridge(symbol="CGContextSetLineWidth")
+    @Bridge(symbol="CGContextSetLineWidth", optional=true)
     public native void setLineWidth(@MachineSizedFloat double width);
-    @Bridge(symbol="CGContextSetLineCap")
+    @Bridge(symbol="CGContextSetLineCap", optional=true)
     public native void setLineCap(CGLineCap cap);
-    @Bridge(symbol="CGContextSetLineJoin")
+    @Bridge(symbol="CGContextSetLineJoin", optional=true)
     public native void setLineJoin(CGLineJoin join);
-    @Bridge(symbol="CGContextSetMiterLimit")
+    @Bridge(symbol="CGContextSetMiterLimit", optional=true)
     public native void setMiterLimit(@MachineSizedFloat double limit);
-    @Bridge(symbol="CGContextSetLineDash")
+    @Bridge(symbol="CGContextSetLineDash", optional=true)
     protected native void setLineDash(@MachineSizedFloat double phase, @Pointer long lengths, @MachineSizedUInt long count);
-    @Bridge(symbol="CGContextSetFlatness")
+    @Bridge(symbol="CGContextSetFlatness", optional=true)
     public native void setFlatness(@MachineSizedFloat double flatness);
-    @Bridge(symbol="CGContextSetAlpha")
+    @Bridge(symbol="CGContextSetAlpha", optional=true)
     public native void setAlpha(@MachineSizedFloat double alpha);
-    @Bridge(symbol="CGContextSetBlendMode")
+    @Bridge(symbol="CGContextSetBlendMode", optional=true)
     public native void setBlendMode(CGBlendMode mode);
-    @Bridge(symbol="CGContextBeginPath")
+    @Bridge(symbol="CGContextBeginPath", optional=true)
     public native void beginPath();
-    @Bridge(symbol="CGContextMoveToPoint")
+    @Bridge(symbol="CGContextMoveToPoint", optional=true)
     public native void moveToPoint(@MachineSizedFloat double x, @MachineSizedFloat double y);
-    @Bridge(symbol="CGContextAddLineToPoint")
+    @Bridge(symbol="CGContextAddLineToPoint", optional=true)
     public native void addLineToPoint(@MachineSizedFloat double x, @MachineSizedFloat double y);
-    @Bridge(symbol="CGContextAddCurveToPoint")
+    @Bridge(symbol="CGContextAddCurveToPoint", optional=true)
     public native void addCurveToPoint(@MachineSizedFloat double cp1x, @MachineSizedFloat double cp1y, @MachineSizedFloat double cp2x, @MachineSizedFloat double cp2y, @MachineSizedFloat double x, @MachineSizedFloat double y);
-    @Bridge(symbol="CGContextAddQuadCurveToPoint")
+    @Bridge(symbol="CGContextAddQuadCurveToPoint", optional=true)
     public native void addQuadCurveToPoint(@MachineSizedFloat double cpx, @MachineSizedFloat double cpy, @MachineSizedFloat double x, @MachineSizedFloat double y);
-    @Bridge(symbol="CGContextClosePath")
+    @Bridge(symbol="CGContextClosePath", optional=true)
     public native void closePath();
-    @Bridge(symbol="CGContextAddRect")
+    @Bridge(symbol="CGContextAddRect", optional=true)
     public native void addRect(@ByVal CGRect rect);
-    @Bridge(symbol="CGContextAddRects")
+    @Bridge(symbol="CGContextAddRects", optional=true)
     protected native void addRects(CGRect rects, @MachineSizedUInt long count);
-    @Bridge(symbol="CGContextAddLines")
+    @Bridge(symbol="CGContextAddLines", optional=true)
     protected native void addLines(CGPoint points, @MachineSizedUInt long count);
-    @Bridge(symbol="CGContextAddEllipseInRect")
+    @Bridge(symbol="CGContextAddEllipseInRect", optional=true)
     public native void addEllipseInRect(@ByVal CGRect rect);
-    @Bridge(symbol="CGContextAddArc")
+    @Bridge(symbol="CGContextAddArc", optional=true)
     public native void addArc(@MachineSizedFloat double x, @MachineSizedFloat double y, @MachineSizedFloat double radius, @MachineSizedFloat double startAngle, @MachineSizedFloat double endAngle, int clockwise);
-    @Bridge(symbol="CGContextAddArcToPoint")
+    @Bridge(symbol="CGContextAddArcToPoint", optional=true)
     public native void addArcToPoint(@MachineSizedFloat double x1, @MachineSizedFloat double y1, @MachineSizedFloat double x2, @MachineSizedFloat double y2, @MachineSizedFloat double radius);
-    @Bridge(symbol="CGContextAddPath")
+    @Bridge(symbol="CGContextAddPath", optional=true)
     public native void addPath(CGPath path);
-    @Bridge(symbol="CGContextReplacePathWithStrokedPath")
+    @Bridge(symbol="CGContextReplacePathWithStrokedPath", optional=true)
     public native void replacePathWithStrokedPath();
-    @Bridge(symbol="CGContextIsPathEmpty")
+    @Bridge(symbol="CGContextIsPathEmpty", optional=true)
     public native boolean isPathEmpty();
-    @Bridge(symbol="CGContextGetPathCurrentPoint")
+    @Bridge(symbol="CGContextGetPathCurrentPoint", optional=true)
     public native @ByVal CGPoint getPathCurrentPoint();
-    @Bridge(symbol="CGContextGetPathBoundingBox")
+    @Bridge(symbol="CGContextGetPathBoundingBox", optional=true)
     public native @ByVal CGRect getPathBoundingBox();
-    @Bridge(symbol="CGContextCopyPath")
+    @Bridge(symbol="CGContextCopyPath", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPath getPath();
-    @Bridge(symbol="CGContextPathContainsPoint")
+    @Bridge(symbol="CGContextPathContainsPoint", optional=true)
     public native boolean pathContainsPoint(@ByVal CGPoint point, CGPathDrawingMode mode);
-    @Bridge(symbol="CGContextDrawPath")
+    @Bridge(symbol="CGContextDrawPath", optional=true)
     public native void drawPath(CGPathDrawingMode mode);
-    @Bridge(symbol="CGContextFillPath")
+    @Bridge(symbol="CGContextFillPath", optional=true)
     public native void fillPath();
-    @Bridge(symbol="CGContextEOFillPath")
+    @Bridge(symbol="CGContextEOFillPath", optional=true)
     public native void evenOddFillPath();
-    @Bridge(symbol="CGContextStrokePath")
+    @Bridge(symbol="CGContextStrokePath", optional=true)
     public native void strokePath();
-    @Bridge(symbol="CGContextFillRect")
+    @Bridge(symbol="CGContextFillRect", optional=true)
     public native void fillRect(@ByVal CGRect rect);
-    @Bridge(symbol="CGContextFillRects")
+    @Bridge(symbol="CGContextFillRects", optional=true)
     protected native void fillRects(CGRect rects, @MachineSizedUInt long count);
-    @Bridge(symbol="CGContextStrokeRect")
+    @Bridge(symbol="CGContextStrokeRect", optional=true)
     public native void strokeRect(@ByVal CGRect rect);
-    @Bridge(symbol="CGContextStrokeRectWithWidth")
+    @Bridge(symbol="CGContextStrokeRectWithWidth", optional=true)
     public native void strokeRectWithWidth(@ByVal CGRect rect, @MachineSizedFloat double width);
-    @Bridge(symbol="CGContextClearRect")
+    @Bridge(symbol="CGContextClearRect", optional=true)
     public native void clearRect(@ByVal CGRect rect);
-    @Bridge(symbol="CGContextFillEllipseInRect")
+    @Bridge(symbol="CGContextFillEllipseInRect", optional=true)
     public native void fillEllipseInRect(@ByVal CGRect rect);
-    @Bridge(symbol="CGContextStrokeEllipseInRect")
+    @Bridge(symbol="CGContextStrokeEllipseInRect", optional=true)
     public native void strokeEllipseInRect(@ByVal CGRect rect);
-    @Bridge(symbol="CGContextStrokeLineSegments")
+    @Bridge(symbol="CGContextStrokeLineSegments", optional=true)
     protected native void strokeLineSegments(CGPoint points, @MachineSizedUInt long count);
-    @Bridge(symbol="CGContextClip")
+    @Bridge(symbol="CGContextClip", optional=true)
     public native void clip();
-    @Bridge(symbol="CGContextEOClip")
+    @Bridge(symbol="CGContextEOClip", optional=true)
     public native void evenOddClip();
-    @Bridge(symbol="CGContextClipToMask")
+    @Bridge(symbol="CGContextClipToMask", optional=true)
     public native void clipToMask(@ByVal CGRect rect, CGImage mask);
-    @Bridge(symbol="CGContextGetClipBoundingBox")
+    @Bridge(symbol="CGContextGetClipBoundingBox", optional=true)
     public native @ByVal CGRect getClipBoundingBox();
-    @Bridge(symbol="CGContextClipToRect")
+    @Bridge(symbol="CGContextClipToRect", optional=true)
     public native void clipToRect(@ByVal CGRect rect);
-    @Bridge(symbol="CGContextClipToRects")
+    @Bridge(symbol="CGContextClipToRects", optional=true)
     protected native void clipToRects(CGRect rects, @MachineSizedUInt long count);
-    @Bridge(symbol="CGContextSetFillColorWithColor")
+    @Bridge(symbol="CGContextSetFillColorWithColor", optional=true)
     public native void setFillColorWithColor(CGColor color);
-    @Bridge(symbol="CGContextSetStrokeColorWithColor")
+    @Bridge(symbol="CGContextSetStrokeColorWithColor", optional=true)
     public native void setStrokeColorWithColor(CGColor color);
-    @Bridge(symbol="CGContextSetFillColorSpace")
+    @Bridge(symbol="CGContextSetFillColorSpace", optional=true)
     public native void setFillColorSpace(CGColorSpace space);
-    @Bridge(symbol="CGContextSetStrokeColorSpace")
+    @Bridge(symbol="CGContextSetStrokeColorSpace", optional=true)
     public native void setStrokeColorSpace(CGColorSpace space);
-    @Bridge(symbol="CGContextSetFillColor")
+    @Bridge(symbol="CGContextSetFillColor", optional=true)
     protected native void setFillColor(@Pointer long components);
-    @Bridge(symbol="CGContextSetStrokeColor")
+    @Bridge(symbol="CGContextSetStrokeColor", optional=true)
     protected native void setStrokeColor(@Pointer long components);
-    @Bridge(symbol="CGContextSetFillPattern")
+    @Bridge(symbol="CGContextSetFillPattern", optional=true)
     protected native void setFillPattern(CGPattern pattern, @Pointer long components);
-    @Bridge(symbol="CGContextSetStrokePattern")
+    @Bridge(symbol="CGContextSetStrokePattern", optional=true)
     protected native void setStrokePattern(CGPattern pattern, @Pointer long components);
-    @Bridge(symbol="CGContextSetPatternPhase")
+    @Bridge(symbol="CGContextSetPatternPhase", optional=true)
     public native void setPatternPhase(@ByVal CGSize phase);
-    @Bridge(symbol="CGContextSetGrayFillColor")
+    @Bridge(symbol="CGContextSetGrayFillColor", optional=true)
     public native void setGrayFillColor(@MachineSizedFloat double gray, @MachineSizedFloat double alpha);
-    @Bridge(symbol="CGContextSetGrayStrokeColor")
+    @Bridge(symbol="CGContextSetGrayStrokeColor", optional=true)
     public native void setGrayStrokeColor(@MachineSizedFloat double gray, @MachineSizedFloat double alpha);
-    @Bridge(symbol="CGContextSetRGBFillColor")
+    @Bridge(symbol="CGContextSetRGBFillColor", optional=true)
     public native void setRGBFillColor(@MachineSizedFloat double red, @MachineSizedFloat double green, @MachineSizedFloat double blue, @MachineSizedFloat double alpha);
-    @Bridge(symbol="CGContextSetRGBStrokeColor")
+    @Bridge(symbol="CGContextSetRGBStrokeColor", optional=true)
     public native void setRGBStrokeColor(@MachineSizedFloat double red, @MachineSizedFloat double green, @MachineSizedFloat double blue, @MachineSizedFloat double alpha);
-    @Bridge(symbol="CGContextSetCMYKFillColor")
+    @Bridge(symbol="CGContextSetCMYKFillColor", optional=true)
     public native void setCMYKFillColor(@MachineSizedFloat double cyan, @MachineSizedFloat double magenta, @MachineSizedFloat double yellow, @MachineSizedFloat double black, @MachineSizedFloat double alpha);
-    @Bridge(symbol="CGContextSetCMYKStrokeColor")
+    @Bridge(symbol="CGContextSetCMYKStrokeColor", optional=true)
     public native void setCMYKStrokeColor(@MachineSizedFloat double cyan, @MachineSizedFloat double magenta, @MachineSizedFloat double yellow, @MachineSizedFloat double black, @MachineSizedFloat double alpha);
-    @Bridge(symbol="CGContextSetRenderingIntent")
+    @Bridge(symbol="CGContextSetRenderingIntent", optional=true)
     public native void setRenderingIntent(CGColorRenderingIntent intent);
-    @Bridge(symbol="CGContextDrawImage")
+    @Bridge(symbol="CGContextDrawImage", optional=true)
     public native void drawImage(@ByVal CGRect rect, CGImage image);
-    @Bridge(symbol="CGContextDrawTiledImage")
+    @Bridge(symbol="CGContextDrawTiledImage", optional=true)
     public native void drawTiledImage(@ByVal CGRect rect, CGImage image);
-    @Bridge(symbol="CGContextGetInterpolationQuality")
+    @Bridge(symbol="CGContextGetInterpolationQuality", optional=true)
     public native CGInterpolationQuality getInterpolationQuality();
-    @Bridge(symbol="CGContextSetInterpolationQuality")
+    @Bridge(symbol="CGContextSetInterpolationQuality", optional=true)
     public native void setInterpolationQuality(CGInterpolationQuality quality);
-    @Bridge(symbol="CGContextSetShadowWithColor")
+    @Bridge(symbol="CGContextSetShadowWithColor", optional=true)
     public native void setShadowWithColor(@ByVal CGSize offset, @MachineSizedFloat double blur, CGColor color);
-    @Bridge(symbol="CGContextSetShadow")
+    @Bridge(symbol="CGContextSetShadow", optional=true)
     public native void setShadow(@ByVal CGSize offset, @MachineSizedFloat double blur);
-    @Bridge(symbol="CGContextDrawLinearGradient")
+    @Bridge(symbol="CGContextDrawLinearGradient", optional=true)
     public native void drawLinearGradient(CGGradient gradient, @ByVal CGPoint startPoint, @ByVal CGPoint endPoint, CGGradientDrawingOptions options);
-    @Bridge(symbol="CGContextDrawRadialGradient")
+    @Bridge(symbol="CGContextDrawRadialGradient", optional=true)
     public native void drawRadialGradient(CGGradient gradient, @ByVal CGPoint startCenter, @MachineSizedFloat double startRadius, @ByVal CGPoint endCenter, @MachineSizedFloat double endRadius, CGGradientDrawingOptions options);
-    @Bridge(symbol="CGContextDrawShading")
+    @Bridge(symbol="CGContextDrawShading", optional=true)
     public native void drawShading(CGShading shading);
-    @Bridge(symbol="CGContextSetCharacterSpacing")
+    @Bridge(symbol="CGContextSetCharacterSpacing", optional=true)
     public native void setCharacterSpacing(@MachineSizedFloat double spacing);
-    @Bridge(symbol="CGContextSetTextPosition")
+    @Bridge(symbol="CGContextSetTextPosition", optional=true)
     public native void setTextPosition(@MachineSizedFloat double x, @MachineSizedFloat double y);
-    @Bridge(symbol="CGContextGetTextPosition")
+    @Bridge(symbol="CGContextGetTextPosition", optional=true)
     public native @ByVal CGPoint getTextPosition();
-    @Bridge(symbol="CGContextSetTextMatrix")
+    @Bridge(symbol="CGContextSetTextMatrix", optional=true)
     public native void setTextMatrix(@ByVal CGAffineTransform t);
-    @Bridge(symbol="CGContextGetTextMatrix")
+    @Bridge(symbol="CGContextGetTextMatrix", optional=true)
     public native @ByVal CGAffineTransform getTextMatrix();
-    @Bridge(symbol="CGContextSetTextDrawingMode")
+    @Bridge(symbol="CGContextSetTextDrawingMode", optional=true)
     public native void setTextDrawingMode(CGTextDrawingMode mode);
-    @Bridge(symbol="CGContextSetFont")
+    @Bridge(symbol="CGContextSetFont", optional=true)
     public native void setFont(CGFont font);
-    @Bridge(symbol="CGContextSetFontSize")
+    @Bridge(symbol="CGContextSetFontSize", optional=true)
     public native void setFontSize(@MachineSizedFloat double size);
-    @Bridge(symbol="CGContextShowGlyphsAtPositions")
+    @Bridge(symbol="CGContextShowGlyphsAtPositions", optional=true)
     protected native void showGlyphsAtPositions(@Pointer long glyphs, CGPoint positions, @MachineSizedUInt long count);
-    @Bridge(symbol="CGContextDrawPDFPage")
+    @Bridge(symbol="CGContextDrawPDFPage", optional=true)
     public native void drawPDFPage(CGPDFPage page);
-    @Bridge(symbol="CGContextBeginPage")
+    @Bridge(symbol="CGContextBeginPage", optional=true)
     public native void beginPage(CGRect mediaBox);
-    @Bridge(symbol="CGContextEndPage")
+    @Bridge(symbol="CGContextEndPage", optional=true)
     public native void endPage();
-    @Bridge(symbol="CGContextFlush")
+    @Bridge(symbol="CGContextFlush", optional=true)
     public native void flush();
-    @Bridge(symbol="CGContextSynchronize")
+    @Bridge(symbol="CGContextSynchronize", optional=true)
     public native void synchronize();
-    @Bridge(symbol="CGContextSetShouldAntialias")
+    @Bridge(symbol="CGContextSetShouldAntialias", optional=true)
     public native void setShouldAntialias(boolean shouldAntialias);
-    @Bridge(symbol="CGContextSetAllowsAntialiasing")
+    @Bridge(symbol="CGContextSetAllowsAntialiasing", optional=true)
     public native void setAllowsAntialiasing(boolean allowsAntialiasing);
-    @Bridge(symbol="CGContextSetShouldSmoothFonts")
+    @Bridge(symbol="CGContextSetShouldSmoothFonts", optional=true)
     public native void setShouldSmoothFonts(boolean shouldSmoothFonts);
-    @Bridge(symbol="CGContextSetAllowsFontSmoothing")
+    @Bridge(symbol="CGContextSetAllowsFontSmoothing", optional=true)
     public native void setAllowsFontSmoothing(boolean allowsFontSmoothing);
-    @Bridge(symbol="CGContextSetShouldSubpixelPositionFonts")
+    @Bridge(symbol="CGContextSetShouldSubpixelPositionFonts", optional=true)
     public native void setShouldSubpixelPositionFonts(boolean shouldSubpixelPositionFonts);
-    @Bridge(symbol="CGContextSetAllowsFontSubpixelPositioning")
+    @Bridge(symbol="CGContextSetAllowsFontSubpixelPositioning", optional=true)
     public native void setAllowsFontSubpixelPositioning(boolean allowsFontSubpixelPositioning);
-    @Bridge(symbol="CGContextSetShouldSubpixelQuantizeFonts")
+    @Bridge(symbol="CGContextSetShouldSubpixelQuantizeFonts", optional=true)
     public native void setShouldSubpixelQuantizeFonts(boolean shouldSubpixelQuantizeFonts);
-    @Bridge(symbol="CGContextSetAllowsFontSubpixelQuantization")
+    @Bridge(symbol="CGContextSetAllowsFontSubpixelQuantization", optional=true)
     public native void setAllowsFontSubpixelQuantization(boolean allowsFontSubpixelQuantization);
-    @Bridge(symbol="CGContextBeginTransparencyLayer")
+    @Bridge(symbol="CGContextBeginTransparencyLayer", optional=true)
     public native void beginTransparencyLayer(NSDictionary<?, ?> auxiliaryInfo);
-    @Bridge(symbol="CGContextBeginTransparencyLayerWithRect")
+    @Bridge(symbol="CGContextBeginTransparencyLayerWithRect", optional=true)
     public native void beginTransparencyLayerWithRect(@ByVal CGRect rect, NSDictionary<?, ?> auxiliaryInfo);
-    @Bridge(symbol="CGContextEndTransparencyLayer")
+    @Bridge(symbol="CGContextEndTransparencyLayer", optional=true)
     public native void endTransparencyLayer();
-    @Bridge(symbol="CGContextGetUserSpaceToDeviceSpaceTransform")
+    @Bridge(symbol="CGContextGetUserSpaceToDeviceSpaceTransform", optional=true)
     public native @ByVal CGAffineTransform getUserSpaceToDeviceSpaceTransform();
-    @Bridge(symbol="CGContextConvertPointToDeviceSpace")
+    @Bridge(symbol="CGContextConvertPointToDeviceSpace", optional=true)
     public native @ByVal CGPoint convertPointToDeviceSpace(@ByVal CGPoint point);
-    @Bridge(symbol="CGContextConvertPointToUserSpace")
+    @Bridge(symbol="CGContextConvertPointToUserSpace", optional=true)
     public native @ByVal CGPoint convertPointToUserSpace(@ByVal CGPoint point);
-    @Bridge(symbol="CGContextConvertSizeToDeviceSpace")
+    @Bridge(symbol="CGContextConvertSizeToDeviceSpace", optional=true)
     public native @ByVal CGSize convertSizeToDeviceSpace(@ByVal CGSize size);
-    @Bridge(symbol="CGContextConvertSizeToUserSpace")
+    @Bridge(symbol="CGContextConvertSizeToUserSpace", optional=true)
     public native @ByVal CGSize convertSizeToUserSpace(@ByVal CGSize size);
-    @Bridge(symbol="CGContextConvertRectToDeviceSpace")
+    @Bridge(symbol="CGContextConvertRectToDeviceSpace", optional=true)
     public native @ByVal CGRect convertRectToDeviceSpace(@ByVal CGRect rect);
-    @Bridge(symbol="CGContextConvertRectToUserSpace")
+    @Bridge(symbol="CGContextConvertRectToUserSpace", optional=true)
     public native @ByVal CGRect convertRectToUserSpace(@ByVal CGRect rect);
-    @Bridge(symbol="CGContextSelectFont")
+    @Bridge(symbol="CGContextSelectFont", optional=true)
     protected native void selectFont(@Pointer long name, @MachineSizedFloat double size, CGTextEncoding textEncoding);
-    @Bridge(symbol="CGContextShowText")
+    @Bridge(symbol="CGContextShowText", optional=true)
     protected native void showText(@Pointer long string, @MachineSizedUInt long length);
-    @Bridge(symbol="CGContextShowTextAtPoint")
+    @Bridge(symbol="CGContextShowTextAtPoint", optional=true)
     protected native void showTextAtPoint(@MachineSizedFloat double x, @MachineSizedFloat double y, @Pointer long string, @MachineSizedUInt long length);
-    @Bridge(symbol="CGContextShowGlyphs")
+    @Bridge(symbol="CGContextShowGlyphs", optional=true)
     protected native void showGlyphs(@Pointer long g, @MachineSizedUInt long count);
-    @Bridge(symbol="CGContextShowGlyphsAtPoint")
+    @Bridge(symbol="CGContextShowGlyphsAtPoint", optional=true)
     protected native void showGlyphsAtPoint(@MachineSizedFloat double x, @MachineSizedFloat double y, @Pointer long glyphs, @MachineSizedUInt long count);
-    @Bridge(symbol="CGContextShowGlyphsWithAdvances")
+    @Bridge(symbol="CGContextShowGlyphsWithAdvances", optional=true)
     protected native void showGlyphsWithAdvances(@Pointer long glyphs, CGSize advances, @MachineSizedUInt long count);
-    @Bridge(symbol="CGContextDrawPDFDocument")
+    @Bridge(symbol="CGContextDrawPDFDocument", optional=true)
     public native void drawPDFDocument(@ByVal CGRect rect, CGPDFDocument document, int page);
-    @Bridge(symbol="CGContextDrawLayerInRect")
+    @Bridge(symbol="CGContextDrawLayerInRect", optional=true)
     public native void drawLayerInRect(@ByVal CGRect rect, CGLayer layer);
-    @Bridge(symbol="CGContextDrawLayerAtPoint")
+    @Bridge(symbol="CGContextDrawLayerAtPoint", optional=true)
     public native void drawLayerAtPoint(@ByVal CGPoint point, CGLayer layer);
     /*</methods>*/
 }

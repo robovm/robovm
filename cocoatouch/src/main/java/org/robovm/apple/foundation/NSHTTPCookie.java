@@ -52,31 +52,31 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSHTTPCookieName")
+    @GlobalValue(symbol="NSHTTPCookieName", optional=true)
     public static native NSString KeyName();
-    @GlobalValue(symbol="NSHTTPCookieValue")
+    @GlobalValue(symbol="NSHTTPCookieValue", optional=true)
     public static native NSString KeyValue();
-    @GlobalValue(symbol="NSHTTPCookieOriginURL")
+    @GlobalValue(symbol="NSHTTPCookieOriginURL", optional=true)
     public static native NSString KeyOriginURL();
-    @GlobalValue(symbol="NSHTTPCookieVersion")
+    @GlobalValue(symbol="NSHTTPCookieVersion", optional=true)
     public static native NSString KeyVersion();
-    @GlobalValue(symbol="NSHTTPCookieDomain")
+    @GlobalValue(symbol="NSHTTPCookieDomain", optional=true)
     public static native NSString KeyDomain();
-    @GlobalValue(symbol="NSHTTPCookiePath")
+    @GlobalValue(symbol="NSHTTPCookiePath", optional=true)
     public static native NSString KeyPath();
-    @GlobalValue(symbol="NSHTTPCookieSecure")
+    @GlobalValue(symbol="NSHTTPCookieSecure", optional=true)
     public static native NSString KeySecure();
-    @GlobalValue(symbol="NSHTTPCookieExpires")
+    @GlobalValue(symbol="NSHTTPCookieExpires", optional=true)
     public static native NSString KeyExpires();
-    @GlobalValue(symbol="NSHTTPCookieComment")
+    @GlobalValue(symbol="NSHTTPCookieComment", optional=true)
     public static native NSString KeyComment();
-    @GlobalValue(symbol="NSHTTPCookieCommentURL")
+    @GlobalValue(symbol="NSHTTPCookieCommentURL", optional=true)
     public static native NSString KeyCommentURL();
-    @GlobalValue(symbol="NSHTTPCookieDiscard")
+    @GlobalValue(symbol="NSHTTPCookieDiscard", optional=true)
     public static native NSString KeyDiscard();
-    @GlobalValue(symbol="NSHTTPCookieMaximumAge")
+    @GlobalValue(symbol="NSHTTPCookieMaximumAge", optional=true)
     public static native NSString KeyMaximumAge();
-    @GlobalValue(symbol="NSHTTPCookiePort")
+    @GlobalValue(symbol="NSHTTPCookiePort", optional=true)
     public static native NSString KeyPort();
     
     @Method(selector = "initWithProperties:")

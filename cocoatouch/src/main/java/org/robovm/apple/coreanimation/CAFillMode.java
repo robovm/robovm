@@ -48,15 +48,15 @@ import org.robovm.apple.opengles.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCAFillModeForwards")
+    @GlobalValue(symbol="kCAFillModeForwards", optional=true)
     public static native String Forwards();
-    @GlobalValue(symbol="kCAFillModeBackwards")
+    @GlobalValue(symbol="kCAFillModeBackwards", optional=true)
     public static native String Backwards();
-    @GlobalValue(symbol="kCAFillModeBoth")
+    @GlobalValue(symbol="kCAFillModeBoth", optional=true)
     public static native String Both();
-    @GlobalValue(symbol="kCAFillModeRemoved")
+    @GlobalValue(symbol="kCAFillModeRemoved", optional=true)
     public static native String Removed();
-    @GlobalValue(symbol="kCAFillModeFrozen")
+    @GlobalValue(symbol="kCAFillModeFrozen", optional=true)
     public static native String Frozen();
     /*</methods>*/
 }

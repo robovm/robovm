@@ -47,25 +47,25 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFBitVectorGetTypeID")
+    @Bridge(symbol="CFBitVectorGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFBitVectorCreate")
+    @Bridge(symbol="CFBitVectorCreate", optional=true)
     public static native CFBitVector create(CFAllocator allocator, BytePtr bytes, @MachineSizedSInt long numBits);
-    @Bridge(symbol="CFBitVectorCreateCopy")
+    @Bridge(symbol="CFBitVectorCreateCopy", optional=true)
     public static native CFBitVector createCopy(CFAllocator allocator, CFBitVector bv);
-    @Bridge(symbol="CFBitVectorGetCount")
+    @Bridge(symbol="CFBitVectorGetCount", optional=true)
     public native @MachineSizedSInt long getCount();
-    @Bridge(symbol="CFBitVectorGetCountOfBit")
+    @Bridge(symbol="CFBitVectorGetCountOfBit", optional=true)
     public native @MachineSizedSInt long getCountOfBit(@ByVal CFRange range, int value);
-    @Bridge(symbol="CFBitVectorContainsBit")
+    @Bridge(symbol="CFBitVectorContainsBit", optional=true)
     public native boolean containsBit(@ByVal CFRange range, int value);
-    @Bridge(symbol="CFBitVectorGetBitAtIndex")
+    @Bridge(symbol="CFBitVectorGetBitAtIndex", optional=true)
     public native int getBitAtIndex(@MachineSizedSInt long idx);
-    @Bridge(symbol="CFBitVectorGetBits")
+    @Bridge(symbol="CFBitVectorGetBits", optional=true)
     public native void getBits(@ByVal CFRange range, BytePtr bytes);
-    @Bridge(symbol="CFBitVectorGetFirstIndexOfBit")
+    @Bridge(symbol="CFBitVectorGetFirstIndexOfBit", optional=true)
     public native @MachineSizedSInt long getFirstIndexOfBit(@ByVal CFRange range, int value);
-    @Bridge(symbol="CFBitVectorGetLastIndexOfBit")
+    @Bridge(symbol="CFBitVectorGetLastIndexOfBit", optional=true)
     public native @MachineSizedSInt long getLastIndexOfBit(@ByVal CFRange range, int value);
     /*</methods>*/
 }

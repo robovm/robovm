@@ -99,21 +99,21 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCAFillRuleNonZero")
+    @GlobalValue(symbol="kCAFillRuleNonZero", optional=true)
     public static native String FillRuleNonZero();
-    @GlobalValue(symbol="kCAFillRuleEvenOdd")
+    @GlobalValue(symbol="kCAFillRuleEvenOdd", optional=true)
     public static native String FillRuleEvenOdd();
-    @GlobalValue(symbol="kCALineJoinMiter")
+    @GlobalValue(symbol="kCALineJoinMiter", optional=true)
     public static native String LineJoinMiter();
-    @GlobalValue(symbol="kCALineJoinRound")
+    @GlobalValue(symbol="kCALineJoinRound", optional=true)
     public static native String LineJoinRound();
-    @GlobalValue(symbol="kCALineJoinBevel")
+    @GlobalValue(symbol="kCALineJoinBevel", optional=true)
     public static native String LineJoinBevel();
-    @GlobalValue(symbol="kCALineCapButt")
+    @GlobalValue(symbol="kCALineCapButt", optional=true)
     public static native String LineCapButt();
-    @GlobalValue(symbol="kCALineCapRound")
+    @GlobalValue(symbol="kCALineCapRound", optional=true)
     public static native String LineCapRound();
-    @GlobalValue(symbol="kCALineCapSquare")
+    @GlobalValue(symbol="kCALineCapSquare", optional=true)
     public static native String LineCapSquare();
     
     

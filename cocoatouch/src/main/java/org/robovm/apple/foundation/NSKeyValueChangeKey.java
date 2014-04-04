@@ -47,15 +47,15 @@ import org.robovm.apple.security.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSKeyValueChangeKindKey")
+    @GlobalValue(symbol="NSKeyValueChangeKindKey", optional=true)
     public static native NSString KeyChangeKind();
-    @GlobalValue(symbol="NSKeyValueChangeNewKey")
+    @GlobalValue(symbol="NSKeyValueChangeNewKey", optional=true)
     public static native NSString KeyChangeNew();
-    @GlobalValue(symbol="NSKeyValueChangeOldKey")
+    @GlobalValue(symbol="NSKeyValueChangeOldKey", optional=true)
     public static native NSString KeyChangeOld();
-    @GlobalValue(symbol="NSKeyValueChangeIndexesKey")
+    @GlobalValue(symbol="NSKeyValueChangeIndexesKey", optional=true)
     public static native NSString KeyChangeIndexes();
-    @GlobalValue(symbol="NSKeyValueChangeNotificationIsPriorKey")
+    @GlobalValue(symbol="NSKeyValueChangeNotificationIsPriorKey", optional=true)
     public static native NSString KeyChangeNotificationIsPrior();
     /*</methods>*/
 }

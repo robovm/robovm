@@ -80,27 +80,27 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSTextCheckingNameKey")
+    @GlobalValue(symbol="NSTextCheckingNameKey", optional=true)
     public static native NSString KeyName();
-    @GlobalValue(symbol="NSTextCheckingJobTitleKey")
+    @GlobalValue(symbol="NSTextCheckingJobTitleKey", optional=true)
     public static native NSString KeyJobTitle();
-    @GlobalValue(symbol="NSTextCheckingOrganizationKey")
+    @GlobalValue(symbol="NSTextCheckingOrganizationKey", optional=true)
     public static native NSString KeyOrganization();
-    @GlobalValue(symbol="NSTextCheckingStreetKey")
+    @GlobalValue(symbol="NSTextCheckingStreetKey", optional=true)
     public static native NSString KeyStreet();
-    @GlobalValue(symbol="NSTextCheckingCityKey")
+    @GlobalValue(symbol="NSTextCheckingCityKey", optional=true)
     public static native NSString KeyCity();
-    @GlobalValue(symbol="NSTextCheckingStateKey")
+    @GlobalValue(symbol="NSTextCheckingStateKey", optional=true)
     public static native NSString KeyState();
-    @GlobalValue(symbol="NSTextCheckingZIPKey")
+    @GlobalValue(symbol="NSTextCheckingZIPKey", optional=true)
     public static native NSString KeyZIP();
-    @GlobalValue(symbol="NSTextCheckingCountryKey")
+    @GlobalValue(symbol="NSTextCheckingCountryKey", optional=true)
     public static native NSString KeyCountry();
-    @GlobalValue(symbol="NSTextCheckingPhoneKey")
+    @GlobalValue(symbol="NSTextCheckingPhoneKey", optional=true)
     public static native NSString KeyPhone();
-    @GlobalValue(symbol="NSTextCheckingAirlineKey")
+    @GlobalValue(symbol="NSTextCheckingAirlineKey", optional=true)
     public static native NSString KeyAirline();
-    @GlobalValue(symbol="NSTextCheckingFlightKey")
+    @GlobalValue(symbol="NSTextCheckingFlightKey", optional=true)
     public static native NSString KeyFlight();
     
     @Method(selector = "rangeAtIndex:")

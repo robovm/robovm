@@ -73,9 +73,9 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSTextStorageWillProcessEditingNotification")
+    @GlobalValue(symbol="NSTextStorageWillProcessEditingNotification", optional=true)
     public static native String NotificationTextStorageWillProcessEditing();
-    @GlobalValue(symbol="NSTextStorageDidProcessEditingNotification")
+    @GlobalValue(symbol="NSTextStorageDidProcessEditingNotification", optional=true)
     public static native String NotificationTextStorageDidProcessEditing();
     
     @Method(selector = "addLayoutManager:")

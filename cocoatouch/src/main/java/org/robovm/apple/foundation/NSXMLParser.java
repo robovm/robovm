@@ -54,7 +54,7 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSXMLParserErrorDomain")
+    @GlobalValue(symbol="NSXMLParserErrorDomain", optional=true)
     public static native String ErrorDomainXMLParser();
     
     @Method(selector = "initWithContentsOfURL:")

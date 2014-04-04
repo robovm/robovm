@@ -160,29 +160,29 @@ import org.robovm.apple.dispatch.*;
     protected static native void release(@Pointer long handle);
 
     /*<methods>*/
-    @Bridge(symbol="CFGetTypeID")
+    @Bridge(symbol="CFGetTypeID", optional=true)
     public native @MachineSizedUInt long getTypeID();
-    @Bridge(symbol="CFCopyTypeIDDescription")
+    @Bridge(symbol="CFCopyTypeIDDescription", optional=true)
     public static native CFString copyTypeIDDescription(@MachineSizedUInt long type_id);
-    @Bridge(symbol="CFRetain")
+    @Bridge(symbol="CFRetain", optional=true)
     public native CFType retain();
-    @Bridge(symbol="CFRelease")
+    @Bridge(symbol="CFRelease", optional=true)
     public native void release();
-    @Bridge(symbol="CFAutorelease")
+    @Bridge(symbol="CFAutorelease", optional=true)
     public native CFType autorelease();
-    @Bridge(symbol="CFGetRetainCount")
+    @Bridge(symbol="CFGetRetainCount", optional=true)
     public native @MachineSizedSInt long getRetainCount();
-    @Bridge(symbol="CFEqual")
+    @Bridge(symbol="CFEqual", optional=true)
     public native boolean equal(CFType cf2);
-    @Bridge(symbol="CFHash")
+    @Bridge(symbol="CFHash", optional=true)
     public native @MachineSizedUInt long hash();
-    @Bridge(symbol="CFCopyDescription")
+    @Bridge(symbol="CFCopyDescription", optional=true)
     public native CFString copyDescription();
-    @Bridge(symbol="CFGetAllocator")
+    @Bridge(symbol="CFGetAllocator", optional=true)
     public native CFAllocator getAllocator();
-    @Bridge(symbol="CFMakeCollectable")
+    @Bridge(symbol="CFMakeCollectable", optional=true)
     public native CFType makeCollectable();
-    @Bridge(symbol="CFShow")
+    @Bridge(symbol="CFShow", optional=true)
     public native void show();
     /*</methods>*/
 }

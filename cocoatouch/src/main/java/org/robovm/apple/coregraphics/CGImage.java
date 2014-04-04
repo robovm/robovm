@@ -91,51 +91,51 @@ import org.robovm.apple.foundation.*;
     }
     
     /*<methods>*/
-    @Bridge(symbol="CGImageGetTypeID")
+    @Bridge(symbol="CGImageGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CGImageCreate")
+    @Bridge(symbol="CGImageCreate", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage create(@MachineSizedUInt long width, @MachineSizedUInt long height, @MachineSizedUInt long bitsPerComponent, @MachineSizedUInt long bitsPerPixel, @MachineSizedUInt long bytesPerRow, CGColorSpace space, CGBitmapInfo bitmapInfo, CGDataProvider provider, @Pointer long decode, boolean shouldInterpolate, CGColorRenderingIntent intent);
-    @Bridge(symbol="CGImageMaskCreate")
+    @Bridge(symbol="CGImageMaskCreate", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createMask(@MachineSizedUInt long width, @MachineSizedUInt long height, @MachineSizedUInt long bitsPerComponent, @MachineSizedUInt long bitsPerPixel, @MachineSizedUInt long bytesPerRow, CGDataProvider provider, @Pointer long decode, boolean shouldInterpolate);
-    @Bridge(symbol="CGImageCreateCopy")
+    @Bridge(symbol="CGImageCreateCopy", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage copy(CGImage image);
-    @Bridge(symbol="CGImageCreateWithJPEGDataProvider")
+    @Bridge(symbol="CGImageCreateWithJPEGDataProvider", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createWithJPEGDataProvider(CGDataProvider source, @Pointer long decode, boolean shouldInterpolate, CGColorRenderingIntent intent);
-    @Bridge(symbol="CGImageCreateWithPNGDataProvider")
+    @Bridge(symbol="CGImageCreateWithPNGDataProvider", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createWithPNGDataProvider(CGDataProvider source, @Pointer long decode, boolean shouldInterpolate, CGColorRenderingIntent intent);
-    @Bridge(symbol="CGImageCreateWithImageInRect")
+    @Bridge(symbol="CGImageCreateWithImageInRect", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createWithImageInRect(CGImage image, @ByVal CGRect rect);
-    @Bridge(symbol="CGImageCreateWithMask")
+    @Bridge(symbol="CGImageCreateWithMask", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createWithMask(CGImage image, CGImage mask);
-    @Bridge(symbol="CGImageCreateWithMaskingColors")
+    @Bridge(symbol="CGImageCreateWithMaskingColors", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createWithMaskingColors(CGImage image, @Pointer long components);
-    @Bridge(symbol="CGImageCreateCopyWithColorSpace")
+    @Bridge(symbol="CGImageCreateCopyWithColorSpace", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage copy(CGImage image, CGColorSpace space);
-    @Bridge(symbol="CGImageIsMask")
+    @Bridge(symbol="CGImageIsMask", optional=true)
     public native boolean isMask();
-    @Bridge(symbol="CGImageGetWidth")
+    @Bridge(symbol="CGImageGetWidth", optional=true)
     public native @MachineSizedUInt long getWidth();
-    @Bridge(symbol="CGImageGetHeight")
+    @Bridge(symbol="CGImageGetHeight", optional=true)
     public native @MachineSizedUInt long getHeight();
-    @Bridge(symbol="CGImageGetBitsPerComponent")
+    @Bridge(symbol="CGImageGetBitsPerComponent", optional=true)
     public native @MachineSizedUInt long getBitsPerComponent();
-    @Bridge(symbol="CGImageGetBitsPerPixel")
+    @Bridge(symbol="CGImageGetBitsPerPixel", optional=true)
     public native @MachineSizedUInt long getBitsPerPixel();
-    @Bridge(symbol="CGImageGetBytesPerRow")
+    @Bridge(symbol="CGImageGetBytesPerRow", optional=true)
     public native @MachineSizedUInt long getBytesPerRow();
-    @Bridge(symbol="CGImageGetColorSpace")
+    @Bridge(symbol="CGImageGetColorSpace", optional=true)
     public native CGColorSpace getColorSpace();
-    @Bridge(symbol="CGImageGetAlphaInfo")
+    @Bridge(symbol="CGImageGetAlphaInfo", optional=true)
     public native CGImageAlphaInfo getAlphaInfo();
-    @Bridge(symbol="CGImageGetDataProvider")
+    @Bridge(symbol="CGImageGetDataProvider", optional=true)
     public native CGDataProvider getDataProvider();
-    @Bridge(symbol="CGImageGetDecode")
+    @Bridge(symbol="CGImageGetDecode", optional=true)
     public native MachineSizedFloatPtr getDecode();
-    @Bridge(symbol="CGImageGetShouldInterpolate")
+    @Bridge(symbol="CGImageGetShouldInterpolate", optional=true)
     public native boolean getShouldInterpolate();
-    @Bridge(symbol="CGImageGetRenderingIntent")
+    @Bridge(symbol="CGImageGetRenderingIntent", optional=true)
     public native CGColorRenderingIntent getRenderingIntent();
-    @Bridge(symbol="CGImageGetBitmapInfo")
+    @Bridge(symbol="CGImageGetBitmapInfo", optional=true)
     public native CGBitmapInfo getBitmapInfo();
     /*</methods>*/
 }

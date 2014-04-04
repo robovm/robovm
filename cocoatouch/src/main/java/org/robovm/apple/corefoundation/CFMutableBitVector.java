@@ -47,21 +47,21 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFBitVectorCreateMutable")
+    @Bridge(symbol="CFBitVectorCreateMutable", optional=true)
     public static native CFMutableBitVector createMutable(CFAllocator allocator, @MachineSizedSInt long capacity);
-    @Bridge(symbol="CFBitVectorCreateMutableCopy")
+    @Bridge(symbol="CFBitVectorCreateMutableCopy", optional=true)
     public static native CFMutableBitVector createMutableCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFBitVector bv);
-    @Bridge(symbol="CFBitVectorSetCount")
+    @Bridge(symbol="CFBitVectorSetCount", optional=true)
     public native void setCount(@MachineSizedSInt long count);
-    @Bridge(symbol="CFBitVectorFlipBitAtIndex")
+    @Bridge(symbol="CFBitVectorFlipBitAtIndex", optional=true)
     public native void flipBitAtIndex(@MachineSizedSInt long idx);
-    @Bridge(symbol="CFBitVectorFlipBits")
+    @Bridge(symbol="CFBitVectorFlipBits", optional=true)
     public native void flipBits(@ByVal CFRange range);
-    @Bridge(symbol="CFBitVectorSetBitAtIndex")
+    @Bridge(symbol="CFBitVectorSetBitAtIndex", optional=true)
     public native void setBitAtIndex(@MachineSizedSInt long idx, int value);
-    @Bridge(symbol="CFBitVectorSetBits")
+    @Bridge(symbol="CFBitVectorSetBits", optional=true)
     public native void setBits(@ByVal CFRange range, int value);
-    @Bridge(symbol="CFBitVectorSetAllBits")
+    @Bridge(symbol="CFBitVectorSetAllBits", optional=true)
     public native void setAllBits(int value);
     /*</methods>*/
 }

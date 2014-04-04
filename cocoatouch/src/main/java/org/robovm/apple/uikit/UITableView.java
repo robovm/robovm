@@ -153,11 +153,11 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="UITableViewIndexSearch")
+    @GlobalValue(symbol="UITableViewIndexSearch", optional=true)
     public static native NSString SectionIndexSearch();
-    @GlobalValue(symbol="UITableViewAutomaticDimension")
+    @GlobalValue(symbol="UITableViewAutomaticDimension", optional=true)
     public static native @MachineSizedFloat double AutomaticDimension();
-    @GlobalValue(symbol="UITableViewSelectionDidChangeNotification")
+    @GlobalValue(symbol="UITableViewSelectionDidChangeNotification", optional=true)
     public static native String NotificationSelectionDidChange();
     
     @Method(selector = "initWithFrame:style:")

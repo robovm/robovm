@@ -47,19 +47,19 @@ import org.robovm.apple.security.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="NSUserName")
+    @Bridge(symbol="NSUserName", optional=true)
     public static native String getUserName();
-    @Bridge(symbol="NSFullUserName")
+    @Bridge(symbol="NSFullUserName", optional=true)
     public static native String getFullUserName();
-    @Bridge(symbol="NSHomeDirectory")
+    @Bridge(symbol="NSHomeDirectory", optional=true)
     public static native String getHomeDirectory();
-    @Bridge(symbol="NSHomeDirectoryForUser")
+    @Bridge(symbol="NSHomeDirectoryForUser", optional=true)
     public static native String getHomeDirectoryForUser(String userName);
-    @Bridge(symbol="NSTemporaryDirectory")
+    @Bridge(symbol="NSTemporaryDirectory", optional=true)
     public static native String getTemporaryDirectory();
-    @Bridge(symbol="NSOpenStepRootDirectory")
+    @Bridge(symbol="NSOpenStepRootDirectory", optional=true)
     public static native String getOpenStepRootDirectory();
-    @Bridge(symbol="NSSearchPathForDirectoriesInDomains")
+    @Bridge(symbol="NSSearchPathForDirectoriesInDomains", optional=true)
     public static native NSArray<?> getSearchPathForDirectoriesInDomains(NSSearchPathDirectory directory, NSSearchPathDomainMask domainMask, boolean expandTilde);
     /*</methods>*/
 }

@@ -61,27 +61,27 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCIFormatARGB8")
+    @GlobalValue(symbol="kCIFormatARGB8", optional=true)
     public static native int FormatARGB8();
-    @GlobalValue(symbol="kCIFormatBGRA8")
+    @GlobalValue(symbol="kCIFormatBGRA8", optional=true)
     public static native int FormatBGRA8();
-    @GlobalValue(symbol="kCIFormatRGBA8")
+    @GlobalValue(symbol="kCIFormatRGBA8", optional=true)
     public static native int FormatRGBA8();
-    @GlobalValue(symbol="kCIFormatRGBA16")
+    @GlobalValue(symbol="kCIFormatRGBA16", optional=true)
     public static native int FormatRGBA16();
-    @GlobalValue(symbol="kCIFormatRGBAf")
+    @GlobalValue(symbol="kCIFormatRGBAf", optional=true)
     public static native int FormatRGBAf();
-    @GlobalValue(symbol="kCIFormatRGBAh")
+    @GlobalValue(symbol="kCIFormatRGBAh", optional=true)
     public static native int FormatRGBAh();
-    @GlobalValue(symbol="kCIImageColorSpace")
+    @GlobalValue(symbol="kCIImageColorSpace", optional=true)
     public static native NSString KeyColorSpace();
-    @GlobalValue(symbol="kCIImageProperties")
+    @GlobalValue(symbol="kCIImageProperties", optional=true)
     public static native NSString KeyProperties();
-    @GlobalValue(symbol="kCIImageAutoAdjustEnhance")
+    @GlobalValue(symbol="kCIImageAutoAdjustEnhance", optional=true)
     public static native NSString AutoAdjustEnhance();
-    @GlobalValue(symbol="kCIImageAutoAdjustRedEye")
+    @GlobalValue(symbol="kCIImageAutoAdjustRedEye", optional=true)
     public static native NSString AutoAdjustRedEye();
-    @GlobalValue(symbol="kCIImageAutoAdjustFeatures")
+    @GlobalValue(symbol="kCIImageAutoAdjustFeatures", optional=true)
     public static native NSString AutoAdjustFeatures();
     
     @Method(selector = "initWithCGImage:")

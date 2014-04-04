@@ -61,7 +61,7 @@ import org.robovm.apple.foundation.*;
     }
     
     /*<methods>*/
-    @Bridge(symbol="EAGLGetVersion")
+    @Bridge(symbol="EAGLGetVersion", optional=true)
     protected static native void getVersion(IntPtr major, IntPtr minor);
     /*</methods>*/
 }

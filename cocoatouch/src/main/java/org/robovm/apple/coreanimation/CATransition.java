@@ -71,21 +71,21 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCATransitionFade")
+    @GlobalValue(symbol="kCATransitionFade", optional=true)
     public static native String TypeFade();
-    @GlobalValue(symbol="kCATransitionMoveIn")
+    @GlobalValue(symbol="kCATransitionMoveIn", optional=true)
     public static native String TypeMoveIn();
-    @GlobalValue(symbol="kCATransitionPush")
+    @GlobalValue(symbol="kCATransitionPush", optional=true)
     public static native String TypePush();
-    @GlobalValue(symbol="kCATransitionReveal")
+    @GlobalValue(symbol="kCATransitionReveal", optional=true)
     public static native String TypeReveal();
-    @GlobalValue(symbol="kCATransitionFromRight")
+    @GlobalValue(symbol="kCATransitionFromRight", optional=true)
     public static native String SubtypeFromRight();
-    @GlobalValue(symbol="kCATransitionFromLeft")
+    @GlobalValue(symbol="kCATransitionFromLeft", optional=true)
     public static native String SubtypeFromLeft();
-    @GlobalValue(symbol="kCATransitionFromTop")
+    @GlobalValue(symbol="kCATransitionFromTop", optional=true)
     public static native String SubtypeFromTop();
-    @GlobalValue(symbol="kCATransitionFromBottom")
+    @GlobalValue(symbol="kCATransitionFromBottom", optional=true)
     public static native String SubtypeFromBottom();
     
     

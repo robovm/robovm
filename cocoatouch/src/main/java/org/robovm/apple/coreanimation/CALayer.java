@@ -276,41 +276,41 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCAGravityCenter")
+    @GlobalValue(symbol="kCAGravityCenter", optional=true)
     public static native String GravityCenter();
-    @GlobalValue(symbol="kCAGravityTop")
+    @GlobalValue(symbol="kCAGravityTop", optional=true)
     public static native String GravityTop();
-    @GlobalValue(symbol="kCAGravityBottom")
+    @GlobalValue(symbol="kCAGravityBottom", optional=true)
     public static native String GravityBottom();
-    @GlobalValue(symbol="kCAGravityLeft")
+    @GlobalValue(symbol="kCAGravityLeft", optional=true)
     public static native String GravityLeft();
-    @GlobalValue(symbol="kCAGravityRight")
+    @GlobalValue(symbol="kCAGravityRight", optional=true)
     public static native String GravityRight();
-    @GlobalValue(symbol="kCAGravityTopLeft")
+    @GlobalValue(symbol="kCAGravityTopLeft", optional=true)
     public static native String GravityTopLeft();
-    @GlobalValue(symbol="kCAGravityTopRight")
+    @GlobalValue(symbol="kCAGravityTopRight", optional=true)
     public static native String GravityTopRight();
-    @GlobalValue(symbol="kCAGravityBottomLeft")
+    @GlobalValue(symbol="kCAGravityBottomLeft", optional=true)
     public static native String GravityBottomLeft();
-    @GlobalValue(symbol="kCAGravityBottomRight")
+    @GlobalValue(symbol="kCAGravityBottomRight", optional=true)
     public static native String GravityBottomRight();
-    @GlobalValue(symbol="kCAGravityResize")
+    @GlobalValue(symbol="kCAGravityResize", optional=true)
     public static native String GravityResize();
-    @GlobalValue(symbol="kCAGravityResizeAspect")
+    @GlobalValue(symbol="kCAGravityResizeAspect", optional=true)
     public static native String GravityResizeAspect();
-    @GlobalValue(symbol="kCAGravityResizeAspectFill")
+    @GlobalValue(symbol="kCAGravityResizeAspectFill", optional=true)
     public static native String GravityResizeAspectFill();
-    @GlobalValue(symbol="kCAFilterNearest")
+    @GlobalValue(symbol="kCAFilterNearest", optional=true)
     public static native String FilterNearest();
-    @GlobalValue(symbol="kCAFilterLinear")
+    @GlobalValue(symbol="kCAFilterLinear", optional=true)
     public static native String FilterLinear();
-    @GlobalValue(symbol="kCAFilterTrilinear")
+    @GlobalValue(symbol="kCAFilterTrilinear", optional=true)
     public static native String FilterTrilinear();
-    @GlobalValue(symbol="kCAOnOrderIn")
+    @GlobalValue(symbol="kCAOnOrderIn", optional=true)
     public static native String ActionOnOrderIn();
-    @GlobalValue(symbol="kCAOnOrderOut")
+    @GlobalValue(symbol="kCAOnOrderOut", optional=true)
     public static native String ActionOnOrderOut();
-    @GlobalValue(symbol="kCATransition")
+    @GlobalValue(symbol="kCATransition", optional=true)
     public static native String ActionTransition();
     
     @Method(selector = "initWithLayer:")

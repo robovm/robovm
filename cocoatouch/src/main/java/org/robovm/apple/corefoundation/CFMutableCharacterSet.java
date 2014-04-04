@@ -47,23 +47,23 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFCharacterSetCreateMutable")
+    @Bridge(symbol="CFCharacterSetCreateMutable", optional=true)
     public static native CFMutableCharacterSet createMutable(CFAllocator alloc);
-    @Bridge(symbol="CFCharacterSetCreateMutableCopy")
+    @Bridge(symbol="CFCharacterSetCreateMutableCopy", optional=true)
     public static native CFMutableCharacterSet createMutableCopy(CFAllocator alloc, CFCharacterSet theSet);
-    @Bridge(symbol="CFCharacterSetAddCharactersInRange")
+    @Bridge(symbol="CFCharacterSetAddCharactersInRange", optional=true)
     public native void addCharactersInRange(@ByVal CFRange theRange);
-    @Bridge(symbol="CFCharacterSetRemoveCharactersInRange")
+    @Bridge(symbol="CFCharacterSetRemoveCharactersInRange", optional=true)
     public native void removeCharactersInRange(@ByVal CFRange theRange);
-    @Bridge(symbol="CFCharacterSetAddCharactersInString")
+    @Bridge(symbol="CFCharacterSetAddCharactersInString", optional=true)
     public native void addCharactersInString(CFString theString);
-    @Bridge(symbol="CFCharacterSetRemoveCharactersInString")
+    @Bridge(symbol="CFCharacterSetRemoveCharactersInString", optional=true)
     public native void removeCharactersInString(CFString theString);
-    @Bridge(symbol="CFCharacterSetUnion")
+    @Bridge(symbol="CFCharacterSetUnion", optional=true)
     public native void union(CFCharacterSet theOtherSet);
-    @Bridge(symbol="CFCharacterSetIntersect")
+    @Bridge(symbol="CFCharacterSetIntersect", optional=true)
     public native void intersect(CFCharacterSet theOtherSet);
-    @Bridge(symbol="CFCharacterSetInvert")
+    @Bridge(symbol="CFCharacterSetInvert", optional=true)
     public native void invert();
     /*</methods>*/
 }

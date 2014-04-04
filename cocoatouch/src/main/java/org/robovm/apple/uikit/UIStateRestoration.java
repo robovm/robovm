@@ -51,15 +51,15 @@ import org.robovm.apple.coreimage.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="UIStateRestorationViewControllerStoryboardKey")
+    @GlobalValue(symbol="UIStateRestorationViewControllerStoryboardKey", optional=true)
     public static native NSString StateRestorationKeyViewControllerStoryboard();
-    @GlobalValue(symbol="UIApplicationStateRestorationBundleVersionKey")
+    @GlobalValue(symbol="UIApplicationStateRestorationBundleVersionKey", optional=true)
     public static native NSString StateRestorationKeyBundleVersion();
-    @GlobalValue(symbol="UIApplicationStateRestorationUserInterfaceIdiomKey")
+    @GlobalValue(symbol="UIApplicationStateRestorationUserInterfaceIdiomKey", optional=true)
     public static native NSString StateRestorationKeyUserInterfaceIdiom();
-    @GlobalValue(symbol="UIApplicationStateRestorationTimestampKey")
+    @GlobalValue(symbol="UIApplicationStateRestorationTimestampKey", optional=true)
     public static native NSString StateRestorationKeyTimestamp();
-    @GlobalValue(symbol="UIApplicationStateRestorationSystemVersionKey")
+    @GlobalValue(symbol="UIApplicationStateRestorationSystemVersionKey", optional=true)
     public static native NSString StateRestorationKeySystemVersion();
     /*</methods>*/
 }

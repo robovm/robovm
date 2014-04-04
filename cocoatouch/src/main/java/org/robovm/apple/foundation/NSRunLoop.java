@@ -51,9 +51,9 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSDefaultRunLoopMode")
+    @GlobalValue(symbol="NSDefaultRunLoopMode", optional=true)
     public static native String ModeDefault();
-    @GlobalValue(symbol="NSRunLoopCommonModes")
+    @GlobalValue(symbol="NSRunLoopCommonModes", optional=true)
     public static native String ModeCommon();
     
     @Method(selector = "currentMode")

@@ -52,41 +52,41 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSCocoaErrorDomain")
+    @GlobalValue(symbol="NSCocoaErrorDomain", optional=true)
     public static native String ErrorDomainCocoa();
-    @GlobalValue(symbol="NSPOSIXErrorDomain")
+    @GlobalValue(symbol="NSPOSIXErrorDomain", optional=true)
     public static native String ErrorDomainPOSIX();
-    @GlobalValue(symbol="NSOSStatusErrorDomain")
+    @GlobalValue(symbol="NSOSStatusErrorDomain", optional=true)
     public static native String ErrorDomainOSStatus();
-    @GlobalValue(symbol="NSMachErrorDomain")
+    @GlobalValue(symbol="NSMachErrorDomain", optional=true)
     public static native String ErrorDomainMach();
-    @GlobalValue(symbol="NSUnderlyingErrorKey")
+    @GlobalValue(symbol="NSUnderlyingErrorKey", optional=true)
     public static native NSString KeyUnderlyingError();
-    @GlobalValue(symbol="NSLocalizedDescriptionKey")
+    @GlobalValue(symbol="NSLocalizedDescriptionKey", optional=true)
     public static native NSString KeyLocalizedDescription();
-    @GlobalValue(symbol="NSLocalizedFailureReasonErrorKey")
+    @GlobalValue(symbol="NSLocalizedFailureReasonErrorKey", optional=true)
     public static native NSString KeyLocalizedFailureReasonError();
-    @GlobalValue(symbol="NSLocalizedRecoverySuggestionErrorKey")
+    @GlobalValue(symbol="NSLocalizedRecoverySuggestionErrorKey", optional=true)
     public static native NSString KeyLocalizedRecoverySuggestionError();
-    @GlobalValue(symbol="NSLocalizedRecoveryOptionsErrorKey")
+    @GlobalValue(symbol="NSLocalizedRecoveryOptionsErrorKey", optional=true)
     public static native NSString KeyLocalizedRecoveryOptionsError();
-    @GlobalValue(symbol="NSRecoveryAttempterErrorKey")
+    @GlobalValue(symbol="NSRecoveryAttempterErrorKey", optional=true)
     public static native NSString KeyRecoveryAttempterError();
-    @GlobalValue(symbol="NSHelpAnchorErrorKey")
+    @GlobalValue(symbol="NSHelpAnchorErrorKey", optional=true)
     public static native NSString KeyHelpAnchorError();
-    @GlobalValue(symbol="NSStringEncodingErrorKey")
+    @GlobalValue(symbol="NSStringEncodingErrorKey", optional=true)
     public static native NSString KeyStringEncodingError();
-    @GlobalValue(symbol="NSURLErrorKey")
+    @GlobalValue(symbol="NSURLErrorKey", optional=true)
     public static native NSString KeyURLError();
-    @GlobalValue(symbol="NSFilePathErrorKey")
+    @GlobalValue(symbol="NSFilePathErrorKey", optional=true)
     public static native NSString KeyFilePathError();
-    @GlobalValue(symbol="NSURLErrorFailingURLErrorKey")
+    @GlobalValue(symbol="NSURLErrorFailingURLErrorKey", optional=true)
     public static native NSString KeyURLErrorFailingURLError();
-    @GlobalValue(symbol="NSURLErrorFailingURLStringErrorKey")
+    @GlobalValue(symbol="NSURLErrorFailingURLStringErrorKey", optional=true)
     public static native NSString KeyURLErrorFailingURLStringError();
-    @GlobalValue(symbol="NSErrorFailingURLStringKey")
+    @GlobalValue(symbol="NSErrorFailingURLStringKey", optional=true)
     public static native NSString KeyErrorFailingURLString();
-    @GlobalValue(symbol="NSURLErrorFailingURLPeerTrustErrorKey")
+    @GlobalValue(symbol="NSURLErrorFailingURLPeerTrustErrorKey", optional=true)
     public static native NSString KeyURLErrorFailingURLPeerTrustError();
     
     @Method(selector = "initWithDomain:code:userInfo:")

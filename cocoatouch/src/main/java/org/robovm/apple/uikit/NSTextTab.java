@@ -60,7 +60,7 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSTabColumnTerminatorsAttributeName")
+    @GlobalValue(symbol="NSTabColumnTerminatorsAttributeName", optional=true)
     public static native NSString AttributeTabColumnTerminators();
     
     @Method(selector = "initWithTextAlignment:location:options:")

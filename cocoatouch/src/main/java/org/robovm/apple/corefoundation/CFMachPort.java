@@ -47,25 +47,25 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFMachPortGetTypeID")
+    @Bridge(symbol="CFMachPortGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFMachPortCreate")
+    @Bridge(symbol="CFMachPortCreate", optional=true)
     public static native CFMachPort create(CFAllocator allocator, FunctionPtr callout, CFMachPortContext context, BytePtr shouldFreeInfo);
-    @Bridge(symbol="CFMachPortCreateWithPort")
+    @Bridge(symbol="CFMachPortCreateWithPort", optional=true)
     public static native CFMachPort createWithPort(CFAllocator allocator, int portNum, FunctionPtr callout, CFMachPortContext context, BytePtr shouldFreeInfo);
-    @Bridge(symbol="CFMachPortGetPort")
+    @Bridge(symbol="CFMachPortGetPort", optional=true)
     public native int getPort();
-    @Bridge(symbol="CFMachPortGetContext")
+    @Bridge(symbol="CFMachPortGetContext", optional=true)
     public native void getContext(CFMachPortContext context);
-    @Bridge(symbol="CFMachPortInvalidate")
+    @Bridge(symbol="CFMachPortInvalidate", optional=true)
     public native void invalidate();
-    @Bridge(symbol="CFMachPortIsValid")
+    @Bridge(symbol="CFMachPortIsValid", optional=true)
     public native boolean isValid();
-    @Bridge(symbol="CFMachPortGetInvalidationCallBack")
+    @Bridge(symbol="CFMachPortGetInvalidationCallBack", optional=true)
     public native FunctionPtr getInvalidationCallBack();
-    @Bridge(symbol="CFMachPortSetInvalidationCallBack")
+    @Bridge(symbol="CFMachPortSetInvalidationCallBack", optional=true)
     public native void setInvalidationCallBack(FunctionPtr callout);
-    @Bridge(symbol="CFMachPortCreateRunLoopSource")
+    @Bridge(symbol="CFMachPortCreateRunLoopSource", optional=true)
     public static native CFRunLoopSource createRunLoopSource(CFAllocator allocator, CFMachPort port, @MachineSizedSInt long order);
     /*</methods>*/
 }

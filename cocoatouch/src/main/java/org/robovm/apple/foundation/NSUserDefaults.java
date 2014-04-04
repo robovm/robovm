@@ -51,13 +51,13 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSGlobalDomain")
+    @GlobalValue(symbol="NSGlobalDomain", optional=true)
     public static native String DomainGlobal();
-    @GlobalValue(symbol="NSArgumentDomain")
+    @GlobalValue(symbol="NSArgumentDomain", optional=true)
     public static native String DomainArgument();
-    @GlobalValue(symbol="NSRegistrationDomain")
+    @GlobalValue(symbol="NSRegistrationDomain", optional=true)
     public static native String DomainRegistration();
-    @GlobalValue(symbol="NSUserDefaultsDidChangeNotification")
+    @GlobalValue(symbol="NSUserDefaultsDidChangeNotification", optional=true)
     public static native String NotificationDidChange();
     
     @Method(selector = "objectForKey:")

@@ -53,23 +53,23 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSUndoManagerGroupIsDiscardableKey")
+    @GlobalValue(symbol="NSUndoManagerGroupIsDiscardableKey", optional=true)
     public static native NSString KeyGroupIsDiscardable();
-    @GlobalValue(symbol="NSUndoManagerCheckpointNotification")
+    @GlobalValue(symbol="NSUndoManagerCheckpointNotification", optional=true)
     public static native String NotificationCheckpoint();
-    @GlobalValue(symbol="NSUndoManagerWillUndoChangeNotification")
+    @GlobalValue(symbol="NSUndoManagerWillUndoChangeNotification", optional=true)
     public static native String NotificationWillUndoChange();
-    @GlobalValue(symbol="NSUndoManagerWillRedoChangeNotification")
+    @GlobalValue(symbol="NSUndoManagerWillRedoChangeNotification", optional=true)
     public static native String NotificationWillRedoChange();
-    @GlobalValue(symbol="NSUndoManagerDidUndoChangeNotification")
+    @GlobalValue(symbol="NSUndoManagerDidUndoChangeNotification", optional=true)
     public static native String NotificationDidUndoChange();
-    @GlobalValue(symbol="NSUndoManagerDidRedoChangeNotification")
+    @GlobalValue(symbol="NSUndoManagerDidRedoChangeNotification", optional=true)
     public static native String NotificationDidRedoChange();
-    @GlobalValue(symbol="NSUndoManagerDidOpenUndoGroupNotification")
+    @GlobalValue(symbol="NSUndoManagerDidOpenUndoGroupNotification", optional=true)
     public static native String NotificationDidOpenUndoGroup();
-    @GlobalValue(symbol="NSUndoManagerWillCloseUndoGroupNotification")
+    @GlobalValue(symbol="NSUndoManagerWillCloseUndoGroupNotification", optional=true)
     public static native String NotificationWillCloseUndoGroup();
-    @GlobalValue(symbol="NSUndoManagerDidCloseUndoGroupNotification")
+    @GlobalValue(symbol="NSUndoManagerDidCloseUndoGroupNotification", optional=true)
     public static native String NotificationDidCloseUndoGroup();
     
     @Method(selector = "beginUndoGrouping")

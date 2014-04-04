@@ -52,59 +52,59 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="GLKMatrixStackCreate")
+    @Bridge(symbol="GLKMatrixStackCreate", optional=true)
     public static native GLKMatrixStack create(CFAllocator alloc);
-    @Bridge(symbol="GLKMatrixStackGetTypeID")
+    @Bridge(symbol="GLKMatrixStackGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="GLKMatrixStackPush")
+    @Bridge(symbol="GLKMatrixStackPush", optional=true)
     public native void push();
-    @Bridge(symbol="GLKMatrixStackPop")
+    @Bridge(symbol="GLKMatrixStackPop", optional=true)
     public native void pop();
-    @Bridge(symbol="GLKMatrixStackSize")
+    @Bridge(symbol="GLKMatrixStackSize", optional=true)
     public native int size();
-    @Bridge(symbol="GLKMatrixStackLoadMatrix4")
+    @Bridge(symbol="GLKMatrixStackLoadMatrix4", optional=true)
     public native void loadMatrix4(@ByVal GLKMatrix4 matrix);
-    @Bridge(symbol="GLKMatrixStackGetMatrix4")
+    @Bridge(symbol="GLKMatrixStackGetMatrix4", optional=true)
     public native @ByVal GLKMatrix4 getMatrix4();
-    @Bridge(symbol="GLKMatrixStackGetMatrix3")
+    @Bridge(symbol="GLKMatrixStackGetMatrix3", optional=true)
     public native @ByVal GLKMatrix3 getMatrix3();
-    @Bridge(symbol="GLKMatrixStackGetMatrix2")
+    @Bridge(symbol="GLKMatrixStackGetMatrix2", optional=true)
     public native @ByVal GLKMatrix2 getMatrix2();
-    @Bridge(symbol="GLKMatrixStackGetMatrix4Inverse")
+    @Bridge(symbol="GLKMatrixStackGetMatrix4Inverse", optional=true)
     public native @ByVal GLKMatrix4 getMatrix4Inverse();
-    @Bridge(symbol="GLKMatrixStackGetMatrix4InverseTranspose")
+    @Bridge(symbol="GLKMatrixStackGetMatrix4InverseTranspose", optional=true)
     public native @ByVal GLKMatrix4 getMatrix4InverseTranspose();
-    @Bridge(symbol="GLKMatrixStackGetMatrix3Inverse")
+    @Bridge(symbol="GLKMatrixStackGetMatrix3Inverse", optional=true)
     public native @ByVal GLKMatrix3 getMatrix3Inverse();
-    @Bridge(symbol="GLKMatrixStackGetMatrix3InverseTranspose")
+    @Bridge(symbol="GLKMatrixStackGetMatrix3InverseTranspose", optional=true)
     public native @ByVal GLKMatrix3 getMatrix3InverseTranspose();
-    @Bridge(symbol="GLKMatrixStackMultiplyMatrix4")
+    @Bridge(symbol="GLKMatrixStackMultiplyMatrix4", optional=true)
     public native void multiplyMatrix4(@ByVal GLKMatrix4 matrix);
-    @Bridge(symbol="GLKMatrixStackMultiplyMatrixStack")
+    @Bridge(symbol="GLKMatrixStackMultiplyMatrixStack", optional=true)
     public native void multiplyMatrixStack(GLKMatrixStack stackRight);
-    @Bridge(symbol="GLKMatrixStackTranslate")
+    @Bridge(symbol="GLKMatrixStackTranslate", optional=true)
     public native void translate(float tx, float ty, float tz);
-    @Bridge(symbol="GLKMatrixStackTranslateWithVector3")
+    @Bridge(symbol="GLKMatrixStackTranslateWithVector3", optional=true)
     public native void translateWithVector3(@ByVal GLKVector3 translationVector);
-    @Bridge(symbol="GLKMatrixStackTranslateWithVector4")
+    @Bridge(symbol="GLKMatrixStackTranslateWithVector4", optional=true)
     public native void translateWithVector4(@ByVal GLKVector4 translationVector);
-    @Bridge(symbol="GLKMatrixStackScale")
+    @Bridge(symbol="GLKMatrixStackScale", optional=true)
     public native void scale(float sx, float sy, float sz);
-    @Bridge(symbol="GLKMatrixStackScaleWithVector3")
+    @Bridge(symbol="GLKMatrixStackScaleWithVector3", optional=true)
     public native void scaleWithVector3(@ByVal GLKVector3 scaleVector);
-    @Bridge(symbol="GLKMatrixStackScaleWithVector4")
+    @Bridge(symbol="GLKMatrixStackScaleWithVector4", optional=true)
     public native void scaleWithVector4(@ByVal GLKVector4 scaleVector);
-    @Bridge(symbol="GLKMatrixStackRotate")
+    @Bridge(symbol="GLKMatrixStackRotate", optional=true)
     public native void rotate(float radians, float x, float y, float z);
-    @Bridge(symbol="GLKMatrixStackRotateWithVector3")
+    @Bridge(symbol="GLKMatrixStackRotateWithVector3", optional=true)
     public native void rotateWithVector3(float radians, @ByVal GLKVector3 axisVector);
-    @Bridge(symbol="GLKMatrixStackRotateWithVector4")
+    @Bridge(symbol="GLKMatrixStackRotateWithVector4", optional=true)
     public native void rotateWithVector4(float radians, @ByVal GLKVector4 axisVector);
-    @Bridge(symbol="GLKMatrixStackRotateX")
+    @Bridge(symbol="GLKMatrixStackRotateX", optional=true)
     public native void rotateX(float radians);
-    @Bridge(symbol="GLKMatrixStackRotateY")
+    @Bridge(symbol="GLKMatrixStackRotateY", optional=true)
     public native void rotateY(float radians);
-    @Bridge(symbol="GLKMatrixStackRotateZ")
+    @Bridge(symbol="GLKMatrixStackRotateZ", optional=true)
     public native void rotateZ(float radians);
     /*</methods>*/
 }

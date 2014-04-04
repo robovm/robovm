@@ -72,35 +72,35 @@ import org.robovm.apple.security.*;
     }
 
     /*<methods>*/
-    @GlobalValue(symbol="NSURLProtectionSpaceHTTP")
+    @GlobalValue(symbol="NSURLProtectionSpaceHTTP", optional=true)
     public static native String ProtocolTypeHTTP();
-    @GlobalValue(symbol="NSURLProtectionSpaceHTTPS")
+    @GlobalValue(symbol="NSURLProtectionSpaceHTTPS", optional=true)
     public static native String ProtocolTypeHTTPS();
-    @GlobalValue(symbol="NSURLProtectionSpaceFTP")
+    @GlobalValue(symbol="NSURLProtectionSpaceFTP", optional=true)
     public static native String ProtocolTypeFTP();
-    @GlobalValue(symbol="NSURLProtectionSpaceHTTPProxy")
+    @GlobalValue(symbol="NSURLProtectionSpaceHTTPProxy", optional=true)
     public static native String ProxyTypeHTTP();
-    @GlobalValue(symbol="NSURLProtectionSpaceHTTPSProxy")
+    @GlobalValue(symbol="NSURLProtectionSpaceHTTPSProxy", optional=true)
     public static native String ProxyTypeHTTPS();
-    @GlobalValue(symbol="NSURLProtectionSpaceFTPProxy")
+    @GlobalValue(symbol="NSURLProtectionSpaceFTPProxy", optional=true)
     public static native String ProxyTypeFTP();
-    @GlobalValue(symbol="NSURLProtectionSpaceSOCKSProxy")
+    @GlobalValue(symbol="NSURLProtectionSpaceSOCKSProxy", optional=true)
     public static native String ProxyTypeSOCKS();
-    @GlobalValue(symbol="NSURLAuthenticationMethodDefault")
+    @GlobalValue(symbol="NSURLAuthenticationMethodDefault", optional=true)
     public static native String AuthenticationMethodDefault();
-    @GlobalValue(symbol="NSURLAuthenticationMethodHTTPBasic")
+    @GlobalValue(symbol="NSURLAuthenticationMethodHTTPBasic", optional=true)
     public static native String AuthenticationMethodHTTPBasic();
-    @GlobalValue(symbol="NSURLAuthenticationMethodHTTPDigest")
+    @GlobalValue(symbol="NSURLAuthenticationMethodHTTPDigest", optional=true)
     public static native String AuthenticationMethodHTTPDigest();
-    @GlobalValue(symbol="NSURLAuthenticationMethodHTMLForm")
+    @GlobalValue(symbol="NSURLAuthenticationMethodHTMLForm", optional=true)
     public static native String AuthenticationMethodHTMLForm();
-    @GlobalValue(symbol="NSURLAuthenticationMethodNTLM")
+    @GlobalValue(symbol="NSURLAuthenticationMethodNTLM", optional=true)
     public static native String AuthenticationMethodNTLM();
-    @GlobalValue(symbol="NSURLAuthenticationMethodNegotiate")
+    @GlobalValue(symbol="NSURLAuthenticationMethodNegotiate", optional=true)
     public static native String AuthenticationMethodNegotiate();
-    @GlobalValue(symbol="NSURLAuthenticationMethodClientCertificate")
+    @GlobalValue(symbol="NSURLAuthenticationMethodClientCertificate", optional=true)
     public static native String AuthenticationMethodClientCertificate();
-    @GlobalValue(symbol="NSURLAuthenticationMethodServerTrust")
+    @GlobalValue(symbol="NSURLAuthenticationMethodServerTrust", optional=true)
     public static native String AuthenticationMethodServerTrust();
     
     @Method(selector = "initWithHost:port:protocol:realm:authenticationMethod:")

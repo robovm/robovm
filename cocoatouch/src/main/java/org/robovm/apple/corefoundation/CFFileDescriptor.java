@@ -47,23 +47,23 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFFileDescriptorGetTypeID")
+    @Bridge(symbol="CFFileDescriptorGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFFileDescriptorCreate")
+    @Bridge(symbol="CFFileDescriptorCreate", optional=true)
     public static native CFFileDescriptor create(CFAllocator allocator, int fd, boolean closeOnInvalidate, FunctionPtr callout, CFFileDescriptorContext context);
-    @Bridge(symbol="CFFileDescriptorGetNativeDescriptor")
+    @Bridge(symbol="CFFileDescriptorGetNativeDescriptor", optional=true)
     public native int getNativeDescriptor();
-    @Bridge(symbol="CFFileDescriptorGetContext")
+    @Bridge(symbol="CFFileDescriptorGetContext", optional=true)
     public native void getContext(CFFileDescriptorContext context);
-    @Bridge(symbol="CFFileDescriptorEnableCallBacks")
+    @Bridge(symbol="CFFileDescriptorEnableCallBacks", optional=true)
     public native void enableCallBacks(CFFileDescriptorCallBackType callBackTypes);
-    @Bridge(symbol="CFFileDescriptorDisableCallBacks")
+    @Bridge(symbol="CFFileDescriptorDisableCallBacks", optional=true)
     public native void disableCallBacks(CFFileDescriptorCallBackType callBackTypes);
-    @Bridge(symbol="CFFileDescriptorInvalidate")
+    @Bridge(symbol="CFFileDescriptorInvalidate", optional=true)
     public native void invalidate();
-    @Bridge(symbol="CFFileDescriptorIsValid")
+    @Bridge(symbol="CFFileDescriptorIsValid", optional=true)
     public native boolean isValid();
-    @Bridge(symbol="CFFileDescriptorCreateRunLoopSource")
+    @Bridge(symbol="CFFileDescriptorCreateRunLoopSource", optional=true)
     public static native CFRunLoopSource createRunLoopSource(CFAllocator allocator, CFFileDescriptor f, @MachineSizedSInt long order);
     /*</methods>*/
 }

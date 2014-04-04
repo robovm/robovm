@@ -48,11 +48,11 @@ import org.robovm.apple.foundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CGDataConsumerGetTypeID")
+    @Bridge(symbol="CGDataConsumerGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CGDataConsumerCreateWithURL")
+    @Bridge(symbol="CGDataConsumerCreateWithURL", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGDataConsumer create(NSURL url);
-    @Bridge(symbol="CGDataConsumerCreateWithCFData")
+    @Bridge(symbol="CGDataConsumerCreateWithCFData", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGDataConsumer create(CFMutableData data);
     /*</methods>*/
 }

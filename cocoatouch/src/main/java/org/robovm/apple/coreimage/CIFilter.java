@@ -52,157 +52,157 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCIAttributeFilterName")
+    @GlobalValue(symbol="kCIAttributeFilterName", optional=true)
     public static native NSString AttributeFilterName();
-    @GlobalValue(symbol="kCIAttributeFilterDisplayName")
+    @GlobalValue(symbol="kCIAttributeFilterDisplayName", optional=true)
     public static native NSString AttributeFilterDisplayName();
-    @GlobalValue(symbol="kCIAttributeDescription")
+    @GlobalValue(symbol="kCIAttributeDescription", optional=true)
     public static native NSString AttributeDescription();
-    @GlobalValue(symbol="kCIAttributeReferenceDocumentation")
+    @GlobalValue(symbol="kCIAttributeReferenceDocumentation", optional=true)
     public static native NSString AttributeReferenceDocumentation();
-    @GlobalValue(symbol="kCIAttributeFilterCategories")
+    @GlobalValue(symbol="kCIAttributeFilterCategories", optional=true)
     public static native NSString AttributeFilterCategories();
-    @GlobalValue(symbol="kCIAttributeClass")
+    @GlobalValue(symbol="kCIAttributeClass", optional=true)
     public static native NSString AttributeClass();
-    @GlobalValue(symbol="kCIAttributeType")
+    @GlobalValue(symbol="kCIAttributeType", optional=true)
     public static native NSString AttributeType();
-    @GlobalValue(symbol="kCIAttributeMin")
+    @GlobalValue(symbol="kCIAttributeMin", optional=true)
     public static native NSString AttributeMin();
-    @GlobalValue(symbol="kCIAttributeMax")
+    @GlobalValue(symbol="kCIAttributeMax", optional=true)
     public static native NSString AttributeMax();
-    @GlobalValue(symbol="kCIAttributeSliderMin")
+    @GlobalValue(symbol="kCIAttributeSliderMin", optional=true)
     public static native NSString AttributeSliderMin();
-    @GlobalValue(symbol="kCIAttributeSliderMax")
+    @GlobalValue(symbol="kCIAttributeSliderMax", optional=true)
     public static native NSString AttributeSliderMax();
-    @GlobalValue(symbol="kCIAttributeDefault")
+    @GlobalValue(symbol="kCIAttributeDefault", optional=true)
     public static native NSString AttributeDefault();
-    @GlobalValue(symbol="kCIAttributeIdentity")
+    @GlobalValue(symbol="kCIAttributeIdentity", optional=true)
     public static native NSString AttributeIdentity();
-    @GlobalValue(symbol="kCIAttributeName")
+    @GlobalValue(symbol="kCIAttributeName", optional=true)
     public static native NSString AttributeName();
-    @GlobalValue(symbol="kCIAttributeDisplayName")
+    @GlobalValue(symbol="kCIAttributeDisplayName", optional=true)
     public static native NSString AttributeDisplayName();
-    @GlobalValue(symbol="kCIAttributeTypeTime")
+    @GlobalValue(symbol="kCIAttributeTypeTime", optional=true)
     public static native NSString AttributeTypeTime();
-    @GlobalValue(symbol="kCIAttributeTypeScalar")
+    @GlobalValue(symbol="kCIAttributeTypeScalar", optional=true)
     public static native NSString AttributeTypeScalar();
-    @GlobalValue(symbol="kCIAttributeTypeDistance")
+    @GlobalValue(symbol="kCIAttributeTypeDistance", optional=true)
     public static native NSString AttributeTypeDistance();
-    @GlobalValue(symbol="kCIAttributeTypeAngle")
+    @GlobalValue(symbol="kCIAttributeTypeAngle", optional=true)
     public static native NSString AttributeTypeAngle();
-    @GlobalValue(symbol="kCIAttributeTypeBoolean")
+    @GlobalValue(symbol="kCIAttributeTypeBoolean", optional=true)
     public static native NSString AttributeTypeBoolean();
-    @GlobalValue(symbol="kCIAttributeTypeInteger")
+    @GlobalValue(symbol="kCIAttributeTypeInteger", optional=true)
     public static native NSString AttributeTypeInteger();
-    @GlobalValue(symbol="kCIAttributeTypeCount")
+    @GlobalValue(symbol="kCIAttributeTypeCount", optional=true)
     public static native NSString AttributeTypeCount();
-    @GlobalValue(symbol="kCIAttributeTypePosition")
+    @GlobalValue(symbol="kCIAttributeTypePosition", optional=true)
     public static native NSString AttributeTypePosition();
-    @GlobalValue(symbol="kCIAttributeTypeOffset")
+    @GlobalValue(symbol="kCIAttributeTypeOffset", optional=true)
     public static native NSString AttributeTypeOffset();
-    @GlobalValue(symbol="kCIAttributeTypePosition3")
+    @GlobalValue(symbol="kCIAttributeTypePosition3", optional=true)
     public static native NSString AttributeTypePosition3();
-    @GlobalValue(symbol="kCIAttributeTypeRectangle")
+    @GlobalValue(symbol="kCIAttributeTypeRectangle", optional=true)
     public static native NSString AttributeTypeRectangle();
-    @GlobalValue(symbol="kCIAttributeTypeColor")
+    @GlobalValue(symbol="kCIAttributeTypeColor", optional=true)
     public static native NSString AttributeTypeColor();
-    @GlobalValue(symbol="kCIAttributeTypeGradient")
+    @GlobalValue(symbol="kCIAttributeTypeGradient", optional=true)
     public static native NSString AttributeTypeGradient();
-    @GlobalValue(symbol="kCIAttributeTypeImage")
+    @GlobalValue(symbol="kCIAttributeTypeImage", optional=true)
     public static native NSString AttributeTypeImage();
-    @GlobalValue(symbol="kCIAttributeTypeTransform")
+    @GlobalValue(symbol="kCIAttributeTypeTransform", optional=true)
     public static native NSString AttributeTypeTransform();
-    @GlobalValue(symbol="kCICategoryDistortionEffect")
+    @GlobalValue(symbol="kCICategoryDistortionEffect", optional=true)
     public static native NSString CategoryDistortionEffect();
-    @GlobalValue(symbol="kCICategoryGeometryAdjustment")
+    @GlobalValue(symbol="kCICategoryGeometryAdjustment", optional=true)
     public static native NSString CategoryGeometryAdjustment();
-    @GlobalValue(symbol="kCICategoryCompositeOperation")
+    @GlobalValue(symbol="kCICategoryCompositeOperation", optional=true)
     public static native NSString CategoryCompositeOperation();
-    @GlobalValue(symbol="kCICategoryHalftoneEffect")
+    @GlobalValue(symbol="kCICategoryHalftoneEffect", optional=true)
     public static native NSString CategoryHalftoneEffect();
-    @GlobalValue(symbol="kCICategoryColorAdjustment")
+    @GlobalValue(symbol="kCICategoryColorAdjustment", optional=true)
     public static native NSString CategoryColorAdjustment();
-    @GlobalValue(symbol="kCICategoryColorEffect")
+    @GlobalValue(symbol="kCICategoryColorEffect", optional=true)
     public static native NSString CategoryColorEffect();
-    @GlobalValue(symbol="kCICategoryTransition")
+    @GlobalValue(symbol="kCICategoryTransition", optional=true)
     public static native NSString CategoryTransition();
-    @GlobalValue(symbol="kCICategoryTileEffect")
+    @GlobalValue(symbol="kCICategoryTileEffect", optional=true)
     public static native NSString CategoryTileEffect();
-    @GlobalValue(symbol="kCICategoryGenerator")
+    @GlobalValue(symbol="kCICategoryGenerator", optional=true)
     public static native NSString CategoryGenerator();
-    @GlobalValue(symbol="kCICategoryReduction")
+    @GlobalValue(symbol="kCICategoryReduction", optional=true)
     public static native NSString CategoryReduction();
-    @GlobalValue(symbol="kCICategoryGradient")
+    @GlobalValue(symbol="kCICategoryGradient", optional=true)
     public static native NSString CategoryGradient();
-    @GlobalValue(symbol="kCICategoryStylize")
+    @GlobalValue(symbol="kCICategoryStylize", optional=true)
     public static native NSString CategoryStylize();
-    @GlobalValue(symbol="kCICategorySharpen")
+    @GlobalValue(symbol="kCICategorySharpen", optional=true)
     public static native NSString CategorySharpen();
-    @GlobalValue(symbol="kCICategoryBlur")
+    @GlobalValue(symbol="kCICategoryBlur", optional=true)
     public static native NSString CategoryBlur();
-    @GlobalValue(symbol="kCICategoryVideo")
+    @GlobalValue(symbol="kCICategoryVideo", optional=true)
     public static native NSString CategoryVideo();
-    @GlobalValue(symbol="kCICategoryStillImage")
+    @GlobalValue(symbol="kCICategoryStillImage", optional=true)
     public static native NSString CategoryStillImage();
-    @GlobalValue(symbol="kCICategoryInterlaced")
+    @GlobalValue(symbol="kCICategoryInterlaced", optional=true)
     public static native NSString CategoryInterlaced();
-    @GlobalValue(symbol="kCICategoryNonSquarePixels")
+    @GlobalValue(symbol="kCICategoryNonSquarePixels", optional=true)
     public static native NSString CategoryNonSquarePixels();
-    @GlobalValue(symbol="kCICategoryHighDynamicRange")
+    @GlobalValue(symbol="kCICategoryHighDynamicRange", optional=true)
     public static native NSString CategoryHighDynamicRange();
-    @GlobalValue(symbol="kCICategoryBuiltIn")
+    @GlobalValue(symbol="kCICategoryBuiltIn", optional=true)
     public static native NSString CategoryBuiltIn();
-    @GlobalValue(symbol="kCICategoryFilterGenerator")
+    @GlobalValue(symbol="kCICategoryFilterGenerator", optional=true)
     public static native NSString CategoryFilterGenerator();
-    @GlobalValue(symbol="kCIOutputImageKey")
+    @GlobalValue(symbol="kCIOutputImageKey", optional=true)
     public static native NSString ParameterOutputImage();
-    @GlobalValue(symbol="kCIInputBackgroundImageKey")
+    @GlobalValue(symbol="kCIInputBackgroundImageKey", optional=true)
     public static native NSString ParameterInputBackgroundImage();
-    @GlobalValue(symbol="kCIInputImageKey")
+    @GlobalValue(symbol="kCIInputImageKey", optional=true)
     public static native NSString ParameterInputImage();
-    @GlobalValue(symbol="kCIInputTimeKey")
+    @GlobalValue(symbol="kCIInputTimeKey", optional=true)
     public static native NSString ParameterInputTime();
-    @GlobalValue(symbol="kCIInputTransformKey")
+    @GlobalValue(symbol="kCIInputTransformKey", optional=true)
     public static native NSString ParameterInputTransform();
-    @GlobalValue(symbol="kCIInputScaleKey")
+    @GlobalValue(symbol="kCIInputScaleKey", optional=true)
     public static native NSString ParameterInputScale();
-    @GlobalValue(symbol="kCIInputAspectRatioKey")
+    @GlobalValue(symbol="kCIInputAspectRatioKey", optional=true)
     public static native NSString ParameterInputAspectRatio();
-    @GlobalValue(symbol="kCIInputCenterKey")
+    @GlobalValue(symbol="kCIInputCenterKey", optional=true)
     public static native NSString ParameterInputCenter();
-    @GlobalValue(symbol="kCIInputRadiusKey")
+    @GlobalValue(symbol="kCIInputRadiusKey", optional=true)
     public static native NSString ParameterInputRadius();
-    @GlobalValue(symbol="kCIInputAngleKey")
+    @GlobalValue(symbol="kCIInputAngleKey", optional=true)
     public static native NSString ParameterInputAngle();
-    @GlobalValue(symbol="kCIInputRefractionKey")
+    @GlobalValue(symbol="kCIInputRefractionKey", optional=true)
     public static native NSString ParameterInputRefraction();
-    @GlobalValue(symbol="kCIInputWidthKey")
+    @GlobalValue(symbol="kCIInputWidthKey", optional=true)
     public static native NSString ParameterInputWidth();
-    @GlobalValue(symbol="kCIInputSharpnessKey")
+    @GlobalValue(symbol="kCIInputSharpnessKey", optional=true)
     public static native NSString ParameterInputSharpness();
-    @GlobalValue(symbol="kCIInputIntensityKey")
+    @GlobalValue(symbol="kCIInputIntensityKey", optional=true)
     public static native NSString ParameterInputIntensity();
-    @GlobalValue(symbol="kCIInputEVKey")
+    @GlobalValue(symbol="kCIInputEVKey", optional=true)
     public static native NSString ParameterInputEV();
-    @GlobalValue(symbol="kCIInputSaturationKey")
+    @GlobalValue(symbol="kCIInputSaturationKey", optional=true)
     public static native NSString ParameterInputSaturation();
-    @GlobalValue(symbol="kCIInputColorKey")
+    @GlobalValue(symbol="kCIInputColorKey", optional=true)
     public static native NSString ParameterInputColor();
-    @GlobalValue(symbol="kCIInputBrightnessKey")
+    @GlobalValue(symbol="kCIInputBrightnessKey", optional=true)
     public static native NSString ParameterInputBrightness();
-    @GlobalValue(symbol="kCIInputContrastKey")
+    @GlobalValue(symbol="kCIInputContrastKey", optional=true)
     public static native NSString ParameterInputContrast();
-    @GlobalValue(symbol="kCIInputGradientImageKey")
+    @GlobalValue(symbol="kCIInputGradientImageKey", optional=true)
     public static native NSString ParameterInputGradientImage();
-    @GlobalValue(symbol="kCIInputMaskImageKey")
+    @GlobalValue(symbol="kCIInputMaskImageKey", optional=true)
     public static native NSString ParameterInputMaskImage();
-    @GlobalValue(symbol="kCIInputShadingImageKey")
+    @GlobalValue(symbol="kCIInputShadingImageKey", optional=true)
     public static native NSString ParameterInputShadingImage();
-    @GlobalValue(symbol="kCIInputTargetImageKey")
+    @GlobalValue(symbol="kCIInputTargetImageKey", optional=true)
     public static native NSString ParameterInputTargetImage();
-    @GlobalValue(symbol="kCIInputExtentKey")
+    @GlobalValue(symbol="kCIInputExtentKey", optional=true)
     public static native NSString ParameterInputExtent();
-    @GlobalValue(symbol="kCIInputVersionKey")
+    @GlobalValue(symbol="kCIInputVersionKey", optional=true)
     public static native NSString ParameterInputVersion();
     
     @Method(selector = "name")

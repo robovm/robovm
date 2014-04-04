@@ -51,23 +51,23 @@ import org.robovm.apple.foundation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSManagedObjectContextWillSaveNotification")
+    @GlobalValue(symbol="NSManagedObjectContextWillSaveNotification", optional=true)
     public static native String NotificationWillSave();
-    @GlobalValue(symbol="NSManagedObjectContextDidSaveNotification")
+    @GlobalValue(symbol="NSManagedObjectContextDidSaveNotification", optional=true)
     public static native String NotificationDidSave();
-    @GlobalValue(symbol="NSManagedObjectContextObjectsDidChangeNotification")
+    @GlobalValue(symbol="NSManagedObjectContextObjectsDidChangeNotification", optional=true)
     public static native String NotificationObjectsDidChange();
-    @GlobalValue(symbol="NSInsertedObjectsKey")
+    @GlobalValue(symbol="NSInsertedObjectsKey", optional=true)
     public static native NSString KeyInsertedObjects();
-    @GlobalValue(symbol="NSUpdatedObjectsKey")
+    @GlobalValue(symbol="NSUpdatedObjectsKey", optional=true)
     public static native NSString KeyUpdatedObjects();
-    @GlobalValue(symbol="NSDeletedObjectsKey")
+    @GlobalValue(symbol="NSDeletedObjectsKey", optional=true)
     public static native NSString KeyDeletedObjects();
-    @GlobalValue(symbol="NSRefreshedObjectsKey")
+    @GlobalValue(symbol="NSRefreshedObjectsKey", optional=true)
     public static native NSString KeyRefreshedObjects();
-    @GlobalValue(symbol="NSInvalidatedObjectsKey")
+    @GlobalValue(symbol="NSInvalidatedObjectsKey", optional=true)
     public static native NSString KeyInvalidatedObjects();
-    @GlobalValue(symbol="NSInvalidatedAllObjectsKey")
+    @GlobalValue(symbol="NSInvalidatedAllObjectsKey", optional=true)
     public static native NSString KeyInvalidatedAllObjects();
     
     @Method(selector = "initWithConcurrencyType:")

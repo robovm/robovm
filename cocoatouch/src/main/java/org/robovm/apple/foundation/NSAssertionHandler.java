@@ -51,7 +51,7 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSAssertionHandlerKey")
+    @GlobalValue(symbol="NSAssertionHandlerKey", optional=true)
     public static native NSString KeyThreadAssertionHandler();
     
     @Method(selector = "currentHandler")

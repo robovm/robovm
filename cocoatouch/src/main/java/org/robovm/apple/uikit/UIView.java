@@ -162,11 +162,11 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="UIViewNoIntrinsicMetric")
+    @GlobalValue(symbol="UIViewNoIntrinsicMetric", optional=true)
     public static native @MachineSizedFloat double NoIntrinsicMetric();
-    @GlobalValue(symbol="UILayoutFittingCompressedSize")
+    @GlobalValue(symbol="UILayoutFittingCompressedSize", optional=true)
     public static native @ByVal CGSize LayoutFittingCompressedSize();
-    @GlobalValue(symbol="UILayoutFittingExpandedSize")
+    @GlobalValue(symbol="UILayoutFittingExpandedSize", optional=true)
     public static native @ByVal CGSize LayoutFittingExpandedSize();
     
     @Method(selector = "initWithFrame:")

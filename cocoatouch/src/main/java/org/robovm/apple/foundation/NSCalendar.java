@@ -52,35 +52,35 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSCalendarIdentifierGregorian")
+    @GlobalValue(symbol="NSCalendarIdentifierGregorian", optional=true)
     public static native String CalendarIdentifierGregorian();
-    @GlobalValue(symbol="NSCalendarIdentifierBuddhist")
+    @GlobalValue(symbol="NSCalendarIdentifierBuddhist", optional=true)
     public static native String CalendarIdentifierBuddhist();
-    @GlobalValue(symbol="NSCalendarIdentifierChinese")
+    @GlobalValue(symbol="NSCalendarIdentifierChinese", optional=true)
     public static native String CalendarIdentifierChinese();
-    @GlobalValue(symbol="NSCalendarIdentifierCoptic")
+    @GlobalValue(symbol="NSCalendarIdentifierCoptic", optional=true)
     public static native String CalendarIdentifierCoptic();
-    @GlobalValue(symbol="NSCalendarIdentifierEthiopicAmeteMihret")
+    @GlobalValue(symbol="NSCalendarIdentifierEthiopicAmeteMihret", optional=true)
     public static native String CalendarIdentifierEthiopicAmeteMihret();
-    @GlobalValue(symbol="NSCalendarIdentifierEthiopicAmeteAlem")
+    @GlobalValue(symbol="NSCalendarIdentifierEthiopicAmeteAlem", optional=true)
     public static native String CalendarIdentifierEthiopicAmeteAlem();
-    @GlobalValue(symbol="NSCalendarIdentifierHebrew")
+    @GlobalValue(symbol="NSCalendarIdentifierHebrew", optional=true)
     public static native String CalendarIdentifierHebrew();
-    @GlobalValue(symbol="NSCalendarIdentifierISO8601")
+    @GlobalValue(symbol="NSCalendarIdentifierISO8601", optional=true)
     public static native String CalendarIdentifierISO8601();
-    @GlobalValue(symbol="NSCalendarIdentifierIndian")
+    @GlobalValue(symbol="NSCalendarIdentifierIndian", optional=true)
     public static native String CalendarIdentifierIndian();
-    @GlobalValue(symbol="NSCalendarIdentifierIslamic")
+    @GlobalValue(symbol="NSCalendarIdentifierIslamic", optional=true)
     public static native String CalendarIdentifierIslamic();
-    @GlobalValue(symbol="NSCalendarIdentifierIslamicCivil")
+    @GlobalValue(symbol="NSCalendarIdentifierIslamicCivil", optional=true)
     public static native String CalendarIdentifierIslamicCivil();
-    @GlobalValue(symbol="NSCalendarIdentifierJapanese")
+    @GlobalValue(symbol="NSCalendarIdentifierJapanese", optional=true)
     public static native String CalendarIdentifierJapanese();
-    @GlobalValue(symbol="NSCalendarIdentifierPersian")
+    @GlobalValue(symbol="NSCalendarIdentifierPersian", optional=true)
     public static native String CalendarIdentifierPersian();
-    @GlobalValue(symbol="NSCalendarIdentifierRepublicOfChina")
+    @GlobalValue(symbol="NSCalendarIdentifierRepublicOfChina", optional=true)
     public static native String CalendarIdentifierRepublicOfChina();
-    @GlobalValue(symbol="NSCalendarDayChangedNotification")
+    @GlobalValue(symbol="NSCalendarDayChangedNotification", optional=true)
     public static native String NotificationDayChanged();
     
     @Method(selector = "initWithCalendarIdentifier:")

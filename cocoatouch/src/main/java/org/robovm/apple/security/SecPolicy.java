@@ -48,50 +48,50 @@ import org.robovm.apple.corefoundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kSecPolicyAppleX509Basic")
+    @GlobalValue(symbol="kSecPolicyAppleX509Basic", optional=true)
     public static native CFType AppleX509Basic();
-    @GlobalValue(symbol="kSecPolicyAppleSSL")
+    @GlobalValue(symbol="kSecPolicyAppleSSL", optional=true)
     public static native CFType AppleSSL();
-    @GlobalValue(symbol="kSecPolicyAppleSMIME")
+    @GlobalValue(symbol="kSecPolicyAppleSMIME", optional=true)
     public static native CFType AppleSMIME();
-    @GlobalValue(symbol="kSecPolicyAppleEAP")
+    @GlobalValue(symbol="kSecPolicyAppleEAP", optional=true)
     public static native CFType AppleEAP();
-    @GlobalValue(symbol="kSecPolicyAppleIPsec")
+    @GlobalValue(symbol="kSecPolicyAppleIPsec", optional=true)
     public static native CFType AppleIPsec();
-    @GlobalValue(symbol="kSecPolicyApplePKINITClient")
+    @GlobalValue(symbol="kSecPolicyApplePKINITClient", optional=true)
     public static native CFType ApplePKINITClient();
-    @GlobalValue(symbol="kSecPolicyApplePKINITServer")
+    @GlobalValue(symbol="kSecPolicyApplePKINITServer", optional=true)
     public static native CFType ApplePKINITServer();
-    @GlobalValue(symbol="kSecPolicyAppleCodeSigning")
+    @GlobalValue(symbol="kSecPolicyAppleCodeSigning", optional=true)
     public static native CFType AppleCodeSigning();
-    @GlobalValue(symbol="kSecPolicyMacAppStoreReceipt")
+    @GlobalValue(symbol="kSecPolicyMacAppStoreReceipt", optional=true)
     public static native CFType MacAppStoreReceipt();
-    @GlobalValue(symbol="kSecPolicyAppleIDValidation")
+    @GlobalValue(symbol="kSecPolicyAppleIDValidation", optional=true)
     public static native CFType AppleIDValidation();
-    @GlobalValue(symbol="kSecPolicyAppleTimeStamping")
+    @GlobalValue(symbol="kSecPolicyAppleTimeStamping", optional=true)
     public static native CFType AppleTimeStamping();
-    @GlobalValue(symbol="kSecPolicyAppleRevocation")
+    @GlobalValue(symbol="kSecPolicyAppleRevocation", optional=true)
     public static native CFType AppleRevocation();
-    @GlobalValue(symbol="kSecPolicyOid")
+    @GlobalValue(symbol="kSecPolicyOid", optional=true)
     public static native CFType Oid();
-    @GlobalValue(symbol="kSecPolicyName")
+    @GlobalValue(symbol="kSecPolicyName", optional=true)
     public static native CFType Name();
-    @GlobalValue(symbol="kSecPolicyClient")
+    @GlobalValue(symbol="kSecPolicyClient", optional=true)
     public static native CFType Client();
-    @GlobalValue(symbol="kSecPolicyRevocationFlags")
+    @GlobalValue(symbol="kSecPolicyRevocationFlags", optional=true)
     public static native CFType RevocationFlags();
     
-    @Bridge(symbol="SecPolicyGetTypeID")
+    @Bridge(symbol="SecPolicyGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="SecPolicyCopyProperties")
+    @Bridge(symbol="SecPolicyCopyProperties", optional=true)
     public native CFDictionary copyProperties();
-    @Bridge(symbol="SecPolicyCreateBasicX509")
+    @Bridge(symbol="SecPolicyCreateBasicX509", optional=true)
     public static native SecPolicy createBasicX509();
-    @Bridge(symbol="SecPolicyCreateSSL")
+    @Bridge(symbol="SecPolicyCreateSSL", optional=true)
     public static native SecPolicy createSSL(boolean server, CFString hostname);
-    @Bridge(symbol="SecPolicyCreateRevocation")
+    @Bridge(symbol="SecPolicyCreateRevocation", optional=true)
     public static native SecPolicy createRevocation(SecRevocation revocationFlags);
-    @Bridge(symbol="SecPolicyCreateWithProperties")
+    @Bridge(symbol="SecPolicyCreateWithProperties", optional=true)
     public static native SecPolicy createWithProperties(CFType policyIdentifier, CFDictionary properties);
     /*</methods>*/
 }

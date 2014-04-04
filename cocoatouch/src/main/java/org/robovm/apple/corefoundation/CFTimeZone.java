@@ -47,46 +47,46 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFTimeZoneSystemTimeZoneDidChangeNotification")
+    @GlobalValue(symbol="kCFTimeZoneSystemTimeZoneDidChangeNotification", optional=true)
     public static native CFString NotificationSystemTimeZoneDidChange();
     
-    @Bridge(symbol="CFTimeZoneGetTypeID")
+    @Bridge(symbol="CFTimeZoneGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFTimeZoneCopySystem")
+    @Bridge(symbol="CFTimeZoneCopySystem", optional=true)
     public static native CFTimeZone copySystem();
-    @Bridge(symbol="CFTimeZoneResetSystem")
+    @Bridge(symbol="CFTimeZoneResetSystem", optional=true)
     public static native void resetSystem();
-    @Bridge(symbol="CFTimeZoneCopyDefault")
+    @Bridge(symbol="CFTimeZoneCopyDefault", optional=true)
     public static native CFTimeZone copyDefault();
-    @Bridge(symbol="CFTimeZoneSetDefault")
+    @Bridge(symbol="CFTimeZoneSetDefault", optional=true)
     public native void setDefault();
-    @Bridge(symbol="CFTimeZoneCopyKnownNames")
+    @Bridge(symbol="CFTimeZoneCopyKnownNames", optional=true)
     public static native CFArray copyKnownNames();
-    @Bridge(symbol="CFTimeZoneCopyAbbreviationDictionary")
+    @Bridge(symbol="CFTimeZoneCopyAbbreviationDictionary", optional=true)
     public static native CFDictionary copyAbbreviationDictionary();
-    @Bridge(symbol="CFTimeZoneSetAbbreviationDictionary")
+    @Bridge(symbol="CFTimeZoneSetAbbreviationDictionary", optional=true)
     public static native void setAbbreviationDictionary(CFDictionary dict);
-    @Bridge(symbol="CFTimeZoneCreate")
+    @Bridge(symbol="CFTimeZoneCreate", optional=true)
     public static native CFTimeZone create(CFAllocator allocator, CFString name, CFData data);
-    @Bridge(symbol="CFTimeZoneCreateWithTimeIntervalFromGMT")
+    @Bridge(symbol="CFTimeZoneCreateWithTimeIntervalFromGMT", optional=true)
     public static native CFTimeZone createWithTimeIntervalFromGMT(CFAllocator allocator, double ti);
-    @Bridge(symbol="CFTimeZoneCreateWithName")
+    @Bridge(symbol="CFTimeZoneCreateWithName", optional=true)
     public static native CFTimeZone createWithName(CFAllocator allocator, CFString name, boolean tryAbbrev);
-    @Bridge(symbol="CFTimeZoneGetName")
+    @Bridge(symbol="CFTimeZoneGetName", optional=true)
     public native CFString getName();
-    @Bridge(symbol="CFTimeZoneGetData")
+    @Bridge(symbol="CFTimeZoneGetData", optional=true)
     public native CFData getData();
-    @Bridge(symbol="CFTimeZoneGetSecondsFromGMT")
+    @Bridge(symbol="CFTimeZoneGetSecondsFromGMT", optional=true)
     public native double getSecondsFromGMT(double at);
-    @Bridge(symbol="CFTimeZoneCopyAbbreviation")
+    @Bridge(symbol="CFTimeZoneCopyAbbreviation", optional=true)
     public native CFString copyAbbreviation(double at);
-    @Bridge(symbol="CFTimeZoneIsDaylightSavingTime")
+    @Bridge(symbol="CFTimeZoneIsDaylightSavingTime", optional=true)
     public native boolean isDaylightSavingTime(double at);
-    @Bridge(symbol="CFTimeZoneGetDaylightSavingTimeOffset")
+    @Bridge(symbol="CFTimeZoneGetDaylightSavingTimeOffset", optional=true)
     public native double getDaylightSavingTimeOffset(double at);
-    @Bridge(symbol="CFTimeZoneGetNextDaylightSavingTimeTransition")
+    @Bridge(symbol="CFTimeZoneGetNextDaylightSavingTimeTransition", optional=true)
     public native double getNextDaylightSavingTimeTransition(double at);
-    @Bridge(symbol="CFTimeZoneCopyLocalizedName")
+    @Bridge(symbol="CFTimeZoneCopyLocalizedName", optional=true)
     public native CFString copyLocalizedName(CFTimeZoneNameStyle style, CFLocale locale);
     /*</methods>*/
 }

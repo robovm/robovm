@@ -52,7 +52,7 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSKeyedArchiveRootObjectKey")
+    @GlobalValue(symbol="NSKeyedArchiveRootObjectKey", optional=true)
     public static native NSString KeyRootObjectKey();
     
     @Method(selector = "initForWritingWithMutableData:")

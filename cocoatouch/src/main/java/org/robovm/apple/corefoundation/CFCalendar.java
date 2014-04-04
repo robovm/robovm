@@ -47,39 +47,39 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFCalendarGetTypeID")
+    @Bridge(symbol="CFCalendarGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFCalendarCopyCurrent")
+    @Bridge(symbol="CFCalendarCopyCurrent", optional=true)
     public static native CFCalendar copyCurrent();
-    @Bridge(symbol="CFCalendarCreateWithIdentifier")
+    @Bridge(symbol="CFCalendarCreateWithIdentifier", optional=true)
     public static native CFCalendar createWithIdentifier(CFAllocator allocator, CFString identifier);
-    @Bridge(symbol="CFCalendarGetIdentifier")
+    @Bridge(symbol="CFCalendarGetIdentifier", optional=true)
     public native CFString getIdentifier();
-    @Bridge(symbol="CFCalendarCopyLocale")
+    @Bridge(symbol="CFCalendarCopyLocale", optional=true)
     public native CFLocale copyLocale();
-    @Bridge(symbol="CFCalendarSetLocale")
+    @Bridge(symbol="CFCalendarSetLocale", optional=true)
     public native void setLocale(CFLocale locale);
-    @Bridge(symbol="CFCalendarCopyTimeZone")
+    @Bridge(symbol="CFCalendarCopyTimeZone", optional=true)
     public native CFTimeZone copyTimeZone();
-    @Bridge(symbol="CFCalendarSetTimeZone")
+    @Bridge(symbol="CFCalendarSetTimeZone", optional=true)
     public native void setTimeZone(CFTimeZone tz);
-    @Bridge(symbol="CFCalendarGetFirstWeekday")
+    @Bridge(symbol="CFCalendarGetFirstWeekday", optional=true)
     public native @MachineSizedSInt long getFirstWeekday();
-    @Bridge(symbol="CFCalendarSetFirstWeekday")
+    @Bridge(symbol="CFCalendarSetFirstWeekday", optional=true)
     public native void setFirstWeekday(@MachineSizedSInt long wkdy);
-    @Bridge(symbol="CFCalendarGetMinimumDaysInFirstWeek")
+    @Bridge(symbol="CFCalendarGetMinimumDaysInFirstWeek", optional=true)
     public native @MachineSizedSInt long getMinimumDaysInFirstWeek();
-    @Bridge(symbol="CFCalendarSetMinimumDaysInFirstWeek")
+    @Bridge(symbol="CFCalendarSetMinimumDaysInFirstWeek", optional=true)
     public native void setMinimumDaysInFirstWeek(@MachineSizedSInt long mwd);
-    @Bridge(symbol="CFCalendarGetMinimumRangeOfUnit")
+    @Bridge(symbol="CFCalendarGetMinimumRangeOfUnit", optional=true)
     public native @ByVal CFRange getMinimumRangeOfUnit(CFCalendarUnit unit);
-    @Bridge(symbol="CFCalendarGetMaximumRangeOfUnit")
+    @Bridge(symbol="CFCalendarGetMaximumRangeOfUnit", optional=true)
     public native @ByVal CFRange getMaximumRangeOfUnit(CFCalendarUnit unit);
-    @Bridge(symbol="CFCalendarGetRangeOfUnit")
+    @Bridge(symbol="CFCalendarGetRangeOfUnit", optional=true)
     public native @ByVal CFRange getRangeOfUnit(CFCalendarUnit smallerUnit, CFCalendarUnit biggerUnit, double at);
-    @Bridge(symbol="CFCalendarGetOrdinalityOfUnit")
+    @Bridge(symbol="CFCalendarGetOrdinalityOfUnit", optional=true)
     public native @MachineSizedSInt long getOrdinalityOfUnit(CFCalendarUnit smallerUnit, CFCalendarUnit biggerUnit, double at);
-    @Bridge(symbol="CFCalendarGetTimeRangeOfUnit")
+    @Bridge(symbol="CFCalendarGetTimeRangeOfUnit", optional=true)
     public native boolean getTimeRangeOfUnit(CFCalendarUnit unit, double at, DoublePtr startp, DoublePtr tip);
     /*</methods>*/
 }

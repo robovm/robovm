@@ -55,13 +55,13 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCAScrollNone")
+    @GlobalValue(symbol="kCAScrollNone", optional=true)
     public static native String ScrollNone();
-    @GlobalValue(symbol="kCAScrollVertically")
+    @GlobalValue(symbol="kCAScrollVertically", optional=true)
     public static native String ScrollVertically();
-    @GlobalValue(symbol="kCAScrollHorizontally")
+    @GlobalValue(symbol="kCAScrollHorizontally", optional=true)
     public static native String ScrollHorizontally();
-    @GlobalValue(symbol="kCAScrollBoth")
+    @GlobalValue(symbol="kCAScrollBoth", optional=true)
     public static native String ScrollBoth();
     
     @Method(selector = "scrollToPoint:")

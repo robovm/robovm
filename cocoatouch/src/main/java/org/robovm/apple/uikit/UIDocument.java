@@ -76,7 +76,7 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="UIDocumentStateChangedNotification")
+    @GlobalValue(symbol="UIDocumentStateChangedNotification", optional=true)
     public static native String NotificationDocumentStateChanged();
     
     @Method(selector = "initWithFileURL:")

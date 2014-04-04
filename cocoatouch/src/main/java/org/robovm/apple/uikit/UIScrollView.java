@@ -164,9 +164,9 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="UIScrollViewDecelerationRateNormal")
+    @GlobalValue(symbol="UIScrollViewDecelerationRateNormal", optional=true)
     public static native @MachineSizedFloat double DecelerationRateNormal();
-    @GlobalValue(symbol="UIScrollViewDecelerationRateFast")
+    @GlobalValue(symbol="UIScrollViewDecelerationRateFast", optional=true)
     public static native @MachineSizedFloat double DecelerationRateFast();
     
     @Method(selector = "setContentOffset:animated:")

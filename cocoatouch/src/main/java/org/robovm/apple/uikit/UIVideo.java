@@ -60,9 +60,9 @@ import org.robovm.apple.coreimage.*;
     }
     
     /*<methods>*/
-    @Bridge(symbol="UIVideoAtPathIsCompatibleWithSavedPhotosAlbum")
+    @Bridge(symbol="UIVideoAtPathIsCompatibleWithSavedPhotosAlbum", optional=true)
     protected static native boolean isCompatibleWithSavedPhotosAlbum(String videoPath);
-    @Bridge(symbol="UISaveVideoAtPathToSavedPhotosAlbum")
+    @Bridge(symbol="UISaveVideoAtPathToSavedPhotosAlbum", optional=true)
     protected static native void saveToPhotosAlbum(String videoPath, NSObject completionTarget, Selector completionSelector, VoidPtr contextInfo);
     /*</methods>*/
 }

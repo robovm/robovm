@@ -72,12 +72,12 @@ import org.robovm.apple.coreimage.*;
     }
     
     /*<methods>*/
-    @GlobalValue(symbol="UIEdgeInsetsZero")
+    @GlobalValue(symbol="UIEdgeInsetsZero", optional=true)
     public static native @ByVal UIEdgeInsets Zero();
     
-    @Bridge(symbol="NSStringFromUIEdgeInsets")
+    @Bridge(symbol="NSStringFromUIEdgeInsets", optional=true)
     protected static native String toString(@ByVal UIEdgeInsets insets);
-    @Bridge(symbol="UIEdgeInsetsFromString")
+    @Bridge(symbol="UIEdgeInsetsFromString", optional=true)
     public static native @ByVal UIEdgeInsets fromString(String string);
     /*</methods>*/
 }

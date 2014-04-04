@@ -54,13 +54,13 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="UITextAttributeFont")
+    @GlobalValue(symbol="UITextAttributeFont", optional=true)
     public static native NSString AttributeFont();
-    @GlobalValue(symbol="UITextAttributeTextColor")
+    @GlobalValue(symbol="UITextAttributeTextColor", optional=true)
     public static native NSString AttributeTextColor();
-    @GlobalValue(symbol="UITextAttributeTextShadowColor")
+    @GlobalValue(symbol="UITextAttributeTextShadowColor", optional=true)
     public static native NSString AttributeTextShadowColor();
-    @GlobalValue(symbol="UITextAttributeTextShadowOffset")
+    @GlobalValue(symbol="UITextAttributeTextShadowOffset", optional=true)
     public static native NSString AttributeTextShadowOffset();
     
     @Method(selector = "sizeWithFont:")

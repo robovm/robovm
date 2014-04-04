@@ -51,9 +51,9 @@ import org.robovm.apple.coreimage.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="UITransitionContextFromViewControllerKey")
+    @GlobalValue(symbol="UITransitionContextFromViewControllerKey", optional=true)
     public static native NSString TransitionKeyFromViewController();
-    @GlobalValue(symbol="UITransitionContextToViewControllerKey")
+    @GlobalValue(symbol="UITransitionContextToViewControllerKey", optional=true)
     public static native NSString TransitionKeyToViewController();
     /*</methods>*/
 }

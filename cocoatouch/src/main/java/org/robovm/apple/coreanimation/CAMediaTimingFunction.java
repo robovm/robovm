@@ -53,15 +53,15 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCAMediaTimingFunctionLinear")
+    @GlobalValue(symbol="kCAMediaTimingFunctionLinear", optional=true)
     public static native String FunctionLinear();
-    @GlobalValue(symbol="kCAMediaTimingFunctionEaseIn")
+    @GlobalValue(symbol="kCAMediaTimingFunctionEaseIn", optional=true)
     public static native String FunctionEaseIn();
-    @GlobalValue(symbol="kCAMediaTimingFunctionEaseOut")
+    @GlobalValue(symbol="kCAMediaTimingFunctionEaseOut", optional=true)
     public static native String FunctionEaseOut();
-    @GlobalValue(symbol="kCAMediaTimingFunctionEaseInEaseOut")
+    @GlobalValue(symbol="kCAMediaTimingFunctionEaseInEaseOut", optional=true)
     public static native String FunctionEaseInEaseOut();
-    @GlobalValue(symbol="kCAMediaTimingFunctionDefault")
+    @GlobalValue(symbol="kCAMediaTimingFunctionDefault", optional=true)
     public static native String FunctionDefault();
     
     @Method(selector = "initWithControlPoints::::")

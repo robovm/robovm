@@ -87,19 +87,19 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCAAnimationLinear")
+    @GlobalValue(symbol="kCAAnimationLinear", optional=true)
     public static native String CalculationLinear();
-    @GlobalValue(symbol="kCAAnimationDiscrete")
+    @GlobalValue(symbol="kCAAnimationDiscrete", optional=true)
     public static native String CalculationDiscrete();
-    @GlobalValue(symbol="kCAAnimationPaced")
+    @GlobalValue(symbol="kCAAnimationPaced", optional=true)
     public static native String CalculationPaced();
-    @GlobalValue(symbol="kCAAnimationCubic")
+    @GlobalValue(symbol="kCAAnimationCubic", optional=true)
     public static native String CalculationCubic();
-    @GlobalValue(symbol="kCAAnimationCubicPaced")
+    @GlobalValue(symbol="kCAAnimationCubicPaced", optional=true)
     public static native String CalculationCubicPaced();
-    @GlobalValue(symbol="kCAAnimationRotateAuto")
+    @GlobalValue(symbol="kCAAnimationRotateAuto", optional=true)
     public static native String RotationAuto();
-    @GlobalValue(symbol="kCAAnimationRotateAutoReverse")
+    @GlobalValue(symbol="kCAAnimationRotateAutoReverse", optional=true)
     public static native String RotationAutoReverse();
     
     

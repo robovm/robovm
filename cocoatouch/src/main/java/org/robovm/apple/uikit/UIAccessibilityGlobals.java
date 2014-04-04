@@ -51,92 +51,92 @@ import org.robovm.apple.coreimage.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="UIAccessibilityTraitNone")
+    @GlobalValue(symbol="UIAccessibilityTraitNone", optional=true)
     public static native long TraitNone();
-    @GlobalValue(symbol="UIAccessibilityTraitButton")
+    @GlobalValue(symbol="UIAccessibilityTraitButton", optional=true)
     public static native long TraitButton();
-    @GlobalValue(symbol="UIAccessibilityTraitLink")
+    @GlobalValue(symbol="UIAccessibilityTraitLink", optional=true)
     public static native long TraitLink();
-    @GlobalValue(symbol="UIAccessibilityTraitHeader")
+    @GlobalValue(symbol="UIAccessibilityTraitHeader", optional=true)
     public static native long TraitHeader();
-    @GlobalValue(symbol="UIAccessibilityTraitSearchField")
+    @GlobalValue(symbol="UIAccessibilityTraitSearchField", optional=true)
     public static native long TraitSearchField();
-    @GlobalValue(symbol="UIAccessibilityTraitImage")
+    @GlobalValue(symbol="UIAccessibilityTraitImage", optional=true)
     public static native long TraitImage();
-    @GlobalValue(symbol="UIAccessibilityTraitSelected")
+    @GlobalValue(symbol="UIAccessibilityTraitSelected", optional=true)
     public static native long TraitSelected();
-    @GlobalValue(symbol="UIAccessibilityTraitPlaysSound")
+    @GlobalValue(symbol="UIAccessibilityTraitPlaysSound", optional=true)
     public static native long TraitPlaysSound();
-    @GlobalValue(symbol="UIAccessibilityTraitKeyboardKey")
+    @GlobalValue(symbol="UIAccessibilityTraitKeyboardKey", optional=true)
     public static native long TraitKeyboardKey();
-    @GlobalValue(symbol="UIAccessibilityTraitStaticText")
+    @GlobalValue(symbol="UIAccessibilityTraitStaticText", optional=true)
     public static native long TraitStaticText();
-    @GlobalValue(symbol="UIAccessibilityTraitSummaryElement")
+    @GlobalValue(symbol="UIAccessibilityTraitSummaryElement", optional=true)
     public static native long TraitSummaryElement();
-    @GlobalValue(symbol="UIAccessibilityTraitNotEnabled")
+    @GlobalValue(symbol="UIAccessibilityTraitNotEnabled", optional=true)
     public static native long TraitNotEnabled();
-    @GlobalValue(symbol="UIAccessibilityTraitUpdatesFrequently")
+    @GlobalValue(symbol="UIAccessibilityTraitUpdatesFrequently", optional=true)
     public static native long TraitUpdatesFrequently();
-    @GlobalValue(symbol="UIAccessibilityTraitStartsMediaSession")
+    @GlobalValue(symbol="UIAccessibilityTraitStartsMediaSession", optional=true)
     public static native long TraitStartsMediaSession();
-    @GlobalValue(symbol="UIAccessibilityTraitAdjustable")
+    @GlobalValue(symbol="UIAccessibilityTraitAdjustable", optional=true)
     public static native long TraitAdjustable();
-    @GlobalValue(symbol="UIAccessibilityTraitAllowsDirectInteraction")
+    @GlobalValue(symbol="UIAccessibilityTraitAllowsDirectInteraction", optional=true)
     public static native long TraitAllowsDirectInteraction();
-    @GlobalValue(symbol="UIAccessibilityTraitCausesPageTurn")
+    @GlobalValue(symbol="UIAccessibilityTraitCausesPageTurn", optional=true)
     public static native long TraitCausesPageTurn();
-    @GlobalValue(symbol="UIAccessibilityScreenChangedNotification")
+    @GlobalValue(symbol="UIAccessibilityScreenChangedNotification", optional=true)
     public static native int NotificationScreenChanged();
-    @GlobalValue(symbol="UIAccessibilityLayoutChangedNotification")
+    @GlobalValue(symbol="UIAccessibilityLayoutChangedNotification", optional=true)
     public static native int NotificationLayoutChanged();
-    @GlobalValue(symbol="UIAccessibilityAnnouncementNotification")
+    @GlobalValue(symbol="UIAccessibilityAnnouncementNotification", optional=true)
     public static native int NotificationAnnouncement();
-    @GlobalValue(symbol="UIAccessibilityAnnouncementDidFinishNotification")
+    @GlobalValue(symbol="UIAccessibilityAnnouncementDidFinishNotification", optional=true)
     public static native String NotificationAnnouncementDidFinish();
-    @GlobalValue(symbol="UIAccessibilityAnnouncementKeyStringValue")
+    @GlobalValue(symbol="UIAccessibilityAnnouncementKeyStringValue", optional=true)
     public static native NSString AnnouncementKeyStringValue();
-    @GlobalValue(symbol="UIAccessibilityAnnouncementKeyWasSuccessful")
+    @GlobalValue(symbol="UIAccessibilityAnnouncementKeyWasSuccessful", optional=true)
     public static native NSString AnnouncementKeyWasSuccessful();
-    @GlobalValue(symbol="UIAccessibilityPageScrolledNotification")
+    @GlobalValue(symbol="UIAccessibilityPageScrolledNotification", optional=true)
     public static native int NotificationPageScrolled();
-    @GlobalValue(symbol="UIAccessibilitySpeechAttributePunctuation")
+    @GlobalValue(symbol="UIAccessibilitySpeechAttributePunctuation", optional=true)
     public static native NSString SpeechAttributePunctuation();
-    @GlobalValue(symbol="UIAccessibilitySpeechAttributeLanguage")
+    @GlobalValue(symbol="UIAccessibilitySpeechAttributeLanguage", optional=true)
     public static native NSString SpeechAttributeLanguage();
-    @GlobalValue(symbol="UIAccessibilitySpeechAttributePitch")
+    @GlobalValue(symbol="UIAccessibilitySpeechAttributePitch", optional=true)
     public static native NSString SpeechAttributePitch();
-    @GlobalValue(symbol="UIAccessibilityVoiceOverStatusChanged")
+    @GlobalValue(symbol="UIAccessibilityVoiceOverStatusChanged", optional=true)
     public static native String NotificationVoiceOverStatusChanged();
-    @GlobalValue(symbol="UIAccessibilityMonoAudioStatusDidChangeNotification")
+    @GlobalValue(symbol="UIAccessibilityMonoAudioStatusDidChangeNotification", optional=true)
     public static native String NotificationMonoAudioStatusDidChange();
-    @GlobalValue(symbol="UIAccessibilityClosedCaptioningStatusDidChangeNotification")
+    @GlobalValue(symbol="UIAccessibilityClosedCaptioningStatusDidChangeNotification", optional=true)
     public static native String NotificationClosedCaptioningStatusDidChange();
-    @GlobalValue(symbol="UIAccessibilityInvertColorsStatusDidChangeNotification")
+    @GlobalValue(symbol="UIAccessibilityInvertColorsStatusDidChangeNotification", optional=true)
     public static native String NotificationInvertColorsStatusDidChange();
-    @GlobalValue(symbol="UIAccessibilityGuidedAccessStatusDidChangeNotification")
+    @GlobalValue(symbol="UIAccessibilityGuidedAccessStatusDidChangeNotification", optional=true)
     public static native String NotificationGuidedAccessStatusDidChange();
     
-    @Bridge(symbol="UIAccessibilityZoomFocusChanged")
+    @Bridge(symbol="UIAccessibilityZoomFocusChanged", optional=true)
     public static native void zoomFocusChanged(UIAccessibilityZoomType type, @ByVal CGRect frame, UIView view);
-    @Bridge(symbol="UIAccessibilityRegisterGestureConflictWithZoom")
+    @Bridge(symbol="UIAccessibilityRegisterGestureConflictWithZoom", optional=true)
     public static native void registerGestureConflictWithZoom();
-    @Bridge(symbol="UIAccessibilityConvertFrameToScreenCoordinates")
+    @Bridge(symbol="UIAccessibilityConvertFrameToScreenCoordinates", optional=true)
     public static native @ByVal CGRect convertFrameToScreenCoordinates(@ByVal CGRect rect, UIView view);
-    @Bridge(symbol="UIAccessibilityConvertPathToScreenCoordinates")
+    @Bridge(symbol="UIAccessibilityConvertPathToScreenCoordinates", optional=true)
     public static native UIBezierPath convertPathToScreenCoordinates(UIBezierPath path, UIView view);
-    @Bridge(symbol="UIAccessibilityPostNotification")
+    @Bridge(symbol="UIAccessibilityPostNotification", optional=true)
     public static native void postNotification(int notification, NSObject argument);
-    @Bridge(symbol="UIAccessibilityIsVoiceOverRunning")
+    @Bridge(symbol="UIAccessibilityIsVoiceOverRunning", optional=true)
     public static native boolean isVoiceOverRunning();
-    @Bridge(symbol="UIAccessibilityIsMonoAudioEnabled")
+    @Bridge(symbol="UIAccessibilityIsMonoAudioEnabled", optional=true)
     public static native boolean isMonoAudioEnabled();
-    @Bridge(symbol="UIAccessibilityIsClosedCaptioningEnabled")
+    @Bridge(symbol="UIAccessibilityIsClosedCaptioningEnabled", optional=true)
     public static native boolean isClosedCaptioningEnabled();
-    @Bridge(symbol="UIAccessibilityIsInvertColorsEnabled")
+    @Bridge(symbol="UIAccessibilityIsInvertColorsEnabled", optional=true)
     public static native boolean isInvertColorsEnabled();
-    @Bridge(symbol="UIAccessibilityIsGuidedAccessEnabled")
+    @Bridge(symbol="UIAccessibilityIsGuidedAccessEnabled", optional=true)
     public static native boolean isGuidedAccessEnabled();
-    @Bridge(symbol="UIAccessibilityRequestGuidedAccessSession")
+    @Bridge(symbol="UIAccessibilityRequestGuidedAccessSession", optional=true)
     public static native void requestGuidedAccessSession(boolean enable, @Block VoidBooleanBlock completionHandler);
     /*</methods>*/
 }

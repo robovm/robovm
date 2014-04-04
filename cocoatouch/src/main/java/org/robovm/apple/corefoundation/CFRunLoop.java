@@ -47,54 +47,54 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFRunLoopDefaultMode")
+    @GlobalValue(symbol="kCFRunLoopDefaultMode", optional=true)
     public static native CFString ModeDefault();
-    @GlobalValue(symbol="kCFRunLoopCommonModes")
+    @GlobalValue(symbol="kCFRunLoopCommonModes", optional=true)
     public static native CFString ModeCommon();
     
-    @Bridge(symbol="CFRunLoopGetTypeID")
+    @Bridge(symbol="CFRunLoopGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFRunLoopGetCurrent")
+    @Bridge(symbol="CFRunLoopGetCurrent", optional=true)
     public static native CFRunLoop getCurrent();
-    @Bridge(symbol="CFRunLoopGetMain")
+    @Bridge(symbol="CFRunLoopGetMain", optional=true)
     public static native CFRunLoop getMain();
-    @Bridge(symbol="CFRunLoopCopyCurrentMode")
+    @Bridge(symbol="CFRunLoopCopyCurrentMode", optional=true)
     public native CFString copyCurrentMode();
-    @Bridge(symbol="CFRunLoopCopyAllModes")
+    @Bridge(symbol="CFRunLoopCopyAllModes", optional=true)
     public native CFArray copyAllModes();
-    @Bridge(symbol="CFRunLoopAddCommonMode")
+    @Bridge(symbol="CFRunLoopAddCommonMode", optional=true)
     public native void addCommonMode(CFString mode);
-    @Bridge(symbol="CFRunLoopGetNextTimerFireDate")
+    @Bridge(symbol="CFRunLoopGetNextTimerFireDate", optional=true)
     public native double getNextTimerFireDate(CFString mode);
-    @Bridge(symbol="CFRunLoopRun")
+    @Bridge(symbol="CFRunLoopRun", optional=true)
     public static native void run();
-    @Bridge(symbol="CFRunLoopRunInMode")
+    @Bridge(symbol="CFRunLoopRunInMode", optional=true)
     public static native int runInMode(CFString mode, double seconds, boolean returnAfterSourceHandled);
-    @Bridge(symbol="CFRunLoopIsWaiting")
+    @Bridge(symbol="CFRunLoopIsWaiting", optional=true)
     public native boolean isWaiting();
-    @Bridge(symbol="CFRunLoopWakeUp")
+    @Bridge(symbol="CFRunLoopWakeUp", optional=true)
     public native void wakeUp();
-    @Bridge(symbol="CFRunLoopStop")
+    @Bridge(symbol="CFRunLoopStop", optional=true)
     public native void stop();
-    @Bridge(symbol="CFRunLoopPerformBlock")
+    @Bridge(symbol="CFRunLoopPerformBlock", optional=true)
     public native void performBlock(CFType mode, @Block Runnable block);
-    @Bridge(symbol="CFRunLoopContainsSource")
+    @Bridge(symbol="CFRunLoopContainsSource", optional=true)
     public native boolean containsSource(CFRunLoopSource source, CFString mode);
-    @Bridge(symbol="CFRunLoopAddSource")
+    @Bridge(symbol="CFRunLoopAddSource", optional=true)
     public native void addSource(CFRunLoopSource source, CFString mode);
-    @Bridge(symbol="CFRunLoopRemoveSource")
+    @Bridge(symbol="CFRunLoopRemoveSource", optional=true)
     public native void removeSource(CFRunLoopSource source, CFString mode);
-    @Bridge(symbol="CFRunLoopContainsObserver")
+    @Bridge(symbol="CFRunLoopContainsObserver", optional=true)
     public native boolean containsObserver(CFRunLoopObserver observer, CFString mode);
-    @Bridge(symbol="CFRunLoopAddObserver")
+    @Bridge(symbol="CFRunLoopAddObserver", optional=true)
     public native void addObserver(CFRunLoopObserver observer, CFString mode);
-    @Bridge(symbol="CFRunLoopRemoveObserver")
+    @Bridge(symbol="CFRunLoopRemoveObserver", optional=true)
     public native void removeObserver(CFRunLoopObserver observer, CFString mode);
-    @Bridge(symbol="CFRunLoopContainsTimer")
+    @Bridge(symbol="CFRunLoopContainsTimer", optional=true)
     public native boolean containsTimer(CFRunLoopTimer timer, CFString mode);
-    @Bridge(symbol="CFRunLoopAddTimer")
+    @Bridge(symbol="CFRunLoopAddTimer", optional=true)
     public native void addTimer(CFRunLoopTimer timer, CFString mode);
-    @Bridge(symbol="CFRunLoopRemoveTimer")
+    @Bridge(symbol="CFRunLoopRemoveTimer", optional=true)
     public native void removeTimer(CFRunLoopTimer timer, CFString mode);
     /*</methods>*/
 }

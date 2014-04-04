@@ -97,33 +97,33 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSProgressEstimatedTimeRemainingKey")
+    @GlobalValue(symbol="NSProgressEstimatedTimeRemainingKey", optional=true)
     public static native NSString KeyEstimatedTimeRemaining();
-    @GlobalValue(symbol="NSProgressThroughputKey")
+    @GlobalValue(symbol="NSProgressThroughputKey", optional=true)
     public static native NSString KeyThroughput();
-    @GlobalValue(symbol="NSProgressKindFile")
+    @GlobalValue(symbol="NSProgressKindFile", optional=true)
     public static native String KindFile();
-    @GlobalValue(symbol="NSProgressFileOperationKindKey")
+    @GlobalValue(symbol="NSProgressFileOperationKindKey", optional=true)
     public static native NSString KeyFileOperationKind();
-    @GlobalValue(symbol="NSProgressFileOperationKindDownloading")
+    @GlobalValue(symbol="NSProgressFileOperationKindDownloading", optional=true)
     public static native NSString FileOperationKindDownloading();
-    @GlobalValue(symbol="NSProgressFileOperationKindDecompressingAfterDownloading")
+    @GlobalValue(symbol="NSProgressFileOperationKindDecompressingAfterDownloading", optional=true)
     public static native NSString FileOperationKindDecompressingAfterDownloading();
-    @GlobalValue(symbol="NSProgressFileOperationKindReceiving")
+    @GlobalValue(symbol="NSProgressFileOperationKindReceiving", optional=true)
     public static native NSString FileOperationKindReceiving();
-    @GlobalValue(symbol="NSProgressFileOperationKindCopying")
+    @GlobalValue(symbol="NSProgressFileOperationKindCopying", optional=true)
     public static native NSString FileOperationKindCopying();
-    @GlobalValue(symbol="NSProgressFileURLKey")
+    @GlobalValue(symbol="NSProgressFileURLKey", optional=true)
     public static native NSString KeyFileURL();
-    @GlobalValue(symbol="NSProgressFileTotalCountKey")
+    @GlobalValue(symbol="NSProgressFileTotalCountKey", optional=true)
     public static native NSString KeyFileTotalCount();
-    @GlobalValue(symbol="NSProgressFileCompletedCountKey")
+    @GlobalValue(symbol="NSProgressFileCompletedCountKey", optional=true)
     public static native NSString KeyFileCompletedCount();
-    @GlobalValue(symbol="NSProgressFileAnimationImageKey")
+    @GlobalValue(symbol="NSProgressFileAnimationImageKey", optional=true)
     public static native NSString KeyFileAnimationImage();
-    @GlobalValue(symbol="NSProgressFileAnimationImageOriginalRectKey")
+    @GlobalValue(symbol="NSProgressFileAnimationImageOriginalRectKey", optional=true)
     public static native NSString KeyFileAnimationImageOriginalRect();
-    @GlobalValue(symbol="NSProgressFileIconKey")
+    @GlobalValue(symbol="NSProgressFileIconKey", optional=true)
     public static native NSString KeyFileIcon();
     
     @Method(selector = "initWithParent:userInfo:")

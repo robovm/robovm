@@ -47,36 +47,36 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFTypeDictionaryKeyCallBacks")
+    @GlobalValue(symbol="kCFTypeDictionaryKeyCallBacks", optional=true)
     public static native @ByVal CFDictionaryKeyCallBacks DictionaryKeyCallBacks();
-    @GlobalValue(symbol="kCFCopyStringDictionaryKeyCallBacks")
+    @GlobalValue(symbol="kCFCopyStringDictionaryKeyCallBacks", optional=true)
     public static native @ByVal CFDictionaryKeyCallBacks CopyStringDictionaryKeyCallBacks();
-    @GlobalValue(symbol="kCFTypeDictionaryValueCallBacks")
+    @GlobalValue(symbol="kCFTypeDictionaryValueCallBacks", optional=true)
     public static native @ByVal CFDictionaryValueCallBacks DictionaryValueCallBacks();
     
-    @Bridge(symbol="CFDictionaryGetTypeID")
+    @Bridge(symbol="CFDictionaryGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFDictionaryCreate")
+    @Bridge(symbol="CFDictionaryCreate", optional=true)
     public static native CFDictionary create(CFAllocator allocator, VoidPtr.VoidPtrPtr keys, VoidPtr.VoidPtrPtr values, @MachineSizedSInt long numValues, CFDictionaryKeyCallBacks keyCallBacks, CFDictionaryValueCallBacks valueCallBacks);
-    @Bridge(symbol="CFDictionaryCreateCopy")
+    @Bridge(symbol="CFDictionaryCreateCopy", optional=true)
     public static native CFDictionary createCopy(CFAllocator allocator, CFDictionary theDict);
-    @Bridge(symbol="CFDictionaryGetCount")
+    @Bridge(symbol="CFDictionaryGetCount", optional=true)
     public native @MachineSizedSInt long getCount();
-    @Bridge(symbol="CFDictionaryGetCountOfKey")
+    @Bridge(symbol="CFDictionaryGetCountOfKey", optional=true)
     public native @MachineSizedSInt long getCountOfKey(VoidPtr key);
-    @Bridge(symbol="CFDictionaryGetCountOfValue")
+    @Bridge(symbol="CFDictionaryGetCountOfValue", optional=true)
     public native @MachineSizedSInt long getCountOfValue(VoidPtr value);
-    @Bridge(symbol="CFDictionaryContainsKey")
+    @Bridge(symbol="CFDictionaryContainsKey", optional=true)
     public native boolean containsKey(VoidPtr key);
-    @Bridge(symbol="CFDictionaryContainsValue")
+    @Bridge(symbol="CFDictionaryContainsValue", optional=true)
     public native boolean containsValue(VoidPtr value);
-    @Bridge(symbol="CFDictionaryGetValue")
+    @Bridge(symbol="CFDictionaryGetValue", optional=true)
     public native VoidPtr getValue(VoidPtr key);
-    @Bridge(symbol="CFDictionaryGetValueIfPresent")
+    @Bridge(symbol="CFDictionaryGetValueIfPresent", optional=true)
     public native boolean getValueIfPresent(VoidPtr key, VoidPtr.VoidPtrPtr value);
-    @Bridge(symbol="CFDictionaryGetKeysAndValues")
+    @Bridge(symbol="CFDictionaryGetKeysAndValues", optional=true)
     public native void getKeysAndValues(VoidPtr.VoidPtrPtr keys, VoidPtr.VoidPtrPtr values);
-    @Bridge(symbol="CFDictionaryApplyFunction")
+    @Bridge(symbol="CFDictionaryApplyFunction", optional=true)
     public native void applyFunction(FunctionPtr applier, VoidPtr context);
     /*</methods>*/
 }

@@ -57,13 +57,13 @@ import org.robovm.apple.security.*;
     @StructMember(1) public native NSRange length(@MachineSizedUInt long length);
     /*</members>*/
     /*<methods>*/
-    @Bridge(symbol="NSUnionRange")
+    @Bridge(symbol="NSUnionRange", optional=true)
     public static native @ByVal NSRange union(@ByVal NSRange range1, @ByVal NSRange range2);
-    @Bridge(symbol="NSIntersectionRange")
+    @Bridge(symbol="NSIntersectionRange", optional=true)
     public static native @ByVal NSRange intersection(@ByVal NSRange range1, @ByVal NSRange range2);
-    @Bridge(symbol="NSStringFromRange")
+    @Bridge(symbol="NSStringFromRange", optional=true)
     protected static native String toString(@ByVal NSRange range);
-    @Bridge(symbol="NSRangeFromString")
+    @Bridge(symbol="NSRangeFromString", optional=true)
     public static native @ByVal NSRange fromString(String aString);
     /*</methods>*/
 }

@@ -52,13 +52,13 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCATransactionAnimationDuration")
+    @GlobalValue(symbol="kCATransactionAnimationDuration", optional=true)
     public static native String KeyAnimationDuration();
-    @GlobalValue(symbol="kCATransactionDisableActions")
+    @GlobalValue(symbol="kCATransactionDisableActions", optional=true)
     public static native String KeyDisableActions();
-    @GlobalValue(symbol="kCATransactionAnimationTimingFunction")
+    @GlobalValue(symbol="kCATransactionAnimationTimingFunction", optional=true)
     public static native String KeyAnimationTimingFunction();
-    @GlobalValue(symbol="kCATransactionCompletionBlock")
+    @GlobalValue(symbol="kCATransactionCompletionBlock", optional=true)
     public static native String KeyCompletionBlock();
     
     @Method(selector = "begin")

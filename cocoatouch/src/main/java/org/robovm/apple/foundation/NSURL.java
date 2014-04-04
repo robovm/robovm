@@ -81,201 +81,201 @@ import org.robovm.apple.security.*;
     }
 
     /*<methods>*/
-    @GlobalValue(symbol="NSURLFileScheme")
+    @GlobalValue(symbol="NSURLFileScheme", optional=true)
     public static native String FileScheme();
-    @GlobalValue(symbol="NSURLKeysOfUnsetValuesKey")
+    @GlobalValue(symbol="NSURLKeysOfUnsetValuesKey", optional=true)
     public static native NSString KeyKeysOfUnsetValues();
-    @GlobalValue(symbol="NSURLNameKey")
+    @GlobalValue(symbol="NSURLNameKey", optional=true)
     public static native NSString KeyName();
-    @GlobalValue(symbol="NSURLLocalizedNameKey")
+    @GlobalValue(symbol="NSURLLocalizedNameKey", optional=true)
     public static native NSString KeyLocalizedName();
-    @GlobalValue(symbol="NSURLIsRegularFileKey")
+    @GlobalValue(symbol="NSURLIsRegularFileKey", optional=true)
     public static native NSString KeyIsRegularFile();
-    @GlobalValue(symbol="NSURLIsDirectoryKey")
+    @GlobalValue(symbol="NSURLIsDirectoryKey", optional=true)
     public static native NSString KeyIsDirectory();
-    @GlobalValue(symbol="NSURLIsSymbolicLinkKey")
+    @GlobalValue(symbol="NSURLIsSymbolicLinkKey", optional=true)
     public static native NSString KeyIsSymbolicLink();
-    @GlobalValue(symbol="NSURLIsVolumeKey")
+    @GlobalValue(symbol="NSURLIsVolumeKey", optional=true)
     public static native NSString KeyIsVolume();
-    @GlobalValue(symbol="NSURLIsPackageKey")
+    @GlobalValue(symbol="NSURLIsPackageKey", optional=true)
     public static native NSString KeyIsPackage();
-    @GlobalValue(symbol="NSURLIsSystemImmutableKey")
+    @GlobalValue(symbol="NSURLIsSystemImmutableKey", optional=true)
     public static native NSString KeyIsSystemImmutable();
-    @GlobalValue(symbol="NSURLIsUserImmutableKey")
+    @GlobalValue(symbol="NSURLIsUserImmutableKey", optional=true)
     public static native NSString KeyIsUserImmutable();
-    @GlobalValue(symbol="NSURLIsHiddenKey")
+    @GlobalValue(symbol="NSURLIsHiddenKey", optional=true)
     public static native NSString KeyIsHidden();
-    @GlobalValue(symbol="NSURLHasHiddenExtensionKey")
+    @GlobalValue(symbol="NSURLHasHiddenExtensionKey", optional=true)
     public static native NSString KeyHasHiddenExtension();
-    @GlobalValue(symbol="NSURLCreationDateKey")
+    @GlobalValue(symbol="NSURLCreationDateKey", optional=true)
     public static native NSString KeyCreationDate();
-    @GlobalValue(symbol="NSURLContentAccessDateKey")
+    @GlobalValue(symbol="NSURLContentAccessDateKey", optional=true)
     public static native NSString KeyContentAccessDate();
-    @GlobalValue(symbol="NSURLContentModificationDateKey")
+    @GlobalValue(symbol="NSURLContentModificationDateKey", optional=true)
     public static native NSString KeyContentModificationDate();
-    @GlobalValue(symbol="NSURLAttributeModificationDateKey")
+    @GlobalValue(symbol="NSURLAttributeModificationDateKey", optional=true)
     public static native NSString KeyAttributeModificationDate();
-    @GlobalValue(symbol="NSURLLinkCountKey")
+    @GlobalValue(symbol="NSURLLinkCountKey", optional=true)
     public static native NSString KeyLinkCount();
-    @GlobalValue(symbol="NSURLParentDirectoryURLKey")
+    @GlobalValue(symbol="NSURLParentDirectoryURLKey", optional=true)
     public static native NSString KeyParentDirectoryURL();
-    @GlobalValue(symbol="NSURLVolumeURLKey")
+    @GlobalValue(symbol="NSURLVolumeURLKey", optional=true)
     public static native NSString KeyVolumeURL();
-    @GlobalValue(symbol="NSURLTypeIdentifierKey")
+    @GlobalValue(symbol="NSURLTypeIdentifierKey", optional=true)
     public static native NSString KeyTypeIdentifier();
-    @GlobalValue(symbol="NSURLLocalizedTypeDescriptionKey")
+    @GlobalValue(symbol="NSURLLocalizedTypeDescriptionKey", optional=true)
     public static native NSString KeyLocalizedTypeDescription();
-    @GlobalValue(symbol="NSURLLabelNumberKey")
+    @GlobalValue(symbol="NSURLLabelNumberKey", optional=true)
     public static native NSString KeyLabelNumber();
-    @GlobalValue(symbol="NSURLLabelColorKey")
+    @GlobalValue(symbol="NSURLLabelColorKey", optional=true)
     public static native NSString KeyLabelColor();
-    @GlobalValue(symbol="NSURLLocalizedLabelKey")
+    @GlobalValue(symbol="NSURLLocalizedLabelKey", optional=true)
     public static native NSString KeyLocalizedLabel();
-    @GlobalValue(symbol="NSURLEffectiveIconKey")
+    @GlobalValue(symbol="NSURLEffectiveIconKey", optional=true)
     public static native NSString KeyEffectiveIcon();
-    @GlobalValue(symbol="NSURLCustomIconKey")
+    @GlobalValue(symbol="NSURLCustomIconKey", optional=true)
     public static native NSString KeyCustomIcon();
-    @GlobalValue(symbol="NSURLFileResourceIdentifierKey")
+    @GlobalValue(symbol="NSURLFileResourceIdentifierKey", optional=true)
     public static native NSString KeyFileResourceIdentifier();
-    @GlobalValue(symbol="NSURLVolumeIdentifierKey")
+    @GlobalValue(symbol="NSURLVolumeIdentifierKey", optional=true)
     public static native NSString KeyVolumeIdentifier();
-    @GlobalValue(symbol="NSURLPreferredIOBlockSizeKey")
+    @GlobalValue(symbol="NSURLPreferredIOBlockSizeKey", optional=true)
     public static native NSString KeyPreferredIOBlockSize();
-    @GlobalValue(symbol="NSURLIsReadableKey")
+    @GlobalValue(symbol="NSURLIsReadableKey", optional=true)
     public static native NSString KeyIsReadable();
-    @GlobalValue(symbol="NSURLIsWritableKey")
+    @GlobalValue(symbol="NSURLIsWritableKey", optional=true)
     public static native NSString KeyIsWritable();
-    @GlobalValue(symbol="NSURLIsExecutableKey")
+    @GlobalValue(symbol="NSURLIsExecutableKey", optional=true)
     public static native NSString KeyIsExecutable();
-    @GlobalValue(symbol="NSURLFileSecurityKey")
+    @GlobalValue(symbol="NSURLFileSecurityKey", optional=true)
     public static native NSString KeyFileSecurity();
-    @GlobalValue(symbol="NSURLIsExcludedFromBackupKey")
+    @GlobalValue(symbol="NSURLIsExcludedFromBackupKey", optional=true)
     public static native NSString KeyIsExcludedFromBackup();
-    @GlobalValue(symbol="NSURLTagNamesKey")
+    @GlobalValue(symbol="NSURLTagNamesKey", optional=true)
     public static native NSString KeyTagNames();
-    @GlobalValue(symbol="NSURLPathKey")
+    @GlobalValue(symbol="NSURLPathKey", optional=true)
     public static native NSString KeyPath();
-    @GlobalValue(symbol="NSURLIsMountTriggerKey")
+    @GlobalValue(symbol="NSURLIsMountTriggerKey", optional=true)
     public static native NSString KeyIsMountTrigger();
-    @GlobalValue(symbol="NSURLFileResourceTypeKey")
+    @GlobalValue(symbol="NSURLFileResourceTypeKey", optional=true)
     public static native NSString KeyFileResourceType();
-    @GlobalValue(symbol="NSURLFileResourceTypeNamedPipe")
+    @GlobalValue(symbol="NSURLFileResourceTypeNamedPipe", optional=true)
     public static native String FileResourceTypeNamedPipe();
-    @GlobalValue(symbol="NSURLFileResourceTypeCharacterSpecial")
+    @GlobalValue(symbol="NSURLFileResourceTypeCharacterSpecial", optional=true)
     public static native String FileResourceTypeCharacterSpecial();
-    @GlobalValue(symbol="NSURLFileResourceTypeDirectory")
+    @GlobalValue(symbol="NSURLFileResourceTypeDirectory", optional=true)
     public static native String FileResourceTypeDirectory();
-    @GlobalValue(symbol="NSURLFileResourceTypeBlockSpecial")
+    @GlobalValue(symbol="NSURLFileResourceTypeBlockSpecial", optional=true)
     public static native String FileResourceTypeBlockSpecial();
-    @GlobalValue(symbol="NSURLFileResourceTypeRegular")
+    @GlobalValue(symbol="NSURLFileResourceTypeRegular", optional=true)
     public static native String FileResourceTypeRegular();
-    @GlobalValue(symbol="NSURLFileResourceTypeSymbolicLink")
+    @GlobalValue(symbol="NSURLFileResourceTypeSymbolicLink", optional=true)
     public static native String FileResourceTypeSymbolicLink();
-    @GlobalValue(symbol="NSURLFileResourceTypeSocket")
+    @GlobalValue(symbol="NSURLFileResourceTypeSocket", optional=true)
     public static native String FileResourceTypeSocket();
-    @GlobalValue(symbol="NSURLFileResourceTypeUnknown")
+    @GlobalValue(symbol="NSURLFileResourceTypeUnknown", optional=true)
     public static native String FileResourceTypeUnknown();
-    @GlobalValue(symbol="NSURLFileSizeKey")
+    @GlobalValue(symbol="NSURLFileSizeKey", optional=true)
     public static native NSString KeyFileSize();
-    @GlobalValue(symbol="NSURLFileAllocatedSizeKey")
+    @GlobalValue(symbol="NSURLFileAllocatedSizeKey", optional=true)
     public static native NSString KeyFileAllocatedSize();
-    @GlobalValue(symbol="NSURLTotalFileSizeKey")
+    @GlobalValue(symbol="NSURLTotalFileSizeKey", optional=true)
     public static native NSString KeyTotalFileSize();
-    @GlobalValue(symbol="NSURLTotalFileAllocatedSizeKey")
+    @GlobalValue(symbol="NSURLTotalFileAllocatedSizeKey", optional=true)
     public static native NSString KeyTotalFileAllocatedSize();
-    @GlobalValue(symbol="NSURLIsAliasFileKey")
+    @GlobalValue(symbol="NSURLIsAliasFileKey", optional=true)
     public static native NSString KeyIsAliasFile();
-    @GlobalValue(symbol="NSURLVolumeLocalizedFormatDescriptionKey")
+    @GlobalValue(symbol="NSURLVolumeLocalizedFormatDescriptionKey", optional=true)
     public static native NSString KeyVolumeLocalizedFormatDescription();
-    @GlobalValue(symbol="NSURLVolumeTotalCapacityKey")
+    @GlobalValue(symbol="NSURLVolumeTotalCapacityKey", optional=true)
     public static native NSString KeyVolumeTotalCapacity();
-    @GlobalValue(symbol="NSURLVolumeAvailableCapacityKey")
+    @GlobalValue(symbol="NSURLVolumeAvailableCapacityKey", optional=true)
     public static native NSString KeyVolumeAvailableCapacity();
-    @GlobalValue(symbol="NSURLVolumeResourceCountKey")
+    @GlobalValue(symbol="NSURLVolumeResourceCountKey", optional=true)
     public static native NSString KeyVolumeResourceCount();
-    @GlobalValue(symbol="NSURLVolumeSupportsPersistentIDsKey")
+    @GlobalValue(symbol="NSURLVolumeSupportsPersistentIDsKey", optional=true)
     public static native NSString KeyVolumeSupportsPersistentIDs();
-    @GlobalValue(symbol="NSURLVolumeSupportsSymbolicLinksKey")
+    @GlobalValue(symbol="NSURLVolumeSupportsSymbolicLinksKey", optional=true)
     public static native NSString KeyVolumeSupportsSymbolicLinks();
-    @GlobalValue(symbol="NSURLVolumeSupportsHardLinksKey")
+    @GlobalValue(symbol="NSURLVolumeSupportsHardLinksKey", optional=true)
     public static native NSString KeyVolumeSupportsHardLinks();
-    @GlobalValue(symbol="NSURLVolumeSupportsJournalingKey")
+    @GlobalValue(symbol="NSURLVolumeSupportsJournalingKey", optional=true)
     public static native NSString KeyVolumeSupportsJournaling();
-    @GlobalValue(symbol="NSURLVolumeIsJournalingKey")
+    @GlobalValue(symbol="NSURLVolumeIsJournalingKey", optional=true)
     public static native NSString KeyVolumeIsJournaling();
-    @GlobalValue(symbol="NSURLVolumeSupportsSparseFilesKey")
+    @GlobalValue(symbol="NSURLVolumeSupportsSparseFilesKey", optional=true)
     public static native NSString KeyVolumeSupportsSparseFiles();
-    @GlobalValue(symbol="NSURLVolumeSupportsZeroRunsKey")
+    @GlobalValue(symbol="NSURLVolumeSupportsZeroRunsKey", optional=true)
     public static native NSString KeyVolumeSupportsZeroRuns();
-    @GlobalValue(symbol="NSURLVolumeSupportsCaseSensitiveNamesKey")
+    @GlobalValue(symbol="NSURLVolumeSupportsCaseSensitiveNamesKey", optional=true)
     public static native NSString KeyVolumeSupportsCaseSensitiveNames();
-    @GlobalValue(symbol="NSURLVolumeSupportsCasePreservedNamesKey")
+    @GlobalValue(symbol="NSURLVolumeSupportsCasePreservedNamesKey", optional=true)
     public static native NSString KeyVolumeSupportsCasePreservedNames();
-    @GlobalValue(symbol="NSURLVolumeSupportsRootDirectoryDatesKey")
+    @GlobalValue(symbol="NSURLVolumeSupportsRootDirectoryDatesKey", optional=true)
     public static native NSString KeyVolumeSupportsRootDirectoryDates();
-    @GlobalValue(symbol="NSURLVolumeSupportsVolumeSizesKey")
+    @GlobalValue(symbol="NSURLVolumeSupportsVolumeSizesKey", optional=true)
     public static native NSString KeyVolumeSupportsVolumeSizes();
-    @GlobalValue(symbol="NSURLVolumeSupportsRenamingKey")
+    @GlobalValue(symbol="NSURLVolumeSupportsRenamingKey", optional=true)
     public static native NSString KeyVolumeSupportsRenaming();
-    @GlobalValue(symbol="NSURLVolumeSupportsAdvisoryFileLockingKey")
+    @GlobalValue(symbol="NSURLVolumeSupportsAdvisoryFileLockingKey", optional=true)
     public static native NSString KeyVolumeSupportsAdvisoryFileLocking();
-    @GlobalValue(symbol="NSURLVolumeSupportsExtendedSecurityKey")
+    @GlobalValue(symbol="NSURLVolumeSupportsExtendedSecurityKey", optional=true)
     public static native NSString KeyVolumeSupportsExtendedSecurity();
-    @GlobalValue(symbol="NSURLVolumeIsBrowsableKey")
+    @GlobalValue(symbol="NSURLVolumeIsBrowsableKey", optional=true)
     public static native NSString KeyVolumeIsBrowsable();
-    @GlobalValue(symbol="NSURLVolumeMaximumFileSizeKey")
+    @GlobalValue(symbol="NSURLVolumeMaximumFileSizeKey", optional=true)
     public static native NSString KeyVolumeMaximumFileSize();
-    @GlobalValue(symbol="NSURLVolumeIsEjectableKey")
+    @GlobalValue(symbol="NSURLVolumeIsEjectableKey", optional=true)
     public static native NSString KeyVolumeIsEjectable();
-    @GlobalValue(symbol="NSURLVolumeIsRemovableKey")
+    @GlobalValue(symbol="NSURLVolumeIsRemovableKey", optional=true)
     public static native NSString KeyVolumeIsRemovable();
-    @GlobalValue(symbol="NSURLVolumeIsInternalKey")
+    @GlobalValue(symbol="NSURLVolumeIsInternalKey", optional=true)
     public static native NSString KeyVolumeIsInternal();
-    @GlobalValue(symbol="NSURLVolumeIsAutomountedKey")
+    @GlobalValue(symbol="NSURLVolumeIsAutomountedKey", optional=true)
     public static native NSString KeyVolumeIsAutomounted();
-    @GlobalValue(symbol="NSURLVolumeIsLocalKey")
+    @GlobalValue(symbol="NSURLVolumeIsLocalKey", optional=true)
     public static native NSString KeyVolumeIsLocal();
-    @GlobalValue(symbol="NSURLVolumeIsReadOnlyKey")
+    @GlobalValue(symbol="NSURLVolumeIsReadOnlyKey", optional=true)
     public static native NSString KeyVolumeIsReadOnly();
-    @GlobalValue(symbol="NSURLVolumeCreationDateKey")
+    @GlobalValue(symbol="NSURLVolumeCreationDateKey", optional=true)
     public static native NSString KeyVolumeCreationDate();
-    @GlobalValue(symbol="NSURLVolumeURLForRemountingKey")
+    @GlobalValue(symbol="NSURLVolumeURLForRemountingKey", optional=true)
     public static native NSString KeyVolumeURLForRemounting();
-    @GlobalValue(symbol="NSURLVolumeUUIDStringKey")
+    @GlobalValue(symbol="NSURLVolumeUUIDStringKey", optional=true)
     public static native NSString KeyVolumeUUIDString();
-    @GlobalValue(symbol="NSURLVolumeNameKey")
+    @GlobalValue(symbol="NSURLVolumeNameKey", optional=true)
     public static native NSString KeyVolumeName();
-    @GlobalValue(symbol="NSURLVolumeLocalizedNameKey")
+    @GlobalValue(symbol="NSURLVolumeLocalizedNameKey", optional=true)
     public static native NSString KeyVolumeLocalizedName();
-    @GlobalValue(symbol="NSURLIsUbiquitousItemKey")
+    @GlobalValue(symbol="NSURLIsUbiquitousItemKey", optional=true)
     public static native NSString KeyIsUbiquitousItem();
-    @GlobalValue(symbol="NSURLUbiquitousItemHasUnresolvedConflictsKey")
+    @GlobalValue(symbol="NSURLUbiquitousItemHasUnresolvedConflictsKey", optional=true)
     public static native NSString KeyUbiquitousItemHasUnresolvedConflicts();
-    @GlobalValue(symbol="NSURLUbiquitousItemIsDownloadedKey")
+    @GlobalValue(symbol="NSURLUbiquitousItemIsDownloadedKey", optional=true)
     public static native NSString KeyUbiquitousItemIsDownloaded();
-    @GlobalValue(symbol="NSURLUbiquitousItemIsDownloadingKey")
+    @GlobalValue(symbol="NSURLUbiquitousItemIsDownloadingKey", optional=true)
     public static native NSString KeyUbiquitousItemIsDownloading();
-    @GlobalValue(symbol="NSURLUbiquitousItemIsUploadedKey")
+    @GlobalValue(symbol="NSURLUbiquitousItemIsUploadedKey", optional=true)
     public static native NSString KeyUbiquitousItemIsUploaded();
-    @GlobalValue(symbol="NSURLUbiquitousItemIsUploadingKey")
+    @GlobalValue(symbol="NSURLUbiquitousItemIsUploadingKey", optional=true)
     public static native NSString KeyUbiquitousItemIsUploading();
-    @GlobalValue(symbol="NSURLUbiquitousItemPercentDownloadedKey")
+    @GlobalValue(symbol="NSURLUbiquitousItemPercentDownloadedKey", optional=true)
     public static native NSString KeyUbiquitousItemPercentDownloaded();
-    @GlobalValue(symbol="NSURLUbiquitousItemPercentUploadedKey")
+    @GlobalValue(symbol="NSURLUbiquitousItemPercentUploadedKey", optional=true)
     public static native NSString KeyUbiquitousItemPercentUploaded();
-    @GlobalValue(symbol="NSURLUbiquitousItemDownloadingStatusKey")
+    @GlobalValue(symbol="NSURLUbiquitousItemDownloadingStatusKey", optional=true)
     public static native NSString KeyUbiquitousItemDownloadingStatus();
-    @GlobalValue(symbol="NSURLUbiquitousItemDownloadingErrorKey")
+    @GlobalValue(symbol="NSURLUbiquitousItemDownloadingErrorKey", optional=true)
     public static native NSString KeyUbiquitousItemDownloadingError();
-    @GlobalValue(symbol="NSURLUbiquitousItemUploadingErrorKey")
+    @GlobalValue(symbol="NSURLUbiquitousItemUploadingErrorKey", optional=true)
     public static native NSString KeyUbiquitousItemUploadingError();
-    @GlobalValue(symbol="NSURLUbiquitousItemDownloadingStatusNotDownloaded")
+    @GlobalValue(symbol="NSURLUbiquitousItemDownloadingStatusNotDownloaded", optional=true)
     public static native String UbiquitousItemDownloadingStatusNotDownloaded();
-    @GlobalValue(symbol="NSURLUbiquitousItemDownloadingStatusDownloaded")
+    @GlobalValue(symbol="NSURLUbiquitousItemDownloadingStatusDownloaded", optional=true)
     public static native String UbiquitousItemDownloadingStatusDownloaded();
-    @GlobalValue(symbol="NSURLUbiquitousItemDownloadingStatusCurrent")
+    @GlobalValue(symbol="NSURLUbiquitousItemDownloadingStatusCurrent", optional=true)
     public static native String UbiquitousItemDownloadingStatusCurrent();
-    @GlobalValue(symbol="NSURLErrorDomain")
+    @GlobalValue(symbol="NSURLErrorDomain", optional=true)
     public static native String ErrorDomainURL();
     
     @Method(selector = "initWithScheme:host:path:")

@@ -52,9 +52,9 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="NSGetUncaughtExceptionHandler")
+    @Bridge(symbol="NSGetUncaughtExceptionHandler", optional=true)
     public static native FunctionPtr getUncaughtExceptionHandler();
-    @Bridge(symbol="NSSetUncaughtExceptionHandler")
+    @Bridge(symbol="NSSetUncaughtExceptionHandler", optional=true)
     public static native void setUncaughtExceptionHandler(FunctionPtr p0);
     
     @Method(selector = "initWithName:reason:userInfo:")

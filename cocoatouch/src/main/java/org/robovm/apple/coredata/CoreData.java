@@ -70,23 +70,23 @@ import org.robovm.apple.foundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSCoreDataVersionNumber")
+    @GlobalValue(symbol="NSCoreDataVersionNumber", optional=true)
     public static native double VersionNumber();
-    @GlobalValue(symbol="NSDetailedErrorsKey")
+    @GlobalValue(symbol="NSDetailedErrorsKey", optional=true)
     public static native NSString ErrorKeyDetailedErrors();
-    @GlobalValue(symbol="NSValidationObjectErrorKey")
+    @GlobalValue(symbol="NSValidationObjectErrorKey", optional=true)
     public static native NSString ErrorKeyValidationObject();
-    @GlobalValue(symbol="NSValidationKeyErrorKey")
+    @GlobalValue(symbol="NSValidationKeyErrorKey", optional=true)
     public static native NSString ErrorKeyValidationKey();
-    @GlobalValue(symbol="NSValidationPredicateErrorKey")
+    @GlobalValue(symbol="NSValidationPredicateErrorKey", optional=true)
     public static native NSString ErrorKeyValidationPredicate();
-    @GlobalValue(symbol="NSValidationValueErrorKey")
+    @GlobalValue(symbol="NSValidationValueErrorKey", optional=true)
     public static native NSString ErrorKeyValidationValue();
-    @GlobalValue(symbol="NSAffectedStoresErrorKey")
+    @GlobalValue(symbol="NSAffectedStoresErrorKey", optional=true)
     public static native NSString ErrorKeyAffectedStores();
-    @GlobalValue(symbol="NSAffectedObjectsErrorKey")
+    @GlobalValue(symbol="NSAffectedObjectsErrorKey", optional=true)
     public static native NSString ErrorKeyAffectedObjects();
-    @GlobalValue(symbol="NSSQLiteErrorDomain")
+    @GlobalValue(symbol="NSSQLiteErrorDomain", optional=true)
     public static native String ErrorDomainSQLite();
     /*</methods>*/
 }

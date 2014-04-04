@@ -47,30 +47,30 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFTypeSetCallBacks")
+    @GlobalValue(symbol="kCFTypeSetCallBacks", optional=true)
     public static native @ByVal CFSetCallBacks SetCallBacks();
-    @GlobalValue(symbol="kCFCopyStringSetCallBacks")
+    @GlobalValue(symbol="kCFCopyStringSetCallBacks", optional=true)
     public static native @ByVal CFSetCallBacks CopyStringSetCallBacks();
     
-    @Bridge(symbol="CFSetGetTypeID")
+    @Bridge(symbol="CFSetGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFSetCreate")
+    @Bridge(symbol="CFSetCreate", optional=true)
     public static native CFSet create(CFAllocator allocator, VoidPtr.VoidPtrPtr values, @MachineSizedSInt long numValues, CFSetCallBacks callBacks);
-    @Bridge(symbol="CFSetCreateCopy")
+    @Bridge(symbol="CFSetCreateCopy", optional=true)
     public static native CFSet createCopy(CFAllocator allocator, CFSet theSet);
-    @Bridge(symbol="CFSetGetCount")
+    @Bridge(symbol="CFSetGetCount", optional=true)
     public native @MachineSizedSInt long getCount();
-    @Bridge(symbol="CFSetGetCountOfValue")
+    @Bridge(symbol="CFSetGetCountOfValue", optional=true)
     public native @MachineSizedSInt long getCountOfValue(VoidPtr value);
-    @Bridge(symbol="CFSetContainsValue")
+    @Bridge(symbol="CFSetContainsValue", optional=true)
     public native boolean containsValue(VoidPtr value);
-    @Bridge(symbol="CFSetGetValue")
+    @Bridge(symbol="CFSetGetValue", optional=true)
     public native VoidPtr getValue(VoidPtr value);
-    @Bridge(symbol="CFSetGetValueIfPresent")
+    @Bridge(symbol="CFSetGetValueIfPresent", optional=true)
     public native boolean getValueIfPresent(VoidPtr candidate, VoidPtr.VoidPtrPtr value);
-    @Bridge(symbol="CFSetGetValues")
+    @Bridge(symbol="CFSetGetValues", optional=true)
     public native void getValues(VoidPtr.VoidPtrPtr values);
-    @Bridge(symbol="CFSetApplyFunction")
+    @Bridge(symbol="CFSetApplyFunction", optional=true)
     public native void applyFunction(FunctionPtr applier, VoidPtr context);
     /*</methods>*/
 }

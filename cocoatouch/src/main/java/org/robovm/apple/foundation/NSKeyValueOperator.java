@@ -47,27 +47,27 @@ import org.robovm.apple.security.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSAverageKeyValueOperator")
+    @GlobalValue(symbol="NSAverageKeyValueOperator", optional=true)
     public static native String Average();
-    @GlobalValue(symbol="NSCountKeyValueOperator")
+    @GlobalValue(symbol="NSCountKeyValueOperator", optional=true)
     public static native String Count();
-    @GlobalValue(symbol="NSDistinctUnionOfArraysKeyValueOperator")
+    @GlobalValue(symbol="NSDistinctUnionOfArraysKeyValueOperator", optional=true)
     public static native String DistinctUnionOfArrays();
-    @GlobalValue(symbol="NSDistinctUnionOfObjectsKeyValueOperator")
+    @GlobalValue(symbol="NSDistinctUnionOfObjectsKeyValueOperator", optional=true)
     public static native String DistinctUnionOfObjects();
-    @GlobalValue(symbol="NSDistinctUnionOfSetsKeyValueOperator")
+    @GlobalValue(symbol="NSDistinctUnionOfSetsKeyValueOperator", optional=true)
     public static native String DistinctUnionOfSets();
-    @GlobalValue(symbol="NSMaximumKeyValueOperator")
+    @GlobalValue(symbol="NSMaximumKeyValueOperator", optional=true)
     public static native String Maximum();
-    @GlobalValue(symbol="NSMinimumKeyValueOperator")
+    @GlobalValue(symbol="NSMinimumKeyValueOperator", optional=true)
     public static native String Minimum();
-    @GlobalValue(symbol="NSSumKeyValueOperator")
+    @GlobalValue(symbol="NSSumKeyValueOperator", optional=true)
     public static native String Sum();
-    @GlobalValue(symbol="NSUnionOfArraysKeyValueOperator")
+    @GlobalValue(symbol="NSUnionOfArraysKeyValueOperator", optional=true)
     public static native String UnionOfArrays();
-    @GlobalValue(symbol="NSUnionOfObjectsKeyValueOperator")
+    @GlobalValue(symbol="NSUnionOfObjectsKeyValueOperator", optional=true)
     public static native String UnionOfObjects();
-    @GlobalValue(symbol="NSUnionOfSetsKeyValueOperator")
+    @GlobalValue(symbol="NSUnionOfSetsKeyValueOperator", optional=true)
     public static native String UnionOfSets();
     /*</methods>*/
 }

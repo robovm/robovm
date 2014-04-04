@@ -63,33 +63,33 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="dispatch_source_create")
+    @Bridge(symbol="dispatch_source_create", optional=true)
     public static native DispatchSource create(DispatchSourceType type, @MachineSizedUInt long handle, @MachineSizedUInt long mask, DispatchQueue queue);
-    @Bridge(symbol="dispatch_source_set_event_handler")
+    @Bridge(symbol="dispatch_source_set_event_handler", optional=true)
     public native void setEventHandler(@Block Runnable handler);
-    @Bridge(symbol="dispatch_source_set_event_handler_f")
+    @Bridge(symbol="dispatch_source_set_event_handler_f", optional=true)
     public native void setEventHandlerF(FunctionPtr handler);
-    @Bridge(symbol="dispatch_source_set_cancel_handler")
+    @Bridge(symbol="dispatch_source_set_cancel_handler", optional=true)
     public native void setCancelHandler(@Block Runnable cancel_handler);
-    @Bridge(symbol="dispatch_source_set_cancel_handler_f")
+    @Bridge(symbol="dispatch_source_set_cancel_handler_f", optional=true)
     public native void setCancelHandlerF(FunctionPtr cancel_handler);
-    @Bridge(symbol="dispatch_source_cancel")
+    @Bridge(symbol="dispatch_source_cancel", optional=true)
     public native void cancel();
-    @Bridge(symbol="dispatch_source_testcancel")
+    @Bridge(symbol="dispatch_source_testcancel", optional=true)
     public native @MachineSizedSInt long testcancel();
-    @Bridge(symbol="dispatch_source_get_handle")
+    @Bridge(symbol="dispatch_source_get_handle", optional=true)
     public native @MachineSizedUInt long getSourceHandle();
-    @Bridge(symbol="dispatch_source_get_mask")
+    @Bridge(symbol="dispatch_source_get_mask", optional=true)
     public native @MachineSizedUInt long getMask();
-    @Bridge(symbol="dispatch_source_get_data")
+    @Bridge(symbol="dispatch_source_get_data", optional=true)
     public native @MachineSizedUInt long getData();
-    @Bridge(symbol="dispatch_source_merge_data")
+    @Bridge(symbol="dispatch_source_merge_data", optional=true)
     public native void mergeData(@MachineSizedUInt long value);
-    @Bridge(symbol="dispatch_source_set_timer")
+    @Bridge(symbol="dispatch_source_set_timer", optional=true)
     public native void setTimer(long start, long interval, long leeway);
-    @Bridge(symbol="dispatch_source_set_registration_handler")
+    @Bridge(symbol="dispatch_source_set_registration_handler", optional=true)
     public native void setRegistrationHandler(@Block Runnable registration_handler);
-    @Bridge(symbol="dispatch_source_set_registration_handler_f")
+    @Bridge(symbol="dispatch_source_set_registration_handler_f", optional=true)
     public native void setRegistrationHandlerF(FunctionPtr registration_handler);
     /*</methods>*/
 }

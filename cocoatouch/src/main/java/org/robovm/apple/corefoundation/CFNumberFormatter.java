@@ -47,120 +47,120 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFNumberFormatterCurrencyCode")
+    @GlobalValue(symbol="kCFNumberFormatterCurrencyCode", optional=true)
     public static native CFString KeyCurrencyCode();
-    @GlobalValue(symbol="kCFNumberFormatterDecimalSeparator")
+    @GlobalValue(symbol="kCFNumberFormatterDecimalSeparator", optional=true)
     public static native CFString KeyDecimalSeparator();
-    @GlobalValue(symbol="kCFNumberFormatterCurrencyDecimalSeparator")
+    @GlobalValue(symbol="kCFNumberFormatterCurrencyDecimalSeparator", optional=true)
     public static native CFString KeyCurrencyDecimalSeparator();
-    @GlobalValue(symbol="kCFNumberFormatterAlwaysShowDecimalSeparator")
+    @GlobalValue(symbol="kCFNumberFormatterAlwaysShowDecimalSeparator", optional=true)
     public static native CFString KeyAlwaysShowDecimalSeparator();
-    @GlobalValue(symbol="kCFNumberFormatterGroupingSeparator")
+    @GlobalValue(symbol="kCFNumberFormatterGroupingSeparator", optional=true)
     public static native CFString KeyGroupingSeparator();
-    @GlobalValue(symbol="kCFNumberFormatterUseGroupingSeparator")
+    @GlobalValue(symbol="kCFNumberFormatterUseGroupingSeparator", optional=true)
     public static native CFString KeyUseGroupingSeparator();
-    @GlobalValue(symbol="kCFNumberFormatterPercentSymbol")
+    @GlobalValue(symbol="kCFNumberFormatterPercentSymbol", optional=true)
     public static native CFString KeyPercentSymbol();
-    @GlobalValue(symbol="kCFNumberFormatterZeroSymbol")
+    @GlobalValue(symbol="kCFNumberFormatterZeroSymbol", optional=true)
     public static native CFString KeyZeroSymbol();
-    @GlobalValue(symbol="kCFNumberFormatterNaNSymbol")
+    @GlobalValue(symbol="kCFNumberFormatterNaNSymbol", optional=true)
     public static native CFString KeyNaNSymbol();
-    @GlobalValue(symbol="kCFNumberFormatterInfinitySymbol")
+    @GlobalValue(symbol="kCFNumberFormatterInfinitySymbol", optional=true)
     public static native CFString KeyInfinitySymbol();
-    @GlobalValue(symbol="kCFNumberFormatterMinusSign")
+    @GlobalValue(symbol="kCFNumberFormatterMinusSign", optional=true)
     public static native CFString KeyMinusSign();
-    @GlobalValue(symbol="kCFNumberFormatterPlusSign")
+    @GlobalValue(symbol="kCFNumberFormatterPlusSign", optional=true)
     public static native CFString KeyPlusSign();
-    @GlobalValue(symbol="kCFNumberFormatterCurrencySymbol")
+    @GlobalValue(symbol="kCFNumberFormatterCurrencySymbol", optional=true)
     public static native CFString KeyCurrencySymbol();
-    @GlobalValue(symbol="kCFNumberFormatterExponentSymbol")
+    @GlobalValue(symbol="kCFNumberFormatterExponentSymbol", optional=true)
     public static native CFString KeyExponentSymbol();
-    @GlobalValue(symbol="kCFNumberFormatterMinIntegerDigits")
+    @GlobalValue(symbol="kCFNumberFormatterMinIntegerDigits", optional=true)
     public static native CFString KeyMinIntegerDigits();
-    @GlobalValue(symbol="kCFNumberFormatterMaxIntegerDigits")
+    @GlobalValue(symbol="kCFNumberFormatterMaxIntegerDigits", optional=true)
     public static native CFString KeyMaxIntegerDigits();
-    @GlobalValue(symbol="kCFNumberFormatterMinFractionDigits")
+    @GlobalValue(symbol="kCFNumberFormatterMinFractionDigits", optional=true)
     public static native CFString KeyMinFractionDigits();
-    @GlobalValue(symbol="kCFNumberFormatterMaxFractionDigits")
+    @GlobalValue(symbol="kCFNumberFormatterMaxFractionDigits", optional=true)
     public static native CFString KeyMaxFractionDigits();
-    @GlobalValue(symbol="kCFNumberFormatterGroupingSize")
+    @GlobalValue(symbol="kCFNumberFormatterGroupingSize", optional=true)
     public static native CFString KeyGroupingSize();
-    @GlobalValue(symbol="kCFNumberFormatterSecondaryGroupingSize")
+    @GlobalValue(symbol="kCFNumberFormatterSecondaryGroupingSize", optional=true)
     public static native CFString KeySecondaryGroupingSize();
-    @GlobalValue(symbol="kCFNumberFormatterRoundingMode")
+    @GlobalValue(symbol="kCFNumberFormatterRoundingMode", optional=true)
     public static native CFString KeyRoundingMode();
-    @GlobalValue(symbol="kCFNumberFormatterRoundingIncrement")
+    @GlobalValue(symbol="kCFNumberFormatterRoundingIncrement", optional=true)
     public static native CFString KeyRoundingIncrement();
-    @GlobalValue(symbol="kCFNumberFormatterFormatWidth")
+    @GlobalValue(symbol="kCFNumberFormatterFormatWidth", optional=true)
     public static native CFString KeyFormatWidth();
-    @GlobalValue(symbol="kCFNumberFormatterPaddingPosition")
+    @GlobalValue(symbol="kCFNumberFormatterPaddingPosition", optional=true)
     public static native CFString KeyPaddingPosition();
-    @GlobalValue(symbol="kCFNumberFormatterPaddingCharacter")
+    @GlobalValue(symbol="kCFNumberFormatterPaddingCharacter", optional=true)
     public static native CFString KeyPaddingCharacter();
-    @GlobalValue(symbol="kCFNumberFormatterDefaultFormat")
+    @GlobalValue(symbol="kCFNumberFormatterDefaultFormat", optional=true)
     public static native CFString KeyDefaultFormat();
-    @GlobalValue(symbol="kCFNumberFormatterMultiplier")
+    @GlobalValue(symbol="kCFNumberFormatterMultiplier", optional=true)
     public static native CFString KeyMultiplier();
-    @GlobalValue(symbol="kCFNumberFormatterPositivePrefix")
+    @GlobalValue(symbol="kCFNumberFormatterPositivePrefix", optional=true)
     public static native CFString KeyPositivePrefix();
-    @GlobalValue(symbol="kCFNumberFormatterPositiveSuffix")
+    @GlobalValue(symbol="kCFNumberFormatterPositiveSuffix", optional=true)
     public static native CFString KeyPositiveSuffix();
-    @GlobalValue(symbol="kCFNumberFormatterNegativePrefix")
+    @GlobalValue(symbol="kCFNumberFormatterNegativePrefix", optional=true)
     public static native CFString KeyNegativePrefix();
-    @GlobalValue(symbol="kCFNumberFormatterNegativeSuffix")
+    @GlobalValue(symbol="kCFNumberFormatterNegativeSuffix", optional=true)
     public static native CFString KeyNegativeSuffix();
-    @GlobalValue(symbol="kCFNumberFormatterPerMillSymbol")
+    @GlobalValue(symbol="kCFNumberFormatterPerMillSymbol", optional=true)
     public static native CFString KeyPerMillSymbol();
-    @GlobalValue(symbol="kCFNumberFormatterInternationalCurrencySymbol")
+    @GlobalValue(symbol="kCFNumberFormatterInternationalCurrencySymbol", optional=true)
     public static native CFString KeyInternationalCurrencySymbol();
-    @GlobalValue(symbol="kCFNumberFormatterCurrencyGroupingSeparator")
+    @GlobalValue(symbol="kCFNumberFormatterCurrencyGroupingSeparator", optional=true)
     public static native CFString KeyCurrencyGroupingSeparator();
-    @GlobalValue(symbol="kCFNumberFormatterIsLenient")
+    @GlobalValue(symbol="kCFNumberFormatterIsLenient", optional=true)
     public static native CFString KeyIsLenient();
-    @GlobalValue(symbol="kCFNumberFormatterUseSignificantDigits")
+    @GlobalValue(symbol="kCFNumberFormatterUseSignificantDigits", optional=true)
     public static native CFString KeyUseSignificantDigits();
-    @GlobalValue(symbol="kCFNumberFormatterMinSignificantDigits")
+    @GlobalValue(symbol="kCFNumberFormatterMinSignificantDigits", optional=true)
     public static native CFString KeyMinSignificantDigits();
-    @GlobalValue(symbol="kCFNumberFormatterMaxSignificantDigits")
+    @GlobalValue(symbol="kCFNumberFormatterMaxSignificantDigits", optional=true)
     public static native CFString KeyMaxSignificantDigits();
     
-    @Bridge(symbol="CFNumberCreate")
+    @Bridge(symbol="CFNumberCreate", optional=true)
     public static native CFNumber create(CFAllocator allocator, CFNumberType theType, VoidPtr valuePtr);
-    @Bridge(symbol="CFNumberGetType")
+    @Bridge(symbol="CFNumberGetType", optional=true)
     public static native CFNumberType getType(CFNumber number);
-    @Bridge(symbol="CFNumberGetByteSize")
+    @Bridge(symbol="CFNumberGetByteSize", optional=true)
     public static native @MachineSizedSInt long getByteSize(CFNumber number);
-    @Bridge(symbol="CFNumberIsFloatType")
+    @Bridge(symbol="CFNumberIsFloatType", optional=true)
     public static native boolean isFloatType(CFNumber number);
-    @Bridge(symbol="CFNumberGetValue")
+    @Bridge(symbol="CFNumberGetValue", optional=true)
     public static native boolean getValue(CFNumber number, CFNumberType theType, VoidPtr valuePtr);
-    @Bridge(symbol="CFNumberCompare")
+    @Bridge(symbol="CFNumberCompare", optional=true)
     public static native CFComparisonResult compare(CFNumber number, CFNumber otherNumber, VoidPtr context);
-    @Bridge(symbol="CFNumberFormatterGetTypeID")
+    @Bridge(symbol="CFNumberFormatterGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFNumberFormatterCreate")
+    @Bridge(symbol="CFNumberFormatterCreate", optional=true)
     public static native CFNumberFormatter create(CFAllocator allocator, CFLocale locale, CFNumberFormatterStyle style);
-    @Bridge(symbol="CFNumberFormatterGetLocale")
+    @Bridge(symbol="CFNumberFormatterGetLocale", optional=true)
     public native CFLocale getLocale();
-    @Bridge(symbol="CFNumberFormatterGetStyle")
+    @Bridge(symbol="CFNumberFormatterGetStyle", optional=true)
     public native CFNumberFormatterStyle getStyle();
-    @Bridge(symbol="CFNumberFormatterGetFormat")
+    @Bridge(symbol="CFNumberFormatterGetFormat", optional=true)
     public native CFString getFormat();
-    @Bridge(symbol="CFNumberFormatterSetFormat")
+    @Bridge(symbol="CFNumberFormatterSetFormat", optional=true)
     public native void setFormat(CFString formatString);
-    @Bridge(symbol="CFNumberFormatterCreateStringWithNumber")
+    @Bridge(symbol="CFNumberFormatterCreateStringWithNumber", optional=true)
     public static native CFString createStringWithNumber(CFAllocator allocator, CFNumberFormatter formatter, CFNumber number);
-    @Bridge(symbol="CFNumberFormatterCreateStringWithValue")
+    @Bridge(symbol="CFNumberFormatterCreateStringWithValue", optional=true)
     public static native CFString createStringWithValue(CFAllocator allocator, CFNumberFormatter formatter, CFNumberType numberType, VoidPtr valuePtr);
-    @Bridge(symbol="CFNumberFormatterCreateNumberFromString")
+    @Bridge(symbol="CFNumberFormatterCreateNumberFromString", optional=true)
     public static native CFNumber createNumberFromString(CFAllocator allocator, CFNumberFormatter formatter, CFString string, CFRange rangep, CFNumberFormatterOptionFlags options);
-    @Bridge(symbol="CFNumberFormatterGetValueFromString")
+    @Bridge(symbol="CFNumberFormatterGetValueFromString", optional=true)
     public native boolean getValueFromString(CFString string, CFRange rangep, CFNumberType numberType, VoidPtr valuePtr);
-    @Bridge(symbol="CFNumberFormatterSetProperty")
+    @Bridge(symbol="CFNumberFormatterSetProperty", optional=true)
     public native void setProperty(CFString key, CFType value);
-    @Bridge(symbol="CFNumberFormatterCopyProperty")
+    @Bridge(symbol="CFNumberFormatterCopyProperty", optional=true)
     public native CFType copyProperty(CFString key);
-    @Bridge(symbol="CFNumberFormatterGetDecimalInfoForCurrencyCode")
+    @Bridge(symbol="CFNumberFormatterGetDecimalInfoForCurrencyCode", optional=true)
     public static native boolean getDecimalInfoForCurrencyCode(CFString currencyCode, IntPtr defaultFractionDigits, DoublePtr roundingIncrement);
     /*</methods>*/
 }

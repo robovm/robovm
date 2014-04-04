@@ -46,26 +46,26 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFStreamPropertyDataWritten")
+    @GlobalValue(symbol="kCFStreamPropertyDataWritten", optional=true)
     public static native CFString PropertyDataWritten();
-    @GlobalValue(symbol="kCFStreamPropertyAppendToFile")
+    @GlobalValue(symbol="kCFStreamPropertyAppendToFile", optional=true)
     public static native CFString PropertyAppendToFile();
-    @GlobalValue(symbol="kCFStreamPropertyFileCurrentOffset")
+    @GlobalValue(symbol="kCFStreamPropertyFileCurrentOffset", optional=true)
     public static native CFString PropertyFileCurrentOffset();
-    @GlobalValue(symbol="kCFStreamPropertySocketNativeHandle")
+    @GlobalValue(symbol="kCFStreamPropertySocketNativeHandle", optional=true)
     public static native CFString PropertySocketNativeHandle();
-    @GlobalValue(symbol="kCFStreamPropertySocketRemoteHostName")
+    @GlobalValue(symbol="kCFStreamPropertySocketRemoteHostName", optional=true)
     public static native CFString PropertySocketRemoteHostName();
-    @GlobalValue(symbol="kCFStreamPropertySocketRemotePortNumber")
+    @GlobalValue(symbol="kCFStreamPropertySocketRemotePortNumber", optional=true)
     public static native CFString PropertySocketRemotePortNumber();
     
-    @Bridge(symbol="CFStreamCreateBoundPair")
+    @Bridge(symbol="CFStreamCreateBoundPair", optional=true)
     public static native void createBoundPair(CFAllocator alloc, CFReadStream.CFReadStreamPtr readStream, CFWriteStream.CFWriteStreamPtr writeStream, @MachineSizedSInt long transferBufferSize);
-    @Bridge(symbol="CFStreamCreatePairWithSocket")
+    @Bridge(symbol="CFStreamCreatePairWithSocket", optional=true)
     public static native void createPairWithSocket(CFAllocator alloc, int sock, CFReadStream.CFReadStreamPtr readStream, CFWriteStream.CFWriteStreamPtr writeStream);
-    @Bridge(symbol="CFStreamCreatePairWithSocketToHost")
+    @Bridge(symbol="CFStreamCreatePairWithSocketToHost", optional=true)
     public static native void createPairWithSocketToHost(CFAllocator alloc, CFString host, int port, CFReadStream.CFReadStreamPtr readStream, CFWriteStream.CFWriteStreamPtr writeStream);
-    @Bridge(symbol="CFStreamCreatePairWithPeerSocketSignature")
+    @Bridge(symbol="CFStreamCreatePairWithPeerSocketSignature", optional=true)
     public static native void createPairWithPeerSocketSignature(CFAllocator alloc, CFSocketSignature signature, CFReadStream.CFReadStreamPtr readStream, CFWriteStream.CFWriteStreamPtr writeStream);
     /*</methods>*/
 }

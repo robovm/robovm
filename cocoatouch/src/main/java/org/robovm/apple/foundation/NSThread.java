@@ -52,11 +52,11 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSWillBecomeMultiThreadedNotification")
+    @GlobalValue(symbol="NSWillBecomeMultiThreadedNotification", optional=true)
     public static native String NotificationWillBecomeMultiThreaded();
-    @GlobalValue(symbol="NSDidBecomeSingleThreadedNotification")
+    @GlobalValue(symbol="NSDidBecomeSingleThreadedNotification", optional=true)
     public static native String NotificationDidBecomeSingleThreaded();
-    @GlobalValue(symbol="NSThreadWillExitNotification")
+    @GlobalValue(symbol="NSThreadWillExitNotification", optional=true)
     public static native String NotificationThreadWillExit();
     
     @Method(selector = "threadDictionary")

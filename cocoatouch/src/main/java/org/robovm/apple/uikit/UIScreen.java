@@ -81,13 +81,13 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="UIScreenDidConnectNotification")
+    @GlobalValue(symbol="UIScreenDidConnectNotification", optional=true)
     public static native String NotificationScreenDidConnect();
-    @GlobalValue(symbol="UIScreenDidDisconnectNotification")
+    @GlobalValue(symbol="UIScreenDidDisconnectNotification", optional=true)
     public static native String NotificationScreenDidDisconnect();
-    @GlobalValue(symbol="UIScreenModeDidChangeNotification")
+    @GlobalValue(symbol="UIScreenModeDidChangeNotification", optional=true)
     public static native String NotificationScreenModeDidChange();
-    @GlobalValue(symbol="UIScreenBrightnessDidChangeNotification")
+    @GlobalValue(symbol="UIScreenBrightnessDidChangeNotification", optional=true)
     public static native String NotificationScreenBrightnessDidChange();
     
     @Method(selector = "displayLinkWithTarget:selector:")

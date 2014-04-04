@@ -47,29 +47,29 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFCharacterSetGetTypeID")
+    @Bridge(symbol="CFCharacterSetGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFCharacterSetGetPredefined")
+    @Bridge(symbol="CFCharacterSetGetPredefined", optional=true)
     public static native CFCharacterSet getPredefined(CFCharacterSetPredefinedSet theSetIdentifier);
-    @Bridge(symbol="CFCharacterSetCreateWithCharactersInRange")
+    @Bridge(symbol="CFCharacterSetCreateWithCharactersInRange", optional=true)
     public static native CFCharacterSet createWithCharactersInRange(CFAllocator alloc, @ByVal CFRange theRange);
-    @Bridge(symbol="CFCharacterSetCreateWithCharactersInString")
+    @Bridge(symbol="CFCharacterSetCreateWithCharactersInString", optional=true)
     public static native CFCharacterSet createWithCharactersInString(CFAllocator alloc, CFString theString);
-    @Bridge(symbol="CFCharacterSetCreateWithBitmapRepresentation")
+    @Bridge(symbol="CFCharacterSetCreateWithBitmapRepresentation", optional=true)
     public static native CFCharacterSet createWithBitmapRepresentation(CFAllocator alloc, CFData theData);
-    @Bridge(symbol="CFCharacterSetCreateInvertedSet")
+    @Bridge(symbol="CFCharacterSetCreateInvertedSet", optional=true)
     public static native CFCharacterSet createInvertedSet(CFAllocator alloc, CFCharacterSet theSet);
-    @Bridge(symbol="CFCharacterSetIsSupersetOfSet")
+    @Bridge(symbol="CFCharacterSetIsSupersetOfSet", optional=true)
     public native boolean isSupersetOfSet(CFCharacterSet theOtherset);
-    @Bridge(symbol="CFCharacterSetHasMemberInPlane")
+    @Bridge(symbol="CFCharacterSetHasMemberInPlane", optional=true)
     public native boolean hasMemberInPlane(@MachineSizedSInt long thePlane);
-    @Bridge(symbol="CFCharacterSetCreateCopy")
+    @Bridge(symbol="CFCharacterSetCreateCopy", optional=true)
     public static native CFCharacterSet createCopy(CFAllocator alloc, CFCharacterSet theSet);
-    @Bridge(symbol="CFCharacterSetIsCharacterMember")
+    @Bridge(symbol="CFCharacterSetIsCharacterMember", optional=true)
     public native boolean isCharacterMember(short theChar);
-    @Bridge(symbol="CFCharacterSetIsLongCharacterMember")
+    @Bridge(symbol="CFCharacterSetIsLongCharacterMember", optional=true)
     public native boolean isLongCharacterMember(int theChar);
-    @Bridge(symbol="CFCharacterSetCreateBitmapRepresentation")
+    @Bridge(symbol="CFCharacterSetCreateBitmapRepresentation", optional=true)
     public static native CFData createBitmapRepresentation(CFAllocator alloc, CFCharacterSet theSet);
     /*</methods>*/
 }

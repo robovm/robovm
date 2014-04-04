@@ -79,23 +79,23 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCATruncationNone")
+    @GlobalValue(symbol="kCATruncationNone", optional=true)
     public static native String TruncationNone();
-    @GlobalValue(symbol="kCATruncationStart")
+    @GlobalValue(symbol="kCATruncationStart", optional=true)
     public static native String TruncationStart();
-    @GlobalValue(symbol="kCATruncationEnd")
+    @GlobalValue(symbol="kCATruncationEnd", optional=true)
     public static native String TruncationEnd();
-    @GlobalValue(symbol="kCATruncationMiddle")
+    @GlobalValue(symbol="kCATruncationMiddle", optional=true)
     public static native String TruncationMiddle();
-    @GlobalValue(symbol="kCAAlignmentNatural")
+    @GlobalValue(symbol="kCAAlignmentNatural", optional=true)
     public static native String AlignmentNatural();
-    @GlobalValue(symbol="kCAAlignmentLeft")
+    @GlobalValue(symbol="kCAAlignmentLeft", optional=true)
     public static native String AlignmentLeft();
-    @GlobalValue(symbol="kCAAlignmentRight")
+    @GlobalValue(symbol="kCAAlignmentRight", optional=true)
     public static native String AlignmentRight();
-    @GlobalValue(symbol="kCAAlignmentCenter")
+    @GlobalValue(symbol="kCAAlignmentCenter", optional=true)
     public static native String AlignmentCenter();
-    @GlobalValue(symbol="kCAAlignmentJustified")
+    @GlobalValue(symbol="kCAAlignmentJustified", optional=true)
     public static native String AlignmentJustified();
     
     

@@ -59,7 +59,7 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSSystemClockDidChangeNotification")
+    @GlobalValue(symbol="NSSystemClockDidChangeNotification", optional=true)
     public static native String NotificationSystemClockDidChange();
     
     @Method(selector = "timeIntervalSinceReferenceDate")

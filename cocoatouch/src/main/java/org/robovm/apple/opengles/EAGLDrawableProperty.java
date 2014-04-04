@@ -46,9 +46,9 @@ import org.robovm.apple.foundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kEAGLDrawablePropertyRetainedBacking")
+    @GlobalValue(symbol="kEAGLDrawablePropertyRetainedBacking", optional=true)
     public static native NSString RetainedBacking();
-    @GlobalValue(symbol="kEAGLDrawablePropertyColorFormat")
+    @GlobalValue(symbol="kEAGLDrawablePropertyColorFormat", optional=true)
     public static native NSString ColorFormat();
     /*</methods>*/
 }

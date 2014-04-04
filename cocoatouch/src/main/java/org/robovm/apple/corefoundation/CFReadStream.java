@@ -47,41 +47,41 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFReadStreamGetTypeID")
+    @Bridge(symbol="CFReadStreamGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFReadStreamCreateWithBytesNoCopy")
+    @Bridge(symbol="CFReadStreamCreateWithBytesNoCopy", optional=true)
     public static native CFReadStream createWithBytesNoCopy(CFAllocator alloc, BytePtr bytes, @MachineSizedSInt long length, CFAllocator bytesDeallocator);
-    @Bridge(symbol="CFReadStreamCreateWithFile")
+    @Bridge(symbol="CFReadStreamCreateWithFile", optional=true)
     public static native CFReadStream createWithFile(CFAllocator alloc, CFURL fileURL);
-    @Bridge(symbol="CFReadStreamGetStatus")
+    @Bridge(symbol="CFReadStreamGetStatus", optional=true)
     public native CFStreamStatus getStatus();
-    @Bridge(symbol="CFReadStreamCopyError")
+    @Bridge(symbol="CFReadStreamCopyError", optional=true)
     public native CFError copyError();
-    @Bridge(symbol="CFReadStreamOpen")
+    @Bridge(symbol="CFReadStreamOpen", optional=true)
     public native boolean openStream();
-    @Bridge(symbol="CFReadStreamClose")
+    @Bridge(symbol="CFReadStreamClose", optional=true)
     public native void closeStream();
-    @Bridge(symbol="CFReadStreamHasBytesAvailable")
+    @Bridge(symbol="CFReadStreamHasBytesAvailable", optional=true)
     public native boolean hasBytesAvailable();
-    @Bridge(symbol="CFReadStreamRead")
+    @Bridge(symbol="CFReadStreamRead", optional=true)
     public native @MachineSizedSInt long read(BytePtr buffer, @MachineSizedSInt long bufferLength);
-    @Bridge(symbol="CFReadStreamGetBuffer")
+    @Bridge(symbol="CFReadStreamGetBuffer", optional=true)
     public native BytePtr getBuffer(@MachineSizedSInt long maxBytesToRead, MachineSizedSIntPtr numBytesRead);
-    @Bridge(symbol="CFReadStreamCopyProperty")
+    @Bridge(symbol="CFReadStreamCopyProperty", optional=true)
     public native CFType copyProperty(CFString propertyName);
-    @Bridge(symbol="CFReadStreamSetProperty")
+    @Bridge(symbol="CFReadStreamSetProperty", optional=true)
     public native boolean setProperty(CFString propertyName, CFType propertyValue);
-    @Bridge(symbol="CFReadStreamSetClient")
+    @Bridge(symbol="CFReadStreamSetClient", optional=true)
     public native boolean setClient(CFStreamEventType streamEvents, FunctionPtr clientCB, CFStreamClientContext clientContext);
-    @Bridge(symbol="CFReadStreamScheduleWithRunLoop")
+    @Bridge(symbol="CFReadStreamScheduleWithRunLoop", optional=true)
     public native void scheduleWithRunLoop(CFRunLoop runLoop, CFString runLoopMode);
-    @Bridge(symbol="CFReadStreamUnscheduleFromRunLoop")
+    @Bridge(symbol="CFReadStreamUnscheduleFromRunLoop", optional=true)
     public native void unscheduleFromRunLoop(CFRunLoop runLoop, CFString runLoopMode);
-    @Bridge(symbol="CFReadStreamSetDispatchQueue")
+    @Bridge(symbol="CFReadStreamSetDispatchQueue", optional=true)
     public native void setDispatchQueue(DispatchQueue q);
-    @Bridge(symbol="CFReadStreamCopyDispatchQueue")
+    @Bridge(symbol="CFReadStreamCopyDispatchQueue", optional=true)
     public native DispatchQueue copyDispatchQueue();
-    @Bridge(symbol="CFReadStreamGetError")
+    @Bridge(symbol="CFReadStreamGetError", optional=true)
     public native @ByVal CFStreamError getError();
     /*</methods>*/
 }

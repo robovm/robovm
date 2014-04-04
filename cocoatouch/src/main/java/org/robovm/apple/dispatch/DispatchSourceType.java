@@ -46,27 +46,27 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="_dispatch_source_type_data_add")
+    @GlobalValue(symbol="_dispatch_source_type_data_add", optional=true)
     public static native DispatchSourceType DataAdd();
-    @GlobalValue(symbol="_dispatch_source_type_data_or")
+    @GlobalValue(symbol="_dispatch_source_type_data_or", optional=true)
     public static native DispatchSourceType DataOr();
-    @GlobalValue(symbol="_dispatch_source_type_mach_send")
+    @GlobalValue(symbol="_dispatch_source_type_mach_send", optional=true)
     public static native DispatchSourceType MachSend();
-    @GlobalValue(symbol="_dispatch_source_type_mach_recv")
+    @GlobalValue(symbol="_dispatch_source_type_mach_recv", optional=true)
     public static native DispatchSourceType MachRecv();
-    @GlobalValue(symbol="_dispatch_source_type_memorypressure")
+    @GlobalValue(symbol="_dispatch_source_type_memorypressure", optional=true)
     public static native DispatchSourceType Memorypressure();
-    @GlobalValue(symbol="_dispatch_source_type_proc")
+    @GlobalValue(symbol="_dispatch_source_type_proc", optional=true)
     public static native DispatchSourceType Proc();
-    @GlobalValue(symbol="_dispatch_source_type_read")
+    @GlobalValue(symbol="_dispatch_source_type_read", optional=true)
     public static native DispatchSourceType Read();
-    @GlobalValue(symbol="_dispatch_source_type_signal")
+    @GlobalValue(symbol="_dispatch_source_type_signal", optional=true)
     public static native DispatchSourceType Signal();
-    @GlobalValue(symbol="_dispatch_source_type_timer")
+    @GlobalValue(symbol="_dispatch_source_type_timer", optional=true)
     public static native DispatchSourceType Timer();
-    @GlobalValue(symbol="_dispatch_source_type_vnode")
+    @GlobalValue(symbol="_dispatch_source_type_vnode", optional=true)
     public static native DispatchSourceType Vnode();
-    @GlobalValue(symbol="_dispatch_source_type_write")
+    @GlobalValue(symbol="_dispatch_source_type_write", optional=true)
     public static native DispatchSourceType Write();
     /*</methods>*/
 }

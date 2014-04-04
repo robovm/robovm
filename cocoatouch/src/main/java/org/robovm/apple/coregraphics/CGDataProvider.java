@@ -56,15 +56,15 @@ import org.robovm.apple.foundation.*;
     }
     
     /*<methods>*/
-    @Bridge(symbol="CGDataProviderGetTypeID")
+    @Bridge(symbol="CGDataProviderGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CGDataProviderCreateWithCFData")
+    @Bridge(symbol="CGDataProviderCreateWithCFData", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGDataProvider create(NSData data);
-    @Bridge(symbol="CGDataProviderCreateWithURL")
+    @Bridge(symbol="CGDataProviderCreateWithURL", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGDataProvider create(NSURL url);
-    @Bridge(symbol="CGDataProviderCreateWithFilename")
+    @Bridge(symbol="CGDataProviderCreateWithFilename", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGDataProvider createWithFilename(@Pointer long filename);
-    @Bridge(symbol="CGDataProviderCopyData")
+    @Bridge(symbol="CGDataProviderCopyData", optional=true)
     public native NSData getData();
     /*</methods>*/
 }

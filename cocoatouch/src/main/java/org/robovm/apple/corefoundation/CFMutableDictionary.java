@@ -47,19 +47,19 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFDictionaryCreateMutable")
+    @Bridge(symbol="CFDictionaryCreateMutable", optional=true)
     public static native CFMutableDictionary createMutable(CFAllocator allocator, @MachineSizedSInt long capacity, CFDictionaryKeyCallBacks keyCallBacks, CFDictionaryValueCallBacks valueCallBacks);
-    @Bridge(symbol="CFDictionaryCreateMutableCopy")
+    @Bridge(symbol="CFDictionaryCreateMutableCopy", optional=true)
     public static native CFMutableDictionary createMutableCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFDictionary theDict);
-    @Bridge(symbol="CFDictionaryAddValue")
+    @Bridge(symbol="CFDictionaryAddValue", optional=true)
     public native void addValue(VoidPtr key, VoidPtr value);
-    @Bridge(symbol="CFDictionarySetValue")
+    @Bridge(symbol="CFDictionarySetValue", optional=true)
     public native void setValue(VoidPtr key, VoidPtr value);
-    @Bridge(symbol="CFDictionaryReplaceValue")
+    @Bridge(symbol="CFDictionaryReplaceValue", optional=true)
     public native void replaceValue(VoidPtr key, VoidPtr value);
-    @Bridge(symbol="CFDictionaryRemoveValue")
+    @Bridge(symbol="CFDictionaryRemoveValue", optional=true)
     public native void removeValue(VoidPtr key);
-    @Bridge(symbol="CFDictionaryRemoveAllValues")
+    @Bridge(symbol="CFDictionaryRemoveAllValues", optional=true)
     public native void removeAllValues();
     /*</methods>*/
 }

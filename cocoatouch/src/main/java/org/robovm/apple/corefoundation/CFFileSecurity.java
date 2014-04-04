@@ -47,33 +47,33 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFFileSecurityGetTypeID")
+    @Bridge(symbol="CFFileSecurityGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFFileSecurityCreate")
+    @Bridge(symbol="CFFileSecurityCreate", optional=true)
     public static native CFFileSecurity create(CFAllocator allocator);
-    @Bridge(symbol="CFFileSecurityCreateCopy")
+    @Bridge(symbol="CFFileSecurityCreateCopy", optional=true)
     public static native CFFileSecurity createCopy(CFAllocator allocator, CFFileSecurity fileSec);
-    @Bridge(symbol="CFFileSecurityCopyOwnerUUID")
+    @Bridge(symbol="CFFileSecurityCopyOwnerUUID", optional=true)
     public native boolean copyOwnerUUID(CFUUID.CFUUIDPtr ownerUUID);
-    @Bridge(symbol="CFFileSecuritySetOwnerUUID")
+    @Bridge(symbol="CFFileSecuritySetOwnerUUID", optional=true)
     public native boolean setOwnerUUID(CFUUID ownerUUID);
-    @Bridge(symbol="CFFileSecurityCopyGroupUUID")
+    @Bridge(symbol="CFFileSecurityCopyGroupUUID", optional=true)
     public native boolean copyGroupUUID(CFUUID.CFUUIDPtr groupUUID);
-    @Bridge(symbol="CFFileSecuritySetGroupUUID")
+    @Bridge(symbol="CFFileSecuritySetGroupUUID", optional=true)
     public native boolean setGroupUUID(CFUUID groupUUID);
-    @Bridge(symbol="CFFileSecurityGetOwner")
+    @Bridge(symbol="CFFileSecurityGetOwner", optional=true)
     public native boolean getOwner(IntPtr owner);
-    @Bridge(symbol="CFFileSecuritySetOwner")
+    @Bridge(symbol="CFFileSecuritySetOwner", optional=true)
     public native boolean setOwner(int owner);
-    @Bridge(symbol="CFFileSecurityGetGroup")
+    @Bridge(symbol="CFFileSecurityGetGroup", optional=true)
     public native boolean getGroup(IntPtr group);
-    @Bridge(symbol="CFFileSecuritySetGroup")
+    @Bridge(symbol="CFFileSecuritySetGroup", optional=true)
     public native boolean setGroup(int group);
-    @Bridge(symbol="CFFileSecurityGetMode")
+    @Bridge(symbol="CFFileSecurityGetMode", optional=true)
     public native boolean getMode(ShortPtr mode);
-    @Bridge(symbol="CFFileSecuritySetMode")
+    @Bridge(symbol="CFFileSecuritySetMode", optional=true)
     public native boolean setMode(short mode);
-    @Bridge(symbol="CFFileSecurityClearProperties")
+    @Bridge(symbol="CFFileSecurityClearProperties", optional=true)
     public native boolean clearProperties(CFFileSecurityClearOptions clearPropertyMask);
     /*</methods>*/
 }

@@ -96,11 +96,11 @@ import org.robovm.apple.foundation.*;
     }
     
     /*<methods>*/
-    @Bridge(symbol="CGGradientGetTypeID")
+    @Bridge(symbol="CGGradientGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CGGradientCreateWithColorComponents")
+    @Bridge(symbol="CGGradientCreateWithColorComponents", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGGradient create(CGColorSpace space, @Pointer long components, @Pointer long locations, @MachineSizedUInt long count);
-    @Bridge(symbol="CGGradientCreateWithColors")
+    @Bridge(symbol="CGGradientCreateWithColors", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGGradient create(CGColorSpace space, CFArray colors, @Pointer long locations);
     /*</methods>*/
 }

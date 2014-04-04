@@ -55,6 +55,7 @@ import org.robovm.apple.opengles.*;
     @Method(selector = "CATransform3DValue")
     public static native @ByVal CATransform3D CATransform3DValue(NSValue thiz);
     @Method(selector = "valueWithCATransform3D:")
-    public static native NSValue valueWithCATransform3D$(NSValue thiz, @ByVal CATransform3D t);
+    protected static native NSValue valueWithCATransform3D$(ObjCClass clazz, @ByVal CATransform3D t);
+    public static NSValue valueWithCATransform3D$(@ByVal CATransform3D t) { return valueWithCATransform3D$(ObjCClass.getByType(NSValue.class), t); }
     /*</methods>*/
 }

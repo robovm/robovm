@@ -48,10 +48,10 @@ import org.robovm.apple.corefoundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kSecRandomDefault")
+    @GlobalValue(symbol="kSecRandomDefault", optional=true)
     public static native SecRandom Default();
     
-    @Bridge(symbol="SecRandomCopyBytes")
+    @Bridge(symbol="SecRandomCopyBytes", optional=true)
     public native int copyBytes(@MachineSizedUInt long count, BytePtr bytes);
     /*</methods>*/
 }

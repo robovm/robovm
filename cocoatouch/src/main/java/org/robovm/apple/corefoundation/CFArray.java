@@ -47,32 +47,32 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFTypeArrayCallBacks")
+    @GlobalValue(symbol="kCFTypeArrayCallBacks", optional=true)
     public static native @ByVal CFArrayCallBacks ArrayCallBacks();
     
-    @Bridge(symbol="CFArrayGetTypeID")
+    @Bridge(symbol="CFArrayGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFArrayCreate")
+    @Bridge(symbol="CFArrayCreate", optional=true)
     public static native CFArray create(CFAllocator allocator, VoidPtr.VoidPtrPtr values, @MachineSizedSInt long numValues, CFArrayCallBacks callBacks);
-    @Bridge(symbol="CFArrayCreateCopy")
+    @Bridge(symbol="CFArrayCreateCopy", optional=true)
     public static native CFArray createCopy(CFAllocator allocator, CFArray theArray);
-    @Bridge(symbol="CFArrayGetCount")
+    @Bridge(symbol="CFArrayGetCount", optional=true)
     public native @MachineSizedSInt long getCount();
-    @Bridge(symbol="CFArrayGetCountOfValue")
+    @Bridge(symbol="CFArrayGetCountOfValue", optional=true)
     public native @MachineSizedSInt long getCountOfValue(@ByVal CFRange range, VoidPtr value);
-    @Bridge(symbol="CFArrayContainsValue")
+    @Bridge(symbol="CFArrayContainsValue", optional=true)
     public native boolean containsValue(@ByVal CFRange range, VoidPtr value);
-    @Bridge(symbol="CFArrayGetValueAtIndex")
+    @Bridge(symbol="CFArrayGetValueAtIndex", optional=true)
     public native VoidPtr getValueAtIndex(@MachineSizedSInt long idx);
-    @Bridge(symbol="CFArrayGetValues")
+    @Bridge(symbol="CFArrayGetValues", optional=true)
     public native void getValues(@ByVal CFRange range, VoidPtr.VoidPtrPtr values);
-    @Bridge(symbol="CFArrayApplyFunction")
+    @Bridge(symbol="CFArrayApplyFunction", optional=true)
     public native void applyFunction(@ByVal CFRange range, FunctionPtr applier, VoidPtr context);
-    @Bridge(symbol="CFArrayGetFirstIndexOfValue")
+    @Bridge(symbol="CFArrayGetFirstIndexOfValue", optional=true)
     public native @MachineSizedSInt long getFirstIndexOfValue(@ByVal CFRange range, VoidPtr value);
-    @Bridge(symbol="CFArrayGetLastIndexOfValue")
+    @Bridge(symbol="CFArrayGetLastIndexOfValue", optional=true)
     public native @MachineSizedSInt long getLastIndexOfValue(@ByVal CFRange range, VoidPtr value);
-    @Bridge(symbol="CFArrayBSearchValues")
+    @Bridge(symbol="CFArrayBSearchValues", optional=true)
     public native @MachineSizedSInt long bSearchValues(@ByVal CFRange range, VoidPtr value, FunctionPtr comparator, VoidPtr context);
     /*</methods>*/
 }

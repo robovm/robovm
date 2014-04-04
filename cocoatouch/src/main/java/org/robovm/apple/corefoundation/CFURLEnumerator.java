@@ -47,7 +47,7 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFURLEnumeratorGetTypeID")
+    @Bridge(symbol="CFURLEnumeratorGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     /*</methods>*/
 }

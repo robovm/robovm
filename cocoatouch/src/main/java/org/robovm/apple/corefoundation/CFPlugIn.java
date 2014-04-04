@@ -46,44 +46,44 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFPlugInDynamicRegistrationKey")
+    @GlobalValue(symbol="kCFPlugInDynamicRegistrationKey", optional=true)
     public static native CFString KeyDynamicRegistration();
-    @GlobalValue(symbol="kCFPlugInDynamicRegisterFunctionKey")
+    @GlobalValue(symbol="kCFPlugInDynamicRegisterFunctionKey", optional=true)
     public static native CFString KeyDynamicRegisterFunction();
-    @GlobalValue(symbol="kCFPlugInUnloadFunctionKey")
+    @GlobalValue(symbol="kCFPlugInUnloadFunctionKey", optional=true)
     public static native CFString KeyUnloadFunction();
-    @GlobalValue(symbol="kCFPlugInFactoriesKey")
+    @GlobalValue(symbol="kCFPlugInFactoriesKey", optional=true)
     public static native CFString KeyFactories();
-    @GlobalValue(symbol="kCFPlugInTypesKey")
+    @GlobalValue(symbol="kCFPlugInTypesKey", optional=true)
     public static native CFString KeyTypes();
     
-    @Bridge(symbol="CFPlugInGetTypeID")
+    @Bridge(symbol="CFPlugInGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFPlugInCreate")
+    @Bridge(symbol="CFPlugInCreate", optional=true)
     public static native CFBundle create(CFAllocator allocator, CFURL plugInURL);
-    @Bridge(symbol="CFPlugInGetBundle")
+    @Bridge(symbol="CFPlugInGetBundle", optional=true)
     public static native CFBundle getBundle(CFBundle plugIn);
-    @Bridge(symbol="CFPlugInSetLoadOnDemand")
+    @Bridge(symbol="CFPlugInSetLoadOnDemand", optional=true)
     public static native void setLoadOnDemand(CFBundle plugIn, boolean flag);
-    @Bridge(symbol="CFPlugInIsLoadOnDemand")
+    @Bridge(symbol="CFPlugInIsLoadOnDemand", optional=true)
     public static native boolean isLoadOnDemand(CFBundle plugIn);
-    @Bridge(symbol="CFPlugInFindFactoriesForPlugInType")
+    @Bridge(symbol="CFPlugInFindFactoriesForPlugInType", optional=true)
     public static native CFArray findFactoriesForPlugInType(CFUUID typeUUID);
-    @Bridge(symbol="CFPlugInFindFactoriesForPlugInTypeInPlugIn")
+    @Bridge(symbol="CFPlugInFindFactoriesForPlugInTypeInPlugIn", optional=true)
     public static native CFArray findFactoriesForPlugInTypeInPlugIn(CFUUID typeUUID, CFBundle plugIn);
-    @Bridge(symbol="CFPlugInRegisterFactoryFunction")
+    @Bridge(symbol="CFPlugInRegisterFactoryFunction", optional=true)
     public static native boolean registerFactoryFunction(CFUUID factoryUUID, FunctionPtr func);
-    @Bridge(symbol="CFPlugInRegisterFactoryFunctionByName")
+    @Bridge(symbol="CFPlugInRegisterFactoryFunctionByName", optional=true)
     public static native boolean registerFactoryFunctionByName(CFUUID factoryUUID, CFBundle plugIn, CFString functionName);
-    @Bridge(symbol="CFPlugInUnregisterFactory")
+    @Bridge(symbol="CFPlugInUnregisterFactory", optional=true)
     public static native boolean unregisterFactory(CFUUID factoryUUID);
-    @Bridge(symbol="CFPlugInRegisterPlugInType")
+    @Bridge(symbol="CFPlugInRegisterPlugInType", optional=true)
     public static native boolean registerPlugInType(CFUUID factoryUUID, CFUUID typeUUID);
-    @Bridge(symbol="CFPlugInUnregisterPlugInType")
+    @Bridge(symbol="CFPlugInUnregisterPlugInType", optional=true)
     public static native boolean unregisterPlugInType(CFUUID factoryUUID, CFUUID typeUUID);
-    @Bridge(symbol="CFPlugInAddInstanceForFactory")
+    @Bridge(symbol="CFPlugInAddInstanceForFactory", optional=true)
     public static native void addInstanceForFactory(CFUUID factoryID);
-    @Bridge(symbol="CFPlugInRemoveInstanceForFactory")
+    @Bridge(symbol="CFPlugInRemoveInstanceForFactory", optional=true)
     public static native void removeInstanceForFactory(CFUUID factoryID);
     /*</methods>*/
 }

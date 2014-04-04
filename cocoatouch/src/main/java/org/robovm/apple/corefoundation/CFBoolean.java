@@ -47,14 +47,14 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFBooleanTrue")
+    @GlobalValue(symbol="kCFBooleanTrue", optional=true)
     public static native CFBoolean True();
-    @GlobalValue(symbol="kCFBooleanFalse")
+    @GlobalValue(symbol="kCFBooleanFalse", optional=true)
     public static native CFBoolean False();
     
-    @Bridge(symbol="CFBooleanGetTypeID")
+    @Bridge(symbol="CFBooleanGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFBooleanGetValue")
+    @Bridge(symbol="CFBooleanGetValue", optional=true)
     public native boolean getValue();
     /*</methods>*/
 }

@@ -138,34 +138,34 @@ import org.robovm.apple.opengles.*;
     }
     
     /*<methods>*/
-    @GlobalValue(symbol="CATransform3DIdentity")
+    @GlobalValue(symbol="CATransform3DIdentity", optional=true)
     public static native @ByVal CATransform3D Identity();
     
-    @Bridge(symbol="CATransform3DIsIdentity")
+    @Bridge(symbol="CATransform3DIsIdentity", optional=true)
     protected static native boolean isIdentity(@ByVal CATransform3D t);
-    @Bridge(symbol="CATransform3DEqualToTransform")
+    @Bridge(symbol="CATransform3DEqualToTransform", optional=true)
     protected static native boolean equalToTransform(@ByVal CATransform3D a, @ByVal CATransform3D b);
-    @Bridge(symbol="CATransform3DMakeTranslation")
+    @Bridge(symbol="CATransform3DMakeTranslation", optional=true)
     public static native @ByVal CATransform3D makeTranslation(@MachineSizedFloat double tx, @MachineSizedFloat double ty, @MachineSizedFloat double tz);
-    @Bridge(symbol="CATransform3DMakeScale")
+    @Bridge(symbol="CATransform3DMakeScale", optional=true)
     public static native @ByVal CATransform3D makeScale(@MachineSizedFloat double sx, @MachineSizedFloat double sy, @MachineSizedFloat double sz);
-    @Bridge(symbol="CATransform3DMakeRotation")
+    @Bridge(symbol="CATransform3DMakeRotation", optional=true)
     public static native @ByVal CATransform3D makeRotation(@MachineSizedFloat double angle, @MachineSizedFloat double x, @MachineSizedFloat double y, @MachineSizedFloat double z);
-    @Bridge(symbol="CATransform3DTranslate")
+    @Bridge(symbol="CATransform3DTranslate", optional=true)
     protected static native @ByVal CATransform3D translate(@ByVal CATransform3D t, @MachineSizedFloat double tx, @MachineSizedFloat double ty, @MachineSizedFloat double tz);
-    @Bridge(symbol="CATransform3DScale")
+    @Bridge(symbol="CATransform3DScale", optional=true)
     protected static native @ByVal CATransform3D scale(@ByVal CATransform3D t, @MachineSizedFloat double sx, @MachineSizedFloat double sy, @MachineSizedFloat double sz);
-    @Bridge(symbol="CATransform3DRotate")
+    @Bridge(symbol="CATransform3DRotate", optional=true)
     protected static native @ByVal CATransform3D rotate(@ByVal CATransform3D t, @MachineSizedFloat double angle, @MachineSizedFloat double x, @MachineSizedFloat double y, @MachineSizedFloat double z);
-    @Bridge(symbol="CATransform3DConcat")
+    @Bridge(symbol="CATransform3DConcat", optional=true)
     protected static native @ByVal CATransform3D concat(@ByVal CATransform3D a, @ByVal CATransform3D b);
-    @Bridge(symbol="CATransform3DInvert")
+    @Bridge(symbol="CATransform3DInvert", optional=true)
     protected static native @ByVal CATransform3D invert(@ByVal CATransform3D t);
-    @Bridge(symbol="CATransform3DMakeAffineTransform")
+    @Bridge(symbol="CATransform3DMakeAffineTransform", optional=true)
     public static native @ByVal CATransform3D makeAffineTransform(@ByVal CGAffineTransform m);
-    @Bridge(symbol="CATransform3DIsAffine")
+    @Bridge(symbol="CATransform3DIsAffine", optional=true)
     protected static native boolean isAffine(@ByVal CATransform3D t);
-    @Bridge(symbol="CATransform3DGetAffineTransform")
+    @Bridge(symbol="CATransform3DGetAffineTransform", optional=true)
     protected static native @ByVal CGAffineTransform getAffineTransform(@ByVal CATransform3D t);
     /*</methods>*/
 }

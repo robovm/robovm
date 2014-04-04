@@ -250,58 +250,58 @@ import org.robovm.apple.foundation.*;
     }
     
     /*<methods>*/
-    @GlobalValue(symbol="kCGColorSpaceGenericGray")
+    @GlobalValue(symbol="kCGColorSpaceGenericGray", optional=true)
     public static native String ColorSpaceGenericGray();
-    @GlobalValue(symbol="kCGColorSpaceGenericRGB")
+    @GlobalValue(symbol="kCGColorSpaceGenericRGB", optional=true)
     public static native String ColorSpaceGenericRGB();
-    @GlobalValue(symbol="kCGColorSpaceGenericCMYK")
+    @GlobalValue(symbol="kCGColorSpaceGenericCMYK", optional=true)
     public static native String ColorSpaceGenericCMYK();
-    @GlobalValue(symbol="kCGColorSpaceGenericRGBLinear")
+    @GlobalValue(symbol="kCGColorSpaceGenericRGBLinear", optional=true)
     public static native String ColorSpaceGenericRGBLinear();
-    @GlobalValue(symbol="kCGColorSpaceAdobeRGB1998")
+    @GlobalValue(symbol="kCGColorSpaceAdobeRGB1998", optional=true)
     public static native String ColorSpaceAdobeRGB1998();
-    @GlobalValue(symbol="kCGColorSpaceSRGB")
+    @GlobalValue(symbol="kCGColorSpaceSRGB", optional=true)
     public static native String ColorSpaceSRGB();
-    @GlobalValue(symbol="kCGColorSpaceGenericGrayGamma2_2")
+    @GlobalValue(symbol="kCGColorSpaceGenericGrayGamma2_2", optional=true)
     public static native String ColorSpaceGenericGrayGamma2_2();
     
-    @Bridge(symbol="CGColorSpaceCreateDeviceGray")
+    @Bridge(symbol="CGColorSpaceCreateDeviceGray", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace createDeviceGray();
-    @Bridge(symbol="CGColorSpaceCreateDeviceRGB")
+    @Bridge(symbol="CGColorSpaceCreateDeviceRGB", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace createDeviceRGB();
-    @Bridge(symbol="CGColorSpaceCreateDeviceCMYK")
+    @Bridge(symbol="CGColorSpaceCreateDeviceCMYK", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace createDeviceCMYK();
-    @Bridge(symbol="CGColorSpaceCreateCalibratedGray")
+    @Bridge(symbol="CGColorSpaceCreateCalibratedGray", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace createCalibratedGray(@Pointer long whitePoint, @Pointer long blackPoint, @MachineSizedFloat double gamma);
-    @Bridge(symbol="CGColorSpaceCreateCalibratedRGB")
+    @Bridge(symbol="CGColorSpaceCreateCalibratedRGB", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace createCalibratedRGB(@Pointer long whitePoint, @Pointer long blackPoint, @Pointer long gamma, @Pointer long matrix);
-    @Bridge(symbol="CGColorSpaceCreateLab")
+    @Bridge(symbol="CGColorSpaceCreateLab", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace createLab(@Pointer long whitePoint, @Pointer long blackPoint, @Pointer long range);
-    @Bridge(symbol="CGColorSpaceCreateWithICCProfile")
+    @Bridge(symbol="CGColorSpaceCreateWithICCProfile", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace createWithICCProfile(NSData data);
-    @Bridge(symbol="CGColorSpaceCreateICCBased")
+    @Bridge(symbol="CGColorSpaceCreateICCBased", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace createICCBased(@MachineSizedUInt long nComponents, @Pointer long range, CGDataProvider profile, CGColorSpace alternate);
-    @Bridge(symbol="CGColorSpaceCreateIndexed")
+    @Bridge(symbol="CGColorSpaceCreateIndexed", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace createIndexed(CGColorSpace baseSpace, @MachineSizedUInt long lastIndex, @Pointer long colorTable);
-    @Bridge(symbol="CGColorSpaceCreatePattern")
+    @Bridge(symbol="CGColorSpaceCreatePattern", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace createPattern(CGColorSpace baseSpace);
-    @Bridge(symbol="CGColorSpaceCreateWithName")
+    @Bridge(symbol="CGColorSpaceCreateWithName", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace createWithName(String name);
-    @Bridge(symbol="CGColorSpaceCopyName")
+    @Bridge(symbol="CGColorSpaceCopyName", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getName();
-    @Bridge(symbol="CGColorSpaceGetTypeID")
+    @Bridge(symbol="CGColorSpaceGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CGColorSpaceGetNumberOfComponents")
+    @Bridge(symbol="CGColorSpaceGetNumberOfComponents", optional=true)
     public native @MachineSizedUInt long getNumberOfComponents();
-    @Bridge(symbol="CGColorSpaceGetModel")
+    @Bridge(symbol="CGColorSpaceGetModel", optional=true)
     public native CGColorSpaceModel getModel();
-    @Bridge(symbol="CGColorSpaceGetBaseColorSpace")
+    @Bridge(symbol="CGColorSpaceGetBaseColorSpace", optional=true)
     public native CGColorSpace getBaseColorSpace();
-    @Bridge(symbol="CGColorSpaceGetColorTableCount")
+    @Bridge(symbol="CGColorSpaceGetColorTableCount", optional=true)
     public native @MachineSizedUInt long getColorTableCount();
-    @Bridge(symbol="CGColorSpaceGetColorTable")
+    @Bridge(symbol="CGColorSpaceGetColorTable", optional=true)
     protected native void getColorTable(@Pointer long table);
-    @Bridge(symbol="CGColorSpaceCopyICCProfile")
+    @Bridge(symbol="CGColorSpaceCopyICCProfile", optional=true)
     public native NSData copyICCProfile();
     /*</methods>*/
 }

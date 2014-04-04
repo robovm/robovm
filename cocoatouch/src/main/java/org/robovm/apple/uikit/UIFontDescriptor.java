@@ -62,53 +62,53 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="UIFontDescriptorFamilyAttribute")
+    @GlobalValue(symbol="UIFontDescriptorFamilyAttribute", optional=true)
     public static native NSString AttributeFamily();
-    @GlobalValue(symbol="UIFontDescriptorNameAttribute")
+    @GlobalValue(symbol="UIFontDescriptorNameAttribute", optional=true)
     public static native NSString AttributeName();
-    @GlobalValue(symbol="UIFontDescriptorFaceAttribute")
+    @GlobalValue(symbol="UIFontDescriptorFaceAttribute", optional=true)
     public static native NSString AttributeFace();
-    @GlobalValue(symbol="UIFontDescriptorSizeAttribute")
+    @GlobalValue(symbol="UIFontDescriptorSizeAttribute", optional=true)
     public static native NSString AttributeSize();
-    @GlobalValue(symbol="UIFontDescriptorVisibleNameAttribute")
+    @GlobalValue(symbol="UIFontDescriptorVisibleNameAttribute", optional=true)
     public static native NSString AttributeVisibleName();
-    @GlobalValue(symbol="UIFontDescriptorMatrixAttribute")
+    @GlobalValue(symbol="UIFontDescriptorMatrixAttribute", optional=true)
     public static native NSString AttributeMatrix();
-    @GlobalValue(symbol="UIFontDescriptorCharacterSetAttribute")
+    @GlobalValue(symbol="UIFontDescriptorCharacterSetAttribute", optional=true)
     public static native NSString AttributeCharacterSet();
-    @GlobalValue(symbol="UIFontDescriptorCascadeListAttribute")
+    @GlobalValue(symbol="UIFontDescriptorCascadeListAttribute", optional=true)
     public static native NSString AttributeCascadeList();
-    @GlobalValue(symbol="UIFontDescriptorTraitsAttribute")
+    @GlobalValue(symbol="UIFontDescriptorTraitsAttribute", optional=true)
     public static native NSString AttributeTraits();
-    @GlobalValue(symbol="UIFontDescriptorFixedAdvanceAttribute")
+    @GlobalValue(symbol="UIFontDescriptorFixedAdvanceAttribute", optional=true)
     public static native NSString AttributeFixedAdvance();
-    @GlobalValue(symbol="UIFontDescriptorFeatureSettingsAttribute")
+    @GlobalValue(symbol="UIFontDescriptorFeatureSettingsAttribute", optional=true)
     public static native NSString AttributeFeatureSettings();
-    @GlobalValue(symbol="UIFontDescriptorTextStyleAttribute")
+    @GlobalValue(symbol="UIFontDescriptorTextStyleAttribute", optional=true)
     public static native NSString AttributeTextStyle();
-    @GlobalValue(symbol="UIFontSymbolicTrait")
+    @GlobalValue(symbol="UIFontSymbolicTrait", optional=true)
     public static native NSString TraitSymbolic();
-    @GlobalValue(symbol="UIFontWeightTrait")
+    @GlobalValue(symbol="UIFontWeightTrait", optional=true)
     public static native NSString TraitWeight();
-    @GlobalValue(symbol="UIFontWidthTrait")
+    @GlobalValue(symbol="UIFontWidthTrait", optional=true)
     public static native NSString TraitWidth();
-    @GlobalValue(symbol="UIFontSlantTrait")
+    @GlobalValue(symbol="UIFontSlantTrait", optional=true)
     public static native NSString TraitSlant();
-    @GlobalValue(symbol="UIFontFeatureTypeIdentifierKey")
+    @GlobalValue(symbol="UIFontFeatureTypeIdentifierKey", optional=true)
     public static native NSString FeatureTypeIdentifierKey();
-    @GlobalValue(symbol="UIFontFeatureSelectorIdentifierKey")
+    @GlobalValue(symbol="UIFontFeatureSelectorIdentifierKey", optional=true)
     public static native NSString FeatureSelectorIdentifierKey();
-    @GlobalValue(symbol="UIFontTextStyleHeadline")
+    @GlobalValue(symbol="UIFontTextStyleHeadline", optional=true)
     public static native String TextStyleHeadline();
-    @GlobalValue(symbol="UIFontTextStyleBody")
+    @GlobalValue(symbol="UIFontTextStyleBody", optional=true)
     public static native String TextStyleBody();
-    @GlobalValue(symbol="UIFontTextStyleSubheadline")
+    @GlobalValue(symbol="UIFontTextStyleSubheadline", optional=true)
     public static native String TextStyleSubheadline();
-    @GlobalValue(symbol="UIFontTextStyleFootnote")
+    @GlobalValue(symbol="UIFontTextStyleFootnote", optional=true)
     public static native String TextStyleFootnote();
-    @GlobalValue(symbol="UIFontTextStyleCaption1")
+    @GlobalValue(symbol="UIFontTextStyleCaption1", optional=true)
     public static native String TextStyleCaption1();
-    @GlobalValue(symbol="UIFontTextStyleCaption2")
+    @GlobalValue(symbol="UIFontTextStyleCaption2", optional=true)
     public static native String TextStyleCaption2();
     
     @Method(selector = "objectForKey:")

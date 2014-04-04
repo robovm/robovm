@@ -51,21 +51,21 @@ import org.robovm.apple.coreimage.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="NSStringFromCGPoint")
+    @Bridge(symbol="NSStringFromCGPoint", optional=true)
     public static native String toString(@ByVal CGPoint point);
-    @Bridge(symbol="NSStringFromCGSize")
+    @Bridge(symbol="NSStringFromCGSize", optional=true)
     public static native String toString(@ByVal CGSize size);
-    @Bridge(symbol="NSStringFromCGRect")
+    @Bridge(symbol="NSStringFromCGRect", optional=true)
     public static native String toString(@ByVal CGRect rect);
-    @Bridge(symbol="NSStringFromCGAffineTransform")
+    @Bridge(symbol="NSStringFromCGAffineTransform", optional=true)
     public static native String toString(@ByVal CGAffineTransform transform);
-    @Bridge(symbol="CGPointFromString")
+    @Bridge(symbol="CGPointFromString", optional=true)
     public static native @ByVal CGPoint stringToCGPoint(String string);
-    @Bridge(symbol="CGSizeFromString")
+    @Bridge(symbol="CGSizeFromString", optional=true)
     public static native @ByVal CGSize stringToCGSize(String string);
-    @Bridge(symbol="CGRectFromString")
+    @Bridge(symbol="CGRectFromString", optional=true)
     public static native @ByVal CGRect stringToCGRect(String string);
-    @Bridge(symbol="CGAffineTransformFromString")
+    @Bridge(symbol="CGAffineTransformFromString", optional=true)
     public static native @ByVal CGAffineTransform stringToCGAffineTransform(String string);
     /*</methods>*/
 }

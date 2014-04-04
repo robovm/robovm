@@ -111,35 +111,35 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCAEmitterLayerPoint")
+    @GlobalValue(symbol="kCAEmitterLayerPoint", optional=true)
     public static native String ShapePoint();
-    @GlobalValue(symbol="kCAEmitterLayerLine")
+    @GlobalValue(symbol="kCAEmitterLayerLine", optional=true)
     public static native String ShapeLine();
-    @GlobalValue(symbol="kCAEmitterLayerRectangle")
+    @GlobalValue(symbol="kCAEmitterLayerRectangle", optional=true)
     public static native String ShapeRectangle();
-    @GlobalValue(symbol="kCAEmitterLayerCuboid")
+    @GlobalValue(symbol="kCAEmitterLayerCuboid", optional=true)
     public static native String ShapeCuboid();
-    @GlobalValue(symbol="kCAEmitterLayerCircle")
+    @GlobalValue(symbol="kCAEmitterLayerCircle", optional=true)
     public static native String ShapeCircle();
-    @GlobalValue(symbol="kCAEmitterLayerSphere")
+    @GlobalValue(symbol="kCAEmitterLayerSphere", optional=true)
     public static native String ShapeSphere();
-    @GlobalValue(symbol="kCAEmitterLayerPoints")
+    @GlobalValue(symbol="kCAEmitterLayerPoints", optional=true)
     public static native String ModePoints();
-    @GlobalValue(symbol="kCAEmitterLayerOutline")
+    @GlobalValue(symbol="kCAEmitterLayerOutline", optional=true)
     public static native String ModeOutline();
-    @GlobalValue(symbol="kCAEmitterLayerSurface")
+    @GlobalValue(symbol="kCAEmitterLayerSurface", optional=true)
     public static native String ModeSurface();
-    @GlobalValue(symbol="kCAEmitterLayerVolume")
+    @GlobalValue(symbol="kCAEmitterLayerVolume", optional=true)
     public static native String ModeVolume();
-    @GlobalValue(symbol="kCAEmitterLayerUnordered")
+    @GlobalValue(symbol="kCAEmitterLayerUnordered", optional=true)
     public static native String RenderUnordered();
-    @GlobalValue(symbol="kCAEmitterLayerOldestFirst")
+    @GlobalValue(symbol="kCAEmitterLayerOldestFirst", optional=true)
     public static native String RenderOldestFirst();
-    @GlobalValue(symbol="kCAEmitterLayerOldestLast")
+    @GlobalValue(symbol="kCAEmitterLayerOldestLast", optional=true)
     public static native String RenderOldestLast();
-    @GlobalValue(symbol="kCAEmitterLayerBackToFront")
+    @GlobalValue(symbol="kCAEmitterLayerBackToFront", optional=true)
     public static native String RenderBackToFront();
-    @GlobalValue(symbol="kCAEmitterLayerAdditive")
+    @GlobalValue(symbol="kCAEmitterLayerAdditive", optional=true)
     public static native String RenderAdditive();
     
     

@@ -48,17 +48,17 @@ import org.robovm.apple.foundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CGPDFPageGetDocument")
+    @Bridge(symbol="CGPDFPageGetDocument", optional=true)
     public native CGPDFDocument getDocument();
-    @Bridge(symbol="CGPDFPageGetPageNumber")
+    @Bridge(symbol="CGPDFPageGetPageNumber", optional=true)
     public native @MachineSizedUInt long getPageNumber();
-    @Bridge(symbol="CGPDFPageGetBoxRect")
+    @Bridge(symbol="CGPDFPageGetBoxRect", optional=true)
     public native @ByVal CGRect getBoxRect(CGPDFBox box);
-    @Bridge(symbol="CGPDFPageGetRotationAngle")
+    @Bridge(symbol="CGPDFPageGetRotationAngle", optional=true)
     public native int getRotationAngle();
-    @Bridge(symbol="CGPDFPageGetDrawingTransform")
+    @Bridge(symbol="CGPDFPageGetDrawingTransform", optional=true)
     public native @ByVal CGAffineTransform getDrawingTransform(CGPDFBox box, @ByVal CGRect rect, int rotate, boolean preserveAspectRatio);
-    @Bridge(symbol="CGPDFPageGetTypeID")
+    @Bridge(symbol="CGPDFPageGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     /*</methods>*/
 }

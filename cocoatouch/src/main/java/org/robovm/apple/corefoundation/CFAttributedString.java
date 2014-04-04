@@ -47,25 +47,25 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFAttributedStringGetTypeID")
+    @Bridge(symbol="CFAttributedStringGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFAttributedStringCreate")
+    @Bridge(symbol="CFAttributedStringCreate", optional=true)
     public static native CFAttributedString create(CFAllocator alloc, CFString str, CFDictionary attributes);
-    @Bridge(symbol="CFAttributedStringCreateWithSubstring")
+    @Bridge(symbol="CFAttributedStringCreateWithSubstring", optional=true)
     public static native CFAttributedString createWithSubstring(CFAllocator alloc, CFAttributedString aStr, @ByVal CFRange range);
-    @Bridge(symbol="CFAttributedStringCreateCopy")
+    @Bridge(symbol="CFAttributedStringCreateCopy", optional=true)
     public static native CFAttributedString createCopy(CFAllocator alloc, CFAttributedString aStr);
-    @Bridge(symbol="CFAttributedStringGetString")
+    @Bridge(symbol="CFAttributedStringGetString", optional=true)
     public native CFString getString();
-    @Bridge(symbol="CFAttributedStringGetLength")
+    @Bridge(symbol="CFAttributedStringGetLength", optional=true)
     public native @MachineSizedSInt long getLength();
-    @Bridge(symbol="CFAttributedStringGetAttributes")
+    @Bridge(symbol="CFAttributedStringGetAttributes", optional=true)
     public native CFDictionary getAttributes(@MachineSizedSInt long loc, CFRange effectiveRange);
-    @Bridge(symbol="CFAttributedStringGetAttribute")
+    @Bridge(symbol="CFAttributedStringGetAttribute", optional=true)
     public native CFType getAttribute(@MachineSizedSInt long loc, CFString attrName, CFRange effectiveRange);
-    @Bridge(symbol="CFAttributedStringGetAttributesAndLongestEffectiveRange")
+    @Bridge(symbol="CFAttributedStringGetAttributesAndLongestEffectiveRange", optional=true)
     public native CFDictionary getAttributesAndLongestEffectiveRange(@MachineSizedSInt long loc, @ByVal CFRange inRange, CFRange longestEffectiveRange);
-    @Bridge(symbol="CFAttributedStringGetAttributeAndLongestEffectiveRange")
+    @Bridge(symbol="CFAttributedStringGetAttributeAndLongestEffectiveRange", optional=true)
     public native CFType getAttributeAndLongestEffectiveRange(@MachineSizedSInt long loc, CFString attrName, @ByVal CFRange inRange, CFRange longestEffectiveRange);
     /*</methods>*/
 }

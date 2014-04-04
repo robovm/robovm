@@ -97,7 +97,7 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="UILocalNotificationDefaultSoundName")
+    @GlobalValue(symbol="UILocalNotificationDefaultSoundName", optional=true)
     public static native String DefaultSoundName();
     
     @Method(selector = "encodeWithCoder:")

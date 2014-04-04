@@ -60,11 +60,11 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSURLErrorBackgroundTaskCancelledReasonKey")
+    @GlobalValue(symbol="NSURLErrorBackgroundTaskCancelledReasonKey", optional=true)
     public static native NSString KeyBackgroundTaskCancelledReasonKey();
-    @GlobalValue(symbol="NSURLSessionTransferSizeUnknown")
+    @GlobalValue(symbol="NSURLSessionTransferSizeUnknown", optional=true)
     public static native long TransferSizeUnknown();
-    @GlobalValue(symbol="NSURLSessionDownloadTaskResumeData")
+    @GlobalValue(symbol="NSURLSessionDownloadTaskResumeData", optional=true)
     public static native NSString KeyDownloadTaskResumeData();
     
     @Method(selector = "finishTasksAndInvalidate")

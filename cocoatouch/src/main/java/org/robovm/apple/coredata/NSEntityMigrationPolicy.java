@@ -50,17 +50,17 @@ import org.robovm.apple.foundation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSMigrationManagerKey")
+    @GlobalValue(symbol="NSMigrationManagerKey", optional=true)
     public static native NSString KeyManager();
-    @GlobalValue(symbol="NSMigrationSourceObjectKey")
+    @GlobalValue(symbol="NSMigrationSourceObjectKey", optional=true)
     public static native NSString KeySourceObject();
-    @GlobalValue(symbol="NSMigrationDestinationObjectKey")
+    @GlobalValue(symbol="NSMigrationDestinationObjectKey", optional=true)
     public static native NSString KeyDestinationObject();
-    @GlobalValue(symbol="NSMigrationEntityMappingKey")
+    @GlobalValue(symbol="NSMigrationEntityMappingKey", optional=true)
     public static native NSString KeyEntityMapping();
-    @GlobalValue(symbol="NSMigrationPropertyMappingKey")
+    @GlobalValue(symbol="NSMigrationPropertyMappingKey", optional=true)
     public static native NSString KeyPropertyMapping();
-    @GlobalValue(symbol="NSMigrationEntityPolicyKey")
+    @GlobalValue(symbol="NSMigrationEntityPolicyKey", optional=true)
     public static native NSString KeyEntityPolicy();
     
     @Method(selector = "beginEntityMapping:manager:error:")

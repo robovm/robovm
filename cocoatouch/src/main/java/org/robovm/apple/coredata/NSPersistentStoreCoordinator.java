@@ -51,73 +51,73 @@ import org.robovm.apple.foundation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSPersistentStoreSaveConflictsErrorKey")
+    @GlobalValue(symbol="NSPersistentStoreSaveConflictsErrorKey", optional=true)
     public static native NSString KeySaveConflictsError();
-    @GlobalValue(symbol="NSSQLiteStoreType")
+    @GlobalValue(symbol="NSSQLiteStoreType", optional=true)
     public static native String StoreTypeSQLite();
-    @GlobalValue(symbol="NSXMLStoreType")
+    @GlobalValue(symbol="NSXMLStoreType", optional=true)
     public static native String StoreTypeXML();
-    @GlobalValue(symbol="NSBinaryStoreType")
+    @GlobalValue(symbol="NSBinaryStoreType", optional=true)
     public static native String StoreTypeBinary();
-    @GlobalValue(symbol="NSInMemoryStoreType")
+    @GlobalValue(symbol="NSInMemoryStoreType", optional=true)
     public static native String StoreTypeInMemory();
-    @GlobalValue(symbol="NSStoreTypeKey")
+    @GlobalValue(symbol="NSStoreTypeKey", optional=true)
     public static native NSString KeyStoreType();
-    @GlobalValue(symbol="NSStoreUUIDKey")
+    @GlobalValue(symbol="NSStoreUUIDKey", optional=true)
     public static native NSString KeyStoreUUID();
-    @GlobalValue(symbol="NSPersistentStoreCoordinatorStoresWillChangeNotification")
+    @GlobalValue(symbol="NSPersistentStoreCoordinatorStoresWillChangeNotification", optional=true)
     public static native String NotificationStoresWillChange();
-    @GlobalValue(symbol="NSPersistentStoreCoordinatorStoresDidChangeNotification")
+    @GlobalValue(symbol="NSPersistentStoreCoordinatorStoresDidChangeNotification", optional=true)
     public static native String NotificationStoresDidChange();
-    @GlobalValue(symbol="NSPersistentStoreCoordinatorWillRemoveStoreNotification")
+    @GlobalValue(symbol="NSPersistentStoreCoordinatorWillRemoveStoreNotification", optional=true)
     public static native String NotificationWillRemoveStore();
-    @GlobalValue(symbol="NSAddedPersistentStoresKey")
+    @GlobalValue(symbol="NSAddedPersistentStoresKey", optional=true)
     public static native NSString KeyAddedPersistentStores();
-    @GlobalValue(symbol="NSRemovedPersistentStoresKey")
+    @GlobalValue(symbol="NSRemovedPersistentStoresKey", optional=true)
     public static native NSString KeyRemovedPersistentStores();
-    @GlobalValue(symbol="NSUUIDChangedPersistentStoresKey")
+    @GlobalValue(symbol="NSUUIDChangedPersistentStoresKey", optional=true)
     public static native NSString KeyUUIDChangedPersistentStores();
-    @GlobalValue(symbol="NSReadOnlyPersistentStoreOption")
+    @GlobalValue(symbol="NSReadOnlyPersistentStoreOption", optional=true)
     public static native NSString KeyReadOnlyOption();
-    @GlobalValue(symbol="NSValidateXMLStoreOption")
+    @GlobalValue(symbol="NSValidateXMLStoreOption", optional=true)
     public static native NSString KeyValidateXMLStoreOption();
-    @GlobalValue(symbol="NSPersistentStoreTimeoutOption")
+    @GlobalValue(symbol="NSPersistentStoreTimeoutOption", optional=true)
     public static native NSString KeyTimeoutOption();
-    @GlobalValue(symbol="NSSQLitePragmasOption")
+    @GlobalValue(symbol="NSSQLitePragmasOption", optional=true)
     public static native NSString KeySQLitePragmasOption();
-    @GlobalValue(symbol="NSSQLiteAnalyzeOption")
+    @GlobalValue(symbol="NSSQLiteAnalyzeOption", optional=true)
     public static native NSString KeySQLiteAnalyzeOption();
-    @GlobalValue(symbol="NSSQLiteManualVacuumOption")
+    @GlobalValue(symbol="NSSQLiteManualVacuumOption", optional=true)
     public static native NSString KeySQLiteManualVacuumOption();
-    @GlobalValue(symbol="NSIgnorePersistentStoreVersioningOption")
+    @GlobalValue(symbol="NSIgnorePersistentStoreVersioningOption", optional=true)
     public static native NSString KeyIgnorePersistentStoreVersioningOption();
-    @GlobalValue(symbol="NSMigratePersistentStoresAutomaticallyOption")
+    @GlobalValue(symbol="NSMigratePersistentStoresAutomaticallyOption", optional=true)
     public static native NSString KeyMigratePersistentStoresAutomaticallyOption();
-    @GlobalValue(symbol="NSInferMappingModelAutomaticallyOption")
+    @GlobalValue(symbol="NSInferMappingModelAutomaticallyOption", optional=true)
     public static native NSString KeyInferMappingModelAutomaticallyOption();
-    @GlobalValue(symbol="NSStoreModelVersionHashesKey")
+    @GlobalValue(symbol="NSStoreModelVersionHashesKey", optional=true)
     public static native NSString KeyModelVersionHashes();
-    @GlobalValue(symbol="NSStoreModelVersionIdentifiersKey")
+    @GlobalValue(symbol="NSStoreModelVersionIdentifiersKey", optional=true)
     public static native NSString KeyModelVersionIdentifiers();
-    @GlobalValue(symbol="NSPersistentStoreOSCompatibility")
+    @GlobalValue(symbol="NSPersistentStoreOSCompatibility", optional=true)
     public static native NSString KeyOSCompatibility();
-    @GlobalValue(symbol="NSPersistentStoreUbiquitousContentNameKey")
+    @GlobalValue(symbol="NSPersistentStoreUbiquitousContentNameKey", optional=true)
     public static native NSString KeyUbiquitousContentName();
-    @GlobalValue(symbol="NSPersistentStoreUbiquitousContentURLKey")
+    @GlobalValue(symbol="NSPersistentStoreUbiquitousContentURLKey", optional=true)
     public static native NSString KeyUbiquitousContentURL();
-    @GlobalValue(symbol="NSPersistentStoreDidImportUbiquitousContentChangesNotification")
+    @GlobalValue(symbol="NSPersistentStoreDidImportUbiquitousContentChangesNotification", optional=true)
     public static native String NotificationDidImportUbiquitousContentChanges();
-    @GlobalValue(symbol="NSPersistentStoreUbiquitousTransitionTypeKey")
+    @GlobalValue(symbol="NSPersistentStoreUbiquitousTransitionTypeKey", optional=true)
     public static native NSString KeyUbiquitousTransitionType();
-    @GlobalValue(symbol="NSPersistentStoreUbiquitousPeerTokenOption")
+    @GlobalValue(symbol="NSPersistentStoreUbiquitousPeerTokenOption", optional=true)
     public static native NSString KeyUbiquitousPeerTokenOption();
-    @GlobalValue(symbol="NSPersistentStoreRemoveUbiquitousMetadataOption")
+    @GlobalValue(symbol="NSPersistentStoreRemoveUbiquitousMetadataOption", optional=true)
     public static native NSString KeyRemoveUbiquitousMetadataOption();
-    @GlobalValue(symbol="NSPersistentStoreUbiquitousContainerIdentifierKey")
+    @GlobalValue(symbol="NSPersistentStoreUbiquitousContainerIdentifierKey", optional=true)
     public static native NSString KeyUbiquitousContainerIdentifier();
-    @GlobalValue(symbol="NSPersistentStoreRebuildFromUbiquitousContentOption")
+    @GlobalValue(symbol="NSPersistentStoreRebuildFromUbiquitousContentOption", optional=true)
     public static native NSString KeyRebuildFromUbiquitousContentOption();
-    @GlobalValue(symbol="NSPersistentStoreFileProtectionKey")
+    @GlobalValue(symbol="NSPersistentStoreFileProtectionKey", optional=true)
     public static native NSString KeyFileProtection();
     
     @Method(selector = "setMetadata:forPersistentStore:")

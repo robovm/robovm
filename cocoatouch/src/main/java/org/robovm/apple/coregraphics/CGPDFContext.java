@@ -47,23 +47,23 @@ import org.robovm.apple.foundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CGPDFContextCreate")
+    @Bridge(symbol="CGPDFContextCreate", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPDFContext create(CGDataConsumer consumer, CGRect mediaBox, NSDictionary<?, ?> auxiliaryInfo);
-    @Bridge(symbol="CGPDFContextCreateWithURL")
+    @Bridge(symbol="CGPDFContextCreateWithURL", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPDFContext createWithURL(NSURL url, CGRect mediaBox, NSDictionary<?, ?> auxiliaryInfo);
-    @Bridge(symbol="CGPDFContextClose")
+    @Bridge(symbol="CGPDFContextClose", optional=true)
     public native void closeContext();
-    @Bridge(symbol="CGPDFContextBeginPage")
+    @Bridge(symbol="CGPDFContextBeginPage", optional=true)
     public native void beginPage(NSDictionary<?, ?> pageInfo);
-    @Bridge(symbol="CGPDFContextEndPage")
+    @Bridge(symbol="CGPDFContextEndPage", optional=true)
     public native void endPage();
-    @Bridge(symbol="CGPDFContextAddDocumentMetadata")
+    @Bridge(symbol="CGPDFContextAddDocumentMetadata", optional=true)
     public native void addDocumentMetadata(NSData metadata);
-    @Bridge(symbol="CGPDFContextSetURLForRect")
+    @Bridge(symbol="CGPDFContextSetURLForRect", optional=true)
     public native void setURLForRect(NSURL url, @ByVal CGRect rect);
-    @Bridge(symbol="CGPDFContextAddDestinationAtPoint")
+    @Bridge(symbol="CGPDFContextAddDestinationAtPoint", optional=true)
     public native void addDestinationAtPoint(String name, @ByVal CGPoint point);
-    @Bridge(symbol="CGPDFContextSetDestinationForRect")
+    @Bridge(symbol="CGPDFContextSetDestinationForRect", optional=true)
     public native void setDestinationForRect(String name, @ByVal CGRect rect);
     /*</methods>*/
 }

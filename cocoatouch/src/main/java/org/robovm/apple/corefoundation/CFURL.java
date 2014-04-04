@@ -47,354 +47,354 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFURLKeysOfUnsetValuesKey")
+    @GlobalValue(symbol="kCFURLKeysOfUnsetValuesKey", optional=true)
     public static native CFString KeyKeysOfUnsetValues();
-    @GlobalValue(symbol="kCFURLNameKey")
+    @GlobalValue(symbol="kCFURLNameKey", optional=true)
     public static native CFString KeyName();
-    @GlobalValue(symbol="kCFURLLocalizedNameKey")
+    @GlobalValue(symbol="kCFURLLocalizedNameKey", optional=true)
     public static native CFString KeyLocalizedName();
-    @GlobalValue(symbol="kCFURLIsRegularFileKey")
+    @GlobalValue(symbol="kCFURLIsRegularFileKey", optional=true)
     public static native CFString KeyIsRegularFile();
-    @GlobalValue(symbol="kCFURLIsDirectoryKey")
+    @GlobalValue(symbol="kCFURLIsDirectoryKey", optional=true)
     public static native CFString KeyIsDirectory();
-    @GlobalValue(symbol="kCFURLIsSymbolicLinkKey")
+    @GlobalValue(symbol="kCFURLIsSymbolicLinkKey", optional=true)
     public static native CFString KeyIsSymbolicLink();
-    @GlobalValue(symbol="kCFURLIsVolumeKey")
+    @GlobalValue(symbol="kCFURLIsVolumeKey", optional=true)
     public static native CFString KeyIsVolume();
-    @GlobalValue(symbol="kCFURLIsPackageKey")
+    @GlobalValue(symbol="kCFURLIsPackageKey", optional=true)
     public static native CFString KeyIsPackage();
-    @GlobalValue(symbol="kCFURLIsSystemImmutableKey")
+    @GlobalValue(symbol="kCFURLIsSystemImmutableKey", optional=true)
     public static native CFString KeyIsSystemImmutable();
-    @GlobalValue(symbol="kCFURLIsUserImmutableKey")
+    @GlobalValue(symbol="kCFURLIsUserImmutableKey", optional=true)
     public static native CFString KeyIsUserImmutable();
-    @GlobalValue(symbol="kCFURLIsHiddenKey")
+    @GlobalValue(symbol="kCFURLIsHiddenKey", optional=true)
     public static native CFString KeyIsHidden();
-    @GlobalValue(symbol="kCFURLHasHiddenExtensionKey")
+    @GlobalValue(symbol="kCFURLHasHiddenExtensionKey", optional=true)
     public static native CFString KeyHasHiddenExtension();
-    @GlobalValue(symbol="kCFURLCreationDateKey")
+    @GlobalValue(symbol="kCFURLCreationDateKey", optional=true)
     public static native CFString KeyCreationDate();
-    @GlobalValue(symbol="kCFURLContentAccessDateKey")
+    @GlobalValue(symbol="kCFURLContentAccessDateKey", optional=true)
     public static native CFString KeyContentAccessDate();
-    @GlobalValue(symbol="kCFURLContentModificationDateKey")
+    @GlobalValue(symbol="kCFURLContentModificationDateKey", optional=true)
     public static native CFString KeyContentModificationDate();
-    @GlobalValue(symbol="kCFURLAttributeModificationDateKey")
+    @GlobalValue(symbol="kCFURLAttributeModificationDateKey", optional=true)
     public static native CFString KeyAttributeModificationDate();
-    @GlobalValue(symbol="kCFURLLinkCountKey")
+    @GlobalValue(symbol="kCFURLLinkCountKey", optional=true)
     public static native CFString KeyLinkCount();
-    @GlobalValue(symbol="kCFURLParentDirectoryURLKey")
+    @GlobalValue(symbol="kCFURLParentDirectoryURLKey", optional=true)
     public static native CFString KeyParentDirectoryURL();
-    @GlobalValue(symbol="kCFURLVolumeURLKey")
+    @GlobalValue(symbol="kCFURLVolumeURLKey", optional=true)
     public static native CFString KeyVolumeURL();
-    @GlobalValue(symbol="kCFURLTypeIdentifierKey")
+    @GlobalValue(symbol="kCFURLTypeIdentifierKey", optional=true)
     public static native CFString KeyTypeIdentifier();
-    @GlobalValue(symbol="kCFURLLocalizedTypeDescriptionKey")
+    @GlobalValue(symbol="kCFURLLocalizedTypeDescriptionKey", optional=true)
     public static native CFString KeyLocalizedTypeDescription();
-    @GlobalValue(symbol="kCFURLLabelNumberKey")
+    @GlobalValue(symbol="kCFURLLabelNumberKey", optional=true)
     public static native CFString KeyLabelNumber();
-    @GlobalValue(symbol="kCFURLLabelColorKey")
+    @GlobalValue(symbol="kCFURLLabelColorKey", optional=true)
     public static native CFString KeyLabelColor();
-    @GlobalValue(symbol="kCFURLLocalizedLabelKey")
+    @GlobalValue(symbol="kCFURLLocalizedLabelKey", optional=true)
     public static native CFString KeyLocalizedLabel();
-    @GlobalValue(symbol="kCFURLEffectiveIconKey")
+    @GlobalValue(symbol="kCFURLEffectiveIconKey", optional=true)
     public static native CFString KeyEffectiveIcon();
-    @GlobalValue(symbol="kCFURLCustomIconKey")
+    @GlobalValue(symbol="kCFURLCustomIconKey", optional=true)
     public static native CFString KeyCustomIcon();
-    @GlobalValue(symbol="kCFURLFileResourceIdentifierKey")
+    @GlobalValue(symbol="kCFURLFileResourceIdentifierKey", optional=true)
     public static native CFString KeyFileResourceIdentifier();
-    @GlobalValue(symbol="kCFURLVolumeIdentifierKey")
+    @GlobalValue(symbol="kCFURLVolumeIdentifierKey", optional=true)
     public static native CFString KeyVolumeIdentifier();
-    @GlobalValue(symbol="kCFURLPreferredIOBlockSizeKey")
+    @GlobalValue(symbol="kCFURLPreferredIOBlockSizeKey", optional=true)
     public static native CFString KeyPreferredIOBlockSize();
-    @GlobalValue(symbol="kCFURLIsReadableKey")
+    @GlobalValue(symbol="kCFURLIsReadableKey", optional=true)
     public static native CFString KeyIsReadable();
-    @GlobalValue(symbol="kCFURLIsWritableKey")
+    @GlobalValue(symbol="kCFURLIsWritableKey", optional=true)
     public static native CFString KeyIsWritable();
-    @GlobalValue(symbol="kCFURLIsExecutableKey")
+    @GlobalValue(symbol="kCFURLIsExecutableKey", optional=true)
     public static native CFString KeyIsExecutable();
-    @GlobalValue(symbol="kCFURLFileSecurityKey")
+    @GlobalValue(symbol="kCFURLFileSecurityKey", optional=true)
     public static native CFString KeyFileSecurity();
-    @GlobalValue(symbol="kCFURLIsExcludedFromBackupKey")
+    @GlobalValue(symbol="kCFURLIsExcludedFromBackupKey", optional=true)
     public static native CFString KeyIsExcludedFromBackup();
-    @GlobalValue(symbol="kCFURLTagNamesKey")
+    @GlobalValue(symbol="kCFURLTagNamesKey", optional=true)
     public static native CFString KeyTagNames();
-    @GlobalValue(symbol="kCFURLPathKey")
+    @GlobalValue(symbol="kCFURLPathKey", optional=true)
     public static native CFString KeyPath();
-    @GlobalValue(symbol="kCFURLIsMountTriggerKey")
+    @GlobalValue(symbol="kCFURLIsMountTriggerKey", optional=true)
     public static native CFString KeyIsMountTrigger();
-    @GlobalValue(symbol="kCFURLFileResourceTypeKey")
+    @GlobalValue(symbol="kCFURLFileResourceTypeKey", optional=true)
     public static native CFString KeyFileResourceType();
-    @GlobalValue(symbol="kCFURLFileResourceTypeNamedPipe")
+    @GlobalValue(symbol="kCFURLFileResourceTypeNamedPipe", optional=true)
     public static native CFString FileResourceTypeNamedPipe();
-    @GlobalValue(symbol="kCFURLFileResourceTypeCharacterSpecial")
+    @GlobalValue(symbol="kCFURLFileResourceTypeCharacterSpecial", optional=true)
     public static native CFString FileResourceTypeCharacterSpecial();
-    @GlobalValue(symbol="kCFURLFileResourceTypeDirectory")
+    @GlobalValue(symbol="kCFURLFileResourceTypeDirectory", optional=true)
     public static native CFString FileResourceTypeDirectory();
-    @GlobalValue(symbol="kCFURLFileResourceTypeBlockSpecial")
+    @GlobalValue(symbol="kCFURLFileResourceTypeBlockSpecial", optional=true)
     public static native CFString FileResourceTypeBlockSpecial();
-    @GlobalValue(symbol="kCFURLFileResourceTypeRegular")
+    @GlobalValue(symbol="kCFURLFileResourceTypeRegular", optional=true)
     public static native CFString FileResourceTypeRegular();
-    @GlobalValue(symbol="kCFURLFileResourceTypeSymbolicLink")
+    @GlobalValue(symbol="kCFURLFileResourceTypeSymbolicLink", optional=true)
     public static native CFString FileResourceTypeSymbolicLink();
-    @GlobalValue(symbol="kCFURLFileResourceTypeSocket")
+    @GlobalValue(symbol="kCFURLFileResourceTypeSocket", optional=true)
     public static native CFString FileResourceTypeSocket();
-    @GlobalValue(symbol="kCFURLFileResourceTypeUnknown")
+    @GlobalValue(symbol="kCFURLFileResourceTypeUnknown", optional=true)
     public static native CFString FileResourceTypeUnknown();
-    @GlobalValue(symbol="kCFURLFileSizeKey")
+    @GlobalValue(symbol="kCFURLFileSizeKey", optional=true)
     public static native CFString KeyFileSize();
-    @GlobalValue(symbol="kCFURLFileAllocatedSizeKey")
+    @GlobalValue(symbol="kCFURLFileAllocatedSizeKey", optional=true)
     public static native CFString KeyFileAllocatedSize();
-    @GlobalValue(symbol="kCFURLTotalFileSizeKey")
+    @GlobalValue(symbol="kCFURLTotalFileSizeKey", optional=true)
     public static native CFString KeyTotalFileSize();
-    @GlobalValue(symbol="kCFURLTotalFileAllocatedSizeKey")
+    @GlobalValue(symbol="kCFURLTotalFileAllocatedSizeKey", optional=true)
     public static native CFString KeyTotalFileAllocatedSize();
-    @GlobalValue(symbol="kCFURLIsAliasFileKey")
+    @GlobalValue(symbol="kCFURLIsAliasFileKey", optional=true)
     public static native CFString KeyIsAliasFile();
-    @GlobalValue(symbol="kCFURLVolumeLocalizedFormatDescriptionKey")
+    @GlobalValue(symbol="kCFURLVolumeLocalizedFormatDescriptionKey", optional=true)
     public static native CFString KeyVolumeLocalizedFormatDescription();
-    @GlobalValue(symbol="kCFURLVolumeTotalCapacityKey")
+    @GlobalValue(symbol="kCFURLVolumeTotalCapacityKey", optional=true)
     public static native CFString KeyVolumeTotalCapacity();
-    @GlobalValue(symbol="kCFURLVolumeAvailableCapacityKey")
+    @GlobalValue(symbol="kCFURLVolumeAvailableCapacityKey", optional=true)
     public static native CFString KeyVolumeAvailableCapacity();
-    @GlobalValue(symbol="kCFURLVolumeResourceCountKey")
+    @GlobalValue(symbol="kCFURLVolumeResourceCountKey", optional=true)
     public static native CFString KeyVolumeResourceCount();
-    @GlobalValue(symbol="kCFURLVolumeSupportsPersistentIDsKey")
+    @GlobalValue(symbol="kCFURLVolumeSupportsPersistentIDsKey", optional=true)
     public static native CFString KeyVolumeSupportsPersistentIDs();
-    @GlobalValue(symbol="kCFURLVolumeSupportsSymbolicLinksKey")
+    @GlobalValue(symbol="kCFURLVolumeSupportsSymbolicLinksKey", optional=true)
     public static native CFString KeyVolumeSupportsSymbolicLinks();
-    @GlobalValue(symbol="kCFURLVolumeSupportsHardLinksKey")
+    @GlobalValue(symbol="kCFURLVolumeSupportsHardLinksKey", optional=true)
     public static native CFString KeyVolumeSupportsHardLinks();
-    @GlobalValue(symbol="kCFURLVolumeSupportsJournalingKey")
+    @GlobalValue(symbol="kCFURLVolumeSupportsJournalingKey", optional=true)
     public static native CFString KeyVolumeSupportsJournaling();
-    @GlobalValue(symbol="kCFURLVolumeIsJournalingKey")
+    @GlobalValue(symbol="kCFURLVolumeIsJournalingKey", optional=true)
     public static native CFString KeyVolumeIsJournaling();
-    @GlobalValue(symbol="kCFURLVolumeSupportsSparseFilesKey")
+    @GlobalValue(symbol="kCFURLVolumeSupportsSparseFilesKey", optional=true)
     public static native CFString KeyVolumeSupportsSparseFiles();
-    @GlobalValue(symbol="kCFURLVolumeSupportsZeroRunsKey")
+    @GlobalValue(symbol="kCFURLVolumeSupportsZeroRunsKey", optional=true)
     public static native CFString KeyVolumeSupportsZeroRuns();
-    @GlobalValue(symbol="kCFURLVolumeSupportsCaseSensitiveNamesKey")
+    @GlobalValue(symbol="kCFURLVolumeSupportsCaseSensitiveNamesKey", optional=true)
     public static native CFString KeyVolumeSupportsCaseSensitiveNames();
-    @GlobalValue(symbol="kCFURLVolumeSupportsCasePreservedNamesKey")
+    @GlobalValue(symbol="kCFURLVolumeSupportsCasePreservedNamesKey", optional=true)
     public static native CFString KeyVolumeSupportsCasePreservedNames();
-    @GlobalValue(symbol="kCFURLVolumeSupportsRootDirectoryDatesKey")
+    @GlobalValue(symbol="kCFURLVolumeSupportsRootDirectoryDatesKey", optional=true)
     public static native CFString KeyVolumeSupportsRootDirectoryDates();
-    @GlobalValue(symbol="kCFURLVolumeSupportsVolumeSizesKey")
+    @GlobalValue(symbol="kCFURLVolumeSupportsVolumeSizesKey", optional=true)
     public static native CFString KeyVolumeSupportsVolumeSizes();
-    @GlobalValue(symbol="kCFURLVolumeSupportsRenamingKey")
+    @GlobalValue(symbol="kCFURLVolumeSupportsRenamingKey", optional=true)
     public static native CFString KeyVolumeSupportsRenaming();
-    @GlobalValue(symbol="kCFURLVolumeSupportsAdvisoryFileLockingKey")
+    @GlobalValue(symbol="kCFURLVolumeSupportsAdvisoryFileLockingKey", optional=true)
     public static native CFString KeyVolumeSupportsAdvisoryFileLocking();
-    @GlobalValue(symbol="kCFURLVolumeSupportsExtendedSecurityKey")
+    @GlobalValue(symbol="kCFURLVolumeSupportsExtendedSecurityKey", optional=true)
     public static native CFString KeyVolumeSupportsExtendedSecurity();
-    @GlobalValue(symbol="kCFURLVolumeIsBrowsableKey")
+    @GlobalValue(symbol="kCFURLVolumeIsBrowsableKey", optional=true)
     public static native CFString KeyVolumeIsBrowsable();
-    @GlobalValue(symbol="kCFURLVolumeMaximumFileSizeKey")
+    @GlobalValue(symbol="kCFURLVolumeMaximumFileSizeKey", optional=true)
     public static native CFString KeyVolumeMaximumFileSize();
-    @GlobalValue(symbol="kCFURLVolumeIsEjectableKey")
+    @GlobalValue(symbol="kCFURLVolumeIsEjectableKey", optional=true)
     public static native CFString KeyVolumeIsEjectable();
-    @GlobalValue(symbol="kCFURLVolumeIsRemovableKey")
+    @GlobalValue(symbol="kCFURLVolumeIsRemovableKey", optional=true)
     public static native CFString KeyVolumeIsRemovable();
-    @GlobalValue(symbol="kCFURLVolumeIsInternalKey")
+    @GlobalValue(symbol="kCFURLVolumeIsInternalKey", optional=true)
     public static native CFString KeyVolumeIsInternal();
-    @GlobalValue(symbol="kCFURLVolumeIsAutomountedKey")
+    @GlobalValue(symbol="kCFURLVolumeIsAutomountedKey", optional=true)
     public static native CFString KeyVolumeIsAutomounted();
-    @GlobalValue(symbol="kCFURLVolumeIsLocalKey")
+    @GlobalValue(symbol="kCFURLVolumeIsLocalKey", optional=true)
     public static native CFString KeyVolumeIsLocal();
-    @GlobalValue(symbol="kCFURLVolumeIsReadOnlyKey")
+    @GlobalValue(symbol="kCFURLVolumeIsReadOnlyKey", optional=true)
     public static native CFString KeyVolumeIsReadOnly();
-    @GlobalValue(symbol="kCFURLVolumeCreationDateKey")
+    @GlobalValue(symbol="kCFURLVolumeCreationDateKey", optional=true)
     public static native CFString KeyVolumeCreationDate();
-    @GlobalValue(symbol="kCFURLVolumeURLForRemountingKey")
+    @GlobalValue(symbol="kCFURLVolumeURLForRemountingKey", optional=true)
     public static native CFString KeyVolumeURLForRemounting();
-    @GlobalValue(symbol="kCFURLVolumeUUIDStringKey")
+    @GlobalValue(symbol="kCFURLVolumeUUIDStringKey", optional=true)
     public static native CFString KeyVolumeUUIDString();
-    @GlobalValue(symbol="kCFURLVolumeNameKey")
+    @GlobalValue(symbol="kCFURLVolumeNameKey", optional=true)
     public static native CFString KeyVolumeName();
-    @GlobalValue(symbol="kCFURLVolumeLocalizedNameKey")
+    @GlobalValue(symbol="kCFURLVolumeLocalizedNameKey", optional=true)
     public static native CFString KeyVolumeLocalizedName();
-    @GlobalValue(symbol="kCFURLIsUbiquitousItemKey")
+    @GlobalValue(symbol="kCFURLIsUbiquitousItemKey", optional=true)
     public static native CFString KeyIsUbiquitousItem();
-    @GlobalValue(symbol="kCFURLUbiquitousItemHasUnresolvedConflictsKey")
+    @GlobalValue(symbol="kCFURLUbiquitousItemHasUnresolvedConflictsKey", optional=true)
     public static native CFString KeyUbiquitousItemHasUnresolvedConflicts();
-    @GlobalValue(symbol="kCFURLUbiquitousItemIsDownloadedKey")
+    @GlobalValue(symbol="kCFURLUbiquitousItemIsDownloadedKey", optional=true)
     public static native CFString KeyUbiquitousItemIsDownloaded();
-    @GlobalValue(symbol="kCFURLUbiquitousItemIsDownloadingKey")
+    @GlobalValue(symbol="kCFURLUbiquitousItemIsDownloadingKey", optional=true)
     public static native CFString KeyUbiquitousItemIsDownloading();
-    @GlobalValue(symbol="kCFURLUbiquitousItemIsUploadedKey")
+    @GlobalValue(symbol="kCFURLUbiquitousItemIsUploadedKey", optional=true)
     public static native CFString KeyUbiquitousItemIsUploaded();
-    @GlobalValue(symbol="kCFURLUbiquitousItemIsUploadingKey")
+    @GlobalValue(symbol="kCFURLUbiquitousItemIsUploadingKey", optional=true)
     public static native CFString KeyUbiquitousItemIsUploading();
-    @GlobalValue(symbol="kCFURLUbiquitousItemPercentDownloadedKey")
+    @GlobalValue(symbol="kCFURLUbiquitousItemPercentDownloadedKey", optional=true)
     public static native CFString KeyUbiquitousItemPercentDownloaded();
-    @GlobalValue(symbol="kCFURLUbiquitousItemPercentUploadedKey")
+    @GlobalValue(symbol="kCFURLUbiquitousItemPercentUploadedKey", optional=true)
     public static native CFString KeyUbiquitousItemPercentUploaded();
-    @GlobalValue(symbol="kCFURLUbiquitousItemDownloadingStatusKey")
+    @GlobalValue(symbol="kCFURLUbiquitousItemDownloadingStatusKey", optional=true)
     public static native CFString KeyUbiquitousItemDownloadingStatus();
-    @GlobalValue(symbol="kCFURLUbiquitousItemDownloadingErrorKey")
+    @GlobalValue(symbol="kCFURLUbiquitousItemDownloadingErrorKey", optional=true)
     public static native CFString KeyUbiquitousItemDownloadingError();
-    @GlobalValue(symbol="kCFURLUbiquitousItemUploadingErrorKey")
+    @GlobalValue(symbol="kCFURLUbiquitousItemUploadingErrorKey", optional=true)
     public static native CFString KeyUbiquitousItemUploadingError();
-    @GlobalValue(symbol="kCFURLUbiquitousItemDownloadingStatusNotDownloaded")
+    @GlobalValue(symbol="kCFURLUbiquitousItemDownloadingStatusNotDownloaded", optional=true)
     public static native CFString UbiquitousItemDownloadingStatusNotDownloaded();
-    @GlobalValue(symbol="kCFURLUbiquitousItemDownloadingStatusDownloaded")
+    @GlobalValue(symbol="kCFURLUbiquitousItemDownloadingStatusDownloaded", optional=true)
     public static native CFString UbiquitousItemDownloadingStatusDownloaded();
-    @GlobalValue(symbol="kCFURLUbiquitousItemDownloadingStatusCurrent")
+    @GlobalValue(symbol="kCFURLUbiquitousItemDownloadingStatusCurrent", optional=true)
     public static native CFString UbiquitousItemDownloadingStatusCurrent();
-    @GlobalValue(symbol="kCFURLFileExists")
+    @GlobalValue(symbol="kCFURLFileExists", optional=true)
     public static native CFString FileExists();
-    @GlobalValue(symbol="kCFURLFileDirectoryContents")
+    @GlobalValue(symbol="kCFURLFileDirectoryContents", optional=true)
     public static native CFString FileDirectoryContents();
-    @GlobalValue(symbol="kCFURLFileLength")
+    @GlobalValue(symbol="kCFURLFileLength", optional=true)
     public static native CFString FileLength();
-    @GlobalValue(symbol="kCFURLFileLastModificationTime")
+    @GlobalValue(symbol="kCFURLFileLastModificationTime", optional=true)
     public static native CFString FileLastModificationTime();
-    @GlobalValue(symbol="kCFURLFilePOSIXMode")
+    @GlobalValue(symbol="kCFURLFilePOSIXMode", optional=true)
     public static native CFString FilePOSIXMode();
-    @GlobalValue(symbol="kCFURLFileOwnerID")
+    @GlobalValue(symbol="kCFURLFileOwnerID", optional=true)
     public static native CFString FileOwnerID();
-    @GlobalValue(symbol="kCFURLHTTPStatusCode")
+    @GlobalValue(symbol="kCFURLHTTPStatusCode", optional=true)
     public static native CFString HTTPStatusCode();
-    @GlobalValue(symbol="kCFURLHTTPStatusLine")
+    @GlobalValue(symbol="kCFURLHTTPStatusLine", optional=true)
     public static native CFString HTTPStatusLine();
     
-    @Bridge(symbol="CFURLGetTypeID")
+    @Bridge(symbol="CFURLGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFURLCreateWithBytes")
+    @Bridge(symbol="CFURLCreateWithBytes", optional=true)
     public static native CFURL createWithBytes(CFAllocator allocator, BytePtr URLBytes, @MachineSizedSInt long length, int encoding, CFURL baseURL);
-    @Bridge(symbol="CFURLCreateData")
+    @Bridge(symbol="CFURLCreateData", optional=true)
     public static native CFData createData(CFAllocator allocator, CFURL url, int encoding, boolean escapeWhitespace);
-    @Bridge(symbol="CFURLCreateWithString")
+    @Bridge(symbol="CFURLCreateWithString", optional=true)
     public static native CFURL createWithString(CFAllocator allocator, CFString URLString, CFURL baseURL);
-    @Bridge(symbol="CFURLCreateAbsoluteURLWithBytes")
+    @Bridge(symbol="CFURLCreateAbsoluteURLWithBytes", optional=true)
     public static native CFURL createAbsoluteURLWithBytes(CFAllocator alloc, BytePtr relativeURLBytes, @MachineSizedSInt long length, int encoding, CFURL baseURL, boolean useCompatibilityMode);
-    @Bridge(symbol="CFURLCreateWithFileSystemPath")
+    @Bridge(symbol="CFURLCreateWithFileSystemPath", optional=true)
     public static native CFURL createWithFileSystemPath(CFAllocator allocator, CFString filePath, CFURLPathStyle pathStyle, boolean isDirectory);
-    @Bridge(symbol="CFURLCreateFromFileSystemRepresentation")
+    @Bridge(symbol="CFURLCreateFromFileSystemRepresentation", optional=true)
     public static native CFURL createFromFileSystemRepresentation(CFAllocator allocator, BytePtr buffer, @MachineSizedSInt long bufLen, boolean isDirectory);
-    @Bridge(symbol="CFURLCreateWithFileSystemPathRelativeToBase")
+    @Bridge(symbol="CFURLCreateWithFileSystemPathRelativeToBase", optional=true)
     public static native CFURL createWithFileSystemPathRelativeToBase(CFAllocator allocator, CFString filePath, CFURLPathStyle pathStyle, boolean isDirectory, CFURL baseURL);
-    @Bridge(symbol="CFURLCreateFromFileSystemRepresentationRelativeToBase")
+    @Bridge(symbol="CFURLCreateFromFileSystemRepresentationRelativeToBase", optional=true)
     public static native CFURL createFromFileSystemRepresentationRelativeToBase(CFAllocator allocator, BytePtr buffer, @MachineSizedSInt long bufLen, boolean isDirectory, CFURL baseURL);
-    @Bridge(symbol="CFURLGetFileSystemRepresentation")
+    @Bridge(symbol="CFURLGetFileSystemRepresentation", optional=true)
     public native boolean getFileSystemRepresentation(boolean resolveAgainstBase, BytePtr buffer, @MachineSizedSInt long maxBufLen);
-    @Bridge(symbol="CFURLCopyAbsoluteURL")
+    @Bridge(symbol="CFURLCopyAbsoluteURL", optional=true)
     public native CFURL copyAbsoluteURL();
-    @Bridge(symbol="CFURLGetString")
+    @Bridge(symbol="CFURLGetString", optional=true)
     public native CFString getString();
-    @Bridge(symbol="CFURLGetBaseURL")
+    @Bridge(symbol="CFURLGetBaseURL", optional=true)
     public native CFURL getBaseURL();
-    @Bridge(symbol="CFURLCanBeDecomposed")
+    @Bridge(symbol="CFURLCanBeDecomposed", optional=true)
     public native boolean canBeDecomposed();
-    @Bridge(symbol="CFURLCopyScheme")
+    @Bridge(symbol="CFURLCopyScheme", optional=true)
     public native CFString copyScheme();
-    @Bridge(symbol="CFURLCopyNetLocation")
+    @Bridge(symbol="CFURLCopyNetLocation", optional=true)
     public native CFString copyNetLocation();
-    @Bridge(symbol="CFURLCopyPath")
+    @Bridge(symbol="CFURLCopyPath", optional=true)
     public native CFString copyPath();
-    @Bridge(symbol="CFURLCopyStrictPath")
+    @Bridge(symbol="CFURLCopyStrictPath", optional=true)
     public native CFString copyStrictPath(BytePtr isAbsolute);
-    @Bridge(symbol="CFURLCopyFileSystemPath")
+    @Bridge(symbol="CFURLCopyFileSystemPath", optional=true)
     public native CFString copyFileSystemPath(CFURLPathStyle pathStyle);
-    @Bridge(symbol="CFURLHasDirectoryPath")
+    @Bridge(symbol="CFURLHasDirectoryPath", optional=true)
     public native boolean hasDirectoryPath();
-    @Bridge(symbol="CFURLCopyResourceSpecifier")
+    @Bridge(symbol="CFURLCopyResourceSpecifier", optional=true)
     public native CFString copyResourceSpecifier();
-    @Bridge(symbol="CFURLCopyHostName")
+    @Bridge(symbol="CFURLCopyHostName", optional=true)
     public native CFString copyHostName();
-    @Bridge(symbol="CFURLGetPortNumber")
+    @Bridge(symbol="CFURLGetPortNumber", optional=true)
     public native int getPortNumber();
-    @Bridge(symbol="CFURLCopyUserName")
+    @Bridge(symbol="CFURLCopyUserName", optional=true)
     public native CFString copyUserName();
-    @Bridge(symbol="CFURLCopyPassword")
+    @Bridge(symbol="CFURLCopyPassword", optional=true)
     public native CFString copyPassword();
-    @Bridge(symbol="CFURLCopyParameterString")
+    @Bridge(symbol="CFURLCopyParameterString", optional=true)
     public native CFString copyParameterString(CFString charactersToLeaveEscaped);
-    @Bridge(symbol="CFURLCopyQueryString")
+    @Bridge(symbol="CFURLCopyQueryString", optional=true)
     public native CFString copyQueryString(CFString charactersToLeaveEscaped);
-    @Bridge(symbol="CFURLCopyFragment")
+    @Bridge(symbol="CFURLCopyFragment", optional=true)
     public native CFString copyFragment(CFString charactersToLeaveEscaped);
-    @Bridge(symbol="CFURLCopyLastPathComponent")
+    @Bridge(symbol="CFURLCopyLastPathComponent", optional=true)
     public native CFString copyLastPathComponent();
-    @Bridge(symbol="CFURLCopyPathExtension")
+    @Bridge(symbol="CFURLCopyPathExtension", optional=true)
     public native CFString copyPathExtension();
-    @Bridge(symbol="CFURLCreateCopyAppendingPathComponent")
+    @Bridge(symbol="CFURLCreateCopyAppendingPathComponent", optional=true)
     public static native CFURL createCopyAppendingPathComponent(CFAllocator allocator, CFURL url, CFString pathComponent, boolean isDirectory);
-    @Bridge(symbol="CFURLCreateCopyDeletingLastPathComponent")
+    @Bridge(symbol="CFURLCreateCopyDeletingLastPathComponent", optional=true)
     public static native CFURL createCopyDeletingLastPathComponent(CFAllocator allocator, CFURL url);
-    @Bridge(symbol="CFURLCreateCopyAppendingPathExtension")
+    @Bridge(symbol="CFURLCreateCopyAppendingPathExtension", optional=true)
     public static native CFURL createCopyAppendingPathExtension(CFAllocator allocator, CFURL url, CFString extension);
-    @Bridge(symbol="CFURLCreateCopyDeletingPathExtension")
+    @Bridge(symbol="CFURLCreateCopyDeletingPathExtension", optional=true)
     public static native CFURL createCopyDeletingPathExtension(CFAllocator allocator, CFURL url);
-    @Bridge(symbol="CFURLGetBytes")
+    @Bridge(symbol="CFURLGetBytes", optional=true)
     public native @MachineSizedSInt long getBytes(BytePtr buffer, @MachineSizedSInt long bufferLength);
-    @Bridge(symbol="CFURLGetByteRangeForComponent")
+    @Bridge(symbol="CFURLGetByteRangeForComponent", optional=true)
     public native @ByVal CFRange getByteRangeForComponent(CFURLComponentType component, CFRange rangeIncludingSeparators);
-    @Bridge(symbol="CFURLCreateStringByReplacingPercentEscapes")
+    @Bridge(symbol="CFURLCreateStringByReplacingPercentEscapes", optional=true)
     public static native CFString createStringByReplacingPercentEscapes(CFAllocator allocator, CFString originalString, CFString charactersToLeaveEscaped);
-    @Bridge(symbol="CFURLCreateStringByReplacingPercentEscapesUsingEncoding")
+    @Bridge(symbol="CFURLCreateStringByReplacingPercentEscapesUsingEncoding", optional=true)
     public static native CFString createStringByReplacingPercentEscapesUsingEncoding(CFAllocator allocator, CFString origString, CFString charsToLeaveEscaped, int encoding);
-    @Bridge(symbol="CFURLCreateStringByAddingPercentEscapes")
+    @Bridge(symbol="CFURLCreateStringByAddingPercentEscapes", optional=true)
     public static native CFString createStringByAddingPercentEscapes(CFAllocator allocator, CFString originalString, CFString charactersToLeaveUnescaped, CFString legalURLCharactersToBeEscaped, int encoding);
-    @Bridge(symbol="CFURLIsFileReferenceURL")
+    @Bridge(symbol="CFURLIsFileReferenceURL", optional=true)
     public native boolean isFileReferenceURL();
-    @Bridge(symbol="CFURLCreateFileReferenceURL")
+    @Bridge(symbol="CFURLCreateFileReferenceURL", optional=true)
     public static native CFURL createFileReferenceURL(CFAllocator allocator, CFURL url, CFError.CFErrorPtr error);
-    @Bridge(symbol="CFURLCreateFilePathURL")
+    @Bridge(symbol="CFURLCreateFilePathURL", optional=true)
     public static native CFURL createFilePathURL(CFAllocator allocator, CFURL url, CFError.CFErrorPtr error);
-    @Bridge(symbol="CFURLCopyResourcePropertyForKey")
+    @Bridge(symbol="CFURLCopyResourcePropertyForKey", optional=true)
     public native boolean copyResourcePropertyForKey(CFString key, VoidPtr propertyValueTypeRefPtr, CFError.CFErrorPtr error);
-    @Bridge(symbol="CFURLCopyResourcePropertiesForKeys")
+    @Bridge(symbol="CFURLCopyResourcePropertiesForKeys", optional=true)
     public native CFDictionary copyResourcePropertiesForKeys(CFArray keys, CFError.CFErrorPtr error);
-    @Bridge(symbol="CFURLSetResourcePropertyForKey")
+    @Bridge(symbol="CFURLSetResourcePropertyForKey", optional=true)
     public native boolean setResourcePropertyForKey(CFString key, CFType propertyValue, CFError.CFErrorPtr error);
-    @Bridge(symbol="CFURLSetResourcePropertiesForKeys")
+    @Bridge(symbol="CFURLSetResourcePropertiesForKeys", optional=true)
     public native boolean setResourcePropertiesForKeys(CFDictionary keyedPropertyValues, CFError.CFErrorPtr error);
-    @Bridge(symbol="CFURLClearResourcePropertyCacheForKey")
+    @Bridge(symbol="CFURLClearResourcePropertyCacheForKey", optional=true)
     public native void clearResourcePropertyCacheForKey(CFString key);
-    @Bridge(symbol="CFURLClearResourcePropertyCache")
+    @Bridge(symbol="CFURLClearResourcePropertyCache", optional=true)
     public native void clearResourcePropertyCache();
-    @Bridge(symbol="CFURLSetTemporaryResourcePropertyForKey")
+    @Bridge(symbol="CFURLSetTemporaryResourcePropertyForKey", optional=true)
     public native void setTemporaryResourcePropertyForKey(CFString key, CFType propertyValue);
-    @Bridge(symbol="CFURLResourceIsReachable")
+    @Bridge(symbol="CFURLResourceIsReachable", optional=true)
     public native boolean resourceIsReachable(CFError.CFErrorPtr error);
-    @Bridge(symbol="CFURLCreateBookmarkData")
+    @Bridge(symbol="CFURLCreateBookmarkData", optional=true)
     public static native CFData createBookmarkData(CFAllocator allocator, CFURL url, CFURLBookmarkCreationOptions options, CFArray resourcePropertiesToInclude, CFURL relativeToURL, CFError.CFErrorPtr error);
-    @Bridge(symbol="CFURLCreateByResolvingBookmarkData")
+    @Bridge(symbol="CFURLCreateByResolvingBookmarkData", optional=true)
     public static native CFURL createByResolvingBookmarkData(CFAllocator allocator, CFData bookmark, CFURLBookmarkResolutionOptions options, CFURL relativeToURL, CFArray resourcePropertiesToInclude, BytePtr isStale, CFError.CFErrorPtr error);
-    @Bridge(symbol="CFURLCreateResourcePropertiesForKeysFromBookmarkData")
+    @Bridge(symbol="CFURLCreateResourcePropertiesForKeysFromBookmarkData", optional=true)
     public static native CFDictionary createResourcePropertiesForKeysFromBookmarkData(CFAllocator allocator, CFArray resourcePropertiesToReturn, CFData bookmark);
-    @Bridge(symbol="CFURLCreateResourcePropertyForKeyFromBookmarkData")
+    @Bridge(symbol="CFURLCreateResourcePropertyForKeyFromBookmarkData", optional=true)
     public static native CFType createResourcePropertyForKeyFromBookmarkData(CFAllocator allocator, CFString resourcePropertyKey, CFData bookmark);
-    @Bridge(symbol="CFURLCreateBookmarkDataFromFile")
+    @Bridge(symbol="CFURLCreateBookmarkDataFromFile", optional=true)
     public static native CFData createBookmarkDataFromFile(CFAllocator allocator, CFURL fileURL, CFError.CFErrorPtr errorRef);
-    @Bridge(symbol="CFURLWriteBookmarkDataToFile")
+    @Bridge(symbol="CFURLWriteBookmarkDataToFile", optional=true)
     public static native boolean writeBookmarkDataToFile(CFData bookmarkRef, CFURL fileURL, @MachineSizedUInt long options, CFError.CFErrorPtr errorRef);
-    @Bridge(symbol="CFURLCreateBookmarkDataFromAliasRecord")
+    @Bridge(symbol="CFURLCreateBookmarkDataFromAliasRecord", optional=true)
     public static native CFData createBookmarkDataFromAliasRecord(CFAllocator allocatorRef, CFData aliasRecordDataRef);
-    @Bridge(symbol="CFURLStartAccessingSecurityScopedResource")
+    @Bridge(symbol="CFURLStartAccessingSecurityScopedResource", optional=true)
     public native boolean startAccessingSecurityScopedResource();
-    @Bridge(symbol="CFURLStopAccessingSecurityScopedResource")
+    @Bridge(symbol="CFURLStopAccessingSecurityScopedResource", optional=true)
     public native void stopAccessingSecurityScopedResource();
-    @Bridge(symbol="CFURLCreateDataAndPropertiesFromResource")
+    @Bridge(symbol="CFURLCreateDataAndPropertiesFromResource", optional=true)
     public static native boolean createDataAndPropertiesFromResource(CFAllocator alloc, CFURL url, CFData.CFDataPtr resourceData, CFDictionary.CFDictionaryPtr properties, CFArray desiredProperties, IntPtr errorCode);
-    @Bridge(symbol="CFURLWriteDataAndPropertiesToResource")
+    @Bridge(symbol="CFURLWriteDataAndPropertiesToResource", optional=true)
     public native boolean writeDataAndPropertiesToResource(CFData dataToWrite, CFDictionary propertiesToWrite, IntPtr errorCode);
-    @Bridge(symbol="CFURLDestroyResource")
+    @Bridge(symbol="CFURLDestroyResource", optional=true)
     public native boolean destroyResource(IntPtr errorCode);
-    @Bridge(symbol="CFURLCreatePropertyFromResource")
+    @Bridge(symbol="CFURLCreatePropertyFromResource", optional=true)
     public static native CFType createPropertyFromResource(CFAllocator alloc, CFURL url, CFString property, IntPtr errorCode);
-    @Bridge(symbol="CFCopyHomeDirectoryURL")
+    @Bridge(symbol="CFCopyHomeDirectoryURL", optional=true)
     public static native CFURL copyHomeDirectoryURL();
-    @Bridge(symbol="CFURLEnumeratorCreateForDirectoryURL")
+    @Bridge(symbol="CFURLEnumeratorCreateForDirectoryURL", optional=true)
     public static native CFURLEnumerator enumeratorCreateForDirectoryURL(CFAllocator alloc, CFURL directoryURL, CFURLEnumeratorOptions option, CFArray propertyKeys);
-    @Bridge(symbol="CFURLEnumeratorCreateForMountedVolumes")
+    @Bridge(symbol="CFURLEnumeratorCreateForMountedVolumes", optional=true)
     public static native CFURLEnumerator enumeratorCreateForMountedVolumes(CFAllocator alloc, CFURLEnumeratorOptions option, CFArray propertyKeys);
-    @Bridge(symbol="CFURLEnumeratorGetNextURL")
+    @Bridge(symbol="CFURLEnumeratorGetNextURL", optional=true)
     public static native CFURLEnumeratorResult enumeratorGetNextURL(CFURLEnumerator enumerator, CFURL.CFURLPtr url, CFError.CFErrorPtr error);
-    @Bridge(symbol="CFURLEnumeratorSkipDescendents")
+    @Bridge(symbol="CFURLEnumeratorSkipDescendents", optional=true)
     public static native void enumeratorSkipDescendents(CFURLEnumerator enumerator);
-    @Bridge(symbol="CFURLEnumeratorGetDescendentLevel")
+    @Bridge(symbol="CFURLEnumeratorGetDescendentLevel", optional=true)
     public static native @MachineSizedSInt long enumeratorGetDescendentLevel(CFURLEnumerator enumerator);
-    @Bridge(symbol="CFURLEnumeratorGetSourceDidChange")
+    @Bridge(symbol="CFURLEnumeratorGetSourceDidChange", optional=true)
     public static native boolean enumeratorGetSourceDidChange(CFURLEnumerator enumerator);
     /*</methods>*/
 }

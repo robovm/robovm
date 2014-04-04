@@ -99,28 +99,28 @@ import org.robovm.apple.foundation.*;
     }
     
     /*<methods>*/
-    @GlobalValue(symbol="CGAffineTransformIdentity")
+    @GlobalValue(symbol="CGAffineTransformIdentity", optional=true)
     public static native @ByVal CGAffineTransform Identity();
     
-    @Bridge(symbol="CGAffineTransformMakeTranslation")
+    @Bridge(symbol="CGAffineTransformMakeTranslation", optional=true)
     public static native @ByVal CGAffineTransform makeTranslation(@MachineSizedFloat double tx, @MachineSizedFloat double ty);
-    @Bridge(symbol="CGAffineTransformMakeScale")
+    @Bridge(symbol="CGAffineTransformMakeScale", optional=true)
     public static native @ByVal CGAffineTransform makeScale(@MachineSizedFloat double sx, @MachineSizedFloat double sy);
-    @Bridge(symbol="CGAffineTransformMakeRotation")
+    @Bridge(symbol="CGAffineTransformMakeRotation", optional=true)
     public static native @ByVal CGAffineTransform makeRotation(@MachineSizedFloat double angle);
-    @Bridge(symbol="CGAffineTransformIsIdentity")
+    @Bridge(symbol="CGAffineTransformIsIdentity", optional=true)
     protected static native boolean isIdentity(@ByVal CGAffineTransform t);
-    @Bridge(symbol="CGAffineTransformTranslate")
+    @Bridge(symbol="CGAffineTransformTranslate", optional=true)
     protected static native @ByVal CGAffineTransform translate(@ByVal CGAffineTransform t, @MachineSizedFloat double tx, @MachineSizedFloat double ty);
-    @Bridge(symbol="CGAffineTransformScale")
+    @Bridge(symbol="CGAffineTransformScale", optional=true)
     protected static native @ByVal CGAffineTransform scale(@ByVal CGAffineTransform t, @MachineSizedFloat double sx, @MachineSizedFloat double sy);
-    @Bridge(symbol="CGAffineTransformRotate")
+    @Bridge(symbol="CGAffineTransformRotate", optional=true)
     protected static native @ByVal CGAffineTransform rotate(@ByVal CGAffineTransform t, @MachineSizedFloat double angle);
-    @Bridge(symbol="CGAffineTransformInvert")
+    @Bridge(symbol="CGAffineTransformInvert", optional=true)
     protected static native @ByVal CGAffineTransform invert(@ByVal CGAffineTransform t);
-    @Bridge(symbol="CGAffineTransformConcat")
+    @Bridge(symbol="CGAffineTransformConcat", optional=true)
     protected static native @ByVal CGAffineTransform concat(@ByVal CGAffineTransform t1, @ByVal CGAffineTransform t2);
-    @Bridge(symbol="CGAffineTransformEqualToTransform")
+    @Bridge(symbol="CGAffineTransformEqualToTransform", optional=true)
     protected static native boolean equalToTransform(@ByVal CGAffineTransform t1, @ByVal CGAffineTransform t2);
     /*</methods>*/
 }

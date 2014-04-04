@@ -51,7 +51,7 @@ import org.robovm.apple.coreimage.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="UIGuidedAccessRestrictionStateForIdentifier")
+    @Bridge(symbol="UIGuidedAccessRestrictionStateForIdentifier", optional=true)
     public static native UIGuidedAccessRestrictionState getState(String restrictionIdentifier);
     /*</methods>*/
 }

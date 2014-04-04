@@ -110,37 +110,37 @@ import org.robovm.apple.foundation.*;
     }
     
     /*<methods>*/
-    @Bridge(symbol="CGPathGetTypeID")
+    @Bridge(symbol="CGPathGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CGPathCreateCopy")
+    @Bridge(symbol="CGPathCreateCopy", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPath createCopy(CGPath path);
-    @Bridge(symbol="CGPathCreateCopyByTransformingPath")
+    @Bridge(symbol="CGPathCreateCopyByTransformingPath", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPath createCopyByTransformingPath(CGPath path, CGAffineTransform transform);
-    @Bridge(symbol="CGPathCreateWithRect")
+    @Bridge(symbol="CGPathCreateWithRect", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPath createWithRect(@ByVal CGRect rect, CGAffineTransform transform);
-    @Bridge(symbol="CGPathCreateWithEllipseInRect")
+    @Bridge(symbol="CGPathCreateWithEllipseInRect", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPath createWithEllipseInRect(@ByVal CGRect rect, CGAffineTransform transform);
-    @Bridge(symbol="CGPathCreateWithRoundedRect")
+    @Bridge(symbol="CGPathCreateWithRoundedRect", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPath createWithRoundedRect(@ByVal CGRect rect, @MachineSizedFloat double cornerWidth, @MachineSizedFloat double cornerHeight, CGAffineTransform transform);
-    @Bridge(symbol="CGPathCreateCopyByDashingPath")
+    @Bridge(symbol="CGPathCreateCopyByDashingPath", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPath createCopyByDashingPath(CGPath path, CGAffineTransform transform, @MachineSizedFloat double phase, @Pointer long lengths, @MachineSizedUInt long count);
-    @Bridge(symbol="CGPathCreateCopyByStrokingPath")
+    @Bridge(symbol="CGPathCreateCopyByStrokingPath", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPath createCopyByStrokingPath(CGPath path, CGAffineTransform transform, @MachineSizedFloat double lineWidth, CGLineCap lineCap, CGLineJoin lineJoin, @MachineSizedFloat double miterLimit);
-    @Bridge(symbol="CGPathEqualToPath")
+    @Bridge(symbol="CGPathEqualToPath", optional=true)
     public native boolean equalToPath(CGPath path2);
-    @Bridge(symbol="CGPathIsEmpty")
+    @Bridge(symbol="CGPathIsEmpty", optional=true)
     public native boolean isEmpty();
-    @Bridge(symbol="CGPathIsRect")
+    @Bridge(symbol="CGPathIsRect", optional=true)
     public native boolean isRect(CGRect rect);
-    @Bridge(symbol="CGPathGetCurrentPoint")
+    @Bridge(symbol="CGPathGetCurrentPoint", optional=true)
     public native @ByVal CGPoint getCurrentPoint();
-    @Bridge(symbol="CGPathGetBoundingBox")
+    @Bridge(symbol="CGPathGetBoundingBox", optional=true)
     public native @ByVal CGRect getBoundingBox();
-    @Bridge(symbol="CGPathGetPathBoundingBox")
+    @Bridge(symbol="CGPathGetPathBoundingBox", optional=true)
     public native @ByVal CGRect getPathBoundingBox();
-    @Bridge(symbol="CGPathContainsPoint")
+    @Bridge(symbol="CGPathContainsPoint", optional=true)
     public native boolean containsPoint(CGAffineTransform m, @ByVal CGPoint point, boolean eoFill);
-    @Bridge(symbol="CGPathApply")
+    @Bridge(symbol="CGPathApply", optional=true)
     protected native void apply(@Pointer long info, @Pointer long function);
     /*</methods>*/
 }

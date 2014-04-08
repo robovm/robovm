@@ -44,8 +44,11 @@ import org.robovm.apple.security.*;
     public static class AsStringMarshaler {
         @MarshalsPointer
         public static String toObject(Class<?> cls, long handle, long flags) {
-            try (NSString o = ObjCObject.toObjCObject(NSString.class, handle)) {
+            NSString o = ObjCObject.toObjCObject(NSString.class, handle);
+            try {
                 return o != null ? o.toString() : null;
+            } finally {
+                o.dispose();
             }
         }
         @MarshalsPointer
@@ -53,7 +56,8 @@ import org.robovm.apple.security.*;
             if (o == null) {
                 return 0L;
             }
-            try (NSString s = new NSString(o)) {
+            NSString s = new NSString(o);
+            try {
                 // retainCount is now 1
                 s.retain(); // Make sure the retainCount is 1 when we exit this try block
                 // retainCount is now 2
@@ -62,6 +66,8 @@ import org.robovm.apple.security.*;
                     s.autorelease();
                 }
                 return s.getHandle(); // retainCount is 1 after the return
+            } finally {
+                s.dispose();
             }
         }
         @AfterBridgeCall

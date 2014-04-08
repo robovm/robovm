@@ -44,7 +44,7 @@ import org.robovm.apple.security.*;
 })
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSObject/*</name>*/ 
     extends /*<extends>*/ObjCObject/*</extends>*/ 
-    /*<implements>*/implements NSObjectProtocol/*</implements>*/, AutoCloseable {
+    /*<implements>*/implements NSObjectProtocol/*</implements>*/ {
 
     protected static class SkipInit {}
 
@@ -140,12 +140,7 @@ import org.robovm.apple.security.*;
             release();
         }
     }
-    
-    @Override
-    public final void close() {
-        dispose();
-    }
-    
+
     @Override
     public String toString() {
         return description();

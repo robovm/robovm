@@ -19,6 +19,7 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -37,7 +38,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSAutoreleasePool/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*//*</implements>*/ implements AutoCloseable {
 
     /*<ptr>*/public static class NSAutoreleasePoolPtr extends Ptr<NSAutoreleasePool, NSAutoreleasePoolPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSAutoreleasePool.class); }/*</bind>*/
@@ -50,6 +51,12 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+
+    @Override
+    public final void close() {
+        dispose();
+    }
+
     /*<methods>*/
     
     /*</methods>*/

@@ -48,7 +48,9 @@ import org.robovm.apple.security.*;
             try {
                 return o != null ? o.toString() : null;
             } finally {
-                o.dispose();
+                if (o != null) {
+                    o.dispose();
+                }
             }
         }
         @MarshalsPointer

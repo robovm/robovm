@@ -43,7 +43,6 @@ import org.robovm.apple.security.*;
     /*<bind>*/static { ObjCRuntime.bind(NSLocale.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public NSLocale() {}
     protected NSLocale(SkipInit skipInit) { super(skipInit); }
     public NSLocale(String string) { super((SkipInit) null); initObject(initWithLocaleIdentifier$(string)); }
     /*</constructors>*/
@@ -166,7 +165,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "preferredLanguages")
     public static native NSArray<NSString> getPreferredLanguages();
     @Method(selector = "componentsFromLocaleIdentifier:")
-    public static native NSDictionary<NSString, ?> getCmponentsFromLocaleIdentifier(String string);
+    public static native NSDictionary<NSString, ?> getComponentsFromLocaleIdentifier(String string);
     @Method(selector = "localeIdentifierFromComponents:")
     public static native String getLocaleIdentifierFromComponents(NSDictionary<NSString, ?> dict);
     @Method(selector = "canonicalLocaleIdentifierFromString:")

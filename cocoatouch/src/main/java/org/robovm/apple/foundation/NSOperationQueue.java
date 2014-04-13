@@ -54,17 +54,17 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "addOperation:")
-    public native void addOperation$(NSOperation op);
+    public native void addOperation(NSOperation op);
     @Method(selector = "addOperations:waitUntilFinished:")
-    public native void addOperations$waitUntilFinished$(NSArray<?> ops, boolean wait);
+    public native void addOperations(NSArray<NSOperation> ops, boolean wait);
     @Method(selector = "addOperationWithBlock:")
-    public native void addOperationWithBlock$(@Block Runnable block);
+    public native void addOperation(@Block Runnable block);
     @Method(selector = "operations")
-    public native NSArray<?> operations();
+    public native NSArray<NSOperation> getOperations();
     @Method(selector = "operationCount")
-    public native @MachineSizedUInt long operationCount();
+    public native @MachineSizedUInt long getOperationCount();
     @Method(selector = "maxConcurrentOperationCount")
-    public native @MachineSizedSInt long maxConcurrentOperationCount();
+    public native @MachineSizedSInt long getMaxConcurrentOperationCount();
     @Method(selector = "setMaxConcurrentOperationCount:")
     public native void setMaxConcurrentOperationCount(@MachineSizedSInt long cnt);
     @Method(selector = "setSuspended:")
@@ -74,14 +74,14 @@ import org.robovm.apple.security.*;
     @Method(selector = "setName:")
     public native void setName(String n);
     @Method(selector = "name")
-    public native String name();
+    public native String getName();
     @Method(selector = "cancelAllOperations")
     public native void cancelAllOperations();
     @Method(selector = "waitUntilAllOperationsAreFinished")
     public native void waitUntilAllOperationsAreFinished();
     @Method(selector = "currentQueue")
-    public static native NSObject currentQueue();
+    public static native NSOperationQueue getCurrentQueue();
     @Method(selector = "mainQueue")
-    public static native NSObject mainQueue();
+    public static native NSOperationQueue getMainQueue();
     /*</methods>*/
 }

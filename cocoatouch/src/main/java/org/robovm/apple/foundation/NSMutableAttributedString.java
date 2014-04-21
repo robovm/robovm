@@ -46,31 +46,42 @@ import org.robovm.apple.security.*;
     public NSMutableAttributedString() {}
     protected NSMutableAttributedString(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    
+    public NSMutableAttributedString(NSAttributedString attrStr) {
+        super(attrStr);
+    }
+    public NSMutableAttributedString(String str, NSDictionary<NSString, ?> attrs) {
+        super(str, attrs);
+    }
+    public NSMutableAttributedString(String str) {
+        super(str);
+    }    
+    
     /*<properties>*/
     
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "replaceCharactersInRange:withString:")
-    public native void replaceCharactersInRange$withString$(@ByVal NSRange range, String str);
+    public native void replace(@ByVal NSRange range, String str);
     @Method(selector = "setAttributes:range:")
-    public native void setAttributes$range$(NSDictionary<?, ?> attrs, @ByVal NSRange range);
+    public native void setAttributes(NSDictionary<NSString, ?> attrs, @ByVal NSRange range);
     @Method(selector = "mutableString")
-    public native NSMutableString mutableString();
+    public native NSMutableString getMutableString();
     @Method(selector = "addAttribute:value:range:")
-    public native void addAttribute$value$range$(String name, NSObject value, @ByVal NSRange range);
+    public native void addAttribute(NSString name, NSObject value, @ByVal NSRange range);
     @Method(selector = "addAttributes:range:")
-    public native void addAttributes$range$(NSDictionary<?, ?> attrs, @ByVal NSRange range);
+    public native void addAttributes(NSDictionary<NSString, ?> attrs, @ByVal NSRange range);
     @Method(selector = "removeAttribute:range:")
-    public native void removeAttribute$range$(String name, @ByVal NSRange range);
+    public native void removeAttribute(NSString name, @ByVal NSRange range);
     @Method(selector = "replaceCharactersInRange:withAttributedString:")
-    public native void replaceCharactersInRange$withAttributedString$(@ByVal NSRange range, NSAttributedString attrString);
+    public native void replace(@ByVal NSRange range, NSAttributedString attrString);
     @Method(selector = "insertAttributedString:atIndex:")
-    public native void insertAttributedString$atIndex$(NSAttributedString attrString, @MachineSizedUInt long loc);
+    public native void insert(NSAttributedString attrString, @MachineSizedUInt long loc);
     @Method(selector = "appendAttributedString:")
-    public native void appendAttributedString$(NSAttributedString attrString);
+    public native void append(NSAttributedString attrString);
     @Method(selector = "deleteCharactersInRange:")
-    public native void deleteCharactersInRange$(@ByVal NSRange range);
+    public native void delete(@ByVal NSRange range);
     @Method(selector = "setAttributedString:")
     public native void setAttributedString(NSAttributedString attrString);
     @Method(selector = "beginEditing")

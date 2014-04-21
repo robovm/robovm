@@ -46,40 +46,49 @@ import org.robovm.apple.security.*;
     public NSAttributedString() {}
     protected NSAttributedString(SkipInit skipInit) { super(skipInit); }
     public NSAttributedString(String str) { super((SkipInit) null); initObject(initWithString$(str)); }
-    public NSAttributedString(String str, NSDictionary<?, ?> attrs) { super((SkipInit) null); initObject(initWithString$attributes$(str, attrs)); }
+    public NSAttributedString(String str, NSDictionary<NSString, ?> attrs) { super((SkipInit) null); initObject(initWithString$attributes$(str, attrs)); }
     public NSAttributedString(NSAttributedString attrStr) { super((SkipInit) null); initObject(initWithAttributedString$(attrStr)); }
     /*</constructors>*/
     /*<properties>*/
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof NSAttributedString)) {
+            return false;
+        }
+        return isEqualToAttributedString$((NSAttributedString) obj);
+    }
+    
     /*<methods>*/
     @Method(selector = "string")
-    public native String string();
+    public native String getString();
     @Method(selector = "attributesAtIndex:effectiveRange:")
-    public native NSDictionary<?, ?> attributesAtIndex$effectiveRange$(@MachineSizedUInt long location, NSRange range);
+    public native NSDictionary<?, ?> getAttributes(@MachineSizedUInt long location, NSRange range);
     @Method(selector = "length")
-    public native @MachineSizedUInt long length();
+    public native @MachineSizedUInt long getLength();
     @Method(selector = "attribute:atIndex:effectiveRange:")
-    public native NSObject attribute$atIndex$effectiveRange$(String attrName, @MachineSizedUInt long location, NSRange range);
+    public native NSObject getAttribute(NSString attrName, @MachineSizedUInt long location, NSRange range);
     @Method(selector = "attributedSubstringFromRange:")
-    public native NSAttributedString attributedSubstringFromRange$(@ByVal NSRange range);
+    public native NSAttributedString substring(@ByVal NSRange range);
     @Method(selector = "attributesAtIndex:longestEffectiveRange:inRange:")
-    public native NSDictionary<?, ?> attributesAtIndex$longestEffectiveRange$inRange$(@MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit);
+    public native NSDictionary<?, ?> getAttributes(@MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit);
     @Method(selector = "attribute:atIndex:longestEffectiveRange:inRange:")
-    public native NSObject attribute$atIndex$longestEffectiveRange$inRange$(String attrName, @MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit);
+    public native NSObject getAttribute(NSString attrName, @MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit);
     @Method(selector = "isEqualToAttributedString:")
-    public native boolean isEqualToAttributedString$(NSAttributedString other);
+    protected native boolean isEqualToAttributedString$(NSAttributedString other);
     @Method(selector = "initWithString:")
     protected native @Pointer long initWithString$(String str);
     @Method(selector = "initWithString:attributes:")
-    protected native @Pointer long initWithString$attributes$(String str, NSDictionary<?, ?> attrs);
+    protected native @Pointer long initWithString$attributes$(String str, NSDictionary<NSString, ?> attrs);
     @Method(selector = "initWithAttributedString:")
     protected native @Pointer long initWithAttributedString$(NSAttributedString attrStr);
     @Method(selector = "enumerateAttributesInRange:options:usingBlock:")
-    public native void enumerateAttributesInRange$options$usingBlock$(@ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, ObjCBlock block);
+    public native void enumerateAttributes(@ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, @Block("(,@ByVal,)") VoidBlock3<NSDictionary<NSString, ?>, NSRange, BytePtr> block);
     @Method(selector = "enumerateAttribute:inRange:options:usingBlock:")
-    public native void enumerateAttribute$inRange$options$usingBlock$(String attrName, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, ObjCBlock block);
+    public native void enumerateAttribute(NSString attrName, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, @Block("(,@ByVal,)") VoidBlock3<NSObject, NSRange, BytePtr> block);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

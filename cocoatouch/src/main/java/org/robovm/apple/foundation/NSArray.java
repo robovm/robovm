@@ -253,8 +253,6 @@ import org.robovm.apple.security.*;
     protected native @MachineSizedUInt long count();
     @Method(selector = "objectAtIndex:")
     protected native T objectAtIndex$(@MachineSizedUInt long index);
-    @Method(selector = "componentsJoinedByString:")
-    public native String join(String separator);
     @Method(selector = "containsObject:")
     protected native boolean containsObject$(NSObject anObject);
     @Method(selector = "indexOfObject:")

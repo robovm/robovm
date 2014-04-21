@@ -57,6 +57,7 @@ import org.robovm.apple.security.*;
     }
 
     /*<methods>*/
-    
+    @Method(selector = "drain")
+    public native void drain();
     /*</methods>*/
 }

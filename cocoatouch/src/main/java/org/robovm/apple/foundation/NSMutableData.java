@@ -129,7 +129,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "replaceBytesInRange:withBytes:")
     protected native void replaceBytesInRange$withBytes$(@ByVal NSRange range, @Pointer long bytes);
     @Method(selector = "resetBytesInRange:")
-    public native void resetRange(@ByVal NSRange range);
+    public native void reset(@ByVal NSRange range);
     @Method(selector = "setData:")
     public native void setData(NSData data);
     @Method(selector = "replaceBytesInRange:withBytes:length:")

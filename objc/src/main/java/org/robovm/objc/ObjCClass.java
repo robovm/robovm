@@ -16,6 +16,7 @@
 package org.robovm.objc;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -290,15 +291,18 @@ public final class ObjCClass extends ObjCObject {
             findNotImplemented(superclass, result);
         }
         for (Method m : type.getDeclaredMethods()) {
-            NotImplemented ni = m.getAnnotation(NotImplemented.class);
-            if (ni != null) {
-                result.put(ni.value(), m);
-            } else {
-                for (Iterator<Entry<String, Method>> it = result.entrySet().iterator(); it.hasNext();) {
-                    Entry<String, Method> entry = it.next();
-                    Method m2 = entry.getValue();
-                    if (m2.getName().equals(m.getName()) && Arrays.equals(m2.getParameterTypes(), m.getParameterTypes())) {
-                        it.remove();
+            int mod = m.getModifiers();
+            if ((mod & Modifier.STATIC) == 0 && (mod & Modifier.PRIVATE) == 0) {
+                NotImplemented ni = m.getAnnotation(NotImplemented.class);
+                if (ni != null) {
+                    result.put(ni.value(), m);
+                } else {
+                    for (Iterator<Entry<String, Method>> it = result.entrySet().iterator(); it.hasNext();) {
+                        Entry<String, Method> entry = it.next();
+                        Method m2 = entry.getValue();
+                        if (m2.getName().equals(m.getName()) && Arrays.equals(m2.getParameterTypes(), m.getParameterTypes())) {
+                            it.remove();
+                        }
                     }
                 }
             }

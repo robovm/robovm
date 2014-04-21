@@ -23,6 +23,7 @@ import static soot.tagkit.AnnotationConstants.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -77,6 +78,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     public static final String METHOD = "L" + OBJC_ANNOTATIONS_PACKAGE + "/Method;";
     public static final String PROPERTY = "L" + OBJC_ANNOTATIONS_PACKAGE + "/Property;";
     public static final String BIND_SELECTOR = "L" + OBJC_ANNOTATIONS_PACKAGE + "/BindSelector;";
+    public static final String NOT_IMPLEMENTED = "L" + OBJC_ANNOTATIONS_PACKAGE + "/NotImplemented;";
     public static final String SELECTOR = "org.robovm.objc.Selector";
     public static final String OBJC_SUPER = "org.robovm.objc.ObjCSuper";
     public static final String OBJC_CLASS = "org.robovm.objc.ObjCClass";
@@ -396,9 +398,10 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                 && (isObjCObject(sootClass) || (extensions = isObjCExtensions(sootClass)))) {
             
             Set<String> selectors = new TreeSet<>();
+            Set<String> overridables = new HashSet<>();
             for (SootMethod method : sootClass.getMethods()) {
                 if (!"<clinit>".equals(method.getName()) && !"<init>".equals(method.getName())) {
-                    transformMethod(config, clazz, sootClass, method, selectors, extensions);
+                    transformMethod(config, clazz, sootClass, method, selectors, overridables, extensions);
                 }
             }
             addBindCall(sootClass);
@@ -415,8 +418,27 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         return l;
     }
     
+    private boolean isOverridable(SootMethod method) {
+        if (method.isStatic() || method.isPrivate() 
+                || (method.getModifiers() & Modifier.FINAL) != 0
+                || (method.getDeclaringClass().getModifiers() & Modifier.FINAL) != 0) {
+            return false;
+        }
+        return true;
+    }
+    
+    private boolean checkOverridable(Set<String> overridables, String selectorName, SootMethod method) {
+        boolean b = isOverridable(method);
+        if (b && overridables.contains(selectorName)) {
+            throw new CompilerException("Found multiple overridable @Method or @Property " 
+                    + "methods in " + method.getDeclaringClass() + " with the selector '" 
+                    + selectorName + "'.");
+        }
+        return b;
+    }
+    
     private void transformMethod(Config config, Clazz clazz, SootClass sootClass, 
-            SootMethod method, Set<String> selectors, boolean extensions) {
+            SootMethod method, Set<String> selectors, Set<String> overridables, boolean extensions) {
         
         AnnotationTag methodAnno = getAnnotation(method, METHOD);
         if (methodAnno != null) {
@@ -445,6 +467,9 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                 createCallback(sootClass, method, selectorName, receiverType);
             }
             if (method.isNative()) {
+                if (checkOverridable(overridables, selectorName, method)) {
+                    overridables.add(selectorName);
+                }
                 selectors.add(selectorName);
                 createBridge(sootClass, method, selectorName, false, extensions);
             }
@@ -517,6 +542,9 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                     createCallback(sootClass, method, selectorName, receiverType);
                 }
                 if (method.isNative()) {
+                    if (checkOverridable(overridables, selectorName, method)) {
+                        overridables.add(selectorName);
+                    }
                     selectors.add(selectorName);
                     boolean strongRefSetter = !isGetter && readBooleanElem(propertyAnno, "strongRef", false);
                     createBridge(sootClass, method, selectorName, strongRefSetter, extensions);
@@ -604,6 +632,9 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         }
         
         method.setModifiers(method.getModifiers() & ~NATIVE);
+        if (isOverridable(method)) {
+            addNotImplementedAnnotation(method, selectorName);
+        }
         
         Body body = j.newBody(method);
         method.setActiveBody(body);
@@ -776,6 +807,12 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
 
     static void addBindSelectorAnnotation(SootMethod method, String selectorName) {
         AnnotationTag annotationTag = new AnnotationTag(BIND_SELECTOR, 1);
+        annotationTag.addElem(new AnnotationStringElem(selectorName, 's', "value"));
+        addRuntimeVisibleAnnotation(method, annotationTag);
+    }
+
+    static void addNotImplementedAnnotation(SootMethod method, String selectorName) {
+        AnnotationTag annotationTag = new AnnotationTag(NOT_IMPLEMENTED, 1);
         annotationTag.addElem(new AnnotationStringElem(selectorName, 's', "value"));
         addRuntimeVisibleAnnotation(method, annotationTag);
     }

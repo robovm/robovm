@@ -60,21 +60,15 @@ import org.robovm.apple.security.*;
     public static native String NotificationThreadWillExit();
     
     @Method(selector = "threadDictionary")
-    public native NSMutableDictionary<?, ?> threadDictionary();
-    @Method(selector = "threadPriority")
-    public native double threadPriority();
-    @Method(selector = "setThreadPriority:")
-    public native void setThreadPriority(double p);
+    public native NSMutableDictionary<?, ?> getThreadDictionary();
     @Method(selector = "setName:")
     public native void setName(String n);
     @Method(selector = "name")
-    public native String name();
+    public native String getName();
     @Method(selector = "stackSize")
-    public native @MachineSizedUInt long stackSize();
+    public native @MachineSizedUInt long getStackSize();
     @Method(selector = "setStackSize:")
     public native void setStackSize(@MachineSizedUInt long s);
-    @Method(selector = "isMainThread")
-    public native boolean isMainThread();
     @Method(selector = "initWithTarget:selector:object:")
     protected native @Pointer long initWithTarget$selector$object$(NSThread target, Selector selector, NSThread argument);
     @Method(selector = "isExecuting")
@@ -90,18 +84,20 @@ import org.robovm.apple.security.*;
     @Method(selector = "main")
     public native void main();
     @Method(selector = "currentThread")
-    public static native NSThread currentThread();
+    public static native NSThread getCurrentThread();
     @Method(selector = "detachNewThreadSelector:toTarget:withObject:")
-    public static native void detachNewThreadSelector$toTarget$withObject$(Selector selector, NSObject target, NSObject argument);
+    public static native void detachNewThread(Selector selector, NSObject target, NSObject argument);
     @Method(selector = "isMultiThreaded")
     public static native boolean isMultiThreaded();
     @Method(selector = "sleepUntilDate:")
-    public static native void sleepUntilDate$(NSDate date);
+    public static native void sleep(NSDate date);
     @Method(selector = "sleepForTimeInterval:")
-    public static native void sleepForTimeInterval$(double ti);
+    public static native void sleep(double ti);
     @Method(selector = "exit")
     public static native void exit();
+    @Method(selector = "callStackSymbols")
+    public static native NSArray<NSString> getCallStackSymbols();
     @Method(selector = "mainThread")
-    public static native NSThread mainThread();
+    public static native NSThread getMainThread();
     /*</methods>*/
 }

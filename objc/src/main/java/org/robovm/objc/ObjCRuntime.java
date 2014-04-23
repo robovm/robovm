@@ -146,7 +146,10 @@ public class ObjCRuntime {
 
     @Bridge
     public static native @Pointer long class_getSuperclass(@Pointer long cls);
-    
+
+    @Bridge
+    public static native @Pointer long class_getName(@Pointer long cls);
+
     @Bridge
     public static native @Pointer long class_getInstanceMethod(@Pointer long aClass, @Pointer long aSelector);
     

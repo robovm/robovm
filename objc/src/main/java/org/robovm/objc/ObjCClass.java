@@ -151,36 +151,8 @@ public final class ObjCClass extends ObjCObject {
     }
     
     public static ObjCClass getFromObject(long handle) {
-        ObjCClass c = null;
         long classPtr = ObjCRuntime.object_getClass(handle);
-        c = ObjCObject.getPeerObject(classPtr);
-        if (c == null) {
-            String name = VM.newStringUTF(ObjCRuntime.object_getClassName(handle));
-            c = getByName(name);
-        }
-        return c;
-    }
-    
-    public static ObjCClass getFromObject(long handle, ObjCClass fallback) {
-        long fallbackHandle = fallback.getHandle();
-        ObjCClass c = null;
-        long classPtr = ObjCRuntime.object_getClass(handle);
-        c = ObjCObject.getPeerObject(classPtr);
-        if (c == null) {
-            c = getByNameNotLoaded(VM.newStringUTF(ObjCRuntime.object_getClassName(classPtr)));
-        }
-        while (c == null && classPtr != 0L && classPtr != fallbackHandle) {
-            classPtr = ObjCRuntime.class_getSuperclass(classPtr);
-            c = ObjCObject.getPeerObject(classPtr);
-            if (c == null) {
-                c = getByNameNotLoaded(VM.newStringUTF(ObjCRuntime.object_getClassName(classPtr)));
-            }
-        }
-        if (c == null) {
-            String name = VM.newStringUTF(ObjCRuntime.object_getClassName(handle));
-            throw new ObjCClassNotFoundException("Could not find Java class corresponding to Objective-C class: " + name);
-        }
-        return c;
+        return toObjCClass(classPtr);
     }
     
     public static ObjCClass getByType(Class<? extends ObjCObject> type) {
@@ -211,6 +183,26 @@ public final class ObjCClass extends ObjCObject {
             }
             return c;
         }
+    }
+
+    public static ObjCClass toObjCClass(final long handle) {
+        long classPtr = handle;
+        ObjCClass c = ObjCObject.getPeerObject(classPtr);
+        if (c == null) {
+            c = getByNameNotLoaded(VM.newStringUTF(ObjCRuntime.class_getName(classPtr)));
+        }
+        while (c == null && classPtr != 0L) {
+            classPtr = ObjCRuntime.class_getSuperclass(classPtr);
+            c = ObjCObject.getPeerObject(classPtr);
+            if (c == null) {
+                c = getByNameNotLoaded(VM.newStringUTF(ObjCRuntime.class_getName(classPtr)));
+            }
+        }
+        if (c == null) {
+            String name = VM.newStringUTF(ObjCRuntime.class_getName(handle));
+            throw new ObjCClassNotFoundException("Could not find Java class corresponding to Objective-C class: " + name);
+        }
+        return c;
     }
 
     public static ObjCClass registerCustomClass(Class<? extends ObjCObject> type) {

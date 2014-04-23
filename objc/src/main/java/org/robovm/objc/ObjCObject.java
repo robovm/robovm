@@ -55,7 +55,7 @@ public abstract class ObjCObject extends NativeObject {
             throw new Error(t);
         }
     }
-	
+
     private static final long CUSTOM_CLASS_OFFSET;
     
     private ObjCSuper zuper;
@@ -200,6 +200,10 @@ public abstract class ObjCObject extends NativeObject {
         if (handle == 0L) {
             return null;
         }
+        if (cls == ObjCClass.class) {
+            return (T) ObjCClass.toObjCClass(handle);
+        }
+
         T o = getPeerObject(handle);
         if (o != null && o.getHandle() != 0) {
             if (forceType && !cls.isAssignableFrom(o.getClass())) {
@@ -208,12 +212,9 @@ public abstract class ObjCObject extends NativeObject {
             }
             return o;
         }
-        ObjCClass fallback = ObjCClass.getByType(cls);
-        ObjCClass objCClass = forceType ? ObjCClass.getByType(cls) : ObjCClass.getFromObject(handle, fallback);
+
+        ObjCClass objCClass = forceType ? ObjCClass.getByType(cls) : ObjCClass.getFromObject(handle);
         Class<T> c = (Class<T>) objCClass.getType();
-        if (c == ObjCClass.class) {
-            return (T) objCClass;
-        }
 
         o = VM.allocateObject(c);
         o.setHandle(handle);

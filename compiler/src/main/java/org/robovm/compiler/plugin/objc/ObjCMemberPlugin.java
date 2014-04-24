@@ -18,7 +18,6 @@ package org.robovm.compiler.plugin.objc;
 
 import static org.robovm.compiler.Annotations.*;
 import static soot.Modifier.*;
-import static soot.tagkit.AnnotationConstants.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +28,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.robovm.compiler.Annotations.Visibility;
 import org.robovm.compiler.CompilerException;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.config.Config;
@@ -63,9 +63,6 @@ import soot.jimple.Stmt;
 import soot.jimple.StringConstant;
 import soot.tagkit.AnnotationStringElem;
 import soot.tagkit.AnnotationTag;
-import soot.tagkit.Tag;
-import soot.tagkit.VisibilityAnnotationTag;
-import soot.tagkit.VisibilityParameterAnnotationTag;
 import soot.util.Chain;
 
 /**
@@ -146,7 +143,15 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         }
         SootMethod m = new SootMethod((isCallback ? "$cb$": "$m$") + selectorName.replace(':', '$'), 
                 paramTypes, method.getReturnType(), STATIC | PRIVATE | (isCallback ? 0 : NATIVE));
-        copyAnnotations(method, m, extensions ? 1 : 2);
+        copyAnnotations(method, m, Visibility.RuntimeVisible);
+        if (extensions) {
+            copyParameterAnnotations(method, m, 0, 1, 0, Visibility.RuntimeVisible);
+            if (method.getParameterCount() > 1) {
+                copyParameterAnnotations(method, m, 1, method.getParameterCount(), 1, Visibility.RuntimeVisible);
+            }
+        } else {
+            copyParameterAnnotations(method, m, 0, method.getParameterCount(), 2, Visibility.RuntimeVisible);
+        }
         return m;
     }
 
@@ -162,45 +167,11 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         paramTypes.addAll(method.getParameterTypes());
         SootMethod m = new SootMethod("$m$super$" + selectorName.replace(':', '$'), 
                 paramTypes, method.getReturnType(), STATIC | PRIVATE | NATIVE);
-        copyAnnotations(method, m, 2);
+        copyAnnotations(method, m, Visibility.RuntimeVisible);
+        copyParameterAnnotations(method, m, 0, method.getParameterCount(), 2, Visibility.RuntimeVisible);
         return m;
     }
-
-    static void copyAnnotations(SootMethod fromMethod, SootMethod toMethod, int shift) {
-        // Copy annotations
-        for (Tag tag : fromMethod.getTags()) {
-            if (tag instanceof VisibilityAnnotationTag 
-                    && ((VisibilityAnnotationTag) tag).getVisibility() == RUNTIME_VISIBLE) {
-                VisibilityAnnotationTag copy = new VisibilityAnnotationTag(RUNTIME_VISIBLE);
-                for (AnnotationTag annoTag : ((VisibilityAnnotationTag) tag).getAnnotations()) {
-                    copy.addAnnotation(annoTag);
-                }
-                toMethod.addTag(copy);
-            } else if (tag instanceof VisibilityParameterAnnotationTag 
-                    && ((VisibilityParameterAnnotationTag) tag).getKind() == RUNTIME_VISIBLE) {
-                toMethod.addTag(tag);
-            }
-        }
-        
-        // Shift parameter annotations if there are any
-        VisibilityParameterAnnotationTag vpaTag = 
-            (VisibilityParameterAnnotationTag) 
-                toMethod.getTag(VisibilityParameterAnnotationTag.class.getSimpleName());
-        
-        if (vpaTag != null && vpaTag.getVisibilityAnnotations() != null) {
-            toMethod.removeTag(vpaTag.getName());
-            List<VisibilityAnnotationTag> tags = new ArrayList<>(vpaTag.getVisibilityAnnotations());
-            for (int i = 0; i < shift; i++) {
-                tags.add(0, new VisibilityAnnotationTag(RUNTIME_VISIBLE));
-            }
-            vpaTag = new VisibilityParameterAnnotationTag(tags.size(), RUNTIME_VISIBLE);
-            for (VisibilityAnnotationTag tag : tags) {
-                vpaTag.addVisibilityAnnotation(tag);
-            }
-            toMethod.addTag(vpaTag);
-        }
-    }
-
+    
     private SootMethod getCallbackMethod(String selectorName, SootMethod method, Type receiverType) {
         return getMsgSendMethod(selectorName, method, true, receiverType, false);
     }
@@ -453,7 +424,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
             if (selectorName.length() == 0) {
                 StringBuilder sb = new StringBuilder(method.getName());
                 int argCount = method.getParameterCount();
-                for (int i = 0; i < argCount; i++) {
+                for (int i = extensions ? 1 : 0; i < argCount; i++) {
                     sb.append(':');
                 }
                 selectorName = sb.toString();

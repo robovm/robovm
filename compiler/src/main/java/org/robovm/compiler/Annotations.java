@@ -41,6 +41,9 @@ import soot.tagkit.VisibilityParameterAnnotationTag;
  *
  */
 public class Annotations {
+    
+    public enum Visibility { RuntimeVisible, RuntimeInvisible, SourceVisible, Any }
+    
     public static final String BRIDGE = "Lorg/robovm/rt/bro/annotation/Bridge;";
     public static final String CALLBACK = "Lorg/robovm/rt/bro/annotation/Callback;";
     public static final String STRUCT_MEMBER = "Lorg/robovm/rt/bro/annotation/StructMember;";
@@ -70,21 +73,24 @@ public class Annotations {
         return getParameterAnnotation(method, paramIndex, annotationType) != null;
     }
 
-    public static List<AnnotationTag> getAnnotations(Host host) {
+    public static List<AnnotationTag> getAnnotations(Host host, Visibility visibility) {
         if (host instanceof SootClass) {
             SootResolver.v().bringToHierarchy((SootClass) host);
         }
         List<AnnotationTag> result = new ArrayList<>();
         for (Tag tag : host.getTags()) {
             if (tag instanceof VisibilityAnnotationTag) {
-                result.addAll(((VisibilityAnnotationTag) tag).getAnnotations());
+                if (visibility == Visibility.Any
+                        || ((VisibilityAnnotationTag) tag).getVisibility() == visibility.ordinal()) {
+                    result.addAll(((VisibilityAnnotationTag) tag).getAnnotations());
+                }
             }
         }
         return result;
     }
     
     public static AnnotationTag getAnnotation(Host host, String annotationType) {
-        for (AnnotationTag tag : getAnnotations(host)) {
+        for (AnnotationTag tag : getAnnotations(host, Visibility.Any)) {
             if (annotationType.equals(tag.getType())) {
                 return tag;
             }                    
@@ -92,16 +98,20 @@ public class Annotations {
         return null;
     }
     
-    public static List<AnnotationTag> getParameterAnnotations(SootMethod method, int paramIndex) {
+    public static List<AnnotationTag> getParameterAnnotations(SootMethod method, int paramIndex, Visibility visibility) {
         List<AnnotationTag> result = new ArrayList<>();
         for (Tag tag : method.getTags()) {
-            if (tag instanceof VisibilityParameterAnnotationTag) {
-                ArrayList<VisibilityAnnotationTag> l = 
-                        ((VisibilityParameterAnnotationTag) tag).getVisibilityAnnotations();
-                if (l != null && paramIndex < l.size()) {
-                    ArrayList<AnnotationTag> annotations = l.get(paramIndex).getAnnotations();
-                    if (annotations != null) {
-                        result.addAll(annotations);
+            if (tag instanceof VisibilityParameterAnnotationTag) { 
+                if (visibility == Visibility.Any 
+                        || ((VisibilityParameterAnnotationTag) tag).getKind() == visibility.ordinal()) {
+                    
+                    ArrayList<VisibilityAnnotationTag> l = 
+                            ((VisibilityParameterAnnotationTag) tag).getVisibilityAnnotations();
+                    if (l != null && paramIndex < l.size()) {
+                        ArrayList<AnnotationTag> annotations = l.get(paramIndex).getAnnotations();
+                        if (annotations != null) {
+                            result.addAll(annotations);
+                        }
                     }
                 }
             }
@@ -109,8 +119,37 @@ public class Annotations {
         return result;
     }
 
+    public static List<AnnotationTag>[] getParameterAnnotations(SootMethod method, Visibility visibility) {
+        @SuppressWarnings("unchecked")
+        ArrayList<AnnotationTag>[] result = new ArrayList[method.getParameterCount()];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = new ArrayList<>();
+        }
+        for (Tag tag : method.getTags()) {
+            if (tag instanceof VisibilityParameterAnnotationTag) {
+                if (visibility == Visibility.Any 
+                        || ((VisibilityParameterAnnotationTag) tag).getKind() == visibility.ordinal()) {
+                    
+                    ArrayList<VisibilityAnnotationTag> l = 
+                            ((VisibilityParameterAnnotationTag) tag).getVisibilityAnnotations();
+                    if (l != null) {
+                        int i = 0;
+                        for (VisibilityAnnotationTag t : l) {
+                            ArrayList<AnnotationTag> annotations = t.getAnnotations();
+                            if (annotations != null) {
+                                result[i].addAll(annotations);
+                            }
+                            i++;
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+    
     public static AnnotationTag getParameterAnnotation(SootMethod method, int paramIndex, String annotationType) {
-        for (AnnotationTag tag : getParameterAnnotations(method, paramIndex)) {
+        for (AnnotationTag tag : getParameterAnnotations(method, paramIndex, Visibility.Any)) {
             if (annotationType.equals(tag.getType())) {
                 return tag;
             }                    
@@ -359,6 +398,68 @@ public class Annotations {
         }
     }
 
+    private static void copyAnnotations(SootMethod fromMethod, SootMethod toMethod, int visibility) {
+        for (Tag tag : fromMethod.getTags()) {
+            if (tag instanceof VisibilityAnnotationTag) {
+                if (((VisibilityAnnotationTag) tag).getVisibility() == visibility) {
+                    VisibilityAnnotationTag copy = new VisibilityAnnotationTag(visibility);
+                    for (AnnotationTag annoTag : ((VisibilityAnnotationTag) tag).getAnnotations()) {
+                        copy.addAnnotation(annoTag);
+                    }
+                    toMethod.addTag(copy);
+                }
+            }
+        }
+    }
+    
+    public static void copyAnnotations(SootMethod fromMethod, SootMethod toMethod, Visibility visibility) {
+        if (visibility == Visibility.Any) {
+            copyAnnotations(fromMethod, toMethod, RUNTIME_VISIBLE);
+            copyAnnotations(fromMethod, toMethod, RUNTIME_INVISIBLE);
+            copyAnnotations(fromMethod, toMethod, SOURCE_VISIBLE);
+        } else {
+            copyAnnotations(fromMethod, toMethod, visibility.ordinal());
+        }
+    }
+    
+    private static void copyParameterAnnotations(SootMethod fromMethod, SootMethod toMethod, int start, int end, int shift, int visibility) {
+        List<AnnotationTag>[] fromAnnos = getParameterAnnotations(fromMethod, Visibility.values()[visibility]);
+        List<AnnotationTag>[] toAnnos = getParameterAnnotations(toMethod, Visibility.values()[visibility]);
+
+        for (int i = start; i < end; i++) {
+            toAnnos[i + shift].addAll(fromAnnos[i]);
+        }
+        
+        for (Iterator<Tag> it = toMethod.getTags().iterator(); it.hasNext();) {
+            Tag tag = it.next();
+            if (tag instanceof VisibilityParameterAnnotationTag) {
+                if (((VisibilityParameterAnnotationTag) tag).getKind() == visibility) {
+                    it.remove();
+                }
+            }
+        }
+        
+        VisibilityParameterAnnotationTag vpaTag = new VisibilityParameterAnnotationTag(toAnnos.length, visibility);
+        for (List<AnnotationTag> annos : toAnnos) {
+            VisibilityAnnotationTag vaTag = new VisibilityAnnotationTag(visibility);
+            for (AnnotationTag anno : annos) {
+                vaTag.addAnnotation(anno);
+            }
+            vpaTag.addVisibilityAnnotation(vaTag);
+        }
+        toMethod.addTag(vpaTag);
+    }
+    
+    public static void copyParameterAnnotations(SootMethod fromMethod, SootMethod toMethod, int start, int end, int shift, Visibility visibility) {
+        if (visibility == Visibility.Any) {
+            copyParameterAnnotations(fromMethod, toMethod, start, end, shift, RUNTIME_VISIBLE);
+            copyParameterAnnotations(fromMethod, toMethod, start, end, shift, RUNTIME_INVISIBLE);
+            copyParameterAnnotations(fromMethod, toMethod, start, end, shift, SOURCE_VISIBLE);
+        } else {
+            copyParameterAnnotations(fromMethod, toMethod, start, end, shift, visibility.ordinal());
+        }
+    }
+    
     public static VisibilityAnnotationTag getOrCreateRuntimeVisibilityAnnotationTag(SootMethod method, int paramIndex) {
         for (Tag tag : method.getTags()) {
             if (tag instanceof VisibilityParameterAnnotationTag) {

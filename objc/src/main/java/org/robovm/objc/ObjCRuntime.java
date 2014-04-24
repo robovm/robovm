@@ -15,6 +15,7 @@
  */
 package org.robovm.objc;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,7 +61,17 @@ public class ObjCRuntime {
                         if (paramTypes[0] == ObjCSuper.class) {
                             symbol = "objc_msgSendSuper";
                         } else if (ObjCObject.class.isAssignableFrom(paramTypes[0])) {
+                            // self should be an instance of ObjCObject
                             symbol = "objc_msgSend";
+                        } else if (paramTypes[0] == long.class) {
+                            // Also allow @Pointer long as type of self
+                            Annotation[] paramAnnos = method.getParameterAnnotations()[0];
+                            for (Annotation a : paramAnnos) {
+                                if (a.annotationType() == Pointer.class) {
+                                    symbol = "objc_msgSend";
+                                    break;
+                                }
+                            }
                         }
                         if (symbol != null) {
                             // So this is a bridge to an ObjC method. If the method

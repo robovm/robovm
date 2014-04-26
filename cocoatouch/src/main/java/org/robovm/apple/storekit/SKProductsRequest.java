@@ -55,6 +55,6 @@ import org.robovm.apple.storekit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithProductIdentifiers:")
-    public native @Pointer long init(NSSet<NSString> productIdentifiers);
+    protected native @Pointer long init(NSSet<NSString> productIdentifiers);
     /*</methods>*/
 }

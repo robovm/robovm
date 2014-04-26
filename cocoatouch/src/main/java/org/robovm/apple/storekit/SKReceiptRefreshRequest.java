@@ -53,7 +53,7 @@ import org.robovm.apple.storekit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithReceiptProperties:")
-    public native @Pointer long init(NSDictionary<?, ?> properties);
+    protected native @Pointer long init(NSDictionary<?, ?> properties);
     @GlobalValue(symbol="SKReceiptPropertyIsExpired", optional=true)
     public static native String PropertyIsExpired();
     @GlobalValue(symbol="SKReceiptPropertyIsRevoked", optional=true)

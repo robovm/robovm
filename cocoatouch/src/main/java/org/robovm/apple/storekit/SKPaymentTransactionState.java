@@ -26,8 +26,8 @@ import org.robovm.rt.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.corefoundation.*;
-import org.robovm.apple.security.*;
+import org.robovm.apple.foundation.*;
+import org.robovm.apple.storekit.*;
 /*</imports>*/
 
 /**

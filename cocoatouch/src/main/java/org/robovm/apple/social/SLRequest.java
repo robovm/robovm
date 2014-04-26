@@ -56,8 +56,6 @@ import org.robovm.apple.social.*;
     public native NSURL getURL();
     @Property(selector = "parameters")
     public native NSDictionary<?, ?> getParameters();
-    @Property(selector = "setCompletionHandler:")
-    public native void setCompletionHandler(@Block VoidBlock1<SLComposeViewControllerResult> completionHandler);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -68,6 +66,6 @@ import org.robovm.apple.social.*;
     @Method(selector = "preparedURLRequest")
     public native NSURLRequest getPreparedURLRequest();
     @Method(selector = "performRequestWithHandler:")
-    public native void performRequest(VoidBlock3<NSData, NSHTTPURLResponse, NSError> handler);
+    public native void performRequest(@Block VoidBlock3<NSData, NSHTTPURLResponse, NSError> handler);
     /*</methods>*/
 }

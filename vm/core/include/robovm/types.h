@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2012 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -368,6 +368,7 @@ typedef struct Options {
     ClasspathEntry* bootclasspath;
     ClasspathEntry* classpath;
     jboolean dynamicJNI;
+    char** staticLibs; 
     Class* (*loadBootClass)(Env*, const char*, ClassLoader*);
     Class* (*loadUserClass)(Env*, const char*, ClassLoader*);
     void (*classInitialized)(Env*, Class*);

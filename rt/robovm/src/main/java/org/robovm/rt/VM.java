@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2012 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,6 +47,12 @@ public final class VM {
      * Returns the parent directory of the path to the executable currently running.
      */
     public static native String basePath();
+    
+    /**
+     * Returns the names of any static libraries that have been linked into
+     * the executable.
+     */
+    public static native String[] staticLibs();
     
     /**
      * Returns the VM's version.

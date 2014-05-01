@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Trillian AB
+ * Copyright (C) 2013 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,10 +30,6 @@ import java.lang.annotation.Target;
  * For {@link Bridge} parameters that are marshaled from Java objects to native 
  * pointers the method must have a signature matching:
  * <pre>public static void afterJavaToNative(T before, long after, long flags)</pre>
- * <p>
- * For {@link Callback} parameters that are marshaled from native pointers to 
- * Java objects the method must have a signature matching:
- * <pre>public static void afterNativeToJava(long before, T after, long flags)</pre>
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

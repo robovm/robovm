@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2012 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,16 +49,16 @@ import org.robovm.rt.bro.ptr.*;
 
     private static final ObjCClass objCClass = ObjCClass.getByType(/*<name>*/ UIApplication /*</name>*/.class);
 
-    @Bridge private native static int UIApplicationMain(int argc, BytePtr.Ptr argv, 
+    @Bridge private native static int UIApplicationMain(int argc, BytePtr.BytePtrPtr argv, 
             String principalClassName, String delegateClassName);
     
     public static <P extends UIApplication, D extends NSObject & UIApplicationDelegate> 
         void main(String[] args, Class<P> principalClass, Class<D> delegateClass) {
         
         int argc = args.length;
-        BytePtr.Ptr argv = null;
+        BytePtr.BytePtrPtr argv = null;
         if (argc > 0) {
-            argv = Struct.allocate(BytePtr.Ptr.class, argc);
+            argv = Struct.allocate(BytePtr.BytePtrPtr.class, argc);
             for (int i = 0; i < argc; i++) {
                 // TODO: Encoding?
                 BytePtr arg = BytePtr.toBytePtrAsciiZ(args[i]);

@@ -36,7 +36,7 @@ import soot.jimple.*;
 import java.util.*;
 
 abstract public class AbstractJimpleFloatBinopExpr
-    extends AbstractFloatBinopExpr
+    extends AbstractFloatBinopExpr 
 {
     AbstractJimpleFloatBinopExpr(Value op1, Value op2)
     {
@@ -49,4 +49,6 @@ abstract public class AbstractJimpleFloatBinopExpr
         this.op1Box = op1Box;
         this.op2Box = op2Box;
     }
+
+
 }

@@ -64,6 +64,7 @@ public class BriefBlockGraph extends BlockGraph
      */
     public  BriefBlockGraph(BriefUnitGraph unitGraph) {
         super(unitGraph);
+
     }
 }
 

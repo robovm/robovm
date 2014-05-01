@@ -97,6 +97,7 @@ public class ExceptionalBlockGraph extends BlockGraph implements ExceptionalGrap
     public ExceptionalBlockGraph(ExceptionalUnitGraph unitGraph)
     {
         super(unitGraph);
+
     }
 
 

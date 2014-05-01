@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2012 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,14 +52,18 @@ public class Bro {
         }
         for (Method method : c.getDeclaredMethods()) {
             Bridge bridge = method.getAnnotation(Bridge.class);
-            if (bridge != null && !VM.isBridgeMethodBound(method)) {
+            if (bridge != null && !bridge.dynamic() && !VM.isBridgeMethodBound(method)) {
                 long f = Runtime.resolveBridge(library, bridge, method);
-                VM.bindBridgeMethod(method, f);
+                if (f != 0L) {
+                    VM.bindBridgeMethod(method, f);
+                }
             } else {
                 GlobalValue globalValue = method.getAnnotation(GlobalValue.class);
                 if (globalValue != null && !VM.isBridgeMethodBound(method)) {
                     long f = Runtime.resolveGlobalValue(library, globalValue, method);
-                    VM.bindBridgeMethod(method, f);
+                    if (f != 0L) {
+                        VM.bindBridgeMethod(method, f);
+                    }
                 }
             }
         }

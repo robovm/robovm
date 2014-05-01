@@ -252,6 +252,7 @@ public class Printer {
         incJimpleLnNum();
     }
 
+
     /**
      *   Prints out the method corresponding to b Body, (declaration and body),
      *   in the textual format corresponding to the IR used to encode b body.

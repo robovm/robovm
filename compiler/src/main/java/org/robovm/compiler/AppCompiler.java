@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2012 Trillian Mobile AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -146,7 +146,7 @@ public class AppCompiler {
      * 
      * The classes matching {@link #ROOT_CLASS_PATTERNS} and {@link #ROOT_CLASSES} will always be 
      * included. If a main class has been specified it will also become a root. Any root class 
-     * pattern specified on the command line (as returned by {@link Config#getRoots()} will also be 
+     * pattern specified on the command line (as returned by {@link Config#getRoots()} will also be
      * used to find root classes. If no main class has been specified and {@link Config#getRoots()} 
      * returns an empty set all classes available on the bootclasspath and the classpath will become 
      * roots.
@@ -292,6 +292,8 @@ public class AppCompiler {
                     builder.useDynamicJni(true);
                 } else if ("-skiprt".equals(args[i])) {
                     builder.skipRuntimeLib(true);
+                } else if ("-skipsign".equals(args[i])) {
+                    builder.iosSkipSigning(true);
                 } else if ("-clean".equals(args[i])) {
                     builder.clean(true);
                 } else if ("-help".equals(args[i]) || "-?".equals(args[i])) {
@@ -318,7 +320,7 @@ public class AppCompiler {
                     }
                 } else if ("-libs".equals(args[i])) {
                     for (String p : args[++i].split(":")) {
-                        builder.addLib(p);
+                        builder.addLib(new Config.Lib(p, true));
                     }
                 } else if ("-exportedsymbols".equals(args[i])) {
                     for (String p : args[++i].split(":")) {
@@ -444,6 +446,11 @@ public class AppCompiler {
                         if (launchParameters instanceof IOSSimulatorLaunchParameters) {
                             String name = launchArgs.get(i++);
                             try {
+                                if (name.equals("iphone")) {
+                                    name = Family.iPhoneRetina4Inch.name();
+                                } else if (name.equals("ipad")) {
+                                    name = Family.iPadRetina.name();
+                                }
                                 ((IOSSimulatorLaunchParameters) launchParameters).setFamily(Family.valueOf(name));
                             } catch (IllegalArgumentException e) {
                                 throw new IllegalArgumentException("Illegal -ios-sim-family value: " + name);
@@ -562,7 +569,7 @@ public class AppCompiler {
                          + "                        : separated list of frameworks that should be weakly linked\n" 
                          + "                        into the final executable.");
         System.err.println("  -frameworkpaths <list>\n" 
-                         + "                        : separated list of framework search paths used when searching" 
+                         + "                        : separated list of framework search paths used when searching\n" 
                          + "                        for custom frameworks.");
         System.err.println("  -resources <list>     : separated list of files and directories that should be\n"
                          + "                        copied to the install dir. Accepts Ant-style patterns.\n" 
@@ -597,6 +604,8 @@ public class AppCompiler {
         System.err.println("  -resourcerules <file> (iOS) Property list (.plist) file containing resource rules\n" 
                          + "                        passed to codesign when signing the app.");
         System.err.println("  -signidentity <id>    (iOS) Sign using this identity. Default is 'iPhone Developer'.");
+        System.err.println("  -skipsign             (iOS) Skips signing of the compiled Application. Can be used\n"
+                         + "                        to create unsigned packages for testing on a jailbroken device.");
         System.err.println("  -provisioningprofile <file>\n" 
                          + "                        (iOS) Provisioning profile to use when building for a device.\n" 
                          + "                        Either a UUID, an app name or app id prefix. If not specified\n" 
@@ -606,7 +615,9 @@ public class AppCompiler {
                          + "                        specified the latest SDK that can be found will be used.");
         System.err.println("iOS simulator launch options:");
         System.err.println("  -ios-sim-family <fam> The device type that should be simulated. Valid values are\n" 
-                         + "                        'iphone' (default) and 'ipad'.");
+                         + "                        'iPhoneRetina35Inch', 'iPhoneRetina4Inch' (default), 'iPad' and\n"
+                         + "                        'iPadRetina'. Accepts aliases 'iphone' ('iPhoneRetina4Inch')\n"
+                         + "                        and 'ipad' ('iPadRetina').");
         System.err.println("  -ios-sim-sdk <sdk>    The iOS SDK version to run the application on (defaults to\n" 
                          + "                        the latest).");
         

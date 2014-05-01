@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2012 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -198,7 +198,7 @@ public final class Runtime {
             symbol = method.getName();
         }
         long f = Dl.resolve(handle, symbol);
-        if (f == 0L) {
+        if (f == 0L && !bridge.optional()) {
             throw new UnsatisfiedLinkError("Failed to resolve native function '" + symbol + "' " 
                     + "for method " + method + " with @Bridge annotation " + bridge 
                     + " in library " + library);
@@ -218,7 +218,7 @@ public final class Runtime {
             symbol = method.getName();
         }
         long f = Dl.resolve(handle, symbol);
-        if (f == 0L) {
+        if (f == 0L && !globalValue.optional()) {
             throw new UnsatisfiedLinkError("Failed to resolve symbol '" + symbol + "' " 
                     + "for method " + method + " with @GlobalValue annotation " + globalValue 
                     + " in library " + library);

@@ -20,7 +20,7 @@
 package soot;
 import java.util.*;
 
-import soot.IInitialResolver.Dependencies;
+import soot.javaToJimple.IInitialResolver.Dependencies;
 
 /** A class source is responsible for resolving a single class from a
  * particular source format (.class, .jimple, .java, etc.)

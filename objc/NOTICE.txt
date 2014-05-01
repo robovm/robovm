@@ -5,4 +5,4 @@
    =========================================================================
 
 RoboVM Objective-C Bridge
-Copyright (C) 2012 Trillian AB
+Copyright (C) 2012 Trillian Mobile AB

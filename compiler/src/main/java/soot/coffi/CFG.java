@@ -99,6 +99,7 @@ public class CFG {
 	else
 	    firstInstruction = null;
 
+    
     /*	
 	if (m.code_attr != null)
 	{
@@ -693,6 +694,8 @@ public class CFG {
 
     /* if a jsr/astore/ret is replaced by some other instruction, it will be put on this table. */
     private final Hashtable<Instruction, Instruction_Goto> replacedInsns = new Hashtable<Instruction, Instruction_Goto>();
+    /* bootstrap methods table */
+    private BootstrapMethods_attribute bootstrap_methods_attribute;
     /* do not forget set the target labelled as TRUE.*/
     private void adjustBranchTargets()
     {
@@ -838,12 +841,14 @@ public class CFG {
     * @param constant_pool constant pool of ClassFile.
     * @param this_class constant pool index of the CONSTANT_Class_info object for
     * this' class.
+    * @param bootstrap_methods_attribute 
     * @return <i>true</i> if all ok, <i>false</i> if there was an error.
     * @see Stmt
     */
-    public boolean jimplify(cp_info constant_pool[],int this_class, JimpleBody listBody)
+    public boolean jimplify(cp_info constant_pool[],int this_class, BootstrapMethods_attribute bootstrap_methods_attribute, JimpleBody listBody)
    {
-        Util.v().setClassNameToAbbreviation(new HashMap());
+        this.bootstrap_methods_attribute = bootstrap_methods_attribute;
+		Util.v().setClassNameToAbbreviation(new HashMap());
 
         Chain units = listBody.getUnits();
 
@@ -2268,6 +2273,37 @@ public class CFG {
             break;
          }
 
+         case ByteCode.INVOKEDYNAMIC:
+         {
+             Instruction_Invokedynamic iv = (Instruction_Invokedynamic)ins;
+   	      	 CONSTANT_InvokeDynamic_info iv_info = (CONSTANT_InvokeDynamic_info) constant_pool[iv.invoke_dynamic_index];
+             int args = cp_info.countParams(constant_pool,iv_info.name_and_type_index);
+             Type returnType = byteCodeTypeOf(jimpleReturnTypeOfNameAndType(cm,
+                 constant_pool, iv_info.name_and_type_index));
+
+             // pop off parameters.
+                 for (int j=args-1;j>=0;j--)
+                 {
+                     if(typeStack.top().equals(Long2ndHalfType.v()))
+                     {
+                         typeStack = popSafe(typeStack, Long2ndHalfType.v());
+                         typeStack = popSafe(typeStack, LongType.v());
+
+                     }
+                     else if(typeStack.top().equals(Double2ndHalfType.v()))
+                     {
+                         typeStack = popSafe(typeStack, Double2ndHalfType.v());
+                         typeStack = popSafe(typeStack, DoubleType.v());
+                     }
+                     else
+                         typeStack = popSafe(typeStack, typeStack.top());
+                 }
+
+             if(!returnType.equals(VoidType.v()))
+                 typeStack = smartPush(typeStack, returnType);
+             break;
+          }
+         
          case ByteCode.INVOKEVIRTUAL:
          {
             Instruction_Invokevirtual iv = (Instruction_Invokevirtual)ins;
@@ -2462,6 +2498,18 @@ public class CFG {
         return Util.v().jimpleTypeOfFieldDescriptor(fieldDescriptor);
     }
 
+    private Type jimpleReturnTypeOfNameAndType(Scene cm,
+            cp_info[] constant_pool, int index)
+    {
+        CONSTANT_NameAndType_info nat = (CONSTANT_NameAndType_info)
+            (constant_pool[index]);
+
+        String methodDescriptor = ((CONSTANT_Utf8_info)
+            (constant_pool[nat.descriptor_index])).convert();
+
+        return Util.v().jimpleReturnTypeOfMethodDescriptor(methodDescriptor);
+    }
+    
     private Type jimpleReturnTypeOfMethodRef(Scene cm,
         cp_info[] constant_pool, int index)
     {
@@ -4268,54 +4316,102 @@ public class CFG {
             break;
          }
 
+         case ByteCode.INVOKEDYNAMIC:
+         {
+            Instruction_Invokedynamic iv = (Instruction_Invokedynamic)ins;
+   	      	CONSTANT_InvokeDynamic_info iv_info = (CONSTANT_InvokeDynamic_info) constant_pool[iv.invoke_dynamic_index];
+            args = cp_info.countParams(constant_pool,iv_info.name_and_type_index);
+             
+			SootMethodRef bootstrapMethodRef;
+			List bootstrapArgs = new LinkedList();
+			{
+				short[] bootstrapMethodTable = bootstrap_methods_attribute.method_handles;
+				short methodSigIndex = bootstrapMethodTable[iv_info.bootstrap_method_index];
+				CONSTANT_MethodHandle_info mhInfo = (CONSTANT_MethodHandle_info) constant_pool[methodSigIndex];
+				CONSTANT_Methodref_info bsmInfo = (CONSTANT_Methodref_info) constant_pool[mhInfo.target_index];
+				bootstrapMethodRef = createMethodRef(constant_pool, bsmInfo,
+						false);
 
+				short[] bsmArgIndices = bootstrap_methods_attribute.arg_indices[iv_info.bootstrap_method_index];
+				if (bsmArgIndices.length > 0) {
+					// G.v().out.println("Soot does not currently support static arguments to bootstrap methods. They will be stripped.");
+					for (short bsmArgIndex : bsmArgIndices) {
+					      cp_info cpEntry = constant_pool[bsmArgIndex];
+					      Value val = cpEntry.createJimpleConstantValue(constant_pool);
+					      bootstrapArgs.add(val);
+					}
+				}
+			}			 
+			 
+        	 SootMethodRef methodRef = null;
+
+        	 CONSTANT_NameAndType_info nameAndTypeInfo = (CONSTANT_NameAndType_info) constant_pool[iv_info.name_and_type_index];
+        	 
+        	 String methodName = ((CONSTANT_Utf8_info) (constant_pool[nameAndTypeInfo.name_index])).convert();
+        	 String methodDescriptor = ((CONSTANT_Utf8_info) (constant_pool[nameAndTypeInfo.descriptor_index])).
+        	 convert();
+
+        	 SootClass bclass = cm.getSootClass(SootClass.INVOKEDYNAMIC_DUMMY_CLASS_NAME);
+        	 
+        	 List parameterTypes;
+        	 Type returnType;
+
+        	 // Generate parameters & returnType & parameterTypes
+        	 {
+        		 Type[] types = Util.v().jimpleTypesOfFieldOrMethodDescriptor(methodDescriptor);
+
+        		 parameterTypes = new ArrayList();
+
+        		 for(int k = 0; k < types.length - 1; k++)
+        		 {
+        			 parameterTypes.add(types[k]);
+        		 }
+
+        		 returnType = types[types.length - 1];
+        	 }
+        	 //we always model invokeDynamic method refs as static method references of methods on the type SootClass.INVOKEDYNAMIC_DUMMY_CLASS_NAME
+        	 methodRef = Scene.v().makeMethodRef(bclass, methodName, parameterTypes, returnType, true);
+
+        	 // build Vector of parameters
+        	 params = new Value[args];
+        	 for (int j=args-1;j>=0;j--)
+        	 {
+        		 params[j] = Util.v().getLocalForStackOp(listBody, typeStack, typeStack.topIndex());
+
+        		 if(typeSize(typeStack.top()) == 2)
+        		 {
+        			 typeStack = typeStack.pop();
+        			 typeStack = typeStack.pop();
+        		 }
+        		 else
+        			 typeStack = typeStack.pop();
+        	 }
+
+        	 rvalue = Jimple.v().newDynamicInvokeExpr(bootstrapMethodRef, bootstrapArgs,
+        			 methodRef, Arrays.asList(params));
+
+        	 if(!returnType.equals(VoidType.v()))
+        	 {
+        		 stmt = Jimple.v().newAssignStmt(Util.v().getLocalForStackOp(listBody, postTypeStack,
+        				 postTypeStack.topIndex()),rvalue);
+        	 }
+        	 else
+        		 stmt = Jimple.v().newInvokeStmt(rvalue);
+
+        	 break;
+         }  	 
+ 
          case ByteCode.INVOKEVIRTUAL:
          {
             Instruction_Invokevirtual iv = (Instruction_Invokevirtual)ins;
             args = cp_info.countParams(constant_pool,iv.arg_i);
 
-            SootMethodRef methodRef = null;
+    		CONSTANT_Methodref_info methodInfo =
+    		    (CONSTANT_Methodref_info) constant_pool[iv.arg_i];
 
-            CONSTANT_Methodref_info methodInfo =
-                (CONSTANT_Methodref_info) constant_pool[iv.arg_i];
+            SootMethodRef methodRef = createMethodRef(constant_pool, methodInfo, false);
 
-            CONSTANT_Class_info c =
-                (CONSTANT_Class_info) constant_pool[methodInfo.class_index];
-
-             String className = ((CONSTANT_Utf8_info) (constant_pool[c.name_index])).convert();
-                className = className.replace('/', '.');
-
-            CONSTANT_NameAndType_info i =
-                (CONSTANT_NameAndType_info) constant_pool[methodInfo.name_and_type_index];
-
-            String methodName = ((CONSTANT_Utf8_info) (constant_pool[i.name_index])).convert();
-            String methodDescriptor = ((CONSTANT_Utf8_info) (constant_pool[i.descriptor_index])).
-                convert();
-
-           if (className.charAt(0) == '[')
-               className = "java.lang.Object";
-
-            SootClass bclass = cm.getSootClass(className);
-
-            List parameterTypes;
-            Type returnType;
-
-            // Generate parameters & returnType & parameterTypes
-            {
-                Type[] types = Util.v().jimpleTypesOfFieldOrMethodDescriptor(methodDescriptor);
-
-                parameterTypes = new ArrayList();
-
-                for(int k = 0; k < types.length - 1; k++)
-                {
-                    parameterTypes.add(types[k]);
-                }
-
-                returnType = types[types.length - 1];
-            }
-
-            methodRef = Scene.v().makeMethodRef(bclass, methodName, parameterTypes, returnType, false);
-
+            Type returnType = methodRef.returnType();
             // build array of parameters
                 params = new Value[args];
                 for (int j=args-1;j>=0;j--)
@@ -4349,44 +4445,12 @@ public class CFG {
             Instruction_Invokenonvirtual iv = (Instruction_Invokenonvirtual)ins;
             args = cp_info.countParams(constant_pool,iv.arg_i);
 
-            SootMethodRef methodRef = null;
+            CONSTANT_Methodref_info methodInfo =
+            	(CONSTANT_Methodref_info) constant_pool[iv.arg_i];
 
-                CONSTANT_Methodref_info methodInfo =
-                    (CONSTANT_Methodref_info) constant_pool[iv.arg_i];
+            SootMethodRef methodRef = createMethodRef(constant_pool, methodInfo, false);
 
-                CONSTANT_Class_info c =
-                    (CONSTANT_Class_info) constant_pool[methodInfo.class_index];
-
-                String className = ((CONSTANT_Utf8_info) (constant_pool[c.name_index])).convert();
-                className = className.replace('/', '.');
-
-                CONSTANT_NameAndType_info i =
-                    (CONSTANT_NameAndType_info) constant_pool[methodInfo.name_and_type_index];
-
-                String methodName = ((CONSTANT_Utf8_info) (constant_pool[i.name_index])).convert();
-                String methodDescriptor = ((CONSTANT_Utf8_info) (constant_pool[i.descriptor_index])).
-                    convert();
-
-                SootClass bclass = cm.getSootClass(className);
-
-                List parameterTypes;
-                Type returnType;
-
-                // Generate parameters & returnType & parameterTypes
-                {
-                    Type[] types = Util.v().jimpleTypesOfFieldOrMethodDescriptor(methodDescriptor);
-
-                    parameterTypes = new ArrayList();
-
-                    for(int k = 0; k < types.length - 1; k++)
-                    {
-                        parameterTypes.add(types[k]);
-                    }
-
-                    returnType = types[types.length - 1];
-                }
-
-                methodRef = Scene.v().makeMethodRef( bclass, methodName, parameterTypes, returnType, false);
+            Type returnType = methodRef.returnType();
 
             // build array of parameters
                 params = new Value[args];
@@ -4421,47 +4485,12 @@ public class CFG {
             Instruction_Invokestatic is = (Instruction_Invokestatic)ins;
             args = cp_info.countParams(constant_pool,is.arg_i);
 
-            SootMethodRef methodRef = null;
+            CONSTANT_Methodref_info methodInfo =
+            	(CONSTANT_Methodref_info) constant_pool[is.arg_i];
 
-                CONSTANT_Methodref_info methodInfo =
-                    (CONSTANT_Methodref_info) constant_pool[is.arg_i];
+            SootMethodRef methodRef = createMethodRef(constant_pool, methodInfo, true);
 
-                CONSTANT_Class_info c =
-                    (CONSTANT_Class_info) constant_pool[methodInfo.class_index];
-
-                String className = ((CONSTANT_Utf8_info) (constant_pool[c.name_index])).convert();
-                className = className.replace('/', '.');
-
-                CONSTANT_NameAndType_info i =
-                    (CONSTANT_NameAndType_info) constant_pool[methodInfo.name_and_type_index];
-
-                String methodName = ((CONSTANT_Utf8_info) (constant_pool[i.name_index])).convert();
-                String methodDescriptor = ((CONSTANT_Utf8_info) (constant_pool[i.descriptor_index])).
-                    convert();
-
-		if (className.charAt(0) == '[')
-		    className = "java.lang.Object";
-
-                SootClass bclass = cm.getSootClass(className);
-
-                List parameterTypes;
-                Type returnType;
-
-                // Generate parameters & returnType & parameterTypes
-                {
-                    Type[] types = Util.v().jimpleTypesOfFieldOrMethodDescriptor(methodDescriptor);
-
-                    parameterTypes = new ArrayList();
-
-                    for(int k = 0; k < types.length - 1; k++)
-                    {
-                        parameterTypes.add(types[k]);
-                    }
-
-                    returnType = types[types.length - 1];
-                }
-
-                methodRef = Scene.v().makeMethodRef(bclass, methodName, parameterTypes, returnType, true);
+            Type returnType = methodRef.returnType();
 
             // build Vector of parameters
                    params = new Value[args];
@@ -4503,47 +4532,12 @@ public class CFG {
             Instruction_Invokeinterface ii = (Instruction_Invokeinterface)ins;
             args = cp_info.countParams(constant_pool,ii.arg_i);
 
-            SootMethodRef methodRef = null;
+            CONSTANT_InterfaceMethodref_info methodInfo =
+                (CONSTANT_InterfaceMethodref_info) constant_pool[ii.arg_i];
 
-                CONSTANT_InterfaceMethodref_info methodInfo =
-                    (CONSTANT_InterfaceMethodref_info) constant_pool[ii.arg_i];
+            SootMethodRef methodRef = createMethodRef(constant_pool, methodInfo, false);
 
-                CONSTANT_Class_info c =
-                    (CONSTANT_Class_info) constant_pool[methodInfo.class_index];
-
-                String className = ((CONSTANT_Utf8_info) (constant_pool[c.name_index])).convert();
-                className = className.replace('/', '.');
-
-                CONSTANT_NameAndType_info i =
-                    (CONSTANT_NameAndType_info) constant_pool[methodInfo.name_and_type_index];
-
-                String methodName = ((CONSTANT_Utf8_info) (constant_pool[i.name_index])).convert();
-                String methodDescriptor = ((CONSTANT_Utf8_info) (constant_pool[i.descriptor_index])).
-                    convert();
-
-               if (className.charAt(0) == '[')
-                   className = "java.lang.Object";
-
-                SootClass bclass = cm.getSootClass(className);
-
-                List parameterTypes;
-                Type returnType;
-
-                // Generate parameters & returnType & parameterTypes
-                {
-                    Type[] types = Util.v().jimpleTypesOfFieldOrMethodDescriptor(methodDescriptor);
-
-                    parameterTypes = new ArrayList();
-
-                    for(int k = 0; k < types.length - 1; k++)
-                    {
-                        parameterTypes.add(types[k]);
-                    }
-
-                    returnType = types[types.length - 1];
-                }
-
-                methodRef = Scene.v().makeMethodRef(bclass, methodName, parameterTypes, returnType, false);
+            Type returnType = methodRef.returnType();
 
             // build Vector of parameters
                 params = new Value[args];
@@ -4649,7 +4643,49 @@ public class CFG {
       }
    }
 
-     Type jimpleTypeOfAtype(int atype)
+    private SootMethodRef createMethodRef(cp_info[] constant_pool,
+			ICONSTANT_Methodref_info methodInfo, boolean isStatic) {
+		SootMethodRef methodRef;
+
+		CONSTANT_Class_info c =
+		    (CONSTANT_Class_info) constant_pool[methodInfo.getClassIndex()];
+
+		String className = ((CONSTANT_Utf8_info) (constant_pool[c.name_index])).convert();
+		    className = className.replace('/', '.');
+
+		CONSTANT_NameAndType_info i =
+		    (CONSTANT_NameAndType_info) constant_pool[methodInfo.getNameAndTypeIndex()];
+
+		String methodName = ((CONSTANT_Utf8_info) (constant_pool[i.name_index])).convert();
+		String methodDescriptor = ((CONSTANT_Utf8_info) (constant_pool[i.descriptor_index])).
+		    convert();
+
+         if (className.charAt(0) == '[')
+		   className = "java.lang.Object";
+
+		SootClass bclass = cm.getSootClass(className);
+
+		List parameterTypes;
+		Type returnType;
+		// Generate parameters & returnType & parameterTypes
+		{
+		    Type[] types = Util.v().jimpleTypesOfFieldOrMethodDescriptor(methodDescriptor);
+
+		    parameterTypes = new ArrayList();
+
+		    for(int k = 0; k < types.length - 1; k++)
+		    {
+		        parameterTypes.add(types[k]);
+		    }
+
+		    returnType = types[types.length - 1];
+		}
+
+		methodRef = Scene.v().makeMethodRef(bclass, methodName, parameterTypes, returnType, isStatic);
+		return methodRef;
+	}
+
+	Type jimpleTypeOfAtype(int atype)
     {
         switch(atype)
         {

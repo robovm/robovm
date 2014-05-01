@@ -30,6 +30,7 @@
 
 package soot.jimple.internal;
 
+
 import soot.tagkit.*;
 import soot.jimple.*;
 import soot.*;
@@ -63,6 +64,7 @@ public class JNopStmt extends AbstractStmt implements NopStmt
         ((StmtSwitch) sw).caseNopStmt(this);
     }    
     
+
 
     public boolean fallsThrough(){return true;}        
     public boolean branches(){return false;}

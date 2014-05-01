@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2012 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.robovm.objc.annotation.NativeClass;
+import org.robovm.objc.annotation.Property;
 import org.robovm.rt.VM;
 import org.robovm.rt.bro.NativeObject;
 import org.robovm.rt.bro.Struct;
@@ -32,6 +33,7 @@ import org.robovm.rt.bro.annotation.Marshaler;
 import org.robovm.rt.bro.annotation.MarshalsPointer;
 import org.robovm.rt.bro.annotation.Pointer;
 import org.robovm.rt.bro.annotation.StructMember;
+import org.robovm.rt.bro.ptr.Ptr;
 
 /**
  *
@@ -41,7 +43,7 @@ import org.robovm.rt.bro.annotation.StructMember;
 @Marshaler(ObjCObject.Marshaler.class)
 public abstract class ObjCObject extends NativeObject {
 
-    public static class Ptr extends org.robovm.rt.bro.ptr.Ptr<ObjCObject, Ptr> {}
+    public static class ObjCObjectPtr extends Ptr<ObjCObject, ObjCObjectPtr> {}
     
     static {
         ObjCRuntime.bind();
@@ -53,14 +55,18 @@ public abstract class ObjCObject extends NativeObject {
             throw new Error(t);
         }
     }
-	
+
     private static final long CUSTOM_CLASS_OFFSET;
     
     private ObjCSuper zuper;
     protected final boolean customClass;
     
     protected ObjCObject() {
-        setHandle(alloc());
+        long handle = alloc();
+        setHandle(handle);
+        // Make sure the peer is set immediately even if a different handle
+        // is set later with initObject().
+        AssociatedObjectHelper.setPeerObject(handle, this);
         customClass = getObjCClass().isCustom();
     }
     
@@ -75,12 +81,43 @@ public abstract class ObjCObject extends NativeObject {
     }
     
     protected void initObject(long handle) {
+        if (handle == 0) {
+            throw new RuntimeException("Objective-C initialization method returned nil");
+        }
         setHandle(handle);
         AssociatedObjectHelper.setPeerObject(handle, this);
     }
     
     protected long alloc() {
         throw new UnsupportedOperationException("Cannot create instances of " + getClass().getName());
+    }
+    
+    @Override
+    protected final void finalize() throws Throwable {
+        dispose(true);
+    }
+    
+    public final void dispose() {
+        dispose(false);
+    }
+    
+    protected void doDispose() {
+    }
+    
+    protected void dispose(boolean finalizing) {
+        long handle = getHandle();
+        if (handle != 0) {
+            AssociatedObjectHelper.setPeerObject(handle, null);
+            doDispose();
+            setHandle(0);
+        }
+        if (finalizing) {
+            try {
+                super.finalize();
+            } catch (Throwable e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
     
     @SuppressWarnings("unchecked")
@@ -108,12 +145,42 @@ public abstract class ObjCObject extends NativeObject {
         return AssociatedObjectHelper.getPeerObject(handle);
     }
     
-    public void addStrongRef(ObjCObject to) {
+    public <T extends Object> T addStrongRef(T to) {
         AssociatedObjectHelper.addStrongRef(this, to);
+        return to;
     }
     
-    public void removeStrongRef(ObjCObject to) {
-        AssociatedObjectHelper.removeStrongRef(this, to);
+    public void removeStrongRef(Object to) {
+        AssociatedObjectHelper.removeStrongRef(this, to, false);
+    }
+    
+    /**
+     * Updates a strong reference handling {@code null} values properly. This
+     * is meant to be used for {@link Property} setter methods with 
+     * {@code strongRef=true}.
+     * 
+     * @param before the previous value for the property. If not {@code null}
+     *        and not equal to {@code after} {@link #removeStrongRef(Object)}
+     *        will be called on this value.
+     * @param after the new value for the property. If not {@code null}
+     *        and not equal to {@code after} {@link #addStrongRef(Object)}
+     *        will be called on this value.
+     */
+    public void updateStrongRef(Object before, Object after) {
+        if (before == after) {
+            // Either both are null or they reference the same object.
+            // If not null we assume that the property has already been set so 
+            // that there already exists a strong reference.
+            return;
+        }
+        if (before != null) {
+            // Don't fail if the before value didn't have a strong reference.
+            // It could have been set from within ObjC.
+            AssociatedObjectHelper.removeStrongRef(this, before, true);
+        }
+        if (after != null) {
+            AssociatedObjectHelper.addStrongRef(this, after);
+        }
     }
     
     public Object getAssociatedObject(Object key) {
@@ -124,24 +191,30 @@ public abstract class ObjCObject extends NativeObject {
         AssociatedObjectHelper.setAssociatedObject(this, key, value);
     }
     
-    @SuppressWarnings("unchecked")
     public static <T extends ObjCObject> T toObjCObject(Class<T> cls, long handle) {
+        return toObjCObject(cls, handle, false);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static <T extends ObjCObject> T toObjCObject(Class<T> cls, long handle, boolean forceType) {
         if (handle == 0L) {
             return null;
         }
+        if (cls == ObjCClass.class) {
+            return (T) ObjCClass.toObjCClass(handle);
+        }
+
         T o = getPeerObject(handle);
-        if (o != null) {
+        if (o != null && o.getHandle() != 0) {
+            if (forceType && !cls.isAssignableFrom(o.getClass())) {
+                throw new IllegalStateException("The peer object type " + o.getClass().getName() 
+                        + " is not compatible with the forced type " + cls.getName());
+            }
             return o;
         }
-        ObjCClass fallback = ObjCClass.getByType(cls.isInterface() ? ObjCObject.class : cls);
-        ObjCClass objCClass = ObjCClass.getFromObject(handle, fallback);
+
+        ObjCClass objCClass = forceType ? ObjCClass.getByType(cls) : ObjCClass.getFromObject(handle);
         Class<T> c = (Class<T>) objCClass.getType();
-        if (c == ObjCClass.class) {
-            return (T) objCClass;
-        }
-        if (c == ObjCObject.class && cls.isInterface()) {
-            throw new ObjCClassNotFoundException("Could not create a Java object for interface: " + cls.getName());
-        }
 
         o = VM.allocateObject(c);
         o.setHandle(handle);
@@ -167,8 +240,12 @@ public abstract class ObjCObject extends NativeObject {
             return o.getHandle();
         }
         @MarshalsPointer
-        public static ObjCProtocol protocolToObject(Class<? extends ObjCObject> cls, long handle, long flags) {
-            ObjCObject o = ObjCObject.toObjCObject(cls, handle);
+        public static ObjCProtocol protocolToObject(Class<?> cls, long handle, long flags) {
+            Class<? extends ObjCObject> proxyClass = ObjCClass.allObjCProxyClasses.get(cls.getName());
+            if (proxyClass == null) {
+                proxyClass = ObjCObject.class;
+            }
+            ObjCObject o = ObjCObject.toObjCObject(proxyClass, handle);
             return (ObjCProtocol) o;
         }
         @MarshalsPointer
@@ -308,7 +385,7 @@ public abstract class ObjCObject extends NativeObject {
         }
 
         @SuppressWarnings({ "rawtypes", "unchecked" })
-        public static void addStrongRef(ObjCObject from, ObjCObject to) {
+        public static void addStrongRef(ObjCObject from, Object to) {
             if (to == null) {
                 throw new NullPointerException();
             }
@@ -323,18 +400,18 @@ public abstract class ObjCObject extends NativeObject {
         }
 
         @SuppressWarnings("rawtypes")
-        public static void removeStrongRef(ObjCObject from, ObjCObject to) {
+        public static void removeStrongRef(ObjCObject from, Object to, boolean ignoreNotExists) {
             if (to == null) {
                 throw new NullPointerException();
             }
             synchronized (ASSOCIATED_OBJECTS) {
                 List l = (List) getAssociatedObject(from, STRONG_REFS_KEY);
-                if (l == null || !l.remove(to)) {
+                if (!ignoreNotExists && (l == null || !l.remove(to))) {
                     throw new IllegalArgumentException("No strong ref exists from " + from 
                             + " (a " + from.getClass().getName() + ") to " + to 
                             + " a (" + to.getClass().getName() + ")");
                 }
-                if (l.isEmpty()) {
+                if (l != null && l.isEmpty()) {
                     setAssociatedObject(from, STRONG_REFS_KEY, null);
                 }
             }

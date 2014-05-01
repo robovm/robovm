@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2012 Trillian Mobile AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -153,16 +153,25 @@ public abstract class AbstractTarget implements Target {
         
         if (!config.getLibs().isEmpty()) {
             objectFiles = new ArrayList<File>(objectFiles);
-            for (String p : config.getLibs()) {
+            for (Config.Lib lib : config.getLibs()) {
+                String p = lib.getValue();
                 if (p.endsWith(".o")) {
                     objectFiles.add(new File(p));
                 } else if(p.endsWith(".a")) {
                     // .a file
                     if (config.getOs().getFamily() == OS.Family.darwin) {
-                        libs.add("-force_load");
+                        if (lib.isForce()) {
+                            libs.add("-force_load");
+                        }
                         libs.add(new File(p).getAbsolutePath());
                     } else {
-                        libs.addAll(Arrays.asList("-Wl,--whole-archive", new File(p).getAbsolutePath(), "-Wl,--no-whole-archive"));            
+                        if (lib.isForce()) {
+                            libs.add("-Wl,--whole-archive");
+                        }
+                        libs.add(new File(p).getAbsolutePath());            
+                        if (lib.isForce()) {
+                            libs.add("-Wl,--no-whole-archive");
+                        }
                     }
                 } else {
                     // link via -l if suffix is omitted

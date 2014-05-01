@@ -26,7 +26,6 @@
 #ifndef SUPPORT_DATATYPES_H
 #define SUPPORT_DATATYPES_H
 
-#define HAVE_SYS_TYPES_H 1
 #define HAVE_INTTYPES_H 1
 #define HAVE_STDINT_H 1
 #define HAVE_UINT64_T 1
@@ -54,9 +53,7 @@
 #endif
 
 /* Note that <inttypes.h> includes <stdint.h>, if this is a C99 system. */
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
 
 #ifdef HAVE_INTTYPES_H
 #include <inttypes.h>
@@ -101,7 +98,11 @@ typedef short int16_t;
 typedef unsigned short uint16_t;
 typedef signed char int8_t;
 typedef unsigned char uint8_t;
-typedef signed int ssize_t;
+#if defined(_WIN64)
+  typedef signed __int64 ssize_t;
+#else
+  typedef signed int ssize_t;
+#endif
 #ifndef INT8_MAX
 # define INT8_MAX 127
 #endif

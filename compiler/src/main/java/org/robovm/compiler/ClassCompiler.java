@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2012 Trillian Mobile AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -80,6 +80,7 @@ import org.robovm.compiler.llvm.StructureType;
 import org.robovm.compiler.llvm.Value;
 import org.robovm.compiler.llvm.Variable;
 import org.robovm.compiler.llvm.VariableRef;
+import org.robovm.compiler.plugin.CompilerPlugin;
 import org.robovm.compiler.trampoline.FieldAccessor;
 import org.robovm.compiler.trampoline.Invoke;
 import org.robovm.compiler.trampoline.LdcString;
@@ -496,6 +497,13 @@ public class ClassCompiler {
         nativeMethodCompiler.reset(clazz);
         structMemberMethodCompiler.reset(clazz);
         globalValueMethodCompiler.reset(clazz);
+        
+        ClazzInfo ci = clazz.resetClazzInfo();
+
+        for (CompilerPlugin compilerPlugin : config.getCompilerPlugins()) {
+            compilerPlugin.beforeClass(config, clazz);
+        }
+        
         sootClass = clazz.getSootClass();
         mb = new ModuleBuilder();
         trampolines = new HashSet<Trampoline>();
@@ -549,6 +557,11 @@ public class ClassCompiler {
         }
         
         for (SootMethod method : sootClass.getMethods()) {
+            
+            for (CompilerPlugin compilerPlugin : config.getCompilerPlugins()) {
+                compilerPlugin.beforeMethod(config, clazz, method);
+            }
+            
             String name = method.getName();
             if (hasBridgeAnnotation(method)) {
                 bridgeMethod(method);
@@ -607,8 +620,6 @@ public class ClassCompiler {
         mb.addFunction(infoFn);
         
         out.write(mb.build().toString().getBytes("UTF-8"));
-        
-        ClazzInfo ci = clazz.resetClazzInfo();
         
         ci.setCatchNames(catches);
         ci.setTrampolines(trampolines);
@@ -1039,7 +1050,11 @@ public class ClassCompiler {
                 }
             }
             if (hasBridgeAnnotation(m)) {
-                body.add(new GlobalRef(BridgeMethodCompiler.getTargetFnPtrName(m), I8_PTR));
+                if (!readBooleanElem(getAnnotation(m, BRIDGE), "dynamic", false)) {
+                    body.add(new GlobalRef(BridgeMethodCompiler.getTargetFnPtrName(m), I8_PTR));
+                } else {
+                    body.add(new NullConstant(I8_PTR));
+                }
             } else if (hasGlobalValueAnnotation(m)) {
                 body.add(new GlobalRef(GlobalValueMethodCompiler.getGlobalValuePtrName(m), I8_PTR));
             }

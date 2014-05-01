@@ -40,6 +40,8 @@ public abstract class Constant implements Value, Immediate
         return AbstractUnit.emptyList;
     }
 
+    /** Adds a Baf instruction pushing this constant to the stack onto <code>out</code>. */
+
     /** Clones the current constant.  Not implemented here. */
     public Object clone() 
     {

@@ -65,6 +65,7 @@ public class BriefUnitGraph extends UnitGraph
 
         if(Options.v().time())
             Timers.v().graphTimer.end();
+
     }
 }
 

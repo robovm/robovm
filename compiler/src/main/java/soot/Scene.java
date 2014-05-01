@@ -84,7 +84,26 @@ public class Scene  //extends AbstractHost
         kindNumberer.add( Kind.NEWINSTANCE );
 
         addSootBasicClasses();
+        
+        determineExcludedPackages();
     }
+	private void determineExcludedPackages() {
+		excludedPackages = new LinkedList<String>();
+        if (Options.v().exclude() != null)
+            excludedPackages.addAll(Options.v().exclude());
+
+        if( !Options.v().include_all() ) {
+            excludedPackages.add("java.");
+            excludedPackages.add("sun.");
+            excludedPackages.add("javax.");
+            excludedPackages.add("com.sun.");
+            excludedPackages.add("com.ibm.");
+            excludedPackages.add("org.xml.");
+            excludedPackages.add("org.w3c.");
+            excludedPackages.add("apple.awt.");
+            excludedPackages.add("com.apple.");
+        }
+	}
     public static Scene  v() { return G.v().soot_Scene (); }
     
     Chain<SootClass> classes = new HashChain<SootClass>();
@@ -151,12 +170,16 @@ public class Scene  //extends AbstractHost
             return s;
     }
     
-    public SootClass getMainClass()
-    {
+    public boolean hasMainClass() {
         if(mainClass == null) {
         	setMainClassFromOptions();
         }
-        if(mainClass == null)
+        return mainClass!=null;
+    }
+    
+    public SootClass getMainClass()
+    {
+        if(!hasMainClass())
             throw new RuntimeException("There is no main class set!");
             
         return mainClass;
@@ -475,7 +498,8 @@ public class Scene  //extends AbstractHost
 
 		if (toReturn != null) {
 			return toReturn;
-		} else if (allowsPhantomRefs()) {
+		} else if (allowsPhantomRefs() ||
+				   className.equals(SootClass.INVOKEDYNAMIC_DUMMY_CLASS_NAME)) {
 			SootClass c = new SootClass(className);
 			c.setPhantom(true);
 			addClass(c);
@@ -677,6 +701,10 @@ public class Scene  //extends AbstractHost
         activeHierarchy = null;
     }
 
+    public boolean hasCustomEntryPoints() {
+    	return entryPoints!=null;
+    }
+    
     /** Get the set of entry points that are used to build the call graph. */
     public List<SootMethod> getEntryPoints() {
         if( entryPoints == null ) {
@@ -935,6 +963,12 @@ public class Scene  //extends AbstractHost
 	addBasicClass("java.lang.Cloneable");
 
 	addBasicClass("java.io.Serializable");	
+
+	// RoboVM note: Not available in RoboVM
+//	addBasicClass("java.lang.ref.Finalizer");
+//	
+//	addBasicClass("java.dyn.InvokeDynamic");
+
     }
 
     public void addBasicClass(String name) {
@@ -950,12 +984,24 @@ public class Scene  //extends AbstractHost
      *  loadNecessaryClasses, though it will only waste time.
      */
     public void loadBasicClasses() {
+    	
 		for(int i=SootClass.BODIES;i>=SootClass.HIERARCHY;i--) {
 		    for(String name: basicclasses[i]) {
 		    	tryLoadClass(name,i);
 		    }
 		}
     }
+    
+    public Set<String> getBasicClasses() {
+    	Set<String> all = new HashSet<String>();
+    	for(int i=0;i<basicclasses.length;i++) {
+    		Set<String> classes = basicclasses[i];
+    		if(classes!=null)
+    			all.addAll(classes);
+    	}
+		return all; 
+	}
+
 
 	private List<SootClass> dynamicClasses;
     public Collection<SootClass> dynamicClasses() {
@@ -995,6 +1041,7 @@ public class Scene  //extends AbstractHost
         }
 
         prepareClasses();
+        // RoboVM note: In RoboVM we're never done resolving
         //setDoneResolving();
     }
 
@@ -1037,24 +1084,6 @@ public class Scene  //extends AbstractHost
      * command line options. 
      */
     private void prepareClasses() {
-
-        LinkedList<String> excludedPackages = new LinkedList<String>();
-        if (Options.v().exclude() != null)
-            excludedPackages.addAll(Options.v().exclude());
-
-        if( !Options.v().include_all() ) {
-            excludedPackages.add("java.");
-            excludedPackages.add("sun.");
-            excludedPackages.add("javax.");
-            excludedPackages.add("com.sun.");
-            excludedPackages.add("com.ibm.");
-            excludedPackages.add("org.xml.");
-            excludedPackages.add("org.w3c.");
-            excludedPackages.add("org.apache.");
-            excludedPackages.add("apple.awt.");
-            excludedPackages.add("com.apple.");
-        }
-
         // Remove/add all classes from packageInclusionMask as per -i option
         Chain<SootClass> processedClasses = new HashChain<SootClass>();
         while(true) {
@@ -1091,7 +1120,17 @@ public class Scene  //extends AbstractHost
         }
     }
 
-    ArrayList<String> pkgList;
+    public boolean isExcluded(SootClass sc) {
+    	String name = sc.getName();
+    	for(String pkg: excludedPackages){
+			if(name.startsWith(pkg)) {
+    			return true;
+    		}
+    	}
+		return false;
+	}
+
+	ArrayList<String> pkgList;
 
     public void setPkgList(ArrayList<String> list){
         pkgList = list;
@@ -1142,6 +1181,7 @@ public class Scene  //extends AbstractHost
     }
     private boolean doneResolving = false;
 	private boolean incrementalBuild;
+	protected LinkedList<String> excludedPackages;
     public boolean doneResolving() { return doneResolving; }
     public void setDoneResolving() { doneResolving = true; }
     public void setMainClassFromOptions() {
@@ -1189,6 +1229,22 @@ public class Scene  //extends AbstractHost
 
     public void incrementalBuildFinished() {
     	this.incrementalBuild = false;
+    }
+    
+    /*
+     * Forces Soot to resolve the class with the given name to the given level,
+     * even if resolving has actually already finished.
+     */
+    public SootClass forceResolve(String className, int level) {
+    	boolean tmp = doneResolving;
+    	doneResolving = false;
+    	SootClass c;
+    	try {
+			c = SootResolver.v().resolveClass(className, level);
+    	} finally {
+    		doneResolving = tmp;
+    	}    	    	
+    	return c;
     }
 }
 

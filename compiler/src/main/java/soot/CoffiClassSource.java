@@ -18,8 +18,8 @@
  */
 
 package soot;
-import soot.IInitialResolver;
-import soot.IInitialResolver.Dependencies;
+import soot.javaToJimple.IInitialResolver;
+import soot.javaToJimple.IInitialResolver.Dependencies;
 import soot.options.*;
 import java.io.*;
 import java.util.*;

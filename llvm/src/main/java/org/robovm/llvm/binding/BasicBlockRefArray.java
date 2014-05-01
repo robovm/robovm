@@ -35,6 +35,15 @@ public class BasicBlockRefArray {
     }
   }
 
+  public void setValue(BasicBlockRef value) {
+    LLVMJNI.BasicBlockRefArray_value_set(swigCPtr, this, BasicBlockRef.getCPtr(value));
+  }
+
+  public BasicBlockRef getValue() {
+    long cPtr = LLVMJNI.BasicBlockRefArray_value_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new BasicBlockRef(cPtr, false);
+  }
+
   public BasicBlockRefArray(int nelements) {
     this(LLVMJNI.new_BasicBlockRefArray(nelements), true);
   }

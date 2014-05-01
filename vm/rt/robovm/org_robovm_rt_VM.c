@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2012 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,6 +57,30 @@ Object* Java_org_robovm_rt_VM_basePath(Env* env, Class* c) {
 
 Object* Java_org_robovm_rt_VM_executablePath(Env* env, Class* c) {
     return rvmNewStringUTF(env, env->vm->options->executablePath, -1);
+}
+
+ObjectArray* Java_org_robovm_rt_VM_staticLibs(Env* env, Class* c) {
+    Options* options = env->vm->options;
+    if (!options->staticLibs || options->staticLibs[0] == NULL) {
+        return rvmNewObjectArray(env, 0, java_lang_String, NULL, NULL);
+    }
+
+    jint length = 0;
+    while (options->staticLibs[length] != NULL) {
+        length++;
+    }
+
+    ObjectArray* result = rvmNewObjectArray(env, length, java_lang_String, NULL, NULL);
+    if (!result) return NULL;
+
+    jint i;
+    for (i = 0; i < length; i++) {
+        Object* s = rvmNewStringUTF(env, options->staticLibs[i], -1);
+        if (!s) return NULL;
+        result->values[i] = s;
+    }
+
+    return result;
 }
 
 ObjectArray* Java_org_robovm_rt_VM_getStackClasses(Env* env, Class* c, jint skipNum, jint maxDepth) {

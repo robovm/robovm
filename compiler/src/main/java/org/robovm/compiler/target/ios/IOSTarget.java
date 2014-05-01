@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2012 Trillian Mobile AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -120,13 +120,14 @@ public class IOSTarget extends AbstractTarget {
         List<Object> args = new ArrayList<Object>();
         args.add("launch");
         args.add(dir);
+        args.add("--timeout");
+        args.add("90");
         args.add("--unbuffered");
         if (((IOSSimulatorLaunchParameters) launchParameters).getSdk() != null) {
             args.add("--sdk");
             args.add(((IOSSimulatorLaunchParameters) launchParameters).getSdk());
         }
-        args.add("--family");
-        args.add(((IOSSimulatorLaunchParameters) launchParameters).getFamily().toString().toLowerCase());
+        args.addAll(((IOSSimulatorLaunchParameters) launchParameters).getFamily().getIosSimArgs());
         if (launchParameters.getStdoutFifo() != null) {
             args.add("--stdout");
             args.add(launchParameters.getStdoutFifo());
@@ -141,9 +142,7 @@ public class IOSTarget extends AbstractTarget {
         }
         
         File xcodePath = new File(ToolchainUtil.findXcodePath());
-        Map<String, String> env = Collections.singletonMap("DYLD_FRAMEWORK_PATH", 
-                new File(xcodePath, "Platforms/iPhoneSimulator.platform/Developer/Library/PrivateFrameworks").getAbsolutePath() + ":" +
-                new File(xcodePath, "../OtherFrameworks").getAbsolutePath());
+        Map<String, String> env = Collections.singletonMap("DEVELOPER_DIR", xcodePath.getAbsolutePath());
         return new Executor(config.getLogger(), iosSimPath)
             .args(args)
             .wd(launchParameters.getWorkingDirectory())
@@ -245,15 +244,21 @@ public class IOSTarget extends AbstractTarget {
         if (arch == Arch.thumbv7) {
             strip(installDir, getExecutable());
             copyResourcesPList(installDir);
-            // Copy the provisioning profile
-            copyProvisioningProfile(provisioningProfile, installDir);
-            boolean getTaskAllow = provisioningProfile.getType() == Type.Development;
-            codesign(signIdentity, getOrCreateEntitlementsPList(getTaskAllow), installDir);
-            // For some odd reason there needs to be a symbolic link in the root of
-            // the app bundle named CodeResources pointing at _CodeSignature/CodeResources
-            new Executor(config.getLogger(), "ln")
-                .args("-f", "-s", "_CodeSignature/CodeResources", new File(installDir, "CodeResources"))
-                .exec();
+            if (config.isIosSkipSigning()) {
+                config.getLogger().warn("Skiping code signing. The resulting app will "
+                        + "be unsigned and will not run on unjailbroken devices");
+                ldid(entitlementsPList, installDir);
+            } else {
+                // Copy the provisioning profile
+                copyProvisioningProfile(provisioningProfile, installDir);
+                boolean getTaskAllow = provisioningProfile.getType() == Type.Development;
+                codesign(signIdentity, getOrCreateEntitlementsPList(getTaskAllow), installDir);
+                // For some odd reason there needs to be a symbolic link in the root of
+                // the app bundle named CodeResources pointing at _CodeSignature/CodeResources
+                new Executor(config.getLogger(), "ln")
+                    .args("-f", "-s", "_CodeSignature/CodeResources", new File(installDir, "CodeResources"))
+                    .exec();
+            }
         }
     }
 
@@ -271,8 +276,14 @@ public class IOSTarget extends AbstractTarget {
         generateDsym(appDir, getExecutable());
         if (arch == Arch.thumbv7) {
             copyResourcesPList(appDir);
-            copyProvisioningProfile(provisioningProfile, appDir);
-            codesign(signIdentity, getOrCreateEntitlementsPList(true), appDir);
+            if (config.isIosSkipSigning()) {
+                config.getLogger().warn("Skiping code signing. The resulting app will "
+                        + "be unsigned and will not run on unjailbroken devices");
+                ldid(getOrCreateEntitlementsPList(true), appDir);
+            } else {
+                copyProvisioningProfile(provisioningProfile, appDir);
+                codesign(signIdentity, getOrCreateEntitlementsPList(true), appDir);
+            }
         }
     }
     
@@ -293,7 +304,22 @@ public class IOSTarget extends AbstractTarget {
             .args(args)
             .exec();
     }
-    
+
+    private void ldid(File entitlementsPList, File appDir) throws IOException {
+        File executableFile = new File(appDir, getExecutable());
+        config.getLogger().debug("Pseudo-signing %s", executableFile.getAbsolutePath());
+        List<Object> args = new ArrayList<Object>();
+        if (entitlementsPList != null) {
+            args.add("-S" + entitlementsPList.getAbsolutePath());
+        } else {
+            args.add("-S");
+        }
+        args.add(executableFile);
+        new Executor(config.getLogger(), new File(config.getHome().getBinDir(), "ldid"))
+            .args(args)
+            .exec();
+    }
+
     private void copyResourcesPList(File destDir) throws IOException {
         File destFile = new File(destDir, "ResourceRules.plist");
         if (resourceRulesPList != null) {
@@ -312,13 +338,15 @@ public class IOSTarget extends AbstractTarget {
             } else {
                 dict = (NSDictionary) PropertyListParser.parse(IOUtils.toByteArray(getClass().getResourceAsStream("/Entitlements.plist")));
             }
-            NSDictionary profileEntitlements = provisioningProfile.getEntitlements();
-            for (String key : profileEntitlements.allKeys()) {
-                if (dict.objectForKey(key) == null) {
-                    dict.put(key, profileEntitlements.objectForKey(key));
+            if (provisioningProfile != null) {
+                NSDictionary profileEntitlements = provisioningProfile.getEntitlements();
+                for (String key : profileEntitlements.allKeys()) {
+                    if (dict.objectForKey(key) == null) {
+                        dict.put(key, profileEntitlements.objectForKey(key));
+                    }
                 }
+                dict.put("application-identifier", provisioningProfile.getAppIdPrefix() + "." + getBundleId());
             }
-            dict.put("application-identifier", provisioningProfile.getAppIdPrefix() + "." + getBundleId());
             dict.put("get-task-allow", getTaskAllow);
             PropertyListParser.saveAsXML(dict, destFile);
             return destFile;
@@ -377,6 +405,10 @@ public class IOSTarget extends AbstractTarget {
             destDir.mkdirs();
             File outFile = new File(destDir, file.getName());
             ToolchainUtil.pngcrush(config, file, outFile);
+        } else if (file.getName().toLowerCase().endsWith(".strings")) {
+            destDir.mkdirs();
+            File outFile = new File(destDir, file.getName());
+            ToolchainUtil.compileStrings(config, file, outFile);
         } else {
             super.copyFile(resource, file, destDir);
         }
@@ -413,6 +445,12 @@ public class IOSTarget extends AbstractTarget {
         return config.getMainClass() != null ? config.getMainClass() : config.getExecutableName();
     }
     
+    private void putIfAbsent(NSDictionary dict, String key, String value) {
+        if (dict.objectForKey(key) == null) {
+            dict.put(key, value);
+        }
+    }
+
     protected void customizeInfoPList(NSDictionary dict) {
         if (arch == Arch.x86) {
             dict.put("CFBundleSupportedPlatforms", new NSArray(new NSString("iPhoneSimulator")));
@@ -422,9 +460,9 @@ public class IOSTarget extends AbstractTarget {
             dict.put("DTPlatformVersion", sdk.getPlatformVersion());
             dict.put("DTPlatformBuild", sdk.getPlatformBuild());
             dict.put("DTSDKBuild", sdk.getBuild());
-            // Validation fails without these. Let's pretend the app was built with Xcode 4.6.3
-            dict.put("DTXcode", "0463");
-            dict.put("DTXcodeBuild", "4H1503");
+            // Validation fails without these. Let's pretend the app was built with Xcode 5.0.2
+            putIfAbsent(dict, "DTXcode", "0502");
+            putIfAbsent(dict, "DTXcodeBuild", "5A3005");
         }
     }
     
@@ -508,9 +546,11 @@ public class IOSTarget extends AbstractTarget {
         }
 
         if (arch == Arch.thumbv7) {
-            signIdentity = config.getIosSignIdentity();
-            if (signIdentity == null) {
-                signIdentity = SigningIdentity.find(SigningIdentity.list(), "iPhone Developer");
+            if (!config.isIosSkipSigning()) {
+                signIdentity = config.getIosSignIdentity();
+                if (signIdentity == null) {
+                    signIdentity = SigningIdentity.find(SigningIdentity.list(), "iPhone Developer");
+                }
             }
         }
         
@@ -524,13 +564,15 @@ public class IOSTarget extends AbstractTarget {
         }
 
         if (arch == Arch.thumbv7) {
-            provisioningProfile = config.getIosProvisioningProfile();
-            if (provisioningProfile == null) {
-                NSString bundleId = infoPListDict != null ? (NSString) infoPListDict.objectForKey("CFBundleIdentifier") : null;
-                if (bundleId == null) {
-                    bundleId = new NSString("*");
+            if (!config.isIosSkipSigning()) {
+                provisioningProfile = config.getIosProvisioningProfile();
+                if (provisioningProfile == null) {
+                    NSString bundleId = infoPListDict != null ? (NSString) infoPListDict.objectForKey("CFBundleIdentifier") : null;
+                    if (bundleId == null) {
+                        bundleId = new NSString("*");
+                    }
+                    provisioningProfile = ProvisioningProfile.find(ProvisioningProfile.list(), signIdentity, bundleId.toString());
                 }
-                provisioningProfile = ProvisioningProfile.find(ProvisioningProfile.list(), signIdentity, bundleId.toString());
             }
         }
 

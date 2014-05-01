@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2012 Trillian Mobile AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -806,11 +806,18 @@ public class MethodCompiler extends AbstractMethodCompiler {
         } else if (rightOp instanceof ArrayRef) {
             ArrayRef ref = (ArrayRef) rightOp;
             VariableRef base = (VariableRef) immediate(stmt, (Immediate) ref.getBase());
-            Value index = immediate(stmt, (Immediate) ref.getIndex());
-            checkNull(stmt, base);
-            checkBounds(stmt, base, index);
-            result = call(getArrayLoad(ref.getType()), base, index);
-            result = widenToI32Value(result, isUnsigned(ref.getType()));
+            if (ref.getType() instanceof NullType) {
+                // The base value is always null. Do a null check which will
+                // always throw NPE.
+                checkNull(stmt, base);
+                return;
+            } else {
+                Value index = immediate(stmt, (Immediate) ref.getIndex());
+                checkNull(stmt, base);
+                checkBounds(stmt, base, index);
+                result = call(getArrayLoad(ref.getType()), base, index);
+                result = widenToI32Value(result, isUnsigned(ref.getType()));
+            }
         } else if (rightOp instanceof InstanceFieldRef) {
             InstanceFieldRef ref = (InstanceFieldRef) rightOp;
             Value base = immediate(stmt, (Immediate) ref.getBase());

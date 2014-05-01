@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2012 Trillian Mobile AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -133,6 +133,22 @@ public class Linker {
         mb.addInclude(getClass().getClassLoader().getResource("header.ll"));
 
         mb.addGlobal(new Global("_bcDynamicJNI", new IntegerConstant(config.isUseDynamicJni() ? (byte) 1 : (byte) 0)));
+        ArrayConstantBuilder staticLibs = new ArrayConstantBuilder(I8_PTR);
+        if (!config.isUseDynamicJni()) {
+            for (Config.Lib lib : config.getLibs()) {
+                String p = lib.getValue();
+                if (p.endsWith(".a")) {
+                    p = new File(p).getName();
+                    String libName = p.substring(0, p.length() - 2);
+                    if (libName.startsWith("lib")) {
+                        libName = libName.substring(3);
+                    }
+                    staticLibs.add(mb.getString(libName));
+                }
+            }
+        }
+        staticLibs.add(new NullConstant(Type.I8_PTR));
+        mb.addGlobal(new Global("_bcStaticLibs", new ConstantGetelementptr(mb.newGlobal(staticLibs.build()).ref(), 0, 0)));
 
         HashTableGenerator<String, Constant> bcpHashGen = new HashTableGenerator<String, Constant>(new ModifiedUtf8HashFunction());
         HashTableGenerator<String, Constant> cpHashGen = new HashTableGenerator<String, Constant>(new ModifiedUtf8HashFunction());

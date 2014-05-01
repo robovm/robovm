@@ -32,6 +32,7 @@ public class EnhancedBlockGraph extends BlockGraph
 
     public  EnhancedBlockGraph(EnhancedUnitGraph unitGraph) {
         super(unitGraph);
+
     }
 }
 

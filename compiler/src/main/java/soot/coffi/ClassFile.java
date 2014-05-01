@@ -102,6 +102,7 @@ public class ClassFile {
 
    /** File name of the <tt>.class</tt> this represents. */
     String fn;
+    
 
    /* For chaining ClassFiles into a list.
       ClassFile next;*/
@@ -156,7 +157,10 @@ public class ClassFile {
    /** Array of attribute_info objects for this class.
     * @see attribute_info
     */
-    attribute_info attributes[];
+    public attribute_info attributes[];
+    
+    /** bootstrap-methods attribute (if any) */
+    public BootstrapMethods_attribute bootstrap_methods_attribute;
 
    /** Creates a new ClassFile object given the name of the file.
     * @param nfn file name which this ClassFile will represent.
@@ -170,15 +174,46 @@ public class ClassFile {
 
     public boolean loadClassFile(InputStream is) 
     {
-      DataInputStream d = null;
-      try {
-          d = new DataInputStream(new BufferedInputStream(is, 8192));
-          return readClass(d);
-      } finally {
-          try {
-              d.close();
-          } catch (Throwable t) {}
+      InputStream f = null;
+      InputStream classFileStream;
+      DataInputStream d;
+      boolean b;
+
+      classFileStream = is;
+     
+      byte[]  data;
+      
+      
+      Timers.v().readTimer.start();
+      
+      try 
+      {
+        data = new byte[classFileStream.available()];
+        classFileStream.read(data);
+        f = new ByteArrayInputStream(data);
+         
+      } catch(IOException e)
+      {
       }
+      
+      Timers.v().readTimer.end();
+      
+      d = new DataInputStream(f);
+      b = readClass(d);
+      
+      try {
+        classFileStream.close();
+        d.close(); 
+        f.close();
+      } catch(IOException e) {
+         G.v().out.println("IOException with " + fn + ": " + e.getMessage());
+         return false;
+      }
+      
+      if (!b) return false;
+      //parse();        // parse all methods & builds CFGs
+      //G.v().out.println("-- Read " + cf + " --");
+      return true;
    }
 
 
@@ -386,7 +421,7 @@ public class ClassFile {
          Timers.v().attributeTimer.end();
          
       } catch(IOException e) {
-         throw new RuntimeException("IOException with " + fn + ": " + e.getMessage());
+         throw new RuntimeException("IOException with " + fn + ": " + e.getMessage(), e);
       }
 
       /*inf.fields = fields_count;
@@ -444,7 +479,7 @@ public class ClassFile {
             ((CONSTANT_InterfaceMethodref_info)cp).name_and_type_index =
                d.readUnsignedShort();
             if (debug)
-               G.v().out.println("Constant pool[" + i + "]: InterfaceMethodref");
+               G.v().out.println("Constant pool[" + i + "]: MethodHandle");
             break;
          case cp_info.CONSTANT_String:
             cp = new CONSTANT_String_info();
@@ -504,6 +539,16 @@ public class ClassFile {
                G.v().out.println("Constant pool[" + i + "]: Utf8 = \"" +
                                   cputf8.convert() + "\"");
             break;
+         case cp_info.CONSTANT_MethodHandle:
+             cp = new CONSTANT_MethodHandle_info();
+             ((CONSTANT_MethodHandle_info)cp).kind = d.readByte();
+             ((CONSTANT_MethodHandle_info)cp).target_index = d.readUnsignedShort();
+             break;
+         case cp_info.CONSTANT_InvokeDynamic:
+             cp = new CONSTANT_InvokeDynamic_info();
+             ((CONSTANT_InvokeDynamic_info)cp).bootstrap_method_index = d.readUnsignedShort();
+             ((CONSTANT_InvokeDynamic_info)cp).name_and_type_index = d.readUnsignedShort();
+             break;
          default:
             G.v().out.println("Unknown tag in constant pool: " +
                                tag + " at entry " + i);
@@ -744,8 +789,24 @@ public class ClassFile {
              element_value [] result = readElementValues(1, d, false, 0);
              da.default_value = result[0];
              a = (attribute_info)da;
-         }
-         else {
+         } else if (s.equals(attribute_info.BootstrapMethods)){
+            	 BootstrapMethods_attribute bsma = new BootstrapMethods_attribute();
+            	 int count = d.readUnsignedShort();
+            	 bsma.method_handles = new short[count];
+            	 bsma.arg_indices = new short[count][];
+            	 for(int num=0;num<count;num++) {
+            		 short index = (short) d.readUnsignedShort();
+            		 bsma.method_handles[num] = index;
+            		 int argCount = d.readUnsignedShort();
+            		 bsma.arg_indices[num] = new short[argCount];
+            		 for(int numArg=0;numArg<argCount;numArg++) {
+            			 short indexArg = (short) d.readUnsignedShort();
+            			 bsma.arg_indices[num][numArg] = indexArg;
+            		 }
+            	 }
+            	 assert bootstrap_methods_attribute==null : "More than one bootstrap methods attribute!";
+            	 a = bootstrap_methods_attribute = bsma;
+         } else {
             // unknown attribute
             // G.v().out.println("Generic/Unknown Attribute: " + s);
             Generic_attribute ga = new Generic_attribute();

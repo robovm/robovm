@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian AB
+ * Copyright (C) 2014 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ public final class FunctionPtr extends Struct<FunctionPtr> {
     /**
      * Pointer to {@link FunctionPtr}.
      */
-    public static class Ptr extends org.robovm.rt.bro.ptr.Ptr<FunctionPtr, Ptr> {}
+    public static class FunctionPtrPtr extends org.robovm.rt.bro.ptr.Ptr<FunctionPtr, FunctionPtrPtr> {}
     
     /**
      * Creates a new {@link FunctionPtr} which points to the specified

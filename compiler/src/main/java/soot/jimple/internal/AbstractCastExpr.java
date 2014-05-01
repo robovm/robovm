@@ -31,6 +31,7 @@ import soot.*;
 import soot.jimple.*;
 import soot.util.*;
 import java.util.*;
+import soot.grimp.PrecedenceTest;
 
 abstract public class AbstractCastExpr implements CastExpr
 {
@@ -124,5 +125,4 @@ abstract public class AbstractCastExpr implements CastExpr
     {
         ((ExprSwitch) sw).caseCastExpr(this);
     }
-
 }

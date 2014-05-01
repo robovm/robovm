@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2012 Trillian Mobile AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,20 +22,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.robovm.compiler.config.Config;
 
-import soot.Body;
-import soot.BodyTransformer;
-import soot.Pack;
-import soot.PackManager;
 import soot.Scene;
 import soot.SootClass;
-import soot.Transform;
 import soot.options.Options;
 
 /**
@@ -130,7 +124,17 @@ public class Clazzes {
     }
     
     public Clazz load(String internalName) {
-        return cache.get(internalName);
+        Clazz clazz = cache.get(internalName);
+        if (clazz == null) {
+            // Could be a generated class
+            for (Path p : paths) {
+                clazz = p.loadGeneratedClass(internalName);
+                if (clazz != null) {
+                    break;
+                }
+            }
+        }
+        return clazz;
     }
     
     public List<Path> getBootclasspathPaths() {
@@ -165,6 +169,8 @@ public class Clazzes {
             }
             try {
                 sb.append(path.getFile().getCanonicalPath());
+                sb.append(File.pathSeparator);
+                sb.append(clazzes.config.getGeneratedClassDir(path).getCanonicalPath());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -176,46 +182,52 @@ public class Clazzes {
         soot.G.reset();
         Options.v().set_output_format(Options.output_format_jimple);
         Options.v().set_include_all(true);
-        Options.v().setPhaseOption("jap.npc", "enabled:true");
-        Options.v().setPhaseOption("jap.abc", "enabled:true");
         Options.v().set_print_tags_in_output(true);
         Options.v().set_allow_phantom_refs(true);
         Options.v().set_soot_classpath(getSootClasspath(clazzes));
 
-        Scene.v().loadNecessaryClasses();
+        /*
+         * Disable the jb.dae phase (DeadAssignmentEliminator) since it removes 
+         * LDC instructions which would have thrown a NoClassDefFoundError.
+         * TODO: Report this to soot as a bug?
+         */
+        Options.v().setPhaseOption("jb.dae", "enabled:false");
+        /* 
+         * Disable the jb.uce phase (UnreachableCodeEliminator) since it seems 
+         * to remove try-catch blocks which catches a non-existing Throwable 
+         * class. This should generate a NoClassDefFoundError at runtime but 
+         * with the UCE in place no exception is thrown.
+         */
+        Options.v().setPhaseOption("jb.uce", "enabled:false");
+        
+        /*
+         * Enable jap.npc (NullPointerChecker) and jap.abc (ArrayBoundsChecker)
+         * phases in the annotation pack. The annotation pack is enabled by 
+         * default but all its phases are disabled by default.
+         */
+        Options.v().setPhaseOption("jap.npc", "enabled:true");
+        Options.v().setPhaseOption("jap.abc", "enabled:true");
 
         /*
-         * Hack: Remove the DeadAssignmentEliminator since it removes LDC instructions
-         * which would have thrown a NoClassDefFoundError.
-         * TODO: Report this to soot as a bug?
-         * 
-         * Hack: Remove the UnreachableCodeEliminator since it seems to remove
-         * try-catch blocks which catches a non-existing Throwable class. This
-         * should generate a NoClassDefFoundError at runtime but with the UCE
-         * in place no exception is thrown.
+         * Enable the jop (Jimple optimization) pack but disable all phases
+         * for now.
          */
-        Pack pack = PackManager.v().getPack("jb");
-        for (Iterator<?> it = pack.iterator(); it.hasNext();) {
-            Transform t = (Transform) it.next();
-            if ("jb.dae".equals(t.getPhaseName())) {
-                it.remove();
-            }
-            if ("jb.uce".equals(t.getPhaseName())) {
-                it.remove();
-            }
-        }
-        pack.insertAfter(new Transform("jb.dae", new BodyTransformer() {
-            @SuppressWarnings("rawtypes")
-            @Override
-            protected void internalTransform(Body b, String phaseName, Map options) {
-            }
-        }), "jb.cp");
-        pack.insertAfter(new Transform("jb.uce", new BodyTransformer() {
-            @SuppressWarnings("rawtypes")
-            @Override
-            protected void internalTransform(Body b, String phaseName, Map options) {
-            }
-        }), "jb.ne");
+        Options.v().setPhaseOption("jop", "enabled:true");
+        Options.v().setPhaseOption("jop.cse", "enabled:false");
+        Options.v().setPhaseOption("jop.bcm", "enabled:false");
+        Options.v().setPhaseOption("jop.lcm", "enabled:false");
+        Options.v().setPhaseOption("jop.cp", "enabled:false");
+        Options.v().setPhaseOption("jop.cpf", "enabled:false");
+        Options.v().setPhaseOption("jop.cbf", "enabled:false");
+        Options.v().setPhaseOption("jop.dae", "enabled:false");
+        Options.v().setPhaseOption("jop.nce", "enabled:false");
+        Options.v().setPhaseOption("jop.uce1", "enabled:false");
+        Options.v().setPhaseOption("jop.ubf1", "enabled:false");
+        Options.v().setPhaseOption("jop.uce2", "enabled:false");
+        Options.v().setPhaseOption("jop.ubf2", "enabled:false");
+        Options.v().setPhaseOption("jop.ule", "enabled:false");
+        
+        Scene.v().loadNecessaryClasses();
     }
 
 }

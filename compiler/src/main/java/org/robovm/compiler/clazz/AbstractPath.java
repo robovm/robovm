@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2012 Trillian Mobile AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,6 +18,8 @@ package org.robovm.compiler.clazz;
 
 import java.io.File;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -31,12 +33,15 @@ public abstract class AbstractPath implements Path {
     protected Set<Clazz> clazzSet = null;
     protected Set<Package> packageSet = null;
     protected boolean inBootclasspath = false;
+    protected Map<String, Clazz> generatedClasses = new HashMap<String, Clazz>();
+    protected final File generatedClassDir;
     
     AbstractPath(File file, Clazzes clazzes, int index, boolean inBootclasspath) {
         this.file = file.getAbsoluteFile();
         this.clazzes = clazzes;
         this.index = index;
         this.inBootclasspath = inBootclasspath;
+        this.generatedClassDir = clazzes.getConfig().getGeneratedClassDir(this);
     }
 
     public boolean isInBootClasspath() {
@@ -56,6 +61,28 @@ public abstract class AbstractPath implements Path {
             clazzSet = doListClasses();
         }
         return Collections.unmodifiableSet(clazzSet);
+    }
+    
+    public File getGeneratedClassFile(String internalName) {
+        return new File(generatedClassDir, internalName.replace('/', File.separatorChar) + ".class");
+    }
+    
+    public Clazz loadGeneratedClass(String internalName) {
+        // First check the cache
+        Clazz clazz = generatedClasses.get(internalName);
+        if (clazz == null) {
+            // We use null values for negative lookups
+            if (generatedClasses.containsKey(internalName)) {
+                return null;
+            }
+            File classFile = getGeneratedClassFile(internalName);
+            if (classFile.exists() && classFile.isFile()) {
+                clazz = new DirectoryPath.DirectoryPathClazz(clazzes, this, generatedClassDir, classFile);
+            }
+            // Put the clazz (or null if not found) in the cache
+            generatedClasses.put(internalName, clazz);
+        }
+        return clazz;
     }
     
     protected abstract Set<Clazz> doListClasses();

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2012 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,6 +41,7 @@ typedef struct {
 
 const char* __attribute__ ((weak)) _bcMainClass = NULL;
 extern jboolean _bcDynamicJNI;
+extern char** _bcStaticLibs;
 extern char** _bcBootclasspath;
 extern char** _bcClasspath;
 extern void* _bcBootClassesHash;
@@ -74,6 +75,7 @@ int main(int argc, char* argv[]) {
     options.findClassAt = findClassAt;
     options.exceptionMatch = exceptionMatch;
     options.dynamicJNI = _bcDynamicJNI;
+    options.staticLibs = _bcStaticLibs;
     options.listBootClasses = listBootClasses;
     options.listUserClasses = listUserClasses;
     if (!rvmInitOptions(argc, argv, &options, FALSE)) {

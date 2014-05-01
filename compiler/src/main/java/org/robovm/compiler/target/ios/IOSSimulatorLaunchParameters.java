@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Trillian AB
+ * Copyright (C) 2013 Trillian Mobile AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,6 +16,10 @@
  */
 package org.robovm.compiler.target.ios;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.robovm.compiler.target.LaunchParameters;
 
 /**
@@ -24,9 +28,30 @@ import org.robovm.compiler.target.LaunchParameters;
  */
 public class IOSSimulatorLaunchParameters extends LaunchParameters {
 
-    public static enum Family {iphone, ipad}
+    public static enum Family {
+        iPhoneRetina35Inch("iPhone Retina (3.5-inch)", "--family", "iphone", "--retina"),
+        iPhoneRetina4Inch("iPhone Retina (4-inch)", "--family", "iphone", "--retina", "--tall"), 
+        iPad("iPad", "--family", "ipad"), 
+        iPadRetina("iPad Retina", "--family", "ipad", "--retina");
+
+        private final String displayName;
+        private final List<String> iosSimArgs;
+
+        private Family(String displayName, String ... iosSimArgs) {
+            this.displayName = displayName;
+            this.iosSimArgs = new ArrayList<>(Arrays.asList(iosSimArgs));
+        }
+
+        public String getDisplayName() {
+            return displayName;
+        }
+
+        public List<String> getIosSimArgs() {
+            return iosSimArgs;
+        }
+    }
     
-    private Family family = Family.iphone;
+    private Family family = Family.iPhoneRetina4Inch;
     private String sdk = null;
     
     public Family getFamily() {

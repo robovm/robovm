@@ -99,6 +99,7 @@ public class TrapUnitGraph extends UnitGraph
 
         if(Options.v().time())
             Timers.v().graphTimer.end();
+
     }
 
 

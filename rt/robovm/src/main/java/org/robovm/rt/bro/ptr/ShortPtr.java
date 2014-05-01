@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2012 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ public final class ShortPtr extends Struct<ShortPtr> {
     /**
      * Pointer to {@link ShortPtr} (<code>short **</code> in C)
      */
-    public static class Ptr extends org.robovm.rt.bro.ptr.Ptr<ShortPtr, Ptr> {}
+    public static class ShortPtrPtr extends org.robovm.rt.bro.ptr.Ptr<ShortPtr, ShortPtrPtr> {}
 
     /**
      * Creates a new {@link ShortPtr} with a value of 0.
@@ -73,5 +73,62 @@ public final class ShortPtr extends Struct<ShortPtr> {
      */
     public ShortBuffer asShortBuffer(int n) {
         return as(BytePtr.class).asByteBuffer(n << 1).order(ByteOrder.nativeOrder()).asShortBuffer();
+    }
+    
+    /**
+     * Copies {@code n} shorts from the memory pointed to by this {@link ShortPtr}
+     * to a new {@code short[]} instance.
+     * 
+     * @param n the number of shorts to copy.
+     * @return the {@code short[]}.
+     */
+    public short[] toShortArray(int n) {
+        short[] result = new short[n];
+        get(result);
+        return result;
+    }
+
+    /**
+     * Copies {@code dst.length} shorts from the memory pointed to by this 
+     * {@link ShortPtr} to {@code dst}.
+     * 
+     * @param dst the destination.
+     */
+    public void get(short[] dst) {
+        get(dst, 0, dst.length);
+    }
+
+    /**
+     * Copies {@code count} shorts from the memory pointed to by this 
+     * {@link ShortPtr} to {@code dst} starting at offset {@code offset}.
+     * 
+     * @param dst the destination.
+     * @param offset the offset within the destination array to start copying to.
+     * @param count the number of elements to copy.
+     */
+    public void get(short[] dst, int offset, int count) {
+        asShortBuffer(count).get(dst, offset, count);
+    }
+
+    /**
+     * Copies {@code src.length} shorts from {@code src} to the memory pointed to by
+     * this {@link ShortPtr}.
+     * 
+     * @param src the source.
+     */
+    public void set(short[] src) {
+        set(src, 0, src.length);
+    }
+    
+    /**
+     * Copies {@code count} shorts from {@code src} starting at offset {@code offset}
+     * to the memory pointed to by this {@link ShortPtr}.
+     * 
+     * @param src the source.
+     * @param offset the offset within the source array to start copying from.
+     * @param count the number of elements to copy.
+     */
+    public void set(short[] src, int offset, int count) {
+        asShortBuffer(count).put(src, offset, count);
     }
 }

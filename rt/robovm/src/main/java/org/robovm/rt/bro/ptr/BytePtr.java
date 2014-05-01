@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2012 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ public final class BytePtr extends Struct<BytePtr> {
     /**
      * Pointer to {@link BytePtr} (<code>char **</code> in C)
      */
-    public static class Ptr extends org.robovm.rt.bro.ptr.Ptr<BytePtr, Ptr> {}
+    public static class BytePtrPtr extends org.robovm.rt.bro.ptr.Ptr<BytePtr, BytePtrPtr> {}
     
     /**
      * Creates a new {@link BytePtr} with a value of 0.
@@ -134,6 +134,63 @@ public final class BytePtr extends Struct<BytePtr> {
      */
     public ByteBuffer asByteBuffer(int n) {
         return VM.newDirectByteBuffer(getHandle(), n);
+    }
+    
+    /**
+     * Copies {@code n} bytes from the memory pointed to by this {@link BytePtr}
+     * to a new {@code byte[]} instance.
+     * 
+     * @param n the number of bytes to copy.
+     * @return the {@code byte[]}.
+     */
+    public byte[] toByteArray(int n) {
+        byte[] result = new byte[n];
+        get(result);
+        return result;
+    }
+
+    /**
+     * Copies {@code dst.length} bytes from the memory pointed to by this 
+     * {@link BytePtr} to {@code dst}.
+     * 
+     * @param dst the destination.
+     */
+    public void get(byte[] dst) {
+        get(dst, 0, dst.length);
+    }
+
+    /**
+     * Copies {@code count} bytes from the memory pointed to by this 
+     * {@link BytePtr} to {@code dst} starting at offset {@code offset}.
+     * 
+     * @param dst the destination.
+     * @param offset the offset within the destination array to start copying to.
+     * @param count the number of elements to copy.
+     */
+    public void get(byte[] dst, int offset, int count) {
+        asByteBuffer(count).get(dst, offset, count);
+    }
+
+    /**
+     * Copies {@code src.length} bytes from {@code src} to the memory pointed to by
+     * this {@link BytePtr}.
+     * 
+     * @param src the source.
+     */
+    public void set(byte[] src) {
+        set(src, 0, src.length);
+    }
+    
+    /**
+     * Copies {@code count} bytes from {@code src} starting at offset {@code offset}
+     * to the memory pointed to by this {@link BytePtr}.
+     * 
+     * @param src the source.
+     * @param offset the offset within the source array to start copying from.
+     * @param count the number of elements to copy.
+     */
+    public void set(byte[] src, int offset, int count) {
+        asByteBuffer(count).put(src, offset, count);
     }
     
     /**

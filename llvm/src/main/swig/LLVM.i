@@ -56,25 +56,28 @@ SWIG_JAVABODY_METHODS(protected, protected, SWIGTYPE)
 
 %define ARRAY_CLASS(TYPE,NAME)
     %{
-        typedef TYPE NAME;
+        typedef struct NAME {
+            TYPE value;
+        } NAME;
     %}
     typedef struct NAME {
+        TYPE value;
     } NAME;
     %extend NAME {
         NAME(int nelements) {
-          return (TYPE *) calloc(nelements,sizeof(TYPE));
+          return (NAME *) calloc(nelements,sizeof(TYPE));
         }
         ~NAME() {
           free(self);
         }
         TYPE get(int index) {
-          return self[index];
+          return self[index].value;
         }
         void set(int index, TYPE value) {
-          self[index] = value;
+          self[index].value = value;
         }
     };
-    %types(NAME = TYPE);
+    %types(TYPE);
 %enddef
 
 %define ARRAY_ARG(javatype, pattern)
@@ -87,12 +90,14 @@ typedef char* charp;
 OUT_CLASS(LLVMMemoryBufferRef, MemoryBufferRefOut)
 OUT_CLASS(LLVMModuleRef, ModuleRefOut)
 OUT_CLASS(LLVMModuleProviderRef, ModuleProviderRefOut)
+OUT_CLASS(LLVMTargetRef, TargetRefOut)
 OUT_CLASS(charp, StringOut, if (self->value) free(self->value))
 OUT_CLASS(jint, IntOut)
 OUT_ARG(MemoryBufferRefOut, LLVMMemoryBufferRef *OutMemBuf)
 OUT_ARG(ModuleRefOut, LLVMModuleRef *OutM)
 OUT_ARG(ModuleRefOut, LLVMModuleRef *OutModule)
 OUT_ARG(ModuleProviderRefOut, LLVMModuleProviderRef *OutMP)
+OUT_ARG(TargetRefOut, LLVMTargetRef *T)
 OUT_ARG(StringOut, char **OutMessage)
 OUT_ARG(StringOut, char **ErrorMessage)
 OUT_ARG(IntOut, unsigned *Len)
@@ -211,6 +216,9 @@ typedef jlong uint64_t;
 
 %ignore AllocOutputStreamWrapper;
 %ignore FreeOutputStreamWrapper;
+
+%ignore LLVMInstallFatalErrorHandler;
+%ignore LLVMResetFatalErrorHandler;
 
 // Prevent arguments named ContextRef to interfere with the type named ContextRef
 #define ContextRef contextRef

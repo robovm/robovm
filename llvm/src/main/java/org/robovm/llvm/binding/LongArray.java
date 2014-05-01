@@ -35,6 +35,14 @@ public class LongArray {
     }
   }
 
+  public void setValue(long value) {
+    LLVMJNI.LongArray_value_set(swigCPtr, this, value);
+  }
+
+  public long getValue() {
+    return LLVMJNI.LongArray_value_get(swigCPtr, this);
+  }
+
   public LongArray(int nelements) {
     this(LLVMJNI.new_LongArray(nelements), true);
   }

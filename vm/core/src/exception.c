@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2012 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -214,7 +214,7 @@ jboolean rvmThrowNegativeArraySizeException(Env* env) {
 }
 
 jboolean rvmThrowUnsatisfiedLinkError(Env* env, const char* message) {
-    return rvmThrowNew(env, java_lang_UnsatisfiedLinkError, "");
+    return rvmThrowNew(env, java_lang_UnsatisfiedLinkError, message);
 }
 
 jboolean rvmThrowIllegalArgumentException(Env* env, const char* message) {

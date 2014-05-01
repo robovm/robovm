@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2012 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ public final class DoublePtr extends Struct<DoublePtr> {
     /**
      * Pointer to {@link DoublePtr} (<code>double **</code> in C)
      */
-    public static class Ptr extends org.robovm.rt.bro.ptr.Ptr<DoublePtr, Ptr> {}
+    public static class DoublePtrPtr extends org.robovm.rt.bro.ptr.Ptr<DoublePtr, DoublePtrPtr> {}
     
     /**
      * Creates a new {@link DoublePtr} with a value of 0.0.
@@ -73,5 +73,62 @@ public final class DoublePtr extends Struct<DoublePtr> {
      */
     public DoubleBuffer asDoubleBuffer(int n) {
         return as(BytePtr.class).asByteBuffer(n << 3).order(ByteOrder.nativeOrder()).asDoubleBuffer();
+    }
+    
+    /**
+     * Copies {@code n} doubles from the memory pointed to by this {@link DoublePtr}
+     * to a new {@code double[]} instance.
+     * 
+     * @param n the number of doubles to copy.
+     * @return the {@code double[]}.
+     */
+    public double[] toDoubleArray(int n) {
+        double[] result = new double[n];
+        get(result);
+        return result;
+    }
+
+    /**
+     * Copies {@code dst.length} doubles from the memory pointed to by this 
+     * {@link DoublePtr} to {@code dst}.
+     * 
+     * @param dst the destination.
+     */
+    public void get(double[] dst) {
+        get(dst, 0, dst.length);
+    }
+
+    /**
+     * Copies {@code count} doubles from the memory pointed to by this 
+     * {@link DoublePtr} to {@code dst} starting at offset {@code offset}.
+     * 
+     * @param dst the destination.
+     * @param offset the offset within the destination array to start copying to.
+     * @param count the number of elements to copy.
+     */
+    public void get(double[] dst, int offset, int count) {
+        asDoubleBuffer(count).get(dst, offset, count);
+    }
+
+    /**
+     * Copies {@code src.length} doubles from {@code src} to the memory pointed to by
+     * this {@link DoublePtr}.
+     * 
+     * @param src the source.
+     */
+    public void set(double[] src) {
+        set(src, 0, src.length);
+    }
+    
+    /**
+     * Copies {@code count} doubles from {@code src} starting at offset {@code offset}
+     * to the memory pointed to by this {@link DoublePtr}.
+     * 
+     * @param src the source.
+     * @param offset the offset within the source array to start copying from.
+     * @param count the number of elements to copy.
+     */
+    public void set(double[] src, int offset, int count) {
+        asDoubleBuffer(count).put(src, offset, count);
     }
 }

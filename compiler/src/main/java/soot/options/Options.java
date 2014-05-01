@@ -64,6 +64,8 @@ public class Options extends OptionsBase {
     public static final int output_format_class = 12;
     public static final int output_format_d = 13;
     public static final int output_format_dava = 13;
+    public static final int output_format_t = 14;
+    public static final int output_format_template = 14;
     public static final int throw_analysis_pedantic = 1;
     public static final int throw_analysis_unit = 2;
 
@@ -129,6 +131,11 @@ public class Options extends OptionsBase {
                 interactive_mode = true;
   
             else if( false 
+            || option.equals( "unfriendly-mode" )
+            )
+                unfriendly_mode = true;
+  
+            else if( false 
             || option.equals( "app" )
             )
                 app = true;
@@ -186,6 +193,7 @@ public class Options extends OptionsBase {
                 prepend_classpath = true;
   
             else if( false
+            || option.equals( "process-path" )
             || option.equals( "process-dir" )
             ) {
                 if( !hasMoreOptions() ) {
@@ -277,6 +285,11 @@ public class Options extends OptionsBase {
             || option.equals( "allow-phantom-refs" )
             )
                 allow_phantom_refs = true;
+  
+            else if( false 
+            || option.equals( "no-bodies-for-excluded" )
+            )
+                no_bodies_for_excluded = true;
   
             else if( false 
             || option.equals( "j2me" )
@@ -487,6 +500,18 @@ public class Options extends OptionsBase {
                         return false;
                     }
                     output_format = output_format_dava;
+                }
+    
+                else if( false
+                || value.equals( "t" )
+                || value.equals( "template" )
+                ) {
+                    if( output_format != 0
+                    && output_format != output_format_template ) {
+                        G.v().out.println( "Multiple values given for option "+option );
+                        return false;
+                    }
+                    output_format = output_format_template;
                 }
     
                 else {
@@ -908,6 +933,10 @@ public class Options extends OptionsBase {
     private boolean interactive_mode = false;
     public void set_interactive_mode( boolean setting ) { interactive_mode = setting; }
   
+    public boolean unfriendly_mode() { return unfriendly_mode; }
+    private boolean unfriendly_mode = false;
+    public void set_unfriendly_mode( boolean setting ) { unfriendly_mode = setting; }
+  
     public boolean app() { return app; }
     private boolean app = false;
     public void set_app( boolean setting ) { app = setting; }
@@ -964,6 +993,10 @@ public class Options extends OptionsBase {
     public boolean allow_phantom_refs() { return allow_phantom_refs; }
     private boolean allow_phantom_refs = false;
     public void set_allow_phantom_refs( boolean setting ) { allow_phantom_refs = setting; }
+  
+    public boolean no_bodies_for_excluded() { return no_bodies_for_excluded; }
+    private boolean no_bodies_for_excluded = false;
+    public void set_no_bodies_for_excluded( boolean setting ) { no_bodies_for_excluded = setting; }
   
     public boolean j2me() { return j2me; }
     private boolean j2me = false;
@@ -1119,6 +1152,7 @@ public class Options extends OptionsBase {
 +padOpt(" -version", "Display version information and exit" )
 +padOpt(" -v -verbose", "Verbose mode" )
 +padOpt(" -interactive-mode", "Run in interactive mode" )
++padOpt(" -unfriendly-mode", "Allow Soot to run with no command-line options" )
 +padOpt(" -app", "Run in application mode" )
 +padOpt(" -w -whole-program", "Run in whole-program mode" )
 +padOpt(" -ws -whole-shimple", "Run in whole-shimple mode" )
@@ -1129,7 +1163,7 @@ public class Options extends OptionsBase {
       
 +padOpt(" -cp PATH -soot-class-path PATH -soot-classpath PATH", "Use PATH as the classpath for finding classes." )
 +padOpt(" -pp -prepend-classpath", "Prepend the given soot classpath to the default classpath." )
-+padOpt(" -process-dir DIR", "Process all classes found in DIR" )
++padOpt(" -process-path DIR -process-dir DIR", "Process all classes found in DIR" )
 +padOpt(" -ast-metrics", "Compute AST Metrics if performing java to jimple" )
 +padOpt(" -src-prec FORMAT", "Sets source precedence to FORMAT files" )
 +padVal(" c class (default)", "Favour class files as Soot source" )
@@ -1138,6 +1172,7 @@ public class Options extends OptionsBase {
 +padVal(" java", "Favour Java files as Soot source" )
 +padOpt(" -full-resolver", "Force transitive resolving of referenced classes" )
 +padOpt(" -allow-phantom-refs", "Allow unresolved classes; may cause errors" )
++padOpt(" -no-bodies-for-excluded", "Do not load bodies for excluded classes" )
 +padOpt(" -j2me", "Use J2ME mode; changes assignment of types" )
 +padOpt(" -main-class CLASS", "Sets the main class for whole-program analysis." )
 +padOpt(" -polyglot", "Use Java 1.4 Polyglot frontend instead of JastAdd" )
@@ -1158,6 +1193,7 @@ public class Options extends OptionsBase {
 +padVal(" jasmin", "Produce .jasmin files" )
 +padVal(" c class (default)", "Produce .class Files" )
 +padVal(" d dava", "Produce dava-decompiled .java files" )
++padVal(" t template", "Produce .java files with Jimple templates." )
 +padOpt(" -outjar -output-jar", "Make output dir a Jar file instead of dir" )
 +padOpt(" -xml-attributes", "Save tags to XML attributes for Eclipse" )
 +padOpt(" -print-tags -print-tags-in-output", "Print tags in output files after stmt" )
@@ -1235,6 +1271,8 @@ public class Options extends OptionsBase {
         +padVal("jj.lp", "Local packer: minimizes number of locals")
         +padVal("jj.ne", "Nop eliminator")
         +padVal("jj.uce", "Unreachable code eliminator")
+        +padOpt("wjpp", "Whole Jimple Pre-processing Pack")
+        +padOpt("wspp", "Whole Shimple Pre-processing Pack")
         +padOpt("cg", "Call graph constructor")
         +padVal("cg.cha", "Builds call graph using Class Hierarchy Analysis")
         +padVal("cg.spark", "Spark points-to analysis framework")
@@ -1499,6 +1537,18 @@ public class Options extends OptionsBase {
                 +"\n\nRecognized options (with default values):\n"
                 +padOpt( "enabled (true)", "" );
     
+        if( phaseName.equals( "wjpp" ) )
+            return "Phase "+phaseName+":\n"+
+                "\nThis pack allows you to insert pre-processors that are run \nbefore call-graph construction. Only enabled in whole-program \nmode. In an unmodified copy of Soot, this pack is empty."
+                +"\n\nRecognized options (with default values):\n"
+                +padOpt( "enabled (true)", "" );
+    
+        if( phaseName.equals( "wspp" ) )
+            return "Phase "+phaseName+":\n"+
+                "\nThis pack allows you to insert pre-processors that are run \nbefore call-graph construction. Only enabled in whole-program \nShimple mode. In an unmodified copy of Soot, this pack is empty."
+                +"\n\nRecognized options (with default values):\n"
+                +padOpt( "enabled (true)", "" );
+    
         if( phaseName.equals( "cg" ) )
             return "Phase "+phaseName+":\n"+
                 "\nThe Call Graph Constructor computes a call graph for whole \nprogram analysis. When this pack finishes, a call graph is \navailable in the Scene. The different phases in this pack are \ndifferent ways to construct the call graph. Exactly one phase in \nthis pack must be enabled; Soot will raise an error otherwise. "
@@ -1609,7 +1659,27 @@ public class Options extends OptionsBase {
                 +padOpt( "cs-demand (false)", "After running Spark, refine points-to sets on demand with context information" )
                 +padOpt( "lazy-pts (true)", "Create lazy points-to sets that create context information only when needed." )
                 +padOpt( "traversal (75000)", "Make the analysis traverse at most this number of nodes per query." )
-                +padOpt( "passes (10)", "Perform at most this number of refinement iterations." );
+                +padOpt( "passes (10)", "Perform at most this number of refinement iterations." )
+                +padOpt( "geom-pta (false)", "This switch enables/disables the geometric analysis." )
+                +padOpt( "geom-encoding (Geom)", "Encoding methodology" )
+                +padVal( "Geom (default)", "Geometric Encoding" )
+                
+                +padVal( "HeapIns", "Heap Insensitive Encoding" )
+                
+                +padVal( "PtIns", "PtIns" )
+                
+                +padOpt( "geom-worklist (PQ)", "Worklist type" )
+                +padVal( "PQ (default)", "Priority Queue" )
+                
+                +padVal( "FIFO", "FIFO Queue" )
+                
+                +padOpt( "geom-dump-verbose ()", "Filename for detailed execution log" )
+                +padOpt( "geom-verify-name ()", "Filename for verification file" )
+                +padOpt( "geom-eval (0)", "Precision evaluation methodologies" )
+                +padOpt( "geom-trans (false)", "Transform to context-insensitive result" )
+                +padOpt( "geom-frac-base (40)", "Fractional parameter for precision/performance trade-off" )
+                +padOpt( "geom-blocking (true)", "Enable blocking strategy for recursive calls" )
+                +padOpt( "geom-runs (1)", "Iterations of analysis" );
     
         if( phaseName.equals( "cg.paddle" ) )
             return "Phase "+phaseName+":\n"+
@@ -1881,6 +1951,7 @@ public class Options extends OptionsBase {
                 +padOpt( "dump-cg (false)", "" )
                 +padOpt( "dump-intra (false)", "" )
                 +padOpt( "print (true)", "" )
+                +padOpt( "annotate (true)", "Marks pure methods with a purity bytecode attribute" )
                 +padOpt( "verbose (false)", "" );
     
         if( phaseName.equals( "shimple" ) )
@@ -2416,6 +2487,14 @@ public class Options extends OptionsBase {
             return ""
                 +"enabled ";
     
+        if( phaseName.equals( "wjpp" ) )
+            return ""
+                +"enabled ";
+    
+        if( phaseName.equals( "wspp" ) )
+            return ""
+                +"enabled ";
+    
         if( phaseName.equals( "cg" ) )
             return ""
                 +"enabled "
@@ -2470,7 +2549,17 @@ public class Options extends OptionsBase {
                 +"cs-demand "
                 +"lazy-pts "
                 +"traversal "
-                +"passes ";
+                +"passes "
+                +"geom-pta "
+                +"geom-encoding "
+                +"geom-worklist "
+                +"geom-dump-verbose "
+                +"geom-verify-name "
+                +"geom-eval "
+                +"geom-trans "
+                +"geom-frac-base "
+                +"geom-blocking "
+                +"geom-runs ";
     
         if( phaseName.equals( "cg.paddle" ) )
             return ""
@@ -2592,6 +2681,7 @@ public class Options extends OptionsBase {
                 +"dump-cg "
                 +"dump-intra "
                 +"print "
+                +"annotate "
                 +"verbose ";
     
         if( phaseName.equals( "shimple" ) )
@@ -3001,6 +3091,14 @@ public class Options extends OptionsBase {
             return ""
               +"enabled:true ";
     
+        if( phaseName.equals( "wjpp" ) )
+            return ""
+              +"enabled:true ";
+    
+        if( phaseName.equals( "wspp" ) )
+            return ""
+              +"enabled:true ";
+    
         if( phaseName.equals( "cg" ) )
             return ""
               +"enabled:true "
@@ -3054,7 +3152,19 @@ public class Options extends OptionsBase {
               +"cs-demand:false "
               +"lazy-pts:true "
               +"traversal:75000 "
-              +"passes:10 ";
+              +"passes:10 "
+              +"geom-pta:false "
+              +"geom-encoding:Geom "
+              +"geom-encoding:Geom "
+              +"geom-worklist:PQ "
+              +"geom-worklist:PQ "
+              +"geom-dump-verbose: "
+              +"geom-verify-name: "
+              +"geom-eval:0 "
+              +"geom-trans:false "
+              +"geom-frac-base:40 "
+              +"geom-blocking:true "
+              +"geom-runs:1 ";
     
         if( phaseName.equals( "cg.paddle" ) )
             return ""
@@ -3175,6 +3285,7 @@ public class Options extends OptionsBase {
               +"dump-cg:false "
               +"dump-intra:false "
               +"print:true "
+              +"annotate:true "
               +"verbose:false ";
     
         if( phaseName.equals( "shimple" ) )
@@ -3482,6 +3593,8 @@ public class Options extends OptionsBase {
         if( phaseName.equals( "jj.lp" ) ) return;
         if( phaseName.equals( "jj.ne" ) ) return;
         if( phaseName.equals( "jj.uce" ) ) return;
+        if( phaseName.equals( "wjpp" ) ) return;
+        if( phaseName.equals( "wspp" ) ) return;
         if( phaseName.equals( "cg" ) ) return;
         if( phaseName.equals( "cg.cha" ) ) return;
         if( phaseName.equals( "cg.spark" ) ) return;
@@ -3618,6 +3731,10 @@ public class Options extends OptionsBase {
             G.v().out.println( "Warning: Options exist for non-existent phase jj.ne" );
         if( !PackManager.v().hasPhase( "jj.uce" ) )
             G.v().out.println( "Warning: Options exist for non-existent phase jj.uce" );
+        if( !PackManager.v().hasPhase( "wjpp" ) )
+            G.v().out.println( "Warning: Options exist for non-existent phase wjpp" );
+        if( !PackManager.v().hasPhase( "wspp" ) )
+            G.v().out.println( "Warning: Options exist for non-existent phase wspp" );
         if( !PackManager.v().hasPhase( "cg" ) )
             G.v().out.println( "Warning: Options exist for non-existent phase cg" );
         if( !PackManager.v().hasPhase( "cg.cha" ) )

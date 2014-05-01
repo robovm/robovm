@@ -96,6 +96,9 @@ public class JThrowStmt extends AbstractStmt implements ThrowStmt
         ((StmtSwitch) sw).caseThrowStmt(this);
     }    
 
+
+
+
     
     public boolean fallsThrough(){return false;}
     public boolean branches(){return false;}

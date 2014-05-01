@@ -135,5 +135,4 @@ public abstract class AbstractNewArrayExpr implements NewArrayExpr
     {
         ((ExprSwitch) sw).caseNewArrayExpr(this);
     }
-
 }

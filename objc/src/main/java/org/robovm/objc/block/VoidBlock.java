@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Trillian AB
+ * Copyright (C) 2013 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,10 @@ import org.robovm.rt.bro.annotation.Callback;
 /**
  * Block which takes no arguments and returns no value. This is used to map the
  * Objective-C {@code void (^)(void)} block type.
+ * 
+ * @deprecated Use {@link Runnable} instead.
  */
+@Deprecated
 public interface VoidBlock {
 
     /**

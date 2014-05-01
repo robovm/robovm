@@ -63,11 +63,23 @@ elseif(WINDOWS AND X86_64)
   set(LD_FLAGS "${LD_FLAGS} -m64")
 endif()
 
+if(MACOSX)
+  exec_program(xcode-select ARGS --print-path OUTPUT_VARIABLE XCODE_PATH)
+  set(SYSROOT "${XCODE_PATH}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk")
+  if(NOT IS_DIRECTORY ${SYSROOT})
+    set(SYSROOT "${XCODE_PATH}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk")
+  endif()
+  if(NOT IS_DIRECTORY ${SYSROOT})
+    message(FATAL_ERROR "No supported MacOSX SDK found")
+  endif()
+  set(C_CXX_FLAGS "${C_CXX_FLAGS} -isysroot ${SYSROOT}")
+endif()
+
 set(LLVM_ARCHS "X86^^ARM")
 set(LLVM_C_FLAGS "${C_CXX_FLAGS} -fvisibility=hidden -fdata-sections -ffunction-sections")
 set(LLVM_CXX_FLAGS "${C_CXX_FLAGS} -fvisibility=hidden -fdata-sections -ffunction-sections")
 ExternalProject_Add(extllvm
-  URL http://llvm.org/releases/3.3/llvm-3.3.src.tar.gz
+  URL http://llvm.org/releases/3.4/llvm-3.4.src.tar.gz
   LIST_SEPARATOR ^^
   CONFIGURE_COMMAND cmake -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER} -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DCMAKE_RC_COMPILER=${CMAKE_RC_COMPILER} -DCMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME} -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF "-DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/llvm" "-DLLVM_TARGETS_TO_BUILD=${LLVM_ARCHS}" "-DCMAKE_C_FLAGS=${LLVM_C_FLAGS}" "-DCMAKE_CXX_FLAGS=${LLVM_CXX_FLAGS}" ../extllvm/
 )
@@ -102,7 +114,7 @@ elseif(WINDOWS)
 elseif(MACOSX)
   set(LLVM_LDFLAGS
     -L"${CMAKE_BINARY_DIR}/llvm/lib"
-    -lpthread -lz
+    -lcurses -lpthread -lz
   )
 endif()
 

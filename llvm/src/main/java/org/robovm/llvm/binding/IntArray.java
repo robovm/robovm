@@ -35,6 +35,14 @@ public class IntArray {
     }
   }
 
+  public void setValue(int value) {
+    LLVMJNI.IntArray_value_set(swigCPtr, this, value);
+  }
+
+  public int getValue() {
+    return LLVMJNI.IntArray_value_get(swigCPtr, this);
+  }
+
   public IntArray(int nelements) {
     this(LLVMJNI.new_IntArray(nelements), true);
   }

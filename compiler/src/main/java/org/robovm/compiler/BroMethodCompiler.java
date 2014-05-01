@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2012 Trillian Mobile AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@ import static org.robovm.compiler.llvm.Type.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.robovm.compiler.Annotations.Visibility;
 import org.robovm.compiler.MarshalerLookup.ArrayMarshalerMethod;
 import org.robovm.compiler.MarshalerLookup.MarshalSite;
 import org.robovm.compiler.MarshalerLookup.MarshalerMethod;
@@ -66,9 +67,6 @@ import soot.RefType;
 import soot.SootClass;
 import soot.SootMethod;
 import soot.VoidType;
-import soot.tagkit.AnnotationTag;
-import soot.tagkit.VisibilityAnnotationTag;
-import soot.tagkit.VisibilityParameterAnnotationTag;
 
 
 /**
@@ -497,19 +495,19 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
         }
     }
 
-    public FunctionType getBridgeFunctionType(SootMethod method) {
-        return getBridgeOrCallbackFunctionType("@Bridge", method);
+    public FunctionType getBridgeFunctionType(SootMethod method, boolean dynamic) {
+        return getBridgeOrCallbackFunctionType("@Bridge", method, dynamic);
     }
     
     public FunctionType getCallbackFunctionType(SootMethod method) {
-        return getBridgeOrCallbackFunctionType("@Callback", method);
+        return getBridgeOrCallbackFunctionType("@Callback", method, false);
     }
     
-    private FunctionType getBridgeOrCallbackFunctionType(String anno, SootMethod method) {
+    private FunctionType getBridgeOrCallbackFunctionType(String anno, SootMethod method, boolean dynamic) {
         Type returnType = getReturnType(anno, method);
         
         List<Type> paramTypes = new ArrayList<>();
-        for (int i = 0; i < method.getParameterCount(); i++) {
+        for (int i = dynamic ? 1 : 0; i < method.getParameterCount(); i++) {
             paramTypes.add(getParameterType(anno, method, i));
         }
         if (!method.isStatic()) {
@@ -752,22 +750,12 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
         SootMethod method = new SootMethod(originalMethod.getName(), newParameterTypes, VoidType.v(), originalMethod.getModifiers());
         method.setDeclaringClass(originalMethod.getDeclaringClass());
         method.setDeclared(true);
-        // Copy all annotations from the original method except for the parameter annotations
-        method.addAllTagsOf(originalMethod);
-        method.removeTag("VisibilityParameterAnnotationTag");
-        // Copy all parameter annotations from the original method to the copy
-        VisibilityParameterAnnotationTag vpaTag = new VisibilityParameterAnnotationTag(newParameterTypes.size(), 0);
-        VisibilityAnnotationTag vaTag = new VisibilityAnnotationTag(0);
-        vaTag.addAnnotation(new AnnotationTag(STRUCT_RET, 0));
-        vpaTag.addVisibilityAnnotation(vaTag);
-        for (int i = 0; i < originalMethod.getParameterCount(); i++) {
-            vaTag = new VisibilityAnnotationTag(0);
-            for (AnnotationTag tag : getParameterAnnotations(originalMethod, i)) {
-                vaTag.addAnnotation(tag);
-            }
-            vpaTag.addVisibilityAnnotation(vaTag);
-        }
-        method.addTag(vpaTag);
+        // Copy all annotations from the original method
+        copyAnnotations(originalMethod, method, Visibility.Any);
+        // Copy all parameter annotations from the original method to the copy shifting by 1
+        copyParameterAnnotations(originalMethod, method, 0, originalMethod.getParameterCount(), 1, Visibility.Any);
+        // Add @StructRet to parameter 0
+        addRuntimeVisibleParameterAnnotation(method, 0, STRUCT_RET);
         return method;
     }
 

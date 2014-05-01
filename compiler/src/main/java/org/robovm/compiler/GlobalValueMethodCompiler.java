@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2012 Trillian Mobile AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,6 +16,7 @@
  */
 package org.robovm.compiler;
 
+import static org.robovm.compiler.Annotations.*;
 import static org.robovm.compiler.Functions.*;
 import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.Types.*;
@@ -43,6 +44,7 @@ import org.robovm.compiler.llvm.VariableRef;
 
 import soot.SootMethod;
 import soot.VoidType;
+import soot.tagkit.AnnotationTag;
 
 /**
  * @author niklas
@@ -75,6 +77,9 @@ public class GlobalValueMethodCompiler extends BroMethodCompiler {
     protected void doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
         validateGlobalValueMethod(method);
         
+        AnnotationTag globalValueAnnotation = getAnnotation(method, GLOBAL_VALUE);
+        boolean optional = readBooleanElem(globalValueAnnotation, "optional", false);
+
         Function fn = FunctionBuilder.method(method);
         moduleBuilder.addFunction(fn);
 
@@ -95,7 +100,8 @@ public class GlobalValueMethodCompiler extends BroMethodCompiler {
         fn.newBasicBlock(nullLabel);
         VariableRef env = fn.getParameterRef(0);
         call(fn, BC_THROW_UNSATISIFED_LINK_ERROR, env,
-                moduleBuilder.getString(String.format("@GlobalValue method %s.%s%s not bound", className,
+                moduleBuilder.getString(String.format((optional ? "Optional " : "") 
+                        + "@GlobalValue method %s.%s%s not bound", className,
                         method.getName(), getDescriptor(method))));
         fn.add(new Unreachable());
         fn.newBasicBlock(notNullLabel);

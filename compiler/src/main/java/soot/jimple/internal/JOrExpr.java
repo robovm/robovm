@@ -40,6 +40,8 @@ public class JOrExpr extends AbstractJimpleIntLongBinopExpr implements OrExpr
     public String getSymbol() { return " | "; }
     public void apply(Switch sw) { ((ExprSwitch) sw).caseOrExpr(this); }
 
+
+
     public Object clone() 
     {
         return new JOrExpr(Jimple.cloneIfNecessary(getOp1()), Jimple.cloneIfNecessary(getOp2()));

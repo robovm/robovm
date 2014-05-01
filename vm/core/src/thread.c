@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian AB
+ * Copyright (C) 2012 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,7 +58,24 @@ static void* getStackAddress(void) {
     pthread_t self = pthread_self();
 #if defined(DARWIN)
     result = pthread_get_stackaddr_np(self);
-    stackSize = pthread_get_stacksize_np(self);
+    if (pthread_main_np()) {
+        // pthread_get_stacksize_np() cannot be relied upon under OSX 10.9 and
+        // iOS 7 so we need to implement a workaround here. See issue #274.
+#if defined(IOS)
+        size_t guardSize = 0;
+        pthread_attr_t attr;
+        pthread_attr_init(&attr);
+        pthread_attr_getguardsize(&attr, &guardSize);
+        // Stack size for the main thread is 1MB on iOS including the guard page size
+        stackSize = 1 * 1024 * 1024 - guardSize;
+#else // MACOSX
+        // Stack size for the main thread is 8MB on OSX excluding the guard page size
+        stackSize = 8 * 1024 * 1024;
+#endif
+    } else {
+        // For other threads pthread_get_stacksize_np() returns the correct stack size excluding guard page size
+        stackSize = pthread_get_stacksize_np(self);
+    }
     // pthread_get_stackaddr_np returns the beginning (highest address) of the stack
     // while we want the address of the memory area allocated for the stack (lowest address).
     result -= stackSize;

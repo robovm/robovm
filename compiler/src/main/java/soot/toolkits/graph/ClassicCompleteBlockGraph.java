@@ -87,6 +87,7 @@ public class ClassicCompleteBlockGraph extends BlockGraph
 	}
 	mHeads = Collections.unmodifiableList(newHeads);
 	mTails = Collections.EMPTY_LIST;
+
     }
 }
 

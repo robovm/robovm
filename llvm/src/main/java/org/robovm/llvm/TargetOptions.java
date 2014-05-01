@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Trillian AB
+ * Copyright (C) 2013 Trillian Mobile AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -45,14 +45,6 @@ public class TargetOptions {
 
     public void setNoFramePointerElim(boolean value) {
         LLVM.TargetOptionsSetNoFramePointerElim(ref, value);
-    }
-
-    public boolean getNoFramePointerElimNonLeaf() {
-        return LLVM.TargetOptionsGetNoFramePointerElimNonLeaf(ref);
-    }
-
-    public void setNoFramePointerElimNonLeaf(boolean value) {
-        LLVM.TargetOptionsSetNoFramePointerElimNonLeaf(ref, value);
     }
 
     public boolean getLessPreciseFPMADOption() {
@@ -149,22 +141,6 @@ public class TargetOptions {
 
     public void setStackAlignmentOverride(int value) {
         LLVM.TargetOptionsSetStackAlignmentOverride(ref, value);
-    }
-
-    public boolean getRealignStack() {
-        return LLVM.TargetOptionsGetRealignStack(ref);
-    }
-
-    public void setRealignStack(boolean value) {
-        LLVM.TargetOptionsSetRealignStack(ref, value);
-    }
-
-    public int getSSPBufferSize() {
-        return LLVM.TargetOptionsGetSSPBufferSize(ref);
-    }
-
-    public void setSSPBufferSize(int value) {
-        LLVM.TargetOptionsSetSSPBufferSize(ref, value);
     }
 
     public boolean getEnableFastISel() {

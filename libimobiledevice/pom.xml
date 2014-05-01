@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.robovm</groupId>
     <artifactId>robovm-parent</artifactId>
-    <version>0.0.9-SNAPSHOT</version>
+    <version>0.0.12-SNAPSHOT</version>
   </parent>
 
   <artifactId>robovm-libimobiledevice</artifactId>
@@ -39,5 +39,19 @@
       <scope>test</scope>
     </dependency>  
   </dependencies>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <configuration>
+            <excludeResources>true</excludeResources>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 
 </project>

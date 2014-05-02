@@ -51,6 +51,14 @@ public class LockdowndPairRecordStruct {
     return LibIMobileDeviceJNI.LockdowndPairRecordStruct_host_certificate_get(swigCPtr, this);
   }
 
+  public void setRoot_certificate(String value) {
+    LibIMobileDeviceJNI.LockdowndPairRecordStruct_root_certificate_set(swigCPtr, this, value);
+  }
+
+  public String getRoot_certificate() {
+    return LibIMobileDeviceJNI.LockdowndPairRecordStruct_root_certificate_get(swigCPtr, this);
+  }
+
   public void setHost_id(String value) {
     LibIMobileDeviceJNI.LockdowndPairRecordStruct_host_id_set(swigCPtr, this, value);
   }
@@ -59,12 +67,12 @@ public class LockdowndPairRecordStruct {
     return LibIMobileDeviceJNI.LockdowndPairRecordStruct_host_id_get(swigCPtr, this);
   }
 
-  public void setRoot_certificate(String value) {
-    LibIMobileDeviceJNI.LockdowndPairRecordStruct_root_certificate_set(swigCPtr, this, value);
+  public void setSystem_buid(String value) {
+    LibIMobileDeviceJNI.LockdowndPairRecordStruct_system_buid_set(swigCPtr, this, value);
   }
 
-  public String getRoot_certificate() {
-    return LibIMobileDeviceJNI.LockdowndPairRecordStruct_root_certificate_get(swigCPtr, this);
+  public String getSystem_buid() {
+    return LibIMobileDeviceJNI.LockdowndPairRecordStruct_system_buid_get(swigCPtr, this);
   }
 
   public LockdowndPairRecordStruct() {

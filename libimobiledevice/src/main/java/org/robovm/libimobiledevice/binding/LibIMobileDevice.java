@@ -53,6 +53,10 @@ public class LibIMobileDevice implements LibIMobileDeviceConstants {
     return LibIMobileDeviceJNI.get_global_idevice_event_cb();
   }
 
+  public static short upload_image(MobileImageMounterClientRef client, String image_path, String image_type) {
+    return LibIMobileDeviceJNI.upload_image(MobileImageMounterClientRef.getCPtr(client), image_path, image_type);
+  }
+
   public static void idevice_set_debug_level(int level) {
     LibIMobileDeviceJNI.idevice_set_debug_level(level);
   }
@@ -99,6 +103,14 @@ public class LibIMobileDevice implements LibIMobileDeviceConstants {
 
   public static short idevice_connection_receive(IDeviceConnectionRef connection, byte[] data, int len, IntOut recv_bytes) {
     return LibIMobileDeviceJNI.idevice_connection_receive(IDeviceConnectionRef.getCPtr(connection), data, len, IntOut.getCPtr(recv_bytes), recv_bytes);
+  }
+
+  public static short idevice_connection_enable_ssl(IDeviceConnectionRef connection) {
+    return LibIMobileDeviceJNI.idevice_connection_enable_ssl(IDeviceConnectionRef.getCPtr(connection));
+  }
+
+  public static short idevice_connection_disable_ssl(IDeviceConnectionRef connection) {
+    return LibIMobileDeviceJNI.idevice_connection_disable_ssl(IDeviceConnectionRef.getCPtr(connection));
   }
 
   public static short idevice_get_handle(IDeviceRef device, IntOut handle) {
@@ -213,6 +225,10 @@ public class LibIMobileDevice implements LibIMobileDeviceConstants {
     return LibIMobileDeviceJNI.afc_client_new(IDeviceRef.getCPtr(device), LockdowndServiceDescriptorStruct.getCPtr(service), service, AfcClientRefOut.getCPtr(client), client);
   }
 
+  public static short afc_client_start_service(IDeviceRef device, AfcClientRefOut client, String label) {
+    return LibIMobileDeviceJNI.afc_client_start_service(IDeviceRef.getCPtr(device), AfcClientRefOut.getCPtr(client), client, label);
+  }
+
   public static short afc_client_free(AfcClientRef client) {
     return LibIMobileDeviceJNI.afc_client_free(AfcClientRef.getCPtr(client));
   }
@@ -289,8 +305,16 @@ public class LibIMobileDevice implements LibIMobileDeviceConstants {
     return LibIMobileDeviceJNI.afc_get_device_info_key(AfcClientRef.getCPtr(client), key, StringOut.getCPtr(value), value);
   }
 
+  public static short afc_dictionary_free(StringOut dictionary) {
+    return LibIMobileDeviceJNI.afc_dictionary_free(StringOut.getCPtr(dictionary), dictionary);
+  }
+
   public static short instproxy_client_new(IDeviceRef device, LockdowndServiceDescriptorStruct service, InstproxyClientRefOut client) {
     return LibIMobileDeviceJNI.instproxy_client_new(IDeviceRef.getCPtr(device), LockdowndServiceDescriptorStruct.getCPtr(service), service, InstproxyClientRefOut.getCPtr(client), client);
+  }
+
+  public static short instproxy_client_start_service(IDeviceRef device, InstproxyClientRefOut client, String label) {
+    return LibIMobileDeviceJNI.instproxy_client_start_service(IDeviceRef.getCPtr(device), InstproxyClientRefOut.getCPtr(client), client, label);
   }
 
   public static short instproxy_client_free(InstproxyClientRef client) {
@@ -337,8 +361,16 @@ public class LibIMobileDevice implements LibIMobileDeviceConstants {
     LibIMobileDeviceJNI.instproxy_client_options_free(PlistRef.getCPtr(client_options));
   }
 
+  public static short instproxy_client_get_path_for_bundle_identifier(InstproxyClientRef client, String bundle_id, StringOut path) {
+    return LibIMobileDeviceJNI.instproxy_client_get_path_for_bundle_identifier(InstproxyClientRef.getCPtr(client), bundle_id, StringOut.getCPtr(path), path);
+  }
+
   public static short mobile_image_mounter_new(IDeviceRef device, LockdowndServiceDescriptorStruct service, MobileImageMounterClientRefOut client) {
     return LibIMobileDeviceJNI.mobile_image_mounter_new(IDeviceRef.getCPtr(device), LockdowndServiceDescriptorStruct.getCPtr(service), service, MobileImageMounterClientRefOut.getCPtr(client), client);
+  }
+
+  public static short mobile_image_mounter_start_service(IDeviceRef device, MobileImageMounterClientRefOut client, String label) {
+    return LibIMobileDeviceJNI.mobile_image_mounter_start_service(IDeviceRef.getCPtr(device), MobileImageMounterClientRefOut.getCPtr(client), client, label);
   }
 
   public static short mobile_image_mounter_free(MobileImageMounterClientRef client) {

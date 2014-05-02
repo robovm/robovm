@@ -30,6 +30,8 @@ extern "C" {
 #include <libimobiledevice/libimobiledevice.h>
 #include <libimobiledevice/lockdown.h>
 
+#define AFC_SERVICE_NAME "com.apple.afc"
+
 /** @name Error Codes */
 /*@{*/
 #define AFC_E_SUCCESS                 0
@@ -94,7 +96,9 @@ typedef afc_client_private *afc_client_t; /**< The client handle. */
 
 /* Interface */
 afc_error_t afc_client_new(idevice_t device, lockdownd_service_descriptor_t service, afc_client_t *client);
+afc_error_t afc_client_start_service(idevice_t device, afc_client_t* client, const char* label);
 afc_error_t afc_client_free(afc_client_t client);
+
 afc_error_t afc_get_device_info(afc_client_t client, char ***infos);
 afc_error_t afc_read_directory(afc_client_t client, const char *dir, char ***list);
 afc_error_t afc_get_file_info(afc_client_t client, const char *filename, char ***infolist);
@@ -115,6 +119,7 @@ afc_error_t afc_set_file_time(afc_client_t client, const char *path, uint64_t mt
 
 /* Helper functions */
 afc_error_t afc_get_device_info_key(afc_client_t client, const char *key, char **value);
+afc_error_t afc_dictionary_free(char **dictionary);
 
 #ifdef __cplusplus
 }

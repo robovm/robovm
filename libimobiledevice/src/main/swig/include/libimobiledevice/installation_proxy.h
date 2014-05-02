@@ -30,6 +30,8 @@ extern "C" {
 #include <libimobiledevice/libimobiledevice.h>
 #include <libimobiledevice/lockdown.h>
 
+#define INSTPROXY_SERVICE_NAME "com.apple.mobile.installation_proxy"
+
 /** @name Error Codes */
 /*@{*/
 #define INSTPROXY_E_SUCCESS                0
@@ -38,6 +40,7 @@ extern "C" {
 #define INSTPROXY_E_CONN_FAILED           -3
 #define INSTPROXY_E_OP_IN_PROGRESS        -4
 #define INSTPROXY_E_OP_FAILED             -5
+#define INSTPROXY_E_RECEIVE_TIMEOUT       -6
 
 #define INSTPROXY_E_UNKNOWN_ERROR       -256
 /*@}*/
@@ -53,6 +56,7 @@ typedef void (*instproxy_status_cb_t) (const char *operation, plist_t status, vo
 
 /* Interface */
 instproxy_error_t instproxy_client_new(idevice_t device, lockdownd_service_descriptor_t service, instproxy_client_t *client);
+instproxy_error_t instproxy_client_start_service(idevice_t device, instproxy_client_t * client, const char* label);
 instproxy_error_t instproxy_client_free(instproxy_client_t client);
 
 instproxy_error_t instproxy_browse(instproxy_client_t client, plist_t client_options, plist_t *result);
@@ -65,9 +69,11 @@ instproxy_error_t instproxy_archive(instproxy_client_t client, const char *appid
 instproxy_error_t instproxy_restore(instproxy_client_t client, const char *appid, plist_t client_options, instproxy_status_cb_t status_cb, void *user_data);
 instproxy_error_t instproxy_remove_archive(instproxy_client_t client, const char *appid, plist_t client_options, instproxy_status_cb_t status_cb, void *user_data);
 
+/* Helper */
 plist_t instproxy_client_options_new();
 void instproxy_client_options_add(plist_t client_options, ...);
 void instproxy_client_options_free(plist_t client_options);
+instproxy_error_t instproxy_client_get_path_for_bundle_identifier(instproxy_client_t client, const char* bundle_id, char** path);
 
 #ifdef __cplusplus
 }

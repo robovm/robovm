@@ -864,6 +864,25 @@ jlong get_global_idevice_event_cb(void) {
     return (jlong) global_idevice_event_cb;
 }
 
+static ssize_t upload_cb(void* buf, size_t size, void* userdata) {
+    return fread(buf, 1, size, (FILE*) userdata);
+}
+mobile_image_mounter_error_t upload_image(mobile_image_mounter_client_t client, const char *image_path, const char *image_type) {
+    FILE* f = fopen(image_path, "rb");
+    if (!f) {
+        return MOBILE_IMAGE_MOUNTER_E_UNKNOWN_ERROR;
+    }
+    struct stat fst;
+    if (stat(image_path, &fst) != 0) {
+        fclose(f);
+        return MOBILE_IMAGE_MOUNTER_E_UNKNOWN_ERROR;
+    }
+    size_t image_size = fst.st_size;
+    mobile_image_mounter_error_t err = mobile_image_mounter_upload_image(client, image_type, image_size, upload_cb, f);
+    fclose(f);
+    return err;
+}
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -1704,6 +1723,34 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
+SWIGEXPORT jshort JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_upload_1image(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jstring jarg3) {
+  jshort jresult = 0 ;
+  mobile_image_mounter_client_t arg1 = (mobile_image_mounter_client_t) 0 ;
+  char *arg2 = (char *) 0 ;
+  char *arg3 = (char *) 0 ;
+  mobile_image_mounter_error_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(mobile_image_mounter_client_t *)&jarg1; 
+  arg2 = 0;
+  if (jarg2) {
+    arg2 = (char *)(*jenv)->GetStringUTFChars(jenv, jarg2, 0);
+    if (!arg2) return 0;
+  }
+  arg3 = 0;
+  if (jarg3) {
+    arg3 = (char *)(*jenv)->GetStringUTFChars(jenv, jarg3, 0);
+    if (!arg3) return 0;
+  }
+  result = (mobile_image_mounter_error_t)upload_image(arg1,(char const *)arg2,(char const *)arg3);
+  jresult = (jshort)result; 
+  if (arg2) (*jenv)->ReleaseStringUTFChars(jenv, jarg2, (const char *)arg2);
+  if (arg3) (*jenv)->ReleaseStringUTFChars(jenv, jarg3, (const char *)arg3);
+  return jresult;
+}
+
+
 SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1set_1debug_1level(JNIEnv *jenv, jclass jcls, jint jarg1) {
   int arg1 ;
   
@@ -2036,6 +2083,34 @@ SWIGEXPORT jshort JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDev
 }
 
 
+SWIGEXPORT jshort JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1connection_1enable_1ssl(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jshort jresult = 0 ;
+  idevice_connection_t arg1 = (idevice_connection_t) 0 ;
+  idevice_error_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(idevice_connection_t *)&jarg1; 
+  result = (idevice_error_t)idevice_connection_enable_ssl(arg1);
+  jresult = (jshort)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jshort JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1connection_1disable_1ssl(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jshort jresult = 0 ;
+  idevice_connection_t arg1 = (idevice_connection_t) 0 ;
+  idevice_error_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(idevice_connection_t *)&jarg1; 
+  result = (idevice_error_t)idevice_connection_disable_ssl(arg1);
+  jresult = (jshort)result; 
+  return jresult;
+}
+
+
 SWIGEXPORT jshort JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_idevice_1get_1handle(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
   jshort jresult = 0 ;
   idevice_t arg1 = (idevice_t) 0 ;
@@ -2152,6 +2227,47 @@ SWIGEXPORT jstring JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDe
 }
 
 
+SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1root_1certificate_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  struct lockdownd_pair_record *arg1 = (struct lockdownd_pair_record *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(struct lockdownd_pair_record **)&jarg1; 
+  arg2 = 0;
+  if (jarg2) {
+    arg2 = (char *)(*jenv)->GetStringUTFChars(jenv, jarg2, 0);
+    if (!arg2) return ;
+  }
+  {
+    free(arg1->root_certificate);
+    if (arg2) {
+      arg1->root_certificate = (char *) malloc(strlen((const char *)arg2)+1);
+      strcpy((char *)arg1->root_certificate, (const char *)arg2);
+    } else {
+      arg1->root_certificate = 0;
+    }
+  }
+  if (arg2) (*jenv)->ReleaseStringUTFChars(jenv, jarg2, (const char *)arg2);
+}
+
+
+SWIGEXPORT jstring JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1root_1certificate_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  struct lockdownd_pair_record *arg1 = (struct lockdownd_pair_record *) 0 ;
+  char *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(struct lockdownd_pair_record **)&jarg1; 
+  result = (char *) ((arg1)->root_certificate);
+  if (result) jresult = (*jenv)->NewStringUTF(jenv, (const char *)result);
+  return jresult;
+}
+
+
 SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1host_1id_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   struct lockdownd_pair_record *arg1 = (struct lockdownd_pair_record *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -2193,7 +2309,7 @@ SWIGEXPORT jstring JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDe
 }
 
 
-SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1root_1certificate_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1system_1buid_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   struct lockdownd_pair_record *arg1 = (struct lockdownd_pair_record *) 0 ;
   char *arg2 = (char *) 0 ;
   
@@ -2207,19 +2323,19 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
     if (!arg2) return ;
   }
   {
-    free(arg1->root_certificate);
+    free(arg1->system_buid);
     if (arg2) {
-      arg1->root_certificate = (char *) malloc(strlen((const char *)arg2)+1);
-      strcpy((char *)arg1->root_certificate, (const char *)arg2);
+      arg1->system_buid = (char *) malloc(strlen((const char *)arg2)+1);
+      strcpy((char *)arg1->system_buid, (const char *)arg2);
     } else {
-      arg1->root_certificate = 0;
+      arg1->system_buid = 0;
     }
   }
   if (arg2) (*jenv)->ReleaseStringUTFChars(jenv, jarg2, (const char *)arg2);
 }
 
 
-SWIGEXPORT jstring JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1root_1certificate_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jstring JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_LockdowndPairRecordStruct_1system_1buid_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jstring jresult = 0 ;
   struct lockdownd_pair_record *arg1 = (struct lockdownd_pair_record *) 0 ;
   char *result = 0 ;
@@ -2228,7 +2344,7 @@ SWIGEXPORT jstring JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDe
   (void)jcls;
   (void)jarg1_;
   arg1 = *(struct lockdownd_pair_record **)&jarg1; 
-  result = (char *) ((arg1)->root_certificate);
+  result = (char *) ((arg1)->system_buid);
   if (result) jresult = (*jenv)->NewStringUTF(jenv, (const char *)result);
   return jresult;
 }
@@ -2855,6 +2971,30 @@ SWIGEXPORT jshort JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDev
 }
 
 
+SWIGEXPORT jshort JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1client_1start_1service(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jstring jarg3) {
+  jshort jresult = 0 ;
+  idevice_t arg1 = (idevice_t) 0 ;
+  afc_client_t *arg2 = (afc_client_t *) 0 ;
+  char *arg3 = (char *) 0 ;
+  afc_error_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg2_;
+  arg1 = *(idevice_t *)&jarg1; 
+  arg2 = *(afc_client_t **)&jarg2; 
+  arg3 = 0;
+  if (jarg3) {
+    arg3 = (char *)(*jenv)->GetStringUTFChars(jenv, jarg3, 0);
+    if (!arg3) return 0;
+  }
+  result = (afc_error_t)afc_client_start_service(arg1,arg2,(char const *)arg3);
+  jresult = (jshort)result; 
+  if (arg3) (*jenv)->ReleaseStringUTFChars(jenv, jarg3, (const char *)arg3);
+  return jresult;
+}
+
+
 SWIGEXPORT jshort JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1client_1free(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jshort jresult = 0 ;
   afc_client_t arg1 = (afc_client_t) 0 ;
@@ -3273,6 +3413,21 @@ SWIGEXPORT jshort JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDev
 }
 
 
+SWIGEXPORT jshort JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_afc_1dictionary_1free(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jshort jresult = 0 ;
+  char **arg1 = (char **) 0 ;
+  afc_error_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(char ***)&jarg1; 
+  result = (afc_error_t)afc_dictionary_free(arg1);
+  jresult = (jshort)result; 
+  return jresult;
+}
+
+
 SWIGEXPORT jshort JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1client_1new(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   jshort jresult = 0 ;
   idevice_t arg1 = (idevice_t) 0 ;
@@ -3289,6 +3444,30 @@ SWIGEXPORT jshort JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDev
   arg3 = *(instproxy_client_t **)&jarg3; 
   result = (instproxy_error_t)instproxy_client_new(arg1,arg2,arg3);
   jresult = (jshort)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jshort JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1client_1start_1service(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jstring jarg3) {
+  jshort jresult = 0 ;
+  idevice_t arg1 = (idevice_t) 0 ;
+  instproxy_client_t *arg2 = (instproxy_client_t *) 0 ;
+  char *arg3 = (char *) 0 ;
+  instproxy_error_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg2_;
+  arg1 = *(idevice_t *)&jarg1; 
+  arg2 = *(instproxy_client_t **)&jarg2; 
+  arg3 = 0;
+  if (jarg3) {
+    arg3 = (char *)(*jenv)->GetStringUTFChars(jenv, jarg3, 0);
+    if (!arg3) return 0;
+  }
+  result = (instproxy_error_t)instproxy_client_start_service(arg1,arg2,(char const *)arg3);
+  jresult = (jshort)result; 
+  if (arg3) (*jenv)->ReleaseStringUTFChars(jenv, jarg3, (const char *)arg3);
   return jresult;
 }
 
@@ -3587,6 +3766,30 @@ SWIGEXPORT void JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
+SWIGEXPORT jshort JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_instproxy_1client_1get_1path_1for_1bundle_1identifier(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jlong jarg3, jobject jarg3_) {
+  jshort jresult = 0 ;
+  instproxy_client_t arg1 = (instproxy_client_t) 0 ;
+  char *arg2 = (char *) 0 ;
+  char **arg3 = (char **) 0 ;
+  instproxy_error_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg3_;
+  arg1 = *(instproxy_client_t *)&jarg1; 
+  arg2 = 0;
+  if (jarg2) {
+    arg2 = (char *)(*jenv)->GetStringUTFChars(jenv, jarg2, 0);
+    if (!arg2) return 0;
+  }
+  arg3 = *(char ***)&jarg3; 
+  result = (instproxy_error_t)instproxy_client_get_path_for_bundle_identifier(arg1,(char const *)arg2,arg3);
+  jresult = (jshort)result; 
+  if (arg2) (*jenv)->ReleaseStringUTFChars(jenv, jarg2, (const char *)arg2);
+  return jresult;
+}
+
+
 SWIGEXPORT jshort JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_mobile_1image_1mounter_1new(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   jshort jresult = 0 ;
   idevice_t arg1 = (idevice_t) 0 ;
@@ -3603,6 +3806,30 @@ SWIGEXPORT jshort JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDev
   arg3 = *(mobile_image_mounter_client_t **)&jarg3; 
   result = (mobile_image_mounter_error_t)mobile_image_mounter_new(arg1,arg2,arg3);
   jresult = (jshort)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jshort JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_mobile_1image_1mounter_1start_1service(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_, jstring jarg3) {
+  jshort jresult = 0 ;
+  idevice_t arg1 = (idevice_t) 0 ;
+  mobile_image_mounter_client_t *arg2 = (mobile_image_mounter_client_t *) 0 ;
+  char *arg3 = (char *) 0 ;
+  mobile_image_mounter_error_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg2_;
+  arg1 = *(idevice_t *)&jarg1; 
+  arg2 = *(mobile_image_mounter_client_t **)&jarg2; 
+  arg3 = 0;
+  if (jarg3) {
+    arg3 = (char *)(*jenv)->GetStringUTFChars(jenv, jarg3, 0);
+    if (!arg3) return 0;
+  }
+  result = (mobile_image_mounter_error_t)mobile_image_mounter_start_service(arg1,arg2,(char const *)arg3);
+  jresult = (jshort)result; 
+  if (arg3) (*jenv)->ReleaseStringUTFChars(jenv, jarg3, (const char *)arg3);
   return jresult;
 }
 

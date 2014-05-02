@@ -114,7 +114,7 @@ public class IDevice implements AutoCloseable {
     }
     
     @Override
-    public void close() throws Exception {
+    public void close() {
         dispose();
     }
 

@@ -30,6 +30,8 @@ extern "C" {
 #include <libimobiledevice/libimobiledevice.h>
 #include <libimobiledevice/lockdown.h>
 
+#define MOBILEBACKUP2_SERVICE_NAME "com.apple.mobilebackup2"
+
 /** @name Error Codes */
 /*@{*/
 #define MOBILEBACKUP2_E_SUCCESS                0
@@ -50,7 +52,9 @@ typedef struct mobilebackup2_client_private mobilebackup2_client_private;
 typedef mobilebackup2_client_private *mobilebackup2_client_t; /**< The client handle. */
 
 mobilebackup2_error_t mobilebackup2_client_new(idevice_t device, lockdownd_service_descriptor_t service, mobilebackup2_client_t * client);
+mobilebackup2_error_t mobilebackup2_client_start_service(idevice_t device, mobilebackup2_client_t* client, const char* label);
 mobilebackup2_error_t mobilebackup2_client_free(mobilebackup2_client_t client);
+
 mobilebackup2_error_t mobilebackup2_send_message(mobilebackup2_client_t client, const char *message, plist_t options);
 mobilebackup2_error_t mobilebackup2_receive_message(mobilebackup2_client_t client, plist_t *msg_plist, char **dlmessage);
 mobilebackup2_error_t mobilebackup2_send_raw(mobilebackup2_client_t client, const char *data, uint32_t length, uint32_t *bytes);

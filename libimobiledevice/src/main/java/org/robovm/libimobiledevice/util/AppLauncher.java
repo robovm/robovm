@@ -463,8 +463,7 @@ public class AppLauncher {
     
     private String getAppPath(LockdowndClient lockdowndClient, String appId) throws IOException {
         LockdowndServiceDescriptor instService = lockdowndClient.startService(InstallationProxyClient.SERVICE_NAME);
-        InstallationProxyClient instClient = new InstallationProxyClient(device, instService);
-        try {
+        try (InstallationProxyClient instClient = new InstallationProxyClient(device, instService)) {
             NSArray apps = instClient.browse();
             for (int i = 0; i < apps.count(); i++) {
                 NSDictionary appInfo = (NSDictionary) apps.objectAtIndex(i);
@@ -484,8 +483,6 @@ public class AppLauncher {
                 }
             }
             throw new RuntimeException("No app with id '" + appId + "' found on device");
-        } finally {
-            instClient.dispose();
         }
     }
     
@@ -532,13 +529,7 @@ public class AppLauncher {
     static File findDeveloperImage(File dsDir, String productVersion, String buildVersion) 
             throws FileNotFoundException {
         
-        // Split productVersion and expand to 3 parts (e.g. 7.0 -> 7.0.0)
-        String[] versionParts = Arrays.copyOf(productVersion.split("\\."), 3);
-        for (int i = 0; i < versionParts.length; i++) {
-            if (versionParts[i] == null) {
-                versionParts[i] = "0";
-            }
-        }
+        String[] versionParts = getProductVersionParts(productVersion);
         
         String[] patterns = new String[] {
             // 7.0.3 (11B508)
@@ -571,6 +562,19 @@ public class AppLauncher {
                 + dsDir.getAbsolutePath() + " for iOS version " + productVersion 
                 + " (" + buildVersion + ")");
     }
+
+    /**
+     * Splits productVersion and expand to 3 parts (e.g. 7.0 -> 7.0.0)
+     */
+    private static String[] getProductVersionParts(String productVersion) {
+        String[] versionParts = Arrays.copyOf(productVersion.split("\\."), 3);
+        for (int i = 0; i < versionParts.length; i++) {
+            if (versionParts[i] == null) {
+                versionParts[i] = "0";
+            }
+        }
+        return versionParts;
+    }
     
     private void mountDeveloperImage(LockdowndClient lockdowndClient) throws Exception {
         // Find the DeveloperDiskImage.dmg path that best matches the current device. Here's what
@@ -588,21 +592,30 @@ public class AppLauncher {
         log("Looking up developer disk image for iOS version %s (%s) in %s", productVersion, buildVersion, deviceSupport);
         File devImage = findDeveloperImage(deviceSupport, productVersion, buildVersion);
         
-        LockdowndServiceDescriptor afcService = lockdowndClient.startService(AfcClient.SERVICE_NAME);
-        try (AfcClient afcClient = new AfcClient(device, afcService)) {
-            LockdowndServiceDescriptor mimService = lockdowndClient.startService(MobileImageMounterClient.SERVICE_NAME);
-            try (MobileImageMounterClient mimClient = new MobileImageMounterClient(device, mimService)) {
-                File devImageSig = new File(devImage.getParentFile(), devImage.getName() + ".signature");
-                byte[] devImageSigBytes = Files.readAllBytes(devImageSig.toPath());
-                log("Copying developer disk image %s to device", devImage);
-                afcClient.makeDirectory("/PublicStaging");
-                afcClient.fileCopy(devImage, "/PublicStaging/staging.dimage");
-                log("Mounting developer disk image");
-                NSDictionary result = mimClient.mountImage("/PublicStaging/staging.dimage", devImageSigBytes, null);
-                NSString status = (NSString) result.objectForKey("Status");
-                if (status == null || !"Complete".equals(status.toString())) {
-                    throw new IOException("Failed to mount " + devImage.getAbsolutePath() + " on the device.");
+        LockdowndServiceDescriptor mimService = lockdowndClient.startService(MobileImageMounterClient.SERVICE_NAME);
+        try (MobileImageMounterClient mimClient = new MobileImageMounterClient(device, mimService)) {
+
+            log("Copying developer disk image %s to device", devImage);
+            
+            int majorVersion = Integer.parseInt(getProductVersionParts(productVersion)[0]);
+            if (majorVersion >= 7) {
+                // Use new upload method
+                mimClient.uploadImage(devImage, null);
+            } else {
+                LockdowndServiceDescriptor afcService = lockdowndClient.startService(AfcClient.SERVICE_NAME);
+                try (AfcClient afcClient = new AfcClient(device, afcService)) {
+                    afcClient.makeDirectory("/PublicStaging");
+                    afcClient.fileCopy(devImage, "/PublicStaging/staging.dimage");
                 }
+            }
+            
+            log("Mounting developer disk image");
+            File devImageSig = new File(devImage.getParentFile(), devImage.getName() + ".signature");
+            byte[] devImageSigBytes = Files.readAllBytes(devImageSig.toPath());
+            NSDictionary result = mimClient.mountImage("/PublicStaging/staging.dimage", devImageSigBytes, null);
+            NSString status = (NSString) result.objectForKey("Status");
+            if (status == null || !"Complete".equals(status.toString())) {
+                throw new IOException("Failed to mount " + devImage.getAbsolutePath() + " on the device.");
             }
         }
     }

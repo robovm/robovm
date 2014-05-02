@@ -16,7 +16,7 @@ elseif (ARCH STREQUAL "x86_64")
   set(X86_64 YES)
 endif()
 
-set(C_CXX_FLAGS "${C_CXX_FLAGS} -fvisibility=hidden -fdata-sections -ffunction-sections")
+set(C_CXX_FLAGS "${C_CXX_FLAGS} -fdata-sections -ffunction-sections")
 if(MACOSX AND X86)
   set(C_CXX_FLAGS "${C_CXX_FLAGS} -arch i386 -mmacosx-version-min=10.6")
   set(LD_FLAGS "${LD_FLAGS} -arch i386 -mmacosx-version-min=10.6")
@@ -29,6 +29,18 @@ elseif(LINUX AND X86)
 elseif(LINUX AND X86_64)
   set(C_CXX_FLAGS "${C_CXX_FLAGS} -m64 -fPIC")
   set(LD_FLAGS "${LD_FLAGS} -m64")
+endif()
+
+if(MACOSX)
+  exec_program(xcode-select ARGS --print-path OUTPUT_VARIABLE XCODE_PATH)
+  set(SYSROOT "${XCODE_PATH}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk")
+  if(NOT IS_DIRECTORY ${SYSROOT})
+    set(SYSROOT "${XCODE_PATH}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk")
+  endif()
+  if(NOT IS_DIRECTORY ${SYSROOT})
+    message(FATAL_ERROR "No supported MacOSX SDK found")
+  endif()
+  set(C_CXX_FLAGS "${C_CXX_FLAGS} -isysroot ${SYSROOT}")
 endif()
 
 set(EXTPREFIX "${CMAKE_BINARY_DIR}/ext")
@@ -44,15 +56,15 @@ ExternalProject_Add(extlibusbx
   BUILD_IN_SOURCE 1
 )
 ExternalProject_Add(extlibplist
-  URL http://www.libimobiledevice.org/downloads/libplist-1.10.tar.bz2
-  PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/libplist.patch
-  CONFIGURE_COMMAND cmake -DCMAKE_BUILD_TYPE=Release "-DCMAKE_INSTALL_PREFIX=${EXTPREFIX}" -DLIBXML2_FOUND=TRUE "-DLIBXML2_INCLUDE_DIR=${EXTPREFIX}/include/libxml2" -DENABLE_SWIG=OFF -DENABLE_CYTHON=OFF "-DCMAKE_C_FLAGS=${EXTCFLAGS}" "-DCMAKE_CXX_FLAGS=${EXTCFLAGS}" ../extlibplist/
+  URL http://www.libimobiledevice.org/downloads/libplist-1.11.tar.bz2
+  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTCFLAGS}' PKG_CONFIG_PATH='${EXTPREFIX}/lib/pkgconfig' ./configure --enable-shared=no --prefix=${EXTPREFIX} --without-cython"
+  BUILD_IN_SOURCE 1
   DEPENDS extlibxml
 )
-ExternalProject_Add(extusbmuxd
-  URL http://www.libimobiledevice.org/downloads/usbmuxd-1.0.8.tar.bz2
-  PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/usbmuxd.patch
-  CONFIGURE_COMMAND cmake -DCMAKE_BUILD_TYPE=Release "-DCMAKE_INSTALL_PREFIX=${EXTPREFIX}" -DPLIST_FOUND=TRUE "-DPLIST_INCLUDE_DIR=${EXTPREFIX}/include/" "-DPLIST_LIBRARY=${EXTPREFIX}/lib/libplist.a" -DWITH_USBMUXD=OFF "-DCMAKE_C_FLAGS=${EXTCFLAGS}" "-DCMAKE_CXX_FLAGS=${EXTCFLAGS}" -DLIB_SUFFIX='' ../extusbmuxd/
+ExternalProject_Add(extlibusbmuxd
+  URL http://www.libimobiledevice.org/downloads/libusbmuxd-1.0.9.tar.bz2
+  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTCFLAGS}' PKG_CONFIG_PATH='${EXTPREFIX}/lib/pkgconfig' ./configure --enable-shared=no --prefix=${EXTPREFIX}"
+  BUILD_IN_SOURCE 1
   DEPENDS extlibusbx extlibplist
 )
 set(LIBIMOBILEDEVICE_CFLAGS "${EXTCFLAGS}")
@@ -60,10 +72,10 @@ if(MACOSX)
   set(LIBIMOBILEDEVICE_CFLAGS "${EXTCFLAGS} -std=gnu89")
 endif()
 ExternalProject_Add(extlibimobiledevice
-  URL http://www.libimobiledevice.org/downloads/libimobiledevice-1.1.5.tar.bz2
+  URL http://www.libimobiledevice.org/downloads/libimobiledevice-1.1.6.tar.bz2
   CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${LIBIMOBILEDEVICE_CFLAGS}' LDFLAGS='-L${EXTPREFIX}/lib -lxml2' PKG_CONFIG_PATH='${EXTPREFIX}/lib/pkgconfig' ./configure --prefix ${EXTPREFIX} --enable-shared=no --without-cython"
   BUILD_IN_SOURCE 1
-  DEPENDS extlibxml extlibplist extusbmuxd
+  DEPENDS extlibxml extlibplist extlibusbmuxd
 )
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${C_CXX_FLAGS}")

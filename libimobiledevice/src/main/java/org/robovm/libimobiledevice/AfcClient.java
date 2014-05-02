@@ -54,7 +54,7 @@ import org.robovm.libimobiledevice.binding.StringArrayOut;
  */
 public class AfcClient implements AutoCloseable {
     
-    public static final String SERVICE_NAME = "com.apple.afc";
+    public static final String SERVICE_NAME = LibIMobileDeviceConstants.AFC_SERVICE_NAME;
     
     public static final String DEVICE_INFO_KEY_FS_TOTAL_BYTES = "FSTotalBytes";
     public static final String DEVICE_INFO_KEY_FS_FREE_BYTES = "FSFreeBytes";
@@ -608,7 +608,7 @@ public class AfcClient implements AutoCloseable {
     }
     
     @Override
-    public void close() throws Exception {
+    public void close() {
         dispose();
     }
     

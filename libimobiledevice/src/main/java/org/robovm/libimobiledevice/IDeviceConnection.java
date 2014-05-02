@@ -144,7 +144,7 @@ public class IDeviceConnection implements AutoCloseable {
     }
     
     @Override
-    public void close() throws Exception {
+    public void close() {
         dispose();
     }
 }

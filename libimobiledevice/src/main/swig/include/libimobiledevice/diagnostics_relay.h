@@ -30,6 +30,8 @@ extern "C" {
 #include <libimobiledevice/libimobiledevice.h>
 #include <libimobiledevice/lockdown.h>
 
+#define DIAGNOSTICS_RELAY_SERVICE_NAME "com.apple.mobile.diagnostics_relay"
+
 /** @name Error Codes */
 /*@{*/
 #define DIAGNOSTICS_RELAY_E_SUCCESS                0
@@ -57,6 +59,7 @@ typedef struct diagnostics_relay_client_private diagnostics_relay_client_private
 typedef diagnostics_relay_client_private *diagnostics_relay_client_t; /**< The client handle. */
 
 diagnostics_relay_error_t diagnostics_relay_client_new(idevice_t device, lockdownd_service_descriptor_t service, diagnostics_relay_client_t *client);
+diagnostics_relay_error_t diagnostics_relay_client_start_service(idevice_t device, diagnostics_relay_client_t* client, const char* label);
 diagnostics_relay_error_t diagnostics_relay_client_free(diagnostics_relay_client_t client);
 
 diagnostics_relay_error_t diagnostics_relay_goodbye(diagnostics_relay_client_t client);

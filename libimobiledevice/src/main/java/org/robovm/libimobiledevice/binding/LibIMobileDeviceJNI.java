@@ -71,6 +71,7 @@ public class LibIMobileDeviceJNI {
   public final static native void delete_StringArray_values_z(long jarg1, StringArray jarg1_);
   public final static native long get_global_instproxy_status_cb();
   public final static native long get_global_idevice_event_cb();
+  public final static native short upload_image(long jarg1, String jarg2, String jarg3);
   public final static native void idevice_set_debug_level(int jarg1);
   public final static native void IDeviceEvent_event_set(long jarg1, IDeviceEvent jarg1_, int jarg2);
   public final static native int IDeviceEvent_event_get(long jarg1, IDeviceEvent jarg1_);
@@ -91,16 +92,20 @@ public class LibIMobileDeviceJNI {
   public final static native short idevice_connection_send(long jarg1, byte[] jarg2, int jarg3, long jarg4, IntOut jarg4_);
   public final static native short idevice_connection_receive_timeout(long jarg1, byte[] jarg2, int jarg3, long jarg4, IntOut jarg4_, long jarg5);
   public final static native short idevice_connection_receive(long jarg1, byte[] jarg2, int jarg3, long jarg4, IntOut jarg4_);
+  public final static native short idevice_connection_enable_ssl(long jarg1);
+  public final static native short idevice_connection_disable_ssl(long jarg1);
   public final static native short idevice_get_handle(long jarg1, long jarg2, IntOut jarg2_);
   public final static native short idevice_get_udid(long jarg1, long jarg2, StringOut jarg2_);
   public final static native void LockdowndPairRecordStruct_device_certificate_set(long jarg1, LockdowndPairRecordStruct jarg1_, String jarg2);
   public final static native String LockdowndPairRecordStruct_device_certificate_get(long jarg1, LockdowndPairRecordStruct jarg1_);
   public final static native void LockdowndPairRecordStruct_host_certificate_set(long jarg1, LockdowndPairRecordStruct jarg1_, String jarg2);
   public final static native String LockdowndPairRecordStruct_host_certificate_get(long jarg1, LockdowndPairRecordStruct jarg1_);
-  public final static native void LockdowndPairRecordStruct_host_id_set(long jarg1, LockdowndPairRecordStruct jarg1_, String jarg2);
-  public final static native String LockdowndPairRecordStruct_host_id_get(long jarg1, LockdowndPairRecordStruct jarg1_);
   public final static native void LockdowndPairRecordStruct_root_certificate_set(long jarg1, LockdowndPairRecordStruct jarg1_, String jarg2);
   public final static native String LockdowndPairRecordStruct_root_certificate_get(long jarg1, LockdowndPairRecordStruct jarg1_);
+  public final static native void LockdowndPairRecordStruct_host_id_set(long jarg1, LockdowndPairRecordStruct jarg1_, String jarg2);
+  public final static native String LockdowndPairRecordStruct_host_id_get(long jarg1, LockdowndPairRecordStruct jarg1_);
+  public final static native void LockdowndPairRecordStruct_system_buid_set(long jarg1, LockdowndPairRecordStruct jarg1_, String jarg2);
+  public final static native String LockdowndPairRecordStruct_system_buid_get(long jarg1, LockdowndPairRecordStruct jarg1_);
   public final static native long new_LockdowndPairRecordStruct();
   public final static native void delete_LockdowndPairRecordStruct(long jarg1);
   public final static native void LockdowndServiceDescriptorStruct_port_set(long jarg1, LockdowndServiceDescriptorStruct jarg1_, short jarg2);
@@ -135,6 +140,7 @@ public class LibIMobileDeviceJNI {
   public final static native short lockdownd_data_classes_free(long jarg1, StringArray jarg1_);
   public final static native short lockdownd_service_descriptor_free(long jarg1, LockdowndServiceDescriptorStruct jarg1_);
   public final static native short afc_client_new(long jarg1, long jarg2, LockdowndServiceDescriptorStruct jarg2_, long jarg3, AfcClientRefOut jarg3_);
+  public final static native short afc_client_start_service(long jarg1, long jarg2, AfcClientRefOut jarg2_, String jarg3);
   public final static native short afc_client_free(long jarg1);
   public final static native short afc_get_device_info(long jarg1, long jarg2, StringArrayOut jarg2_);
   public final static native short afc_read_directory(long jarg1, String jarg2, long jarg3, StringArrayOut jarg3_);
@@ -154,7 +160,9 @@ public class LibIMobileDeviceJNI {
   public final static native short afc_make_link(long jarg1, int jarg2, String jarg3, String jarg4);
   public final static native short afc_set_file_time(long jarg1, String jarg2, long jarg3);
   public final static native short afc_get_device_info_key(long jarg1, String jarg2, long jarg3, StringOut jarg3_);
+  public final static native short afc_dictionary_free(long jarg1, StringOut jarg1_);
   public final static native short instproxy_client_new(long jarg1, long jarg2, LockdowndServiceDescriptorStruct jarg2_, long jarg3, InstproxyClientRefOut jarg3_);
+  public final static native short instproxy_client_start_service(long jarg1, long jarg2, InstproxyClientRefOut jarg2_, String jarg3);
   public final static native short instproxy_client_free(long jarg1);
   public final static native short instproxy_browse(long jarg1, long jarg2, long jarg3, PlistRefOut jarg3_);
   public final static native short instproxy_install(long jarg1, String jarg2, long jarg3, long jarg4, int jarg5);
@@ -166,7 +174,9 @@ public class LibIMobileDeviceJNI {
   public final static native short instproxy_remove_archive(long jarg1, String jarg2, long jarg3, long jarg4, int jarg5);
   public final static native long instproxy_client_options_new();
   public final static native void instproxy_client_options_free(long jarg1);
+  public final static native short instproxy_client_get_path_for_bundle_identifier(long jarg1, String jarg2, long jarg3, StringOut jarg3_);
   public final static native short mobile_image_mounter_new(long jarg1, long jarg2, LockdowndServiceDescriptorStruct jarg2_, long jarg3, MobileImageMounterClientRefOut jarg3_);
+  public final static native short mobile_image_mounter_start_service(long jarg1, long jarg2, MobileImageMounterClientRefOut jarg2_, String jarg3);
   public final static native short mobile_image_mounter_free(long jarg1);
   public final static native short mobile_image_mounter_lookup_image(long jarg1, String jarg2, long jarg3, PlistRefOut jarg3_);
   public final static native short mobile_image_mounter_mount_image(long jarg1, String jarg2, byte[] jarg3, short jarg4, String jarg5, long jarg6, PlistRefOut jarg6_);

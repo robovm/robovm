@@ -27,6 +27,7 @@ import org.robovm.libimobiledevice.InstallationProxyClient.Options.PackageType;
 import org.robovm.libimobiledevice.binding.InstproxyClientRef;
 import org.robovm.libimobiledevice.binding.InstproxyClientRefOut;
 import org.robovm.libimobiledevice.binding.LibIMobileDevice;
+import org.robovm.libimobiledevice.binding.LibIMobileDeviceConstants;
 import org.robovm.libimobiledevice.binding.LockdowndServiceDescriptorStruct;
 import org.robovm.libimobiledevice.binding.PlistRef;
 import org.robovm.libimobiledevice.binding.PlistRefOut;
@@ -41,7 +42,7 @@ import com.dd.plist.NSObject;
  */
 public class InstallationProxyClient implements AutoCloseable {
     
-    public static final String SERVICE_NAME = "com.apple.mobile.installation_proxy";
+    public static final String SERVICE_NAME = LibIMobileDeviceConstants.INSTPROXY_SERVICE_NAME;
     
     protected InstproxyClientRef ref;
 
@@ -190,7 +191,7 @@ public class InstallationProxyClient implements AutoCloseable {
     }
     
     @Override
-    public void close() throws Exception {
+    public void close() {
         dispose();
     }
     
@@ -202,6 +203,7 @@ public class InstallationProxyClient implements AutoCloseable {
         case INSTPROXY_E_CONN_FAILED: throw new LibIMobileDeviceException(result, "INSTPROXY_E_CONN_FAILED");
         case INSTPROXY_E_OP_IN_PROGRESS: throw new LibIMobileDeviceException(result, "INSTPROXY_E_OP_IN_PROGRESS");
         case INSTPROXY_E_OP_FAILED: throw new LibIMobileDeviceException(result, "INSTPROXY_E_OP_FAILED");
+        case INSTPROXY_E_RECEIVE_TIMEOUT: throw new LibIMobileDeviceException(result, "INSTPROXY_E_RECEIVE_TIMEOUT");
         case INSTPROXY_E_UNKNOWN_ERROR: throw new LibIMobileDeviceException(result, "INSTPROXY_E_UNKNOWN_ERROR");
         default: throw new LibIMobileDeviceException(result);
         }

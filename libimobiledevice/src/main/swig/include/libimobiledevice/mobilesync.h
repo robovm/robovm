@@ -31,6 +31,8 @@ extern "C" {
 #include <libimobiledevice/libimobiledevice.h>
 #include <libimobiledevice/lockdown.h>
 
+#define MOBILESYNC_SERVICE_NAME "com.apple.mobilesync"
+
 /** @name Error Codes */
 /*@{*/
 #define MOBILESYNC_E_SUCCESS                0
@@ -67,6 +69,7 @@ typedef mobilesync_anchors *mobilesync_anchors_t; /**< Anchors used by the devic
 
 /* Interface */
 mobilesync_error_t mobilesync_client_new(idevice_t device, lockdownd_service_descriptor_t service, mobilesync_client_t * client);
+mobilesync_error_t mobilesync_client_start_service(idevice_t device, mobilesync_client_t* client, const char* label);
 mobilesync_error_t mobilesync_client_free(mobilesync_client_t client);
 
 mobilesync_error_t mobilesync_receive(mobilesync_client_t client, plist_t *plist);

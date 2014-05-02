@@ -119,6 +119,8 @@ OUT_ARG(StringOut, char **device_name)
 OUT_ARG(StringOut, char **type)
 OUT_ARG(StringOut, char **session_id)
 OUT_ARG(StringOut, char **value)
+OUT_ARG(StringOut, char **path)
+OUT_ARG(StringOut, char **dictionary)
 OUT_ARG(ByteArrayOut, char **plist_bin)
 OUT_ARG(ByteArrayOut, char **plist_xml)
 OUT_ARG(IDeviceRefOut, idevice_t *device)
@@ -154,6 +156,7 @@ typedef jlong int64_t;
 typedef jlong uint64_t;
 
 %ignore instproxy_client_options_add;
+%ignore mobile_image_mounter_upload_image;
 
 // Map just enough of the plist.h functions to be able to convert to/from Java plists.
 extern plist_t plist_new_dict(void);
@@ -168,6 +171,7 @@ extern void delete_StringArray_values(StringArray* s, int length);
 extern void delete_StringArray_values_z(StringArray* s);
 extern jlong get_global_instproxy_status_cb(void);
 extern jlong get_global_idevice_event_cb(void);
+extern mobile_image_mounter_error_t upload_image(mobile_image_mounter_client_t client, const char *image_path, const char *image_type);
 %{
 static JavaVM *vm = NULL;
 static jclass class_Callbacks = NULL;
@@ -240,6 +244,25 @@ static void global_idevice_event_cb(const idevice_event_t *event, void *user_dat
 }
 jlong get_global_idevice_event_cb(void) {
     return (jlong) global_idevice_event_cb;
+}
+
+static ssize_t upload_cb(void* buf, size_t size, void* userdata) {
+    return fread(buf, 1, size, (FILE*) userdata);
+}
+mobile_image_mounter_error_t upload_image(mobile_image_mounter_client_t client, const char *image_path, const char *image_type) {
+    FILE* f = fopen(image_path, "rb");
+    if (!f) {
+        return MOBILE_IMAGE_MOUNTER_E_UNKNOWN_ERROR;
+    }
+    struct stat fst;
+    if (stat(image_path, &fst) != 0) {
+        fclose(f);
+        return MOBILE_IMAGE_MOUNTER_E_UNKNOWN_ERROR;
+    }
+    size_t image_size = fst.st_size;
+    mobile_image_mounter_error_t err = mobile_image_mounter_upload_image(client, image_type, image_size, upload_cb, f);
+    fclose(f);
+    return err;
 }
 %}
 

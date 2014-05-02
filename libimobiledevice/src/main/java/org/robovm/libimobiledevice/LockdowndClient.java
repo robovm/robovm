@@ -125,7 +125,7 @@ public class LockdowndClient implements AutoCloseable {
     }
     
     @Override
-    public void close() throws Exception {
+    public void close() {
         dispose();
     }
 
@@ -150,6 +150,8 @@ public class LockdowndClient implements AutoCloseable {
         case LOCKDOWN_E_INVALID_HOST_ID: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_INVALID_HOST_ID");
         case LOCKDOWN_E_INVALID_SERVICE: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_INVALID_SERVICE");
         case LOCKDOWN_E_INVALID_ACTIVATION_RECORD: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_INVALID_ACTIVATION_RECORD");
+        case LOCKDOWN_E_PAIRING_DIALOG_PENDING: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_PAIRING_DIALOG_PENDING");
+        case LOCKDOWN_E_USER_DENIED_PAIRING: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_USER_DENIED_PAIRING");
         case LOCKDOWN_E_UNKNOWN_ERROR: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_UNKNOWN_ERROR");
         default: throw new LibIMobileDeviceException(result);
         }

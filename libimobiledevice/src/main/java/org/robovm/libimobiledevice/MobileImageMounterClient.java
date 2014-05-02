@@ -19,11 +19,13 @@ package org.robovm.libimobiledevice;
 import static org.robovm.libimobiledevice.binding.LibIMobileDeviceConstants.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
 
 import org.robovm.libimobiledevice.binding.LibIMobileDevice;
+import org.robovm.libimobiledevice.binding.LibIMobileDeviceConstants;
 import org.robovm.libimobiledevice.binding.LockdowndServiceDescriptorStruct;
 import org.robovm.libimobiledevice.binding.MobileImageMounterClientRef;
 import org.robovm.libimobiledevice.binding.MobileImageMounterClientRefOut;
@@ -38,7 +40,7 @@ import com.dd.plist.NSObject;
  */
 public class MobileImageMounterClient implements AutoCloseable {
 
-    public static final String SERVICE_NAME = "com.apple.mobile.mobile_image_mounter";
+    public static final String SERVICE_NAME = LibIMobileDeviceConstants.MOBILE_IMAGE_MOUNTER_SERVICE_NAME;
     
     /**
      * The AFC jail prefix path. Has to be added to image paths before mounting.
@@ -158,6 +160,23 @@ public class MobileImageMounterClient implements AutoCloseable {
         }
     }
     
+    public void uploadImage(File localImageFile, String imageType) throws IOException {
+        if (localImageFile == null) {
+            throw new NullPointerException("localImageFile");
+        }
+        if (!localImageFile.exists()) {
+            throw new FileNotFoundException(localImageFile.getAbsolutePath());
+        }
+        if (!localImageFile.isFile()) {
+            throw new IllegalArgumentException("Path is not a file: " + localImageFile.getAbsolutePath());
+        }
+        if (imageType == null) {
+            imageType = "Developer";
+        }
+
+        checkResult(LibIMobileDevice.upload_image(getRef(), localImageFile.getAbsolutePath(), imageType));
+    }
+    
     protected MobileImageMounterClientRef getRef() {
         checkDisposed();
         return ref;
@@ -187,6 +206,7 @@ public class MobileImageMounterClient implements AutoCloseable {
         case MOBILE_IMAGE_MOUNTER_E_CONN_FAILED: throw new LibIMobileDeviceException(result, "MOBILE_IMAGE_MOUNTER_E_CONN_FAILED");
         case MOBILE_IMAGE_MOUNTER_E_INVALID_ARG: throw new LibIMobileDeviceException(result, "MOBILE_IMAGE_MOUNTER_E_INVALID_ARG");
         case MOBILE_IMAGE_MOUNTER_E_PLIST_ERROR: throw new LibIMobileDeviceException(result, "MOBILE_IMAGE_MOUNTER_E_PLIST_ERROR");
+        case MOBILE_IMAGE_MOUNTER_E_COMMAND_FAILED: throw new LibIMobileDeviceException(result, "MOBILE_IMAGE_MOUNTER_E_COMMAND_FAILED");
         case MOBILE_IMAGE_MOUNTER_E_UNKNOWN_ERROR: throw new LibIMobileDeviceException(result, "MOBILE_IMAGE_MOUNTER_E_UNKNOWN_ERROR");
         default: throw new LibIMobileDeviceException(result);
         }

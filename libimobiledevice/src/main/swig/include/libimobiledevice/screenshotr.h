@@ -31,6 +31,8 @@ extern "C" {
 #include <libimobiledevice/libimobiledevice.h>
 #include <libimobiledevice/lockdown.h>
 
+#define SCREENSHOTR_SERVICE_NAME "com.apple.mobile.screenshotr"
+
 /** @name Error Codes */
 /*@{*/
 #define SCREENSHOTR_E_SUCCESS                0
@@ -49,7 +51,9 @@ typedef struct screenshotr_client_private screenshotr_client_private;
 typedef screenshotr_client_private *screenshotr_client_t; /**< The client handle. */
 
 screenshotr_error_t screenshotr_client_new(idevice_t device, lockdownd_service_descriptor_t service, screenshotr_client_t * client);
+screenshotr_error_t screenshotr_client_start_service(idevice_t device, screenshotr_client_t* client, const char* label);
 screenshotr_error_t screenshotr_client_free(screenshotr_client_t client);
+
 screenshotr_error_t screenshotr_take_screenshot(screenshotr_client_t client, char **imgdata, uint64_t *imgsize);
 
 #ifdef __cplusplus

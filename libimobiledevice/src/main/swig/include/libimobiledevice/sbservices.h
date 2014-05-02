@@ -30,6 +30,8 @@ extern "C" {
 #include <libimobiledevice/libimobiledevice.h>
 #include <libimobiledevice/lockdown.h>
 
+#define SBSERVICES_SERVICE_NAME "com.apple.springboardservices"
+
 /** @name Error Codes */
 /*@{*/
 #define SBSERVICES_E_SUCCESS                0
@@ -59,7 +61,9 @@ typedef sbservices_client_private *sbservices_client_t; /**< The client handle. 
 
 /* Interface */
 sbservices_error_t sbservices_client_new(idevice_t device, lockdownd_service_descriptor_t service, sbservices_client_t *client);
+sbservices_error_t sbservices_client_start_service(idevice_t device, sbservices_client_t* client, const char* label);
 sbservices_error_t sbservices_client_free(sbservices_client_t client);
+
 sbservices_error_t sbservices_get_icon_state(sbservices_client_t client, plist_t *state, const char *format_version);
 sbservices_error_t sbservices_set_icon_state(sbservices_client_t client, plist_t newstate);
 sbservices_error_t sbservices_get_icon_pngdata(sbservices_client_t client, const char *bundleId, char **pngdata, uint64_t *pngsize);

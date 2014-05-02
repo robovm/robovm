@@ -52,7 +52,7 @@ ExternalProject_Add(extlibxml
 )
 ExternalProject_Add(extlibusbx
   URL http://kent.dl.sourceforge.net/project/libusbx/releases/1.0.16/source/libusbx-1.0.16.tar.bz2
-  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTCFLAGS}' ./configure --enable-shared=no --prefix=${EXTPREFIX}"
+  CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTCFLAGS}' ./configure --enable-shared=no --enable-udev=no --prefix=${EXTPREFIX}"
   BUILD_IN_SOURCE 1
 )
 ExternalProject_Add(extlibplist

@@ -38,6 +38,12 @@ public class DirectoryPath extends AbstractPath {
     }
 
     @Override
+    public boolean contains(String file) {
+        File f = new File(getFile(), file);
+        return f.exists() && f.isFile();
+    }
+    
+    @Override
     protected Set<Clazz> doListClasses() {
         Set<Clazz> s = new TreeSet<Clazz>();
         for (File f : listClassFiles()) {

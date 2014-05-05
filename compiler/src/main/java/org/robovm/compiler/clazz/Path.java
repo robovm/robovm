@@ -45,4 +45,13 @@ public interface Path {
     
     boolean hasChangedSince(long timestamp);
     boolean isInBootClasspath();
+    
+    /**
+     * Returns {@code true} if this {@link Path} contains a file with the
+     * specified name.
+     * 
+     * @param file the file including path to look for.
+     * @return {@code true} if it exists, {@code false} otherwise.
+     */
+    boolean contains(String file);
 }

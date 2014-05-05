@@ -20,20 +20,26 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.ITable;
 import org.robovm.compiler.MarshalerLookup;
@@ -446,6 +452,99 @@ public class Config {
         return (String) getManifestAttributes(jarFile).get(Attributes.Name.MAIN_CLASS);
     }
     
+    private File extractIfNeeded(Path path) throws IOException {
+        if (path.getFile().isFile()) {
+            File pathCacheDir = getCacheDir(path);
+            File target = new File(pathCacheDir.getParentFile(), pathCacheDir.getName() + ".extracted");
+            
+            if (!target.exists() || path.getFile().lastModified() > target.lastModified()) {
+                FileUtils.deleteDirectory(target);
+                target.mkdirs();
+                try (ZipFile zipFile = new ZipFile(path.getFile())) {
+                    Enumeration<? extends ZipEntry> entries = zipFile.entries();
+                    while (entries.hasMoreElements()) {
+                        ZipEntry entry = entries.nextElement();
+                        if (entry.getName().startsWith("META-INF/robovm/") && !entry.isDirectory()) {
+                            File f = new File(target, entry.getName());
+                            f.getParentFile().mkdirs();
+                            try (InputStream in = zipFile.getInputStream(entry); 
+                                 OutputStream out = new FileOutputStream(f)) {
+                                
+                                IOUtils.copy(in, out);
+                                if (entry.getTime() != -1) {
+                                    f.setLastModified(entry.getTime());
+                                }
+                            }
+                        }
+                    }
+                }
+                target.setLastModified(path.getFile().lastModified());
+            }
+            
+            return target;
+        } else {
+            return path.getFile();
+        }
+    }
+    
+    private <T> ArrayList<T> mergeLists(ArrayList<T> from, ArrayList<T> to) {
+        if (from == null) {
+            return to;
+        }
+        to = to != null ? to : new ArrayList<T>();
+        for (T o : from) {
+            if (!to.contains(o)) {
+                to.add(o);
+            }
+        }
+        return to;
+    }
+    
+    private void mergeConfig(Config from, Config to) {
+        to.exportedSymbols = mergeLists(from.exportedSymbols, to.exportedSymbols);
+        to.forceLinkClasses = mergeLists(from.forceLinkClasses, to.forceLinkClasses);
+        to.frameworkPaths = mergeLists(from.frameworkPaths, to.frameworkPaths);
+        to.frameworks = mergeLists(from.frameworks, to.frameworks);
+        to.libs = mergeLists(from.libs, to.libs);
+        to.resources = mergeLists(from.resources, to.resources);
+        to.weakFrameworks = mergeLists(from.weakFrameworks, to.weakFrameworks);
+    }
+    
+    private void mergeConfigsFromClasspath() throws IOException {
+        List<String> dirs = Arrays.asList(
+                "META-INF/robovm/" + os + "/" + arch, 
+                "META-INF/robovm/" + os);
+
+        // The algorithm below preserves the order of config data from the
+        // classpath. Last the config from this object is added.
+        
+        // First merge all configs on the classpath to an empty Config
+        Config config = new Config();
+        for (Path path : clazzes.getPaths()) {
+            for (String dir : dirs) {
+                if (path.contains(dir + "/robovm.xml")) {
+                    File configXml = new File(new File(extractIfNeeded(path), dir), "robovm.xml");
+                    Builder builder = new Builder();
+                    builder.read(configXml);
+                    mergeConfig(builder.config, config);
+                    break;
+                }
+            }
+        }
+        
+        // Then merge with this Config
+        mergeConfig(this, config);
+        
+        // Copy back to this Config
+        this.exportedSymbols = config.exportedSymbols;
+        this.forceLinkClasses = config.forceLinkClasses;
+        this.frameworkPaths = config.frameworkPaths;
+        this.frameworks = config.frameworks;
+        this.libs = config.libs;
+        this.resources = config.resources;
+        this.weakFrameworks = config.weakFrameworks;
+    }
+    
     private Config build() throws IOException {
         if (home == null) {
             home = Home.find();
@@ -530,6 +629,8 @@ public class Config {
             new ObjCBlockPlugin(),
             new ObjCMemberPlugin()
         ));
+
+        mergeConfigsFromClasspath();
         
         return this;
     }
@@ -1013,7 +1114,7 @@ public class Config {
             return config.build();
         }
         
-        public void read(File file) throws Exception {
+        public void read(File file) throws IOException {
             Reader reader = null;
             try {
                 reader = new InputStreamReader(new FileInputStream(file), "utf-8");
@@ -1023,9 +1124,17 @@ public class Config {
             }
         }
         
-        public void read(Reader reader, File wd) throws Exception {
-            Serializer serializer = createSerializer(wd);
-            serializer.read(config, reader);
+        public void read(Reader reader, File wd) throws IOException {
+            try {
+                Serializer serializer = createSerializer(wd);
+                serializer.read(config, reader);
+            } catch (IOException e) {
+                throw e;
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Exception e) {
+                throw (IOException) new IOException().initCause(e);
+            }
             // <roots> was renamed to <forceLinkClasses> but we still support <roots>. We need to
             // copy <roots> to <forceLinkClasses> and set <roots> to null.
             if (config.roots != null && !config.roots.isEmpty()) {
@@ -1037,7 +1146,7 @@ public class Config {
             }
         }
         
-        public void write(File file) throws Exception {
+        public void write(File file) throws IOException {
             Writer writer = null;
             try {
                 writer = new OutputStreamWriter(new FileOutputStream(file), "utf-8");
@@ -1047,9 +1156,17 @@ public class Config {
             }
         }
         
-        public void write(Writer writer, File wd) throws Exception {
-            Serializer serializer = createSerializer(wd);
-            serializer.write(config, writer);
+        public void write(Writer writer, File wd) throws IOException {
+            try {
+                Serializer serializer = createSerializer(wd);
+                serializer.write(config, writer);
+            } catch (IOException e) {
+                throw e;
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Exception e) {
+                throw (IOException) new IOException().initCause(e);
+            }
         }
 
         private Serializer createSerializer(final File wd) throws Exception {

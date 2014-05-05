@@ -288,8 +288,6 @@ import org.robovm.apple.security.*;
     protected native V objectForKey$(K aKey);
     @Method(selector = "allKeys")
     protected native NSArray<K> allKeys();
-    @Method(selector = "allKeysForObject:")
-    protected native NSArray<K> allKeysForObject$(NSObject anObject);
     @Method(selector = "allValues")
     protected native NSArray<V> allValues();
     @Method(selector = "descriptionInStringsFileFormat")
@@ -300,12 +298,8 @@ import org.robovm.apple.security.*;
     protected native boolean writeToFile$atomically$(String path, boolean useAuxiliaryFile);
     @Method(selector = "writeToURL:atomically:")
     public native boolean write(NSURL url, boolean atomically);
-    @Method(selector = "initWithObjects:forKeys:count:")
-    protected native @Pointer long initWithObjects$forKeys$count$(NSObject.NSObjectPtr objects, NSObject.NSObjectPtr keys, @MachineSizedUInt long cnt);
     @Method(selector = "initWithDictionary:")
     protected native @Pointer long initWithDictionary$(NSDictionary<?, ?> otherDictionary);
-    @Method(selector = "initWithDictionary:copyItems:")
-    protected native @Pointer long initWithDictionary$copyItems$(NSDictionary<?, ?> otherDictionary, boolean flag);
     @Method(selector = "initWithObjects:forKeys:")
     protected native @Pointer long initWithObjects$forKeys$(NSArray<?> objects, NSArray<?> keys);
     @Method(selector = "dictionaryWithContentsOfFile:")

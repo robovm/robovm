@@ -53,6 +53,6 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CGDataConsumerCreateWithURL", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGDataConsumer create(NSURL url);
     @Bridge(symbol="CGDataConsumerCreateWithCFData", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGDataConsumer create(CFMutableData data);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGDataConsumer create(NSData data);
     /*</methods>*/
 }

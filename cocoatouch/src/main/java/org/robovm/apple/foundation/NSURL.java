@@ -47,6 +47,8 @@ import org.robovm.apple.security.*;
     protected NSURL(SkipInit skipInit) { super(skipInit); }
     public NSURL(String scheme, String host, String path) { super((SkipInit) null); initObject(initWithScheme$host$path$(scheme, host, path)); }
     public NSURL(String URLString) { super((SkipInit) null); initObject(initWithString$(URLString)); }
+    public NSURL(String URLString, NSURL baseURL) { super((SkipInit) null); initObject(initWithString$relativeToURL$(URLString, baseURL)); }
+    public NSURL(NSData bookmarkData, NSURLBookmarkResolutionOptions options, NSURL relativeURL, BytePtr isStale, NSError.NSErrorPtr error) { super((SkipInit) null); initObject(initByResolvingBookmarkData$options$relativeToURL$bookmarkDataIsStale$error$(bookmarkData, options, relativeURL, isStale, error)); }
     /*</constructors>*/
     
     public NSURL(File file) {
@@ -286,10 +288,16 @@ import org.robovm.apple.security.*;
     protected native @Pointer long initFileURLWithPath$(String path);
     @Method(selector = "initWithString:")
     protected native @Pointer long initWithString$(String URLString);
+    @Method(selector = "initWithString:relativeToURL:")
+    protected native @Pointer long initWithString$relativeToURL$(String URLString, NSURL baseURL);
     @Method(selector = "absoluteString")
     public native String absoluteString();
     @Method(selector = "relativeString")
     public native String relativeString();
+    @Method(selector = "baseURL")
+    public native NSURL baseURL();
+    @Method(selector = "absoluteURL")
+    public native NSURL absoluteURL();
     @Method(selector = "scheme")
     public native String scheme();
     @Method(selector = "resourceSpecifier")
@@ -316,8 +324,18 @@ import org.robovm.apple.security.*;
     public native boolean getFileSystemRepresentation$maxLength$(BytePtr buffer, @MachineSizedUInt long maxBufferLength);
     @Method(selector = "fileSystemRepresentation")
     public native BytePtr fileSystemRepresentation();
+    @Method(selector = "isFileURL")
+    public native boolean isFileURL();
+    @Method(selector = "standardizedURL")
+    public native NSURL standardizedURL();
     @Method(selector = "checkResourceIsReachableAndReturnError:")
     public native boolean checkResourceIsReachableAndReturnError$(NSError.NSErrorPtr error);
+    @Method(selector = "isFileReferenceURL")
+    public native boolean isFileReferenceURL();
+    @Method(selector = "fileReferenceURL")
+    public native NSURL fileReferenceURL();
+    @Method(selector = "filePathURL")
+    public native NSURL filePathURL();
     @Method(selector = "getResourceValue:forKey:error:")
     public native boolean getResourceValue$forKey$error$(NSObject value, String key, NSError.NSErrorPtr error);
     @Method(selector = "resourceValuesForKeys:error:")
@@ -332,13 +350,35 @@ import org.robovm.apple.security.*;
     public native void removeAllCachedResourceValues();
     @Method(selector = "setTemporaryResourceValue:forKey:")
     public native void setTemporaryResourceValue$forKey$(NSObject value, String key);
+    @Method(selector = "bookmarkDataWithOptions:includingResourceValuesForKeys:relativeToURL:error:")
+    public native NSData bookmarkDataWithOptions$includingResourceValuesForKeys$relativeToURL$error$(NSURLBookmarkCreationOptions options, NSArray<?> keys, NSURL relativeURL, NSError.NSErrorPtr error);
+    @Method(selector = "initByResolvingBookmarkData:options:relativeToURL:bookmarkDataIsStale:error:")
+    protected native @Pointer long initByResolvingBookmarkData$options$relativeToURL$bookmarkDataIsStale$error$(NSData bookmarkData, NSURLBookmarkResolutionOptions options, NSURL relativeURL, BytePtr isStale, NSError.NSErrorPtr error);
     @Method(selector = "resourceValuesForKeys:fromBookmarkData:")
     public static native NSDictionary<?, ?> resourceValuesForKeys$fromBookmarkData$(NSArray<?> keys, NSData bookmarkData);
+    @Method(selector = "writeBookmarkData:toURL:options:error:")
+    public static native boolean writeBookmarkData$toURL$options$error$(NSData bookmarkData, NSURL bookmarkFileURL, @MachineSizedUInt long options, NSError.NSErrorPtr error);
+    @Method(selector = "bookmarkDataWithContentsOfURL:error:")
+    public static native NSData bookmarkDataWithContentsOfURL$error$(NSURL bookmarkFileURL, NSError.NSErrorPtr error);
     @Method(selector = "pathComponents")
     public native NSArray<?> pathComponents();
     @Method(selector = "lastPathComponent")
     public native String lastPathComponent();
     @Method(selector = "pathExtension")
     public native String pathExtension();
+    @Method(selector = "URLByAppendingPathComponent:")
+    public native NSURL URLByAppendingPathComponent$(String pathComponent);
+    @Method(selector = "URLByAppendingPathComponent:isDirectory:")
+    public native NSURL URLByAppendingPathComponent$isDirectory$(String pathComponent, boolean isDirectory);
+    @Method(selector = "URLByDeletingLastPathComponent")
+    public native NSURL URLByDeletingLastPathComponent();
+    @Method(selector = "URLByAppendingPathExtension:")
+    public native NSURL URLByAppendingPathExtension$(String pathExtension);
+    @Method(selector = "URLByDeletingPathExtension")
+    public native NSURL URLByDeletingPathExtension();
+    @Method(selector = "URLByStandardizingPath")
+    public native NSURL URLByStandardizingPath();
+    @Method(selector = "URLByResolvingSymlinksInPath")
+    public native NSURL URLByResolvingSymlinksInPath();
     /*</methods>*/
 }

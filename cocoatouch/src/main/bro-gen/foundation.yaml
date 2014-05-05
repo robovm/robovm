@@ -601,7 +601,7 @@ classes:
                 visibility: protected
             '-replaceObjectAtIndex:withObject:':
                 visibility: protected
-            'insertObject:atIndex:':
+            '-insertObject:atIndex:':
                 visibility: protected
 
             '+.*': {exclude: true}
@@ -709,7 +709,7 @@ classes:
                 visibility: protected
             '-replaceObjectAtIndex:withObject:':
                 visibility: protected
-            'insertObject:atIndex:':
+            '-insertObject:atIndex:':
                 visibility: protected
             '-removeObject:':
                 visibility: protected

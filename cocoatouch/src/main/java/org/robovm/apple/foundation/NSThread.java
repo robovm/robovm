@@ -61,6 +61,10 @@ import org.robovm.apple.security.*;
     
     @Method(selector = "threadDictionary")
     public native NSMutableDictionary<?, ?> getThreadDictionary();
+    @Method(selector = "threadPriority")
+    public native double getThreadPriority();
+    @Method(selector = "setThreadPriority:")
+    public native void setThreadPriority(double p);
     @Method(selector = "setName:")
     public native void setName(String n);
     @Method(selector = "name")
@@ -69,6 +73,8 @@ import org.robovm.apple.security.*;
     public native @MachineSizedUInt long getStackSize();
     @Method(selector = "setStackSize:")
     public native void setStackSize(@MachineSizedUInt long s);
+    @Method(selector = "isMainThread")
+    public native boolean isMainThread();
     @Method(selector = "initWithTarget:selector:object:")
     protected native @Pointer long initWithTarget$selector$object$(NSThread target, Selector selector, NSThread argument);
     @Method(selector = "isExecuting")

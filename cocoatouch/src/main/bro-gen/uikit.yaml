@@ -82,6 +82,7 @@ enums:
     UIImageResizingMode: {}
     UIInputViewStyle: {}
     UIInterfaceOrientation: {}
+    UIInterfaceOrientationMask: {}
     UIInterpolatingMotionEffectType: {prefix: UIInterpolatingMotionEffectType}
     UIKeyboardAppearance: {}
     UIKeyboardType: {}
@@ -625,7 +626,7 @@ classes:
                 name: getTitlePositionAdjustment
             '-backgroundImageForState:style:barMetrics:$':
                 name: getBackgroundImage
-            'setBackgroundImage:forState:barMetrics:$':
+            '-setBackgroundImage:forState:barMetrics:$':
                 trim_after_first_colon: true
             '-setBackgroundImage:forState:style:barMetrics:$':
                 trim_after_first_colon: true

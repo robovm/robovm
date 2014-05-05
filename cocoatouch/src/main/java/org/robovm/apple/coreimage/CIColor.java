@@ -83,7 +83,7 @@ import org.robovm.apple.opengles.*;
     @Method(selector = "alpha")
     public native @MachineSizedFloat double getAlpha();
     @Method(selector = "colorSpace")
-    protected native @Pointer long colorSpace();
+    public native CGColorSpace getColorSpace();
     @Method(selector = "red")
     public native @MachineSizedFloat double getRed();
     @Method(selector = "green")

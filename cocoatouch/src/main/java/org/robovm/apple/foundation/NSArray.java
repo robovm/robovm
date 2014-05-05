@@ -271,8 +271,6 @@ import org.robovm.apple.security.*;
     protected native @Pointer long initWithObjects$count$(@Pointer long objects, @MachineSizedUInt long cnt);
     @Method(selector = "initWithArray:")
     protected native @Pointer long initWithArray$(NSArray<?> array);
-    @Method(selector = "initWithArray:copyItems:")
-    protected native @Pointer long initWithArray$copyItems$(NSArray<?> array, boolean flag);
     @Method(selector = "arrayWithContentsOfFile:")
     protected static native NSArray<?> arrayWithContentsOfFile$(String path);
     @Method(selector = "arrayWithContentsOfURL:")

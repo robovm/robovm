@@ -179,8 +179,6 @@ import org.robovm.apple.security.*;
     protected native @Pointer long initWithObjects$count$(@Pointer long objects, @MachineSizedUInt long cnt);
     @Method(selector = "initWithSet:")
     protected native @Pointer long initWithSet$(NSSet<?> set);
-    @Method(selector = "initWithSet:copyItems:")
-    protected native @Pointer long initWithSet$copyItems$(NSSet<?> set, boolean flag);
     @Method(selector = "initWithArray:")
     protected native @Pointer long initWithArray$(NSArray<?> array);
     /*</methods>*/

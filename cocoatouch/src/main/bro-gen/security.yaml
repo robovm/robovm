@@ -1,0 +1,116 @@
+package: org.robovm.apple.security
+include: [dispatch.yaml, corefoundation.yaml]
+clang_args: ['-x', 'objective-c']
+library: Security
+framework: Security
+headers:
+    - /System/Library/Frameworks/Security.framework/Headers/Security.h
+    - /System/Library/Frameworks/Security.framework/Headers/SecureTransport.h
+enums:
+    SSLAuthenticate: { first: kNeverAuthenticate }
+    SSLClientCertificateState: { first: kSSLClientCertNone }
+    SSLConnectionType: { first: kSSLStreamType }
+    SSLProtocol: { first: kSSLProtocolUnknown }
+    SSLProtocolSide: { first: kSSLServerSide }
+    SSLSessionOption: { first: kSSLSessionOptionBreakOnServerAuth }
+    SSLSessionState: { first: kSSLIdle }
+    SSLCipherSuite: { first: SSL_NULL_WITH_NULL_NULL }
+    SecPadding: { first: kSecPaddingNone }
+    SecTrustResultType: { first: kSecTrustResultInvalid }
+    SecRevocation: { first: kSecRevocationOCSPMethod }
+classes:
+    ^__SecCertificate$:
+        name: SecCertificate
+        extends: CFType
+    ^__SecIdentity$:
+        name: SecIdentity
+        extends: CFType
+    ^__SecKey$:
+        name: SecKey
+        extends: CFType
+    ^__SecTrust$:
+        name: SecTrust
+        extends: CFType
+    ^__SecPolicy$:
+        name: SecPolicy
+        extends: CFType
+    ^__SecRandom$:
+        name: SecRandom
+    ^SSLContext$:
+        extends: CFType
+functions:
+    ^Sec(Certificate|Identity|Key|Policy|Trust)GetTypeID$:
+        class: "Sec#{g[0]}"
+        name: getClassTypeID
+    ^SecPolicy(CreateRevocation)$:
+        class: SecPolicy
+        name: "#{g[0]}"
+        parameters:
+            revocationFlags:
+                type: SecRevocation
+    ^Sec(Certificate|Identity|Key|Policy|Random|Trust)(.*)$:
+        class: "Sec#{g[0]}"
+        name: "#{g[1]}"
+    ^SecItem(.*)$:
+        class: SecItem
+        name: "#{g[0]}"
+    ^SecPKCS12Import$:
+        class: SecImportExport
+        name: importPKCS12
+    ^(Sec.*)$:
+        name: "#{g[0]}"
+    ^SSLContextGetTypeID:
+        class: SSLContext
+        name: getClassTypeID
+    ^SSLClose$:
+        class: SSLContext
+        name: closeContext
+    ^SSL(.*)$:
+        class: SSLContext
+        name: "#{g[0]}"
+values:
+    ^kSec(Certificate|Identity|Key|Random|Policy|Trust)(.*)$:
+        class: "Sec#{g[0]}"
+        readonly: true
+        name: "#{g[1]}"
+    ^kSec((Class|Attr|Match|Return|Value|UseItemList).*)$:
+        class: SecItem
+        readonly: true
+        name: "Key#{g[0]}"
+    ^kSec((Class|Attr|Match|Return|Value|UseItemList).*)$:
+        class: SecItem
+        readonly: true
+        name: "#{g[0]}"
+    ^kSec(PropertyType.*)$:
+        class: SecCertificate
+        readonly: true
+        name: "#{g[0]}"
+    ^kSec((Private|Public)KeyAttrs)$:
+        class: SecKey
+        readonly: true
+        name: "#{g[0]}"
+    ^kSecImport(Item.*)$:
+        class: SecImportExport
+        readonly: true
+        name: "Key#{g[0]}"
+    ^kSecImportExport(.*)$:
+        class: SecImportExport
+        readonly: true
+        name: "Key#{g[0]}"
+    ^(kSec.*)$:
+        name: "#{g[0]}"
+    ^(kSSL.*)$:
+        class: SSLContext
+        name: "#{g[0]}"
+constants:
+    ^errSSL(.*)$:
+        class: SSLErrorCode
+        name: "#{g[0]}"
+    ^errSec(.*)$:
+        class: SecErrorCode
+        name: "#{g[0]}"
+    ^(kSec.*)$:
+        name: "#{g[0]}"
+    ^(kSSL.*)$:
+        class: SSLContext
+        name: "#{g[0]}"

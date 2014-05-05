@@ -1,0 +1,721 @@
+package: org.robovm.apple.corefoundation
+include: [dispatch.yaml]
+library: CoreFoundation
+framework: CoreFoundation
+clang_args: ['-x', 'objective-c']
+header: /System/Library/Frameworks/CoreFoundation.framework/Headers/CoreFoundation.h
+typedefs:
+    Boolean: boolean
+    #CFOptionFlags: MachineUInt
+    __CFByteOrder: CFByteOrder
+    SInt32: int
+    UInt32: int
+    "Boolean *": BytePtr
+enums:
+    CFBundleExecutableArchitectureType: {first: kCFBundleExecutableArchitectureI386}
+    CFCalendarComponentsOptionFlags: {first: kCFCalendarComponentsWrap, prefix: kCFCalendarComponents, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler}
+    CFCalendarUnit: {}
+    CFCharacterSetPredefinedSet: {}
+    CFComparisonResult: {}
+    CFDataSearchFlags: {}
+    CFDateFormatterStyle: {}
+    CFFileDescriptorCallBackType: {first: kCFFileDescriptorReadCallBack, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler}
+    CFFileSecurityClearOptions: {}
+    CFGregorianUnitFlags: {first: kCFGregorianUnitsYears}
+    CFLocaleLanguageDirection: {}
+    CFMessagePortError: {first: kCFMessagePortSuccess}
+    CFNotificationPostingOptions: {first: kCFNotificationDeliverImmediately, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler}
+    CFNotificationSuspensionBehavior: {}
+    CFNumberFormatterOptionFlags: {first: kCFNumberFormatterParseIntegersOnly, prefix: kCFNumberFormatter, bits: true}
+    CFNumberFormatterPadPosition: {}
+    CFNumberFormatterRoundingMode: {}
+    CFNumberFormatterStyle: {}
+    CFNumberType: {}
+    CFPropertyListError: {first: kCFPropertyListReadCorruptError}
+    CFPropertyListFormat: {}
+    CFPropertyListMutabilityOptions: {}
+    CFRunLoopActivity: {}
+    CFRunLoopExitReason: {first: kCFRunLoopRunFinished}
+    CFSocketCallBackType: {}
+    CFSocketError: {}
+    CFSocketFlags: {first: kCFSocketAutomaticallyReenableReadCallBack, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler}
+    CFStreamErrorDomain: {}
+    CFStreamEventType: {}
+    CFStreamStatus: {}
+    CFStringBuiltInEncodings: {}
+    CFStringCompareFlags: {}
+    CFStringEncodings: {}
+    CFStringNormalizationForm: {}
+    CFStringTokenizerTokenType: {}
+    CFStringTokenizerUnitOptions: {first: kCFStringTokenizerUnitWord, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler}
+    CFTimeZoneNameStyle: {}
+    CFURLBookmarkCreationOptions: {}
+    CFURLBookmarkResolutionOptions2: {first: kCFURLBookmarkResolutionWithSecurityScope, merge_with: CFURLBookmarkResolutionOptions, prefix: kCFURLBookmarkResolution}
+    CFURLBookmarkResolutionOptions: {first: kCFBookmarkResolutionWithoutUIMask, prefix: kCFBookmarkResolution, bits: true}
+    CFURLComponentType: {}
+    CFURLEnumeratorOptions: {}
+    CFURLEnumeratorResult: {}
+    CFURLError: {}
+    CFURLPathStyle: {}
+
+classes:
+    CFAllocatorContext: {}
+    CFArrayCallBacks: {}
+    CFBagCallBacks: {}
+    CFBinaryHeapCallBacks: {}
+    CFBinaryHeapCompareContext: {}
+    CFDictionaryKeyCallBacks: {}
+    CFDictionaryValueCallBacks: {}
+    CFFileDescriptorContext: {}
+    CFGregorianDate: {}
+    CFGregorianUnits: {}
+    CFMachPortContext: {}
+    CFMessagePortContext: {}
+    CFRange: {}
+    CFRunLoopObserverContext: {}
+    CFRunLoopSourceContext: {}
+    CFRunLoopTimerContext: {}
+    CFSetCallBacks: {}
+    CFSocketContext: {}
+    CFSocketSignature: {}
+    CFStreamClientContext: {}
+    CFStreamError:
+        domain:
+            type: CFStreamErrorDomain
+    CFTreeContext: {}
+    CFUUIDBytes: {}
+
+    OS_dispatch_queue:
+        exclude: true
+        name: DispatchQueue
+
+    CFTypeRef: 
+        name: CFType
+        extends: NativeObject
+    __CFAllocator:
+        name: CFAllocator
+        extends: CFType
+    __CFArray:
+        name: CFArray
+        extends: CFPropertyList
+    __CFAttributedString:
+        name: CFAttributedString
+        extends: CFType
+    __CFBag:
+        name: CFBag
+        extends: CFType
+    __CFBinaryHeap:
+        name: CFBinaryHeap
+        extends: CFType
+    __CFBitVector:
+        name: CFBitVector
+        extends: CFType
+    __CFBoolean:
+        name: CFBoolean
+        extends: CFPropertyList
+    __CFBundle:
+        name: CFBundle
+        extends: CFType
+    __CFCalendar:
+        name: CFCalendar
+        extends: CFType
+    __CFCharacterSet:
+        name: CFCharacterSet
+        extends: CFType
+    __CFData:
+        name: CFData
+        extends: CFPropertyList
+    __CFDateFormatter:
+        name: CFDateFormatter
+        extends: CFType
+    __CFDate:
+        name: CFDate
+        extends: CFPropertyList
+    __CFDictionary:
+        name: CFDictionary
+        extends: CFPropertyList
+    __CFError:
+        name: CFError
+        extends: CFType
+    __CFFileDescriptor:
+        name: CFFileDescriptor
+        extends: CFType
+    __CFFileSecurity:
+        name: CFFileSecurity
+        extends: CFType
+    __CFLocale:
+        name: CFLocale
+        extends: CFType
+    __CFMachPort:
+        name: CFMachPort
+        extends: CFType
+    __CFMessagePort:
+        name: CFMessagePort
+        extends: CFType
+    CFMutableArray:
+        name: CFMutableArray
+        extends: CFArray
+    CFMutableAttributedString:
+        name: CFMutableAttributedString
+        extends: CFAttributedString
+    CFMutableBag:
+        name: CFMutableBag
+        extends: CFBag
+    CFMutableBitVector:
+        name: CFMutableBitVector
+        extends: CFBitVector
+    CFMutableCharacterSet:
+        name: CFMutableCharacterSet
+        extends: CFCharacterSet
+    CFMutableData:
+        name: CFMutableData
+        extends: CFData
+    CFMutableDictionary:
+        name: CFMutableDictionary
+        extends: CFDictionary
+    CFMutableSet:
+        name: CFMutableSet
+        extends: CFSet
+    CFMutableString:
+        name: CFMutableString
+        extends: CFString
+    __CFNotificationCenter:
+        name: CFNotificationCenter
+        extends: CFType
+    __CFNull:
+        name: CFNull
+        extends: CFType
+    __CFNumberFormatter:
+        name: CFNumberFormatter
+        extends: CFType
+    __CFNumber:
+        name: CFNumber
+        extends: CFPropertyList
+    __CFPlugInInstance:
+        name: CFPlugInInstance
+        extends: CFType
+    __CFPlugIn:
+        name: CFPlugIn
+        extends: CFType
+    ^CFPropertyList$:
+        extends: CFType
+    __CFReadStream:
+        name: CFReadStream
+        extends: CFType
+    __CFRunLoopObserver:
+        name: CFRunLoopObserver
+        extends: CFType
+    __CFRunLoop:
+        name: CFRunLoop
+        extends: CFType
+    __CFRunLoopSource:
+        name: CFRunLoopSource
+        extends: CFType
+    __CFRunLoopTimer:
+        name: CFRunLoopTimer
+        extends: CFType
+    __CFSet:
+        name: CFSet
+        extends: CFType
+    __CFSocket:
+        name: CFSocket
+        extends: CFType
+    __CFString:
+        name: CFString
+        extends: CFPropertyList
+    __CFStringTokenizer:
+        name: CFStringTokenizer
+        extends: CFType
+    __CFTimeZone:
+        name: CFTimeZone
+        extends: CFType
+    __CFTree:
+        name: CFTree
+        extends: CFType
+    __CFURLEnumerator:
+        name: CFURLEnumerator
+        extends: CFType
+    __CFURL:
+        name: CFURL
+        extends: CFType
+    __CFUUID:
+        name: CFUUID
+        extends: CFType
+    __CFWriteStream:
+        name: CFWriteStream
+        extends: CFType
+functions:
+    # Takes an acl_t as parameter which we don't bind ATM. Exclude for now.
+    CFFileSecurityCopyAccessControlList:
+        exclude: true
+    # Takes an acl_t as parameter which we don't bind ATM. Exclude for now.
+    CFFileSecuritySetAccessControlList:
+        exclude: true
+
+    __CFRangeMake:
+        exclude: true
+    __CFStringMakeConstantString:
+        exclude: true
+    ^CF(GetTypeID)$:
+        class: CFType
+        name: "#{g[0]}"
+    ^CF(CopyTypeIDDescription)$:
+        class: CFType
+        name: "#{g[0]}"
+    ^CF(Retain)$:
+        class: CFType
+        name: "#{g[0]}"
+    ^CF(Release)$:
+        class: CFType
+        name: "#{g[0]}"
+    ^CF(Autorelease)$:
+        class: CFType
+        name: "#{g[0]}"
+    ^CF(GetRetainCount)$:
+        class: CFType
+        name: "#{g[0]}"
+    ^CF(Equal)$:
+        class: CFType
+        name: "#{g[0]}"
+    ^CF(Hash)$:
+        class: CFType
+        name: "#{g[0]}"
+    ^CF(CopyDescription)$:
+        class: CFType
+        name: "#{g[0]}"
+    ^CF(GetAllocator)$:
+        class: CFType
+        name: "#{g[0]}"
+    ^CF(MakeCollectable)$:
+        class: CFType
+        name: "#{g[0]}"
+    ^CF(Show)$:
+        class: CFType
+        name: "#{g[0]}"
+
+    ^CF(.*)GetTypeID:
+        class: "CF#{g[0]}"
+        name: getClassTypeID
+
+    ^CF(.*)(CreateMutable.*)$:
+        class: "CFMutable#{g[0]}"
+        name: "#{g[1]}"
+        return_type: "CFMutable#{g[0]}"
+    ^CF(Array|Bag|BitVector|Dictionary|Set)(Add.*)$:
+        class: "CFMutable#{g[0]}"
+        name: "#{g[1]}"
+        parameters:
+            theArray: {type: CFMutableArray}
+            theDict: {type: CFMutableDictionary}
+    ^CF(Array|Bag|BitVector|Dictionary|Set)(Append.*)$:
+        class: "CFMutable#{g[0]}"
+        name: "#{g[1]}"
+        parameters:
+            theArray: {type: CFMutableArray}
+            theDict: {type: CFMutableDictionary}
+    ^CF(Array|Bag|BitVector|Dictionary|Set)(Exchange.*)$:
+        class: "CFMutable#{g[0]}"
+        name: "#{g[1]}"
+        parameters:
+            theArray: {type: CFMutableArray}
+            theDict: {type: CFMutableDictionary}
+    ^CF(Array|Bag|BitVector|Dictionary|Set)(Insert.*)$:
+        class: "CFMutable#{g[0]}"
+        name: "#{g[1]}"
+        parameters:
+            theArray: {type: CFMutableArray}
+            theDict: {type: CFMutableDictionary}
+    ^CF(Array|Bag|BitVector|Dictionary|Set)(Remove.*)$:
+        class: "CFMutable#{g[0]}"
+        name: "#{g[1]}"
+        parameters:
+            theArray: {type: CFMutableArray}
+            theDict: {type: CFMutableDictionary}
+    ^CF(Array|Bag|BitVector|Dictionary|Set)(Replace.*)$:
+        class: "CFMutable#{g[0]}"
+        name: "#{g[1]}"
+        parameters:
+            theArray: {type: CFMutableArray}
+            theDict: {type: CFMutableDictionary}
+    ^CF(Array|Bag|BitVector|Dictionary|Set)(SetValue.*)$:
+        class: "CFMutable#{g[0]}"
+        name: "#{g[1]}"
+        parameters:
+            theArray: {type: CFMutableArray}
+            theDict: {type: CFMutableDictionary}
+    ^CF(Array|Bag|BitVector|Dictionary|Set)(Sort.*)$:
+        class: "CFMutable#{g[0]}"
+        name: "#{g[1]}"
+        parameters:
+            theArray: {type: CFMutableArray}
+            theDict: {type: CFMutableDictionary}
+    ^CF(BitVector)((Flip|Set).*)$:
+        class: "CFMutable#{g[0]}"
+        name: "#{g[1]}"
+    ^CF(Data)((Append|Delete|GetMutable|IncreaseLength|Replace|SetLength).*)$:
+        class: "CFMutable#{g[0]}"
+        name: "#{g[1]}"
+    ^CF(AttributedString)((BeginEditing|EndEditing|GetMutable|Remove|Replace|SetAttribute).*)$:
+        class: "CFMutable#{g[0]}"
+        name: "#{g[1]}"
+    ^CF(CharacterSet)((Add|Intersect|Invert|Remove|Union).*)$:
+        class: "CFMutable#{g[0]}"
+        name: "#{g[1]}"
+    ^CF(String)((Append|Capitalize|Delete|Find|Fold|Insert|Lowercase|Normalize|Pad|Replace|SetExternal|Transform|Trim|Uppercase).*)$:
+        class: "CFMutable#{g[0]}"
+        name: "#{g[1]}"
+
+    ^CFAllocator(.*)$:
+        class: CFAllocator
+        name: "#{g[0]}"
+        parameters:
+            hint:
+                type: "@MachineSizedSInt long"
+    ^CFArray(.*)$:
+        class: CFArray
+        name: "#{g[0]}"
+    ^CFAttributedString(.*)$:
+        class: CFAttributedString
+        name: "#{g[0]}"
+    ^CFBag(.*)$:
+        class: CFBag
+        name: "#{g[0]}"
+    ^CFBinaryHeap(.*)$:
+        class: CFBinaryHeap
+        name: "#{g[0]}"
+    ^CFBitVector(.*)$:
+        class: CFBitVector
+        name: "#{g[0]}"
+    ^CFBoolean(.*)$:
+        class: CFBoolean
+        name: "#{g[0]}"
+    ^CFBundle(.*)$:
+        class: CFBundle
+        name: "#{g[0]}"
+    ^CFCalendar(.*)$:
+        class: CFCalendar
+        name: "#{g[0]}"
+    ^CFCharacterSet(.*)$:
+        class: CFCharacterSet
+        name: "#{g[0]}"
+    ^CFData(.*)$:
+        class: CFData
+        name: "#{g[0]}"
+    ^CFDateFormatter(.*)$:
+        class: CFDateFormatter
+        name: "#{g[0]}"
+        parameters:
+            options:
+                type: "@MachineSizedUInt long"
+    ^CFDate(.*)$:
+        class: CFDate
+        name: "#{g[0]}"
+    ^CF(AbsoluteTime.*)$:
+        class: CFDate
+        name: "#{g[0]}"
+        parameters:
+            unitFlags:
+                type: CFGregorianUnitFlags
+    ^CF(GregorianDate.*)$:
+        class: CFDate
+        name: "#{g[0]}"
+        parameters:
+            unitFlags:
+                type: CFGregorianUnitFlags
+    ^CFDictionary(.*)$:
+        class: CFDictionary
+        name: "#{g[0]}"
+    ^CFError(.*)$:
+        class: CFError
+        name: "#{g[0]}"
+    ^CFFileDescriptor(.*)$:
+        class: CFFileDescriptor
+        name: "#{g[0]}"
+        parameters:
+            callBackTypes:
+                type: CFFileDescriptorCallBackType
+    ^CFFileSecurity(.*)$:
+        class: CFFileSecurity
+        name: "#{g[0]}"
+    ^CFLocale(.*)$:
+        class: CFLocale
+        name: "#{g[0]}"
+    ^CFMachPort(.*)$:
+        class: CFMachPort
+        name: "#{g[0]}"
+    ^CFMessagePort(.*)$:
+        class: CFMessagePort
+        name: "#{g[0]}"
+    ^CFNotificationCenter(.*)$:
+        class: CFNotificationCenter
+        name: "#{g[0]}"
+        parameters:
+            options:
+                type: CFNotificationPostingOptions
+    ^CFNumberFormatter(.*)$:
+        class: CFNumberFormatter
+        name: "#{g[0]}"
+        parameters:
+            options:
+                type: CFNumberFormatterOptionFlags
+    ^CFNumber(.*)$:
+        class: CFNumberFormatter
+        name: "#{g[0]}"
+    ^CFPlugInInstance(.*)$:
+        class: CFPlugInInstance
+        name: "#{g[0]}"
+    ^CFPlugIn(.*)$:
+        class: CFPlugIn
+        name: "#{g[0]}"
+    ^CFPreferences(.*)$:
+        class: CFPreferences
+        name: "#{g[0]}"
+    ^CFPropertyList(.*)$:
+        class: CFPropertyList
+        name: "#{g[0]}"
+        parameters:
+            mutabilityOption:
+                type: CFPropertyListMutabilityOptions
+            options:
+                type: CFPropertyListMutabilityOptions
+    ^CFReadStream(Open|Close)$:
+        class: CFReadStream
+        name: "#{g[0]}Stream"
+    ^CFReadStream(.*)$:
+        class: CFReadStream
+        name: "#{g[0]}"
+        parameters:
+            streamEvents:
+                type: CFStreamEventType
+    ^CFRunLoopObserver(GetActivities)$:
+        class: CFRunLoopObserver
+        name: "#{g[0]}"
+        return_type: CFRunLoopActivity
+    ^CFRunLoopObserver(.*)$:
+        class: CFRunLoopObserver
+        name: "#{g[0]}"
+        parameters:
+            activities:
+                type: CFRunLoopActivity
+    ^CFRunLoopSource(.*)$:
+        class: CFRunLoopSource
+        name: "#{g[0]}"
+    ^CFRunLoopTimer(.*)$:
+        class: CFRunLoopTimer
+        name: "#{g[0]}"
+        parameters:
+            flags:
+                type: "@MachineSizedUInt long"
+    ^CFRunLoop(.*)$:
+        class: CFRunLoop
+        name: "#{g[0]}"
+    ^CFSet(.*)$:
+        class: CFSet
+        name: "#{g[0]}"
+    ^CFSocket(GetSocketFlags)$:
+        class: CFSocket
+        name: "#{g[0]}"
+        return_type: CFSocketFlags
+    ^CFSocket(.*)$:
+        class: CFSocket
+        name: "#{g[0]}"
+        parameters:
+            callBackTypes:
+                type: CFSocketCallBackType
+            flags:
+                type: CFSocketFlags
+    ^CFStream(.*)$:
+        class: CFStream
+        name: "#{g[0]}"
+    ^CFStringTokenizer(Create)$:
+        class: CFStringTokenizer
+        name: "#{g[0]}"
+        parameters:
+            options:
+                type: CFStringTokenizerUnitOptions
+    ^CFStringTokenizer(CopyCurrentTokenAttribute)$:
+        class: CFStringTokenizer
+        name: "#{g[0]}"
+        parameters:
+            attribute:
+                type: CFStringTokenizerUnitOptions
+    ^CFStringTokenizer(.*)$:
+        class: CFStringTokenizer
+        name: "#{g[0]}"
+    ^CFString(GetHyphenationLocationBeforeIndex)$:
+        class: CFString
+        name: "#{g[0]}"
+        parameters:
+            options:
+                type: "@MachineSizedUInt long"
+    ^CFString(.*)$:
+        class: CFString
+        name: "#{g[0]}"
+    CFShowStr:
+        class: CFString
+        name: showStr
+    ^CFTimeZone(.*)$:
+        class: CFTimeZone
+        name: "#{g[0]}"
+    ^CFTree(.*)$:
+        class: CFTree
+        name: "#{g[0]}"
+    ^CFURL(WriteBookmarkDataToFile)$:
+        class: CFURL
+        name: "#{g[0]}"
+        parameters:
+            options:
+                type: "@MachineSizedUInt long"
+    ^CFURLCreateFromFSRef.*$:
+        exclude: true
+    CFURLGetFSRef:
+        exclude: true
+    ^CFURL(.*)$:
+        class: CFURL
+        name: "#{g[0]}"
+    CFCopyHomeDirectoryURL:
+        class: CFURL
+        name: copyHomeDirectoryURL
+    ^CFUUID(.*)$:
+        class: CFUUID
+        name: "#{g[0]}"
+    ^CFWriteStream(Open|Close)$:
+        class: CFWriteStream
+        name: "#{g[0]}Stream"
+    ^CFWriteStream(.*)$:
+        class: CFWriteStream
+        name: "#{g[0]}"
+        parameters:
+            streamEvents:
+                type: CFStreamEventType
+    ^(CF.*)$:
+        class: CoreFoundation
+        name: "#{g[0]}"
+
+values:
+    ^kCF(AbsoluteTimeIntervalSince.*)$:
+        class: CFDate
+        name: "#{g[0]}"
+    ^kCF(Allocator.*)$:
+        class: CFAllocator
+        name: "#{g[0]}"
+    ^kCFBoolean(.*)$:
+        class: CFBoolean
+        name: "#{g[0]}"
+    ^kCFBundle(.*)Key$:
+        class: CFBundle
+        name: "Key#{g[0]}"
+    ^kCF(CopyStringBagCallBacks)$:
+        class: CFBag
+        name: "#{g[0]}"
+    ^kCF(CopyStringDictionaryKeyCallBacks)$:
+        class: CFDictionary
+        name: "#{g[0]}"
+    ^kCF(CopyStringSetCallBacks)$:
+        class: CFSet
+        name: "#{g[0]}"
+    ^kCFDateFormatter(.*)$:
+        class: CFDateFormatter
+        name: "Key#{g[0]}"
+    ^kCFError(.*)Key$:
+        class: CFError
+        name: "Key#{g[0]}"
+    ^kCFError(.*)$:
+        class: CFError
+        name: "#{g[0]}"
+    ^kCF(.*Calendar)$:
+        class: CFLocale
+        name: "CalendarIdentifier#{g[0]}"
+    ^kCFLocale(CurrentLocaleDidChange)Notification$:
+        class: CFLocale
+        name: "Notification#{g[0]}"
+    ^kCFLocale(.*)$:
+        class: CFLocale
+        name: "Key#{g[0]}"
+    kCFNull:
+        class: CFNull
+        name: "Null"
+    ^kCFNumberFormatter(.*)$:
+        class: CFNumberFormatter
+        name: "Key#{g[0]}"
+    ^kCFNumber(.*)$:
+        class: CFNumber
+        name: "#{g[0]}"
+    ^kCFPlugIn(.*)Key$:
+        class: CFPlugIn
+        name: "Key#{g[0]}"
+    ^kCFPreferences(.*)$:
+        class: CFPreferences
+        name: "Key#{g[0]}"
+    ^kCFRunLoopCommonModes$:
+        class: CFRunLoop
+        name: "ModeCommon"
+    ^kCFRunLoopDefaultMode$:
+        class: CFRunLoop
+        name: "ModeDefault"
+    ^kCFRunLoop(.*)$:
+        class: CFRunLoop
+        name: "#{g[0]}"
+    ^kCFSocket(Command|Name|Value|Result|Error)Key$:
+        class: CFSocket
+        name: "Key#{g[0]}"
+    ^kCFSocket(.*)Command$:
+        class: CFSocket
+        name: "Command#{g[0]}"
+    ^kCFStream(.*)$:
+        class: CFStream
+        name: "#{g[0]}"
+    ^kCFString(Transform.*)$:
+        class: CFMutableString
+        name: "#{g[0]}"
+    ^kCF(StringBinaryHeapCallBacks)$:
+        class: CFBinaryHeap
+        name: "#{g[0]}"
+    ^kCFTimeZone(SystemTimeZoneDidChange)Notification$:
+        class: CFTimeZone
+        name: "Notification#{g[0]}"
+    ^kCFURL(.*)Key$:
+        class: CFURL
+        name: "Key#{g[0]}"
+    ^kCFURL(.*)$:
+        class: CFURL
+        name: "#{g[0]}"
+    ^kCFType(ArrayCallBacks)$:
+        class: CFArray
+        name: "#{g[0]}"
+    ^kCFType(BagCallBacks)$:
+        class: CFBag
+        name: "#{g[0]}"
+    ^kCFType(DictionaryKeyCallBacks)$:
+        class: CFDictionary
+        name: "#{g[0]}"
+    ^kCFType(DictionaryValueCallBacks)$:
+        class: CFDictionary
+        name: "#{g[0]}"
+    ^kCFType(SetCallBacks)$:
+        class: CFSet
+        name: "#{g[0]}"
+    ^kCFCoreFoundation(VersionNumber)$:
+        class: CoreFoundation
+        name: "#{g[0]}"
+        readonly: true
+    # Make sure we don't miss any values if new ones are introduced in a later CoreFoundation
+    ^(kCF.*)$:
+        class: CoreFoundation
+        name: "#{g[0]}"
+
+
+constants:
+    ^kCFCoreFoundation(.*)$:
+        class: CoreFoundation
+        name: "#{g[0]}"
+    ^kCF(StringEncodingInvalidId)$:
+        class: CFString
+        name: "#{g[0]}"
+    ^kCF(NotFound):
+        class: CoreFoundation
+        name: "#{g[0]}"
+    # Make sure we don't miss any constants if new ones are introduced in a later CoreFoundation
+    ^(kCF.*)$:
+        class: CoreFoundation
+        name: "#{g[0]}"

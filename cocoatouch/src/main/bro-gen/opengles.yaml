@@ -1,0 +1,74 @@
+package: org.robovm.apple.opengles
+include: [foundation.yaml]
+library: OpenGLES
+framework: OpenGLES
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/OpenGLES.framework/Headers/EAGL.h
+    - /System/Library/Frameworks/OpenGLES.framework/Headers/EAGLDrawable.h
+typedefs: {}
+enums:
+    EAGLRenderingAPI: {first: kEAGLRenderingAPIOpenGLES1, type: MachineUInt, prefix: kEAGLRenderingAPI}
+
+classes:
+    ^EAGLContext$:
+        methods:
+            '+currentContext$':
+                name: getCurrentContext
+            '+setCurrentContext:$':
+                name: setCurrentContext
+            '-renderbufferStorage:fromDrawable:$':
+                name: renderBufferStorage
+            '-presentRenderbuffer:$':
+                name: presentRenderbuffer
+    ^EAGLSharegroup$: {}
+
+protocols:
+    ^EAGLDrawable$: {}
+
+functions:
+
+    ^EAGL(GetVersion)$:
+        class: OpenGLES
+        name: "#{g[0]}"
+        visibility: protected
+
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    ^(EAGL.*)$:
+        class: OpenGLES
+        name: "Function__#{g[0]}"
+    ^(GL.*)$:
+        class: OpenGLES
+        name: "Function__#{g[0]}"
+
+values:
+
+    ^kEAGLColorFormat(.*)$:
+        class: EAGLColorFormat
+        name: "#{g[0]}"
+        type: NSString
+    ^kEAGLDrawableProperty(.*)$:
+        class: EAGLDrawableProperty
+        name: "#{g[0]}"
+        type: NSString
+
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    ^(k?EAGL.*)$:
+        class: OpenGLES
+        name: "Value__#{g[0]}"
+    ^(k?GL.*)$:
+        class: OpenGLES
+        name: "Value__#{g[0]}"
+
+constants:
+
+    ^EAGL_(MAJOR|MINOR)_VERSION$:
+        exclude: true
+
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    ^(k?EAGL.*)$:
+        class: OpenGLES
+        name: "Constant__#{g[0]}"
+    ^(k?GL.*)$:
+        class: OpenGLES
+        name: "Constant__#{g[0]}"

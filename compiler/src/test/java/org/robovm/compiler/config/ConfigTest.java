@@ -223,15 +223,15 @@ public class ConfigTest {
     public void testMergeConfigsFromClasspath() throws Exception {
         File tmpDir = createTempDir();
         File cacheDir = new File(tmpDir, "cache");
-        File p1 = createMergeConfig(tmpDir, "p1", "Foo", OS.ios, Arch.thumbv7, false);
+        File p1 = createMergeConfig(tmpDir, "p1", "Foo", OS.macosx, Arch.x86, false);
         File p2 = createMergeConfig(tmpDir, "p2", "Wooz", OS.linux, Arch.x86, false);
-        File p3 = createMergeConfig(tmpDir, "p3", "Baaz", OS.ios, Arch.thumbv7, true);
+        File p3 = createMergeConfig(tmpDir, "p3", "Baaz", OS.macosx, Arch.x86, true);
         
         Config.Builder builder = new Config.Builder();
         builder.cacheDir(cacheDir);
-        builder.os(OS.ios);
-        builder.arch(Arch.thumbv7);
-        builder.targetType(TargetType.ios);
+        builder.os(OS.macosx);
+        builder.arch(Arch.x86);
+        builder.targetType(TargetType.console);
         builder.mainClass("Main");
         builder.addClasspathEntry(p1);
         builder.addClasspathEntry(p2);
@@ -246,9 +246,9 @@ public class ConfigTest {
         builder.home(fakeHome);
         Config config = builder.build();
 
-        File p1Root = new File(p1, "META-INF/robovm/ios/thumbv7");
+        File p1Root = new File(p1, "META-INF/robovm/macosx/x86");
         File p3Cache = config.getCacheDir(config.getClazzes().getClasspathPaths().get(2));
-        File p3Root = new File(p3Cache.getParentFile(), p3Cache.getName() + ".extracted/META-INF/robovm/ios/thumbv7");
+        File p3Root = new File(p3Cache.getParentFile(), p3Cache.getName() + ".extracted/META-INF/robovm/macosx/x86");
 
         assertEquals(Arrays.asList("FOO*", "BAAZ*", "YADA*"), config.getExportedSymbols());
         assertEquals(Arrays.asList("com.foo.**", "com.baaz.**", "org.yada.**"), config.getForceLinkClasses());

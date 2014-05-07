@@ -1344,9 +1344,9 @@ void* rvmResolveNativeMethodImpl(Env* env, NativeMethod* method, const char* sho
         f = rvmFindDynamicLibSymbol(env, nativeLibs, shortMangledName, TRUE);
         if (f) {
             TRACEF("Found native method using short name: %s", shortMangledName);
-        } else if (!strcmp(shortMangledName, longMangledName)) {
+        } else if (strcmp(shortMangledName, longMangledName)) {
             TRACEF("Searching for native method using long name: %s", longMangledName);
-            void* f = rvmFindDynamicLibSymbol(env, nativeLibs, longMangledName, TRUE);
+            f = rvmFindDynamicLibSymbol(env, nativeLibs, longMangledName, TRUE);
             if (f) {
                 TRACEF("Found native method using long name: %s", longMangledName);
             }

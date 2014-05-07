@@ -16,7 +16,7 @@ fi
 
 java \
     -XX:+HeapDumpOnOutOfMemoryError \
-    -Xmx1024m \
+    -Xmx2g \
     -Xss1024k \
     -jar "$COMPILER_JAR" \
     $@

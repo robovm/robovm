@@ -91,16 +91,17 @@ import org.robovm.apple.dispatch.*;
     }
 
     private static final Map<Long, Class<? extends CFType>> allCFTypeClasses = new HashMap<>();
-
+    private static final int ABSTRACT = 0x00000400;
+    
     static {
         @SuppressWarnings("unchecked")
         Class<? extends CFType>[] classes = (Class<? extends CFType>[]) 
                 VM.listClasses(CFType.class, ClassLoader.getSystemClassLoader());
         Class<?>[] emptyArgs = new Class<?>[0];
+        final Class<?> cfTypeClass = CFType.class;
         for (Class<? extends CFType> cls : classes) {
-            if (!java.lang.reflect.Modifier.isAbstract(cls.getModifiers())) {
+            if (cls != cfTypeClass && (cls.getModifiers() & ABSTRACT) == 0) {
                 try {
-                    Bro.bind(cls);
                     java.lang.reflect.Method m = cls.getMethod("getClassTypeID", emptyArgs);
                     Long typeId = (Long) m.invoke(null);
                     allCFTypeClasses.put(typeId, cls);

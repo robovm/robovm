@@ -52,7 +52,7 @@ import org.robovm.apple.foundation.*;
     
     static {
         try {
-            cbApplier = CGFunction.class.getDeclaredMethod("cbApplier", long.class, CGPathElement.class);
+            cbApplier = CGPath.class.getDeclaredMethod("cbApplier", long.class, CGPathElement.class);
         } catch (Throwable e) {
             throw new Error(e);
         }

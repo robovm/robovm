@@ -54,8 +54,8 @@ import org.robovm.apple.foundation.*;
     
     static {
         try {
-            cbDrawPattern = CGFunction.class.getDeclaredMethod("cbDrawPattern", long.class, CGContext.class);
-            cbReleaseInfo = CGFunction.class.getDeclaredMethod("cbReleaseInfo", long.class);
+            cbDrawPattern = CGPattern.class.getDeclaredMethod("cbDrawPattern", long.class, CGContext.class);
+            cbReleaseInfo = CGPattern.class.getDeclaredMethod("cbReleaseInfo", long.class);
         } catch (Throwable e) {
             throw new Error(e);
         }

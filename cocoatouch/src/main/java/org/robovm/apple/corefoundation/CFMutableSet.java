@@ -41,9 +41,8 @@ import org.robovm.apple.dispatch.*;
     /*<ptr>*/public static class CFMutableSetPtr extends Ptr<CFMutableSet, CFMutableSetPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFMutableSet.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
+    /*<constructors>*//*</constructors>*/
     protected CFMutableSet() {}
-    /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

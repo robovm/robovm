@@ -41,9 +41,8 @@ import org.robovm.apple.dispatch.*;
     /*<ptr>*/public static class CFMutableArrayPtr extends Ptr<CFMutableArray, CFMutableArrayPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFMutableArray.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
+    /*<constructors>*//*</constructors>*/
     protected CFMutableArray() {}
-    /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

@@ -41,9 +41,8 @@ import org.robovm.apple.dispatch.*;
     /*<ptr>*/public static class CFMutableBitVectorPtr extends Ptr<CFMutableBitVector, CFMutableBitVectorPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFMutableBitVector.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
+    /*<constructors>*//*</constructors>*/
     protected CFMutableBitVector() {}
-    /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

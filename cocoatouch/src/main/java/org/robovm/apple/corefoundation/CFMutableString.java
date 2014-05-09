@@ -41,9 +41,8 @@ import org.robovm.apple.dispatch.*;
     /*<ptr>*/public static class CFMutableStringPtr extends Ptr<CFMutableString, CFMutableStringPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFMutableString.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
+    /*<constructors>*//*</constructors>*/
     protected CFMutableString() {}
-    /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -86,14 +85,6 @@ import org.robovm.apple.dispatch.*;
     public static native CFMutableString createMutableCopy(CFAllocator alloc, @MachineSizedSInt long maxLength, CFString theString);
     @Bridge(symbol="CFStringCreateMutableWithExternalCharactersNoCopy", optional=true)
     public static native CFMutableString createMutableWithExternalCharactersNoCopy(CFAllocator alloc, ShortPtr chars, @MachineSizedSInt long numChars, @MachineSizedSInt long capacity, CFAllocator externalCharactersAllocator);
-    @Bridge(symbol="CFStringFindWithOptionsAndLocale", optional=true)
-    public static native boolean findWithOptionsAndLocale(CFString theString, CFString stringToFind, @ByVal CFRange rangeToSearch, CFStringCompareFlags searchOptions, CFLocale locale, CFRange result);
-    @Bridge(symbol="CFStringFindWithOptions", optional=true)
-    public static native boolean findWithOptions(CFString theString, CFString stringToFind, @ByVal CFRange rangeToSearch, CFStringCompareFlags searchOptions, CFRange result);
-    @Bridge(symbol="CFStringFind", optional=true)
-    public static native @ByVal CFRange find(CFString theString, CFString stringToFind, CFStringCompareFlags compareOptions);
-    @Bridge(symbol="CFStringFindCharacterFromSet", optional=true)
-    public static native boolean findCharacterFromSet(CFString theString, CFCharacterSet theSet, @ByVal CFRange rangeToSearch, CFStringCompareFlags searchOptions, CFRange result);
     @Bridge(symbol="CFStringAppend", optional=true)
     public native void append(CFString appendedString);
     @Bridge(symbol="CFStringAppendCharacters", optional=true)

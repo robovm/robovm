@@ -41,9 +41,8 @@ import org.robovm.apple.dispatch.*;
     /*<ptr>*/public static class CFMutableAttributedStringPtr extends Ptr<CFMutableAttributedString, CFMutableAttributedStringPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFMutableAttributedString.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
+    /*<constructors>*//*</constructors>*/
     protected CFMutableAttributedString() {}
-    /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -53,8 +52,6 @@ import org.robovm.apple.dispatch.*;
     public static native CFMutableAttributedString createMutable(CFAllocator alloc, @MachineSizedSInt long maxLength);
     @Bridge(symbol="CFAttributedStringReplaceString", optional=true)
     public native void replaceString(@ByVal CFRange range, CFString replacement);
-    @Bridge(symbol="CFAttributedStringGetMutableString", optional=true)
-    public native CFMutableString getMutableString();
     @Bridge(symbol="CFAttributedStringSetAttributes", optional=true)
     public native void setAttributes(@ByVal CFRange range, CFDictionary replacement, boolean clearOtherAttributes);
     @Bridge(symbol="CFAttributedStringSetAttribute", optional=true)

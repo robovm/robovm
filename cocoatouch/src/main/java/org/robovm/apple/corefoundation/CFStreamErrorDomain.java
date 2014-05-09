@@ -32,7 +32,7 @@ import org.robovm.apple.dispatch.*;
 /**
  * <div class="javadoc"></div>
  */
-/*<annotations>*//*</annotations>*/
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/CFStreamErrorDomain/*</name>*/ implements ValuedEnum {
     /*<values>*/
     Custom(-1L),

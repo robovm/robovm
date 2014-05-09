@@ -306,64 +306,100 @@ functions:
         name: "#{g[1]}"
         parameters:
             theArray: {type: CFMutableArray}
+            theBag: {type: CFMutableBag}
             theDict: {type: CFMutableDictionary}
+            theSet: {type: CFMutableSet}
     ^CF(Array|Bag|BitVector|Dictionary|Set)(Append.*)$:
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
         parameters:
             theArray: {type: CFMutableArray}
+            theBag: {type: CFMutableBag}
             theDict: {type: CFMutableDictionary}
+            theSet: {type: CFMutableSet}
     ^CF(Array|Bag|BitVector|Dictionary|Set)(Exchange.*)$:
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
         parameters:
             theArray: {type: CFMutableArray}
+            theBag: {type: CFMutableBag}
             theDict: {type: CFMutableDictionary}
+            theSet: {type: CFMutableSet}
     ^CF(Array|Bag|BitVector|Dictionary|Set)(Insert.*)$:
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
         parameters:
             theArray: {type: CFMutableArray}
+            theBag: {type: CFMutableBag}
             theDict: {type: CFMutableDictionary}
+            theSet: {type: CFMutableSet}
     ^CF(Array|Bag|BitVector|Dictionary|Set)(Remove.*)$:
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
         parameters:
             theArray: {type: CFMutableArray}
+            theBag: {type: CFMutableBag}
             theDict: {type: CFMutableDictionary}
+            theSet: {type: CFMutableSet}
     ^CF(Array|Bag|BitVector|Dictionary|Set)(Replace.*)$:
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
         parameters:
             theArray: {type: CFMutableArray}
+            theBag: {type: CFMutableBag}
             theDict: {type: CFMutableDictionary}
+            theSet: {type: CFMutableSet}
     ^CF(Array|Bag|BitVector|Dictionary|Set)(SetValue.*)$:
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
         parameters:
             theArray: {type: CFMutableArray}
+            theBag: {type: CFMutableBag}
             theDict: {type: CFMutableDictionary}
+            theSet: {type: CFMutableSet}
     ^CF(Array|Bag|BitVector|Dictionary|Set)(Sort.*)$:
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
         parameters:
             theArray: {type: CFMutableArray}
+            theBag: {type: CFMutableBag}
             theDict: {type: CFMutableDictionary}
+            theSet: {type: CFMutableSet}
     ^CF(BitVector)((Flip|Set).*)$:
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
+        parameters:
+            bv: {type: CFMutableBitVector}
     ^CF(Data)((Append|Delete|GetMutable|IncreaseLength|Replace|SetLength).*)$:
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
+        parameters:
+            theData: {type: CFMutableData}
+    (CFAttributedString)(GetMutableString):
+        class: "#{g[0]}"
+        name: "#{g[1]}"
+        return_type: CFMutableString
     ^CF(AttributedString)((BeginEditing|EndEditing|GetMutable|Remove|Replace|SetAttribute).*)$:
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
+        parameters:
+            aStr: {type: CFMutableAttributedString}
     ^CF(CharacterSet)((Add|Intersect|Invert|Remove|Union).*)$:
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
-    ^CF(String)((Append|Capitalize|Delete|Find|Fold|Insert|Lowercase|Normalize|Pad|Replace|SetExternal|Transform|Trim|Uppercase).*)$:
+        parameters:
+            theSet: {type: CFMutableCharacterSet}
+    ^CF(String)((Append|Capitalize|Delete|FindAndReplace|Fold|Lowercase|Normalize|Pad|Replace|SetExternal|Trim|Uppercase).*)$:
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
+        parameters:
+            theString: {type: CFMutableString}
+    ^CF(String)((Insert|Transform).*)$:
+        class: "CFMutable#{g[0]}"
+        name: "#{g[1]}"
+        parameters:
+            str: {type: CFMutableString}
+            string: {type: CFMutableString}
 
     ^CFAllocator(.*)$:
         class: CFAllocator
@@ -539,6 +575,12 @@ functions:
         parameters:
             attribute:
                 type: CFStringTokenizerUnitOptions
+    ^CFStringTokenizer(GetCurrentSubTokens)$:
+        class: CFStringTokenizer
+        name: "#{g[0]}"
+        parameters:
+            derivedSubTokens:
+                type: CFMutableArray
     ^CFStringTokenizer(.*)$:
         class: CFStringTokenizer
         name: "#{g[0]}"

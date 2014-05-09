@@ -67,5 +67,7 @@ import org.robovm.apple.dispatch.*;
     public native CFDictionary getAttributesAndLongestEffectiveRange(@MachineSizedSInt long loc, @ByVal CFRange inRange, CFRange longestEffectiveRange);
     @Bridge(symbol="CFAttributedStringGetAttributeAndLongestEffectiveRange", optional=true)
     public native CFType getAttributeAndLongestEffectiveRange(@MachineSizedSInt long loc, CFString attrName, @ByVal CFRange inRange, CFRange longestEffectiveRange);
+    @Bridge(symbol="CFAttributedStringGetMutableString", optional=true)
+    public native CFMutableString getMutableString();
     /*</methods>*/
 }

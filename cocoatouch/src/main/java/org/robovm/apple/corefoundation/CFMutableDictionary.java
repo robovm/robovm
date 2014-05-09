@@ -41,9 +41,8 @@ import org.robovm.apple.dispatch.*;
     /*<ptr>*/public static class CFMutableDictionaryPtr extends Ptr<CFMutableDictionary, CFMutableDictionaryPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFMutableDictionary.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
+    /*<constructors>*//*</constructors>*/
     protected CFMutableDictionary() {}
-    /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

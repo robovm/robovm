@@ -196,14 +196,22 @@ import org.robovm.apple.dispatch.*;
     public native CFComparisonResult compareWithOptions(CFString theString2, @ByVal CFRange rangeToCompare, CFStringCompareFlags compareOptions);
     @Bridge(symbol="CFStringCompare", optional=true)
     public native CFComparisonResult compare(CFString theString2, CFStringCompareFlags compareOptions);
+    @Bridge(symbol="CFStringFindWithOptionsAndLocale", optional=true)
+    public native boolean findWithOptionsAndLocale(CFString stringToFind, @ByVal CFRange rangeToSearch, CFStringCompareFlags searchOptions, CFLocale locale, CFRange result);
+    @Bridge(symbol="CFStringFindWithOptions", optional=true)
+    public native boolean findWithOptions(CFString stringToFind, @ByVal CFRange rangeToSearch, CFStringCompareFlags searchOptions, CFRange result);
     @Bridge(symbol="CFStringCreateArrayWithFindResults", optional=true)
     public static native CFArray createArrayWithFindResults(CFAllocator alloc, CFString theString, CFString stringToFind, @ByVal CFRange rangeToSearch, CFStringCompareFlags compareOptions);
+    @Bridge(symbol="CFStringFind", optional=true)
+    public native @ByVal CFRange find(CFString stringToFind, CFStringCompareFlags compareOptions);
     @Bridge(symbol="CFStringHasPrefix", optional=true)
     public native boolean hasPrefix(CFString prefix);
     @Bridge(symbol="CFStringHasSuffix", optional=true)
     public native boolean hasSuffix(CFString suffix);
     @Bridge(symbol="CFStringGetRangeOfComposedCharactersAtIndex", optional=true)
     public native @ByVal CFRange getRangeOfComposedCharactersAtIndex(@MachineSizedSInt long theIndex);
+    @Bridge(symbol="CFStringFindCharacterFromSet", optional=true)
+    public native boolean findCharacterFromSet(CFCharacterSet theSet, @ByVal CFRange rangeToSearch, CFStringCompareFlags searchOptions, CFRange result);
     @Bridge(symbol="CFStringGetLineBounds", optional=true)
     public native void getLineBounds(@ByVal CFRange range, MachineSizedSIntPtr lineBeginIndex, MachineSizedSIntPtr lineEndIndex, MachineSizedSIntPtr contentsEndIndex);
     @Bridge(symbol="CFStringGetParagraphBounds", optional=true)

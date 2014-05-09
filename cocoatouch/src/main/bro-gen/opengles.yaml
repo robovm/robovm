@@ -11,64 +11,64 @@ enums:
     EAGLRenderingAPI: {first: kEAGLRenderingAPIOpenGLES1, type: MachineUInt, prefix: kEAGLRenderingAPI}
 
 classes:
-    ^EAGLContext$:
+    EAGLContext:
         methods:
-            '+currentContext$':
+            '+currentContext':
                 name: getCurrentContext
-            '+setCurrentContext:$':
+            '+setCurrentContext:':
                 name: setCurrentContext
-            '-renderbufferStorage:fromDrawable:$':
+            '-renderbufferStorage:fromDrawable:':
                 name: renderBufferStorage
-            '-presentRenderbuffer:$':
+            '-presentRenderbuffer:':
                 name: presentRenderbuffer
-    ^EAGLSharegroup$: {}
+    EAGLSharegroup: {}
 
 protocols:
-    ^EAGLDrawable$: {}
+    EAGLDrawable: {}
 
 functions:
 
-    ^EAGL(GetVersion)$:
+    EAGL(GetVersion):
         class: OpenGLES
         name: "#{g[0]}"
         visibility: protected
 
     # Make sure we don't miss any functions if new ones are introduced in a later version
-    ^(EAGL.*)$:
+    (EAGL.*):
         class: OpenGLES
         name: "Function__#{g[0]}"
-    ^(GL.*)$:
+    (GL.*):
         class: OpenGLES
         name: "Function__#{g[0]}"
 
 values:
 
-    ^kEAGLColorFormat(.*)$:
+    kEAGLColorFormat(.*):
         class: EAGLColorFormat
         name: "#{g[0]}"
         type: NSString
-    ^kEAGLDrawableProperty(.*)$:
+    kEAGLDrawableProperty(.*):
         class: EAGLDrawableProperty
         name: "#{g[0]}"
         type: NSString
 
     # Make sure we don't miss any values if new ones are introduced in a later version
-    ^(k?EAGL.*)$:
+    (k?EAGL.*):
         class: OpenGLES
         name: "Value__#{g[0]}"
-    ^(k?GL.*)$:
+    (k?GL.*):
         class: OpenGLES
         name: "Value__#{g[0]}"
 
 constants:
 
-    ^EAGL_(MAJOR|MINOR)_VERSION$:
+    EAGL_(MAJOR|MINOR)_VERSION:
         exclude: true
 
     # Make sure we don't miss any constants if new ones are introduced in a later version
-    ^(k?EAGL.*)$:
+    (k?EAGL.*):
         class: OpenGLES
         name: "Constant__#{g[0]}"
-    ^(k?GL.*)$:
+    (k?GL.*):
         class: OpenGLES
         name: "Constant__#{g[0]}"

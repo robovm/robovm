@@ -10,94 +10,94 @@ enums:
 
 classes:
 
-    ^CIColor$:
+    CIColor:
         methods:
-            '+colorWithCGColor:$':
+            '+colorWithCGColor:':
                 exclude: true
-            '+color.*$':
+            '+color.*':
                 visibility: protected
                 return_type: "@Pointer long"
-            '-(alpha|blue|colorSpace|green|numberOfComponents|red|stringRepresentation)$':
+            '-(alpha|blue|colorSpace|green|numberOfComponents|red|stringRepresentation)':
                 property: true
-            '-components$':
+            '-components':
                 visibility: protected
-    ^CIContext$:
+    CIContext:
         methods:
-            '+context.*$':
+            '+context.*':
                 visibility: protected
                 return_type: "@Pointer long"
-            '-(inputImageMaximumSize|outputImageMaximumSize)$':
+            '-(inputImageMaximumSize|outputImageMaximumSize)':
                 property: true
-            '-drawImage.*$':
+            '-drawImage.*':
                 name: drawImage
             # Skip methods that renders to CVBuffers for now until we have CoreVideo support
-            '-render:toCVPixelBuffer:.*$':
+            '-render:toCVPixelBuffer:.*':
                 exclude: true
-            '-render.*$':
+            '-render.*':
                 name: render
-            '-createCGImage.*$':
+            '-createCGImage.*':
                 name: createCGImage
-            '-createCGLayer.*$':
+            '-createCGLayer.*':
                 name: createCGLayer
-    ^CIDetector$:
+    CIDetector:
         methods:
-            '+detectorOfType:context:options:$':
+            '+detectorOfType:context:options:':
                 visibility: protected
                 return_type: "@Pointer long"
-            '-featuresInImage.*$':
+            '-featuresInImage.*':
                 name: findFeatures
                 return_type: "NSArray<CIFeature>"
-    ^CIFaceFeature$: {}
-    ^CIFeature$: {}
-    ^CIFilter$:
+    CIFaceFeature: {}
+    CIFeature: {}
+    CIFilter:
         skip_def_constructor: true
         methods:
-            '+filterWithName:$':
+            '+filterWithName:':
                 name: getFilter
-            '+serializedXMPFromFilters:inputImageExtent:$':
+            '+serializedXMPFromFilters:inputImageExtent:':
                 name: serializeToXMP
                 parameters:
                     filters:
                         type: "NSArray<CIFilter>"
-            '+filterArrayFromSerializedXMP:inputImageExtent:error:$':
+            '+filterArrayFromSerializedXMP:inputImageExtent:error:':
                 name: deserializeFromXMP
                 return_type: "NSArray<CIFilter>"
-            '+filterNames.*$':
+            '+filterNames.*':
                 name: getFilterNames
                 return_type: "NSArray<NSString>"
                 parameters:
                     categories:
                         type: "NSArray<NSString>"
-            '-(name|inputKeys|outputKeys|attributes)$':
+            '-(name|inputKeys|outputKeys|attributes)':
                 property: true
-    ^CIImage$:
+    CIImage:
         methods:
-            '+imageWith.*$':
+            '+imageWith.*':
                 exclude: true
-            '+emptyImage$':
+            '+emptyImage':
                 name: getEmptyImage
-            '-(extent|properties)$':
+            '-(extent|properties)':
                 property: true
-            '-autoAdjustmentFilters.*$':
+            '-autoAdjustmentFilters.*':
                 name: getAutoAdjustmentFilters
                 return_type: "NSArray<CIFilter>"
-            '-regionOfInterestForImage:inRect:$':
+            '-regionOfInterestForImage:inRect:':
                 name: getRegionOfInterest
-            '-image(By[^:]*).*$':
+            '-image(By[^:]*).*':
                 name: "createImage#{g[0]}"
             # Skip constructors that take a CVBuffer for now until we have CoreVideo support
-            '-initWithCVPixelBuffer:.*$':
+            '-initWithCVPixelBuffer:.*':
                 exclude: true
 
-    ^CIVector$:
+    CIVector:
         methods:
-            '+vectorWith.*$':
+            '+vectorWith.*':
                 exclude: true
-            '-(X|Y|Z|W|count|stringRepresentation|CGAffineTransformValue|CGPointValue|CGRectValue)$':
+            '-(X|Y|Z|W|count|stringRepresentation|CGAffineTransformValue|CGPointValue|CGRectValue)':
                 property: true
-            '-valueAtIndex:$':
+            '-valueAtIndex:':
                 name: getValueAtIndex
-            '-initWithValues:count:$':
+            '-initWithValues:count:':
                 constructor: false
 
 protocols:
@@ -105,87 +105,87 @@ protocols:
 functions:
 
     # Make sure we don't miss any functions if new ones are introduced in a later version
-    ^(CI.*)$:
+    (CI.*):
         class: CoreImage
         name: "Function__#{g[0]}"
 
 values:
 
-    ^kCIContext(.*)$:
+    kCIContext(.*):
         class: CIContext
         name: "Key#{g[0]}"
         type: NSString
 
-    ^CIDetector(Accuracy|Tracking|MinFeatureSize)$:
+    CIDetector(Accuracy|Tracking|MinFeatureSize):
         class: CIDetector
         name: "ConfigKey#{g[0]}"
         type: NSString
-    ^CIDetector(Type.*)$:
+    CIDetector(Type.*):
         class: CIDetector
         name: "#{g[0]}"
-    ^CIDetector(Accuracy.+)$:
+    CIDetector(Accuracy.+):
         class: CIDetector
         name: "#{g[0]}"
         type: NSString
-    ^CIDetector(ImageOrientation|EyeBlink|Smile)$:
+    CIDetector(ImageOrientation|EyeBlink|Smile):
         class: CIDetector
         name: "FeatureKey#{g[0]}"
         type: NSString
 
-    ^CIFeature(TypeFace)$:
+    CIFeature(TypeFace):
         class: CIFeature
         name: "#{g[0]}"
 
-    ^kCI(Attribute.*)$:
+    kCI(Attribute.*):
         class: CIFilter
         name: "#{g[0]}"
         type: NSString
         readonly: true
-    ^kCI(Category.*)$:
+    kCI(Category.*):
         class: CIFilter
         name: "#{g[0]}"
         type: NSString
         readonly: true
-    ^kCI(Input.*)Key$:
+    kCI(Input.*)Key:
         class: CIFilter
         name: "Parameter#{g[0]}"
         type: NSString
         readonly: true
-    ^kCI(Output.*)Key$:
+    kCI(Output.*)Key:
         class: CIFilter
         name: "Parameter#{g[0]}"
         type: NSString
         readonly: true
 
-    ^kCI(Format.*)$:
+    kCI(Format.*):
         class: CIImage
         name: "#{g[0]}"
         readonly: true
-    ^kCIImage(AutoAdjust.*)$:
+    kCIImage(AutoAdjust.*):
         class: CIImage
         name: "#{g[0]}"
         type: NSString
         readonly: true
-    ^kCIImage(.*)$:
+    kCIImage(.*):
         class: CIImage
         name: "Key#{g[0]}"
         type: NSString
         readonly: true
 
     # Not available on iOS
-    ^kCIApplyOption.*$:
+    kCIApplyOption.*:
         exclude: true
-    ^kCIUI.*$:
+    kCIUI.*:
         exclude: true
 
     # Make sure we don't miss any values if new ones are introduced in a later version
-    ^(k?CI.*)$:
+    (k?CI.*):
         class: CoreImage
         name: "Value__#{g[0]}"
 
 constants:
 
     # Make sure we don't miss any constants if new ones are introduced in a later version
-    ^(k?CI.*)$:
+    (k?CI.*):
         class: CoreImage
         name: "Constant__#{g[0]}"

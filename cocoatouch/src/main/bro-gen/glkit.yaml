@@ -25,72 +25,72 @@ enums:
 classes:
 
     # Opaque types
-    ^_GLKMatrixStack$:
+    _GLKMatrixStack:
         name: GLKMatrixStack
         extends: CFType
 
     # Structs
-    ^GLKMatrix2$: {}
-    ^GLKMatrix3$: {}
-    ^GLKMatrix4$: {}
-    ^GLKQuaternion$: {}
-    ^GLKVector2$: {}
-    ^GLKVector3$: {}
-    ^GLKVector4$: {}
+    GLKMatrix2: {}
+    GLKMatrix3: {}
+    GLKMatrix4: {}
+    GLKQuaternion: {}
+    GLKVector2: {}
+    GLKVector3: {}
+    GLKVector4: {}
 
-    ^GLKBaseEffect$: {}
-    ^GLKEffectProperty$: {}
-    ^GLKEffectPropertyFog$: {}
-    ^GLKEffectPropertyLight$: {}
-    ^GLKEffectPropertyMaterial$: {}
-    ^GLKEffectPropertyTexture$: {}
-    ^GLKEffectPropertyTransform$: {}
-    ^GLKReflectionMapEffect$: {}
-    ^GLKSkyboxEffect$: {}
-    ^GLKTextureInfo$: {}
-    ^GLKTextureLoader$: {}
-    ^GLKView$: {}
-    ^GLKViewController$: {}
+    GLKBaseEffect: {}
+    GLKEffectProperty: {}
+    GLKEffectPropertyFog: {}
+    GLKEffectPropertyLight: {}
+    GLKEffectPropertyMaterial: {}
+    GLKEffectPropertyTexture: {}
+    GLKEffectPropertyTransform: {}
+    GLKReflectionMapEffect: {}
+    GLKSkyboxEffect: {}
+    GLKTextureInfo: {}
+    GLKTextureLoader: {}
+    GLKView: {}
+    GLKViewController: {}
 
 protocols:
 
-    ^GLKNamedEffect$: {}
-    ^GLKViewDelegate$:
+    GLKNamedEffect: {}
+    GLKViewDelegate:
         methods:
-            '-glkView:drawInRect:$':
+            '-glkView:drawInRect:':
                 name: draw
-    ^GLKViewControllerDelegate$:
+    GLKViewControllerDelegate:
         methods:
-            '-glkViewController:willPause:$':
+            '-glkViewController:willPause:':
                 name: willPause
-            '-glkViewControllerUpdate:$':
+            '-glkViewControllerUpdate:':
                 name: update
 
 functions:
 
-    ^(GLK.*)GetTypeID$:
+    (GLK.*)GetTypeID:
         class: "#{g[0]}"
         name: getClassTypeID
 
-    ^GLKMatrixStack(.*)$:
+    GLKMatrixStack(.*):
         class: GLKMatrixStack
         name: "#{g[0]}"
 
     # Make sure we don't miss any functions if new ones are introduced in a later version
-    ^(GLK.*)$:
+    (GLK.*):
         class: GLKit
         name: "Function__#{g[0]}"
 
 values:
 
     # Make sure we don't miss any values if new ones are introduced in a later version
-    ^(k?GLK.*)$:
+    (k?GLK.*):
         class: GLKit
         name: "Value__#{g[0]}"
 
 constants:
 
     # Make sure we don't miss any constants if new ones are introduced in a later version
-    ^(k?GLK.*)$:
+    (k?GLK.*):
         class: GLKit
         name: "Constant__#{g[0]}"

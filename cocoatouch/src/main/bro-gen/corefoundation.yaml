@@ -197,7 +197,7 @@ classes:
     __CFPlugIn:
         name: CFPlugIn
         extends: CFType
-    ^CFPropertyList$:
+    CFPropertyList:
         extends: CFType
     __CFReadStream:
         name: CFReadStream
@@ -256,52 +256,52 @@ functions:
         exclude: true
     __CFStringMakeConstantString:
         exclude: true
-    ^CF(GetTypeID)$:
+    CF(GetTypeID):
         class: CFType
         name: "#{g[0]}"
-    ^CF(CopyTypeIDDescription)$:
+    CF(CopyTypeIDDescription):
         class: CFType
         name: "#{g[0]}"
-    ^CF(Retain)$:
+    CF(Retain):
         class: CFType
         name: "#{g[0]}"
-    ^CF(Release)$:
+    CF(Release):
         class: CFType
         name: "#{g[0]}"
-    ^CF(Autorelease)$:
+    CF(Autorelease):
         class: CFType
         name: "#{g[0]}"
-    ^CF(GetRetainCount)$:
+    CF(GetRetainCount):
         class: CFType
         name: "#{g[0]}"
-    ^CF(Equal)$:
+    CF(Equal):
         class: CFType
         name: "#{g[0]}"
-    ^CF(Hash)$:
+    CF(Hash):
         class: CFType
         name: "#{g[0]}"
-    ^CF(CopyDescription)$:
+    CF(CopyDescription):
         class: CFType
         name: "#{g[0]}"
-    ^CF(GetAllocator)$:
+    CF(GetAllocator):
         class: CFType
         name: "#{g[0]}"
-    ^CF(MakeCollectable)$:
+    CF(MakeCollectable):
         class: CFType
         name: "#{g[0]}"
-    ^CF(Show)$:
+    CF(Show):
         class: CFType
         name: "#{g[0]}"
 
-    ^CF(.*)GetTypeID:
+    CF(.*)GetTypeID:
         class: "CF#{g[0]}"
         name: getClassTypeID
 
-    ^CF(.*)(CreateMutable.*)$:
+    CF(.*)(CreateMutable.*):
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
         return_type: "CFMutable#{g[0]}"
-    ^CF(Array|Bag|BitVector|Dictionary|Set)(Add.*)$:
+    CF(Array|Bag|BitVector|Dictionary|Set)(Add.*):
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
         parameters:
@@ -309,7 +309,7 @@ functions:
             theBag: {type: CFMutableBag}
             theDict: {type: CFMutableDictionary}
             theSet: {type: CFMutableSet}
-    ^CF(Array|Bag|BitVector|Dictionary|Set)(Append.*)$:
+    CF(Array|Bag|BitVector|Dictionary|Set)(Append.*):
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
         parameters:
@@ -317,7 +317,7 @@ functions:
             theBag: {type: CFMutableBag}
             theDict: {type: CFMutableDictionary}
             theSet: {type: CFMutableSet}
-    ^CF(Array|Bag|BitVector|Dictionary|Set)(Exchange.*)$:
+    CF(Array|Bag|BitVector|Dictionary|Set)(Exchange.*):
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
         parameters:
@@ -325,7 +325,7 @@ functions:
             theBag: {type: CFMutableBag}
             theDict: {type: CFMutableDictionary}
             theSet: {type: CFMutableSet}
-    ^CF(Array|Bag|BitVector|Dictionary|Set)(Insert.*)$:
+    CF(Array|Bag|BitVector|Dictionary|Set)(Insert.*):
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
         parameters:
@@ -333,7 +333,7 @@ functions:
             theBag: {type: CFMutableBag}
             theDict: {type: CFMutableDictionary}
             theSet: {type: CFMutableSet}
-    ^CF(Array|Bag|BitVector|Dictionary|Set)(Remove.*)$:
+    CF(Array|Bag|BitVector|Dictionary|Set)(Remove.*):
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
         parameters:
@@ -341,7 +341,7 @@ functions:
             theBag: {type: CFMutableBag}
             theDict: {type: CFMutableDictionary}
             theSet: {type: CFMutableSet}
-    ^CF(Array|Bag|BitVector|Dictionary|Set)(Replace.*)$:
+    CF(Array|Bag|BitVector|Dictionary|Set)(Replace.*):
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
         parameters:
@@ -349,7 +349,7 @@ functions:
             theBag: {type: CFMutableBag}
             theDict: {type: CFMutableDictionary}
             theSet: {type: CFMutableSet}
-    ^CF(Array|Bag|BitVector|Dictionary|Set)(SetValue.*)$:
+    CF(Array|Bag|BitVector|Dictionary|Set)(SetValue.*):
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
         parameters:
@@ -357,7 +357,7 @@ functions:
             theBag: {type: CFMutableBag}
             theDict: {type: CFMutableDictionary}
             theSet: {type: CFMutableSet}
-    ^CF(Array|Bag|BitVector|Dictionary|Set)(Sort.*)$:
+    CF(Array|Bag|BitVector|Dictionary|Set)(Sort.*):
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
         parameters:
@@ -365,12 +365,12 @@ functions:
             theBag: {type: CFMutableBag}
             theDict: {type: CFMutableDictionary}
             theSet: {type: CFMutableSet}
-    ^CF(BitVector)((Flip|Set).*)$:
+    CF(BitVector)((Flip|Set).*):
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
         parameters:
             bv: {type: CFMutableBitVector}
-    ^CF(Data)((Append|Delete|GetMutable|IncreaseLength|Replace|SetLength).*)$:
+    CF(Data)((Append|Delete|GetMutable|IncreaseLength|Replace|SetLength).*):
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
         parameters:
@@ -379,134 +379,134 @@ functions:
         class: "#{g[0]}"
         name: "#{g[1]}"
         return_type: CFMutableString
-    ^CF(AttributedString)((BeginEditing|EndEditing|GetMutable|Remove|Replace|SetAttribute).*)$:
+    CF(AttributedString)((BeginEditing|EndEditing|GetMutable|Remove|Replace|SetAttribute).*):
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
         parameters:
             aStr: {type: CFMutableAttributedString}
-    ^CF(CharacterSet)((Add|Intersect|Invert|Remove|Union).*)$:
+    CF(CharacterSet)((Add|Intersect|Invert|Remove|Union).*):
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
         parameters:
             theSet: {type: CFMutableCharacterSet}
-    ^CF(String)((Append|Capitalize|Delete|FindAndReplace|Fold|Lowercase|Normalize|Pad|Replace|SetExternal|Trim|Uppercase).*)$:
+    CF(String)((Append|Capitalize|Delete|FindAndReplace|Fold|Lowercase|Normalize|Pad|Replace|SetExternal|Trim|Uppercase).*):
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
         parameters:
             theString: {type: CFMutableString}
-    ^CF(String)((Insert|Transform).*)$:
+    CF(String)((Insert|Transform).*):
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
         parameters:
             str: {type: CFMutableString}
             string: {type: CFMutableString}
 
-    ^CFAllocator(.*)$:
+    CFAllocator(.*):
         class: CFAllocator
         name: "#{g[0]}"
         parameters:
             hint:
                 type: "@MachineSizedSInt long"
-    ^CFArray(.*)$:
+    CFArray(.*):
         class: CFArray
         name: "#{g[0]}"
-    ^CFAttributedString(.*)$:
+    CFAttributedString(.*):
         class: CFAttributedString
         name: "#{g[0]}"
-    ^CFBag(.*)$:
+    CFBag(.*):
         class: CFBag
         name: "#{g[0]}"
-    ^CFBinaryHeap(.*)$:
+    CFBinaryHeap(.*):
         class: CFBinaryHeap
         name: "#{g[0]}"
-    ^CFBitVector(.*)$:
+    CFBitVector(.*):
         class: CFBitVector
         name: "#{g[0]}"
-    ^CFBoolean(.*)$:
+    CFBoolean(.*):
         class: CFBoolean
         name: "#{g[0]}"
-    ^CFBundle(.*)$:
+    CFBundle(.*):
         class: CFBundle
         name: "#{g[0]}"
-    ^CFCalendar(.*)$:
+    CFCalendar(.*):
         class: CFCalendar
         name: "#{g[0]}"
-    ^CFCharacterSet(.*)$:
+    CFCharacterSet(.*):
         class: CFCharacterSet
         name: "#{g[0]}"
-    ^CFData(.*)$:
+    CFData(.*):
         class: CFData
         name: "#{g[0]}"
-    ^CFDateFormatter(.*)$:
+    CFDateFormatter(.*):
         class: CFDateFormatter
         name: "#{g[0]}"
         parameters:
             options:
                 type: "@MachineSizedUInt long"
-    ^CFDate(.*)$:
+    CFDate(.*):
         class: CFDate
         name: "#{g[0]}"
-    ^CF(AbsoluteTime.*)$:
-        class: CFDate
-        name: "#{g[0]}"
-        parameters:
-            unitFlags:
-                type: CFGregorianUnitFlags
-    ^CF(GregorianDate.*)$:
+    CF(AbsoluteTime.*):
         class: CFDate
         name: "#{g[0]}"
         parameters:
             unitFlags:
                 type: CFGregorianUnitFlags
-    ^CFDictionary(.*)$:
+    CF(GregorianDate.*):
+        class: CFDate
+        name: "#{g[0]}"
+        parameters:
+            unitFlags:
+                type: CFGregorianUnitFlags
+    CFDictionary(.*):
         class: CFDictionary
         name: "#{g[0]}"
-    ^CFError(.*)$:
+    CFError(.*):
         class: CFError
         name: "#{g[0]}"
-    ^CFFileDescriptor(.*)$:
+    CFFileDescriptor(.*):
         class: CFFileDescriptor
         name: "#{g[0]}"
         parameters:
             callBackTypes:
                 type: CFFileDescriptorCallBackType
-    ^CFFileSecurity(.*)$:
+    CFFileSecurity(.*):
         class: CFFileSecurity
         name: "#{g[0]}"
-    ^CFLocale(.*)$:
+    CFLocale(.*):
         class: CFLocale
         name: "#{g[0]}"
-    ^CFMachPort(.*)$:
+    CFMachPort(.*):
         class: CFMachPort
         name: "#{g[0]}"
-    ^CFMessagePort(.*)$:
+    CFMessagePort(.*):
         class: CFMessagePort
         name: "#{g[0]}"
-    ^CFNotificationCenter(.*)$:
+    CFNotificationCenter(.*):
         class: CFNotificationCenter
         name: "#{g[0]}"
         parameters:
             options:
                 type: CFNotificationPostingOptions
-    ^CFNumberFormatter(.*)$:
+    CFNumberFormatter(.*):
         class: CFNumberFormatter
         name: "#{g[0]}"
         parameters:
             options:
                 type: CFNumberFormatterOptionFlags
-    ^CFNumber(.*)$:
+    CFNumber(.*):
         class: CFNumberFormatter
         name: "#{g[0]}"
-    ^CFPlugInInstance(.*)$:
+    CFPlugInInstance(.*):
         class: CFPlugInInstance
         name: "#{g[0]}"
-    ^CFPlugIn(.*)$:
+    CFPlugIn(.*):
         class: CFPlugIn
         name: "#{g[0]}"
-    ^CFPreferences(.*)$:
+    CFPreferences(.*):
         class: CFPreferences
         name: "#{g[0]}"
-    ^CFPropertyList(.*)$:
+    CFPropertyList(.*):
         class: CFPropertyList
         name: "#{g[0]}"
         parameters:
@@ -514,45 +514,45 @@ functions:
                 type: CFPropertyListMutabilityOptions
             options:
                 type: CFPropertyListMutabilityOptions
-    ^CFReadStream(Open|Close)$:
+    CFReadStream(Open|Close):
         class: CFReadStream
         name: "#{g[0]}Stream"
-    ^CFReadStream(.*)$:
+    CFReadStream(.*):
         class: CFReadStream
         name: "#{g[0]}"
         parameters:
             streamEvents:
                 type: CFStreamEventType
-    ^CFRunLoopObserver(GetActivities)$:
+    CFRunLoopObserver(GetActivities):
         class: CFRunLoopObserver
         name: "#{g[0]}"
         return_type: CFRunLoopActivity
-    ^CFRunLoopObserver(.*)$:
+    CFRunLoopObserver(.*):
         class: CFRunLoopObserver
         name: "#{g[0]}"
         parameters:
             activities:
                 type: CFRunLoopActivity
-    ^CFRunLoopSource(.*)$:
+    CFRunLoopSource(.*):
         class: CFRunLoopSource
         name: "#{g[0]}"
-    ^CFRunLoopTimer(.*)$:
+    CFRunLoopTimer(.*):
         class: CFRunLoopTimer
         name: "#{g[0]}"
         parameters:
             flags:
                 type: "@MachineSizedUInt long"
-    ^CFRunLoop(.*)$:
+    CFRunLoop(.*):
         class: CFRunLoop
         name: "#{g[0]}"
-    ^CFSet(.*)$:
+    CFSet(.*):
         class: CFSet
         name: "#{g[0]}"
-    ^CFSocket(GetSocketFlags)$:
+    CFSocket(GetSocketFlags):
         class: CFSocket
         name: "#{g[0]}"
         return_type: CFSocketFlags
-    ^CFSocket(.*)$:
+    CFSocket(.*):
         class: CFSocket
         name: "#{g[0]}"
         parameters:
@@ -560,204 +560,204 @@ functions:
                 type: CFSocketCallBackType
             flags:
                 type: CFSocketFlags
-    ^CFStream(.*)$:
+    CFStream(.*):
         class: CFStream
         name: "#{g[0]}"
-    ^CFStringTokenizer(Create)$:
+    CFStringTokenizer(Create):
         class: CFStringTokenizer
         name: "#{g[0]}"
         parameters:
             options:
                 type: CFStringTokenizerUnitOptions
-    ^CFStringTokenizer(CopyCurrentTokenAttribute)$:
+    CFStringTokenizer(CopyCurrentTokenAttribute):
         class: CFStringTokenizer
         name: "#{g[0]}"
         parameters:
             attribute:
                 type: CFStringTokenizerUnitOptions
-    ^CFStringTokenizer(GetCurrentSubTokens)$:
+    CFStringTokenizer(GetCurrentSubTokens):
         class: CFStringTokenizer
         name: "#{g[0]}"
         parameters:
             derivedSubTokens:
                 type: CFMutableArray
-    ^CFStringTokenizer(.*)$:
+    CFStringTokenizer(.*):
         class: CFStringTokenizer
         name: "#{g[0]}"
-    ^CFString(GetHyphenationLocationBeforeIndex)$:
+    CFString(GetHyphenationLocationBeforeIndex):
         class: CFString
         name: "#{g[0]}"
         parameters:
             options:
                 type: "@MachineSizedUInt long"
-    ^CFString(.*)$:
+    CFString(.*):
         class: CFString
         name: "#{g[0]}"
     CFShowStr:
         class: CFString
         name: showStr
-    ^CFTimeZone(.*)$:
+    CFTimeZone(.*):
         class: CFTimeZone
         name: "#{g[0]}"
-    ^CFTree(.*)$:
+    CFTree(.*):
         class: CFTree
         name: "#{g[0]}"
-    ^CFURL(WriteBookmarkDataToFile)$:
+    CFURL(WriteBookmarkDataToFile):
         class: CFURL
         name: "#{g[0]}"
         parameters:
             options:
                 type: "@MachineSizedUInt long"
-    ^CFURLCreateFromFSRef.*$:
+    CFURLCreateFromFSRef.*:
         exclude: true
     CFURLGetFSRef:
         exclude: true
-    ^CFURL(.*)$:
+    CFURL(.*):
         class: CFURL
         name: "#{g[0]}"
     CFCopyHomeDirectoryURL:
         class: CFURL
         name: copyHomeDirectoryURL
-    ^CFUUID(.*)$:
+    CFUUID(.*):
         class: CFUUID
         name: "#{g[0]}"
-    ^CFWriteStream(Open|Close)$:
+    CFWriteStream(Open|Close):
         class: CFWriteStream
         name: "#{g[0]}Stream"
-    ^CFWriteStream(.*)$:
+    CFWriteStream(.*):
         class: CFWriteStream
         name: "#{g[0]}"
         parameters:
             streamEvents:
                 type: CFStreamEventType
-    ^(CF.*)$:
+    (CF.*):
         class: CoreFoundation
         name: "#{g[0]}"
 
 values:
-    ^kCF(AbsoluteTimeIntervalSince.*)$:
+    kCF(AbsoluteTimeIntervalSince.*):
         class: CFDate
         name: "#{g[0]}"
-    ^kCF(Allocator.*)$:
+    kCF(Allocator.*):
         class: CFAllocator
         name: "#{g[0]}"
-    ^kCFBoolean(.*)$:
+    kCFBoolean(.*):
         class: CFBoolean
         name: "#{g[0]}"
-    ^kCFBundle(.*)Key$:
+    kCFBundle(.*)Key:
         class: CFBundle
         name: "Key#{g[0]}"
-    ^kCF(CopyStringBagCallBacks)$:
+    kCF(CopyStringBagCallBacks):
         class: CFBag
         name: "#{g[0]}"
-    ^kCF(CopyStringDictionaryKeyCallBacks)$:
+    kCF(CopyStringDictionaryKeyCallBacks):
         class: CFDictionary
         name: "#{g[0]}"
-    ^kCF(CopyStringSetCallBacks)$:
+    kCF(CopyStringSetCallBacks):
         class: CFSet
         name: "#{g[0]}"
-    ^kCFDateFormatter(.*)$:
+    kCFDateFormatter(.*):
         class: CFDateFormatter
         name: "Key#{g[0]}"
-    ^kCFError(.*)Key$:
+    kCFError(.*)Key:
         class: CFError
         name: "Key#{g[0]}"
-    ^kCFError(.*)$:
+    kCFError(.*):
         class: CFError
         name: "#{g[0]}"
-    ^kCF(.*Calendar)$:
+    kCF(.*Calendar):
         class: CFLocale
         name: "CalendarIdentifier#{g[0]}"
-    ^kCFLocale(CurrentLocaleDidChange)Notification$:
+    kCFLocale(CurrentLocaleDidChange)Notification:
         class: CFLocale
         name: "Notification#{g[0]}"
-    ^kCFLocale(.*)$:
+    kCFLocale(.*):
         class: CFLocale
         name: "Key#{g[0]}"
     kCFNull:
         class: CFNull
         name: "Null"
-    ^kCFNumberFormatter(.*)$:
+    kCFNumberFormatter(.*):
         class: CFNumberFormatter
         name: "Key#{g[0]}"
-    ^kCFNumber(.*)$:
+    kCFNumber(.*):
         class: CFNumber
         name: "#{g[0]}"
-    ^kCFPlugIn(.*)Key$:
+    kCFPlugIn(.*)Key:
         class: CFPlugIn
         name: "Key#{g[0]}"
-    ^kCFPreferences(.*)$:
+    kCFPreferences(.*):
         class: CFPreferences
         name: "Key#{g[0]}"
-    ^kCFRunLoopCommonModes$:
+    kCFRunLoopCommonModes:
         class: CFRunLoop
         name: "ModeCommon"
-    ^kCFRunLoopDefaultMode$:
+    kCFRunLoopDefaultMode:
         class: CFRunLoop
         name: "ModeDefault"
-    ^kCFRunLoop(.*)$:
+    kCFRunLoop(.*):
         class: CFRunLoop
         name: "#{g[0]}"
-    ^kCFSocket(Command|Name|Value|Result|Error)Key$:
+    kCFSocket(Command|Name|Value|Result|Error)Key:
         class: CFSocket
         name: "Key#{g[0]}"
-    ^kCFSocket(.*)Command$:
+    kCFSocket(.*)Command:
         class: CFSocket
         name: "Command#{g[0]}"
-    ^kCFStream(.*)$:
+    kCFStream(.*):
         class: CFStream
         name: "#{g[0]}"
-    ^kCFString(Transform.*)$:
+    kCFString(Transform.*):
         class: CFMutableString
         name: "#{g[0]}"
-    ^kCF(StringBinaryHeapCallBacks)$:
+    kCF(StringBinaryHeapCallBacks):
         class: CFBinaryHeap
         name: "#{g[0]}"
-    ^kCFTimeZone(SystemTimeZoneDidChange)Notification$:
+    kCFTimeZone(SystemTimeZoneDidChange)Notification:
         class: CFTimeZone
         name: "Notification#{g[0]}"
-    ^kCFURL(.*)Key$:
+    kCFURL(.*)Key:
         class: CFURL
         name: "Key#{g[0]}"
-    ^kCFURL(.*)$:
+    kCFURL(.*):
         class: CFURL
         name: "#{g[0]}"
-    ^kCFType(ArrayCallBacks)$:
+    kCFType(ArrayCallBacks):
         class: CFArray
         name: "#{g[0]}"
-    ^kCFType(BagCallBacks)$:
+    kCFType(BagCallBacks):
         class: CFBag
         name: "#{g[0]}"
-    ^kCFType(DictionaryKeyCallBacks)$:
+    kCFType(DictionaryKeyCallBacks):
         class: CFDictionary
         name: "#{g[0]}"
-    ^kCFType(DictionaryValueCallBacks)$:
+    kCFType(DictionaryValueCallBacks):
         class: CFDictionary
         name: "#{g[0]}"
-    ^kCFType(SetCallBacks)$:
+    kCFType(SetCallBacks):
         class: CFSet
         name: "#{g[0]}"
-    ^kCFCoreFoundation(VersionNumber)$:
+    kCFCoreFoundation(VersionNumber):
         class: CoreFoundation
         name: "#{g[0]}"
         readonly: true
     # Make sure we don't miss any values if new ones are introduced in a later CoreFoundation
-    ^(kCF.*)$:
+    (kCF.*):
         class: CoreFoundation
         name: "#{g[0]}"
 
 
 constants:
-    ^kCFCoreFoundation(.*)$:
+    kCFCoreFoundation(.*):
         class: CoreFoundation
         name: "#{g[0]}"
-    ^kCF(StringEncodingInvalidId)$:
+    kCF(StringEncodingInvalidId):
         class: CFString
         name: "#{g[0]}"
-    ^kCF(NotFound):
+    kCF(NotFound):
         class: CoreFoundation
         name: "#{g[0]}"
     # Make sure we don't miss any constants if new ones are introduced in a later CoreFoundation
-    ^(kCF.*)$:
+    (kCF.*):
         class: CoreFoundation
         name: "#{g[0]}"

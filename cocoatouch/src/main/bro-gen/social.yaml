@@ -1,0 +1,73 @@
+package: org.robovm.apple.social
+include: [foundation.yaml, uikit.yaml, accounts.yaml]
+library: Social
+framework: Social
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/Social.framework/Headers/Social.h
+    - /System/Library/Frameworks/Social.framework/Headers/SocialDefines.h
+typedefs: {}
+
+enums: 
+    SLComposeViewControllerResult: {}
+    SLRequestMethod: {}
+
+classes: 
+    SLComposeViewController: # DONE
+        properties:
+            'completionHandler':
+                type: "@Block VoidBlock3<String, SLRequestMethod, NSURL>"
+        methods:
+            '-setInitialText:':
+                trim_after_first_colon: true
+            '-addImage:':
+                trim_after_first_colon: true
+            '-addURL:':
+                trim_after_first_colon: true
+            '+isAvailableForServiceType:':
+                name: "isAvailable"
+            '+composeViewControllerForServiceType:':
+                name: "fromServiceType"
+            
+    SLRequest: # DONE
+        properties:
+            'parameters':
+                type: "NSDictionary<NSString, NSString>"
+        methods:
+            '-addMultipartData:withName:type:filename:':
+                trim_after_first_colon: true
+            '-preparedURLRequest':
+                name: "getPreparedURLRequest"
+            '-performRequestWithHandler:':
+                name: "performRequest"
+                parameters:
+                    handler:
+                        type: "@Block VoidBlock3<String, SLRequestMethod, NSURL>"
+            '+requestForServiceType:requestMethod:URL:parameters:':
+                name: "create"
+
+protocols: {}
+
+functions:
+
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (SL.*):
+        class: Social
+        name: "Function__#{g[0]}"
+
+values:
+    SLServiceType(.*):
+        class: SLServiceType
+        name: "#{g[0]}"
+
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (SL.*):
+        class: Social
+        name: "Value__#{g[0]}"
+
+constants:
+
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (SL.*):
+        class: Social
+        name: "Constant__#{g[0]}"

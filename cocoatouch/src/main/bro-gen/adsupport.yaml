@@ -1,0 +1,33 @@
+package: org.robovm.apple.adsupport
+include: [foundation.yaml]
+library: AdSupport
+framework: AdSupport
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/AdSupport.framework/Headers/AdSupport.h
+typedefs: {}
+    
+enums: {}
+        
+classes:
+    ASIdentifierManager: {}
+
+protocols: {}
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (AS.*):
+        class: AdSupport
+        name: "Function__#{g[0]}"
+
+values:
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (AS.*):
+        class: AdSupport
+        name: "Value__#{g[0]}"
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (AS.*):
+        class: AdSupport
+        name: "Constant__#{g[0]}"

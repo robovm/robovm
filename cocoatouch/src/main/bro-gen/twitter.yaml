@@ -1,0 +1,68 @@
+package: org.robovm.apple.twitter
+include: [foundation.yaml, uikit.yaml, social.yaml, accounts.yaml]
+library: Twitter
+framework: Twitter
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/Twitter.framework/Headers/Twitter.h
+typedefs: {}
+    
+enums:
+    TWRequestMethod:
+        first: "TWRequestMethodGET"
+    TWTweetComposeViewControllerResult:
+        first: "TWTweetComposeViewControllerResultCancelled"
+        
+classes:
+    TWRequest:
+        properties:
+            'parameters':
+                type: "NSDictionary<NSString, ?>"
+        methods:
+            '-initWithURL:parameters:requestMethod:':
+                name: "init"
+                parameters:
+                    url: {}
+                    parameters:
+                        type: "NSDictionary<NSString, ?>"
+                    requestMethod: {}
+            '-signedURLRequest':
+                name: "getSignedURLRequest"
+            '-addMultiPartData:withName:type:':
+                trim_after_first_colon: true
+            '-performRequestWithHandler:':
+                trim_after_first_colon: true
+                parameters:
+                    handler:
+                        type: "@Block VoidBlock3<NSData, NSHTTPURLResponse, NSError>"
+    TWTweetComposeViewController:
+        properties:
+            'completionHandler':
+                type: "@Block VoidBlock1<TWTweetComposeViewControllerResult>"
+        methods:
+            '-setInitialText:':
+                trim_after_first_colon: true
+            '-addImage:':
+                trim_after_first_colon: true
+            '-addURL:':
+                trim_after_first_colon: true
+
+protocols: {}
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (TW.*):
+        class: Twitter
+        name: "Function__#{g[0]}"
+
+values:
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (TW.*):
+        class: Twitter
+        name: "Value__#{g[0]}"
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (TW.*):
+        class: Twitter
+        name: "Constant__#{g[0]}"

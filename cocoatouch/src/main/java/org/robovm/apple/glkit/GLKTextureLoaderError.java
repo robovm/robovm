@@ -37,8 +37,7 @@ import org.robovm.apple.dispatch.*;
 /**
  * <div class="javadoc"></div>
  */
-/*<annotations>*/
-/*</annotations>*/
+/*<annotations>*//*</annotations>*/
 public enum /*<name>*/GLKTextureLoaderError/*</name>*/ implements ValuedEnum {
     /*<values>*/
     FileOrURLNotFound(0L),

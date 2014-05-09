@@ -33,8 +33,7 @@ import org.robovm.apple.security.*;
 /**
  * <div class="javadoc"></div>
  */
-/*<annotations>*/
-/*</annotations>*/
+/*<annotations>*//*</annotations>*/
 public enum /*<name>*/NSUbiquitousKeyValueStoreChangeReason/*</name>*/ implements ValuedEnum {
     /*<values>*/
     ServerChange(0L),

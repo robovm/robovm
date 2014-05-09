@@ -33,8 +33,7 @@ import org.robovm.apple.security.*;
 /**
  * <div class="javadoc"></div>
  */
-/*<annotations>*/
-/*</annotations>*/
+/*<annotations>*//*</annotations>*/
 public final class /*<name>*/NSActivityOptions/*</name>*/ extends Bits</*<name>*/NSActivityOptions/*</name>*/> {
     /*<values>*/
     public static final NSActivityOptions IdleDisplaySleepDisabled = new NSActivityOptions(1099511627776L);

@@ -33,8 +33,7 @@ import org.robovm.apple.foundation.*;
 /**
  * <div class="javadoc"></div>
  */
-/*<annotations>*/
-/*</annotations>*/
+/*<annotations>*//*</annotations>*/
 public enum /*<name>*/CGImageAlphaInfo/*</name>*/ implements ValuedEnum {
     /*<values>*/
     None(0L),

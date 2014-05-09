@@ -33,8 +33,7 @@ import org.robovm.apple.corefoundation.*;
 /**
  * <div class="javadoc"></div>
  */
-/*<annotations>*/
-/*</annotations>*/
+/*<annotations>*//*</annotations>*/
 public enum /*<name>*/SecTrustResultType/*</name>*/ implements ValuedEnum {
     /*<values>*/
     Invalid(0L),

@@ -33,8 +33,7 @@ import org.robovm.apple.foundation.*;
 /**
  * <div class="javadoc"></div>
  */
-/*<annotations>*/
-/*</annotations>*/
+/*<annotations>*//*</annotations>*/
 public enum /*<name>*/CGGradientDrawingOptions/*</name>*/ implements ValuedEnum {
     /*<values>*/
     BeforeStartLocation(1L),

@@ -33,8 +33,7 @@ import org.robovm.apple.security.*;
 /**
  * <div class="javadoc"></div>
  */
-/*<annotations>*/
-/*</annotations>*/
+/*<annotations>*//*</annotations>*/
 public enum /*<name>*/NSStringEncodings/*</name>*/ implements ValuedEnum {
     /*<values>*/
     ASCII(1L),

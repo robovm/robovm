@@ -33,8 +33,7 @@ import org.robovm.apple.foundation.*;
 /**
  * <div class="javadoc"></div>
  */
-/*<annotations>*/
-/*</annotations>*/
+/*<annotations>*//*</annotations>*/
 public enum /*<name>*/CGPathElementType/*</name>*/ implements ValuedEnum {
     /*<values>*/
     MoveToPoint(0L),

@@ -33,8 +33,7 @@ import org.robovm.apple.foundation.*;
 /**
  * <div class="javadoc"></div>
  */
-/*<annotations>*/
-/*</annotations>*/
+/*<annotations>*//*</annotations>*/
 public enum /*<name>*/CGTextDrawingMode/*</name>*/ implements ValuedEnum {
     /*<values>*/
     Fill(0L),

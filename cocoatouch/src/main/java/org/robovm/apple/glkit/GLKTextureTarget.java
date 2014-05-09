@@ -37,8 +37,7 @@ import org.robovm.apple.dispatch.*;
 /**
  * <div class="javadoc"></div>
  */
-/*<annotations>*/
-/*</annotations>*/
+/*<annotations>*//*</annotations>*/
 public enum /*<name>*/GLKTextureTarget/*</name>*/ implements ValuedEnum {
     /*<values>*/
     _2D(3553L),

@@ -32,8 +32,7 @@ import org.robovm.apple.dispatch.*;
 /**
  * <div class="javadoc"></div>
  */
-/*<annotations>*/
-/*</annotations>*/
+/*<annotations>*//*</annotations>*/
 public enum /*<name>*/CFRunLoopExitReason/*</name>*/ implements ValuedEnum {
     /*<values>*/
     Finished(1L),

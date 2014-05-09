@@ -33,8 +33,7 @@ import org.robovm.apple.corefoundation.*;
 /**
  * <div class="javadoc"></div>
  */
-/*<annotations>*/
-/*</annotations>*/
+/*<annotations>*//*</annotations>*/
 public enum /*<name>*/SSLCipherSuite/*</name>*/ implements ValuedEnum {
     /*<values>*/
     SSL_NULL_WITH_NULL_NULL(0L),

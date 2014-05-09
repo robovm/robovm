@@ -33,8 +33,7 @@ import org.robovm.apple.security.*;
 /**
  * <div class="javadoc"></div>
  */
-/*<annotations>*/
-/*</annotations>*/
+/*<annotations>*//*</annotations>*/
 public final class /*<name>*/NSTextCheckingType/*</name>*/ extends Bits</*<name>*/NSTextCheckingType/*</name>*/> {
     /*<values>*/
     public static final NSTextCheckingType Orthography = new NSTextCheckingType(1L);

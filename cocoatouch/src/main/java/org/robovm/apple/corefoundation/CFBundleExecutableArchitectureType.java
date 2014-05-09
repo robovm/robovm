@@ -32,8 +32,7 @@ import org.robovm.apple.dispatch.*;
 /**
  * <div class="javadoc"></div>
  */
-/*<annotations>*/
-/*</annotations>*/
+/*<annotations>*//*</annotations>*/
 public enum /*<name>*/CFBundleExecutableArchitectureType/*</name>*/ implements ValuedEnum {
     /*<values>*/
     I386(7L),

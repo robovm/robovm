@@ -32,8 +32,7 @@ import org.robovm.apple.dispatch.*;
 /**
  * <div class="javadoc"></div>
  */
-/*<annotations>*/
-/*</annotations>*/
+/*<annotations>*//*</annotations>*/
 public enum /*<name>*/CFMessagePortError/*</name>*/ implements ValuedEnum {
     /*<values>*/
     Success(0L),

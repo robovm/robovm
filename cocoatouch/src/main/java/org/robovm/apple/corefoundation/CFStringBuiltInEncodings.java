@@ -32,8 +32,7 @@ import org.robovm.apple.dispatch.*;
 /**
  * <div class="javadoc"></div>
  */
-/*<annotations>*/
-/*</annotations>*/
+/*<annotations>*//*</annotations>*/
 public enum /*<name>*/CFStringBuiltInEncodings/*</name>*/ implements ValuedEnum {
     /*<values>*/
     MacRoman(0L),

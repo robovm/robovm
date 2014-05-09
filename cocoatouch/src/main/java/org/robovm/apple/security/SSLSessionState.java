@@ -33,8 +33,7 @@ import org.robovm.apple.corefoundation.*;
 /**
  * <div class="javadoc"></div>
  */
-/*<annotations>*/
-/*</annotations>*/
+/*<annotations>*//*</annotations>*/
 public enum /*<name>*/SSLSessionState/*</name>*/ implements ValuedEnum {
     /*<values>*/
     Idle(0L),

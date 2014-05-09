@@ -37,8 +37,7 @@ import org.robovm.apple.dispatch.*;
 /**
  * <div class="javadoc"></div>
  */
-/*<annotations>*/
-/*</annotations>*/
+/*<annotations>*//*</annotations>*/
 public enum /*<name>*/GLKFogMode/*</name>*/ implements ValuedEnum {
     /*<values>*/
     Exp(0L),

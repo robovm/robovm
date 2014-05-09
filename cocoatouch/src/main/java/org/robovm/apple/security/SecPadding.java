@@ -33,8 +33,7 @@ import org.robovm.apple.corefoundation.*;
 /**
  * <div class="javadoc"></div>
  */
-/*<annotations>*/
-/*</annotations>*/
+/*<annotations>*//*</annotations>*/
 public enum /*<name>*/SecPadding/*</name>*/ implements ValuedEnum {
     /*<values>*/
     None(0L),

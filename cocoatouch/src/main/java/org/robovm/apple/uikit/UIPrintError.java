@@ -36,8 +36,7 @@ import org.robovm.apple.coreimage.*;
 /**
  * <div class="javadoc"></div>
  */
-/*<annotations>*/
-/*</annotations>*/
+/*<annotations>*//*</annotations>*/
 public enum /*<name>*/UIPrintError/*</name>*/ implements ValuedEnum {
     /*<values>*/
     PrintingNotAvailable(1L),

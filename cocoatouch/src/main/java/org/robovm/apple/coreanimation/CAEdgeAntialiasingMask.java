@@ -34,8 +34,7 @@ import org.robovm.apple.opengles.*;
 /**
  * <div class="javadoc"></div>
  */
-/*<annotations>*/
-/*</annotations>*/
+/*<annotations>*//*</annotations>*/
 public final class /*<name>*/CAEdgeAntialiasingMask/*</name>*/ extends Bits</*<name>*/CAEdgeAntialiasingMask/*</name>*/> {
     /*<values>*/
     public static final CAEdgeAntialiasingMask LeftEdge = new CAEdgeAntialiasingMask(1L);

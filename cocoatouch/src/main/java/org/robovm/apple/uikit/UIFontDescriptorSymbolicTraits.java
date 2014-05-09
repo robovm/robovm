@@ -36,8 +36,7 @@ import org.robovm.apple.coreimage.*;
 /**
  * <div class="javadoc"></div>
  */
-/*<annotations>*/
-/*</annotations>*/
+/*<annotations>*//*</annotations>*/
 public final class /*<name>*/UIFontDescriptorSymbolicTraits/*</name>*/ extends Bits</*<name>*/UIFontDescriptorSymbolicTraits/*</name>*/> {
     /*<values>*/
     public static final UIFontDescriptorSymbolicTraits TraitItalic = new UIFontDescriptorSymbolicTraits(1L);

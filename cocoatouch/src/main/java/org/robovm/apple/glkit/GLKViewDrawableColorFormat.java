@@ -37,8 +37,7 @@ import org.robovm.apple.dispatch.*;
 /**
  * <div class="javadoc"></div>
  */
-/*<annotations>*/
-/*</annotations>*/
+/*<annotations>*//*</annotations>*/
 public enum /*<name>*/GLKViewDrawableColorFormat/*</name>*/ implements ValuedEnum {
     /*<values>*/
     RGBA8888(0L),

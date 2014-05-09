@@ -33,8 +33,7 @@ import org.robovm.apple.foundation.*;
 /**
  * <div class="javadoc"></div>
  */
-/*<annotations>*/
-/*</annotations>*/
+/*<annotations>*//*</annotations>*/
 public final class /*<name>*/CGBitmapInfo/*</name>*/ extends Bits</*<name>*/CGBitmapInfo/*</name>*/> {
     /*<values>*/
     public static final CGBitmapInfo AlphaInfoMask = new CGBitmapInfo(31L);

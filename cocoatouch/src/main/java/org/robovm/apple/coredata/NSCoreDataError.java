@@ -32,8 +32,7 @@ import org.robovm.apple.foundation.*;
 /**
  * <div class="javadoc"></div>
  */
-/*<annotations>*/
-/*</annotations>*/
+/*<annotations>*//*</annotations>*/
 public enum /*<name>*/NSCoreDataError/*</name>*/ implements ValuedEnum {
     /*<values>*/
     ManagedObjectValidation(1550L),

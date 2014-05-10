@@ -18,8 +18,10 @@ package org.robovm.compiler.plugin;
 
 import java.io.IOException;
 
+import org.robovm.compiler.ModuleBuilder;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.config.Config;
+import org.robovm.compiler.llvm.Function;
 
 import soot.SootClass;
 import soot.SootMethod;
@@ -37,8 +39,11 @@ public interface CompilerPlugin {
      * 
      * @param config the current {@link Config}.
      * @param clazz the {@link Clazz} being compiled.
+     * @param moduleBuilder the {@link ModuleBuilder} holding the generated
+     *        bitcode.
      */
-    void beforeClass(Config config, Clazz clazz) throws IOException;
+    void beforeClass(Config config, Clazz clazz, ModuleBuilder moduleBuilder) 
+            throws IOException;
     
     /**
      * Called just before a method is about to be compiled. Modifications to the 
@@ -47,7 +52,35 @@ public interface CompilerPlugin {
      * @param config the current {@link Config}.
      * @param clazz the {@link Clazz} being compiled.
      * @param method the method being compiled.
+     * @param moduleBuilder the {@link ModuleBuilder} holding the generated
+     *        bitcode.
      */
-    void beforeMethod(Config config, Clazz clazz, SootMethod method) throws IOException;
+    void beforeMethod(Config config, Clazz clazz, SootMethod method, 
+            ModuleBuilder moduleBuilder) throws IOException;
     
+    /**
+     * Called after a class has been compiled to LLVM bitcode but before it is
+     * converted into machine code.
+     * 
+     * @param config the current {@link Config}.
+     * @param clazz the {@link Clazz} being compiled.
+     * @param moduleBuilder the {@link ModuleBuilder} holding the generated
+     *        bitcode.
+     */
+    void afterClass(Config config, Clazz clazz, ModuleBuilder moduleBuilder) 
+            throws IOException;
+    
+    /**
+     * Called after a method has been compiled to LLVM bitcode but before it is
+     * converted into machine code.
+     * 
+     * @param config the current {@link Config}.
+     * @param clazz the {@link Clazz} being compiled.
+     * @param method the method being compiled.
+     * @param moduleBuilder the {@link ModuleBuilder} holding the generated
+     *        bitcode.
+     * @param function the function corresponding to the method.
+     */
+    void afterMethod(Config config, Clazz clazz, SootMethod method,
+            ModuleBuilder moduleBuilder, Function function) throws IOException;
 }

@@ -42,7 +42,7 @@ public class NativeMethodCompiler extends AbstractMethodCompiler {
         super(config);
     }
 
-    protected void doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
+    protected Function doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
         Function fn = FunctionBuilder.method(method);
         moduleBuilder.addFunction(fn);
 
@@ -67,5 +67,7 @@ public class NativeMethodCompiler extends AbstractMethodCompiler {
         popNativeFrame(fn);
         call(fn, BC_THROW_IF_EXCEPTION_OCCURRED, env);
         fn.add(new Ret(result));
+        
+        return fn;
     }
 }

@@ -30,6 +30,7 @@ import java.util.TreeSet;
 
 import org.robovm.compiler.Annotations.Visibility;
 import org.robovm.compiler.CompilerException;
+import org.robovm.compiler.ModuleBuilder;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.plugin.AbstractCompilerPlugin;
@@ -361,7 +362,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     }
 
     @Override
-    public void beforeClass(Config config, Clazz clazz) {
+    public void beforeClass(Config config, Clazz clazz, ModuleBuilder moduleBuilder) {
         init();
         SootClass sootClass = clazz.getSootClass();
         boolean extensions = false;

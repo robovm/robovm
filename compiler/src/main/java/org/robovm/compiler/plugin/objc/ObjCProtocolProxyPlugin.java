@@ -34,6 +34,7 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.robovm.compiler.ModuleBuilder;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.Clazzes;
 import org.robovm.compiler.config.Config;
@@ -195,7 +196,7 @@ public class ObjCProtocolProxyPlugin extends AbstractCompilerPlugin {
     }
     
     @Override
-    public void beforeClass(Config config, Clazz clazz) {
+    public void beforeClass(Config config, Clazz clazz, ModuleBuilder moduleBuilder) {
         init();
         SootClass sootClass = clazz.getSootClass();
         if (isObjCProtocol(sootClass)) {

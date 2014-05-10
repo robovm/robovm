@@ -18,8 +18,10 @@ package org.robovm.compiler.plugin;
 
 import java.io.IOException;
 
+import org.robovm.compiler.ModuleBuilder;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.config.Config;
+import org.robovm.compiler.llvm.Function;
 
 import soot.SootMethod;
 
@@ -30,11 +32,22 @@ import soot.SootMethod;
 public abstract class AbstractCompilerPlugin implements CompilerPlugin {
 
     @Override
-    public void beforeClass(Config config, Clazz clazz) throws IOException {
+    public void beforeClass(Config config, Clazz clazz, ModuleBuilder moduleBuilder) 
+            throws IOException {
     }
     
     @Override
-    public void beforeMethod(Config config, Clazz clazz, SootMethod method) throws IOException {
+    public void beforeMethod(Config config, Clazz clazz, SootMethod method, 
+            ModuleBuilder moduleBuilder) throws IOException {
     }
     
+    @Override
+    public void afterClass(Config config, Clazz clazz, ModuleBuilder moduleBuilder) 
+            throws IOException {
+    }
+    
+    @Override
+    public void afterMethod(Config config, Clazz clazz, SootMethod method, 
+            ModuleBuilder moduleBuilder, Function function) throws IOException {
+    }
 }

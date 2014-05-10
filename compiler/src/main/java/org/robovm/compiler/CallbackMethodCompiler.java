@@ -70,8 +70,8 @@ public class CallbackMethodCompiler extends BroMethodCompiler {
     }
 
     @Override
-    protected void doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
-        compileCallback(moduleBuilder, method);
+    protected Function doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
+        return compileCallback(moduleBuilder, method);
     }
     
     private Function callback(SootMethod method) {
@@ -87,7 +87,7 @@ public class CallbackMethodCompiler extends BroMethodCompiler {
             .linkage(external).attribs(noinline, optsize).build();
     }
     
-    private void compileCallback(ModuleBuilder moduleBuilder, SootMethod method) {
+    private Function compileCallback(ModuleBuilder moduleBuilder, SootMethod method) {
         DataLayout dataLayout = config.getDataLayout();
         SootMethod originalMethod = method;
         boolean passByValue = isPassByValue(originalMethod);
@@ -247,6 +247,8 @@ public class CallbackMethodCompiler extends BroMethodCompiler {
         call(callbackFn, BC_DETACH_THREAD_FROM_CALLBACK, env);
         call(callbackFn, BC_THROW, env, ex);
         callbackFn.add(new Unreachable());
+        
+        return callbackFn;
     }
 
     private void updateNative(SootMethod method, Function fn, Value env, long flags, List<MarshaledArg> marshaledArgs) {

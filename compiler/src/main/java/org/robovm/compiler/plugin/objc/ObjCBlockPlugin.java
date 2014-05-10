@@ -44,6 +44,7 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.robovm.compiler.CompilerException;
 import org.robovm.compiler.Mangler;
+import org.robovm.compiler.ModuleBuilder;
 import org.robovm.compiler.Types;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.config.Config;
@@ -128,7 +129,7 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
     }
     
     @Override
-    public void beforeClass(Config config, Clazz clazz) throws IOException {
+    public void beforeClass(Config config, Clazz clazz, ModuleBuilder moduleBuilder) throws IOException {
         init();
         SootClass sootClass = clazz.getSootClass();
         if (!sootClass.isInterface()) {

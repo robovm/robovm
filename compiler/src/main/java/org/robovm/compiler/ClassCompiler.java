@@ -500,12 +500,13 @@ public class ClassCompiler {
         
         ClazzInfo ci = clazz.resetClazzInfo();
 
+        mb = new ModuleBuilder();
+        
         for (CompilerPlugin compilerPlugin : config.getCompilerPlugins()) {
-            compilerPlugin.beforeClass(config, clazz);
+            compilerPlugin.beforeClass(config, clazz, mb);
         }
         
         sootClass = clazz.getSootClass();
-        mb = new ModuleBuilder();
         trampolines = new HashSet<Trampoline>();
         catches = new HashSet<String>();
         classFields = getClassFields(config.getOs(), config.getArch(),sootClass);
@@ -559,21 +560,22 @@ public class ClassCompiler {
         for (SootMethod method : sootClass.getMethods()) {
             
             for (CompilerPlugin compilerPlugin : config.getCompilerPlugins()) {
-                compilerPlugin.beforeMethod(config, clazz, method);
+                compilerPlugin.beforeMethod(config, clazz, method, mb);
             }
             
             String name = method.getName();
+            Function function = null;
             if (hasBridgeAnnotation(method)) {
-                bridgeMethod(method);
+                function = bridgeMethod(method);
             } else if (hasGlobalValueAnnotation(method)) {
-                globalValueMethod(method);
+                function = globalValueMethod(method);
             } else if (isStruct(sootClass) && ("_sizeOf".equals(name) 
                         || "sizeOf".equals(name) || hasStructMemberAnnotation(method))) {
-                structMember(method);
+                function = structMember(method);
             } else if (method.isNative()) {
-                nativeMethod(method);
+                function = nativeMethod(method);
             } else if (!method.isAbstract()) {
-                method(method);
+                function = method(method);
             }
             if (hasCallbackAnnotation(method)) {
                 callbackMethod(method);
@@ -592,6 +594,12 @@ public class ClassCompiler {
                 }
                 FunctionRef fn = new FunctionRef(fnName, getFunctionType(method));
                 mb.addFunction(createClassInitWrapperFunction(fn));
+            }
+            
+            for (CompilerPlugin compilerPlugin : config.getCompilerPlugins()) {
+                if (function != null) {
+                    compilerPlugin.afterMethod(config, clazz, method, mb, function);
+                }
             }
         }
         
@@ -618,6 +626,10 @@ public class ClassCompiler {
         Function infoFn = FunctionBuilder.infoStruct(sootClass);
         infoFn.add(new Ret(new ConstantBitcast(classInfoStruct.ref(), I8_PTR_PTR)));
         mb.addFunction(infoFn);
+        
+        for (CompilerPlugin compilerPlugin : config.getCompilerPlugins()) {
+            compilerPlugin.afterClass(config, clazz, mb);
+        }
         
         out.write(mb.build().toString().getBytes("UTF-8"));
         
@@ -1069,40 +1081,46 @@ public class ClassCompiler {
         return new StructureConstantBuilder().add(header.build()).add(body.build()).build();
     }
     
-    private void nativeMethod(SootMethod method) {
-        nativeMethodCompiler.compile(mb, method);
+    private Function nativeMethod(SootMethod method) {
+        Function fn = nativeMethodCompiler.compile(mb, method);
         trampolines.addAll(nativeMethodCompiler.getTrampolines());
         catches.addAll(nativeMethodCompiler.getCatches());
+        return fn;
     }
     
-    private void bridgeMethod(SootMethod method) {
-        bridgeMethodCompiler.compile(mb, method);
+    private Function bridgeMethod(SootMethod method) {
+        Function fn = bridgeMethodCompiler.compile(mb, method);
         trampolines.addAll(bridgeMethodCompiler.getTrampolines());
         catches.addAll(bridgeMethodCompiler.getCatches());
+        return fn;
     }
     
-    private void callbackMethod(SootMethod method) {
-        callbackMethodCompiler.compile(mb, method);
+    private Function callbackMethod(SootMethod method) {
+        Function fn = callbackMethodCompiler.compile(mb, method);
         trampolines.addAll(callbackMethodCompiler.getTrampolines());
         catches.addAll(callbackMethodCompiler.getCatches());
+        return fn;
     }
     
-    private void structMember(SootMethod method) {
-        structMemberMethodCompiler.compile(mb, method);
+    private Function structMember(SootMethod method) {
+        Function fn = structMemberMethodCompiler.compile(mb, method);
         trampolines.addAll(structMemberMethodCompiler.getTrampolines());
         catches.addAll(structMemberMethodCompiler.getCatches());
+        return fn;
     }
 
-    private void globalValueMethod(SootMethod method) {
-        globalValueMethodCompiler.compile(mb, method);
+    private Function globalValueMethod(SootMethod method) {
+        Function fn = globalValueMethodCompiler.compile(mb, method);
         trampolines.addAll(globalValueMethodCompiler.getTrampolines());
         catches.addAll(globalValueMethodCompiler.getCatches());
+        return fn;
     }
 
-    private void method(SootMethod method) {
-        methodCompiler.compile(mb, method);
+    private Function method(SootMethod method) {
+        Function fn = methodCompiler.compile(mb, method);
         trampolines.addAll(methodCompiler.getTrampolines());
         catches.addAll(methodCompiler.getCatches());
+        return fn;
     }
     
     private Function createAllocator() {

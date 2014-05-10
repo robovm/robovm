@@ -93,7 +93,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         }
     }
 
-    protected void doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
+    protected Function doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
         validateBridgeMethod(method);
 
         AnnotationTag bridgeAnnotation = getAnnotation(method, BRIDGE);
@@ -318,6 +318,8 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         
         call(fn, BC_THROW, env, ex);
         fn.add(new Unreachable());
+        
+        return fn;
     }
 
     private void updateObject(SootMethod method, Function fn, Value env, long flags, List<MarshaledArg> marshaledArgs) {

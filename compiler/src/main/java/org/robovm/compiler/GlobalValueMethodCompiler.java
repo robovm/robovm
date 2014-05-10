@@ -74,7 +74,7 @@ public class GlobalValueMethodCompiler extends BroMethodCompiler {
         }
     }
     
-    protected void doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
+    protected Function doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
         validateGlobalValueMethod(method);
         
         AnnotationTag globalValueAnnotation = getAnnotation(method, GLOBAL_VALUE);
@@ -118,6 +118,8 @@ public class GlobalValueMethodCompiler extends BroMethodCompiler {
                     value, MarshalerFlags.CALL_TYPE_GLOBAL_VALUE);
             fn.add(new Ret());
         }
+        
+        return fn;
     }
 
     public static String getGlobalValuePtrName(SootMethod method) {

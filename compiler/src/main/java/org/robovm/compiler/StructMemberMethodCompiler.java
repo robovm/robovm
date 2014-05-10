@@ -62,21 +62,22 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
     }
     
     @Override
-    protected void doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
+    protected Function doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
         if ("_sizeOf".equals(method.getName()) || "sizeOf".equals(method.getName())) {
-            structSizeOf(moduleBuilder, method);
+            return structSizeOf(moduleBuilder, method);
         } else {
-            structMember(moduleBuilder, method);
+            return structMember(moduleBuilder, method);
         }
     }
     
-    private void structSizeOf(ModuleBuilder moduleBuilder, SootMethod method) {
+    private Function structSizeOf(ModuleBuilder moduleBuilder, SootMethod method) {
         Function fn = FunctionBuilder.structSizeOf(method);
         moduleBuilder.addFunction(fn);
         fn.add(new Ret(sizeof(structType)));
+        return fn;
     }
 
-    private void structMember(ModuleBuilder moduleBuilder, SootMethod method) {
+    private Function structMember(ModuleBuilder moduleBuilder, SootMethod method) {
         Function function = FunctionBuilder.structMember(method);
         moduleBuilder.addFunction(function);
         
@@ -119,5 +120,7 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
                 function.add(new Ret(function.getParameterRef(1)));
             }
         }
+        
+        return function;
     }
 }

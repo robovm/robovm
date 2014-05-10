@@ -207,7 +207,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
         super(config);
     }
     
-    protected void doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
+    protected Function doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
         function = FunctionBuilder.method(method);
         moduleBuilder.addFunction(function);
         
@@ -219,7 +219,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
             // Object.<init>() calls register_finalizable() in header.ll which checks if the class of 'this' is finalizable.
             // If it is the object will be registered for finalization.
             compileObjectInit();
-            return;
+            return function;
         }
         
         trapsAt = new HashMap<Unit, List<Trap>>();
@@ -415,6 +415,8 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 throw new IllegalArgumentException("Unknown Unit type: " + unit.getClass());
             }
         }
+        
+        return function;
     }
 
     private void compileObjectInit() {

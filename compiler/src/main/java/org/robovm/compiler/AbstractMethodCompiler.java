@@ -67,17 +67,18 @@ public abstract class AbstractMethodCompiler {
         return catches;
     }
     
-    public void compile(ModuleBuilder moduleBuilder, SootMethod method) {
+    public Function compile(ModuleBuilder moduleBuilder, SootMethod method) {
         sootMethod = method;
         trampolines = new HashSet<Trampoline>();
         catches = new HashSet<String>();
-        doCompile(moduleBuilder, method);
+        Function f = doCompile(moduleBuilder, method);
         if (method.isSynchronized()) {
             compileSynchronizedWrapper(moduleBuilder, method);
         }
+        return f;
     }
         
-    protected abstract void doCompile(ModuleBuilder moduleBuilder, SootMethod method);
+    protected abstract Function doCompile(ModuleBuilder moduleBuilder, SootMethod method);
 
     private void compileSynchronizedWrapper(ModuleBuilder moduleBuilder, SootMethod method) {
         String targetName = mangleMethod(method);

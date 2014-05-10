@@ -326,7 +326,12 @@ public abstract class AbstractTarget implements Target {
                     if (f.getName().toLowerCase().endsWith(".class")) {
                         continue;
                     }
-                    ZipEntry newEntry = new ZipEntry(f.getAbsolutePath().substring(basePath.length() + 1));
+                    String entryName = f.getAbsolutePath().substring(basePath.length() + 1);
+                    if (entryName.startsWith("META-INF/robovm/")) {
+                        // Don't include anything under META-INF/robovm/
+                        continue;
+                    }
+                    ZipEntry newEntry = new ZipEntry(entryName);
                     newEntry.setTime(f.lastModified());
                     out.putNextEntry(newEntry);
                     InputStream in = null;

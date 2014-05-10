@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2014 Trillian Mobile AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,34 +17,22 @@
 package org.robovm.compiler.llvm;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 /**
  *
  * @version $Id$
  */
-public abstract class Instruction {
-    BasicBlock basicBlock;
-    private List<Metadata> metadata;
+public class MetadataNodeBuilder {
+    private final List<Value> values = new ArrayList<Value>();
 
-    public Set<Variable> getWritesTo() {
-        return Collections.emptySet();
+    public MetadataNodeBuilder add(Value v) {
+        values.add(v);
+        return this;
     }
     
-    public Set<VariableRef> getReadsFrom() {
-        return Collections.emptySet();
+    public MetadataNode build() {
+        return new MetadataNode(values.toArray(new Value[values.size()]));
     }
     
-    public List<Metadata> getMetadata() {
-        return metadata == null ? Collections.<Metadata>emptyList() : metadata;
-    }
-    
-    public void addMetadata(Metadata md) {
-        if (metadata == null) {
-            metadata = new ArrayList<>();
-        }
-        metadata.add(md);
-    }
 }

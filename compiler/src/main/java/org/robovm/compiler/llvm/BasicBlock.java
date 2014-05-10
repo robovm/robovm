@@ -68,6 +68,17 @@ public class BasicBlock {
         instruction.basicBlock = this;
     }
     
+    public List<Instruction> getInstructions() {
+        return instructions;
+    }
+
+    public Instruction first() {
+        if (instructions.isEmpty()) {
+            return null;
+        }
+        return instructions.get(0);
+    }
+
     public Instruction last() {
         if (instructions.isEmpty()) {
             return null;
@@ -83,6 +94,13 @@ public class BasicBlock {
         for (Instruction instruction : instructions) {
             sb.append("    ");
             sb.append(instruction.toString());
+            List<Metadata> metadata = instruction.getMetadata();
+            if (!metadata.isEmpty()) {
+                for (Metadata md : metadata) {
+                    sb.append(", ");
+                    sb.append(md.toString());
+                }
+            }
             sb.append('\n');
         }
         return sb.toString();

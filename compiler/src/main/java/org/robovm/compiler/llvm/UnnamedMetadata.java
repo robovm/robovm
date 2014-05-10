@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2014 Trillian Mobile AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,35 +16,40 @@
  */
 package org.robovm.compiler.llvm;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
 /**
  *
  * @version $Id$
  */
-public abstract class Instruction {
-    BasicBlock basicBlock;
-    private List<Metadata> metadata;
+public class UnnamedMetadata {
+    private final int index;
+    private final Metadata value;
 
-    public Set<Variable> getWritesTo() {
-        return Collections.emptySet();
+    public UnnamedMetadata(int index, Metadata value) {
+        this.index = index;
+        this.value = value;
+    }
+
+    public UnnamedMetadataRef ref() {
+        return new UnnamedMetadataRef(this);
     }
     
-    public Set<VariableRef> getReadsFrom() {
-        return Collections.emptySet();
+    public int getIndex() {
+        return index;
     }
     
-    public List<Metadata> getMetadata() {
-        return metadata == null ? Collections.<Metadata>emptyList() : metadata;
+    @Override
+    public String toString() {
+        return "!" + index;
     }
     
-    public void addMetadata(Metadata md) {
-        if (metadata == null) {
-            metadata = new ArrayList<>();
-        }
-        metadata.add(md);
+    public String getDefinition() {
+        StringBuilder sb = new StringBuilder();
+        sb.append('!');
+        sb.append(index);
+        sb.append(" = ");
+        sb.append(value.getType());
+        sb.append(' ');
+        sb.append(value.toString());
+        return sb.toString();
     }
 }

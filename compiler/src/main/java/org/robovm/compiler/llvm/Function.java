@@ -117,6 +117,10 @@ public class Function {
         return basicBlockList.get(basicBlockList.size() - 1);
     }
 
+    public List<BasicBlock> getBasicBlocks() {
+        return basicBlockList;
+    }
+    
     public Variable newVariable(Type type) {
         return newVariable("t" + (counter++), type);
     }

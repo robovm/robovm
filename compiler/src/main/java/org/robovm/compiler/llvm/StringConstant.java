@@ -38,6 +38,12 @@ public class StringConstant extends Constant {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("c\"");
+        escape(sb, bytes);
+        sb.append('"');
+        return sb.toString();
+    }
+
+    static void escape(StringBuilder sb, byte[] bytes) {
         for (int i = 0; i < bytes.length; i++) {
             int b = bytes[i] & 0xff;
             if (b < ' ' || b > '~' || b == '"' || b == '\\') {
@@ -46,7 +52,5 @@ public class StringConstant extends Constant {
                 sb.append((char) b);
             }
         }
-        sb.append('"');
-        return sb.toString();
     }
 }

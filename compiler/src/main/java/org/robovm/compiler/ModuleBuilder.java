@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.robovm.compiler.llvm.Alias;
 import org.robovm.compiler.llvm.Constant;
@@ -35,9 +36,12 @@ import org.robovm.compiler.llvm.FunctionDeclaration;
 import org.robovm.compiler.llvm.Global;
 import org.robovm.compiler.llvm.GlobalRef;
 import org.robovm.compiler.llvm.Linkage;
+import org.robovm.compiler.llvm.Metadata;
 import org.robovm.compiler.llvm.Module;
+import org.robovm.compiler.llvm.NamedMetadata;
 import org.robovm.compiler.llvm.NullConstant;
 import org.robovm.compiler.llvm.StringConstant;
+import org.robovm.compiler.llvm.UnnamedMetadata;
 import org.robovm.compiler.llvm.UserType;
 
 /**
@@ -52,6 +56,8 @@ public class ModuleBuilder {
     private final List<FunctionDeclaration> functionDeclarations = new ArrayList<FunctionDeclaration>();
     private final List<UserType> types = new ArrayList<UserType>();
     private final List<String> asm = new ArrayList<String>();
+    private final Map<String, NamedMetadata> namedMetadata = new TreeMap<>();
+    private final Map<Integer, UnnamedMetadata> unnamedMetadata = new TreeMap<>();
     private final Set<String> symbols = new HashSet<String>();
     private int counter = 0;
     private Map<String, Global> strings = new HashMap<String, Global>();;
@@ -89,6 +95,19 @@ public class ModuleBuilder {
         throw new IllegalArgumentException("Global with name " + name + " not found");
     }
     
+    public void addNamedMetadata(NamedMetadata md) {
+        if (namedMetadata.containsKey(md.getName())) {
+            throw new IllegalArgumentException("Named metadata " + md.getName() + " already defined");
+        }
+        namedMetadata.put(md.getName(), md);
+    }
+
+    public UnnamedMetadata newUnnamedMetadata(Metadata value) {
+        UnnamedMetadata md = new UnnamedMetadata(unnamedMetadata.size(), value);
+        unnamedMetadata.put(md.getIndex(), md);
+        return md;
+    }
+
     public Global newGlobal(Constant value) {
         return newGlobal(value, false);
     }
@@ -144,6 +163,7 @@ public class ModuleBuilder {
     
     public Module build() {
         return new Module(includes, types, globals, aliases, 
-                functionDeclarations, asm, functions);
+                functionDeclarations, asm, functions, namedMetadata.values(), 
+                unnamedMetadata.values());
     }
 }

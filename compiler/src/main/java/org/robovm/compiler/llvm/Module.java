@@ -19,7 +19,7 @@ package org.robovm.compiler.llvm;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.List;
+import java.util.Collection;
 
 import org.apache.commons.io.IOUtils;
 
@@ -28,18 +28,21 @@ import org.apache.commons.io.IOUtils;
  * @version $Id$
  */
 public class Module {
-    private final List<URL> includes;
-    private final List<Global> globals;
-    private final List<Alias> aliases;    
-    private final List<Function> functions;
-    private final List<FunctionDeclaration> functionDeclarations;
-    private final List<UserType> types;
-    private final List<String> asm;
+    private final Collection<URL> includes;
+    private final Collection<Global> globals;
+    private final Collection<Alias> aliases;    
+    private final Collection<Function> functions;
+    private final Collection<FunctionDeclaration> functionDeclarations;
+    private final Collection<UserType> types;
+    private final Collection<String> asm;
+    private final Collection<NamedMetadata> namedMetadata;
+    private final Collection<UnnamedMetadata> unnamedMetadata;
 
-    public Module(List<URL> includes, List<UserType> types,
-            List<Global> globals, List<Alias> aliases,
-            List<FunctionDeclaration> functionDeclarations, List<String> asm,
-            List<Function> functions) {
+    public Module(Collection<URL> includes, Collection<UserType> types,
+            Collection<Global> globals, Collection<Alias> aliases,
+            Collection<FunctionDeclaration> functionDeclarations, Collection<String> asm,
+            Collection<Function> functions, Collection<NamedMetadata> namedMetadata,
+            Collection<UnnamedMetadata> unnamedMetadata) {
         
         this.includes = includes;
         this.types = types;
@@ -48,6 +51,8 @@ public class Module {
         this.functionDeclarations = functionDeclarations;
         this.asm = asm;
         this.functions = functions;
+        this.namedMetadata = namedMetadata;
+        this.unnamedMetadata = unnamedMetadata;
     }
 
     @Override
@@ -96,6 +101,16 @@ public class Module {
         sb.append("\n");
         for (Function f : functions) {
             sb.append(f.toString());
+            sb.append("\n");
+        }
+        sb.append("\n");
+        for (NamedMetadata md : namedMetadata) {
+            sb.append(md.toString());
+            sb.append("\n");
+        }
+        sb.append("\n");
+        for (UnnamedMetadata md : unnamedMetadata) {
+            sb.append(md.getDefinition());
             sb.append("\n");
         }
         return sb.toString();

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2014 Trillian Mobile AB
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,35 +16,33 @@
  */
 package org.robovm.compiler.llvm;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.io.UnsupportedEncodingException;
 
 /**
  *
  * @version $Id$
  */
-public abstract class Instruction {
-    BasicBlock basicBlock;
-    private List<Metadata> metadata;
+public class MetadataString extends Metadata {
+    private final byte[] bytes;
 
-    public Set<Variable> getWritesTo() {
-        return Collections.emptySet();
+    public MetadataString(byte[] bytes) {
+        this.bytes = bytes;
     }
-    
-    public Set<VariableRef> getReadsFrom() {
-        return Collections.emptySet();
-    }
-    
-    public List<Metadata> getMetadata() {
-        return metadata == null ? Collections.<Metadata>emptyList() : metadata;
-    }
-    
-    public void addMetadata(Metadata md) {
-        if (metadata == null) {
-            metadata = new ArrayList<>();
+
+    public MetadataString(String s) {
+        try {
+            this.bytes = s.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
         }
-        metadata.add(md);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("!\"");
+        StringConstant.escape(sb, bytes);
+        sb.append('"');
+        return sb.toString();
     }
 }

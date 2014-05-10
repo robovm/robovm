@@ -1,0 +1,71 @@
+package: org.robovm.apple.messageui
+include: [foundation.yaml, uikit.yaml]
+library: MessageUI
+framework: MessageUI
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/MessageUI.framework/Headers/MessageUI.h
+typedefs: {}
+    
+enums:
+    MFMailComposeResult: {}
+    MFMailComposeErrorCode:
+        prefix: "MFMailComposeErrorCode"
+    MessageComposeResult: {}
+        
+classes:
+    MFMailComposeViewController:
+        methods:
+            '-setMessageBody:isHTML:':
+                trim_after_first_colon: true
+            '-addAttachmentData:mimeType:fileName:':
+                trim_after_first_colon: true
+    MFMessageComposeViewController:
+        properties:
+            'recipients':
+                type: "NSArray<NSString>"
+            'attachments':
+                type: "NSArray<NSDictionary<NSString, ?>"
+        methods:
+            '-addAttachmentURL:withAlternateFilename:':
+                trim_after_first_colon: true
+            '-addAttachmentData:typeIdentifier:filename:':
+                trim_after_first_colon: true
+            '+isSupportedAttachmentUTI:':
+                trim_after_first_colon: true
+
+protocols:
+    MFMailComposeViewControllerDelegate:
+        methods:
+            '-mailComposeController:didFinishWithResult:error:':
+                name: "didFinish"
+    MFMessageComposeViewControllerDelegate:
+        methods:
+            '-messageComposeViewController:didFinishWithResult:':
+                name: "didFinish"
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (MF.*):
+        class: MessageUI
+        name: "Function__#{g[0]}"
+
+values:
+    MFMailCompose(.*):
+        class: MFMailComposeViewController
+        name: "#{g[0]}"
+        
+    MFMessageComposeViewController(.*):
+        class: MFMessageComposeViewController
+        name: "#{g[0]}"
+    
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (MF.*):
+        class: MessageUI
+        name: "Value__#{g[0]}"
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (MF.*):
+        class: MessageUI
+        name: "Constant__#{g[0]}"

@@ -297,6 +297,10 @@ public abstract class AbstractTarget implements Target {
                         if (entry.getName().toLowerCase().endsWith(".class")) {
                             continue;
                         }
+                        if (entry.getName().startsWith("META-INF/robovm/")) {
+                            // Don't include anything under META-INF/robovm/
+                            continue;
+                        }
                         ZipEntry newEntry = new ZipEntry(entry.getName());
                         newEntry.setTime(entry.getTime());
                         out.putNextEntry(newEntry);

@@ -17,6 +17,8 @@ classes:
         properties:
             'completionHandler':
                 type: "@Block VoidBlock3<String, SLRequestMethod, NSURL>"
+            'serviceType':
+                type: NSString
         methods:
             '-setInitialText:':
                 trim_after_first_colon: true
@@ -26,8 +28,14 @@ classes:
                 trim_after_first_colon: true
             '+isAvailableForServiceType:':
                 name: "isAvailable"
+                parameters:
+                    serviceType:
+                        type: NSString
             '+composeViewControllerForServiceType:':
-                name: "fromServiceType"
+                name: "create"
+                parameters:
+                    serviceType:
+                        type: NSString
             
     SLRequest: # DONE
         properties:
@@ -45,6 +53,11 @@ classes:
                         type: "@Block VoidBlock3<String, SLRequestMethod, NSURL>"
             '+requestForServiceType:requestMethod:URL:parameters:':
                 name: "create"
+                parameters:
+                    serviceType:
+                        type: NSString
+                    parameters:
+                        type: 'NSDictionary<NSString, NSString>'
 
 protocols: {}
 
@@ -59,6 +72,7 @@ values:
     SLServiceType(.*):
         class: SLServiceType
         name: "#{g[0]}"
+        type: NSString
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (SL.*):

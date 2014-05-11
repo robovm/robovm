@@ -24,6 +24,9 @@ classes:
                 name: getAccount
             '-accountTypeWithAccountTypeIdentifier:':
                 name: getAccountType
+                parameters:
+                    typeIdentifier:
+                        type: NSString
             '-accountsWithAccountType:':
                 name: getAccounts
                 return_type: "NSArray<ACAccount>" 
@@ -59,7 +62,10 @@ classes:
                     account: {}
                     completionHandler:
                         type: "@Block VoidBlock2<Boolean, NSError>"
-    ACAccountType: {}
+    ACAccountType:
+        properties:
+            'identifier':
+                type: NSString
 
 protocols: {}
 
@@ -70,29 +76,35 @@ functions:
         name: "Function__#{g[0]}"
 
 values:
-    ACError(.*):
+    ACError(Domain):
         class: ACError
         name: "#{g[0]}"
+        type: NSString
         
-    ACAccount(Type.*):
-        class: ACAccount
+    ACAccountType(Identifier.*):
+        class: ACAccountType
         name: "#{g[0]}"
+        type: NSString
         
     AC(Facebook.*):
-        class: ACAccount
-        name: "#{g[0]}"
-        
-    AC(LinkedIn.*):
-        class: ACAccount
-        name: "#{g[0]}"
-        
-    AC(TencentWeibo.*):
-        class: ACAccount
-        name: "#{g[0]}"
-    
-    ACAccountStore(.*):
         class: ACAccountStore
         name: "#{g[0]}"
+        type: NSString
+        
+    AC(LinkedIn.*):
+        class: ACAccountStore
+        name: "#{g[0]}"
+        type: NSString
+        
+    AC(TencentWeibo.*):
+        class: ACAccountStore
+        name: "#{g[0]}"
+        type: NSString
+    
+    ACAccountStore(.*Notification):
+        class: ACAccountStore
+        name: "#{g[0]}"
+        type: NSString
    
     # Make sure we don't miss any values if new ones are introduced in a later version
     (AC.*):

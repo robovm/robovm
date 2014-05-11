@@ -8,10 +8,8 @@ headers:
 typedefs: {}
     
 enums:
-    TWRequestMethod:
-        first: "TWRequestMethodGET"
-    TWTweetComposeViewControllerResult:
-        first: "TWTweetComposeViewControllerResultCancelled"
+    TWRequestMethod: {first: TWRequestMethodGET, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
+    TWTweetComposeViewControllerResult: {first: TWTweetComposeViewControllerResultCancelled, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
         
 classes:
     TWRequest:
@@ -31,7 +29,7 @@ classes:
             '-addMultiPartData:withName:type:':
                 trim_after_first_colon: true
             '-performRequestWithHandler:':
-                trim_after_first_colon: true
+                name: performRequest
                 parameters:
                     handler:
                         type: "@Block VoidBlock3<NSData, NSHTTPURLResponse, NSError>"

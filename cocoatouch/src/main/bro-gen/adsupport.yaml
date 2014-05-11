@@ -10,7 +10,10 @@ typedefs: {}
 enums: {}
         
 classes:
-    ASIdentifierManager: {}
+    ASIdentifierManager:
+        methods:
+            '+sharedManager':
+                name: getSharedManager
 
 protocols: {}
 

@@ -20,17 +20,29 @@ classes:
                 trim_after_first_colon: true
             '-addAttachmentData:mimeType:fileName:':
                 trim_after_first_colon: true
+            '-setBccRecipients:':
+                parameters:
+                    bccRecipients:
+                        type: 'NSArray<NSString>'
+            '-setCcRecipients:':
+                parameters:
+                    ccRecipients:
+                        type: 'NSArray<NSString>'
+            '-setToRecipients:':
+                parameters:
+                    toRecipients:
+                        type: 'NSArray<NSString>'
     MFMessageComposeViewController:
         properties:
             'recipients':
                 type: "NSArray<NSString>"
             'attachments':
-                type: "NSArray<NSDictionary<NSString, ?>"
+                type: "NSArray<NSDictionary<NSString, ?>>"
         methods:
             '-addAttachmentURL:withAlternateFilename:':
-                trim_after_first_colon: true
+                name: addAttachment
             '-addAttachmentData:typeIdentifier:filename:':
-                trim_after_first_colon: true
+                name: addAttachment
             '+isSupportedAttachmentUTI:':
                 trim_after_first_colon: true
 
@@ -51,13 +63,23 @@ functions:
         name: "Function__#{g[0]}"
 
 values:
-    MFMailCompose(.*):
+    MFMailCompose(ErrorDomain):
         class: MFMailComposeViewController
         name: "#{g[0]}"
+        type: NSString
         
-    MFMessageComposeViewController(.*):
+    MFMessageComposeViewController(Attachment.*):
         class: MFMessageComposeViewController
         name: "#{g[0]}"
+        type: NSString
+    MFMessageComposeViewController(TextMessageAvailabilityDidChangeNotification):
+        class: MFMessageComposeViewController
+        name: "#{g[0]}"
+        type: NSString
+    MFMessageComposeViewController(TextMessageAvailabilityKey):
+        class: MFMessageComposeViewController
+        name: "#{g[0]}"
+        type: NSString
     
     # Make sure we don't miss any values if new ones are introduced in a later version
     (MF.*):

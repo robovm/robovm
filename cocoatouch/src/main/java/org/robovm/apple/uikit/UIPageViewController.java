@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 5.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIPageViewController/*</name>*/ 
     extends /*<extends>*/UIViewController/*</extends>*/ 
@@ -78,6 +79,9 @@ import org.robovm.apple.coreimage.*;
     /*<methods>*/
     @GlobalValue(symbol="UIPageViewControllerOptionSpineLocationKey", optional=true)
     public static native NSString OptionKeySpineLocation();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="UIPageViewControllerOptionInterPageSpacingKey", optional=true)
     public static native NSString OptionKeyInterPageSpacing();
     

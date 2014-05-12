@@ -30,10 +30,8 @@ import org.robovm.apple.dispatch.*;
 import org.robovm.apple.corefoundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("Security")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SecIdentity/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -48,10 +46,19 @@ import org.robovm.apple.corefoundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="SecIdentityGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="SecIdentityCopyCertificate", optional=true)
     public native int copyCertificate(SecCertificate.SecCertificatePtr certificateRef);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="SecIdentityCopyPrivateKey", optional=true)
     public native int copyPrivateKey(SecKey.SecKeyPtr privateKeyRef);
     /*</methods>*/

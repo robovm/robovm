@@ -33,10 +33,13 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
+ * @deprecated Deprecated in iOS 5.0.
  */
+@Deprecated
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIAccelerometer/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 

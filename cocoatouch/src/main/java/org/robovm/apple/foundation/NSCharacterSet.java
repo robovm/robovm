@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSCharacterSet/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -93,6 +92,9 @@ import org.robovm.apple.security.*;
     public static native NSObject capitalizedLetterCharacterSet();
     @Method(selector = "symbolCharacterSet")
     public static native NSObject symbolCharacterSet();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "newlineCharacterSet")
     public static native NSObject newlineCharacterSet();
     @Method(selector = "characterSetWithRange:")
@@ -103,16 +105,34 @@ import org.robovm.apple.security.*;
     public static native NSObject characterSetWithBitmapRepresentation$(NSData data);
     @Method(selector = "characterSetWithContentsOfFile:")
     public static native NSObject characterSetWithContentsOfFile$(String fName);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "URLUserAllowedCharacterSet")
     public static native NSObject URLUserAllowedCharacterSet();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "URLPasswordAllowedCharacterSet")
     public static native NSObject URLPasswordAllowedCharacterSet();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "URLHostAllowedCharacterSet")
     public static native NSObject URLHostAllowedCharacterSet();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "URLPathAllowedCharacterSet")
     public static native NSObject URLPathAllowedCharacterSet();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "URLQueryAllowedCharacterSet")
     public static native NSObject URLQueryAllowedCharacterSet();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "URLFragmentAllowedCharacterSet")
     public static native NSObject URLFragmentAllowedCharacterSet();
     @Method(selector = "encodeWithCoder:")

@@ -30,10 +30,8 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreGraphics")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGPDFContext/*</name>*/ 
     extends /*<extends>*/CGContext/*</extends>*/ 
@@ -47,22 +45,49 @@ import org.robovm.apple.foundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGPDFContextCreate", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPDFContext create(CGDataConsumer consumer, CGRect mediaBox, NSDictionary<?, ?> auxiliaryInfo);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGPDFContextCreateWithURL", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPDFContext createWithURL(NSURL url, CGRect mediaBox, NSDictionary<?, ?> auxiliaryInfo);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGPDFContextClose", optional=true)
     public native void closeContext();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGPDFContextBeginPage", optional=true)
     public native void beginPage(NSDictionary<?, ?> pageInfo);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGPDFContextEndPage", optional=true)
     public native void endPage();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CGPDFContextAddDocumentMetadata", optional=true)
     public native void addDocumentMetadata(NSData metadata);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGPDFContextSetURLForRect", optional=true)
     public native void setURLForRect(NSURL url, @ByVal CGRect rect);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGPDFContextAddDestinationAtPoint", optional=true)
     public native void addDestinationAtPoint(String name, @ByVal CGPoint point);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGPDFContextSetDestinationForRect", optional=true)
     public native void setDestinationForRect(String name, @ByVal CGRect rect);
     /*</methods>*/

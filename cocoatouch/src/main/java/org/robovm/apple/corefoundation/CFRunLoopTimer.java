@@ -29,10 +29,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFRunLoopTimer/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -51,6 +49,9 @@ import org.robovm.apple.dispatch.*;
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFRunLoopTimerCreate", optional=true)
     public static native CFRunLoopTimer create(CFAllocator allocator, double fireDate, double interval, @MachineSizedUInt long flags, @MachineSizedSInt long order, FunctionPtr callout, CFRunLoopTimerContext context);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Bridge(symbol="CFRunLoopTimerCreateWithHandler", optional=true)
     public static native CFRunLoopTimer createWithHandler(CFAllocator allocator, double fireDate, double interval, @MachineSizedUInt long flags, @MachineSizedSInt long order, ObjCBlock block);
     @Bridge(symbol="CFRunLoopTimerGetNextFireDate", optional=true)
@@ -69,8 +70,14 @@ import org.robovm.apple.dispatch.*;
     public native boolean isValid();
     @Bridge(symbol="CFRunLoopTimerGetContext", optional=true)
     public native void getContext(CFRunLoopTimerContext context);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Bridge(symbol="CFRunLoopTimerGetTolerance", optional=true)
     public native double getTolerance();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Bridge(symbol="CFRunLoopTimerSetTolerance", optional=true)
     public native void setTolerance(double tolerance);
     /*</methods>*/

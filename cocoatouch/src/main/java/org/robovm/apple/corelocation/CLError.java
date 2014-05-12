@@ -29,9 +29,9 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreLocation")/*</annotations>*/
 public enum /*<name>*/CLError/*</name>*/ implements ValuedEnum {
     /*<values>*/
@@ -60,6 +60,9 @@ public enum /*<name>*/CLError/*</name>*/ implements ValuedEnum {
     /*<methods>*/
     @GlobalValue(symbol="kCLErrorDomain", optional=true)
     public static native NSString Domain();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="kCLErrorUserInfoAlternateRegionKey", optional=true)
     public static native NSString UserInfoAlternateRegionKey();
     /*</methods>*/

@@ -28,10 +28,8 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("dispatch")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/Dispatch/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
@@ -49,20 +47,44 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_time", optional=true)
     public static native long time(long when, long delta);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_walltime", optional=true)
     public static native long walltime(timespec when, long delta);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_main", optional=true)
     public static native void main();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Bridge(symbol="dispatch_get_specific", optional=true)
     public static native VoidPtr getSpecific(VoidPtr key);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_once", optional=true)
     public static native void once(MachineSizedSIntPtr predicate, @Block Runnable block);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_once_f", optional=true)
     public static native void onceF(MachineSizedSIntPtr predicate, VoidPtr context, FunctionPtr function);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Bridge(symbol="dispatch_read", optional=true)
     public static native void read(int fd, @MachineSizedUInt long length, DispatchQueue queue, ObjCBlock handler);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Bridge(symbol="dispatch_write", optional=true)
     public static native void write(int fd, DispatchData data, DispatchQueue queue, ObjCBlock handler);
     /*</methods>*/

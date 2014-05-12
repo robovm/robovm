@@ -33,10 +33,8 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
 @Marshaler(NSString.AsStringMarshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIViewControllerContextTransitioningGlobals/*</name>*/ 
@@ -51,8 +49,14 @@ import org.robovm.apple.coreimage.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UITransitionContextFromViewControllerKey", optional=true)
     public static native NSString TransitionKeyFromViewController();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UITransitionContextToViewControllerKey", optional=true)
     public static native NSString TransitionKeyToViewController();
     /*</methods>*/

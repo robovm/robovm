@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 5.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIDocument/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -76,6 +77,9 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="UIDocumentStateChangedNotification", optional=true)
     public static native String NotificationDocumentStateChanged();
     

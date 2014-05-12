@@ -29,10 +29,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFURLEnumerator/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -47,6 +45,9 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CFURLEnumeratorGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     /*</methods>*/

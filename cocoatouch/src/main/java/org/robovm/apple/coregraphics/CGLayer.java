@@ -30,10 +30,8 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreGraphics")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGLayer/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -48,12 +46,24 @@ import org.robovm.apple.foundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGLayerCreateWithContext", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGLayer create(CGContext context, @ByVal CGSize size, NSDictionary<?, ?> auxiliaryInfo);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGLayerGetSize", optional=true)
     public native @ByVal CGSize getSize();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGLayerGetContext", optional=true)
     public native CGContext getContext();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGLayerGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     /*</methods>*/

@@ -29,10 +29,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFData/*</name>*/ 
     extends /*<extends>*/CFPropertyList/*</extends>*/ 
@@ -61,6 +59,9 @@ import org.robovm.apple.dispatch.*;
     public native BytePtr getBytePtr();
     @Bridge(symbol="CFDataGetBytes", optional=true)
     public native void getBytes(@ByVal CFRange range, BytePtr buffer);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CFDataFind", optional=true)
     public native @ByVal CFRange find(CFData dataToFind, @ByVal CFRange searchRange, CFDataSearchFlags compareOptions);
     /*</methods>*/

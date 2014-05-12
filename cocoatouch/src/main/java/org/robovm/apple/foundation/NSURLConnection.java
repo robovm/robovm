@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLConnection/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -45,6 +44,9 @@ import org.robovm.apple.security.*;
     /*<constructors>*/
     public NSURLConnection() {}
     protected NSURLConnection(SkipInit skipInit) { super(skipInit); }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     public NSURLConnection(NSURLRequest request, NSURLConnection delegate, boolean startImmediately) { super((SkipInit) null); initObject(initWithRequest$delegate$startImmediately$(request, delegate, startImmediately)); }
     public NSURLConnection(NSURLRequest request, NSURLConnection delegate) { super((SkipInit) null); initObject(initWithRequest$delegate$(request, delegate)); }
     /*</constructors>*/
@@ -53,22 +55,43 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "initWithRequest:delegate:startImmediately:")
     protected native @Pointer long initWithRequest$delegate$startImmediately$(NSURLRequest request, NSURLConnection delegate, boolean startImmediately);
     @Method(selector = "initWithRequest:delegate:")
     protected native @Pointer long initWithRequest$delegate$(NSURLRequest request, NSURLConnection delegate);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "originalRequest")
     public native NSURLRequest originalRequest();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "currentRequest")
     public native NSURLRequest currentRequest();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "start")
     public native void start();
     @Method(selector = "cancel")
     public native void cancel();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "scheduleInRunLoop:forMode:")
     public native void scheduleInRunLoop$forMode$(NSRunLoop aRunLoop, String mode);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "unscheduleFromRunLoop:forMode:")
     public native void unscheduleFromRunLoop$forMode$(NSRunLoop aRunLoop, String mode);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setDelegateQueue:")
     public native void setDelegateQueue(NSOperationQueue queue);
     @Method(selector = "connectionWithRequest:delegate:")
@@ -77,6 +100,9 @@ import org.robovm.apple.security.*;
     public static native boolean canHandleRequest$(NSURLRequest request);
     @Method(selector = "sendSynchronousRequest:returningResponse:error:")
     public static native NSData sendSynchronousRequest$returningResponse$error$(NSURLRequest request, NSURLResponse.NSURLResponsePtr response, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "sendAsynchronousRequest:queue:completionHandler:")
     public static native void sendAsynchronousRequest$queue$completionHandler$(NSURLRequest request, NSOperationQueue queue, ObjCBlock handler);
     /*</methods>*/

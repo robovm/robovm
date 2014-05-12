@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UISearchBar/*</name>*/ 
     extends /*<extends>*/UIView/*</extends>*/ 
@@ -160,34 +161,79 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "setShowsCancelButton:animated:")
     public native void setShowsCancelButton(boolean showsCancelButton, boolean animated);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "setBackgroundImage:forBarPosition:barMetrics:")
     public native void setBackgroundImage(UIImage backgroundImage, UIBarPosition barPosition, UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "backgroundImageForBarPosition:barMetrics:")
     public native UIImage getBackgroundImage(UIBarPosition barPosition, UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setSearchFieldBackgroundImage:forState:")
     public native void setSearchFieldBackgroundImage(UIImage backgroundImage, UIControlState state);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "searchFieldBackgroundImageForState:")
     public native UIImage getSearchFieldBackgroundImage(UIControlState state);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setImage:forSearchBarIcon:state:")
     public native void setImageForSearchBarIcon(UIImage iconImage, UISearchBarIcon icon, UIControlState state);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "imageForSearchBarIcon:state:")
     public native UIImage getImageForSearchBarIcon(UISearchBarIcon icon, UIControlState state);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setScopeBarButtonBackgroundImage:forState:")
     public native void setScopeBarButtonBackgroundImage(UIImage backgroundImage, UIControlState state);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "scopeBarButtonBackgroundImageForState:")
     public native UIImage getScopeBarButtonBackgroundImage(UIControlState state);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setScopeBarButtonDividerImage:forLeftSegmentState:rightSegmentState:")
     public native void setScopeBarButtonDividerImage(UIImage dividerImage, UIControlState leftState, UIControlState rightState);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "scopeBarButtonDividerImageForLeftSegmentState:rightSegmentState:")
     public native UIImage getScopeBarButtonDividerImage(UIControlState leftState, UIControlState rightState);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setScopeBarButtonTitleTextAttributes:forState:")
     public native void setScopeBarButtonTitleTextAttributes(NSDictionary<NSString, ?> attributes, UIControlState state);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "scopeBarButtonTitleTextAttributesForState:")
     public native NSDictionary<NSString, ?> getScopeBarButtonTitleTextAttributes(UIControlState state);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setPositionAdjustment:forSearchBarIcon:")
     public native void setPositionAdjustmentForSearchBarIcon(@ByVal UIOffset adjustment, UISearchBarIcon icon);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "positionAdjustmentForSearchBarIcon:")
     public native @ByVal UIOffset getPositionAdjustmentForSearchBarIcon(UISearchBarIcon icon);
     /*</methods>*/

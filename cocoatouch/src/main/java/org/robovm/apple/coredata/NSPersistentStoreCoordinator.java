@@ -29,10 +29,11 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 3.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreData") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSPersistentStoreCoordinator/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -51,72 +52,164 @@ import org.robovm.apple.foundation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="NSPersistentStoreSaveConflictsErrorKey", optional=true)
     public static native NSString KeySaveConflictsError();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSSQLiteStoreType", optional=true)
     public static native String StoreTypeSQLite();
-    @GlobalValue(symbol="NSXMLStoreType", optional=true)
-    public static native String StoreTypeXML();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSBinaryStoreType", optional=true)
     public static native String StoreTypeBinary();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSInMemoryStoreType", optional=true)
     public static native String StoreTypeInMemory();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSStoreTypeKey", optional=true)
     public static native NSString KeyStoreType();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSStoreUUIDKey", optional=true)
     public static native NSString KeyStoreUUID();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="NSPersistentStoreCoordinatorStoresWillChangeNotification", optional=true)
     public static native String NotificationStoresWillChange();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSPersistentStoreCoordinatorStoresDidChangeNotification", optional=true)
     public static native String NotificationStoresDidChange();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSPersistentStoreCoordinatorWillRemoveStoreNotification", optional=true)
     public static native String NotificationWillRemoveStore();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSAddedPersistentStoresKey", optional=true)
     public static native NSString KeyAddedPersistentStores();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSRemovedPersistentStoresKey", optional=true)
     public static native NSString KeyRemovedPersistentStores();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSUUIDChangedPersistentStoresKey", optional=true)
     public static native NSString KeyUUIDChangedPersistentStores();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSReadOnlyPersistentStoreOption", optional=true)
     public static native NSString KeyReadOnlyOption();
-    @GlobalValue(symbol="NSValidateXMLStoreOption", optional=true)
-    public static native NSString KeyValidateXMLStoreOption();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSPersistentStoreTimeoutOption", optional=true)
     public static native NSString KeyTimeoutOption();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSSQLitePragmasOption", optional=true)
     public static native NSString KeySQLitePragmasOption();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSSQLiteAnalyzeOption", optional=true)
     public static native NSString KeySQLiteAnalyzeOption();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSSQLiteManualVacuumOption", optional=true)
     public static native NSString KeySQLiteManualVacuumOption();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSIgnorePersistentStoreVersioningOption", optional=true)
     public static native NSString KeyIgnorePersistentStoreVersioningOption();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSMigratePersistentStoresAutomaticallyOption", optional=true)
     public static native NSString KeyMigratePersistentStoresAutomaticallyOption();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSInferMappingModelAutomaticallyOption", optional=true)
     public static native NSString KeyInferMappingModelAutomaticallyOption();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSStoreModelVersionHashesKey", optional=true)
     public static native NSString KeyModelVersionHashes();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSStoreModelVersionIdentifiersKey", optional=true)
     public static native NSString KeyModelVersionIdentifiers();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSPersistentStoreOSCompatibility", optional=true)
     public static native NSString KeyOSCompatibility();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="NSPersistentStoreUbiquitousContentNameKey", optional=true)
     public static native NSString KeyUbiquitousContentName();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="NSPersistentStoreUbiquitousContentURLKey", optional=true)
     public static native NSString KeyUbiquitousContentURL();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="NSPersistentStoreDidImportUbiquitousContentChangesNotification", optional=true)
     public static native String NotificationDidImportUbiquitousContentChanges();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="NSPersistentStoreUbiquitousTransitionTypeKey", optional=true)
     public static native NSString KeyUbiquitousTransitionType();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="NSPersistentStoreUbiquitousPeerTokenOption", optional=true)
     public static native NSString KeyUbiquitousPeerTokenOption();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="NSPersistentStoreRemoveUbiquitousMetadataOption", optional=true)
     public static native NSString KeyRemoveUbiquitousMetadataOption();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="NSPersistentStoreUbiquitousContainerIdentifierKey", optional=true)
     public static native NSString KeyUbiquitousContainerIdentifier();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="NSPersistentStoreRebuildFromUbiquitousContentOption", optional=true)
     public static native NSString KeyRebuildFromUbiquitousContentOption();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="NSPersistentStoreFileProtectionKey", optional=true)
     public static native NSString KeyFileProtection();
     
@@ -134,6 +227,9 @@ import org.robovm.apple.foundation.*;
     public native NSPersistentStore persistentStoreForURL$(NSURL URL);
     @Method(selector = "URLForPersistentStore:")
     public native NSURL URLForPersistentStore$(NSPersistentStore store);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "setURL:forPersistentStore:")
     public native boolean setURL$forPersistentStore$(NSURL url, NSPersistentStore store);
     @Method(selector = "addPersistentStoreWithType:configuration:URL:options:error:")
@@ -144,6 +240,9 @@ import org.robovm.apple.foundation.*;
     public native NSPersistentStore migratePersistentStore$toURL$options$withType$error$(NSPersistentStore store, NSURL URL, NSDictionary<?, ?> options, String storeType, NSError.NSErrorPtr error);
     @Method(selector = "managedObjectIDForURIRepresentation:")
     public native NSManagedObjectID managedObjectIDForURIRepresentation$(NSURL url);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "executeRequest:withContext:error:")
     public native NSObject executeRequest$withContext$error$(NSPersistentStoreRequest request, NSManagedObjectContext context, NSError.NSErrorPtr error);
     @Method(selector = "lock")
@@ -152,14 +251,29 @@ import org.robovm.apple.foundation.*;
     public native void unlock();
     @Method(selector = "tryLock")
     public native boolean tryLock();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "registeredStoreTypes")
     public static native NSDictionary<?, ?> registeredStoreTypes();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "registerStoreClass:forStoreType:")
     public static native void registerStoreClass$forStoreType$(ObjCClass storeClass, String storeType);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "metadataForPersistentStoreOfType:URL:error:")
     public static native NSDictionary<?, ?> metadataForPersistentStoreOfType$URL$error$(String storeType, NSURL url, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "setMetadata:forPersistentStoreOfType:URL:error:")
     public static native boolean setMetadata$forPersistentStoreOfType$URL$error$(NSDictionary<?, ?> metadata, String storeType, NSURL url, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "removeUbiquitousContentAndPersistentStoreAtURL:options:error:")
     public static native boolean removeUbiquitousContentAndPersistentStoreAtURL$options$error$(NSURL storeURL, NSDictionary<?, ?> options, NSError.NSErrorPtr error);
     /*</methods>*/

@@ -30,10 +30,8 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreGraphics")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGDataProvider/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -56,14 +54,29 @@ import org.robovm.apple.foundation.*;
     }
     
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGDataProviderGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGDataProviderCreateWithCFData", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGDataProvider create(NSData data);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGDataProviderCreateWithURL", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGDataProvider create(NSURL url);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGDataProviderCreateWithFilename", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGDataProvider createWithFilename(@Pointer long filename);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGDataProviderCopyData", optional=true)
     public native NSData getData();
     /*</methods>*/

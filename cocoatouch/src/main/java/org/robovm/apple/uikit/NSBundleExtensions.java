@@ -33,10 +33,8 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
 /*<visibility>*/public final/*</visibility>*/ class /*<name>*/NSBundleExtensions/*</name>*/ 
     extends /*<extends>*/NSExtensions/*</extends>*/ 
@@ -54,8 +52,16 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="UINibExternalObjects", optional=true)
     public static native NSString OptionKeyExternalObjects();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="UINibProxiedObjectsKey", optional=true)
     public static native NSString OptionKeyProxiedObjects();
     

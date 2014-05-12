@@ -33,10 +33,9 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ interface /*<name>*/UIPageViewControllerDataSource/*</name>*/ 
     /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
@@ -54,8 +53,14 @@ import org.robovm.apple.coreimage.*;
     UIViewController getViewControllerBefore(UIPageViewController pageViewController, UIViewController viewController);
     @Method(selector = "pageViewController:viewControllerAfterViewController:")
     UIViewController getViewControllerAfter(UIPageViewController pageViewController, UIViewController viewController);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "presentationCountForPageViewController:")
     @MachineSizedSInt long getPresentationCount(UIPageViewController pageViewController);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "presentationIndexForPageViewController:")
     @MachineSizedSInt long getPresentationIndex(UIPageViewController pageViewController);
     /*</methods>*/

@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSLocale/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -75,6 +74,9 @@ import org.robovm.apple.security.*;
     }
     
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSCurrentLocaleDidChangeNotification", optional=true)
     public static native String NotificationCurrentLocaleDidChange();
     @GlobalValue(symbol="NSLocaleIdentifier", optional=true)
@@ -105,36 +107,106 @@ import org.robovm.apple.security.*;
     public static native NSString KeyCurrencySymbol();
     @GlobalValue(symbol="NSLocaleCurrencyCode", optional=true)
     public static native NSString KeyCurrencyCode();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="NSLocaleCollatorIdentifier", optional=true)
     public static native NSString KeyCollatorIdentifier();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="NSLocaleQuotationBeginDelimiterKey", optional=true)
     public static native NSString KeyQuotationBeginDelimiter();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="NSLocaleQuotationEndDelimiterKey", optional=true)
     public static native NSString KeyQuotationEndDelimiter();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="NSLocaleAlternateQuotationBeginDelimiterKey", optional=true)
     public static native NSString KeyAlternateQuotationBeginDelimiter();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="NSLocaleAlternateQuotationEndDelimiterKey", optional=true)
     public static native NSString KeyAlternateQuotationEndDelimiter();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="NSGregorianCalendar", optional=true)
     public static native String CalendarIdentifierGregorian();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="NSBuddhistCalendar", optional=true)
     public static native String CalendarIdentifierBuddhist();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="NSChineseCalendar", optional=true)
     public static native String CalendarIdentifierChinese();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="NSHebrewCalendar", optional=true)
     public static native String CalendarIdentifierHebrew();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="NSIslamicCalendar", optional=true)
     public static native String CalendarIdentifierIslamic();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="NSIslamicCivilCalendar", optional=true)
     public static native String CalendarIdentifierIslamicCivil();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="NSJapaneseCalendar", optional=true)
     public static native String CalendarIdentifierJapanese();
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="NSRepublicOfChinaCalendar", optional=true)
     public static native String CalendarIdentifierRepublicOfChina();
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="NSPersianCalendar", optional=true)
     public static native String CalendarIdentifierPersian();
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="NSIndianCalendar", optional=true)
     public static native String CalendarIdentifierIndian();
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="NSISO8601Calendar", optional=true)
     public static native String CalendarIdentifierISO8601();
     
@@ -146,6 +218,9 @@ import org.robovm.apple.security.*;
     public native String getLocaleIdentifier();
     @Method(selector = "initWithLocaleIdentifier:")
     protected native @Pointer long initWithLocaleIdentifier$(String string);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "autoupdatingCurrentLocale")
     public static native NSLocale getAutoupdatingCurrentLocale();
     @Method(selector = "currentLocale")
@@ -160,8 +235,14 @@ import org.robovm.apple.security.*;
     public static native NSArray<NSString> getISOCountryCodes();
     @Method(selector = "ISOCurrencyCodes")
     public static native NSArray<NSString> getISOCurrencyCodes();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "commonISOCurrencyCodes")
     public static native NSArray<NSString> getCommonISOCurrencyCodes();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "preferredLanguages")
     public static native NSArray<NSString> getPreferredLanguages();
     @Method(selector = "componentsFromLocaleIdentifier:")
@@ -172,12 +253,24 @@ import org.robovm.apple.security.*;
     public static native String getCanonicalLocaleIdentifier(String string);
     @Method(selector = "canonicalLanguageIdentifierFromString:")
     public static native String getCanonicalLanguageIdentifier(String string);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "localeIdentifierFromWindowsLocaleCode:")
     public static native String getLocaleIdentifierFromWindowsLocaleCode(int lcid);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "windowsLocaleCodeFromLocaleIdentifier:")
     public static native int getWindowsLocaleCodeFromLocaleIdentifier(String localeIdentifier);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "characterDirectionForLanguage:")
     public static native NSLocaleLanguageDirection getCharacterDirection(String isoLangCode);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "lineDirectionForLanguage:")
     public static native NSLocaleLanguageDirection getLineDirection(String isoLangCode);
     /*</methods>*/

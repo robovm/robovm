@@ -33,10 +33,8 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
 @Marshaler(NSString.AsStringMarshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIPrint/*</name>*/ 

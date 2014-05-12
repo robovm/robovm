@@ -29,10 +29,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("OpenGLES")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/OpenGLES/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 

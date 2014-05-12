@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSStream/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -51,50 +50,119 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSStreamSocketSecurityLevelKey", optional=true)
     public static native NSString KeySocketSecurityLevel();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSStreamSocketSecurityLevelNone", optional=true)
     public static native NSString SocketSecurityLevelNone();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSStreamSocketSecurityLevelSSLv2", optional=true)
     public static native NSString SocketSecurityLevelSSLv2();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSStreamSocketSecurityLevelSSLv3", optional=true)
     public static native NSString SocketSecurityLevelSSLv3();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSStreamSocketSecurityLevelTLSv1", optional=true)
     public static native NSString SocketSecurityLevelTLSv1();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSStreamSocketSecurityLevelNegotiatedSSL", optional=true)
     public static native NSString SocketSecurityLevelNegotiatedSSL();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSStreamSOCKSProxyConfigurationKey", optional=true)
     public static native NSString KeySOCKSProxyConfiguration();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSStreamSOCKSProxyHostKey", optional=true)
     public static native NSString KeySOCKSProxyHost();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSStreamSOCKSProxyPortKey", optional=true)
     public static native NSString KeySOCKSProxyPort();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSStreamSOCKSProxyVersionKey", optional=true)
     public static native NSString KeySOCKSProxyVersion();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSStreamSOCKSProxyUserKey", optional=true)
     public static native NSString KeySOCKSProxyUser();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSStreamSOCKSProxyPasswordKey", optional=true)
     public static native NSString KeySOCKSProxyPassword();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSStreamSOCKSProxyVersion4", optional=true)
     public static native NSString SOCKSProxyVersion4();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSStreamSOCKSProxyVersion5", optional=true)
     public static native NSString SOCKSProxyVersion5();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSStreamDataWrittenToMemoryStreamKey", optional=true)
     public static native NSString KeyDataWrittenToMemoryStream();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSStreamFileCurrentOffsetKey", optional=true)
     public static native NSString KeyFileCurrentOffset();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSStreamSocketSSLErrorDomain", optional=true)
     public static native String ErrorDomainSocketSSL();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSStreamSOCKSErrorDomain", optional=true)
     public static native String ErrorDomainSOCKS();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="NSStreamNetworkServiceType", optional=true)
     public static native NSString KeyNetworkServiceType();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="NSStreamNetworkServiceTypeVoIP", optional=true)
     public static native NSString NetworkServiceTypeVoIP();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="NSStreamNetworkServiceTypeVideo", optional=true)
     public static native NSString NetworkServiceTypeVideo();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="NSStreamNetworkServiceTypeBackground", optional=true)
     public static native NSString NetworkServiceTypeBackground();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="NSStreamNetworkServiceTypeVoice", optional=true)
     public static native NSString NetworkServiceTypeVoice();
     

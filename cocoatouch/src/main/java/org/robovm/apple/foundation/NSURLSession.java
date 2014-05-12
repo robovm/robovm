@@ -30,10 +30,11 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 7.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLSession/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -60,10 +61,19 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="NSURLErrorBackgroundTaskCancelledReasonKey", optional=true)
     public static native NSString KeyBackgroundTaskCancelledReasonKey();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="NSURLSessionTransferSizeUnknown", optional=true)
     public static native long TransferSizeUnknown();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="NSURLSessionDownloadTaskResumeData", optional=true)
     public static native NSString KeyDownloadTaskResumeData();
     
@@ -113,8 +123,18 @@ import org.robovm.apple.security.*;
     public native NSURLSessionDownloadTask downloadTaskWithURL$completionHandler$(NSURL url, ObjCBlock completionHandler);
     @Method(selector = "downloadTaskWithResumeData:completionHandler:")
     public native NSURLSessionDownloadTask downloadTaskWithResumeData$completionHandler$(NSData resumeData, ObjCBlock completionHandler);
+    /**
+     * @since Available in iOS 7.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @Method(selector = "dataTaskWithHTTPGetRequest:")
     public native NSURLSessionDataTask dataTaskWithHTTPGetRequest$(NSURL url);
+    /**
+     * @since Available in iOS 7.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @Method(selector = "dataTaskWithHTTPGetRequest:completionHandler:")
     public native NSURLSessionDataTask dataTaskWithHTTPGetRequest$completionHandler$(NSURL url, ObjCBlock completionHandler);
     /*</methods>*/

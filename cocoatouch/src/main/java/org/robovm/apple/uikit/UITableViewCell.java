@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UITableViewCell/*</name>*/ 
     extends /*<extends>*/UIView/*</extends>*/ 
@@ -48,7 +49,15 @@ import org.robovm.apple.coreimage.*;
     /*<constructors>*/
     public UITableViewCell() {}
     protected UITableViewCell(SkipInit skipInit) { super(skipInit); }
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public UITableViewCell(UITableViewCellStyle style, String reuseIdentifier) { super((SkipInit) null); initObject(initWithStyle$reuseIdentifier$(style, reuseIdentifier)); }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     public UITableViewCell(@ByVal CGRect frame, String reuseIdentifier) { super((SkipInit) null); initObject(initWithFrame$reuseIdentifier$(frame, reuseIdentifier)); }
     /*</constructors>*/
     
@@ -186,6 +195,9 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "initWithStyle:reuseIdentifier:")
     protected native @Pointer long initWithStyle$reuseIdentifier$(UITableViewCellStyle style, String reuseIdentifier);
     @Method(selector = "prepareForReuse")
@@ -196,18 +208,35 @@ import org.robovm.apple.coreimage.*;
     public native void setHighlighted(boolean highlighted, boolean animated);
     @Method(selector = "setEditing:animated:")
     public native void setEditing(boolean editing, boolean animated);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "willTransitionToState:")
     public native void willTransitionToState(UITableViewCellStateMask state);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "didTransitionToState:")
     public native void didTransitionToState(UITableViewCellStateMask state);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Method(selector = "initWithFrame:reuseIdentifier:")
     protected native @Pointer long initWithFrame$reuseIdentifier$(@ByVal CGRect frame, String reuseIdentifier);
     @Method(selector = "gestureRecognizerShouldBegin:")
     public native boolean shouldBegin(UIGestureRecognizer gestureRecognizer);
     @Method(selector = "gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:")
     public native boolean shouldRecognizeSimultaneously(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "gestureRecognizer:shouldRequireFailureOfGestureRecognizer:")
     public native boolean shouldRequireFailure(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "gestureRecognizer:shouldBeRequiredToFailByGestureRecognizer:")
     public native boolean shouldBeRequiredToFail(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer);
     @Method(selector = "gestureRecognizer:shouldReceiveTouch:")

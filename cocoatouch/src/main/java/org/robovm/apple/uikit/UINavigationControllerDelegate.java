@@ -33,10 +33,9 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ interface /*<name>*/UINavigationControllerDelegate/*</name>*/ 
     /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
@@ -54,12 +53,24 @@ import org.robovm.apple.coreimage.*;
     void willShowViewController(UINavigationController navigationController, UIViewController viewController, boolean animated);
     @Method(selector = "navigationController:didShowViewController:animated:")
     void didShowViewController(UINavigationController navigationController, UIViewController viewController, boolean animated);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "navigationControllerSupportedInterfaceOrientations:")
     @MachineSizedUInt long getSupportedInterfaceOrientations(UINavigationController navigationController);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "navigationControllerPreferredInterfaceOrientationForPresentation:")
     UIInterfaceOrientation getPreferredInterfaceOrientation(UINavigationController navigationController);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "navigationController:interactionControllerForAnimationController:")
     UIViewControllerInteractiveTransitioning getInteractionController(UINavigationController navigationController, UIViewControllerAnimatedTransitioning animationController);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "navigationController:animationControllerForOperation:fromViewController:toViewController:")
     UIViewControllerAnimatedTransitioning getAnimationController(UINavigationController navigationController, UINavigationControllerOperation operation, UIViewController fromVC, UIViewController toVC);
     /*</methods>*/

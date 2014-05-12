@@ -29,10 +29,9 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreLocation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CLLocationCoordinate2D/*</name>*/ 
     extends /*<extends>*/Struct<CLLocationCoordinate2D>/*</extends>*/ 
@@ -56,9 +55,15 @@ import org.robovm.apple.foundation.*;
     @StructMember(1) public native CLLocationCoordinate2D longitude(double longitude);
     /*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="kCLLocationCoordinate2DInvalid", optional=true)
     public static native @ByVal CLLocationCoordinate2D Invalid();
     
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CLLocationCoordinate2DIsValid", optional=true)
     private static native boolean isValid(@ByVal CLLocationCoordinate2D coord);
     /*</methods>*/

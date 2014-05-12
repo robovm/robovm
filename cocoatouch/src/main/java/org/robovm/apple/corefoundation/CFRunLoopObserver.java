@@ -29,10 +29,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFRunLoopObserver/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -51,6 +49,9 @@ import org.robovm.apple.dispatch.*;
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFRunLoopObserverCreate", optional=true)
     public static native CFRunLoopObserver create(CFAllocator allocator, CFRunLoopActivity activities, boolean repeats, @MachineSizedSInt long order, FunctionPtr callout, CFRunLoopObserverContext context);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Bridge(symbol="CFRunLoopObserverCreateWithHandler", optional=true)
     public static native CFRunLoopObserver createWithHandler(CFAllocator allocator, CFRunLoopActivity activities, boolean repeats, @MachineSizedSInt long order, ObjCBlock block);
     @Bridge(symbol="CFRunLoopObserverGetActivities", optional=true)

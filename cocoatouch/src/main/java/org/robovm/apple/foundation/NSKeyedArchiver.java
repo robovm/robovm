@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSKeyedArchiver/*</name>*/ 
     extends /*<extends>*/NSCoder/*</extends>*/ 
@@ -52,6 +51,9 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="NSKeyedArchiveRootObjectKey", optional=true)
     public static native NSString KeyRootObjectKey();
     
@@ -89,6 +91,9 @@ import org.robovm.apple.security.*;
     public native void encodeDouble$forKey$(double realv, String key);
     @Method(selector = "encodeBytes:length:forKey:")
     public native void encodeBytes$length$forKey$(BytePtr bytesp, @MachineSizedUInt long lenv, String key);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "setRequiresSecureCoding:")
     public native void setRequiresSecureCoding(boolean b);
     @Method(selector = "archivedDataWithRootObject:")

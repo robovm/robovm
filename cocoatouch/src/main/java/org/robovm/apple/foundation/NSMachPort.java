@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSMachPort/*</name>*/ 
     extends /*<extends>*/NSPort/*</extends>*/ 
@@ -46,6 +45,9 @@ import org.robovm.apple.security.*;
     public NSMachPort() {}
     protected NSMachPort(SkipInit skipInit) { super(skipInit); }
     public NSMachPort(int machPort) { super((SkipInit) null); initObject(initWithMachPort$(machPort)); }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     public NSMachPort(int machPort, NSMachPortRights f) { super((SkipInit) null); initObject(initWithMachPort$options$(machPort, f)); }
     /*</constructors>*/
     /*<properties>*/
@@ -55,6 +57,9 @@ import org.robovm.apple.security.*;
     /*<methods>*/
     @Method(selector = "initWithMachPort:")
     protected native @Pointer long initWithMachPort$(int machPort);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "initWithMachPort:options:")
     protected native @Pointer long initWithMachPort$options$(int machPort, NSMachPortRights f);
     @Method(selector = "machPort")
@@ -65,6 +70,9 @@ import org.robovm.apple.security.*;
     public native void removeFromRunLoop$forMode$(NSRunLoop runLoop, String mode);
     @Method(selector = "portWithMachPort:")
     public static native NSPort portWithMachPort$(int machPort);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "portWithMachPort:options:")
     public static native NSPort portWithMachPort$options$(int machPort, NSMachPortRights f);
     /*</methods>*/

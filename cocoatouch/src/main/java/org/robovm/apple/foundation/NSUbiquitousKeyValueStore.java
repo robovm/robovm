@@ -30,10 +30,11 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 5.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSUbiquitousKeyValueStore/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -51,10 +52,19 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="NSUbiquitousKeyValueStoreDidChangeExternallyNotification", optional=true)
     public static native String NotificationDidChangeExternally();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="NSUbiquitousKeyValueStoreChangeReasonKey", optional=true)
     public static native NSString KeyChangeReason();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="NSUbiquitousKeyValueStoreChangedKeysKey", optional=true)
     public static native NSString KeyChangedKeys();
     

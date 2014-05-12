@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UINavigationBar/*</name>*/ 
     extends /*<extends>*/UIView/*</extends>*/ 
@@ -110,16 +111,34 @@ import org.robovm.apple.coreimage.*;
     public native UINavigationItem popNavigationItem(boolean animated);
     @Method(selector = "setItems:animated:")
     public native void setItems(NSArray<UINavigationItem> items, boolean animated);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "setBackgroundImage:forBarPosition:barMetrics:")
     public native void setBackgroundImage(UIImage backgroundImage, UIBarPosition barPosition, UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "backgroundImageForBarPosition:barMetrics:")
     public native UIImage getBackgroundImage(UIBarPosition barPosition, UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setBackgroundImage:forBarMetrics:")
     public native void setBackgroundImage(UIImage backgroundImage, UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "backgroundImageForBarMetrics:")
     public native UIImage getBackgroundImage(UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setTitleVerticalPositionAdjustment:forBarMetrics:")
     public native void setTitleVerticalPositionAdjustment(@MachineSizedFloat double adjustment, UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "titleVerticalPositionAdjustmentForBarMetrics:")
     public native @MachineSizedFloat double getTitleVerticalPositionAdjustment(UIBarMetrics barMetrics);
     /*</methods>*/

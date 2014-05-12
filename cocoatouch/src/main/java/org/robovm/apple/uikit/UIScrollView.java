@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIScrollView/*</name>*/ 
     extends /*<extends>*/UIView/*</extends>*/ 
@@ -164,8 +165,14 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="UIScrollViewDecelerationRateNormal", optional=true)
     public static native @MachineSizedFloat double DecelerationRateNormal();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="UIScrollViewDecelerationRateFast", optional=true)
     public static native @MachineSizedFloat double DecelerationRateFast();
     
@@ -179,8 +186,14 @@ import org.robovm.apple.coreimage.*;
     public native boolean touchesShouldBegin(NSSet<UITouch> touches, UIEvent event, UIView view);
     @Method(selector = "touchesShouldCancelInContentView:")
     public native boolean touchesShouldCancelInContentView(UIView view);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "setZoomScale:animated:")
     public native void setZoomScale(@MachineSizedFloat double scale, boolean animated);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "zoomToRect:animated:")
     public native void zoomToRect(@ByVal CGRect rect, boolean animated);
     /*</methods>*/

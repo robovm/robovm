@@ -31,10 +31,9 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("QuartzCore")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CATransform3D/*</name>*/ 
     extends /*<extends>*/Struct<CATransform3D>/*</extends>*/ 
@@ -138,33 +137,75 @@ import org.robovm.apple.opengles.*;
     }
     
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="CATransform3DIdentity", optional=true)
     public static native @ByVal CATransform3D Identity();
     
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CATransform3DIsIdentity", optional=true)
     protected static native boolean isIdentity(@ByVal CATransform3D t);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CATransform3DEqualToTransform", optional=true)
     protected static native boolean equalToTransform(@ByVal CATransform3D a, @ByVal CATransform3D b);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CATransform3DMakeTranslation", optional=true)
     public static native @ByVal CATransform3D makeTranslation(@MachineSizedFloat double tx, @MachineSizedFloat double ty, @MachineSizedFloat double tz);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CATransform3DMakeScale", optional=true)
     public static native @ByVal CATransform3D makeScale(@MachineSizedFloat double sx, @MachineSizedFloat double sy, @MachineSizedFloat double sz);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CATransform3DMakeRotation", optional=true)
     public static native @ByVal CATransform3D makeRotation(@MachineSizedFloat double angle, @MachineSizedFloat double x, @MachineSizedFloat double y, @MachineSizedFloat double z);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CATransform3DTranslate", optional=true)
     protected static native @ByVal CATransform3D translate(@ByVal CATransform3D t, @MachineSizedFloat double tx, @MachineSizedFloat double ty, @MachineSizedFloat double tz);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CATransform3DScale", optional=true)
     protected static native @ByVal CATransform3D scale(@ByVal CATransform3D t, @MachineSizedFloat double sx, @MachineSizedFloat double sy, @MachineSizedFloat double sz);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CATransform3DRotate", optional=true)
     protected static native @ByVal CATransform3D rotate(@ByVal CATransform3D t, @MachineSizedFloat double angle, @MachineSizedFloat double x, @MachineSizedFloat double y, @MachineSizedFloat double z);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CATransform3DConcat", optional=true)
     protected static native @ByVal CATransform3D concat(@ByVal CATransform3D a, @ByVal CATransform3D b);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CATransform3DInvert", optional=true)
     protected static native @ByVal CATransform3D invert(@ByVal CATransform3D t);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CATransform3DMakeAffineTransform", optional=true)
     public static native @ByVal CATransform3D makeAffineTransform(@ByVal CGAffineTransform m);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CATransform3DIsAffine", optional=true)
     protected static native boolean isAffine(@ByVal CATransform3D t);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CATransform3DGetAffineTransform", optional=true)
     protected static native @ByVal CGAffineTransform getAffineTransform(@ByVal CATransform3D t);
     /*</methods>*/

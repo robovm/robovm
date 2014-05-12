@@ -33,15 +33,28 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/UIStatusBarStyle/*</name>*/ implements ValuedEnum {
     /*<values>*/
     Default(0L),
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     LightContent(1L),
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     BlackTranslucent(1L),
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     BlackOpaque(2L);
     /*</values>*/
 

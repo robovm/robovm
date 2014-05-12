@@ -29,9 +29,13 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
+ * @deprecated Deprecated in iOS 7.0.
  */
+@Deprecated
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/CFURLError/*</name>*/ implements ValuedEnum {
     /*<values>*/

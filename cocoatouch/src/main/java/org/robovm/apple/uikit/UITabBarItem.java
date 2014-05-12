@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UITabBarItem/*</name>*/ 
     extends /*<extends>*/UIBarItem/*</extends>*/ 
@@ -49,6 +50,9 @@ import org.robovm.apple.coreimage.*;
     public UITabBarItem() {}
     protected UITabBarItem(SkipInit skipInit) { super(skipInit); }
     public UITabBarItem(String title, UIImage image, @MachineSizedSInt long tag) { super((SkipInit) null); initObject(initWithTitle$image$tag$(title, image, tag)); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public UITabBarItem(String title, UIImage image, UIImage selectedImage) { super((SkipInit) null); initObject(initWithTitle$image$selectedImage$(title, image, selectedImage)); }
     public UITabBarItem(UITabBarSystemItem systemItem, @MachineSizedSInt long tag) { super((SkipInit) null); initObject(initWithTabBarSystemItem$tag$(systemItem, tag)); }
     /*</constructors>*/
@@ -66,18 +70,42 @@ import org.robovm.apple.coreimage.*;
     /*<methods>*/
     @Method(selector = "initWithTitle:image:tag:")
     protected native @Pointer long initWithTitle$image$tag$(String title, UIImage image, @MachineSizedSInt long tag);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "initWithTitle:image:selectedImage:")
     protected native @Pointer long initWithTitle$image$selectedImage$(String title, UIImage image, UIImage selectedImage);
     @Method(selector = "initWithTabBarSystemItem:tag:")
     protected native @Pointer long initWithTabBarSystemItem$tag$(UITabBarSystemItem systemItem, @MachineSizedSInt long tag);
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @Method(selector = "setFinishedSelectedImage:withFinishedUnselectedImage:")
     public native void setFinishedImages(UIImage selectedImage, UIImage unselectedImage);
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @Method(selector = "finishedSelectedImage")
     public native UIImage getFinishedSelectedImage();
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @Method(selector = "finishedUnselectedImage")
     public native UIImage getFinishedUnselectedImage();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setTitlePositionAdjustment:")
     public native void setTitlePositionAdjustment(@ByVal UIOffset adjustment);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "titlePositionAdjustment")
     public native @ByVal UIOffset getTitlePositionAdjustment();
     /*</methods>*/

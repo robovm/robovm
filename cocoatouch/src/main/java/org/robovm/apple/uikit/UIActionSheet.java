@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIActionSheet/*</name>*/ 
     extends /*<extends>*/UIView/*</extends>*/ 
@@ -105,8 +106,14 @@ import org.robovm.apple.coreimage.*;
     public native void showFrom(UIToolbar view);
     @Method(selector = "showFromTabBar:")
     public native void showFrom(UITabBar view);
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Method(selector = "showFromBarButtonItem:animated:")
     public native void showFrom(UIBarButtonItem item, boolean animated);
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Method(selector = "showFromRect:inView:animated:")
     public native void showFrom(@ByVal CGRect rect, UIView view, boolean animated);
     @Method(selector = "showInView:")

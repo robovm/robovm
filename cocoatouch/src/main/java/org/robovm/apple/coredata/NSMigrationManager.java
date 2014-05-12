@@ -29,10 +29,11 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 3.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreData") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSMigrationManager/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -55,8 +56,14 @@ import org.robovm.apple.foundation.*;
     protected native @Pointer long initWithSourceModel$destinationModel$(NSManagedObjectModel sourceModel, NSManagedObjectModel destinationModel);
     @Method(selector = "migrateStoreFromURL:type:options:withMappingModel:toDestinationURL:destinationType:destinationOptions:error:")
     public native boolean migrateStoreFromURL$type$options$withMappingModel$toDestinationURL$destinationType$destinationOptions$error$(NSURL sourceURL, String sStoreType, NSDictionary<?, ?> sOptions, NSMappingModel mappings, NSURL dURL, String dStoreType, NSDictionary<?, ?> dOptions, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setUsesStoreSpecificMigrationManager:")
     public native void setUsesStoreSpecificMigrationManager(boolean flag);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "usesStoreSpecificMigrationManager")
     public native boolean usesStoreSpecificMigrationManager();
     @Method(selector = "reset")

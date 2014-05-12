@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIToolbar/*</name>*/ 
     extends /*<extends>*/UIView/*</extends>*/ 
@@ -86,12 +87,24 @@ import org.robovm.apple.coreimage.*;
     /*<methods>*/
     @Method(selector = "setItems:animated:")
     public native void setItems(NSArray<UIBarButtonItem> items, boolean animated);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setBackgroundImage:forToolbarPosition:barMetrics:")
     public native void setBackgroundImage(UIImage backgroundImage, UIBarPosition topOrBottom, UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "backgroundImageForToolbarPosition:barMetrics:")
     public native UIImage getBackgroundImage(UIBarPosition topOrBottom, UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "setShadowImage:forToolbarPosition:")
     public native void setShadowImage(UIImage shadowImage, UIBarPosition topOrBottom);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "shadowImageForToolbarPosition:")
     public native UIImage getShadowImage(UIBarPosition topOrBottom);
     /*</methods>*/

@@ -30,10 +30,8 @@ import org.robovm.apple.dispatch.*;
 import org.robovm.apple.corefoundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SSLErrorCode/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 

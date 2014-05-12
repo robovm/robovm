@@ -31,10 +31,9 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("QuartzCore") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CATransaction/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -52,12 +51,24 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCATransactionAnimationDuration", optional=true)
     public static native String KeyAnimationDuration();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCATransactionDisableActions", optional=true)
     public static native String KeyDisableActions();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="kCATransactionAnimationTimingFunction", optional=true)
     public static native String KeyAnimationTimingFunction();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="kCATransactionCompletionBlock", optional=true)
     public static native String KeyCompletionBlock();
     

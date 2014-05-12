@@ -31,10 +31,8 @@ import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("MediaPlayer")/*</annotations>*/
 /*<visibility>*/public final/*</visibility>*/ class /*<name>*/UIViewControllerExtensions/*</name>*/ 
     extends /*<extends>*/NSExtensions/*</extends>*/ 

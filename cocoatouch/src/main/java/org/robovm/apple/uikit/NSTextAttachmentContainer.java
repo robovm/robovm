@@ -33,10 +33,9 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ interface /*<name>*/NSTextAttachmentContainer/*</name>*/ 
     /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
@@ -50,8 +49,14 @@ import org.robovm.apple.coreimage.*;
     
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "imageForBounds:textContainer:characterIndex:")
     UIImage getImageForBounds(@ByVal CGRect imageBounds, NSTextContainer textContainer, @MachineSizedUInt long charIndex);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "attachmentBoundsForTextContainer:proposedLineFragment:glyphPosition:characterIndex:")
     @ByVal CGRect getAttachmentBounds(NSTextContainer textContainer, @ByVal CGRect lineFrag, @ByVal CGPoint position, @MachineSizedUInt long charIndex);
     /*</methods>*/

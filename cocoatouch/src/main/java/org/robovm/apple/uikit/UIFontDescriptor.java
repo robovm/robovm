@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 7.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIFontDescriptor/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -62,52 +63,124 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIFontDescriptorFamilyAttribute", optional=true)
     public static native NSString AttributeFamily();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIFontDescriptorNameAttribute", optional=true)
     public static native NSString AttributeName();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIFontDescriptorFaceAttribute", optional=true)
     public static native NSString AttributeFace();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIFontDescriptorSizeAttribute", optional=true)
     public static native NSString AttributeSize();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIFontDescriptorVisibleNameAttribute", optional=true)
     public static native NSString AttributeVisibleName();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIFontDescriptorMatrixAttribute", optional=true)
     public static native NSString AttributeMatrix();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIFontDescriptorCharacterSetAttribute", optional=true)
     public static native NSString AttributeCharacterSet();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIFontDescriptorCascadeListAttribute", optional=true)
     public static native NSString AttributeCascadeList();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIFontDescriptorTraitsAttribute", optional=true)
     public static native NSString AttributeTraits();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIFontDescriptorFixedAdvanceAttribute", optional=true)
     public static native NSString AttributeFixedAdvance();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIFontDescriptorFeatureSettingsAttribute", optional=true)
     public static native NSString AttributeFeatureSettings();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIFontDescriptorTextStyleAttribute", optional=true)
     public static native NSString AttributeTextStyle();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIFontSymbolicTrait", optional=true)
     public static native NSString TraitSymbolic();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIFontWeightTrait", optional=true)
     public static native NSString TraitWeight();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIFontWidthTrait", optional=true)
     public static native NSString TraitWidth();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIFontSlantTrait", optional=true)
     public static native NSString TraitSlant();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIFontFeatureTypeIdentifierKey", optional=true)
     public static native NSString FeatureTypeIdentifierKey();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIFontFeatureSelectorIdentifierKey", optional=true)
     public static native NSString FeatureSelectorIdentifierKey();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIFontTextStyleHeadline", optional=true)
     public static native String TextStyleHeadline();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIFontTextStyleBody", optional=true)
     public static native String TextStyleBody();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIFontTextStyleSubheadline", optional=true)
     public static native String TextStyleSubheadline();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIFontTextStyleFootnote", optional=true)
     public static native String TextStyleFootnote();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIFontTextStyleCaption1", optional=true)
     public static native String TextStyleCaption1();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIFontTextStyleCaption2", optional=true)
     public static native String TextStyleCaption2();
     

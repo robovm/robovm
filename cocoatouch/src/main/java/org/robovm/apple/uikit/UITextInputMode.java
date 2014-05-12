@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 4.2 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UITextInputMode/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -55,9 +56,17 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
     @GlobalValue(symbol="UITextInputCurrentInputModeDidChangeNotification", optional=true)
     public static native String NotificationCurrentInputModeDidChange();
     
+    /**
+     * @since Available in iOS 4.2 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @Method(selector = "currentInputMode")
     public static native UITextInputMode getCurrentInputMode();
     @Method(selector = "activeInputModes")

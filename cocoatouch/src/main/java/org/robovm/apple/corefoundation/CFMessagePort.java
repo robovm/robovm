@@ -29,10 +29,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFMessagePort/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -73,6 +71,9 @@ import org.robovm.apple.dispatch.*;
     public native int sendRequest(int msgid, CFData data, double sendTimeout, double rcvTimeout, CFString replyMode, CFData.CFDataPtr returnData);
     @Bridge(symbol="CFMessagePortCreateRunLoopSource", optional=true)
     public static native CFRunLoopSource createRunLoopSource(CFAllocator allocator, CFMessagePort local, @MachineSizedSInt long order);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CFMessagePortSetDispatchQueue", optional=true)
     public native void setDispatchQueue(DispatchQueue queue);
     /*</methods>*/

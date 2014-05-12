@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSFileHandle/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -72,6 +71,11 @@ import org.robovm.apple.security.*;
     public static native String NotificationDataItem();
     @GlobalValue(symbol="NSFileHandleNotificationFileHandleItem", optional=true)
     public static native String NotificationFileHandleItem();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 5.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="NSFileHandleNotificationMonitorModes", optional=true)
     public static native String NotificationMonitorModes();
     
@@ -109,10 +113,19 @@ import org.robovm.apple.security.*;
     public static native NSObject fileHandleForWritingAtPath$(String path);
     @Method(selector = "fileHandleForUpdatingAtPath:")
     public static native NSObject fileHandleForUpdatingAtPath$(String path);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "fileHandleForReadingFromURL:error:")
     public static native NSObject fileHandleForReadingFromURL$error$(NSURL url, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "fileHandleForWritingToURL:error:")
     public static native NSObject fileHandleForWritingToURL$error$(NSURL url, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "fileHandleForUpdatingURL:error:")
     public static native NSObject fileHandleForUpdatingURL$error$(NSURL url, NSError.NSErrorPtr error);
     @Method(selector = "readInBackgroundAndNotifyForModes:")

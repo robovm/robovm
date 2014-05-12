@@ -30,10 +30,8 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSZone/*</name>*/ 
     extends /*<extends>*/NativeObject/*</extends>*/ 
@@ -82,6 +80,11 @@ import org.robovm.apple.security.*;
     public static native void deallocateMemoryPages(VoidPtr ptr, @MachineSizedUInt long bytes);
     @Bridge(symbol="NSCopyMemoryPages", optional=true)
     public static native void copyMemoryPages(VoidPtr source, VoidPtr dest, @MachineSizedUInt long bytes);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
     @Bridge(symbol="NSRealMemoryAvailable", optional=true)
     public static native @MachineSizedUInt long getRealMemoryAvailable();
     /*</methods>*/

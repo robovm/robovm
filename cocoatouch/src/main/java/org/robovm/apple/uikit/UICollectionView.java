@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 6.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UICollectionView/*</name>*/ 
     extends /*<extends>*/UIScrollView/*</extends>*/ 
@@ -102,12 +103,24 @@ import org.robovm.apple.coreimage.*;
     public native void reloadData();
     @Method(selector = "setCollectionViewLayout:animated:")
     public native void setCollectionViewLayout(UICollectionViewLayout layout, boolean animated);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "setCollectionViewLayout:animated:completion:")
     public native void setCollectionViewLayout(UICollectionViewLayout layout, boolean animated, @Block VoidBooleanBlock completion);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "startInteractiveTransitionToCollectionViewLayout:completion:")
     public native UICollectionViewTransitionLayout startInteractiveTransition(UICollectionViewLayout layout, @Block VoidBlock2<Boolean, Boolean> completion);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "finishInteractiveTransition")
     public native void finishInteractiveTransition();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "cancelInteractiveTransition")
     public native void cancelInteractiveTransition();
     @Method(selector = "numberOfSections")

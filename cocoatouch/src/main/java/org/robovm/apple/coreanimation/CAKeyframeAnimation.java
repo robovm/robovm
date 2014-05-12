@@ -31,10 +31,9 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("QuartzCore") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CAKeyframeAnimation/*</name>*/ 
     extends /*<extends>*/CAPropertyAnimation/*</extends>*/ 
@@ -87,18 +86,39 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCAAnimationLinear", optional=true)
     public static native String CalculationLinear();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCAAnimationDiscrete", optional=true)
     public static native String CalculationDiscrete();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCAAnimationPaced", optional=true)
     public static native String CalculationPaced();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="kCAAnimationCubic", optional=true)
     public static native String CalculationCubic();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="kCAAnimationCubicPaced", optional=true)
     public static native String CalculationCubicPaced();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCAAnimationRotateAuto", optional=true)
     public static native String RotationAuto();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCAAnimationRotateAutoReverse", optional=true)
     public static native String RotationAutoReverse();
     

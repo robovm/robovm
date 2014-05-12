@@ -33,10 +33,8 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
 @Marshaler(NSString.AsStringMarshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIVideo/*</name>*/ 
@@ -60,8 +58,14 @@ import org.robovm.apple.coreimage.*;
     }
     
     /*<methods>*/
+    /**
+     * @since Available in iOS 3.1 and later.
+     */
     @Bridge(symbol="UIVideoAtPathIsCompatibleWithSavedPhotosAlbum", optional=true)
     protected static native boolean isCompatibleWithSavedPhotosAlbum(String videoPath);
+    /**
+     * @since Available in iOS 3.1 and later.
+     */
     @Bridge(symbol="UISaveVideoAtPathToSavedPhotosAlbum", optional=true)
     protected static native void saveToPhotosAlbum(String videoPath, NSObject completionTarget, Selector completionSelector, VoidPtr contextInfo);
     /*</methods>*/

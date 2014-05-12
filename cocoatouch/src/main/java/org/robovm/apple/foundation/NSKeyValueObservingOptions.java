@@ -30,15 +30,21 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSKeyValueObservingOptions/*</name>*/ extends Bits</*<name>*/NSKeyValueObservingOptions/*</name>*/> {
     /*<values>*/
     public static final NSKeyValueObservingOptions New = new NSKeyValueObservingOptions(1L);
     public static final NSKeyValueObservingOptions Old = new NSKeyValueObservingOptions(2L);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     public static final NSKeyValueObservingOptions Initial = new NSKeyValueObservingOptions(4L);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     public static final NSKeyValueObservingOptions Prior = new NSKeyValueObservingOptions(8L);
     /*</values>*/
 

@@ -30,10 +30,8 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreGraphics")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGFont/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -80,42 +78,99 @@ import org.robovm.apple.foundation.*;
     }
     
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGFontGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGFontCreateWithDataProvider", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGFont create(CGDataProvider provider);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGFontCreateWithFontName", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGFont create(String name);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGFontGetNumberOfGlyphs", optional=true)
     public native @MachineSizedUInt long getNumberOfGlyphs();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGFontGetUnitsPerEm", optional=true)
     public native int getUnitsPerEm();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGFontCopyPostScriptName", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getPostScriptName();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGFontCopyFullName", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getFullName();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGFontGetAscent", optional=true)
     public native int getAscent();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGFontGetDescent", optional=true)
     public native int getDescent();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGFontGetLeading", optional=true)
     public native int getLeading();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGFontGetCapHeight", optional=true)
     public native int getCapHeight();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGFontGetXHeight", optional=true)
     public native int getXHeight();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGFontGetFontBBox", optional=true)
     public native @ByVal CGRect getFontBBox();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGFontGetItalicAngle", optional=true)
     public native @MachineSizedFloat double getItalicAngle();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGFontGetStemV", optional=true)
     public native @MachineSizedFloat double getStemV();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGFontGetGlyphAdvances", optional=true)
     protected native boolean getGlyphAdvances(ShortPtr glyphs, @MachineSizedUInt long count, IntPtr advances);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGFontGetGlyphBBoxes", optional=true)
     protected native boolean getGlyphBBoxes(ShortPtr glyphs, @MachineSizedUInt long count, CGRect bboxes);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGFontGetGlyphWithGlyphName", optional=true)
     public native char getGlyphWithGlyphName(String name);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGFontCopyGlyphNameForGlyph", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getGlyphNameForGlyph(char glyph);
     /*</methods>*/

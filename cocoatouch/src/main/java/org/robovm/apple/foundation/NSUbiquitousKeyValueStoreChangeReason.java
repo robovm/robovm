@@ -30,15 +30,27 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 public enum /*<name>*/NSUbiquitousKeyValueStoreChangeReason/*</name>*/ implements ValuedEnum {
     /*<values>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     ServerChange(0L),
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     InitialSyncChange(1L),
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     QuotaViolationChange(2L),
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     AccountChange(3L);
     /*</values>*/
 

@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSNetService/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -87,8 +86,16 @@ import org.robovm.apple.security.*;
     public native void removeFromRunLoop$forMode$(NSRunLoop aRunLoop, String mode);
     @Method(selector = "publish")
     public native void publish();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "publishWithOptions:")
     public native void publishWithOptions$(NSNetServiceOptions options);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 2.0.
+     */
+    @Deprecated
     @Method(selector = "resolve")
     public native void resolve();
     @Method(selector = "stop")

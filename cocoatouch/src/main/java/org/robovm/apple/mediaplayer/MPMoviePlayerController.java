@@ -31,10 +31,11 @@ import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("MediaPlayer") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MPMoviePlayerController/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -134,60 +135,146 @@ import org.robovm.apple.coregraphics.*;
     public static native String NotificationScalingModeDidChange();
     @GlobalValue(symbol="MPMoviePlayerPlaybackDidFinishNotification", optional=true)
     public static native String NotificationPlaybackDidFinish();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="MPMoviePlayerPlaybackDidFinishReasonUserInfoKey", optional=true)
     public static native NSString PlaybackDidFinishReasonUserInfoKey();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="MPMoviePlayerPlaybackStateDidChangeNotification", optional=true)
     public static native String NotificationPlaybackStateDidChange();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="MPMoviePlayerLoadStateDidChangeNotification", optional=true)
     public static native String NotificationLoadStateDidChange();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="MPMoviePlayerNowPlayingMovieDidChangeNotification", optional=true)
     public static native String NotificationNowPlayingMovieDidChange();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="MPMoviePlayerWillEnterFullscreenNotification", optional=true)
     public static native String NotificationWillEnterFullscreen();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="MPMoviePlayerDidEnterFullscreenNotification", optional=true)
     public static native String NotificationDidEnterFullscreen();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="MPMoviePlayerWillExitFullscreenNotification", optional=true)
     public static native String NotificationWillExitFullscreen();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="MPMoviePlayerDidExitFullscreenNotification", optional=true)
     public static native String NotificationDidExitFullscreen();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="MPMoviePlayerFullscreenAnimationDurationUserInfoKey", optional=true)
     public static native NSString FullscreenAnimationDurationUserInfoKey();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="MPMoviePlayerFullscreenAnimationCurveUserInfoKey", optional=true)
     public static native NSString FullscreenAnimationCurveUserInfoKey();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="MPMoviePlayerIsAirPlayVideoActiveDidChangeNotification", optional=true)
     public static native String NotificationIsAirPlayVideoActiveDidChange();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="MPMoviePlayerReadyForDisplayDidChangeNotification", optional=true)
     public static native String NotificationReadyForDisplayDidChange();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="MPMovieMediaTypesAvailableNotification", optional=true)
     public static native String NotificationMediaTypesAvailable();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="MPMovieSourceTypeAvailableNotification", optional=true)
     public static native String NotificationSourceTypeAvailable();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="MPMovieDurationAvailableNotification", optional=true)
     public static native String NotificationDurationAvailable();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="MPMovieNaturalSizeAvailableNotification", optional=true)
     public static native String NotificationNaturalSizeAvailable();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="MPMoviePlayerThumbnailImageRequestDidFinishNotification", optional=true)
     public static native String NotificationThumbnailImageRequestDidFinish();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="MPMoviePlayerThumbnailImageKey", optional=true)
     public static native NSString ThumbnailImageKey();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="MPMoviePlayerThumbnailTimeKey", optional=true)
     public static native NSString ThumbnailTimeKey();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="MPMoviePlayerThumbnailErrorKey", optional=true)
     public static native NSString ThumbnailErrorKey();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="MPMoviePlayerTimedMetadataUpdatedNotification", optional=true)
     public static native String NotificationTimedMetadataUpdated();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="MPMoviePlayerTimedMetadataUserInfoKey", optional=true)
     public static native NSString TimedMetadataUserInfoKey();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="MPMoviePlayerTimedMetadataKeyName", optional=true)
     public static native NSString TimedMetadataKeyName();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="MPMoviePlayerTimedMetadataKeyInfo", optional=true)
     public static native NSString TimedMetadataKeyInfo();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="MPMoviePlayerTimedMetadataKeyMIMEType", optional=true)
     public static native NSString TimedMetadataKeyMIMEType();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="MPMoviePlayerTimedMetadataKeyDataType", optional=true)
     public static native NSString TimedMetadataKeyDataType();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="MPMoviePlayerTimedMetadataKeyLanguageCode", optional=true)
     public static native NSString TimedMetadataKeyLanguageCode();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.2.
+     */
+    @Deprecated
     @GlobalValue(symbol="MPMoviePlayerContentPreloadDidFinishNotification", optional=true)
     public static native String NotificationContentPreloadDidFinish();
     
@@ -195,20 +282,54 @@ import org.robovm.apple.coregraphics.*;
     protected native @Pointer long initWithContentURL$(NSURL url);
     @Method(selector = "setFullscreen:animated:")
     public native void setFullscreen(boolean fullscreen, boolean animated);
+    /**
+     * @since Available in iOS 3.2 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @Method(selector = "thumbnailImageAtTime:timeOption:")
     public native UIImage getThumbnailImage(double playbackTime, MPMovieTimeOption option);
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Method(selector = "requestThumbnailImagesAtTimes:timeOption:")
     public native void requestThumbnailImages(NSArray<NSNumber> playbackTimes, MPMovieTimeOption option);
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Method(selector = "cancelAllThumbnailImageRequests")
     public native void cancelAllThumbnailImageRequests();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "timedMetadata")
     public native NSArray<MPTimedMetadata> getTimedMetadata();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.2.
+     */
+    @Deprecated
     @Method(selector = "setBackgroundColor:")
     public native void setBackgroundColor(UIColor backgroundColor);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.2.
+     */
+    @Deprecated
     @Method(selector = "backgroundColor")
     public native UIColor getBackgroundColor();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.2.
+     */
+    @Deprecated
     @Method(selector = "setMovieControlMode:")
     public native void setMovieControlMode(MPMovieControlMode movieControlMode);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.2.
+     */
+    @Deprecated
     @Method(selector = "movieControlMode")
     public native MPMovieControlMode getMovieControlMode();
     @Method(selector = "prepareToPlay")

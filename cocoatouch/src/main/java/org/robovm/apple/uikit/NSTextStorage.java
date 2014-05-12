@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 7.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSTextStorage/*</name>*/ 
     extends /*<extends>*/NSMutableAttributedString/*</extends>*/ 
@@ -73,8 +74,14 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="NSTextStorageWillProcessEditingNotification", optional=true)
     public static native String NotificationTextStorageWillProcessEditing();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="NSTextStorageDidProcessEditingNotification", optional=true)
     public static native String NotificationTextStorageDidProcessEditing();
     

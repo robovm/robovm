@@ -33,10 +33,8 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
 /*<visibility>*/public final/*</visibility>*/ class /*<name>*/NSMutableAttributedStringExtensions/*</name>*/ 
     extends /*<extends>*/NSExtensions/*</extends>*/ 
@@ -54,10 +52,19 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "fixAttributesInRange:")
     public static native void fixAttributesInRange(NSMutableAttributedString thiz, @ByVal NSRange range);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "readFromFileURL:options:documentAttributes:error:")
     public static native boolean readFromFileURL(NSMutableAttributedString thiz, NSURL url, NSDictionary<NSString, ?> opts, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "readFromData:options:documentAttributes:error:")
     public static native boolean readFromData(NSMutableAttributedString thiz, NSData data, NSDictionary<NSString, ?> opts, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
     /*</methods>*/

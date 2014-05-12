@@ -33,10 +33,8 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
 /*<visibility>*/public final/*</visibility>*/ class /*<name>*/NSCoderExtensions/*</name>*/ 
     extends /*<extends>*/NSExtensions/*</extends>*/ 
@@ -64,6 +62,9 @@ import org.robovm.apple.coreimage.*;
     public static native void encodeCGAffineTransform(NSCoder thiz, @ByVal CGAffineTransform transform, String key);
     @Method(selector = "encodeUIEdgeInsets:forKey:")
     public static native void encodeUIEdgeInsets(NSCoder thiz, @ByVal UIEdgeInsets insets, String key);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "encodeUIOffset:forKey:")
     public static native void encodeUIOffset(NSCoder thiz, @ByVal UIOffset offset, String key);
     @Method(selector = "decodeCGPointForKey:")
@@ -76,6 +77,9 @@ import org.robovm.apple.coreimage.*;
     public static native @ByVal CGAffineTransform decodeCGAffineTransform(NSCoder thiz, String key);
     @Method(selector = "decodeUIEdgeInsetsForKey:")
     public static native @ByVal UIEdgeInsets decodeUIEdgeInsets(NSCoder thiz, String key);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "decodeUIOffsetForKey:")
     public static native @ByVal UIOffset decodeUIOffset(NSCoder thiz, String key);
     /*</methods>*/

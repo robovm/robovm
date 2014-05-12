@@ -29,10 +29,11 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 4.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreLocation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CLRegion/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -44,6 +45,11 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public CLRegion() {}
     protected CLRegion(SkipInit skipInit) { super(skipInit); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     public CLRegion(@ByVal CLLocationCoordinate2D center, double radius, String identifier) { super((SkipInit) null); initObject(initCircularRegionWithCenter$radius$identifier$(center, radius, identifier)); }
     /*</constructors>*/
     /*<properties>*/
@@ -64,8 +70,18 @@ import org.robovm.apple.foundation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @Method(selector = "initCircularRegionWithCenter:radius:identifier:")
     protected native @Pointer long initCircularRegionWithCenter$radius$identifier$(@ByVal CLLocationCoordinate2D center, double radius, String identifier);
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @Method(selector = "containsCoordinate:")
     public native boolean containsCoordinate(@ByVal CLLocationCoordinate2D coordinate);
     /*</methods>*/

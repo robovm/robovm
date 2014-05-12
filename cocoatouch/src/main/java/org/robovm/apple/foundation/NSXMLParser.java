@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSXMLParser/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -47,6 +46,9 @@ import org.robovm.apple.security.*;
     protected NSXMLParser(SkipInit skipInit) { super(skipInit); }
     public NSXMLParser(NSURL url) { super((SkipInit) null); initObject(initWithContentsOfURL$(url)); }
     public NSXMLParser(NSData data) { super((SkipInit) null); initObject(initWithData$(data)); }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public NSXMLParser(NSInputStream stream) { super((SkipInit) null); initObject(initWithStream$(stream)); }
     /*</constructors>*/
     /*<properties>*/
@@ -54,6 +56,9 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSXMLParserErrorDomain", optional=true)
     public static native String ErrorDomainXMLParser();
     
@@ -61,6 +66,9 @@ import org.robovm.apple.security.*;
     protected native @Pointer long initWithContentsOfURL$(NSURL url);
     @Method(selector = "initWithData:")
     protected native @Pointer long initWithData$(NSData data);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "initWithStream:")
     protected native @Pointer long initWithStream$(NSInputStream stream);
     @Method(selector = "delegate")

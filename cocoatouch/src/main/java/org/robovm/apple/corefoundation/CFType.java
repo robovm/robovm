@@ -31,10 +31,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 @Marshalers({
     @Marshaler(CFType.Marshaler.class),
@@ -169,6 +167,9 @@ import org.robovm.apple.dispatch.*;
     public native CFType retain();
     @Bridge(symbol="CFRelease", optional=true)
     public native void release();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Bridge(symbol="CFAutorelease", optional=true)
     public native CFType autorelease();
     @Bridge(symbol="CFGetRetainCount", optional=true)

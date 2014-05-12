@@ -29,10 +29,11 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreLocation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CLLocationManager/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -93,8 +94,14 @@ import org.robovm.apple.foundation.*;
     /*<methods>*/
     @GlobalValue(symbol="kCLDistanceFilterNone", optional=true)
     public static native double DistanceFilterNone();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="CLLocationDistanceMax", optional=true)
     public static native double DistanceMax();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="CLTimeIntervalMax", optional=true)
     public static native double TimeIntervalMax();
     @GlobalValue(symbol="kCLHeadingFilterNone", optional=true)
@@ -104,46 +111,113 @@ import org.robovm.apple.foundation.*;
     public native void startUpdatingLocation();
     @Method(selector = "stopUpdatingLocation")
     public native void stopUpdatingLocation();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "startUpdatingHeading")
     public native void startUpdatingHeading();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "stopUpdatingHeading")
     public native void stopUpdatingHeading();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "dismissHeadingCalibrationDisplay")
     public native void dismissHeadingCalibrationDisplay();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "startMonitoringSignificantLocationChanges")
     public native void startMonitoringSignificantLocationChanges();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "stopMonitoringSignificantLocationChanges")
     public native void stopMonitoringSignificantLocationChanges();
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
     @Method(selector = "startMonitoringForRegion:desiredAccuracy:")
     public native void startMonitoring(CLRegion region, double accuracy);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "stopMonitoringForRegion:")
     public native void stopMonitoring(CLRegion region);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "startMonitoringForRegion:")
     public native void startMonitoring(CLRegion region);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "requestStateForRegion:")
     public native void requestState(CLRegion region);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "startRangingBeaconsInRegion:")
     public native void startRangingBeacons(CLBeaconRegion region);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "stopRangingBeaconsInRegion:")
     public native void stopRangingBeacons(CLBeaconRegion region);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "allowDeferredLocationUpdatesUntilTraveled:timeout:")
     public native void allowDeferredLocationUpdatesUntil(double distance, double timeout);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "disallowDeferredLocationUpdates")
     public native void disallowDeferredLocationUpdates();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "locationServicesEnabled")
     public static native boolean isLocationServicesEnabled();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "headingAvailable")
     public static native boolean isHeadingAvailable();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "significantLocationChangeMonitoringAvailable")
     public static native boolean isSignificantLocationChangeMonitoringAvailable();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "isMonitoringAvailableForClass:")
     public static native boolean isMonitoringAvailable(ObjCClass regionClass);
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @Method(selector = "regionMonitoringAvailable")
     public static native boolean isRegionMonitoringAvailable();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "isRangingAvailable")
     public static native boolean isRangingAvailable();
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
     @Method(selector = "authorizationStatus")
     public static native CLAuthorizationStatus getAuthorizationStatus();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "deferredLocationUpdatesAvailable")
     public static native boolean isDeferredLocationUpdatesAvailable();
     /*</methods>*/

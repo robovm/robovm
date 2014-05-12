@@ -33,10 +33,8 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSTextStorageDelegateAdapter/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -53,8 +51,14 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @NotImplemented("textStorage:willProcessEditing:range:changeInLength:")
     public void willProcessEditing(NSTextStorage textStorage, NSTextStorageEditActions editedMask, @ByVal NSRange editedRange, @MachineSizedSInt long delta) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @NotImplemented("textStorage:didProcessEditing:range:changeInLength:")
     public void didProcessEditing(NSTextStorage textStorage, NSTextStorageEditActions editedMask, @ByVal NSRange editedRange, @MachineSizedSInt long delta) { throw new UnsupportedOperationException(); }
     /*</methods>*/

@@ -33,10 +33,8 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UITextViewDelegateAdapter/*</name>*/ 
     extends /*<extends>*/UIScrollViewDelegateAdapter/*</extends>*/ 
@@ -67,8 +65,14 @@ import org.robovm.apple.coreimage.*;
     public void didChange(UITextView textView) { throw new UnsupportedOperationException(); }
     @NotImplemented("textViewDidChangeSelection:")
     public void didChangeSelection(UITextView textView) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @NotImplemented("textView:shouldInteractWithURL:inRange:")
     public boolean shouldInteractWithURL(UITextView textView, NSURL URL, @ByVal NSRange characterRange) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @NotImplemented("textView:shouldInteractWithTextAttachment:inRange:")
     public boolean shouldInteractWithTextAttachment(UITextView textView, NSTextAttachment textAttachment, @ByVal NSRange characterRange) { throw new UnsupportedOperationException(); }
     /*</methods>*/

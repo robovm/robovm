@@ -33,10 +33,8 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UITextInputAdapter/*</name>*/ 
     extends /*<extends>*/UIKeyInputAdapter/*</extends>*/ 
@@ -108,6 +106,9 @@ import org.robovm.apple.coreimage.*;
     public @ByVal CGRect getFirstRect(UITextRange range) { throw new UnsupportedOperationException(); }
     @NotImplemented("caretRectForPosition:")
     public @ByVal CGRect getCaretRect(UITextPosition position) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @NotImplemented("selectionRectsForRange:")
     public NSArray<UITextSelectionRect> getSelectionRects(UITextRange range) { throw new UnsupportedOperationException(); }
     @NotImplemented("closestPositionToPoint:")
@@ -116,6 +117,9 @@ import org.robovm.apple.coreimage.*;
     public UITextPosition getClosestPosition(@ByVal CGPoint point, UITextRange range) { throw new UnsupportedOperationException(); }
     @NotImplemented("characterRangeAtPoint:")
     public UITextRange getCharacterRange(@ByVal CGPoint point) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @NotImplemented("shouldChangeTextInRange:replacementText:")
     public boolean shouldChangeText(UITextRange range, String text) { throw new UnsupportedOperationException(); }
     @NotImplemented("textStylingAtPosition:inDirection:")

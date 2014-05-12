@@ -28,10 +28,8 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("dispatch")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/DispatchQueueAttr/*</name>*/ 
     extends /*<extends>*/DispatchObject/*</extends>*/ 
@@ -46,6 +44,9 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.3 and later.
+     */
     @GlobalValue(symbol="_dispatch_queue_attr_concurrent", optional=true)
     public static native DispatchQueueAttr Concurrent();
     /*</methods>*/

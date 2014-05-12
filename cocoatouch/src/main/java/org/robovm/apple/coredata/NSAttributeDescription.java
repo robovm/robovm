@@ -29,10 +29,11 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 3.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreData") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSAttributeDescription/*</name>*/ 
     extends /*<extends>*/NSPropertyDescription/*</extends>*/ 
@@ -60,16 +61,34 @@ import org.robovm.apple.foundation.*;
     public native NSObject defaultValue();
     @Method(selector = "setDefaultValue:")
     public native void setDefaultValue(NSObject value);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "setAttributeValueClassName:")
     public native void setAttributeValueClassName(String className);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "versionHash")
     public native NSData versionHash();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "valueTransformerName")
     public native String valueTransformerName();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "setValueTransformerName:")
     public native void setValueTransformerName(String string);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "allowsExternalBinaryDataStorage")
     public native boolean allowsExternalBinaryDataStorage();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setAllowsExternalBinaryDataStorage:")
     public native void setAllowsExternalBinaryDataStorage(boolean flag);
     /*</methods>*/

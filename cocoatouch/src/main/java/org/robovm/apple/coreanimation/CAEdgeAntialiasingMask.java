@@ -31,9 +31,9 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 public final class /*<name>*/CAEdgeAntialiasingMask/*</name>*/ extends Bits</*<name>*/CAEdgeAntialiasingMask/*</name>*/> {
     /*<values>*/

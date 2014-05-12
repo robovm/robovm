@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 6.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIRefreshControl/*</name>*/ 
     extends /*<extends>*/UIControl/*</extends>*/ 
@@ -68,8 +69,14 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "beginRefreshing")
     public native void beginRefreshing();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "endRefreshing")
     public native void endRefreshing();
     /*</methods>*/

@@ -33,15 +33,18 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/UITableViewCellSelectionStyle/*</name>*/ implements ValuedEnum {
     /*<values>*/
     None(0L),
     Blue(1L),
     Gray(2L),
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     Default(3L);
     /*</values>*/
 

@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIViewController/*</name>*/ 
     extends /*<extends>*/UIResponder/*</extends>*/ 
@@ -178,24 +179,55 @@ import org.robovm.apple.coreimage.*;
     protected native @Pointer long initWithNibName$bundle$(String nibNameOrNil, NSBundle nibBundleOrNil);
     @Method(selector = "loadView")
     public native void loadView();
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
     @Method(selector = "viewWillUnload")
     public native void viewWillUnload();
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
     @Method(selector = "viewDidUnload")
     public native void viewDidUnload();
     @Method(selector = "viewDidLoad")
     public native void viewDidLoad();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "isViewLoaded")
     public native boolean isViewLoaded();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "performSegueWithIdentifier:sender:")
     public native void performSegue(String identifier, NSObject sender);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "shouldPerformSegueWithIdentifier:sender:")
     public native boolean shouldPerformSegue(String identifier, NSObject sender);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "prepareForSegue:sender:")
     public native void prepareForSegue(UIStoryboardSegue segue, NSObject sender);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "canPerformUnwindSegueAction:fromViewController:withSender:")
     public native boolean canPerformUnwind(Selector action, UIViewController fromViewController, NSObject sender);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "viewControllerForUnwindSegueAction:fromViewController:withSender:")
     public native UIViewController getViewControllerForUnwind(Selector action, UIViewController fromViewController, NSObject sender);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "segueForUnwindingToViewController:fromViewController:identifier:")
     public native UIStoryboardSegue getSegueForUnwinding(UIViewController toViewController, UIViewController fromViewController, String identifier);
     @Method(selector = "viewWillAppear:")
@@ -206,44 +238,107 @@ import org.robovm.apple.coreimage.*;
     public native void viewWillDisappear(boolean animated);
     @Method(selector = "viewDidDisappear:")
     public native void viewDidDisappear(boolean animated);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "viewWillLayoutSubviews")
     public native void viewWillLayoutSubviews();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "viewDidLayoutSubviews")
     public native void viewDidLayoutSubviews();
     @Method(selector = "didReceiveMemoryWarning")
     public native void didReceiveMemoryWarning();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "isBeingPresented")
     public native boolean isBeingPresented();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "isBeingDismissed")
     public native boolean isBeingDismissed();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "isMovingToParentViewController")
     public native boolean isMovingToParentViewController();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "isMovingFromParentViewController")
     public native boolean isMovingFromParentViewController();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "presentViewController:animated:completion:")
     public native void presentViewController(UIViewController viewControllerToPresent, boolean flag, @Block Runnable completion);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "dismissViewControllerAnimated:completion:")
     public native void dismissViewController(boolean flag, @Block Runnable completion);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
     @Method(selector = "presentModalViewController:animated:")
     public native void presentModalViewController(UIViewController modalViewController, boolean animated);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
     @Method(selector = "dismissModalViewControllerAnimated:")
     public native void dismissModalViewController(boolean animated);
+    /**
+     * @since Available in iOS 4.3 and later.
+     */
     @Method(selector = "disablesAutomaticKeyboardDismissal")
     public native boolean disablesAutomaticKeyboardDismissal();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "preferredStatusBarStyle")
     public native UIStatusBarStyle preferredStatusBarStyle();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "prefersStatusBarHidden")
     public native boolean prefersStatusBarHidden();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "preferredStatusBarUpdateAnimation")
     public native UIStatusBarAnimation preferredStatusBarUpdateAnimation();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "setNeedsStatusBarAppearanceUpdate")
     public native void setNeedsStatusBarAppearanceUpdate();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
     @Method(selector = "shouldAutorotateToInterfaceOrientation:")
     public native boolean shouldAutorotate(UIInterfaceOrientation toInterfaceOrientation);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "shouldAutorotate")
     public native boolean shouldAutorotate();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "supportedInterfaceOrientations")
     public native UIInterfaceOrientationMask getSupportedInterfaceOrientations();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "preferredInterfaceOrientationForPresentation")
     public native UIInterfaceOrientation getPreferredInterfaceOrientation();
     @Method(selector = "rotatingHeaderView")
@@ -254,54 +349,131 @@ import org.robovm.apple.coreimage.*;
     public native void willRotate(UIInterfaceOrientation toInterfaceOrientation, double duration);
     @Method(selector = "didRotateFromInterfaceOrientation:")
     public native void didRotate(UIInterfaceOrientation fromInterfaceOrientation);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "willAnimateRotationToInterfaceOrientation:duration:")
     public native void willAnimateRotation(UIInterfaceOrientation toInterfaceOrientation, double duration);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 5.0.
+     */
+    @Deprecated
     @Method(selector = "willAnimateFirstHalfOfRotationToInterfaceOrientation:duration:")
     public native void willAnimateFirstHalfOfRotation(UIInterfaceOrientation toInterfaceOrientation, double duration);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 5.0.
+     */
+    @Deprecated
     @Method(selector = "didAnimateFirstHalfOfRotationToInterfaceOrientation:")
     public native void didAnimateFirstHalfOfRotation(UIInterfaceOrientation toInterfaceOrientation);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 5.0.
+     */
+    @Deprecated
     @Method(selector = "willAnimateSecondHalfOfRotationFromInterfaceOrientation:duration:")
     public native void willAnimateSecondHalfOfRotation(UIInterfaceOrientation fromInterfaceOrientation, double duration);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "attemptRotationToDeviceOrientation")
     public static native void attemptRotationToDeviceOrientation();
     @Method(selector = "setEditing:animated:")
     public native void setEditing(boolean editing, boolean animated);
     @Method(selector = "editButtonItem")
     public native UIBarButtonItem getEditButtonItem();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "addChildViewController:")
     public native void addChildViewController(UIViewController childController);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "removeFromParentViewController")
     public native void removeFromParentViewController();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "transitionFromViewController:toViewController:duration:options:animations:completion:")
     public native void transition(UIViewController fromViewController, UIViewController toViewController, double duration, UIViewAnimationOptions options, @Block Runnable animations, @Block VoidBooleanBlock completion);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "beginAppearanceTransition:animated:")
     public native void beginAppearanceTransition(boolean isAppearing, boolean animated);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "endAppearanceTransition")
     public native void endAppearanceTransition();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "childViewControllerForStatusBarStyle")
     public native UIViewController childViewControllerForStatusBarStyle();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "childViewControllerForStatusBarHidden")
     public native UIViewController childViewControllerForStatusBarHidden();
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
     @Method(selector = "automaticallyForwardAppearanceAndRotationMethodsToChildViewControllers")
     public native boolean isAutomaticallyForwardAppearanceAndRotationMethodsToChildViewControllers();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "shouldAutomaticallyForwardRotationMethods")
     public native boolean shouldAutomaticallyForwardRotationMethods();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "shouldAutomaticallyForwardAppearanceMethods")
     public native boolean shouldAutomaticallyForwardAppearanceMethods();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "willMoveToParentViewController:")
     public native void willMoveToParentViewController(UIViewController parent);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "didMoveToParentViewController:")
     public native void didMoveToParentViewController(UIViewController parent);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "encodeRestorableStateWithCoder:")
     public native void encodeRestorableState(NSCoder coder);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "decodeRestorableStateWithCoder:")
     public native void decodeRestorableState(NSCoder coder);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "applicationFinishedRestoringState")
     public native void applicationFinishedRestoringState();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "updateViewConstraints")
     public native void updateViewConstraints();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "setToolbarItems:animated:")
     public native void setToolbarItems(NSArray<UIBarButtonItem> toolbarItems, boolean animated);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "transitionCoordinator")
     public native UIViewControllerTransitionCoordinator transitionCoordinator();
     @Method(selector = "encodeWithCoder:")

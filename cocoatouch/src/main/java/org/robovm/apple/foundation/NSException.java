@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSException/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -65,8 +64,14 @@ import org.robovm.apple.security.*;
     public native String reason();
     @Method(selector = "userInfo")
     public native NSDictionary<?, ?> userInfo();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "callStackReturnAddresses")
     public native NSArray<?> callStackReturnAddresses();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "callStackSymbols")
     public native NSArray<?> callStackSymbols();
     @Method(selector = "raise")

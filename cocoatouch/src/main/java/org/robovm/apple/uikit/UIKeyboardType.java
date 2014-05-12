@@ -33,9 +33,9 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/UIKeyboardType/*</name>*/ implements ValuedEnum {
     /*<values>*/
@@ -47,8 +47,17 @@ public enum /*<name>*/UIKeyboardType/*</name>*/ implements ValuedEnum {
     PhonePad(5L),
     NamePhonePad(6L),
     EmailAddress(7L),
+    /**
+     * @since Available in iOS 4.1 and later.
+     */
     DecimalPad(8L),
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     Twitter(9L),
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     WebSearch(10L),
     Alphabet(1L);
     /*</values>*/

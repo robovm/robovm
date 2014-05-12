@@ -29,9 +29,11 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- * <div class="javadoc"></div>
+ * @since Available in iOS 6.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CFFileSecurityClearOptions/*</name>*/ extends Bits</*<name>*/CFFileSecurityClearOptions/*</name>*/> {
     /*<values>*/

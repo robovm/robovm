@@ -30,10 +30,8 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreGraphics")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGGradient/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -96,10 +94,19 @@ import org.robovm.apple.foundation.*;
     }
     
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGGradientGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGGradientCreateWithColorComponents", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGGradient create(CGColorSpace space, @Pointer long components, @Pointer long locations, @MachineSizedUInt long count);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGGradientCreateWithColors", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGGradient create(CGColorSpace space, CFArray colors, @Pointer long locations);
     /*</methods>*/

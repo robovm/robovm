@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSDirectoryEnumerator/*</name>*/ 
     extends /*<extends>*/NSEnumerator/*</extends>*/ <NSObject>
@@ -57,8 +56,14 @@ import org.robovm.apple.security.*;
     public native NSDictionary<?, ?> directoryAttributes();
     @Method(selector = "skipDescendents")
     public native void skipDescendents();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "level")
     public native @MachineSizedUInt long level();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "skipDescendants")
     public native void skipDescendants();
     /*</methods>*/

@@ -31,10 +31,9 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreImage") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CIContext/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -70,6 +69,11 @@ import org.robovm.apple.opengles.*;
     @GlobalValue(symbol="kCIContextUseSoftwareRenderer", optional=true)
     public static native NSString KeyUseSoftwareRenderer();
     
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
     @Method(selector = "drawImage:atPoint:fromRect:")
     public native void drawImage(CIImage im, @ByVal CGPoint p, @ByVal CGRect src);
     @Method(selector = "drawImage:inRect:fromRect:")
@@ -80,14 +84,29 @@ import org.robovm.apple.opengles.*;
     public native CGImage createCGImage(CIImage im, @ByVal CGRect r, int f, CGColorSpace cs);
     @Method(selector = "render:toBitmap:rowBytes:bounds:format:colorSpace:")
     public native void render(CIImage im, VoidPtr data, int rb, @ByVal CGRect r, int f, CGColorSpace cs);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "inputImageMaximumSize")
     public native @ByVal CGSize getInputImageMaximumSize();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "outputImageMaximumSize")
     public native @ByVal CGSize getOutputImageMaximumSize();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "contextWithOptions:")
     protected static native @Pointer long contextWithOptions$(NSDictionary<?, ?> dict);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "contextWithEAGLContext:")
     protected static native @Pointer long contextWithEAGLContext$(EAGLContext eaglContext);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "contextWithEAGLContext:options:")
     protected static native @Pointer long contextWithEAGLContext$options$(EAGLContext eaglContext, NSDictionary<?, ?> dict);
     /*</methods>*/

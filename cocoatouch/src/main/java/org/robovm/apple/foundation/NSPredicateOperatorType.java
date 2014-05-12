@@ -30,9 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/NSPredicateOperatorType/*</name>*/ implements ValuedEnum {
     /*<values>*/
@@ -48,7 +48,13 @@ public enum /*<name>*/NSPredicateOperatorType/*</name>*/ implements ValuedEnum {
     EndsWith(9L),
     In(10L),
     CustomSelector(11L),
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     Contains(99L),
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     Between(100L);
     /*</values>*/
 

@@ -31,10 +31,8 @@ import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("MediaPlayer")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MPMediaPlaybackGlobals/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
@@ -48,6 +46,9 @@ import org.robovm.apple.coregraphics.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="MPMediaPlaybackIsPreparedToPlayDidChangeNotification", optional=true)
     public static native String NotificationIsPreparedToPlayDidChange();
     /*</methods>*/

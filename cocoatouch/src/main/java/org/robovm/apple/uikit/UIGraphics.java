@@ -33,10 +33,8 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
 @Marshaler(NSString.AsStringMarshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIGraphics/*</name>*/ 
@@ -69,28 +67,58 @@ import org.robovm.apple.coreimage.*;
     public static native void rectClip(@ByVal CGRect rect);
     @Bridge(symbol="UIGraphicsBeginImageContext", optional=true)
     public static native void beginImageContext(@ByVal CGSize size);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="UIGraphicsBeginImageContextWithOptions", optional=true)
     public static native void beginImageContextWithOptions(@ByVal CGSize size, boolean opaque, @MachineSizedFloat double scale);
     @Bridge(symbol="UIGraphicsGetImageFromCurrentImageContext", optional=true)
     public static native UIImage getImageFromCurrentImageContext();
     @Bridge(symbol="UIGraphicsEndImageContext", optional=true)
     public static native void endImageContext();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Bridge(symbol="UIGraphicsBeginPDFContextToFile", optional=true)
     public static native boolean beginPDFContextToFile(String path, @ByVal CGRect bounds, NSDictionary<NSString, ?> documentInfo);
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Bridge(symbol="UIGraphicsBeginPDFContextToData", optional=true)
     public static native void beginPDFContextToData(NSMutableData data, @ByVal CGRect bounds, NSDictionary<NSString, ?> documentInfo);
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Bridge(symbol="UIGraphicsEndPDFContext", optional=true)
     public static native void endPDFContext();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Bridge(symbol="UIGraphicsBeginPDFPage", optional=true)
     public static native void beginPDFPage();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Bridge(symbol="UIGraphicsBeginPDFPageWithInfo", optional=true)
     public static native void beginPDFPageWithInfo(@ByVal CGRect bounds, NSDictionary<NSString, ?> pageInfo);
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Bridge(symbol="UIGraphicsGetPDFContextBounds", optional=true)
     public static native @ByVal CGRect getPDFContextBounds();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Bridge(symbol="UIGraphicsSetPDFContextURLForRect", optional=true)
     public static native void setPDFContextURLForRect(NSURL url, @ByVal CGRect rect);
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Bridge(symbol="UIGraphicsAddPDFContextDestinationAtPoint", optional=true)
     public static native void addPDFContextDestinationAtPoint(String name, @ByVal CGPoint point);
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Bridge(symbol="UIGraphicsSetPDFContextDestinationForRect", optional=true)
     public static native void setPDFContextDestinationForRect(String name, @ByVal CGRect rect);
     /*</methods>*/

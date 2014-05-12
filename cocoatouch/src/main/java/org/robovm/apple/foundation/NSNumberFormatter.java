@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSNumberFormatter/*</name>*/ 
     extends /*<extends>*/NSFormatter/*</extends>*/ 
@@ -257,30 +256,69 @@ import org.robovm.apple.security.*;
     public native NSNumber maximum();
     @Method(selector = "setMaximum:")
     public native void setMaximum(NSNumber number);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "currencyGroupingSeparator")
     public native String currencyGroupingSeparator();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "setCurrencyGroupingSeparator:")
     public native void setCurrencyGroupingSeparator(String string);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "isLenient")
     public native boolean isLenient();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "setLenient:")
     public native void setLenient(boolean b);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "usesSignificantDigits")
     public native boolean usesSignificantDigits();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "setUsesSignificantDigits:")
     public native void setUsesSignificantDigits(boolean b);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "minimumSignificantDigits")
     public native @MachineSizedUInt long minimumSignificantDigits();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "setMinimumSignificantDigits:")
     public native void setMinimumSignificantDigits(@MachineSizedUInt long number);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "maximumSignificantDigits")
     public native @MachineSizedUInt long maximumSignificantDigits();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "setMaximumSignificantDigits:")
     public native void setMaximumSignificantDigits(@MachineSizedUInt long number);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "isPartialStringValidationEnabled")
     public native boolean isPartialStringValidationEnabled();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "setPartialStringValidationEnabled:")
     public native void setPartialStringValidationEnabled(boolean b);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "localizedStringFromNumber:numberStyle:")
     public static native String localizedStringFromNumber$numberStyle$(NSNumber num, NSNumberFormatterStyle nstyle);
     @Method(selector = "defaultFormatterBehavior")

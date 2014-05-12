@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSScanner/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -72,10 +71,16 @@ import org.robovm.apple.security.*;
     public native NSObject locale();
     @Method(selector = "scanInt:")
     public native boolean scanInt$(IntPtr result);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "scanInteger:")
     public native boolean scanInteger$(MachineSizedSIntPtr result);
     @Method(selector = "scanLongLong:")
     public native boolean scanLongLong$(LongPtr result);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "scanUnsignedLongLong:")
     public native boolean scanUnsignedLongLong$(LongPtr result);
     @Method(selector = "scanFloat:")
@@ -84,10 +89,19 @@ import org.robovm.apple.security.*;
     public native boolean scanDouble$(DoublePtr result);
     @Method(selector = "scanHexInt:")
     public native boolean scanHexInt$(IntPtr result);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "scanHexLongLong:")
     public native boolean scanHexLongLong$(LongPtr result);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "scanHexFloat:")
     public native boolean scanHexFloat$(FloatPtr result);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "scanHexDouble:")
     public native boolean scanHexDouble$(DoublePtr result);
     @Method(selector = "scanString:intoString:")

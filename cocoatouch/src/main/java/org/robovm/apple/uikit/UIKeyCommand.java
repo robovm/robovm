@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 7.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIKeyCommand/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -57,14 +58,29 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIKeyInputUpArrow", optional=true)
     public static native String KeyInputUpArrow();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIKeyInputDownArrow", optional=true)
     public static native String KeyInputDownArrow();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIKeyInputLeftArrow", optional=true)
     public static native String KeyInputLeftArrow();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIKeyInputRightArrow", optional=true)
     public static native String KeyInputRightArrow();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIKeyInputEscape", optional=true)
     public static native String KeyInputEscape();
     

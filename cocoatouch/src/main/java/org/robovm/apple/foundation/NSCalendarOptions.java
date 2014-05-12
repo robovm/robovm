@@ -30,19 +30,40 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSCalendarOptions/*</name>*/ extends Bits</*<name>*/NSCalendarOptions/*</name>*/> {
     /*<values>*/
     public static final NSCalendarOptions WrapComponents = new NSCalendarOptions(1L);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public static final NSCalendarOptions MatchStrictly = new NSCalendarOptions(2L);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public static final NSCalendarOptions SearchBackwards = new NSCalendarOptions(4L);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public static final NSCalendarOptions MatchPreviousTimePreservingSmallerUnits = new NSCalendarOptions(256L);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public static final NSCalendarOptions MatchNextTimePreservingSmallerUnits = new NSCalendarOptions(512L);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public static final NSCalendarOptions MatchNextTime = new NSCalendarOptions(1024L);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public static final NSCalendarOptions MatchFirst = new NSCalendarOptions(4096L);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public static final NSCalendarOptions MatchLast = new NSCalendarOptions(8192L);
     /*</values>*/
 

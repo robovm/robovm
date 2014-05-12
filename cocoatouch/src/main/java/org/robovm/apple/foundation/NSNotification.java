@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSNotification/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -45,6 +44,9 @@ import org.robovm.apple.security.*;
     /*<constructors>*/
     public NSNotification() {}
     protected NSNotification(SkipInit skipInit) { super(skipInit); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public NSNotification(String name, NSNotification object, NSDictionary<?, ?> userInfo) { super((SkipInit) null); initObject(initWithName$object$userInfo$(name, object, userInfo)); }
     /*</constructors>*/
     /*<properties>*/
@@ -58,6 +60,9 @@ import org.robovm.apple.security.*;
     public native NSObject object();
     @Method(selector = "userInfo")
     public native NSDictionary<?, ?> userInfo();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "initWithName:object:userInfo:")
     protected native @Pointer long initWithName$object$userInfo$(String name, NSNotification object, NSDictionary<?, ?> userInfo);
     @Method(selector = "notificationWithName:object:")

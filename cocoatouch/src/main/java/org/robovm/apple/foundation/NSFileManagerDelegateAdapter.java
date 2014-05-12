@@ -30,10 +30,8 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSFileManagerDelegateAdapter/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -52,34 +50,58 @@ import org.robovm.apple.security.*;
     /*<methods>*/
     @NotImplemented("fileManager:shouldCopyItemAtPath:toPath:")
     public boolean fileManager$shouldCopyItemAtPath$toPath$(NSFileManager fileManager, String srcPath, String dstPath) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @NotImplemented("fileManager:shouldCopyItemAtURL:toURL:")
     public boolean fileManager$shouldCopyItemAtURL$toURL$(NSFileManager fileManager, NSURL srcURL, NSURL dstURL) { throw new UnsupportedOperationException(); }
     @NotImplemented("fileManager:shouldProceedAfterError:copyingItemAtPath:toPath:")
     public boolean fileManager$shouldProceedAfterError$copyingItemAtPath$toPath$(NSFileManager fileManager, NSError error, String srcPath, String dstPath) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @NotImplemented("fileManager:shouldProceedAfterError:copyingItemAtURL:toURL:")
     public boolean fileManager$shouldProceedAfterError$copyingItemAtURL$toURL$(NSFileManager fileManager, NSError error, NSURL srcURL, NSURL dstURL) { throw new UnsupportedOperationException(); }
     @NotImplemented("fileManager:shouldMoveItemAtPath:toPath:")
     public boolean fileManager$shouldMoveItemAtPath$toPath$(NSFileManager fileManager, String srcPath, String dstPath) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @NotImplemented("fileManager:shouldMoveItemAtURL:toURL:")
     public boolean fileManager$shouldMoveItemAtURL$toURL$(NSFileManager fileManager, NSURL srcURL, NSURL dstURL) { throw new UnsupportedOperationException(); }
     @NotImplemented("fileManager:shouldProceedAfterError:movingItemAtPath:toPath:")
     public boolean fileManager$shouldProceedAfterError$movingItemAtPath$toPath$(NSFileManager fileManager, NSError error, String srcPath, String dstPath) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @NotImplemented("fileManager:shouldProceedAfterError:movingItemAtURL:toURL:")
     public boolean fileManager$shouldProceedAfterError$movingItemAtURL$toURL$(NSFileManager fileManager, NSError error, NSURL srcURL, NSURL dstURL) { throw new UnsupportedOperationException(); }
     @NotImplemented("fileManager:shouldLinkItemAtPath:toPath:")
     public boolean fileManager$shouldLinkItemAtPath$toPath$(NSFileManager fileManager, String srcPath, String dstPath) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @NotImplemented("fileManager:shouldLinkItemAtURL:toURL:")
     public boolean fileManager$shouldLinkItemAtURL$toURL$(NSFileManager fileManager, NSURL srcURL, NSURL dstURL) { throw new UnsupportedOperationException(); }
     @NotImplemented("fileManager:shouldProceedAfterError:linkingItemAtPath:toPath:")
     public boolean fileManager$shouldProceedAfterError$linkingItemAtPath$toPath$(NSFileManager fileManager, NSError error, String srcPath, String dstPath) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @NotImplemented("fileManager:shouldProceedAfterError:linkingItemAtURL:toURL:")
     public boolean fileManager$shouldProceedAfterError$linkingItemAtURL$toURL$(NSFileManager fileManager, NSError error, NSURL srcURL, NSURL dstURL) { throw new UnsupportedOperationException(); }
     @NotImplemented("fileManager:shouldRemoveItemAtPath:")
     public boolean fileManager$shouldRemoveItemAtPath$(NSFileManager fileManager, String path) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @NotImplemented("fileManager:shouldRemoveItemAtURL:")
     public boolean fileManager$shouldRemoveItemAtURL$(NSFileManager fileManager, NSURL URL) { throw new UnsupportedOperationException(); }
     @NotImplemented("fileManager:shouldProceedAfterError:removingItemAtPath:")
     public boolean fileManager$shouldProceedAfterError$removingItemAtPath$(NSFileManager fileManager, NSError error, String path) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @NotImplemented("fileManager:shouldProceedAfterError:removingItemAtURL:")
     public boolean fileManager$shouldProceedAfterError$removingItemAtURL$(NSFileManager fileManager, NSError error, NSURL URL) { throw new UnsupportedOperationException(); }
     /*</methods>*/

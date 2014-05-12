@@ -30,10 +30,11 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 4.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSFileWrapper/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -45,9 +46,15 @@ import org.robovm.apple.security.*;
     /*<constructors>*/
     public NSFileWrapper() {}
     protected NSFileWrapper(SkipInit skipInit) { super(skipInit); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public NSFileWrapper(NSURL url, NSFileWrapperReadingOptions options, NSError.NSErrorPtr outError) { super((SkipInit) null); initObject(initWithURL$options$error$(url, options, outError)); }
     public NSFileWrapper(NSDictionary<?, ?> childrenByPreferredName) { super((SkipInit) null); initObject(initDirectoryWithFileWrappers$(childrenByPreferredName)); }
     public NSFileWrapper(NSData contents) { super((SkipInit) null); initObject(initRegularFileWithContents$(contents)); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public NSFileWrapper(NSURL url) { super((SkipInit) null); initObject(initSymbolicLinkWithDestinationURL$(url)); }
     /*</constructors>*/
     /*<properties>*/
@@ -66,12 +73,18 @@ import org.robovm.apple.security.*;
     }
     
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "initWithURL:options:error:")
     protected native @Pointer long initWithURL$options$error$(NSURL url, NSFileWrapperReadingOptions options, NSError.NSErrorPtr outError);
     @Method(selector = "initDirectoryWithFileWrappers:")
     protected native @Pointer long initDirectoryWithFileWrappers$(NSDictionary<?, ?> childrenByPreferredName);
     @Method(selector = "initRegularFileWithContents:")
     protected native @Pointer long initRegularFileWithContents$(NSData contents);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "initSymbolicLinkWithDestinationURL:")
     protected native @Pointer long initSymbolicLinkWithDestinationURL$(NSURL url);
     @Method(selector = "initWithSerializedRepresentation:")
@@ -94,10 +107,19 @@ import org.robovm.apple.security.*;
     public native void setFileAttributes(NSDictionary<?, ?> fileAttributes);
     @Method(selector = "fileAttributes")
     public native NSDictionary<?, ?> fileAttributes();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "matchesContentsOfURL:")
     public native boolean matchesContentsOfURL$(NSURL url);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "readFromURL:options:error:")
     public native boolean readFromURL$options$error$(NSURL url, NSFileWrapperReadingOptions options, NSError.NSErrorPtr outError);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "writeToURL:options:originalContentsURL:error:")
     public native boolean writeToURL$options$originalContentsURL$error$(NSURL url, NSFileWrapperWritingOptions options, NSURL originalContentsURL, NSError.NSErrorPtr outError);
     @Method(selector = "serializedRepresentation")
@@ -114,6 +136,9 @@ import org.robovm.apple.security.*;
     public native String keyForFileWrapper$(NSFileWrapper child);
     @Method(selector = "regularFileContents")
     public native NSData regularFileContents();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "symbolicLinkDestinationURL")
     public native NSURL symbolicLinkDestinationURL();
     @Method(selector = "encodeWithCoder:")

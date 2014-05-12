@@ -33,10 +33,8 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UISplitViewControllerDelegateAdapter/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -59,10 +57,19 @@ import org.robovm.apple.coreimage.*;
     public void willShowViewController(UISplitViewController svc, UIViewController aViewController, UIBarButtonItem barButtonItem) { throw new UnsupportedOperationException(); }
     @NotImplemented("splitViewController:popoverController:willPresentViewController:")
     public void willPresentViewController(UISplitViewController svc, UIPopoverController pc, UIViewController aViewController) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @NotImplemented("splitViewController:shouldHideViewController:inOrientation:")
     public boolean shouldHideViewController(UISplitViewController svc, UIViewController vc, UIInterfaceOrientation orientation) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @NotImplemented("splitViewControllerSupportedInterfaceOrientations:")
     public @MachineSizedUInt long getSupportedInterfaceOrientations(UISplitViewController splitViewController) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @NotImplemented("splitViewControllerPreferredInterfaceOrientationForPresentation:")
     public UIInterfaceOrientation name(UISplitViewController splitViewController) { throw new UnsupportedOperationException(); }
     /*</methods>*/

@@ -30,10 +30,8 @@ import org.robovm.apple.dispatch.*;
 import org.robovm.apple.corefoundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("Security")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SecKey/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -48,23 +46,50 @@ import org.robovm.apple.corefoundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kSecPrivateKeyAttrs", optional=true)
     public static native CFType PrivateKeyAttrs();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kSecPublicKeyAttrs", optional=true)
     public static native CFType PublicKeyAttrs();
     
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="SecKeyGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="SecKeyGeneratePair", optional=true)
     public static native int generatePair(CFDictionary parameters, SecKey.SecKeyPtr publicKey, SecKey.SecKeyPtr privateKey);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="SecKeyRawSign", optional=true)
     public native int rawSign(SecPadding padding, BytePtr dataToSign, @MachineSizedUInt long dataToSignLen, BytePtr sig, MachineSizedUIntPtr sigLen);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="SecKeyRawVerify", optional=true)
     public native int rawVerify(SecPadding padding, BytePtr signedData, @MachineSizedUInt long signedDataLen, BytePtr sig, @MachineSizedUInt long sigLen);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="SecKeyEncrypt", optional=true)
     public native int encrypt(SecPadding padding, BytePtr plainText, @MachineSizedUInt long plainTextLen, BytePtr cipherText, MachineSizedUIntPtr cipherTextLen);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="SecKeyDecrypt", optional=true)
     public native int decrypt(SecPadding padding, BytePtr cipherText, @MachineSizedUInt long cipherTextLen, BytePtr plainText, MachineSizedUIntPtr plainTextLen);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="SecKeyGetBlockSize", optional=true)
     public native @MachineSizedUInt long getBlockSize();
     /*</methods>*/

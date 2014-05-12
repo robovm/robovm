@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSTimer/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -62,8 +61,14 @@ import org.robovm.apple.security.*;
     public native void setFireDate(NSDate date);
     @Method(selector = "timeInterval")
     public native double timeInterval();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "tolerance")
     public native double tolerance();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "setTolerance:")
     public native void setTolerance(double tolerance);
     @Method(selector = "invalidate")

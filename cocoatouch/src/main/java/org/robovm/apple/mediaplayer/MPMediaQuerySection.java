@@ -31,10 +31,11 @@ import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 4.2 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("MediaPlayer") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MPMediaQuerySection/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 

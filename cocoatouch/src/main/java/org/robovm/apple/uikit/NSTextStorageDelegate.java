@@ -33,10 +33,9 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ interface /*<name>*/NSTextStorageDelegate/*</name>*/ 
     /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
@@ -50,8 +49,14 @@ import org.robovm.apple.coreimage.*;
     
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "textStorage:willProcessEditing:range:changeInLength:")
     void willProcessEditing(NSTextStorage textStorage, NSTextStorageEditActions editedMask, @ByVal NSRange editedRange, @MachineSizedSInt long delta);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "textStorage:didProcessEditing:range:changeInLength:")
     void didProcessEditing(NSTextStorage textStorage, NSTextStorageEditActions editedMask, @ByVal NSRange editedRange, @MachineSizedSInt long delta);
     /*</methods>*/

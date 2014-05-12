@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIImagePickerController/*</name>*/ 
     extends /*<extends>*/UINavigationController/*</extends>*/ 
@@ -115,25 +116,49 @@ import org.robovm.apple.coreimage.*;
     public static native NSString EditingInfoCropRect();
     @GlobalValue(symbol="UIImagePickerControllerMediaURL", optional=true)
     public static native NSString EditingInfoMediaURL();
+    /**
+     * @since Available in iOS 4.1 and later.
+     */
     @GlobalValue(symbol="UIImagePickerControllerReferenceURL", optional=true)
     public static native NSString EditingInfoReferenceURL();
+    /**
+     * @since Available in iOS 4.1 and later.
+     */
     @GlobalValue(symbol="UIImagePickerControllerMediaMetadata", optional=true)
     public static native NSString EditingInfoMediaMetadata();
     
+    /**
+     * @since Available in iOS 3.1 and later.
+     */
     @Method(selector = "takePicture")
     public native void takePicture();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "startVideoCapture")
     public native boolean startVideoCapture();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "stopVideoCapture")
     public native void stopVideoCapture();
     @Method(selector = "isSourceTypeAvailable:")
     public static native boolean isSourceTypeAvailable(UIImagePickerControllerSourceType sourceType);
     @Method(selector = "availableMediaTypesForSourceType:")
     public static native NSArray<NSString> getAvailableMediaTypes(UIImagePickerControllerSourceType sourceType);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "isCameraDeviceAvailable:")
     public static native boolean isCameraDeviceAvailable(UIImagePickerControllerCameraDevice cameraDevice);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "isFlashAvailableForCameraDevice:")
     public static native boolean isFlashAvailableForCameraDevice(UIImagePickerControllerCameraDevice cameraDevice);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "availableCaptureModesForCameraDevice:")
     public static native NSArray<NSNumber> getAvailableCaptureModes(UIImagePickerControllerCameraDevice cameraDevice);
     /*</methods>*/

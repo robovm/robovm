@@ -29,10 +29,11 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 3.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreData") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSEntityMigrationPolicy/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -50,16 +51,34 @@ import org.robovm.apple.foundation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSMigrationManagerKey", optional=true)
     public static native NSString KeyManager();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSMigrationSourceObjectKey", optional=true)
     public static native NSString KeySourceObject();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSMigrationDestinationObjectKey", optional=true)
     public static native NSString KeyDestinationObject();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSMigrationEntityMappingKey", optional=true)
     public static native NSString KeyEntityMapping();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSMigrationPropertyMappingKey", optional=true)
     public static native NSString KeyPropertyMapping();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSMigrationEntityPolicyKey", optional=true)
     public static native NSString KeyEntityPolicy();
     

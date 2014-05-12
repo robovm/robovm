@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSNotificationCenter/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -63,6 +62,9 @@ import org.robovm.apple.security.*;
     public native void removeObserver$(NSObject observer);
     @Method(selector = "removeObserver:name:object:")
     public native void removeObserver$name$object$(NSObject observer, String aName, NSObject anObject);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "addObserverForName:object:queue:usingBlock:")
     public native NSObject addObserverForName$object$queue$usingBlock$(String name, NSObject obj, NSOperationQueue queue, ObjCBlock block);
     @Method(selector = "defaultCenter")

@@ -30,10 +30,11 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 5.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSFileCoordinator/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -64,6 +65,9 @@ import org.robovm.apple.security.*;
     public native void coordinateWritingItemAtURL$options$writingItemAtURL$options$error$byAccessor$(NSURL url1, NSFileCoordinatorWritingOptions options1, NSURL url2, NSFileCoordinatorWritingOptions options2, NSError.NSErrorPtr outError, ObjCBlock writer);
     @Method(selector = "prepareForReadingItemsAtURLs:options:writingItemsAtURLs:options:error:byAccessor:")
     public native void prepareForReadingItemsAtURLs$options$writingItemsAtURLs$options$error$byAccessor$(NSArray<?> readingURLs, NSFileCoordinatorReadingOptions readingOptions, NSArray<?> writingURLs, NSFileCoordinatorWritingOptions writingOptions, NSError.NSErrorPtr outError, @Block("(@Block)") VoidBlock1<Runnable> batchAccessor);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "itemAtURL:willMoveToURL:")
     public native void itemAtURL$willMoveToURL$(NSURL oldURL, NSURL newURL);
     @Method(selector = "itemAtURL:didMoveToURL:")

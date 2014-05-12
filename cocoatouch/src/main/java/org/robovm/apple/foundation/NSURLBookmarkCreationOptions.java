@@ -30,12 +30,19 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- * <div class="javadoc"></div>
+ * @since Available in iOS 4.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSURLBookmarkCreationOptions/*</name>*/ extends Bits</*<name>*/NSURLBookmarkCreationOptions/*</name>*/> {
     /*<values>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     public static final NSURLBookmarkCreationOptions PreferFileIDResolution = new NSURLBookmarkCreationOptions(256L);
     public static final NSURLBookmarkCreationOptions MinimalBookmark = new NSURLBookmarkCreationOptions(512L);
     public static final NSURLBookmarkCreationOptions SuitableForBookmarkFile = new NSURLBookmarkCreationOptions(1024L);

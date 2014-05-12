@@ -31,10 +31,8 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("QuartzCore")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CoreAnimation/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
@@ -48,6 +46,9 @@ import org.robovm.apple.opengles.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CACurrentMediaTime", optional=true)
     public static native double getCurrentMediaTime();
     /*</methods>*/

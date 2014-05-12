@@ -29,9 +29,9 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CFCalendarUnit/*</name>*/ extends Bits</*<name>*/CFCalendarUnit/*</name>*/> {
     /*<values>*/
@@ -45,9 +45,21 @@ public final class /*<name>*/CFCalendarUnit/*</name>*/ extends Bits</*<name>*/CF
     public static final CFCalendarUnit Week = new CFCalendarUnit(256L);
     public static final CFCalendarUnit Weekday = new CFCalendarUnit(512L);
     public static final CFCalendarUnit WeekdayOrdinal = new CFCalendarUnit(1024L);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public static final CFCalendarUnit Quarter = new CFCalendarUnit(2048L);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public static final CFCalendarUnit WeekOfMonth = new CFCalendarUnit(4096L);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public static final CFCalendarUnit WeekOfYear = new CFCalendarUnit(8192L);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public static final CFCalendarUnit YearForWeekOfYear = new CFCalendarUnit(16384L);
     /*</values>*/
 

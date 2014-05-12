@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSDate/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -59,6 +58,9 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="NSSystemClockDidChangeNotification", optional=true)
     public static native String NotificationSystemClockDidChange();
     
@@ -70,8 +72,16 @@ import org.robovm.apple.security.*;
     public native double timeIntervalSinceNow();
     @Method(selector = "timeIntervalSince1970")
     public native double timeIntervalSince1970();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 4.0.
+     */
+    @Deprecated
     @Method(selector = "addTimeInterval:")
     public native NSObject addTimeInterval$(double seconds);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "dateByAddingTimeInterval:")
     public native NSObject dateByAddingTimeInterval$(double ti);
     @Method(selector = "earlierDate:")

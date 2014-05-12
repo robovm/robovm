@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 5.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIPopoverBackgroundView/*</name>*/ 
     extends /*<extends>*/UIView/*</extends>*/ 
@@ -72,6 +73,9 @@ import org.robovm.apple.coreimage.*;
     public static native @MachineSizedFloat double getArrowBase();
     @Method(selector = "contentViewInsets")
     public static native @ByVal UIEdgeInsets getContentViewInsets();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "wantsDefaultContentAppearance")
     public static native boolean wantsDefaultContentAppearance();
     /*</methods>*/

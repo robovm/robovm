@@ -30,10 +30,8 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreGraphics")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGBitmapContext/*</name>*/ 
     extends /*<extends>*/CGContext/*</extends>*/ 
@@ -52,28 +50,64 @@ import org.robovm.apple.foundation.*;
     }
     
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CGBitmapContextCreateWithData", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGBitmapContext create(VoidPtr data, @MachineSizedUInt long width, @MachineSizedUInt long height, @MachineSizedUInt long bitsPerComponent, @MachineSizedUInt long bytesPerRow, CGColorSpace space, CGBitmapInfo bitmapInfo, FunctionPtr releaseCallback, VoidPtr releaseInfo);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGBitmapContextCreate", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGBitmapContext create(VoidPtr data, @MachineSizedUInt long width, @MachineSizedUInt long height, @MachineSizedUInt long bitsPerComponent, @MachineSizedUInt long bytesPerRow, CGColorSpace space, CGBitmapInfo bitmapInfo);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGBitmapContextGetData", optional=true)
     public native VoidPtr getData();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGBitmapContextGetWidth", optional=true)
     public native @MachineSizedUInt long getWidth();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGBitmapContextGetHeight", optional=true)
     public native @MachineSizedUInt long getHeight();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGBitmapContextGetBitsPerComponent", optional=true)
     public native @MachineSizedUInt long getBitsPerComponent();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGBitmapContextGetBitsPerPixel", optional=true)
     public native @MachineSizedUInt long getBitsPerPixel();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGBitmapContextGetBytesPerRow", optional=true)
     public native @MachineSizedUInt long getBytesPerRow();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGBitmapContextGetColorSpace", optional=true)
     public native CGColorSpace getColorSpace();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGBitmapContextGetAlphaInfo", optional=true)
     public native CGImageAlphaInfo getAlphaInfo();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGBitmapContextGetBitmapInfo", optional=true)
     public native CGBitmapInfo getBitmapInfo();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGBitmapContextCreateImage", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage toImage();
     /*</methods>*/

@@ -30,18 +30,36 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSDataWritingOptions/*</name>*/ extends Bits</*<name>*/NSDataWritingOptions/*</name>*/> {
     /*<values>*/
     public static final NSDataWritingOptions DataWritingAtomic = new NSDataWritingOptions(1L);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public static final NSDataWritingOptions DataWritingWithoutOverwriting = new NSDataWritingOptions(2L);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public static final NSDataWritingOptions DataWritingFileProtectionNone = new NSDataWritingOptions(268435456L);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public static final NSDataWritingOptions DataWritingFileProtectionComplete = new NSDataWritingOptions(536870912L);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public static final NSDataWritingOptions DataWritingFileProtectionCompleteUnlessOpen = new NSDataWritingOptions(805306368L);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public static final NSDataWritingOptions DataWritingFileProtectionCompleteUntilFirstUserAuthentication = new NSDataWritingOptions(1073741824L);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public static final NSDataWritingOptions DataWritingFileProtectionMask = new NSDataWritingOptions(-268435456L);
     public static final NSDataWritingOptions AtomicWrite = new NSDataWritingOptions(1L);
     /*</values>*/

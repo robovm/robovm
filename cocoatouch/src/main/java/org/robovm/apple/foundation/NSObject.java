@@ -32,10 +32,11 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 @Marshalers({
     @Marshaler(NSString.AsStringMarshaler.class),
@@ -235,6 +236,9 @@ import org.robovm.apple.security.*;
     public native boolean validateValueForKey(NSObject ioValue, String inKey, NSError.NSErrorPtr outError);
     @Method(selector = "mutableArrayValueForKey:")
     public native NSMutableArray<?> getMutableArrayValueForKey(String key);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "mutableOrderedSetValueForKey:")
     public native NSMutableOrderedSet<?> getMutableOrderedSetValueForKey(String key);
     @Method(selector = "mutableSetValueForKey:")
@@ -247,6 +251,9 @@ import org.robovm.apple.security.*;
     public native boolean validateValueForKeyPath(NSObject ioValue, String inKeyPath, NSError.NSErrorPtr outError);
     @Method(selector = "mutableArrayValueForKeyPath:")
     public native NSMutableArray<?> getMutableArrayValueForKeyPath(String keyPath);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "mutableOrderedSetValueForKeyPath:")
     public native NSMutableOrderedSet<?> getMutableOrderedSetValueForKeyPath(String keyPath);
     @Method(selector = "mutableSetValueForKeyPath:")
@@ -263,6 +270,9 @@ import org.robovm.apple.security.*;
     public native void setValuesForKeys(NSDictionary<?, ?> keyedValues);
     @Method(selector = "addObserver:forKeyPath:options:context:")
     private native void addObserver$forKeyPath$options$context$(NSObject observer, String keyPath, NSKeyValueObservingOptions options, VoidPtr context);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "removeObserver:forKeyPath:context:")
     private native void removeObserver$forKeyPath$context$(NSObject observer, String keyPath, VoidPtr context);
     @Method(selector = "willChangeValueForKey:")
@@ -285,10 +295,19 @@ import org.robovm.apple.security.*;
     public final native void performSelectorOnMainThread(Selector aSelector, NSObject arg, boolean wait, NSArray<?> array);
     @Method(selector = "performSelectorOnMainThread:withObject:waitUntilDone:")
     public final native void performSelectorOnMainThread(Selector aSelector, NSObject arg, boolean wait);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "performSelector:onThread:withObject:waitUntilDone:modes:")
     public final native void performSelector(Selector aSelector, NSThread thr, NSObject arg, boolean wait, NSArray<?> array);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "performSelector:onThread:withObject:waitUntilDone:")
     public final native void performSelector(Selector aSelector, NSThread thr, NSObject arg, boolean wait);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "performSelectorInBackground:withObject:")
     public final native void performSelectorInBackground(Selector aSelector, NSObject arg);
     /*</methods>*/

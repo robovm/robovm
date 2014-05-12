@@ -30,9 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 public enum /*<name>*/NSURLError/*</name>*/ implements ValuedEnum {
     /*<values>*/
@@ -59,6 +59,9 @@ public enum /*<name>*/NSURLError/*</name>*/ implements ValuedEnum {
     FileDoesNotExist(-1100L),
     FileIsDirectory(-1101L),
     NoPermissionsToReadFile(-1102L),
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     DataLengthExceedsMaximum(-1103L),
     SecureConnectionFailed(-1200L),
     ServerCertificateHasBadDate(-1201L),
@@ -76,9 +79,21 @@ public enum /*<name>*/NSURLError/*</name>*/ implements ValuedEnum {
     CannotMoveFile(-3005L),
     DownloadDecodingFailedMidStream(-3006L),
     DownloadDecodingFailedToComplete(-3007L),
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     InternationalRoamingOff(-1018L),
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     CallIsActive(-1019L),
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     DataNotAllowed(-1020L),
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     RequestBodyStreamExhausted(-1021L);
     /*</values>*/
 

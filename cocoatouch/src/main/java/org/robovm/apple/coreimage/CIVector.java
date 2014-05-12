@@ -31,10 +31,9 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreImage") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CIVector/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -50,8 +49,17 @@ import org.robovm.apple.opengles.*;
     public CIVector(@MachineSizedFloat double x, @MachineSizedFloat double y) { super((SkipInit) null); initObject(initWithX$Y$(x, y)); }
     public CIVector(@MachineSizedFloat double x, @MachineSizedFloat double y, @MachineSizedFloat double z) { super((SkipInit) null); initObject(initWithX$Y$Z$(x, y, z)); }
     public CIVector(@MachineSizedFloat double x, @MachineSizedFloat double y, @MachineSizedFloat double z, @MachineSizedFloat double w) { super((SkipInit) null); initObject(initWithX$Y$Z$W$(x, y, z, w)); }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public CIVector(@ByVal CGPoint p) { super((SkipInit) null); initObject(initWithCGPoint$(p)); }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public CIVector(@ByVal CGRect r) { super((SkipInit) null); initObject(initWithCGRect$(r)); }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public CIVector(@ByVal CGAffineTransform r) { super((SkipInit) null); initObject(initWithCGAffineTransform$(r)); }
     public CIVector(String representation) { super((SkipInit) null); initObject(initWithString$(representation)); }
     /*</constructors>*/
@@ -91,10 +99,19 @@ import org.robovm.apple.opengles.*;
     protected native @Pointer long initWithX$Y$Z$(@MachineSizedFloat double x, @MachineSizedFloat double y, @MachineSizedFloat double z);
     @Method(selector = "initWithX:Y:Z:W:")
     protected native @Pointer long initWithX$Y$Z$W$(@MachineSizedFloat double x, @MachineSizedFloat double y, @MachineSizedFloat double z, @MachineSizedFloat double w);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "initWithCGPoint:")
     protected native @Pointer long initWithCGPoint$(@ByVal CGPoint p);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "initWithCGRect:")
     protected native @Pointer long initWithCGRect$(@ByVal CGRect r);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "initWithCGAffineTransform:")
     protected native @Pointer long initWithCGAffineTransform$(@ByVal CGAffineTransform r);
     @Method(selector = "initWithString:")
@@ -111,10 +128,19 @@ import org.robovm.apple.opengles.*;
     public native @MachineSizedFloat double getZ();
     @Method(selector = "W")
     public native @MachineSizedFloat double getW();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "CGPointValue")
     public native @ByVal CGPoint getCGPointValue();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "CGRectValue")
     public native @ByVal CGRect getCGRectValue();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "CGAffineTransformValue")
     public native @ByVal CGAffineTransform getCGAffineTransformValue();
     @Method(selector = "stringRepresentation")

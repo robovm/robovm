@@ -30,10 +30,11 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 6.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSMapTable/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -79,12 +80,24 @@ import org.robovm.apple.security.*;
     public native NSDictionary<?, ?> dictionaryRepresentation();
     @Method(selector = "mapTableWithKeyOptions:valueOptions:")
     public static native NSObject mapTableWithKeyOptions$valueOptions$(NSPointerFunctionsOptions keyOptions, NSPointerFunctionsOptions valueOptions);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "strongToStrongObjectsMapTable")
     public static native NSObject strongToStrongObjectsMapTable();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "weakToStrongObjectsMapTable")
     public static native NSObject weakToStrongObjectsMapTable();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "strongToWeakObjectsMapTable")
     public static native NSObject strongToWeakObjectsMapTable();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "weakToWeakObjectsMapTable")
     public static native NSObject weakToWeakObjectsMapTable();
     @Method(selector = "encodeWithCoder:")

@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIProgressView/*</name>*/ 
     extends /*<extends>*/UIView/*</extends>*/ 
@@ -85,6 +86,9 @@ import org.robovm.apple.coreimage.*;
     /*<methods>*/
     @Method(selector = "initWithProgressViewStyle:")
     protected native @Pointer long initWithProgressViewStyle$(UIProgressViewStyle style);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setProgress:animated:")
     public native void setProgress(float progress, boolean animated);
     /*</methods>*/

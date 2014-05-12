@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIFont/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -73,8 +74,14 @@ import org.robovm.apple.coreimage.*;
     /*<methods>*/
     @Method(selector = "fontWithSize:")
     public native UIFont getFontWithSize(@MachineSizedFloat double fontSize);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "fontDescriptor")
     public native UIFontDescriptor getFontDescriptor();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "preferredFontForTextStyle:")
     public static native UIFont getPreferredFontForTextStyle(String style);
     @Method(selector = "fontWithName:size:")
@@ -89,6 +96,9 @@ import org.robovm.apple.coreimage.*;
     public static native UIFont getBoldSystemFont(@MachineSizedFloat double fontSize);
     @Method(selector = "italicSystemFontOfSize:")
     public static native UIFont getItalicSystemFont(@MachineSizedFloat double fontSize);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "fontWithDescriptor:size:")
     public static native UIFont getFont(UIFontDescriptor descriptor, @MachineSizedFloat double pointSize);
     @Method(selector = "labelFontSize")

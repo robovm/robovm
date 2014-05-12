@@ -28,10 +28,9 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*//*</visibility>*/ class /*<name>*/timespec/*</name>*/ 
     extends /*<extends>*/Struct<timespec>/*</extends>*/ 

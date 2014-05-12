@@ -34,10 +34,9 @@ import org.robovm.apple.uikit.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/GLKMatrix4/*</name>*/ 
     extends /*<extends>*/Struct<GLKMatrix4>/*</extends>*/ 

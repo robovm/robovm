@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSHTTPURLResponse/*</name>*/ 
     extends /*<extends>*/NSURLResponse/*</extends>*/ 
@@ -45,6 +44,9 @@ import org.robovm.apple.security.*;
     /*<constructors>*/
     public NSHTTPURLResponse() {}
     protected NSHTTPURLResponse(SkipInit skipInit) { super(skipInit); }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public NSHTTPURLResponse(NSURL url, @MachineSizedSInt long statusCode, String HTTPVersion, NSDictionary<?, ?> headerFields) { super((SkipInit) null); initObject(initWithURL$statusCode$HTTPVersion$headerFields$(url, statusCode, HTTPVersion, headerFields)); }
     /*</constructors>*/
     /*<properties>*/
@@ -52,6 +54,9 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "initWithURL:statusCode:HTTPVersion:headerFields:")
     protected native @Pointer long initWithURL$statusCode$HTTPVersion$headerFields$(NSURL url, @MachineSizedSInt long statusCode, String HTTPVersion, NSDictionary<?, ?> headerFields);
     @Method(selector = "statusCode")

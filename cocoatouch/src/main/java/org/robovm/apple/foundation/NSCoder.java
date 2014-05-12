@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSCoder/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -125,18 +124,39 @@ import org.robovm.apple.security.*;
     public native double decodeDoubleForKey$(String key);
     @Method(selector = "decodeBytesForKey:returnedLength:")
     public native BytePtr decodeBytesForKey$returnedLength$(String key, MachineSizedUIntPtr lengthp);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "encodeInteger:forKey:")
     public native void encodeInteger$forKey$(@MachineSizedSInt long intv, String key);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "decodeIntegerForKey:")
     public native @MachineSizedSInt long decodeIntegerForKey$(String key);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "requiresSecureCoding")
     public native boolean requiresSecureCoding();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "decodeObjectOfClass:forKey:")
     public native NSObject decodeObjectOfClass$forKey$(ObjCClass aClass, String key);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "decodeObjectOfClasses:forKey:")
     public native NSObject decodeObjectOfClasses$forKey$(NSSet<?> classes, String key);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "decodePropertyListForKey:")
     public native NSObject decodePropertyListForKey$(String key);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "allowedClasses")
     public native NSSet<?> allowedClasses();
     /*</methods>*/

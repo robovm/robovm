@@ -33,10 +33,8 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIGestureRecognizerDelegateAdapter/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -57,8 +55,14 @@ import org.robovm.apple.coreimage.*;
     public boolean shouldBegin(UIGestureRecognizer gestureRecognizer) { throw new UnsupportedOperationException(); }
     @NotImplemented("gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:")
     public boolean shouldRecognizeSimultaneously(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @NotImplemented("gestureRecognizer:shouldRequireFailureOfGestureRecognizer:")
     public boolean shouldRequireFailure(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @NotImplemented("gestureRecognizer:shouldBeRequiredToFailByGestureRecognizer:")
     public boolean shouldBeRequiredToFail(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer) { throw new UnsupportedOperationException(); }
     @NotImplemented("gestureRecognizer:shouldReceiveTouch:")

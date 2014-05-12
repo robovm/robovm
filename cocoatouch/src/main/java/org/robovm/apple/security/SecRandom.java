@@ -30,10 +30,8 @@ import org.robovm.apple.dispatch.*;
 import org.robovm.apple.corefoundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("Security")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SecRandom/*</name>*/ 
     extends /*<extends>*/NativeObject/*</extends>*/ 
@@ -48,9 +46,15 @@ import org.robovm.apple.corefoundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kSecRandomDefault", optional=true)
     public static native SecRandom Default();
     
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="SecRandomCopyBytes", optional=true)
     public native int copyBytes(@MachineSizedUInt long count, BytePtr bytes);
     /*</methods>*/

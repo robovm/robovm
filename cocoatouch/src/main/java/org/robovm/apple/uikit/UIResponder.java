@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIResponder/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -85,20 +86,44 @@ import org.robovm.apple.coreimage.*;
     public native void touchesEnded(NSSet<UITouch> touches, UIEvent event);
     @Method(selector = "touchesCancelled:withEvent:")
     public native void touchesCancelled(NSSet<UITouch> touches, UIEvent event);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "motionBegan:withEvent:")
     public native void motionBegan(UIEventSubtype motion, UIEvent event);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "motionEnded:withEvent:")
     public native void motionEnded(UIEventSubtype motion, UIEvent event);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "motionCancelled:withEvent:")
     public native void motionCancelled(UIEventSubtype motion, UIEvent event);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "remoteControlReceivedWithEvent:")
     public native void remoteControlReceived(UIEvent event);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "canPerformAction:withSender:")
     public native boolean canPerformAction(Selector action, NSObject sender);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "targetForAction:withSender:")
     public native NSObject getActionTarget(Selector action, NSObject sender);
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Method(selector = "reloadInputViews")
     public native void reloadInputViews();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "clearTextInputContextIdentifier:")
     public static native void clearTextInputContextIdentifier(String identifier);
     /*</methods>*/

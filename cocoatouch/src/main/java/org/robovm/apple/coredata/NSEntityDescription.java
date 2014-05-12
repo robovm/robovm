@@ -29,10 +29,11 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 3.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreData") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSEntityDescription/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -88,20 +89,44 @@ import org.robovm.apple.foundation.*;
     public native NSDictionary<?, ?> relationshipsByName();
     @Method(selector = "relationshipsWithDestinationEntity:")
     public native NSArray<?> relationshipsWithDestinationEntity$(NSEntityDescription entity);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "isKindOfEntity:")
     public native boolean isKindOfEntity$(NSEntityDescription entity);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "versionHash")
     public native NSData versionHash();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "versionHashModifier")
     public native String versionHashModifier();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "setVersionHashModifier:")
     public native void setVersionHashModifier(String modifierString);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "renamingIdentifier")
     public native String renamingIdentifier();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "setRenamingIdentifier:")
     public native void setRenamingIdentifier(String value);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "compoundIndexes")
     public native NSArray<?> compoundIndexes();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setCompoundIndexes:")
     public native void setCompoundIndexes(NSArray<?> value);
     @Method(selector = "entityForName:inManagedObjectContext:")

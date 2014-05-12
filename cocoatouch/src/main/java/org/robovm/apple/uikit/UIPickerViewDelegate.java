@@ -33,10 +33,9 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ interface /*<name>*/UIPickerViewDelegate/*</name>*/ 
     /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
@@ -56,6 +55,9 @@ import org.robovm.apple.coreimage.*;
     @MachineSizedFloat double getRowHeight(UIPickerView pickerView, @MachineSizedSInt long component);
     @Method(selector = "pickerView:titleForRow:forComponent:")
     String getRowTitle(UIPickerView pickerView, @MachineSizedSInt long row, @MachineSizedSInt long component);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "pickerView:attributedTitleForRow:forComponent:")
     NSAttributedString getAttributedRowTitle(UIPickerView pickerView, @MachineSizedSInt long row, @MachineSizedSInt long component);
     @Method(selector = "pickerView:viewForRow:forComponent:reusingView:")

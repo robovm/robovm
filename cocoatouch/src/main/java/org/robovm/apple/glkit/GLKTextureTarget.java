@@ -34,9 +34,11 @@ import org.robovm.apple.uikit.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- * <div class="javadoc"></div>
+ * @since Available in iOS 5.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 public enum /*<name>*/GLKTextureTarget/*</name>*/ implements ValuedEnum {
     /*<values>*/

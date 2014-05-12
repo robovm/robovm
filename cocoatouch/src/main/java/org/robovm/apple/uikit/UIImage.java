@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIImage/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -49,10 +50,22 @@ import org.robovm.apple.coreimage.*;
     public UIImage() {}
     protected UIImage(SkipInit skipInit) { super(skipInit); }
     public UIImage(NSData data) { super((SkipInit) null); initObject(initWithData$(data)); }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public UIImage(NSData data, @MachineSizedFloat double scale) { super((SkipInit) null); initObject(initWithData$scale$(data, scale)); }
     public UIImage(CGImage cgImage) { super((SkipInit) null); initObject(initWithCGImage$(cgImage)); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public UIImage(CGImage cgImage, @MachineSizedFloat double scale, UIImageOrientation orientation) { super((SkipInit) null); initObject(initWithCGImage$scale$orientation$(cgImage, scale, orientation)); }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public UIImage(CIImage ciImage) { super((SkipInit) null); initObject(initWithCIImage$(ciImage)); }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public UIImage(CIImage ciImage, @MachineSizedFloat double scale, UIImageOrientation orientation) { super((SkipInit) null); initObject(initWithCIImage$scale$orientation$(ciImage, scale, orientation)); }
     /*</constructors>*/
 
@@ -106,14 +119,26 @@ import org.robovm.apple.coreimage.*;
     protected native @Pointer long initWithContentsOfFile$(String path);
     @Method(selector = "initWithData:")
     protected native @Pointer long initWithData$(NSData data);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "initWithData:scale:")
     protected native @Pointer long initWithData$scale$(NSData data, @MachineSizedFloat double scale);
     @Method(selector = "initWithCGImage:")
     protected native @Pointer long initWithCGImage$(CGImage cgImage);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "initWithCGImage:scale:orientation:")
     protected native @Pointer long initWithCGImage$scale$orientation$(CGImage cgImage, @MachineSizedFloat double scale, UIImageOrientation orientation);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "initWithCIImage:")
     protected native @Pointer long initWithCIImage$(CIImage ciImage);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "initWithCIImage:scale:orientation:")
     protected native @Pointer long initWithCIImage$scale$orientation$(CIImage ciImage, @MachineSizedFloat double scale, UIImageOrientation orientation);
     @Method(selector = "drawAtPoint:")
@@ -126,12 +151,24 @@ import org.robovm.apple.coreimage.*;
     public native void draw(@ByVal CGRect rect, CGBlendMode blendMode, @MachineSizedFloat double alpha);
     @Method(selector = "drawAsPatternInRect:")
     public native void drawAsPattern(@ByVal CGRect rect);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "resizableImageWithCapInsets:")
     public native UIImage newResizable(@ByVal UIEdgeInsets capInsets);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "resizableImageWithCapInsets:resizingMode:")
     public native UIImage newResizable(@ByVal UIEdgeInsets capInsets, UIImageResizingMode resizingMode);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "imageWithAlignmentRectInsets:")
     public native UIImage newWithAlignment(@ByVal UIEdgeInsets alignmentInsets);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "imageWithRenderingMode:")
     public native UIImage newWithRenderingMode(UIImageRenderingMode renderingMode);
     @Method(selector = "imageNamed:")
@@ -140,22 +177,46 @@ import org.robovm.apple.coreimage.*;
     public static native UIImage createFromFile(String path);
     @Method(selector = "imageWithData:")
     public static native UIImage createFromData(NSData data);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "imageWithData:scale:")
     public static native UIImage createFromData(NSData data, @MachineSizedFloat double scale);
     @Method(selector = "imageWithCGImage:")
     public static native UIImage createFromImage(CGImage cgImage);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "imageWithCGImage:scale:orientation:")
     public static native UIImage createFromImage(CGImage cgImage, @MachineSizedFloat double scale, UIImageOrientation orientation);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "imageWithCIImage:")
     public static native UIImage createFromImage(CIImage ciImage);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "imageWithCIImage:scale:orientation:")
     public static native UIImage createFromImage(CIImage ciImage, @MachineSizedFloat double scale, UIImageOrientation orientation);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "animatedImageNamed:duration:")
     public static native UIImage createAnimated(String name, double duration);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "animatedResizableImageNamed:capInsets:duration:")
     public static native UIImage createAnimatedResizable(String name, @ByVal UIEdgeInsets capInsets, double duration);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "animatedResizableImageNamed:capInsets:resizingMode:duration:")
     public static native UIImage createAnimatedResizable(String name, @ByVal UIEdgeInsets capInsets, UIImageResizingMode resizingMode, double duration);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "animatedImageWithImages:duration:")
     public static native UIImage createAnimated(NSArray<UIImage> images, double duration);
     @Method(selector = "stretchableImageWithLeftCapWidth:topCapHeight:")

@@ -34,10 +34,8 @@ import org.robovm.apple.uikit.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("GLKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/GLKit/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
@@ -57,20 +55,44 @@ import org.robovm.apple.dispatch.*;
     public static native @ByVal GLKMatrix3 Value__GLKMatrix3Identity();
     @GlobalValue(symbol="GLKMatrix4Identity", optional=true)
     public static native @ByVal GLKMatrix4 Value__GLKMatrix4Identity();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="GLKTextureLoaderApplyPremultiplication", optional=true)
     public static native String Value__GLKTextureLoaderApplyPremultiplication();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="GLKTextureLoaderGenerateMipmaps", optional=true)
     public static native String Value__GLKTextureLoaderGenerateMipmaps();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="GLKTextureLoaderOriginBottomLeft", optional=true)
     public static native String Value__GLKTextureLoaderOriginBottomLeft();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="GLKTextureLoaderGrayscaleAsAlpha", optional=true)
     public static native String Value__GLKTextureLoaderGrayscaleAsAlpha();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="GLKTextureLoaderSRGB", optional=true)
     public static native String Value__GLKTextureLoaderSRGB();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="GLKTextureLoaderErrorDomain", optional=true)
     public static native String Value__GLKTextureLoaderErrorDomain();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="GLKTextureLoaderErrorKey", optional=true)
     public static native String Value__GLKTextureLoaderErrorKey();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="GLKTextureLoaderGLErrorKey", optional=true)
     public static native String Value__GLKTextureLoaderGLErrorKey();
     

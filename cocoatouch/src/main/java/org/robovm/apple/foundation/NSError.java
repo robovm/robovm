@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSError/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -80,12 +79,26 @@ import org.robovm.apple.security.*;
     public static native NSString KeyURLError();
     @GlobalValue(symbol="NSFilePathErrorKey", optional=true)
     public static native NSString KeyFilePathError();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="NSURLErrorFailingURLErrorKey", optional=true)
     public static native NSString KeyURLErrorFailingURLError();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="NSURLErrorFailingURLStringErrorKey", optional=true)
     public static native NSString KeyURLErrorFailingURLStringError();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 4.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="NSErrorFailingURLStringKey", optional=true)
     public static native NSString KeyErrorFailingURLString();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="NSURLErrorFailingURLPeerTrustErrorKey", optional=true)
     public static native NSString KeyURLErrorFailingURLPeerTrustError();
     

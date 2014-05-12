@@ -30,14 +30,17 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSComparisonPredicateOptions/*</name>*/ extends Bits</*<name>*/NSComparisonPredicateOptions/*</name>*/> {
     /*<values>*/
     public static final NSComparisonPredicateOptions CaseInsensitive = new NSComparisonPredicateOptions(1L);
     public static final NSComparisonPredicateOptions DiacriticInsensitive = new NSComparisonPredicateOptions(2L);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public static final NSComparisonPredicateOptions Normalized = new NSComparisonPredicateOptions(4L);
     /*</values>*/
 

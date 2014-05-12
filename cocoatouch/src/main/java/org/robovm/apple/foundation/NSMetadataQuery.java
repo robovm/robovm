@@ -30,10 +30,11 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 5.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSMetadataQuery/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -51,34 +52,54 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="NSMetadataQueryDidStartGatheringNotification", optional=true)
     public static native String NotificationDidStartGathering();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="NSMetadataQueryGatheringProgressNotification", optional=true)
     public static native String NotificationGatheringProgress();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="NSMetadataQueryDidFinishGatheringNotification", optional=true)
     public static native String NotificationDidFinishGathering();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="NSMetadataQueryDidUpdateNotification", optional=true)
     public static native String NotificationDidUpdate();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="NSMetadataQueryUpdateAddedItemsKey", optional=true)
     public static native NSString KeyUpdateAddedItems();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="NSMetadataQueryUpdateChangedItemsKey", optional=true)
     public static native NSString KeyUpdateChangedItems();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="NSMetadataQueryUpdateRemovedItemsKey", optional=true)
     public static native NSString KeyUpdateRemovedItems();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="NSMetadataQueryResultContentRelevanceAttribute", optional=true)
     public static native NSString KeyResultContentRelevanceAttribute();
-    @GlobalValue(symbol="NSMetadataQueryUserHomeScope", optional=true)
-    public static native NSString ScopeUserHome();
-    @GlobalValue(symbol="NSMetadataQueryLocalComputerScope", optional=true)
-    public static native NSString ScopeLocalComputer();
-    @GlobalValue(symbol="NSMetadataQueryNetworkScope", optional=true)
-    public static native NSString ScopeNetwork();
-    @GlobalValue(symbol="NSMetadataQueryIndexedLocalComputerScope", optional=true)
-    public static native NSString ScopeIndexedLocalComputer();
-    @GlobalValue(symbol="NSMetadataQueryIndexedNetworkScope", optional=true)
-    public static native NSString ScopeIndexedNetwork();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="NSMetadataQueryUbiquitousDocumentsScope", optional=true)
     public static native NSString ScopeUbiquitousDocuments();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="NSMetadataQueryUbiquitousDataScope", optional=true)
     public static native NSString ScopeUbiquitousData();
     
@@ -110,12 +131,24 @@ import org.robovm.apple.security.*;
     public native NSArray<?> searchScopes();
     @Method(selector = "setSearchScopes:")
     public native void setSearchScopes(NSArray<?> scopes);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "searchItems")
     public native NSArray<?> searchItems();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "setSearchItems:")
     public native void setSearchItems(NSArray<?> items);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "operationQueue")
     public native NSOperationQueue operationQueue();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "setOperationQueue:")
     public native void setOperationQueue(NSOperationQueue operationQueue);
     @Method(selector = "startQuery")
@@ -136,8 +169,14 @@ import org.robovm.apple.security.*;
     public native @MachineSizedUInt long resultCount();
     @Method(selector = "resultAtIndex:")
     public native NSObject resultAtIndex$(@MachineSizedUInt long idx);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "enumerateResultsUsingBlock:")
     public native void enumerateResultsUsingBlock$(ObjCBlock block);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "enumerateResultsWithOptions:usingBlock:")
     public native void enumerateResultsWithOptions$usingBlock$(NSEnumerationOptions opts, ObjCBlock block);
     @Method(selector = "results")

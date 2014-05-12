@@ -33,10 +33,9 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ interface /*<name>*/UITextInput/*</name>*/ 
     /*<implements>*/extends UIKeyInput/*</implements>*/ {
@@ -105,6 +104,9 @@ import org.robovm.apple.coreimage.*;
     @ByVal CGRect getFirstRect(UITextRange range);
     @Method(selector = "caretRectForPosition:")
     @ByVal CGRect getCaretRect(UITextPosition position);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "selectionRectsForRange:")
     NSArray<UITextSelectionRect> getSelectionRects(UITextRange range);
     @Method(selector = "closestPositionToPoint:")
@@ -113,6 +115,9 @@ import org.robovm.apple.coreimage.*;
     UITextPosition getClosestPosition(@ByVal CGPoint point, UITextRange range);
     @Method(selector = "characterRangeAtPoint:")
     UITextRange getCharacterRange(@ByVal CGPoint point);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "shouldChangeTextInRange:replacementText:")
     boolean shouldChangeText(UITextRange range, String text);
     @Method(selector = "textStylingAtPosition:inDirection:")

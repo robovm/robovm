@@ -30,9 +30,9 @@ import org.robovm.apple.dispatch.*;
 import org.robovm.apple.corefoundation.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 public enum /*<name>*/SSLSessionOption/*</name>*/ implements ValuedEnum {
     /*<values>*/

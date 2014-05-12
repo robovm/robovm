@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 6.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIActivity/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -54,32 +55,74 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="UIActivityTypePostToFacebook", optional=true)
     public static native String TypePostToFacebook();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="UIActivityTypePostToTwitter", optional=true)
     public static native String TypePostToTwitter();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="UIActivityTypePostToWeibo", optional=true)
     public static native String TypePostToWeibo();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="UIActivityTypeMessage", optional=true)
     public static native String TypeMessage();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="UIActivityTypeMail", optional=true)
     public static native String TypeMail();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="UIActivityTypePrint", optional=true)
     public static native String TypePrint();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="UIActivityTypeCopyToPasteboard", optional=true)
     public static native String TypeCopyToPasteboard();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="UIActivityTypeAssignToContact", optional=true)
     public static native String TypeAssignToContact();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="UIActivityTypeSaveToCameraRoll", optional=true)
     public static native String TypeSaveToCameraRoll();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIActivityTypeAddToReadingList", optional=true)
     public static native String TypeAddToReadingList();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIActivityTypePostToFlickr", optional=true)
     public static native String TypePostToFlickr();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIActivityTypePostToVimeo", optional=true)
     public static native String TypePostToVimeo();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIActivityTypePostToTencentWeibo", optional=true)
     public static native String TypePostToTencentWeibo();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIActivityTypeAirDrop", optional=true)
     public static native String TypeAirDrop();
     
@@ -99,6 +142,9 @@ import org.robovm.apple.coreimage.*;
     public native void perform();
     @Method(selector = "activityDidFinish:")
     public native void didFinish(boolean completed);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "activityCategory")
     public static native UIActivityCategory getActivityCategory();
     /*</methods>*/

@@ -34,10 +34,9 @@ import org.robovm.apple.uikit.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/GLKVector3/*</name>*/ 
     extends /*<extends>*/Struct<GLKVector3>/*</extends>*/ 

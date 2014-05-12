@@ -31,9 +31,9 @@ import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/MPMovieMediaTypeMask/*</name>*/ extends Bits</*<name>*/MPMovieMediaTypeMask/*</name>*/> {
     /*<values>*/

@@ -30,10 +30,8 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreGraphics")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGColor/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -78,41 +76,59 @@ import org.robovm.apple.foundation.*;
     }
 
     /*<methods>*/
-    @GlobalValue(symbol="kCGColorWhite", optional=true)
-    public static native String ColorWhite();
-    @GlobalValue(symbol="kCGColorBlack", optional=true)
-    public static native String ColorBlack();
-    @GlobalValue(symbol="kCGColorClear", optional=true)
-    public static native String ColorClear();
-    
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorCreate", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColor create(CGColorSpace space, @Pointer long components);
-    @Bridge(symbol="CGColorCreateGenericGray", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColor createGenericGray(@MachineSizedFloat double gray, @MachineSizedFloat double alpha);
-    @Bridge(symbol="CGColorCreateGenericRGB", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColor createGenericRGB(@MachineSizedFloat double red, @MachineSizedFloat double green, @MachineSizedFloat double blue, @MachineSizedFloat double alpha);
-    @Bridge(symbol="CGColorCreateGenericCMYK", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColor createGenericCMYK(@MachineSizedFloat double cyan, @MachineSizedFloat double magenta, @MachineSizedFloat double yellow, @MachineSizedFloat double black, @MachineSizedFloat double alpha);
-    @Bridge(symbol="CGColorGetConstantColor", optional=true)
-    public static native CGColor getConstantColor(String colorName);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorCreateWithPattern", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColor createWithPattern(CGColorSpace space, CGPattern pattern, @Pointer long components);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorCreateCopy", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColor createCopy(CGColor color);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorCreateCopyWithAlpha", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColor createCopyWithAlpha(CGColor color, @MachineSizedFloat double alpha);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorEqualToColor", optional=true)
     public native boolean equalToColor(CGColor color2);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorGetNumberOfComponents", optional=true)
     public native @MachineSizedUInt long getNumberOfComponents();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorGetComponents", optional=true)
     protected static native MachineSizedFloatPtr getComponents(CGColor color);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorGetAlpha", optional=true)
     public native @MachineSizedFloat double getAlpha();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorGetColorSpace", optional=true)
     public native CGColorSpace getColorSpace();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorGetPattern", optional=true)
     public native CGPattern getPattern();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     /*</methods>*/

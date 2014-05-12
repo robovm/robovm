@@ -33,10 +33,9 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ interface /*<name>*/NSLayoutManagerDelegate/*</name>*/ 
     /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
@@ -50,26 +49,59 @@ import org.robovm.apple.coreimage.*;
     
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "layoutManager:shouldGenerateGlyphs:properties:characterIndexes:font:forGlyphRange:")
     @MachineSizedUInt long shouldGenerateGlyphs(NSLayoutManager layoutManager, ShortPtr glyphs, MachineSizedSIntPtr props, MachineSizedUIntPtr charIndexes, UIFont aFont, @ByVal NSRange glyphRange);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "layoutManager:lineSpacingAfterGlyphAtIndex:withProposedLineFragmentRect:")
     @MachineSizedFloat double getLineSpacingAfterGlyph(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, @ByVal CGRect rect);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "layoutManager:paragraphSpacingBeforeGlyphAtIndex:withProposedLineFragmentRect:")
     @MachineSizedFloat double getParagraphSpacingBeforeGlyph(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, @ByVal CGRect rect);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "layoutManager:paragraphSpacingAfterGlyphAtIndex:withProposedLineFragmentRect:")
     @MachineSizedFloat double getParagraphSpacingAfterGlyph(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, @ByVal CGRect rect);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "layoutManager:shouldUseAction:forControlCharacterAtIndex:")
     NSControlCharacterAction shouldUseAction(NSLayoutManager layoutManager, NSControlCharacterAction action, @MachineSizedUInt long charIndex);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "layoutManager:shouldBreakLineByWordBeforeCharacterAtIndex:")
     boolean shouldBreakLineByWordBeforeCharacter(NSLayoutManager layoutManager, @MachineSizedUInt long charIndex);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "layoutManager:shouldBreakLineByHyphenatingBeforeCharacterAtIndex:")
     boolean shouldBreakLineByHyphenatingBeforeCharacter(NSLayoutManager layoutManager, @MachineSizedUInt long charIndex);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "layoutManager:boundingBoxForControlGlyphAtIndex:forTextContainer:proposedLineFragment:glyphPosition:characterIndex:")
     @ByVal CGRect getBoundingBoxForControlGlyph(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, NSTextContainer textContainer, @ByVal CGRect proposedRect, @ByVal CGPoint glyphPosition, @MachineSizedUInt long charIndex);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "layoutManagerDidInvalidateLayout:")
     void didInvalidateLayout(NSLayoutManager sender);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "layoutManager:didCompleteLayoutForTextContainer:atEnd:")
     void didCompleteLayout(NSLayoutManager layoutManager, NSTextContainer textContainer, boolean layoutFinishedFlag);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "layoutManager:textContainer:didChangeGeometryFromSize:")
     void didChangeGeometry(NSLayoutManager layoutManager, NSTextContainer textContainer, @ByVal CGSize oldSize);
     /*</methods>*/

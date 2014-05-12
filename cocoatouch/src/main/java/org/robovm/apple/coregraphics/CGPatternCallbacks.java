@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*//*</visibility>*/ class /*<name>*/CGPatternCallbacks/*</name>*/ 
     extends /*<extends>*/Struct<CGPatternCallbacks>/*</extends>*/ 

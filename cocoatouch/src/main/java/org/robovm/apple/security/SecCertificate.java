@@ -30,10 +30,8 @@ import org.robovm.apple.dispatch.*;
 import org.robovm.apple.corefoundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("Security")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SecCertificate/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -48,17 +46,35 @@ import org.robovm.apple.corefoundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kSecPropertyTypeTitle", optional=true)
     public static native CFType PropertyTypeTitle();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kSecPropertyTypeError", optional=true)
     public static native CFType PropertyTypeError();
     
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="SecCertificateGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="SecCertificateCreateWithData", optional=true)
     public static native SecCertificate createWithData(CFAllocator allocator, CFData data);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="SecCertificateCopyData", optional=true)
     public native CFData copyData();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="SecCertificateCopySubjectSummary", optional=true)
     public native CFString copySubjectSummary();
     /*</methods>*/

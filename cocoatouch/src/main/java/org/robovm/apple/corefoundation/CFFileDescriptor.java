@@ -29,10 +29,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFFileDescriptor/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -47,22 +45,49 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFFileDescriptorGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFFileDescriptorCreate", optional=true)
     public static native CFFileDescriptor create(CFAllocator allocator, int fd, boolean closeOnInvalidate, FunctionPtr callout, CFFileDescriptorContext context);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFFileDescriptorGetNativeDescriptor", optional=true)
     public native int getNativeDescriptor();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFFileDescriptorGetContext", optional=true)
     public native void getContext(CFFileDescriptorContext context);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFFileDescriptorEnableCallBacks", optional=true)
     public native void enableCallBacks(CFFileDescriptorCallBackType callBackTypes);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFFileDescriptorDisableCallBacks", optional=true)
     public native void disableCallBacks(CFFileDescriptorCallBackType callBackTypes);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFFileDescriptorInvalidate", optional=true)
     public native void invalidate();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFFileDescriptorIsValid", optional=true)
     public native boolean isValid();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFFileDescriptorCreateRunLoopSource", optional=true)
     public static native CFRunLoopSource createRunLoopSource(CFAllocator allocator, CFFileDescriptor f, @MachineSizedSInt long order);
     /*</methods>*/

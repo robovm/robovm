@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIImageView/*</name>*/ 
     extends /*<extends>*/UIView/*</extends>*/ 
@@ -49,6 +50,9 @@ import org.robovm.apple.coreimage.*;
     public UIImageView() {}
     protected UIImageView(SkipInit skipInit) { super(skipInit); }
     public UIImageView(UIImage image) { super((SkipInit) null); initObject(initWithImage$(image)); }
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public UIImageView(UIImage image, UIImage highlightedImage) { super((SkipInit) null); initObject(initWithImage$highlightedImage$(image, highlightedImage)); }
     /*</constructors>*/
     
@@ -98,6 +102,9 @@ import org.robovm.apple.coreimage.*;
     /*<methods>*/
     @Method(selector = "initWithImage:")
     protected native @Pointer long initWithImage$(UIImage image);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "initWithImage:highlightedImage:")
     protected native @Pointer long initWithImage$highlightedImage$(UIImage image, UIImage highlightedImage);
     @Method(selector = "startAnimating")

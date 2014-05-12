@@ -30,9 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 public enum /*<name>*/CGGradientDrawingOptions/*</name>*/ implements ValuedEnum {
     /*<values>*/

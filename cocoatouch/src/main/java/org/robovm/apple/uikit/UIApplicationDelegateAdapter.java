@@ -33,10 +33,8 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIApplicationDelegateAdapter/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -58,8 +56,14 @@ import org.robovm.apple.coreimage.*;
     /*<methods>*/
     @NotImplemented("applicationDidFinishLaunching:")
     public void didFinishLaunching(UIApplication application) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @NotImplemented("application:willFinishLaunchingWithOptions:")
     public boolean willFinishLaunching(UIApplication application, NSDictionary<NSString, ?> launchOptions) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @NotImplemented("application:didFinishLaunchingWithOptions:")
     public boolean didFinishLaunching(UIApplication application, NSDictionary<NSString, ?> launchOptions) { throw new UnsupportedOperationException(); }
     @NotImplemented("applicationDidBecomeActive:")
@@ -68,6 +72,9 @@ import org.robovm.apple.coreimage.*;
     public void willResignActive(UIApplication application) { throw new UnsupportedOperationException(); }
     @NotImplemented("application:handleOpenURL:")
     public boolean handleOpenURL(UIApplication application, NSURL url) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
     @NotImplemented("application:openURL:sourceApplication:annotation:")
     public boolean openURL(UIApplication application, NSURL url, String sourceApplication, NSObject annotation) { throw new UnsupportedOperationException(); }
     @NotImplemented("applicationDidReceiveMemoryWarning:")
@@ -84,38 +91,89 @@ import org.robovm.apple.coreimage.*;
     public void willChangeStatusBarFrame(UIApplication application, @ByVal CGRect newStatusBarFrame) { throw new UnsupportedOperationException(); }
     @NotImplemented("application:didChangeStatusBarFrame:")
     public void didChangStatusBarFrame(UIApplication application, @ByVal CGRect oldStatusBarFrame) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @NotImplemented("application:didRegisterForRemoteNotificationsWithDeviceToken:")
     public void didRegisterForRemoteNotifications(UIApplication application, NSData deviceToken) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @NotImplemented("application:didFailToRegisterForRemoteNotificationsWithError:")
     public void didFailToRegisterForRemoteNotifications(UIApplication application, NSError error) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @NotImplemented("application:didReceiveRemoteNotification:")
     public void didReceiveRemoteNotification(UIApplication application, NSDictionary<?, ?> userInfo) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @NotImplemented("application:didReceiveLocalNotification:")
     public void didReceiveLocalNotification(UIApplication application, UILocalNotification notification) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @NotImplemented("application:didReceiveRemoteNotification:fetchCompletionHandler:")
     public void didReceiveRemoteNotification(UIApplication application, NSDictionary<?, ?> userInfo, @Block VoidBlock1<UIBackgroundFetchResult> completionHandler) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @NotImplemented("application:performFetchWithCompletionHandler:")
     public void performFetch(UIApplication application, @Block VoidBlock1<UIBackgroundFetchResult> completionHandler) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @NotImplemented("application:handleEventsForBackgroundURLSession:completionHandler:")
     public void handleEventsForBackgroundURLSession(UIApplication application, String identifier, @Block Runnable completionHandler) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @NotImplemented("applicationDidEnterBackground:")
     public void didEnterBackground(UIApplication application) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @NotImplemented("applicationWillEnterForeground:")
     public void willEnterForeground(UIApplication application) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @NotImplemented("applicationProtectedDataWillBecomeUnavailable:")
     public void protectedDataWillBecomeUnavailable(UIApplication application) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @NotImplemented("applicationProtectedDataDidBecomeAvailable:")
     public void protectedDataDidBecomeAvailable(UIApplication application) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @NotImplemented("application:supportedInterfaceOrientationsForWindow:")
     public @MachineSizedUInt long getSupportedInterfaceOrientations(UIApplication application, UIWindow window) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @NotImplemented("application:viewControllerWithRestorationIdentifierPath:coder:")
     public UIViewController getViewController(UIApplication application, NSArray<NSString> identifierComponents, NSCoder coder) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @NotImplemented("application:shouldSaveApplicationState:")
     public boolean shouldSaveApplicationState(UIApplication application, NSCoder coder) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @NotImplemented("application:shouldRestoreApplicationState:")
     public boolean shouldRestoreApplicationState(UIApplication application, NSCoder coder) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @NotImplemented("application:willEncodeRestorableStateWithCoder:")
     public void willEncodeRestorableState(UIApplication application, NSCoder coder) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @NotImplemented("application:didDecodeRestorableStateWithCoder:")
     public void didDecodeRestorableState(UIApplication application, NSCoder coder) { throw new UnsupportedOperationException(); }
     /*</methods>*/

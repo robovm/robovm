@@ -33,9 +33,9 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/UITableViewCellAccessoryType/*</name>*/ implements ValuedEnum {
     /*<values>*/
@@ -43,6 +43,9 @@ public enum /*<name>*/UITableViewCellAccessoryType/*</name>*/ implements ValuedE
     DisclosureIndicator(1L),
     DetailDisclosureButton(2L),
     Checkmark(3L),
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     DetailButton(4L);
     /*</values>*/
 

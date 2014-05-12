@@ -29,9 +29,9 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/CFCharacterSetPredefinedSet/*</name>*/ implements ValuedEnum {
     /*<values>*/
@@ -48,6 +48,9 @@ public enum /*<name>*/CFCharacterSetPredefinedSet/*</name>*/ implements ValuedEn
     Punctuation(11L),
     CapitalizedLetter(13L),
     Symbol(14L),
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     Newline(15L),
     Illegal(12L);
     /*</values>*/

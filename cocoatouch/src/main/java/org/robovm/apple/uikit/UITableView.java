@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UITableView/*</name>*/ 
     extends /*<extends>*/UIScrollView/*</extends>*/ 
@@ -153,8 +154,14 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="UITableViewIndexSearch", optional=true)
     public static native NSString SectionIndexSearch();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="UITableViewAutomaticDimension", optional=true)
     public static native @MachineSizedFloat double AutomaticDimension();
     @GlobalValue(symbol="UITableViewSelectionDidChangeNotification", optional=true)
@@ -164,6 +171,9 @@ import org.robovm.apple.coreimage.*;
     protected native @Pointer long initWithFrame$style$(@ByVal CGRect frame, UITableViewStyle style);
     @Method(selector = "reloadData")
     public native void reloadData();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "reloadSectionIndexTitles")
     public native void reloadSectionIndexTitles();
     @Method(selector = "numberOfSections")
@@ -190,8 +200,14 @@ import org.robovm.apple.coreimage.*;
     public native NSArray<UITableViewCell> getVisibleCells();
     @Method(selector = "indexPathsForVisibleRows")
     public native NSArray<NSIndexPath> getIndexPathsForVisibleRows();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "headerViewForSection:")
     public native UITableViewHeaderFooterView getHeaderViewForSection(@MachineSizedSInt long section);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "footerViewForSection:")
     public native UITableViewHeaderFooterView getFooterViewForSection(@MachineSizedSInt long section);
     @Method(selector = "scrollToRowAtIndexPath:atScrollPosition:animated:")
@@ -206,22 +222,37 @@ import org.robovm.apple.coreimage.*;
     public native void insertSections(NSIndexSet sections, UITableViewRowAnimation animation);
     @Method(selector = "deleteSections:withRowAnimation:")
     public native void deleteSections(NSIndexSet sections, UITableViewRowAnimation animation);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "reloadSections:withRowAnimation:")
     public native void reloadSections(NSIndexSet sections, UITableViewRowAnimation animation);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "moveSection:toSection:")
     public native void moveSection(@MachineSizedSInt long section, @MachineSizedSInt long newSection);
     @Method(selector = "insertRowsAtIndexPaths:withRowAnimation:")
     public native void insertRows(NSArray<NSIndexPath> indexPaths, UITableViewRowAnimation animation);
     @Method(selector = "deleteRowsAtIndexPaths:withRowAnimation:")
     public native void deleteRows(NSArray<NSIndexPath> indexPaths, UITableViewRowAnimation animation);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "reloadRowsAtIndexPaths:withRowAnimation:")
     public native void reloadRows(NSArray<NSIndexPath> indexPaths, UITableViewRowAnimation animation);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "moveRowAtIndexPath:toIndexPath:")
     public native void moveRow(NSIndexPath indexPath, NSIndexPath newIndexPath);
     @Method(selector = "setEditing:animated:")
     public native void setEditing(boolean editing, boolean animated);
     @Method(selector = "indexPathForSelectedRow")
     public native NSIndexPath getIndexPathForSelectedRow();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "indexPathsForSelectedRows")
     public native NSArray<NSIndexPath> getIndexPathsForSelectedRows();
     @Method(selector = "selectRowAtIndexPath:animated:scrollPosition:")
@@ -230,16 +261,34 @@ import org.robovm.apple.coreimage.*;
     public native void deselectRow(NSIndexPath indexPath, boolean animated);
     @Method(selector = "dequeueReusableCellWithIdentifier:")
     public native NSObject dequeueReusableCell(String identifier);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "dequeueReusableCellWithIdentifier:forIndexPath:")
     public native NSObject dequeueReusableCell(String identifier, NSIndexPath indexPath);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "dequeueReusableHeaderFooterViewWithIdentifier:")
     public native NSObject dequeueReusableHeaderFooterView(String identifier);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "registerNib:forCellReuseIdentifier:")
     public native void registerReusableCellNib(UINib nib, String identifier);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "registerClass:forCellReuseIdentifier:")
     public native void registerReusableCellClass(ObjCClass cellClass, String identifier);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "registerNib:forHeaderFooterViewReuseIdentifier:")
     public native void registerReusableHeaderFooterViewNib(UINib nib, String identifier);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "registerClass:forHeaderFooterViewReuseIdentifier:")
     public native void registerReusableHeaderFooterViewClass(ObjCClass aClass, String identifier);
     /*</methods>*/

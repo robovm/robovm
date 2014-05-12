@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSOutputStream/*</name>*/ 
     extends /*<extends>*/NSStream/*</extends>*/ 
@@ -47,6 +46,9 @@ import org.robovm.apple.security.*;
     public NSOutputStream() { super((SkipInit) null); initObject(initToMemory()); }
     public NSOutputStream(BytePtr buffer, @MachineSizedUInt long capacity) { super((SkipInit) null); initObject(initToBuffer$capacity$(buffer, capacity)); }
     public NSOutputStream(String path, boolean shouldAppend) { super((SkipInit) null); initObject(initToFileAtPath$append$(path, shouldAppend)); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public NSOutputStream(NSURL url, boolean shouldAppend) { super((SkipInit) null); initObject(initWithURL$append$(url, shouldAppend)); }
     /*</constructors>*/
     /*<properties>*/
@@ -86,6 +88,9 @@ import org.robovm.apple.security.*;
     protected native @Pointer long initToBuffer$capacity$(BytePtr buffer, @MachineSizedUInt long capacity);
     @Method(selector = "initToFileAtPath:append:")
     protected native @Pointer long initToFileAtPath$append$(String path, boolean shouldAppend);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "initWithURL:append:")
     protected native @Pointer long initWithURL$append$(NSURL url, boolean shouldAppend);
     /*</methods>*/

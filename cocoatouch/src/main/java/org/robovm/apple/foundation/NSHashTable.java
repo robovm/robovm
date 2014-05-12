@@ -30,10 +30,11 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 6.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSHashTable/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -93,6 +94,9 @@ import org.robovm.apple.security.*;
     public native NSSet<?> setRepresentation();
     @Method(selector = "hashTableWithOptions:")
     public static native NSObject hashTableWithOptions$(NSPointerFunctionsOptions options);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "weakObjectsHashTable")
     public static native NSObject weakObjectsHashTable();
     @Method(selector = "encodeWithCoder:")

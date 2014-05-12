@@ -29,10 +29,11 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 3.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreData") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSManagedObjectContext/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -44,6 +45,9 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public NSManagedObjectContext() {}
     protected NSManagedObjectContext(SkipInit skipInit) { super(skipInit); }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public NSManagedObjectContext(NSManagedObjectContextConcurrencyType ct) { super((SkipInit) null); initObject(initWithConcurrencyType$(ct)); }
     /*</constructors>*/
     /*<properties>*/
@@ -51,37 +55,79 @@ import org.robovm.apple.foundation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSManagedObjectContextWillSaveNotification", optional=true)
     public static native String NotificationWillSave();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSManagedObjectContextDidSaveNotification", optional=true)
     public static native String NotificationDidSave();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSManagedObjectContextObjectsDidChangeNotification", optional=true)
     public static native String NotificationObjectsDidChange();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSInsertedObjectsKey", optional=true)
     public static native NSString KeyInsertedObjects();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSUpdatedObjectsKey", optional=true)
     public static native NSString KeyUpdatedObjects();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSDeletedObjectsKey", optional=true)
     public static native NSString KeyDeletedObjects();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSRefreshedObjectsKey", optional=true)
     public static native NSString KeyRefreshedObjects();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSInvalidatedObjectsKey", optional=true)
     public static native NSString KeyInvalidatedObjects();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSInvalidatedAllObjectsKey", optional=true)
     public static native NSString KeyInvalidatedAllObjects();
     
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "initWithConcurrencyType:")
     protected native @Pointer long initWithConcurrencyType$(NSManagedObjectContextConcurrencyType ct);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "performBlock:")
     public native void performBlock$(@Block Runnable block);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "performBlockAndWait:")
     public native void performBlockAndWait$(@Block Runnable block);
     @Method(selector = "setPersistentStoreCoordinator:")
     public native void setPersistentStoreCoordinator(NSPersistentStoreCoordinator coordinator);
     @Method(selector = "persistentStoreCoordinator")
     public native NSPersistentStoreCoordinator persistentStoreCoordinator();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setParentContext:")
     public native void setParentContext(NSManagedObjectContext parent);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "parentContext")
     public native NSManagedObjectContext parentContext();
     @Method(selector = "setUndoManager:")
@@ -90,18 +136,30 @@ import org.robovm.apple.foundation.*;
     public native NSUndoManager undoManager();
     @Method(selector = "hasChanges")
     public native boolean hasChanges();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "userInfo")
     public native NSMutableDictionary<?, ?> userInfo();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "concurrencyType")
     public native NSManagedObjectContextConcurrencyType concurrencyType();
     @Method(selector = "objectRegisteredForID:")
     public native NSManagedObject objectRegisteredForID$(NSManagedObjectID objectID);
     @Method(selector = "objectWithID:")
     public native NSManagedObject objectWithID$(NSManagedObjectID objectID);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "existingObjectWithID:error:")
     public native NSManagedObject existingObjectWithID$error$(NSManagedObjectID objectID, NSError.NSErrorPtr error);
     @Method(selector = "executeFetchRequest:error:")
     public native NSArray<?> executeFetchRequest$error$(NSFetchRequest request, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "countForFetchRequest:error:")
     public native @MachineSizedUInt long countForFetchRequest$error$(NSFetchRequest request, NSError.NSErrorPtr error);
     @Method(selector = "insertObject:")
@@ -158,8 +216,14 @@ import org.robovm.apple.foundation.*;
     public native void setMergePolicy(NSObject mergePolicy);
     @Method(selector = "mergePolicy")
     public native NSObject mergePolicy();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "obtainPermanentIDsForObjects:error:")
     public native boolean obtainPermanentIDsForObjects$error$(NSArray<?> objects, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "mergeChangesFromContextDidSaveNotification:")
     public native void mergeChangesFromContextDidSaveNotification$(NSNotification notification);
     @Method(selector = "encodeWithCoder:")

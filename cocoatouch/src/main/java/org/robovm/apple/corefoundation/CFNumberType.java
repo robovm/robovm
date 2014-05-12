@@ -29,9 +29,9 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/CFNumberType/*</name>*/ implements ValuedEnum {
     /*<values>*/
@@ -49,7 +49,13 @@ public enum /*<name>*/CFNumberType/*</name>*/ implements ValuedEnum {
     FloatType(12L),
     DoubleType(13L),
     CFIndexType(14L),
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     NSIntegerType(15L),
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     CGFloatType(16L),
     MaxType(16L);
     /*</values>*/

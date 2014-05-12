@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIColor/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -50,6 +51,9 @@ import org.robovm.apple.coreimage.*;
     protected UIColor(SkipInit skipInit) { super(skipInit); }
     public UIColor(@MachineSizedFloat double red, @MachineSizedFloat double green, @MachineSizedFloat double blue, @MachineSizedFloat double alpha) { super((SkipInit) null); initObject(initWithRed$green$blue$alpha$(red, green, blue, alpha)); }
     public UIColor(CGColor cgColor) { super((SkipInit) null); initObject(initWithCGColor$(cgColor)); }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public UIColor(CIColor ciColor) { super((SkipInit) null); initObject(initWithCIColor$(ciColor)); }
     /*</constructors>*/
     /*<properties>*/
@@ -118,6 +122,9 @@ import org.robovm.apple.coreimage.*;
     protected native @Pointer long initWithRed$green$blue$alpha$(@MachineSizedFloat double red, @MachineSizedFloat double green, @MachineSizedFloat double blue, @MachineSizedFloat double alpha);
     @Method(selector = "initWithCGColor:")
     protected native @Pointer long initWithCGColor$(CGColor cgColor);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "initWithCIColor:")
     protected native @Pointer long initWithCIColor$(CIColor ciColor);
     @Method(selector = "set")
@@ -126,10 +133,19 @@ import org.robovm.apple.coreimage.*;
     public native void setFill();
     @Method(selector = "setStroke")
     public native void setStroke();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "getWhite:alpha:")
     protected native boolean getWhiteAlpha(MachineSizedFloatPtr white, MachineSizedFloatPtr alpha);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "getHue:saturation:brightness:alpha:")
     protected native boolean getHSBA(MachineSizedFloatPtr hue, MachineSizedFloatPtr saturation, MachineSizedFloatPtr brightness, MachineSizedFloatPtr alpha);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "getRed:green:blue:alpha:")
     protected native boolean getRGBA(MachineSizedFloatPtr red, MachineSizedFloatPtr green, MachineSizedFloatPtr blue, MachineSizedFloatPtr alpha);
     @Method(selector = "colorWithAlphaComponent:")
@@ -144,6 +160,9 @@ import org.robovm.apple.coreimage.*;
     public static native UIColor createFromCGColor(CGColor cgColor);
     @Method(selector = "colorWithPatternImage:")
     public static native UIColor createFromPatternImage(UIImage image);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "colorWithCIColor:")
     public static native UIColor createFromCIColor(CIColor ciColor);
     @Method(selector = "blackColor")
@@ -182,10 +201,25 @@ import org.robovm.apple.coreimage.*;
     public static native UIColor colorDarkText();
     @Method(selector = "groupTableViewBackgroundColor")
     public static native UIColor colorGroupTableViewBackground();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @Method(selector = "viewFlipsideBackgroundColor")
     public static native UIColor colorViewFlipsideBackground();
+    /**
+     * @since Available in iOS 3.2 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @Method(selector = "scrollViewTexturedBackgroundColor")
     public static native UIColor colorScrollViewTexturedBackground();
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @Method(selector = "underPageBackgroundColor")
     public static native UIColor colorUnderPageBackground();
     /*</methods>*/

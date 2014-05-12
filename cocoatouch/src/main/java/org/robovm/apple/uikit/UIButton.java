@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIButton/*</name>*/ 
     extends /*<extends>*/UIControl/*</extends>*/ 
@@ -130,6 +131,9 @@ import org.robovm.apple.coreimage.*;
     public native void setImage(UIImage image, UIControlState state);
     @Method(selector = "setBackgroundImage:forState:")
     public native void setBackgroundImage(UIImage image, UIControlState state);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "setAttributedTitle:forState:")
     public native void setAttributedTitle(NSAttributedString title, UIControlState state);
     @Method(selector = "titleForState:")
@@ -142,6 +146,9 @@ import org.robovm.apple.coreimage.*;
     public native UIImage getImage(UIControlState state);
     @Method(selector = "backgroundImageForState:")
     public native UIImage getBackgroundImage(UIControlState state);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "attributedTitleForState:")
     public native NSAttributedString getAttributedTitle(UIControlState state);
     @Method(selector = "backgroundRectForBounds:")

@@ -29,10 +29,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFStringTokenizer/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -47,22 +45,49 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Bridge(symbol="CFStringTokenizerCopyBestStringLanguage", optional=true)
     public static native CFString copyBestStringLanguage(CFString string, @ByVal CFRange range);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Bridge(symbol="CFStringTokenizerGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Bridge(symbol="CFStringTokenizerCreate", optional=true)
     public static native CFStringTokenizer create(CFAllocator alloc, CFString string, @ByVal CFRange range, CFStringTokenizerUnitOptions options, CFLocale locale);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Bridge(symbol="CFStringTokenizerSetString", optional=true)
     public native void setString(CFString string, @ByVal CFRange range);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Bridge(symbol="CFStringTokenizerGoToTokenAtIndex", optional=true)
     public native CFStringTokenizerTokenType goToTokenAtIndex(@MachineSizedSInt long index);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Bridge(symbol="CFStringTokenizerAdvanceToNextToken", optional=true)
     public native CFStringTokenizerTokenType advanceToNextToken();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Bridge(symbol="CFStringTokenizerGetCurrentTokenRange", optional=true)
     public native @ByVal CFRange getCurrentTokenRange();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Bridge(symbol="CFStringTokenizerCopyCurrentTokenAttribute", optional=true)
     public native CFType copyCurrentTokenAttribute(CFStringTokenizerUnitOptions attribute);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Bridge(symbol="CFStringTokenizerGetCurrentSubTokens", optional=true)
     public native @MachineSizedSInt long getCurrentSubTokens(CFRange ranges, @MachineSizedSInt long maxRangeLength, CFMutableArray derivedSubTokens);
     /*</methods>*/

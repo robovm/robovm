@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSInputStream/*</name>*/ 
     extends /*<extends>*/NSStream/*</extends>*/ 
@@ -47,6 +46,9 @@ import org.robovm.apple.security.*;
     protected NSInputStream(SkipInit skipInit) { super(skipInit); }
     public NSInputStream(NSData data) { super((SkipInit) null); initObject(initWithData$(data)); }
     public NSInputStream(String path) { super((SkipInit) null); initObject(initWithFileAtPath$(path)); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public NSInputStream(NSURL url) { super((SkipInit) null); initObject(initWithURL$(url)); }
     /*</constructors>*/
     /*<properties>*/
@@ -64,12 +66,18 @@ import org.robovm.apple.security.*;
     protected native @Pointer long initWithData$(NSData data);
     @Method(selector = "initWithFileAtPath:")
     protected native @Pointer long initWithFileAtPath$(String path);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "initWithURL:")
     protected native @Pointer long initWithURL$(NSURL url);
     @Method(selector = "inputStreamWithData:")
     public static native NSObject inputStreamWithData$(NSData data);
     @Method(selector = "inputStreamWithFileAtPath:")
     public static native NSObject inputStreamWithFileAtPath$(String path);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "inputStreamWithURL:")
     public static native NSObject inputStreamWithURL$(NSURL url);
     /*</methods>*/

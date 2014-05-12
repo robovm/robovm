@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreGraphics")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGPoint/*</name>*/ 
     extends /*<extends>*/Struct<CGPoint>/*</extends>*/ 
@@ -67,11 +66,20 @@ import org.robovm.apple.foundation.*;
     }
     
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="CGPointZero", optional=true)
     public static native @ByVal CGPoint Zero();
     
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGPointEqualToPoint", optional=true)
     protected static native boolean equalToPoint(@ByVal CGPoint point1, @ByVal CGPoint point2);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGPointApplyAffineTransform", optional=true)
     protected static native @ByVal CGPoint applyAffineTransform(@ByVal CGPoint point, @ByVal CGAffineTransform t);
     /*</methods>*/

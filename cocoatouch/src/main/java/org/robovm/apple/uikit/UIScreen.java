@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIScreen/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -81,21 +82,42 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="UIScreenDidConnectNotification", optional=true)
     public static native String NotificationScreenDidConnect();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="UIScreenDidDisconnectNotification", optional=true)
     public static native String NotificationScreenDidDisconnect();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="UIScreenModeDidChangeNotification", optional=true)
     public static native String NotificationScreenModeDidChange();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="UIScreenBrightnessDidChangeNotification", optional=true)
     public static native String NotificationScreenBrightnessDidChange();
     
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "displayLinkWithTarget:selector:")
     public native CADisplayLink createDisplayLink(NSObject target, Selector sel);
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Method(selector = "screens")
     public static native NSArray<UIScreen> getScreens();
     @Method(selector = "mainScreen")
     public static native UIScreen getMainScreen();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "snapshotViewAfterScreenUpdates:")
     public native UIView snapshotView(boolean afterUpdates);
     /*</methods>*/

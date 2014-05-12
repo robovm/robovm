@@ -31,10 +31,11 @@ import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("MediaPlayer") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MPVolumeView/*</name>*/ 
     extends /*<extends>*/UIView/*</extends>*/ 
@@ -67,33 +68,72 @@ import org.robovm.apple.coregraphics.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="MPVolumeViewWirelessRoutesAvailableDidChangeNotification", optional=true)
     public static native String NotificationWirelessRoutesAvailableDidChange();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="MPVolumeViewWirelessRouteActiveDidChangeNotification", optional=true)
     public static native String NotificationWirelessRouteActiveDidChange();
     
     @Method(selector = "sizeThatFits:")
     public native @ByVal CGSize calculateSizeThatFits(@ByVal CGSize size);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "setMinimumVolumeSliderImage:forState:")
     public native void setMinimumVolumeSliderImage(UIImage image, UIControlState state);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "setMaximumVolumeSliderImage:forState:")
     public native void setMaximumVolumeSliderImage(UIImage image, UIControlState state);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "setVolumeThumbImage:forState:")
     public native void setVolumeThumbImage(UIImage image, UIControlState state);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "minimumVolumeSliderImageForState:")
     public native UIImage getMinimumVolumeSliderImage(UIControlState state);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "maximumVolumeSliderImageForState:")
     public native UIImage getMaximumVolumeSliderImage(UIControlState state);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "volumeThumbImageForState:")
     public native UIImage getVolumeThumbImage(UIControlState state);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "volumeSliderRectForBounds:")
     public native @ByVal CGRect getVolumeSliderRect(@ByVal CGRect bounds);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "volumeThumbRectForBounds:volumeSliderRect:value:")
     public native @ByVal CGRect getVolumeThumbRect(@ByVal CGRect bounds, @ByVal CGRect rect, float value);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "setRouteButtonImage:forState:")
     public native void setRouteButtonImage(UIImage image, UIControlState state);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "routeButtonImageForState:")
     public native UIImage getRouteButtonImage(UIControlState state);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "routeButtonRectForBounds:")
     public native @ByVal CGRect getRouteButtonRect(@ByVal CGRect bounds);
     /*</methods>*/

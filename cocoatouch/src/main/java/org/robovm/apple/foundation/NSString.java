@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSString/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -158,6 +157,9 @@ import org.robovm.apple.security.*;
     public native NSComparisonResult localizedCompare$(String string);
     @Method(selector = "localizedCaseInsensitiveCompare:")
     public native NSComparisonResult localizedCaseInsensitiveCompare$(String string);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "localizedStandardCompare:")
     public native NSComparisonResult localizedStandardCompare$(String string);
     @Method(selector = "isEqualToString:")
@@ -172,6 +174,9 @@ import org.robovm.apple.security.*;
     public native @ByVal NSRange rangeOfString$options$(String aString, NSStringCompareOptions mask);
     @Method(selector = "rangeOfString:options:range:")
     public native @ByVal NSRange rangeOfString$options$range$(String aString, NSStringCompareOptions mask, @ByVal NSRange searchRange);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "rangeOfString:options:range:locale:")
     public native @ByVal NSRange rangeOfString$options$range$locale$(String aString, NSStringCompareOptions mask, @ByVal NSRange searchRange, NSLocale locale);
     @Method(selector = "rangeOfCharacterFromSet:")
@@ -182,6 +187,9 @@ import org.robovm.apple.security.*;
     public native @ByVal NSRange rangeOfCharacterFromSet$options$range$(NSCharacterSet aSet, NSStringCompareOptions mask, @ByVal NSRange searchRange);
     @Method(selector = "rangeOfComposedCharacterSequenceAtIndex:")
     public native @ByVal NSRange rangeOfComposedCharacterSequenceAtIndex$(@MachineSizedUInt long index);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "rangeOfComposedCharacterSequencesForRange:")
     public native @ByVal NSRange rangeOfComposedCharacterSequencesForRange$(@ByVal NSRange range);
     @Method(selector = "stringByAppendingString:")
@@ -192,14 +200,26 @@ import org.robovm.apple.security.*;
     public native float floatValue();
     @Method(selector = "intValue")
     public native int intValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "integerValue")
     public native @MachineSizedSInt long integerValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "longLongValue")
     public native long longLongValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "boolValue")
     public native boolean boolValue();
     @Method(selector = "componentsSeparatedByString:")
     public native NSArray<?> componentsSeparatedByString$(String separator);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "componentsSeparatedByCharactersInSet:")
     public native NSArray<?> componentsSeparatedByCharactersInSet$(NSCharacterSet separator);
     @Method(selector = "commonPrefixWithString:options:")
@@ -210,10 +230,19 @@ import org.robovm.apple.security.*;
     public native String lowercaseString();
     @Method(selector = "capitalizedString")
     public native String capitalizedString();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "uppercaseStringWithLocale:")
     public native String uppercaseStringWithLocale$(NSLocale locale);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "lowercaseStringWithLocale:")
     public native String lowercaseStringWithLocale$(NSLocale locale);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "capitalizedStringWithLocale:")
     public native String capitalizedStringWithLocale$(NSLocale locale);
     @Method(selector = "stringByTrimmingCharactersInSet:")
@@ -228,8 +257,14 @@ import org.robovm.apple.security.*;
     public native void getParagraphStart$end$contentsEnd$forRange$(MachineSizedUIntPtr startPtr, MachineSizedUIntPtr parEndPtr, MachineSizedUIntPtr contentsEndPtr, @ByVal NSRange range);
     @Method(selector = "paragraphRangeForRange:")
     public native @ByVal NSRange paragraphRangeForRange$(@ByVal NSRange range);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "enumerateSubstringsInRange:options:usingBlock:")
     public native void enumerateSubstringsInRange$options$usingBlock$(@ByVal NSRange range, NSStringEnumerationOptions opts, ObjCBlock block);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "enumerateLinesUsingBlock:")
     public native void enumerateLinesUsingBlock$(ObjCBlock block);
     @Method(selector = "description")
@@ -264,12 +299,24 @@ import org.robovm.apple.security.*;
     public native String decomposedStringWithCompatibilityMapping();
     @Method(selector = "precomposedStringWithCompatibilityMapping")
     public native String precomposedStringWithCompatibilityMapping();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "stringByFoldingWithOptions:locale:")
     public native String stringByFoldingWithOptions$locale$(NSStringCompareOptions options, NSLocale locale);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "stringByReplacingOccurrencesOfString:withString:options:range:")
     public native String stringByReplacingOccurrencesOfString$withString$options$range$(String target, String replacement, NSStringCompareOptions options, @ByVal NSRange searchRange);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "stringByReplacingOccurrencesOfString:withString:")
     public native String stringByReplacingOccurrencesOfString$withString$(String target, String replacement);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "stringByReplacingCharactersInRange:withString:")
     public native String stringByReplacingCharactersInRange$withString$(@ByVal NSRange range, String replacement);
     @Method(selector = "UTF8String")
@@ -308,30 +355,90 @@ import org.robovm.apple.security.*;
     public native NSObject propertyList();
     @Method(selector = "propertyListFromStringsFileFormat")
     public native NSDictionary<?, ?> propertyListFromStringsFileFormat();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 2.0.
+     */
+    @Deprecated
     @Method(selector = "cString")
     public native BytePtr cString();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 2.0.
+     */
+    @Deprecated
     @Method(selector = "lossyCString")
     public native BytePtr lossyCString();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 2.0.
+     */
+    @Deprecated
     @Method(selector = "cStringLength")
     public native @MachineSizedUInt long cStringLength();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 2.0.
+     */
+    @Deprecated
     @Method(selector = "getCString:")
     public native void getCString$(BytePtr bytes);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 2.0.
+     */
+    @Deprecated
     @Method(selector = "getCString:maxLength:")
     public native void getCString$maxLength$(BytePtr bytes, @MachineSizedUInt long maxLength);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 2.0.
+     */
+    @Deprecated
     @Method(selector = "getCString:maxLength:range:remainingRange:")
     public native void getCString$maxLength$range$remainingRange$(BytePtr bytes, @MachineSizedUInt long maxLength, @ByVal NSRange aRange, NSRange leftoverRange);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 2.0.
+     */
+    @Deprecated
     @Method(selector = "writeToFile:atomically:")
     public native boolean writeToFile$atomically$(String path, boolean useAuxiliaryFile);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 2.0.
+     */
+    @Deprecated
     @Method(selector = "writeToURL:atomically:")
     public native boolean writeToURL$atomically$(NSURL url, boolean atomically);
     @Method(selector = "getCharacters:")
     public native void getCharacters$(ShortPtr buffer);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 2.0.
+     */
+    @Deprecated
     @Method(selector = "stringWithContentsOfFile:")
     public static native NSObject stringWithContentsOfFile$(String path);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 2.0.
+     */
+    @Deprecated
     @Method(selector = "stringWithContentsOfURL:")
     public static native NSObject stringWithContentsOfURL$(NSURL url);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 2.0.
+     */
+    @Deprecated
     @Method(selector = "stringWithCString:length:")
     public static native NSObject stringWithCString$length$(BytePtr bytes, @MachineSizedUInt long length);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 2.0.
+     */
+    @Deprecated
     @Method(selector = "stringWithCString:")
     public static native NSObject stringWithCString$(BytePtr bytes);
     @Method(selector = "pathComponents")
@@ -368,16 +475,28 @@ import org.robovm.apple.security.*;
     public native boolean getFileSystemRepresentation$maxLength$(BytePtr cname, @MachineSizedUInt long max);
     @Method(selector = "pathWithComponents:")
     public static native String pathWithComponents$(NSArray<?> components);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "stringByAddingPercentEncodingWithAllowedCharacters:")
     public native String stringByAddingPercentEncodingWithAllowedCharacters$(NSCharacterSet allowedCharacters);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "stringByRemovingPercentEncoding")
     public native String stringByRemovingPercentEncoding();
     @Method(selector = "stringByAddingPercentEscapesUsingEncoding:")
     public native String stringByAddingPercentEscapesUsingEncoding$(@MachineSizedUInt long enc);
     @Method(selector = "stringByReplacingPercentEscapesUsingEncoding:")
     public native String stringByReplacingPercentEscapesUsingEncoding$(@MachineSizedUInt long enc);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "linguisticTagsInRange:scheme:options:orthography:tokenRanges:")
     public native NSArray<?> linguisticTagsInRange$scheme$options$orthography$tokenRanges$(@ByVal NSRange range, String tagScheme, NSLinguisticTaggerOptions opts, NSOrthography orthography, NSArray.NSArrayPtr<?> tokenRanges);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "enumerateLinguisticTagsInRange:scheme:options:orthography:usingBlock:")
     public native void enumerateLinguisticTagsInRange$scheme$options$orthography$usingBlock$(@ByVal NSRange range, String tagScheme, NSLinguisticTaggerOptions opts, NSOrthography orthography, ObjCBlock block);
     /*</methods>*/

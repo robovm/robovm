@@ -30,10 +30,8 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreGraphics")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGImage/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -91,50 +89,119 @@ import org.robovm.apple.foundation.*;
     }
     
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGImageGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGImageCreate", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage create(@MachineSizedUInt long width, @MachineSizedUInt long height, @MachineSizedUInt long bitsPerComponent, @MachineSizedUInt long bitsPerPixel, @MachineSizedUInt long bytesPerRow, CGColorSpace space, CGBitmapInfo bitmapInfo, CGDataProvider provider, @Pointer long decode, boolean shouldInterpolate, CGColorRenderingIntent intent);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGImageMaskCreate", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createMask(@MachineSizedUInt long width, @MachineSizedUInt long height, @MachineSizedUInt long bitsPerComponent, @MachineSizedUInt long bitsPerPixel, @MachineSizedUInt long bytesPerRow, CGDataProvider provider, @Pointer long decode, boolean shouldInterpolate);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGImageCreateCopy", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage copy(CGImage image);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGImageCreateWithJPEGDataProvider", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createWithJPEGDataProvider(CGDataProvider source, @Pointer long decode, boolean shouldInterpolate, CGColorRenderingIntent intent);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGImageCreateWithPNGDataProvider", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createWithPNGDataProvider(CGDataProvider source, @Pointer long decode, boolean shouldInterpolate, CGColorRenderingIntent intent);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGImageCreateWithImageInRect", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createWithImageInRect(CGImage image, @ByVal CGRect rect);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGImageCreateWithMask", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createWithMask(CGImage image, CGImage mask);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGImageCreateWithMaskingColors", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createWithMaskingColors(CGImage image, @Pointer long components);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGImageCreateCopyWithColorSpace", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage copy(CGImage image, CGColorSpace space);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGImageIsMask", optional=true)
     public native boolean isMask();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGImageGetWidth", optional=true)
     public native @MachineSizedUInt long getWidth();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGImageGetHeight", optional=true)
     public native @MachineSizedUInt long getHeight();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGImageGetBitsPerComponent", optional=true)
     public native @MachineSizedUInt long getBitsPerComponent();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGImageGetBitsPerPixel", optional=true)
     public native @MachineSizedUInt long getBitsPerPixel();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGImageGetBytesPerRow", optional=true)
     public native @MachineSizedUInt long getBytesPerRow();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGImageGetColorSpace", optional=true)
     public native CGColorSpace getColorSpace();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGImageGetAlphaInfo", optional=true)
     public native CGImageAlphaInfo getAlphaInfo();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGImageGetDataProvider", optional=true)
     public native CGDataProvider getDataProvider();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGImageGetDecode", optional=true)
     public native MachineSizedFloatPtr getDecode();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGImageGetShouldInterpolate", optional=true)
     public native boolean getShouldInterpolate();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGImageGetRenderingIntent", optional=true)
     public native CGColorRenderingIntent getRenderingIntent();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGImageGetBitmapInfo", optional=true)
     public native CGBitmapInfo getBitmapInfo();
     /*</methods>*/

@@ -29,10 +29,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFTimeZone/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -47,6 +45,9 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFTimeZoneSystemTimeZoneDidChangeNotification", optional=true)
     public static native CFString NotificationSystemTimeZoneDidChange();
     
@@ -82,10 +83,19 @@ import org.robovm.apple.dispatch.*;
     public native CFString copyAbbreviation(double at);
     @Bridge(symbol="CFTimeZoneIsDaylightSavingTime", optional=true)
     public native boolean isDaylightSavingTime(double at);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFTimeZoneGetDaylightSavingTimeOffset", optional=true)
     public native double getDaylightSavingTimeOffset(double at);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFTimeZoneGetNextDaylightSavingTimeTransition", optional=true)
     public native double getNextDaylightSavingTimeTransition(double at);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFTimeZoneCopyLocalizedName", optional=true)
     public native CFString copyLocalizedName(CFTimeZoneNameStyle style, CFLocale locale);
     /*</methods>*/

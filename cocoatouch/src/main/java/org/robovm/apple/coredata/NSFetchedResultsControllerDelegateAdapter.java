@@ -29,10 +29,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSFetchedResultsControllerDelegateAdapter/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -57,6 +55,9 @@ import org.robovm.apple.foundation.*;
     public void controllerWillChangeContent$(NSFetchedResultsController controller) { throw new UnsupportedOperationException(); }
     @NotImplemented("controllerDidChangeContent:")
     public void controllerDidChangeContent$(NSFetchedResultsController controller) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @NotImplemented("controller:sectionIndexTitleForSectionName:")
     public String controller$sectionIndexTitleForSectionName$(NSFetchedResultsController controller, String sectionName) { throw new UnsupportedOperationException(); }
     /*</methods>*/

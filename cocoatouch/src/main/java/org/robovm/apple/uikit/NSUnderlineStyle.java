@@ -33,21 +33,47 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- * <div class="javadoc"></div>
+ * @since Available in iOS 6.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/NSUnderlineStyle/*</name>*/ implements ValuedEnum {
     /*<values>*/
     StyleNone(0L),
     StyleSingle(1L),
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     StyleThick(2L),
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     StyleDouble(9L),
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     PatternSolid(0L),
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     PatternDot(256L),
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     PatternDash(512L),
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     PatternDashDot(768L),
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     PatternDashDotDot(1024L),
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     ByWord(32768L);
     /*</values>*/
 

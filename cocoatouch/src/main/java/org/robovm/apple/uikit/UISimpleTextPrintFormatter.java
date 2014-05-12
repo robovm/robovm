@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 4.2 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UISimpleTextPrintFormatter/*</name>*/ 
     extends /*<extends>*/UIPrintFormatter/*</extends>*/ 
@@ -49,6 +50,9 @@ import org.robovm.apple.coreimage.*;
     public UISimpleTextPrintFormatter() {}
     protected UISimpleTextPrintFormatter(SkipInit skipInit) { super(skipInit); }
     public UISimpleTextPrintFormatter(String text) { super((SkipInit) null); initObject(initWithText$(text)); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public UISimpleTextPrintFormatter(NSAttributedString attributedText) { super((SkipInit) null); initObject(initWithAttributedText$(attributedText)); }
     /*</constructors>*/
     /*<properties>*/
@@ -77,6 +81,9 @@ import org.robovm.apple.coreimage.*;
     /*<methods>*/
     @Method(selector = "initWithText:")
     protected native @Pointer long initWithText$(String text);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "initWithAttributedText:")
     protected native @Pointer long initWithAttributedText$(NSAttributedString attributedText);
     /*</methods>*/

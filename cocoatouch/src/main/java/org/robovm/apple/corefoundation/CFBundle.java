@@ -29,10 +29,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFBundle/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -130,14 +128,26 @@ import org.robovm.apple.dispatch.*;
     public static native CFDictionary copyInfoDictionaryForURL(CFURL url);
     @Bridge(symbol="CFBundleCopyLocalizationsForURL", optional=true)
     public static native CFArray copyLocalizationsForURL(CFURL url);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFBundleCopyExecutableArchitecturesForURL", optional=true)
     public static native CFArray copyExecutableArchitecturesForURL(CFURL url);
     @Bridge(symbol="CFBundleCopyExecutableURL", optional=true)
     public native CFURL copyExecutableURL();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFBundleCopyExecutableArchitectures", optional=true)
     public native CFArray copyExecutableArchitectures();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFBundlePreflightExecutable", optional=true)
     public native boolean preflightExecutable(CFError.CFErrorPtr error);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFBundleLoadExecutableAndReturnError", optional=true)
     public native boolean loadExecutableAndReturnError(CFError.CFErrorPtr error);
     @Bridge(symbol="CFBundleLoadExecutable", optional=true)

@@ -31,10 +31,9 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("QuartzCore") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CALayer/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -276,40 +275,94 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCAGravityCenter", optional=true)
     public static native String GravityCenter();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCAGravityTop", optional=true)
     public static native String GravityTop();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCAGravityBottom", optional=true)
     public static native String GravityBottom();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCAGravityLeft", optional=true)
     public static native String GravityLeft();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCAGravityRight", optional=true)
     public static native String GravityRight();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCAGravityTopLeft", optional=true)
     public static native String GravityTopLeft();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCAGravityTopRight", optional=true)
     public static native String GravityTopRight();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCAGravityBottomLeft", optional=true)
     public static native String GravityBottomLeft();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCAGravityBottomRight", optional=true)
     public static native String GravityBottomRight();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCAGravityResize", optional=true)
     public static native String GravityResize();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCAGravityResizeAspect", optional=true)
     public static native String GravityResizeAspect();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCAGravityResizeAspectFill", optional=true)
     public static native String GravityResizeAspectFill();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCAFilterNearest", optional=true)
     public static native String FilterNearest();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCAFilterLinear", optional=true)
     public static native String FilterLinear();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="kCAFilterTrilinear", optional=true)
     public static native String FilterTrilinear();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCAOnOrderIn", optional=true)
     public static native String ActionOnOrderIn();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCAOnOrderOut", optional=true)
     public static native String ActionOnOrderOut();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCATransition", optional=true)
     public static native String ActionTransition();
     

@@ -30,9 +30,11 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 public final class /*<name>*/CGBitmapInfo/*</name>*/ extends Bits</*<name>*/CGBitmapInfo/*</name>*/> {
     /*<values>*/

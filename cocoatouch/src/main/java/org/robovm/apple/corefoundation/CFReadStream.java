@@ -29,10 +29,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFReadStream/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -55,6 +53,9 @@ import org.robovm.apple.dispatch.*;
     public static native CFReadStream createWithFile(CFAllocator alloc, CFURL fileURL);
     @Bridge(symbol="CFReadStreamGetStatus", optional=true)
     public native CFStreamStatus getStatus();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFReadStreamCopyError", optional=true)
     public native CFError copyError();
     @Bridge(symbol="CFReadStreamOpen", optional=true)
@@ -77,8 +78,14 @@ import org.robovm.apple.dispatch.*;
     public native void scheduleWithRunLoop(CFRunLoop runLoop, CFString runLoopMode);
     @Bridge(symbol="CFReadStreamUnscheduleFromRunLoop", optional=true)
     public native void unscheduleFromRunLoop(CFRunLoop runLoop, CFString runLoopMode);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Bridge(symbol="CFReadStreamSetDispatchQueue", optional=true)
     public native void setDispatchQueue(DispatchQueue q);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Bridge(symbol="CFReadStreamCopyDispatchQueue", optional=true)
     public native DispatchQueue copyDispatchQueue();
     @Bridge(symbol="CFReadStreamGetError", optional=true)

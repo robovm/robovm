@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSConditionLock/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -68,8 +67,14 @@ import org.robovm.apple.security.*;
     public native boolean lockBeforeDate$(NSDate limit);
     @Method(selector = "lockWhenCondition:beforeDate:")
     public native boolean lockWhenCondition$beforeDate$(@MachineSizedSInt long condition, NSDate limit);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "setName:")
     public native void setName(String n);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "name")
     public native String name();
     @Method(selector = "lock")

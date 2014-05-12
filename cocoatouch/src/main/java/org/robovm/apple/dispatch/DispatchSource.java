@@ -28,10 +28,8 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("dispatch")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/DispatchSource/*</name>*/ 
     extends /*<extends>*/DispatchObject/*</extends>*/ 
@@ -63,32 +61,74 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_source_create", optional=true)
     public static native DispatchSource create(DispatchSourceType type, @MachineSizedUInt long handle, @MachineSizedUInt long mask, DispatchQueue queue);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_source_set_event_handler", optional=true)
     public native void setEventHandler(@Block Runnable handler);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_source_set_event_handler_f", optional=true)
     public native void setEventHandlerF(FunctionPtr handler);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_source_set_cancel_handler", optional=true)
     public native void setCancelHandler(@Block Runnable cancel_handler);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_source_set_cancel_handler_f", optional=true)
     public native void setCancelHandlerF(FunctionPtr cancel_handler);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_source_cancel", optional=true)
     public native void cancel();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_source_testcancel", optional=true)
     public native @MachineSizedSInt long testcancel();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_source_get_handle", optional=true)
     public native @MachineSizedUInt long getSourceHandle();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_source_get_mask", optional=true)
     public native @MachineSizedUInt long getMask();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_source_get_data", optional=true)
     public native @MachineSizedUInt long getData();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_source_merge_data", optional=true)
     public native void mergeData(@MachineSizedUInt long value);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_source_set_timer", optional=true)
     public native void setTimer(long start, long interval, long leeway);
+    /**
+     * @since Available in iOS 4.3 and later.
+     */
     @Bridge(symbol="dispatch_source_set_registration_handler", optional=true)
     public native void setRegistrationHandler(@Block Runnable registration_handler);
+    /**
+     * @since Available in iOS 4.3 and later.
+     */
     @Bridge(symbol="dispatch_source_set_registration_handler_f", optional=true)
     public native void setRegistrationHandlerF(FunctionPtr registration_handler);
     /*</methods>*/

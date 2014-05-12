@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreGraphics")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGSize/*</name>*/ 
     extends /*<extends>*/Struct<CGSize>/*</extends>*/ 
@@ -67,11 +66,20 @@ import org.robovm.apple.foundation.*;
     }
     
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="CGSizeZero", optional=true)
     public static native @ByVal CGSize Zero();
     
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGSizeEqualToSize", optional=true)
     protected static native boolean equalToSize(@ByVal CGSize size1, @ByVal CGSize size2);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGSizeApplyAffineTransform", optional=true)
     protected static native @ByVal CGSize applyAffineTransform(@ByVal CGSize size, @ByVal CGAffineTransform t);
     /*</methods>*/

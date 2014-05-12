@@ -30,10 +30,11 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 3.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSExpression/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -68,20 +69,41 @@ import org.robovm.apple.security.*;
     public native NSExpression operand();
     @Method(selector = "arguments")
     public native NSArray<?> arguments();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "collection")
     public native NSObject collection();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "predicate")
     public native NSPredicate predicate();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "leftExpression")
     public native NSExpression leftExpression();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "rightExpression")
     public native NSExpression rightExpression();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "expressionBlock")
     public native ObjCBlock expressionBlock(NSObject p0, NSArray<?> p1, NSMutableDictionary<?, ?> p2);
     @Method(selector = "expressionValueWithObject:context:")
     public native NSObject expressionValueWithObject$context$(NSObject object, NSMutableDictionary<?, ?> context);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "allowEvaluation")
     public native void allowEvaluation();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "expressionWithFormat:argumentArray:")
     public static native NSExpression expressionWithFormat$argumentArray$(String expressionFormat, NSArray<?> arguments);
     @Method(selector = "expressionForConstantValue:")
@@ -94,20 +116,44 @@ import org.robovm.apple.security.*;
     public static native NSExpression expressionForKeyPath$(String keyPath);
     @Method(selector = "expressionForFunction:arguments:")
     public static native NSExpression expressionForFunction$arguments$(String name, NSArray<?> parameters);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "expressionForAggregate:")
     public static native NSExpression expressionForAggregate$(NSArray<?> subexpressions);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "expressionForUnionSet:with:")
     public static native NSExpression expressionForUnionSet$with$(NSExpression left, NSExpression right);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "expressionForIntersectSet:with:")
     public static native NSExpression expressionForIntersectSet$with$(NSExpression left, NSExpression right);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "expressionForMinusSet:with:")
     public static native NSExpression expressionForMinusSet$with$(NSExpression left, NSExpression right);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "expressionForSubquery:usingIteratorVariable:predicate:")
     public static native NSExpression expressionForSubquery$usingIteratorVariable$predicate$(NSExpression expression, String variable, NSObject predicate);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "expressionForFunction:selectorName:arguments:")
     public static native NSExpression expressionForFunction$selectorName$arguments$(NSExpression target, String name, NSArray<?> parameters);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "expressionForAnyKey")
     public static native NSExpression expressionForAnyKey();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "expressionForBlock:arguments:")
     public static native NSExpression expressionForBlock$arguments$(ObjCBlock block, NSArray<?> arguments);
     /*</methods>*/

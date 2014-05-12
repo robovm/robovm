@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreGraphics")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGRect/*</name>*/ 
     extends /*<extends>*/Struct<CGRect>/*</extends>*/ 
@@ -153,57 +152,135 @@ import org.robovm.apple.foundation.*;
     }
     
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="CGRectZero", optional=true)
     public static native @ByVal CGRect Zero();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="CGRectNull", optional=true)
     public static native @ByVal CGRect Null();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="CGRectInfinite", optional=true)
     public static native @ByVal CGRect Infinite();
     
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGRectGetMinX", optional=true)
     protected static native @MachineSizedFloat double getMinX(@ByVal CGRect rect);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGRectGetMidX", optional=true)
     protected static native @MachineSizedFloat double getMidX(@ByVal CGRect rect);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGRectGetMaxX", optional=true)
     protected static native @MachineSizedFloat double getMaxX(@ByVal CGRect rect);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGRectGetMinY", optional=true)
     protected static native @MachineSizedFloat double getMinY(@ByVal CGRect rect);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGRectGetMidY", optional=true)
     protected static native @MachineSizedFloat double getMidY(@ByVal CGRect rect);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGRectGetMaxY", optional=true)
     protected static native @MachineSizedFloat double getMaxY(@ByVal CGRect rect);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGRectGetWidth", optional=true)
     protected static native @MachineSizedFloat double getWidth(@ByVal CGRect rect);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGRectGetHeight", optional=true)
     protected static native @MachineSizedFloat double getHeight(@ByVal CGRect rect);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGRectEqualToRect", optional=true)
     protected static native boolean equalToRect(@ByVal CGRect rect1, @ByVal CGRect rect2);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGRectStandardize", optional=true)
     protected static native @ByVal CGRect standardize(@ByVal CGRect rect);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGRectIsEmpty", optional=true)
     protected static native boolean isEmpty(@ByVal CGRect rect);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGRectIsNull", optional=true)
     protected static native boolean isNull(@ByVal CGRect rect);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGRectIsInfinite", optional=true)
     protected static native boolean isInfinite(@ByVal CGRect rect);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGRectInset", optional=true)
     protected static native @ByVal CGRect inset(@ByVal CGRect rect, @MachineSizedFloat double dx, @MachineSizedFloat double dy);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGRectIntegral", optional=true)
     protected static native @ByVal CGRect integral(@ByVal CGRect rect);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGRectUnion", optional=true)
     protected static native @ByVal CGRect union(@ByVal CGRect r1, @ByVal CGRect r2);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGRectIntersection", optional=true)
     protected static native @ByVal CGRect intersection(@ByVal CGRect r1, @ByVal CGRect r2);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGRectOffset", optional=true)
     protected static native @ByVal CGRect offset(@ByVal CGRect rect, @MachineSizedFloat double dx, @MachineSizedFloat double dy);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGRectDivide", optional=true)
     public static native void divide(@ByVal CGRect rect, CGRect slice, CGRect remainder, @MachineSizedFloat double amount, CGRectEdge edge);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGRectContainsPoint", optional=true)
     protected static native boolean containsPoint(@ByVal CGRect rect, @ByVal CGPoint point);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGRectContainsRect", optional=true)
     protected static native boolean containsRect(@ByVal CGRect rect1, @ByVal CGRect rect2);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGRectIntersectsRect", optional=true)
     protected static native boolean intersectsRect(@ByVal CGRect rect1, @ByVal CGRect rect2);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGRectApplyAffineTransform", optional=true)
     protected static native @ByVal CGRect applyAffineTransform(@ByVal CGRect rect, @ByVal CGAffineTransform t);
     /*</methods>*/

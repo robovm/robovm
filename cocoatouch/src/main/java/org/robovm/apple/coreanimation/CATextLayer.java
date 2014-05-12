@@ -31,10 +31,9 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("QuartzCore") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CATextLayer/*</name>*/ 
     extends /*<extends>*/CALayer/*</extends>*/ 
@@ -79,22 +78,49 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="kCATruncationNone", optional=true)
     public static native String TruncationNone();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="kCATruncationStart", optional=true)
     public static native String TruncationStart();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="kCATruncationEnd", optional=true)
     public static native String TruncationEnd();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="kCATruncationMiddle", optional=true)
     public static native String TruncationMiddle();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="kCAAlignmentNatural", optional=true)
     public static native String AlignmentNatural();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="kCAAlignmentLeft", optional=true)
     public static native String AlignmentLeft();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="kCAAlignmentRight", optional=true)
     public static native String AlignmentRight();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="kCAAlignmentCenter", optional=true)
     public static native String AlignmentCenter();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="kCAAlignmentJustified", optional=true)
     public static native String AlignmentJustified();
     

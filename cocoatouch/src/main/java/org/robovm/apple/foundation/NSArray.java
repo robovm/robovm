@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSArray/*</name>*/ <T extends NSObject>
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -257,6 +256,9 @@ import org.robovm.apple.security.*;
     protected native boolean containsObject$(NSObject anObject);
     @Method(selector = "indexOfObject:")
     protected native @MachineSizedUInt long indexOfObject$(NSObject anObject);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "firstObject")
     public native NSObject getFirst();
     @Method(selector = "lastObject")
@@ -277,6 +279,9 @@ import org.robovm.apple.security.*;
     public static native NSArray<?> read(NSURL url);
     @Method(selector = "addObserver:toObjectsAtIndexes:forKeyPath:options:context:")
     public native void addObserver(NSObject observer, NSIndexSet indexes, String keyPath, NSKeyValueObservingOptions options, VoidPtr context);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "removeObserver:fromObjectsAtIndexes:forKeyPath:context:")
     public native void removeObserver(NSObject observer, NSIndexSet indexes, String keyPath, VoidPtr context);
     /*</methods>*/

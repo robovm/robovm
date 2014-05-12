@@ -29,10 +29,9 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFRunLoopSourceContext/*</name>*/ 
     extends /*<extends>*/Struct<CFRunLoopSourceContext>/*</extends>*/ 

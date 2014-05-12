@@ -30,10 +30,11 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSOperationQueue/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -55,12 +56,21 @@ import org.robovm.apple.security.*;
     /*<methods>*/
     @Method(selector = "addOperation:")
     public native void addOperation(NSOperation op);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "addOperations:waitUntilFinished:")
     public native void addOperations(NSArray<NSOperation> ops, boolean wait);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "addOperationWithBlock:")
     public native void addOperation(@Block Runnable block);
     @Method(selector = "operations")
     public native NSArray<NSOperation> getOperations();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "operationCount")
     public native @MachineSizedUInt long getOperationCount();
     @Method(selector = "maxConcurrentOperationCount")
@@ -71,16 +81,28 @@ import org.robovm.apple.security.*;
     public native void setSuspended(boolean b);
     @Method(selector = "isSuspended")
     public native boolean isSuspended();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "setName:")
     public native void setName(String n);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "name")
     public native String getName();
     @Method(selector = "cancelAllOperations")
     public native void cancelAllOperations();
     @Method(selector = "waitUntilAllOperationsAreFinished")
     public native void waitUntilAllOperationsAreFinished();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "currentQueue")
     public static native NSOperationQueue getCurrentQueue();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "mainQueue")
     public static native NSOperationQueue getMainQueue();
     /*</methods>*/

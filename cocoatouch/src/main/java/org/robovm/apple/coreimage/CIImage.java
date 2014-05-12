@@ -31,10 +31,9 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreImage") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CIImage/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -51,6 +50,9 @@ import org.robovm.apple.opengles.*;
     public CIImage(NSData data) { super((SkipInit) null); initObject(initWithData$(data)); }
     public CIImage(NSData data, NSDictionary<?, ?> d) { super((SkipInit) null); initObject(initWithData$options$(data, d)); }
     public CIImage(NSData d, @MachineSizedUInt long bpr, @ByVal CGSize size, int f, CGColorSpace c) { super((SkipInit) null); initObject(initWithBitmapData$bytesPerRow$size$format$colorSpace$(d, bpr, size, f, c)); }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public CIImage(int name, @ByVal CGSize size, boolean flag, CGColorSpace cs) { super((SkipInit) null); initObject(initWithTexture$size$flipped$colorSpace$(name, size, flag, cs)); }
     public CIImage(NSURL url) { super((SkipInit) null); initObject(initWithContentsOfURL$(url)); }
     public CIImage(NSURL url, NSDictionary<?, ?> d) { super((SkipInit) null); initObject(initWithContentsOfURL$options$(url, d)); }
@@ -61,26 +63,46 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="kCIFormatARGB8", optional=true)
     public static native int FormatARGB8();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="kCIFormatBGRA8", optional=true)
     public static native int FormatBGRA8();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="kCIFormatRGBA8", optional=true)
     public static native int FormatRGBA8();
-    @GlobalValue(symbol="kCIFormatRGBA16", optional=true)
-    public static native int FormatRGBA16();
-    @GlobalValue(symbol="kCIFormatRGBAf", optional=true)
-    public static native int FormatRGBAf();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="kCIFormatRGBAh", optional=true)
     public static native int FormatRGBAh();
     @GlobalValue(symbol="kCIImageColorSpace", optional=true)
     public static native NSString KeyColorSpace();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="kCIImageProperties", optional=true)
     public static native NSString KeyProperties();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="kCIImageAutoAdjustEnhance", optional=true)
     public static native NSString AutoAdjustEnhance();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="kCIImageAutoAdjustRedEye", optional=true)
     public static native NSString AutoAdjustRedEye();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="kCIImageAutoAdjustFeatures", optional=true)
     public static native NSString AutoAdjustFeatures();
     
@@ -94,6 +116,9 @@ import org.robovm.apple.opengles.*;
     protected native @Pointer long initWithData$options$(NSData data, NSDictionary<?, ?> d);
     @Method(selector = "initWithBitmapData:bytesPerRow:size:format:colorSpace:")
     protected native @Pointer long initWithBitmapData$bytesPerRow$size$format$colorSpace$(NSData d, @MachineSizedUInt long bpr, @ByVal CGSize size, int f, CGColorSpace c);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "initWithTexture:size:flipped:colorSpace:")
     protected native @Pointer long initWithTexture$size$flipped$colorSpace$(int name, @ByVal CGSize size, boolean flag, CGColorSpace cs);
     @Method(selector = "initWithContentsOfURL:")
@@ -108,14 +133,26 @@ import org.robovm.apple.opengles.*;
     public native CIImage createImageByCroppingToRect(@ByVal CGRect r);
     @Method(selector = "extent")
     public native @ByVal CGRect getExtent();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "properties")
     public native NSDictionary<?, ?> getProperties();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "regionOfInterestForImage:inRect:")
     public native @ByVal CGRect getRegionOfInterest(CIImage im, @ByVal CGRect r);
     @Method(selector = "emptyImage")
     public static native CIImage getEmptyImage();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "autoAdjustmentFilters")
     public native NSArray<CIFilter> getAutoAdjustmentFilters();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "autoAdjustmentFiltersWithOptions:")
     public native NSArray<CIFilter> getAutoAdjustmentFilters(NSDictionary<?, ?> dict);
     @Method(selector = "encodeWithCoder:")

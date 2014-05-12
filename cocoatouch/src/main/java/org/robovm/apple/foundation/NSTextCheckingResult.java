@@ -30,10 +30,11 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 4.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSTextCheckingResult/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -80,31 +81,70 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="NSTextCheckingNameKey", optional=true)
     public static native NSString KeyName();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="NSTextCheckingJobTitleKey", optional=true)
     public static native NSString KeyJobTitle();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="NSTextCheckingOrganizationKey", optional=true)
     public static native NSString KeyOrganization();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="NSTextCheckingStreetKey", optional=true)
     public static native NSString KeyStreet();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="NSTextCheckingCityKey", optional=true)
     public static native NSString KeyCity();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="NSTextCheckingStateKey", optional=true)
     public static native NSString KeyState();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="NSTextCheckingZIPKey", optional=true)
     public static native NSString KeyZIP();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="NSTextCheckingCountryKey", optional=true)
     public static native NSString KeyCountry();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="NSTextCheckingPhoneKey", optional=true)
     public static native NSString KeyPhone();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="NSTextCheckingAirlineKey", optional=true)
     public static native NSString KeyAirline();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="NSTextCheckingFlightKey", optional=true)
     public static native NSString KeyFlight();
     
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "rangeAtIndex:")
     public native @ByVal NSRange rangeAtIndex$(@MachineSizedUInt long idx);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "resultByAdjustingRangesWithOffset:")
     public native NSTextCheckingResult resultByAdjustingRangesWithOffset$(@MachineSizedSInt long offset);
     @Method(selector = "orthographyCheckingResultWithRange:orthography:")
@@ -129,12 +169,24 @@ import org.robovm.apple.security.*;
     public static native NSTextCheckingResult replacementCheckingResultWithRange$replacementString$(@ByVal NSRange range, String replacementString);
     @Method(selector = "correctionCheckingResultWithRange:replacementString:")
     public static native NSTextCheckingResult correctionCheckingResultWithRange$replacementString$(@ByVal NSRange range, String replacementString);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "correctionCheckingResultWithRange:replacementString:alternativeStrings:")
     public static native NSTextCheckingResult correctionCheckingResultWithRange$replacementString$alternativeStrings$(@ByVal NSRange range, String replacementString, NSArray<?> alternativeStrings);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "regularExpressionCheckingResultWithRanges:count:regularExpression:")
     public static native NSTextCheckingResult regularExpressionCheckingResultWithRanges$count$regularExpression$(NSRange ranges, @MachineSizedUInt long count, NSRegularExpression regularExpression);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "phoneNumberCheckingResultWithRange:phoneNumber:")
     public static native NSTextCheckingResult phoneNumberCheckingResultWithRange$phoneNumber$(@ByVal NSRange range, String phoneNumber);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "transitInformationCheckingResultWithRange:components:")
     public static native NSTextCheckingResult transitInformationCheckingResultWithRange$components$(@ByVal NSRange range, NSDictionary<?, ?> components);
     @Method(selector = "encodeWithCoder:")

@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UITableViewController/*</name>*/ 
     extends /*<extends>*/UIViewController/*</extends>*/ 
@@ -70,14 +71,29 @@ import org.robovm.apple.coreimage.*;
     protected native @Pointer long initWithStyle$(UITableViewStyle style);
     @Method(selector = "tableView:willDisplayCell:forRowAtIndexPath:")
     public native void willDisplayCell(UITableView tableView, UITableViewCell cell, NSIndexPath indexPath);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "tableView:willDisplayHeaderView:forSection:")
     public native void willDisplayHeaderView(UITableView tableView, UIView view, @MachineSizedSInt long section);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "tableView:willDisplayFooterView:forSection:")
     public native void willDisplayFooterView(UITableView tableView, UIView view, @MachineSizedSInt long section);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "tableView:didEndDisplayingCell:forRowAtIndexPath:")
     public native void didEndDisplayingCell(UITableView tableView, UITableViewCell cell, NSIndexPath indexPath);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "tableView:didEndDisplayingHeaderView:forSection:")
     public native void didEndDisplayingHeaderView(UITableView tableView, UIView view, @MachineSizedSInt long section);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "tableView:didEndDisplayingFooterView:forSection:")
     public native void didEndDisplayingFooterView(UITableView tableView, UIView view, @MachineSizedSInt long section);
     @Method(selector = "tableView:heightForRowAtIndexPath:")
@@ -86,36 +102,68 @@ import org.robovm.apple.coreimage.*;
     public native @MachineSizedFloat double getSectionHeaderHeight(UITableView tableView, @MachineSizedSInt long section);
     @Method(selector = "tableView:heightForFooterInSection:")
     public native @MachineSizedFloat double getSectionFooterHeight(UITableView tableView, @MachineSizedSInt long section);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "tableView:estimatedHeightForRowAtIndexPath:")
     public native @MachineSizedFloat double getEstimatedRowHeight(UITableView tableView, NSIndexPath indexPath);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "tableView:estimatedHeightForHeaderInSection:")
     public native @MachineSizedFloat double getEstimatedSectionHeaderHeight(UITableView tableView, @MachineSizedSInt long section);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "tableView:estimatedHeightForFooterInSection:")
     public native @MachineSizedFloat double getEstimatedSectionFooterHeight(UITableView tableView, @MachineSizedSInt long section);
     @Method(selector = "tableView:viewForHeaderInSection:")
     public native UIView getSectionHeaderView(UITableView tableView, @MachineSizedSInt long section);
     @Method(selector = "tableView:viewForFooterInSection:")
     public native UIView getSectionFooterView(UITableView tableView, @MachineSizedSInt long section);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Method(selector = "tableView:accessoryTypeForRowWithIndexPath:")
     public native UITableViewCellAccessoryType getRowAccessoryType(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "tableView:accessoryButtonTappedForRowWithIndexPath:")
     public native void accessoryButtonTapped(UITableView tableView, NSIndexPath indexPath);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "tableView:shouldHighlightRowAtIndexPath:")
     public native boolean shouldHighlightRow(UITableView tableView, NSIndexPath indexPath);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "tableView:didHighlightRowAtIndexPath:")
     public native void didHighlightRow(UITableView tableView, NSIndexPath indexPath);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "tableView:didUnhighlightRowAtIndexPath:")
     public native void didUnhighlightRow(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "tableView:willSelectRowAtIndexPath:")
     public native NSIndexPath willSelectRow(UITableView tableView, NSIndexPath indexPath);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "tableView:willDeselectRowAtIndexPath:")
     public native NSIndexPath willDeselectRow(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "tableView:didSelectRowAtIndexPath:")
     public native void didSelectRow(UITableView tableView, NSIndexPath indexPath);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "tableView:didDeselectRowAtIndexPath:")
     public native void didDeselectRow(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "tableView:editingStyleForRowAtIndexPath:")
     public native UITableViewCellEditingStyle getRowEditingStyle(UITableView tableView, NSIndexPath indexPath);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "tableView:titleForDeleteConfirmationButtonForRowAtIndexPath:")
     public native String getDeleteConfirmationButtonTitle(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "tableView:shouldIndentWhileEditingRowAtIndexPath:")
@@ -128,18 +176,33 @@ import org.robovm.apple.coreimage.*;
     public native NSIndexPath getTargetForMove(UITableView tableView, NSIndexPath sourceIndexPath, NSIndexPath proposedDestinationIndexPath);
     @Method(selector = "tableView:indentationLevelForRowAtIndexPath:")
     public native @MachineSizedSInt long getRowIndentationLevel(UITableView tableView, NSIndexPath indexPath);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "tableView:shouldShowMenuForRowAtIndexPath:")
     public native boolean shouldShowMenuForRow(UITableView tableView, NSIndexPath indexPath);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "tableView:canPerformAction:forRowAtIndexPath:withSender:")
     public native boolean canPerformAction(UITableView tableView, Selector action, NSIndexPath indexPath, NSObject sender);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "tableView:performAction:forRowAtIndexPath:withSender:")
     public native void performAction(UITableView tableView, Selector action, NSIndexPath indexPath, NSObject sender);
     @Method(selector = "scrollViewDidScroll:")
     public native void didScroll(UIScrollView scrollView);
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Method(selector = "scrollViewDidZoom:")
     public native void didZoom(UIScrollView scrollView);
     @Method(selector = "scrollViewWillBeginDragging:")
     public native void willBeginDragging(UIScrollView scrollView);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "scrollViewWillEndDragging:withVelocity:targetContentOffset:")
     public native void willEndDragging(UIScrollView scrollView, @ByVal CGPoint velocity, CGPoint targetContentOffset);
     @Method(selector = "scrollViewDidEndDragging:willDecelerate:")
@@ -152,6 +215,9 @@ import org.robovm.apple.coreimage.*;
     public native void didEndScrollingAnimation(UIScrollView scrollView);
     @Method(selector = "viewForZoomingInScrollView:")
     public native UIView getViewForZooming(UIScrollView scrollView);
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Method(selector = "scrollViewWillBeginZooming:withView:")
     public native void willBeginZooming(UIScrollView scrollView, UIView view);
     @Method(selector = "scrollViewDidEndZooming:withView:atScale:")

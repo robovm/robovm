@@ -33,10 +33,8 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIPrintInteractionControllerDelegateAdapter/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -69,6 +67,9 @@ import org.robovm.apple.coreimage.*;
     public void willStartJob(UIPrintInteractionController printInteractionController) { throw new UnsupportedOperationException(); }
     @NotImplemented("printInteractionControllerDidFinishJob:")
     public void didFinishJob(UIPrintInteractionController printInteractionController) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @NotImplemented("printInteractionController:cutLengthForPaper:")
     public @MachineSizedFloat double getCutLength(UIPrintInteractionController printInteractionController, UIPrintPaper paper) { throw new UnsupportedOperationException(); }
     /*</methods>*/

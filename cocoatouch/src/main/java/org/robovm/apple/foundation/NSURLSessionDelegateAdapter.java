@@ -30,10 +30,8 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLSessionDelegateAdapter/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -54,6 +52,9 @@ import org.robovm.apple.security.*;
     public void URLSession$didBecomeInvalidWithError$(NSURLSession session, NSError error) { throw new UnsupportedOperationException(); }
     @NotImplemented("URLSession:didReceiveChallenge:completionHandler:")
     public void URLSession$didReceiveChallenge$completionHandler$(NSURLSession session, NSURLAuthenticationChallenge challenge, ObjCBlock completionHandler) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @NotImplemented("URLSessionDidFinishEventsForBackgroundURLSession:")
     public void URLSessionDidFinishEventsForBackgroundURLSession$(NSURLSession session) { throw new UnsupportedOperationException(); }
     /*</methods>*/

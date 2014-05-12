@@ -29,10 +29,11 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 3.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreData") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSPersistentStore/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -87,6 +88,9 @@ import org.robovm.apple.foundation.*;
     public static native NSDictionary<?, ?> metadataForPersistentStoreWithURL$error$(NSURL url, NSError.NSErrorPtr error);
     @Method(selector = "setMetadata:forPersistentStoreWithURL:error:")
     public static native boolean setMetadata$forPersistentStoreWithURL$error$(NSDictionary<?, ?> metadata, NSURL url, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "migrationManagerClass")
     public static native ObjCClass migrationManagerClass();
     /*</methods>*/

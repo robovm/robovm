@@ -33,10 +33,8 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
 @Marshaler(NSString.AsStringMarshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIStateRestoration/*</name>*/ 
@@ -51,14 +49,29 @@ import org.robovm.apple.coreimage.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="UIStateRestorationViewControllerStoryboardKey", optional=true)
     public static native NSString StateRestorationKeyViewControllerStoryboard();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="UIApplicationStateRestorationBundleVersionKey", optional=true)
     public static native NSString StateRestorationKeyBundleVersion();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="UIApplicationStateRestorationUserInterfaceIdiomKey", optional=true)
     public static native NSString StateRestorationKeyUserInterfaceIdiom();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIApplicationStateRestorationTimestampKey", optional=true)
     public static native NSString StateRestorationKeyTimestamp();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIApplicationStateRestorationSystemVersionKey", optional=true)
     public static native NSString StateRestorationKeySystemVersion();
     /*</methods>*/

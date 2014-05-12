@@ -31,10 +31,9 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreImage") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CIFilter/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -56,10 +55,6 @@ import org.robovm.apple.opengles.*;
     public static native NSString AttributeFilterName();
     @GlobalValue(symbol="kCIAttributeFilterDisplayName", optional=true)
     public static native NSString AttributeFilterDisplayName();
-    @GlobalValue(symbol="kCIAttributeDescription", optional=true)
-    public static native NSString AttributeDescription();
-    @GlobalValue(symbol="kCIAttributeReferenceDocumentation", optional=true)
-    public static native NSString AttributeReferenceDocumentation();
     @GlobalValue(symbol="kCIAttributeFilterCategories", optional=true)
     public static native NSString AttributeFilterCategories();
     @GlobalValue(symbol="kCIAttributeClass", optional=true)
@@ -92,8 +87,14 @@ import org.robovm.apple.opengles.*;
     public static native NSString AttributeTypeAngle();
     @GlobalValue(symbol="kCIAttributeTypeBoolean", optional=true)
     public static native NSString AttributeTypeBoolean();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="kCIAttributeTypeInteger", optional=true)
     public static native NSString AttributeTypeInteger();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="kCIAttributeTypeCount", optional=true)
     public static native NSString AttributeTypeCount();
     @GlobalValue(symbol="kCIAttributeTypePosition", optional=true)
@@ -106,10 +107,14 @@ import org.robovm.apple.opengles.*;
     public static native NSString AttributeTypeRectangle();
     @GlobalValue(symbol="kCIAttributeTypeColor", optional=true)
     public static native NSString AttributeTypeColor();
-    @GlobalValue(symbol="kCIAttributeTypeGradient", optional=true)
-    public static native NSString AttributeTypeGradient();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="kCIAttributeTypeImage", optional=true)
     public static native NSString AttributeTypeImage();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="kCIAttributeTypeTransform", optional=true)
     public static native NSString AttributeTypeTransform();
     @GlobalValue(symbol="kCICategoryDistortionEffect", optional=true)
@@ -130,6 +135,9 @@ import org.robovm.apple.opengles.*;
     public static native NSString CategoryTileEffect();
     @GlobalValue(symbol="kCICategoryGenerator", optional=true)
     public static native NSString CategoryGenerator();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="kCICategoryReduction", optional=true)
     public static native NSString CategoryReduction();
     @GlobalValue(symbol="kCICategoryGradient", optional=true)
@@ -152,59 +160,120 @@ import org.robovm.apple.opengles.*;
     public static native NSString CategoryHighDynamicRange();
     @GlobalValue(symbol="kCICategoryBuiltIn", optional=true)
     public static native NSString CategoryBuiltIn();
-    @GlobalValue(symbol="kCICategoryFilterGenerator", optional=true)
-    public static native NSString CategoryFilterGenerator();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="kCIOutputImageKey", optional=true)
     public static native NSString ParameterOutputImage();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="kCIInputBackgroundImageKey", optional=true)
     public static native NSString ParameterInputBackgroundImage();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="kCIInputImageKey", optional=true)
     public static native NSString ParameterInputImage();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kCIInputTimeKey", optional=true)
     public static native NSString ParameterInputTime();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kCIInputTransformKey", optional=true)
     public static native NSString ParameterInputTransform();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kCIInputScaleKey", optional=true)
     public static native NSString ParameterInputScale();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kCIInputAspectRatioKey", optional=true)
     public static native NSString ParameterInputAspectRatio();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kCIInputCenterKey", optional=true)
     public static native NSString ParameterInputCenter();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kCIInputRadiusKey", optional=true)
     public static native NSString ParameterInputRadius();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kCIInputAngleKey", optional=true)
     public static native NSString ParameterInputAngle();
-    @GlobalValue(symbol="kCIInputRefractionKey", optional=true)
-    public static native NSString ParameterInputRefraction();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kCIInputWidthKey", optional=true)
     public static native NSString ParameterInputWidth();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kCIInputSharpnessKey", optional=true)
     public static native NSString ParameterInputSharpness();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kCIInputIntensityKey", optional=true)
     public static native NSString ParameterInputIntensity();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kCIInputEVKey", optional=true)
     public static native NSString ParameterInputEV();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kCIInputSaturationKey", optional=true)
     public static native NSString ParameterInputSaturation();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kCIInputColorKey", optional=true)
     public static native NSString ParameterInputColor();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kCIInputBrightnessKey", optional=true)
     public static native NSString ParameterInputBrightness();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kCIInputContrastKey", optional=true)
     public static native NSString ParameterInputContrast();
-    @GlobalValue(symbol="kCIInputGradientImageKey", optional=true)
-    public static native NSString ParameterInputGradientImage();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kCIInputMaskImageKey", optional=true)
     public static native NSString ParameterInputMaskImage();
-    @GlobalValue(symbol="kCIInputShadingImageKey", optional=true)
-    public static native NSString ParameterInputShadingImage();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kCIInputTargetImageKey", optional=true)
     public static native NSString ParameterInputTargetImage();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kCIInputExtentKey", optional=true)
     public static native NSString ParameterInputExtent();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="kCIInputVersionKey", optional=true)
     public static native NSString ParameterInputVersion();
     
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "name")
     public native String getName();
     @Method(selector = "inputKeys")
@@ -221,8 +290,14 @@ import org.robovm.apple.opengles.*;
     public static native NSArray<NSString> getFilterNames(String category);
     @Method(selector = "filterNamesInCategories:")
     public static native NSArray<NSString> getFilterNames(NSArray<NSString> categories);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "serializedXMPFromFilters:inputImageExtent:")
     public static native NSData serializeToXMP(NSArray<CIFilter> filters, @ByVal CGRect extent);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "filterArrayFromSerializedXMP:inputImageExtent:error:")
     public static native NSArray<CIFilter> deserializeFromXMP(NSData xmpData, @ByVal CGRect extent, NSError.NSErrorPtr outError);
     @Method(selector = "encodeWithCoder:")

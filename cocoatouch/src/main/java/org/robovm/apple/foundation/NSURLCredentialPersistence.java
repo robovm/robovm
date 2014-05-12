@@ -30,15 +30,18 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/NSURLCredentialPersistence/*</name>*/ implements ValuedEnum {
     /*<values>*/
     None(0L),
     ForSession(1L),
     Permanent(2L),
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     Synchronizable(3L);
     /*</values>*/
 

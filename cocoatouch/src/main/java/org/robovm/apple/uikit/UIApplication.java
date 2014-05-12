@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIApplication/*</name>*/ 
     extends /*<extends>*/UIResponder/*</extends>*/ 
@@ -138,18 +139,36 @@ import org.robovm.apple.coreimage.*;
     }
     
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="UIBackgroundTaskInvalid", optional=true)
     public static native @MachineSizedUInt long BackgroundTaskInvalid();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="UIMinimumKeepAliveTimeout", optional=true)
     public static native double MinimumKeepAliveTimeout();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIApplicationBackgroundFetchIntervalMinimum", optional=true)
     public static native double BackgroundFetchIntervalMinimum();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIApplicationBackgroundFetchIntervalNever", optional=true)
     public static native double BackgroundFetchIntervalNever();
     @GlobalValue(symbol="UITrackingRunLoopMode", optional=true)
     public static native String RunLoopModeTracking();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="UIApplicationDidEnterBackgroundNotification", optional=true)
     public static native String NotificationApplicationDidEnterBackground();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="UIApplicationWillEnterForegroundNotification", optional=true)
     public static native String NotificationApplicationWillEnterForeground();
     @GlobalValue(symbol="UIApplicationDidFinishLaunchingNotification", optional=true)
@@ -176,58 +195,139 @@ import org.robovm.apple.coreimage.*;
     public static native String NotificationApplicationDidChangeStatusBarFrame();
     @GlobalValue(symbol="UIApplicationStatusBarFrameUserInfoKey", optional=true)
     public static native NSString UserInfoKeyStatusBarFrame();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIApplicationBackgroundRefreshStatusDidChangeNotification", optional=true)
     public static native String NotificationBackgroundRefreshStatusDidChange();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="UIApplicationLaunchOptionsURLKey", optional=true)
     public static native NSString LaunchOptionsURLKey();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="UIApplicationLaunchOptionsSourceApplicationKey", optional=true)
     public static native NSString LaunchOptionsSourceApplicationKey();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="UIApplicationLaunchOptionsRemoteNotificationKey", optional=true)
     public static native NSString LaunchOptionsRemoteNotificationKey();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="UIApplicationLaunchOptionsLocalNotificationKey", optional=true)
     public static native NSString LaunchOptionsLocalNotificationKey();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="UIApplicationLaunchOptionsAnnotationKey", optional=true)
     public static native NSString LaunchOptionsAnnotationKey();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="UIApplicationProtectedDataWillBecomeUnavailable", optional=true)
     public static native String NotificationProtectedDataWillBecomeUnavailable();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="UIApplicationProtectedDataDidBecomeAvailable", optional=true)
     public static native String NotificationProtectedDataDidBecomeAvailable();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="UIApplicationLaunchOptionsLocationKey", optional=true)
     public static native NSString LaunchOptionsLocationKey();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="UIApplicationLaunchOptionsNewsstandDownloadsKey", optional=true)
     public static native NSString LaunchOptionsNewsstandDownloadsKey();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIApplicationLaunchOptionsBluetoothCentralsKey", optional=true)
     public static native NSString LaunchOptionsBluetoothCentralsKey();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIApplicationLaunchOptionsBluetoothPeripheralsKey", optional=true)
     public static native NSString LaunchOptionsBluetoothPeripheralsKey();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIContentSizeCategoryExtraSmall", optional=true)
     public static native String ContentSizeCategoryExtraSmall();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIContentSizeCategorySmall", optional=true)
     public static native String ContentSizeCategorySmall();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIContentSizeCategoryMedium", optional=true)
     public static native String ContentSizeCategoryMedium();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIContentSizeCategoryLarge", optional=true)
     public static native String ContentSizeCategoryLarge();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIContentSizeCategoryExtraLarge", optional=true)
     public static native String ContentSizeCategoryExtraLarge();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIContentSizeCategoryExtraExtraLarge", optional=true)
     public static native String ContentSizeCategoryExtraExtraLarge();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIContentSizeCategoryExtraExtraExtraLarge", optional=true)
     public static native String ContentSizeCategoryExtraExtraExtraLarge();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIContentSizeCategoryAccessibilityMedium", optional=true)
     public static native String ContentSizeCategoryAccessibilityMedium();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIContentSizeCategoryAccessibilityLarge", optional=true)
     public static native String ContentSizeCategoryAccessibilityLarge();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIContentSizeCategoryAccessibilityExtraLarge", optional=true)
     public static native String ContentSizeCategoryAccessibilityExtraLarge();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIContentSizeCategoryAccessibilityExtraExtraLarge", optional=true)
     public static native String ContentSizeCategoryAccessibilityExtraExtraLarge();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIContentSizeCategoryAccessibilityExtraExtraExtraLarge", optional=true)
     public static native String ContentSizeCategoryAccessibilityExtraExtraExtraLarge();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIContentSizeCategoryDidChangeNotification", optional=true)
     public static native String NotificationContentSizeCategoryDidChange();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIContentSizeCategoryNewValueKey", optional=true)
     public static native NSString UserInfoKeyContentSizeCategoryNewValue();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="UIApplicationUserDidTakeScreenshotNotification", optional=true)
     public static native String NotificationUserDidTakeScreenshot();
     
@@ -242,6 +342,9 @@ import org.robovm.apple.coreimage.*;
     public native boolean isIgnoringInteractionEvents();
     @Method(selector = "openURL:")
     public native boolean openURL(NSURL url);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "canOpenURL:")
     public native boolean canOpenURL(NSURL url);
     @Method(selector = "sendEvent:")
@@ -250,54 +353,122 @@ import org.robovm.apple.coreimage.*;
     public native boolean sendAction(Selector action, NSObject target, NSObject sender, UIEvent event);
     @Method(selector = "setStatusBarStyle:animated:")
     public native void setStatusBarStyle(UIStatusBarStyle statusBarStyle, boolean animated);
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Method(selector = "setStatusBarHidden:withAnimation:")
     public native void setStatusBarHidden(boolean hidden, UIStatusBarAnimation animation);
     @Method(selector = "setStatusBarOrientation:animated:")
     public native void setStatusBarOrientation(UIInterfaceOrientation interfaceOrientation, boolean animated);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "supportedInterfaceOrientationsForWindow:")
     public native @MachineSizedUInt long getSupportedInterfaceOrientations(UIWindow window);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "beginBackgroundTaskWithExpirationHandler:")
     public native @MachineSizedUInt long beginBackgroundTask(@Block Runnable handler);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "beginBackgroundTaskWithName:expirationHandler:")
     public native @MachineSizedUInt long beginBackgroundTask(String taskName, @Block Runnable handler);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "endBackgroundTask:")
     public native void endBackgroundTask(@MachineSizedUInt long identifier);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "setMinimumBackgroundFetchInterval:")
     public native void setMinimumBackgroundFetchInterval(double minimumBackgroundFetchInterval);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "setKeepAliveTimeout:handler:")
     public native boolean setKeepAliveTimeout(double timeout, @Block Runnable keepAliveHandler);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "clearKeepAliveTimeout")
     public native void clearKeepAliveTimeout();
     @Method(selector = "sharedApplication")
     public static native UIApplication getSharedApplication();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "registerForRemoteNotificationTypes:")
     public native void registerForRemoteNotificationTypes(UIRemoteNotificationType types);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "unregisterForRemoteNotifications")
     public native void unregisterForRemoteNotifications();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "enabledRemoteNotificationTypes")
     public native UIRemoteNotificationType getEnabledRemoteNotificationTypes();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "presentLocalNotificationNow:")
     public native void presentLocalNotificationNow(UILocalNotification notification);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "scheduleLocalNotification:")
     public native void scheduleLocalNotification(UILocalNotification notification);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "cancelLocalNotification:")
     public native void cancelLocalNotification(UILocalNotification notification);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "cancelAllLocalNotifications")
     public native void cancelAllLocalNotifications();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "beginReceivingRemoteControlEvents")
     public native void beginReceivingRemoteControlEvents();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "endReceivingRemoteControlEvents")
     public native void endReceivingRemoteControlEvents();
     @Method(selector = "setNewsstandIconImage:")
     public native void setNewsstandIconImage(UIImage image);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "extendStateRestoration")
     public native void extendStateRestoration();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "completeStateRestoration")
     public native void completeStateRestoration();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "ignoreSnapshotOnNextApplicationLaunch")
     public native void ignoreSnapshotOnNextApplicationLaunch();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "registerObjectForStateRestoration:restorationIdentifier:")
     public static native void registerObjectForStateRestoration(UIStateRestoring object, String restorationIdentifier);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.2.
+     */
+    @Deprecated
     @Method(selector = "setStatusBarHidden:animated:")
     public native void setStatusBarHidden(boolean hidden, boolean animated);
     @Method(selector = "actionSheet:clickedButtonAtIndex:")

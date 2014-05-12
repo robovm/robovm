@@ -31,23 +31,49 @@ import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- * <div class="javadoc"></div>
+ * @since Available in iOS 3.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/MPMediaType/*</name>*/ extends Bits</*<name>*/MPMediaType/*</name>*/> {
     /*<values>*/
     public static final MPMediaType Music = new MPMediaType(1L);
     public static final MPMediaType Podcast = new MPMediaType(2L);
     public static final MPMediaType AudioBook = new MPMediaType(4L);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public static final MPMediaType AudioITunesU = new MPMediaType(8L);
     public static final MPMediaType AnyAudio = new MPMediaType(255L);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public static final MPMediaType Movie = new MPMediaType(256L);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public static final MPMediaType TVShow = new MPMediaType(512L);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public static final MPMediaType VideoPodcast = new MPMediaType(1024L);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public static final MPMediaType MusicVideo = new MPMediaType(2048L);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public static final MPMediaType VideoITunesU = new MPMediaType(4096L);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public static final MPMediaType HomeVideo = new MPMediaType(8192L);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public static final MPMediaType AnyVideo = new MPMediaType(65280L);
     public static final MPMediaType Any = new MPMediaType(-1L);
     /*</values>*/

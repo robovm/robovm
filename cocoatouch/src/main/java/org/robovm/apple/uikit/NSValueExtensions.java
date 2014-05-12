@@ -33,10 +33,8 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
 /*<visibility>*/public final/*</visibility>*/ class /*<name>*/NSValueExtensions/*</name>*/ 
     extends /*<extends>*/NSExtensions/*</extends>*/ 
@@ -64,6 +62,9 @@ import org.robovm.apple.coreimage.*;
     public static native @ByVal CGAffineTransform CGAffineTransformValue(NSValue thiz);
     @Method(selector = "UIEdgeInsetsValue")
     public static native @ByVal UIEdgeInsets UIEdgeInsetsValue(NSValue thiz);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "UIOffsetValue")
     public static native @ByVal UIOffset UIOffsetValue(NSValue thiz);
     @Method(selector = "valueWithCGPoint:")
@@ -81,6 +82,9 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "valueWithUIEdgeInsets:")
     protected static native NSValue valueOf(ObjCClass clazz, @ByVal UIEdgeInsets insets);
     public static NSValue valueOf(@ByVal UIEdgeInsets insets) { return valueOf(ObjCClass.getByType(NSValue.class), insets); }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "valueWithUIOffset:")
     protected static native NSValue valueOf(ObjCClass clazz, @ByVal UIOffset insets);
     public static NSValue valueOf(@ByVal UIOffset insets) { return valueOf(ObjCClass.getByType(NSValue.class), insets); }

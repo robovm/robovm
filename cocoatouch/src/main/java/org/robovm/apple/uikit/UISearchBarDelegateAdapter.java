@@ -33,10 +33,8 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UISearchBarDelegateAdapter/*</name>*/ 
     extends /*<extends>*/UIBarPositioningDelegateAdapter/*</extends>*/ 
@@ -63,6 +61,9 @@ import org.robovm.apple.coreimage.*;
     public void didEndEditing(UISearchBar searchBar) { throw new UnsupportedOperationException(); }
     @NotImplemented("searchBar:textDidChange:")
     public void didChange(UISearchBar searchBar, String searchText) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @NotImplemented("searchBar:shouldChangeTextInRange:replacementText:")
     public boolean shouldChange(UISearchBar searchBar, @ByVal NSRange range, String text) { throw new UnsupportedOperationException(); }
     @NotImplemented("searchBarSearchButtonClicked:")
@@ -71,8 +72,14 @@ import org.robovm.apple.coreimage.*;
     public void bookmarkButtonClicked(UISearchBar searchBar) { throw new UnsupportedOperationException(); }
     @NotImplemented("searchBarCancelButtonClicked:")
     public void cancelButtonClicked(UISearchBar searchBar) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @NotImplemented("searchBarResultsListButtonClicked:")
     public void resultsListButtonClicked(UISearchBar searchBar) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @NotImplemented("searchBar:selectedScopeButtonIndexDidChange:")
     public void selectedScopeButtonIndexDidChange(UISearchBar searchBar, @MachineSizedSInt long selectedScope) { throw new UnsupportedOperationException(); }
     /*</methods>*/

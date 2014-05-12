@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLProtectionSpace/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -72,10 +71,19 @@ import org.robovm.apple.security.*;
     }
 
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSURLProtectionSpaceHTTP", optional=true)
     public static native String ProtocolTypeHTTP();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSURLProtectionSpaceHTTPS", optional=true)
     public static native String ProtocolTypeHTTPS();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSURLProtectionSpaceFTP", optional=true)
     public static native String ProtocolTypeFTP();
     @GlobalValue(symbol="NSURLProtectionSpaceHTTPProxy", optional=true)
@@ -94,12 +102,24 @@ import org.robovm.apple.security.*;
     public static native String AuthenticationMethodHTTPDigest();
     @GlobalValue(symbol="NSURLAuthenticationMethodHTMLForm", optional=true)
     public static native String AuthenticationMethodHTMLForm();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSURLAuthenticationMethodNTLM", optional=true)
     public static native String AuthenticationMethodNTLM();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSURLAuthenticationMethodNegotiate", optional=true)
     public static native String AuthenticationMethodNegotiate();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSURLAuthenticationMethodClientCertificate", optional=true)
     public static native String AuthenticationMethodClientCertificate();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSURLAuthenticationMethodServerTrust", optional=true)
     public static native String AuthenticationMethodServerTrust();
     
@@ -123,8 +143,14 @@ import org.robovm.apple.security.*;
     public native String getProtocol();
     @Method(selector = "authenticationMethod")
     public native String getAuthenticationMethod();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "distinguishedNames")
     public native NSArray<?> getDistinguishedNames();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "serverTrust")
     public native SecTrust getServerTrust();
     /*</methods>*/

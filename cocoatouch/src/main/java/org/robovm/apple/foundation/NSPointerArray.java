@@ -30,10 +30,11 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 6.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSPointerArray/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -81,8 +82,14 @@ import org.robovm.apple.security.*;
     public static native NSObject pointerArrayWithPointerFunctions$(NSPointerFunctions functions);
     @Method(selector = "allObjects")
     public native NSArray<?> allObjects();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "strongObjectsPointerArray")
     public static native NSObject strongObjectsPointerArray();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "weakObjectsPointerArray")
     public static native NSObject weakObjectsPointerArray();
     @Method(selector = "encodeWithCoder:")

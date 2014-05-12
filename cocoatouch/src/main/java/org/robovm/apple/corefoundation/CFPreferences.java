@@ -29,10 +29,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFPreferences/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
@@ -83,6 +81,11 @@ import org.robovm.apple.dispatch.*;
     public static native void setMultiple(CFDictionary keysToSet, CFArray keysToRemove, CFString applicationID, CFString userName, CFString hostName);
     @Bridge(symbol="CFPreferencesSynchronize", optional=true)
     public static native boolean synchronize(CFString applicationID, CFString userName, CFString hostName);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @Bridge(symbol="CFPreferencesCopyApplicationList", optional=true)
     public static native CFArray copyApplicationList(CFString userName, CFString hostName);
     @Bridge(symbol="CFPreferencesCopyKeyList", optional=true)

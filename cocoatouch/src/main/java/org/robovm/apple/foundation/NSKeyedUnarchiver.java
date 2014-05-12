@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSKeyedUnarchiver/*</name>*/ 
     extends /*<extends>*/NSCoder/*</extends>*/ 
@@ -82,6 +81,9 @@ import org.robovm.apple.security.*;
     public native double decodeDoubleForKey$(String key);
     @Method(selector = "decodeBytesForKey:returnedLength:")
     public native BytePtr decodeBytesForKey$returnedLength$(String key, MachineSizedUIntPtr lengthp);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "setRequiresSecureCoding:")
     public native void setRequiresSecureCoding(boolean b);
     @Method(selector = "unarchiveObjectWithData:")

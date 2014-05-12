@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 7.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSTextAttachment/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -78,8 +79,14 @@ import org.robovm.apple.coreimage.*;
     /*<methods>*/
     @Method(selector = "initWithData:ofType:")
     protected native @Pointer long initWithData$ofType$(NSData contentData, String uti);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "imageForBounds:textContainer:characterIndex:")
     public native UIImage getImageForBounds(@ByVal CGRect imageBounds, NSTextContainer textContainer, @MachineSizedUInt long charIndex);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "attachmentBoundsForTextContainer:proposedLineFragment:glyphPosition:characterIndex:")
     public native @ByVal CGRect getAttachmentBounds(NSTextContainer textContainer, @ByVal CGRect lineFrag, @ByVal CGPoint position, @MachineSizedUInt long charIndex);
     @Method(selector = "encodeWithCoder:")

@@ -33,10 +33,8 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIAccessibilityFocusAdapter/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -53,10 +51,19 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @NotImplemented("accessibilityElementDidBecomeFocused")
     public void accessibilityElementDidBecomeFocused() { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @NotImplemented("accessibilityElementDidLoseFocus")
     public void accessibilityElementDidLoseFocus() { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @NotImplemented("accessibilityElementIsFocused")
     public boolean accessibilityElementIsFocused() { throw new UnsupportedOperationException(); }
     /*</methods>*/

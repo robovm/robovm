@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSBundle/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -45,6 +44,9 @@ import org.robovm.apple.security.*;
     /*<constructors>*/
     public NSBundle() {}
     protected NSBundle(SkipInit skipInit) { super(skipInit); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public NSBundle(NSURL url) { super((SkipInit) null); initObject(initWithURL$(url)); }
     /*</constructors>*/
     
@@ -65,28 +67,64 @@ import org.robovm.apple.security.*;
     
     @Method(selector = "initWithPath:")
     protected native @Pointer long initWithPath$(String path);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "initWithURL:")
     protected native @Pointer long initWithURL$(NSURL url);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "preflightAndReturnError:")
     public native boolean preflight(NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "loadAndReturnError:")
     public native boolean load(NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "bundleURL")
     public native NSURL getBundleURL();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "resourceURL")
     public native NSURL getResourceURL();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "executableURL")
     public native NSURL getExecutableURL();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "URLForAuxiliaryExecutable:")
     public native NSURL findAuxiliaryExecutableURL(String executableName);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "privateFrameworksURL")
     public native NSURL getPrivateFrameworksURL();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "sharedFrameworksURL")
     public native NSURL getSharedFrameworksURL();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "sharedSupportURL")
     public native NSURL getSharedSupportURL();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "builtInPlugInsURL")
     public native NSURL getBuiltInPlugInsURL();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "appStoreReceiptURL")
     public native NSURL getAppStoreReceiptURL();
     @Method(selector = "bundlePath")
@@ -105,14 +143,29 @@ import org.robovm.apple.security.*;
     public native String getSharedSupportPath();
     @Method(selector = "builtInPlugInsPath")
     public native String getBuiltInPlugInsPath();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "URLForResource:withExtension:")
     public native NSURL findResourceURLInSubPath(String name, String ext);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "URLForResource:withExtension:subdirectory:")
     public native NSURL findResourceURLInSubPath(String name, String ext, String subpath);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "URLForResource:withExtension:subdirectory:localization:")
     public native NSURL findResourceURLInSubPath(String name, String ext, String subpath, String localizationName);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "URLsForResourcesWithExtension:subdirectory:")
     public native NSArray<NSURL> findResourceURLsInSubPath(String ext, String subpath);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "URLsForResourcesWithExtension:subdirectory:localization:")
     public native NSArray<NSURL> findResourceURLsInSubPath(String ext, String subpath, String localizationName);
     @Method(selector = "pathForResource:ofType:")
@@ -145,6 +198,9 @@ import org.robovm.apple.security.*;
     public native NSArray<NSString> getLocalizations();
     @Method(selector = "developmentLocalization")
     public native String getDevelopmentLocalization();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "executableArchitectures")
     public native NSArray<NSNumber> getExecutableArchitectures();
     @Method(selector = "mainBundle")
@@ -157,8 +213,14 @@ import org.robovm.apple.security.*;
     public static native NSArray<NSBundle> getAllBundles();
     @Method(selector = "allFrameworks")
     public static native NSArray<NSBundle> getAllFrameworks();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "URLForResource:withExtension:subdirectory:inBundleWithURL:")
     public static native NSURL findResourceURLInBundleURL(String name, String ext, String subpath, NSURL bundleURL);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "URLsForResourcesWithExtension:subdirectory:inBundleWithURL:")
     public static native NSArray<NSString> findResourceURLsInBundleURL(String ext, String subpath, NSURL bundleURL);
     @Method(selector = "pathForResource:ofType:inDirectory:")

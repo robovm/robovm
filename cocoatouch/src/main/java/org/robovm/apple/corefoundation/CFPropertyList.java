@@ -29,10 +29,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ abstract class /*<name>*/CFPropertyList/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -58,12 +56,24 @@ import org.robovm.apple.dispatch.*;
     public static native @MachineSizedSInt long writeToStream(CFType propertyList, CFWriteStream stream, CFPropertyListFormat format, CFString.CFStringPtr errorString);
     @Bridge(symbol="CFPropertyListCreateFromStream", optional=true)
     public static native CFType createFromStream(CFAllocator allocator, CFReadStream stream, @MachineSizedSInt long streamLength, CFPropertyListMutabilityOptions mutabilityOption, MachineSizedSIntPtr format, CFString.CFStringPtr errorString);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CFPropertyListCreateWithData", optional=true)
     public static native CFType createWithData(CFAllocator allocator, CFData data, CFPropertyListMutabilityOptions options, MachineSizedSIntPtr format, CFError.CFErrorPtr error);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CFPropertyListCreateWithStream", optional=true)
     public static native CFType createWithStream(CFAllocator allocator, CFReadStream stream, @MachineSizedSInt long streamLength, CFPropertyListMutabilityOptions options, MachineSizedSIntPtr format, CFError.CFErrorPtr error);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CFPropertyListWrite", optional=true)
     public static native @MachineSizedSInt long write(CFType propertyList, CFWriteStream stream, CFPropertyListFormat format, CFPropertyListMutabilityOptions options, CFError.CFErrorPtr error);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CFPropertyListCreateData", optional=true)
     public static native CFData createData(CFAllocator allocator, CFType propertyList, CFPropertyListFormat format, CFPropertyListMutabilityOptions options, CFError.CFErrorPtr error);
     /*</methods>*/

@@ -30,14 +30,17 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSDataReadingOptions/*</name>*/ extends Bits</*<name>*/NSDataReadingOptions/*</name>*/> {
     /*<values>*/
     public static final NSDataReadingOptions DataReadingMappedIfSafe = new NSDataReadingOptions(1L);
     public static final NSDataReadingOptions DataReadingUncached = new NSDataReadingOptions(2L);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public static final NSDataReadingOptions DataReadingMappedAlways = new NSDataReadingOptions(8L);
     public static final NSDataReadingOptions DataReadingMapped = new NSDataReadingOptions(1L);
     public static final NSDataReadingOptions MappedRead = new NSDataReadingOptions(1L);

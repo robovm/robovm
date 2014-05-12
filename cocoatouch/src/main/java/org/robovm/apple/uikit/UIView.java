@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIView/*</name>*/ 
     extends /*<extends>*/UIResponder/*</extends>*/ 
@@ -162,10 +163,19 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="UIViewNoIntrinsicMetric", optional=true)
     public static native @MachineSizedFloat double NoIntrinsicMetric();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="UILayoutFittingCompressedSize", optional=true)
     public static native @ByVal CGSize LayoutFittingCompressedSize();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="UILayoutFittingExpandedSize", optional=true)
     public static native @ByVal CGSize LayoutFittingExpandedSize();
     
@@ -233,6 +243,9 @@ import org.robovm.apple.coreimage.*;
     public native void setNeedsDisplay();
     @Method(selector = "setNeedsDisplayInRect:")
     public native void setNeedsDisplay(@ByVal CGRect rect);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "tintColorDidChange")
     public native void tintColorDidChange();
     @Method(selector = "beginAnimations:context:")
@@ -265,96 +278,234 @@ import org.robovm.apple.coreimage.*;
     public static native void setAnimationsEnabled(boolean enabled);
     @Method(selector = "areAnimationsEnabled")
     public static native boolean areAnimationsEnabled();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "performWithoutAnimation:")
     public static native void performWithoutAnimation(@Block Runnable actionsWithoutAnimation);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "animateWithDuration:delay:options:animations:completion:")
     public static native void animate(double duration, double delay, UIViewAnimationOptions options, @Block Runnable animations, @Block VoidBooleanBlock completion);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "animateWithDuration:animations:completion:")
     public static native void animate(double duration, @Block Runnable animations, @Block VoidBooleanBlock completion);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "animateWithDuration:animations:")
     public static native void animate(double duration, @Block Runnable animations);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "animateWithDuration:delay:usingSpringWithDamping:initialSpringVelocity:options:animations:completion:")
     public static native void animateWithDuration(double duration, double delay, @MachineSizedFloat double dampingRatio, @MachineSizedFloat double velocity, UIViewAnimationOptions options, @Block Runnable animations, @Block VoidBooleanBlock completion);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "transitionWithView:duration:options:animations:completion:")
     public static native void transition(UIView view, double duration, UIViewAnimationOptions options, @Block Runnable animations, @Block VoidBooleanBlock completion);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "transitionFromView:toView:duration:options:completion:")
     public static native void transition(UIView fromView, UIView toView, double duration, UIViewAnimationOptions options, @Block VoidBooleanBlock completion);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "performSystemAnimation:onViews:options:animations:completion:")
     public static native void performSystemAnimation(UISystemAnimation animation, NSArray<UIView> views, UIViewAnimationOptions options, @Block Runnable parallelAnimations, @Block VoidBooleanBlock completion);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "animateKeyframesWithDuration:delay:options:animations:completion:")
     public static native void animateKeyframes(double duration, double delay, UIViewKeyframeAnimationOptions options, @Block Runnable animations, @Block VoidBooleanBlock completion);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "addKeyframeWithRelativeStartTime:relativeDuration:animations:")
     public static native void addKeyframe(double frameStartTime, double frameDuration, @Block Runnable animations);
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Method(selector = "addGestureRecognizer:")
     public native void addGestureRecognizer(UIGestureRecognizer gestureRecognizer);
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Method(selector = "removeGestureRecognizer:")
     public native void removeGestureRecognizer(UIGestureRecognizer gestureRecognizer);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "gestureRecognizerShouldBegin:")
     public native boolean gestureRecognizerShouldBegin(UIGestureRecognizer gestureRecognizer);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "addMotionEffect:")
     public native void addMotionEffect(UIMotionEffect effect);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "removeMotionEffect:")
     public native void removeMotionEffect(UIMotionEffect effect);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "constraints")
     public native NSArray<NSLayoutConstraint> getConstraints();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "addConstraint:")
     public native void addConstraint(NSLayoutConstraint constraint);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "addConstraints:")
     public native void addConstraints(NSArray<NSLayoutConstraint> constraints);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "removeConstraint:")
     public native void removeConstraint(NSLayoutConstraint constraint);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "removeConstraints:")
     public native void removeConstraints(NSArray<NSLayoutConstraint> constraints);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "updateConstraintsIfNeeded")
     public native void updateConstraintsIfNeeded();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "updateConstraints")
     public native void updateConstraints();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "needsUpdateConstraints")
     public native boolean needsUpdateConstraints();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "setNeedsUpdateConstraints")
     public native void setNeedsUpdateConstraints();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "translatesAutoresizingMaskIntoConstraints")
     public native boolean translatesAutoresizingMaskIntoConstraints();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "setTranslatesAutoresizingMaskIntoConstraints:")
     public native void setTranslatesAutoresizingMaskIntoConstraints(boolean flag);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "requiresConstraintBasedLayout")
     public static native boolean requiresConstraintBasedLayout();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "alignmentRectForFrame:")
     public native @ByVal CGRect getAlignmentRectForFrame(@ByVal CGRect frame);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "frameForAlignmentRect:")
     public native @ByVal CGRect getFrameForAlignmentRect(@ByVal CGRect alignmentRect);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "alignmentRectInsets")
     public native @ByVal UIEdgeInsets getAlignmentRectInsets();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "viewForBaselineLayout")
     public native UIView getViewForBaselineLayout();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "intrinsicContentSize")
     public native @ByVal CGSize getIntrinsicContentSize();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "invalidateIntrinsicContentSize")
     public native void invalidateIntrinsicContentSize();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "contentHuggingPriorityForAxis:")
     public native float getContentHuggingPriority(UILayoutConstraintAxis axis);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "setContentHuggingPriority:forAxis:")
     public native void setContentHuggingPriority(float priority, UILayoutConstraintAxis axis);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "contentCompressionResistancePriorityForAxis:")
     public native float getContentCompressionResistancePriority(UILayoutConstraintAxis axis);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "setContentCompressionResistancePriority:forAxis:")
     public native void setContentCompressionResistancePriority(float priority, UILayoutConstraintAxis axis);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "systemLayoutSizeFittingSize:")
     public native @ByVal CGSize getSystemLayoutSizeFittingSize(@ByVal CGSize targetSize);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "constraintsAffectingLayoutForAxis:")
     public native NSArray<NSLayoutConstraint> getConstraintsAffectingLayout(UILayoutConstraintAxis axis);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "hasAmbiguousLayout")
     public native boolean hasAmbiguousLayout();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "exerciseAmbiguityInLayout")
     public native void exerciseAmbiguityInLayout();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "encodeRestorableStateWithCoder:")
     public native void encodeRestorableState(NSCoder coder);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "decodeRestorableStateWithCoder:")
     public native void decodeRestorableState(NSCoder coder);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "snapshotViewAfterScreenUpdates:")
     public native UIView snapshotView(boolean afterUpdates);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "resizableSnapshotViewFromRect:afterScreenUpdates:withCapInsets:")
     public native UIView resizableSnapshotView(@ByVal CGRect rect, boolean afterUpdates, @ByVal UIEdgeInsets capInsets);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "drawViewHierarchyInRect:afterScreenUpdates:")
     public native boolean drawViewHierarchy(@ByVal CGRect rect, boolean afterUpdates);
     @Method(selector = "endEditing:")

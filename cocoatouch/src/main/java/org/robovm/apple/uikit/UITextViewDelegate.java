@@ -33,10 +33,9 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ interface /*<name>*/UITextViewDelegate/*</name>*/ 
     /*<implements>*/extends NSObjectProtocol, UIScrollViewDelegate/*</implements>*/ {
@@ -64,8 +63,14 @@ import org.robovm.apple.coreimage.*;
     void didChange(UITextView textView);
     @Method(selector = "textViewDidChangeSelection:")
     void didChangeSelection(UITextView textView);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "textView:shouldInteractWithURL:inRange:")
     boolean shouldInteractWithURL(UITextView textView, NSURL URL, @ByVal NSRange characterRange);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "textView:shouldInteractWithTextAttachment:inRange:")
     boolean shouldInteractWithTextAttachment(UITextView textView, NSTextAttachment textAttachment, @ByVal NSRange characterRange);
     /*</methods>*/

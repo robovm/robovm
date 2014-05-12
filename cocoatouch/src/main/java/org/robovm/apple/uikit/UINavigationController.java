@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UINavigationController/*</name>*/ 
     extends /*<extends>*/UIViewController/*</extends>*/ 
@@ -48,6 +49,9 @@ import org.robovm.apple.coreimage.*;
     /*<constructors>*/
     public UINavigationController() {}
     protected UINavigationController(SkipInit skipInit) { super(skipInit); }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public UINavigationController(ObjCClass navigationBarClass, ObjCClass toolbarClass) { super((SkipInit) null); initObject(initWithNavigationBarClass$toolbarClass$(navigationBarClass, toolbarClass)); }
     public UINavigationController(UIViewController rootViewController) { super((SkipInit) null); initObject(initWithRootViewController$(rootViewController)); }
     /*</constructors>*/
@@ -84,6 +88,9 @@ import org.robovm.apple.coreimage.*;
     @GlobalValue(symbol="UINavigationControllerHideShowBarDuration", optional=true)
     public static native @MachineSizedFloat double HideShowBarDuration();
     
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "initWithNavigationBarClass:toolbarClass:")
     protected native @Pointer long initWithNavigationBarClass$toolbarClass$(ObjCClass navigationBarClass, ObjCClass toolbarClass);
     @Method(selector = "initWithRootViewController:")
@@ -96,10 +103,16 @@ import org.robovm.apple.coreimage.*;
     public native NSArray<UIViewController> popToViewController(UIViewController viewController, boolean animated);
     @Method(selector = "popToRootViewControllerAnimated:")
     public native NSArray<UIViewController> popToRootViewController(boolean animated);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "setViewControllers:animated:")
     public native void setViewControllers(NSArray<UIViewController> viewControllers, boolean animated);
     @Method(selector = "setNavigationBarHidden:animated:")
     public native void setNavigationBarHidden(boolean hidden, boolean animated);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "setToolbarHidden:animated:")
     public native void setToolbarHidden(boolean hidden, boolean animated);
     /*</methods>*/

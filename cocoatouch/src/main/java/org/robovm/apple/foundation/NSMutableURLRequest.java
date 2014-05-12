@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSMutableURLRequest/*</name>*/ 
     extends /*<extends>*/NSURLRequest/*</extends>*/ 
@@ -59,8 +58,14 @@ import org.robovm.apple.security.*;
     public native void setTimeoutInterval(double seconds);
     @Method(selector = "setMainDocumentURL:")
     public native void setMainDocumentURL(NSURL URL);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "setNetworkServiceType:")
     public native void setNetworkServiceType(NSURLRequestNetworkServiceType networkServiceType);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "setAllowsCellularAccess:")
     public native void setAllowsCellularAccess(boolean allow);
     @Method(selector = "setHTTPMethod:")
@@ -77,6 +82,9 @@ import org.robovm.apple.security.*;
     public native void setHTTPBodyStream(NSInputStream inputStream);
     @Method(selector = "setHTTPShouldHandleCookies:")
     public native void setHTTPShouldHandleCookies(boolean should);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "setHTTPShouldUsePipelining:")
     public native void setHTTPShouldUsePipelining(boolean shouldUsePipelining);
     /*</methods>*/

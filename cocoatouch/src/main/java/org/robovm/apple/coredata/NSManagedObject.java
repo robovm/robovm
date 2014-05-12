@@ -29,10 +29,11 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 3.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreData") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSManagedObject/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -65,12 +66,21 @@ import org.robovm.apple.foundation.*;
     public native boolean isUpdated();
     @Method(selector = "isDeleted")
     public native boolean isDeleted();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "hasChanges")
     public native boolean hasChanges();
     @Method(selector = "isFault")
     public native boolean isFault();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "hasFaultForRelationshipNamed:")
     public native boolean hasFaultForRelationshipNamed$(String key);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "faultingState")
     public native @MachineSizedUInt long faultingState();
     @Method(selector = "willAccessValueForKey:")
@@ -93,14 +103,23 @@ import org.robovm.apple.foundation.*;
     public native void awakeFromFetch();
     @Method(selector = "awakeFromInsert")
     public native void awakeFromInsert();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "awakeFromSnapshotEvents:")
     public native void awakeFromSnapshotEvents$(NSSnapshotEventType flags);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "prepareForDeletion")
     public native void prepareForDeletion();
     @Method(selector = "willSave")
     public native void willSave();
     @Method(selector = "didSave")
     public native void didSave();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "willTurnIntoFault")
     public native void willTurnIntoFault();
     @Method(selector = "didTurnIntoFault")
@@ -117,6 +136,9 @@ import org.robovm.apple.foundation.*;
     public native NSDictionary<?, ?> committedValuesForKeys$(NSArray<?> keys);
     @Method(selector = "changedValues")
     public native NSDictionary<?, ?> changedValues();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "changedValuesForCurrentEvent")
     public native NSDictionary<?, ?> changedValuesForCurrentEvent();
     @Method(selector = "validateValue:forKey:error:")
@@ -127,6 +149,9 @@ import org.robovm.apple.foundation.*;
     public native boolean validateForInsert$(NSError.NSErrorPtr error);
     @Method(selector = "validateForUpdate:")
     public native boolean validateForUpdate$(NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "contextShouldIgnoreUnmodeledPropertyChanges")
     public static native boolean contextShouldIgnoreUnmodeledPropertyChanges();
     /*</methods>*/

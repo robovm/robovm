@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIEvent/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -65,6 +66,9 @@ import org.robovm.apple.coreimage.*;
     public native NSSet<UITouch> getTouches(UIWindow window);
     @Method(selector = "touchesForView:")
     public native NSSet<UITouch> getTouches(UIView view);
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Method(selector = "touchesForGestureRecognizer:")
     public native NSSet<UITouch> getTouches(UIGestureRecognizer gesture);
     /*</methods>*/

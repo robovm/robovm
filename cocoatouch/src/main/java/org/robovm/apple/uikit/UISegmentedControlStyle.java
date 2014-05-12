@@ -33,9 +33,13 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
+ * @deprecated Deprecated in iOS 7.0.
  */
+@Deprecated
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/UISegmentedControlStyle/*</name>*/ implements ValuedEnum {
     /*<values>*/

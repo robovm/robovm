@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSDateFormatter/*</name>*/ 
     extends /*<extends>*/NSFormatter/*</extends>*/ 
@@ -129,68 +128,164 @@ import org.robovm.apple.security.*;
     public native String PMSymbol();
     @Method(selector = "setPMSymbol:")
     public native void setPMSymbol(String string);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "longEraSymbols")
     public native NSArray<?> longEraSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "setLongEraSymbols:")
     public native void setLongEraSymbols(NSArray<?> array);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "veryShortMonthSymbols")
     public native NSArray<?> veryShortMonthSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "setVeryShortMonthSymbols:")
     public native void setVeryShortMonthSymbols(NSArray<?> array);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "standaloneMonthSymbols")
     public native NSArray<?> standaloneMonthSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "setStandaloneMonthSymbols:")
     public native void setStandaloneMonthSymbols(NSArray<?> array);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "shortStandaloneMonthSymbols")
     public native NSArray<?> shortStandaloneMonthSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "setShortStandaloneMonthSymbols:")
     public native void setShortStandaloneMonthSymbols(NSArray<?> array);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "veryShortStandaloneMonthSymbols")
     public native NSArray<?> veryShortStandaloneMonthSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "setVeryShortStandaloneMonthSymbols:")
     public native void setVeryShortStandaloneMonthSymbols(NSArray<?> array);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "veryShortWeekdaySymbols")
     public native NSArray<?> veryShortWeekdaySymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "setVeryShortWeekdaySymbols:")
     public native void setVeryShortWeekdaySymbols(NSArray<?> array);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "standaloneWeekdaySymbols")
     public native NSArray<?> standaloneWeekdaySymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "setStandaloneWeekdaySymbols:")
     public native void setStandaloneWeekdaySymbols(NSArray<?> array);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "shortStandaloneWeekdaySymbols")
     public native NSArray<?> shortStandaloneWeekdaySymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "setShortStandaloneWeekdaySymbols:")
     public native void setShortStandaloneWeekdaySymbols(NSArray<?> array);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "veryShortStandaloneWeekdaySymbols")
     public native NSArray<?> veryShortStandaloneWeekdaySymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "setVeryShortStandaloneWeekdaySymbols:")
     public native void setVeryShortStandaloneWeekdaySymbols(NSArray<?> array);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "quarterSymbols")
     public native NSArray<?> quarterSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "setQuarterSymbols:")
     public native void setQuarterSymbols(NSArray<?> array);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "shortQuarterSymbols")
     public native NSArray<?> shortQuarterSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "setShortQuarterSymbols:")
     public native void setShortQuarterSymbols(NSArray<?> array);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "standaloneQuarterSymbols")
     public native NSArray<?> standaloneQuarterSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "setStandaloneQuarterSymbols:")
     public native void setStandaloneQuarterSymbols(NSArray<?> array);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "shortStandaloneQuarterSymbols")
     public native NSArray<?> shortStandaloneQuarterSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "setShortStandaloneQuarterSymbols:")
     public native void setShortStandaloneQuarterSymbols(NSArray<?> array);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "gregorianStartDate")
     public native NSDate gregorianStartDate();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "setGregorianStartDate:")
     public native void setGregorianStartDate(NSDate date);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "doesRelativeDateFormatting")
     public native boolean doesRelativeDateFormatting();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "setDoesRelativeDateFormatting:")
     public native void setDoesRelativeDateFormatting(boolean b);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "localizedStringFromDate:dateStyle:timeStyle:")
     public static native String localizedStringFromDate$dateStyle$timeStyle$(NSDate date, NSDateFormatterStyle dstyle, NSDateFormatterStyle tstyle);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "dateFormatFromTemplate:options:locale:")
     public static native String dateFormatFromTemplate$options$locale$(String tmplate, @MachineSizedUInt long opts, NSLocale locale);
     @Method(selector = "defaultFormatterBehavior")

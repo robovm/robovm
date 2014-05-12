@@ -31,10 +31,8 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("QuartzCore")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CAFillMode/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
@@ -48,15 +46,25 @@ import org.robovm.apple.opengles.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCAFillModeForwards", optional=true)
     public static native String Forwards();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCAFillModeBackwards", optional=true)
     public static native String Backwards();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCAFillModeBoth", optional=true)
     public static native String Both();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCAFillModeRemoved", optional=true)
     public static native String Removed();
-    @GlobalValue(symbol="kCAFillModeFrozen", optional=true)
-    public static native String Frozen();
     /*</methods>*/
 }

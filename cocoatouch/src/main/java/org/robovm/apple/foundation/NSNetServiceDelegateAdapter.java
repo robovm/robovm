@@ -30,10 +30,8 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSNetServiceDelegateAdapter/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -66,6 +64,9 @@ import org.robovm.apple.security.*;
     public void netServiceDidStop$(NSNetService sender) { throw new UnsupportedOperationException(); }
     @NotImplemented("netService:didUpdateTXTRecordData:")
     public void netService$didUpdateTXTRecordData$(NSNetService sender, NSData data) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @NotImplemented("netService:didAcceptConnectionWithInputStream:outputStream:")
     public void netService$didAcceptConnectionWithInputStream$outputStream$(NSNetService sender, NSInputStream inputStream, NSOutputStream outputStream) { throw new UnsupportedOperationException(); }
     /*</methods>*/

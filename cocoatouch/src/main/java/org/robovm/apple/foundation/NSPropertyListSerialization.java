@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSPropertyListSerialization/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -53,12 +52,24 @@ import org.robovm.apple.security.*;
     /*<methods>*/
     @Method(selector = "propertyList:isValidForFormat:")
     public static native boolean propertyList$isValidForFormat$(NSObject plist, NSPropertyListFormat format);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "dataWithPropertyList:format:options:error:")
     public static native NSData dataWithPropertyList$format$options$error$(NSObject plist, NSPropertyListFormat format, @MachineSizedUInt long opt, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "writePropertyList:toStream:format:options:error:")
     public static native @MachineSizedSInt long writePropertyList$toStream$format$options$error$(NSObject plist, NSOutputStream stream, NSPropertyListFormat format, @MachineSizedUInt long opt, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "propertyListWithData:options:format:error:")
     public static native NSObject propertyListWithData$options$format$error$(NSData data, @MachineSizedUInt long opt, MachineSizedUIntPtr format, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "propertyListWithStream:options:format:error:")
     public static native NSObject propertyListWithStream$options$format$error$(NSInputStream stream, @MachineSizedUInt long opt, MachineSizedUIntPtr format, NSError.NSErrorPtr error);
     @Method(selector = "dataFromPropertyList:format:errorDescription:")

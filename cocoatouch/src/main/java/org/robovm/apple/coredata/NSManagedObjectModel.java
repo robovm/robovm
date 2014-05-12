@@ -29,10 +29,11 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 3.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreData") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSManagedObjectModel/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -75,22 +76,43 @@ import org.robovm.apple.foundation.*;
     public native NSDictionary<?, ?> localizationDictionary();
     @Method(selector = "setLocalizationDictionary:")
     public native void setLocalizationDictionary(NSDictionary<?, ?> localizationDictionary);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "fetchRequestTemplatesByName")
     public native NSDictionary<?, ?> fetchRequestTemplatesByName();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "versionIdentifiers")
     public native NSSet<?> versionIdentifiers();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "setVersionIdentifiers:")
     public native void setVersionIdentifiers(NSSet<?> identifiers);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "isConfiguration:compatibleWithStoreMetadata:")
     public native boolean isConfiguration$compatibleWithStoreMetadata$(String configuration, NSDictionary<?, ?> metadata);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "entityVersionHashesByName")
     public native NSDictionary<?, ?> entityVersionHashesByName();
     @Method(selector = "mergedModelFromBundles:")
     public static native NSManagedObjectModel mergedModelFromBundles$(NSArray<?> bundles);
     @Method(selector = "modelByMergingModels:")
     public static native NSManagedObjectModel modelByMergingModels$(NSArray<?> models);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "mergedModelFromBundles:forStoreMetadata:")
     public static native NSManagedObjectModel mergedModelFromBundles$forStoreMetadata$(NSArray<?> bundles, NSDictionary<?, ?> metadata);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "modelByMergingModels:forStoreMetadata:")
     public static native NSManagedObjectModel modelByMergingModels$forStoreMetadata$(NSArray<?> models, NSDictionary<?, ?> metadata);
     @Method(selector = "encodeWithCoder:")

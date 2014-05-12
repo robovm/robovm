@@ -30,23 +30,59 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSPointerFunctionsOptions/*</name>*/ extends Bits</*<name>*/NSPointerFunctionsOptions/*</name>*/> {
     /*<values>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public static final NSPointerFunctionsOptions StrongMemory = new NSPointerFunctionsOptions(0L);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public static final NSPointerFunctionsOptions OpaqueMemory = new NSPointerFunctionsOptions(2L);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public static final NSPointerFunctionsOptions MallocMemory = new NSPointerFunctionsOptions(3L);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public static final NSPointerFunctionsOptions MachVirtualMemory = new NSPointerFunctionsOptions(4L);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public static final NSPointerFunctionsOptions WeakMemory = new NSPointerFunctionsOptions(5L);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public static final NSPointerFunctionsOptions ObjectPersonality = new NSPointerFunctionsOptions(0L);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public static final NSPointerFunctionsOptions OpaquePersonality = new NSPointerFunctionsOptions(256L);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public static final NSPointerFunctionsOptions ObjectPointerPersonality = new NSPointerFunctionsOptions(512L);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public static final NSPointerFunctionsOptions CStringPersonality = new NSPointerFunctionsOptions(768L);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public static final NSPointerFunctionsOptions StructPersonality = new NSPointerFunctionsOptions(1024L);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public static final NSPointerFunctionsOptions IntegerPersonality = new NSPointerFunctionsOptions(1280L);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public static final NSPointerFunctionsOptions CopyIn = new NSPointerFunctionsOptions(65536L);
     /*</values>*/
 

@@ -29,10 +29,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFNumberFormatter/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -113,14 +111,29 @@ import org.robovm.apple.dispatch.*;
     public static native CFString KeyPerMillSymbol();
     @GlobalValue(symbol="kCFNumberFormatterInternationalCurrencySymbol", optional=true)
     public static native CFString KeyInternationalCurrencySymbol();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFNumberFormatterCurrencyGroupingSeparator", optional=true)
     public static native CFString KeyCurrencyGroupingSeparator();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFNumberFormatterIsLenient", optional=true)
     public static native CFString KeyIsLenient();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFNumberFormatterUseSignificantDigits", optional=true)
     public static native CFString KeyUseSignificantDigits();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFNumberFormatterMinSignificantDigits", optional=true)
     public static native CFString KeyMinSignificantDigits();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFNumberFormatterMaxSignificantDigits", optional=true)
     public static native CFString KeyMaxSignificantDigits();
     

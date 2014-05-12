@@ -31,10 +31,11 @@ import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 4.2 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("MediaPlayer") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MPMediaEntity/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -52,11 +53,17 @@ import org.robovm.apple.coregraphics.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
     @GlobalValue(symbol="MPMediaEntityPropertyPersistentID", optional=true)
     public static native NSString PropertyPersistentID();
     
     @Method(selector = "valueForProperty:")
     public native NSObject getValue(String property);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "enumerateValuesForProperties:usingBlock:")
     public native void enumerateValues(NSSet<NSString> properties, @Block VoidBlock3<NSString, NSObject, BytePtr> block);
     @Method(selector = "canFilterByProperty:")

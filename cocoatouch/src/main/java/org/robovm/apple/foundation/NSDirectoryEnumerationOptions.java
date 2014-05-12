@@ -30,9 +30,11 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- * <div class="javadoc"></div>
+ * @since Available in iOS 4.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSDirectoryEnumerationOptions/*</name>*/ extends Bits</*<name>*/NSDirectoryEnumerationOptions/*</name>*/> {
     /*<values>*/

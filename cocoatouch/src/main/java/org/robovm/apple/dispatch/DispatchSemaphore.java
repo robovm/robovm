@@ -28,10 +28,8 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("dispatch")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/DispatchSemaphore/*</name>*/ 
     extends /*<extends>*/DispatchObject/*</extends>*/ 
@@ -46,10 +44,19 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_semaphore_create", optional=true)
     public static native DispatchSemaphore create(@MachineSizedSInt long value);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_semaphore_wait", optional=true)
     public native @MachineSizedSInt long await(long timeout);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_semaphore_signal", optional=true)
     public native @MachineSizedSInt long signal();
     /*</methods>*/

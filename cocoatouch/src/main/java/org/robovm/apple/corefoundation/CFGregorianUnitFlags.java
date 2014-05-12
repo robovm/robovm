@@ -29,18 +29,53 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CFGregorianUnitFlags/*</name>*/ extends Bits</*<name>*/CFGregorianUnitFlags/*</name>*/> {
     /*<values>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     public static final CFGregorianUnitFlags UnitsYears = new CFGregorianUnitFlags(1L);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     public static final CFGregorianUnitFlags UnitsMonths = new CFGregorianUnitFlags(2L);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     public static final CFGregorianUnitFlags UnitsDays = new CFGregorianUnitFlags(4L);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     public static final CFGregorianUnitFlags UnitsHours = new CFGregorianUnitFlags(8L);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     public static final CFGregorianUnitFlags UnitsMinutes = new CFGregorianUnitFlags(16L);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     public static final CFGregorianUnitFlags UnitsSeconds = new CFGregorianUnitFlags(32L);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     public static final CFGregorianUnitFlags AllUnits = new CFGregorianUnitFlags(16777215L);
     /*</values>*/
 

@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UITextField/*</name>*/ 
     extends /*<extends>*/UIControl/*</extends>*/ 
@@ -273,6 +274,9 @@ import org.robovm.apple.coreimage.*;
     public native @ByVal CGRect getFirstRect(UITextRange range);
     @Method(selector = "caretRectForPosition:")
     public native @ByVal CGRect getCaretRect(UITextPosition position);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "selectionRectsForRange:")
     public native NSArray<UITextSelectionRect> getSelectionRects(UITextRange range);
     @Method(selector = "closestPositionToPoint:")
@@ -281,6 +285,9 @@ import org.robovm.apple.coreimage.*;
     public native UITextPosition getClosestPosition(@ByVal CGPoint point, UITextRange range);
     @Method(selector = "characterRangeAtPoint:")
     public native UITextRange getCharacterRange(@ByVal CGPoint point);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "shouldChangeTextInRange:replacementText:")
     public native boolean shouldChangeText(UITextRange range, String text);
     @Method(selector = "textStylingAtPosition:inDirection:")

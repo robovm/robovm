@@ -29,10 +29,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFString/*</name>*/ 
     extends /*<extends>*/CFPropertyList/*</extends>*/ 
@@ -190,12 +188,18 @@ import org.robovm.apple.dispatch.*;
     public native @MachineSizedSInt long getMaximumSizeOfFileSystemRepresentation();
     @Bridge(symbol="CFStringCreateWithFileSystemRepresentation", optional=true)
     public static native CFString createWithFileSystemRepresentation(CFAllocator alloc, BytePtr buffer);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFStringCompareWithOptionsAndLocale", optional=true)
     public native CFComparisonResult compareWithOptionsAndLocale(CFString theString2, @ByVal CFRange rangeToCompare, CFStringCompareFlags compareOptions, CFLocale locale);
     @Bridge(symbol="CFStringCompareWithOptions", optional=true)
     public native CFComparisonResult compareWithOptions(CFString theString2, @ByVal CFRange rangeToCompare, CFStringCompareFlags compareOptions);
     @Bridge(symbol="CFStringCompare", optional=true)
     public native CFComparisonResult compare(CFString theString2, CFStringCompareFlags compareOptions);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFStringFindWithOptionsAndLocale", optional=true)
     public native boolean findWithOptionsAndLocale(CFString stringToFind, @ByVal CFRange rangeToSearch, CFStringCompareFlags searchOptions, CFLocale locale, CFRange result);
     @Bridge(symbol="CFStringFindWithOptions", optional=true)
@@ -214,10 +218,19 @@ import org.robovm.apple.dispatch.*;
     public native boolean findCharacterFromSet(CFCharacterSet theSet, @ByVal CFRange rangeToSearch, CFStringCompareFlags searchOptions, CFRange result);
     @Bridge(symbol="CFStringGetLineBounds", optional=true)
     public native void getLineBounds(@ByVal CFRange range, MachineSizedSIntPtr lineBeginIndex, MachineSizedSIntPtr lineEndIndex, MachineSizedSIntPtr contentsEndIndex);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFStringGetParagraphBounds", optional=true)
     public native void getParagraphBounds(@ByVal CFRange range, MachineSizedSIntPtr parBeginIndex, MachineSizedSIntPtr parEndIndex, MachineSizedSIntPtr contentsEndIndex);
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
     @Bridge(symbol="CFStringGetHyphenationLocationBeforeIndex", optional=true)
     public native @MachineSizedSInt long getHyphenationLocationBeforeIndex(@MachineSizedSInt long location, @ByVal CFRange limitRange, @MachineSizedUInt long options, CFLocale locale, IntPtr character);
+    /**
+     * @since Available in iOS 4.3 and later.
+     */
     @Bridge(symbol="CFStringIsHyphenationAvailableForLocale", optional=true)
     public static native boolean isHyphenationAvailableForLocale(CFLocale locale);
     @Bridge(symbol="CFStringCreateByCombiningStrings", optional=true)

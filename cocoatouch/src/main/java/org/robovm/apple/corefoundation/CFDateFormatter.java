@@ -29,10 +29,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFDateFormatter/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -75,37 +73,85 @@ import org.robovm.apple.dispatch.*;
     public static native CFString KeyAMSymbol();
     @GlobalValue(symbol="kCFDateFormatterPMSymbol", optional=true)
     public static native CFString KeyPMSymbol();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFDateFormatterLongEraSymbols", optional=true)
     public static native CFString KeyLongEraSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFDateFormatterVeryShortMonthSymbols", optional=true)
     public static native CFString KeyVeryShortMonthSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFDateFormatterStandaloneMonthSymbols", optional=true)
     public static native CFString KeyStandaloneMonthSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFDateFormatterShortStandaloneMonthSymbols", optional=true)
     public static native CFString KeyShortStandaloneMonthSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFDateFormatterVeryShortStandaloneMonthSymbols", optional=true)
     public static native CFString KeyVeryShortStandaloneMonthSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFDateFormatterVeryShortWeekdaySymbols", optional=true)
     public static native CFString KeyVeryShortWeekdaySymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFDateFormatterStandaloneWeekdaySymbols", optional=true)
     public static native CFString KeyStandaloneWeekdaySymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFDateFormatterShortStandaloneWeekdaySymbols", optional=true)
     public static native CFString KeyShortStandaloneWeekdaySymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFDateFormatterVeryShortStandaloneWeekdaySymbols", optional=true)
     public static native CFString KeyVeryShortStandaloneWeekdaySymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFDateFormatterQuarterSymbols", optional=true)
     public static native CFString KeyQuarterSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFDateFormatterShortQuarterSymbols", optional=true)
     public static native CFString KeyShortQuarterSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFDateFormatterStandaloneQuarterSymbols", optional=true)
     public static native CFString KeyStandaloneQuarterSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFDateFormatterShortStandaloneQuarterSymbols", optional=true)
     public static native CFString KeyShortStandaloneQuarterSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFDateFormatterGregorianStartDate", optional=true)
     public static native CFString KeyGregorianStartDate();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="kCFDateFormatterDoesRelativeDateFormattingKey", optional=true)
     public static native CFString KeyDoesRelativeDateFormattingKey();
     
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CFDateFormatterCreateDateFormatFromTemplate", optional=true)
     public static native CFString createDateFormatFromTemplate(CFAllocator allocator, CFString tmplate, @MachineSizedUInt long options, CFLocale locale);
     @Bridge(symbol="CFDateFormatterGetTypeID", optional=true)

@@ -29,10 +29,11 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 5.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreData") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSMergePolicy/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -52,14 +53,29 @@ import org.robovm.apple.foundation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSErrorMergePolicy", optional=true)
     public static native NSObject PolicyError();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSMergeByPropertyStoreTrumpMergePolicy", optional=true)
     public static native NSObject PolicyMergeByPropertyStoreTrump();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSMergeByPropertyObjectTrumpMergePolicy", optional=true)
     public static native NSObject PolicyMergeByPropertyObjectTrump();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSOverwriteMergePolicy", optional=true)
     public static native NSObject PolicyOverwrite();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSRollbackMergePolicy", optional=true)
     public static native NSObject PolicyRollback();
     

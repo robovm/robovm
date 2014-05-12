@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSUserDefaults/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -84,6 +83,9 @@ import org.robovm.apple.security.*;
     public native double doubleForKey$(String defaultName);
     @Method(selector = "boolForKey:")
     public native boolean boolForKey$(String defaultName);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "URLForKey:")
     public native NSURL URLForKey$(String defaultName);
     @Method(selector = "setInteger:forKey:")
@@ -94,6 +96,9 @@ import org.robovm.apple.security.*;
     public native void setDouble$forKey$(double value, String defaultName);
     @Method(selector = "setBool:forKey:")
     public native void setBool$forKey$(boolean value, String defaultName);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "setURL:forKey:")
     public native void setURL$forKey$(NSURL url, String defaultName);
     @Method(selector = "registerDefaults:")
@@ -112,6 +117,11 @@ import org.robovm.apple.security.*;
     public native void setVolatileDomain$forName$(NSDictionary<?, ?> domain, String domainName);
     @Method(selector = "removeVolatileDomainForName:")
     public native void removeVolatileDomainForName$(String domainName);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @Method(selector = "persistentDomainNames")
     public native NSArray<?> persistentDomainNames();
     @Method(selector = "persistentDomainForName:")

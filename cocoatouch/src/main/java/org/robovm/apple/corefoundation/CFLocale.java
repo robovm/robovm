@@ -29,10 +29,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFLocale/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -47,6 +45,9 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFLocaleCurrentLocaleDidChangeNotification", optional=true)
     public static native CFString NotificationCurrentLocaleDidChange();
     @GlobalValue(symbol="kCFLocaleIdentifier", optional=true)
@@ -79,14 +80,29 @@ import org.robovm.apple.dispatch.*;
     public static native CFString KeyCurrencySymbol();
     @GlobalValue(symbol="kCFLocaleCurrencyCode", optional=true)
     public static native CFString KeyCurrencyCode();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="kCFLocaleCollatorIdentifier", optional=true)
     public static native CFString KeyCollatorIdentifier();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="kCFLocaleQuotationBeginDelimiterKey", optional=true)
     public static native CFString KeyQuotationBeginDelimiterKey();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="kCFLocaleQuotationEndDelimiterKey", optional=true)
     public static native CFString KeyQuotationEndDelimiterKey();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="kCFLocaleAlternateQuotationBeginDelimiterKey", optional=true)
     public static native CFString KeyAlternateQuotationBeginDelimiterKey();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="kCFLocaleAlternateQuotationEndDelimiterKey", optional=true)
     public static native CFString KeyAlternateQuotationEndDelimiterKey();
     @GlobalValue(symbol="kCFGregorianCalendar", optional=true)
@@ -103,12 +119,24 @@ import org.robovm.apple.dispatch.*;
     public static native CFString CalendarIdentifierIslamicCivilCalendar();
     @GlobalValue(symbol="kCFJapaneseCalendar", optional=true)
     public static native CFString CalendarIdentifierJapaneseCalendar();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="kCFRepublicOfChinaCalendar", optional=true)
     public static native CFString CalendarIdentifierRepublicOfChinaCalendar();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="kCFPersianCalendar", optional=true)
     public static native CFString CalendarIdentifierPersianCalendar();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="kCFIndianCalendar", optional=true)
     public static native CFString CalendarIdentifierIndianCalendar();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="kCFISO8601Calendar", optional=true)
     public static native CFString CalendarIdentifierISO8601Calendar();
     
@@ -126,8 +154,14 @@ import org.robovm.apple.dispatch.*;
     public static native CFArray copyISOCountryCodes();
     @Bridge(symbol="CFLocaleCopyISOCurrencyCodes", optional=true)
     public static native CFArray copyISOCurrencyCodes();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFLocaleCopyCommonISOCurrencyCodes", optional=true)
     public static native CFArray copyCommonISOCurrencyCodes();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFLocaleCopyPreferredLanguages", optional=true)
     public static native CFArray copyPreferredLanguages();
     @Bridge(symbol="CFLocaleCreateCanonicalLanguageIdentifierFromString", optional=true)
@@ -136,12 +170,24 @@ import org.robovm.apple.dispatch.*;
     public static native CFString createCanonicalLocaleIdentifierFromString(CFAllocator allocator, CFString localeIdentifier);
     @Bridge(symbol="CFLocaleCreateCanonicalLocaleIdentifierFromScriptManagerCodes", optional=true)
     public static native CFString createCanonicalLocaleIdentifierFromScriptManagerCodes(CFAllocator allocator, short lcode, short rcode);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CFLocaleCreateLocaleIdentifierFromWindowsLocaleCode", optional=true)
     public static native CFString createLocaleIdentifierFromWindowsLocaleCode(CFAllocator allocator, int lcid);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CFLocaleGetWindowsLocaleCodeFromLocaleIdentifier", optional=true)
     public static native int getWindowsLocaleCodeFromLocaleIdentifier(CFString localeIdentifier);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CFLocaleGetLanguageCharacterDirection", optional=true)
     public static native CFLocaleLanguageDirection getLanguageCharacterDirection(CFString isoLangCode);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CFLocaleGetLanguageLineDirection", optional=true)
     public static native CFLocaleLanguageDirection getLanguageLineDirection(CFString isoLangCode);
     @Bridge(symbol="CFLocaleCreateComponentsFromLocaleIdentifier", optional=true)

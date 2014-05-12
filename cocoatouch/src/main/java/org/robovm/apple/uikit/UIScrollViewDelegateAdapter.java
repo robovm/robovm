@@ -33,10 +33,8 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIScrollViewDelegateAdapter/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -55,10 +53,16 @@ import org.robovm.apple.coreimage.*;
     /*<methods>*/
     @NotImplemented("scrollViewDidScroll:")
     public void didScroll(UIScrollView scrollView) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @NotImplemented("scrollViewDidZoom:")
     public void didZoom(UIScrollView scrollView) { throw new UnsupportedOperationException(); }
     @NotImplemented("scrollViewWillBeginDragging:")
     public void willBeginDragging(UIScrollView scrollView) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @NotImplemented("scrollViewWillEndDragging:withVelocity:targetContentOffset:")
     public void willEndDragging(UIScrollView scrollView, @ByVal CGPoint velocity, CGPoint targetContentOffset) { throw new UnsupportedOperationException(); }
     @NotImplemented("scrollViewDidEndDragging:willDecelerate:")
@@ -71,6 +75,9 @@ import org.robovm.apple.coreimage.*;
     public void didEndScrollingAnimation(UIScrollView scrollView) { throw new UnsupportedOperationException(); }
     @NotImplemented("viewForZoomingInScrollView:")
     public UIView getViewForZooming(UIScrollView scrollView) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @NotImplemented("scrollViewWillBeginZooming:withView:")
     public void willBeginZooming(UIScrollView scrollView, UIView view) { throw new UnsupportedOperationException(); }
     @NotImplemented("scrollViewDidEndZooming:withView:atScale:")

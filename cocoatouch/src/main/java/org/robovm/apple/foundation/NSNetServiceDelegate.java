@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ interface /*<name>*/NSNetServiceDelegate/*</name>*/ 
     /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
@@ -63,6 +62,9 @@ import org.robovm.apple.security.*;
     void netServiceDidStop$(NSNetService sender);
     @Method(selector = "netService:didUpdateTXTRecordData:")
     void netService$didUpdateTXTRecordData$(NSNetService sender, NSData data);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "netService:didAcceptConnectionWithInputStream:outputStream:")
     void netService$didAcceptConnectionWithInputStream$outputStream$(NSNetService sender, NSInputStream inputStream, NSOutputStream outputStream);
     /*</methods>*/

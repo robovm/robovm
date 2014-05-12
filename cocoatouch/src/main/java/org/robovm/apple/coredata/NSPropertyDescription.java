@@ -29,10 +29,11 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 3.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreData") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSPropertyDescription/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -74,26 +75,59 @@ import org.robovm.apple.foundation.*;
     public native NSDictionary<?, ?> userInfo();
     @Method(selector = "setUserInfo:")
     public native void setUserInfo(NSDictionary<?, ?> dictionary);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "isIndexed")
     public native boolean isIndexed();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "setIndexed:")
     public native void setIndexed(boolean flag);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "versionHash")
     public native NSData versionHash();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "versionHashModifier")
     public native String versionHashModifier();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "setVersionHashModifier:")
     public native void setVersionHashModifier(String modifierString);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "isIndexedBySpotlight")
     public native boolean isIndexedBySpotlight();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "setIndexedBySpotlight:")
     public native void setIndexedBySpotlight(boolean flag);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "isStoredInExternalRecord")
     public native boolean isStoredInExternalRecord();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "setStoredInExternalRecord:")
     public native void setStoredInExternalRecord(boolean flag);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "renamingIdentifier")
     public native String renamingIdentifier();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "setRenamingIdentifier:")
     public native void setRenamingIdentifier(String value);
     @Method(selector = "encodeWithCoder:")

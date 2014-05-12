@@ -30,10 +30,8 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreImage")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CoreImage/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 

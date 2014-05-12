@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSProcessInfo/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -71,20 +70,41 @@ import org.robovm.apple.security.*;
     public native String operatingSystemName();
     @Method(selector = "operatingSystemVersionString")
     public native String operatingSystemVersionString();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "processorCount")
     public native @MachineSizedUInt long processorCount();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "activeProcessorCount")
     public native @MachineSizedUInt long activeProcessorCount();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "physicalMemory")
     public native long physicalMemory();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "systemUptime")
     public native double systemUptime();
     @Method(selector = "processInfo")
     public static native NSProcessInfo processInfo();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "beginActivityWithOptions:reason:")
     public native NSObject beginActivityWithOptions$reason$(NSActivityOptions options, String reason);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "endActivity:")
     public native void endActivity$(NSObject activity);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "performActivityWithOptions:reason:usingBlock:")
     public native void performActivityWithOptions$reason$usingBlock$(NSActivityOptions options, String reason, @Block Runnable block);
     /*</methods>*/

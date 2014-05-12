@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSData/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -168,6 +167,9 @@ import org.robovm.apple.security.*;
     protected native boolean writeToFile$options$error$(String path, NSDataWritingOptions writeOptionsMask, NSError.NSErrorPtr errorPtr);
     @Method(selector = "writeToURL:options:error:")
     public native boolean write(NSURL url, NSDataWritingOptions writeOptionsMask, NSError.NSErrorPtr errorPtr);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "rangeOfData:options:range:")
     public native @ByVal NSRange find(NSData dataToFind, NSDataSearchOptions mask, @ByVal NSRange searchRange);
     @Method(selector = "initWithBytes:length:")
@@ -184,12 +186,24 @@ import org.robovm.apple.security.*;
     protected static native NSObject dataWithContentsOfFile$(String path);
     @Method(selector = "dataWithContentsOfURL:")
     public static native NSObject read(NSURL url);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "initWithBase64EncodedString:options:")
     protected native @Pointer long initWithBase64EncodedString$options$(String base64String, NSDataBase64DecodingOptions options);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "base64EncodedStringWithOptions:")
     public native String toBase64EncodedString(NSDataBase64EncodingOptions options);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "initWithBase64EncodedData:options:")
     protected native @Pointer long initWithBase64EncodedData$options$(NSData base64Data, NSDataBase64DecodingOptions options);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "base64EncodedDataWithOptions:")
     public native NSData toBase64EncodedData(NSDataBase64EncodingOptions options);
     @Method(selector = "dataWithContentsOfMappedFile:")

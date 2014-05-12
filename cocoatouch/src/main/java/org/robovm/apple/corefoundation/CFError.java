@@ -29,10 +29,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFError/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -47,45 +45,105 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFErrorDomainPOSIX", optional=true)
     public static native CFString DomainPOSIX();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFErrorDomainOSStatus", optional=true)
     public static native CFString DomainOSStatus();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFErrorDomainMach", optional=true)
     public static native CFString DomainMach();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFErrorDomainCocoa", optional=true)
     public static native CFString DomainCocoa();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFErrorLocalizedDescriptionKey", optional=true)
     public static native CFString KeyLocalizedDescription();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFErrorLocalizedFailureReasonKey", optional=true)
     public static native CFString KeyLocalizedFailureReason();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFErrorLocalizedRecoverySuggestionKey", optional=true)
     public static native CFString KeyLocalizedRecoverySuggestion();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFErrorDescriptionKey", optional=true)
     public static native CFString KeyDescription();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFErrorUnderlyingErrorKey", optional=true)
     public static native CFString KeyUnderlyingError();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="kCFErrorURLKey", optional=true)
     public static native CFString KeyURL();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="kCFErrorFilePathKey", optional=true)
     public static native CFString KeyFilePath();
     
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFErrorGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFErrorCreate", optional=true)
     public static native CFError create(CFAllocator allocator, CFString domain, @MachineSizedSInt long code, CFDictionary userInfo);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFErrorCreateWithUserInfoKeysAndValues", optional=true)
     public static native CFError createWithUserInfoKeysAndValues(CFAllocator allocator, CFString domain, @MachineSizedSInt long code, VoidPtr.VoidPtrPtr userInfoKeys, VoidPtr.VoidPtrPtr userInfoValues, @MachineSizedSInt long numUserInfoValues);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFErrorGetDomain", optional=true)
     public native CFString getDomain();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFErrorGetCode", optional=true)
     public native @MachineSizedSInt long getCode();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFErrorCopyUserInfo", optional=true)
     public native CFDictionary copyUserInfo();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFErrorCopyDescription", optional=true)
     public native CFString copyDescription();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFErrorCopyFailureReason", optional=true)
     public native CFString copyFailureReason();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFErrorCopyRecoverySuggestion", optional=true)
     public native CFString copyRecoverySuggestion();
     /*</methods>*/

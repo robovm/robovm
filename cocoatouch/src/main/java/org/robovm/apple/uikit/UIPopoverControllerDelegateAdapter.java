@@ -33,10 +33,8 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIPopoverControllerDelegateAdapter/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -57,6 +55,9 @@ import org.robovm.apple.coreimage.*;
     public boolean shouldDismiss(UIPopoverController popoverController) { throw new UnsupportedOperationException(); }
     @NotImplemented("popoverControllerDidDismissPopover:")
     public void didDismiss(UIPopoverController popoverController) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @NotImplemented("popoverController:willRepositionPopoverToRect:inView:")
     public void willReposition(UIPopoverController popoverController, CGRect rect, UIView.UIViewPtr view) { throw new UnsupportedOperationException(); }
     /*</methods>*/

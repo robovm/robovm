@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 6.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UICollectionViewController/*</name>*/ 
     extends /*<extends>*/UIViewController/*</extends>*/ 
@@ -98,10 +99,16 @@ import org.robovm.apple.coreimage.*;
     public native UICollectionViewTransitionLayout getTransitionLayout(UICollectionView collectionView, UICollectionViewLayout fromLayout, UICollectionViewLayout toLayout);
     @Method(selector = "scrollViewDidScroll:")
     public native void didScroll(UIScrollView scrollView);
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Method(selector = "scrollViewDidZoom:")
     public native void didZoom(UIScrollView scrollView);
     @Method(selector = "scrollViewWillBeginDragging:")
     public native void willBeginDragging(UIScrollView scrollView);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "scrollViewWillEndDragging:withVelocity:targetContentOffset:")
     public native void willEndDragging(UIScrollView scrollView, @ByVal CGPoint velocity, CGPoint targetContentOffset);
     @Method(selector = "scrollViewDidEndDragging:willDecelerate:")
@@ -114,6 +121,9 @@ import org.robovm.apple.coreimage.*;
     public native void didEndScrollingAnimation(UIScrollView scrollView);
     @Method(selector = "viewForZoomingInScrollView:")
     public native UIView getViewForZooming(UIScrollView scrollView);
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Method(selector = "scrollViewWillBeginZooming:withView:")
     public native void willBeginZooming(UIScrollView scrollView, UIView view);
     @Method(selector = "scrollViewDidEndZooming:withView:atScale:")

@@ -29,10 +29,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFRunLoop/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -76,6 +74,9 @@ import org.robovm.apple.dispatch.*;
     public native void wakeUp();
     @Bridge(symbol="CFRunLoopStop", optional=true)
     public native void stop();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CFRunLoopPerformBlock", optional=true)
     public native void performBlock(CFType mode, @Block Runnable block);
     @Bridge(symbol="CFRunLoopContainsSource", optional=true)

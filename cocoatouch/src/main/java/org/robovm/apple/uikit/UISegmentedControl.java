@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UISegmentedControl/*</name>*/ 
     extends /*<extends>*/UIControl/*</extends>*/ 
@@ -113,20 +114,44 @@ import org.robovm.apple.coreimage.*;
     public native void setEnabled(boolean enabled, @MachineSizedUInt long segment);
     @Method(selector = "isEnabledForSegmentAtIndex:")
     public native boolean isEnabled(@MachineSizedUInt long segment);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setBackgroundImage:forState:barMetrics:")
     public native void setBackgroundImage(UIImage backgroundImage, UIControlState state, UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "backgroundImageForState:barMetrics:")
     public native UIImage getBackgroundImage(UIControlState state, UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setDividerImage:forLeftSegmentState:rightSegmentState:barMetrics:")
     public native void setDividerImage(UIImage dividerImage, UIControlState leftState, UIControlState rightState, UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "dividerImageForLeftSegmentState:rightSegmentState:barMetrics:")
     public native UIImage getDividerImage(UIControlState leftState, UIControlState rightState, UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setTitleTextAttributes:forState:")
     public native void setTitleTextAttributes(NSDictionary<NSString, ?> attributes, UIControlState state);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "titleTextAttributesForState:")
     public native NSDictionary<NSString, ?> getTitleTextAttributes(UIControlState state);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setContentPositionAdjustment:forSegmentType:barMetrics:")
     public native void setContentPositionAdjustment(@ByVal UIOffset adjustment, UISegmentedControlSegment leftCenterRightOrAlone, UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "contentPositionAdjustmentForSegmentType:barMetrics:")
     public native @ByVal UIOffset getContentPositionAdjustment(UISegmentedControlSegment leftCenterRightOrAlone, UIBarMetrics barMetrics);
     /*</methods>*/

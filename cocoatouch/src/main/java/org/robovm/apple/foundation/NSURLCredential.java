@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLCredential/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -46,7 +45,13 @@ import org.robovm.apple.security.*;
     public NSURLCredential() {}
     protected NSURLCredential(SkipInit skipInit) { super(skipInit); }
     public NSURLCredential(String user, String password, NSURLCredentialPersistence persistence) { super((SkipInit) null); initObject(initWithUser$password$persistence$(user, password, persistence)); }
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public NSURLCredential(SecIdentity identity, NSArray<?> certArray, NSURLCredentialPersistence persistence) { super((SkipInit) null); initObject(initWithIdentity$certificates$persistence$(identity, certArray, persistence)); }
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public NSURLCredential(SecTrust trust) { super((SkipInit) null); initObject(initWithTrust$(trust)); }
     /*</constructors>*/
     /*<properties>*/
@@ -66,16 +71,31 @@ import org.robovm.apple.security.*;
     public native boolean hasPassword();
     @Method(selector = "credentialWithUser:password:persistence:")
     public static native NSURLCredential credentialWithUser$password$persistence$(String user, String password, NSURLCredentialPersistence persistence);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "initWithIdentity:certificates:persistence:")
     protected native @Pointer long initWithIdentity$certificates$persistence$(SecIdentity identity, NSArray<?> certArray, NSURLCredentialPersistence persistence);
     @Method(selector = "identity")
     public native SecIdentity identity();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "certificates")
     public native NSArray<?> certificates();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "credentialWithIdentity:certificates:persistence:")
     public static native NSURLCredential credentialWithIdentity$certificates$persistence$(SecIdentity identity, NSArray<?> certArray, NSURLCredentialPersistence persistence);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "initWithTrust:")
     protected native @Pointer long initWithTrust$(SecTrust trust);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "credentialForTrust:")
     public static native NSURLCredential credentialForTrust$(SecTrust trust);
     /*</methods>*/

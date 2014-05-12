@@ -31,10 +31,11 @@ import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 3.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("MediaPlayer") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MPMediaItem/*</name>*/ 
     extends /*<extends>*/MPMediaEntity/*</extends>*/ 
@@ -60,22 +61,37 @@ import org.robovm.apple.coregraphics.*;
     public static native NSString PropertyTitle();
     @GlobalValue(symbol="MPMediaItemPropertyAlbumTitle", optional=true)
     public static native NSString PropertyAlbumTitle();
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
     @GlobalValue(symbol="MPMediaItemPropertyAlbumPersistentID", optional=true)
     public static native NSString PropertyAlbumPersistentID();
     @GlobalValue(symbol="MPMediaItemPropertyArtist", optional=true)
     public static native NSString PropertyArtist();
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
     @GlobalValue(symbol="MPMediaItemPropertyArtistPersistentID", optional=true)
     public static native NSString PropertyArtistPersistentID();
     @GlobalValue(symbol="MPMediaItemPropertyAlbumArtist", optional=true)
     public static native NSString PropertyAlbumArtist();
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
     @GlobalValue(symbol="MPMediaItemPropertyAlbumArtistPersistentID", optional=true)
     public static native NSString PropertyAlbumArtistPersistentID();
     @GlobalValue(symbol="MPMediaItemPropertyGenre", optional=true)
     public static native NSString PropertyGenre();
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
     @GlobalValue(symbol="MPMediaItemPropertyGenrePersistentID", optional=true)
     public static native NSString PropertyGenrePersistentID();
     @GlobalValue(symbol="MPMediaItemPropertyComposer", optional=true)
     public static native NSString PropertyComposer();
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
     @GlobalValue(symbol="MPMediaItemPropertyComposerPersistentID", optional=true)
     public static native NSString PropertyComposerPersistentID();
     @GlobalValue(symbol="MPMediaItemPropertyPlaybackDuration", optional=true)
@@ -94,18 +110,36 @@ import org.robovm.apple.coregraphics.*;
     public static native NSString PropertyLyrics();
     @GlobalValue(symbol="MPMediaItemPropertyIsCompilation", optional=true)
     public static native NSString PropertyIsCompilation();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="MPMediaItemPropertyReleaseDate", optional=true)
     public static native NSString PropertyReleaseDate();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="MPMediaItemPropertyBeatsPerMinute", optional=true)
     public static native NSString PropertyBeatsPerMinute();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="MPMediaItemPropertyComments", optional=true)
     public static native NSString PropertyComments();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="MPMediaItemPropertyAssetURL", optional=true)
     public static native NSString PropertyAssetURL();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="MPMediaItemPropertyIsCloudItem", optional=true)
     public static native NSString PropertyIsCloudItem();
     @GlobalValue(symbol="MPMediaItemPropertyPodcastTitle", optional=true)
     public static native NSString PropertyPodcastTitle();
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
     @GlobalValue(symbol="MPMediaItemPropertyPodcastPersistentID", optional=true)
     public static native NSString PropertyPodcastPersistentID();
     @GlobalValue(symbol="MPMediaItemPropertyPlayCount", optional=true)
@@ -116,13 +150,25 @@ import org.robovm.apple.coregraphics.*;
     public static native NSString PropertyRating();
     @GlobalValue(symbol="MPMediaItemPropertyLastPlayedDate", optional=true)
     public static native NSString PropertyLastPlayedDate();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="MPMediaItemPropertyUserGrouping", optional=true)
     public static native NSString PropertyUserGrouping();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="MPMediaItemPropertyBookmarkTime", optional=true)
     public static native NSString PropertyBookmarkTime();
     
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
     @Method(selector = "persistentIDPropertyForGroupingType:")
     public static native String getPersistentIDProperty(MPMediaGrouping groupingType);
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
     @Method(selector = "titlePropertyForGroupingType:")
     public static native String getTitleProperty(MPMediaGrouping groupingType);
     /*</methods>*/

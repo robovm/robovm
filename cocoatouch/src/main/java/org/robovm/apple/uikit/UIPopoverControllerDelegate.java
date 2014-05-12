@@ -33,10 +33,9 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ interface /*<name>*/UIPopoverControllerDelegate/*</name>*/ 
     /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
@@ -54,6 +53,9 @@ import org.robovm.apple.coreimage.*;
     boolean shouldDismiss(UIPopoverController popoverController);
     @Method(selector = "popoverControllerDidDismissPopover:")
     void didDismiss(UIPopoverController popoverController);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "popoverController:willRepositionPopoverToRect:inView:")
     void willReposition(UIPopoverController popoverController, CGRect rect, UIView.UIViewPtr view);
     /*</methods>*/

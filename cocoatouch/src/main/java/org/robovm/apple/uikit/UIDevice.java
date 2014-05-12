@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIDevice/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -89,10 +90,19 @@ import org.robovm.apple.coreimage.*;
     /*<methods>*/
     @GlobalValue(symbol="UIDeviceOrientationDidChangeNotification", optional=true)
     public static native String NotificationDeviceOrientationDidChange();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="UIDeviceBatteryStateDidChangeNotification", optional=true)
     public static native String NotificationDeviceBatteryStateDidChange();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="UIDeviceBatteryLevelDidChangeNotification", optional=true)
     public static native String NotificationDeviceBatteryLevelDidChange();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="UIDeviceProximityStateDidChangeNotification", optional=true)
     public static native String NotificationDeviceProximityStateDidChange();
     
@@ -100,6 +110,9 @@ import org.robovm.apple.coreimage.*;
     public native void beginGeneratingDeviceOrientationNotifications();
     @Method(selector = "endGeneratingDeviceOrientationNotifications")
     public native void endGeneratingDeviceOrientationNotifications();
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
     @Method(selector = "playInputClick")
     public native void playInputClick();
     @Method(selector = "currentDevice")

@@ -30,10 +30,11 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 3.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSValueTransformer/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -51,14 +52,29 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSNegateBooleanTransformerName", optional=true)
     public static native String NameNegateBooleanTransformer();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSIsNilTransformerName", optional=true)
     public static native String NameIsNilTransformer();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSIsNotNilTransformerName", optional=true)
     public static native String NameIsNotNilTransformer();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSUnarchiveFromDataTransformerName", optional=true)
     public static native String NameUnarchiveFromDataTransformer();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSKeyedUnarchiveFromDataTransformerName", optional=true)
     public static native String NameKeyedUnarchiveFromDataTransformer();
     

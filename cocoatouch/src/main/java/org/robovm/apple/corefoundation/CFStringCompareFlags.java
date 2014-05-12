@@ -29,9 +29,9 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CFStringCompareFlags/*</name>*/ extends Bits</*<name>*/CFStringCompareFlags/*</name>*/> {
     /*<values>*/
@@ -41,8 +41,17 @@ public final class /*<name>*/CFStringCompareFlags/*</name>*/ extends Bits</*<nam
     public static final CFStringCompareFlags Nonliteral = new CFStringCompareFlags(16L);
     public static final CFStringCompareFlags Localized = new CFStringCompareFlags(32L);
     public static final CFStringCompareFlags Numerically = new CFStringCompareFlags(64L);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     public static final CFStringCompareFlags DiacriticInsensitive = new CFStringCompareFlags(128L);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     public static final CFStringCompareFlags WidthInsensitive = new CFStringCompareFlags(256L);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     public static final CFStringCompareFlags ForcedOrdering = new CFStringCompareFlags(512L);
     /*</values>*/
 

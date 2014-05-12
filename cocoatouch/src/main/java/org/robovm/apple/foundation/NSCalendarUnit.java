@@ -30,9 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSCalendarUnit/*</name>*/ extends Bits</*<name>*/NSCalendarUnit/*</name>*/> {
     /*<values>*/
@@ -45,12 +45,33 @@ public final class /*<name>*/NSCalendarUnit/*</name>*/ extends Bits</*<name>*/NS
     public static final NSCalendarUnit Second = new NSCalendarUnit(128L);
     public static final NSCalendarUnit Weekday = new NSCalendarUnit(512L);
     public static final NSCalendarUnit WeekdayOrdinal = new NSCalendarUnit(1024L);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public static final NSCalendarUnit Quarter = new NSCalendarUnit(2048L);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public static final NSCalendarUnit WeekOfMonth = new NSCalendarUnit(4096L);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public static final NSCalendarUnit WeekOfYear = new NSCalendarUnit(8192L);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public static final NSCalendarUnit YearForWeekOfYear = new NSCalendarUnit(16384L);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public static final NSCalendarUnit Nanosecond = new NSCalendarUnit(32768L);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public static final NSCalendarUnit Calendar = new NSCalendarUnit(1048576L);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public static final NSCalendarUnit TimeZone = new NSCalendarUnit(2097152L);
     /*</values>*/
 

@@ -31,10 +31,9 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("QuartzCore") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CAValueFunction/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -53,26 +52,59 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="kCAValueFunctionRotateX", optional=true)
     public static native String FunctionRotateX();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="kCAValueFunctionRotateY", optional=true)
     public static native String FunctionRotateY();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="kCAValueFunctionRotateZ", optional=true)
     public static native String FunctionRotateZ();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="kCAValueFunctionScale", optional=true)
     public static native String FunctionScale();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="kCAValueFunctionScaleX", optional=true)
     public static native String FunctionScaleX();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="kCAValueFunctionScaleY", optional=true)
     public static native String FunctionScaleY();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="kCAValueFunctionScaleZ", optional=true)
     public static native String FunctionScaleZ();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="kCAValueFunctionTranslate", optional=true)
     public static native String FunctionTranslate();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="kCAValueFunctionTranslateX", optional=true)
     public static native String FunctionTranslateX();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="kCAValueFunctionTranslateY", optional=true)
     public static native String FunctionTranslateY();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="kCAValueFunctionTranslateZ", optional=true)
     public static native String FunctionTranslateZ();
     

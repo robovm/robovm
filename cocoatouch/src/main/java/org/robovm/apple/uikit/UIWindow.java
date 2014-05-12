@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIWindow/*</name>*/ 
     extends /*<extends>*/UIView/*</extends>*/ 
@@ -94,22 +95,55 @@ import org.robovm.apple.coreimage.*;
     public static native String NotificationKeyboardWillHide();
     @GlobalValue(symbol="UIKeyboardDidHideNotification", optional=true)
     public static native String NotificationKeyboardDidHide();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="UIKeyboardFrameBeginUserInfoKey", optional=true)
     public static native NSString UserInfoKeyKeyboardFrameBegin();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @GlobalValue(symbol="UIKeyboardFrameEndUserInfoKey", optional=true)
     public static native NSString UserInfoKeyKeyboardFrameEnd();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="UIKeyboardAnimationDurationUserInfoKey", optional=true)
     public static native NSString UserInfoKeyKeyboardAnimationDuration();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="UIKeyboardAnimationCurveUserInfoKey", optional=true)
     public static native NSString UserInfoKeyKeyboardAnimationCurve();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="UIKeyboardWillChangeFrameNotification", optional=true)
     public static native String NotificationKeyboardWillChangeFrame();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @GlobalValue(symbol="UIKeyboardDidChangeFrameNotification", optional=true)
     public static native String NotificationKeyboardDidChangeFrame();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.2.
+     */
+    @Deprecated
     @GlobalValue(symbol="UIKeyboardCenterBeginUserInfoKey", optional=true)
     public static native NSString UserInfoKeyKeyboardCenterBegin();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.2.
+     */
+    @Deprecated
     @GlobalValue(symbol="UIKeyboardCenterEndUserInfoKey", optional=true)
     public static native NSString UserInfoKeyKeyboardCenterEnd();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.2.
+     */
+    @Deprecated
     @GlobalValue(symbol="UIKeyboardBoundsUserInfoKey", optional=true)
     public static native NSString UserInfoKeyKeyboardBounds();
     

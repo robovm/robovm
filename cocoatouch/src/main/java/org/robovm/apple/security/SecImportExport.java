@@ -30,10 +30,8 @@ import org.robovm.apple.dispatch.*;
 import org.robovm.apple.corefoundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("Security")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SecImportExport/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
@@ -47,19 +45,40 @@ import org.robovm.apple.corefoundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kSecImportExportPassphrase", optional=true)
     public static native CFString KeyPassphrase();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kSecImportItemLabel", optional=true)
     public static native CFString KeyItemLabel();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kSecImportItemKeyID", optional=true)
     public static native CFString KeyItemKeyID();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kSecImportItemTrust", optional=true)
     public static native CFString KeyItemTrust();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kSecImportItemCertChain", optional=true)
     public static native CFString KeyItemCertChain();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kSecImportItemIdentity", optional=true)
     public static native CFString KeyItemIdentity();
     
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="SecPKCS12Import", optional=true)
     public static native int importPKCS12(CFData pkcs12_data, CFDictionary options, CFArray.CFArrayPtr items);
     /*</methods>*/

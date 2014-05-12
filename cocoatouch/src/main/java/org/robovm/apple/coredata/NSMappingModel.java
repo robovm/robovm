@@ -29,10 +29,11 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 3.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreData") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSMappingModel/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -61,6 +62,9 @@ import org.robovm.apple.foundation.*;
     public native NSDictionary<?, ?> entityMappingsByName();
     @Method(selector = "mappingModelFromBundles:forSourceModel:destinationModel:")
     public static native NSMappingModel mappingModelFromBundles$forSourceModel$destinationModel$(NSArray<?> bundles, NSManagedObjectModel sourceModel, NSManagedObjectModel destinationModel);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "inferredMappingModelForSourceModel:destinationModel:error:")
     public static native NSMappingModel inferredMappingModelForSourceModel$destinationModel$error$(NSManagedObjectModel sourceModel, NSManagedObjectModel destinationModel, NSError.NSErrorPtr error);
     /*</methods>*/

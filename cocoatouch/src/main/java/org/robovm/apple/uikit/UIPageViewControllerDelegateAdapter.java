@@ -33,10 +33,8 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIPageViewControllerDelegateAdapter/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -53,14 +51,23 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @NotImplemented("pageViewController:willTransitionToViewControllers:")
     public void willTransition(UIPageViewController pageViewController, NSArray<UIViewController> pendingViewControllers) { throw new UnsupportedOperationException(); }
     @NotImplemented("pageViewController:didFinishAnimating:previousViewControllers:transitionCompleted:")
     public void didFinishAnimating(UIPageViewController pageViewController, boolean finished, NSArray<UIViewController> previousViewControllers, boolean completed) { throw new UnsupportedOperationException(); }
     @NotImplemented("pageViewController:spineLocationForInterfaceOrientation:")
     public UIPageViewControllerSpineLocation getSpineLocation(UIPageViewController pageViewController, UIInterfaceOrientation orientation) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @NotImplemented("pageViewControllerSupportedInterfaceOrientations:")
     public @MachineSizedUInt long getSupportedInterfaceOrientations(UIPageViewController pageViewController) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @NotImplemented("pageViewControllerPreferredInterfaceOrientationForPresentation:")
     public UIInterfaceOrientation getPreferredInterfaceOrientation(UIPageViewController pageViewController) { throw new UnsupportedOperationException(); }
     /*</methods>*/

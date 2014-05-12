@@ -33,10 +33,9 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ interface /*<name>*/UIPageViewControllerDelegate/*</name>*/ 
     /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
@@ -50,14 +49,23 @@ import org.robovm.apple.coreimage.*;
     
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "pageViewController:willTransitionToViewControllers:")
     void willTransition(UIPageViewController pageViewController, NSArray<UIViewController> pendingViewControllers);
     @Method(selector = "pageViewController:didFinishAnimating:previousViewControllers:transitionCompleted:")
     void didFinishAnimating(UIPageViewController pageViewController, boolean finished, NSArray<UIViewController> previousViewControllers, boolean completed);
     @Method(selector = "pageViewController:spineLocationForInterfaceOrientation:")
     UIPageViewControllerSpineLocation getSpineLocation(UIPageViewController pageViewController, UIInterfaceOrientation orientation);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "pageViewControllerSupportedInterfaceOrientations:")
     @MachineSizedUInt long getSupportedInterfaceOrientations(UIPageViewController pageViewController);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "pageViewControllerPreferredInterfaceOrientationForPresentation:")
     UIInterfaceOrientation getPreferredInterfaceOrientation(UIPageViewController pageViewController);
     /*</methods>*/

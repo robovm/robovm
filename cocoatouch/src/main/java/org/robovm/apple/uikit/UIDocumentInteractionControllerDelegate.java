@@ -33,10 +33,9 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ interface /*<name>*/UIDocumentInteractionControllerDelegate/*</name>*/ 
     /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
@@ -72,8 +71,18 @@ import org.robovm.apple.coreimage.*;
     void willBeginSendingToApplication(UIDocumentInteractionController controller, String application);
     @Method(selector = "documentInteractionController:didEndSendingToApplication:")
     void didEndSendingToApplication(UIDocumentInteractionController controller, String application);
+    /**
+     * @since Available in iOS 3.2 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
     @Method(selector = "documentInteractionController:canPerformAction:")
     boolean canPerformAction(UIDocumentInteractionController controller, Selector action);
+    /**
+     * @since Available in iOS 3.2 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
     @Method(selector = "documentInteractionController:performAction:")
     boolean performAction(UIDocumentInteractionController controller, Selector action);
     /*</methods>*/

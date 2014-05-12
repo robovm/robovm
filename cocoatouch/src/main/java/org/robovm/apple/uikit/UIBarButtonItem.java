@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIBarButtonItem/*</name>*/ 
     extends /*<extends>*/UIBarItem/*</extends>*/ 
@@ -49,6 +50,9 @@ import org.robovm.apple.coreimage.*;
     public UIBarButtonItem() {}
     protected UIBarButtonItem(SkipInit skipInit) { super(skipInit); }
     public UIBarButtonItem(UIImage image, UIBarButtonItemStyle style, UIBarButtonItem target, Selector action) { super((SkipInit) null); initObject(initWithImage$style$target$action$(image, style, target, action)); }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public UIBarButtonItem(UIImage image, UIImage landscapeImagePhone, UIBarButtonItemStyle style, UIBarButtonItem target, Selector action) { super((SkipInit) null); initObject(initWithImage$landscapeImagePhone$style$target$action$(image, landscapeImagePhone, style, target, action)); }
     public UIBarButtonItem(String title, UIBarButtonItemStyle style, UIBarButtonItem target, Selector action) { super((SkipInit) null); initObject(initWithTitle$style$target$action$(title, style, target, action)); }
     public UIBarButtonItem(UIBarButtonSystemItem systemItem, UIBarButtonItem target, Selector action) { super((SkipInit) null); initObject(initWithBarButtonSystemItem$target$action$(systemItem, target, action)); }
@@ -88,6 +92,9 @@ import org.robovm.apple.coreimage.*;
     /*<methods>*/
     @Method(selector = "initWithImage:style:target:action:")
     protected native @Pointer long initWithImage$style$target$action$(UIImage image, UIBarButtonItemStyle style, UIBarButtonItem target, Selector action);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "initWithImage:landscapeImagePhone:style:target:action:")
     protected native @Pointer long initWithImage$landscapeImagePhone$style$target$action$(UIImage image, UIImage landscapeImagePhone, UIBarButtonItemStyle style, UIBarButtonItem target, Selector action);
     @Method(selector = "initWithTitle:style:target:action:")
@@ -96,32 +103,74 @@ import org.robovm.apple.coreimage.*;
     protected native @Pointer long initWithBarButtonSystemItem$target$action$(UIBarButtonSystemItem systemItem, UIBarButtonItem target, Selector action);
     @Method(selector = "initWithCustomView:")
     protected native @Pointer long initWithCustomView$(UIView customView);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setBackgroundImage:forState:barMetrics:")
     public native void setBackgroundImage(UIImage backgroundImage, UIControlState state, UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "backgroundImageForState:barMetrics:")
     public native UIImage getBackgroundImage(UIControlState state, UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "setBackgroundImage:forState:style:barMetrics:")
     public native void setBackgroundImage(UIImage backgroundImage, UIControlState state, UIBarButtonItemStyle style, UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "backgroundImageForState:style:barMetrics:")
     public native UIImage getBackgroundImage(UIControlState state, UIBarButtonItemStyle style, UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setBackgroundVerticalPositionAdjustment:forBarMetrics:")
     public native void setBackgroundVerticalPositionAdjustment(@MachineSizedFloat double adjustment, UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "backgroundVerticalPositionAdjustmentForBarMetrics:")
     public native @MachineSizedFloat double getBackgroundVerticalPositionAdjustment(UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setTitlePositionAdjustment:forBarMetrics:")
     public native void setTitlePositionAdjustment(@ByVal UIOffset adjustment, UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "titlePositionAdjustmentForBarMetrics:")
     public native @ByVal UIOffset getTitlePositionAdjustment(UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setBackButtonBackgroundImage:forState:barMetrics:")
     public native void setBackButtonBackgroundImage(UIImage backgroundImage, UIControlState state, UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "backButtonBackgroundImageForState:barMetrics:")
     public native UIImage getBackButtonBackgroundImage(UIControlState state, UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setBackButtonTitlePositionAdjustment:forBarMetrics:")
     public native void setBackButtonTitlePositionAdjustment(@ByVal UIOffset adjustment, UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "backButtonTitlePositionAdjustmentForBarMetrics:")
     public native @ByVal UIOffset getBackButtonTitlePositionAdjustment(UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setBackButtonBackgroundVerticalPositionAdjustment:forBarMetrics:")
     public native void setBackButtonBackgroundVerticalPositionAdjustment(@MachineSizedFloat double adjustment, UIBarMetrics barMetrics);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "backButtonBackgroundVerticalPositionAdjustmentForBarMetrics:")
     public native @MachineSizedFloat double getBackButtonBackgroundVerticalPositionAdjustment(UIBarMetrics barMetrics);
     @Method(selector = "encodeWithCoder:")

@@ -33,10 +33,9 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ interface /*<name>*/UIImagePickerControllerDelegate/*</name>*/ 
     /*<implements>*/extends UINavigationControllerDelegate/*</implements>*/ {
@@ -50,6 +49,11 @@ import org.robovm.apple.coreimage.*;
     
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Method(selector = "imagePickerController:didFinishPickingImage:editingInfo:")
     void didFinishPickingImage(UIImagePickerController picker, UIImage image, NSDictionary<NSString, ?> editingInfo);
     @Method(selector = "imagePickerController:didFinishPickingMediaWithInfo:")

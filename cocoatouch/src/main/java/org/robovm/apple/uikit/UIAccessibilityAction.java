@@ -33,10 +33,9 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ interface /*<name>*/UIAccessibilityAction/*</name>*/ 
     /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
@@ -50,16 +49,34 @@ import org.robovm.apple.coreimage.*;
     
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "accessibilityActivate")
     boolean accessibilityActivate();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "accessibilityIncrement")
     void accessibilityIncrement();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "accessibilityDecrement")
     void accessibilityDecrement();
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
     @Method(selector = "accessibilityScroll:")
     boolean accessibilityScroll(UIAccessibilityScrollDirection direction);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "accessibilityPerformEscape")
     boolean accessibilityPerformEscape();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "accessibilityPerformMagicTap")
     boolean accessibilityPerformMagicTap();
     /*</methods>*/

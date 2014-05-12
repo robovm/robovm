@@ -30,10 +30,11 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSOperation/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -77,14 +78,29 @@ import org.robovm.apple.security.*;
     public native NSOperationQueuePriority queuePriority();
     @Method(selector = "setQueuePriority:")
     public native void setQueuePriority(NSOperationQueuePriority p);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "completionBlock")
     public native @Block Runnable completionBlock();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "setCompletionBlock:")
     public native void setCompletionBlock(@Block Runnable block);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "waitUntilFinished")
     public native void waitUntilFinished();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "threadPriority")
     public native double threadPriority();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "setThreadPriority:")
     public native void setThreadPriority(double p);
     /*</methods>*/

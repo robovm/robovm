@@ -29,10 +29,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFCalendar/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -79,6 +77,9 @@ import org.robovm.apple.dispatch.*;
     public native @ByVal CFRange getRangeOfUnit(CFCalendarUnit smallerUnit, CFCalendarUnit biggerUnit, double at);
     @Bridge(symbol="CFCalendarGetOrdinalityOfUnit", optional=true)
     public native @MachineSizedSInt long getOrdinalityOfUnit(CFCalendarUnit smallerUnit, CFCalendarUnit biggerUnit, double at);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFCalendarGetTimeRangeOfUnit", optional=true)
     public native boolean getTimeRangeOfUnit(CFCalendarUnit unit, double at, DoublePtr startp, DoublePtr tip);
     /*</methods>*/

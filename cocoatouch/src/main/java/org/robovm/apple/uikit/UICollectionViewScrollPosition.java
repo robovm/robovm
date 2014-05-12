@@ -33,9 +33,9 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/UICollectionViewScrollPosition/*</name>*/ extends Bits</*<name>*/UICollectionViewScrollPosition/*</name>*/> {
     /*<values>*/

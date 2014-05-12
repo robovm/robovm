@@ -29,10 +29,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("OpenGLES")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/EAGLColorFormat/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
@@ -50,6 +48,9 @@ import org.robovm.apple.foundation.*;
     public static native NSString RGBA8();
     @GlobalValue(symbol="kEAGLColorFormatRGB565", optional=true)
     public static native NSString RGB565();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kEAGLColorFormatSRGBA8", optional=true)
     public static native NSString SRGBA8();
     /*</methods>*/

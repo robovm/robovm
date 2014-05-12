@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UITextView/*</name>*/ 
     extends /*<extends>*/UIScrollView/*</extends>*/ 
@@ -48,6 +49,9 @@ import org.robovm.apple.coreimage.*;
     /*<constructors>*/
     public UITextView() {}
     protected UITextView(SkipInit skipInit) { super(skipInit); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public UITextView(@ByVal CGRect frame, NSTextContainer textContainer) { super((SkipInit) null); initObject(initWithFrame$textContainer$(frame, textContainer)); }
     /*</constructors>*/
     
@@ -200,6 +204,9 @@ import org.robovm.apple.coreimage.*;
     
     @Method(selector = "scrollRangeToVisible:")
     public native void scrollRangeToVisible(@ByVal NSRange range);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "initWithFrame:textContainer:")
     protected native @Pointer long initWithFrame$textContainer$(@ByVal CGRect frame, NSTextContainer textContainer);
     @Method(selector = "textInRange:")
@@ -232,6 +239,9 @@ import org.robovm.apple.coreimage.*;
     public native @ByVal CGRect getFirstRect(UITextRange range);
     @Method(selector = "caretRectForPosition:")
     public native @ByVal CGRect getCaretRect(UITextPosition position);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "selectionRectsForRange:")
     public native NSArray<UITextSelectionRect> getSelectionRects(UITextRange range);
     @Method(selector = "closestPositionToPoint:")
@@ -240,6 +250,9 @@ import org.robovm.apple.coreimage.*;
     public native UITextPosition getClosestPosition(@ByVal CGPoint point, UITextRange range);
     @Method(selector = "characterRangeAtPoint:")
     public native UITextRange getCharacterRange(@ByVal CGPoint point);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "shouldChangeTextInRange:replacementText:")
     public native boolean shouldChangeText(UITextRange range, String text);
     @Method(selector = "textStylingAtPosition:inDirection:")

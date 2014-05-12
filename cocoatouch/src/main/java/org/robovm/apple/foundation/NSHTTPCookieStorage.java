@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSHTTPCookieStorage/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -70,6 +69,9 @@ import org.robovm.apple.security.*;
     public native NSHTTPCookieAcceptPolicy cookieAcceptPolicy();
     @Method(selector = "setCookieAcceptPolicy:")
     public native void setCookieAcceptPolicy(NSHTTPCookieAcceptPolicy cookieAcceptPolicy);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "sortedCookiesUsingDescriptors:")
     public native NSArray<?> sortedCookiesUsingDescriptors$(NSArray<?> sortOrder);
     @Method(selector = "sharedHTTPCookieStorage")

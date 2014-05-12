@@ -29,10 +29,11 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 3.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreData") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSRelationshipDescription/*</name>*/ 
     extends /*<extends>*/NSPropertyDescription/*</extends>*/ 
@@ -72,10 +73,19 @@ import org.robovm.apple.foundation.*;
     public native void setDeleteRule(NSDeleteRule rule);
     @Method(selector = "isToMany")
     public native boolean isToMany();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "versionHash")
     public native NSData versionHash();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "setOrdered:")
     public native void setOrdered(boolean flag);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "isOrdered")
     public native boolean isOrdered();
     /*</methods>*/

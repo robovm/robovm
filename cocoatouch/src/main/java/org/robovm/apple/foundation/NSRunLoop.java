@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSRunLoop/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -53,6 +52,9 @@ import org.robovm.apple.security.*;
     /*<methods>*/
     @GlobalValue(symbol="NSDefaultRunLoopMode", optional=true)
     public static native String ModeDefault();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSRunLoopCommonModes", optional=true)
     public static native String ModeCommon();
     
@@ -66,6 +68,9 @@ import org.robovm.apple.security.*;
     public native void acceptInputForMode$beforeDate$(String mode, NSDate limitDate);
     @Method(selector = "currentRunLoop")
     public static native NSRunLoop getCurrent();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "mainRunLoop")
     public static native NSRunLoop getMain();
     @Method(selector = "run")

@@ -30,10 +30,11 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 3.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSPredicate/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -57,14 +58,23 @@ import org.robovm.apple.security.*;
     public native NSPredicate predicateWithSubstitutionVariables$(NSDictionary<?, ?> variables);
     @Method(selector = "evaluateWithObject:")
     public native boolean evaluateWithObject$(NSObject object);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "evaluateWithObject:substitutionVariables:")
     public native boolean evaluateWithObject$substitutionVariables$(NSObject object, NSDictionary<?, ?> bindings);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "allowEvaluation")
     public native void allowEvaluation();
     @Method(selector = "predicateWithFormat:argumentArray:")
     public static native NSPredicate predicateWithFormat$argumentArray$(String predicateFormat, NSArray<?> arguments);
     @Method(selector = "predicateWithValue:")
     public static native NSPredicate predicateWithValue$(boolean value);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "predicateWithBlock:")
     public static native NSPredicate predicateWithBlock$(ObjCBlock block);
     /*</methods>*/

@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 5.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIStoryboardSegue/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -64,6 +65,9 @@ import org.robovm.apple.coreimage.*;
     protected native @Pointer long initWithIdentifier$source$destination$(String identifier, UIViewController source, UIViewController destination);
     @Method(selector = "perform")
     public native void perform();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "segueWithIdentifier:source:destination:performHandler:")
     public static native NSObject getSegue(String identifier, UIViewController source, UIViewController destination, @Block Runnable performHandler);
     /*</methods>*/

@@ -31,10 +31,11 @@ import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 3.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("MediaPlayer") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MPMediaItemArtwork/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -46,6 +47,9 @@ import org.robovm.apple.coregraphics.*;
     /*<constructors>*/
     public MPMediaItemArtwork() {}
     protected MPMediaItemArtwork(SkipInit skipInit) { super(skipInit); }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public MPMediaItemArtwork(UIImage image) { super((SkipInit) null); initObject(initWithImage$(image)); }
     /*</constructors>*/
     /*<properties>*/
@@ -56,6 +60,9 @@ import org.robovm.apple.coregraphics.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "initWithImage:")
     protected native @Pointer long initWithImage$(UIImage image);
     @Method(selector = "imageWithSize:")

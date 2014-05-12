@@ -30,10 +30,8 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreGraphics")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGColorSpace/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -250,57 +248,94 @@ import org.robovm.apple.foundation.*;
     }
     
     /*<methods>*/
-    @GlobalValue(symbol="kCGColorSpaceGenericGray", optional=true)
-    public static native String ColorSpaceGenericGray();
-    @GlobalValue(symbol="kCGColorSpaceGenericRGB", optional=true)
-    public static native String ColorSpaceGenericRGB();
-    @GlobalValue(symbol="kCGColorSpaceGenericCMYK", optional=true)
-    public static native String ColorSpaceGenericCMYK();
-    @GlobalValue(symbol="kCGColorSpaceGenericRGBLinear", optional=true)
-    public static native String ColorSpaceGenericRGBLinear();
-    @GlobalValue(symbol="kCGColorSpaceAdobeRGB1998", optional=true)
-    public static native String ColorSpaceAdobeRGB1998();
-    @GlobalValue(symbol="kCGColorSpaceSRGB", optional=true)
-    public static native String ColorSpaceSRGB();
-    @GlobalValue(symbol="kCGColorSpaceGenericGrayGamma2_2", optional=true)
-    public static native String ColorSpaceGenericGrayGamma2_2();
-    
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorSpaceCreateDeviceGray", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace createDeviceGray();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorSpaceCreateDeviceRGB", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace createDeviceRGB();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorSpaceCreateDeviceCMYK", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace createDeviceCMYK();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorSpaceCreateCalibratedGray", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace createCalibratedGray(@Pointer long whitePoint, @Pointer long blackPoint, @MachineSizedFloat double gamma);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorSpaceCreateCalibratedRGB", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace createCalibratedRGB(@Pointer long whitePoint, @Pointer long blackPoint, @Pointer long gamma, @Pointer long matrix);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorSpaceCreateLab", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace createLab(@Pointer long whitePoint, @Pointer long blackPoint, @Pointer long range);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorSpaceCreateWithICCProfile", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace createWithICCProfile(NSData data);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorSpaceCreateICCBased", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace createICCBased(@MachineSizedUInt long nComponents, @Pointer long range, CGDataProvider profile, CGColorSpace alternate);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorSpaceCreateIndexed", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace createIndexed(CGColorSpace baseSpace, @MachineSizedUInt long lastIndex, @Pointer long colorTable);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorSpaceCreatePattern", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace createPattern(CGColorSpace baseSpace);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorSpaceCreateWithName", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace createWithName(String name);
-    @Bridge(symbol="CGColorSpaceCopyName", optional=true)
-    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getName();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorSpaceGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorSpaceGetNumberOfComponents", optional=true)
     public native @MachineSizedUInt long getNumberOfComponents();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorSpaceGetModel", optional=true)
     public native CGColorSpaceModel getModel();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorSpaceGetBaseColorSpace", optional=true)
     public native CGColorSpace getBaseColorSpace();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorSpaceGetColorTableCount", optional=true)
     public native @MachineSizedUInt long getColorTableCount();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGColorSpaceGetColorTable", optional=true)
     protected native void getColorTable(@Pointer long table);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Bridge(symbol="CGColorSpaceCopyICCProfile", optional=true)
     public native NSData copyICCProfile();
     /*</methods>*/

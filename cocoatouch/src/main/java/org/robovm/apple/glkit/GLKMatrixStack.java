@@ -34,10 +34,8 @@ import org.robovm.apple.uikit.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("GLKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/GLKMatrixStack/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 

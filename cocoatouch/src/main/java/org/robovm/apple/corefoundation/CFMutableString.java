@@ -29,10 +29,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFMutableString/*</name>*/ 
     extends /*<extends>*/CFString/*</extends>*/ 
@@ -76,6 +74,9 @@ import org.robovm.apple.dispatch.*;
     public static native CFString TransformToXMLHex();
     @GlobalValue(symbol="kCFStringTransformToUnicodeName", optional=true)
     public static native CFString TransformToUnicodeName();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFStringTransformStripDiacritics", optional=true)
     public static native CFString TransformStripDiacritics();
     
@@ -119,6 +120,9 @@ import org.robovm.apple.dispatch.*;
     public native void capitalize(CFLocale locale);
     @Bridge(symbol="CFStringNormalize", optional=true)
     public native void normalize(CFStringNormalizationForm theForm);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFStringFold", optional=true)
     public native void fold(CFStringCompareFlags theFlags, CFLocale theLocale);
     @Bridge(symbol="CFStringTransform", optional=true)

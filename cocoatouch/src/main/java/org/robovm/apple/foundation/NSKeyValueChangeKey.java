@@ -30,10 +30,8 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
 /*<visibility>*/public final/*</visibility>*/ class /*<name>*/NSKeyValueChangeKey/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
@@ -55,6 +53,9 @@ import org.robovm.apple.security.*;
     public static native NSString KeyChangeOld();
     @GlobalValue(symbol="NSKeyValueChangeIndexesKey", optional=true)
     public static native NSString KeyChangeIndexes();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="NSKeyValueChangeNotificationIsPriorKey", optional=true)
     public static native NSString KeyChangeNotificationIsPrior();
     /*</methods>*/

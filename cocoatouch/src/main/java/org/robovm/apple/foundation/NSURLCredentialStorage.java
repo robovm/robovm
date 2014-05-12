@@ -30,10 +30,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLCredentialStorage/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -53,6 +52,9 @@ import org.robovm.apple.security.*;
     /*<methods>*/
     @GlobalValue(symbol="NSURLCredentialStorageChangedNotification", optional=true)
     public static native String NotificationChanged();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="NSURLCredentialStorageRemoveSynchronizableCredentials", optional=true)
     public static native NSString KeyRemoveSynchronizableCredentials();
     
@@ -64,6 +66,9 @@ import org.robovm.apple.security.*;
     public native void setCredential$forProtectionSpace$(NSURLCredential credential, NSURLProtectionSpace space);
     @Method(selector = "removeCredential:forProtectionSpace:")
     public native void removeCredential$forProtectionSpace$(NSURLCredential credential, NSURLProtectionSpace space);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "removeCredential:forProtectionSpace:options:")
     public native void removeCredential$forProtectionSpace$options$(NSURLCredential credential, NSURLProtectionSpace space, NSDictionary<?, ?> options);
     @Method(selector = "defaultCredentialForProtectionSpace:")

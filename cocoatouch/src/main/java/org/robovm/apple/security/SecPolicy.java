@@ -30,10 +30,8 @@ import org.robovm.apple.dispatch.*;
 import org.robovm.apple.corefoundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("Security")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SecPolicy/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -48,49 +46,100 @@ import org.robovm.apple.corefoundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kSecPolicyAppleX509Basic", optional=true)
     public static native CFType AppleX509Basic();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kSecPolicyAppleSSL", optional=true)
     public static native CFType AppleSSL();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kSecPolicyAppleSMIME", optional=true)
     public static native CFType AppleSMIME();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kSecPolicyAppleEAP", optional=true)
     public static native CFType AppleEAP();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kSecPolicyAppleIPsec", optional=true)
     public static native CFType AppleIPsec();
-    @GlobalValue(symbol="kSecPolicyApplePKINITClient", optional=true)
-    public static native CFType ApplePKINITClient();
-    @GlobalValue(symbol="kSecPolicyApplePKINITServer", optional=true)
-    public static native CFType ApplePKINITServer();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kSecPolicyAppleCodeSigning", optional=true)
     public static native CFType AppleCodeSigning();
-    @GlobalValue(symbol="kSecPolicyMacAppStoreReceipt", optional=true)
-    public static native CFType MacAppStoreReceipt();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kSecPolicyAppleIDValidation", optional=true)
     public static native CFType AppleIDValidation();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kSecPolicyAppleTimeStamping", optional=true)
     public static native CFType AppleTimeStamping();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kSecPolicyAppleRevocation", optional=true)
     public static native CFType AppleRevocation();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kSecPolicyOid", optional=true)
     public static native CFType Oid();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kSecPolicyName", optional=true)
     public static native CFType Name();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kSecPolicyClient", optional=true)
     public static native CFType Client();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @GlobalValue(symbol="kSecPolicyRevocationFlags", optional=true)
     public static native CFType RevocationFlags();
     
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="SecPolicyGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Bridge(symbol="SecPolicyCopyProperties", optional=true)
     public native CFDictionary copyProperties();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="SecPolicyCreateBasicX509", optional=true)
     public static native SecPolicy createBasicX509();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="SecPolicyCreateSSL", optional=true)
     public static native SecPolicy createSSL(boolean server, CFString hostname);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Bridge(symbol="SecPolicyCreateRevocation", optional=true)
     public static native SecPolicy createRevocation(SecRevocation revocationFlags);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Bridge(symbol="SecPolicyCreateWithProperties", optional=true)
     public static native SecPolicy createWithProperties(CFType policyIdentifier, CFDictionary properties);
     /*</methods>*/

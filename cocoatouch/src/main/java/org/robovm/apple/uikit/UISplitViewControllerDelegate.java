@@ -33,10 +33,9 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ interface /*<name>*/UISplitViewControllerDelegate/*</name>*/ 
     /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
@@ -56,10 +55,19 @@ import org.robovm.apple.coreimage.*;
     void willShowViewController(UISplitViewController svc, UIViewController aViewController, UIBarButtonItem barButtonItem);
     @Method(selector = "splitViewController:popoverController:willPresentViewController:")
     void willPresentViewController(UISplitViewController svc, UIPopoverController pc, UIViewController aViewController);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "splitViewController:shouldHideViewController:inOrientation:")
     boolean shouldHideViewController(UISplitViewController svc, UIViewController vc, UIInterfaceOrientation orientation);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "splitViewControllerSupportedInterfaceOrientations:")
     @MachineSizedUInt long getSupportedInterfaceOrientations(UISplitViewController splitViewController);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "splitViewControllerPreferredInterfaceOrientationForPresentation:")
     UIInterfaceOrientation name(UISplitViewController splitViewController);
     /*</methods>*/

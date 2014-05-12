@@ -28,10 +28,8 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("dispatch")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/DispatchGroup/*</name>*/ 
     extends /*<extends>*/DispatchObject/*</extends>*/ 
@@ -46,20 +44,44 @@ import org.robovm.rt.bro.ptr.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_group_create", optional=true)
     public static native DispatchGroup create();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_group_async", optional=true)
     public native void async(DispatchQueue queue, @Block Runnable block);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_group_async_f", optional=true)
     public native void asyncF(DispatchQueue queue, VoidPtr context, FunctionPtr work);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_group_wait", optional=true)
     public native @MachineSizedSInt long await(long timeout);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_group_notify", optional=true)
     public native void notify(DispatchQueue queue, @Block Runnable block);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_group_notify_f", optional=true)
     public native void notifyF(DispatchQueue queue, VoidPtr context, FunctionPtr work);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_group_enter", optional=true)
     public native void enter();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="dispatch_group_leave", optional=true)
     public native void leave();
     /*</methods>*/

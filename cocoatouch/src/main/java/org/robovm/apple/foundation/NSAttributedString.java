@@ -30,10 +30,11 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 3.2 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSAttributedString/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
@@ -85,8 +86,14 @@ import org.robovm.apple.security.*;
     protected native @Pointer long initWithString$attributes$(String str, NSDictionary<NSString, ?> attrs);
     @Method(selector = "initWithAttributedString:")
     protected native @Pointer long initWithAttributedString$(NSAttributedString attrStr);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "enumerateAttributesInRange:options:usingBlock:")
     public native void enumerateAttributes(@ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, @Block("(,@ByVal,)") VoidBlock3<NSDictionary<NSString, ?>, NSRange, BytePtr> block);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "enumerateAttribute:inRange:options:usingBlock:")
     public native void enumerateAttribute(NSString attrName, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, @Block("(,@ByVal,)") VoidBlock3<NSObject, NSRange, BytePtr> block);
     @Method(selector = "encodeWithCoder:")

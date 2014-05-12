@@ -29,10 +29,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreData")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CoreData/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
@@ -72,20 +70,44 @@ import org.robovm.apple.foundation.*;
     /*<methods>*/
     @GlobalValue(symbol="NSCoreDataVersionNumber", optional=true)
     public static native double VersionNumber();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSDetailedErrorsKey", optional=true)
     public static native NSString ErrorKeyDetailedErrors();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSValidationObjectErrorKey", optional=true)
     public static native NSString ErrorKeyValidationObject();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSValidationKeyErrorKey", optional=true)
     public static native NSString ErrorKeyValidationKey();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSValidationPredicateErrorKey", optional=true)
     public static native NSString ErrorKeyValidationPredicate();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSValidationValueErrorKey", optional=true)
     public static native NSString ErrorKeyValidationValue();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSAffectedStoresErrorKey", optional=true)
     public static native NSString ErrorKeyAffectedStores();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSAffectedObjectsErrorKey", optional=true)
     public static native NSString ErrorKeyAffectedObjects();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @GlobalValue(symbol="NSSQLiteErrorDomain", optional=true)
     public static native String ErrorDomainSQLite();
     /*</methods>*/

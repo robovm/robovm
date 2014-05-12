@@ -33,13 +33,16 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/UIButtonType/*</name>*/ implements ValuedEnum {
     /*<values>*/
     Custom(0L),
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     System(1L),
     DetailDisclosure(2L),
     InfoLight(3L),

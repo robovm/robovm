@@ -29,10 +29,9 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ interface /*<name>*/NSFetchedResultsControllerDelegate/*</name>*/ 
     /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
@@ -54,6 +53,9 @@ import org.robovm.apple.foundation.*;
     void controllerWillChangeContent$(NSFetchedResultsController controller);
     @Method(selector = "controllerDidChangeContent:")
     void controllerDidChangeContent$(NSFetchedResultsController controller);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "controller:sectionIndexTitleForSectionName:")
     String controller$sectionIndexTitleForSectionName$(NSFetchedResultsController controller, String sectionName);
     /*</methods>*/

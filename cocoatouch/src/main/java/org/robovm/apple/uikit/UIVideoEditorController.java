@@ -33,10 +33,11 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- *
- * <div class="javadoc"></div>
+ * @since Available in iOS 3.1 and later.
  */
+/*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIVideoEditorController/*</name>*/ 
     extends /*<extends>*/UINavigationController/*</extends>*/ 
@@ -74,6 +75,9 @@ import org.robovm.apple.coreimage.*;
     }
     
     /*<methods>*/
+    /**
+     * @since Available in iOS 3.1 and later.
+     */
     @Method(selector = "canEditVideoAtPath:")
     protected static native boolean canEditVideoAtPath$(String videoPath);
     /*</methods>*/

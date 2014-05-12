@@ -30,13 +30,16 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-/**
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+
+/*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSNetServiceOptions/*</name>*/ extends Bits</*<name>*/NSNetServiceOptions/*</name>*/> {
     /*<values>*/
     public static final NSNetServiceOptions NoAutoRename = new NSNetServiceOptions(1L);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public static final NSNetServiceOptions ListenForConnections = new NSNetServiceOptions(2L);
     /*</values>*/
 

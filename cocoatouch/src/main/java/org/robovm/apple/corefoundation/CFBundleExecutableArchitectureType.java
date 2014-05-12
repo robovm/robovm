@@ -29,9 +29,11 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
+/*<javadoc>*/
 /**
- * <div class="javadoc"></div>
+ * @since Available in iOS 2.0 and later.
  */
+/*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 public enum /*<name>*/CFBundleExecutableArchitectureType/*</name>*/ implements ValuedEnum {
     /*<values>*/

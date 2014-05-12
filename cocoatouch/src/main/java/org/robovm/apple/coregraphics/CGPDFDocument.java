@@ -30,10 +30,8 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
 
-/**
- *
- * <div class="javadoc"></div>
- */
+/*<javadoc>*/
+/*</javadoc>*/
 /*<annotations>*/@Library("CoreGraphics")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGPDFDocument/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -63,39 +61,60 @@ import org.robovm.apple.foundation.*;
     }
 
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGPDFDocumentCreateWithProvider", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPDFDocument createWithProvider(CGDataProvider provider);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGPDFDocumentCreateWithURL", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPDFDocument createWithURL(NSURL url);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGPDFDocumentGetVersion", optional=true)
     protected native void getVersion(IntPtr majorVersion, IntPtr minorVersion);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGPDFDocumentIsEncrypted", optional=true)
     public native boolean isEncrypted();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGPDFDocumentUnlockWithPassword", optional=true)
     public native boolean unlockWithPassword(@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String password);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGPDFDocumentIsUnlocked", optional=true)
     public native boolean isUnlocked();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGPDFDocumentAllowsPrinting", optional=true)
     public native boolean allowsPrinting();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGPDFDocumentAllowsCopying", optional=true)
     public native boolean allowsCopying();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGPDFDocumentGetNumberOfPages", optional=true)
     public native @MachineSizedUInt long getNumberOfPages();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGPDFDocumentGetPage", optional=true)
     public native CGPDFPage getPage(@MachineSizedUInt long pageNumber);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGPDFDocumentGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CGPDFDocumentGetMediaBox", optional=true)
-    public native @ByVal CGRect getMediaBox(int page);
-    @Bridge(symbol="CGPDFDocumentGetCropBox", optional=true)
-    public native @ByVal CGRect getCropBox(int page);
-    @Bridge(symbol="CGPDFDocumentGetBleedBox", optional=true)
-    public native @ByVal CGRect getBleedBox(int page);
-    @Bridge(symbol="CGPDFDocumentGetTrimBox", optional=true)
-    public native @ByVal CGRect getTrimBox(int page);
-    @Bridge(symbol="CGPDFDocumentGetArtBox", optional=true)
-    public native @ByVal CGRect getArtBox(int page);
-    @Bridge(symbol="CGPDFDocumentGetRotationAngle", optional=true)
-    public native int getRotationAngle(int page);
     /*</methods>*/
 }

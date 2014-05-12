@@ -32,7 +32,7 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
+/*<annotations>*/@Library("CoreGraphics")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CoreGraphics/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
@@ -41,6 +41,9 @@ import org.robovm.apple.foundation.*;
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(CoreGraphics.class); }/*</bind>*/
     /*<constants>*/
+    public static final int FontIndexMax = 65534;
+    public static final int FontIndexInvalid = 65535;
+    public static final int GlyphMax = 65534;
     /*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
@@ -75,5 +78,36 @@ import org.robovm.apple.foundation.*;
         }
     }
     
-    /*<methods>*//*</methods>*/
+    /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @GlobalValue(symbol="CGPointZero", optional=true)
+    public static native @ByVal CGPoint PointZero();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @GlobalValue(symbol="CGSizeZero", optional=true)
+    public static native @ByVal CGSize SizeZero();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @GlobalValue(symbol="CGRectZero", optional=true)
+    public static native @ByVal CGRect RectZero();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @GlobalValue(symbol="CGRectNull", optional=true)
+    public static native @ByVal CGRect RectNull();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @GlobalValue(symbol="CGRectInfinite", optional=true)
+    public static native @ByVal CGRect RectInfinite();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @GlobalValue(symbol="CGAffineTransformIdentity", optional=true)
+    public static native @ByVal CGAffineTransform AffineTransformIdentity();
+    /*</methods>*/
 }

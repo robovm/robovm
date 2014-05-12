@@ -84,62 +84,6 @@ import org.robovm.apple.security.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @GlobalValue(symbol="NSTextCheckingNameKey", optional=true)
-    public static native NSString KeyName();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingJobTitleKey", optional=true)
-    public static native NSString KeyJobTitle();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingOrganizationKey", optional=true)
-    public static native NSString KeyOrganization();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingStreetKey", optional=true)
-    public static native NSString KeyStreet();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingCityKey", optional=true)
-    public static native NSString KeyCity();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingStateKey", optional=true)
-    public static native NSString KeyState();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingZIPKey", optional=true)
-    public static native NSString KeyZIP();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingCountryKey", optional=true)
-    public static native NSString KeyCountry();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingPhoneKey", optional=true)
-    public static native NSString KeyPhone();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingAirlineKey", optional=true)
-    public static native NSString KeyAirline();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingFlightKey", optional=true)
-    public static native NSString KeyFlight();
-    
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
     @Method(selector = "rangeAtIndex:")
     public native @ByVal NSRange rangeAtIndex$(@MachineSizedUInt long idx);
     /**

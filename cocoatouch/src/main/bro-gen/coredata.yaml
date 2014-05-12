@@ -69,88 +69,34 @@ functions:
 
 values:
 
-    NSMigration(.*)Key:
-        class: NSEntityMigrationPolicy
-        name: "Key#{g[0]}"
+    NS(.*Key):
+        type: NSString
+        name: "#{g[0]}"
+
+    NS(.*Notification):
+        name: "#{g[0]}"
         type: NSString
 
-    NS(.*Objects)Key:
-        class: NSManagedObjectContext
-        name: "Key#{g[0]}"
-        type: NSString
-    NSManagedObjectContext(.*)Notification:
-        class: NSManagedObjectContext
-        name: "Notification#{g[0]}"
-
-    NS(.*)MergePolicy:
-        class: NSMergePolicy
-        name: "Policy#{g[0]}"
+    NS(.*MergePolicy):
+        name: "#{g[0]}"
         readonly: true
 
-    NS(.*)StoreType:
-        class: NSPersistentStoreCoordinator
-        name: "StoreType#{g[0]}"
-    NS(StoreType|StoreUUID)Key:
-        class: NSPersistentStoreCoordinator
-        name: "Key#{g[0]}"
-        type: NSString
-    NS(.*PersistentStores)Key:
-        class: NSPersistentStoreCoordinator
-        name: "Key#{g[0]}"
-        type: NSString
-    NSPersistentStore(UbiquitousTransitionType)Key:
-        class: NSPersistentStoreCoordinator
-        name: "Key#{g[0]}"
-        type: NSString
-    NSPersistentStore(.*)Key:
-        class: NSPersistentStoreCoordinator
-        name: "Key#{g[0]}"
-        type: NSString
-    NSPersistentStore(.*Option):
-        class: NSPersistentStoreCoordinator
-        name: "Key#{g[0]}"
-        type: NSString
-    NS(.*)PersistentStoreOption:
-        class: NSPersistentStoreCoordinator
-        name: "Key#{g[0]}Option"
-        type: NSString
-    NS(SQLite.*Option):
-        class: NSPersistentStoreCoordinator
-        name: "Key#{g[0]}"
-        type: NSString
-    NSStore(Model.*)Key:
-        class: NSPersistentStoreCoordinator
-        name: "Key#{g[0]}"
-        type: NSString
-    NSPersistentStore(OSCompatibility):
-        class: NSPersistentStoreCoordinator
-        name: "Key#{g[0]}"
-        type: NSString
-    NS(ValidateXMLStoreOption|IgnorePersistentStoreVersioningOption|MigratePersistentStoresAutomaticallyOption|InferMappingModelAutomaticallyOption):
-        class: NSPersistentStoreCoordinator
-        name: "Key#{g[0]}"
-        type: NSString
-    NSPersistentStoreCoordinator(.*)Notification:
-        class: NSPersistentStoreCoordinator
-        name: "Notification#{g[0]}"
-    NSPersistentStore(DidImportUbiquitousContentChanges)Notification:
-        class: NSPersistentStoreCoordinator
-        name: "Notification#{g[0]}"
+    NS(.*StoreType):
+        name: "#{g[0]}"
 
-    NS(.*)ErrorKey:
-        class: CoreData
-        name: "ErrorKey#{g[0]}"
+    NS(.*Option):
+        name: "#{g[0]}"
         type: NSString
-    NS(DetailedErrors)Key:
-        class: CoreData
-        name: "ErrorKey#{g[0]}"
-        type: NSString
-    NS(.*)ErrorDomain:
-        class: CoreData
-        name: "ErrorDomain#{g[0]}"
 
-    NSCoreData(VersionNumber):
-        class: CoreData
+    NS(PersistentStoreOSCompatibility):
+        name: "#{g[0]}"
+        type: NSString
+
+    NS(.*ErrorDomain):
+        type: NSString
+        name: "#{g[0]}"
+
+    NS(CoreDataVersionNumber):
         name: "#{g[0]}"
         readonly: true
 
@@ -161,7 +107,7 @@ values:
 
 constants:
 
-    NSCoreData(VersionNumber.*):
+    NS(CoreDataVersionNumber.*):
         class: CoreData
         name: "#{g[0]}"
 

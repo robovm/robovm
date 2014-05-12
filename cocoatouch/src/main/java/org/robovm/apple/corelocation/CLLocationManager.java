@@ -92,21 +92,6 @@ import org.robovm.apple.foundation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCLDistanceFilterNone", optional=true)
-    public static native double DistanceFilterNone();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="CLLocationDistanceMax", optional=true)
-    public static native double DistanceMax();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="CLTimeIntervalMax", optional=true)
-    public static native double TimeIntervalMax();
-    @GlobalValue(symbol="kCLHeadingFilterNone", optional=true)
-    public static native double HeadingFilterNone();
-    
     @Method(selector = "startUpdatingLocation")
     public native void startUpdatingLocation();
     @Method(selector = "stopUpdatingLocation")

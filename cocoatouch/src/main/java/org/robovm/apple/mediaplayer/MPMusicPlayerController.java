@@ -82,13 +82,6 @@ import org.robovm.apple.coregraphics.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="MPMusicPlayerControllerPlaybackStateDidChangeNotification", optional=true)
-    public static native String NotificationPlaybackStateDidChange();
-    @GlobalValue(symbol="MPMusicPlayerControllerNowPlayingItemDidChangeNotification", optional=true)
-    public static native String NotificationNowPlayingItemDidChange();
-    @GlobalValue(symbol="MPMusicPlayerControllerVolumeDidChangeNotification", optional=true)
-    public static native String NotificationVolumeDidChange();
-    
     @Method(selector = "applicationMusicPlayer")
     public static native MPMusicPlayerController getApplicationMusicPlayer();
     @Method(selector = "iPodMusicPlayer")

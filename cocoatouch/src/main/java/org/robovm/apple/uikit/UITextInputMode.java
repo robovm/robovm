@@ -58,12 +58,6 @@ import org.robovm.apple.coreimage.*;
     /*<methods>*/
     /**
      * @since Available in iOS 4.2 and later.
-     */
-    @GlobalValue(symbol="UITextInputCurrentInputModeDidChangeNotification", optional=true)
-    public static native String NotificationCurrentInputModeDidChange();
-    
-    /**
-     * @since Available in iOS 4.2 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated

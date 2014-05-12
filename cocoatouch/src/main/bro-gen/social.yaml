@@ -69,8 +69,7 @@ functions:
         name: "Function__#{g[0]}"
 
 values:
-    SLServiceType(.*):
-        class: SLServiceType
+    SL(ServiceType.*):
         name: "#{g[0]}"
         type: NSString
 

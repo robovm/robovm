@@ -53,15 +53,6 @@ import org.robovm.apple.coregraphics.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="MPMediaPlaylistPropertyPersistentID", optional=true)
-    public static native NSString PropertyPersistentID();
-    @GlobalValue(symbol="MPMediaPlaylistPropertyName", optional=true)
-    public static native NSString PropertyName();
-    @GlobalValue(symbol="MPMediaPlaylistPropertyPlaylistAttributes", optional=true)
-    public static native NSString PropertyPlaylistAttributes();
-    @GlobalValue(symbol="MPMediaPlaylistPropertySeedItems", optional=true)
-    public static native NSString PropertySeedItems();
-    
     
     /*</methods>*/
 }

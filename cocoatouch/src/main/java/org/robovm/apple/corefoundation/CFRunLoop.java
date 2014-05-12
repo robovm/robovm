@@ -45,11 +45,6 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFRunLoopDefaultMode", optional=true)
-    public static native CFString ModeDefault();
-    @GlobalValue(symbol="kCFRunLoopCommonModes", optional=true)
-    public static native CFString ModeCommon();
-    
     @Bridge(symbol="CFRunLoopGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFRunLoopGetCurrent", optional=true)

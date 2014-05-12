@@ -51,57 +51,6 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSCocoaErrorDomain", optional=true)
-    public static native String ErrorDomainCocoa();
-    @GlobalValue(symbol="NSPOSIXErrorDomain", optional=true)
-    public static native String ErrorDomainPOSIX();
-    @GlobalValue(symbol="NSOSStatusErrorDomain", optional=true)
-    public static native String ErrorDomainOSStatus();
-    @GlobalValue(symbol="NSMachErrorDomain", optional=true)
-    public static native String ErrorDomainMach();
-    @GlobalValue(symbol="NSUnderlyingErrorKey", optional=true)
-    public static native NSString KeyUnderlyingError();
-    @GlobalValue(symbol="NSLocalizedDescriptionKey", optional=true)
-    public static native NSString KeyLocalizedDescription();
-    @GlobalValue(symbol="NSLocalizedFailureReasonErrorKey", optional=true)
-    public static native NSString KeyLocalizedFailureReasonError();
-    @GlobalValue(symbol="NSLocalizedRecoverySuggestionErrorKey", optional=true)
-    public static native NSString KeyLocalizedRecoverySuggestionError();
-    @GlobalValue(symbol="NSLocalizedRecoveryOptionsErrorKey", optional=true)
-    public static native NSString KeyLocalizedRecoveryOptionsError();
-    @GlobalValue(symbol="NSRecoveryAttempterErrorKey", optional=true)
-    public static native NSString KeyRecoveryAttempterError();
-    @GlobalValue(symbol="NSHelpAnchorErrorKey", optional=true)
-    public static native NSString KeyHelpAnchorError();
-    @GlobalValue(symbol="NSStringEncodingErrorKey", optional=true)
-    public static native NSString KeyStringEncodingError();
-    @GlobalValue(symbol="NSURLErrorKey", optional=true)
-    public static native NSString KeyURLError();
-    @GlobalValue(symbol="NSFilePathErrorKey", optional=true)
-    public static native NSString KeyFilePathError();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLErrorFailingURLErrorKey", optional=true)
-    public static native NSString KeyURLErrorFailingURLError();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLErrorFailingURLStringErrorKey", optional=true)
-    public static native NSString KeyURLErrorFailingURLStringError();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 4.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="NSErrorFailingURLStringKey", optional=true)
-    public static native NSString KeyErrorFailingURLString();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLErrorFailingURLPeerTrustErrorKey", optional=true)
-    public static native NSString KeyURLErrorFailingURLPeerTrustError();
-    
     @Method(selector = "initWithDomain:code:userInfo:")
     protected native @Pointer long initWithDomain$code$userInfo$(String domain, @MachineSizedSInt long code, NSDictionary<?, ?> dict);
     @Method(selector = "domain")

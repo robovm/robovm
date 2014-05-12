@@ -1279,296 +1279,100 @@ values:
         exclude: true
     NSAssertionHandlerKey:
         exclude: true
-        
-    NSBundle(.*)Notification:
-        class: NSBundle
-        name: "Notification#{g[0]}"
+
+    NS(.*)Notification:
+        type: NSString
     NS(LoadedClasses):
-        class: NSBundle
         type: NSString
-        name: "Key#{g[0]}"
-    NS(.*)Calendar:
-        class: NSLocale
-        name: "CalendarIdentifier#{g[0]}"
-    NSCalendarIdentifier(.*):
-        class: NSCalendar
-        name: "CalendarIdentifier#{g[0]}"
-    NSCalendar(.*)Notification:
-        class: NSCalendar
-        name: "Notification#{g[0]}"
-    NS(SystemClockDidChange)Notification:
-        class: NSDate
-        name: "Notification#{g[0]}"
-    NSDecimalNumber(.*):
-        class: NSDecimalNumber
-        name: "#{g[0]}"
     NS(LocalizedDescription|ErrorFailingURLString|FilePathError|StringEncodingError)Key:
-        class: NSError
         type: NSString
-        name: "Key#{g[0]}"
     NS(UnderlyingError|URLError|LocalizedFailureReasonError|LocalizedRecoverySuggestionError)Key:
-        class: NSError
         type: NSString
-        name: "Key#{g[0]}"
     NS(LocalizedRecoveryOptionsError|RecoveryAttempterError|HelpAnchorError|URLErrorFailingURLError)Key:
-        class: NSError
         type: NSString
-        name: "Key#{g[0]}"
     NS(URLErrorFailingURLStringError|URLErrorFailingURLPeerTrustError)Key:
-        class: NSError
         type: NSString
-        name: "Key#{g[0]}"
-    NS(Cocoa|POSIX|OSStatus|Mach)ErrorDomain:
-        class: NSError
-        name: "ErrorDomain#{g[0]}"
-    NSFileHandle(.*)Notification:
-        class: NSFileHandle
-        name: "Notification#{g[0]}"
-    NSFileHandle(.*):
-        class: NSFileHandle
-        name: "#{g[0]}"
+    NS(.*)ErrorDomain:
+        type: NSString
     NSFile(AppendOnly|Busy|CreationDate|DeviceIdentifier|ExtensionHidden|GroupOwnerAccountID|GroupOwnerAccountName):
-        class: NSFileManager
         type: NSString
-        name: "Key#{g[0]}"
     NSFile(HFSCreatorCode|HFSTypeCode|Immutable|ModificationDate|OwnerAccountID|OwnerAccountName|PosixPermissions):
-        class: NSFileManager
         type: NSString
-        name: "Key#{g[0]}"
     NSFile(ReferenceCount|Size|SystemFileNumber|SystemNumber|Type):
-        class: NSFileManager
         type: NSString
-        name: "Key#{g[0]}"
     NSFile(.*)Key:
-        class: NSFileManager
         type: NSString
-        name: "Key#{g[0]}"
-    NS(UbiquityIdentityDidChange)Notification:
-        class: NSFileManager
-        name: "Notification#{g[0]}"
     NS(FileProtection.*):
-        class: NSFileManager
         type: NSString
-        name: "#{g[0]}"
     NS(FileSystem.*):
-        class: NSFileManager
         type: NSString
-        name: "#{g[0]}"
     NS(FileType.*):
-        class: NSFileManager
         type: NSString
-        name: "#{g[0]}"
-    NSHTTPCookieManager(.*)Notification:
-        class: NSHTTPCookieStorage
-        name: "Notification#{g[0]}"
     NSHTTPCookie(.*):
-        class: NSHTTPCookie
         type: NSString
-        name: "Key#{g[0]}"
     NSKeyedArchive(RootObjectKey):
-        class: NSKeyedArchiver
         type: NSString
-        name: "Key#{g[0]}"
     NSKeyValue(.*)Key:
-        class: NSKeyValueChangeKey
         type: NSString
-        name: "Key#{g[0]}"
-    NS(.*)KeyValueOperator:
-        class: NSKeyValueOperator
-        name: "#{g[0]}"
     NSLinguistic(TagScheme.*):
-        class: NSLinguisticTagger
         type: NSString
-        name: "#{g[0]}"
     NSLinguisticTag(Word|Punctuation|Whitespace|Other):
-        class: NSLinguisticTagger
         type: NSString
-        name: "TokenType#{g[0]}"
     NSLinguisticTag(.*)Name:
-        class: NSLinguisticTagger
         type: NSString
-        name: "NameType#{g[0]}"
     NSLinguisticTag(.*):
-        class: NSLinguisticTagger
         type: NSString
-        name: "LexicalClass#{g[0]}"
-    NSCurrentLocaleDidChangeNotification:
-        class: NSLocale
-        name: "NotificationCurrentLocaleDidChange"
     NSLocale(.*)Key:
-        class: NSLocale
         type: NSString
-        name: "Key#{g[0]}"
     NSLocale(.*):
-        class: NSLocale
         type: NSString
-        name: "Key#{g[0]}"
     NSMetadataItem(.*)Key:
-        class: NSMetadataItem
         type: NSString
-        name: "Key#{g[0]}"
     NSMetadataUbiquitousItem(.*)Key:
-        class: NSMetadataItem
         type: NSString
-        name: "KeyUbiquitous#{g[0]}"
     NSMetadataUbiquitousItem(DownloadingStatus.*):
-        class: NSMetadataItem
         type: NSString
-        name: "Ubiquitous#{g[0]}"
-    NSMetadataQuery(.*)Notification:
-        class: NSMetadataQuery
-        name: "Notification#{g[0]}"
     NSMetadataQuery(.*)Key:
-        class: NSMetadataQuery
         type: NSString
-        name: "Key#{g[0]}"
     NSMetadataQuery(.*)Scope:
-        class: NSMetadataQuery
         type: NSString
-        name: "Scope#{g[0]}"
     NSMetadataQuery(ResultContentRelevanceAttribute):
-        class: NSMetadataQuery
         type: NSString
-        name: "Key#{g[0]}"
     NSNetServices(ErrorCode):
-        class: NSNetService
         type: NSString
-        name: "#{g[0]}"
-    NSNetServicesErrorDomain:
-        class: NSNetService
-        name: "ErrorDomainNetServices"
-    NSPort(.*)Notification:
-        class: NSPort
-        name: "Notification#{g[0]}"
     NSProgress(.*)Key:
-        class: NSProgress
         type: NSString
-        name: "Key#{g[0]}"
     NSProgress(FileOperationKind.*):
-        class: NSProgress
         type: NSString
-        name: "#{g[0]}"
-    NSProgress(.*):
-        class: NSProgress
-        name: "#{g[0]}"
-    NSDefaultRunLoopMode:
-        class: NSRunLoop
-        name: "ModeDefault"
-    NSRunLoopCommonModes:
-        class: NSRunLoop
-        name: "ModeCommon"
     NSStream(.*)Key:
-        class: NSStream
         type: NSString
-        name: "Key#{g[0]}"
     NSStreamNetworkServiceType:
-        class: NSStream
         type: NSString
-        name: "KeyNetworkServiceType"
     NSStream(SocketSecurityLevel.*):
-        class: NSStream
         type: NSString
-        name: "#{g[0]}"
     NSStream(SOCKSProxyVersion.*):
-        class: NSStream
         type: NSString
-        name: "#{g[0]}"
     NSStream(NetworkServiceType.*):
-        class: NSStream
         type: NSString
-        name: "#{g[0]}"
-    NSStream(.*)ErrorDomain:
-        class: NSStream
-        name: "ErrorDomain#{g[0]}"
-    NS(.*Become.*Threaded)Notification:
-        class: NSThread
-        name: "Notification#{g[0]}"
-    NSThread(WillExit)Notification:
-        class: NSThread
-        name: "NotificationThread#{g[0]}"
     NSTextChecking(.*)Key:
-        class: NSTextCheckingResult
         type: NSString
-        name: "Key#{g[0]}"
-    NS(SystemTimeZoneDidChange)Notification:
-        class: NSTimeZone
-        name: "Notification#{g[0]}"
     NSUbiquitousKeyValueStore(.*)Key:
-        class: NSUbiquitousKeyValueStore
         type: NSString
-        name: "Key#{g[0]}"
-    NSUbiquitousKeyValueStore(.*)Notification:
-        class: NSUbiquitousKeyValueStore
-        name: "Notification#{g[0]}"
-    NSUndoManager(.*)Notification:
-        class: NSUndoManager
-        name: "Notification#{g[0]}"
     NSUndoManager(.*)Key:
-        class: NSUndoManager
         type: NSString
-        name: "Key#{g[0]}"
     NSURLCredentialStorage(RemoveSynchronizableCredentials):
-        class: NSURLCredentialStorage
         type: NSString
-        name: "Key#{g[0]}"
-    NSURLCredentialStorage(.*)Notification:
-        class: NSURLCredentialStorage
-        name: "Notification#{g[0]}"
-    NSURLProtectionSpace(.*)Proxy:
-        class: NSURLProtectionSpace
-        name: "ProxyType#{g[0]}"
-    NSURLProtectionSpace(HTTPS|HTTP|FTP):
-        class: NSURLProtectionSpace
-        name: "ProtocolType#{g[0]}"
-    NSURL(Authentication.*):
-        class: NSURLProtectionSpace
-        name: "#{g[0]}"
     NSURLSession(DownloadTaskResumeData):
-        class: NSURLSession
         type: NSString
-        name: "Key#{g[0]}"
-    NSURLSession(TransferSizeUnknown):
-        class: NSURLSession
-        name: "#{g[0]}"
     NSURLError(BackgroundTaskCancelledReasonKey):
-        class: NSURLSession
         type: NSString
-        name: "Key#{g[0]}"
     NSURL(.*)Key:
-        class: NSURL
         type: NSString
-        name: "Key#{g[0]}"
-    NSURLErrorDomain:
-        class: NSURL
-        readonly: true
-        name: "ErrorDomainURL"
-    NSURL(.*):
-        class: NSURL
-        readonly: true
-        name: "#{g[0]}"
-    NS(.*)Name:
-        class: NSValueTransformer
-        name: "Name#{g[0]}"
-    NSXMLParserErrorDomain:
-        class: NSXMLParser
-        name: "ErrorDomainXMLParser"
-    NSXMLParser(.*):
-        class: NSXMLParser
-        name: "#{g[0]}"
-    NSUserDefaults(.*)Notification:
-        class: NSUserDefaults
-        name: "Notification#{g[0]}"
-    NS(Global|Argument|Registration)Domain:
-        class: NSUserDefaults
-        name: "Domain#{g[0]}"
-    NSFoundation(.*):
-        class: Foundation
-        readonly: true
-        name: "#{g[0]}"
-    # Make sure we don't miss any values if new ones are introduced in a later Foundation
+
     (NS.*):
         class: Foundation
-        name: "Value__#{g[0]}"
+        readonly: true
+        name: "#{g[0]}"
 
 constants:
     # Garbage
@@ -1588,45 +1392,12 @@ constants:
     NSTextCheckingAll.*Types:
         exclude: true
 
-    NSDecimal(.*):
-        class: NSDecimal
-        name: "#{g[0]}"
-
-    NS(TimeIntervalSince1970):
-        class: NSDate
-        name: "#{g[0]}"
-
     # Deprecated
     NSUndefinedDateComponent:
         exclude: true
 
-    NSDateComponentUndefined:
-        class: NSDateComponents
-        name: "Undefined"
-
-    NS(OpenStepUnicodeReservedBase):
-        class: NSCharacterSet
-        name: "#{g[0]}"
-    NSOperationQueue(DefaultMaxConcurrentOperationCount):
-        class: NSOperationQueue
-        name: "#{g[0]}"
-    NS(UndoCloseGroupingRunLoopOrdering):
-        class: NSUndoManager
-        name: "#{g[0]}"
-    NSURLResponse(.*):
-        class: NSURLResponse
-        name: "#{g[0]}"
-    NS(FoundationVersionWithFileManagerResourceForkSupport):
-        class: NSFileManager
-        name: "#{g[0]}"
-    NSNotFound:
-        class: Foundation
-        name: NotFound
-    NSFoundation(.*):
-        class: Foundation
-        name: "#{g[0]}"
     NSWrapCalendarComponents: { exclude: true }
-    # Make sure we don't miss any constants if new ones are introduced in a later Foundation
+
     (NS.*):
         class: Foundation
-        name: "Constant__#{g[0]}"
+        name: "#{g[0]}"

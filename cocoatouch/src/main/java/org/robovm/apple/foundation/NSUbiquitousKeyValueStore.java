@@ -52,22 +52,6 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSUbiquitousKeyValueStoreDidChangeExternallyNotification", optional=true)
-    public static native String NotificationDidChangeExternally();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSUbiquitousKeyValueStoreChangeReasonKey", optional=true)
-    public static native NSString KeyChangeReason();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSUbiquitousKeyValueStoreChangedKeysKey", optional=true)
-    public static native NSString KeyChangedKeys();
-    
     @Method(selector = "objectForKey:")
     public native NSObject objectForKey$(String aKey);
     @Method(selector = "setObject:forKey:")

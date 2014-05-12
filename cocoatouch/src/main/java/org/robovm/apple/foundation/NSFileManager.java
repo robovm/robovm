@@ -40,9 +40,7 @@ import org.robovm.apple.security.*;
 
     /*<ptr>*/public static class NSFileManagerPtr extends Ptr<NSFileManager, NSFileManagerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSFileManager.class); }/*</bind>*/
-    /*<constants>*/
-    public static final int FoundationVersionWithFileManagerResourceForkSupport = 412;
-    /*</constants>*/
+    /*<constants>*//*</constants>*/
     /*<constructors>*/
     public NSFileManager() {}
     protected NSFileManager(SkipInit skipInit) { super(skipInit); }
@@ -52,97 +50,6 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="NSUbiquityIdentityDidChangeNotification", optional=true)
-    public static native String NotificationUbiquityIdentityDidChange();
-    @GlobalValue(symbol="NSFileType", optional=true)
-    public static native NSString KeyType();
-    @GlobalValue(symbol="NSFileTypeDirectory", optional=true)
-    public static native NSString FileTypeDirectory();
-    @GlobalValue(symbol="NSFileTypeRegular", optional=true)
-    public static native NSString FileTypeRegular();
-    @GlobalValue(symbol="NSFileTypeSymbolicLink", optional=true)
-    public static native NSString FileTypeSymbolicLink();
-    @GlobalValue(symbol="NSFileTypeSocket", optional=true)
-    public static native NSString FileTypeSocket();
-    @GlobalValue(symbol="NSFileTypeCharacterSpecial", optional=true)
-    public static native NSString FileTypeCharacterSpecial();
-    @GlobalValue(symbol="NSFileTypeBlockSpecial", optional=true)
-    public static native NSString FileTypeBlockSpecial();
-    @GlobalValue(symbol="NSFileTypeUnknown", optional=true)
-    public static native NSString FileTypeUnknown();
-    @GlobalValue(symbol="NSFileSize", optional=true)
-    public static native NSString KeySize();
-    @GlobalValue(symbol="NSFileModificationDate", optional=true)
-    public static native NSString KeyModificationDate();
-    @GlobalValue(symbol="NSFileReferenceCount", optional=true)
-    public static native NSString KeyReferenceCount();
-    @GlobalValue(symbol="NSFileDeviceIdentifier", optional=true)
-    public static native NSString KeyDeviceIdentifier();
-    @GlobalValue(symbol="NSFileOwnerAccountName", optional=true)
-    public static native NSString KeyOwnerAccountName();
-    @GlobalValue(symbol="NSFileGroupOwnerAccountName", optional=true)
-    public static native NSString KeyGroupOwnerAccountName();
-    @GlobalValue(symbol="NSFilePosixPermissions", optional=true)
-    public static native NSString KeyPosixPermissions();
-    @GlobalValue(symbol="NSFileSystemNumber", optional=true)
-    public static native NSString KeySystemNumber();
-    @GlobalValue(symbol="NSFileSystemFileNumber", optional=true)
-    public static native NSString KeySystemFileNumber();
-    @GlobalValue(symbol="NSFileExtensionHidden", optional=true)
-    public static native NSString KeyExtensionHidden();
-    @GlobalValue(symbol="NSFileHFSCreatorCode", optional=true)
-    public static native NSString KeyHFSCreatorCode();
-    @GlobalValue(symbol="NSFileHFSTypeCode", optional=true)
-    public static native NSString KeyHFSTypeCode();
-    @GlobalValue(symbol="NSFileImmutable", optional=true)
-    public static native NSString KeyImmutable();
-    @GlobalValue(symbol="NSFileAppendOnly", optional=true)
-    public static native NSString KeyAppendOnly();
-    @GlobalValue(symbol="NSFileCreationDate", optional=true)
-    public static native NSString KeyCreationDate();
-    @GlobalValue(symbol="NSFileOwnerAccountID", optional=true)
-    public static native NSString KeyOwnerAccountID();
-    @GlobalValue(symbol="NSFileGroupOwnerAccountID", optional=true)
-    public static native NSString KeyGroupOwnerAccountID();
-    @GlobalValue(symbol="NSFileBusy", optional=true)
-    public static native NSString KeyBusy();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSFileProtectionKey", optional=true)
-    public static native NSString KeyProtection();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSFileProtectionNone", optional=true)
-    public static native NSString FileProtectionNone();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSFileProtectionComplete", optional=true)
-    public static native NSString FileProtectionComplete();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSFileProtectionCompleteUnlessOpen", optional=true)
-    public static native NSString FileProtectionCompleteUnlessOpen();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSFileProtectionCompleteUntilFirstUserAuthentication", optional=true)
-    public static native NSString FileProtectionCompleteUntilFirstUserAuthentication();
-    @GlobalValue(symbol="NSFileSystemSize", optional=true)
-    public static native NSString FileSystemSize();
-    @GlobalValue(symbol="NSFileSystemFreeSize", optional=true)
-    public static native NSString FileSystemFreeSize();
-    @GlobalValue(symbol="NSFileSystemNodes", optional=true)
-    public static native NSString FileSystemNodes();
-    @GlobalValue(symbol="NSFileSystemFreeNodes", optional=true)
-    public static native NSString FileSystemFreeNodes();
-    
     /**
      * @since Available in iOS 4.0 and later.
      */

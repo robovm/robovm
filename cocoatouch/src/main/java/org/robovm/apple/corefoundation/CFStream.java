@@ -44,19 +44,6 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFStreamPropertyDataWritten", optional=true)
-    public static native CFString PropertyDataWritten();
-    @GlobalValue(symbol="kCFStreamPropertyAppendToFile", optional=true)
-    public static native CFString PropertyAppendToFile();
-    @GlobalValue(symbol="kCFStreamPropertyFileCurrentOffset", optional=true)
-    public static native CFString PropertyFileCurrentOffset();
-    @GlobalValue(symbol="kCFStreamPropertySocketNativeHandle", optional=true)
-    public static native CFString PropertySocketNativeHandle();
-    @GlobalValue(symbol="kCFStreamPropertySocketRemoteHostName", optional=true)
-    public static native CFString PropertySocketRemoteHostName();
-    @GlobalValue(symbol="kCFStreamPropertySocketRemotePortNumber", optional=true)
-    public static native CFString PropertySocketRemotePortNumber();
-    
     @Bridge(symbol="CFStreamCreateBoundPair", optional=true)
     public static native void createBoundPair(CFAllocator alloc, CFReadStream.CFReadStreamPtr readStream, CFWriteStream.CFWriteStreamPtr writeStream, @MachineSizedSInt long transferBufferSize);
     @Bridge(symbol="CFStreamCreatePairWithSocket", optional=true)

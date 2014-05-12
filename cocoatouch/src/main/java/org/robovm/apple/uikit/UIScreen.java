@@ -83,27 +83,6 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="UIScreenDidConnectNotification", optional=true)
-    public static native String NotificationScreenDidConnect();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="UIScreenDidDisconnectNotification", optional=true)
-    public static native String NotificationScreenDidDisconnect();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="UIScreenModeDidChangeNotification", optional=true)
-    public static native String NotificationScreenModeDidChange();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="UIScreenBrightnessDidChangeNotification", optional=true)
-    public static native String NotificationScreenBrightnessDidChange();
-    
-    /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "displayLinkWithTarget:selector:")

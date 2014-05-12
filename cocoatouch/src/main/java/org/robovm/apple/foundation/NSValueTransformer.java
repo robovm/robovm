@@ -52,32 +52,6 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSNegateBooleanTransformerName", optional=true)
-    public static native String NameNegateBooleanTransformer();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSIsNilTransformerName", optional=true)
-    public static native String NameIsNilTransformer();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSIsNotNilTransformerName", optional=true)
-    public static native String NameIsNotNilTransformer();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSUnarchiveFromDataTransformerName", optional=true)
-    public static native String NameUnarchiveFromDataTransformer();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSKeyedUnarchiveFromDataTransformerName", optional=true)
-    public static native String NameKeyedUnarchiveFromDataTransformer();
-    
     @Method(selector = "transformedValue:")
     public native NSObject transformedValue$(NSObject value);
     @Method(selector = "reverseTransformedValue:")

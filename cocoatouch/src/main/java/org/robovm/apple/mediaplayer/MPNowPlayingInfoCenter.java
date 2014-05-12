@@ -56,37 +56,6 @@ import org.robovm.apple.coregraphics.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="MPNowPlayingInfoPropertyElapsedPlaybackTime", optional=true)
-    public static native NSString PropertyElapsedPlaybackTime();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="MPNowPlayingInfoPropertyPlaybackRate", optional=true)
-    public static native NSString PropertyPlaybackRate();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="MPNowPlayingInfoPropertyPlaybackQueueIndex", optional=true)
-    public static native NSString PropertyPlaybackQueueIndex();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="MPNowPlayingInfoPropertyPlaybackQueueCount", optional=true)
-    public static native NSString PropertyPlaybackQueueCount();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="MPNowPlayingInfoPropertyChapterNumber", optional=true)
-    public static native NSString PropertyChapterNumber();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="MPNowPlayingInfoPropertyChapterCount", optional=true)
-    public static native NSString PropertyChapterCount();
-    
     @Method(selector = "defaultCenter")
     public static native MPNowPlayingInfoCenter getDefaultCenter();
     /*</methods>*/

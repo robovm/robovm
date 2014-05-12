@@ -56,12 +56,6 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSXMLParserErrorDomain", optional=true)
-    public static native String ErrorDomainXMLParser();
-    
     @Method(selector = "initWithContentsOfURL:")
     protected native @Pointer long initWithContentsOfURL$(NSURL url);
     @Method(selector = "initWithData:")

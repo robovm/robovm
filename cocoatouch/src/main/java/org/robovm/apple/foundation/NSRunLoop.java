@@ -50,14 +50,6 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSDefaultRunLoopMode", optional=true)
-    public static native String ModeDefault();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSRunLoopCommonModes", optional=true)
-    public static native String ModeCommon();
-    
     @Method(selector = "currentMode")
     public native String getCurrentMode();
     @Method(selector = "addTimer:forMode:")

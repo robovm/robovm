@@ -52,47 +52,6 @@ import org.robovm.apple.foundation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="ACFacebookAppIdKey", optional=true)
-    public static native NSString FacebookAppIdKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="ACFacebookPermissionsKey", optional=true)
-    public static native NSString FacebookPermissionsKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="ACFacebookAudienceKey", optional=true)
-    public static native NSString FacebookAudienceKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="ACFacebookAudienceEveryone", optional=true)
-    public static native NSString FacebookAudienceEveryone();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="ACFacebookAudienceFriends", optional=true)
-    public static native NSString FacebookAudienceFriends();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="ACFacebookAudienceOnlyMe", optional=true)
-    public static native NSString FacebookAudienceOnlyMe();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="ACTencentWeiboAppIdKey", optional=true)
-    public static native NSString TencentWeiboAppIdKey();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="ACAccountStoreDidChangeNotification", optional=true)
-    public static native NSString DidChangeNotification();
-    
     @Method(selector = "accountWithIdentifier:")
     public native ACAccount getAccount(String identifier);
     @Method(selector = "accountTypeWithAccountTypeIdentifier:")

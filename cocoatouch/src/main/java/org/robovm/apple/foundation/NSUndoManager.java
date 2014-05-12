@@ -42,9 +42,7 @@ import org.robovm.apple.security.*;
 
     /*<ptr>*/public static class NSUndoManagerPtr extends Ptr<NSUndoManager, NSUndoManagerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSUndoManager.class); }/*</bind>*/
-    /*<constants>*/
-    public static final int UndoCloseGroupingRunLoopOrdering = 350000;
-    /*</constants>*/
+    /*<constants>*//*</constants>*/
     /*<constructors>*/
     public NSUndoManager() {}
     protected NSUndoManager(SkipInit skipInit) { super(skipInit); }
@@ -54,52 +52,6 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSUndoManagerGroupIsDiscardableKey", optional=true)
-    public static native NSString KeyGroupIsDiscardable();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSUndoManagerCheckpointNotification", optional=true)
-    public static native String NotificationCheckpoint();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSUndoManagerWillUndoChangeNotification", optional=true)
-    public static native String NotificationWillUndoChange();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSUndoManagerWillRedoChangeNotification", optional=true)
-    public static native String NotificationWillRedoChange();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSUndoManagerDidUndoChangeNotification", optional=true)
-    public static native String NotificationDidUndoChange();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSUndoManagerDidRedoChangeNotification", optional=true)
-    public static native String NotificationDidRedoChange();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSUndoManagerDidOpenUndoGroupNotification", optional=true)
-    public static native String NotificationDidOpenUndoGroup();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSUndoManagerWillCloseUndoGroupNotification", optional=true)
-    public static native String NotificationWillCloseUndoGroup();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSUndoManagerDidCloseUndoGroupNotification", optional=true)
-    public static native String NotificationDidCloseUndoGroup();
-    
     @Method(selector = "beginUndoGrouping")
     public native void beginUndoGrouping();
     @Method(selector = "endUndoGrouping")

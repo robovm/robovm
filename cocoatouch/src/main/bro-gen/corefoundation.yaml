@@ -635,124 +635,63 @@ functions:
         name: "#{g[0]}"
 
 values:
+
+    kCF(.*CallBacks):
+        name: "#{g[0]}"
+        
+    kCF(.*Notification):
+        name: "#{g[0]}"
+    kCF(.*Key):
+        name: "#{g[0]}"
+
     kCF(AbsoluteTimeIntervalSince.*):
-        class: CFDate
         name: "#{g[0]}"
     kCF(Allocator.*):
-        class: CFAllocator
         name: "#{g[0]}"
-    kCFBoolean(.*):
-        class: CFBoolean
+    kCF(Boolean.*):
         name: "#{g[0]}"
-    kCFBundle(.*)Key:
-        class: CFBundle
-        name: "Key#{g[0]}"
-    kCF(CopyStringBagCallBacks):
-        class: CFBag
+    kCF(DateFormatter.*):
         name: "#{g[0]}"
-    kCF(CopyStringDictionaryKeyCallBacks):
-        class: CFDictionary
-        name: "#{g[0]}"
-    kCF(CopyStringSetCallBacks):
-        class: CFSet
-        name: "#{g[0]}"
-    kCFDateFormatter(.*):
-        class: CFDateFormatter
-        name: "Key#{g[0]}"
-    kCFError(.*)Key:
-        class: CFError
-        name: "Key#{g[0]}"
-    kCFError(.*):
-        class: CFError
+    kCF(Error.*):
         name: "#{g[0]}"
     kCF(.*Calendar):
-        class: CFLocale
-        name: "CalendarIdentifier#{g[0]}"
-    kCFLocale(CurrentLocaleDidChange)Notification:
-        class: CFLocale
-        name: "Notification#{g[0]}"
-    kCFLocale(.*):
-        class: CFLocale
-        name: "Key#{g[0]}"
-    kCFNull:
-        class: CFNull
-        name: "Null"
-    kCFNumberFormatter(.*):
-        class: CFNumberFormatter
-        name: "Key#{g[0]}"
-    kCFNumber(.*):
-        class: CFNumber
         name: "#{g[0]}"
-    kCFPlugIn(.*)Key:
-        class: CFPlugIn
-        name: "Key#{g[0]}"
-    kCFPreferences(.*):
-        class: CFPreferences
-        name: "Key#{g[0]}"
-    kCFRunLoopCommonModes:
-        class: CFRunLoop
-        name: "ModeCommon"
-    kCFRunLoopDefaultMode:
-        class: CFRunLoop
-        name: "ModeDefault"
-    kCFRunLoop(.*):
-        class: CFRunLoop
+    kCF(Locale.*):
         name: "#{g[0]}"
-    kCFSocket(Command|Name|Value|Result|Error)Key:
-        class: CFSocket
-        name: "Key#{g[0]}"
-    kCFSocket(.*)Command:
-        class: CFSocket
-        name: "Command#{g[0]}"
-    kCFStream(.*):
-        class: CFStream
+    kCF(Null):
         name: "#{g[0]}"
-    kCFString(Transform.*):
-        class: CFMutableString
+    kCF(NumberFormatter.*):
         name: "#{g[0]}"
-    kCF(StringBinaryHeapCallBacks):
-        class: CFBinaryHeap
+    kCF(Number.*):
         name: "#{g[0]}"
-    kCFTimeZone(SystemTimeZoneDidChange)Notification:
-        class: CFTimeZone
-        name: "Notification#{g[0]}"
-    kCFURL(.*)Key:
-        class: CFURL
-        name: "Key#{g[0]}"
-    kCFURL(.*):
-        class: CFURL
+    kCF(Preferences.*):
         name: "#{g[0]}"
-    kCFType(ArrayCallBacks):
-        class: CFArray
+    kCF(RunLoop.*):
         name: "#{g[0]}"
-    kCFType(BagCallBacks):
-        class: CFBag
+    kCF(Socket.*Command):
         name: "#{g[0]}"
-    kCFType(DictionaryKeyCallBacks):
-        class: CFDictionary
+    kCF(Stream.*):
         name: "#{g[0]}"
-    kCFType(DictionaryValueCallBacks):
-        class: CFDictionary
+    kCF(StringTransform.*):
         name: "#{g[0]}"
-    kCFType(SetCallBacks):
-        class: CFSet
+    kCF(URL.*):
         name: "#{g[0]}"
-    kCFCoreFoundation(VersionNumber):
+    kCF(CoreFoundationVersionNumber):
         class: CoreFoundation
         name: "#{g[0]}"
         readonly: true
     # Make sure we don't miss any values if new ones are introduced in a later CoreFoundation
     (kCF.*):
         class: CoreFoundation
-        name: "#{g[0]}"
+        name: "Values_#{g[0]}"
 
 
 constants:
-    kCFCoreFoundation(.*):
+    kCF(CoreFoundation.*):
         class: CoreFoundation
         name: "#{g[0]}"
     kCF(StringEncodingInvalidId):
-        class: CFString
+        class: CoreFoundation
         name: "#{g[0]}"
     kCF(NotFound):
         class: CoreFoundation
@@ -760,4 +699,4 @@ constants:
     # Make sure we don't miss any constants if new ones are introduced in a later CoreFoundation
     (kCF.*):
         class: CoreFoundation
-        name: "#{g[0]}"
+        name: "Constants_#{g[0]}"

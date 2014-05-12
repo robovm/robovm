@@ -56,52 +56,6 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSManagedObjectContextWillSaveNotification", optional=true)
-    public static native String NotificationWillSave();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSManagedObjectContextDidSaveNotification", optional=true)
-    public static native String NotificationDidSave();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSManagedObjectContextObjectsDidChangeNotification", optional=true)
-    public static native String NotificationObjectsDidChange();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSInsertedObjectsKey", optional=true)
-    public static native NSString KeyInsertedObjects();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSUpdatedObjectsKey", optional=true)
-    public static native NSString KeyUpdatedObjects();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSDeletedObjectsKey", optional=true)
-    public static native NSString KeyDeletedObjects();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSRefreshedObjectsKey", optional=true)
-    public static native NSString KeyRefreshedObjects();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSInvalidatedObjectsKey", optional=true)
-    public static native NSString KeyInvalidatedObjects();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSInvalidatedAllObjectsKey", optional=true)
-    public static native NSString KeyInvalidatedAllObjects();
-    
-    /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "initWithConcurrencyType:")

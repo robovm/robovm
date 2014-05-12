@@ -672,18 +672,15 @@ values:
         exclude: true
 
     # CGAffineTransform
-    CGAffineTransform(.*):
-        class: CGAffineTransform
+    CG(AffineTransform.*):
         name: "#{g[0]}"
 
     # CGColorSpace
     kCG(ColorSpace.*):
-        class: CGColorSpace
         name: "#{g[0]}"
 
     # CGColor
     kCG(Color.*):
-        class: CGColor
         name: "#{g[0]}"
 
     # CGFont
@@ -691,18 +688,15 @@ values:
         exclude: true
 
     # CGPoint
-    CGPoint(.*):
-        class: CGPoint
+    CG(Point.*):
         name: "#{g[0]}"
 
     # CGRect
-    CGRect(.*):
-        class: CGRect
+    CG(Rect.*):
         name: "#{g[0]}"
 
     # CGSize
-    CGSize(.*):
-        class: CGSize
+    CG(Size.*):
         name: "#{g[0]}"
 
     # Make sure we don't miss any values if new ones are introduced in a later CoreGraphics
@@ -722,10 +716,8 @@ constants:
 
     # CGFont
     kCG(FontIndex.*):
-        class: CGFont
         name: "#{g[0]}"
     kCG(GlyphMax):
-        class: CGFont
         name: "#{g[0]}"
 
     # Make sure we don't miss any constants if new ones are introduced in a later CoreGraphics

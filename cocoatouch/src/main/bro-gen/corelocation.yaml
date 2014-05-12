@@ -161,34 +161,26 @@ functions:
 
 values:
 
-    kCLError(Domain):
-        class: CLError
+    kCL(ErrorDomain):
         name: "#{g[0]}"
         type: NSString
-    kCLError(UserInfoAlternateRegionKey):
-        class: CLError
+    kCL(ErrorUserInfoAlternateRegionKey):
         name: "#{g[0]}"
         type: NSString
 
-    kCLLocation(Accuracy.*):
-        class: CLLocation
+    kCL(LocationAccuracy.*):
         name: "#{g[0]}"
 
-    CLLocation(DistanceMax):
-        class: CLLocationManager
+    CL(LocationDistanceMax):
         name: "#{g[0]}"
     CL(TimeIntervalMax):
-        class: CLLocationManager
         name: "#{g[0]}"
     kCL(DistanceFilterNone):
-        class: CLLocationManager
         name: "#{g[0]}"
     kCL(HeadingFilterNone):
-        class: CLLocationManager
         name: "#{g[0]}"
 
-    kCLLocationCoordinate2D(Invalid):
-        class: CLLocationCoordinate2D
+    kCL(LocationCoordinate2DInvalid):
         name: "#{g[0]}"
 
     # Make sure we don't miss any values if new ones are introduced in a later version

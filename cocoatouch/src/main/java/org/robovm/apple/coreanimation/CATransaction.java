@@ -51,27 +51,6 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCATransactionAnimationDuration", optional=true)
-    public static native String KeyAnimationDuration();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCATransactionDisableActions", optional=true)
-    public static native String KeyDisableActions();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kCATransactionAnimationTimingFunction", optional=true)
-    public static native String KeyAnimationTimingFunction();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCATransactionCompletionBlock", optional=true)
-    public static native String KeyCompletionBlock();
-    
     @Method(selector = "begin")
     public static native void begin();
     @Method(selector = "commit")

@@ -62,13 +62,6 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCIContextOutputColorSpace", optional=true)
-    public static native NSString KeyOutputColorSpace();
-    @GlobalValue(symbol="kCIContextWorkingColorSpace", optional=true)
-    public static native NSString KeyWorkingColorSpace();
-    @GlobalValue(symbol="kCIContextUseSoftwareRenderer", optional=true)
-    public static native NSString KeyUseSoftwareRenderer();
-    
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 6.0.

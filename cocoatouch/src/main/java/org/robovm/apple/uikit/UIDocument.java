@@ -77,12 +77,6 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="UIDocumentStateChangedNotification", optional=true)
-    public static native String NotificationDocumentStateChanged();
-    
     @Method(selector = "initWithFileURL:")
     protected native @Pointer long initWithFileURL$(NSURL url);
     @Method(selector = "openWithCompletionHandler:")

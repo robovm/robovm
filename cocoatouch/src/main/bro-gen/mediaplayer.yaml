@@ -281,59 +281,21 @@ functions:
 
 values:
 
-    MPMediaItem(Property.*):
-        class: MPMediaItem
+    MP(.*Property.*):
         name: "#{g[0]}"
         type: NSString
 
-    MPMediaPlaylist(Property.*):
-        class: MPMediaPlaylist
+    MP(.*Notification):
         name: "#{g[0]}"
         type: NSString
 
-    MPMoviePlayer(.*)Notification:
-        class: MPMoviePlayerController
-        name: "Notification#{g[0]}"
-
-    MPMoviePlayer(.*Key):
-        class: MPMoviePlayerController
+    MP(.*Key):
         name: "#{g[0]}"
         type: NSString
 
-    MPMoviePlayer(TimedMetadataKey.*):
-        class: MPMoviePlayerController
+    MP(MoviePlayerTimedMetadataKey.*):
         name: "#{g[0]}"
         type: NSString
-
-    MPMovie(.*)Notification:
-        class: MPMoviePlayerController
-        name: "Notification#{g[0]}"
-
-    MPNowPlayingInfo(Property.*):
-        class: MPNowPlayingInfoCenter
-        name: "#{g[0]}"
-        type: NSString
-
-    MPMusicPlayerController(.*)Notification:
-        class: MPMusicPlayerController
-        name: "Notification#{g[0]}"
-
-    MPMediaEntity(Property.*):
-        class: MPMediaEntity
-        name: "#{g[0]}"
-        type: NSString
-
-    MPMediaLibrary(.*)Notification:
-        class: MPMediaLibrary
-        name: "Notification#{g[0]}"
-
-    MPMediaPlayback(.*)Notification:
-        class: MPMediaPlaybackGlobals
-        name: "Notification#{g[0]}"
-
-    MPVolumeView(.*)Notification:
-        class: MPVolumeView
-        name: "Notification#{g[0]}"
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?MP.*):

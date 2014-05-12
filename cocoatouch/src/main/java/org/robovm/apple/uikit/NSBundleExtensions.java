@@ -52,19 +52,6 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="UINibExternalObjects", optional=true)
-    public static native NSString OptionKeyExternalObjects();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="UINibProxiedObjectsKey", optional=true)
-    public static native NSString OptionKeyProxiedObjects();
-    
     @Method(selector = "loadNibNamed:owner:options:")
     public static native NSArray<?> loadNib(NSBundle thiz, String name, NSObject owner, NSDictionary<NSString, ?> options);
     /*</methods>*/

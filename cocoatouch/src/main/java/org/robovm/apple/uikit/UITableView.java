@@ -154,19 +154,6 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="UITableViewIndexSearch", optional=true)
-    public static native NSString SectionIndexSearch();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="UITableViewAutomaticDimension", optional=true)
-    public static native @MachineSizedFloat double AutomaticDimension();
-    @GlobalValue(symbol="UITableViewSelectionDidChangeNotification", optional=true)
-    public static native String NotificationSelectionDidChange();
-    
     @Method(selector = "initWithFrame:style:")
     protected native @Pointer long initWithFrame$style$(@ByVal CGRect frame, UITableViewStyle style);
     @Method(selector = "reloadData")

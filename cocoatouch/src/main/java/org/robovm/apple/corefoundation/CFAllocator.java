@@ -45,19 +45,6 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFAllocatorDefault", optional=true)
-    public static native CFAllocator AllocatorDefault();
-    @GlobalValue(symbol="kCFAllocatorSystemDefault", optional=true)
-    public static native CFAllocator AllocatorSystemDefault();
-    @GlobalValue(symbol="kCFAllocatorMalloc", optional=true)
-    public static native CFAllocator AllocatorMalloc();
-    @GlobalValue(symbol="kCFAllocatorMallocZone", optional=true)
-    public static native CFAllocator AllocatorMallocZone();
-    @GlobalValue(symbol="kCFAllocatorNull", optional=true)
-    public static native CFAllocator AllocatorNull();
-    @GlobalValue(symbol="kCFAllocatorUseContext", optional=true)
-    public static native CFAllocator AllocatorUseContext();
-    
     @Bridge(symbol="CFAllocatorGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFAllocatorSetDefault", optional=true)

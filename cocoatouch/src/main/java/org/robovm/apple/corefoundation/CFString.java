@@ -81,9 +81,7 @@ import org.robovm.apple.dispatch.*;
     }
     
     /*<bind>*/static { Bro.bind(CFString.class); }/*</bind>*/
-    /*<constants>*/
-    public static final float StringEncodingInvalidId = 0xffffffff;
-    /*</constants>*/
+    /*<constants>*//*</constants>*/
     
     private static String EMPTY_STRING = "";
     private static final long STRING_VALUE_OFFSET;    

@@ -85,9 +85,6 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="UINavigationControllerHideShowBarDuration", optional=true)
-    public static native @MachineSizedFloat double HideShowBarDuration();
-    
     /**
      * @since Available in iOS 5.0 and later.
      */

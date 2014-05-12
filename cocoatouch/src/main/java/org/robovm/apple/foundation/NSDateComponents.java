@@ -40,9 +40,7 @@ import org.robovm.apple.security.*;
 
     /*<ptr>*/public static class NSDateComponentsPtr extends Ptr<NSDateComponents, NSDateComponentsPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSDateComponents.class); }/*</bind>*/
-    /*<constants>*/
-    public static final int Undefined = 2147483647;
-    /*</constants>*/
+    /*<constants>*//*</constants>*/
     /*<constructors>*/
     public NSDateComponents() {}
     protected NSDateComponents(SkipInit skipInit) { super(skipInit); }

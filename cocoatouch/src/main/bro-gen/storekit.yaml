@@ -154,23 +154,19 @@ functions:
         name: "Function__#{g[0]}"
 
 values:
-    SKReceipt(Property.*):
-        class: SKReceiptRefreshRequest
+    SK(ReceiptProperty.*):
         name: "#{g[0]}"
         type: NSString
         
-    SKError(Domain):
-        class: SKError
+    SK(ErrorDomain):
         name: "#{g[0]}"
         type: NSString
         
-    SKDownload(TimeRemainingUnknown):
-        class: SKDownload
+    SK(DownloadTimeRemainingUnknown):
         name: "#{g[0]}"
         readonly: true
         
-    SKStoreProduct(Parameter.*):
-        class: SKStoreProductViewController
+    SK(StoreProductParameter.*):
         name: "#{g[0]}"
         type: NSString
 

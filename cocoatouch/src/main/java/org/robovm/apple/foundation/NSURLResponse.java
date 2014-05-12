@@ -40,9 +40,7 @@ import org.robovm.apple.security.*;
 
     /*<ptr>*/public static class NSURLResponsePtr extends Ptr<NSURLResponse, NSURLResponsePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSURLResponse.class); }/*</bind>*/
-    /*<constants>*/
-    public static final int UnknownLength = -1;
-    /*</constants>*/
+    /*<constants>*//*</constants>*/
     /*<constructors>*/
     public NSURLResponse() {}
     protected NSURLResponse(SkipInit skipInit) { super(skipInit); }

@@ -53,32 +53,6 @@ import org.robovm.apple.foundation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSErrorMergePolicy", optional=true)
-    public static native NSObject PolicyError();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSMergeByPropertyStoreTrumpMergePolicy", optional=true)
-    public static native NSObject PolicyMergeByPropertyStoreTrump();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSMergeByPropertyObjectTrumpMergePolicy", optional=true)
-    public static native NSObject PolicyMergeByPropertyObjectTrump();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSOverwriteMergePolicy", optional=true)
-    public static native NSObject PolicyOverwrite();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSRollbackMergePolicy", optional=true)
-    public static native NSObject PolicyRollback();
-    
     @Method(selector = "initWithMergeType:")
     protected native @Pointer long initWithMergeType$(NSMergePolicyType ty);
     @Method(selector = "resolveConflicts:error:")

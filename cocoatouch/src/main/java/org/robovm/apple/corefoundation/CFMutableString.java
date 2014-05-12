@@ -44,42 +44,6 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFStringTransformStripCombiningMarks", optional=true)
-    public static native CFString TransformStripCombiningMarks();
-    @GlobalValue(symbol="kCFStringTransformToLatin", optional=true)
-    public static native CFString TransformToLatin();
-    @GlobalValue(symbol="kCFStringTransformFullwidthHalfwidth", optional=true)
-    public static native CFString TransformFullwidthHalfwidth();
-    @GlobalValue(symbol="kCFStringTransformLatinKatakana", optional=true)
-    public static native CFString TransformLatinKatakana();
-    @GlobalValue(symbol="kCFStringTransformLatinHiragana", optional=true)
-    public static native CFString TransformLatinHiragana();
-    @GlobalValue(symbol="kCFStringTransformHiraganaKatakana", optional=true)
-    public static native CFString TransformHiraganaKatakana();
-    @GlobalValue(symbol="kCFStringTransformMandarinLatin", optional=true)
-    public static native CFString TransformMandarinLatin();
-    @GlobalValue(symbol="kCFStringTransformLatinHangul", optional=true)
-    public static native CFString TransformLatinHangul();
-    @GlobalValue(symbol="kCFStringTransformLatinArabic", optional=true)
-    public static native CFString TransformLatinArabic();
-    @GlobalValue(symbol="kCFStringTransformLatinHebrew", optional=true)
-    public static native CFString TransformLatinHebrew();
-    @GlobalValue(symbol="kCFStringTransformLatinThai", optional=true)
-    public static native CFString TransformLatinThai();
-    @GlobalValue(symbol="kCFStringTransformLatinCyrillic", optional=true)
-    public static native CFString TransformLatinCyrillic();
-    @GlobalValue(symbol="kCFStringTransformLatinGreek", optional=true)
-    public static native CFString TransformLatinGreek();
-    @GlobalValue(symbol="kCFStringTransformToXMLHex", optional=true)
-    public static native CFString TransformToXMLHex();
-    @GlobalValue(symbol="kCFStringTransformToUnicodeName", optional=true)
-    public static native CFString TransformToUnicodeName();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCFStringTransformStripDiacritics", optional=true)
-    public static native CFString TransformStripDiacritics();
-    
     @Bridge(symbol="CFStringCreateMutable", optional=true)
     public static native CFMutableString createMutable(CFAllocator alloc, @MachineSizedSInt long maxLength);
     @Bridge(symbol="CFStringCreateMutableCopy", optional=true)

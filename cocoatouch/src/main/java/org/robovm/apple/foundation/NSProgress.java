@@ -98,62 +98,6 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressEstimatedTimeRemainingKey", optional=true)
-    public static native NSString KeyEstimatedTimeRemaining();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressThroughputKey", optional=true)
-    public static native NSString KeyThroughput();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressKindFile", optional=true)
-    public static native String KindFile();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressFileOperationKindKey", optional=true)
-    public static native NSString KeyFileOperationKind();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressFileOperationKindDownloading", optional=true)
-    public static native NSString FileOperationKindDownloading();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressFileOperationKindDecompressingAfterDownloading", optional=true)
-    public static native NSString FileOperationKindDecompressingAfterDownloading();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressFileOperationKindReceiving", optional=true)
-    public static native NSString FileOperationKindReceiving();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressFileOperationKindCopying", optional=true)
-    public static native NSString FileOperationKindCopying();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressFileURLKey", optional=true)
-    public static native NSString KeyFileURL();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressFileTotalCountKey", optional=true)
-    public static native NSString KeyFileTotalCount();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressFileCompletedCountKey", optional=true)
-    public static native NSString KeyFileCompletedCount();
-    
     @Method(selector = "initWithParent:userInfo:")
     protected native @Pointer long initWithParent$userInfo$(NSProgress parentProgressOrNil, NSDictionary<?, ?> userInfoOrNil);
     @Method(selector = "becomeCurrentWithPendingUnitCount:")

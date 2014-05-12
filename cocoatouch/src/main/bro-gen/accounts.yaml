@@ -76,35 +76,24 @@ functions:
         name: "Function__#{g[0]}"
 
 values:
-    ACError(Domain):
-        class: ACError
-        name: "#{g[0]}"
+    AC(ErrorDomain):
         type: NSString
-        
-    ACAccountType(Identifier.*):
-        class: ACAccountType
         name: "#{g[0]}"
+    AC(AccountTypeIdentifier.*):
         type: NSString
-        
+        name: "#{g[0]}"
     AC(Facebook.*):
-        class: ACAccountStore
-        name: "#{g[0]}"
         type: NSString
-        
+        name: "#{g[0]}"
     AC(LinkedIn.*):
-        class: ACAccountStore
-        name: "#{g[0]}"
         type: NSString
-        
+        name: "#{g[0]}"
     AC(TencentWeibo.*):
-        class: ACAccountStore
-        name: "#{g[0]}"
         type: NSString
-    
-    ACAccountStore(.*Notification):
-        class: ACAccountStore
         name: "#{g[0]}"
+    AC(.*Notification):
         type: NSString
+        name: "#{g[0]}"
    
     # Make sure we don't miss any values if new ones are introduced in a later version
     (AC.*):

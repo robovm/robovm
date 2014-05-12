@@ -45,21 +45,6 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFSocketCommandKey", optional=true)
-    public static native CFString KeyCommand();
-    @GlobalValue(symbol="kCFSocketNameKey", optional=true)
-    public static native CFString KeyName();
-    @GlobalValue(symbol="kCFSocketValueKey", optional=true)
-    public static native CFString KeyValue();
-    @GlobalValue(symbol="kCFSocketResultKey", optional=true)
-    public static native CFString KeyResult();
-    @GlobalValue(symbol="kCFSocketErrorKey", optional=true)
-    public static native CFString KeyError();
-    @GlobalValue(symbol="kCFSocketRegisterCommand", optional=true)
-    public static native CFString CommandRegister();
-    @GlobalValue(symbol="kCFSocketRetrieveCommand", optional=true)
-    public static native CFString CommandRetrieve();
-    
     @Bridge(symbol="CFSocketGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFSocketCreate", optional=true)

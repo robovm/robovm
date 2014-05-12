@@ -63,49 +63,6 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="kCIFormatARGB8", optional=true)
-    public static native int FormatARGB8();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCIFormatBGRA8", optional=true)
-    public static native int FormatBGRA8();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCIFormatRGBA8", optional=true)
-    public static native int FormatRGBA8();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="kCIFormatRGBAh", optional=true)
-    public static native int FormatRGBAh();
-    @GlobalValue(symbol="kCIImageColorSpace", optional=true)
-    public static native NSString KeyColorSpace();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCIImageProperties", optional=true)
-    public static native NSString KeyProperties();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCIImageAutoAdjustEnhance", optional=true)
-    public static native NSString AutoAdjustEnhance();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCIImageAutoAdjustRedEye", optional=true)
-    public static native NSString AutoAdjustRedEye();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCIImageAutoAdjustFeatures", optional=true)
-    public static native NSString AutoAdjustFeatures();
-    
     @Method(selector = "initWithCGImage:")
     protected native @Pointer long initWithCGImage$(CGImage image);
     @Method(selector = "initWithCGImage:options:")

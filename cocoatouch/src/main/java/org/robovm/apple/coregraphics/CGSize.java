@@ -69,12 +69,6 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @GlobalValue(symbol="CGSizeZero", optional=true)
-    public static native @ByVal CGSize Zero();
-    
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
     @Bridge(symbol="CGSizeEqualToSize", optional=true)
     protected static native boolean equalToSize(@ByVal CGSize size1, @ByVal CGSize size2);
     /**

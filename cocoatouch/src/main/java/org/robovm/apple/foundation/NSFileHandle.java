@@ -59,26 +59,6 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSFileHandleReadCompletionNotification", optional=true)
-    public static native String NotificationReadCompletion();
-    @GlobalValue(symbol="NSFileHandleReadToEndOfFileCompletionNotification", optional=true)
-    public static native String NotificationReadToEndOfFileCompletion();
-    @GlobalValue(symbol="NSFileHandleConnectionAcceptedNotification", optional=true)
-    public static native String NotificationConnectionAccepted();
-    @GlobalValue(symbol="NSFileHandleDataAvailableNotification", optional=true)
-    public static native String NotificationDataAvailable();
-    @GlobalValue(symbol="NSFileHandleNotificationDataItem", optional=true)
-    public static native String NotificationDataItem();
-    @GlobalValue(symbol="NSFileHandleNotificationFileHandleItem", optional=true)
-    public static native String NotificationFileHandleItem();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 5.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="NSFileHandleNotificationMonitorModes", optional=true)
-    public static native String NotificationMonitorModes();
-    
     @Method(selector = "availableData")
     public native NSData availableData();
     @Method(selector = "readDataToEndOfFile")

@@ -44,19 +44,6 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFPreferencesAnyApplication", optional=true)
-    public static native CFString KeyAnyApplication();
-    @GlobalValue(symbol="kCFPreferencesCurrentApplication", optional=true)
-    public static native CFString KeyCurrentApplication();
-    @GlobalValue(symbol="kCFPreferencesAnyHost", optional=true)
-    public static native CFString KeyAnyHost();
-    @GlobalValue(symbol="kCFPreferencesCurrentHost", optional=true)
-    public static native CFString KeyCurrentHost();
-    @GlobalValue(symbol="kCFPreferencesAnyUser", optional=true)
-    public static native CFString KeyAnyUser();
-    @GlobalValue(symbol="kCFPreferencesCurrentUser", optional=true)
-    public static native CFString KeyCurrentUser();
-    
     @Bridge(symbol="CFPreferencesCopyAppValue", optional=true)
     public static native CFType copyAppValue(CFString key, CFString applicationID);
     @Bridge(symbol="CFPreferencesGetAppBooleanValue", optional=true)

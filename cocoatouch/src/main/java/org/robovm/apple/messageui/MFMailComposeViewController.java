@@ -56,12 +56,6 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 3.0 and later.
      */
-    @GlobalValue(symbol="MFMailComposeErrorDomain", optional=true)
-    public static native NSString ErrorDomain();
-    
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     @Method(selector = "setSubject:")
     public native void setSubject(String subject);
     /**

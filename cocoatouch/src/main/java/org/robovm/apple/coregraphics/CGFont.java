@@ -39,11 +39,7 @@ import org.robovm.apple.foundation.*;
 
     /*<ptr>*/public static class CGFontPtr extends Ptr<CGFont, CGFontPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CGFont.class); }/*</bind>*/
-    /*<constants>*/
-    public static final int FontIndexMax = 65534;
-    public static final int FontIndexInvalid = 65535;
-    public static final int GlyphMax = 65534;
-    /*</constants>*/
+    /*<constants>*//*</constants>*/
     /*<constructors>*/
     protected CGFont() {}
     /*</constructors>*/

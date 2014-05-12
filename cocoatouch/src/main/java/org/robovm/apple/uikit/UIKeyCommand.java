@@ -58,32 +58,6 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIKeyInputUpArrow", optional=true)
-    public static native String KeyInputUpArrow();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIKeyInputDownArrow", optional=true)
-    public static native String KeyInputDownArrow();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIKeyInputLeftArrow", optional=true)
-    public static native String KeyInputLeftArrow();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIKeyInputRightArrow", optional=true)
-    public static native String KeyInputRightArrow();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIKeyInputEscape", optional=true)
-    public static native String KeyInputEscape();
-    
     @Method(selector = "keyCommandWithInput:modifierFlags:action:")
     public static native UIKeyCommand create(String input, UIKeyModifierFlags modifierFlags, Selector action);
     /*</methods>*/

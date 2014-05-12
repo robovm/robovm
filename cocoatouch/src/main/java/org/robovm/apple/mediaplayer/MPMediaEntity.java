@@ -53,12 +53,6 @@ import org.robovm.apple.coregraphics.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 4.2 and later.
-     */
-    @GlobalValue(symbol="MPMediaEntityPropertyPersistentID", optional=true)
-    public static native NSString PropertyPersistentID();
-    
     @Method(selector = "valueForProperty:")
     public native NSObject getValue(String property);
     /**

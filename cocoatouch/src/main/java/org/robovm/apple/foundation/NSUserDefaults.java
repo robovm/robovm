@@ -50,15 +50,6 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSGlobalDomain", optional=true)
-    public static native String DomainGlobal();
-    @GlobalValue(symbol="NSArgumentDomain", optional=true)
-    public static native String DomainArgument();
-    @GlobalValue(symbol="NSRegistrationDomain", optional=true)
-    public static native String DomainRegistration();
-    @GlobalValue(symbol="NSUserDefaultsDidChangeNotification", optional=true)
-    public static native String NotificationDidChange();
-    
     @Method(selector = "objectForKey:")
     public native NSObject objectForKey$(String defaultName);
     @Method(selector = "setObject:forKey:")

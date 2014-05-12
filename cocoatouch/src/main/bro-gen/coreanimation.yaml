@@ -80,7 +80,7 @@ functions:
         name: "#{g[0]}"
 
     CA(CurrentMediaTime):
-        class: CoreAnimation
+        class: CAAnimation
         name: "get#{g[0]}"
 
     # Make sure we don't miss any functions if new ones are introduced in a later version
@@ -90,89 +90,9 @@ functions:
 
 values: 
 
-    kCAEmitterLayer(Points|Outline|Surface|Volume):
-        class: CAEmitterLayer
-        name: "Mode#{g[0]}"
-    kCAEmitterLayer(Point|Line|Rectangle|Cuboid|Circle|Sphere):
-        class: CAEmitterLayer
-        name: "Shape#{g[0]}"
-    kCAEmitterLayer(Unordered|OldestFirst|OldestLast|BackToFront|Additive):
-        class: CAEmitterLayer
-        name: "Render#{g[0]}"
-
-    kCAFillMode(.*):
-        class: CAFillMode
-        name: "#{g[0]}"
-
-    kCAGradientLayer(Axial):
-        class: CAGradientLayer
-        name: "Type#{g[0]}"
-
-    kCA(Gravity.*):
-        class: CALayer
-        name: "#{g[0]}"
-    kCA(OnOrderIn|OnOrderOut|Transition):
-        class: CALayer
-        name: "Action#{g[0]}"
-    kCA(Filter.*):
-        class: CALayer
-        name: "#{g[0]}"
-
-    kCAAnimationRotate(.*):
-        class: CAKeyframeAnimation
-        name: "Rotation#{g[0]}"
-    kCAAnimation(Linear|Discrete|Paced|Cubic|CubicPaced):
-        class: CAKeyframeAnimation
-        name: "Calculation#{g[0]}"
-
-    kCAMediaTiming(Function.*):
-        class: CAMediaTimingFunction
-        name: "#{g[0]}"
-
-    kCAScroll(None|Vertically|Horizontally|Both):
-        class: CAScrollLayer
-        name: "Scroll#{g[0]}"
-
-    kCA(FillRule.*):
-        class: CAShapeLayer
-        name: "#{g[0]}"
-    kCA(LineJoin.*):
-        class: CAShapeLayer
-        name: "#{g[0]}"
-    kCA(LineCap.*):
-        class: CAShapeLayer
-        name: "#{g[0]}"
-
-    kCA(Alignment.*):
-        class: CATextLayer
-        name: "#{g[0]}"
-    kCA(Truncation.*):
-        class: CATextLayer
-        name: "#{g[0]}"
-
-    kCATransaction(.*):
-        class: CATransaction
-        name: "Key#{g[0]}"
-
-    CATransform3D(Identity):
-        class: CATransform3D
-        name: "#{g[0]}"
-
-    kCATransition(Fade|MoveIn|Push|Reveal):
-        class: CATransition
-        name: "Type#{g[0]}"
-    kCATransition(From.*):
-        class: CATransition
-        name: "Subtype#{g[0]}"
-
-    kCAValue(Function.*):
-        class: CAValueFunction
-        name: "#{g[0]}"
-
-    # Make sure we don't miss any values if new ones are introduced in a later version
-    (k?CA.*):
+    k?CA(.*):
         class: CoreAnimation
-        name: "Value__#{g[0]}"
+        name: "#{g[0]}"
 
 constants:
 

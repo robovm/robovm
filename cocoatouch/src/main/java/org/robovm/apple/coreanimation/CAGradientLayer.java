@@ -70,12 +70,6 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kCAGradientLayerAxial", optional=true)
-    public static native String TypeAxial();
-    
     
     /*</methods>*/
 }

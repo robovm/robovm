@@ -60,11 +60,6 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSBundleDidLoadNotification", optional=true)
-    public static native String NotificationDidLoad();
-    @GlobalValue(symbol="NSLoadedClasses", optional=true)
-    public static native NSString KeyLoadedClasses();
-    
     @Method(selector = "initWithPath:")
     protected native @Pointer long initWithPath$(String path);
     /**

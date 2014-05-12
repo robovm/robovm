@@ -68,17 +68,6 @@ import org.robovm.apple.coregraphics.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="MPVolumeViewWirelessRoutesAvailableDidChangeNotification", optional=true)
-    public static native String NotificationWirelessRoutesAvailableDidChange();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="MPVolumeViewWirelessRouteActiveDidChangeNotification", optional=true)
-    public static native String NotificationWirelessRouteActiveDidChange();
-    
     @Method(selector = "sizeThatFits:")
     public native @ByVal CGSize calculateSizeThatFits(@ByVal CGSize size);
     /**

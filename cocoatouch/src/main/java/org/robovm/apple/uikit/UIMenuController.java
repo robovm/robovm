@@ -68,17 +68,6 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="UIMenuControllerWillShowMenuNotification", optional=true)
-    public static native String NotificationMenuControllerWillShowMenu();
-    @GlobalValue(symbol="UIMenuControllerDidShowMenuNotification", optional=true)
-    public static native String NotificationMenuControllerDidShowMenu();
-    @GlobalValue(symbol="UIMenuControllerWillHideMenuNotification", optional=true)
-    public static native String NotificationMenuControllerWillHideMenu();
-    @GlobalValue(symbol="UIMenuControllerDidHideMenuNotification", optional=true)
-    public static native String NotificationMenuControllerDidHideMenu();
-    @GlobalValue(symbol="UIMenuControllerMenuFrameDidChangeNotification", optional=true)
-    public static native String NotificationMenuControllerMenuFrameDidChange();
-    
     @Method(selector = "setMenuVisible:animated:")
     public native void setMenuVisible(boolean menuVisible, boolean animated);
     @Method(selector = "setTargetRect:inView:")

@@ -44,17 +44,6 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFPlugInDynamicRegistrationKey", optional=true)
-    public static native CFString KeyDynamicRegistration();
-    @GlobalValue(symbol="kCFPlugInDynamicRegisterFunctionKey", optional=true)
-    public static native CFString KeyDynamicRegisterFunction();
-    @GlobalValue(symbol="kCFPlugInUnloadFunctionKey", optional=true)
-    public static native CFString KeyUnloadFunction();
-    @GlobalValue(symbol="kCFPlugInFactoriesKey", optional=true)
-    public static native CFString KeyFactories();
-    @GlobalValue(symbol="kCFPlugInTypesKey", optional=true)
-    public static native CFString KeyTypes();
-    
     @Bridge(symbol="CFPlugInGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFPlugInCreate", optional=true)

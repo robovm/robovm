@@ -3477,293 +3477,157 @@ functions:
 
 values: 
 
-    NS(Font|ParagraphStyle|ForegroundColor|BackgroundColor|Ligature)AttributeName:
-        class: NSAttributedStringExtensions
-        name: "Attribute#{g[0]}"
+    UI(.*Key):
+        name: "#{g[0]}"
         type: NSString
-    NS(Kern|StrikethroughStyle|UnderlineStyle|StrokeColor|StrokeWidth)AttributeName:
-        class: NSAttributedStringExtensions
-        name: "Attribute#{g[0]}"
+    NS(.*Notification):
+        name: "#{g[0]}"
         type: NSString
-    NS(Shadow|TextEffect|Attachment|Link|BaselineOffset|UnderlineColor)AttributeName:
-        class: NSAttributedStringExtensions
-        name: "Attribute#{g[0]}"
+    UI(.*Notification):
+        name: "#{g[0]}"
         type: NSString
-    NS(StrikethroughColor|Obliqueness|Expansion|WritingDirection|VerticalGlyphForm)AttributeName:
-        class: NSAttributedStringExtensions
-        name: "Attribute#{g[0]}"
+
+    NS((Font|ParagraphStyle|ForegroundColor|BackgroundColor|Ligature)AttributeName):
+        name: "#{g[0]}"
         type: NSString
-    NS(.*)DocumentAttribute:
-        class: NSAttributedStringExtensions
-        name: "DocumentAttribute#{g[0]}"
+    NS((Kern|StrikethroughStyle|UnderlineStyle|StrokeColor|StrokeWidth)AttributeName):
+        name: "#{g[0]}"
         type: NSString
-    NS(TextLayoutSections)Attribute:
-        class: NSAttributedStringExtensions
-        name: "DocumentAttribute#{g[0]}"
+    NS((Shadow|TextEffect|Attachment|Link|BaselineOffset|UnderlineColor)AttributeName):
+        name: "#{g[0]}"
+        type: NSString
+    NS((StrikethroughColor|Obliqueness|Expansion|WritingDirection|VerticalGlyphForm)AttributeName):
+        name: "#{g[0]}"
+        type: NSString
+    NS(.*DocumentAttribute):
+        name: "#{g[0]}"
+        type: NSString
+    NS(TextLayoutSectionsAttribute):
+        name: "#{g[0]}"
         type: NSString
     NS(TextLayoutSection.*):
-        class: NSAttributedStringExtensions
         name: "#{g[0]}"
         type: NSString
     NS(TextEffect.*):
-        class: NSAttributedStringExtensions
         name: "#{g[0]}"
         type: NSString
-    NS(.*)DocumentType:
-        class: NSAttributedStringExtensions
-        name: "DocumentType#{g[0]}"
-        type: NSString
-
-    UINib(.*)Key:
-        class: NSBundleExtensions
-        name: "OptionKey#{g[0]}"
-        type: NSString
-    UINib(ExternalObjects):
-        class: NSBundleExtensions
-        name: "OptionKey#{g[0]}"
-        type: NSString
-
-    UIText(Attribute.*):
-        class: NSStringExtensions
+    NS(.*DocumentType):
         name: "#{g[0]}"
         type: NSString
 
-    NS(TextStorage.*)Notification:
-        class: NSTextStorage
-        name: "Notification#{g[0]}"
-
-    NS(TabColumnTerminators)AttributeName:
-        class: NSTextTab
-        name: "Attribute#{g[0]}"
+    UI(NibExternalObjects):
+        name: "#{g[0]}"
         type: NSString
 
-    UIAccessibility(.*)Notification:
-        class: UIAccessibilityGlobals
-        name: "Notification#{g[0]}"
-        readonly: true
-    UIAccessibility(VoiceOverStatusChanged):
-        class: UIAccessibilityGlobals
-        name: "Notification#{g[0]}"
-        readonly: true
-    UIAccessibility(Speech.*):
-        class: UIAccessibilityGlobals
+    UI(TextAttribute.*):
+        name: "#{g[0]}"
+        type: NSString
+
+    NS(TabColumnTerminatorsAttributeName):
+        name: "#{g[0]}"
+        type: NSString
+
+    UI(AccessibilityVoiceOverStatusChanged):
         name: "#{g[0]}"
         readonly: true
         type: NSString
-    UIAccessibility(Trait.*):
-        class: UIAccessibilityGlobals
+    UI(AccessibilitySpeech.*):
         name: "#{g[0]}"
         readonly: true
-    UIAccessibility(AnnouncementKey.*):
-        class: UIAccessibilityGlobals
+        type: NSString
+    UI(AccessibilityTrait.*):
+        name: "#{g[0]}"
+        readonly: true
+    UI(AccessibilityAnnouncementKey.*):
         name: "#{g[0]}"
         readonly: true
         type: NSString
 
-    UIActivity(Type.*):
-        class: UIActivity
+    UI(ActivityType.*):
         name: "#{g[0]}"
 
-    UI(ApplicationDid.*)Notification:
-        class: UIApplication
-        name: "Notification#{g[0]}"
-    UI(ApplicationWill.*)Notification:
-        class: UIApplication
-        name: "Notification#{g[0]}"
-    UIApplication(.*)Notification:
-        class: UIApplication
-        name: "Notification#{g[0]}"
-    UI(ContentSizeCategoryDidChange)Notification:
-        class: UIApplication
-        name: "Notification#{g[0]}"
-    UIApplication(ProtectedData.*):
-        class: UIApplication
-        name: "Notification#{g[0]}"
-    UIApplication(LaunchOptions.*):
-        class: UIApplication
+    UI(ApplicationProtectedData.*):
         name: "#{g[0]}"
         type: NSString
-    UIApplication(BackgroundFetchInterval.*):
-        class: UIApplication
+    UI(ApplicationLaunchOptions.*):
         name: "#{g[0]}"
-    UIApplication(.*)UserInfoKey:
-        class: UIApplication
-        name: "UserInfoKey#{g[0]}"
         type: NSString
-    UI(ContentSizeCategoryNewValue)Key:
-        class: UIApplication
-        name: "UserInfoKey#{g[0]}"
-        type: NSString
+    UI(ApplicationBackgroundFetchInterval.*):
+        name: "#{g[0]}"
     UI(ContentSizeCategory.*):
-        class: UIApplication
         name: "#{g[0]}"
-    UI(Tracking)RunLoopMode:
-        class: UIApplication
-        name: "RunLoopMode#{g[0]}"
+    UI(TrackingRunLoopMode):
+        name: "#{g[0]}"
     UIApplicationInvalidInterfaceOrientationException:
         exclude: true
     UI(BackgroundTaskInvalid):
-        class: UIApplication
         name: "#{g[0]}"
     UI(MinimumKeepAliveTimeout):
-        class: UIApplication
         name: "#{g[0]}"
 
-    UICollectionElement(Kind.*):
-        class: UICollectionViewFlowLayout
+    UI(CollectionElementKind.*):
         name: "#{g[0]}"
 
-    UI(Device.*)Notification:
-        class: UIDevice
-        name: "Notification#{g[0]}"
-
-    UI(Document.*)Notification:
-        class: UIDocument
-        name: "Notification#{g[0]}"
-
-    UIEdgeInsets(Zero):
-        class: UIEdgeInsets
+    UI(EdgeInsetsZero):
         name: "#{g[0]}"
 
-    UIFontDescriptor(.*)Attribute:
-        class: UIFontDescriptor
-        name: "Attribute#{g[0]}"
+    UI(FontDescriptor.*Attribute):
+        name: "#{g[0]}"
         type: NSString
-    UIFont(TextStyle.*):
-        class: UIFontDescriptor
+    UI(FontTextStyle.*):
         name: "#{g[0]}"
-    UIFont(.*)Trait:
-        class: UIFontDescriptor
-        name: "Trait#{g[0]}"
+    UI(Font.*Trait):
+        name: "#{g[0]}"
         type: NSString
-    UIFont(Feature.*):
-        class: UIFontDescriptor
+    UI(FontFeature.*):
         name: "#{g[0]}"
         type: NSString
 
-    UIImagePickerController(.*):
-        class: UIImagePickerController
-        name: "EditingInfo#{g[0]}"
+    UI(ImagePickerController.*):
+        name: "#{g[0]}"
         type: NSString
 
     UI(KeyInput.*):
-        class: UIKeyCommand
         name: "#{g[0]}"
 
-    UILocalNotification(DefaultSoundName):
-        class: UILocalNotification
+    UI(LocalNotificationDefaultSoundName):
         name: "#{g[0]}"
 
-    UI(MenuController.*)Notification:
-        class: UIMenuController
-        name: "Notification#{g[0]}"
-
-    UINavigationController(HideShowBarDuration):
-        class: UINavigationController
+    UI(NavigationControllerHideShowBarDuration):
         name: "#{g[0]}"
 
-    UIOffset(Zero):
-        class: UIOffset
+    UI(OffsetZero):
         name: "#{g[0]}"
 
-    UIPageViewControllerOption(.*)Key:
-        class: UIPageViewController
-        name: "OptionKey#{g[0]}"
-        type: NSString
-
-    UI(Pasteboard.*)Notification:
-        class: UIPasteboard
-        name: "Notification#{g[0]}"
-    UIPasteboardChanged(Types.*)Key:
-        class: UIPasteboard
-        name: "UserInfoKey#{g[0]}"
-        type: NSString
-    UIPasteboard(Name.*):
-        class: UIPasteboard
+    UI(PasteboardName.*):
         name: "#{g[0]}"
-    UIPasteboard(Type.*):
-        class: UIPasteboard
+    UI(PasteboardType.*):
         name: "#{g[0]}"
         readonly: true
         type: "NSArray<NSString>"
 
-    UIPrint(ErrorDomain):
-        class: UIPrint
+    UI(PrintErrorDomain):
         name: "#{g[0]}"
 
-    UI(Screen.*)Notification:
-        class: UIScreen
-        name: "Notification#{g[0]}"
-
-    UIScrollView(DecelerationRate.*):
-        class: UIScrollView
+    UI(ScrollViewDecelerationRate.*):
         name: "#{g[0]}"
 
-    UIApplicationStateRestoration(.*)Key:
-        class: UIStateRestoration
-        name: "StateRestorationKey#{g[0]}"
-        type: NSString
-    UIStateRestoration(ViewControllerStoryboard)Key:
-        class: UIStateRestoration
-        name: "StateRestorationKey#{g[0]}"
-        type: NSString
-
-    UITableViewIndex(Search):
-        class: UITableView
-        name: "SectionIndex#{g[0]}"
-        type: NSString
-    UITableView(AutomaticDimension):
-        class: UITableView
+    UI(TableViewIndexSearch):
         name: "#{g[0]}"
-    UITableView(SelectionDidChange)Notification:
-        class: UITableView
-        name: "Notification#{g[0]}"
-
-    UITextInputText(.*)Key:
-        class: UITextInputGlobals
-        name: "StyleKey#{g[0]}"
         type: NSString
-
-    UITextInput(CurrentInputModeDidChange)Notification:
-        class: UITextInputMode
-        name: "Notification#{g[0]}"
-
-    UITextField(.*)Notification:
-        class: UITextField
-        name: "Notification#{g[0]}"
-
-    UITextView(Text.*)Notification:
-        class: UITextView
-        name: "Notification#{g[0]}"
+    UI(TableViewAutomaticDimension):
+        name: "#{g[0]}"
 
     UI(LayoutFitting.*):
-        class: UIView
         name: "#{g[0]}"
-    UIView(NoIntrinsicMetric):
-        class: UIView
+    UI(ViewNoIntrinsicMetric):
         name: "#{g[0]}"
 
     UIViewControllerHierarchyInconsistencyException:
         exclude: true
 
-    UITransitionContext((From|To)ViewController)Key:
-        class: UIViewControllerContextTransitioningGlobals
-        name: "TransitionKey#{g[0]}"
-        type: NSString
-
-    UI(Keyboard.*)UserInfoKey:
-        class: UIWindow
-        name: "UserInfoKey#{g[0]}"
-        type: NSString
     UI(WindowLevel.*):
-        class: UIWindow
         name: "#{g[0]}"
-    UI(Window.*)Notification:
-        class: UIWindow
-        name: "Notification#{g[0]}"
-    UI(Keyboard.*)Notification:
-        class: UIWindow
-        name: "Notification#{g[0]}"
 
     # Make sure we don't miss any values if new ones are introduced in a later UIKit
     (NS.*):

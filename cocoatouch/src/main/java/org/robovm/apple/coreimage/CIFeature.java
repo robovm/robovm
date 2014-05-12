@@ -54,9 +54,6 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="CIFeatureTypeFace", optional=true)
-    public static native String TypeFace();
-    
     
     /*</methods>*/
 }

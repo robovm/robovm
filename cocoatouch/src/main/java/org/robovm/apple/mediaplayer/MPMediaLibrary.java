@@ -54,9 +54,6 @@ import org.robovm.apple.coregraphics.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="MPMediaLibraryDidChangeNotification", optional=true)
-    public static native String NotificationDidChange();
-    
     @Method(selector = "beginGeneratingLibraryChangeNotifications")
     public native void beginGeneratingLibraryChangeNotifications();
     @Method(selector = "endGeneratingLibraryChangeNotifications")

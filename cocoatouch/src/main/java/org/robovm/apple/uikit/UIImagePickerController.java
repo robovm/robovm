@@ -106,27 +106,6 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="UIImagePickerControllerMediaType", optional=true)
-    public static native NSString EditingInfoMediaType();
-    @GlobalValue(symbol="UIImagePickerControllerOriginalImage", optional=true)
-    public static native NSString EditingInfoOriginalImage();
-    @GlobalValue(symbol="UIImagePickerControllerEditedImage", optional=true)
-    public static native NSString EditingInfoEditedImage();
-    @GlobalValue(symbol="UIImagePickerControllerCropRect", optional=true)
-    public static native NSString EditingInfoCropRect();
-    @GlobalValue(symbol="UIImagePickerControllerMediaURL", optional=true)
-    public static native NSString EditingInfoMediaURL();
-    /**
-     * @since Available in iOS 4.1 and later.
-     */
-    @GlobalValue(symbol="UIImagePickerControllerReferenceURL", optional=true)
-    public static native NSString EditingInfoReferenceURL();
-    /**
-     * @since Available in iOS 4.1 and later.
-     */
-    @GlobalValue(symbol="UIImagePickerControllerMediaMetadata", optional=true)
-    public static native NSString EditingInfoMediaMetadata();
-    
     /**
      * @since Available in iOS 3.1 and later.
      */

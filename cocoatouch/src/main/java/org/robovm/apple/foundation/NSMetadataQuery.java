@@ -52,57 +52,6 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSMetadataQueryDidStartGatheringNotification", optional=true)
-    public static native String NotificationDidStartGathering();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSMetadataQueryGatheringProgressNotification", optional=true)
-    public static native String NotificationGatheringProgress();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSMetadataQueryDidFinishGatheringNotification", optional=true)
-    public static native String NotificationDidFinishGathering();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSMetadataQueryDidUpdateNotification", optional=true)
-    public static native String NotificationDidUpdate();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSMetadataQueryUpdateAddedItemsKey", optional=true)
-    public static native NSString KeyUpdateAddedItems();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSMetadataQueryUpdateChangedItemsKey", optional=true)
-    public static native NSString KeyUpdateChangedItems();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSMetadataQueryUpdateRemovedItemsKey", optional=true)
-    public static native NSString KeyUpdateRemovedItems();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSMetadataQueryResultContentRelevanceAttribute", optional=true)
-    public static native NSString KeyResultContentRelevanceAttribute();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSMetadataQueryUbiquitousDocumentsScope", optional=true)
-    public static native NSString ScopeUbiquitousDocuments();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSMetadataQueryUbiquitousDataScope", optional=true)
-    public static native NSString ScopeUbiquitousData();
-    
     @Method(selector = "delegate")
     public native NSMetadataQueryDelegate delegate();
     @Method(selector = "setDelegate:")

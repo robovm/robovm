@@ -100,27 +100,6 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="UIPasteboardNameGeneral", optional=true)
-    public static native String NameGeneral();
-    @GlobalValue(symbol="UIPasteboardNameFind", optional=true)
-    public static native String NameFind();
-    @GlobalValue(symbol="UIPasteboardChangedNotification", optional=true)
-    public static native String NotificationPasteboardChanged();
-    @GlobalValue(symbol="UIPasteboardChangedTypesAddedKey", optional=true)
-    public static native NSString UserInfoKeyTypesAdded();
-    @GlobalValue(symbol="UIPasteboardChangedTypesRemovedKey", optional=true)
-    public static native NSString UserInfoKeyTypesRemoved();
-    @GlobalValue(symbol="UIPasteboardRemovedNotification", optional=true)
-    public static native String NotificationPasteboardRemoved();
-    @GlobalValue(symbol="UIPasteboardTypeListString", optional=true)
-    public static native NSArray<NSString> TypeListString();
-    @GlobalValue(symbol="UIPasteboardTypeListURL", optional=true)
-    public static native NSArray<NSString> TypeListURL();
-    @GlobalValue(symbol="UIPasteboardTypeListImage", optional=true)
-    public static native NSArray<NSString> TypeListImage();
-    @GlobalValue(symbol="UIPasteboardTypeListColor", optional=true)
-    public static native NSArray<NSString> TypeListColor();
-    
     @Method(selector = "pasteboardTypes")
     public native NSArray<NSString> getTypes();
     @Method(selector = "containsPasteboardTypes:")

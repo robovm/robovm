@@ -59,52 +59,6 @@ import org.robovm.apple.opengles.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    @GlobalValue(symbol="CIDetectorTypeFace", optional=true)
-    public static native String TypeFace();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="CIDetectorAccuracy", optional=true)
-    public static native NSString ConfigKeyAccuracy();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="CIDetectorAccuracyLow", optional=true)
-    public static native NSString AccuracyLow();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="CIDetectorAccuracyHigh", optional=true)
-    public static native NSString AccuracyHigh();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="CIDetectorTracking", optional=true)
-    public static native NSString ConfigKeyTracking();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="CIDetectorMinFeatureSize", optional=true)
-    public static native NSString ConfigKeyMinFeatureSize();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="CIDetectorImageOrientation", optional=true)
-    public static native NSString FeatureKeyImageOrientation();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="CIDetectorEyeBlink", optional=true)
-    public static native NSString FeatureKeyEyeBlink();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="CIDetectorSmile", optional=true)
-    public static native NSString FeatureKeySmile();
-    
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     @Method(selector = "featuresInImage:")
     public native NSArray<CIFeature> findFeatures(CIImage image);
     /**

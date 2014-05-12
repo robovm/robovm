@@ -63,21 +63,17 @@ functions:
         name: "Function__#{g[0]}"
 
 values:
-    MFMailCompose(ErrorDomain):
-        class: MFMailComposeViewController
+    MF(.*ErrorDomain):
         name: "#{g[0]}"
         type: NSString
         
-    MFMessageComposeViewController(Attachment.*):
-        class: MFMessageComposeViewController
+    MF(MessageComposeViewControllerAttachment.*):
         name: "#{g[0]}"
         type: NSString
-    MFMessageComposeViewController(TextMessageAvailabilityDidChangeNotification):
-        class: MFMessageComposeViewController
+    MF(.*Notification):
         name: "#{g[0]}"
         type: NSString
-    MFMessageComposeViewController(TextMessageAvailabilityKey):
-        class: MFMessageComposeViewController
+    MF(.*Key):
         name: "#{g[0]}"
         type: NSString
     

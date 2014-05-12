@@ -61,22 +61,6 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSURLErrorBackgroundTaskCancelledReasonKey", optional=true)
-    public static native NSString KeyBackgroundTaskCancelledReasonKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSURLSessionTransferSizeUnknown", optional=true)
-    public static native long TransferSizeUnknown();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSURLSessionDownloadTaskResumeData", optional=true)
-    public static native NSString KeyDownloadTaskResumeData();
-    
     @Method(selector = "finishTasksAndInvalidate")
     public native void finishTasksAndInvalidate();
     @Method(selector = "invalidateAndCancel")

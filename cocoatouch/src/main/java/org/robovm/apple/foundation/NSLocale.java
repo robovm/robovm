@@ -57,9 +57,9 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     
     public Locale toLocale() {
-        NSString language = (NSString) getComponent(KeyLanguageCode());
-        NSString country = (NSString) getComponent(KeyCountryCode());
-        NSString variant = (NSString) getComponent(KeyVariantCode());
+        NSString language = (NSString) getComponent(Foundation.NSLocaleLanguageCode());
+        NSString country = (NSString) getComponent(Foundation.NSLocaleCountryCode());
+        NSString variant = (NSString) getComponent(Foundation.NSLocaleVariantCode());
         if (language != null && country != null && variant != null) {
             return new Locale(language.toString(), country.toString(), variant.toString());
         }
@@ -74,142 +74,6 @@ import org.robovm.apple.security.*;
     }
     
     /*<methods>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSCurrentLocaleDidChangeNotification", optional=true)
-    public static native String NotificationCurrentLocaleDidChange();
-    @GlobalValue(symbol="NSLocaleIdentifier", optional=true)
-    public static native NSString KeyIdentifier();
-    @GlobalValue(symbol="NSLocaleLanguageCode", optional=true)
-    public static native NSString KeyLanguageCode();
-    @GlobalValue(symbol="NSLocaleCountryCode", optional=true)
-    public static native NSString KeyCountryCode();
-    @GlobalValue(symbol="NSLocaleScriptCode", optional=true)
-    public static native NSString KeyScriptCode();
-    @GlobalValue(symbol="NSLocaleVariantCode", optional=true)
-    public static native NSString KeyVariantCode();
-    @GlobalValue(symbol="NSLocaleExemplarCharacterSet", optional=true)
-    public static native NSString KeyExemplarCharacterSet();
-    @GlobalValue(symbol="NSLocaleCalendar", optional=true)
-    public static native String CalendarIdentifierLocale();
-    @GlobalValue(symbol="NSLocaleCollationIdentifier", optional=true)
-    public static native NSString KeyCollationIdentifier();
-    @GlobalValue(symbol="NSLocaleUsesMetricSystem", optional=true)
-    public static native NSString KeyUsesMetricSystem();
-    @GlobalValue(symbol="NSLocaleMeasurementSystem", optional=true)
-    public static native NSString KeyMeasurementSystem();
-    @GlobalValue(symbol="NSLocaleDecimalSeparator", optional=true)
-    public static native NSString KeyDecimalSeparator();
-    @GlobalValue(symbol="NSLocaleGroupingSeparator", optional=true)
-    public static native NSString KeyGroupingSeparator();
-    @GlobalValue(symbol="NSLocaleCurrencySymbol", optional=true)
-    public static native NSString KeyCurrencySymbol();
-    @GlobalValue(symbol="NSLocaleCurrencyCode", optional=true)
-    public static native NSString KeyCurrencyCode();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSLocaleCollatorIdentifier", optional=true)
-    public static native NSString KeyCollatorIdentifier();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSLocaleQuotationBeginDelimiterKey", optional=true)
-    public static native NSString KeyQuotationBeginDelimiter();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSLocaleQuotationEndDelimiterKey", optional=true)
-    public static native NSString KeyQuotationEndDelimiter();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSLocaleAlternateQuotationBeginDelimiterKey", optional=true)
-    public static native NSString KeyAlternateQuotationBeginDelimiter();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSLocaleAlternateQuotationEndDelimiterKey", optional=true)
-    public static native NSString KeyAlternateQuotationEndDelimiter();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="NSGregorianCalendar", optional=true)
-    public static native String CalendarIdentifierGregorian();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="NSBuddhistCalendar", optional=true)
-    public static native String CalendarIdentifierBuddhist();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="NSChineseCalendar", optional=true)
-    public static native String CalendarIdentifierChinese();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="NSHebrewCalendar", optional=true)
-    public static native String CalendarIdentifierHebrew();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="NSIslamicCalendar", optional=true)
-    public static native String CalendarIdentifierIslamic();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="NSIslamicCivilCalendar", optional=true)
-    public static native String CalendarIdentifierIslamicCivil();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="NSJapaneseCalendar", optional=true)
-    public static native String CalendarIdentifierJapanese();
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="NSRepublicOfChinaCalendar", optional=true)
-    public static native String CalendarIdentifierRepublicOfChina();
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="NSPersianCalendar", optional=true)
-    public static native String CalendarIdentifierPersian();
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="NSIndianCalendar", optional=true)
-    public static native String CalendarIdentifierIndian();
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="NSISO8601Calendar", optional=true)
-    public static native String CalendarIdentifierISO8601();
-    
     @Method(selector = "objectForKey:")
     public native NSObject getComponent(NSString key);
     @Method(selector = "displayNameForKey:value:")

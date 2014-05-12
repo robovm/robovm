@@ -53,35 +53,6 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="UITextAttributeFont", optional=true)
-    public static native NSString AttributeFont();
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="UITextAttributeTextColor", optional=true)
-    public static native NSString AttributeTextColor();
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="UITextAttributeTextShadowColor", optional=true)
-    public static native NSString AttributeTextShadowColor();
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="UITextAttributeTextShadowOffset", optional=true)
-    public static native NSString AttributeTextShadowOffset();
-    
-    /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */

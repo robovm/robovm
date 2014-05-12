@@ -45,13 +45,6 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFTypeDictionaryKeyCallBacks", optional=true)
-    public static native @ByVal CFDictionaryKeyCallBacks DictionaryKeyCallBacks();
-    @GlobalValue(symbol="kCFCopyStringDictionaryKeyCallBacks", optional=true)
-    public static native @ByVal CFDictionaryKeyCallBacks CopyStringDictionaryKeyCallBacks();
-    @GlobalValue(symbol="kCFTypeDictionaryValueCallBacks", optional=true)
-    public static native @ByVal CFDictionaryValueCallBacks DictionaryValueCallBacks();
-    
     @Bridge(symbol="CFDictionaryGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFDictionaryCreate", optional=true)

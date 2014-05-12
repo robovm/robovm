@@ -111,72 +111,50 @@ functions:
 
 values:
 
-    kCIContext(.*):
-        class: CIContext
-        name: "Key#{g[0]}"
+    kCI(.*Key):
         type: NSString
-
-    CIDetector(Accuracy|Tracking|MinFeatureSize):
-        class: CIDetector
-        name: "ConfigKey#{g[0]}"
-        type: NSString
-    CIDetector(Type.*):
-        class: CIDetector
         name: "#{g[0]}"
-    CIDetector(Accuracy.+):
-        class: CIDetector
+        readonly: true
+
+    kCI(Context.*):
         name: "#{g[0]}"
         type: NSString
-    CIDetector(ImageOrientation|EyeBlink|Smile):
-        class: CIDetector
-        name: "FeatureKey#{g[0]}"
+
+    CI(Detector(Accuracy|Tracking|MinFeatureSize)):
+        name: "#{g[0]}"
+        type: NSString
+    CI(DetectorType.*):
+        name: "#{g[0]}"
+    CI(DetectorAccuracy.+):
+        name: "#{g[0]}"
+        type: NSString
+    CI(Detector(ImageOrientation|EyeBlink|Smile)):
+        name: "#{g[0]}"
         type: NSString
 
-    CIFeature(TypeFace):
-        class: CIFeature
+    CI(FeatureTypeFace):
         name: "#{g[0]}"
 
     kCI(Attribute.*):
-        class: CIFilter
         name: "#{g[0]}"
         type: NSString
         readonly: true
     kCI(Category.*):
-        class: CIFilter
         name: "#{g[0]}"
-        type: NSString
-        readonly: true
-    kCI(Input.*)Key:
-        class: CIFilter
-        name: "Parameter#{g[0]}"
-        type: NSString
-        readonly: true
-    kCI(Output.*)Key:
-        class: CIFilter
-        name: "Parameter#{g[0]}"
         type: NSString
         readonly: true
 
     kCI(Format.*):
-        class: CIImage
         name: "#{g[0]}"
         readonly: true
-    kCIImage(AutoAdjust.*):
-        class: CIImage
+    kCI(ImageAutoAdjust.*):
         name: "#{g[0]}"
         type: NSString
         readonly: true
-    kCIImage(.*):
-        class: CIImage
-        name: "Key#{g[0]}"
+    kCI(Image.*):
+        name: "#{g[0]}"
         type: NSString
         readonly: true
-
-    # Not available on iOS
-    kCIApplyOption.*:
-        exclude: true
-    kCIUI.*:
-        exclude: true
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?CI.*):

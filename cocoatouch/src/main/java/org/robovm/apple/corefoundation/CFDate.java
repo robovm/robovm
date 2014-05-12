@@ -45,11 +45,6 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFAbsoluteTimeIntervalSince1970", optional=true)
-    public static native double AbsoluteTimeIntervalSince1970();
-    @GlobalValue(symbol="kCFAbsoluteTimeIntervalSince1904", optional=true)
-    public static native double AbsoluteTimeIntervalSince1904();
-    
     @Bridge(symbol="CFAbsoluteTimeGetCurrent", optional=true)
     public static native double absoluteTimeGetCurrent();
     @Bridge(symbol="CFDateGetTypeID", optional=true)

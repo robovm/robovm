@@ -52,32 +52,6 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAMediaTimingFunctionLinear", optional=true)
-    public static native String FunctionLinear();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAMediaTimingFunctionEaseIn", optional=true)
-    public static native String FunctionEaseIn();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAMediaTimingFunctionEaseOut", optional=true)
-    public static native String FunctionEaseOut();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCAMediaTimingFunctionEaseInEaseOut", optional=true)
-    public static native String FunctionEaseInEaseOut();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kCAMediaTimingFunctionDefault", optional=true)
-    public static native String FunctionDefault();
-    
     @Method(selector = "initWithControlPoints::::")
     protected native @Pointer long initWithControlPoints$$$$(float c1x, float c1y, float c2x, float c2y);
     @Method(selector = "getControlPointAtIndex:values:")

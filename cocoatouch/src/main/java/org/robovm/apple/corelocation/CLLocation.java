@@ -70,22 +70,6 @@ import org.robovm.apple.foundation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCLLocationAccuracyBestForNavigation", optional=true)
-    public static native double AccuracyBestForNavigation();
-    @GlobalValue(symbol="kCLLocationAccuracyBest", optional=true)
-    public static native double AccuracyBest();
-    @GlobalValue(symbol="kCLLocationAccuracyNearestTenMeters", optional=true)
-    public static native double AccuracyNearestTenMeters();
-    @GlobalValue(symbol="kCLLocationAccuracyHundredMeters", optional=true)
-    public static native double AccuracyHundredMeters();
-    @GlobalValue(symbol="kCLLocationAccuracyKilometer", optional=true)
-    public static native double AccuracyKilometer();
-    @GlobalValue(symbol="kCLLocationAccuracyThreeKilometers", optional=true)
-    public static native double AccuracyThreeKilometers();
-    
     @Method(selector = "initWithLatitude:longitude:")
     protected native @Pointer long initWithLatitude$longitude$(double latitude, double longitude);
     @Method(selector = "initWithCoordinate:altitude:horizontalAccuracy:verticalAccuracy:timestamp:")

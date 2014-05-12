@@ -70,47 +70,6 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCATransitionFade", optional=true)
-    public static native String TypeFade();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCATransitionMoveIn", optional=true)
-    public static native String TypeMoveIn();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCATransitionPush", optional=true)
-    public static native String TypePush();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCATransitionReveal", optional=true)
-    public static native String TypeReveal();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCATransitionFromRight", optional=true)
-    public static native String SubtypeFromRight();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCATransitionFromLeft", optional=true)
-    public static native String SubtypeFromLeft();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCATransitionFromTop", optional=true)
-    public static native String SubtypeFromTop();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCATransitionFromBottom", optional=true)
-    public static native String SubtypeFromBottom();
-    
     
     /*</methods>*/
 }

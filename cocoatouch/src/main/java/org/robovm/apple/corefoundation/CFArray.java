@@ -45,9 +45,6 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFTypeArrayCallBacks", optional=true)
-    public static native @ByVal CFArrayCallBacks ArrayCallBacks();
-    
     @Bridge(symbol="CFArrayGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFArrayCreate", optional=true)

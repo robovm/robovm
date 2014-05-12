@@ -94,6 +94,12 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Bridge(symbol="CACurrentMediaTime", optional=true)
+    public static native double getCurrentMediaTime();
+    
     @Method(selector = "shouldArchiveValueForKey:")
     public native boolean shouldArchiveValueForKey$(String key);
     @Method(selector = "animation")

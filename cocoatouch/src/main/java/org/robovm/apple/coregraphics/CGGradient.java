@@ -84,7 +84,7 @@ import org.robovm.apple.foundation.*;
         if (colors == null) {
             throw new NullPointerException("colors");
         }
-        try (CFMutableArray colorsArray = CFMutableArray.createMutable(null, colors.length, CFArray.ArrayCallBacks())) {
+        try (CFMutableArray colorsArray = CFMutableArray.createMutable(null, colors.length, CoreFoundation.TypeArrayCallBacks())) {
             for (CGColor c : colors) {
                 colorsArray.appendValue(Struct.toStruct(VoidPtr.class, c.getHandle()));
             }

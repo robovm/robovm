@@ -51,12 +51,6 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSKeyedArchiveRootObjectKey", optional=true)
-    public static native NSString KeyRootObjectKey();
-    
     @Method(selector = "initForWritingWithMutableData:")
     protected native @Pointer long initForWritingWithMutableData$(NSMutableData data);
     @Method(selector = "setDelegate:")

@@ -32,7 +32,7 @@ import org.robovm.apple.foundation.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Library("CoreLocation")/*</annotations>*/
+/*<annotations>*//*</annotations>*/
 public enum /*<name>*/CLError/*</name>*/ implements ValuedEnum {
     /*<values>*/
     LocationUnknown(0L),
@@ -57,15 +57,7 @@ public enum /*<name>*/CLError/*</name>*/ implements ValuedEnum {
 
     /*<bind>*/static { Bro.bind(CLError.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<methods>*/
-    @GlobalValue(symbol="kCLErrorDomain", optional=true)
-    public static native NSString Domain();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCLErrorUserInfoAlternateRegionKey", optional=true)
-    public static native NSString UserInfoAlternateRegionKey();
-    /*</methods>*/
+    /*<methods>*//*</methods>*/
 
     private final long n;
 

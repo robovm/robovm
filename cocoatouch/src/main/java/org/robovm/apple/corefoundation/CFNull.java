@@ -45,9 +45,6 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFNull", optional=true)
-    public static native CFNull Null();
-    
     @Bridge(symbol="CFNullGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     /*</methods>*/

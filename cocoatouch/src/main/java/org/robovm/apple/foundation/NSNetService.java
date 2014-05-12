@@ -71,11 +71,6 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSNetServicesErrorCode", optional=true)
-    public static native NSString ErrorCode();
-    @GlobalValue(symbol="NSNetServicesErrorDomain", optional=true)
-    public static native String ErrorDomainNetServices();
-    
     @Method(selector = "initWithDomain:type:name:port:")
     protected native @Pointer long initWithDomain$type$name$port$(String domain, String type, String name, int port);
     @Method(selector = "initWithDomain:type:name:")

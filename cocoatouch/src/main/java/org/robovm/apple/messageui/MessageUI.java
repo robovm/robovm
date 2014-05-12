@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.social;
+package org.robovm.apple.messageui;
 
 /*<imports>*/
 import java.io.*;
@@ -28,43 +28,41 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
-import org.robovm.apple.accounts.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("Social")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/SLServiceType/*</name>*/ 
+/*<annotations>*/@Library("MessageUI")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/MessageUI/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(SLServiceType.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(MessageUI.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     /**
-     * @since Available in iOS 6.0 and later.
+     * @since Available in iOS 3.0 and later.
      */
-    @GlobalValue(symbol="SLServiceTypeTwitter", optional=true)
-    public static native NSString Twitter();
+    @GlobalValue(symbol="MFMailComposeErrorDomain", optional=true)
+    public static native NSString MailComposeErrorDomain();
+    @GlobalValue(symbol="MFMessageComposeViewControllerAttachmentURL", optional=true)
+    public static native NSString MessageComposeViewControllerAttachmentURL();
+    @GlobalValue(symbol="MFMessageComposeViewControllerAttachmentAlternateFilename", optional=true)
+    public static native NSString MessageComposeViewControllerAttachmentAlternateFilename();
     /**
-     * @since Available in iOS 6.0 and later.
+     * @since Available in iOS 5.0 and later.
      */
-    @GlobalValue(symbol="SLServiceTypeFacebook", optional=true)
-    public static native NSString Facebook();
+    @GlobalValue(symbol="MFMessageComposeViewControllerTextMessageAvailabilityDidChangeNotification", optional=true)
+    public static native NSString MessageComposeViewControllerTextMessageAvailabilityDidChangeNotification();
     /**
-     * @since Available in iOS 6.0 and later.
+     * @since Available in iOS 5.0 and later.
      */
-    @GlobalValue(symbol="SLServiceTypeSinaWeibo", optional=true)
-    public static native NSString SinaWeibo();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="SLServiceTypeTencentWeibo", optional=true)
-    public static native NSString TencentWeibo();
+    @GlobalValue(symbol="MFMessageComposeViewControllerTextMessageAvailabilityKey", optional=true)
+    public static native NSString MessageComposeViewControllerTextMessageAvailabilityKey();
     /*</methods>*/
 }

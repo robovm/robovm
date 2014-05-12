@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.foundation;
+package org.robovm.apple.social;
 
 /*<imports>*/
 import java.io.*;
@@ -26,37 +26,45 @@ import org.robovm.rt.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.corefoundation.*;
-import org.robovm.apple.security.*;
+import org.robovm.apple.foundation.*;
+import org.robovm.apple.uikit.*;
+import org.robovm.apple.accounts.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
-/*<visibility>*/public final/*</visibility>*/ class /*<name>*/NSKeyValueChangeKey/*</name>*/ 
+/*<annotations>*/@Library("Social")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/Social/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSKeyValueChangeKey.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(Social.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSKeyValueChangeKindKey", optional=true)
-    public static native NSString KeyChangeKind();
-    @GlobalValue(symbol="NSKeyValueChangeNewKey", optional=true)
-    public static native NSString KeyChangeNew();
-    @GlobalValue(symbol="NSKeyValueChangeOldKey", optional=true)
-    public static native NSString KeyChangeOld();
-    @GlobalValue(symbol="NSKeyValueChangeIndexesKey", optional=true)
-    public static native NSString KeyChangeIndexes();
     /**
-     * @since Available in iOS 2.0 and later.
+     * @since Available in iOS 6.0 and later.
      */
-    @GlobalValue(symbol="NSKeyValueChangeNotificationIsPriorKey", optional=true)
-    public static native NSString KeyChangeNotificationIsPrior();
+    @GlobalValue(symbol="SLServiceTypeTwitter", optional=true)
+    public static native NSString ServiceTypeTwitter();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="SLServiceTypeFacebook", optional=true)
+    public static native NSString ServiceTypeFacebook();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="SLServiceTypeSinaWeibo", optional=true)
+    public static native NSString ServiceTypeSinaWeibo();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="SLServiceTypeTencentWeibo", optional=true)
+    public static native NSString ServiceTypeTencentWeibo();
     /*</methods>*/
 }

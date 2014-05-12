@@ -45,21 +45,6 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFBundleInfoDictionaryVersionKey", optional=true)
-    public static native CFString KeyInfoDictionaryVersion();
-    @GlobalValue(symbol="kCFBundleExecutableKey", optional=true)
-    public static native CFString KeyExecutable();
-    @GlobalValue(symbol="kCFBundleIdentifierKey", optional=true)
-    public static native CFString KeyIdentifier();
-    @GlobalValue(symbol="kCFBundleVersionKey", optional=true)
-    public static native CFString KeyVersion();
-    @GlobalValue(symbol="kCFBundleDevelopmentRegionKey", optional=true)
-    public static native CFString KeyDevelopmentRegion();
-    @GlobalValue(symbol="kCFBundleNameKey", optional=true)
-    public static native CFString KeyName();
-    @GlobalValue(symbol="kCFBundleLocalizationsKey", optional=true)
-    public static native CFString KeyLocalizations();
-    
     @Bridge(symbol="CFBundleGetMainBundle", optional=true)
     public static native CFBundle getMainBundle();
     @Bridge(symbol="CFBundleGetBundleWithIdentifier", optional=true)

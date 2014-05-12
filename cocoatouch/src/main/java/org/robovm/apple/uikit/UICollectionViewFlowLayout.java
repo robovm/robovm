@@ -82,11 +82,6 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="UICollectionElementKindSectionHeader", optional=true)
-    public static native String KindSectionHeader();
-    @GlobalValue(symbol="UICollectionElementKindSectionFooter", optional=true)
-    public static native String KindSectionFooter();
-    
     
     /*</methods>*/
 }

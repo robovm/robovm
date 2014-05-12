@@ -56,27 +56,6 @@ import org.robovm.apple.foundation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="ACAccountTypeIdentifierTwitter", optional=true)
-    public static native NSString IdentifierTwitter();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="ACAccountTypeIdentifierFacebook", optional=true)
-    public static native NSString IdentifierFacebook();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="ACAccountTypeIdentifierSinaWeibo", optional=true)
-    public static native NSString IdentifierSinaWeibo();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="ACAccountTypeIdentifierTencentWeibo", optional=true)
-    public static native NSString IdentifierTencentWeibo();
-    
     
     /*</methods>*/
 }

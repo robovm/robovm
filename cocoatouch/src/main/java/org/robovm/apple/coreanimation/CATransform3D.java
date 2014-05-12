@@ -140,12 +140,6 @@ import org.robovm.apple.opengles.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @GlobalValue(symbol="CATransform3DIdentity", optional=true)
-    public static native @ByVal CATransform3D Identity();
-    
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
     @Bridge(symbol="CATransform3DIsIdentity", optional=true)
     protected static native boolean isIdentity(@ByVal CATransform3D t);
     /**

@@ -42,9 +42,7 @@ import org.robovm.apple.security.*;
 
     /*<ptr>*/public static class NSOperationQueuePtr extends Ptr<NSOperationQueue, NSOperationQueuePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSOperationQueue.class); }/*</bind>*/
-    /*<constants>*/
-    public static final int DefaultMaxConcurrentOperationCount = -1;
-    /*</constants>*/
+    /*<constants>*//*</constants>*/
     /*<constructors>*/
     public NSOperationQueue() {}
     protected NSOperationQueue(SkipInit skipInit) { super(skipInit); }

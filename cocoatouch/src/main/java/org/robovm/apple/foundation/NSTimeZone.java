@@ -52,12 +52,6 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSSystemTimeZoneDidChangeNotification", optional=true)
-    public static native String NotificationSystemTimeZoneDidChange();
-    
     @Method(selector = "name")
     public native String name();
     @Method(selector = "data")

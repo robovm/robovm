@@ -51,33 +51,6 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSHTTPCookieName", optional=true)
-    public static native NSString KeyName();
-    @GlobalValue(symbol="NSHTTPCookieValue", optional=true)
-    public static native NSString KeyValue();
-    @GlobalValue(symbol="NSHTTPCookieOriginURL", optional=true)
-    public static native NSString KeyOriginURL();
-    @GlobalValue(symbol="NSHTTPCookieVersion", optional=true)
-    public static native NSString KeyVersion();
-    @GlobalValue(symbol="NSHTTPCookieDomain", optional=true)
-    public static native NSString KeyDomain();
-    @GlobalValue(symbol="NSHTTPCookiePath", optional=true)
-    public static native NSString KeyPath();
-    @GlobalValue(symbol="NSHTTPCookieSecure", optional=true)
-    public static native NSString KeySecure();
-    @GlobalValue(symbol="NSHTTPCookieExpires", optional=true)
-    public static native NSString KeyExpires();
-    @GlobalValue(symbol="NSHTTPCookieComment", optional=true)
-    public static native NSString KeyComment();
-    @GlobalValue(symbol="NSHTTPCookieCommentURL", optional=true)
-    public static native NSString KeyCommentURL();
-    @GlobalValue(symbol="NSHTTPCookieDiscard", optional=true)
-    public static native NSString KeyDiscard();
-    @GlobalValue(symbol="NSHTTPCookieMaximumAge", optional=true)
-    public static native NSString KeyMaximumAge();
-    @GlobalValue(symbol="NSHTTPCookiePort", optional=true)
-    public static native NSString KeyPort();
-    
     @Method(selector = "initWithProperties:")
     protected native @Pointer long initWithProperties$(NSDictionary<?, ?> properties);
     @Method(selector = "properties")

@@ -45,11 +45,6 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFTypeBagCallBacks", optional=true)
-    public static native @ByVal CFBagCallBacks BagCallBacks();
-    @GlobalValue(symbol="kCFCopyStringBagCallBacks", optional=true)
-    public static native @ByVal CFBagCallBacks CopyStringBagCallBacks();
-    
     @Bridge(symbol="CFBagGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFBagCreate", optional=true)

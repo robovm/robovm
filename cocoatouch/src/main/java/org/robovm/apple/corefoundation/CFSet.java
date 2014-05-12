@@ -45,11 +45,6 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCFTypeSetCallBacks", optional=true)
-    public static native @ByVal CFSetCallBacks SetCallBacks();
-    @GlobalValue(symbol="kCFCopyStringSetCallBacks", optional=true)
-    public static native @ByVal CFSetCallBacks CopyStringSetCallBacks();
-    
     @Bridge(symbol="CFSetGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFSetCreate", optional=true)

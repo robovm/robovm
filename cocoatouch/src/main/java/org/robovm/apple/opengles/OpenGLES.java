@@ -59,6 +59,20 @@ import org.robovm.apple.foundation.*;
     }
     
     /*<methods>*/
+    @GlobalValue(symbol="kEAGLDrawablePropertyRetainedBacking", optional=true)
+    public static native NSString DrawablePropertyRetainedBacking();
+    @GlobalValue(symbol="kEAGLDrawablePropertyColorFormat", optional=true)
+    public static native NSString DrawablePropertyColorFormat();
+    @GlobalValue(symbol="kEAGLColorFormatRGBA8", optional=true)
+    public static native NSString ColorFormatRGBA8();
+    @GlobalValue(symbol="kEAGLColorFormatRGB565", optional=true)
+    public static native NSString ColorFormatRGB565();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="kEAGLColorFormatSRGBA8", optional=true)
+    public static native NSString ColorFormatSRGBA8();
+    
     @Bridge(symbol="EAGLGetVersion", optional=true)
     protected static native void getVersion(IntPtr major, IntPtr minor);
     /*</methods>*/

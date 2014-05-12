@@ -40,10 +40,7 @@ import org.robovm.apple.security.*;
 
     /*<ptr>*/public static class NSDecimalPtr extends Ptr<NSDecimal, NSDecimalPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(NSDecimal.class); }/*</bind>*/
-    /*<constants>*/
-    public static final int MaxSize = 8;
-    public static final int NoScale = 32767;
-    /*</constants>*/
+    /*<constants>*//*</constants>*/
 
     @StructMember(0) private native int fields();
     @StructMember(1) private native @Array(8) ShortBuffer mantissa();

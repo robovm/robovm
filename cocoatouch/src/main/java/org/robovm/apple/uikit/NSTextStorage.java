@@ -74,17 +74,6 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSTextStorageWillProcessEditingNotification", optional=true)
-    public static native String NotificationTextStorageWillProcessEditing();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSTextStorageDidProcessEditingNotification", optional=true)
-    public static native String NotificationTextStorageDidProcessEditing();
-    
     @Method(selector = "addLayoutManager:")
     public native void addLayoutManager(NSLayoutManager aLayoutManager);
     @Method(selector = "removeLayoutManager:")

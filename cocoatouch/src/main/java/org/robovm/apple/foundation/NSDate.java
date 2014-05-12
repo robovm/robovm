@@ -40,9 +40,7 @@ import org.robovm.apple.security.*;
 
     /*<ptr>*/public static class NSDatePtr extends Ptr<NSDate, NSDatePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSDate.class); }/*</bind>*/
-    /*<constants>*/
-    public static final double TimeIntervalSince1970 = 978307200.0;
-    /*</constants>*/
+    /*<constants>*//*</constants>*/
     /*<constructors>*/
     public NSDate() {}
     protected NSDate(SkipInit skipInit) { super(skipInit); }
@@ -58,12 +56,6 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSSystemClockDidChangeNotification", optional=true)
-    public static native String NotificationSystemClockDidChange();
-    
     @Method(selector = "timeIntervalSinceReferenceDate")
     public native double timeIntervalSinceReferenceDate();
     @Method(selector = "timeIntervalSinceDate:")

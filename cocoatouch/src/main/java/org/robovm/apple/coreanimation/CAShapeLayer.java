@@ -98,47 +98,6 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kCAFillRuleNonZero", optional=true)
-    public static native String FillRuleNonZero();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kCAFillRuleEvenOdd", optional=true)
-    public static native String FillRuleEvenOdd();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kCALineJoinMiter", optional=true)
-    public static native String LineJoinMiter();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kCALineJoinRound", optional=true)
-    public static native String LineJoinRound();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kCALineJoinBevel", optional=true)
-    public static native String LineJoinBevel();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kCALineCapButt", optional=true)
-    public static native String LineCapButt();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kCALineCapRound", optional=true)
-    public static native String LineCapRound();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kCALineCapSquare", optional=true)
-    public static native String LineCapSquare();
-    
     
     /*</methods>*/
 }

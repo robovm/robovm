@@ -66,7 +66,7 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "addObserverForName:object:queue:usingBlock:")
-    public native NSObject addObserverForName$object$queue$usingBlock$(String name, NSObject obj, NSOperationQueue queue, ObjCBlock block);
+    public native NSObject addObserverForName$object$queue$usingBlock$(String name, NSObject obj, NSOperationQueue queue, @Block VoidBlock1<NSNotification> block);
     @Method(selector = "defaultCenter")
     public static native NSNotificationCenter defaultCenter();
     /*</methods>*/

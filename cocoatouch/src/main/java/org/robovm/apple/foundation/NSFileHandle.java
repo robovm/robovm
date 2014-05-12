@@ -49,13 +49,13 @@ import org.robovm.apple.security.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "readabilityHandler")
-    public native ObjCBlock getReadabilityHandler();
+    public native @Block VoidBlock1<NSFileHandle> getReadabilityHandler();
     @Property(selector = "setReadabilityHandler:")
-    public native void setReadabilityHandler(ObjCBlock v);
+    public native void setReadabilityHandler(@Block VoidBlock1<NSFileHandle> v);
     @Property(selector = "writeabilityHandler")
-    public native ObjCBlock getWriteabilityHandler();
+    public native @Block VoidBlock1<NSFileHandle> getWriteabilityHandler();
     @Property(selector = "setWriteabilityHandler:")
-    public native void setWriteabilityHandler(ObjCBlock v);
+    public native void setWriteabilityHandler(@Block VoidBlock1<NSFileHandle> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

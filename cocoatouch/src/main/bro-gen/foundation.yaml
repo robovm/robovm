@@ -34,10 +34,31 @@ typedefs:
     "NSMutableOrderedSet *": "NSMutableOrderedSet<?>"
     "NSMutableOrderedSet **": "NSMutableOrderedSet.NSMutableOrderedSetPtr<?>"
     "NSEnumerator *": "NSEnumerator<?>"
-    'void (^)(void (^)(void))': '@Block("(@Block)") VoidBlock1<Runnable>'
-    'void (^)(NSError *)': '@Block VoidBlock1<NSError>'
+    'BOOL (^)(NSUInteger, BOOL *)': '@Block Block2<NSObject, BytePtr, Boolean>'
+    'BOOL (^)(NSURL *, NSError *)': '@Block Block2<NSURL, NSError, Boolean>'
     'void (^)(id, NSRange, BOOL *)': '@Block("(,@ByVal,)") VoidBlock3<NSObject, NSRange, BytePtr>'
+    'void (^)(id, NSUInteger, BOOL *)': '@Block("(,@MachineSizedUInt,)") VoidBlock3<NSObject, Long, BytePtr>'
+    'void (^)(NSCachedURLResponse *)': '@Block VoidBlock1<NSCachedURLResponse>'
+    'void (^)(NSData *)': '@Block VoidBlock1<NSData>'
+    'void (^)(NSData *, NSURLResponse *, NSError *)': '@Block VoidBlock3<NSData, NSURLResponse, NSError>'
+    'void (^)(NSDate *, BOOL, BOOL *)': '@Block VoidBlock3<NSDate, Boolean, BytePtr>'
     'void (^)(NSDictionary *, NSRange, BOOL *)': '@Block("(,@ByVal,)") VoidBlock3<NSDictionary<NSString, ?>, NSRange, BytePtr>'
+    'void (^)(NSError *)': '@Block VoidBlock1<NSError>'
+    'void (^)(NSFileHandle *)': '@Block VoidBlock1<NSFileHandle>'
+    'void (^)(NSInputStream *)': '@Block VoidBlock1<NSInputStream>'
+    'void (^)(NSNotification *)': '@Block VoidBlock1<NSNotification>'
+    'void (^)(NSRange, BOOL *)': '@Block("(@ByVal,)") VoidBlock2<NSRange, BytePtr>'
+    'void (^)(NSString *, BOOL *)':
+    'void (^)(NSTextCheckingResult *, NSMatchingFlags, BOOL *)': '@Block VoidBlock3<NSTextCheckingResult, NSMatchingFlags, BytePtr>'
+    'void (^)(NSUInteger, BOOL *)': '@Block("(@MachineSizedUInt,)") VoidBlock2<Long, BytePtr>'
+    'void (^)(NSURL *)': '@Block VoidBlock1<NSURL>'
+    'void (^)(NSURL *, NSURL *)': '@Block VoidBlock2<NSURL, NSURL>'
+    'void (^)(NSURL *, NSURLResponse *, NSError *)': '@Block VoidBlock3<NSURL, NSURLResponse, NSError>'
+    'void (^)(NSURLRequest *)': '@Block VoidBlock1<NSURLRequest>'
+    'void (^)(NSURLResponse *, NSData *, NSError *)': '@Block VoidBlock3<NSURLResponse, NSData, NSError>'
+    'void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential *)': '@Block VoidBlock2<NSURLSessionAuthChallengeDisposition, NSURLCredential>'
+    'void (^)(NSURLSessionResponseDisposition)': '@Block VoidBlock1<NSURLSessionResponseDisposition>'
+    'void (^)(void (^)(void))': '@Block("(@Block)") VoidBlock1<Runnable>'
 
 enums:
     NSActivityOptions: {}
@@ -465,7 +486,16 @@ classes:
                 return_type: T
     NSError: {}
     NSException: {}
-    NSExpression: {}
+    NSExpression:
+        methods:
+            '+expressionForBlock:arguments:':
+                name: create
+                parameters:
+                    block:
+                        type: '@Block Block3<NSObject, NSArray<NSExpression>, NSMutableDictionary<?, ?>, NSObject>'
+            '-expressionBlock':
+                name: getExpressionBlock
+                return_type: '@Block Block3<NSObject, NSArray<NSExpression>, NSMutableDictionary<?, ?>, NSObject>'
     NSFileCoordinator: {}
     NSFileHandle: {}
     NSFileManager:
@@ -520,7 +550,13 @@ classes:
                 name: getDefaultClass
             '+setClass:forClassName:':
                 name: setDefaultClass
-    NSLinguisticTagger: {}
+    NSLinguisticTagger:
+        methods:
+            '-enumerateTagsInRange:scheme:options:usingBlock:':
+                parameters:
+                    block:
+                        type: '@Block("(,@ByVal,@ByVal,)") VoidBlock4<String, NSRange, NSRange, BytePtr>'
+
     NSLocale:
         skip_def_constructor: true
         methods:
@@ -965,7 +1001,14 @@ classes:
     NSPort: {}
     NSPortMessage:
         extends: NSObject
-    NSPredicate: {}
+    NSPredicate:
+        methods:
+            '+predicateWithBlock:':
+                name: create
+                parameters:
+                    block:
+                        type: '@Block Block2<NSObject, NSDictionary<NSString, ?>, Boolean>'
+
     NSProcessInfo:
         methods:
             "-operatingSystem":
@@ -1099,7 +1142,14 @@ classes:
     NSURLProtocol: {}
     NSURLRequest: {}
     NSURLResponse: {}
-    NSURLSession: {}
+    NSURLSession:
+        methods:
+            '-getTasksWithCompletionHandler:':
+                name: getTasks
+                parameters:
+                    completionHandler:
+                        type: '@Block VoidBlock3<NSArray<NSURLSessionDataTask>, NSArray<NSURLSessionUploadTask>, NSArray<NSURLSessionDownloadTask>>'
+
     NSURLSessionConfiguration: {}
     NSURLSessionDataTask: {}
     NSURLSessionDownloadTask: {}

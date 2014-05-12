@@ -70,7 +70,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "flushWithCompletionHandler:")
     public native void flushWithCompletionHandler$(@Block Runnable completionHandler);
     @Method(selector = "getTasksWithCompletionHandler:")
-    public native void getTasksWithCompletionHandler$(ObjCBlock completionHandler);
+    public native void getTasks(@Block VoidBlock3<NSArray<NSURLSessionDataTask>, NSArray<NSURLSessionUploadTask>, NSArray<NSURLSessionDownloadTask>> completionHandler);
     @Method(selector = "dataTaskWithRequest:")
     public native NSURLSessionDataTask dataTaskWithRequest$(NSURLRequest request);
     @Method(selector = "dataTaskWithURL:")
@@ -94,19 +94,19 @@ import org.robovm.apple.security.*;
     @Method(selector = "sessionWithConfiguration:delegate:delegateQueue:")
     public static native NSURLSession sessionWithConfiguration$delegate$delegateQueue$(NSURLSessionConfiguration configuration, NSURLSessionDelegate delegate, NSOperationQueue queue);
     @Method(selector = "dataTaskWithRequest:completionHandler:")
-    public native NSURLSessionDataTask dataTaskWithRequest$completionHandler$(NSURLRequest request, ObjCBlock completionHandler);
+    public native NSURLSessionDataTask dataTaskWithRequest$completionHandler$(NSURLRequest request, @Block VoidBlock3<NSData, NSURLResponse, NSError> completionHandler);
     @Method(selector = "dataTaskWithURL:completionHandler:")
-    public native NSURLSessionDataTask dataTaskWithURL$completionHandler$(NSURL url, ObjCBlock completionHandler);
+    public native NSURLSessionDataTask dataTaskWithURL$completionHandler$(NSURL url, @Block VoidBlock3<NSData, NSURLResponse, NSError> completionHandler);
     @Method(selector = "uploadTaskWithRequest:fromFile:completionHandler:")
-    public native NSURLSessionUploadTask uploadTaskWithRequest$fromFile$completionHandler$(NSURLRequest request, NSURL fileURL, ObjCBlock completionHandler);
+    public native NSURLSessionUploadTask uploadTaskWithRequest$fromFile$completionHandler$(NSURLRequest request, NSURL fileURL, @Block VoidBlock3<NSData, NSURLResponse, NSError> completionHandler);
     @Method(selector = "uploadTaskWithRequest:fromData:completionHandler:")
-    public native NSURLSessionUploadTask uploadTaskWithRequest$fromData$completionHandler$(NSURLRequest request, NSData bodyData, ObjCBlock completionHandler);
+    public native NSURLSessionUploadTask uploadTaskWithRequest$fromData$completionHandler$(NSURLRequest request, NSData bodyData, @Block VoidBlock3<NSData, NSURLResponse, NSError> completionHandler);
     @Method(selector = "downloadTaskWithRequest:completionHandler:")
-    public native NSURLSessionDownloadTask downloadTaskWithRequest$completionHandler$(NSURLRequest request, ObjCBlock completionHandler);
+    public native NSURLSessionDownloadTask downloadTaskWithRequest$completionHandler$(NSURLRequest request, @Block VoidBlock3<NSURL, NSURLResponse, NSError> completionHandler);
     @Method(selector = "downloadTaskWithURL:completionHandler:")
-    public native NSURLSessionDownloadTask downloadTaskWithURL$completionHandler$(NSURL url, ObjCBlock completionHandler);
+    public native NSURLSessionDownloadTask downloadTaskWithURL$completionHandler$(NSURL url, @Block VoidBlock3<NSURL, NSURLResponse, NSError> completionHandler);
     @Method(selector = "downloadTaskWithResumeData:completionHandler:")
-    public native NSURLSessionDownloadTask downloadTaskWithResumeData$completionHandler$(NSData resumeData, ObjCBlock completionHandler);
+    public native NSURLSessionDownloadTask downloadTaskWithResumeData$completionHandler$(NSData resumeData, @Block VoidBlock3<NSURL, NSURLResponse, NSError> completionHandler);
     /**
      * @since Available in iOS 7.0 and later.
      * @deprecated Deprecated in iOS 7.0.
@@ -120,6 +120,6 @@ import org.robovm.apple.security.*;
      */
     @Deprecated
     @Method(selector = "dataTaskWithHTTPGetRequest:completionHandler:")
-    public native NSURLSessionDataTask dataTaskWithHTTPGetRequest$completionHandler$(NSURL url, ObjCBlock completionHandler);
+    public native NSURLSessionDataTask dataTaskWithHTTPGetRequest$completionHandler$(NSURL url, @Block VoidBlock3<NSData, NSURLResponse, NSError> completionHandler);
     /*</methods>*/
 }

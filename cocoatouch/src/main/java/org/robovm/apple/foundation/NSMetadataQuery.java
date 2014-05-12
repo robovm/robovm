@@ -122,12 +122,12 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "enumerateResultsUsingBlock:")
-    public native void enumerateResultsUsingBlock$(ObjCBlock block);
+    public native void enumerateResultsUsingBlock$(@Block("(,@MachineSizedUInt,)") VoidBlock3<NSObject, Long, BytePtr> block);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "enumerateResultsWithOptions:usingBlock:")
-    public native void enumerateResultsWithOptions$usingBlock$(NSEnumerationOptions opts, ObjCBlock block);
+    public native void enumerateResultsWithOptions$usingBlock$(NSEnumerationOptions opts, @Block("(,@MachineSizedUInt,)") VoidBlock3<NSObject, Long, BytePtr> block);
     @Method(selector = "results")
     public native NSArray<?> results();
     @Method(selector = "indexOfResult:")

@@ -51,7 +51,7 @@ import org.robovm.apple.security.*;
     @NotImplemented("URLSession:didBecomeInvalidWithError:")
     public void URLSession$didBecomeInvalidWithError$(NSURLSession session, NSError error) { throw new UnsupportedOperationException(); }
     @NotImplemented("URLSession:didReceiveChallenge:completionHandler:")
-    public void URLSession$didReceiveChallenge$completionHandler$(NSURLSession session, NSURLAuthenticationChallenge challenge, ObjCBlock completionHandler) { throw new UnsupportedOperationException(); }
+    public void URLSession$didReceiveChallenge$completionHandler$(NSURLSession session, NSURLAuthenticationChallenge challenge, @Block VoidBlock2<NSURLSessionAuthChallengeDisposition, NSURLCredential> completionHandler) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 7.0 and later.
      */

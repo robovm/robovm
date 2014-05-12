@@ -47,13 +47,13 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "URLSession:dataTask:didReceiveResponse:completionHandler:")
-    void URLSession$dataTask$didReceiveResponse$completionHandler$(NSURLSession session, NSURLSessionDataTask dataTask, NSURLResponse response, ObjCBlock completionHandler);
+    void URLSession$dataTask$didReceiveResponse$completionHandler$(NSURLSession session, NSURLSessionDataTask dataTask, NSURLResponse response, @Block VoidBlock1<NSURLSessionResponseDisposition> completionHandler);
     @Method(selector = "URLSession:dataTask:didBecomeDownloadTask:")
     void URLSession$dataTask$didBecomeDownloadTask$(NSURLSession session, NSURLSessionDataTask dataTask, NSURLSessionDownloadTask downloadTask);
     @Method(selector = "URLSession:dataTask:didReceiveData:")
     void URLSession$dataTask$didReceiveData$(NSURLSession session, NSURLSessionDataTask dataTask, NSData data);
     @Method(selector = "URLSession:dataTask:willCacheResponse:completionHandler:")
-    void URLSession$dataTask$willCacheResponse$completionHandler$(NSURLSession session, NSURLSessionDataTask dataTask, NSCachedURLResponse proposedResponse, ObjCBlock completionHandler);
+    void URLSession$dataTask$willCacheResponse$completionHandler$(NSURLSession session, NSURLSessionDataTask dataTask, NSCachedURLResponse proposedResponse, @Block VoidBlock1<NSCachedURLResponse> completionHandler);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

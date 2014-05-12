@@ -95,7 +95,7 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "enumerateTagsInRange:scheme:options:usingBlock:")
-    public native void enumerateTagsInRange$scheme$options$usingBlock$(@ByVal NSRange range, String tagScheme, NSLinguisticTaggerOptions opts, ObjCBlock block);
+    public native void enumerateTagsInRange$scheme$options$usingBlock$(@ByVal NSRange range, String tagScheme, NSLinguisticTaggerOptions opts, @Block("(,@ByVal,@ByVal,)") VoidBlock4<String, NSRange, NSRange, BytePtr> block);
     /**
      * @since Available in iOS 5.0 and later.
      */

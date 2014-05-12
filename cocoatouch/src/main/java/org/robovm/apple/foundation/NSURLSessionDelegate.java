@@ -49,7 +49,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "URLSession:didBecomeInvalidWithError:")
     void URLSession$didBecomeInvalidWithError$(NSURLSession session, NSError error);
     @Method(selector = "URLSession:didReceiveChallenge:completionHandler:")
-    void URLSession$didReceiveChallenge$completionHandler$(NSURLSession session, NSURLAuthenticationChallenge challenge, ObjCBlock completionHandler);
+    void URLSession$didReceiveChallenge$completionHandler$(NSURLSession session, NSURLAuthenticationChallenge challenge, @Block VoidBlock2<NSURLSessionAuthChallengeDisposition, NSURLCredential> completionHandler);
     /**
      * @since Available in iOS 7.0 and later.
      */

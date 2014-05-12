@@ -291,7 +291,7 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "enumerateDatesStartingAfterDate:matchingComponents:options:usingBlock:")
-    public native void enumerateDatesStartingAfterDate$matchingComponents$options$usingBlock$(NSDate start, NSDateComponents comps, NSCalendarOptions opts, ObjCBlock block);
+    public native void enumerateDatesStartingAfterDate$matchingComponents$options$usingBlock$(NSDate start, NSDateComponents comps, NSCalendarOptions opts, @Block VoidBlock3<NSDate, Boolean, BytePtr> block);
     /**
      * @since Available in iOS 7.0 and later.
      */

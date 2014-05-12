@@ -76,6 +76,6 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "predicateWithBlock:")
-    public static native NSPredicate predicateWithBlock$(ObjCBlock block);
+    public static native NSPredicate create(@Block Block2<NSObject, NSDictionary<NSString, ?>, Boolean> block);
     /*</methods>*/
 }

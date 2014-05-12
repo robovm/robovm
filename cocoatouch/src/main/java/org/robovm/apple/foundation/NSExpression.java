@@ -93,7 +93,7 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "expressionBlock")
-    public native ObjCBlock expressionBlock(NSObject p0, NSArray<?> p1, NSMutableDictionary<?, ?> p2);
+    public native @Block Block3<NSObject, NSArray<NSExpression>, NSMutableDictionary<?, ?>, NSObject> getExpressionBlock(NSObject p0, NSArray<?> p1, NSMutableDictionary<?, ?> p2);
     @Method(selector = "expressionValueWithObject:context:")
     public native NSObject expressionValueWithObject$context$(NSObject object, NSMutableDictionary<?, ?> context);
     /**
@@ -155,6 +155,6 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "expressionForBlock:arguments:")
-    public static native NSExpression expressionForBlock$arguments$(ObjCBlock block, NSArray<?> arguments);
+    public static native NSExpression create(@Block Block3<NSObject, NSArray<NSExpression>, NSMutableDictionary<?, ?>, NSObject> block, NSArray<?> arguments);
     /*</methods>*/
 }

@@ -104,6 +104,6 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "sendAsynchronousRequest:queue:completionHandler:")
-    public static native void sendAsynchronousRequest$queue$completionHandler$(NSURLRequest request, NSOperationQueue queue, ObjCBlock handler);
+    public static native void sendAsynchronousRequest$queue$completionHandler$(NSURLRequest request, NSOperationQueue queue, @Block VoidBlock3<NSURLResponse, NSData, NSError> handler);
     /*</methods>*/
 }

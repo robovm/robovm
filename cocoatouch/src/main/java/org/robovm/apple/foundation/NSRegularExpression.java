@@ -65,7 +65,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "escapedPatternForString:")
     public static native String escapedPatternForString$(String string);
     @Method(selector = "enumerateMatchesInString:options:range:usingBlock:")
-    public native void enumerateMatchesInString$options$range$usingBlock$(String string, NSMatchingOptions options, @ByVal NSRange range, ObjCBlock block);
+    public native void enumerateMatchesInString$options$range$usingBlock$(String string, NSMatchingOptions options, @ByVal NSRange range, @Block VoidBlock3<NSTextCheckingResult, NSMatchingFlags, BytePtr> block);
     @Method(selector = "matchesInString:options:range:")
     public native NSArray<?> matchesInString$options$range$(String string, NSMatchingOptions options, @ByVal NSRange range);
     @Method(selector = "numberOfMatchesInString:options:range:")

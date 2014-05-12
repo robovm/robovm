@@ -94,62 +94,62 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "enumerateIndexesUsingBlock:")
-    public native void enumerateIndexesUsingBlock$(ObjCBlock block);
+    public native void enumerateIndexesUsingBlock$(@Block("(@MachineSizedUInt,)") VoidBlock2<Long, BytePtr> block);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "enumerateIndexesWithOptions:usingBlock:")
-    public native void enumerateIndexesWithOptions$usingBlock$(NSEnumerationOptions opts, ObjCBlock block);
+    public native void enumerateIndexesWithOptions$usingBlock$(NSEnumerationOptions opts, @Block("(@MachineSizedUInt,)") VoidBlock2<Long, BytePtr> block);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "enumerateIndexesInRange:options:usingBlock:")
-    public native void enumerateIndexesInRange$options$usingBlock$(@ByVal NSRange range, NSEnumerationOptions opts, ObjCBlock block);
+    public native void enumerateIndexesInRange$options$usingBlock$(@ByVal NSRange range, NSEnumerationOptions opts, @Block("(@MachineSizedUInt,)") VoidBlock2<Long, BytePtr> block);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "indexPassingTest:")
-    public native @MachineSizedUInt long indexPassingTest$(ObjCBlock predicate);
+    public native @MachineSizedUInt long indexPassingTest$(@Block Block2<NSObject, BytePtr, Boolean> predicate);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "indexWithOptions:passingTest:")
-    public native @MachineSizedUInt long indexWithOptions$passingTest$(NSEnumerationOptions opts, ObjCBlock predicate);
+    public native @MachineSizedUInt long indexWithOptions$passingTest$(NSEnumerationOptions opts, @Block Block2<NSObject, BytePtr, Boolean> predicate);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "indexInRange:options:passingTest:")
-    public native @MachineSizedUInt long indexInRange$options$passingTest$(@ByVal NSRange range, NSEnumerationOptions opts, ObjCBlock predicate);
+    public native @MachineSizedUInt long indexInRange$options$passingTest$(@ByVal NSRange range, NSEnumerationOptions opts, @Block Block2<NSObject, BytePtr, Boolean> predicate);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "indexesPassingTest:")
-    public native NSIndexSet indexesPassingTest$(ObjCBlock predicate);
+    public native NSIndexSet indexesPassingTest$(@Block Block2<NSObject, BytePtr, Boolean> predicate);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "indexesWithOptions:passingTest:")
-    public native NSIndexSet indexesWithOptions$passingTest$(NSEnumerationOptions opts, ObjCBlock predicate);
+    public native NSIndexSet indexesWithOptions$passingTest$(NSEnumerationOptions opts, @Block Block2<NSObject, BytePtr, Boolean> predicate);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "indexesInRange:options:passingTest:")
-    public native NSIndexSet indexesInRange$options$passingTest$(@ByVal NSRange range, NSEnumerationOptions opts, ObjCBlock predicate);
+    public native NSIndexSet indexesInRange$options$passingTest$(@ByVal NSRange range, NSEnumerationOptions opts, @Block Block2<NSObject, BytePtr, Boolean> predicate);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "enumerateRangesUsingBlock:")
-    public native void enumerateRangesUsingBlock$(ObjCBlock block);
+    public native void enumerateRangesUsingBlock$(@Block("(@ByVal,)") VoidBlock2<NSRange, BytePtr> block);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "enumerateRangesWithOptions:usingBlock:")
-    public native void enumerateRangesWithOptions$usingBlock$(NSEnumerationOptions opts, ObjCBlock block);
+    public native void enumerateRangesWithOptions$usingBlock$(NSEnumerationOptions opts, @Block("(@ByVal,)") VoidBlock2<NSRange, BytePtr> block);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "enumerateRangesInRange:options:usingBlock:")
-    public native void enumerateRangesInRange$options$usingBlock$(@ByVal NSRange range, NSEnumerationOptions opts, ObjCBlock block);
+    public native void enumerateRangesInRange$options$usingBlock$(@ByVal NSRange range, NSEnumerationOptions opts, @Block("(@ByVal,)") VoidBlock2<NSRange, BytePtr> block);
     @Method(selector = "indexSet")
     public static native NSIndexSet indexSet();
     @Method(selector = "indexSetWithIndex:")

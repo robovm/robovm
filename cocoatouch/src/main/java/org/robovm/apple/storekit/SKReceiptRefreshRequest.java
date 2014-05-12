@@ -59,22 +59,6 @@ import org.robovm.apple.accounts.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="SKReceiptPropertyIsExpired", optional=true)
-    public static native NSString PropertyIsExpired();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="SKReceiptPropertyIsRevoked", optional=true)
-    public static native NSString PropertyIsRevoked();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="SKReceiptPropertyIsVolumePurchase", optional=true)
-    public static native NSString PropertyIsVolumePurchase();
-    
-    /**
      * @since Available in iOS 7.1 and later.
      */
     @Bridge(symbol="SKTerminateForInvalidReceipt", optional=true)

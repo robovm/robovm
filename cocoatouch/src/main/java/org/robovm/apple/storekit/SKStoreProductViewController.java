@@ -59,12 +59,6 @@ import org.robovm.apple.accounts.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    @GlobalValue(symbol="SKStoreProductParameterITunesItemIdentifier", optional=true)
-    public static native NSString ParameterITunesItemIdentifier();
-    
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     @Method(selector = "loadProductWithParameters:completionBlock:")
     public native void loadProduct(NSDictionary<NSString, ?> parameters, @Block VoidBlock2<Boolean, NSError> block);
     /*</methods>*/

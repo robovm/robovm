@@ -42,7 +42,6 @@ import org.robovm.apple.security.*;
     /*<bind>*/static { ObjCRuntime.bind(NSNotificationQueue.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public NSNotificationQueue() {}
     protected NSNotificationQueue(SkipInit skipInit) { super(skipInit); }
     public NSNotificationQueue(NSNotificationCenter notificationCenter) { super((SkipInit) null); initObject(initWithNotificationCenter$(notificationCenter)); }
     /*</constructors>*/
@@ -54,12 +53,12 @@ import org.robovm.apple.security.*;
     @Method(selector = "initWithNotificationCenter:")
     protected native @Pointer long initWithNotificationCenter$(NSNotificationCenter notificationCenter);
     @Method(selector = "enqueueNotification:postingStyle:")
-    public native void enqueueNotification$postingStyle$(NSNotification notification, NSPostingStyle postingStyle);
+    public native void enqueueNotification(NSNotification notification, NSPostingStyle postingStyle);
     @Method(selector = "enqueueNotification:postingStyle:coalesceMask:forModes:")
-    public native void enqueueNotification$postingStyle$coalesceMask$forModes$(NSNotification notification, NSPostingStyle postingStyle, NSNotificationCoalescing coalesceMask, NSArray<?> modes);
+    public native void enqueueNotification(NSNotification notification, NSPostingStyle postingStyle, NSNotificationCoalescing coalesceMask, NSArray<NSString> modes);
     @Method(selector = "dequeueNotificationsMatching:coalesceMask:")
-    public native void dequeueNotificationsMatching$coalesceMask$(NSNotification notification, NSNotificationCoalescing coalesceMask);
+    public native void dequeueNotificationsMatching(NSNotification notification, NSNotificationCoalescing coalesceMask);
     @Method(selector = "defaultQueue")
-    public static native NSObject defaultQueue();
+    public static native NSObject getDefaultQueue();
     /*</methods>*/
 }

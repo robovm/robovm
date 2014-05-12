@@ -42,7 +42,6 @@ import org.robovm.apple.security.*;
     /*<bind>*/static { ObjCRuntime.bind(NSException.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public NSException() {}
     protected NSException(SkipInit skipInit) { super(skipInit); }
     public NSException(String aName, String aReason, NSDictionary<?, ?> aUserInfo) { super((SkipInit) null); initObject(initWithName$reason$userInfo$(aName, aReason, aUserInfo)); }
     /*</constructors>*/
@@ -50,34 +49,48 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    private static VoidBlock1<NSException> handler = null;
+    
+    @Callback
+    private static void handler(NSException e) {
+        handler.invoke(e);
+    }
+    
+    public static void setUncaughtExceptionHandler(VoidBlock1<NSException> handler) {
+        if (handler == null) {
+            throw new NullPointerException("handler");
+        }
+        NSException.handler = handler;
+        try {
+            setUncaughtExceptionHandler(new FunctionPtr(NSException.class.getDeclaredMethod("handler", NSException.class)));
+        } catch (Throwable t) {
+            throw new Error(t);
+        }
+    }
+    
     /*<methods>*/
-    @Bridge(symbol="NSGetUncaughtExceptionHandler", optional=true)
-    public static native FunctionPtr getUncaughtExceptionHandler();
     @Bridge(symbol="NSSetUncaughtExceptionHandler", optional=true)
-    public static native void setUncaughtExceptionHandler(FunctionPtr p0);
+    private static native void setUncaughtExceptionHandler(FunctionPtr p0);
     
     @Method(selector = "initWithName:reason:userInfo:")
     protected native @Pointer long initWithName$reason$userInfo$(String aName, String aReason, NSDictionary<?, ?> aUserInfo);
     @Method(selector = "name")
-    public native String name();
+    public native String getName();
     @Method(selector = "reason")
-    public native String reason();
+    public native String getReason();
     @Method(selector = "userInfo")
-    public native NSDictionary<?, ?> userInfo();
+    public native NSDictionary<?, ?> getUserInfo();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "callStackReturnAddresses")
-    public native NSArray<?> callStackReturnAddresses();
+    public native NSArray<NSNumber> getCallStackReturnAddresses();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "callStackSymbols")
-    public native NSArray<?> callStackSymbols();
-    @Method(selector = "raise")
-    public native void raise();
-    @Method(selector = "exceptionWithName:reason:userInfo:")
-    public static native NSException exceptionWithName$reason$userInfo$(String name, String reason, NSDictionary<?, ?> userInfo);
+    public native NSArray<NSString> getCallStackSymbols();
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

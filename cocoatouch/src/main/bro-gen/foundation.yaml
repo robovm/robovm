@@ -243,13 +243,22 @@ classes:
             '-isEqualToAttributedString:':
                 visibility: protected
 
-    NSAutoreleasePool:
+    NSAutoreleasePool: # DONE
         methods:
             '-drain': {}
             '+.*': {exclude: true}
             '-.*': {exclude: true}
-    NSBlockOperation: {}
-    NSBundle:
+    NSBlockOperation: # DONE
+        skip_def_constructor: true
+        methods:
+            '+blockOperationWithBlock:':
+                name: create
+            '-addExecutionBlock:':
+                trim_after_first_colon: true
+            '-executionBlocks': # We cannot marshal NSArray<BlockType>
+                exclude: true
+
+    NSBundle: # DONE
         methods:
             '+(mainBundle)':
                 property: true
@@ -270,14 +279,14 @@ classes:
             '-(executableArchitectures)':
                 property: true
                 return_type: NSArray<NSNumber>
-            '\+pathForResource:ofType:inDirectory:':
+            '+pathForResource:ofType:inDirectory:':
                 name: findResourcePathInBundlePath
-            '\+pathsForResourcesOfType:inDirectory:':
+            '+pathsForResourcesOfType:inDirectory:':
                 name: findResourcesPathsInBundlePath
                 return_type: NSArray<NSString>
-            '\+URLForResource:withExtension:subdirectory:inBundleWithURL:':
+            '+URLForResource:withExtension:subdirectory:inBundleWithURL:':
                 name: findResourceURLInBundleURL
-            '\+URLsForResourcesWithExtension:subdirectory:inBundleWithURL:':
+            '+URLsForResourcesWithExtension:subdirectory:inBundleWithURL:':
                 name: findResourceURLsInBundleURL
                 return_type: NSArray<NSString>
             '+preferredLocalizationsFromArray:.*':
@@ -331,8 +340,13 @@ classes:
             '+.*': {exclude: true}
             '-.*': {exclude: true}
 
-    NSByteCountFormatter: {}
-    NSCache:
+    NSByteCountFormatter: # DONE
+        methods:
+            '+stringFromByteCount:countStyle:':
+                name: format
+            '-stringFromByteCount:':
+                name: format
+    NSCache: # DONE
         methods:
             '-setDelegate:':
                 property: true
@@ -344,9 +358,21 @@ classes:
                 return_type: NSCacheDelegate
             '-(name|totalCostLimit|countLimit|evictsObjectsWithDiscardedContent)':
                 property: true
-    NSCachedURLResponse:
+            '-objectForKey:':
+                name: getObject
+            '-removeObjectForKey:':
+                name: removeObject
+            '-setObject:forKey:':
+                trim_after_first_colon: true
+            '-setObject:forKey:cost:':
+                trim_after_first_colon: true
+
+    NSCachedURLResponse: # DONE
         methods:
+            '-(data|response|userInfo)':
+                property: true
             "-storagePolicy":
+                property: true
                 return_type: NSURLCacheStoragePolicy
             "-initWithResponse:data:userInfo:storagePolicy:":
                 parameters:
@@ -357,14 +383,16 @@ classes:
     NSCoder: {}
     NSComparisonPredicate: {}
     NSCompoundPredicate: {}
-    NSCondition:
+    NSCondition: # DONE
         methods:
             "-wait":
                 name: await
             "-waitUntilDate:":
                 name: await
+            '-name':
+                property: true
     NSConditionLock: {}
-    NSCountedSet:
+    NSCountedSet: # DONE
         methods:
             '-countForObject:':
                 visibility: protected
@@ -372,7 +400,7 @@ classes:
             '+.*': {exclude: true}
             '-.*': {exclude: true}
 
-    NSData:
+    NSData: # DONE
         methods:
 
             '-initWithData:':
@@ -435,7 +463,7 @@ classes:
     NSDateFormatter: {}
     NSDecimalNumber: {}
     NSDecimalNumberHandler: {}
-    NSDictionary:
+    NSDictionary: # DONE
         methods:
             "+dictionaryWithContentsOfFile:":
                 visibility: protected
@@ -479,13 +507,63 @@ classes:
             '+.*': {exclude: true}
             '-.*': {exclude: true}
 
-    NSDirectoryEnumerator: {}
-    NSEnumerator:
+    NSDirectoryEnumerator: # DONE
+        skip_def_constructor: true
+        methods:
+            '-fileAttributes':
+                property: true
+                return_type: 'NSDictionary<NSString, ?>'
+            '-directoryAttributes':
+                property: true
+                return_type: 'NSDictionary<NSString, ?>'
+            '-level':
+                property: true
+    NSEnumerator: # DONE
         methods:
             '-nextObject':
                 return_type: T
-    NSError: {}
-    NSException: {}
+            '-allObjects':
+                return_type: 'NSArray<T>'
+    NSError: # DONE
+        skip_def_constructor: true
+        methods:
+            '+errorWithDomain:code:userInfo:':
+                exclude: true
+            '-initWithDomain:code:userInfo:':
+                parameters:
+                    dict:
+                        type: 'NSDictionary<NSString, ?>'
+            '-code':
+                property: true
+            '-domain':
+                property: true
+                return_type: NSString
+            '-(helpAnchor|localizedDescription|localizedFailureReason|localizedRecoverySuggestion)':
+                property: true
+            '-localizedRecoveryOptions':
+                property: true
+                return_type: 'NSArray<NSString>'
+            '-recoveryAttempter':
+                property: true
+            '-userInfo':
+                property: true
+
+    NSException: # DONE
+        skip_def_constructor: true
+        methods:
+            '+exceptionWithName:reason:userInfo:': {exclude: true}
+            '-raise': {exclude: true}
+            '-callStackSymbols':
+                property: true
+                return_type: 'NSArray<NSString>'
+            '-callStackReturnAddresses':
+                property: true
+                return_type: 'NSArray<NSNumber>'
+            '-(name|reason)':
+                property: true
+            '-userInfo':
+                property: true
+
     NSExpression:
         methods:
             '+expressionForBlock:arguments:':
@@ -515,8 +593,10 @@ classes:
     NSHTTPCookie: {}
     NSHTTPCookieStorage: {}
     NSHTTPURLResponse: {}
-    NSIndexPath:
+    NSIndexPath: # DONE
         methods:
+            '+indexPathWithIndex:': {exclude: true}
+            '+indexPathWithIndexes:length:': {exclude: true}
             "-initWithIndex:":
             "-length":
                 name: getLength
@@ -526,6 +606,13 @@ classes:
                 name: addIndex
             "-indexPathByRemovingLastIndex":
                 name: removeLastIndex
+            '-compare:':
+                trim_after_first_colon: true
+            '-getIndexes:':
+                visibility: private
+            '-initWithIndexes:length:':
+                constructor: false
+                visibility: private
 
             '-init': {exclude: true}
 
@@ -774,23 +861,85 @@ classes:
 
             '-init': {exclude: true}
 
-    NSNotification:
+    NSNotification: # DONE
+        skip_def_constructor: true
         methods:
+            '+notificationWithName:object:.*': {exclude: true}
             '-init': {exclude: true}
-    NSNotificationCenter:
+            '-initWithName:object:userInfo:':
+                parameters:
+                    name:
+                        type: NSString
+                    object:
+                        type: NSObject
+                    userInfo:
+                        type: 'NSDictionary<NSString, ?>'
+            '-name':
+                property: true
+                return_type: NSString
+            '-object':
+                property: true
+            '-userInfo':
+                property: true
+                return_type: 'NSDictionary<NSString, ?>'
+    NSNotificationCenter: # DONE
         methods:
+            '+defaultCenter':
+                property: true
             '-init': {exclude: true}
-    NSNotificationQueue:
+            '-addObserver:selector:name:object:':
+                trim_after_first_colon: true
+                parameters:
+                    aName:
+                        type: NSString
+            '-addObserverForName:object:queue:usingBlock:':
+                name: addObserver
+                parameters:
+                    name:
+                        type: NSString
+            '-removeObserver:':
+                trim_after_first_colon: true
+            '-removeObserver:name:object:':
+                trim_after_first_colon: true
+                parameters:
+                    aName:
+                        type: NSString
+            '-postNotification:':
+                trim_after_first_colon: true
+            '-postNotificationName:object:':
+                name: postNotification
+                parameters:
+                    aName:
+                        type: NSString
+            '-postNotificationName:object:userInfo:':
+                name: postNotification
+                parameters:
+                    aName:
+                        type: NSString
+                    aUserInfo:
+                        type: 'NSDictionary<NSString, ?>'
+
+    NSNotificationQueue: # DONE
+        skip_def_constructor: true
         methods:
-            "-dequeueNotificationsMatching:coalesceMask:":
+            '+defaultQueue':
+                property: true
+            '-dequeueNotificationsMatching:coalesceMask:':
+                trim_after_first_colon: true
                 parameters:
                     coalesceMask:
                         type: NSNotificationCoalescing
-            "-enqueueNotification:postingStyle:coalesceMask:forModes:":
+            '-enqueueNotification:postingStyle:':
+                trim_after_first_colon: true
+            '-enqueueNotification:postingStyle:coalesceMask:forModes:':
+                trim_after_first_colon: true
                 parameters:
                     coalesceMask:
                         type: NSNotificationCoalescing
-    NSNull:
+                    modes:
+                        type: 'NSArray<NSString>'
+    NSNull: # DONE
+        skip_def_constructor: true
         methods:
             "+null":
                 name: getNull
@@ -914,10 +1063,22 @@ classes:
             '\+.*': { exclude: true }
             '-.*': { exclude: true }
 
-    NSOperation:
+    NSOperation: # DONE
         methods:
-
             '-init': {exclude: true}
+            '-completionBlock':
+                property: true
+            '-addDependency:':
+                trim_after_first_colon: true
+            '-removeDependency:':
+                trim_after_first_colon: true
+            '-dependencies':
+                property: true
+                return_type: 'NSArray<NSOperation>'
+            '-queuePriority':
+                property: true
+            '-threadPriority':
+                property: true
 
     NSOperationQueue: # DONE
         methods:
@@ -1067,29 +1228,54 @@ classes:
             '-.*': {exclude: true}
 
     NSSortDescriptor: {}
-    NSStream:
+    NSStream: # DONE
         methods:
-            '-close':
-                name: closeStream
-            '-open':
-                name: openStream
-    NSString:
+            '-(delegate|streamStatus|streamError)':
+                property: true
+            '-propertyForKey:':
+                name: getProperty
+                parameters:
+                    key:
+                        type: NSString
+            '-setProperty:forKey:':
+                trim_after_first_colon: true
+                parameters:
+                    key:
+                        type: NSString
+            '-removeFromRunLoop:forMode:':
+                trim_after_first_colon: true
+                parameters:
+                    mode:
+                        type: NSString
+            '-scheduleInRunLoop:forMode:':
+                trim_after_first_colon: true
+                parameters:
+                    mode:
+                        type: NSString
+
+    NSString: # DONE
         methods:
             "-initWithCharactersNoCopy:length:freeWhenDone:":
+                constructor: false
                 visibility: private
                 parameters:
                     characters:
                         type: "@Pointer long"
             '-init.*': { exclude: true }
             "-characterAtIndex:":
+                visibility: private
             "-length":
+                visibility: private
             "-getCharacters:range:":
                 visibility: private
                 parameters:
                     buffer:
                         type: "@Pointer long"
+            '+.*': {exclude: true}
+            '-.*': {exclude: true}
+
     NSTextCheckingResult: {}
-    NSThread:
+    NSThread: # DONE
         methods:
             '+callStackReturnAddresses': { exclude: true }
             '+isMainThread': { exclude: true }
@@ -1160,7 +1346,7 @@ classes:
 
             '-init.*': {exclude: true}
 
-    NSUUID:
+    NSUUID: # DONE
         methods:
             '-initWithUUIDString:':
                 constructor: false
@@ -1257,9 +1443,12 @@ functions:
         name: "#{g[0]}"
         static: true
 
+    NS(GetUncaughtExceptionHandler):
+        exclude: true
     NS(.*UncaughtExceptionHandler):
         class: NSException
         name: "#{g[0]}"
+        visibility: private
 
     NS(.*ExtraRefCount.*):
         exclude: true

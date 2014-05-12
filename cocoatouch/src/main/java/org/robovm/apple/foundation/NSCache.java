@@ -61,13 +61,13 @@ import org.robovm.apple.security.*;
     @Method(selector = "delegate")
     public native NSCacheDelegate getDelegate();
     @Method(selector = "objectForKey:")
-    public native NSObject objectForKey$(NSObject key);
+    public native NSObject getObject(NSObject key);
     @Method(selector = "setObject:forKey:")
-    public native void setObject$forKey$(NSObject obj, NSObject key);
+    public native void setObject(NSObject obj, NSObject key);
     @Method(selector = "setObject:forKey:cost:")
-    public native void setObject$forKey$cost$(NSObject obj, NSObject key, @MachineSizedUInt long g);
+    public native void setObject(NSObject obj, NSObject key, @MachineSizedUInt long g);
     @Method(selector = "removeObjectForKey:")
-    public native void removeObjectForKey$(NSObject key);
+    public native void removeObject(NSObject key);
     @Method(selector = "removeAllObjects")
     public native void removeAllObjects();
     @Method(selector = "setTotalCostLimit:")

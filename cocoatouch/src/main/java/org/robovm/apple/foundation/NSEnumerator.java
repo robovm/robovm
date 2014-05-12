@@ -97,6 +97,6 @@ import org.robovm.apple.security.*;
     @Method(selector = "nextObject")
     public native T nextObject();
     @Method(selector = "allObjects")
-    public native NSArray<?> allObjects();
+    public native NSArray<T> allObjects();
     /*</methods>*/
 }

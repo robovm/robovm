@@ -84,8 +84,8 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "stringFromByteCount:")
-    public native String stringFromByteCount$(long byteCount);
+    public native String format(long byteCount);
     @Method(selector = "stringFromByteCount:countStyle:")
-    public static native String stringFromByteCount$countStyle$(long byteCount, NSByteCountFormatterCountStyle countStyle);
+    public static native String format(long byteCount, NSByteCountFormatterCountStyle countStyle);
     /*</methods>*/
 }

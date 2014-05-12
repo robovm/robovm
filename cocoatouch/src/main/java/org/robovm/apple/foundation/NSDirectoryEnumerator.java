@@ -42,7 +42,6 @@ import org.robovm.apple.security.*;
     /*<bind>*/static { ObjCRuntime.bind(NSDirectoryEnumerator.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public NSDirectoryEnumerator() {}
     protected NSDirectoryEnumerator(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
@@ -51,16 +50,16 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "fileAttributes")
-    public native NSDictionary<?, ?> fileAttributes();
+    public native NSDictionary<NSString, ?> getFileAttributes();
     @Method(selector = "directoryAttributes")
-    public native NSDictionary<?, ?> directoryAttributes();
+    public native NSDictionary<NSString, ?> getDirectoryAttributes();
     @Method(selector = "skipDescendents")
     public native void skipDescendents();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "level")
-    public native @MachineSizedUInt long level();
+    public native @MachineSizedUInt long getLevel();
     /**
      * @since Available in iOS 4.0 and later.
      */

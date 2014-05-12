@@ -42,9 +42,8 @@ import org.robovm.apple.security.*;
     /*<bind>*/static { ObjCRuntime.bind(NSError.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public NSError() {}
     protected NSError(SkipInit skipInit) { super(skipInit); }
-    public NSError(String domain, @MachineSizedSInt long code, NSDictionary<?, ?> dict) { super((SkipInit) null); initObject(initWithDomain$code$userInfo$(domain, code, dict)); }
+    public NSError(String domain, @MachineSizedSInt long code, NSDictionary<NSString, ?> dict) { super((SkipInit) null); initObject(initWithDomain$code$userInfo$(domain, code, dict)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -52,26 +51,24 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithDomain:code:userInfo:")
-    protected native @Pointer long initWithDomain$code$userInfo$(String domain, @MachineSizedSInt long code, NSDictionary<?, ?> dict);
+    protected native @Pointer long initWithDomain$code$userInfo$(String domain, @MachineSizedSInt long code, NSDictionary<NSString, ?> dict);
     @Method(selector = "domain")
-    public native String domain();
+    public native NSString getDomain();
     @Method(selector = "code")
-    public native @MachineSizedSInt long code();
+    public native @MachineSizedSInt long getCode();
     @Method(selector = "userInfo")
-    public native NSDictionary<?, ?> userInfo();
+    public native NSDictionary<?, ?> getUserInfo();
     @Method(selector = "localizedDescription")
-    public native String localizedDescription();
+    public native String getLocalizedDescription();
     @Method(selector = "localizedFailureReason")
-    public native String localizedFailureReason();
+    public native String getLocalizedFailureReason();
     @Method(selector = "localizedRecoverySuggestion")
-    public native String localizedRecoverySuggestion();
+    public native String getLocalizedRecoverySuggestion();
     @Method(selector = "localizedRecoveryOptions")
-    public native NSArray<?> localizedRecoveryOptions();
+    public native NSArray<NSString> getLocalizedRecoveryOptions();
     @Method(selector = "recoveryAttempter")
-    public native NSObject recoveryAttempter();
+    public native NSObject getRecoveryAttempter();
     @Method(selector = "helpAnchor")
-    public native String helpAnchor();
-    @Method(selector = "errorWithDomain:code:userInfo:")
-    public static native NSObject errorWithDomain$code$userInfo$(String domain, @MachineSizedSInt long code, NSDictionary<?, ?> dict);
+    public native String getHelpAnchor();
     /*</methods>*/
 }

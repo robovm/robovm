@@ -51,23 +51,23 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "addObserver:selector:name:object:")
-    public native void addObserver$selector$name$object$(NSObject observer, Selector aSelector, String aName, NSObject anObject);
+    public native void addObserver(NSObject observer, Selector aSelector, NSString aName, NSObject anObject);
     @Method(selector = "postNotification:")
-    public native void postNotification$(NSNotification notification);
+    public native void postNotification(NSNotification notification);
     @Method(selector = "postNotificationName:object:")
-    public native void postNotificationName$object$(String aName, NSObject anObject);
+    public native void postNotification(NSString aName, NSObject anObject);
     @Method(selector = "postNotificationName:object:userInfo:")
-    public native void postNotificationName$object$userInfo$(String aName, NSObject anObject, NSDictionary<?, ?> aUserInfo);
+    public native void postNotification(NSString aName, NSObject anObject, NSDictionary<NSString, ?> aUserInfo);
     @Method(selector = "removeObserver:")
-    public native void removeObserver$(NSObject observer);
+    public native void removeObserver(NSObject observer);
     @Method(selector = "removeObserver:name:object:")
-    public native void removeObserver$name$object$(NSObject observer, String aName, NSObject anObject);
+    public native void removeObserver(NSObject observer, NSString aName, NSObject anObject);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "addObserverForName:object:queue:usingBlock:")
-    public native NSObject addObserverForName$object$queue$usingBlock$(String name, NSObject obj, NSOperationQueue queue, @Block VoidBlock1<NSNotification> block);
+    public native NSObject addObserver(NSString name, NSObject obj, NSOperationQueue queue, @Block VoidBlock1<NSNotification> block);
     @Method(selector = "defaultCenter")
-    public static native NSNotificationCenter defaultCenter();
+    public static native NSNotificationCenter getDefaultCenter();
     /*</methods>*/
 }

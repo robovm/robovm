@@ -69,20 +69,20 @@ import org.robovm.apple.security.*;
     @Method(selector = "isReady")
     public native boolean isReady();
     @Method(selector = "addDependency:")
-    public native void addDependency$(NSOperation op);
+    public native void addDependency(NSOperation op);
     @Method(selector = "removeDependency:")
-    public native void removeDependency$(NSOperation op);
+    public native void removeDependency(NSOperation op);
     @Method(selector = "dependencies")
-    public native NSArray<?> dependencies();
+    public native NSArray<NSOperation> getDependencies();
     @Method(selector = "queuePriority")
-    public native NSOperationQueuePriority queuePriority();
+    public native NSOperationQueuePriority getQueuePriority();
     @Method(selector = "setQueuePriority:")
     public native void setQueuePriority(NSOperationQueuePriority p);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "completionBlock")
-    public native @Block Runnable completionBlock();
+    public native @Block Runnable getCompletionBlock();
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -97,7 +97,7 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "threadPriority")
-    public native double threadPriority();
+    public native double getThreadPriority();
     /**
      * @since Available in iOS 4.0 and later.
      */

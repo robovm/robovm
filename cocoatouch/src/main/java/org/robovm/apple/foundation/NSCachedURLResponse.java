@@ -57,13 +57,13 @@ import org.robovm.apple.security.*;
     @Method(selector = "initWithResponse:data:userInfo:storagePolicy:")
     protected native @Pointer long initWithResponse$data$userInfo$storagePolicy$(NSURLResponse response, NSData data, NSDictionary<?, ?> userInfo, NSURLCacheStoragePolicy storagePolicy);
     @Method(selector = "response")
-    public native NSURLResponse response();
+    public native NSURLResponse getResponse();
     @Method(selector = "data")
-    public native NSData data();
+    public native NSData getData();
     @Method(selector = "userInfo")
-    public native NSDictionary<?, ?> userInfo();
+    public native NSDictionary<?, ?> getUserInfo();
     @Method(selector = "storagePolicy")
-    public native NSURLCacheStoragePolicy storagePolicy();
+    public native NSURLCacheStoragePolicy getStoragePolicy();
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

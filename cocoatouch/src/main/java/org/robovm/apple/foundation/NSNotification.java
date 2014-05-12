@@ -42,12 +42,11 @@ import org.robovm.apple.security.*;
     /*<bind>*/static { ObjCRuntime.bind(NSNotification.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public NSNotification() {}
     protected NSNotification(SkipInit skipInit) { super(skipInit); }
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public NSNotification(String name, NSNotification object, NSDictionary<?, ?> userInfo) { super((SkipInit) null); initObject(initWithName$object$userInfo$(name, object, userInfo)); }
+    public NSNotification(NSString name, NSObject object, NSDictionary<NSString, ?> userInfo) { super((SkipInit) null); initObject(initWithName$object$userInfo$(name, object, userInfo)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -55,20 +54,16 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "name")
-    public native String name();
+    public native NSString getName();
     @Method(selector = "object")
-    public native NSObject object();
+    public native NSObject getObject();
     @Method(selector = "userInfo")
-    public native NSDictionary<?, ?> userInfo();
+    public native NSDictionary<NSString, ?> getUserInfo();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "initWithName:object:userInfo:")
-    protected native @Pointer long initWithName$object$userInfo$(String name, NSNotification object, NSDictionary<?, ?> userInfo);
-    @Method(selector = "notificationWithName:object:")
-    public static native NSNotification notificationWithName$object$(String aName, NSObject anObject);
-    @Method(selector = "notificationWithName:object:userInfo:")
-    public static native NSNotification notificationWithName$object$userInfo$(String aName, NSObject anObject, NSDictionary<?, ?> aUserInfo);
+    protected native @Pointer long initWithName$object$userInfo$(NSString name, NSObject object, NSDictionary<NSString, ?> userInfo);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

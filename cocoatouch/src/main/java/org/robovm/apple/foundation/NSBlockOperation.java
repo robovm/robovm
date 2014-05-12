@@ -44,7 +44,6 @@ import org.robovm.apple.security.*;
     /*<bind>*/static { ObjCRuntime.bind(NSBlockOperation.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public NSBlockOperation() {}
     protected NSBlockOperation(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
@@ -53,10 +52,8 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "addExecutionBlock:")
-    public native void addExecutionBlock$(@Block Runnable block);
-    @Method(selector = "executionBlocks")
-    public native NSArray<?> executionBlocks();
+    public native void addExecutionBlock(@Block Runnable block);
     @Method(selector = "blockOperationWithBlock:")
-    public static native NSObject blockOperationWithBlock$(@Block Runnable block);
+    public static native NSObject create(@Block Runnable block);
     /*</methods>*/
 }

@@ -51,24 +51,24 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "open")
-    public native void openStream();
+    public native void open();
     @Method(selector = "close")
-    public native void closeStream();
+    public native void close();
     @Method(selector = "delegate")
-    public native NSStreamDelegate delegate();
+    public native NSStreamDelegate getDelegate();
     @Method(selector = "setDelegate:")
     public native void setDelegate(NSStreamDelegate delegate);
     @Method(selector = "propertyForKey:")
-    public native NSObject propertyForKey$(String key);
+    public native NSObject getProperty(NSString key);
     @Method(selector = "setProperty:forKey:")
-    public native boolean setProperty$forKey$(NSObject property, String key);
+    public native boolean setProperty(NSObject property, NSString key);
     @Method(selector = "scheduleInRunLoop:forMode:")
-    public native void scheduleInRunLoop$forMode$(NSRunLoop aRunLoop, String mode);
+    public native void scheduleInRunLoop(NSRunLoop aRunLoop, NSString mode);
     @Method(selector = "removeFromRunLoop:forMode:")
-    public native void removeFromRunLoop$forMode$(NSRunLoop aRunLoop, String mode);
+    public native void removeFromRunLoop(NSRunLoop aRunLoop, NSString mode);
     @Method(selector = "streamStatus")
-    public native NSStreamStatus streamStatus();
+    public native NSStreamStatus getStreamStatus();
     @Method(selector = "streamError")
-    public native NSError streamError();
+    public native NSError getStreamError();
     /*</methods>*/
 }

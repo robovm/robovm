@@ -42,7 +42,6 @@ import org.robovm.apple.security.*;
     /*<bind>*/static { ObjCRuntime.bind(NSNull.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public NSNull() {}
     protected NSNull(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/

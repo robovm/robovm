@@ -63,7 +63,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "setName:")
     public native void setName(String n);
     @Method(selector = "name")
-    public native String name();
+    public native String getName();
     @Method(selector = "lock")
     public native void lock();
     @Method(selector = "unlock")

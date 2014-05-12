@@ -10,12 +10,9 @@ typedefs:
     "void (^)(BOOL, NSError *)": "@Block VoidBlock2<Boolean, NSError>"
     
 enums:
-    SKDownloadState:
-        first: "SKDownloadStateWaiting"
-    SKPaymentTransactionState:
-        first: "SKPaymentTransactionStatePurchasing"
-    SKErrorCode:
-        first: "SKErrorUnknown"
+    SKDownloadState: {first: SKDownloadStateWaiting, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
+    SKPaymentTransactionState: {first: SKPaymentTransactionStatePurchasing, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
+    SKErrorCode: {first: SKErrorUnknown}
 
 classes:
     SKDownload: {} # DONE
@@ -23,10 +20,10 @@ classes:
     SKPayment: # DONE
         methods:
             '+paymentWithProduct:':
-                name: "fromProduct"
+                name: "createFromProduct"
                 return_type: "SKPayment"
             '+paymentWithProductIdentifier:':
-                name: "fromProductIdentifier"
+                name: "createFromProductIdentifier"
                 return_type: "SKPayment"
     SKPaymentQueue: # DONE
         properties:
@@ -103,8 +100,9 @@ classes:
             '-loadProductWithParameters:completionBlock:':
                 name: "loadProduct"
                 parameters:
-                    parameters: "NSDictionary<NSString, ?>"
-                    block: {}
+                    parameters:
+                        type: "NSDictionary<NSString, ?>"
+
 protocols:
     SKPaymentTransactionObserver: # DONE
         methods:
@@ -159,18 +157,22 @@ values:
     SKReceipt(Property.*):
         class: SKReceiptRefreshRequest
         name: "#{g[0]}"
+        type: NSString
         
-    SKError(.*):
+    SKError(Domain):
         class: SKError
         name: "#{g[0]}"
+        type: NSString
         
-    SKDownload(.*):
+    SKDownload(TimeRemainingUnknown):
         class: SKDownload
         name: "#{g[0]}"
+        readonly: true
         
     SKStoreProduct(Parameter.*):
         class: SKStoreProductViewController
         name: "#{g[0]}"
+        type: NSString
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (SK.*):

@@ -1,5 +1,5 @@
 package: org.robovm.apple.quicklook
-include: [foundation.yaml, uikit.yaml]
+include: [foundation.yaml, coregraphics.yaml, uikit.yaml]
 library: QuickLook
 framework: QuickLook
 clang_args: ['-x', 'objective-c']
@@ -26,6 +26,13 @@ protocols:
                 name: "URL"
             'previewItemTitle':
                 name: "Title"
+    QLPreviewControllerDataSource: # DONE
+        methods:
+            '-numberOfPreviewItemsInPreviewController:':
+                name: getNumberOfPreviewItems
+            '-previewController:previewItemAtIndex:':
+                name: getPreviewItem
+
     QLPreviewControllerDelegate: # DONE
         methods:
             '-previewControllerWillDismiss:':

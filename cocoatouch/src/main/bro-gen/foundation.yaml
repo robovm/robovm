@@ -823,16 +823,25 @@ classes:
             '-userInfo':
                 property: true
 
-    NSExpression:
+    NSExpression: # DONE
         methods:
             '+expressionForBlock:arguments:':
-                name: create
+                name: createForBlock
                 parameters:
                     block:
                         type: '@Block Block3<NSObject, NSArray<NSExpression>, NSMutableDictionary<?, ?>, NSObject>'
+            '+expression(For.*?)(:.*)?':
+                name: 'create#{g[0]}'
+            '+expressionWithFormat:argumentArray:':
+                name: 'createFromFormat'
             '-expressionBlock':
                 name: getExpressionBlock
                 return_type: '@Block Block3<NSObject, NSArray<NSExpression>, NSMutableDictionary<?, ?>, NSObject>'
+            '-(arguments|collection|constantValue|expressionType|function|keyPath|leftExpression|operand|predicate|rightExpression|variable)':
+                property: true
+            '-expressionValueWithObject:context:':
+                name: evaluate
+
     NSFileCoordinator: {}
     NSFileHandle: {}
     NSFileManager:

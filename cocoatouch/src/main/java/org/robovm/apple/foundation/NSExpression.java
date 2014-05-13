@@ -56,46 +56,46 @@ import org.robovm.apple.security.*;
     @Method(selector = "initWithExpressionType:")
     protected native @Pointer long initWithExpressionType$(NSExpressionType type);
     @Method(selector = "expressionType")
-    public native NSExpressionType expressionType();
+    public native NSExpressionType getExpressionType();
     @Method(selector = "constantValue")
-    public native NSObject constantValue();
+    public native NSObject getConstantValue();
     @Method(selector = "keyPath")
-    public native String keyPath();
+    public native String getKeyPath();
     @Method(selector = "function")
-    public native String function();
+    public native String getFunction();
     @Method(selector = "variable")
-    public native String variable();
+    public native String getVariable();
     @Method(selector = "operand")
-    public native NSExpression operand();
+    public native NSExpression getOperand();
     @Method(selector = "arguments")
-    public native NSArray<?> arguments();
+    public native NSArray<?> getArguments();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "collection")
-    public native NSObject collection();
+    public native NSObject getCollection();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "predicate")
-    public native NSPredicate predicate();
+    public native NSPredicate getPredicate();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "leftExpression")
-    public native NSExpression leftExpression();
+    public native NSExpression getLeftExpression();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "rightExpression")
-    public native NSExpression rightExpression();
+    public native NSExpression getRightExpression();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "expressionBlock")
     public native @Block Block3<NSObject, NSArray<NSExpression>, NSMutableDictionary<?, ?>, NSObject> getExpressionBlock(NSObject p0, NSArray<?> p1, NSMutableDictionary<?, ?> p2);
     @Method(selector = "expressionValueWithObject:context:")
-    public native NSObject expressionValueWithObject$context$(NSObject object, NSMutableDictionary<?, ?> context);
+    public native NSObject evaluate(NSObject object, NSMutableDictionary<?, ?> context);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -105,56 +105,56 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "expressionWithFormat:argumentArray:")
-    public static native NSExpression expressionWithFormat$argumentArray$(String expressionFormat, NSArray<?> arguments);
+    public static native NSExpression createFromFormat(String expressionFormat, NSArray<?> arguments);
     @Method(selector = "expressionForConstantValue:")
-    public static native NSExpression expressionForConstantValue$(NSObject obj);
+    public static native NSExpression createForConstantValue(NSObject obj);
     @Method(selector = "expressionForEvaluatedObject")
-    public static native NSExpression expressionForEvaluatedObject();
+    public static native NSExpression createForEvaluatedObject();
     @Method(selector = "expressionForVariable:")
-    public static native NSExpression expressionForVariable$(String string);
+    public static native NSExpression createForVariable(String string);
     @Method(selector = "expressionForKeyPath:")
-    public static native NSExpression expressionForKeyPath$(String keyPath);
+    public static native NSExpression createForKeyPath(String keyPath);
     @Method(selector = "expressionForFunction:arguments:")
-    public static native NSExpression expressionForFunction$arguments$(String name, NSArray<?> parameters);
+    public static native NSExpression createForFunction(String name, NSArray<?> parameters);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "expressionForAggregate:")
-    public static native NSExpression expressionForAggregate$(NSArray<?> subexpressions);
+    public static native NSExpression createForAggregate(NSArray<?> subexpressions);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "expressionForUnionSet:with:")
-    public static native NSExpression expressionForUnionSet$with$(NSExpression left, NSExpression right);
+    public static native NSExpression createForUnionSet(NSExpression left, NSExpression right);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "expressionForIntersectSet:with:")
-    public static native NSExpression expressionForIntersectSet$with$(NSExpression left, NSExpression right);
+    public static native NSExpression createForIntersectSet(NSExpression left, NSExpression right);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "expressionForMinusSet:with:")
-    public static native NSExpression expressionForMinusSet$with$(NSExpression left, NSExpression right);
+    public static native NSExpression createForMinusSet(NSExpression left, NSExpression right);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "expressionForSubquery:usingIteratorVariable:predicate:")
-    public static native NSExpression expressionForSubquery$usingIteratorVariable$predicate$(NSExpression expression, String variable, NSObject predicate);
+    public static native NSExpression createForSubquery(NSExpression expression, String variable, NSObject predicate);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "expressionForFunction:selectorName:arguments:")
-    public static native NSExpression expressionForFunction$selectorName$arguments$(NSExpression target, String name, NSArray<?> parameters);
+    public static native NSExpression createForFunction(NSExpression target, String name, NSArray<?> parameters);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "expressionForAnyKey")
-    public static native NSExpression expressionForAnyKey();
+    public static native NSExpression createForAnyKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "expressionForBlock:arguments:")
-    public static native NSExpression create(@Block Block3<NSObject, NSArray<NSExpression>, NSMutableDictionary<?, ?>, NSObject> block, NSArray<?> arguments);
+    public static native NSExpression createForBlock(@Block Block3<NSObject, NSArray<NSExpression>, NSMutableDictionary<?, ?>, NSObject> block, NSArray<?> arguments);
     /*</methods>*/
 }

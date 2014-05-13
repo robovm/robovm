@@ -45,6 +45,10 @@ import org.robovm.apple.security.*;
     public NSURL() {}
     protected NSURL(SkipInit skipInit) { super(skipInit); }
     public NSURL(String scheme, String host, String path) { super((SkipInit) null); initObject(initWithScheme$host$path$(scheme, host, path)); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public NSURL(BytePtr path, boolean isDir, NSURL baseURL) { super((SkipInit) null); initObject(initFileURLWithFileSystemRepresentation$isDirectory$relativeToURL$(path, isDir, baseURL)); }
     public NSURL(String URLString) { super((SkipInit) null); initObject(initWithString$(URLString)); }
     public NSURL(String URLString, NSURL baseURL) { super((SkipInit) null); initObject(initWithString$relativeToURL$(URLString, baseURL)); }
     /**
@@ -77,13 +81,19 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     
     public java.net.URL toURL() throws java.net.MalformedURLException {
-        return new java.net.URL(absoluteString());
+        return new java.net.URL(getAbsoluteString());
     }
 
     public java.net.URI toURI() throws java.net.URISyntaxException {
-        return new java.net.URI(absoluteString());
+        return new java.net.URI(getAbsoluteString());
     }
 
+    public NSObject getResourceValue(NSString key, NSError.NSErrorPtr error) {
+        NSObjectPtr value = new NSObjectPtr();
+        getResourceValue$forKey$error$(value, key, error);
+        return value.get();
+    }
+    
     /*<methods>*/
     @Method(selector = "initWithScheme:host:path:")
     protected native @Pointer long initWithScheme$host$path$(String scheme, String host, String path);
@@ -94,59 +104,59 @@ import org.robovm.apple.security.*;
     protected native @Pointer long initFileURLWithPath$isDirectory$(String path, boolean isDir);
     @Method(selector = "initFileURLWithPath:")
     protected native @Pointer long initFileURLWithPath$(String path);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Method(selector = "initFileURLWithFileSystemRepresentation:isDirectory:relativeToURL:")
+    protected native @Pointer long initFileURLWithFileSystemRepresentation$isDirectory$relativeToURL$(BytePtr path, boolean isDir, NSURL baseURL);
     @Method(selector = "initWithString:")
     protected native @Pointer long initWithString$(String URLString);
     @Method(selector = "initWithString:relativeToURL:")
     protected native @Pointer long initWithString$relativeToURL$(String URLString, NSURL baseURL);
     @Method(selector = "absoluteString")
-    public native String absoluteString();
+    public native String getAbsoluteString();
     @Method(selector = "relativeString")
-    public native String relativeString();
+    public native String getRelativeString();
     @Method(selector = "baseURL")
-    public native NSURL baseURL();
+    public native NSURL getBaseURL();
     @Method(selector = "absoluteURL")
-    public native NSURL absoluteURL();
+    public native NSURL getAbsoluteURL();
     @Method(selector = "scheme")
-    public native String scheme();
+    public native String getScheme();
     @Method(selector = "resourceSpecifier")
-    public native String resourceSpecifier();
+    public native String getResourceSpecifier();
     @Method(selector = "host")
-    public native String host();
+    public native String getHost();
     @Method(selector = "port")
-    public native NSNumber port();
+    public native NSNumber getPort();
     @Method(selector = "user")
-    public native String user();
+    public native String getUser();
     @Method(selector = "password")
-    public native String password();
+    public native String getPassword();
     @Method(selector = "path")
-    public native String path();
+    public native String getPath();
     @Method(selector = "fragment")
-    public native String fragment();
+    public native String getFragment();
     @Method(selector = "parameterString")
-    public native String parameterString();
+    public native String getParameterString();
     @Method(selector = "query")
-    public native String query();
+    public native String getQuery();
     @Method(selector = "relativePath")
-    public native String relativePath();
+    public native String getRelativePath();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "getFileSystemRepresentation:maxLength:")
-    public native boolean getFileSystemRepresentation$maxLength$(BytePtr buffer, @MachineSizedUInt long maxBufferLength);
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "fileSystemRepresentation")
-    public native BytePtr fileSystemRepresentation();
+    public native boolean getFileSystemRepresentation(BytePtr buffer, @MachineSizedUInt long maxBufferLength);
     @Method(selector = "isFileURL")
     public native boolean isFileURL();
     @Method(selector = "standardizedURL")
-    public native NSURL standardizedURL();
+    public native NSURL getStandardizedURL();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "checkResourceIsReachableAndReturnError:")
-    public native boolean checkResourceIsReachableAndReturnError$(NSError.NSErrorPtr error);
+    public native boolean checkResourceIsReachable(NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -156,37 +166,37 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "fileReferenceURL")
-    public native NSURL fileReferenceURL();
+    public native NSURL getFileReferenceURL();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "filePathURL")
-    public native NSURL filePathURL();
+    public native NSURL getFilePathURL();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "getResourceValue:forKey:error:")
-    public native boolean getResourceValue$forKey$error$(NSObject value, String key, NSError.NSErrorPtr error);
+    private native boolean getResourceValue$forKey$error$(NSObject.NSObjectPtr value, NSString key, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "resourceValuesForKeys:error:")
-    public native NSDictionary<?, ?> resourceValuesForKeys$error$(NSArray<?> keys, NSError.NSErrorPtr error);
+    public native NSDictionary<NSString, ?> getResourceValues(NSArray<NSString> keys, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "setResourceValue:forKey:error:")
-    public native boolean setResourceValue$forKey$error$(NSObject value, String key, NSError.NSErrorPtr error);
+    public native boolean setResourceValue(NSObject value, NSString key, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "setResourceValues:error:")
-    public native boolean setResourceValues$error$(NSDictionary<?, ?> keyedValues, NSError.NSErrorPtr error);
+    public native boolean setResourceValues(NSDictionary<NSString, ?> keyedValues, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "removeCachedResourceValueForKey:")
-    public native void removeCachedResourceValueForKey$(String key);
+    public native void removeCachedResourceValue(NSString key);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -196,12 +206,12 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "setTemporaryResourceValue:forKey:")
-    public native void setTemporaryResourceValue$forKey$(NSObject value, String key);
+    public native void setTemporaryResourceValue(NSObject value, NSString key);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "bookmarkDataWithOptions:includingResourceValuesForKeys:relativeToURL:error:")
-    public native NSData bookmarkDataWithOptions$includingResourceValuesForKeys$relativeToURL$error$(NSURLBookmarkCreationOptions options, NSArray<?> keys, NSURL relativeURL, NSError.NSErrorPtr error);
+    public native NSData toBookmarkData(NSURLBookmarkCreationOptions options, NSArray<NSString> keys, NSURL relativeURL, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -211,66 +221,66 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "resourceValuesForKeys:fromBookmarkData:")
-    public static native NSDictionary<?, ?> resourceValuesForKeys$fromBookmarkData$(NSArray<?> keys, NSData bookmarkData);
+    public static native NSDictionary<NSString, ?> getResourceValuesFromBookmarkData(NSArray<NSString> keys, NSData bookmarkData);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "writeBookmarkData:toURL:options:error:")
-    public static native boolean writeBookmarkData$toURL$options$error$(NSData bookmarkData, NSURL bookmarkFileURL, @MachineSizedUInt long options, NSError.NSErrorPtr error);
+    public static native boolean writeBookmarkData(NSData bookmarkData, NSURL bookmarkFileURL, @MachineSizedUInt long options, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "bookmarkDataWithContentsOfURL:error:")
-    public static native NSData bookmarkDataWithContentsOfURL$error$(NSURL bookmarkFileURL, NSError.NSErrorPtr error);
+    public static native NSData createBookmarkData(NSURL bookmarkFileURL, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "pathComponents")
-    public native NSArray<?> pathComponents();
+    public native NSArray<NSString> getPathComponents();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "lastPathComponent")
-    public native String lastPathComponent();
+    public native String getLastPathComponent();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "pathExtension")
-    public native String pathExtension();
+    public native String getPathExtension();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "URLByAppendingPathComponent:")
-    public native NSURL URLByAppendingPathComponent$(String pathComponent);
+    public native NSURL newURLByAppendingPathComponent(String pathComponent);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "URLByAppendingPathComponent:isDirectory:")
-    public native NSURL URLByAppendingPathComponent$isDirectory$(String pathComponent, boolean isDirectory);
+    public native NSURL newURLByAppendingPathComponent(String pathComponent, boolean isDirectory);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "URLByDeletingLastPathComponent")
-    public native NSURL URLByDeletingLastPathComponent();
+    public native NSURL newURLByDeletingLastPathComponent();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "URLByAppendingPathExtension:")
-    public native NSURL URLByAppendingPathExtension$(String pathExtension);
+    public native NSURL newURLByAppendingPathExtension(String pathExtension);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "URLByDeletingPathExtension")
-    public native NSURL URLByDeletingPathExtension();
+    public native NSURL newURLByDeletingPathExtension();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "URLByStandardizingPath")
-    public native NSURL URLByStandardizingPath();
+    public native NSURL newURLByStandardizingPath();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "URLByResolvingSymlinksInPath")
-    public native NSURL URLByResolvingSymlinksInPath();
+    public native NSURL newURLByResolvingSymlinksInPath();
     /*</methods>*/
 }

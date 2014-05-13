@@ -66,12 +66,12 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "originalRequest")
-    public native NSURLRequest originalRequest();
+    public native NSURLRequest getOriginalRequest();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "currentRequest")
-    public native NSURLRequest currentRequest();
+    public native NSURLRequest getCurrentRequest();
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -83,27 +83,27 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "scheduleInRunLoop:forMode:")
-    public native void scheduleInRunLoop$forMode$(NSRunLoop aRunLoop, String mode);
+    public native void scheduleInRunLoop(NSRunLoop aRunLoop, String mode);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "unscheduleFromRunLoop:forMode:")
-    public native void unscheduleFromRunLoop$forMode$(NSRunLoop aRunLoop, String mode);
+    public native void unscheduleFromRunLoop(NSRunLoop aRunLoop, String mode);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "setDelegateQueue:")
     public native void setDelegateQueue(NSOperationQueue queue);
     @Method(selector = "connectionWithRequest:delegate:")
-    public static native NSURLConnection connectionWithRequest$delegate$(NSURLRequest request, NSObject delegate);
+    public static native NSURLConnection create(NSURLRequest request, NSURLConnectionDelegate delegate);
     @Method(selector = "canHandleRequest:")
-    public static native boolean canHandleRequest$(NSURLRequest request);
+    public static native boolean canHandleRequest(NSURLRequest request);
     @Method(selector = "sendSynchronousRequest:returningResponse:error:")
-    public static native NSData sendSynchronousRequest$returningResponse$error$(NSURLRequest request, NSURLResponse.NSURLResponsePtr response, NSError.NSErrorPtr error);
+    public static native NSData sendSynchronousRequest(NSURLRequest request, NSURLResponse.NSURLResponsePtr response, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "sendAsynchronousRequest:queue:completionHandler:")
-    public static native void sendAsynchronousRequest$queue$completionHandler$(NSURLRequest request, NSOperationQueue queue, @Block VoidBlock3<NSURLResponse, NSData, NSError> handler);
+    public static native void sendAsynchronousRequest(NSURLRequest request, NSOperationQueue queue, @Block VoidBlock3<NSURLResponse, NSData, NSError> handler);
     /*</methods>*/
 }

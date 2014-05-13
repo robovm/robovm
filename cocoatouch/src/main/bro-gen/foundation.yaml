@@ -378,9 +378,119 @@ classes:
                 parameters:
                     storagePolicy:
                         type: NSURLCacheStoragePolicy
-    NSCalendar: {}
-    NSCharacterSet: {}
-    NSCoder: {}
+    NSCalendar: # DONE
+        methods:
+            '+currentCalendar':
+                property: true
+            '+autoupdatingCurrentCalendar':
+                property: true
+            '-initWithCalendarIdentifier:': {}
+            '-setFirstWeekday:': {}
+            '-setLocale:': {}
+            '-setMinimumDaysInFirstWeek:': {}
+            '-setTimeZone:': {}
+            '–calendarIdentifier':
+                property: true
+            '-firstWeekday':
+                property: true
+            '-locale':
+                property: true
+            '-maximumRangeOfUnit:':
+                name: getMaximumRange
+            '-minimumDaysInFirstWeek':
+                property: true
+            '-minimumRangeOfUnit:':
+                name: getMinimumRange
+            '-ordinalityOfUnit:inUnit:forDate:':
+                name: getOrdinality
+            '-rangeOfUnit:inUnit:forDate:':
+                name: getRange
+            '-rangeOfUnit:startDate:interval:forDate:':
+                name: getRange
+            '-timeZone':
+                property: true
+            '-components:fromDate:':
+                name: getComponents
+            '-components:fromDate:toDate:options:':
+                name: getComponents
+            '-dateByAddingComponents:toDate:options:':
+                name: newDateByAddingComponents
+            '-dateFromComponents:':
+                name: newDateFromComponents
+
+            '+.*': {exclude: true}
+            '-.*': {exclude: true}
+
+    NSCharacterSet: # DONE
+        methods:
+            '+.*CharacterSet':
+                property: true
+                return_type: NSCharacterSet
+            '+characterSetWithContentsOfFile:':
+                visibility: private
+                return_type: NSCharacterSet
+            '+characterSetWithBitmapRepresentation:':
+                name: createFromBitmapRepresentation
+                return_type: NSCharacterSet
+            '+characterSetWithCharactersInString:':
+                name: createFromCharacters
+                return_type: NSCharacterSet
+            '+characterSetWithRange:':
+                name: createFromRange
+                return_type: NSCharacterSet
+            '-characterIsMember:':
+                name: isMember
+            '-longCharacterIsMember:':
+                name: isMember
+            '-hasMemberInPlane:':
+                trim_after_first_colon: true
+            '-bitmapRepresentation':
+                name: getBitmapRepresentation
+            '-invertedSet':
+                property: true
+            '-isSupersetOfSet:':
+                name: isSuperset
+
+    NSCoder: # DONE
+        methods:
+            '-decodeArrayOfObjCType:count:at:': {exclude: true}
+            '-decodeValueOfObjCType:at:': {exclude: true}
+            '-encodeArrayOfObjCType:count:at:': {exclude: true}
+            '-encodeValueOfObjCType:at:': {exclude: true}
+            '-encodeValuesOfObjCTypes:': {exclude: true}
+
+            '-allowedClasses':
+                property: true
+            '-containsValueForKey:':
+                name: containsValue
+            '-(decode[a-zA-Z0-9]+)ForKey:':
+                name: '#{g[0]}'
+            '-decodeBytesForKey:returnedLength:':
+                name: decodeBytes
+            '-decodeBytesWithReturnedLength:':
+                name: decodeBytes
+            '-decodeObjectOfClass:forKey:':
+                name: decodeObject
+            '-decodeObjectOfClasses:forKey:':
+                name: decodeObject
+            '-(encode[a-zA-Z0-9]+):forKey:':
+                name: '#{g[0]}'
+            '-encode[a-zA-Z0-9]+Object:':
+                trim_after_first_colon: true
+            '-encodeBytes:length:':
+                trim_after_first_colon: true
+            '-encodeBytes:length:forKey:':
+                trim_after_first_colon: true
+            '-encodeObject:':
+                trim_after_first_colon: true
+            '-versionForClassName:':
+                name: getVersionForClassName
+            '-objectZone':
+                property: true
+            '-systemVersion':
+                property: true
+
+
     NSComparisonPredicate: {}
     NSCompoundPredicate: {}
     NSCondition: # DONE
@@ -625,18 +735,43 @@ classes:
     NSInvocation: {}
     NSInvocationOperation: {}
     NSJSONSerialization: {}
-    NSKeyedArchiver:
+    NSKeyedArchiver: # DONE
         methods:
+            '-encode.*': {exclude: true}
+            '+archivedDataWithRootObject:':
+                name: archive
+            '+archiveRootObject:toFile:':
+                visibility: private
             '+classNameForClass:':
-                name: getDefaultClassName
+                name: getDefaultClassNameForClass
             '+setClassName:forClass:':
-                name: setDefaultClassName
-    NSKeyedUnarchiver:
+                name: setDefaultClassNameForClass
+            '-classNameForClass:':
+                name: getClassNameForClass
+            '-setClassName:forClass:':
+                name: setClassNameForClass
+            '-delegate':
+                property: true
+            '-outputFormat':
+                property: true
+    NSKeyedUnarchiver: # DONE
         methods:
+            '-decode.*': {exclude: true}
+            '-containsValueForKey:': {exclude: true}
+            '+unarchiveObjectWithData:':
+                name: unarchive
+            '+unarchiveObjectWithFile:':
+                visibility: private
             '+classForClassName:':
-                name: getDefaultClass
+                name: getDefaultClassForClassName
             '+setClass:forClassName:':
-                name: setDefaultClass
+                name: setDefaultClassForClassName
+            '-classForClassName:':
+                name: getClassForClassName
+            '-setClass:forClassName:':
+                name: setClassForClassName
+            '-delegate':
+                property: true
     NSLinguisticTagger:
         methods:
             '-enumerateTagsInRange:scheme:options:usingBlock:':
@@ -1302,18 +1437,104 @@ classes:
     NSTimeZone: {}
     NSUbiquitousKeyValueStore: {}
     NSUndoManager: {}
-    NSURL:
+    NSURL: # DONE
         methods:
+            '+bookmarkDataWithContentsOfURL:error:':
+                name: createBookmarkData
+            '+resourceValuesForKeys:fromBookmarkData:':
+                name: getResourceValuesFromBookmarkData
+                return_type: 'NSDictionary<NSString, ?>'
+                parameters:
+                    keys:
+                        type: 'NSArray<NSString>'
+            '+writeBookmarkData:toURL:options:error:':
+                trim_after_first_colon: true
+
             '-initFileURLWithPath:.*':
                 constructor: false
 
-            '-initFileURLWithFileSystemRepresentation:isDirectory:relativeToURL:': {exclude: true}
+            '-(absoluteString|relativeString|baseURL|absoluteURL|scheme|resourceSpecifier|host|port|user|password|path|fragment|parameterString|query|relativePath)':
+                property: true
+            '-(fileReferenceURL|filePathURL|standardizedURL|lastPathComponent|pathExtension)':
+                property: true
+            '-pathComponents':
+                property: true
+                return_type: 'NSArray<NSString>'
+
+            '-getResourceValue:forKey:error:':
+                visibility: private
+                parameters:
+                    value:
+                        type: NSObject.NSObjectPtr
+                    key:
+                        type: NSString
+            '-resourceValuesForKeys:error:':
+                name: getResourceValues
+                return_type: 'NSDictionary<NSString, ?>'
+                parameters:
+                    keys:
+                        type: 'NSArray<NSString>'
+            '-setResourceValue:forKey:error:':
+                trim_after_first_colon: true
+                parameters:
+                    key:
+                        type: NSString
+            '-setResourceValues:error:':
+                trim_after_first_colon: true
+                parameters:
+                    keyedValues:
+                        type: 'NSDictionary<NSString, ?>'
+            '-removeCachedResourceValueForKey:':
+                name: removeCachedResourceValue
+                parameters:
+                    key:
+                        type: NSString
+            '-setTemporaryResourceValue:forKey:':
+                trim_after_first_colon: true
+                parameters:
+                    key:
+                        type: NSString
+
+            '-getFileSystemRepresentation:maxLength:':
+                trim_after_first_colon: true
+            '-checkResourceIsReachableAndReturnError:':
+                name: checkResourceIsReachable
+            '-bookmarkDataWithOptions:includingResourceValuesForKeys:relativeToURL:error:':
+                name: toBookmarkData
+                parameters:
+                    keys:
+                        type: 'NSArray<NSString>'
+
+            '-fileSystemRepresentation': {exclude: true}
             '+fileURL.*': {exclude: true}
             '+URL.*': {exclude: true}
 
+            '-(URLBy.*?)(:.*)?':
+                name: 'new#{g[0]}'
+
     NSURLAuthenticationChallenge: {}
     NSURLCache: {}
-    NSURLConnection: {}
+    NSURLConnection: # DONE
+        methods:
+            '+connectionWithRequest:delegate:':
+                name: create
+                parameters:
+                    delegate:
+                        type: NSURLConnectionDelegate
+            '+sendAsynchronousRequest:queue:completionHandler:':
+                trim_after_first_colon: true
+            '+sendSynchronousRequest:returningResponse:error:':
+                trim_after_first_colon: true
+            '+canHandleRequest:':
+                trim_after_first_colon: true
+            '-scheduleInRunLoop:forMode:':
+                trim_after_first_colon: true
+            '-unscheduleFromRunLoop:forMode:':
+                trim_after_first_colon: true
+            '-originalRequest':
+                property: true
+            '-currentRequest':
+                property: true
     NSURLCredential: {}
     NSURLCredentialStorage: {}
     NSURLProtectionSpace:
@@ -1406,8 +1627,30 @@ protocols:
     NSStreamDelegate: {}
     NSURLAuthenticationChallengeSender: {}
     NSURLConnectionDataDelegate: {}
-    NSURLConnectionDelegate: {}
-    NSURLConnectionDownloadDelegate: {}
+    NSURLConnectionDelegate: # DONE
+        methods:
+            '-connection:didFailWithError:':
+                name: didFail
+            '-connectionShouldUseCredentialStorage:':
+                name: shouldUseCredentialStorage
+            '-connection:willSendRequestForAuthenticationChallenge:':
+                name: willSendRequestForAuthenticationChallenge
+            '-connection:canAuthenticateAgainstProtectionSpace:':
+                name: canAuthenticateAgainstProtectionSpace
+            '-connection:didReceiveAuthenticationChallenge:':
+                name: didReceiveAuthenticationChallenge
+            '-connection:didCancelAuthenticationChallenge:':
+                name: didCancelAuthenticationChallenge
+
+    NSURLConnectionDownloadDelegate: # DONE
+        methods:
+            '-connection:didWriteData:totalBytesWritten:expectedTotalBytes:':
+                name: didWriteData
+            '-connectionDidResumeDownloading:totalBytesWritten:expectedTotalBytes:':
+                name: didResumeDownloading
+            '-connectionDidFinishDownloading:destinationURL:':
+                name: didFinishDownloading
+
     NSURLProtocolClient: {}
     NSURLSessionDataDelegate: {}
     NSURLSessionDelegate: {}

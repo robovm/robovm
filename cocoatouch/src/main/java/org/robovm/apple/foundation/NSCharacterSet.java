@@ -49,90 +49,98 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    public static NSCharacterSet createFromFile(File file) {
+        if (file == null) {
+            throw new NullPointerException("file");
+        }
+        return characterSetWithContentsOfFile$(file.getAbsolutePath());
+    }
+    
     /*<methods>*/
     @Method(selector = "characterIsMember:")
-    public native boolean characterIsMember$(short aCharacter);
+    public native boolean isMember(short aCharacter);
     @Method(selector = "bitmapRepresentation")
-    public native NSData bitmapRepresentation();
+    public native NSData getBitmapRepresentation();
     @Method(selector = "invertedSet")
-    public native NSCharacterSet invertedSet();
+    public native NSCharacterSet getInvertedSet();
     @Method(selector = "longCharacterIsMember:")
-    public native boolean longCharacterIsMember$(int theLongChar);
+    public native boolean isMember(int theLongChar);
     @Method(selector = "isSupersetOfSet:")
-    public native boolean isSupersetOfSet$(NSCharacterSet theOtherSet);
+    public native boolean isSuperset(NSCharacterSet theOtherSet);
     @Method(selector = "hasMemberInPlane:")
-    public native boolean hasMemberInPlane$(byte thePlane);
+    public native boolean hasMemberInPlane(byte thePlane);
     @Method(selector = "controlCharacterSet")
-    public static native NSObject controlCharacterSet();
+    public static native NSCharacterSet getControlCharacterSet();
     @Method(selector = "whitespaceCharacterSet")
-    public static native NSObject whitespaceCharacterSet();
+    public static native NSCharacterSet getWhitespaceCharacterSet();
     @Method(selector = "whitespaceAndNewlineCharacterSet")
-    public static native NSObject whitespaceAndNewlineCharacterSet();
+    public static native NSCharacterSet getWhitespaceAndNewlineCharacterSet();
     @Method(selector = "decimalDigitCharacterSet")
-    public static native NSObject decimalDigitCharacterSet();
+    public static native NSCharacterSet getDecimalDigitCharacterSet();
     @Method(selector = "letterCharacterSet")
-    public static native NSObject letterCharacterSet();
+    public static native NSCharacterSet getLetterCharacterSet();
     @Method(selector = "lowercaseLetterCharacterSet")
-    public static native NSObject lowercaseLetterCharacterSet();
+    public static native NSCharacterSet getLowercaseLetterCharacterSet();
     @Method(selector = "uppercaseLetterCharacterSet")
-    public static native NSObject uppercaseLetterCharacterSet();
+    public static native NSCharacterSet getUppercaseLetterCharacterSet();
     @Method(selector = "nonBaseCharacterSet")
-    public static native NSObject nonBaseCharacterSet();
+    public static native NSCharacterSet getNonBaseCharacterSet();
     @Method(selector = "alphanumericCharacterSet")
-    public static native NSObject alphanumericCharacterSet();
+    public static native NSCharacterSet getAlphanumericCharacterSet();
     @Method(selector = "decomposableCharacterSet")
-    public static native NSObject decomposableCharacterSet();
+    public static native NSCharacterSet getDecomposableCharacterSet();
     @Method(selector = "illegalCharacterSet")
-    public static native NSObject illegalCharacterSet();
+    public static native NSCharacterSet getIllegalCharacterSet();
     @Method(selector = "punctuationCharacterSet")
-    public static native NSObject punctuationCharacterSet();
+    public static native NSCharacterSet getPunctuationCharacterSet();
     @Method(selector = "capitalizedLetterCharacterSet")
-    public static native NSObject capitalizedLetterCharacterSet();
+    public static native NSCharacterSet getCapitalizedLetterCharacterSet();
     @Method(selector = "symbolCharacterSet")
-    public static native NSObject symbolCharacterSet();
+    public static native NSCharacterSet getSymbolCharacterSet();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "newlineCharacterSet")
-    public static native NSObject newlineCharacterSet();
+    public static native NSCharacterSet getNewlineCharacterSet();
     @Method(selector = "characterSetWithRange:")
-    public static native NSObject characterSetWithRange$(@ByVal NSRange aRange);
+    public static native NSCharacterSet createFromRange(@ByVal NSRange aRange);
     @Method(selector = "characterSetWithCharactersInString:")
-    public static native NSObject characterSetWithCharactersInString$(String aString);
+    public static native NSCharacterSet createFromCharacters(String aString);
     @Method(selector = "characterSetWithBitmapRepresentation:")
-    public static native NSObject characterSetWithBitmapRepresentation$(NSData data);
+    public static native NSCharacterSet createFromBitmapRepresentation(NSData data);
     @Method(selector = "characterSetWithContentsOfFile:")
-    public static native NSObject characterSetWithContentsOfFile$(String fName);
+    private static native NSCharacterSet characterSetWithContentsOfFile$(String fName);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "URLUserAllowedCharacterSet")
-    public static native NSObject URLUserAllowedCharacterSet();
+    public static native NSCharacterSet getURLUserAllowedCharacterSet();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "URLPasswordAllowedCharacterSet")
-    public static native NSObject URLPasswordAllowedCharacterSet();
+    public static native NSCharacterSet getURLPasswordAllowedCharacterSet();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "URLHostAllowedCharacterSet")
-    public static native NSObject URLHostAllowedCharacterSet();
+    public static native NSCharacterSet getURLHostAllowedCharacterSet();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "URLPathAllowedCharacterSet")
-    public static native NSObject URLPathAllowedCharacterSet();
+    public static native NSCharacterSet getURLPathAllowedCharacterSet();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "URLQueryAllowedCharacterSet")
-    public static native NSObject URLQueryAllowedCharacterSet();
+    public static native NSCharacterSet getURLQueryAllowedCharacterSet();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "URLFragmentAllowedCharacterSet")
-    public static native NSObject URLFragmentAllowedCharacterSet();
+    public static native NSCharacterSet getURLFragmentAllowedCharacterSet();
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

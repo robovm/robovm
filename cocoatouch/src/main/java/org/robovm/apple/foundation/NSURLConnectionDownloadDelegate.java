@@ -47,11 +47,11 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "connection:didWriteData:totalBytesWritten:expectedTotalBytes:")
-    void connection$didWriteData$totalBytesWritten$expectedTotalBytes$(NSURLConnection connection, long bytesWritten, long totalBytesWritten, long expectedTotalBytes);
+    void didWriteData(NSURLConnection connection, long bytesWritten, long totalBytesWritten, long expectedTotalBytes);
     @Method(selector = "connectionDidResumeDownloading:totalBytesWritten:expectedTotalBytes:")
-    void connectionDidResumeDownloading$totalBytesWritten$expectedTotalBytes$(NSURLConnection connection, long totalBytesWritten, long expectedTotalBytes);
+    void didResumeDownloading(NSURLConnection connection, long totalBytesWritten, long expectedTotalBytes);
     @Method(selector = "connectionDidFinishDownloading:destinationURL:")
-    void connectionDidFinishDownloading$destinationURL$(NSURLConnection connection, NSURL destinationURL);
+    void didFinishDownloading(NSURLConnection connection, NSURL destinationURL);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

@@ -50,53 +50,46 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    public boolean archive(NSObject rootObject, File file) {
+        if (rootObject == null) {
+            throw new NullPointerException("rootObject");
+        }
+        if (file == null) {
+            throw new NullPointerException("file");
+        }
+        return archiveRootObject$toFile$(rootObject, file.getAbsolutePath());
+    }
+    
     /*<methods>*/
     @Method(selector = "initForWritingWithMutableData:")
     protected native @Pointer long initForWritingWithMutableData$(NSMutableData data);
     @Method(selector = "setDelegate:")
     public native void setDelegate(NSKeyedArchiverDelegate delegate);
     @Method(selector = "delegate")
-    public native NSKeyedArchiverDelegate delegate();
+    public native NSKeyedArchiverDelegate getDelegate();
     @Method(selector = "setOutputFormat:")
     public native void setOutputFormat(NSPropertyListFormat format);
     @Method(selector = "outputFormat")
-    public native NSPropertyListFormat outputFormat();
+    public native NSPropertyListFormat getOutputFormat();
     @Method(selector = "finishEncoding")
     public native void finishEncoding();
     @Method(selector = "setClassName:forClass:")
-    public native void setClassName$forClass$(String codedName, ObjCClass cls);
+    public native void setClassNameForClass(String codedName, ObjCClass cls);
     @Method(selector = "classNameForClass:")
-    public native String classNameForClass$(ObjCClass cls);
-    @Method(selector = "encodeObject:forKey:")
-    public native void encodeObject$forKey$(NSObject objv, String key);
-    @Method(selector = "encodeConditionalObject:forKey:")
-    public native void encodeConditionalObject$forKey$(NSObject objv, String key);
-    @Method(selector = "encodeBool:forKey:")
-    public native void encodeBool$forKey$(boolean boolv, String key);
-    @Method(selector = "encodeInt:forKey:")
-    public native void encodeInt$forKey$(int intv, String key);
-    @Method(selector = "encodeInt32:forKey:")
-    public native void encodeInt32$forKey$(int intv, String key);
-    @Method(selector = "encodeInt64:forKey:")
-    public native void encodeInt64$forKey$(long intv, String key);
-    @Method(selector = "encodeFloat:forKey:")
-    public native void encodeFloat$forKey$(float realv, String key);
-    @Method(selector = "encodeDouble:forKey:")
-    public native void encodeDouble$forKey$(double realv, String key);
-    @Method(selector = "encodeBytes:length:forKey:")
-    public native void encodeBytes$length$forKey$(BytePtr bytesp, @MachineSizedUInt long lenv, String key);
+    public native String getClassNameForClass(ObjCClass cls);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "setRequiresSecureCoding:")
     public native void setRequiresSecureCoding(boolean b);
     @Method(selector = "archivedDataWithRootObject:")
-    public static native NSData archivedDataWithRootObject$(NSObject rootObject);
+    public static native NSData archive(NSObject rootObject);
     @Method(selector = "archiveRootObject:toFile:")
-    public static native boolean archiveRootObject$toFile$(NSObject rootObject, String path);
+    private static native boolean archiveRootObject$toFile$(NSObject rootObject, String path);
     @Method(selector = "setClassName:forClass:")
-    public static native void setDefaultClassName(String codedName, ObjCClass cls);
+    public static native void setDefaultClassNameForClass(String codedName, ObjCClass cls);
     @Method(selector = "classNameForClass:")
-    public static native String getDefaultClassName(ObjCClass cls);
+    public static native String getDefaultClassNameForClass(ObjCClass cls);
     /*</methods>*/
 }

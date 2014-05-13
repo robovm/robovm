@@ -50,90 +50,82 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "encodeValueOfObjCType:at:")
-    public native void encodeValueOfObjCType$at$(BytePtr type, VoidPtr addr);
     @Method(selector = "encodeDataObject:")
-    public native void encodeDataObject$(NSData data);
-    @Method(selector = "decodeValueOfObjCType:at:")
-    public native void decodeValueOfObjCType$at$(BytePtr type, VoidPtr data);
+    public native void encodeDataObject(NSData data);
     @Method(selector = "decodeDataObject")
     public native NSData decodeDataObject();
     @Method(selector = "versionForClassName:")
-    public native @MachineSizedSInt long versionForClassName$(String className);
+    public native @MachineSizedSInt long getVersionForClassName(String className);
     @Method(selector = "encodeObject:")
-    public native void encodeObject$(NSObject object);
+    public native void encodeObject(NSObject object);
     @Method(selector = "encodeRootObject:")
-    public native void encodeRootObject$(NSObject rootObject);
+    public native void encodeRootObject(NSObject rootObject);
     @Method(selector = "encodeBycopyObject:")
-    public native void encodeBycopyObject$(NSObject anObject);
+    public native void encodeBycopyObject(NSObject anObject);
     @Method(selector = "encodeByrefObject:")
-    public native void encodeByrefObject$(NSObject anObject);
+    public native void encodeByrefObject(NSObject anObject);
     @Method(selector = "encodeConditionalObject:")
-    public native void encodeConditionalObject$(NSObject object);
-    @Method(selector = "encodeArrayOfObjCType:count:at:")
-    public native void encodeArrayOfObjCType$count$at$(BytePtr type, @MachineSizedUInt long count, VoidPtr array);
+    public native void encodeConditionalObject(NSObject object);
     @Method(selector = "encodeBytes:length:")
-    public native void encodeBytes$length$(VoidPtr byteaddr, @MachineSizedUInt long length);
+    public native void encodeBytes(VoidPtr byteaddr, @MachineSizedUInt long length);
     @Method(selector = "decodeObject")
     public native NSObject decodeObject();
-    @Method(selector = "decodeArrayOfObjCType:count:at:")
-    public native void decodeArrayOfObjCType$count$at$(BytePtr itemType, @MachineSizedUInt long count, VoidPtr array);
     @Method(selector = "decodeBytesWithReturnedLength:")
-    public native VoidPtr decodeBytesWithReturnedLength$(MachineSizedUIntPtr lengthp);
+    public native VoidPtr decodeBytes(MachineSizedUIntPtr lengthp);
     @Method(selector = "setObjectZone:")
     public native void setObjectZone(NSZone zone);
     @Method(selector = "objectZone")
-    public native NSZone objectZone();
+    public native NSZone getObjectZone();
     @Method(selector = "systemVersion")
-    public native int systemVersion();
+    public native int getSystemVersion();
     @Method(selector = "allowsKeyedCoding")
     public native boolean allowsKeyedCoding();
     @Method(selector = "encodeObject:forKey:")
-    public native void encodeObject$forKey$(NSObject objv, String key);
+    public native void encodeObject(NSObject objv, String key);
     @Method(selector = "encodeConditionalObject:forKey:")
-    public native void encodeConditionalObject$forKey$(NSObject objv, String key);
+    public native void encodeConditionalObject(NSObject objv, String key);
     @Method(selector = "encodeBool:forKey:")
-    public native void encodeBool$forKey$(boolean boolv, String key);
+    public native void encodeBool(boolean boolv, String key);
     @Method(selector = "encodeInt:forKey:")
-    public native void encodeInt$forKey$(int intv, String key);
+    public native void encodeInt(int intv, String key);
     @Method(selector = "encodeInt32:forKey:")
-    public native void encodeInt32$forKey$(int intv, String key);
+    public native void encodeInt32(int intv, String key);
     @Method(selector = "encodeInt64:forKey:")
-    public native void encodeInt64$forKey$(long intv, String key);
+    public native void encodeInt64(long intv, String key);
     @Method(selector = "encodeFloat:forKey:")
-    public native void encodeFloat$forKey$(float realv, String key);
+    public native void encodeFloat(float realv, String key);
     @Method(selector = "encodeDouble:forKey:")
-    public native void encodeDouble$forKey$(double realv, String key);
+    public native void encodeDouble(double realv, String key);
     @Method(selector = "encodeBytes:length:forKey:")
-    public native void encodeBytes$length$forKey$(BytePtr bytesp, @MachineSizedUInt long lenv, String key);
+    public native void encodeBytes(BytePtr bytesp, @MachineSizedUInt long lenv, String key);
     @Method(selector = "containsValueForKey:")
-    public native boolean containsValueForKey$(String key);
+    public native boolean containsValue(String key);
     @Method(selector = "decodeObjectForKey:")
-    public native NSObject decodeObjectForKey$(String key);
+    public native NSObject decodeObject(String key);
     @Method(selector = "decodeBoolForKey:")
-    public native boolean decodeBoolForKey$(String key);
+    public native boolean decodeBool(String key);
     @Method(selector = "decodeIntForKey:")
-    public native int decodeIntForKey$(String key);
+    public native int decodeInt(String key);
     @Method(selector = "decodeInt32ForKey:")
-    public native int decodeInt32ForKey$(String key);
+    public native int decodeInt32(String key);
     @Method(selector = "decodeInt64ForKey:")
-    public native long decodeInt64ForKey$(String key);
+    public native long decodeInt64(String key);
     @Method(selector = "decodeFloatForKey:")
-    public native float decodeFloatForKey$(String key);
+    public native float decodeFloat(String key);
     @Method(selector = "decodeDoubleForKey:")
-    public native double decodeDoubleForKey$(String key);
+    public native double decodeDouble(String key);
     @Method(selector = "decodeBytesForKey:returnedLength:")
-    public native BytePtr decodeBytesForKey$returnedLength$(String key, MachineSizedUIntPtr lengthp);
+    public native BytePtr decodeBytes(String key, MachineSizedUIntPtr lengthp);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "encodeInteger:forKey:")
-    public native void encodeInteger$forKey$(@MachineSizedSInt long intv, String key);
+    public native void encodeInteger(@MachineSizedSInt long intv, String key);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "decodeIntegerForKey:")
-    public native @MachineSizedSInt long decodeIntegerForKey$(String key);
+    public native @MachineSizedSInt long decodeInteger(String key);
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -143,21 +135,21 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "decodeObjectOfClass:forKey:")
-    public native NSObject decodeObjectOfClass$forKey$(ObjCClass aClass, String key);
+    public native NSObject decodeObject(ObjCClass aClass, String key);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "decodeObjectOfClasses:forKey:")
-    public native NSObject decodeObjectOfClasses$forKey$(NSSet<?> classes, String key);
+    public native NSObject decodeObject(NSSet<?> classes, String key);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "decodePropertyListForKey:")
-    public native NSObject decodePropertyListForKey$(String key);
+    public native NSObject decodePropertyList(String key);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "allowedClasses")
-    public native NSSet<?> allowedClasses();
+    public native NSSet<?> getAllowedClasses();
     /*</methods>*/
 }

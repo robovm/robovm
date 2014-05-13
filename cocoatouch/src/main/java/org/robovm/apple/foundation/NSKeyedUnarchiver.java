@@ -19,6 +19,7 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -50,49 +51,39 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    public static NSObject unarchive(File file) {
+        if (file == null) {
+            throw new NullPointerException("file");
+        }
+        return unarchiveObjectWithFile$(file.getAbsolutePath());
+    }
+    
     /*<methods>*/
     @Method(selector = "initForReadingWithData:")
     protected native @Pointer long initForReadingWithData$(NSData data);
     @Method(selector = "setDelegate:")
     public native void setDelegate(NSKeyedUnarchiverDelegate delegate);
     @Method(selector = "delegate")
-    public native NSKeyedUnarchiverDelegate delegate();
+    public native NSKeyedUnarchiverDelegate getDelegate();
     @Method(selector = "finishDecoding")
     public native void finishDecoding();
     @Method(selector = "setClass:forClassName:")
-    public native void setClass$forClassName$(ObjCClass cls, String codedName);
+    public native void setClassForClassName(ObjCClass cls, String codedName);
     @Method(selector = "classForClassName:")
-    public native ObjCClass classForClassName$(String codedName);
-    @Method(selector = "containsValueForKey:")
-    public native boolean containsValueForKey$(String key);
-    @Method(selector = "decodeObjectForKey:")
-    public native NSObject decodeObjectForKey$(String key);
-    @Method(selector = "decodeBoolForKey:")
-    public native boolean decodeBoolForKey$(String key);
-    @Method(selector = "decodeIntForKey:")
-    public native int decodeIntForKey$(String key);
-    @Method(selector = "decodeInt32ForKey:")
-    public native int decodeInt32ForKey$(String key);
-    @Method(selector = "decodeInt64ForKey:")
-    public native long decodeInt64ForKey$(String key);
-    @Method(selector = "decodeFloatForKey:")
-    public native float decodeFloatForKey$(String key);
-    @Method(selector = "decodeDoubleForKey:")
-    public native double decodeDoubleForKey$(String key);
-    @Method(selector = "decodeBytesForKey:returnedLength:")
-    public native BytePtr decodeBytesForKey$returnedLength$(String key, MachineSizedUIntPtr lengthp);
+    public native ObjCClass getClassForClassName(String codedName);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "setRequiresSecureCoding:")
     public native void setRequiresSecureCoding(boolean b);
     @Method(selector = "unarchiveObjectWithData:")
-    public static native NSObject unarchiveObjectWithData$(NSData data);
+    public static native NSObject unarchive(NSData data);
     @Method(selector = "unarchiveObjectWithFile:")
-    public static native NSObject unarchiveObjectWithFile$(String path);
+    private static native NSObject unarchiveObjectWithFile$(String path);
     @Method(selector = "setClass:forClassName:")
-    public static native void setDefaultClass(ObjCClass cls, String codedName);
+    public static native void setDefaultClassForClassName(ObjCClass cls, String codedName);
     @Method(selector = "classForClassName:")
-    public static native ObjCClass getDefaultClass(String codedName);
+    public static native ObjCClass getDefaultClassForClassName(String codedName);
     /*</methods>*/
 }

@@ -49,16 +49,16 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("connection:didFailWithError:")
-    public void connection$didFailWithError$(NSURLConnection connection, NSError error) { throw new UnsupportedOperationException(); }
+    public void didFail(NSURLConnection connection, NSError error) { throw new UnsupportedOperationException(); }
     @NotImplemented("connectionShouldUseCredentialStorage:")
-    public boolean connectionShouldUseCredentialStorage$(NSURLConnection connection) { throw new UnsupportedOperationException(); }
+    public boolean shouldUseCredentialStorage(NSURLConnection connection) { throw new UnsupportedOperationException(); }
     @NotImplemented("connection:willSendRequestForAuthenticationChallenge:")
-    public void connection$willSendRequestForAuthenticationChallenge$(NSURLConnection connection, NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void willSendRequestForAuthenticationChallenge(NSURLConnection connection, NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
     @NotImplemented("connection:canAuthenticateAgainstProtectionSpace:")
-    public boolean connection$canAuthenticateAgainstProtectionSpace$(NSURLConnection connection, NSURLProtectionSpace protectionSpace) { throw new UnsupportedOperationException(); }
+    public boolean canAuthenticateAgainstProtectionSpace(NSURLConnection connection, NSURLProtectionSpace protectionSpace) { throw new UnsupportedOperationException(); }
     @NotImplemented("connection:didReceiveAuthenticationChallenge:")
-    public void connection$didReceiveAuthenticationChallenge$(NSURLConnection connection, NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void didReceiveAuthenticationChallenge(NSURLConnection connection, NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
     @NotImplemented("connection:didCancelAuthenticationChallenge:")
-    public void connection$didCancelAuthenticationChallenge$(NSURLConnection connection, NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void didCancelAuthenticationChallenge(NSURLConnection connection, NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

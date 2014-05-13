@@ -47,17 +47,17 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "connection:didFailWithError:")
-    void connection$didFailWithError$(NSURLConnection connection, NSError error);
+    void didFail(NSURLConnection connection, NSError error);
     @Method(selector = "connectionShouldUseCredentialStorage:")
-    boolean connectionShouldUseCredentialStorage$(NSURLConnection connection);
+    boolean shouldUseCredentialStorage(NSURLConnection connection);
     @Method(selector = "connection:willSendRequestForAuthenticationChallenge:")
-    void connection$willSendRequestForAuthenticationChallenge$(NSURLConnection connection, NSURLAuthenticationChallenge challenge);
+    void willSendRequestForAuthenticationChallenge(NSURLConnection connection, NSURLAuthenticationChallenge challenge);
     @Method(selector = "connection:canAuthenticateAgainstProtectionSpace:")
-    boolean connection$canAuthenticateAgainstProtectionSpace$(NSURLConnection connection, NSURLProtectionSpace protectionSpace);
+    boolean canAuthenticateAgainstProtectionSpace(NSURLConnection connection, NSURLProtectionSpace protectionSpace);
     @Method(selector = "connection:didReceiveAuthenticationChallenge:")
-    void connection$didReceiveAuthenticationChallenge$(NSURLConnection connection, NSURLAuthenticationChallenge challenge);
+    void didReceiveAuthenticationChallenge(NSURLConnection connection, NSURLAuthenticationChallenge challenge);
     @Method(selector = "connection:didCancelAuthenticationChallenge:")
-    void connection$didCancelAuthenticationChallenge$(NSURLConnection connection, NSURLAuthenticationChallenge challenge);
+    void didCancelAuthenticationChallenge(NSURLConnection connection, NSURLAuthenticationChallenge challenge);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

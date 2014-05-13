@@ -51,27 +51,32 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    public static NSPredicate create(String predicateFormat, NSObject ... arguments) {
+        return create(predicateFormat, new NSArray<NSObject>(arguments));
+    }
+    
     /*<methods>*/
     @Method(selector = "predicateFormat")
-    public native String predicateFormat();
+    public native String getPredicateFormat();
     @Method(selector = "predicateWithSubstitutionVariables:")
-    public native NSPredicate predicateWithSubstitutionVariables$(NSDictionary<?, ?> variables);
+    public native NSPredicate newPredicateWithSubstitutionVariables(NSDictionary<NSString, ?> variables);
     @Method(selector = "evaluateWithObject:")
-    public native boolean evaluateWithObject$(NSObject object);
+    public native boolean evaluate(NSObject object);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "evaluateWithObject:substitutionVariables:")
-    public native boolean evaluateWithObject$substitutionVariables$(NSObject object, NSDictionary<?, ?> bindings);
+    public native boolean evaluate(NSObject object, NSDictionary<NSString, ?> bindings);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "allowEvaluation")
     public native void allowEvaluation();
     @Method(selector = "predicateWithFormat:argumentArray:")
-    public static native NSPredicate predicateWithFormat$argumentArray$(String predicateFormat, NSArray<?> arguments);
+    public static native NSPredicate create(String predicateFormat, NSArray<?> arguments);
     @Method(selector = "predicateWithValue:")
-    public static native NSPredicate predicateWithValue$(boolean value);
+    public static native NSPredicate create(boolean value);
     /**
      * @since Available in iOS 4.0 and later.
      */

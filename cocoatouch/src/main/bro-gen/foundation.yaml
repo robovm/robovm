@@ -491,8 +491,37 @@ classes:
                 property: true
 
 
-    NSComparisonPredicate: {}
-    NSCompoundPredicate: {}
+    NSComparisonPredicate: # DONE
+        methods:
+            '+predicateWithLeftExpression:rightExpression:modifier:type:options:': {exclude: true}
+            '+predicateWithLeftExpression:rightExpression:customSelector:': {exclude: true}
+            '-(comparisonPredicateModifier|leftExpression|rightExpression|options|predicateOperatorType|customSelector)':
+                property: true
+
+    NSCompoundPredicate: # DONE
+        methods:
+            '+andPredicateWithSubpredicates:':
+                name: createAndPredicate
+                parameters:
+                    subpredicates:
+                        type: 'NSArray<NSPredicate>'
+            '+orPredicateWithSubpredicates:':
+                name: createOrPredicate
+                parameters:
+                    subpredicates:
+                        type: 'NSArray<NSPredicate>'
+            '+notPredicateWithSubpredicate:':
+                name: createNotPredicate
+            '-initWithType:subpredicates:':
+                parameters:
+                    subpredicates:
+                        type: 'NSArray<NSPredicate>'
+            '-subpredicates':
+                property: true
+                return_type: 'NSArray<NSPredicate>'
+            '-compoundPredicateType':
+                property: true
+
     NSCondition: # DONE
         methods:
             "-wait":
@@ -501,7 +530,16 @@ classes:
                 name: await
             '-name':
                 property: true
-    NSConditionLock: {}
+    NSConditionLock: # DONE
+        methods:
+            '-(condition|name)':
+                property: true
+            '-lock.*':
+                name: lock
+            '-unlock.*':
+                name: unlock
+            '-tryLockWhenCondition:':
+                name: tryLock
     NSCountedSet: # DONE
         methods:
             '-countForObject:':
@@ -562,17 +600,128 @@ classes:
             '+.*': {exclude: true}
             '-.*': {exclude: true}
 
-    NSDataDetector: {}
-    NSDate:
+    NSDataDetector: # DONE
+        skip_def_constructor: true
+        properties:
+            'checkingTypes':
+                type: NSTextCheckingType
         methods:
-            '+timeIntervalSinceReferenceDate':
-                exclude: true
+            '+dataDetectorWithTypes:error:': {exclude: true}
+            '-initWithTypes:error:':
+                parameters:
+                    checkingTypes:
+                        type: NSTextCheckingType
+    NSDate: # DONE
+        methods:
+            '+timeIntervalSinceReferenceDate': {exclude: true}
+            '+distant.*':
+                property: true
+                return_type: NSDate
+            '+date(WithTimeIntervalSinceNow):':
+                name: 'create#{g[0]}'
+            '+date(WithTimeIntervalSinceReferenceDate):':
+                name: 'create#{g[0]}'
+            '+date(WithTimeIntervalSince1970):':
+                name: 'create#{g[0]}'
+            '+dateWithTimeInterval:sinceDate:':
+                name: 'createWithTimeIntervalSinceDate'
+            '+date':
+                name: now
             '-initWithTimeIntervalSince1970:': {}
             '-init.*': {exclude: true}
-    NSDateComponents: {}
-    NSDateFormatter: {}
-    NSDecimalNumber: {}
-    NSDecimalNumberHandler: {}
+            '-timeIntervalSinceDate:':
+                name: getTimeIntervalSince
+            '-timeIntervalSince[a-zA-Z0-9]+':
+                property: true
+            '-description': {exclude: true}
+            '-addTimeInterval:': {exclude: true}
+            '-compare:':
+                trim_after_first_colon: true
+            '-dateByAddingTimeInterval:':
+                name: newDateByAddingTimeInterval
+                return_type: NSDate
+            '-isEqualToDate:':
+                name: isEqualTo
+            '-descriptionWithLocale:':
+                name: description
+                parameters:
+                    locale:
+                        type: NSLocale
+            '-earlierDate:':
+                trim_after_first_colon: true
+            '-laterDate:':
+                trim_after_first_colon: true
+
+
+    NSDateComponents: # DONE
+        methods:
+            '-(calendar|timeZone|era|year|month|day|hour|minute|second|nanosecond|week|weekday|weekdayOrdinal|quarter|weekOfMonth|weekOfYear|yearForWeekOfYear|date)':
+                property: true
+
+    NSDateFormatter: # DONE
+        methods:
+            '-getObjectValue:forString:range:error:': {exclude: true}
+            '+defaultFormatterBehavior':
+                property: true
+            '+dateFormatFromTemplate:options:locale:':
+                name: getDateFormatFromTemplate
+            '+localizedStringFromDate:dateStyle:timeStyle:':
+                name: format
+            '-[a-zA-Z0-9]+Symbols':
+                property: true
+                return_type: 'NSArray<NSString>'
+            '-set[a-zA-Z0-9]+Symbols:':
+                parameters:
+                    array:
+                        type: 'NSArray<NSString>'
+            '-(timeZone|timeStyle|twoDigitStartDate|AMSymbol|PMSymbol|calendar|dateFormat|dateStyle|defaultDate|formatterBehavior|locale|gregorianStartDate)':
+                property: true
+            '-stringFromDate:':
+                name: format
+            '-dateFromString:':
+                name: parse
+
+    NSDecimalNumber: # DONE
+        skip_def_constructor: true
+        methods:
+            '+decimalNumber.*': {exclude: true}
+            '+defaultBehavior':
+                property: true
+            '+maximumDecimalNumber':
+                property: true
+            '+minimumDecimalNumber':
+                property: true
+            '-compare:': {exclude: true}
+            '-doubleValue': {exclude: true}
+            '-objCType': {exclude: true}
+            '-decimalValue': {exclude: true}
+            '-descriptionWithLocale:': {exclude: true}
+            '-decimalNumberByAdding:.*':
+                name: add
+            '-decimalNumberBySubtracting:.*':
+                name: subtract
+            '-decimalNumberByMultiplyingBy:.*':
+                name: multiply
+            '-decimalNumberByDividingBy:.*':
+                name: divide
+            '-decimalNumberByRaisingToPower:.*':
+                name: raise
+            '-decimalNumberByMultiplyingByPowerOf10:.*':
+                name: multiplyByPowerOf10
+            '-decimalNumberByRoundingAccordingToBehavior:':
+                name: round
+            '-initWithString:locale:':
+                parameters:
+                    locale:
+                        type: NSLocale
+
+    NSDecimalNumberHandler: # DONE
+        skip_def_constructor: true
+        methods:
+            '+decimalNumberHandlerWithRoundingMode:scale:raiseOnExactness:raiseOnOverflow:raiseOnUnderflow:raiseOnDivideByZero:': {exclude: true}
+            '+defaultDecimalNumberHandler':
+                property: true
+
     NSDictionary: # DONE
         methods:
             "+dictionaryWithContentsOfFile:":
@@ -826,7 +975,12 @@ classes:
             '+.*': {exclude: true}
             '-.*': {exclude: true}
 
-    NSLock: {}
+    NSLock: # DONE
+        methods:
+            '-lock.*':
+                name: lock
+            '-name':
+                property: true
     NSMachPort:
         methods:
             '-delegate': { exclude: true }
@@ -1078,7 +1232,8 @@ classes:
         methods:
             "+null":
                 name: getNull
-    NSNumber:
+    NSNumber: # DONE
+        skip_def_constructor: true
         methods:
             "+numberWithBool:":
                 name: valueOf
@@ -1118,6 +1273,15 @@ classes:
                 exclude: true
             "-unsigned.*Value":
                 exclude: true
+            '-compare:':
+                trim_after_first_colon: true
+            '-isEqualToNumber:':
+                name: isEqualTo
+            '-descriptionWithLocale:':
+                name: description
+                parameters:
+                    locale:
+                        type: NSLocale
             '-init.*':
                 exclude: true
     NSNumberFormatter: {}
@@ -1297,13 +1461,32 @@ classes:
     NSPort: {}
     NSPortMessage:
         extends: NSObject
-    NSPredicate:
+    NSPredicate: # DONE
         methods:
             '+predicateWithBlock:':
                 name: create
                 parameters:
                     block:
                         type: '@Block Block2<NSObject, NSDictionary<NSString, ?>, Boolean>'
+            '+predicateWithFormat:argumentArray:':
+                name: create
+            '+predicateWithValue:':
+                name: create
+            '-evaluateWithObject:':
+                name: evaluate
+            '-evaluateWithObject:substitutionVariables:':
+                name: evaluate
+                parameters:
+                    bindings:
+                        type: 'NSDictionary<NSString, ?>'
+            '-predicateFormat':
+                property: true
+            '-predicateWithSubstitutionVariables:':
+                name: newPredicateWithSubstitutionVariables
+
+                parameters:
+                    variables:
+                        type: 'NSDictionary<NSString, ?>'
 
     NSProcessInfo:
         methods:
@@ -1313,8 +1496,38 @@ classes:
     NSProgress: {}
     NSPropertyListSerialization: {}
     NSProxy: { exclude: true }
-    NSRecursiveLock: {}
-    NSRegularExpression: {}
+    NSRecursiveLock: # DONE
+        methods:
+            '-lock.*':
+                name: lock
+            '-name':
+                property: true
+    NSRegularExpression: # DONE
+        skip_def_constructor: true
+        methods:
+            '+regularExpressionWithPattern:options:error:': {exclude: true}
+            '+escapedPatternForString:':
+                name: escapedPattern
+            '+escapedTemplateForString:':
+                name: escapedTemplate
+            '-enumerateMatchesInString:options:range:usingBlock:':
+                name: enumerateMatches
+            '-firstMatchInString:options:range:':
+                name: getFirstMatch
+            '-matchesInString:options:range:':
+                name: getMatches
+                return_type: 'NSArray<NSTextCheckingResult>'
+            '-numberOfMatchesInString:options:range:':
+                name: getNumberOfMatches
+            '-rangeOfFirstMatchInString:options:range:':
+                name: getRangeOfFirstMatch
+            '-replaceMatchesInString:options:range:withTemplate:':
+                name: replaceMatches
+            '-replacementStringForResult:inString:offset:template:':
+                name: getReplacementString
+            '-stringByReplacingMatchesInString:options:range:withTemplate:':
+                name: newStringByReplacingMatches
+
     NSRunLoop:
         methods:
             "+currentRunLoop":
@@ -1600,7 +1813,15 @@ protocols:
             '-encodeWithCoder:':
                 name: encode
 #    NSCopying: {}
-    NSDecimalNumberBehaviors: {}
+    NSDecimalNumberBehaviors: # DONE
+        methods:
+            '-roundingMode':
+                property: true
+            '-scale':
+                property: true
+            '-exceptionDuringOperation:error:leftOperand:rightOperand:':
+                trim_after_first_colon: true
+
     NSErrorRecoveryAttempting: {}
 #    NSFastEnumeration: {}
     NSFileManagerDelegate: {}
@@ -1609,7 +1830,7 @@ protocols:
     NSKeyedUnarchiverDelegate: {}
     #NSKeyValueCoding: {}
     NSKeyValueObserving: {}
-    NSLocking: {}
+    NSLocking: {} # DONE
     NSMachPortDelegate: {}
     NSMetadataQueryDelegate: {}
 #    NSMutableCopying: {}

@@ -53,7 +53,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "tryLock")
     public native boolean tryLock();
     @Method(selector = "lockBeforeDate:")
-    public native boolean lockBeforeDate$(NSDate limit);
+    public native boolean lock(NSDate limit);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -63,7 +63,7 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "name")
-    public native String name();
+    public native String getName();
     @Method(selector = "lock")
     public native void lock();
     @Method(selector = "unlock")

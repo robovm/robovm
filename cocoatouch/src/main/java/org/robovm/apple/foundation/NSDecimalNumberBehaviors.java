@@ -47,11 +47,11 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "roundingMode")
-    NSRoundingMode roundingMode();
+    NSRoundingMode getRoundingMode();
     @Method(selector = "scale")
-    short scale();
+    short getScale();
     @Method(selector = "exceptionDuringOperation:error:leftOperand:rightOperand:")
-    NSDecimalNumber exceptionDuringOperation$error$leftOperand$rightOperand$(Selector operation, NSCalculationError error, NSDecimalNumber leftOperand, NSDecimalNumber rightOperand);
+    NSDecimalNumber exceptionDuringOperation(Selector operation, NSCalculationError error, NSDecimalNumber leftOperand, NSDecimalNumber rightOperand);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

@@ -59,20 +59,16 @@ import org.robovm.apple.security.*;
     @Method(selector = "initWithLeftExpression:rightExpression:customSelector:")
     protected native @Pointer long initWithLeftExpression$rightExpression$customSelector$(NSExpression lhs, NSExpression rhs, Selector selector);
     @Method(selector = "predicateOperatorType")
-    public native NSPredicateOperatorType predicateOperatorType();
+    public native NSPredicateOperatorType getPredicateOperatorType();
     @Method(selector = "comparisonPredicateModifier")
-    public native NSComparisonPredicateModifier comparisonPredicateModifier();
+    public native NSComparisonPredicateModifier getComparisonPredicateModifier();
     @Method(selector = "leftExpression")
-    public native NSExpression leftExpression();
+    public native NSExpression getLeftExpression();
     @Method(selector = "rightExpression")
-    public native NSExpression rightExpression();
+    public native NSExpression getRightExpression();
     @Method(selector = "customSelector")
-    public native Selector customSelector();
+    public native Selector getCustomSelector();
     @Method(selector = "options")
-    public native NSComparisonPredicateOptions options();
-    @Method(selector = "predicateWithLeftExpression:rightExpression:modifier:type:options:")
-    public static native NSPredicate predicateWithLeftExpression$rightExpression$modifier$type$options$(NSExpression lhs, NSExpression rhs, NSComparisonPredicateModifier modifier, NSPredicateOperatorType type, NSComparisonPredicateOptions options);
-    @Method(selector = "predicateWithLeftExpression:rightExpression:customSelector:")
-    public static native NSPredicate predicateWithLeftExpression$rightExpression$customSelector$(NSExpression lhs, NSExpression rhs, Selector selector);
+    public native NSComparisonPredicateOptions getOptions();
     /*</methods>*/
 }

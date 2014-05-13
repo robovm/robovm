@@ -42,7 +42,6 @@ import org.robovm.apple.security.*;
     /*<bind>*/static { ObjCRuntime.bind(NSDecimalNumberHandler.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public NSDecimalNumberHandler() {}
     protected NSDecimalNumberHandler(SkipInit skipInit) { super(skipInit); }
     public NSDecimalNumberHandler(NSRoundingMode roundingMode, short scale, boolean exact, boolean overflow, boolean underflow, boolean divideByZero) { super((SkipInit) null); initObject(initWithRoundingMode$scale$raiseOnExactness$raiseOnOverflow$raiseOnUnderflow$raiseOnDivideByZero$(roundingMode, scale, exact, overflow, underflow, divideByZero)); }
     /*</constructors>*/
@@ -54,15 +53,13 @@ import org.robovm.apple.security.*;
     @Method(selector = "initWithRoundingMode:scale:raiseOnExactness:raiseOnOverflow:raiseOnUnderflow:raiseOnDivideByZero:")
     protected native @Pointer long initWithRoundingMode$scale$raiseOnExactness$raiseOnOverflow$raiseOnUnderflow$raiseOnDivideByZero$(NSRoundingMode roundingMode, short scale, boolean exact, boolean overflow, boolean underflow, boolean divideByZero);
     @Method(selector = "defaultDecimalNumberHandler")
-    public static native NSObject defaultDecimalNumberHandler();
-    @Method(selector = "decimalNumberHandlerWithRoundingMode:scale:raiseOnExactness:raiseOnOverflow:raiseOnUnderflow:raiseOnDivideByZero:")
-    public static native NSObject decimalNumberHandlerWithRoundingMode$scale$raiseOnExactness$raiseOnOverflow$raiseOnUnderflow$raiseOnDivideByZero$(NSRoundingMode roundingMode, short scale, boolean exact, boolean overflow, boolean underflow, boolean divideByZero);
+    public static native NSObject getDefaultDecimalNumberHandler();
     @Method(selector = "roundingMode")
-    public native NSRoundingMode roundingMode();
+    public native NSRoundingMode getRoundingMode();
     @Method(selector = "scale")
-    public native short scale();
+    public native short getScale();
     @Method(selector = "exceptionDuringOperation:error:leftOperand:rightOperand:")
-    public native NSDecimalNumber exceptionDuringOperation$error$leftOperand$rightOperand$(Selector operation, NSCalculationError error, NSDecimalNumber leftOperand, NSDecimalNumber rightOperand);
+    public native NSDecimalNumber exceptionDuringOperation(Selector operation, NSCalculationError error, NSDecimalNumber leftOperand, NSDecimalNumber rightOperand);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

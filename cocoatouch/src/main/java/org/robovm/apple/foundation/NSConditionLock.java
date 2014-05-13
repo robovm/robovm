@@ -54,19 +54,19 @@ import org.robovm.apple.security.*;
     @Method(selector = "initWithCondition:")
     protected native @Pointer long initWithCondition$(@MachineSizedSInt long condition);
     @Method(selector = "condition")
-    public native @MachineSizedSInt long condition();
+    public native @MachineSizedSInt long getCondition();
     @Method(selector = "lockWhenCondition:")
-    public native void lockWhenCondition$(@MachineSizedSInt long condition);
+    public native void lock(@MachineSizedSInt long condition);
     @Method(selector = "tryLock")
     public native boolean tryLock();
     @Method(selector = "tryLockWhenCondition:")
-    public native boolean tryLockWhenCondition$(@MachineSizedSInt long condition);
+    public native boolean tryLock(@MachineSizedSInt long condition);
     @Method(selector = "unlockWithCondition:")
-    public native void unlockWithCondition$(@MachineSizedSInt long condition);
+    public native void unlock(@MachineSizedSInt long condition);
     @Method(selector = "lockBeforeDate:")
-    public native boolean lockBeforeDate$(NSDate limit);
+    public native boolean lock(NSDate limit);
     @Method(selector = "lockWhenCondition:beforeDate:")
-    public native boolean lockWhenCondition$beforeDate$(@MachineSizedSInt long condition, NSDate limit);
+    public native boolean lock(@MachineSizedSInt long condition, NSDate limit);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -76,7 +76,7 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "name")
-    public native String name();
+    public native String getName();
     @Method(selector = "lock")
     public native void lock();
     @Method(selector = "unlock")

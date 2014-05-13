@@ -42,13 +42,17 @@ import org.robovm.apple.security.*;
     /*<bind>*/static { ObjCRuntime.bind(NSNumber.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public NSNumber() {}
     protected NSNumber(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    public String toString(NSLocale locale) {
+        return description(locale);
+    }
+    
     /*<methods>*/
     @Method(selector = "charValue")
     public native byte byteValue();
@@ -69,11 +73,11 @@ import org.robovm.apple.security.*;
     @Method(selector = "stringValue")
     public native String stringValue();
     @Method(selector = "compare:")
-    public native NSComparisonResult compare$(NSNumber otherNumber);
+    public native NSComparisonResult compare(NSNumber otherNumber);
     @Method(selector = "isEqualToNumber:")
-    public native boolean isEqualToNumber$(NSNumber number);
+    public native boolean isEqualTo(NSNumber number);
     @Method(selector = "descriptionWithLocale:")
-    public native String descriptionWithLocale$(NSObject locale);
+    public native String description(NSLocale locale);
     @Method(selector = "numberWithChar:")
     public static native NSNumber valueOf(byte value);
     @Method(selector = "numberWithShort:")

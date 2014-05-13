@@ -49,10 +49,10 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("roundingMode")
-    public NSRoundingMode roundingMode() { throw new UnsupportedOperationException(); }
+    public NSRoundingMode getRoundingMode() { throw new UnsupportedOperationException(); }
     @NotImplemented("scale")
-    public short scale() { throw new UnsupportedOperationException(); }
+    public short getScale() { throw new UnsupportedOperationException(); }
     @NotImplemented("exceptionDuringOperation:error:leftOperand:rightOperand:")
-    public NSDecimalNumber exceptionDuringOperation$error$leftOperand$rightOperand$(Selector operation, NSCalculationError error, NSDecimalNumber leftOperand, NSDecimalNumber rightOperand) { throw new UnsupportedOperationException(); }
+    public NSDecimalNumber exceptionDuringOperation(Selector operation, NSCalculationError error, NSDecimalNumber leftOperand, NSDecimalNumber rightOperand) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

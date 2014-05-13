@@ -42,12 +42,11 @@ import org.robovm.apple.security.*;
     /*<bind>*/static { ObjCRuntime.bind(NSDecimalNumber.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public NSDecimalNumber() {}
     protected NSDecimalNumber(SkipInit skipInit) { super(skipInit); }
     public NSDecimalNumber(long mantissa, short exponent, boolean flag) { super((SkipInit) null); initObject(initWithMantissa$exponent$isNegative$(mantissa, exponent, flag)); }
     public NSDecimalNumber(@ByVal NSDecimal dcm) { super((SkipInit) null); initObject(initWithDecimal$(dcm)); }
     public NSDecimalNumber(String numberValue) { super((SkipInit) null); initObject(initWithString$(numberValue)); }
-    public NSDecimalNumber(String numberValue, NSDecimalNumber locale) { super((SkipInit) null); initObject(initWithString$locale$(numberValue, locale)); }
+    public NSDecimalNumber(String numberValue, NSLocale locale) { super((SkipInit) null); initObject(initWithString$locale$(numberValue, locale)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -61,64 +60,46 @@ import org.robovm.apple.security.*;
     @Method(selector = "initWithString:")
     protected native @Pointer long initWithString$(String numberValue);
     @Method(selector = "initWithString:locale:")
-    protected native @Pointer long initWithString$locale$(String numberValue, NSDecimalNumber locale);
-    @Method(selector = "descriptionWithLocale:")
-    public native String descriptionWithLocale$(NSObject locale);
-    @Method(selector = "decimalValue")
-    public native @ByVal NSDecimal decimalValue();
+    protected native @Pointer long initWithString$locale$(String numberValue, NSLocale locale);
     @Method(selector = "decimalNumberByAdding:")
-    public native NSDecimalNumber decimalNumberByAdding$(NSDecimalNumber decimalNumber);
+    public native NSDecimalNumber add(NSDecimalNumber decimalNumber);
     @Method(selector = "decimalNumberByAdding:withBehavior:")
-    public native NSDecimalNumber decimalNumberByAdding$withBehavior$(NSDecimalNumber decimalNumber, NSDecimalNumberBehaviors behavior);
+    public native NSDecimalNumber add(NSDecimalNumber decimalNumber, NSDecimalNumberBehaviors behavior);
     @Method(selector = "decimalNumberBySubtracting:")
-    public native NSDecimalNumber decimalNumberBySubtracting$(NSDecimalNumber decimalNumber);
+    public native NSDecimalNumber subtract(NSDecimalNumber decimalNumber);
     @Method(selector = "decimalNumberBySubtracting:withBehavior:")
-    public native NSDecimalNumber decimalNumberBySubtracting$withBehavior$(NSDecimalNumber decimalNumber, NSDecimalNumberBehaviors behavior);
+    public native NSDecimalNumber subtract(NSDecimalNumber decimalNumber, NSDecimalNumberBehaviors behavior);
     @Method(selector = "decimalNumberByMultiplyingBy:")
-    public native NSDecimalNumber decimalNumberByMultiplyingBy$(NSDecimalNumber decimalNumber);
+    public native NSDecimalNumber multiply(NSDecimalNumber decimalNumber);
     @Method(selector = "decimalNumberByMultiplyingBy:withBehavior:")
-    public native NSDecimalNumber decimalNumberByMultiplyingBy$withBehavior$(NSDecimalNumber decimalNumber, NSDecimalNumberBehaviors behavior);
+    public native NSDecimalNumber multiply(NSDecimalNumber decimalNumber, NSDecimalNumberBehaviors behavior);
     @Method(selector = "decimalNumberByDividingBy:")
-    public native NSDecimalNumber decimalNumberByDividingBy$(NSDecimalNumber decimalNumber);
+    public native NSDecimalNumber divide(NSDecimalNumber decimalNumber);
     @Method(selector = "decimalNumberByDividingBy:withBehavior:")
-    public native NSDecimalNumber decimalNumberByDividingBy$withBehavior$(NSDecimalNumber decimalNumber, NSDecimalNumberBehaviors behavior);
+    public native NSDecimalNumber divide(NSDecimalNumber decimalNumber, NSDecimalNumberBehaviors behavior);
     @Method(selector = "decimalNumberByRaisingToPower:")
-    public native NSDecimalNumber decimalNumberByRaisingToPower$(@MachineSizedUInt long power);
+    public native NSDecimalNumber raise(@MachineSizedUInt long power);
     @Method(selector = "decimalNumberByRaisingToPower:withBehavior:")
-    public native NSDecimalNumber decimalNumberByRaisingToPower$withBehavior$(@MachineSizedUInt long power, NSDecimalNumberBehaviors behavior);
+    public native NSDecimalNumber raise(@MachineSizedUInt long power, NSDecimalNumberBehaviors behavior);
     @Method(selector = "decimalNumberByMultiplyingByPowerOf10:")
-    public native NSDecimalNumber decimalNumberByMultiplyingByPowerOf10$(short power);
+    public native NSDecimalNumber multiplyByPowerOf10(short power);
     @Method(selector = "decimalNumberByMultiplyingByPowerOf10:withBehavior:")
-    public native NSDecimalNumber decimalNumberByMultiplyingByPowerOf10$withBehavior$(short power, NSDecimalNumberBehaviors behavior);
+    public native NSDecimalNumber multiplyByPowerOf10(short power, NSDecimalNumberBehaviors behavior);
     @Method(selector = "decimalNumberByRoundingAccordingToBehavior:")
-    public native NSDecimalNumber decimalNumberByRoundingAccordingToBehavior$(NSDecimalNumberBehaviors behavior);
-    @Method(selector = "compare:")
-    public native NSComparisonResult compare$(NSNumber decimalNumber);
-    @Method(selector = "objCType")
-    public native BytePtr objCType();
-    @Method(selector = "doubleValue")
-    public native double doubleValue();
-    @Method(selector = "decimalNumberWithMantissa:exponent:isNegative:")
-    public static native NSDecimalNumber decimalNumberWithMantissa$exponent$isNegative$(long mantissa, short exponent, boolean flag);
-    @Method(selector = "decimalNumberWithDecimal:")
-    public static native NSDecimalNumber decimalNumberWithDecimal$(@ByVal NSDecimal dcm);
-    @Method(selector = "decimalNumberWithString:")
-    public static native NSDecimalNumber decimalNumberWithString$(String numberValue);
-    @Method(selector = "decimalNumberWithString:locale:")
-    public static native NSDecimalNumber decimalNumberWithString$locale$(String numberValue, NSObject locale);
+    public native NSDecimalNumber round(NSDecimalNumberBehaviors behavior);
     @Method(selector = "zero")
     public static native NSDecimalNumber zero();
     @Method(selector = "one")
     public static native NSDecimalNumber one();
     @Method(selector = "minimumDecimalNumber")
-    public static native NSDecimalNumber minimumDecimalNumber();
+    public static native NSDecimalNumber getMinimumDecimalNumber();
     @Method(selector = "maximumDecimalNumber")
-    public static native NSDecimalNumber maximumDecimalNumber();
+    public static native NSDecimalNumber getMaximumDecimalNumber();
     @Method(selector = "notANumber")
     public static native NSDecimalNumber notANumber();
     @Method(selector = "setDefaultBehavior:")
     public static native void setDefaultBehavior(NSDecimalNumberBehaviors behavior);
     @Method(selector = "defaultBehavior")
-    public static native NSDecimalNumberBehaviors defaultBehavior();
+    public static native NSDecimalNumberBehaviors getDefaultBehavior();
     /*</methods>*/
 }

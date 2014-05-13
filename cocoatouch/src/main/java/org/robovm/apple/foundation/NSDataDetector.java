@@ -44,19 +44,16 @@ import org.robovm.apple.security.*;
     /*<bind>*/static { ObjCRuntime.bind(NSDataDetector.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public NSDataDetector() {}
     protected NSDataDetector(SkipInit skipInit) { super(skipInit); }
-    public NSDataDetector(long checkingTypes, NSError.NSErrorPtr error) { super((SkipInit) null); initObject(initWithTypes$error$(checkingTypes, error)); }
+    public NSDataDetector(NSTextCheckingType checkingTypes, NSError.NSErrorPtr error) { super((SkipInit) null); initObject(initWithTypes$error$(checkingTypes, error)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "checkingTypes")
-    public native long getCheckingTypes();
+    public native NSTextCheckingType getCheckingTypes();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithTypes:error:")
-    protected native @Pointer long initWithTypes$error$(long checkingTypes, NSError.NSErrorPtr error);
-    @Method(selector = "dataDetectorWithTypes:error:")
-    public static native NSDataDetector dataDetectorWithTypes$error$(long checkingTypes, NSError.NSErrorPtr error);
+    protected native @Pointer long initWithTypes$error$(NSTextCheckingType checkingTypes, NSError.NSErrorPtr error);
     /*</methods>*/
 }

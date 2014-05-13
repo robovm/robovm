@@ -46,7 +46,7 @@ import org.robovm.apple.security.*;
     /*<constructors>*/
     public NSCompoundPredicate() {}
     protected NSCompoundPredicate(SkipInit skipInit) { super(skipInit); }
-    public NSCompoundPredicate(NSCompoundPredicateType type, NSArray<?> subpredicates) { super((SkipInit) null); initObject(initWithType$subpredicates$(type, subpredicates)); }
+    public NSCompoundPredicate(NSCompoundPredicateType type, NSArray<NSPredicate> subpredicates) { super((SkipInit) null); initObject(initWithType$subpredicates$(type, subpredicates)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -54,16 +54,16 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithType:subpredicates:")
-    protected native @Pointer long initWithType$subpredicates$(NSCompoundPredicateType type, NSArray<?> subpredicates);
+    protected native @Pointer long initWithType$subpredicates$(NSCompoundPredicateType type, NSArray<NSPredicate> subpredicates);
     @Method(selector = "compoundPredicateType")
-    public native NSCompoundPredicateType compoundPredicateType();
+    public native NSCompoundPredicateType getCompoundPredicateType();
     @Method(selector = "subpredicates")
-    public native NSArray<?> subpredicates();
+    public native NSArray<NSPredicate> getSubpredicates();
     @Method(selector = "andPredicateWithSubpredicates:")
-    public static native NSPredicate andPredicateWithSubpredicates$(NSArray<?> subpredicates);
+    public static native NSPredicate createAndPredicate(NSArray<NSPredicate> subpredicates);
     @Method(selector = "orPredicateWithSubpredicates:")
-    public static native NSPredicate orPredicateWithSubpredicates$(NSArray<?> subpredicates);
+    public static native NSPredicate createOrPredicate(NSArray<NSPredicate> subpredicates);
     @Method(selector = "notPredicateWithSubpredicate:")
-    public static native NSPredicate notPredicateWithSubpredicate$(NSPredicate predicate);
+    public static native NSPredicate createNotPredicate(NSPredicate predicate);
     /*</methods>*/
 }

@@ -44,7 +44,6 @@ import org.robovm.apple.security.*;
     /*<bind>*/static { ObjCRuntime.bind(NSRegularExpression.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public NSRegularExpression() {}
     protected NSRegularExpression(SkipInit skipInit) { super(skipInit); }
     public NSRegularExpression(String pattern, NSRegularExpressionOptions options, NSError.NSErrorPtr error) { super((SkipInit) null); initObject(initWithPattern$options$error$(pattern, options, error)); }
     /*</constructors>*/
@@ -60,28 +59,26 @@ import org.robovm.apple.security.*;
     /*<methods>*/
     @Method(selector = "initWithPattern:options:error:")
     protected native @Pointer long initWithPattern$options$error$(String pattern, NSRegularExpressionOptions options, NSError.NSErrorPtr error);
-    @Method(selector = "regularExpressionWithPattern:options:error:")
-    public static native NSRegularExpression regularExpressionWithPattern$options$error$(String pattern, NSRegularExpressionOptions options, NSError.NSErrorPtr error);
     @Method(selector = "escapedPatternForString:")
-    public static native String escapedPatternForString$(String string);
+    public static native String escapedPattern(String string);
     @Method(selector = "enumerateMatchesInString:options:range:usingBlock:")
-    public native void enumerateMatchesInString$options$range$usingBlock$(String string, NSMatchingOptions options, @ByVal NSRange range, @Block VoidBlock3<NSTextCheckingResult, NSMatchingFlags, BytePtr> block);
+    public native void enumerateMatches(String string, NSMatchingOptions options, @ByVal NSRange range, @Block VoidBlock3<NSTextCheckingResult, NSMatchingFlags, BytePtr> block);
     @Method(selector = "matchesInString:options:range:")
-    public native NSArray<?> matchesInString$options$range$(String string, NSMatchingOptions options, @ByVal NSRange range);
+    public native NSArray<NSTextCheckingResult> getMatches(String string, NSMatchingOptions options, @ByVal NSRange range);
     @Method(selector = "numberOfMatchesInString:options:range:")
-    public native @MachineSizedUInt long numberOfMatchesInString$options$range$(String string, NSMatchingOptions options, @ByVal NSRange range);
+    public native @MachineSizedUInt long getNumberOfMatches(String string, NSMatchingOptions options, @ByVal NSRange range);
     @Method(selector = "firstMatchInString:options:range:")
-    public native NSTextCheckingResult firstMatchInString$options$range$(String string, NSMatchingOptions options, @ByVal NSRange range);
+    public native NSTextCheckingResult getFirstMatch(String string, NSMatchingOptions options, @ByVal NSRange range);
     @Method(selector = "rangeOfFirstMatchInString:options:range:")
-    public native @ByVal NSRange rangeOfFirstMatchInString$options$range$(String string, NSMatchingOptions options, @ByVal NSRange range);
+    public native @ByVal NSRange getRangeOfFirstMatch(String string, NSMatchingOptions options, @ByVal NSRange range);
     @Method(selector = "stringByReplacingMatchesInString:options:range:withTemplate:")
-    public native String stringByReplacingMatchesInString$options$range$withTemplate$(String string, NSMatchingOptions options, @ByVal NSRange range, String templ);
+    public native String newStringByReplacingMatches(String string, NSMatchingOptions options, @ByVal NSRange range, String templ);
     @Method(selector = "replaceMatchesInString:options:range:withTemplate:")
-    public native @MachineSizedUInt long replaceMatchesInString$options$range$withTemplate$(NSMutableString string, NSMatchingOptions options, @ByVal NSRange range, String templ);
+    public native @MachineSizedUInt long replaceMatches(NSMutableString string, NSMatchingOptions options, @ByVal NSRange range, String templ);
     @Method(selector = "replacementStringForResult:inString:offset:template:")
-    public native String replacementStringForResult$inString$offset$template$(NSTextCheckingResult result, String string, @MachineSizedSInt long offset, String templ);
+    public native String getReplacementString(NSTextCheckingResult result, String string, @MachineSizedSInt long offset, String templ);
     @Method(selector = "escapedTemplateForString:")
-    public static native String escapedTemplateForString$(String string);
+    public static native String escapedTemplate(String string);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

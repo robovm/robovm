@@ -54,62 +54,62 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "calendar")
-    public native NSCalendar calendar();
+    public native NSCalendar getCalendar();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "timeZone")
-    public native NSTimeZone timeZone();
+    public native NSTimeZone getTimeZone();
     @Method(selector = "era")
-    public native @MachineSizedSInt long era();
+    public native @MachineSizedSInt long getEra();
     @Method(selector = "year")
-    public native @MachineSizedSInt long year();
+    public native @MachineSizedSInt long getYear();
     @Method(selector = "month")
-    public native @MachineSizedSInt long month();
+    public native @MachineSizedSInt long getMonth();
     @Method(selector = "day")
-    public native @MachineSizedSInt long day();
+    public native @MachineSizedSInt long getDay();
     @Method(selector = "hour")
-    public native @MachineSizedSInt long hour();
+    public native @MachineSizedSInt long getHour();
     @Method(selector = "minute")
-    public native @MachineSizedSInt long minute();
+    public native @MachineSizedSInt long getMinute();
     @Method(selector = "second")
-    public native @MachineSizedSInt long second();
+    public native @MachineSizedSInt long getSecond();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "nanosecond")
-    public native @MachineSizedSInt long nanosecond();
+    public native @MachineSizedSInt long getNanosecond();
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Method(selector = "week")
-    public native @MachineSizedSInt long week();
+    public native @MachineSizedSInt long getWeek();
     @Method(selector = "weekday")
-    public native @MachineSizedSInt long weekday();
+    public native @MachineSizedSInt long getWeekday();
     @Method(selector = "weekdayOrdinal")
-    public native @MachineSizedSInt long weekdayOrdinal();
+    public native @MachineSizedSInt long getWeekdayOrdinal();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "quarter")
-    public native @MachineSizedSInt long quarter();
+    public native @MachineSizedSInt long getQuarter();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "weekOfMonth")
-    public native @MachineSizedSInt long weekOfMonth();
+    public native @MachineSizedSInt long getWeekOfMonth();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "weekOfYear")
-    public native @MachineSizedSInt long weekOfYear();
+    public native @MachineSizedSInt long getWeekOfYear();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "yearForWeekOfYear")
-    public native @MachineSizedSInt long yearForWeekOfYear();
+    public native @MachineSizedSInt long getYearForWeekOfYear();
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -184,6 +184,6 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "date")
-    public native NSDate date();
+    public native NSDate getDate();
     /*</methods>*/
 }

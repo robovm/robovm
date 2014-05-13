@@ -55,54 +55,54 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    public Date toDate() {
+        return new Date((long) (getTimeIntervalSince1970() * 1000.0));
+    }
+    
+    public String toString(NSLocale locale) {
+        return description(locale);
+    }
+    
     /*<methods>*/
     @Method(selector = "timeIntervalSinceReferenceDate")
-    public native double timeIntervalSinceReferenceDate();
+    public native double getTimeIntervalSinceReferenceDate();
     @Method(selector = "timeIntervalSinceDate:")
-    public native double timeIntervalSinceDate$(NSDate anotherDate);
+    public native double getTimeIntervalSince(NSDate anotherDate);
     @Method(selector = "timeIntervalSinceNow")
-    public native double timeIntervalSinceNow();
+    public native double getTimeIntervalSinceNow();
     @Method(selector = "timeIntervalSince1970")
-    public native double timeIntervalSince1970();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 4.0.
-     */
-    @Deprecated
-    @Method(selector = "addTimeInterval:")
-    public native NSObject addTimeInterval$(double seconds);
+    public native double getTimeIntervalSince1970();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "dateByAddingTimeInterval:")
-    public native NSObject dateByAddingTimeInterval$(double ti);
+    public native NSDate newDateByAddingTimeInterval(double ti);
     @Method(selector = "earlierDate:")
-    public native NSDate earlierDate$(NSDate anotherDate);
+    public native NSDate earlierDate(NSDate anotherDate);
     @Method(selector = "laterDate:")
-    public native NSDate laterDate$(NSDate anotherDate);
+    public native NSDate laterDate(NSDate anotherDate);
     @Method(selector = "compare:")
-    public native NSComparisonResult compare$(NSDate other);
+    public native NSComparisonResult compare(NSDate other);
     @Method(selector = "isEqualToDate:")
-    public native boolean isEqualToDate$(NSDate otherDate);
-    @Method(selector = "description")
-    public native String description();
+    public native boolean isEqualTo(NSDate otherDate);
     @Method(selector = "descriptionWithLocale:")
-    public native String descriptionWithLocale$(NSObject locale);
+    public native String description(NSLocale locale);
     @Method(selector = "initWithTimeIntervalSince1970:")
     protected native @Pointer long initWithTimeIntervalSince1970$(double secs);
     @Method(selector = "date")
-    public static native NSDate date();
+    public static native NSDate now();
     @Method(selector = "dateWithTimeIntervalSinceNow:")
-    public static native NSDate dateWithTimeIntervalSinceNow$(double secs);
+    public static native NSDate createWithTimeIntervalSinceNow(double secs);
     @Method(selector = "dateWithTimeIntervalSinceReferenceDate:")
-    public static native NSDate dateWithTimeIntervalSinceReferenceDate$(double ti);
+    public static native NSDate createWithTimeIntervalSinceReferenceDate(double ti);
     @Method(selector = "dateWithTimeIntervalSince1970:")
-    public static native NSDate dateWithTimeIntervalSince1970$(double secs);
+    public static native NSDate createWithTimeIntervalSince1970(double secs);
     @Method(selector = "dateWithTimeInterval:sinceDate:")
-    public static native NSDate dateWithTimeInterval$sinceDate$(double secsToBeAdded, NSDate date);
+    public static native NSDate createWithTimeIntervalSinceDate(double secsToBeAdded, NSDate date);
     @Method(selector = "distantFuture")
-    public static native NSObject distantFuture();
+    public static native NSDate getDistantFuture();
     @Method(selector = "distantPast")
-    public static native NSObject distantPast();
+    public static native NSDate getDistantPast();
     /*</methods>*/
 }

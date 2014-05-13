@@ -1,0 +1,46 @@
+package: org.robovm.apple.safariservices
+include: [foundation.yaml]
+library: SafariServices
+framework: SafariServices
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/SafariServices.framework/Headers/SafariServices.h
+typedefs: {}
+    
+enums:
+    SSReadingListErrorCode: {first: SSReadingListErrorURLSchemeNotAllowed, prefix: "SSReadingListError", marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
+        
+classes:
+    SSReadingList: # DONE
+        methods:
+            '-addReadingListItemWithURL:title:previewText:error:':
+                name: "addReadingListItem"
+            '+defaultReadingList':
+                property: true
+            '+supportsURL:':
+                trim_after_first_colon: true
+
+protocols: {}
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (SS.*):
+        class: SafariServices
+        name: "Function__#{g[0]}"
+
+values:
+    SS(ReadingListErrorDomain):
+        class: SafariServices
+        name: "#{g[0]}"
+        type: NSString
+
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (SS.*):
+        class: SafariServices
+        name: "Value__#{g[0]}"
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (SS.*):
+        class: SafariServices
+        name: "Constant__#{g[0]}"

@@ -1,0 +1,58 @@
+package: org.robovm.apple.quicklook
+include: [foundation.yaml, uikit.yaml]
+library: QuickLook
+framework: QuickLook
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/QuickLook.framework/Headers/QuickLook.h
+typedefs: {}
+    
+enums: {}
+
+categories:
+    NSURL: # DONE
+        exclude: true
+        
+classes:
+    QLPreviewController: # DONE
+        methods:
+            '+canPreviewItem:':
+                trim_after_first_colon: true
+
+protocols:
+    QLPreviewItem: # DONE
+        properties:
+            'previewItemURL':
+                name: "URL"
+            'previewItemTitle':
+                name: "Title"
+    QLPreviewControllerDelegate: # DONE
+        methods:
+            '-previewControllerWillDismiss:':
+                name: "willDismiss"
+            '-previewControllerDidDismiss:':
+                name: "didDismiss"
+            '-previewController:shouldOpenURL:forPreviewItem:':
+                name: "shouldOpenURL"
+            '-previewController:frameForPreviewItem:inSourceView:':
+                name: "getFrame"
+            '-previewController:transitionImageForPreviewItem:contentRect:':
+                name: "getTransitionImage"
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (QL.*):
+        class: QuickLook
+        name: "Function__#{g[0]}"
+
+values:
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (QL.*):
+        class: QuickLook
+        name: "Value__#{g[0]}"
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (QL.*):
+        class: QuickLook
+        name: "Constant__#{g[0]}"

@@ -276,8 +276,12 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         }
     }
     
-    private void init() {
+    private void init(Config config) {
         if (initialized) {
+            return;
+        }
+        if (config.getClazzes().load(OBJC_OBJECT.replace('.', '/')) == null) {
+            initialized = true;
             return;
         }
         SootResolver r = SootResolver.v();
@@ -342,7 +346,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     }
     
     private boolean isObjCObject(SootClass cls) {
-        if (org_robovm_objc_ObjCObject.isPhantom()) {
+        if (org_robovm_objc_ObjCObject == null || org_robovm_objc_ObjCObject.isPhantom()) {
             return false;
         }
         while (cls != org_robovm_objc_ObjCObject && cls.hasSuperclass()) {
@@ -352,7 +356,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     }
 
     private boolean isObjCExtensions(SootClass cls) {
-        if (org_robovm_objc_ObjCExtensions.isPhantom()) {
+        if (org_robovm_objc_ObjCExtensions == null || org_robovm_objc_ObjCExtensions.isPhantom()) {
             return false;
         }
         while (cls != org_robovm_objc_ObjCExtensions && cls.hasSuperclass()) {
@@ -363,7 +367,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
 
     @Override
     public void beforeClass(Config config, Clazz clazz, ModuleBuilder moduleBuilder) {
-        init();
+        init(config);
         SootClass sootClass = clazz.getSootClass();
         boolean extensions = false;
         if (!sootClass.isInterface() 

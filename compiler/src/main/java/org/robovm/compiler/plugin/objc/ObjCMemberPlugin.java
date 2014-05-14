@@ -450,50 +450,44 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
             if (propertyAnno != null) {
                 
                 // Validate
-                String methodName = method.getName();
-                if (!(methodName.startsWith("get") && methodName.length() > 3)
-                        && !(methodName.startsWith("is") && methodName.length() > 2)
-                        && !(methodName.startsWith("set") && methodName.length() > 3)) {
-                    throw new CompilerException("Invalid Objective-C @Property method name " + method);
-                }
+                
                 
                 if (extensions && !(method.isStatic() && method.isNative())) {
                     throw new CompilerException("Objective-C @Property method " 
                             + method + " in extension class must be static and native.");
                 }
                 
-                boolean isGetter = !methodName.startsWith("set");
-                if (!extensions) {
-                    if (isGetter && method.getParameterCount() != 0) {
-                        throw new CompilerException("Objective-C @Property getter method " + method 
-                                + " must take 0 arguments");
+                int getterParamCount = extensions ? 1 : 0;
+                int setterParamCount = extensions ? 2 : 1;
+                if (method.getReturnType() != VoidType.v() && method.getParameterCount() != getterParamCount
+                        || method.getReturnType() == VoidType.v() && method.getParameterCount() != setterParamCount) {
+
+                    if (!extensions) {
+                        throw new CompilerException("Objective-C @Property method " + method 
+                                + " does not have a supported signature. @Property getter methods"
+                                + " must take 0 arguments and must not return void. " 
+                                + "@Property setter methods must take 1 argument and return void.");
                     }
-                    if (!isGetter && method.getParameterCount() != 1) {
-                        throw new CompilerException("Objective-C @Property setter method " + method 
-                                + " must take 1 argument");
-                    }
-                } else {
-                    if (isGetter && method.getParameterCount() != 1) {
-                        throw new CompilerException("Objective-C @Property getter method " + method 
-                                + " in extension class must take 1 argument (this)");
-                    }
-                    if (!isGetter && method.getParameterCount() != 2) {
-                        throw new CompilerException("Objective-C @Property setter method " + method 
-                                + " in extension class must take 2 arguments");
-                    }
+                    throw new CompilerException("Objective-C @Property method " + method + " in extension class"
+                            + " does not have a supported signature. @Property getter methods in extension classes"
+                            + " must take 1 argument (the 'this' reference) and must not return void. " 
+                            + "@Property setter methods in extension classes must " 
+                            + "take 2 arguments (first is the 'this' reference) and return void.");
                 }
-                if (isGetter && method.getReturnType() == VoidType.v()) {
-                    throw new CompilerException("Objective-C @Property getter method " + method 
-                            + " must not return void");
-                }
-                if (!isGetter && method.getReturnType() != VoidType.v()) {
-                    throw new CompilerException("Objective-C @Property setter method " + method 
-                            + " must return void");
-                }
+                
+                boolean isGetter = method.getReturnType() != VoidType.v();
                 
                 // Determine the selector
                 String selectorName = readStringElem(propertyAnno, "selector", "").trim();
                 if (selectorName.length() == 0) {
+                    String methodName = method.getName();
+                    if (!(isGetter && methodName.startsWith("get") && methodName.length() > 3)
+                            && !(isGetter && methodName.startsWith("is") && methodName.length() > 2)
+                            && !(!isGetter && methodName.startsWith("set") && methodName.length() > 3)) {
+                        throw new CompilerException("Invalid Objective-C @Property method name " 
+                            + method + ". @Property methods without an explicit selector value " 
+                                + "must follow the Java beans property method naming convention.");
+                    }
                     selectorName = methodName;
                     if (isGetter) {
                         selectorName = methodName.startsWith("is") 
@@ -587,6 +581,55 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         }
     }
 
+    private SootMethod findStrongRefGetter(SootClass sootClass, 
+            final SootMethod method, boolean extensions) {
+        
+        String setterPropName = readStringElem(getAnnotation(method, PROPERTY), "name", "").trim();
+        if (setterPropName.length() == 0) {
+            String methodName = method.getName();
+            if (!methodName.startsWith("set") || methodName.length() == 3) {
+                throw new CompilerException("Failed to determine the property " 
+                        + "name from the @Property method " + method 
+                        + ". Either specify the name explicitly in the @Property " 
+                        + "annotation or rename the method according to the Java "
+                        + "beans property setter method naming convention.");
+            }
+            setterPropName = methodName.substring(3);
+            setterPropName = setterPropName.substring(0, 1).toLowerCase() + setterPropName.substring(1);
+        }
+
+        int paramCount = extensions ? 1 : 0;
+        Type propType = method.getParameterType(extensions ? 1 : 0);
+        for (SootMethod m : sootClass.getMethods()) {
+            if (m != method && method.isStatic() == m.isStatic()
+                    && m.getParameterCount() == paramCount && m.getReturnType().equals(propType)) {
+                
+                AnnotationTag propertyAnno = getAnnotation(m, PROPERTY);
+                if (propertyAnno != null) {
+                    String getterPropName = readStringElem(propertyAnno, "name", "").trim();
+                    if (getterPropName.length() == 0) {
+                        String methodName = m.getName();
+                        if (!methodName.startsWith("get") || methodName.length() == 3) {
+                            // Not a candidate. No name set and not a Java beans style getter
+                            continue;
+                        }
+                        getterPropName = methodName.substring(3);
+                        getterPropName = getterPropName.substring(0, 1).toLowerCase() + getterPropName.substring(1);
+                    }
+                    if (setterPropName.equals(getterPropName)) {
+                        return m;
+                    }
+                }
+            }
+        }
+        
+        throw new CompilerException("Failed to determine the getter method " 
+                + "corresponding to the strong ref @Property setter method " + method 
+                + ". The getter must either specify the name explicitly in the @Property " 
+                + "annotation or be named according to the Java "
+                + "beans property getter method naming convention.");
+    }
+    
     private void createBridge(SootClass sootClass, SootMethod method, String selectorName, 
             boolean strongRefSetter, boolean extensions) {
 
@@ -648,11 +691,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         if (strongRefSetter) {
             Type propType = method.getParameterType(extensions ? 1 : 0);
             if (propType instanceof RefLikeType) {
-                SootMethodRef getter = Scene.v().makeMethodRef(
-                        method.getDeclaringClass(),
-                        "get" + method.getName().substring(3),
-                        extensions ? Arrays.asList(thiz.getType()) : Collections.<Type>emptyList(),
-                        propType, extensions || method.isStatic());
+                SootMethodRef getter = findStrongRefGetter(sootClass, method, extensions).makeRef();
                 Local before = j.newLocal("$before", propType);
                 body.getLocals().add(before);
                 units.add(

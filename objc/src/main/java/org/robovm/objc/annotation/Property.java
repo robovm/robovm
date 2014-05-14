@@ -20,6 +20,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.robovm.objc.ObjCExtensions;
 import org.robovm.objc.ObjCObject;
 
 /**
@@ -28,9 +29,20 @@ import org.robovm.objc.ObjCObject;
  * <code>native</code> modifier. Property methods must not be 
  * <code>static</code>.
  * <p>
- * Property methods must be ordinary Java bean style methods: the getter has no 
- * parameters and its name starts with "is" or "get" while the setter takes a 
- * single parameter, returns void and its name starts with "set.
+ * Property methods in ordinary classes can have any name if a 
+ * {@link #selector()} has been specified. The property getter must return 
+ * something and take 0 parameters and the setter must return nothing and take
+ * exactly 1 parameter.
+ * <p>
+ * Property methods in extension classes (extending {@code NSExtensions} or
+ * {@link ObjCExtensions} must be {@code static} and take an instance of the
+ * target class as first parameter.
+ * <p>
+ * If no {@link #selector()} has been specified the name of
+ * the method will be used to determine the selector for the property. In that
+ * case the property methods must follow the Java beans property methods
+ * naming convention: the getter name starts with "is" or "get" while the 
+ * setter name starts with "set.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
@@ -60,6 +72,14 @@ public @interface Property {
      * <p>
      * This attribute is only meaningful when set on a setter method. If 
      * specified on a getter method it will be ignored.
+     * <p>
+     * NOTE: There must be a corresponding getter method in the class. This will
+     * be used to determine the old value of the property.
+     * {@link ObjCObject#removeStrongRef(Object)} will be called passing the old
+     * value if not {@code null}. If the property methods follow the Java beans
+     * naming convention the getter method can be automatically determined.
+     * Otherwise the {@link #name()} has to be set to the same value on both
+     * the getter and setter methods.
      * 
      * @see ObjCObject#addStrongRef(Object)
      * @see ObjCObject#removeStrongRef(Object)

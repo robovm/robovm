@@ -90,9 +90,9 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "registerNib:forSupplementaryViewOfKind:withReuseIdentifier:")
     public native void registerReusableSupplementaryViewNib(UINib nib, String kind, String identifier);
     @Method(selector = "dequeueReusableCellWithReuseIdentifier:forIndexPath:")
-    public native NSObject dequeueReusableCell(String identifier, NSIndexPath indexPath);
+    public native UICollectionReusableView dequeueReusableCell(String identifier, NSIndexPath indexPath);
     @Method(selector = "dequeueReusableSupplementaryViewOfKind:withReuseIdentifier:forIndexPath:")
-    public native NSObject dequeueReusableSupplementaryView(String elementKind, String identifier, NSIndexPath indexPath);
+    public native UICollectionReusableView dequeueReusableSupplementaryView(String elementKind, String identifier, NSIndexPath indexPath);
     @Method(selector = "indexPathsForSelectedItems")
     public native NSArray<NSIndexPath> getIndexPathsForSelectedItems();
     @Method(selector = "selectItemAtIndexPath:animated:scrollPosition:")

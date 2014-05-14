@@ -247,17 +247,17 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "deselectRowAtIndexPath:animated:")
     public native void deselectRow(NSIndexPath indexPath, boolean animated);
     @Method(selector = "dequeueReusableCellWithIdentifier:")
-    public native NSObject dequeueReusableCell(String identifier);
+    public native UITableViewCell dequeueReusableCell(String identifier);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "dequeueReusableCellWithIdentifier:forIndexPath:")
-    public native NSObject dequeueReusableCell(String identifier, NSIndexPath indexPath);
+    public native UITableViewCell dequeueReusableCell(String identifier, NSIndexPath indexPath);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "dequeueReusableHeaderFooterViewWithIdentifier:")
-    public native NSObject dequeueReusableHeaderFooterView(String identifier);
+    public native UITableViewHeaderFooterView dequeueReusableHeaderFooterView(String identifier);
     /**
      * @since Available in iOS 5.0 and later.
      */

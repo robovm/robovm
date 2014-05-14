@@ -743,8 +743,10 @@ classes:
                         type: "NSArray<NSIndexPath>"
             '-dequeueReusableCellWithReuseIdentifier:forIndexPath:':
                 name: dequeueReusableCell
+                return_type: UICollectionReusableView
             '-dequeueReusableSupplementaryViewOfKind:withReuseIdentifier:forIndexPath:':
                 name: dequeueReusableSupplementaryView
+                return_type: UICollectionReusableView
             '-deselectItemAtIndexPath:animated:':
                 name: deselectItem
             '-indexPathForCell:':
@@ -2008,10 +2010,13 @@ classes:
                         type: "NSArray<NSIndexPath>"
             '-dequeueReusableCellWithIdentifier:':
                 name: dequeueReusableCell
+                return_type: UITableViewCell
             '-dequeueReusableCellWithIdentifier:forIndexPath:':
                 name: dequeueReusableCell
+                return_type: UITableViewCell
             '-dequeueReusableHeaderFooterViewWithIdentifier:':
                 name: dequeueReusableHeaderFooterView   
+                return_type: UITableViewHeaderFooterView
             '-deselectRowAtIndexPath:animated:':
                 name: deselectRow
             '-indexPathForCell:':

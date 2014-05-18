@@ -1612,7 +1612,13 @@ classes:
 
     NSString: # DONE
         methods:
-            "-initWithCharactersNoCopy:length:freeWhenDone:":
+            '+stringWithCharacters:length:':
+                visibility: private
+                return_type: '@Pointer long'
+                parameters:
+                    characters:
+                        type: "@Pointer long"
+            '-initWithCharacters:length:':
                 constructor: false
                 visibility: private
                 parameters:

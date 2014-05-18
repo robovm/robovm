@@ -59,14 +59,15 @@ import org.robovm.apple.security.*;
             }
             NSString s = new NSString(o);
             try {
+                long handle = s.getHandle();
                 // retainCount is now 1
-                s.retain(); // Make sure the retainCount is 1 when we exit this try block
+                retain(handle); // Make sure the retainCount is 1 when we exit this try block
                 // retainCount is now 2
                 if ((flags & MarshalerFlags.CALL_TYPE_CALLBACK) > 0) {
                     // NSStrings returned by callbacks should be autoreleased
-                    s.autorelease();
+                    autorelease(handle);
                 }
-                return s.getHandle(); // retainCount is 1 after the return
+                return handle; // retainCount is 1 after the return
             } finally {
                 s.dispose();
             }
@@ -82,7 +83,7 @@ import org.robovm.apple.security.*;
         }
     }
     
-    private static String EMPTY_STRING = "";
+    private static final String EMPTY_STRING = "";
     private static final long STRING_VALUE_OFFSET;    
     private static final long STRING_OFFSET_OFFSET;    
     /*<bind>*/static { ObjCRuntime.bind(NSString.class); }/*</bind>*/
@@ -98,7 +99,7 @@ import org.robovm.apple.security.*;
     
     public NSString(String s) {
         super((SkipInit) null);
-        initObject(initWithCharactersNoCopy$length$freeWhenDone$(copyChars(s), s.length(), true));
+        initObject(initWithCharacters$length$(getChars(s), s.length()));
     }
     
     /*<constructors>*/
@@ -109,14 +110,11 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
-    
-    private static long copyChars(String s) {
-        int len = s.length();
+
+    private static long getChars(String s) {
         int offset = VM.getInt(VM.getObjectAddress(s) + STRING_OFFSET_OFFSET);
         char[] value = (char[]) VM.getObject(VM.getObjectAddress(s) + STRING_VALUE_OFFSET);
-        long dest = VM.malloc(len << 1);
-        VM.memcpy(dest, VM.getArrayValuesAddress(value) + (offset << 1), len << 1);
-        return dest;
+        return VM.getArrayValuesAddress(value) + (offset << 1);
     }
     
     @Override
@@ -137,7 +135,9 @@ import org.robovm.apple.security.*;
     private native short characterAtIndex$(@MachineSizedUInt long index);
     @Method(selector = "getCharacters:range:")
     private native void getCharacters$range$(@Pointer long buffer, @ByVal NSRange aRange);
-    @Method(selector = "initWithCharactersNoCopy:length:freeWhenDone:")
-    private native @Pointer long initWithCharactersNoCopy$length$freeWhenDone$(@Pointer long characters, @MachineSizedUInt long length, boolean freeBuffer);
+    @Method(selector = "initWithCharacters:length:")
+    private native @Pointer long initWithCharacters$length$(@Pointer long characters, @MachineSizedUInt long length);
+    @Method(selector = "stringWithCharacters:length:")
+    private static native @Pointer long stringWithCharacters$length$(@Pointer long characters, @MachineSizedUInt long length);
     /*</methods>*/
 }

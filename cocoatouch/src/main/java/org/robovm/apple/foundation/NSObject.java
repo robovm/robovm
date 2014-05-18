@@ -62,15 +62,16 @@ import org.robovm.apple.security.*;
             if (o == null) {
                 return 0L;
             }
+            long handle = o.getHandle();
             if ((flags & (CALL_TYPE_CALLBACK | CALL_TYPE_GLOBAL_VALUE | CALL_TYPE_STRUCT_MEMBER)) > 0) {
                 // Make sure the object outlives the GC
-                o.retain();
+                retain(handle);
                 if ((flags & CALL_TYPE_CALLBACK) > 0) {
                     // NSObjects returned by callbacks should be autoreleased
-                    o.autorelease();
+                    autorelease(handle);
                 }
             }
-            return o.getHandle();
+            return handle;
         }
         @MarshalsPointer
         public static long toNative(NSObjectProtocol o, long flags) {
@@ -103,7 +104,7 @@ import org.robovm.apple.security.*;
     @Override
     protected void afterMarshaled() {
         super.afterMarshaled();
-        retain();
+        retain(getHandle());
     }
     
     protected long alloc() {
@@ -137,8 +138,9 @@ import org.robovm.apple.security.*;
     protected void doDispose() {
         super.doDispose();
         // Only release once
-        if (getHandle() != 0) {
-            release();
+        long handle = getHandle();
+        if (handle != 0) {
+            release(handle);
         }
     }
 
@@ -147,9 +149,19 @@ import org.robovm.apple.security.*;
         return description();
     }
     
+    private static final Selector retain = Selector.register("retain");
+    protected static void retain(long handle) {
+        ObjCRuntime.void_objc_msgSend(handle, retain.getHandle());
+    }
+    
     private static final Selector release = Selector.register("release");
     protected static void release(long handle) {
         ObjCRuntime.void_objc_msgSend(handle, release.getHandle());
+    }
+
+    private static final Selector autorelease = Selector.register("autorelease");
+    protected static void autorelease(long handle) {
+        ObjCRuntime.void_objc_msgSend(handle, autorelease.getHandle());
     }
 
     // The methods below are defined in the NSObject protocol. We define them here

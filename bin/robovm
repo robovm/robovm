@@ -19,4 +19,4 @@ java \
     -Xmx2g \
     -Xss1024k \
     -jar "$COMPILER_JAR" \
-    $@
+    "$@"

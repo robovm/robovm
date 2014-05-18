@@ -222,5 +222,8 @@ extern jboolean rvmIsInstanceOf(Env* env, Object* obj, Class* clazz);
 
 extern ObjectArray* rvmListClasses(Env* env, Class* instanceofClass, ClassLoader* classLoader);
 
+extern void rvmObtainClassLock(Env* env);
+extern void rvmReleaseClassLock(Env* env);
+
 #endif
 

@@ -270,15 +270,22 @@ static Class* createClass(Env* env, ClassInfoHeader* header, ClassLoader* classL
         if (!superclass) return NULL;
     }
 
+    rvmObtainClassLock(env);
+
     Class* clazz = rvmAllocateClass(env, header->className, superclass, classLoader, ci.access, header->typeInfo, header->vitable, header->itables,
             header->classDataSize, header->instanceDataSize, header->instanceDataOffset, header->classRefCount, 
             header->instanceRefCount, ci.attributes, header->initializer);
 
     if (clazz) {
-        if (!rvmRegisterClass(env, clazz)) return NULL;
+        if (!rvmRegisterClass(env, clazz)) {
+            rvmReleaseClassLock(env);
+            return NULL;
+        }
         header->clazz = clazz;
     }
 
+    rvmReleaseClassLock(env);
+    
     return clazz;
 }
 

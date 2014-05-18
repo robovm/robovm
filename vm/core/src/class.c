@@ -1564,3 +1564,10 @@ ObjectArray* rvmListClasses(Env* env, Class* instanceofClass, ClassLoader* class
     }
     return env->vm->options->listUserClasses(env, instanceofClass);
 }
+
+void rvmObtainClassLock(Env* env) {
+    obtainClassLock();
+}
+void rvmReleaseClassLock(Env* env) {
+    releaseClassLock();
+}

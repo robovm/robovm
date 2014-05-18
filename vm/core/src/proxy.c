@@ -353,10 +353,12 @@ Class* rvmProxyCreateProxyClass(Env* env, Class* superclass, ClassLoader* classL
     ITables* itables = createITables(env, superclass, interfacesCount, interfaces);
     if (!itables) return NULL;
 
+    rvmObtainClassLock(env);
+
     // Allocate the proxy class.
     Class* proxyClass = rvmAllocateClass(env, className, superclass, classLoader, CLASS_TYPE_PROXY | ACC_PUBLIC | ACC_FINAL, typeInfo, vtable, itables,
         offsetof(Class, data) + sizeof(ProxyClassData), instanceDataSize, instanceDataOffset, 1, instanceRefCount, NULL, NULL);
-    if (!proxyClass) return NULL;
+    if (!proxyClass) goto error;
 
     ProxyClassData* proxyClassData = (ProxyClassData*) proxyClass->data;
     proxyClassData->handler = handler;
@@ -364,25 +366,29 @@ Class* rvmProxyCreateProxyClass(Env* env, Class* superclass, ClassLoader* classL
     // Add interfaces
     jint i;
     for (i = 0; i < interfacesCount; i++) {
-        if (!rvmAddInterface(env, proxyClass, (Class*) interfaces[i])) return NULL;
+        if (!rvmAddInterface(env, proxyClass, (Class*) interfaces[i])) goto error;
     }
 
     // Initialize methods to NULL to prevent rvmGetMethods() from trying to load the methods if called with this proxy class
     proxyClass->_methods = NULL;
 
-    if (!addProxyMethods(env, proxyClass, superclass, proxyClassData)) return NULL;
+    if (!addProxyMethods(env, proxyClass, superclass, proxyClassData)) goto error;
 
     Class* c = proxyClass;
     while (c) {
         Interface* interfaze = rvmGetInterfaces(env, c);
-        if (rvmExceptionCheck(env)) return NULL;
-        if (!implementAbstractInterfaceMethods(env, proxyClass, interfaze, proxyClassData)) return NULL;
+        if (rvmExceptionCheck(env)) goto error;
+        if (!implementAbstractInterfaceMethods(env, proxyClass, interfaze, proxyClassData)) goto error;
         c = c->superclass;
     }
 
-    if (!rvmRegisterClass(env, proxyClass)) return NULL;
+    if (!rvmRegisterClass(env, proxyClass)) goto error;
 
+    rvmReleaseClassLock(env);
     return proxyClass;
+error:
+    rvmReleaseClassLock(env);
+    return NULL;
 }
 
 void _rvmProxyHandler(CallInfo* callInfo) {

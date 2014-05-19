@@ -58,7 +58,7 @@ import org.robovm.apple.coreimage.*;
     public UIAlertView(String title, String message, UIAlertViewDelegate delegate, String cancelButtonTitle, 
             String ... otherButtonTitles) {
         super((SkipInit) null);
-        initObject(initWithTitle$message$delegate$cancelButtonTitle$otherButtonTitles$(title, message, delegate, cancelButtonTitle));
+        initObject(initWithTitle$message$delegate$cancelButtonTitle$otherButtonTitles$(title, message, delegate, cancelButtonTitle, 0));
         for (String otherButtonTitle : otherButtonTitles) {
             addButton(otherButtonTitle);
         }
@@ -66,7 +66,7 @@ import org.robovm.apple.coreimage.*;
     }
     
     @Method(selector = "initWithTitle:message:delegate:cancelButtonTitle:otherButtonTitles:")
-    protected native @Pointer long initWithTitle$message$delegate$cancelButtonTitle$otherButtonTitles$(String title, String message, UIAlertViewDelegate delegate, String cancelButtonTitle);
+    protected native @Pointer long initWithTitle$message$delegate$cancelButtonTitle$otherButtonTitles$(String title, String message, UIAlertViewDelegate delegate, String cancelButtonTitle, @Pointer long otherButtonTitles);
     
     /*<properties>*/
     @Property(selector = "delegate")

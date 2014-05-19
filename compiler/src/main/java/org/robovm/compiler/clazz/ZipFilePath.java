@@ -91,7 +91,7 @@ public class ZipFilePath extends AbstractPath {
         }
         
         public long lastModified() {
-            return entry.getTime() == -1 ? 0 : entry.getTime();
+            return file.lastModified();
         }
     }
 }

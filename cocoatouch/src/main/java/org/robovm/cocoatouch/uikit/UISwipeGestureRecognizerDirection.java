@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.Bits;
 
-public final class UISwipeGestureRecognizerDirection extends Bits<UISwipeGestureRecognizerDirection> {
+@Deprecated public final class UISwipeGestureRecognizerDirection extends Bits<UISwipeGestureRecognizerDirection> {
     public static final UISwipeGestureRecognizerDirection Right = new UISwipeGestureRecognizerDirection(1 << 0);
     public static final UISwipeGestureRecognizerDirection Left = new UISwipeGestureRecognizerDirection(1 << 1);
     public static final UISwipeGestureRecognizerDirection Up = new UISwipeGestureRecognizerDirection(1 << 2);

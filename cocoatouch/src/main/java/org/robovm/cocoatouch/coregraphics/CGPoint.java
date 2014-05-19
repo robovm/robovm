@@ -18,7 +18,7 @@ package org.robovm.cocoatouch.coregraphics;
 import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.StructMember;
 
-public final class CGPoint extends Struct<CGPoint> {
+@Deprecated public final class CGPoint extends Struct<CGPoint> {
 
     public CGPoint() {}
     public CGPoint(float x, float y) {

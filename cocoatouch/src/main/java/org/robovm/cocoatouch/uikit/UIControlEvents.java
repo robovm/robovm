@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.Bits;
 
-public final class UIControlEvents extends Bits<UIControlEvents> {
+@Deprecated public final class UIControlEvents extends Bits<UIControlEvents> {
     public static final UIControlEvents TouchDown = new UIControlEvents(1 <<  0);
     public static final UIControlEvents TouchDownRepeat = new UIControlEvents(1 <<  1);
     public static final UIControlEvents TouchDragInside = new UIControlEvents(1 <<  2);

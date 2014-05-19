@@ -39,7 +39,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-@NativeClass public class /*<name>*/ UINavigationItem /*</name>*/ 
+@NativeClass @Deprecated public class /*<name>*/ UINavigationItem /*</name>*/ 
     extends /*<extends>*/ NSObject /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

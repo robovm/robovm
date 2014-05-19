@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIProgressViewStyle implements ValuedEnum {
+@Deprecated public enum UIProgressViewStyle implements ValuedEnum {
     Default(0),
     Bar(1);
 

@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIBarButtonSystemItem implements ValuedEnum {
+@Deprecated public enum UIBarButtonSystemItem implements ValuedEnum {
     Done(0),
     Cancel(1),
     Edit(2),

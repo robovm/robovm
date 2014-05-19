@@ -20,6 +20,6 @@ import org.robovm.rt.bro.NativeObject;
 /**
  *
  */
-public final class CGColor  extends NativeObject {
+@Deprecated public final class CGColor  extends NativeObject {
 
 }

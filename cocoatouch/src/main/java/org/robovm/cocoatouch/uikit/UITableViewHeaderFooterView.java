@@ -38,7 +38,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-@NativeClass public class /*<name>*/ UITableViewHeaderFooterView /*</name>*/ 
+@NativeClass @Deprecated public class /*<name>*/ UITableViewHeaderFooterView /*</name>*/ 
     extends /*<extends>*/ UIView /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

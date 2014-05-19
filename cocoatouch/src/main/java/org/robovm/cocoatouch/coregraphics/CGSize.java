@@ -18,7 +18,7 @@ package org.robovm.cocoatouch.coregraphics;
 import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.StructMember;
 
-public final class CGSize extends Struct<CGSize> {
+@Deprecated public final class CGSize extends Struct<CGSize> {
 
     public CGSize() {}
     public CGSize(float width, float height) {

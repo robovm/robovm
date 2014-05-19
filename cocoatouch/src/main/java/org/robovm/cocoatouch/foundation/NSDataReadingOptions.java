@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.foundation;
 
 import org.robovm.rt.bro.Bits;
 
-public final class NSDataReadingOptions extends Bits<NSDataReadingOptions> {
+@Deprecated public final class NSDataReadingOptions extends Bits<NSDataReadingOptions> {
     public static final NSDataReadingOptions MappedIfSafe = new NSDataReadingOptions(1 << 0);
     public static final NSDataReadingOptions Uncached = new NSDataReadingOptions(1 << 1);
     public static final NSDataReadingOptions MappedAlways = new NSDataReadingOptions(1 << 3);

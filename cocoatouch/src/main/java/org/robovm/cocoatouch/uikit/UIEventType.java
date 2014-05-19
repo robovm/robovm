@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIEventType implements ValuedEnum {
+@Deprecated public enum UIEventType implements ValuedEnum {
     Touches(0),
     Motion(1),
     RemoteControl(2);

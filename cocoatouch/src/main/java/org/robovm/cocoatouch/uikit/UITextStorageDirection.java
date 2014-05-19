@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UITextStorageDirection implements ValuedEnum {
+@Deprecated public enum UITextStorageDirection implements ValuedEnum {
     Forward(0),
     Backward(1);
 

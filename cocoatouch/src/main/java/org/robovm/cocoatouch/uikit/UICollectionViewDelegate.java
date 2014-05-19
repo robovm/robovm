@@ -37,7 +37,7 @@ import org.robovm.rt.bro.ptr.*;
  *   @since Available in iOS 6.0 and later.
  * </div>
  */
-public interface /*<name>*/ UICollectionViewDelegate /*</name>*/ /*<implements>*/ extends UIScrollViewDelegate, NSObjectProtocol /*</implements>*/ {
+@Deprecated public interface /*<name>*/ UICollectionViewDelegate /*</name>*/ /*<implements>*/ extends UIScrollViewDelegate, NSObjectProtocol /*</implements>*/ {
 
     /*<properties>*/
     

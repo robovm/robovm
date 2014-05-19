@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIImagePickerControllerCameraFlashMode implements ValuedEnum {
+@Deprecated public enum UIImagePickerControllerCameraFlashMode implements ValuedEnum {
     Off(-1),
     Auto(0),
     On(1);

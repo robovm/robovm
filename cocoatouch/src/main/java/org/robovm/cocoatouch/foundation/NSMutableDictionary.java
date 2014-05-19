@@ -33,7 +33,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("Foundation")/*</library>*/
-@NativeClass public class /*<name>*/ NSMutableDictionary /*</name>*/ <K extends NSObject, V extends NSObject>
+@NativeClass @Deprecated public class /*<name>*/ NSMutableDictionary /*</name>*/ <K extends NSObject, V extends NSObject>
     extends /*<extends>*/ NSDictionary /*</extends>*/ <K, V>
     /*<implements>*/ /*</implements>*/ {
 

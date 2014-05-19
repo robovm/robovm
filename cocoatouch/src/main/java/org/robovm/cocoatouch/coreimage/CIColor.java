@@ -20,6 +20,6 @@ import org.robovm.cocoatouch.foundation.NSObject;
 /**
  *
  */
-public class CIColor extends NSObject {
+@Deprecated public class CIColor extends NSObject {
 
 }

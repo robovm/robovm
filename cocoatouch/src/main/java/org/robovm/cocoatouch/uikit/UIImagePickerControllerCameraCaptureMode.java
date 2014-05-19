@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIImagePickerControllerCameraCaptureMode implements ValuedEnum {
+@Deprecated public enum UIImagePickerControllerCameraCaptureMode implements ValuedEnum {
     Photo(0),
     Video(1);
 

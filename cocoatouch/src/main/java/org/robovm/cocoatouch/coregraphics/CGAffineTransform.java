@@ -21,7 +21,7 @@ import org.robovm.rt.bro.annotation.StructMember;
 /**
  *
  */
-public final class CGAffineTransform extends Struct<CGAffineTransform> {
+@Deprecated public final class CGAffineTransform extends Struct<CGAffineTransform> {
 
     public CGAffineTransform() {}
     public CGAffineTransform(float a, float b, float c, float d, float tx, float ty) {

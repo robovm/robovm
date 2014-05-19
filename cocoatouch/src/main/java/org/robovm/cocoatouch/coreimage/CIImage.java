@@ -17,6 +17,6 @@ package org.robovm.cocoatouch.coreimage;
 
 import org.robovm.cocoatouch.foundation.NSObject;
 
-public class CIImage extends NSObject {
+@Deprecated public class CIImage extends NSObject {
 
 }

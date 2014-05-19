@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UISearchBarIcon implements ValuedEnum {
+@Deprecated public enum UISearchBarIcon implements ValuedEnum {
     Search(0),
     Clear(1),
     Bookmark(2),

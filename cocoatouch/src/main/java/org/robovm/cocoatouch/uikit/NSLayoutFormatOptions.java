@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.Bits;
 
-public final class NSLayoutFormatOptions extends Bits<NSLayoutFormatOptions> {
+@Deprecated public final class NSLayoutFormatOptions extends Bits<NSLayoutFormatOptions> {
     public static final NSLayoutFormatOptions AlignAllLeft = new NSLayoutFormatOptions(NSLayoutAttribute.Left.value(), 0xff);
     public static final NSLayoutFormatOptions AlignAllRight = new NSLayoutFormatOptions(NSLayoutAttribute.Right.value(), 0xff);
     public static final NSLayoutFormatOptions AlignAllTop = new NSLayoutFormatOptions(NSLayoutAttribute.Top.value(), 0xff);

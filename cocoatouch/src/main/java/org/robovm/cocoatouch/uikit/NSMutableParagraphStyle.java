@@ -38,7 +38,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-@NativeClass public class /*<name>*/ NSMutableParagraphStyle /*</name>*/ 
+@NativeClass @Deprecated public class /*<name>*/ NSMutableParagraphStyle /*</name>*/ 
     extends /*<extends>*/ NSParagraphStyle /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

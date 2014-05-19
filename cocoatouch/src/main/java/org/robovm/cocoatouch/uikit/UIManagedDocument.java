@@ -39,7 +39,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-@NativeClass public class /*<name>*/ UIManagedDocument /*</name>*/ 
+@NativeClass @Deprecated public class /*<name>*/ UIManagedDocument /*</name>*/ 
     extends /*<extends>*/ UIDocument /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.foundation;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum NSWritingDirection implements ValuedEnum {
+@Deprecated public enum NSWritingDirection implements ValuedEnum {
     Natural(-1),
     LeftToRight(0),
     RightToLeft(1);

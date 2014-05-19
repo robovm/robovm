@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIDeviceOrientation implements ValuedEnum {
+@Deprecated public enum UIDeviceOrientation implements ValuedEnum {
     Unknown(0),
     Portrait(1),
     PortraitUpsideDown(2),

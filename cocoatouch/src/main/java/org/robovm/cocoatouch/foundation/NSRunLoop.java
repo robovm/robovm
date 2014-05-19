@@ -33,7 +33,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("Foundation")/*</library>*/
-@NativeClass public class /*<name>*/ NSRunLoop /*</name>*/ 
+@NativeClass @Deprecated public class /*<name>*/ NSRunLoop /*</name>*/ 
     extends /*<extends>*/ NSObject /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

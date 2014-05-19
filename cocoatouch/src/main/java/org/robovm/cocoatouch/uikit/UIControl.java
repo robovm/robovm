@@ -39,7 +39,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-@NativeClass public class /*<name>*/ UIControl /*</name>*/ 
+@NativeClass @Deprecated public class /*<name>*/ UIControl /*</name>*/ 
     extends /*<extends>*/ UIView /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 
@@ -70,14 +70,14 @@ import org.robovm.rt.bro.ptr.*;
             }
         }
     }
-    public interface Listener {}
-    public interface OnTouchDownListener extends Listener {
+    @Deprecated public interface Listener {}
+    @Deprecated public interface OnTouchDownListener extends Listener {
         void onTouchDown(UIControl control, UIEvent event);
     }
-    public interface OnTouchUpInsideListener extends Listener {
+    @Deprecated public interface OnTouchUpInsideListener extends Listener {
         void onTouchUpInside(UIControl control, UIEvent event);
     }
-    public interface OnTouchUpOutsideListener extends Listener {
+    @Deprecated public interface OnTouchUpOutsideListener extends Listener {
         void onTouchUpOutside(UIControl control, UIEvent event);
     }
     

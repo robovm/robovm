@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum NSLineBreakMode implements ValuedEnum {
+@Deprecated public enum NSLineBreakMode implements ValuedEnum {
     WordWrapping(0),
     CharWrapping(1),
     Clipping(2),

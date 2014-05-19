@@ -38,7 +38,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-@NativeClass public class /*<name>*/ UIActionSheet /*</name>*/ 
+@NativeClass @Deprecated public class /*<name>*/ UIActionSheet /*</name>*/ 
     extends /*<extends>*/ UIView /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

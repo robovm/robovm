@@ -21,7 +21,7 @@ import org.robovm.rt.bro.annotation.StructMember;
 /**
  *
  */
-public final class CATransform3D extends Struct<CATransform3D> {
+@Deprecated public final class CATransform3D extends Struct<CATransform3D> {
 
     public CATransform3D() {}
     public CATransform3D(

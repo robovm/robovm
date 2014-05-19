@@ -20,7 +20,7 @@ import org.robovm.rt.bro.ValuedEnum;
 /**
  *
  */
-public enum CGLineCap implements ValuedEnum {
+@Deprecated public enum CGLineCap implements ValuedEnum {
     Butt(0),
     Round(1),
     Square(2);

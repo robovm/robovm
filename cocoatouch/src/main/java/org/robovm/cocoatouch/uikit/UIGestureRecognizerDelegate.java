@@ -38,7 +38,7 @@ import org.robovm.rt.bro.ptr.*;
  *   @since Available in iOS 3.2 and later.
  * </div>
  */
-public interface /*<name>*/ UIGestureRecognizerDelegate /*</name>*/ /*<implements>*/ extends NSObjectProtocol /*</implements>*/ {
+@Deprecated public interface /*<name>*/ UIGestureRecognizerDelegate /*</name>*/ /*<implements>*/ extends NSObjectProtocol /*</implements>*/ {
 
     /*<properties>*/
     

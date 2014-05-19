@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIBarStyle implements ValuedEnum {
+@Deprecated public enum UIBarStyle implements ValuedEnum {
     Default(0),
     Black(1),
     BlackOpaque(1),

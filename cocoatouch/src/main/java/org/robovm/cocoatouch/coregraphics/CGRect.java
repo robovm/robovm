@@ -19,7 +19,7 @@ import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.ByVal;
 import org.robovm.rt.bro.annotation.StructMember;
 
-public final class CGRect extends Struct<CGRect> {
+@Deprecated public final class CGRect extends Struct<CGRect> {
 
     public CGRect() {}
     public CGRect(float x, float y, float width, float height) {

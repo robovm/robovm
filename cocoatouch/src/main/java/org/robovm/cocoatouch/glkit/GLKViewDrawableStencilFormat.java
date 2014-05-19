@@ -19,7 +19,7 @@ import java.util.*;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum GLKViewDrawableStencilFormat implements ValuedEnum {
+@Deprecated public enum GLKViewDrawableStencilFormat implements ValuedEnum {
     None(0),
     Format8(1);
 

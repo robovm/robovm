@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.foundation;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum NSStringEncodingConversionOptions implements ValuedEnum {
+@Deprecated public enum NSStringEncodingConversionOptions implements ValuedEnum {
     AllowLossy(1),
     ExternalRepresentation(2);
 

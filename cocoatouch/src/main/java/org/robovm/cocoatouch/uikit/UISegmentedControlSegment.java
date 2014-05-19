@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UISegmentedControlSegment implements ValuedEnum {
+@Deprecated public enum UISegmentedControlSegment implements ValuedEnum {
     Any(0),
     Left(1),
     Center(2),

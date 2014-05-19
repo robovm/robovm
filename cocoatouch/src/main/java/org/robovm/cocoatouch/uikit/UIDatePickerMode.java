@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIDatePickerMode implements ValuedEnum {
+@Deprecated public enum UIDatePickerMode implements ValuedEnum {
     Time(0),
     Date(1),
     DateAndTime(2),

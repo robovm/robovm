@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UICollectionUpdateAction implements ValuedEnum {
+@Deprecated public enum UICollectionUpdateAction implements ValuedEnum {
     None(0),
     Insert(1),
     Delete(2),

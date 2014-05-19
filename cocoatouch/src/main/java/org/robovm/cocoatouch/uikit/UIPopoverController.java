@@ -39,7 +39,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-@NativeClass public class /*<name>*/ UIPopoverController /*</name>*/ 
+@NativeClass @Deprecated public class /*<name>*/ UIPopoverController /*</name>*/ 
     extends /*<extends>*/ NSObject /*</extends>*/ 
     /*<implements>*/ implements UIAppearanceContainer /*</implements>*/ {
 

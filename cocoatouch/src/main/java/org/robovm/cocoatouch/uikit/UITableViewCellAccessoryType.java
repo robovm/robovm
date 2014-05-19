@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UITableViewCellAccessoryType implements ValuedEnum {
+@Deprecated public enum UITableViewCellAccessoryType implements ValuedEnum {
     None(0),
     DisclosureIndicator(1),
     DetailDisclosureButton(2),

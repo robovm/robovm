@@ -23,6 +23,6 @@ import org.robovm.rt.bro.annotation.Marshaler;
  * interface adds a {@link Marshaler} for {@link String}s to/from {@link NSString}.
  */
 @Marshaler(NSString.AsStringMarshaler.class)
-public interface NSObjectProtocol extends ObjCProtocol {
+@Deprecated public interface NSObjectProtocol extends ObjCProtocol {
 
 }

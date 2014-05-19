@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIStatusBarAnimation implements ValuedEnum {
+@Deprecated public enum UIStatusBarAnimation implements ValuedEnum {
     None(0),
     Fade(1),
     Slide(2);

@@ -35,7 +35,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("OpenGLES")/*</library>*/
-@NativeClass public class /*<name>*/ EAGLContext /*</name>*/ 
+@NativeClass @Deprecated public class /*<name>*/ EAGLContext /*</name>*/ 
     extends /*<extends>*/ NSObject /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

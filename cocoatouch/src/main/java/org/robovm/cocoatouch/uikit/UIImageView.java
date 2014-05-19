@@ -39,7 +39,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-@NativeClass public class /*<name>*/ UIImageView /*</name>*/ 
+@NativeClass @Deprecated public class /*<name>*/ UIImageView /*</name>*/ 
     extends /*<extends>*/ UIView /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

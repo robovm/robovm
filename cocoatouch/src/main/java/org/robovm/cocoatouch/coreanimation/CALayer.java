@@ -35,7 +35,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("QuartzCore")/*</library>*/
-@NativeClass public class /*<name>*/ CALayer /*</name>*/ 
+@NativeClass @Deprecated public class /*<name>*/ CALayer /*</name>*/ 
     extends /*<extends>*/ NSObject /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

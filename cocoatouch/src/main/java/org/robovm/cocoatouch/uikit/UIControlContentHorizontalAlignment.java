@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIControlContentHorizontalAlignment implements ValuedEnum {
+@Deprecated public enum UIControlContentHorizontalAlignment implements ValuedEnum {
     Center(0),
     Left(1),
     Right(2),

@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIScreenOverscanCompensation implements ValuedEnum {
+@Deprecated public enum UIScreenOverscanCompensation implements ValuedEnum {
     Scale(0),
     InsetBounds(1),
     InsetApplicationFrame(2);

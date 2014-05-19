@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIPageViewControllerNavigationOrientation implements ValuedEnum {
+@Deprecated public enum UIPageViewControllerNavigationOrientation implements ValuedEnum {
     Horizontal(0),
     Vertical(1);
 

@@ -39,7 +39,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-@NativeClass public class /*<name>*/ UISearchBar /*</name>*/ 
+@NativeClass @Deprecated public class /*<name>*/ UISearchBar /*</name>*/ 
     extends /*<extends>*/ UIView /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

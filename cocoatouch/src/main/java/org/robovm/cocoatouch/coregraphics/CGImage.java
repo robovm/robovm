@@ -17,6 +17,6 @@ package org.robovm.cocoatouch.coregraphics;
 
 import org.robovm.rt.bro.NativeObject;
 
-public final class CGImage extends NativeObject {
+@Deprecated public final class CGImage extends NativeObject {
 
 }

@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIBaselineAdjustment implements ValuedEnum {
+@Deprecated public enum UIBaselineAdjustment implements ValuedEnum {
     AlignBaselines(0),
     AlignCenters(1),
     None(2);

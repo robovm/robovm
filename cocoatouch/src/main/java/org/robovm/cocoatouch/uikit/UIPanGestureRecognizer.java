@@ -39,7 +39,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-@NativeClass public class /*<name>*/ UIPanGestureRecognizer /*</name>*/ 
+@NativeClass @Deprecated public class /*<name>*/ UIPanGestureRecognizer /*</name>*/ 
     extends /*<extends>*/ UIGestureRecognizer /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

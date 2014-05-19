@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIModalPresentationStyle implements ValuedEnum {
+@Deprecated public enum UIModalPresentationStyle implements ValuedEnum {
     FullScreen(0),
     PageSheet(1),
     FormSheet(2),

@@ -20,7 +20,7 @@ import org.robovm.rt.bro.ValuedEnum;
 /**
  *
  */
-public enum CGLineJoin implements ValuedEnum {
+@Deprecated public enum CGLineJoin implements ValuedEnum {
     Miter(0),
     Round(1),
     Bevel(2);

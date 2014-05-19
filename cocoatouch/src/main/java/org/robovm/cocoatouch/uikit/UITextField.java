@@ -39,7 +39,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-@NativeClass public class /*<name>*/ UITextField /*</name>*/ 
+@NativeClass @Deprecated public class /*<name>*/ UITextField /*</name>*/ 
     extends /*<extends>*/ UIControl /*</extends>*/ 
     /*<implements>*/ implements UITextInput, UIKeyInput, UITextInputTraits /*</implements>*/ {
 

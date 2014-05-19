@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UITextAutocapitalizationType implements ValuedEnum {
+@Deprecated public enum UITextAutocapitalizationType implements ValuedEnum {
     None(0),
     Words(1),
     Sentences(2),

@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.foundation;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum NSTextAlignment implements ValuedEnum {
+@Deprecated public enum NSTextAlignment implements ValuedEnum {
     Left(0),
     Center(1),
     Right(2),

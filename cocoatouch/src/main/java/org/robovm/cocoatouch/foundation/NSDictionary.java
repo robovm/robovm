@@ -40,7 +40,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("Foundation")/*</library>*/
-@NativeClass public class /*<name>*/ NSDictionary /*</name>*/ <K extends NSObject, V extends NSObject>
+@NativeClass @Deprecated public class /*<name>*/ NSDictionary /*</name>*/ <K extends NSObject, V extends NSObject>
     extends /*<extends>*/ NSObject /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ implements Map<K, V> {
 

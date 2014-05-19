@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.Bits;
 
-public final class UITableViewCellStateMask extends Bits<UITableViewCellStateMask> {
+@Deprecated public final class UITableViewCellStateMask extends Bits<UITableViewCellStateMask> {
     public static final UITableViewCellStateMask DefaultMask = new UITableViewCellStateMask(0);
     public static final UITableViewCellStateMask ShowingEditControlMask = new UITableViewCellStateMask(1 << 0);
     public static final UITableViewCellStateMask ShowingDeleteConfirmationMask = new UITableViewCellStateMask(1 << 1);

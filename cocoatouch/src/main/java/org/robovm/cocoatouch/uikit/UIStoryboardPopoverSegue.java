@@ -39,7 +39,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-@NativeClass public class /*<name>*/ UIStoryboardPopoverSegue /*</name>*/ 
+@NativeClass @Deprecated public class /*<name>*/ UIStoryboardPopoverSegue /*</name>*/ 
     extends /*<extends>*/ UIStoryboardSegue /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

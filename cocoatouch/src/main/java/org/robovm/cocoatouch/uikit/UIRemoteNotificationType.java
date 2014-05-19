@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.Bits;
 
-public final class UIRemoteNotificationType extends Bits<UIRemoteNotificationType> {
+@Deprecated public final class UIRemoteNotificationType extends Bits<UIRemoteNotificationType> {
     public static final UIRemoteNotificationType None = new UIRemoteNotificationType(0);
     public static final UIRemoteNotificationType Badge = new UIRemoteNotificationType(1 << 0);
     public static final UIRemoteNotificationType Sound = new UIRemoteNotificationType(1 << 1);

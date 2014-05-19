@@ -35,7 +35,7 @@ import org.robovm.rt.bro.ptr.*;
  */
 /*<library>*/@Library("Foundation")/*</library>*/
 @Marshaler(NSString.AsStringMarshaler.class)    
-@NativeClass public class /*<name>*/ NSObject /*</name>*/ 
+@NativeClass @Deprecated public class /*<name>*/ NSObject /*</name>*/ 
     extends /*<extends>*/ ObjCObject /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

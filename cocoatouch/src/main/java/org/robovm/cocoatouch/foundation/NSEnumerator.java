@@ -33,7 +33,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("Foundation")/*</library>*/
-@NativeClass public class /*<name>*/ NSEnumerator /*</name>*/ <T extends NSObject>
+@NativeClass @Deprecated public class /*<name>*/ NSEnumerator /*</name>*/ <T extends NSObject>
     extends /*<extends>*/ NSObject /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

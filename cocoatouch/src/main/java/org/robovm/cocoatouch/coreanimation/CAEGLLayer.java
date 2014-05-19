@@ -35,7 +35,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("QuartzCore")/*</library>*/
-@NativeClass public class /*<name>*/ CAEGLLayer /*</name>*/ 
+@NativeClass @Deprecated public class /*<name>*/ CAEGLLayer /*</name>*/ 
     extends /*<extends>*/ CALayer /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

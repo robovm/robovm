@@ -38,7 +38,7 @@ import org.robovm.rt.bro.ptr.*;
  *   @since Available in iOS 3.2 and later.
  * </div>
  */
-public interface /*<name>*/ UITextInputDelegate /*</name>*/ /*<implements>*/ extends NSObjectProtocol /*</implements>*/ {
+@Deprecated public interface /*<name>*/ UITextInputDelegate /*</name>*/ /*<implements>*/ extends NSObjectProtocol /*</implements>*/ {
 
     /*<properties>*/
     

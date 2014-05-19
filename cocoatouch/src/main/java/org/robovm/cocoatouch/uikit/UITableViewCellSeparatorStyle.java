@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UITableViewCellSeparatorStyle implements ValuedEnum {
+@Deprecated public enum UITableViewCellSeparatorStyle implements ValuedEnum {
     None(0),
     SingleLine(1),
     SingleLineEtched(2);

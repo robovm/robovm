@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIUserInterfaceLayoutDirection implements ValuedEnum {
+@Deprecated public enum UIUserInterfaceLayoutDirection implements ValuedEnum {
     LeftToRight(0),
     RightToLeft(1);
 

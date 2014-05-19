@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIPageViewControllerTransitionStyle implements ValuedEnum {
+@Deprecated public enum UIPageViewControllerTransitionStyle implements ValuedEnum {
     PageCurl(0);
 
     private final long n;

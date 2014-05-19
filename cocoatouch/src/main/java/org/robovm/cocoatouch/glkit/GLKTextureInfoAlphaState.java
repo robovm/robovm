@@ -19,7 +19,7 @@ import java.util.*;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum GLKTextureInfoAlphaState implements ValuedEnum {
+@Deprecated public enum GLKTextureInfoAlphaState implements ValuedEnum {
     None(0),
     NonPremultiplied(1),
     Premultiplied(2);

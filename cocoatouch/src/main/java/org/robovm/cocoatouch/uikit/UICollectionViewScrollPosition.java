@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.Bits;
 
-public final class UICollectionViewScrollPosition extends Bits<UICollectionViewScrollPosition> {
+@Deprecated public final class UICollectionViewScrollPosition extends Bits<UICollectionViewScrollPosition> {
 	public static final UICollectionViewScrollPosition None = new UICollectionViewScrollPosition(0);
 	public static final UICollectionViewScrollPosition Top = new UICollectionViewScrollPosition(1 << 0);
 	public static final UICollectionViewScrollPosition CenteredVertically = new UICollectionViewScrollPosition(1 << 1);

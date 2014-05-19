@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIStatusBarStyle implements ValuedEnum {
+@Deprecated public enum UIStatusBarStyle implements ValuedEnum {
     Default(0),
     BlackTranslucent(1),
     BlackOpaque(2);

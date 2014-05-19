@@ -37,7 +37,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("GLKit")/*</library>*/
-@NativeClass public class /*<name>*/ GLKTextureInfo /*</name>*/ 
+@NativeClass @Deprecated public class /*<name>*/ GLKTextureInfo /*</name>*/ 
     extends /*<extends>*/ NSObject /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

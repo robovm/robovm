@@ -38,7 +38,7 @@ import org.robovm.rt.bro.ptr.*;
  *   @since Available in iOS 3.1 and later.
  * </div>
  */
-public interface /*<name>*/ UIVideoEditorControllerDelegate /*</name>*/ /*<implements>*/ extends UINavigationControllerDelegate, NSObjectProtocol /*</implements>*/ {
+@Deprecated public interface /*<name>*/ UIVideoEditorControllerDelegate /*</name>*/ /*<implements>*/ extends UINavigationControllerDelegate, NSObjectProtocol /*</implements>*/ {
 
     /*<properties>*/
     

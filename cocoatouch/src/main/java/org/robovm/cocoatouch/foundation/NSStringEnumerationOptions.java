@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.foundation;
 
 import org.robovm.rt.bro.Bits;
 
-public final class NSStringEnumerationOptions extends Bits<NSStringEnumerationOptions> {
+@Deprecated public final class NSStringEnumerationOptions extends Bits<NSStringEnumerationOptions> {
     public static final NSStringEnumerationOptions ByLines = new NSStringEnumerationOptions(0, 0xff);
     public static final NSStringEnumerationOptions ByParagraphs = new NSStringEnumerationOptions(1, 0xff);
     public static final NSStringEnumerationOptions ByComposedCharacterSequences = new NSStringEnumerationOptions(2, 0xff);

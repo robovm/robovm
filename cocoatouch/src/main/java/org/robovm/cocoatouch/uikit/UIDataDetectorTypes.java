@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.Bits;
 
-public final class UIDataDetectorTypes extends Bits<UIDataDetectorTypes> {
+@Deprecated public final class UIDataDetectorTypes extends Bits<UIDataDetectorTypes> {
 	public static final UIDataDetectorTypes PhoneNumber = new UIDataDetectorTypes(1 << 0);
 	public static final UIDataDetectorTypes Link = new UIDataDetectorTypes(1 << 1);
 	public static final UIDataDetectorTypes Address = new UIDataDetectorTypes(1 << 2);

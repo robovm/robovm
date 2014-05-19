@@ -19,7 +19,7 @@ import java.util.*;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum GLKViewDrawableColorFormat implements ValuedEnum {
+@Deprecated public enum GLKViewDrawableColorFormat implements ValuedEnum {
     RGBA8888(0),
     RGB565(1);
 

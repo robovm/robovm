@@ -39,7 +39,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-@NativeClass public class /*<name>*/ UIStepper /*</name>*/ 
+@NativeClass @Deprecated public class /*<name>*/ UIStepper /*</name>*/ 
     extends /*<extends>*/ UIControl /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

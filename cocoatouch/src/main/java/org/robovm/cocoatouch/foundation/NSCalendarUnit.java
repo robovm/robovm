@@ -20,7 +20,7 @@ import org.robovm.rt.bro.ValuedEnum;
 /**
  * 
  */
-public enum NSCalendarUnit implements ValuedEnum {
+@Deprecated public enum NSCalendarUnit implements ValuedEnum {
     Era(1 << 1),
     Year(1 << 2),
     Month(1 << 3),

@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIImagePickerControllerCameraDevice implements ValuedEnum {
+@Deprecated public enum UIImagePickerControllerCameraDevice implements ValuedEnum {
     Rear(0),
     Front(1);
 

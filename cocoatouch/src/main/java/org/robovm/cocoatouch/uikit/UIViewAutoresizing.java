@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.Bits;
 
-public final class UIViewAutoresizing extends Bits<UIViewAutoresizing> {
+@Deprecated public final class UIViewAutoresizing extends Bits<UIViewAutoresizing> {
     public static final UIViewAutoresizing None = new UIViewAutoresizing(0);
     public static final UIViewAutoresizing FlexibleLeftMargin = new UIViewAutoresizing(1 << 0);
     public static final UIViewAutoresizing FlexibleWidth = new UIViewAutoresizing(1 << 1);

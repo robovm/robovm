@@ -20,7 +20,7 @@ import org.robovm.rt.bro.ValuedEnum;
 /**
  *
  */
-public enum CGBlendMode implements ValuedEnum {
+@Deprecated public enum CGBlendMode implements ValuedEnum {
 
     Normal(0),
     Multiply(1),

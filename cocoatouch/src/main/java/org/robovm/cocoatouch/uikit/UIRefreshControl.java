@@ -38,7 +38,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-@NativeClass public class /*<name>*/ UIRefreshControl /*</name>*/ 
+@NativeClass @Deprecated public class /*<name>*/ UIRefreshControl /*</name>*/ 
     extends /*<extends>*/ UIControl /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

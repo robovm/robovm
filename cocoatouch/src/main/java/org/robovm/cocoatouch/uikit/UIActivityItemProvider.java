@@ -38,7 +38,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-@NativeClass public class /*<name>*/ UIActivityItemProvider /*</name>*/ 
+@NativeClass @Deprecated public class /*<name>*/ UIActivityItemProvider /*</name>*/ 
     extends /*<extends>*/ NSOperation /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

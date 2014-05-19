@@ -38,7 +38,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-@NativeClass public class /*<name>*/ UICollectionView /*</name>*/ 
+@NativeClass @Deprecated public class /*<name>*/ UICollectionView /*</name>*/ 
     extends /*<extends>*/ UIScrollView /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

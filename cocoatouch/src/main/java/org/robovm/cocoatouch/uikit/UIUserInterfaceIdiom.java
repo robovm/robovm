@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIUserInterfaceIdiom implements ValuedEnum {
+@Deprecated public enum UIUserInterfaceIdiom implements ValuedEnum {
     Phone(0),
     Pad(1);
 

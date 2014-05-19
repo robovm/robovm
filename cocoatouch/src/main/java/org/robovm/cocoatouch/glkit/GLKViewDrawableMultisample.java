@@ -19,7 +19,7 @@ import java.util.*;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum GLKViewDrawableMultisample implements ValuedEnum {
+@Deprecated public enum GLKViewDrawableMultisample implements ValuedEnum {
     None(0),
     Sample4X(1);
 

@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.Bits;
 
-public final class UIViewAnimationOptions extends Bits<UIViewAnimationOptions> {
+@Deprecated public final class UIViewAnimationOptions extends Bits<UIViewAnimationOptions> {
     public static final UIViewAnimationOptions LayoutSubviews = new UIViewAnimationOptions(1 <<  0);
     public static final UIViewAnimationOptions AllowUserInteraction = new UIViewAnimationOptions(1 <<  1);
     public static final UIViewAnimationOptions BeginFromCurrentState = new UIViewAnimationOptions(1 <<  2);

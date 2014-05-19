@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.Bits;
 
-public final class UIDocumentState extends Bits<UIDocumentState> {
+@Deprecated public final class UIDocumentState extends Bits<UIDocumentState> {
     public static final UIDocumentState Normal = new UIDocumentState(0);
     public static final UIDocumentState Closed = new UIDocumentState(1 << 0);
     public static final UIDocumentState InConflict = new UIDocumentState(1 << 1);

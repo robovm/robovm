@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UITableViewStyle implements ValuedEnum {
+@Deprecated public enum UITableViewStyle implements ValuedEnum {
     Plain(0),
     Grouped(1);
 

@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UITextAlignment implements ValuedEnum {
+@Deprecated public enum UITextAlignment implements ValuedEnum {
     Left(0),
     Center(1),
     Right(2);

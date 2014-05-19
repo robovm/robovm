@@ -21,7 +21,7 @@ import org.robovm.rt.bro.annotation.StructMember;
 /**
  * 
  */
-public final class NSRange extends Struct<NSRange> {
+@Deprecated public final class NSRange extends Struct<NSRange> {
 
     public NSRange() {}
     public NSRange(int location, int length) {

@@ -20,7 +20,7 @@ import org.robovm.rt.bro.ValuedEnum;
 /**
  * 
  */
-public enum NSComparisonResult implements ValuedEnum {
+@Deprecated public enum NSComparisonResult implements ValuedEnum {
     Ascending(-1),
     Same(0),
     Descending(1);

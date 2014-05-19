@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.Bits;
 
-public final class UIInterfaceOrientationMask extends Bits<UIInterfaceOrientationMask> {
+@Deprecated public final class UIInterfaceOrientationMask extends Bits<UIInterfaceOrientationMask> {
     public static final UIInterfaceOrientationMask Portrait = new UIInterfaceOrientationMask(1 << UIInterfaceOrientation.Portrait.value());
     public static final UIInterfaceOrientationMask LandscapeLeft = new UIInterfaceOrientationMask(1 << UIInterfaceOrientation.LandscapeLeft.value());
     public static final UIInterfaceOrientationMask LandscapeRight = new UIInterfaceOrientationMask(1 << UIInterfaceOrientation.LandscapeRight.value());

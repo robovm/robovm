@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIDocumentChangeKind implements ValuedEnum {
+@Deprecated public enum UIDocumentChangeKind implements ValuedEnum {
     Done(0),
     Undone(1),
     Redone(2),

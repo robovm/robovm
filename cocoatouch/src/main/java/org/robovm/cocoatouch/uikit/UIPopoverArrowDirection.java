@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.Bits;
 
-public final class UIPopoverArrowDirection extends Bits<UIPopoverArrowDirection> {
+@Deprecated public final class UIPopoverArrowDirection extends Bits<UIPopoverArrowDirection> {
     public static final UIPopoverArrowDirection Up = new UIPopoverArrowDirection(1 << 0);
     public static final UIPopoverArrowDirection Down = new UIPopoverArrowDirection(1 << 1);
     public static final UIPopoverArrowDirection Left = new UIPopoverArrowDirection(1 << 2);

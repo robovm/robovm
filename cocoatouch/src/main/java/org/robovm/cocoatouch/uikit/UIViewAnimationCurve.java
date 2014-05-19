@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIViewAnimationCurve implements ValuedEnum {
+@Deprecated public enum UIViewAnimationCurve implements ValuedEnum {
     EaseInOut(0),
     EaseIn(1),
     EaseOut(2),

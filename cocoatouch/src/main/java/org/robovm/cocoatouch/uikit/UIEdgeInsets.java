@@ -21,7 +21,7 @@ import org.robovm.rt.bro.annotation.StructMember;
 /**
  * 
  */
-public final class UIEdgeInsets extends Struct<UIEdgeInsets> {
+@Deprecated public final class UIEdgeInsets extends Struct<UIEdgeInsets> {
     public static final UIEdgeInsets Zero = new UIEdgeInsets();
 
     public UIEdgeInsets() {

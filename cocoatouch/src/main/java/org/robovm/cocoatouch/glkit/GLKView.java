@@ -37,7 +37,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("GLKit")/*</library>*/
-@NativeClass public class /*<name>*/ GLKView /*</name>*/ 
+@NativeClass @Deprecated public class /*<name>*/ GLKView /*</name>*/ 
     extends /*<extends>*/ UIView /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

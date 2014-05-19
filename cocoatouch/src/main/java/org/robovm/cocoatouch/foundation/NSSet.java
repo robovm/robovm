@@ -35,7 +35,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("Foundation")/*</library>*/
-@NativeClass public class /*<name>*/ NSSet /*</name>*/ <T extends NSObject>
+@NativeClass @Deprecated public class /*<name>*/ NSSet /*</name>*/ <T extends NSObject>
     extends /*<extends>*/ NSObject /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ implements Set<T> {
 

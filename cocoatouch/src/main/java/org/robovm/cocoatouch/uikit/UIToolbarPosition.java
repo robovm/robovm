@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIToolbarPosition implements ValuedEnum {
+@Deprecated public enum UIToolbarPosition implements ValuedEnum {
     Any(0),
     Bottom(1),
     Top(2);

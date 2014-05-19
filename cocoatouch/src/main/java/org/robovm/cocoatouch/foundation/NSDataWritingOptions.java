@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.foundation;
 
 import org.robovm.rt.bro.Bits;
 
-public final class NSDataWritingOptions extends Bits<NSDataWritingOptions> {
+@Deprecated public final class NSDataWritingOptions extends Bits<NSDataWritingOptions> {
 	public static final NSDataWritingOptions Atomic = new NSDataWritingOptions(1 << 0);
 	public static final NSDataWritingOptions FileProtectionNone = new NSDataWritingOptions(0x10000000, 0xf0000000);
 	public static final NSDataWritingOptions FileProtectionComplete = new NSDataWritingOptions(0x20000000, 0xf0000000);

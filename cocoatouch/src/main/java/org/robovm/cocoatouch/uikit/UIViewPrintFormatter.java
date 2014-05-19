@@ -39,7 +39,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-@NativeClass public class /*<name>*/ UIViewPrintFormatter /*</name>*/ 
+@NativeClass @Deprecated public class /*<name>*/ UIViewPrintFormatter /*</name>*/ 
     extends /*<extends>*/ UIPrintFormatter /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

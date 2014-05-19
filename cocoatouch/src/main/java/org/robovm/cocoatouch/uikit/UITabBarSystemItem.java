@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UITabBarSystemItem implements ValuedEnum {
+@Deprecated public enum UITabBarSystemItem implements ValuedEnum {
     More(0),
     Favorites(1),
     Featured(2),

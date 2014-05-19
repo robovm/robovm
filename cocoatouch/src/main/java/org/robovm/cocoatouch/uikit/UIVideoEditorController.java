@@ -39,7 +39,7 @@ import org.robovm.rt.bro.ptr.*;
  * </div>
  */
 /*<library>*/@Library("UIKit")/*</library>*/
-@NativeClass public class /*<name>*/ UIVideoEditorController /*</name>*/ 
+@NativeClass @Deprecated public class /*<name>*/ UIVideoEditorController /*</name>*/ 
     extends /*<extends>*/ UINavigationController /*</extends>*/ 
     /*<implements>*/ /*</implements>*/ {
 

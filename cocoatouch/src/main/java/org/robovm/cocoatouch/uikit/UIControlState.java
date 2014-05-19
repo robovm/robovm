@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.Bits;
 
-public final class UIControlState extends Bits<UIControlState> {
+@Deprecated public final class UIControlState extends Bits<UIControlState> {
     public static final UIControlState Normal = new UIControlState(0);
     public static final UIControlState Highlighted = new UIControlState(1 << 0);
     public static final UIControlState Disabled = new UIControlState(1 << 1);

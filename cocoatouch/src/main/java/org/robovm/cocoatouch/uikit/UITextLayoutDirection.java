@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UITextLayoutDirection implements ValuedEnum {
+@Deprecated public enum UITextLayoutDirection implements ValuedEnum {
     Right(2),
     Left(3),
     Up(4),

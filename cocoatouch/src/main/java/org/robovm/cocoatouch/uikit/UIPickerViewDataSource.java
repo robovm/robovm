@@ -38,7 +38,7 @@ import org.robovm.rt.bro.ptr.*;
  *   @since Available in iOS 2.0 and later.
  * </div>
  */
-public interface /*<name>*/ UIPickerViewDataSource /*</name>*/ /*<implements>*/ extends NSObjectProtocol /*</implements>*/ {
+@Deprecated public interface /*<name>*/ UIPickerViewDataSource /*</name>*/ /*<implements>*/ extends NSObjectProtocol /*</implements>*/ {
 
     /*<properties>*/
     

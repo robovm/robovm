@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.Bits;
 
-public final class UIRectCorner extends Bits<UIRectCorner> {
+@Deprecated public final class UIRectCorner extends Bits<UIRectCorner> {
     public static final UIRectCorner TopLeft = new UIRectCorner(1 << 0);
     public static final UIRectCorner TopRight = new UIRectCorner(1 << 1);
     public static final UIRectCorner BottomLeft = new UIRectCorner(1 << 2);

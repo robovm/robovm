@@ -17,7 +17,7 @@ package org.robovm.cocoatouch.uikit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum UIWebViewNavigationType implements ValuedEnum {
+@Deprecated public enum UIWebViewNavigationType implements ValuedEnum {
     LinkClicked(0),
     FormSubmitted(1),
     BackForward(2),

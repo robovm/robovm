@@ -19,7 +19,7 @@ import java.util.*;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum GLKViewDrawableDepthFormat implements ValuedEnum {
+@Deprecated public enum GLKViewDrawableDepthFormat implements ValuedEnum {
     None(0),
     Format16(1),
     Format24(2);

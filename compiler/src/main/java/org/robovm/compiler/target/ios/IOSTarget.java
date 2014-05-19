@@ -228,6 +228,13 @@ public class IOSTarget extends AbstractTarget {
             List<File> objectFiles, List<String> libArgs)
             throws IOException {
 
+        // Always link against UIKit or else it will not be initialized properly
+        // causing problems with UIAlertView and maybe other classes on iOS 7 (#195)
+        if (!config.getFrameworks().contains("UIKit")) {
+            libArgs.add("-framework");
+            libArgs.add("UIKit");
+        }
+
         if (arch == Arch.thumbv7) {
             ccArgs.add("-miphoneos-version-min=5.0");
         } else {

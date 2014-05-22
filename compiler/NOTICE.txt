@@ -58,3 +58,12 @@ http://asm.ow2.org/
 The RoboVM compiler uses the ZeroTurnaround ZIP Library which is copyright 2012,
 ZeroTurnaround LLC and released under the Apache License 2.0.
 https://github.com/zeroturnaround/zt-zip
+
+The RoboVM compiler includes the Simple XML serialization framework which is 
+copyright Niall Gallagher and released under the Apache License 2.0.
+http://simple.sourceforge.net
+
+The RoboVM compiler includes the Bouncy Castle Crypto APIs for Java which is 
+copyright 2000 - 2013, The Legion of the Bouncy Castle Inc. and released under 
+the MIT license.
+http://www.bouncycastle.org

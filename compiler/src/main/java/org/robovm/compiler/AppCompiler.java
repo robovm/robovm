@@ -37,7 +37,8 @@ import java.util.UUID;
 import org.apache.commons.exec.ExecuteException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.Dependency;
 import org.robovm.compiler.clazz.Path;
@@ -667,7 +668,7 @@ public class AppCompiler {
             t.join(5 * 1000); // Wait for a maximum of 5 seconds
             JSONObject result = t.result;
             if (result != null) {
-                String version = result.optString("version", null);
+                String version = (String) result.get("version");
                 if (version != null && Version.isOlderThan(version)) {
                     config.getLogger().info("A new version of RoboVM is available. " 
                             + "Current version: %s. New version: %s.", Version.getVersion(), version);
@@ -718,7 +719,7 @@ public class AppCompiler {
             conn.setConnectTimeout(5 * 1000);
             conn.setReadTimeout(5 * 1000);
             try (InputStream in = new BufferedInputStream(conn.getInputStream())) {
-                return new JSONObject(IOUtils.toString(in, "UTF-8"));
+                return (JSONObject) JSONValue.parseWithException(IOUtils.toString(in, "UTF-8"));
             }
         } catch (Exception e) {
             if (config.getHome().isDev()) {

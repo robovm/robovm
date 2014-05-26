@@ -16,7 +16,6 @@
 package org.robovm.objc;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -113,7 +112,7 @@ public final class ObjCClass extends ObjCObject {
     }
     
     public static ObjCClass getByName(String objcClassName) {
-        synchronized (typeToClass) {
+        synchronized (objcBridgeLock) {
             ObjCClass c = nameToClass.get(objcClassName);
             if (c == null) {
                 c = getByNameNotLoaded(objcClassName);
@@ -159,7 +158,7 @@ public final class ObjCClass extends ObjCObject {
         if (type == null) {
             throw new NullPointerException("type");
         }
-        synchronized (typeToClass) {
+        synchronized (objcBridgeLock) {
             ObjCClass c = typeToClass.get(type);
             if (c == null) {
                 NativeClass nativeClassAnno = type.getAnnotation(NativeClass.class);
@@ -210,7 +209,7 @@ public final class ObjCClass extends ObjCObject {
             throw new IllegalArgumentException("@NativeClass annotated class " + type.getName() 
                     + " can not be registered as a custom class");
         }
-        synchronized (typeToClass) {
+        synchronized (objcBridgeLock) {
             ObjCClass c = typeToClass.get(type);
             if (c == null) {
                 String name = getCustomClassName(type);

@@ -58,6 +58,14 @@ public abstract class ObjCObject extends NativeObject {
         }
     }
 
+    /**
+     * Common lock object used to prevent concurrent access to data in the
+     * Obj-C bridge (such as {@link ObjCObject#peers} and 
+     * {@link ObjCClass#typeToClass}). This should be used to prevent deadlock
+     * situations from occurring. (#349)
+     */
+    static final Object objcBridgeLock = new Object();
+
     private static final HashMap<Long, ObjCObjectRef> peers = new HashMap<>();
 
     private static final long CUSTOM_CLASS_OFFSET;
@@ -155,7 +163,7 @@ public abstract class ObjCObject extends NativeObject {
     
     @SuppressWarnings("unchecked")
     static <T extends ObjCObject> T getPeerObject(long handle) {
-        synchronized (peers) {
+        synchronized (objcBridgeLock) {
             ObjCObjectRef ref = peers.get(handle);
             T o = ref != null ? (T) ref.get() : null;
             return o;
@@ -163,7 +171,7 @@ public abstract class ObjCObject extends NativeObject {
     }
     
     private static void setPeerObject(long handle, ObjCObject o) {
-        synchronized (peers) {
+        synchronized (objcBridgeLock) {
             if (o == null) {
                 peers.remove(handle);
             } else {
@@ -174,7 +182,7 @@ public abstract class ObjCObject extends NativeObject {
 
     
     private static void removePeerObject(ObjCObject o) {
-        synchronized (peers) {
+        synchronized (objcBridgeLock) {
             ObjCObjectRef ref = peers.remove(o.getHandle());
             ObjCObject p = ref != null ? ref.get() : null;
             if (p != null && o != p) {
@@ -243,7 +251,7 @@ public abstract class ObjCObject extends NativeObject {
             return (T) ObjCClass.toObjCClass(handle);
         }
 
-        synchronized (peers) {
+        synchronized (objcBridgeLock) {
             T o = getPeerObject(handle);
             if (o != null && o.getHandle() != 0) {
                 if (forceType && !cls.isAssignableFrom(o.getClass())) {

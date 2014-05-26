@@ -42,7 +42,7 @@ static jint AttachCurrentThread(JavaVM* vm, void** penv, void* args) {
     Object* group = NULL;
     if (args) {
         name = ((JavaVMAttachArgs*) args)->name;
-        group = (Object*) ((JavaVMAttachArgs*) group)->name;
+        group = (Object*) ((JavaVMAttachArgs*) args)->group;
     }
     return rvmAttachCurrentThread((VM*) vm, (Env**) penv, name, group);
 }
@@ -66,7 +66,7 @@ static jint AttachCurrentThreadAsDaemon(JavaVM* vm, void** penv, void* args) {
     Object* group = NULL;
     if (args) {
         name = ((JavaVMAttachArgs*) args)->name;
-        group = (Object*) ((JavaVMAttachArgs*) group)->name;
+        group = (Object*) ((JavaVMAttachArgs*) args)->group;
     }
     return rvmAttachCurrentThreadAsDaemon((VM*) vm, (Env**) penv, name, group);
 }

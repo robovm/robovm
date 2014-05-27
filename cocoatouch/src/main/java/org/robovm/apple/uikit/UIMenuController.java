@@ -55,25 +55,25 @@ import org.robovm.apple.coreimage.*;
     public native boolean isMenuVisible();
     @Property(selector = "setMenuVisible:")
     public native void setMenuVisible(boolean v);
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Property(selector = "arrowDirection")
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
     public native UIMenuControllerArrowDirection getArrowDirection();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Property(selector = "setArrowDirection:")
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
     public native void setArrowDirection(UIMenuControllerArrowDirection v);
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Property(selector = "menuItems")
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
     public native NSArray<UIMenuItem> getMenuItems();
-    @Property(selector = "setMenuItems:")
     /**
      * @since Available in iOS 3.2 and later.
      */
+    @Property(selector = "setMenuItems:")
     public native void setMenuItems(NSArray<UIMenuItem> v);
     @Property(selector = "menuFrame")
     public native @ByVal CGRect getMenuFrame();

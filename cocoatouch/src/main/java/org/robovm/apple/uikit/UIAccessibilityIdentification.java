@@ -46,15 +46,15 @@ import org.robovm.apple.coreimage.*;
     /*</bind>*/
     /*<constants>*//*</constants>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "accessibilityIdentifier")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     String getAccessibilityIdentifier();
-    @Property(selector = "setAccessibilityIdentifier:")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @Property(selector = "setAccessibilityIdentifier:")
     void setAccessibilityIdentifier(String v);
     /*</properties>*/
     /*<methods>*/

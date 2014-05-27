@@ -77,15 +77,15 @@ import org.robovm.apple.coreimage.*;
     public native @MachineSizedFloat double getParagraphSpacingBefore();
     @Property(selector = "hyphenationFactor")
     public native float getHyphenationFactor();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "tabStops")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native NSArray<NSTextTab> getTabStops();
-    @Property(selector = "defaultTabInterval")
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @Property(selector = "defaultTabInterval")
     public native @MachineSizedFloat double getDefaultTabInterval();
     /*</properties>*/
     /*<members>*//*</members>*/

@@ -46,15 +46,15 @@ import org.robovm.apple.coreimage.*;
     /*</bind>*/
     /*<constants>*//*</constants>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "layoutOrientation")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     NSTextLayoutOrientation getLayoutOrientation();
-    @Property(selector = "setLayoutOrientation:")
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @Property(selector = "setLayoutOrientation:")
     void setLayoutOrientation(NSTextLayoutOrientation v);
     /*</properties>*/
     /*<methods>*/

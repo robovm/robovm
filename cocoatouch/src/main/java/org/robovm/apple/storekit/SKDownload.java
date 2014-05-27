@@ -49,50 +49,50 @@ import org.robovm.apple.accounts.*;
     protected SKDownload(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "downloadState")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native SKDownloadState getDownloadState();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "contentLength")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native long getContentLength();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "contentIdentifier")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native String getContentIdentifier();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "contentURL")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native NSURL getContentURL();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "contentVersion")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native String getContentVersion();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "error")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native NSError getError();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "progress")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native float getProgress();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "timeRemaining")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native double getTimeRemaining();
-    @Property(selector = "transaction")
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @Property(selector = "transaction")
     public native SKPaymentTransaction getTransaction();
     /*</properties>*/
     /*<members>*//*</members>*/

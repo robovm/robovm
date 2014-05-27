@@ -53,10 +53,10 @@ import org.robovm.apple.accounts.*;
     public SKReceiptRefreshRequest(NSDictionary<NSString, ?> properties) { super((SkipInit) null); initObject(init(properties)); }
     /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "receiptProperties")
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @Property(selector = "receiptProperties")
     public native NSDictionary<NSString, ?> getReceiptProperties();
     /*</properties>*/
     /*<members>*//*</members>*/

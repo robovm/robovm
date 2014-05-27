@@ -67,10 +67,10 @@ import org.robovm.apple.uikit.*;
     public native String getOrganizationName();
     @Property(selector = "relevantDate")
     public native NSDate getRelevantDate();
-    @Property(selector = "userInfo")
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @Property(selector = "userInfo")
     public native NSDictionary<NSString, ?> getUserInfo();
     @Property(selector = "passURL")
     public native NSURL getPassURL();

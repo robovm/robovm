@@ -91,15 +91,15 @@ import org.robovm.apple.coreimage.*;
     public native @MachineSizedSInt long getFirstOtherButtonIndex();
     @Property(selector = "isVisible")
     public native boolean isVisible();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "alertViewStyle")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native UIAlertViewStyle getAlertViewStyle();
-    @Property(selector = "setAlertViewStyle:")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @Property(selector = "setAlertViewStyle:")
     public native void setAlertViewStyle(UIAlertViewStyle v);
     /*</properties>*/
     /*<members>*//*</members>*/

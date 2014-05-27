@@ -79,61 +79,61 @@ import org.robovm.apple.coreimage.*;
     public native @ByVal CGSize getSize();
     @Property(selector = "CGImage")
     public native CGImage getCGImage();
-    @Property(selector = "CIImage")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @Property(selector = "CIImage")
     public native CIImage getCIImage();
     @Property(selector = "imageOrientation")
     public native UIImageOrientation getOrientation();
-    @Property(selector = "scale")
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @Property(selector = "scale")
     public native @MachineSizedFloat double getScale();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "images")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native NSArray<UIImage> getImages();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "duration")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native double getDuration();
-    @Property(selector = "capInsets")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @Property(selector = "capInsets")
     public native @ByVal UIEdgeInsets getCapInsets();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "resizingMode")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native UIImageResizingMode getResizingMode();
-    @Property(selector = "alignmentRectInsets")
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @Property(selector = "alignmentRectInsets")
     public native @ByVal UIEdgeInsets getAlignmentRectInsets();
-    @Property(selector = "renderingMode")
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @Property(selector = "renderingMode")
     public native UIImageRenderingMode getRenderingMode();
     @Property(selector = "leftCapWidth")
     public native @MachineSizedSInt long getLeftCapWidth();
     @Property(selector = "topCapHeight")
     public native @MachineSizedSInt long getTopCapHeight();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "accessibilityIdentifier")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native String getAccessibilityIdentifier();
-    @Property(selector = "setAccessibilityIdentifier:")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @Property(selector = "setAccessibilityIdentifier:")
     public native void setAccessibilityIdentifier(String v);
     /*</properties>*/
     /*<members>*//*</members>*/

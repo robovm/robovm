@@ -52,15 +52,15 @@ import org.robovm.apple.security.*;
     public native NSNetServiceDelegate getDelegate();
     @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(NSNetServiceDelegate v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "includesPeerToPeer")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native boolean isIncludesPeerToPeer();
-    @Property(selector = "setIncludesPeerToPeer:")
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @Property(selector = "setIncludesPeerToPeer:")
     public native void setIncludesPeerToPeer(boolean v);
     @Property(selector = "name")
     public native String getName();
@@ -72,10 +72,10 @@ import org.robovm.apple.security.*;
     public native String getHostName();
     @Property(selector = "addresses")
     public native NSArray<?> getAddresses();
-    @Property(selector = "port")
     /**
      * @since Available in iOS 2.0 and later.
      */
+    @Property(selector = "port")
     public native @MachineSizedSInt long getPort();
     /*</properties>*/
     /*<members>*//*</members>*/

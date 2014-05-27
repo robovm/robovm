@@ -49,47 +49,47 @@ import org.robovm.apple.accounts.*;
     protected SKPaymentTransaction(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "error")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native NSError getError();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "originalTransaction")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native SKPaymentTransaction getOriginalTransaction();
-    @Property(selector = "payment")
     /**
      * @since Available in iOS 3.0 and later.
      */
+    @Property(selector = "payment")
     public native SKPayment getPayment();
-    @Property(selector = "downloads")
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @Property(selector = "downloads")
     public native NSArray<SKDownload> getDownloads();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "transactionDate")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native NSDate getTransactionDate();
-    @Property(selector = "transactionIdentifier")
     /**
      * @since Available in iOS 3.0 and later.
      */
+    @Property(selector = "transactionIdentifier")
     public native String getTransactionIdentifier();
-    @Property(selector = "transactionReceipt")
     /**
      * @since Available in iOS 3.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
+    @Property(selector = "transactionReceipt")
     public native NSData getTransactionReceipt();
-    @Property(selector = "transactionState")
     /**
      * @since Available in iOS 3.0 and later.
      */
+    @Property(selector = "transactionState")
     public native SKPaymentTransactionState getTransactionState();
     /*</properties>*/
     /*<members>*//*</members>*/

@@ -63,15 +63,15 @@ import org.robovm.apple.coreimage.*;
     public native boolean isShowsPageRange();
     @Property(selector = "setShowsPageRange:")
     public native void setShowsPageRange(boolean v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "showsNumberOfCopies")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native boolean isShowsNumberOfCopies();
-    @Property(selector = "setShowsNumberOfCopies:")
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @Property(selector = "setShowsNumberOfCopies:")
     public native void setShowsNumberOfCopies(boolean v);
     @Property(selector = "printPaper")
     public native UIPrintPaper getPrintPaper();

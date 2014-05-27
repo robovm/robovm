@@ -63,109 +63,109 @@ import org.robovm.apple.coreimage.*;
     public native NSArray<NSString> getMediaTypes();
     @Property(selector = "setMediaTypes:")
     public native void setMediaTypes(NSArray<NSString> v);
+    /**
+     * @since Available in iOS 3.1 and later.
+     */
     @Property(selector = "allowsEditing")
-    /**
-     * @since Available in iOS 3.1 and later.
-     */
     public native boolean isAllowsEditing();
+    /**
+     * @since Available in iOS 3.1 and later.
+     */
     @Property(selector = "setAllowsEditing:")
-    /**
-     * @since Available in iOS 3.1 and later.
-     */
     public native void setAllowsEditing(boolean v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.1.
+     */
+    @Deprecated
     @Property(selector = "allowsImageEditing")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.1.
-     */
-    @Deprecated
     public native boolean isAllowsImageEditing();
-    @Property(selector = "setAllowsImageEditing:")
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 3.1.
      */
     @Deprecated
+    @Property(selector = "setAllowsImageEditing:")
     public native void setAllowsImageEditing(boolean v);
+    /**
+     * @since Available in iOS 3.1 and later.
+     */
     @Property(selector = "videoMaximumDuration")
-    /**
-     * @since Available in iOS 3.1 and later.
-     */
     public native double getVideoMaximumDuration();
+    /**
+     * @since Available in iOS 3.1 and later.
+     */
     @Property(selector = "setVideoMaximumDuration:")
-    /**
-     * @since Available in iOS 3.1 and later.
-     */
     public native void setVideoMaximumDuration(double v);
+    /**
+     * @since Available in iOS 3.1 and later.
+     */
     @Property(selector = "videoQuality")
-    /**
-     * @since Available in iOS 3.1 and later.
-     */
     public native UIImagePickerControllerQualityType getVideoQuality();
+    /**
+     * @since Available in iOS 3.1 and later.
+     */
     @Property(selector = "setVideoQuality:")
-    /**
-     * @since Available in iOS 3.1 and later.
-     */
     public native void setVideoQuality(UIImagePickerControllerQualityType v);
+    /**
+     * @since Available in iOS 3.1 and later.
+     */
     @Property(selector = "showsCameraControls")
-    /**
-     * @since Available in iOS 3.1 and later.
-     */
     public native boolean isShowsCameraControls();
+    /**
+     * @since Available in iOS 3.1 and later.
+     */
     @Property(selector = "setShowsCameraControls:")
-    /**
-     * @since Available in iOS 3.1 and later.
-     */
     public native void setShowsCameraControls(boolean v);
+    /**
+     * @since Available in iOS 3.1 and later.
+     */
     @Property(selector = "cameraOverlayView")
-    /**
-     * @since Available in iOS 3.1 and later.
-     */
     public native UIView getCameraOverlayView();
+    /**
+     * @since Available in iOS 3.1 and later.
+     */
     @Property(selector = "setCameraOverlayView:")
-    /**
-     * @since Available in iOS 3.1 and later.
-     */
     public native void setCameraOverlayView(UIView v);
+    /**
+     * @since Available in iOS 3.1 and later.
+     */
     @Property(selector = "cameraViewTransform")
-    /**
-     * @since Available in iOS 3.1 and later.
-     */
     public native @ByVal CGAffineTransform getCameraViewTransform();
-    @Property(selector = "setCameraViewTransform:")
     /**
      * @since Available in iOS 3.1 and later.
      */
+    @Property(selector = "setCameraViewTransform:")
     public native void setCameraViewTransform(@ByVal CGAffineTransform v);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Property(selector = "cameraCaptureMode")
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
     public native UIImagePickerControllerCameraCaptureMode getCameraCaptureMode();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Property(selector = "setCameraCaptureMode:")
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
     public native void setCameraCaptureMode(UIImagePickerControllerCameraCaptureMode v);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Property(selector = "cameraDevice")
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
     public native UIImagePickerControllerCameraDevice getCameraDevice();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Property(selector = "setCameraDevice:")
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
     public native void setCameraDevice(UIImagePickerControllerCameraDevice v);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Property(selector = "cameraFlashMode")
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
     public native UIImagePickerControllerCameraFlashMode getCameraFlashMode();
-    @Property(selector = "setCameraFlashMode:")
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @Property(selector = "setCameraFlashMode:")
     public native void setCameraFlashMode(UIImagePickerControllerCameraFlashMode v);
     /*</properties>*/
     /*<members>*//*</members>*/

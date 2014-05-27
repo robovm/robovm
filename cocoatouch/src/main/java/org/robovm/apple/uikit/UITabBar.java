@@ -68,115 +68,115 @@ import org.robovm.apple.coreimage.*;
     public native UITabBarItem getSelectedItem();
     @Property(selector = "setSelectedItem:", strongRef = true)
     public native void setSelectedItem(UITabBarItem v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "tintColor")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native UIColor getTintColor();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "setTintColor:")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native void setTintColor(UIColor v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "barTintColor")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native UIColor getBarTintColor();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "setBarTintColor:")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native void setBarTintColor(UIColor v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "selectedImageTintColor")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native UIColor getSelectedImageTintColor();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "setSelectedImageTintColor:")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native void setSelectedImageTintColor(UIColor v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "backgroundImage")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native UIImage getBackgroundImage();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "setBackgroundImage:")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native void setBackgroundImage(UIImage v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "selectionIndicatorImage")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native UIImage getSelectionIndicatorImage();
-    @Property(selector = "setSelectionIndicatorImage:")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @Property(selector = "setSelectionIndicatorImage:")
     public native void setSelectionIndicatorImage(UIImage v);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "shadowImage")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native UIImage getShadowImage();
-    @Property(selector = "setShadowImage:")
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @Property(selector = "setShadowImage:")
     public native void setShadowImage(UIImage v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "itemPositioning")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native UITabBarItemPositioning getItemPositioning();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "setItemPositioning:")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native void setItemPositioning(UITabBarItemPositioning v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "itemWidth")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native @MachineSizedFloat double getItemWidth();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "setItemWidth:")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native void setItemWidth(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "itemSpacing")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native @MachineSizedFloat double getItemSpacing();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "setItemSpacing:")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native void setItemSpacing(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "barStyle")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native UIBarStyle getBarStyle();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "setBarStyle:")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native void setBarStyle(UIBarStyle v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "isTranslucent")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native boolean isTranslucent();
-    @Property(selector = "setTranslucent:")
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @Property(selector = "setTranslucent:")
     public native void setTranslucent(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/

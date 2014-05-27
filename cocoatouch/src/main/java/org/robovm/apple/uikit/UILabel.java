@@ -84,15 +84,15 @@ import org.robovm.apple.coreimage.*;
     public native NSLineBreakMode getLineBreakMode();
     @Property(selector = "setLineBreakMode:")
     public native void setLineBreakMode(NSLineBreakMode v);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "attributedText")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native NSAttributedString getAttributedText();
-    @Property(selector = "setAttributedText:")
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @Property(selector = "setAttributedText:")
     public native void setAttributedText(NSAttributedString v);
     @Property(selector = "highlightedTextColor")
     public native UIColor getHighlightedTextColor();
@@ -118,57 +118,57 @@ import org.robovm.apple.coreimage.*;
     public native boolean isAdjustsFontSizeToFitWidth();
     @Property(selector = "setAdjustsFontSizeToFitWidth:")
     public native void setAdjustsFontSizeToFitWidth(boolean v);
+    /**
+     * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @Property(selector = "adjustsLetterSpacingToFitWidth")
-    /**
-     * @since Available in iOS 6.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
     public native boolean isAdjustsLetterSpacingToFitWidth();
-    @Property(selector = "setAdjustsLetterSpacingToFitWidth:")
     /**
      * @since Available in iOS 6.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
+    @Property(selector = "setAdjustsLetterSpacingToFitWidth:")
     public native void setAdjustsLetterSpacingToFitWidth(boolean v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
     @Property(selector = "minimumFontSize")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
     public native @MachineSizedFloat double getMinimumFontSize();
-    @Property(selector = "setMinimumFontSize:")
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 6.0.
      */
     @Deprecated
+    @Property(selector = "setMinimumFontSize:")
     public native void setMinimumFontSize(@MachineSizedFloat double v);
     @Property(selector = "baselineAdjustment")
     public native UIBaselineAdjustment getBaselineAdjustment();
     @Property(selector = "setBaselineAdjustment:")
     public native void setBaselineAdjustment(UIBaselineAdjustment v);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "minimumScaleFactor")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native @MachineSizedFloat double getMinimumScaleFactor();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "setMinimumScaleFactor:")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native void setMinimumScaleFactor(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "preferredMaxLayoutWidth")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native @MachineSizedFloat double getPreferredMaxLayoutWidth();
-    @Property(selector = "setPreferredMaxLayoutWidth:")
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @Property(selector = "setPreferredMaxLayoutWidth:")
     public native void setPreferredMaxLayoutWidth(@MachineSizedFloat double v);
     /*</properties>*/
     /*<members>*//*</members>*/

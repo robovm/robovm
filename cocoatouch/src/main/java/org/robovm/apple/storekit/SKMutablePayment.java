@@ -49,45 +49,45 @@ import org.robovm.apple.accounts.*;
     protected SKMutablePayment(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "applicationUsername")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native String getApplicationUsername();
-    @Property(selector = "setApplicationUsername:")
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @Property(selector = "setApplicationUsername:")
     public native void setApplicationUsername(String v);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "productIdentifier")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native String getProductIdentifier();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "setProductIdentifier:")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native void setProductIdentifier(String v);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "quantity")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native @MachineSizedSInt long getQuantity();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "setQuantity:")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native void setQuantity(@MachineSizedSInt long v);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "requestData")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native NSData getRequestData();
-    @Property(selector = "setRequestData:")
     /**
      * @since Available in iOS 3.0 and later.
      */
+    @Property(selector = "setRequestData:")
     public native void setRequestData(NSData v);
     /*</properties>*/
     /*<members>*//*</members>*/

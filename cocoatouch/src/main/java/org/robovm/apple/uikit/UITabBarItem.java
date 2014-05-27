@@ -57,15 +57,15 @@ import org.robovm.apple.coreimage.*;
     public UITabBarItem(UITabBarSystemItem systemItem, @MachineSizedSInt long tag) { super((SkipInit) null); initObject(initWithTabBarSystemItem$tag$(systemItem, tag)); }
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "selectedImage")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native UIImage getSelectedImage();
-    @Property(selector = "setSelectedImage:")
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @Property(selector = "setSelectedImage:")
     public native void setSelectedImage(UIImage v);
     @Property(selector = "badgeValue")
     public native String getBadgeValue();

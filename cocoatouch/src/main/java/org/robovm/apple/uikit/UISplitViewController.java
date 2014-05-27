@@ -59,15 +59,15 @@ import org.robovm.apple.coreimage.*;
     public native UISplitViewControllerDelegate getDelegate();
     @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UISplitViewControllerDelegate v);
+    /**
+     * @since Available in iOS 5.1 and later.
+     */
     @Property(selector = "presentsWithGesture")
-    /**
-     * @since Available in iOS 5.1 and later.
-     */
     public native boolean isPresentsWithGesture();
-    @Property(selector = "setPresentsWithGesture:")
     /**
      * @since Available in iOS 5.1 and later.
      */
+    @Property(selector = "setPresentsWithGesture:")
     public native void setPresentsWithGesture(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/

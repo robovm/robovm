@@ -49,45 +49,45 @@ import org.robovm.apple.coregraphics.*;
     protected MPVolumeView(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
     @Property(selector = "showsVolumeSlider")
-    /**
-     * @since Available in iOS 4.2 and later.
-     */
     public native boolean isShowsVolumeSlider();
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
     @Property(selector = "setShowsVolumeSlider:")
-    /**
-     * @since Available in iOS 4.2 and later.
-     */
     public native void setShowsVolumeSlider(boolean v);
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
     @Property(selector = "showsRouteButton")
-    /**
-     * @since Available in iOS 4.2 and later.
-     */
     public native boolean isShowsRouteButton();
-    @Property(selector = "setShowsRouteButton:")
     /**
      * @since Available in iOS 4.2 and later.
      */
+    @Property(selector = "setShowsRouteButton:")
     public native void setShowsRouteButton(boolean v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "areWirelessRoutesAvailable")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native boolean isWirelessRoutesAvailable();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "isWirelessRouteActive")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native boolean isWirelessRouteActive();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "volumeWarningSliderImage")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native UIImage getVolumeWarningSliderImage();
-    @Property(selector = "setVolumeWarningSliderImage:")
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @Property(selector = "setVolumeWarningSliderImage:")
     public native void setVolumeWarningSliderImage(UIImage v);
     /*</properties>*/
     /*<members>*//*</members>*/

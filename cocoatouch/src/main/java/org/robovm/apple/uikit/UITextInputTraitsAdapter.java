@@ -55,15 +55,15 @@ import org.robovm.apple.coreimage.*;
     public UITextAutocorrectionType getAutocorrectionType() { throw new UnsupportedOperationException(); }
     @NotImplemented("setAutocorrectionType:")
     public void setAutocorrectionType(UITextAutocorrectionType v) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @NotImplemented("spellCheckingType")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public UITextSpellCheckingType getSpellCheckingType() { throw new UnsupportedOperationException(); }
-    @NotImplemented("setSpellCheckingType:")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @NotImplemented("setSpellCheckingType:")
     public void setSpellCheckingType(UITextSpellCheckingType v) { throw new UnsupportedOperationException(); }
     @NotImplemented("keyboardType")
     public UIKeyboardType getKeyboardType() { throw new UnsupportedOperationException(); }

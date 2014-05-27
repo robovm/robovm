@@ -63,57 +63,57 @@ import org.robovm.apple.coreimage.*;
     public native String getSystemVersion();
     @Property(selector = "orientation")
     public native UIDeviceOrientation getOrientation();
-    @Property(selector = "identifierForVendor")
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @Property(selector = "identifierForVendor")
     public native NSUUID getIdentifierForVendor();
     @Property(selector = "isGeneratingDeviceOrientationNotifications")
     public native boolean isGeneratesDeviceOrientationNotifications();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "isBatteryMonitoringEnabled")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native boolean isBatteryMonitoringEnabled();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "setBatteryMonitoringEnabled:")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native void setBatteryMonitoringEnabled(boolean v);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "batteryState")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native UIDeviceBatteryState getBatteryState();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "batteryLevel")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native float getBatteryLevel();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "isProximityMonitoringEnabled")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native boolean isProximityMonitoringEnabled();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "setProximityMonitoringEnabled:")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native void setProximityMonitoringEnabled(boolean v);
-    @Property(selector = "proximityState")
     /**
      * @since Available in iOS 3.0 and later.
      */
+    @Property(selector = "proximityState")
     public native boolean isProximityState();
-    @Property(selector = "isMultitaskingSupported")
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @Property(selector = "isMultitaskingSupported")
     public native boolean isMultitaskingSupported();
-    @Property(selector = "userInterfaceIdiom")
     /**
      * @since Available in iOS 3.2 and later.
      */
+    @Property(selector = "userInterfaceIdiom")
     public native UIUserInterfaceIdiom getUserInterfaceIdiom();
     /*</properties>*/
     /*<members>*//*</members>*/

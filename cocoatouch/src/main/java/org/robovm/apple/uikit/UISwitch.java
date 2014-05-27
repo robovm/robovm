@@ -52,55 +52,55 @@ import org.robovm.apple.coreimage.*;
     public UISwitch(@ByVal CGRect frame) { super((SkipInit) null); initObject(initWithFrame$(frame)); }
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "onTintColor")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native UIColor getOnTintColor();
-    @Property(selector = "setOnTintColor:")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @Property(selector = "setOnTintColor:")
     public native void setOnTintColor(UIColor v);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "tintColor")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native UIColor getTintColor();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "setTintColor:")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native void setTintColor(UIColor v);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "thumbTintColor")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native UIColor getThumbTintColor();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "setThumbTintColor:")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native void setThumbTintColor(UIColor v);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "onImage")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native UIImage getOnImage();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "setOnImage:")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native void setOnImage(UIImage v);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "offImage")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native UIImage getOffImage();
-    @Property(selector = "setOffImage:")
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @Property(selector = "setOffImage:")
     public native void setOffImage(UIImage v);
     @Property(selector = "isOn")
     public native boolean isOn();

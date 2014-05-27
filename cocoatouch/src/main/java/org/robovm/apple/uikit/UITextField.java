@@ -60,15 +60,15 @@ import org.robovm.apple.coreimage.*;
     public native String getText();
     @Property(selector = "setText:")
     public native void setText(String v);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "attributedText")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native NSAttributedString getAttributedText();
-    @Property(selector = "setAttributedText:")
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @Property(selector = "setAttributedText:")
     public native void setAttributedText(NSAttributedString v);
     @Property(selector = "textColor")
     public native UIColor getTextColor();
@@ -86,29 +86,29 @@ import org.robovm.apple.coreimage.*;
     public native UITextBorderStyle getBorderStyle();
     @Property(selector = "setBorderStyle:")
     public native void setBorderStyle(UITextBorderStyle v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "defaultTextAttributes")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native NSDictionary<NSString, ?> getDefaultTextAttributes();
-    @Property(selector = "setDefaultTextAttributes:")
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @Property(selector = "setDefaultTextAttributes:")
     public native void setDefaultTextAttributes(NSDictionary<NSString, ?> v);
     @Property(selector = "placeholder")
     public native String getPlaceholder();
     @Property(selector = "setPlaceholder:")
     public native void setPlaceholder(String v);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "attributedPlaceholder")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native NSAttributedString getAttributedPlaceholder();
-    @Property(selector = "setAttributedPlaceholder:")
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @Property(selector = "setAttributedPlaceholder:")
     public native void setAttributedPlaceholder(NSAttributedString v);
     @Property(selector = "clearsOnBeginEditing")
     public native boolean isClearsOnBeginEditing();
@@ -136,25 +136,25 @@ import org.robovm.apple.coreimage.*;
     public native void setDisabledBackground(UIImage v);
     @Property(selector = "isEditing")
     public native boolean isEditing();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "allowsEditingTextAttributes")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native boolean isAllowsEditingTextAttributes();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "setAllowsEditingTextAttributes:")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native void setAllowsEditingTextAttributes(boolean v);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "typingAttributes")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native NSDictionary<NSString, ?> getTypingAttributes();
-    @Property(selector = "setTypingAttributes:")
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @Property(selector = "setTypingAttributes:")
     public native void setTypingAttributes(NSDictionary<NSString, ?> v);
     @Property(selector = "clearButtonMode")
     public native UITextFieldViewMode getClearButtonMode();
@@ -184,15 +184,15 @@ import org.robovm.apple.coreimage.*;
     public native UIView getInputAccessoryView();
     @Property(selector = "setInputAccessoryView:")
     public native void setInputAccessoryView(UIView v);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "clearsOnInsertion")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native boolean isClearsOnInsertion();
-    @Property(selector = "setClearsOnInsertion:")
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @Property(selector = "setClearsOnInsertion:")
     public native void setClearsOnInsertion(boolean v);
     @Property(selector = "selectedTextRange")
     public native UITextRange getSelectedTextRange();
@@ -228,15 +228,15 @@ import org.robovm.apple.coreimage.*;
     public native UITextAutocorrectionType getAutocorrectionType();
     @Property(selector = "setAutocorrectionType:")
     public native void setAutocorrectionType(UITextAutocorrectionType v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "spellCheckingType")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native UITextSpellCheckingType getSpellCheckingType();
-    @Property(selector = "setSpellCheckingType:")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @Property(selector = "setSpellCheckingType:")
     public native void setSpellCheckingType(UITextSpellCheckingType v);
     @Property(selector = "keyboardType")
     public native UIKeyboardType getKeyboardType();

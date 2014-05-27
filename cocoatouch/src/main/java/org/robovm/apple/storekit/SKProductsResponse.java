@@ -49,15 +49,15 @@ import org.robovm.apple.accounts.*;
     protected SKProductsResponse(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "products")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native NSArray<SKProduct> getProducts();
-    @Property(selector = "invalidProductIdentifiers")
     /**
      * @since Available in iOS 3.0 and later.
      */
+    @Property(selector = "invalidProductIdentifiers")
     public native NSArray<NSString> getInvalidProductIdentifiers();
     /*</properties>*/
     /*<members>*//*</members>*/

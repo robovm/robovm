@@ -66,20 +66,20 @@ import org.robovm.apple.coreimage.*;
     }
     
     /*<properties>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "imageView")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native UIImageView getImageView();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "textLabel")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native UILabel getTextLabel();
-    @Property(selector = "detailTextLabel")
     /**
      * @since Available in iOS 3.0 and later.
      */
+    @Property(selector = "detailTextLabel")
     public native UILabel getDetailTextLabel();
     @Property(selector = "contentView")
     public native UIView getContentView();
@@ -91,15 +91,15 @@ import org.robovm.apple.coreimage.*;
     public native UIView getSelectedBackgroundView();
     @Property(selector = "setSelectedBackgroundView:")
     public native void setSelectedBackgroundView(UIView v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "multipleSelectionBackgroundView")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native UIView getMultipleSelectionBackgroundView();
-    @Property(selector = "setMultipleSelectionBackgroundView:")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @Property(selector = "setMultipleSelectionBackgroundView:")
     public native void setMultipleSelectionBackgroundView(UIView v);
     @Property(selector = "reuseIdentifier")
     public native String getReuseIdentifier();
@@ -149,15 +149,15 @@ import org.robovm.apple.coreimage.*;
     public native @MachineSizedFloat double getIndentationWidth();
     @Property(selector = "setIndentationWidth:")
     public native void setIndentationWidth(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "separatorInset")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native @ByVal UIEdgeInsets getSeparatorInset();
-    @Property(selector = "setSeparatorInset:")
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @Property(selector = "setSeparatorInset:")
     public native void setSeparatorInset(@ByVal UIEdgeInsets v);
     @Property(selector = "isEditing")
     public native boolean isEditing();
@@ -165,173 +165,173 @@ import org.robovm.apple.coreimage.*;
     public native void setEditing(boolean v);
     @Property(selector = "showingDeleteConfirmation")
     public native boolean isShowingDeleteConfirmation();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "text")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native String getText();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "setText:")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native void setText(String v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "font")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native UIFont getFont();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "setFont:")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native void setFont(UIFont v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "textAlignment")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native NSTextAlignment getTextAlignment();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "setTextAlignment:")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native void setTextAlignment(NSTextAlignment v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "lineBreakMode")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native NSLineBreakMode getLineBreakMode();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "setLineBreakMode:")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native void setLineBreakMode(NSLineBreakMode v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "textColor")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native UIColor getTextColor();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "setTextColor:")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native void setTextColor(UIColor v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "selectedTextColor")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native UIColor getSelectedTextColor();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "setSelectedTextColor:")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native void setSelectedTextColor(UIColor v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "image")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native UIImage getImage();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "setImage:")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native void setImage(UIImage v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "selectedImage")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native UIImage getSelectedImage();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "setSelectedImage:")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native void setSelectedImage(UIImage v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "hidesAccessoryWhenEditing")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native boolean isHidesAccessoryWhenEditing();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "setHidesAccessoryWhenEditing:")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native void setHidesAccessoryWhenEditing(boolean v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "target")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native NSObject getTarget();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "setTarget:", strongRef = true)
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native void setTarget(NSObject v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "editAction")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native Selector getEditAction();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "setEditAction:")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native void setEditAction(Selector v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "accessoryAction")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native Selector getAccessoryAction();
-    @Property(selector = "setAccessoryAction:")
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 3.0.
      */
     @Deprecated
+    @Property(selector = "setAccessoryAction:")
     public native void setAccessoryAction(Selector v);
     /*</properties>*/
     /*<members>*//*</members>*/

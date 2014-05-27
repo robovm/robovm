@@ -61,10 +61,10 @@ import org.robovm.apple.coreimage.*;
     public native UIWindow getWindow();
     @Property(selector = "view")
     public native UIView getView();
-    @Property(selector = "gestureRecognizers")
     /**
      * @since Available in iOS 3.2 and later.
      */
+    @Property(selector = "gestureRecognizers")
     public native NSArray<UIGestureRecognizer> getGestureRecognizers();
     /*</properties>*/
     /*<members>*//*</members>*/

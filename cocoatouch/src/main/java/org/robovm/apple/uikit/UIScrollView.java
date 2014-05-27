@@ -112,15 +112,15 @@ import org.robovm.apple.coreimage.*;
     public native UIScrollViewIndicatorStyle getIndicatorStyle();
     @Property(selector = "setIndicatorStyle:")
     public native void setIndicatorStyle(UIScrollViewIndicatorStyle v);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "decelerationRate")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native @MachineSizedFloat double getDecelerationRate();
-    @Property(selector = "setDecelerationRate:")
     /**
      * @since Available in iOS 3.0 and later.
      */
+    @Property(selector = "setDecelerationRate:")
     public native void setDecelerationRate(@MachineSizedFloat double v);
     @Property(selector = "isTracking")
     public native boolean isTracking();
@@ -144,15 +144,15 @@ import org.robovm.apple.coreimage.*;
     public native @MachineSizedFloat double getMaximumZoomScale();
     @Property(selector = "setMaximumZoomScale:")
     public native void setMaximumZoomScale(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "zoomScale")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native @MachineSizedFloat double getZoomScale();
-    @Property(selector = "setZoomScale:")
     /**
      * @since Available in iOS 3.0 and later.
      */
+    @Property(selector = "setZoomScale:")
     public native void setZoomScale(@MachineSizedFloat double v);
     @Property(selector = "bouncesZoom")
     public native boolean isBouncesZoom();
@@ -166,25 +166,25 @@ import org.robovm.apple.coreimage.*;
     public native boolean isScrollsToTop();
     @Property(selector = "setScrollsToTop:")
     public native void setScrollsToTop(boolean v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "panGestureRecognizer")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native UIPanGestureRecognizer getPanGestureRecognizer();
-    @Property(selector = "pinchGestureRecognizer")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @Property(selector = "pinchGestureRecognizer")
     public native UIPinchGestureRecognizer getPinchGestureRecognizer();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "keyboardDismissMode")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native UIScrollViewKeyboardDismissMode getKeyboardDismissMode();
-    @Property(selector = "setKeyboardDismissMode:")
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @Property(selector = "setKeyboardDismissMode:")
     public native void setKeyboardDismissMode(UIScrollViewKeyboardDismissMode v);
     /*</properties>*/
     /*<members>*//*</members>*/

@@ -62,10 +62,10 @@ import org.robovm.apple.foundation.*;
     public native String getUsername();
     @Property(selector = "setUsername:")
     public native void setUsername(String v);
-    @Property(selector = "userFullName")
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @Property(selector = "userFullName")
     public native String getUserFullName();
     @Property(selector = "credential")
     public native ACAccountCredential getCredential();

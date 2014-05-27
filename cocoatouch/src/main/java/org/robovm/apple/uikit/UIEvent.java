@@ -51,15 +51,15 @@ import org.robovm.apple.coreimage.*;
     protected UIEvent(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "type")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native UIEventType getType();
-    @Property(selector = "subtype")
     /**
      * @since Available in iOS 3.0 and later.
      */
+    @Property(selector = "subtype")
     public native UIEventSubtype getSubtype();
     @Property(selector = "timestamp")
     public native double getTimestamp();

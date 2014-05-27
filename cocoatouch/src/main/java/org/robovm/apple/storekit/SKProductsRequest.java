@@ -53,15 +53,15 @@ import org.robovm.apple.accounts.*;
     public SKProductsRequest(NSSet<NSString> productIdentifiers) { super((SkipInit) null); initObject(init(productIdentifiers)); }
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "delegate")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native SKProductsRequestDelegate getDelegate();
-    @Property(selector = "setDelegate:", strongRef = true)
     /**
      * @since Available in iOS 3.0 and later.
      */
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(SKProductsRequestDelegate v);
     /*</properties>*/
     /*<members>*//*</members>*/

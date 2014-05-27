@@ -60,10 +60,10 @@ import org.robovm.apple.coreimage.*;
     public native UIWebViewDelegate getDelegate();
     @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UIWebViewDelegate v);
-    @Property(selector = "scrollView")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @Property(selector = "scrollView")
     public native UIScrollView getScrollView();
     @Property(selector = "request")
     public native NSURLRequest getRequest();
@@ -77,124 +77,124 @@ import org.robovm.apple.coreimage.*;
     public native boolean isScalesPageToFit();
     @Property(selector = "setScalesPageToFit:")
     public native void setScalesPageToFit(boolean v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "detectsPhoneNumbers")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native boolean isDetectsPhoneNumbers();
-    @Property(selector = "setDetectsPhoneNumbers:")
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 3.0.
      */
     @Deprecated
+    @Property(selector = "setDetectsPhoneNumbers:")
     public native void setDetectsPhoneNumbers(boolean v);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "dataDetectorTypes")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native UIDataDetectorTypes getDataDetectorTypes();
-    @Property(selector = "setDataDetectorTypes:")
     /**
      * @since Available in iOS 3.0 and later.
      */
+    @Property(selector = "setDataDetectorTypes:")
     public native void setDataDetectorTypes(UIDataDetectorTypes v);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Property(selector = "allowsInlineMediaPlayback")
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
     public native boolean isAllowsInlineMediaPlayback();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Property(selector = "setAllowsInlineMediaPlayback:")
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
     public native void setAllowsInlineMediaPlayback(boolean v);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Property(selector = "mediaPlaybackRequiresUserAction")
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
     public native boolean isMediaPlaybackRequiresUserAction();
-    @Property(selector = "setMediaPlaybackRequiresUserAction:")
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @Property(selector = "setMediaPlaybackRequiresUserAction:")
     public native void setMediaPlaybackRequiresUserAction(boolean v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "mediaPlaybackAllowsAirPlay")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native boolean isMediaPlaybackAllowsAirPlay();
-    @Property(selector = "setMediaPlaybackAllowsAirPlay:")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @Property(selector = "setMediaPlaybackAllowsAirPlay:")
     public native void setMediaPlaybackAllowsAirPlay(boolean v);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "suppressesIncrementalRendering")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native boolean isSuppressesIncrementalRendering();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "setSuppressesIncrementalRendering:")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native void setSuppressesIncrementalRendering(boolean v);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "keyboardDisplayRequiresUserAction")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native boolean isKeyboardDisplayRequiresUserAction();
-    @Property(selector = "setKeyboardDisplayRequiresUserAction:")
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @Property(selector = "setKeyboardDisplayRequiresUserAction:")
     public native void setKeyboardDisplayRequiresUserAction(boolean v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "paginationMode")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native UIWebPaginationMode getPaginationMode();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "setPaginationMode:")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native void setPaginationMode(UIWebPaginationMode v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "paginationBreakingMode")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native UIWebPaginationBreakingMode getPaginationBreakingMode();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "setPaginationBreakingMode:")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native void setPaginationBreakingMode(UIWebPaginationBreakingMode v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "pageLength")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native @MachineSizedFloat double getPageLength();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "setPageLength:")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native void setPageLength(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "gapBetweenPages")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native @MachineSizedFloat double getGapBetweenPages();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "setGapBetweenPages:")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native void setGapBetweenPages(@MachineSizedFloat double v);
-    @Property(selector = "pageCount")
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @Property(selector = "pageCount")
     public native @MachineSizedUInt long getPageCount();
     /*</properties>*/
     /*<members>*//*</members>*/

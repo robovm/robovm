@@ -49,15 +49,15 @@ import org.robovm.apple.accounts.*;
     protected SKRequest(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "delegate")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native SKRequestDelegate getDelegate();
-    @Property(selector = "setDelegate:", strongRef = true)
     /**
      * @since Available in iOS 3.0 and later.
      */
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(SKRequestDelegate v);
     /*</properties>*/
     /*<members>*//*</members>*/

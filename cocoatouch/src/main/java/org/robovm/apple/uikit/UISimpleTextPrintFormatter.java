@@ -60,15 +60,15 @@ import org.robovm.apple.coreimage.*;
     public native String getText();
     @Property(selector = "setText:")
     public native void setText(String v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "attributedText")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native NSAttributedString getAttributedText();
-    @Property(selector = "setAttributedText:")
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @Property(selector = "setAttributedText:")
     public native void setAttributedText(NSAttributedString v);
     @Property(selector = "font")
     public native UIFont getFont();

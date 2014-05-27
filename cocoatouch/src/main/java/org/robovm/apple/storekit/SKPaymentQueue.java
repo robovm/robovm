@@ -49,10 +49,10 @@ import org.robovm.apple.accounts.*;
     protected SKPaymentQueue(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "transactions")
     /**
      * @since Available in iOS 3.0 and later.
      */
+    @Property(selector = "transactions")
     public native NSArray<SKPaymentTransaction> getTransactions();
     /*</properties>*/
     /*<members>*//*</members>*/

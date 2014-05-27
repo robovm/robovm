@@ -80,15 +80,15 @@ import org.robovm.apple.coreimage.*;
     public native long getAccessibilityTraits();
     @Property(selector = "setAccessibilityTraits:")
     public native void setAccessibilityTraits(long v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "accessibilityIdentifier")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native String getAccessibilityIdentifier();
-    @Property(selector = "setAccessibilityIdentifier:")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @Property(selector = "setAccessibilityIdentifier:")
     public native void setAccessibilityIdentifier(String v);
     /*</properties>*/
     /*<members>*//*</members>*/

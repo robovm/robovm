@@ -48,25 +48,25 @@ import org.robovm.apple.security.*;
     public NSFileHandle(int fd) { super((SkipInit) null); initObject(initWithFileDescriptor$(fd)); }
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "readabilityHandler")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native @Block VoidBlock1<NSFileHandle> getReadabilityHandler();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "setReadabilityHandler:")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native void setReadabilityHandler(@Block VoidBlock1<NSFileHandle> v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "writeabilityHandler")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native @Block VoidBlock1<NSFileHandle> getWriteabilityHandler();
-    @Property(selector = "setWriteabilityHandler:")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @Property(selector = "setWriteabilityHandler:")
     public native void setWriteabilityHandler(@Block VoidBlock1<NSFileHandle> v);
     /*</properties>*/
     /*<members>*//*</members>*/

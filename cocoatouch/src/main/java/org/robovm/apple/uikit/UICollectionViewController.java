@@ -60,20 +60,20 @@ import org.robovm.apple.coreimage.*;
     public native boolean isClearsSelectionOnViewWillAppear();
     @Property(selector = "setClearsSelectionOnViewWillAppear:")
     public native void setClearsSelectionOnViewWillAppear(boolean v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "useLayoutToLayoutNavigationTransitions")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native boolean isUseLayoutToLayoutNavigationTransitions();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "setUseLayoutToLayoutNavigationTransitions:")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native void setUseLayoutToLayoutNavigationTransitions(boolean v);
-    @Property(selector = "collectionViewLayout")
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @Property(selector = "collectionViewLayout")
     public native UICollectionViewLayout getCollectionViewLayout();
     /*</properties>*/
     /*<members>*//*</members>*/

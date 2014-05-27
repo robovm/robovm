@@ -48,15 +48,15 @@ import org.robovm.apple.coregraphics.*;
     protected ALAsset(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "originalAsset")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native ALAsset getOriginalAsset();
-    @Property(selector = "isEditable")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @Property(selector = "isEditable")
     public native boolean isEditable();
     /*</properties>*/
     /*<members>*//*</members>*/

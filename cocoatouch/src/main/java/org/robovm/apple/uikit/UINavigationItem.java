@@ -72,35 +72,35 @@ import org.robovm.apple.coreimage.*;
     public native boolean isHidesBackButton();
     @Property(selector = "setHidesBackButton:")
     public native void setHidesBackButton(boolean v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "leftBarButtonItems")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native NSArray<UIBarButtonItem> getLeftBarButtonItems();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "setLeftBarButtonItems:")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native void setLeftBarButtonItems(NSArray<UIBarButtonItem> v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "rightBarButtonItems")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native NSArray<UIBarButtonItem> getRightBarButtonItems();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "setRightBarButtonItems:")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native void setRightBarButtonItems(NSArray<UIBarButtonItem> v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "leftItemsSupplementBackButton")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native boolean isLeftItemsSupplementBackButton();
-    @Property(selector = "setLeftItemsSupplementBackButton:")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @Property(selector = "setLeftItemsSupplementBackButton:")
     public native void setLeftItemsSupplementBackButton(boolean v);
     @Property(selector = "leftBarButtonItem")
     public native UIBarButtonItem getLeftBarButtonItem();

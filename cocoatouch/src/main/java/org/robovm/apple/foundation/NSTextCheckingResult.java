@@ -62,36 +62,36 @@ import org.robovm.apple.security.*;
     public native NSTimeZone getTimeZone();
     @Property(selector = "duration")
     public native double getDuration();
-    @Property(selector = "components")
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @Property(selector = "components")
     public native NSDictionary<?, ?> getComponents();
     @Property(selector = "URL")
     public native NSURL getURL();
     @Property(selector = "replacementString")
     public native String getReplacementString();
-    @Property(selector = "alternativeStrings")
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @Property(selector = "alternativeStrings")
     public native NSArray<?> getAlternativeStrings();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Property(selector = "regularExpression")
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
     public native NSRegularExpression getRegularExpression();
-    @Property(selector = "phoneNumber")
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @Property(selector = "phoneNumber")
     public native String getPhoneNumber();
     @Property(selector = "addressComponents")
     public native NSDictionary<?, ?> getAddressComponents();
-    @Property(selector = "numberOfRanges")
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @Property(selector = "numberOfRanges")
     public native @MachineSizedUInt long getNumberOfRanges();
     /*</properties>*/
     /*<members>*//*</members>*/

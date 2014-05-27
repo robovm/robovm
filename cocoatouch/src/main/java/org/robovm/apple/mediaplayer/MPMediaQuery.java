@@ -62,15 +62,15 @@ import org.robovm.apple.coregraphics.*;
     public native MPMediaGrouping getGroupingType();
     @Property(selector = "setGroupingType:")
     public native void setGroupingType(MPMediaGrouping v);
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
     @Property(selector = "itemSections")
-    /**
-     * @since Available in iOS 4.2 and later.
-     */
     public native NSArray<MPMediaQuerySection> getItemSections();
-    @Property(selector = "collectionSections")
     /**
      * @since Available in iOS 4.2 and later.
      */
+    @Property(selector = "collectionSections")
     public native NSArray<MPMediaQuerySection> getCollectionSections();
     /*</properties>*/
     /*<members>*//*</members>*/

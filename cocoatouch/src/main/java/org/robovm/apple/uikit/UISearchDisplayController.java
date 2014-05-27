@@ -74,30 +74,30 @@ import org.robovm.apple.coreimage.*;
     public native UITableViewDelegate getSearchResultsDelegate();
     @Property(selector = "setSearchResultsDelegate:", strongRef = true)
     public native void setSearchResultsDelegate(UITableViewDelegate v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "searchResultsTitle")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native String getSearchResultsTitle();
-    @Property(selector = "setSearchResultsTitle:")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @Property(selector = "setSearchResultsTitle:")
     public native void setSearchResultsTitle(String v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "displaysSearchBarInNavigationBar")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native boolean isDisplaysSearchBarInNavigationBar();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "setDisplaysSearchBarInNavigationBar:")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native void setDisplaysSearchBarInNavigationBar(boolean v);
-    @Property(selector = "navigationItem")
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @Property(selector = "navigationItem")
     public native UINavigationItem getNavigationItem();
     /*</properties>*/
     /*<members>*//*</members>*/

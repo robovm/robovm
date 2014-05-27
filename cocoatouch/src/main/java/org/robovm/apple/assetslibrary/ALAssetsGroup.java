@@ -48,10 +48,10 @@ import org.robovm.apple.coregraphics.*;
     protected ALAssetsGroup(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "isEditable")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @Property(selector = "isEditable")
     public native boolean isEditable();
     /*</properties>*/
     /*<members>*//*</members>*/

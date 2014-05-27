@@ -47,15 +47,15 @@ import org.robovm.apple.coreimage.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @NotImplemented("layoutOrientation")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public NSTextLayoutOrientation getLayoutOrientation() { throw new UnsupportedOperationException(); }
-    @NotImplemented("setLayoutOrientation:")
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @NotImplemented("setLayoutOrientation:")
     public void setLayoutOrientation(NSTextLayoutOrientation v) { throw new UnsupportedOperationException(); }
     /*</properties>*/
     /*<members>*//*</members>*/

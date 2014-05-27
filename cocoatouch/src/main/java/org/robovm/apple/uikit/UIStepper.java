@@ -84,15 +84,15 @@ import org.robovm.apple.coreimage.*;
     public native double getStepValue();
     @Property(selector = "setStepValue:")
     public native void setStepValue(double v);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "tintColor")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native UIColor getTintColor();
-    @Property(selector = "setTintColor:")
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @Property(selector = "setTintColor:")
     public native void setTintColor(UIColor v);
     /*</properties>*/
     /*<members>*//*</members>*/

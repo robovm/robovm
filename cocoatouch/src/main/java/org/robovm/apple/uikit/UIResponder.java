@@ -51,35 +51,35 @@ import org.robovm.apple.coreimage.*;
     protected UIResponder(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "undoManager")
     /**
      * @since Available in iOS 3.0 and later.
      */
+    @Property(selector = "undoManager")
     public native NSUndoManager getUndoManager();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "keyCommands")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native NSArray<UIKeyCommand> getKeyCommands();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Property(selector = "inputView")
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
     public native UIView getInputView();
-    @Property(selector = "inputAccessoryView")
     /**
      * @since Available in iOS 3.2 and later.
      */
+    @Property(selector = "inputAccessoryView")
     public native UIView getInputAccessoryView();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "textInputMode")
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     public native UITextInputMode getTextInputMode();
-    @Property(selector = "textInputContextIdentifier")
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @Property(selector = "textInputContextIdentifier")
     public native String getTextInputContextIdentifier();
     /*</properties>*/
     /*<members>*//*</members>*/

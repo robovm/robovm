@@ -45,15 +45,15 @@ import org.robovm.apple.foundation.*;
     protected EAGLSharegroup(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "debugLabel")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native String getDebugLabel();
-    @Property(selector = "setDebugLabel:")
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @Property(selector = "setDebugLabel:")
     public native void setDebugLabel(String v);
     /*</properties>*/
     /*<members>*//*</members>*/

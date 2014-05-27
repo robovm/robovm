@@ -65,45 +65,45 @@ import org.robovm.apple.coreimage.*;
     public native float getProgress();
     @Property(selector = "setProgress:")
     public native void setProgress(float v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "progressTintColor")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native UIColor getProgressTintColor();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "setProgressTintColor:")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native void setProgressTintColor(UIColor v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "trackTintColor")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native UIColor getTrackTintColor();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "setTrackTintColor:")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native void setTrackTintColor(UIColor v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "progressImage")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native UIImage getProgressImage();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "setProgressImage:")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native void setProgressImage(UIImage v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "trackImage")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native UIImage getTrackImage();
-    @Property(selector = "setTrackImage:")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @Property(selector = "setTrackImage:")
     public native void setTrackImage(UIImage v);
     /*</properties>*/
     /*<members>*//*</members>*/

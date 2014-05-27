@@ -47,15 +47,15 @@ import org.robovm.apple.coreimage.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @NotImplemented("window")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public UIWindow getWindow() { throw new UnsupportedOperationException(); }
-    @NotImplemented("setWindow:")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @NotImplemented("setWindow:")
     public void setWindow(UIWindow v) { throw new UnsupportedOperationException(); }
     /*</properties>*/
     /*<members>*//*</members>*/

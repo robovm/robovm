@@ -49,15 +49,15 @@ import org.robovm.apple.accounts.*;
     protected SKStoreProductViewController(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "delegate")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native SKStoreProductViewControllerDelegate getDelegate();
-    @Property(selector = "setDelegate:", strongRef = true)
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(SKStoreProductViewControllerDelegate v);
     /*</properties>*/
     /*<members>*//*</members>*/

@@ -61,15 +61,15 @@ import org.robovm.apple.foundation.*;
     public native double getHorizontalAccuracy();
     @Property(selector = "verticalAccuracy")
     public native double getVerticalAccuracy();
+    /**
+     * @since Available in iOS 2.2 and later.
+     */
     @Property(selector = "course")
-    /**
-     * @since Available in iOS 2.2 and later.
-     */
     public native double getCourse();
-    @Property(selector = "speed")
     /**
      * @since Available in iOS 2.2 and later.
      */
+    @Property(selector = "speed")
     public native double getSpeed();
     @Property(selector = "timestamp")
     public native NSDate getTimestamp();

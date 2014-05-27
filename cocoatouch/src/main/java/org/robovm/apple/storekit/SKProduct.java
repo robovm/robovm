@@ -49,45 +49,45 @@ import org.robovm.apple.accounts.*;
     protected SKProduct(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "localizedDescription")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native String getLocalizedDescription();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "localizedTitle")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native String getLocalizedTitle();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "price")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native NSDecimalNumber getPrice();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "priceLocale")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native NSLocale getPriceLocale();
-    @Property(selector = "productIdentifier")
     /**
      * @since Available in iOS 3.0 and later.
      */
+    @Property(selector = "productIdentifier")
     public native String getProductIdentifier();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "isDownloadable")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native boolean isDownloadable();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Property(selector = "downloadContentLengths")
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     public native NSArray<NSNumber> getDownloadContentLengths();
-    @Property(selector = "downloadContentVersion")
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @Property(selector = "downloadContentVersion")
     public native String getDownloadContentVersion();
     /*</properties>*/
     /*<members>*//*</members>*/

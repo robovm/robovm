@@ -55,65 +55,65 @@ import org.robovm.apple.coreimage.*;
     public native @ByVal CGRect getBounds();
     @Property(selector = "applicationFrame")
     public native @ByVal CGRect getApplicationFrame();
-    @Property(selector = "scale")
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @Property(selector = "scale")
     public native @MachineSizedFloat double getScale();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Property(selector = "availableModes")
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
     public native NSArray<UIScreenMode> getAvailableModes();
+    /**
+     * @since Available in iOS 4.3 and later.
+     */
     @Property(selector = "preferredMode")
-    /**
-     * @since Available in iOS 4.3 and later.
-     */
     public native UIScreenMode getPreferredMode();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     @Property(selector = "currentMode")
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
     public native UIScreenMode getCurrentMode();
-    @Property(selector = "setCurrentMode:")
     /**
      * @since Available in iOS 3.2 and later.
      */
+    @Property(selector = "setCurrentMode:")
     public native void setCurrentMode(UIScreenMode v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "overscanCompensation")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native UIScreenOverscanCompensation getOverscanCompensation();
-    @Property(selector = "setOverscanCompensation:")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @Property(selector = "setOverscanCompensation:")
     public native void setOverscanCompensation(UIScreenOverscanCompensation v);
-    @Property(selector = "mirroredScreen")
     /**
      * @since Available in iOS 4.3 and later.
      */
+    @Property(selector = "mirroredScreen")
     public native UIScreen getMirroredScreen();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "brightness")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native @MachineSizedFloat double getBrightness();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "setBrightness:")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native void setBrightness(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "wantsSoftwareDimming")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native boolean isWantsSoftwareDimming();
-    @Property(selector = "setWantsSoftwareDimming:")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @Property(selector = "setWantsSoftwareDimming:")
     public native void setWantsSoftwareDimming(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/

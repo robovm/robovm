@@ -49,25 +49,25 @@ import org.robovm.apple.accounts.*;
     protected SKPayment(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "productIdentifier")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native String getProductIdentifier();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "requestData")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native NSData getRequestData();
-    @Property(selector = "quantity")
     /**
      * @since Available in iOS 3.0 and later.
      */
+    @Property(selector = "quantity")
     public native @MachineSizedSInt long getQuantity();
-    @Property(selector = "applicationUsername")
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @Property(selector = "applicationUsername")
     public native String getApplicationUsername();
     /*</properties>*/
     /*<members>*//*</members>*/

@@ -65,15 +65,15 @@ import org.robovm.apple.coreimage.*;
     public native boolean isHidesWhenStopped();
     @Property(selector = "setHidesWhenStopped:")
     public native void setHidesWhenStopped(boolean v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "color")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native UIColor getColor();
-    @Property(selector = "setColor:")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @Property(selector = "setColor:")
     public native void setColor(UIColor v);
     /*</properties>*/
     /*<members>*//*</members>*/

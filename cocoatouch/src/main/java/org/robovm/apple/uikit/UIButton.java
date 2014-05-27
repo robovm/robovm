@@ -84,15 +84,15 @@ import org.robovm.apple.coreimage.*;
     public native boolean isShowsTouchWhenHighlighted();
     @Property(selector = "setShowsTouchWhenHighlighted:")
     public native void setShowsTouchWhenHighlighted(boolean v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "tintColor")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native UIColor getTintColor();
-    @Property(selector = "setTintColor:")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @Property(selector = "setTintColor:")
     public native void setTintColor(UIColor v);
     @Property(selector = "buttonType")
     public native UIButtonType getButtonType();
@@ -106,62 +106,62 @@ import org.robovm.apple.coreimage.*;
     public native UIImage getCurrentImage();
     @Property(selector = "currentBackgroundImage")
     public native UIImage getCurrentBackgroundImage();
-    @Property(selector = "currentAttributedTitle")
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @Property(selector = "currentAttributedTitle")
     public native NSAttributedString getCurrentAttributedTitle();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Property(selector = "titleLabel")
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
     public native UILabel getTitleLabel();
-    @Property(selector = "imageView")
     /**
      * @since Available in iOS 3.0 and later.
      */
+    @Property(selector = "imageView")
     public native UIImageView getImageView();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "font")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native UIFont getFont();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "setFont:")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native void setFont(UIFont v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "lineBreakMode")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native NSLineBreakMode getLineBreakMode();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "setLineBreakMode:")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native void setLineBreakMode(NSLineBreakMode v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     @Property(selector = "titleShadowOffset")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
     public native @ByVal CGSize getTitleShadowOffset();
-    @Property(selector = "setTitleShadowOffset:")
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 3.0.
      */
     @Deprecated
+    @Property(selector = "setTitleShadowOffset:")
     public native void setTitleShadowOffset(@ByVal CGSize v);
     /*</properties>*/
     /*<members>*//*</members>*/

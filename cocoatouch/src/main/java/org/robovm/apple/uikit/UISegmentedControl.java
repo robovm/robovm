@@ -59,19 +59,19 @@ import org.robovm.apple.coreimage.*;
     }
     
     /*<properties>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @Property(selector = "segmentedControlStyle")
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
     public native UISegmentedControlStyle getControlStyle();
-    @Property(selector = "setSegmentedControlStyle:")
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
+    @Property(selector = "setSegmentedControlStyle:")
     public native void setControlStyle(UISegmentedControlStyle v);
     @Property(selector = "isMomentary")
     public native boolean isMomentary();
@@ -79,15 +79,15 @@ import org.robovm.apple.coreimage.*;
     public native void setMomentary(boolean v);
     @Property(selector = "numberOfSegments")
     public native @MachineSizedUInt long getNumberOfSegments();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "apportionsSegmentWidthsByContent")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     public native boolean isApportionsSegmentWidthsByContent();
-    @Property(selector = "setApportionsSegmentWidthsByContent:")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @Property(selector = "setApportionsSegmentWidthsByContent:")
     public native void setApportionsSegmentWidthsByContent(boolean v);
     @Property(selector = "selectedSegmentIndex")
     public native @MachineSizedSInt long getSelectedSegment();

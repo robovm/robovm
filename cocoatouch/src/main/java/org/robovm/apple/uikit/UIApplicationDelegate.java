@@ -46,15 +46,15 @@ import org.robovm.apple.coreimage.*;
     /*</bind>*/
     /*<constants>*//*</constants>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "window")
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     UIWindow getWindow();
-    @Property(selector = "setWindow:")
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @Property(selector = "setWindow:")
     void setWindow(UIWindow v);
     /*</properties>*/
     /*<methods>*/

@@ -66,24 +66,42 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setImage:")
     public native void setImage(UIImage v);
     @Property(selector = "highlightedImage")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native UIImage getHighlightedImage();
     @Property(selector = "setHighlightedImage:")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native void setHighlightedImage(UIImage v);
     @Property(selector = "isUserInteractionEnabled")
     public native boolean isUserInteractionEnabled();
     @Property(selector = "setUserInteractionEnabled:")
     public native void setUserInteractionEnabled(boolean v);
     @Property(selector = "isHighlighted")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native boolean isHighlighted();
     @Property(selector = "setHighlighted:")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native void setHighlighted(boolean v);
     @Property(selector = "animationImages")
     public native NSArray<UIImage> getAnimationImages();
     @Property(selector = "setAnimationImages:")
     public native void setAnimationImages(NSArray<UIImage> v);
     @Property(selector = "highlightedAnimationImages")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native NSArray<UIImage> getHighlightedAnimationImages();
     @Property(selector = "setHighlightedAnimationImages:")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native void setHighlightedAnimationImages(NSArray<UIImage> v);
     @Property(selector = "animationDuration")
     public native double getAnimationDuration();
@@ -94,8 +112,14 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setAnimationRepeatCount:")
     public native void setAnimationRepeatCount(@MachineSizedSInt long v);
     @Property(selector = "tintColor")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native UIColor getTintColor();
     @Property(selector = "setTintColor:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setTintColor(UIColor v);
     /*</properties>*/
     /*<members>*//*</members>*/

@@ -61,6 +61,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "nibBundle")
     public native NSBundle getNibBundle();
     @Property(selector = "storyboard")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native UIStoryboard getStoryboard();
     @Property(selector = "title")
     public native String getTitle();
@@ -69,50 +72,125 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "parentViewController")
     public native UIViewController getParentViewController();
     @Property(selector = "modalViewController")
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
     public native UIViewController getModalViewController();
     @Property(selector = "presentedViewController")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native UIViewController getPresentedViewController();
     @Property(selector = "presentingViewController")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native UIViewController getPresentingViewController();
     @Property(selector = "definesPresentationContext")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native boolean isDefinesPresentationContext();
     @Property(selector = "setDefinesPresentationContext:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setDefinesPresentationContext(boolean v);
     @Property(selector = "providesPresentationContextTransitionStyle")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native boolean isProvidesPresentationContextTransitionStyle();
     @Property(selector = "setProvidesPresentationContextTransitionStyle:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setProvidesPresentationContextTransitionStyle(boolean v);
     @Property(selector = "modalTransitionStyle")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native UIModalTransitionStyle getModalTransitionStyle();
     @Property(selector = "setModalTransitionStyle:")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native void setModalTransitionStyle(UIModalTransitionStyle v);
     @Property(selector = "modalPresentationStyle")
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     public native UIModalPresentationStyle getModalPresentationStyle();
     @Property(selector = "setModalPresentationStyle:")
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     public native void setModalPresentationStyle(UIModalPresentationStyle v);
     @Property(selector = "modalPresentationCapturesStatusBarAppearance")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native boolean isModalPresentationCapturesStatusBarAppearance();
     @Property(selector = "setModalPresentationCapturesStatusBarAppearance:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setModalPresentationCapturesStatusBarAppearance(boolean v);
     @Property(selector = "wantsFullScreenLayout")
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     public native boolean isWantsFullScreenLayout();
     @Property(selector = "setWantsFullScreenLayout:")
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     public native void setWantsFullScreenLayout(boolean v);
     @Property(selector = "edgesForExtendedLayout")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native UIRectEdge getEdgesForExtendedLayout();
     @Property(selector = "setEdgesForExtendedLayout:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setEdgesForExtendedLayout(UIRectEdge v);
     @Property(selector = "extendedLayoutIncludesOpaqueBars")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native boolean isExtendedLayoutIncludesOpaqueBars();
     @Property(selector = "setExtendedLayoutIncludesOpaqueBars:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setExtendedLayoutIncludesOpaqueBars(boolean v);
     @Property(selector = "automaticallyAdjustsScrollViewInsets")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native boolean isAutomaticallyAdjustsScrollViewInsets();
     @Property(selector = "setAutomaticallyAdjustsScrollViewInsets:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setAutomaticallyAdjustsScrollViewInsets(boolean v);
     @Property(selector = "preferredContentSize")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native @ByVal CGSize getPreferredContentSize();
     @Property(selector = "setPreferredContentSize:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setPreferredContentSize(@ByVal CGSize v);
     @Property(selector = "interfaceOrientation")
     public native UIInterfaceOrientation getInterfaceOrientation();
@@ -123,22 +201,49 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "searchDisplayController")
     public native UISearchDisplayController getSearchDisplayController();
     @Property(selector = "childViewControllers")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native NSArray<UIViewController> getChildViewControllers();
     @Property(selector = "restorationIdentifier")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native String getRestorationIdentifier();
     @Property(selector = "setRestorationIdentifier:")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native void setRestorationIdentifier(String v);
     @Property(selector = "restorationClass")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native ObjCClass getRestorationClass();
     @Property(selector = "setRestorationClass:", strongRef = true)
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native void setRestorationClass(ObjCClass v);
     @Property(selector = "transitioningDelegate")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native UIViewControllerTransitioningDelegate getTransitioningDelegate();
     @Property(selector = "setTransitioningDelegate:", strongRef = true)
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setTransitioningDelegate(UIViewControllerTransitioningDelegate v);
     @Property(selector = "topLayoutGuide")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native UILayoutSupport getTopLayoutGuide();
     @Property(selector = "bottomLayoutGuide")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native UILayoutSupport getBottomLayoutGuide();
     @Property(selector = "navigationItem")
     public native UINavigationItem getNavigationItem();
@@ -149,16 +254,38 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "navigationController")
     public native UINavigationController getNavigationController();
     @Property(selector = "toolbarItems")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native NSArray<UIBarButtonItem> getToolbarItems();
     @Property(selector = "setToolbarItems:")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native void setToolbarItems(NSArray<UIBarButtonItem> v);
     @Property(selector = "isModalInPopover")
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     public native boolean isModalInPopover();
     @Property(selector = "setModalInPopover:")
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     public native void setModalInPopover(boolean v);
     @Property(selector = "contentSizeForViewInPopover")
+    /**
+     * @since Available in iOS 3.2 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     public native @ByVal CGSize getContentSizeForViewInPopover();
     @Property(selector = "setContentSizeForViewInPopover:")
+    /**
+     * @since Available in iOS 3.2 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     public native void setContentSizeForViewInPopover(@ByVal CGSize v);
     @Property(selector = "splitViewController")
     public native UISplitViewController getSplitViewController();

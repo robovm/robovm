@@ -52,12 +52,24 @@ import org.robovm.apple.foundation.*;
     @Property(selector = "sharegroup")
     public native EAGLSharegroup getSharegroup();
     @Property(selector = "debugLabel")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native String getDebugLabel();
     @Property(selector = "setDebugLabel:")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native void setDebugLabel(String v);
     @Property(selector = "isMultiThreaded")
+    /**
+     * @since Available in iOS 7.1 and later.
+     */
     public native boolean isMultiThreaded();
     @Property(selector = "setMultiThreaded:")
+    /**
+     * @since Available in iOS 7.1 and later.
+     */
     public native void setMultiThreaded(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/

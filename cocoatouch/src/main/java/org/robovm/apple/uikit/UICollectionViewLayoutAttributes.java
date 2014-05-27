@@ -68,12 +68,24 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setTransform3D:")
     public native void setTransform3D(@ByVal CATransform3D v);
     @Property(selector = "bounds")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native @ByVal CGRect getBounds();
     @Property(selector = "setBounds:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setBounds(@ByVal CGRect v);
     @Property(selector = "transform")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native @ByVal CGAffineTransform getTransform();
     @Property(selector = "setTransform:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setTransform(@ByVal CGAffineTransform v);
     @Property(selector = "alpha")
     public native @MachineSizedFloat double getAlpha();

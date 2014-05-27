@@ -85,8 +85,14 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setShowsTouchWhenHighlighted:")
     public native void setShowsTouchWhenHighlighted(boolean v);
     @Property(selector = "tintColor")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native UIColor getTintColor();
     @Property(selector = "setTintColor:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setTintColor(UIColor v);
     @Property(selector = "buttonType")
     public native UIButtonType getButtonType();
@@ -101,22 +107,61 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "currentBackgroundImage")
     public native UIImage getCurrentBackgroundImage();
     @Property(selector = "currentAttributedTitle")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native NSAttributedString getCurrentAttributedTitle();
     @Property(selector = "titleLabel")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native UILabel getTitleLabel();
     @Property(selector = "imageView")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native UIImageView getImageView();
     @Property(selector = "font")
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     public native UIFont getFont();
     @Property(selector = "setFont:")
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     public native void setFont(UIFont v);
     @Property(selector = "lineBreakMode")
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     public native NSLineBreakMode getLineBreakMode();
     @Property(selector = "setLineBreakMode:")
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     public native void setLineBreakMode(NSLineBreakMode v);
     @Property(selector = "titleShadowOffset")
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     public native @ByVal CGSize getTitleShadowOffset();
     @Property(selector = "setTitleShadowOffset:")
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     public native void setTitleShadowOffset(@ByVal CGSize v);
     /*</properties>*/
     /*<members>*//*</members>*/

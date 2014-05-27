@@ -80,60 +80,126 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setSectionFooterHeight:")
     public native void setSectionFooterHeight(@MachineSizedFloat double v);
     @Property(selector = "estimatedRowHeight")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native @MachineSizedFloat double getEstimatedRowHeight();
     @Property(selector = "setEstimatedRowHeight:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setEstimatedRowHeight(@MachineSizedFloat double v);
     @Property(selector = "estimatedSectionHeaderHeight")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native @MachineSizedFloat double getEstimatedSectionHeaderHeight();
     @Property(selector = "setEstimatedSectionHeaderHeight:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setEstimatedSectionHeaderHeight(@MachineSizedFloat double v);
     @Property(selector = "estimatedSectionFooterHeight")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native @MachineSizedFloat double getEstimatedSectionFooterHeight();
     @Property(selector = "setEstimatedSectionFooterHeight:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setEstimatedSectionFooterHeight(@MachineSizedFloat double v);
     @Property(selector = "separatorInset")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native @ByVal UIEdgeInsets getSeparatorInset();
     @Property(selector = "setSeparatorInset:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setSeparatorInset(@ByVal UIEdgeInsets v);
     @Property(selector = "backgroundView")
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     public native UIView getBackgroundView();
     @Property(selector = "setBackgroundView:")
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     public native void setBackgroundView(UIView v);
     @Property(selector = "isEditing")
     public native boolean isEditing();
     @Property(selector = "setEditing:")
     public native void setEditing(boolean v);
     @Property(selector = "allowsSelection")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native boolean isAllowsSelection();
     @Property(selector = "setAllowsSelection:")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native void setAllowsSelection(boolean v);
     @Property(selector = "allowsSelectionDuringEditing")
     public native boolean isAllowsSelectionDuringEditing();
     @Property(selector = "setAllowsSelectionDuringEditing:")
     public native void setAllowsSelectionDuringEditing(boolean v);
     @Property(selector = "allowsMultipleSelection")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native boolean isAllowsMultipleSelection();
     @Property(selector = "setAllowsMultipleSelection:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setAllowsMultipleSelection(boolean v);
     @Property(selector = "allowsMultipleSelectionDuringEditing")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native boolean isAllowsMultipleSelectionDuringEditing();
     @Property(selector = "setAllowsMultipleSelectionDuringEditing:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setAllowsMultipleSelectionDuringEditing(boolean v);
     @Property(selector = "sectionIndexMinimumDisplayRowCount")
     public native @MachineSizedSInt long getSectionIndexMinimumDisplayRowCount();
     @Property(selector = "setSectionIndexMinimumDisplayRowCount:")
     public native void setSectionIndexMinimumDisplayRowCount(@MachineSizedSInt long v);
     @Property(selector = "sectionIndexColor")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native UIColor getSectionIndexColor();
     @Property(selector = "setSectionIndexColor:")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native void setSectionIndexColor(UIColor v);
     @Property(selector = "sectionIndexBackgroundColor")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native UIColor getSectionIndexBackgroundColor();
     @Property(selector = "setSectionIndexBackgroundColor:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setSectionIndexBackgroundColor(UIColor v);
     @Property(selector = "sectionIndexTrackingBackgroundColor")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native UIColor getSectionIndexTrackingBackgroundColor();
     @Property(selector = "setSectionIndexTrackingBackgroundColor:")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native void setSectionIndexTrackingBackgroundColor(UIColor v);
     @Property(selector = "separatorStyle")
     public native UITableViewCellSeparatorStyle getSeparatorStyle();

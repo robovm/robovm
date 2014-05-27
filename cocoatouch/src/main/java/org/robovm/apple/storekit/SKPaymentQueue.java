@@ -50,6 +50,9 @@ import org.robovm.apple.accounts.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "transactions")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native NSArray<SKPaymentTransaction> getTransactions();
     /*</properties>*/
     /*<members>*//*</members>*/

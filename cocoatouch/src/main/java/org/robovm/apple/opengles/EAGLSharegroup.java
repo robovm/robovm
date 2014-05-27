@@ -46,8 +46,14 @@ import org.robovm.apple.foundation.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "debugLabel")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native String getDebugLabel();
     @Property(selector = "setDebugLabel:")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native void setDebugLabel(String v);
     /*</properties>*/
     /*<members>*//*</members>*/

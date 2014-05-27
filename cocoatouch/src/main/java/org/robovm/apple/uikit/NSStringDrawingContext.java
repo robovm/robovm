@@ -56,12 +56,27 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setMinimumScaleFactor:")
     public native void setMinimumScaleFactor(@MachineSizedFloat double v);
     @Property(selector = "minimumTrackingAdjustment")
+    /**
+     * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     public native @MachineSizedFloat double getMinimumTrackingAdjustment();
     @Property(selector = "setMinimumTrackingAdjustment:")
+    /**
+     * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     public native void setMinimumTrackingAdjustment(@MachineSizedFloat double v);
     @Property(selector = "actualScaleFactor")
     public native @MachineSizedFloat double getActualScaleFactor();
     @Property(selector = "actualTrackingAdjustment")
+    /**
+     * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     public native @MachineSizedFloat double getActualTrackingAdjustment();
     @Property(selector = "totalBounds")
     public native @ByVal CGRect getTotalBounds();

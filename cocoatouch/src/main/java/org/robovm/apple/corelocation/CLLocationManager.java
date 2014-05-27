@@ -52,12 +52,28 @@ import org.robovm.apple.foundation.*;
     @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(CLLocationManagerDelegate v);
     @Property(selector = "purpose")
+    /**
+     * @since Available in iOS 3.2 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
     public native String getPurpose();
     @Property(selector = "setPurpose:")
+    /**
+     * @since Available in iOS 3.2 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
     public native void setPurpose(String v);
     @Property(selector = "activityType")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native CLActivityType getActivityType();
     @Property(selector = "setActivityType:")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native void setActivityType(CLActivityType v);
     @Property(selector = "distanceFilter")
     public native double getDistanceFilter();
@@ -68,26 +84,56 @@ import org.robovm.apple.foundation.*;
     @Property(selector = "setDesiredAccuracy:")
     public native void setDesiredAccuracy(double v);
     @Property(selector = "pausesLocationUpdatesAutomatically")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native boolean isPausesLocationUpdatesAutomatically();
     @Property(selector = "setPausesLocationUpdatesAutomatically:")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native void setPausesLocationUpdatesAutomatically(boolean v);
     @Property(selector = "location")
     public native CLLocation getLocation();
     @Property(selector = "headingFilter")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native double getHeadingFilter();
     @Property(selector = "setHeadingFilter:")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native void setHeadingFilter(double v);
     @Property(selector = "headingOrientation")
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public native CLDeviceOrientation getHeadingOrientation();
     @Property(selector = "setHeadingOrientation:", strongRef = true)
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public native void setHeadingOrientation(CLDeviceOrientation v);
     @Property(selector = "heading")
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public native CLHeading getHeading();
     @Property(selector = "maximumRegionMonitoringDistance")
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public native double getMaximumRegionMonitoringDistance();
     @Property(selector = "monitoredRegions")
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public native NSSet<CLRegion> getMonitoredRegions();
     @Property(selector = "rangedRegions")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native NSSet<CLBeaconRegion> getRangedRegions();
     /*</properties>*/
     /*<members>*//*</members>*/

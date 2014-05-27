@@ -60,14 +60,27 @@ import org.robovm.apple.coregraphics.*;
     @Property(selector = "setShuffleMode:")
     public native void setShuffleMode(MPMusicShuffleMode v);
     @Property(selector = "volume")
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     public native float getVolume();
     @Property(selector = "setVolume:")
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     public native void setVolume(float v);
     @Property(selector = "nowPlayingItem")
     public native MPMediaItem getNowPlayingItem();
     @Property(selector = "setNowPlayingItem:")
     public native void setNowPlayingItem(MPMediaItem v);
     @Property(selector = "indexOfNowPlayingItem")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native @MachineSizedUInt long getIndexOfNowPlayingItem();
     @Property(selector = "isPreparedToPlay")
     public native boolean isIsPreparedToPlay();

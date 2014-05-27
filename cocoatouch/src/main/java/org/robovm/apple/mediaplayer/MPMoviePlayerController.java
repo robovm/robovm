@@ -83,6 +83,9 @@ import org.robovm.apple.coregraphics.*;
     @Property(selector = "setScalingMode:")
     public native void setScalingMode(MPMovieScalingMode v);
     @Property(selector = "readyForDisplay")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native boolean isReadyForDisplay();
     @Property(selector = "movieMediaTypes")
     public native MPMovieMediaTypeMask getMovieMediaTypes();
@@ -105,18 +108,43 @@ import org.robovm.apple.coregraphics.*;
     @Property(selector = "setEndPlaybackTime:")
     public native void setEndPlaybackTime(double v);
     @Property(selector = "allowsAirPlay")
+    /**
+     * @since Available in iOS 4.3 and later.
+     */
     public native boolean isAllowsAirPlay();
     @Property(selector = "setAllowsAirPlay:")
+    /**
+     * @since Available in iOS 4.3 and later.
+     */
     public native void setAllowsAirPlay(boolean v);
     @Property(selector = "isAirPlayVideoActive")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native boolean isAirPlayVideoActive();
     @Property(selector = "accessLog")
+    /**
+     * @since Available in iOS 4.3 and later.
+     */
     public native MPMovieAccessLog getAccessLog();
     @Property(selector = "errorLog")
+    /**
+     * @since Available in iOS 4.3 and later.
+     */
     public native MPMovieErrorLog getErrorLog();
     @Property(selector = "useApplicationAudioSession")
+    /**
+     * @since Available in iOS 3.2 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
     public native boolean isUseApplicationAudioSession();
     @Property(selector = "setUseApplicationAudioSession:")
+    /**
+     * @since Available in iOS 3.2 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
     public native void setUseApplicationAudioSession(boolean v);
     @Property(selector = "isPreparedToPlay")
     public native boolean isIsPreparedToPlay();

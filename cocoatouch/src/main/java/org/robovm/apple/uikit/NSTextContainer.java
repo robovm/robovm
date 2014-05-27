@@ -85,8 +85,14 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setHeightTracksTextView:")
     public native void setHeightTracksTextView(boolean v);
     @Property(selector = "layoutOrientation")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native NSTextLayoutOrientation getLayoutOrientation();
     @Property(selector = "setLayoutOrientation:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setLayoutOrientation(NSTextLayoutOrientation v);
     /*</properties>*/
     /*<members>*//*</members>*/

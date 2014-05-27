@@ -72,28 +72,58 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("setAccessibilityFrame:")
     public void setAccessibilityFrame(@ByVal CGRect v) { throw new UnsupportedOperationException(); }
     @NotImplemented("accessibilityPath")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public UIBezierPath getAccessibilityPath() { throw new UnsupportedOperationException(); }
     @NotImplemented("setAccessibilityPath:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public void setAccessibilityPath(UIBezierPath v) { throw new UnsupportedOperationException(); }
     @NotImplemented("accessibilityActivationPoint")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public @ByVal CGPoint getAccessibilityActivationPoint() { throw new UnsupportedOperationException(); }
     @NotImplemented("setAccessibilityActivationPoint:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public void setAccessibilityActivationPoint(@ByVal CGPoint v) { throw new UnsupportedOperationException(); }
     @NotImplemented("accessibilityLanguage")
     public String getAccessibilityLanguage() { throw new UnsupportedOperationException(); }
     @NotImplemented("setAccessibilityLanguage:")
     public void setAccessibilityLanguage(String v) { throw new UnsupportedOperationException(); }
     @NotImplemented("accessibilityElementsHidden")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public boolean isAccessibilityElementsHidden() { throw new UnsupportedOperationException(); }
     @NotImplemented("setAccessibilityElementsHidden:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public void setAccessibilityElementsHidden(boolean v) { throw new UnsupportedOperationException(); }
     @NotImplemented("accessibilityViewIsModal")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public boolean isAccessibilityViewIsModal() { throw new UnsupportedOperationException(); }
     @NotImplemented("setAccessibilityViewIsModal:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public void setAccessibilityViewIsModal(boolean v) { throw new UnsupportedOperationException(); }
     @NotImplemented("shouldGroupAccessibilityChildren")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public boolean isShouldGroupAccessibilityChildren() { throw new UnsupportedOperationException(); }
     @NotImplemented("setShouldGroupAccessibilityChildren:")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public void setShouldGroupAccessibilityChildren(boolean v) { throw new UnsupportedOperationException(); }
     /*</properties>*/
     /*<members>*//*</members>*/

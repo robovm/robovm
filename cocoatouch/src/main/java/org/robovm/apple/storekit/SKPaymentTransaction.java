@@ -50,20 +50,46 @@ import org.robovm.apple.accounts.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "error")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native NSError getError();
     @Property(selector = "originalTransaction")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native SKPaymentTransaction getOriginalTransaction();
     @Property(selector = "payment")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native SKPayment getPayment();
     @Property(selector = "downloads")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native NSArray<SKDownload> getDownloads();
     @Property(selector = "transactionDate")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native NSDate getTransactionDate();
     @Property(selector = "transactionIdentifier")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native String getTransactionIdentifier();
     @Property(selector = "transactionReceipt")
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     public native NSData getTransactionReceipt();
     @Property(selector = "transactionState")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native SKPaymentTransactionState getTransactionState();
     /*</properties>*/
     /*<members>*//*</members>*/

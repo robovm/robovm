@@ -55,8 +55,14 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setAutocorrectionType:")
     void setAutocorrectionType(UITextAutocorrectionType v);
     @Property(selector = "spellCheckingType")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     UITextSpellCheckingType getSpellCheckingType();
     @Property(selector = "setSpellCheckingType:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     void setSpellCheckingType(UITextSpellCheckingType v);
     @Property(selector = "keyboardType")
     UIKeyboardType getKeyboardType();

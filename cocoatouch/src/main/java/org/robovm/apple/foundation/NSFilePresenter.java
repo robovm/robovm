@@ -47,8 +47,6 @@ import org.robovm.apple.security.*;
     NSURL getPresentedItemURL();
     @Property(selector = "presentedItemOperationQueue")
     NSOperationQueue getPresentedItemOperationQueue();
-    @Property(selector = "primaryPresentedItemURL")
-    NSURL getPrimaryPresentedItemURL();
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "relinquishPresentedItemToReader:")

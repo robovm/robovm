@@ -72,8 +72,6 @@ import org.robovm.apple.coreimage.*;
     public native NSURL getPresentedItemURL();
     @Property(selector = "presentedItemOperationQueue")
     public native NSOperationQueue getPresentedItemOperationQueue();
-    @Property(selector = "primaryPresentedItemURL")
-    public native NSURL getPrimaryPresentedItemURL();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

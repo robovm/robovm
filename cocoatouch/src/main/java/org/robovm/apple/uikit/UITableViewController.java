@@ -57,12 +57,24 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setTableView:")
     public native void setTableView(UITableView v);
     @Property(selector = "clearsSelectionOnViewWillAppear")
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     public native boolean isClearsSelectionOnViewWillAppear();
     @Property(selector = "setClearsSelectionOnViewWillAppear:")
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     public native void setClearsSelectionOnViewWillAppear(boolean v);
     @Property(selector = "refreshControl")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native UIRefreshControl getRefreshControl();
     @Property(selector = "setRefreshControl:")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native void setRefreshControl(UIRefreshControl v);
     /*</properties>*/
     /*<members>*//*</members>*/

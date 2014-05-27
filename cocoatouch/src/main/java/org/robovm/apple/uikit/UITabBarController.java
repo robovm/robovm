@@ -70,6 +70,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setCustomizableViewControllers:")
     public native void setCustomizableViewControllers(NSArray<?> v);
     @Property(selector = "tabBar")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native UITabBar getTabBar();
     @Property(selector = "delegate")
     public native UITabBarControllerDelegate getDelegate();

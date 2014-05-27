@@ -84,8 +84,14 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setTarget:", strongRef = true)
     public native void setTarget(NSObject v);
     @Property(selector = "tintColor")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native UIColor getTintColor();
     @Property(selector = "setTintColor:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setTintColor(UIColor v);
     /*</properties>*/
     /*<members>*//*</members>*/

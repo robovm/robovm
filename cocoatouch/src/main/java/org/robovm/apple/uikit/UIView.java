@@ -79,8 +79,14 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setTransform:")
     public native void setTransform(@ByVal CGAffineTransform v);
     @Property(selector = "contentScaleFactor")
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public native @MachineSizedFloat double getContentScaleFactor();
     @Property(selector = "setContentScaleFactor:")
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public native void setContentScaleFactor(@MachineSizedFloat double v);
     @Property(selector = "isMultipleTouchEnabled")
     public native boolean isMultipleTouchEnabled();
@@ -133,32 +139,78 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setContentMode:")
     public native void setContentMode(UIViewContentMode v);
     @Property(selector = "contentStretch")
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
     public native @ByVal CGRect getContentStretch();
     @Property(selector = "setContentStretch:")
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
     public native void setContentStretch(@ByVal CGRect v);
     @Property(selector = "tintColor")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native UIColor getTintColor();
     @Property(selector = "setTintColor:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setTintColor(UIColor v);
     @Property(selector = "tintAdjustmentMode")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native UIViewTintAdjustmentMode getTintAdjustmentMode();
     @Property(selector = "setTintAdjustmentMode:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setTintAdjustmentMode(UIViewTintAdjustmentMode v);
     @Property(selector = "gestureRecognizers")
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     public native NSArray<UIGestureRecognizer> getGestureRecognizers();
     @Property(selector = "setGestureRecognizers:")
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     public native void setGestureRecognizers(NSArray<UIGestureRecognizer> v);
     @Property(selector = "motionEffects")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native NSArray<UIMotionEffect> getMotionEffects();
     @Property(selector = "setMotionEffects:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setMotionEffects(NSArray<UIMotionEffect> v);
     @Property(selector = "restorationIdentifier")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native String getRestorationIdentifier();
     @Property(selector = "setRestorationIdentifier:")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native void setRestorationIdentifier(String v);
     @Property(selector = "accessibilityIdentifier")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native String getAccessibilityIdentifier();
     @Property(selector = "setAccessibilityIdentifier:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setAccessibilityIdentifier(String v);
     /*</properties>*/
     /*<members>*//*</members>*/

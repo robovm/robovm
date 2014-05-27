@@ -64,16 +64,28 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setImage:")
     public native void setImage(UIImage v);
     @Property(selector = "landscapeImagePhone")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native UIImage getLandscapeImagePhone();
     @Property(selector = "setLandscapeImagePhone:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setLandscapeImagePhone(UIImage v);
     @Property(selector = "imageInsets")
     public native @ByVal UIEdgeInsets getImageInsets();
     @Property(selector = "setImageInsets:")
     public native void setImageInsets(@ByVal UIEdgeInsets v);
     @Property(selector = "landscapeImagePhoneInsets")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native @ByVal UIEdgeInsets getLandscapeImagePhoneInsets();
     @Property(selector = "setLandscapeImagePhoneInsets:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setLandscapeImagePhoneInsets(@ByVal UIEdgeInsets v);
     @Property(selector = "tag")
     public native @MachineSizedSInt long getTag();

@@ -53,24 +53,54 @@ import org.robovm.apple.coreimage.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "onTintColor")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native UIColor getOnTintColor();
     @Property(selector = "setOnTintColor:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setOnTintColor(UIColor v);
     @Property(selector = "tintColor")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native UIColor getTintColor();
     @Property(selector = "setTintColor:")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native void setTintColor(UIColor v);
     @Property(selector = "thumbTintColor")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native UIColor getThumbTintColor();
     @Property(selector = "setThumbTintColor:")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native void setThumbTintColor(UIColor v);
     @Property(selector = "onImage")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native UIImage getOnImage();
     @Property(selector = "setOnImage:")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native void setOnImage(UIImage v);
     @Property(selector = "offImage")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native UIImage getOffImage();
     @Property(selector = "setOffImage:")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native void setOffImage(UIImage v);
     @Property(selector = "isOn")
     public native boolean isOn();

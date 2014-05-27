@@ -58,8 +58,14 @@ import org.robovm.apple.coreimage.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "selectedImage")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native UIImage getSelectedImage();
     @Property(selector = "setSelectedImage:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setSelectedImage(UIImage v);
     @Property(selector = "badgeValue")
     public native String getBadgeValue();

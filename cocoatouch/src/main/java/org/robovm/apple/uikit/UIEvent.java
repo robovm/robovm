@@ -52,8 +52,14 @@ import org.robovm.apple.coreimage.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "type")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native UIEventType getType();
     @Property(selector = "subtype")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native UIEventSubtype getSubtype();
     @Property(selector = "timestamp")
     public native double getTimestamp();

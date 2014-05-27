@@ -47,8 +47,14 @@ import org.robovm.apple.coreimage.*;
     /*<constants>*//*</constants>*/
     /*<properties>*/
     @Property(selector = "accessibilityIdentifier")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     String getAccessibilityIdentifier();
     @Property(selector = "setAccessibilityIdentifier:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     void setAccessibilityIdentifier(String v);
     /*</properties>*/
     /*<methods>*/

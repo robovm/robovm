@@ -57,8 +57,14 @@ import org.robovm.apple.coreimage.*;
     
     /*<properties>*/
     @Property(selector = "screen")
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     public native UIScreen getScreen();
     @Property(selector = "setScreen:")
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     public native void setScreen(UIScreen v);
     @Property(selector = "windowLevel")
     public native @MachineSizedFloat double getWindowLevel();
@@ -67,8 +73,14 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "isKeyWindow")
     public native boolean isKeyWindow();
     @Property(selector = "rootViewController")
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public native UIViewController getRootViewController();
     @Property(selector = "setRootViewController:")
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public native void setRootViewController(UIViewController v);
     /*</properties>*/
     /*<members>*//*</members>*/

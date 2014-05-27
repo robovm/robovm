@@ -50,8 +50,14 @@ import org.robovm.apple.accounts.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "delegate")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native SKStoreProductViewControllerDelegate getDelegate();
     @Property(selector = "setDelegate:", strongRef = true)
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native void setDelegate(SKStoreProductViewControllerDelegate v);
     /*</properties>*/
     /*<members>*//*</members>*/

@@ -50,22 +50,49 @@ import org.robovm.apple.accounts.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "downloadState")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native SKDownloadState getDownloadState();
     @Property(selector = "contentLength")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native long getContentLength();
     @Property(selector = "contentIdentifier")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native String getContentIdentifier();
     @Property(selector = "contentURL")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native NSURL getContentURL();
     @Property(selector = "contentVersion")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native String getContentVersion();
     @Property(selector = "error")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native NSError getError();
     @Property(selector = "progress")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native float getProgress();
     @Property(selector = "timeRemaining")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native double getTimeRemaining();
     @Property(selector = "transaction")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native SKPaymentTransaction getTransaction();
     /*</properties>*/
     /*<members>*//*</members>*/

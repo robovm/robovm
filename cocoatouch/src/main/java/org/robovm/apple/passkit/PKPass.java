@@ -68,6 +68,9 @@ import org.robovm.apple.uikit.*;
     @Property(selector = "relevantDate")
     public native NSDate getRelevantDate();
     @Property(selector = "userInfo")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native NSDictionary<NSString, ?> getUserInfo();
     @Property(selector = "passURL")
     public native NSURL getPassURL();

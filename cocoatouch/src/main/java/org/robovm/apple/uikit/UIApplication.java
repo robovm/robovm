@@ -88,28 +88,68 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setApplicationIconBadgeNumber:")
     public native void setApplicationIconBadgeNumber(@MachineSizedSInt long v);
     @Property(selector = "applicationSupportsShakeToEdit")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native boolean isApplicationSupportsShakeToEdit();
     @Property(selector = "setApplicationSupportsShakeToEdit:")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native void setApplicationSupportsShakeToEdit(boolean v);
     @Property(selector = "applicationState")
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public native UIApplicationState getApplicationState();
     @Property(selector = "backgroundTimeRemaining")
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public native double getBackgroundTimeRemaining();
     @Property(selector = "backgroundRefreshStatus")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native UIBackgroundRefreshStatus getBackgroundRefreshStatus();
     @Property(selector = "isProtectedDataAvailable")
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public native boolean isProtectedDataAvailable();
     @Property(selector = "userInterfaceLayoutDirection")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native UIUserInterfaceLayoutDirection getUserInterfaceLayoutDirection();
     @Property(selector = "preferredContentSizeCategory")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native String getPreferredContentSizeCategory();
     @Property(selector = "scheduledLocalNotifications")
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public native NSArray<UILocalNotification> getScheduledLocalNotifications();
     @Property(selector = "setScheduledLocalNotifications:")
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public native void setScheduledLocalNotifications(NSArray<UILocalNotification> v);
     @Property(selector = "isProximitySensingEnabled")
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     public native boolean isProximitySensingEnabled();
     @Property(selector = "setProximitySensingEnabled:")
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 3.0.
+     */
+    @Deprecated
     public native void setProximitySensingEnabled(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/

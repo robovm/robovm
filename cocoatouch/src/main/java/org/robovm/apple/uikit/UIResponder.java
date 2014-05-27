@@ -52,16 +52,34 @@ import org.robovm.apple.coreimage.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "undoManager")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native NSUndoManager getUndoManager();
     @Property(selector = "keyCommands")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native NSArray<UIKeyCommand> getKeyCommands();
     @Property(selector = "inputView")
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     public native UIView getInputView();
     @Property(selector = "inputAccessoryView")
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     public native UIView getInputAccessoryView();
     @Property(selector = "textInputMode")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native UITextInputMode getTextInputMode();
     @Property(selector = "textInputContextIdentifier")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native String getTextInputContextIdentifier();
     /*</properties>*/
     /*<members>*//*</members>*/

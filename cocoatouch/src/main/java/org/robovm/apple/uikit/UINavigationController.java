@@ -71,16 +71,28 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "navigationBar")
     public native UINavigationBar getNavigationBar();
     @Property(selector = "isToolbarHidden")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native boolean isToolbarHidden();
     @Property(selector = "setToolbarHidden:")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native void setToolbarHidden(boolean v);
     @Property(selector = "toolbar")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native UIToolbar getToolbar();
     @Property(selector = "delegate")
     public native UINavigationControllerDelegate getDelegate();
     @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UINavigationControllerDelegate v);
     @Property(selector = "interactivePopGestureRecognizer")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native UIGestureRecognizer getInteractivePopGestureRecognizer();
     /*</properties>*/
     /*<members>*//*</members>*/

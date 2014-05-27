@@ -89,24 +89,54 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setEditable:")
     public native void setEditable(boolean v);
     @Property(selector = "isSelectable")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native boolean isSelectable();
     @Property(selector = "setSelectable:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setSelectable(boolean v);
     @Property(selector = "dataDetectorTypes")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native UIDataDetectorTypes getDataDetectorTypes();
     @Property(selector = "setDataDetectorTypes:")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native void setDataDetectorTypes(UIDataDetectorTypes v);
     @Property(selector = "allowsEditingTextAttributes")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native boolean isAllowsEditingTextAttributes();
     @Property(selector = "setAllowsEditingTextAttributes:")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native void setAllowsEditingTextAttributes(boolean v);
     @Property(selector = "attributedText")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native NSAttributedString getAttributedText();
     @Property(selector = "setAttributedText:")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native void setAttributedText(NSAttributedString v);
     @Property(selector = "typingAttributes")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native NSDictionary<NSString, ?> getTypingAttributes();
     @Property(selector = "setTypingAttributes:")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native void setTypingAttributes(NSDictionary<NSString, ?> v);
     @Property(selector = "inputView")
     public native UIView getInputView();
@@ -117,22 +147,49 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setInputAccessoryView:")
     public native void setInputAccessoryView(UIView v);
     @Property(selector = "clearsOnInsertion")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native boolean isClearsOnInsertion();
     @Property(selector = "setClearsOnInsertion:")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native void setClearsOnInsertion(boolean v);
     @Property(selector = "textContainer")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native NSTextContainer getTextContainer();
     @Property(selector = "textContainerInset")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native @ByVal UIEdgeInsets getTextContainerInset();
     @Property(selector = "setTextContainerInset:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setTextContainerInset(@ByVal UIEdgeInsets v);
     @Property(selector = "layoutManager")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native NSLayoutManager getLayoutManager();
     @Property(selector = "textStorage")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native NSTextStorage getTextStorage();
     @Property(selector = "linkTextAttributes")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native NSDictionary<NSString, ?> getLinkTextAttributes();
     @Property(selector = "setLinkTextAttributes:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setLinkTextAttributes(NSDictionary<NSString, ?> v);
     @Property(selector = "selectedTextRange")
     public native UITextRange getSelectedTextRange();
@@ -169,8 +226,14 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setAutocorrectionType:")
     public native void setAutocorrectionType(UITextAutocorrectionType v);
     @Property(selector = "spellCheckingType")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native UITextSpellCheckingType getSpellCheckingType();
     @Property(selector = "setSpellCheckingType:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setSpellCheckingType(UITextSpellCheckingType v);
     @Property(selector = "keyboardType")
     public native UIKeyboardType getKeyboardType();

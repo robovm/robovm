@@ -50,8 +50,14 @@ import org.robovm.apple.accounts.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "products")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native NSArray<SKProduct> getProducts();
     @Property(selector = "invalidProductIdentifiers")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native NSArray<NSString> getInvalidProductIdentifiers();
     /*</properties>*/
     /*<members>*//*</members>*/

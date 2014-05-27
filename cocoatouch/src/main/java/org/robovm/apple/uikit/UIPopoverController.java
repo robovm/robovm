@@ -73,16 +73,34 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setPassthroughViews:")
     public native void setPassthroughViews(NSArray<UIView> v);
     @Property(selector = "backgroundColor")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native UIColor getBackgroundColor();
     @Property(selector = "setBackgroundColor:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setBackgroundColor(UIColor v);
     @Property(selector = "popoverLayoutMargins")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native @ByVal UIEdgeInsets getPopoverLayoutMargins();
     @Property(selector = "setPopoverLayoutMargins:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setPopoverLayoutMargins(@ByVal UIEdgeInsets v);
     @Property(selector = "popoverBackgroundViewClass")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native ObjCClass getPopoverBackgroundViewClass();
     @Property(selector = "setPopoverBackgroundViewClass:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setPopoverBackgroundViewClass(ObjCClass v);
     /*</properties>*/
     /*<members>*//*</members>*/

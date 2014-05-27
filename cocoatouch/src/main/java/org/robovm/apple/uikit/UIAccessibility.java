@@ -70,28 +70,58 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setAccessibilityFrame:")
     void setAccessibilityFrame(@ByVal CGRect v);
     @Property(selector = "accessibilityPath")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     UIBezierPath getAccessibilityPath();
     @Property(selector = "setAccessibilityPath:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     void setAccessibilityPath(UIBezierPath v);
     @Property(selector = "accessibilityActivationPoint")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @ByVal CGPoint getAccessibilityActivationPoint();
     @Property(selector = "setAccessibilityActivationPoint:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     void setAccessibilityActivationPoint(@ByVal CGPoint v);
     @Property(selector = "accessibilityLanguage")
     String getAccessibilityLanguage();
     @Property(selector = "setAccessibilityLanguage:")
     void setAccessibilityLanguage(String v);
     @Property(selector = "accessibilityElementsHidden")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     boolean isAccessibilityElementsHidden();
     @Property(selector = "setAccessibilityElementsHidden:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     void setAccessibilityElementsHidden(boolean v);
     @Property(selector = "accessibilityViewIsModal")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     boolean isAccessibilityViewIsModal();
     @Property(selector = "setAccessibilityViewIsModal:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     void setAccessibilityViewIsModal(boolean v);
     @Property(selector = "shouldGroupAccessibilityChildren")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     boolean isShouldGroupAccessibilityChildren();
     @Property(selector = "setShouldGroupAccessibilityChildren:")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     void setShouldGroupAccessibilityChildren(boolean v);
     /*</properties>*/
     /*<methods>*/

@@ -49,8 +49,14 @@ import org.robovm.apple.coregraphics.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "originalAsset")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native ALAsset getOriginalAsset();
     @Property(selector = "isEditable")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native boolean isEditable();
     /*</properties>*/
     /*<members>*//*</members>*/

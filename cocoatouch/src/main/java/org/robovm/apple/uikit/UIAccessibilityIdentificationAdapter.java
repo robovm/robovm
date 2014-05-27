@@ -48,8 +48,14 @@ import org.robovm.apple.coreimage.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("accessibilityIdentifier")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public String getAccessibilityIdentifier() { throw new UnsupportedOperationException(); }
     @NotImplemented("setAccessibilityIdentifier:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public void setAccessibilityIdentifier(String v) { throw new UnsupportedOperationException(); }
     /*</properties>*/
     /*<members>*//*</members>*/

@@ -71,12 +71,24 @@ import org.robovm.apple.security.*;
     @Property(selector = "setAllowsCellularAccess:")
     public native void setAllowsCellularAccess(boolean v);
     @Property(selector = "isDiscretionary")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native boolean isDiscretionary();
     @Property(selector = "setDiscretionary:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setDiscretionary(boolean v);
     @Property(selector = "sessionSendsLaunchEvents")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native boolean isSessionSendsLaunchEvents();
     @Property(selector = "setSessionSendsLaunchEvents:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setSessionSendsLaunchEvents(boolean v);
     @Property(selector = "connectionProxyDictionary")
     public native NSDictionary<?, ?> getConnectionProxyDictionary();

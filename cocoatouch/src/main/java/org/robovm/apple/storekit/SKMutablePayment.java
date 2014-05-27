@@ -50,20 +50,44 @@ import org.robovm.apple.accounts.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "applicationUsername")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native String getApplicationUsername();
     @Property(selector = "setApplicationUsername:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setApplicationUsername(String v);
     @Property(selector = "productIdentifier")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native String getProductIdentifier();
     @Property(selector = "setProductIdentifier:")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native void setProductIdentifier(String v);
     @Property(selector = "quantity")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native @MachineSizedSInt long getQuantity();
     @Property(selector = "setQuantity:")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native void setQuantity(@MachineSizedSInt long v);
     @Property(selector = "requestData")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native NSData getRequestData();
     @Property(selector = "setRequestData:")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native void setRequestData(NSData v);
     /*</properties>*/
     /*<members>*//*</members>*/

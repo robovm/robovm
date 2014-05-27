@@ -92,8 +92,14 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "isVisible")
     public native boolean isVisible();
     @Property(selector = "alertViewStyle")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native UIAlertViewStyle getAlertViewStyle();
     @Property(selector = "setAlertViewStyle:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setAlertViewStyle(UIAlertViewStyle v);
     /*</properties>*/
     /*<members>*//*</members>*/

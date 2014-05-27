@@ -49,6 +49,9 @@ import org.robovm.apple.coregraphics.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "isEditable")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native boolean isEditable();
     /*</properties>*/
     /*<members>*//*</members>*/

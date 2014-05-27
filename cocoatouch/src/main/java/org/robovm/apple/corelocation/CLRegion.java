@@ -54,18 +54,43 @@ import org.robovm.apple.foundation.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "center")
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     public native @ByVal CLLocationCoordinate2D getCenter();
     @Property(selector = "radius")
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     public native double getRadius();
     @Property(selector = "identifier")
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public native String getIdentifier();
     @Property(selector = "notifyOnEntry")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native boolean isNotifyOnEntry();
     @Property(selector = "setNotifyOnEntry:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setNotifyOnEntry(boolean v);
     @Property(selector = "notifyOnExit")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native boolean isNotifyOnExit();
     @Property(selector = "setNotifyOnExit:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setNotifyOnExit(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/

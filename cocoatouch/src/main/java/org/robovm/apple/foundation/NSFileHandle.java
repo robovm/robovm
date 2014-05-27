@@ -49,12 +49,24 @@ import org.robovm.apple.security.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "readabilityHandler")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native @Block VoidBlock1<NSFileHandle> getReadabilityHandler();
     @Property(selector = "setReadabilityHandler:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setReadabilityHandler(@Block VoidBlock1<NSFileHandle> v);
     @Property(selector = "writeabilityHandler")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native @Block VoidBlock1<NSFileHandle> getWriteabilityHandler();
     @Property(selector = "setWriteabilityHandler:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setWriteabilityHandler(@Block VoidBlock1<NSFileHandle> v);
     /*</properties>*/
     /*<members>*//*</members>*/

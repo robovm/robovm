@@ -53,6 +53,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "row")
     public static native @MachineSizedSInt long getRow(NSIndexPath thiz);
     @Property(selector = "item")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public static native @MachineSizedSInt long getItem(NSIndexPath thiz);
     /*</properties>*/
     /*<members>*//*</members>*/

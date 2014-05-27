@@ -56,28 +56,64 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "applicationFrame")
     public native @ByVal CGRect getApplicationFrame();
     @Property(selector = "scale")
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public native @MachineSizedFloat double getScale();
     @Property(selector = "availableModes")
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     public native NSArray<UIScreenMode> getAvailableModes();
     @Property(selector = "preferredMode")
+    /**
+     * @since Available in iOS 4.3 and later.
+     */
     public native UIScreenMode getPreferredMode();
     @Property(selector = "currentMode")
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     public native UIScreenMode getCurrentMode();
     @Property(selector = "setCurrentMode:")
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     public native void setCurrentMode(UIScreenMode v);
     @Property(selector = "overscanCompensation")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native UIScreenOverscanCompensation getOverscanCompensation();
     @Property(selector = "setOverscanCompensation:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setOverscanCompensation(UIScreenOverscanCompensation v);
     @Property(selector = "mirroredScreen")
+    /**
+     * @since Available in iOS 4.3 and later.
+     */
     public native UIScreen getMirroredScreen();
     @Property(selector = "brightness")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native @MachineSizedFloat double getBrightness();
     @Property(selector = "setBrightness:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setBrightness(@MachineSizedFloat double v);
     @Property(selector = "wantsSoftwareDimming")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native boolean isWantsSoftwareDimming();
     @Property(selector = "setWantsSoftwareDimming:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setWantsSoftwareDimming(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/

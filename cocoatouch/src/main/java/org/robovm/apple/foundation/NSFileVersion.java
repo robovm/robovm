@@ -64,10 +64,6 @@ import org.robovm.apple.security.*;
     public native boolean isResolved();
     @Property(selector = "setResolved:")
     public native void setResolved(boolean v);
-    @Property(selector = "isDiscardable")
-    public native boolean isDiscardable();
-    @Property(selector = "setDiscardable:")
-    public native void setDiscardable(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

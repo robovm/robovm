@@ -61,8 +61,14 @@ import org.robovm.apple.coregraphics.*;
     @Property(selector = "setAllowsPickingMultipleItems:")
     public native void setAllowsPickingMultipleItems(boolean v);
     @Property(selector = "showsCloudItems")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native boolean isShowsCloudItems();
     @Property(selector = "setShowsCloudItems:")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native void setShowsCloudItems(boolean v);
     @Property(selector = "prompt")
     public native String getPrompt();

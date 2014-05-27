@@ -80,30 +80,60 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "CGImage")
     public native CGImage getCGImage();
     @Property(selector = "CIImage")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native CIImage getCIImage();
     @Property(selector = "imageOrientation")
     public native UIImageOrientation getOrientation();
     @Property(selector = "scale")
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public native @MachineSizedFloat double getScale();
     @Property(selector = "images")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native NSArray<UIImage> getImages();
     @Property(selector = "duration")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native double getDuration();
     @Property(selector = "capInsets")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native @ByVal UIEdgeInsets getCapInsets();
     @Property(selector = "resizingMode")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native UIImageResizingMode getResizingMode();
     @Property(selector = "alignmentRectInsets")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native @ByVal UIEdgeInsets getAlignmentRectInsets();
     @Property(selector = "renderingMode")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native UIImageRenderingMode getRenderingMode();
     @Property(selector = "leftCapWidth")
     public native @MachineSizedSInt long getLeftCapWidth();
     @Property(selector = "topCapHeight")
     public native @MachineSizedSInt long getTopCapHeight();
     @Property(selector = "accessibilityIdentifier")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native String getAccessibilityIdentifier();
     @Property(selector = "setAccessibilityIdentifier:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setAccessibilityIdentifier(String v);
     /*</properties>*/
     /*<members>*//*</members>*/

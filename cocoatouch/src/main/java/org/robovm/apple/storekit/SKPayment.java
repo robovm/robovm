@@ -50,12 +50,24 @@ import org.robovm.apple.accounts.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "productIdentifier")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native String getProductIdentifier();
     @Property(selector = "requestData")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native NSData getRequestData();
     @Property(selector = "quantity")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native @MachineSizedSInt long getQuantity();
     @Property(selector = "applicationUsername")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native String getApplicationUsername();
     /*</properties>*/
     /*<members>*//*</members>*/

@@ -60,6 +60,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "CGColor")
     public native CGColor getCGColor();
     @Property(selector = "CIColor")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native CIColor getCIColor();
     /*</properties>*/
     /*<members>*//*</members>*/

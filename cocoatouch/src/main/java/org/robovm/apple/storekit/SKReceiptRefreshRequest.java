@@ -54,6 +54,9 @@ import org.robovm.apple.accounts.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "receiptProperties")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native NSDictionary<NSString, ?> getReceiptProperties();
     /*</properties>*/
     /*<members>*//*</members>*/

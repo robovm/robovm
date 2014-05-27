@@ -85,28 +85,58 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setShowsCancelButton:")
     public native void setShowsCancelButton(boolean v);
     @Property(selector = "showsSearchResultsButton")
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     public native boolean isShowsSearchResultsButton();
     @Property(selector = "setShowsSearchResultsButton:")
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     public native void setShowsSearchResultsButton(boolean v);
     @Property(selector = "isSearchResultsButtonSelected")
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     public native boolean isSearchResultsButtonSelected();
     @Property(selector = "setSearchResultsButtonSelected:")
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     public native void setSearchResultsButtonSelected(boolean v);
     @Property(selector = "tintColor")
     public native UIColor getTintColor();
     @Property(selector = "setTintColor:")
     public native void setTintColor(UIColor v);
     @Property(selector = "barTintColor")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native UIColor getBarTintColor();
     @Property(selector = "setBarTintColor:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setBarTintColor(UIColor v);
     @Property(selector = "searchBarStyle")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native UISearchBarStyle getSearchBarStyle();
     @Property(selector = "setSearchBarStyle:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setSearchBarStyle(UISearchBarStyle v);
     @Property(selector = "isTranslucent")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native boolean isTranslucent();
     @Property(selector = "setTranslucent:")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native void setTranslucent(boolean v);
     @Property(selector = "autocapitalizationType")
     public native UITextAutocapitalizationType getAutocapitalizationType();
@@ -125,36 +155,78 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setKeyboardType:")
     public native void setKeyboardType(UIKeyboardType v);
     @Property(selector = "scopeButtonTitles")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native NSArray<NSString> getScopeButtonTitles();
     @Property(selector = "setScopeButtonTitles:")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native void setScopeButtonTitles(NSArray<NSString> v);
     @Property(selector = "selectedScopeButtonIndex")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native @MachineSizedSInt long getSelectedScopeButtonIndex();
     @Property(selector = "setSelectedScopeButtonIndex:")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native void setSelectedScopeButtonIndex(@MachineSizedSInt long v);
     @Property(selector = "showsScopeBar")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native boolean isShowsScopeBar();
     @Property(selector = "setShowsScopeBar:")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native void setShowsScopeBar(boolean v);
     @Property(selector = "inputAccessoryView")
     public native UIView getInputAccessoryView();
     @Property(selector = "setInputAccessoryView:")
     public native void setInputAccessoryView(UIView v);
     @Property(selector = "backgroundImage")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native UIImage getBackgroundImage();
     @Property(selector = "setBackgroundImage:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setBackgroundImage(UIImage v);
     @Property(selector = "scopeBarBackgroundImage")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native UIImage getScopeBarBackgroundImage();
     @Property(selector = "setScopeBarBackgroundImage:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setScopeBarBackgroundImage(UIImage v);
     @Property(selector = "searchFieldBackgroundPositionAdjustment")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native @ByVal UIOffset getSearchFieldBackgroundPositionAdjustment();
     @Property(selector = "setSearchFieldBackgroundPositionAdjustment:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setSearchFieldBackgroundPositionAdjustment(@ByVal UIOffset v);
     @Property(selector = "searchTextPositionAdjustment")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native @ByVal UIOffset getSearchTextPositionAdjustment();
     @Property(selector = "setSearchTextPositionAdjustment:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setSearchTextPositionAdjustment(@ByVal UIOffset v);
     @Property(selector = "barPosition")
     public native UIBarPosition getBarPosition();

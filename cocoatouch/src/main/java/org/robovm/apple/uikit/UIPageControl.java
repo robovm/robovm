@@ -73,12 +73,24 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setDefersCurrentPageDisplay:")
     public native void setDefersCurrentPageDisplay(boolean v);
     @Property(selector = "pageIndicatorTintColor")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native UIColor getPageIndicatorTintColor();
     @Property(selector = "setPageIndicatorTintColor:")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native void setPageIndicatorTintColor(UIColor v);
     @Property(selector = "currentPageIndicatorTintColor")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native UIColor getCurrentPageIndicatorTintColor();
     @Property(selector = "setCurrentPageIndicatorTintColor:")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native void setCurrentPageIndicatorTintColor(UIColor v);
     /*</properties>*/
     /*<members>*//*</members>*/

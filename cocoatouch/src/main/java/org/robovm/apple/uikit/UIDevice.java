@@ -64,26 +64,56 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "orientation")
     public native UIDeviceOrientation getOrientation();
     @Property(selector = "identifierForVendor")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native NSUUID getIdentifierForVendor();
     @Property(selector = "isGeneratingDeviceOrientationNotifications")
     public native boolean isGeneratesDeviceOrientationNotifications();
     @Property(selector = "isBatteryMonitoringEnabled")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native boolean isBatteryMonitoringEnabled();
     @Property(selector = "setBatteryMonitoringEnabled:")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native void setBatteryMonitoringEnabled(boolean v);
     @Property(selector = "batteryState")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native UIDeviceBatteryState getBatteryState();
     @Property(selector = "batteryLevel")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native float getBatteryLevel();
     @Property(selector = "isProximityMonitoringEnabled")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native boolean isProximityMonitoringEnabled();
     @Property(selector = "setProximityMonitoringEnabled:")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native void setProximityMonitoringEnabled(boolean v);
     @Property(selector = "proximityState")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native boolean isProximityState();
     @Property(selector = "isMultitaskingSupported")
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public native boolean isMultitaskingSupported();
     @Property(selector = "userInterfaceIdiom")
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     public native UIUserInterfaceIdiom getUserInterfaceIdiom();
     /*</properties>*/
     /*<members>*//*</members>*/

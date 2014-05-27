@@ -50,20 +50,44 @@ import org.robovm.apple.coregraphics.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "showsVolumeSlider")
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
     public native boolean isShowsVolumeSlider();
     @Property(selector = "setShowsVolumeSlider:")
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
     public native void setShowsVolumeSlider(boolean v);
     @Property(selector = "showsRouteButton")
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
     public native boolean isShowsRouteButton();
     @Property(selector = "setShowsRouteButton:")
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
     public native void setShowsRouteButton(boolean v);
     @Property(selector = "areWirelessRoutesAvailable")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native boolean isWirelessRoutesAvailable();
     @Property(selector = "isWirelessRouteActive")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native boolean isWirelessRouteActive();
     @Property(selector = "volumeWarningSliderImage")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native UIImage getVolumeWarningSliderImage();
     @Property(selector = "setVolumeWarningSliderImage:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setVolumeWarningSliderImage(UIImage v);
     /*</properties>*/
     /*<members>*//*</members>*/

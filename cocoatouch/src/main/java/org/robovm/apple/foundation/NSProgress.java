@@ -93,8 +93,6 @@ import org.robovm.apple.security.*;
     public native String getKind();
     @Property(selector = "setKind:")
     public native void setKind(String v);
-    @Property(selector = "isOld")
-    public native boolean isOld();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

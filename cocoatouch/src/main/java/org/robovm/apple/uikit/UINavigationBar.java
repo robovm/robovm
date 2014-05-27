@@ -65,8 +65,14 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UINavigationBarDelegate v);
     @Property(selector = "isTranslucent")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native boolean isTranslucent();
     @Property(selector = "setTranslucent:")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native void setTranslucent(boolean v);
     @Property(selector = "topItem")
     public native UINavigationItem getTopItem();
@@ -81,24 +87,54 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setTintColor:")
     public native void setTintColor(UIColor v);
     @Property(selector = "barTintColor")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native UIColor getBarTintColor();
     @Property(selector = "setBarTintColor:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setBarTintColor(UIColor v);
     @Property(selector = "shadowImage")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native UIImage getShadowImage();
     @Property(selector = "setShadowImage:")
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public native void setShadowImage(UIImage v);
     @Property(selector = "titleTextAttributes")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native NSDictionary<NSString, ?> getTitleTextAttributes();
     @Property(selector = "setTitleTextAttributes:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setTitleTextAttributes(NSDictionary<NSString, ?> v);
     @Property(selector = "backIndicatorImage")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native UIImage getBackIndicatorImage();
     @Property(selector = "setBackIndicatorImage:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setBackIndicatorImage(UIImage v);
     @Property(selector = "backIndicatorTransitionMaskImage")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native UIImage getBackIndicatorTransitionMaskImage();
     @Property(selector = "setBackIndicatorTransitionMaskImage:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setBackIndicatorTransitionMaskImage(UIImage v);
     @Property(selector = "barPosition")
     public native UIBarPosition getBarPosition();

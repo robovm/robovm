@@ -113,8 +113,14 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setIndicatorStyle:")
     public native void setIndicatorStyle(UIScrollViewIndicatorStyle v);
     @Property(selector = "decelerationRate")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native @MachineSizedFloat double getDecelerationRate();
     @Property(selector = "setDecelerationRate:")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native void setDecelerationRate(@MachineSizedFloat double v);
     @Property(selector = "isTracking")
     public native boolean isTracking();
@@ -139,8 +145,14 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setMaximumZoomScale:")
     public native void setMaximumZoomScale(@MachineSizedFloat double v);
     @Property(selector = "zoomScale")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native @MachineSizedFloat double getZoomScale();
     @Property(selector = "setZoomScale:")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native void setZoomScale(@MachineSizedFloat double v);
     @Property(selector = "bouncesZoom")
     public native boolean isBouncesZoom();
@@ -155,12 +167,24 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setScrollsToTop:")
     public native void setScrollsToTop(boolean v);
     @Property(selector = "panGestureRecognizer")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native UIPanGestureRecognizer getPanGestureRecognizer();
     @Property(selector = "pinchGestureRecognizer")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native UIPinchGestureRecognizer getPinchGestureRecognizer();
     @Property(selector = "keyboardDismissMode")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native UIScrollViewKeyboardDismissMode getKeyboardDismissMode();
     @Property(selector = "setKeyboardDismissMode:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setKeyboardDismissMode(UIScrollViewKeyboardDismissMode v);
     /*</properties>*/
     /*<members>*//*</members>*/

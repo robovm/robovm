@@ -81,16 +81,34 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setContinuous:")
     public native void setContinuous(boolean v);
     @Property(selector = "minimumTrackTintColor")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native UIColor getMinimumTrackTintColor();
     @Property(selector = "setMinimumTrackTintColor:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setMinimumTrackTintColor(UIColor v);
     @Property(selector = "maximumTrackTintColor")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native UIColor getMaximumTrackTintColor();
     @Property(selector = "setMaximumTrackTintColor:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setMaximumTrackTintColor(UIColor v);
     @Property(selector = "thumbTintColor")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native UIColor getThumbTintColor();
     @Property(selector = "setThumbTintColor:")
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public native void setThumbTintColor(UIColor v);
     @Property(selector = "currentThumbImage")
     public native UIImage getCurrentThumbImage();

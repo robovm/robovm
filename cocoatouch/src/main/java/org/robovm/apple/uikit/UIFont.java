@@ -66,6 +66,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "xHeight")
     public native @MachineSizedFloat double getXHeight();
     @Property(selector = "lineHeight")
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public native @MachineSizedFloat double getLineHeight();
     @Property(selector = "leading")
     public native @MachineSizedFloat double getLeading();

@@ -65,20 +65,38 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setItems:")
     public native void setItems(NSArray<UIBarButtonItem> v);
     @Property(selector = "isTranslucent")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native boolean isTranslucent();
     @Property(selector = "setTranslucent:")
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     public native void setTranslucent(boolean v);
     @Property(selector = "tintColor")
     public native UIColor getTintColor();
     @Property(selector = "setTintColor:")
     public native void setTintColor(UIColor v);
     @Property(selector = "barTintColor")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native UIColor getBarTintColor();
     @Property(selector = "setBarTintColor:")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setBarTintColor(UIColor v);
     @Property(selector = "delegate")
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native UIToolbarDelegate getDelegate();
     @Property(selector = "setDelegate:", strongRef = true)
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     public native void setDelegate(UIToolbarDelegate v);
     @Property(selector = "barPosition")
     public native UIBarPosition getBarPosition();

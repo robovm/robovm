@@ -295,6 +295,7 @@ classes:
          methods:
             '+constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:':
                 name: create
+                return_type: NSLayoutConstraint
             '+constraintsWithVisualFormat:options:metrics:views:':
                 name: createFromVisualFormat
                 return_type: "NSArray<NSLayoutConstraint>"
@@ -457,7 +458,10 @@ classes:
             '+defaultWritingDirectionForLanguage:':
                 name: getDefaultWritingDirection
 
-    NSShadow: {} # DONE
+    NSShadow: # DONE
+        property:
+            'shadowColor':
+                type: UIColor
     NSStringDrawingContext: {} # DONE
     NSTextAttachment: {} # DONE
     NSTextContainer: # DONE
@@ -985,7 +989,7 @@ classes:
             '+currentDevice':
                 property: true
 
-    UIDictationPhrase:
+    UIDictationPhrase: # DONE
         properties:
             'alternativeInterpretations':
                 type: "NSArray<NSString>"
@@ -1181,6 +1185,9 @@ classes:
                 name: getPreferredFontDescriptor
             '-objectForKey:':
                 name: getObject
+                parameters:
+                    anAttribute:
+                        type: NSString
             '-fontAttributes':
                 property: true
                 return_type: "NSDictionary<NSString, ?>"
@@ -1347,6 +1354,7 @@ classes:
         methods:
             '+currentCollation':
                 name: getCurrentCollation
+                return_type: UILocalizedIndexedCollation
             '-sectionForObject:collationStringSelector:':
                 name: getSectionForObject
             '-sectionForSectionIndexTitleAtIndex:':
@@ -1398,6 +1406,8 @@ classes:
                 type: "NSArray<UIMotionEffect>"
     UINavigationBar: # DONE
         properties:
+            'delegate':
+                type: UINavigationBarDelegate
             'items':
                 type: "NSArray<UINavigationItem>"
             'titleTextAttributes':
@@ -1951,9 +1961,15 @@ classes:
                 name: instantiateViewController
     UIStoryboardPopoverSegue: {} # DONE
     UIStoryboardSegue: # DONE
+        properties:
+            'sourceViewController':
+                type: UIViewController
+            'destinationViewController':
+                type: UIViewController
         methods:
             '+segueWithIdentifier:source:destination:performHandler:':
-                name: getSegue
+                name: create
+                return_type: UIStoryboardSegue
     UISwipeGestureRecognizer: {} # DONE
 
     UISwitch: # DONE

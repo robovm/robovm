@@ -61,9 +61,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setBarStyle:")
     public native void setBarStyle(UIBarStyle v);
     @Property(selector = "delegate")
-    public native NSObject getDelegate();
+    public native UINavigationBarDelegate getDelegate();
     @Property(selector = "setDelegate:", strongRef = true)
-    public native void setDelegate(NSObject v);
+    public native void setDelegate(UINavigationBarDelegate v);
     @Property(selector = "isTranslucent")
     public native boolean isTranslucent();
     @Property(selector = "setTranslucent:")

@@ -55,9 +55,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "identifier")
     public native String getIdentifier();
     @Property(selector = "sourceViewController")
-    public native NSObject getSourceViewController();
+    public native UIViewController getSourceViewController();
     @Property(selector = "destinationViewController")
-    public native NSObject getDestinationViewController();
+    public native UIViewController getDestinationViewController();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -69,6 +69,6 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "segueWithIdentifier:source:destination:performHandler:")
-    public static native NSObject getSegue(String identifier, UIViewController source, UIViewController destination, @Block Runnable performHandler);
+    public static native UIStoryboardSegue create(String identifier, UIViewController source, UIViewController destination, @Block Runnable performHandler);
     /*</methods>*/
 }

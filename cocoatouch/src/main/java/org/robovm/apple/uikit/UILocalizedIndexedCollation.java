@@ -65,6 +65,6 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "sortedArrayFromArray:collationStringSelector:")
     public native NSArray<?> sortArray(NSArray<?> array, Selector selector);
     @Method(selector = "currentCollation")
-    public static native NSObject getCurrentCollation();
+    public static native UILocalizedIndexedCollation getCurrentCollation();
     /*</methods>*/
 }

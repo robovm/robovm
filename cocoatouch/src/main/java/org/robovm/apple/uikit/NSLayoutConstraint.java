@@ -86,6 +86,6 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "constraintsWithVisualFormat:options:metrics:views:")
     public static native NSArray<NSLayoutConstraint> createFromVisualFormat(String format, NSLayoutFormatOptions opts, NSDictionary<NSString, NSNumber> metrics, NSDictionary<NSString, UIView> views);
     @Method(selector = "constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:")
-    public static native NSObject create(NSObject view1, NSLayoutAttribute attr1, NSLayoutRelation relation, NSObject view2, NSLayoutAttribute attr2, @MachineSizedFloat double multiplier, @MachineSizedFloat double c);
+    public static native NSLayoutConstraint create(NSObject view1, NSLayoutAttribute attr1, NSLayoutRelation relation, NSObject view2, NSLayoutAttribute attr2, @MachineSizedFloat double multiplier, @MachineSizedFloat double c);
     /*</methods>*/
 }

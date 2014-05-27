@@ -64,7 +64,7 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "objectForKey:")
-    public native NSObject getObject(String anAttribute);
+    public native NSObject getObject(NSString anAttribute);
     @Method(selector = "fontAttributes")
     public native NSDictionary<NSString, ?> getFontAttributes();
     @Method(selector = "matchingFontDescriptorsWithMandatoryKeys:")

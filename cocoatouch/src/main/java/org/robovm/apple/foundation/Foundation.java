@@ -33,6 +33,7 @@ import org.robovm.apple.security.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
+@Marshaler(NSString.AsStringMarshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/Foundation/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
@@ -135,6 +136,80 @@ import org.robovm.apple.security.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    
+    /**
+     * Prints the specified message to the system log facility.
+     * 
+     * @param message the message to print to the log.
+     */
+    @Bridge
+    public native static void NSLog(String message);
+    
+    /**
+     * Formats a log message using the specified format string and argument and
+     * prints it to the system log facility. Primitive value arguments must be 
+     * wrapped in {@link NSNumber} instances.
+     * 
+     * @param format the format string.
+     * @param arg the argument to be used in the format string.
+     */
+    @Bridge
+    public native static void NSLog(String format, NSObject arg);
+
+    /**
+     * Formats a log message using the specified format string and arguments and
+     * prints it to the system log facility. Primitive value arguments must be 
+     * wrapped in {@link NSNumber} instances.
+     * 
+     * @param format the format string.
+     * @param arg1 the first argument to be used in the format string.
+     * @param arg2 the second argument to be used in the format string.
+     */
+    @Bridge
+    public native static void NSLog(String format, NSObject arg1, NSObject arg2);
+
+    /**
+     * Formats a log message using the specified format string and arguments and
+     * prints it to the system log facility. Primitive value arguments must be 
+     * wrapped in {@link NSNumber} instances.
+     * 
+     * @param format the format string.
+     * @param arg1 the first argument to be used in the format string.
+     * @param arg2 the second argument to be used in the format string.
+     * @param arg3 the third argument to be used in the format string.
+     */
+    @Bridge
+    public native static void NSLog(String format, NSObject arg1, NSObject arg2, NSObject arg3);
+
+    /**
+     * Formats a log message using the specified format string and arguments and
+     * prints it to the system log facility. Primitive value arguments must be 
+     * wrapped in {@link NSNumber} instances.
+     * 
+     * @param format the format string.
+     * @param arg1 the first argument to be used in the format string.
+     * @param arg2 the second argument to be used in the format string.
+     * @param arg3 the third argument to be used in the format string.
+     * @param arg4 the forth argument to be used in the format string.
+     */
+    @Bridge
+    public native static void NSLog(String format, NSObject arg1, NSObject arg2, NSObject arg3, NSObject arg4);
+
+    /**
+     * Formats a log message using the specified format string and arguments and
+     * prints it to the system log facility. Primitive value arguments must be 
+     * wrapped in {@link NSNumber} instances.
+     * 
+     * @param format the format string.
+     * @param arg1 the first argument to be used in the format string.
+     * @param arg2 the second argument to be used in the format string.
+     * @param arg3 the third argument to be used in the format string.
+     * @param arg4 the forth argument to be used in the format string.
+     * @param arg5 the fifth argument to be used in the format string.
+     */
+    @Bridge
+    public native static void NSLog(String format, NSObject arg1, NSObject arg2, NSObject arg3, NSObject arg4, NSObject arg5);
+    
     /*<methods>*/
     @GlobalValue(symbol="NSFoundationVersionNumber", optional=true)
     public static native double NSFoundationVersionNumber();

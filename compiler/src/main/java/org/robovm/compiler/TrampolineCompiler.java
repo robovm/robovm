@@ -467,7 +467,7 @@ public class TrampolineCompiler {
             targetClassName = getBaseType(targetClassName);
         }
         Clazz target = config.getClazzes().load(targetClassName);
-        if (Access.checkClassAccessible(target.getSootClass(), caller.getSootClass())) {
+        if (Access.checkClassAccessible(target, caller)) {
             return true;
         }
         throwIllegalAccessError(f, ILLEGAL_ACCESS_ERROR_CLASS, 
@@ -477,7 +477,8 @@ public class TrampolineCompiler {
     }
 
     private boolean checkMemberAccessible(Function f, Trampoline t, ClassMember member) {
-        SootClass caller = config.getClazzes().load(t.getCallingClass()).getSootClass();
+        Clazz caller = config.getClazzes().load(t.getCallingClass());
+        Clazz target = config.getClazzes().load(t.getTarget());
 
         String runtimeClassName = null;
         runtimeClassName = t instanceof Invokevirtual 
@@ -500,7 +501,7 @@ public class TrampolineCompiler {
             runtimeClass = c.getSootClass();
         }
         
-        if (Access.checkMemberAccessible(member, caller, runtimeClass)) {
+        if (Access.checkMemberAccessible(member, caller, target, runtimeClass)) {
             return true;
         }
 

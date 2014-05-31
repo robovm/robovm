@@ -16,6 +16,7 @@
  */
 package org.robovm.compiler;
 
+import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.ClazzInfo;
 
 import soot.ClassMember;
@@ -30,14 +31,15 @@ public class Access {
     public static final String ILLEGAL_ACCESS_ERROR_METHOD = "Attempt to access method %s.%s%s from class %s";
     public static final String ILLEGAL_ACCESS_ERROR_CLASS = "Attempt to access class %s from class %s";
 
-    public static boolean checkClassAccessible(SootClass target, SootClass caller) {
+    public static boolean checkClassAccessible(Clazz target, Clazz caller) {
         if (caller == target) {
             return true; 
         }
-        if (target.isPublic()) {
+        if (target.getSootClass().isPublic()) {
             return true; 
         }
-        if (target.getPackageName().equals(caller.getPackageName())) {
+        if (target.getSootClass().getPackageName().equals(caller.getSootClass().getPackageName()) &&
+            target.isInBootClasspath() == caller.isInBootClasspath()) {
             return true;
         }
         return false;
@@ -51,15 +53,18 @@ public class Access {
             return true; 
         }
         if (target.getPackageName().equals(caller.getPackageName())) {
+            if(!target.isPhantom() && !caller.isPhantom()) {
+                if(target.getClazz().isInBootClasspath() != caller.getClazz().isInBootClasspath()) {
+                    return false;
+                }
+            }
             return true;
         }
         return false;
     }
     
-    public static boolean checkMemberAccessible(ClassMember member, SootClass caller, 
+    public static boolean checkMemberAccessible(ClassMember member, Clazz caller, Clazz target,
             SootClass runtimeClass) {
-        
-        SootClass target = member.getDeclaringClass();
         
         if (caller == target || member.isPublic()) {
             return true;
@@ -67,15 +72,16 @@ public class Access {
         
         if (!member.isPrivate()) {
             // Package private or protected
-            if (target.getPackageName().equals(caller.getPackageName())) {
+            if (target.getSootClass().getPackageName().equals(caller.getSootClass().getPackageName()) &&
+                target.isInBootClasspath() == caller.isInBootClasspath()) {
                 return true;
             }
             if (member.isProtected()) {
                 if (member.isStatic()) {
-                    if (isSubClassOrSame(target, caller)) {
+                    if (isSubClassOrSame(target.getSootClass(), caller.getSootClass())) {
                         return true;
                     }
-                } else if (isSubClassOrSame(target, caller)) {
+                } else if (isSubClassOrSame(target.getSootClass(), caller.getSootClass())) {
                     // Need to check that runtime class is a subclass of caller
                     if (runtimeClass == null) {
                         // Either the runtime class is an array or invokestatic 
@@ -85,7 +91,7 @@ public class Access {
                         // check these things.
                         return true;
                     }
-                    if (isSubClassOrSame(caller, runtimeClass)) {
+                    if (isSubClassOrSame(caller.getSootClass(), runtimeClass)) {
                         return true;
                     }
                 }

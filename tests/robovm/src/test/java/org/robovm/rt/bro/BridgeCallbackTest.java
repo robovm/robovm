@@ -157,14 +157,14 @@ public class BridgeCallbackTest {
             BytePtr ptr = BytePtr.toBytePtrAsciiZ((String) s);
             return ptr.getHandle();
         }
-        @AfterBridgeCall
-        public static void afterToNative(String s, long handle, long flags) {
-            calls.add("afterToNative(" + s + ", ?, " + Long.toHexString(flags) + ")");
-        }
-        @AfterCallbackCall
-        public static void afterToObject(long handle, String s, long flags) {
-            calls.add("afterToObject(?, " + s + ", " + Long.toHexString(flags) + ")");
-        }
+//        @AfterBridgeCall
+//        public static void afterToNative(String s, long handle, long flags) {
+//            calls.add("afterToNative(" + s + ", ?, " + Long.toHexString(flags) + ")");
+//        }
+//        @AfterCallbackCall
+//        public static void afterToObject(long handle, String s, long flags) {
+//            calls.add("afterToObject(?, " + s + ", " + Long.toHexString(flags) + ")");
+//        }
     }
     
     @Bridge
@@ -705,22 +705,22 @@ public class BridgeCallbackTest {
         assertEquals("foobar", s);
     }
     
-    @Test
-    public void testMarshalerCallSequence() {
-        StringMarshaler.calls = new ArrayList<String>();
-        append("foo", "bar");
-        assertEquals(10, StringMarshaler.calls.size());
-        assertEquals("toNative(foo, ?, 0)", StringMarshaler.calls.get(0));
-        assertEquals("toNative(bar, ?, 0)", StringMarshaler.calls.get(1));
-        assertEquals("toObject(foo, ?, 1)", StringMarshaler.calls.get(2));
-        assertEquals("toObject(bar, ?, 1)", StringMarshaler.calls.get(3));
-        assertEquals("afterToObject(?, foo, 1)", StringMarshaler.calls.get(4));
-        assertEquals("afterToObject(?, bar, 1)", StringMarshaler.calls.get(5));
-        assertEquals("toNative(foobar, ?, 1)", StringMarshaler.calls.get(6));
-        assertEquals("afterToNative(foo, ?, 0)", StringMarshaler.calls.get(7));
-        assertEquals("afterToNative(bar, ?, 0)", StringMarshaler.calls.get(8));
-        assertEquals("toObject(foobar, ?, 0)", StringMarshaler.calls.get(9));
-    }
+//    @Test
+//    public void testMarshalerCallSequence() {
+//        StringMarshaler.calls = new ArrayList<String>();
+//        append("foo", "bar");
+//        assertEquals(10, StringMarshaler.calls.size());
+//        assertEquals("toNative(foo, ?, 0)", StringMarshaler.calls.get(0));
+//        assertEquals("toNative(bar, ?, 0)", StringMarshaler.calls.get(1));
+//        assertEquals("toObject(foo, ?, 1)", StringMarshaler.calls.get(2));
+//        assertEquals("toObject(bar, ?, 1)", StringMarshaler.calls.get(3));
+//        assertEquals("afterToObject(?, foo, 1)", StringMarshaler.calls.get(4));
+//        assertEquals("afterToObject(?, bar, 1)", StringMarshaler.calls.get(5));
+//        assertEquals("toNative(foobar, ?, 1)", StringMarshaler.calls.get(6));
+//        assertEquals("afterToNative(foo, ?, 0)", StringMarshaler.calls.get(7));
+//        assertEquals("afterToNative(bar, ?, 0)", StringMarshaler.calls.get(8));
+//        assertEquals("toObject(foobar, ?, 0)", StringMarshaler.calls.get(9));
+//    }
     
     @Test
     public void testMarshalSimpleEnum() {

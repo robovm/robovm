@@ -24,7 +24,7 @@ import soot.SootClass;
 
 /**
  * @author niklas
- *
+ * 
  */
 public class Access {
     public static final String ILLEGAL_ACCESS_ERROR_FIELD = "Attempt to access field %s.%s from class %s";
@@ -33,28 +33,28 @@ public class Access {
 
     public static boolean checkClassAccessible(Clazz target, Clazz caller) {
         if (caller == target) {
-            return true; 
+            return true;
         }
         if (target.getSootClass().isPublic()) {
-            return true; 
+            return true;
         }
         if (target.getSootClass().getPackageName().equals(caller.getSootClass().getPackageName()) &&
-            target.isInBootClasspath() == caller.isInBootClasspath()) {
+                target.isInBootClasspath() == caller.isInBootClasspath()) {
             return true;
         }
         return false;
     }
-    
+
     public static boolean checkClassAccessible(ClazzInfo target, ClazzInfo caller) {
         if (caller == target) {
-            return true; 
+            return true;
         }
         if (target.isPublic()) {
-            return true; 
+            return true;
         }
         if (target.getPackageName().equals(caller.getPackageName())) {
-            if(!target.isPhantom() && !caller.isPhantom()) {
-                if(target.getClazz().isInBootClasspath() != caller.getClazz().isInBootClasspath()) {
+            if (!target.isPhantom() && !caller.isPhantom()) {
+                if (target.getClazz().isInBootClasspath() != caller.getClazz().isInBootClasspath()) {
                     return false;
                 }
             }
@@ -62,18 +62,18 @@ public class Access {
         }
         return false;
     }
-    
+
     public static boolean checkMemberAccessible(ClassMember member, Clazz caller, Clazz target,
             SootClass runtimeClass) {
-        
+
         if (caller == target || member.isPublic()) {
             return true;
         }
-        
+
         if (!member.isPrivate()) {
             // Package private or protected
             if (target.getSootClass().getPackageName().equals(caller.getSootClass().getPackageName()) &&
-                target.isInBootClasspath() == caller.isInBootClasspath()) {
+                    target.isInBootClasspath() == caller.isInBootClasspath()) {
                 return true;
             }
             if (member.isProtected()) {
@@ -84,10 +84,11 @@ public class Access {
                 } else if (isSubClassOrSame(target.getSootClass(), caller.getSootClass())) {
                     // Need to check that runtime class is a subclass of caller
                     if (runtimeClass == null) {
-                        // Either the runtime class is an array or invokestatic 
-                        // or getstatic/putstatic is used to call a non-static 
-                        // protected method or access a non-static field. We just
-                        // return true here and assume that other code will 
+                        // Either the runtime class is an array or invokestatic
+                        // or getstatic/putstatic is used to call a non-static
+                        // protected method or access a non-static field. We
+                        // just
+                        // return true here and assume that other code will
                         // check these things.
                         return true;
                     }
@@ -97,11 +98,10 @@ public class Access {
                 }
             }
         }
-        
+
         return false;
     }
-    
-    
+
     public static boolean isSubClassOrSame(SootClass superclass, SootClass clazz) {
         while (clazz != null && !clazz.isPhantom() && clazz.hasSuperclass() && clazz != superclass) {
             clazz = clazz.getSuperclass();

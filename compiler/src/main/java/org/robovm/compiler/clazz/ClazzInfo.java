@@ -90,6 +90,13 @@ public class ClazzInfo implements Serializable {
         this.clazz = clazz;
     }
     
+    /**
+     * may be null if this is a phantom class
+     */
+    public Clazz getClazz() {
+        return clazz;
+    }
+    
     public int getModifiers() {
         return modifiers;
     }

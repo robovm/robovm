@@ -22,7 +22,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
-import java.lang.reflect.Constructor;
 import java.util.Arrays;
 
 import org.apache.commons.io.FileUtils;
@@ -51,9 +50,7 @@ public class ConfigTest {
         wd = new File(tmp, "wd");
         System.setProperty("user.dir", wd.getAbsolutePath());
         
-        Constructor<Home> c = Home.class.getDeclaredConstructor(File.class, boolean.class);
-        c.setAccessible(true);
-        fakeHome = c.newInstance(new File(""), false);
+        fakeHome = new FakeHome();
     }
     
     @After

@@ -17,6 +17,7 @@ package org.robovm.rt.bro;
 
 import static org.junit.Assert.assertEquals;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
@@ -92,8 +93,10 @@ public class BitsTest {
     }
     
     @Test
-    public void testValues() {
-        FlagsWithZero[] positionValues = Bits._values(FlagsWithZero.class);
+    public void testValues() throws Exception {
+        Method m = Bits.class.getDeclaredMethod("_values", Class.class);
+        m.setAccessible(true);
+        FlagsWithZero[] positionValues = (FlagsWithZero[]) m.invoke(null, FlagsWithZero.class);
         assertEquals(set(FlagsWithZero.V0, FlagsWithZero.V1, FlagsWithZero.V2, FlagsWithZero.V4, FlagsWithZero.V8), set(positionValues));
     }
     

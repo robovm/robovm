@@ -478,7 +478,7 @@ public class TrampolineCompiler {
 
     private boolean checkMemberAccessible(Function f, Trampoline t, ClassMember member) {
         Clazz caller = config.getClazzes().load(t.getCallingClass());
-        Clazz target = config.getClazzes().load(t.getTarget());
+        Clazz target = config.getClazzes().load(member.getDeclaringClass().getName().replace('.', '/'));
 
         String runtimeClassName = null;
         runtimeClassName = t instanceof Invokevirtual 

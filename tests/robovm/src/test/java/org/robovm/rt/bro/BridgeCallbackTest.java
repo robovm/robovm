@@ -24,8 +24,6 @@ import java.util.List;
 
 import org.junit.Test;
 import org.robovm.rt.VM;
-import org.robovm.rt.bro.annotation.AfterBridgeCall;
-import org.robovm.rt.bro.annotation.AfterCallbackCall;
 import org.robovm.rt.bro.annotation.Bridge;
 import org.robovm.rt.bro.annotation.ByVal;
 import org.robovm.rt.bro.annotation.Callback;
@@ -896,9 +894,11 @@ public class BridgeCallbackTest {
     }
     
     @Test
-    public void testInstanceMethods() {
+    public void testInstanceMethods() throws Exception {
         NativeObj obj = new NativeObj();
-        obj.setHandle(0x12345678);
+        Method setHandle = NativeObject.class.getDeclaredMethod("setHandle", long.class);
+        setHandle.setAccessible(true);
+        setHandle.invoke(obj, 0x12345678);
         LongPtr l = new LongPtr();
         
         assertEquals(100 * 100, obj.simpleInstanceMethod(100, l));

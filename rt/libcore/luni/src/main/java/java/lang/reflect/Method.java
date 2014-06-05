@@ -107,6 +107,8 @@ public final class Method extends AccessibleObject implements GenericDeclaration
     private Class<?>[] exceptionTypes;
     private Class<?> returnType;
     private Object defaultValue;
+    private Annotation[] declaredAnnotations;
+    private Annotation[][] parameterAnnotations;
 
     private ListOfTypes genericExceptionTypes;
     private ListOfTypes genericParameterTypes;
@@ -153,6 +155,8 @@ public final class Method extends AccessibleObject implements GenericDeclaration
         this.genericReturnType = orig.genericReturnType;
         this.formalTypeParameters = orig.formalTypeParameters;
         this.genericTypesAreInitialized = orig.genericTypesAreInitialized;
+        this.declaredAnnotations = orig.declaredAnnotations;
+        this.parameterAnnotations = orig.parameterAnnotations;
         
         // Copy the accessible flag.
         if (orig.flag) {
@@ -279,8 +283,11 @@ public final class Method extends AccessibleObject implements GenericDeclaration
     }
     
     @Override
-    public Annotation[] getDeclaredAnnotations() {
-        return getDeclaredAnnotations(method);
+    protected Annotation[] getDeclaredAnnotations(boolean copy) {
+        if (declaredAnnotations == null) {
+            declaredAnnotations = getDeclaredAnnotations(method);
+        }
+        return copy ? declaredAnnotations.clone() : declaredAnnotations;
     }
     static final native Annotation[] getDeclaredAnnotations(long method);
 
@@ -306,11 +313,14 @@ public final class Method extends AccessibleObject implements GenericDeclaration
      * @return an array of arrays of {@code Annotation} instances
      */
     public Annotation[][] getParameterAnnotations() {
-        Annotation[][] parameterAnnotations = getParameterAnnotations(method);
-        if (parameterAnnotations.length == 0) {
-            return noAnnotations(getParameterTypes(false).length);
+        if (parameterAnnotations == null) {
+            Annotation[][] pa = getParameterAnnotations(method);
+            if (pa.length == 0) {
+                pa = noAnnotations(getParameterTypes(false).length);
+            }
+            parameterAnnotations = pa;
         }
-        return parameterAnnotations;
+        return parameterAnnotations.clone();
     }
     final static native Annotation[][] getParameterAnnotations(long method);
     

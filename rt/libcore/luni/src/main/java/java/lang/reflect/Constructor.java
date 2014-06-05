@@ -77,6 +77,8 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
     private Class<T> declaringClass;
     private Class<?>[] parameterTypes;
     private Class<?>[] exceptionTypes;    
+    private Annotation[] declaredAnnotations;
+    private Annotation[][] parameterAnnotations;
 
     ListOfTypes genericExceptionTypes;
     ListOfTypes genericParameterTypes;
@@ -103,6 +105,8 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
         this.genericParameterTypes = orig.genericParameterTypes;
         this.formalTypeParameters = orig.formalTypeParameters;
         this.genericTypesAreInitialized = orig.genericTypesAreInitialized;
+        this.declaredAnnotations = orig.declaredAnnotations;
+        this.parameterAnnotations = orig.parameterAnnotations;
         
         // Copy the accessible flag.
         if (orig.flag) {
@@ -217,10 +221,13 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
     }
 
     @Override
-    public Annotation[] getDeclaredAnnotations() {
-        return Method.getDeclaredAnnotations(method);
+    protected Annotation[] getDeclaredAnnotations(boolean copy) {
+        if (declaredAnnotations == null) {
+            declaredAnnotations = Method.getDeclaredAnnotations(method);
+        }
+        return copy ? declaredAnnotations.clone() : declaredAnnotations;
     }
-    
+
     /**
      * Returns an array of arrays that represent the annotations of the formal
      * parameters of this constructor. If there are no parameters on this
@@ -230,11 +237,14 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
      * @return an array of arrays of {@code Annotation} instances
      */
     public Annotation[][] getParameterAnnotations() {
-        Annotation[][] parameterAnnotations = Method.getParameterAnnotations(method);
-        if (parameterAnnotations.length == 0) {
-            return Method.noAnnotations(getParameterTypes(false).length);
+        if (parameterAnnotations == null) {
+            Annotation[][] pa = Method.getParameterAnnotations(method);
+            if (pa.length == 0) {
+                pa = Method.noAnnotations(getParameterTypes(false).length);
+            }
+            parameterAnnotations = pa;
         }
-        return parameterAnnotations;
+        return parameterAnnotations.clone();
     }
 
     /**

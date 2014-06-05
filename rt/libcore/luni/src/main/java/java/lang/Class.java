@@ -287,6 +287,10 @@ public final class Class<T> implements Serializable, AnnotatedElement, GenericDe
      * @see #getDeclaredAnnotations()
      */
     public Annotation[] getAnnotations() {
+        return getClassCache().getAnnotations(true);
+    }
+
+    final Annotation[] getAnnotations0() {
         /*
          * We need to get the annotations declared on this class, plus the
          * annotations from superclasses that have the "@Inherited" annotation
@@ -299,13 +303,13 @@ public final class Class<T> implements Serializable, AnnotatedElement, GenericDe
          * HashMap might be overkill here.
          */
         HashMap<Class, Annotation> map = new HashMap<Class, Annotation>();
-        Annotation[] declaredAnnotations = getDeclaredAnnotations();
+        Annotation[] declaredAnnotations = getClassCache().getDeclaredAnnotations(false);
 
         for (int i = declaredAnnotations.length-1; i >= 0; --i) {
             map.put(declaredAnnotations[i].annotationType(), declaredAnnotations[i]);
         }
         for (Class<?> sup = getSuperclass(); sup != null; sup = sup.getSuperclass()) {
-            declaredAnnotations = sup.getDeclaredAnnotations();
+            declaredAnnotations = sup.getClassCache().getDeclaredAnnotations(false);
             for (int i = declaredAnnotations.length-1; i >= 0; --i) {
                 Class<?> clazz = declaredAnnotations[i].annotationType();
                 if (!map.containsKey(clazz) && clazz.isAnnotationPresent(Inherited.class)) {
@@ -460,7 +464,11 @@ public final class Class<T> implements Serializable, AnnotatedElement, GenericDe
      *         class that this {@code Class} represents.
      * @see #getAnnotations()
      */
-    native public Annotation[] getDeclaredAnnotations();
+    public Annotation[] getDeclaredAnnotations() {
+        return getClassCache().getDeclaredAnnotations(true);
+    }
+
+    final native Annotation[] getDeclaredAnnotations0();
 
     /**
      * Returns the annotation if it exists.
@@ -469,7 +477,7 @@ public final class Class<T> implements Serializable, AnnotatedElement, GenericDe
         if (annotationClass == null) {
             throw new NullPointerException("annotationClass == null");
         }
-        Annotation[] annos = getDeclaredAnnotations();
+        Annotation[] annos = getClassCache().getDeclaredAnnotations(false);
         for (int i = annos.length-1; i >= 0; --i) {
             if (annos[i].annotationType() == annotationClass) {
                 return (A) annos[i];

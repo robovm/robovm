@@ -88,6 +88,7 @@ public final class Field extends AccessibleObject implements Member {
     private Class<?> declaringClass;
     private String name;
     private Class<?> type;
+    private Annotation[] declaredAnnotations;
 
     private Type genericType;
     private volatile boolean genericTypesAreInitialized = false;
@@ -109,6 +110,7 @@ public final class Field extends AccessibleObject implements Member {
         this.type = orig.type;
         this.genericType = orig.genericType;
         this.genericTypesAreInitialized = orig.genericTypesAreInitialized;
+        this.declaredAnnotations = orig.declaredAnnotations;
 
         // Copy the accessible flag.
         if (orig.flag) {
@@ -196,8 +198,11 @@ public final class Field extends AccessibleObject implements Member {
     }
 
     @Override
-    public Annotation[] getDeclaredAnnotations() {
-        return getDeclaredAnnotations(field);
+    protected Annotation[] getDeclaredAnnotations(boolean copy) {
+        if (declaredAnnotations == null) {
+            declaredAnnotations = getDeclaredAnnotations(field);
+        }
+        return copy ? declaredAnnotations.clone() : declaredAnnotations;
     }
     private static final native Annotation[] getDeclaredAnnotations(long field);
     

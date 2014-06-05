@@ -277,7 +277,7 @@ ObjectArray* Java_java_lang_Class_getDeclaredFields0(Env* env, Class* clazz, jbo
     return result;
 }
 
-ObjectArray* Java_java_lang_Class_getDeclaredAnnotations(Env* env, Class* clazz) {
+ObjectArray* Java_java_lang_Class_getDeclaredAnnotations0(Env* env, Class* clazz) {
     return rvmAttributeGetClassRuntimeVisibleAnnotations(env, clazz);
 }
 

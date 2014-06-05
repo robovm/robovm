@@ -242,6 +242,10 @@ public class AccessibleObject implements AnnotatedElement {
     }
     
     public Annotation[] getDeclaredAnnotations() {
+        return getDeclaredAnnotations(true);
+    }
+
+    protected Annotation[] getDeclaredAnnotations(boolean copy) {
         throw new UnsupportedOperationException();
     }
 
@@ -255,7 +259,7 @@ public class AccessibleObject implements AnnotatedElement {
         if (annotationType == null) {
             throw new NullPointerException("annotationType == null");
         }
-        Annotation[] annos = getAnnotations();
+        Annotation[] annos = getDeclaredAnnotations(false);
         for (int i = annos.length-1; i >= 0; --i) {
             if (annos[i].annotationType() == annotationType) {
                 return (T) annos[i];

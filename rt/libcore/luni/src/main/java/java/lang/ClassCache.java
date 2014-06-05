@@ -15,6 +15,7 @@
  */
 package java.lang;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -29,13 +30,14 @@ import org.robovm.rt.ReflectionAccess;
  *
  * @version $Id$
  */
-class ClassCache<T> {
+final class ClassCache<T> {
     static final ReflectionAccess R = loadReflectionAccess();
     
     private static final Class<?>[] EMPTY_CLASSES = new Class<?>[0];
     private static final Constructor<?>[] EMPTY_CONSTRUCTORS = new Constructor<?>[0];
     private static final Method[] EMPTY_METHODS = new Method[0];
     private static final Field[] EMPTY_FIELDS = new Field[0];    
+    private static final Annotation[] EMPTY_ANNOTATIONS = new Annotation[0];
     
     private final Class<T> clazz;
     
@@ -51,6 +53,8 @@ class ClassCache<T> {
     private Method[] declaredMethods;
     private Method[] declaredPublicMethods;
     private Method[] allPublicMethods;
+    private Annotation[] declaredAnnotations;
+    private Annotation[] allAnnotations;
     
     ClassCache(Class<T> clazz) {
         this.clazz = clazz;
@@ -197,6 +201,16 @@ class ClassCache<T> {
         return getDeclaredMethods(copy);
     }
     
+    Annotation[] getDeclaredAnnotations(boolean copy) {
+        if (declaredAnnotations == null) {
+            declaredAnnotations = clazz.getDeclaredAnnotations0();
+            if (declaredAnnotations == null) {
+                declaredAnnotations = EMPTY_ANNOTATIONS;
+            }
+        }
+        return copy ? declaredAnnotations.clone() : declaredAnnotations;
+    }
+
     Class<?>[] getClasses(boolean copy) {
         if (this.allPublicClasses == null) {
             List<Class<?>> l = buildClassesList(new ArrayList<Class<?>>(), new HashSet<String>(), true);
@@ -221,6 +235,16 @@ class ClassCache<T> {
         return copy ? R.clone(this.allPublicMethods) : this.allPublicMethods;
     }
     
+    Annotation[] getAnnotations(boolean copy) {
+        if (allAnnotations == null) {
+            allAnnotations = clazz.getAnnotations0();
+            if (allAnnotations == null) {
+                allAnnotations = EMPTY_ANNOTATIONS;
+            }
+        }
+        return copy ? allAnnotations.clone() : allAnnotations;
+    }
+
     @SuppressWarnings("unchecked")
     Constructor<T> getDeclaredConstructor(boolean copy, Class<?>... parameterTypes) throws java.lang.NoSuchMethodException {
         Constructor<T> c = findConstructor(getDeclaredConstructors(false), parameterTypes);

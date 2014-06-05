@@ -67,7 +67,6 @@ public class AppCompiler {
      */
     private static final String[] ROOT_CLASS_PATTERNS = {
         "java.lang.**.*",
-        "org.apache.harmony.lang.annotation.*",
         "org.robovm.rt.**.*"
     };
     /**

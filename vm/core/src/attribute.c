@@ -38,10 +38,6 @@ static Class* java_lang_TypeNotPresentException = NULL;
 static Class* java_lang_annotation_AnnotationFormatError = NULL;
 static Class* java_lang_reflect_Method = NULL;
 static Method* java_lang_reflect_Method_init = NULL;
-static Class* org_apache_harmony_lang_annotation_AnnotationMember = NULL;
-static Method* org_apache_harmony_lang_annotation_AnnotationMember_init = NULL;
-static Class* org_apache_harmony_lang_annotation_AnnotationFactory = NULL;
-static Method* org_apache_harmony_lang_annotation_AnnotationFactory_createAnnotation = NULL;
 static Class* java_lang_annotation_Annotation = NULL;
 static Class* array_of_java_lang_annotation_Annotation = NULL;
 static ObjectArray* emptyExceptionTypes = NULL;
@@ -398,6 +394,20 @@ static Method* getAnnotationValueMethod(Env* env, Class* clazz, char* name) {
     return NULL;
 }
 
+static Class* findAnnotationImplClass(Env* env, Class* annotationClass, ClassLoader* classLoader) {
+    char* implName = alloca(strlen(annotationClass->name) + 5 + 1);
+    strcpy(implName, annotationClass->name);
+    strcat(implName, "$Impl");
+    return rvmFindClassUsingLoader(env, implName, classLoader);
+}
+
+static InstanceField* getAnnotationMemberField(Env* env, Class* annotationImplClass, const char* memberName) {
+    char* fieldName = alloca(strlen(memberName) + 2 + 1);
+    strcpy(fieldName, "m$");
+    strcat(fieldName, memberName);
+    return rvmGetInstanceField(env, annotationImplClass, fieldName, "Ljava/lang/Object;");
+}
+
 static jboolean getAnnotationValue(Env* env, void** attributes, Class* expectedAnnotationClass, ClassLoader* classLoader, jvalue* result) {
     char* annotationTypeName = getString(attributes);
     if (expectedAnnotationClass && strncmp(&annotationTypeName[1], expectedAnnotationClass->name, strlen(expectedAnnotationClass->name))) {
@@ -410,10 +420,26 @@ static jboolean getAnnotationValue(Env* env, void** attributes, Class* expectedA
         if (!annotationClass) return FALSE;
     }
 
-    jint length = getInt(attributes);
+    // Find the annotation impl class
+    Class* annotationImplClass = findAnnotationImplClass(env, annotationClass, classLoader);
+    if (rvmExceptionCheck(env)) return FALSE;
 
-    ObjectArray* members = (ObjectArray*) rvmNewObjectArray(env, length, org_apache_harmony_lang_annotation_AnnotationMember, NULL, NULL);
-    if (!members) return FALSE;
+    jint length = getInt(attributes);
+    if (length == 0) {
+        // No member values specified. Use a singleton instance.
+        Method* factoryMethod = rvmGetClassMethod(env, annotationImplClass, "$createSingleton", "()Ljava/lang/Object;");
+        if (rvmExceptionCheck(env)) return FALSE;
+        Object* annotationObject = rvmCallObjectClassMethod(env, annotationImplClass, factoryMethod);
+        if (rvmExceptionCheck(env)) return FALSE;
+        result->l = (jobject) annotationObject;
+        return TRUE;
+    }
+
+    // Call the annotation impl $create() method
+    Method* factoryMethod = rvmGetClassMethod(env, annotationImplClass, "$create", "()Ljava/lang/Object;");
+    if (rvmExceptionCheck(env)) return FALSE;
+    Object* annotationObject = rvmCallObjectClassMethod(env, annotationImplClass, factoryMethod);
+    if (rvmExceptionCheck(env)) return FALSE;
 
     jint i = 0;
     for (i = 0; i < length; i++) {
@@ -423,7 +449,8 @@ static jboolean getAnnotationValue(Env* env, void** attributes, Class* expectedA
         if (!method) {
             skipElementValue(attributes);
         } else {
-            Class* type = findType(env, rvmGetReturnType(method->desc), method->clazz->classLoader);
+            const char* memberDesc = rvmGetReturnType(method->desc);
+            Class* type = findType(env, memberDesc, method->clazz->classLoader);
             Object* value = NULL;
             if (!type) {
                 value = rvmExceptionClear(env);
@@ -435,31 +462,17 @@ static jboolean getAnnotationValue(Env* env, void** attributes, Class* expectedA
                     value = rvmBox(env, type, &v);
                 }
             }
-            Object* jName = rvmNewStringUTF(env, name, -1);
-            if (!jName) return FALSE;
-            jvalue args[4];
-            args[0].j = PTR_TO_LONG(method);
-            Object* jMethod = rvmNewObjectA(env, java_lang_reflect_Method, java_lang_reflect_Method_init, args);
-            if (!jMethod) return FALSE;
 
-            args[0].l = (jobject) jName;
-            args[1].l = (jobject) value;
-            args[2].l = (jobject) type;;
-            args[3].l = (jobject) jMethod;
-            Object* member = rvmNewObjectA(env, org_apache_harmony_lang_annotation_AnnotationMember, 
-                                           org_apache_harmony_lang_annotation_AnnotationMember_init, args);
-            if (!member) return FALSE;
-            members->values[i] = member;
+            InstanceField* field = getAnnotationMemberField(env, annotationImplClass, method->name);
+            if (!field) return FALSE;
+
+            rvmSetObjectInstanceFieldValue(env, annotationObject, field, value);
+            if (rvmExceptionCheck(env)) return FALSE;
         }
     }
 
-    jvalue args[2];
-    args[0].l = (jobject) annotationClass;
-    args[1].l = (jobject) members;
-    Object* o = rvmCallObjectClassMethodA(env, org_apache_harmony_lang_annotation_AnnotationFactory, 
-                                          org_apache_harmony_lang_annotation_AnnotationFactory_createAnnotation, args);
-    if (!rvmExceptionCheck(env)) result->l = (jobject) o;
-    return result->l ? TRUE : FALSE;
+    result->l = (jobject) annotationObject;
+    return TRUE;
 }
 
 
@@ -736,17 +749,6 @@ jboolean rvmInitAttributes(Env* env) {
     if (!java_lang_reflect_Method) return FALSE;
     java_lang_reflect_Method_init = rvmGetInstanceMethod(env, java_lang_reflect_Method, "<init>", "(J)V");
     if (!java_lang_reflect_Method_init) return FALSE;
-    org_apache_harmony_lang_annotation_AnnotationMember = rvmFindClassUsingLoader(env, "org/apache/harmony/lang/annotation/AnnotationMember", NULL);
-    if (!org_apache_harmony_lang_annotation_AnnotationMember) return FALSE;
-    org_apache_harmony_lang_annotation_AnnotationMember_init = rvmGetInstanceMethod(env, org_apache_harmony_lang_annotation_AnnotationMember, 
-        "<init>", "(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Class;Ljava/lang/reflect/Method;)V");
-    if (!org_apache_harmony_lang_annotation_AnnotationMember_init) return FALSE;
-
-    org_apache_harmony_lang_annotation_AnnotationFactory = rvmFindClassUsingLoader(env, "org/apache/harmony/lang/annotation/AnnotationFactory", NULL);
-    if (!org_apache_harmony_lang_annotation_AnnotationFactory) return FALSE;
-    org_apache_harmony_lang_annotation_AnnotationFactory_createAnnotation = rvmGetClassMethod(env, org_apache_harmony_lang_annotation_AnnotationFactory, 
-        "createAnnotation", "(Ljava/lang/Class;[Lorg/apache/harmony/lang/annotation/AnnotationMember;)Ljava/lang/annotation/Annotation;");
-    if (!org_apache_harmony_lang_annotation_AnnotationFactory_createAnnotation) return FALSE;
 
     java_lang_annotation_Annotation = rvmFindClassUsingLoader(env, "java/lang/annotation/Annotation", NULL);
     if (!java_lang_annotation_Annotation) return FALSE;

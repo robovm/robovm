@@ -89,7 +89,7 @@ annotations on TYPE class android.test.anno.FullyNoted(1):
   annotations on FIELD int android.test.anno.FullyNoted.mBar:
     @android.test.anno.AnnoFancyField(nombre=fubar)
       interface android.test.anno.AnnoFancyField
-    aff: @android.test.anno.AnnoFancyField(nombre=fubar) / class $Proxy17
+    aff: @android.test.anno.AnnoFancyField(nombre=fubar) / class android.test.anno.AnnoFancyField$Impl
     --> nombre is 'fubar'
 
 SimplyNoted.get(AnnoSimpleType) = @android.test.anno.AnnoSimpleType()

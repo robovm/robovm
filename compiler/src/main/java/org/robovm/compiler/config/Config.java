@@ -51,6 +51,7 @@ import org.robovm.compiler.clazz.Path;
 import org.robovm.compiler.llvm.DataLayout;
 import org.robovm.compiler.log.Logger;
 import org.robovm.compiler.plugin.CompilerPlugin;
+import org.robovm.compiler.plugin.annotation.AnnotationImplPlugin;
 import org.robovm.compiler.plugin.objc.ObjCBlockPlugin;
 import org.robovm.compiler.plugin.objc.ObjCMemberPlugin;
 import org.robovm.compiler.plugin.objc.ObjCProtocolProxyPlugin;
@@ -627,7 +628,8 @@ public class Config {
         compilerPlugins.addAll(0, Arrays.asList(
             new ObjCProtocolProxyPlugin(),
             new ObjCBlockPlugin(),
-            new ObjCMemberPlugin()
+            new ObjCMemberPlugin(),
+            new AnnotationImplPlugin()
         ));
 
         mergeConfigsFromClasspath();

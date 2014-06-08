@@ -47,7 +47,7 @@ char* CuStrCopy(const char* old)
 void CuStringInit(CuString* str)
 {
 	str->length = 0;
-	str->size = STRING_MAX;
+	str->size = CU_STRING_MAX;
 	str->buffer = (char*) malloc(sizeof(char) * str->size);
 	str->buffer[0] = '\0';
 }
@@ -56,7 +56,7 @@ CuString* CuStringNew(void)
 {
 	CuString* str = (CuString*) malloc(sizeof(CuString));
 	str->length = 0;
-	str->size = STRING_MAX;
+	str->size = CU_STRING_MAX;
 	str->buffer = (char*) malloc(sizeof(char) * str->size);
 	str->buffer[0] = '\0';
 	return str;
@@ -85,7 +85,7 @@ void CuStringAppend(CuString* str, const char* text)
 
 	length = strlen(text);
 	if (str->length + length + 1 >= str->size)
-		CuStringResize(str, str->length + length + 1 + STRING_INC);
+		CuStringResize(str, str->length + length + 1 + CU_STRING_INC);
 	str->length += length;
 	strcat(str->buffer, text);
 }
@@ -114,7 +114,7 @@ void CuStringInsert(CuString* str, const char* text, int pos)
 	if (pos > str->length)
 		pos = str->length;
 	if (str->length + length + 1 >= str->size)
-		CuStringResize(str, str->length + length + 1 + STRING_INC);
+		CuStringResize(str, str->length + length + 1 + CU_STRING_INC);
 	memmove(str->buffer + pos + length, str->buffer + pos, (str->length - pos) + 1);
 	str->length += length;
 	memcpy(str->buffer + pos, text, length);
@@ -220,7 +220,7 @@ void CuAssertStrEquals_LineMsg(CuTest* tc, const char* file, int line, const cha
 void CuAssertIntEquals_LineMsg(CuTest* tc, const char* file, int line, const char* message, 
 	int expected, int actual)
 {
-	char buf[STRING_MAX];
+	char buf[CU_STRING_MAX];
 	if (expected == actual) return;
 	sprintf(buf, "expected <%d> but was <%d>", expected, actual);
 	CuFail_Line(tc, file, line, message, buf);
@@ -229,7 +229,7 @@ void CuAssertIntEquals_LineMsg(CuTest* tc, const char* file, int line, const cha
 void CuAssertDblEquals_LineMsg(CuTest* tc, const char* file, int line, const char* message, 
 	double expected, double actual, double delta)
 {
-	char buf[STRING_MAX];
+	char buf[CU_STRING_MAX];
 	if (fabs(expected - actual) <= delta) return;
 	sprintf(buf, "expected <%f> but was <%f>", expected, actual); 
 
@@ -239,7 +239,7 @@ void CuAssertDblEquals_LineMsg(CuTest* tc, const char* file, int line, const cha
 void CuAssertPtrEquals_LineMsg(CuTest* tc, const char* file, int line, const char* message, 
 	void* expected, void* actual)
 {
-	char buf[STRING_MAX];
+	char buf[CU_STRING_MAX];
 	if (expected == actual) return;
 	sprintf(buf, "expected pointer <0x%p> but was <0x%p>", expected, actual);
 	CuFail_Line(tc, file, line, message, buf);

@@ -149,7 +149,10 @@ public class ToolchainUtil {
                 objectsOut = new BufferedOutputStream(new FileOutputStream(objectsFile));
                 for (File f : objectFiles) {
                     objectsOut.write('"');
-                    objectsOut.write(f.getAbsolutePath().getBytes());
+                     String path = f.getAbsolutePath();
+                     if( config.getOs() == OS.windows)
+                        path = path.replace("\\", "\\\\");
+                    objectsOut.write(path.getBytes());
                     objectsOut.write('"');
                     objectsOut.write('\n');
                 }

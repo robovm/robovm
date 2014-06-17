@@ -301,7 +301,7 @@ public class ClassCompiler {
 
         String triple = config.getTriple();
         Target target = Target.lookupTarget(triple);
-        TargetMachine targetMachine = target.createTargetMachine(triple);
+        TargetMachine targetMachine = target.createTargetMachine(triple, config.getArch().getLlvmName(), null, null, null, null);
         targetMachine.setAsmVerbosityDefault(true);
         targetMachine.setFunctionSections(true);
         targetMachine.setDataSections(true);

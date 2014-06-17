@@ -1,9 +1,9 @@
 /*
 ******************************************************************************
-*                                                                            *
-* Copyright (C) 2009, International Business Machines                   *
-*                Corporation and others. All Rights Reserved.                *
-*                                                                            *
+*
+* Copyright (C) 2009-2011, International Business Machines
+*                Corporation and others. All Rights Reserved.
+*
 ******************************************************************************
 *   file name:  ucln_imp.h
 *   encoding:   US-ASCII
@@ -32,8 +32,7 @@
  * 3) Implementing own automatic cleanup functions
  *
  * For option 1, ensure that UCLN_NO_AUTO_CLEANUP is set to 0 by using --enable-auto-cleanup
- * configure option or by setting UCLN_NO_AUTO_CLEANUP to 0 in pwin32.h (For Visual Studio
- * solution file builds)
+ * configure option or by otherwise setting UCLN_NO_AUTO_CLEANUP to 0
  * For option 2, follow option 1 and also define UCLN_AUTO_ATEXIT
  * For option 3, follow option 1 and also define UCLN_AUTO_LOCAL (see below for more information)
  */
@@ -56,6 +55,12 @@
  */
 /*static void ucln_unRegisterAutomaticCleanup();*/
 
+#ifdef UCLN_TYPE_IS_COMMON
+#   define UCLN_CLEAN_ME_UP u_cleanup()
+#else
+#   define UCLN_CLEAN_ME_UP ucln_cleanupOne(UCLN_TYPE)
+#endif
+
 /* ------------ automatic cleanup: registration. Choose ONE ------- */
 #if defined(UCLN_AUTO_LOCAL)
 /* To use:
@@ -75,7 +80,7 @@ static UBool gAutoCleanRegistered = FALSE;
 
 static void ucln_atexit_handler()
 {
-    ucln_cleanupOne(UCLN_TYPE);
+    UCLN_CLEAN_ME_UP;
 }
 
 static void ucln_registerAutomaticCleanup()
@@ -101,19 +106,11 @@ U_CAPI void U_EXPORT2 UCLN_FINI (void);
 U_CAPI void U_EXPORT2 UCLN_FINI ()
 {
     /* This function must be defined, if UCLN_FINI is defined, else link error. */
-     ucln_cleanupOne(UCLN_TYPE);
-}
-#elif defined(__GNUC__)
-/* GCC - use __attribute((destructor)) */
-static void ucln_destructor()   __attribute__((destructor)) ;
-
-static void ucln_destructor() 
-{
-    ucln_cleanupOne(UCLN_TYPE);
+     UCLN_CLEAN_ME_UP;
 }
 
 /* Windows: DllMain */
-#elif defined (U_WINDOWS)
+#elif U_PLATFORM_HAS_WIN32_API
 /* 
  * ICU's own DllMain.
  */
@@ -145,7 +142,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
         case DLL_PROCESS_DETACH:
             /* Here is the one we actually care about. */
 
-            ucln_cleanupOne(UCLN_TYPE);
+            UCLN_CLEAN_ME_UP;
 
             break;
 
@@ -162,6 +159,16 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
     }
     return status;
 }
+
+#elif defined(__GNUC__)
+/* GCC - use __attribute((destructor)) */
+static void ucln_destructor()   __attribute__((destructor)) ;
+
+static void ucln_destructor() 
+{
+    UCLN_CLEAN_ME_UP;
+}
+
 #endif
 
 #endif /* UCLN_NO_AUTO_CLEANUP */

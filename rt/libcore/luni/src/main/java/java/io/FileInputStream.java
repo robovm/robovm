@@ -53,7 +53,7 @@ import static libcore.io.OsConstants.*;
  * @see BufferedInputStream
  * @see FileOutputStream
  */
-public class FileInputStream extends InputStream implements Closeable {
+public class FileInputStream extends InputStream {
 
     private FileDescriptor fd;
     private final boolean shouldClose;

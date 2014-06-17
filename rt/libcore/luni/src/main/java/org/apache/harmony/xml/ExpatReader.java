@@ -309,15 +309,10 @@ public class ExpatReader implements XMLReader {
         parser.parseDocument(in);
     }
 
-    private void parse(InputStream in, String encoding, String publicId,
-            String systemId) throws IOException, SAXException {
-        ExpatParser parser = new ExpatParser(
-                encoding,
-                this,
-                processNamespaces,
-                publicId,
-                systemId
-        );
+    private void parse(InputStream in, String charsetName, String publicId, String systemId)
+            throws IOException, SAXException {
+        ExpatParser parser =
+            new ExpatParser(charsetName, this, processNamespaces, publicId, systemId);
         parser.parseDocument(in);
     }
 

@@ -1,7 +1,7 @@
 /*
 *******************************************************************************
-* Copyright (C) 2007-2010, International Business Machines Corporation and         *
-* others. All Rights Reserved.                                                *
+* Copyright (C) 2007-2013, International Business Machines Corporation and
+* others. All Rights Reserved.
 *******************************************************************************
 */
 #ifndef VTZONE_H
@@ -94,7 +94,7 @@ public:
      * @param basicTZ The basic time zone instance
      * @param status Output param to filled in with a success or an error.
      * @return A <code>VTimeZone</code> object initialized by the basic time zone.
-     * @draft ICU 4.6
+     * @stable ICU 4.6
      */
     static VTimeZone* createVTimeZoneFromBasicTimeZone(const BasicTimeZone& basicTZ,
                                                        UErrorCode &status);
@@ -160,7 +160,7 @@ public:
      * @param status Output param to filled in with a success or an error.
      * @stable ICU 3.8
      */
-    void write(UDate start, UnicodeString& result, UErrorCode& status) /*const*/;
+    void write(UDate start, UnicodeString& result, UErrorCode& status) const;
 
     /**
      * Writes RFC2445 VTIMEZONE data applicalbe for the specified date.
@@ -175,7 +175,7 @@ public:
      * @param status Output param to filled in with a success or an error.
      * @stable ICU 3.8
      */
-    void writeSimple(UDate time, UnicodeString& result, UErrorCode& status) /*const*/;
+    void writeSimple(UDate time, UnicodeString& result, UErrorCode& status) const;
 
     /**
      * Clones TimeZone objects polymorphically. Clients are responsible for deleting
@@ -319,7 +319,7 @@ public:
      * @return  TRUE if the transition is found.
      * @stable ICU 3.8
      */
-    virtual UBool getNextTransition(UDate base, UBool inclusive, TimeZoneTransition& result) /*const*/;
+    virtual UBool getNextTransition(UDate base, UBool inclusive, TimeZoneTransition& result) const;
 
     /**
      * Gets the most recent time zone transition before the base time.
@@ -329,7 +329,7 @@ public:
      * @return  TRUE if the transition is found.
      * @stable ICU 3.8
      */
-    virtual UBool getPreviousTransition(UDate base, UBool inclusive, TimeZoneTransition& result) /*const*/;
+    virtual UBool getPreviousTransition(UDate base, UBool inclusive, TimeZoneTransition& result) const;
 
     /**
      * Returns the number of <code>TimeZoneRule</code>s which represents time transitions,
@@ -339,7 +339,7 @@ public:
      * @return The number of <code>TimeZoneRule</code>s representing time transitions.
      * @stable ICU 3.8
      */
-    virtual int32_t countTransitionRules(UErrorCode& status) /*const*/;
+    virtual int32_t countTransitionRules(UErrorCode& status) const;
 
     /**
      * Gets the <code>InitialTimeZoneRule</code> and the set of <code>TimeZoneRule</code>
@@ -358,7 +358,7 @@ public:
      * @stable ICU 3.8
      */
     virtual void getTimeZoneRules(const InitialTimeZoneRule*& initial,
-        const TimeZoneRule* trsrules[], int32_t& trscount, UErrorCode& status) /*const*/;
+        const TimeZoneRule* trsrules[], int32_t& trscount, UErrorCode& status) const;
 
 private:
     enum { DEFAULT_VTIMEZONE_LINES = 100 };
@@ -369,8 +369,8 @@ private:
     VTimeZone();
     static VTimeZone* createVTimeZone(VTZReader* reader);
     void write(VTZWriter& writer, UErrorCode& status) const;
-    void write(UDate start, VTZWriter& writer, UErrorCode& status) /*const*/;
-    void writeSimple(UDate time, VTZWriter& writer, UErrorCode& status) /*const*/;
+    void write(UDate start, VTZWriter& writer, UErrorCode& status) const;
+    void writeSimple(UDate time, VTZWriter& writer, UErrorCode& status) const;
     void load(VTZReader& reader, UErrorCode& status);
     void parse(UErrorCode& status);
 

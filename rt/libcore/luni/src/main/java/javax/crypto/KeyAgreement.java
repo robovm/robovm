@@ -99,7 +99,7 @@ public class KeyAgreement {
     public static final KeyAgreement getInstance(String algorithm)
             throws NoSuchAlgorithmException {
         if (algorithm == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("algorithm == null");
         }
         Engine.SpiAndProvider sap = ENGINE.getInstance(algorithm, null);
         return new KeyAgreement((KeyAgreementSpi) sap.spi, sap.provider, algorithm);
@@ -161,7 +161,7 @@ public class KeyAgreement {
             throw new IllegalArgumentException("provider == null");
         }
         if (algorithm == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("algorithm == null");
         }
         Object spi = ENGINE.getInstance(algorithm, provider, null);
         return new KeyAgreement((KeyAgreementSpi) spi, provider, algorithm);

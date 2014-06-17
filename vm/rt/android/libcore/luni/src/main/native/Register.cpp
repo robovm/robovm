@@ -16,93 +16,67 @@
 
 #define LOG_TAG "libcore" // We'll be next to "dalvikvm" in the log; make the distinction clear.
 
+#include "cutils/log.h"
 #include "JniConstants.h"
 #include "ScopedLocalFrame.h"
 
 #include <stdlib.h>
 
-extern int register_java_io_Console(JNIEnv* env);
-extern int register_java_io_File(JNIEnv* env);
-extern int register_java_io_ObjectStreamClass(JNIEnv* env);
-extern int register_java_lang_Character(JNIEnv* env);
-extern int register_java_lang_Math(JNIEnv* env);
-extern int register_java_lang_ProcessManager(JNIEnv* env);
-extern int register_java_lang_RealToString(JNIEnv* env);
-extern int register_java_lang_StrictMath(JNIEnv* env);
-extern int register_java_lang_StringToReal(JNIEnv* env);
-extern int register_java_lang_System(JNIEnv* env);
-extern int register_java_math_NativeBN(JNIEnv* env);
-extern int register_java_nio_ByteOrder(JNIEnv* env);
-extern int register_java_nio_charset_Charsets(JNIEnv* env);
-extern int register_java_text_Bidi(JNIEnv* env);
-extern int register_java_util_regex_Matcher(JNIEnv* env);
-extern int register_java_util_regex_Pattern(JNIEnv* env);
-extern int register_java_util_zip_Adler32(JNIEnv* env);
-extern int register_java_util_zip_CRC32(JNIEnv* env);
-extern int register_java_util_zip_Deflater(JNIEnv* env);
-extern int register_java_util_zip_Inflater(JNIEnv* env);
-extern int register_libcore_icu_ICU(JNIEnv* env);
-extern int register_libcore_icu_NativeBreakIterator(JNIEnv* env);
-extern int register_libcore_icu_NativeCollation(JNIEnv* env);
-extern int register_libcore_icu_NativeConverter(JNIEnv* env);
-extern int register_libcore_icu_NativeDecimalFormat(JNIEnv* env);
-extern int register_libcore_icu_NativeIDN(JNIEnv* env);
-extern int register_libcore_icu_NativeNormalizer(JNIEnv* env);
-extern int register_libcore_icu_NativePluralRules(JNIEnv* env);
-extern int register_libcore_icu_TimeZones(JNIEnv* env);
-extern int register_libcore_io_AsynchronousCloseMonitor(JNIEnv* env);
-extern int register_libcore_io_Memory(JNIEnv* env);
-extern int register_libcore_io_OsConstants(JNIEnv* env);
-extern int register_libcore_io_Posix(JNIEnv* env);
-extern int register_libcore_net_RawSocket(JNIEnv* env);
-extern int register_org_apache_harmony_dalvik_NativeTestTarget(JNIEnv* env);
-extern int register_org_apache_harmony_xml_ExpatParser(JNIEnv* env);
-extern int register_org_apache_harmony_xnet_provider_jsse_NativeCrypto(JNIEnv* env);
+// RoboVM note: Macro slightly changed to just define prototypes. All functions return int.
+#define REGISTER(FN) extern int FN(JNIEnv*)
+    REGISTER(register_java_io_Console);
+    REGISTER(register_java_io_File);
+    REGISTER(register_java_io_ObjectStreamClass);
+    REGISTER(register_java_lang_Character);
+    REGISTER(register_java_lang_Double);
+    REGISTER(register_java_lang_Float);
+    REGISTER(register_java_lang_Math);
+    REGISTER(register_java_lang_ProcessManager);
+    REGISTER(register_java_lang_RealToString);
+    REGISTER(register_java_lang_StrictMath);
+    REGISTER(register_java_lang_StringToReal);
+    REGISTER(register_java_lang_System);
+    REGISTER(register_java_math_NativeBN);
+    REGISTER(register_java_nio_ByteOrder);
+    REGISTER(register_java_nio_charset_Charsets);
+    REGISTER(register_java_text_Bidi);
+    REGISTER(register_java_util_regex_Matcher);
+    REGISTER(register_java_util_regex_Pattern);
+    REGISTER(register_java_util_zip_Adler32);
+    REGISTER(register_java_util_zip_CRC32);
+    REGISTER(register_java_util_zip_Deflater);
+    REGISTER(register_java_util_zip_Inflater);
+    REGISTER(register_libcore_icu_AlphabeticIndex);
+    REGISTER(register_libcore_icu_DateIntervalFormat);
+    REGISTER(register_libcore_icu_ICU);
+    REGISTER(register_libcore_icu_NativeBreakIterator);
+    REGISTER(register_libcore_icu_NativeCollation);
+    REGISTER(register_libcore_icu_NativeConverter);
+    REGISTER(register_libcore_icu_NativeDecimalFormat);
+    REGISTER(register_libcore_icu_NativeIDN);
+    REGISTER(register_libcore_icu_NativeNormalizer);
+    REGISTER(register_libcore_icu_NativePluralRules);
+    REGISTER(register_libcore_icu_TimeZoneNames);
+    REGISTER(register_libcore_icu_Transliterator);
+    REGISTER(register_libcore_io_AsynchronousCloseMonitor);
+    REGISTER(register_libcore_io_Memory);
+    REGISTER(register_libcore_io_OsConstants);
+    REGISTER(register_libcore_io_Posix);
+    REGISTER(register_libcore_net_RawSocket);
+    REGISTER(register_org_apache_harmony_dalvik_NativeTestTarget);
+    REGISTER(register_org_apache_harmony_xml_ExpatParser);
+    REGISTER(register_sun_misc_Unsafe);
+#undef REGISTER
 
-// DalvikVM calls this on startup, so we can statically register all our native methods.
+// RoboVM note: rvmInit() calls this on startup, so we can statically register all our native methods.
 extern "C" int registerCoreLibrariesJni(JNIEnv* env) {
     ScopedLocalFrame localFrame(env);
 
     JniConstants::init(env);
 
     bool result =
-//            register_java_io_Console(env) != -1 &&
-//            register_java_io_File(env) != -1 &&
-//            register_java_io_ObjectStreamClass(env) != -1 &&
-//            register_java_lang_Character(env) != -1 &&
-//            register_java_lang_Math(env) != -1 &&
-//            register_java_lang_ProcessManager(env) != -1 &&
-//            register_java_lang_RealToString(env) != -1 &&
-//            register_java_lang_StrictMath(env) != -1 &&
-//            register_java_lang_StringToReal(env) != -1 &&
-//            register_java_lang_System(env) != -1 &&
-//            register_java_math_NativeBN(env) != -1 &&
-//            register_java_nio_ByteOrder(env) != -1 &&
-//            register_java_nio_charset_Charsets(env) != -1 &&
-//            register_java_text_Bidi(env) != -1 &&
-//            register_java_util_regex_Matcher(env) != -1 &&
-//            register_java_util_regex_Pattern(env) != -1 &&
-//            register_java_util_zip_Adler32(env) != -1 &&
-//            register_java_util_zip_CRC32(env) != -1 &&
-//            register_java_util_zip_Deflater(env) != -1 &&
-//            register_java_util_zip_Inflater(env) != -1 &&
             register_libcore_icu_ICU(env) != -1 &&
-//            register_libcore_icu_NativeBreakIterator(env) != -1 &&
-//            register_libcore_icu_NativeCollation(env) != -1 &&
-//            register_libcore_icu_NativeConverter(env) != -1 &&
-//            register_libcore_icu_NativeDecimalFormat(env) != -1 &&
-//            register_libcore_icu_NativeIDN(env) != -1 &&
-//            register_libcore_icu_NativeNormalizer(env) != -1 &&
-//            register_libcore_icu_NativePluralRules(env) != -1 &&
-//            register_libcore_icu_TimeZones(env) != -1 &&
             register_libcore_io_AsynchronousCloseMonitor(env) != -1 &&
-//            register_libcore_io_Memory(env) != -1 &&
-//            register_libcore_io_OsConstants(env) != -1 &&
-//            register_libcore_io_Posix(env) != -1 &&
-//            register_libcore_net_RawSocket(env) != -1 &&
-//            register_org_apache_harmony_dalvik_NativeTestTarget(env) != -1 &&
-//            register_org_apache_harmony_xml_ExpatParser(env) != -1 &&
-//            register_org_apache_harmony_xnet_provider_jsse_NativeCrypto(env) != -1 &&
             true;
 
     if (!result) {

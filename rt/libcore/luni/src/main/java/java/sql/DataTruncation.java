@@ -49,7 +49,7 @@ public class DataTruncation extends SQLWarning implements Serializable {
 
     /**
      * Creates the {@code DataTruncation} object. The reason is set to {@code
-     * "Data truncation"}, the {@code ErrorCode} is set to the {@code
+     * "Data truncation"}, the error code is set to the {@code
      * SQLException} default value, and the other fields are set to the values
      * supplied as arguments.
      *
@@ -79,7 +79,7 @@ public class DataTruncation extends SQLWarning implements Serializable {
 
     /**
      * Creates a DataTruncation. The Reason is set to "Data truncation", the
-     * ErrorCode is set to the SQLException default value and other fields are
+     * error code is set to the SQLException default value and other fields are
      * set to the values supplied on this method.
      *
      * @param index

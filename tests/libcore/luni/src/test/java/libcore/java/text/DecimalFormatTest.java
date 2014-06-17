@@ -22,8 +22,8 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.util.Currency;
 import java.util.Locale;
-import tests.support.Support_Locale;
 
 public class DecimalFormatTest extends junit.framework.TestCase {
     public void test_exponentSeparator() throws Exception {
@@ -80,11 +80,9 @@ public class DecimalFormatTest extends junit.framework.TestCase {
         assertDecFmtWithMultiplierAndFractionByLocale("3330000000000000000000000000000000", 3, 4,
                     Locale.US, "9,990,000,000,000,000,000,000,000,000,000,000");
 
-        Locale inLocale = new Locale("en", "IN");
-        if (Support_Locale.isLocaleAvailable(inLocale)) {
-            assertDecFmtWithMultiplierAndFractionByLocale("3330000000000000000000000000000000", 3, 4,
-                    inLocale, "9,99,00,00,00,00,00,00,00,00,00,00,00,00,00,00,000");
-        }
+        Locale en_IN = new Locale("en", "IN");
+        assertDecFmtWithMultiplierAndFractionByLocale("3330000000000000000000000000000000", 3, 4,
+                en_IN, "9,99,00,00,00,00,00,00,00,00,00,00,00,00,00,00,000");
     }
 
     public void testBigDecimalTestBigIntWithMultiplier() {
@@ -103,22 +101,20 @@ public class DecimalFormatTest extends junit.framework.TestCase {
         assertDecFmtWithMultiplierAndFractionByLocale("98765432109876543210987654321", -10, 0,
                 Locale.US, "-987,654,321,098,765,432,109,876,543,210");
 
-        Locale inLocale = new Locale("en", "IN");
-        if (Support_Locale.isLocaleAvailable(inLocale)) {
-            assertDecFmtWithMultiplierAndFractionByLocale("123456789012345", 10, 0,
-                    inLocale, "1,23,45,67,89,01,23,450");
-            assertDecFmtWithMultiplierAndFractionByLocale("12345678901234567890", 10, 0,
-                    inLocale, "12,34,56,78,90,12,34,56,78,900");
-            assertDecFmtWithMultiplierAndFractionByLocale("98765432109876543210987654321", 10, 0,
-                    inLocale, "9,87,65,43,21,09,87,65,43,21,09,87,65,43,210");
+        Locale en_IN = new Locale("en", "IN");
+        assertDecFmtWithMultiplierAndFractionByLocale("123456789012345", 10, 0,
+                en_IN, "1,23,45,67,89,01,23,450");
+        assertDecFmtWithMultiplierAndFractionByLocale("12345678901234567890", 10, 0,
+                en_IN, "12,34,56,78,90,12,34,56,78,900");
+        assertDecFmtWithMultiplierAndFractionByLocale("98765432109876543210987654321", 10, 0,
+                en_IN, "9,87,65,43,21,09,87,65,43,21,09,87,65,43,210");
 
-            assertDecFmtWithMultiplierAndFractionByLocale("123456789012345", -10, 0,
-                    inLocale, "-1,23,45,67,89,01,23,450");
-            assertDecFmtWithMultiplierAndFractionByLocale("12345678901234567890", -10, 0,
-                    inLocale, "-12,34,56,78,90,12,34,56,78,900");
-            assertDecFmtWithMultiplierAndFractionByLocale("98765432109876543210987654321", -10, 0,
-                    inLocale, "-9,87,65,43,21,09,87,65,43,21,09,87,65,43,210");
-        }
+        assertDecFmtWithMultiplierAndFractionByLocale("123456789012345", -10, 0,
+                en_IN, "-1,23,45,67,89,01,23,450");
+        assertDecFmtWithMultiplierAndFractionByLocale("12345678901234567890", -10, 0,
+                en_IN, "-12,34,56,78,90,12,34,56,78,900");
+        assertDecFmtWithMultiplierAndFractionByLocale("98765432109876543210987654321", -10, 0,
+                en_IN, "-9,87,65,43,21,09,87,65,43,21,09,87,65,43,210");
     }
 
     public void testBigDecimalICUConsistency() {
@@ -175,5 +171,30 @@ public class DecimalFormatTest extends junit.framework.TestCase {
         df.setMaximumFractionDigits(fraction);
         BigDecimal d = new BigDecimal(value);
         assertEquals(expectedResult, df.format(d));
+    }
+
+    public void testSetZeroDigitForPattern() {
+        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols();
+        decimalFormatSymbols.setZeroDigit('a');
+        DecimalFormat formatter = new DecimalFormat();
+        formatter.setDecimalFormatSymbols(decimalFormatSymbols);
+        formatter.applyLocalizedPattern("#.aa");
+        assertEquals("e.fa", formatter.format(4.50));
+    }
+
+    public void testSetZeroDigitForFormatting() {
+        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols();
+        decimalFormatSymbols.setZeroDigit('a');
+        DecimalFormat formatter = new DecimalFormat();
+        formatter.setDecimalFormatSymbols(decimalFormatSymbols);
+        formatter.applyLocalizedPattern("#");
+        assertEquals("eadacab", formatter.format(4030201));
+    }
+
+    public void testBug9087737() throws Exception {
+        DecimalFormat df = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.US);
+        // These shouldn't make valgrind unhappy.
+        df.setCurrency(Currency.getInstance("CHF"));
+        df.setCurrency(Currency.getInstance("GBP"));
     }
 }

@@ -53,12 +53,10 @@ public final class Math {
      * <li>{@code abs(-infinity) = +infinity}</li>
      * <li>{@code abs(NaN) = NaN}</li>
      * </ul>
-     *
-     * @param d
-     *            the value whose absolute value has to be computed.
-     * @return the absolute value of the argument.
      */
-    public static native double abs(double d);
+    public static double abs(double d) {
+        return Double.longBitsToDouble(Double.doubleToRawLongBits(d) & 0x7fffffffffffffffL);
+    }
 
     /**
      * Returns the absolute value of the argument.
@@ -70,41 +68,26 @@ public final class Math {
      * <li>{@code abs(-infinity) = +infinity}</li>
      * <li>{@code abs(NaN) = NaN}</li>
      * </ul>
-     *
-     * @param f
-     *            the value whose absolute value has to be computed.
-     * @return the argument if it is positive, otherwise the negation of the
-     *         argument.
      */
-    public static native float abs(float f);
+    public static float abs(float f) {
+        return Float.intBitsToFloat(Float.floatToRawIntBits(f) & 0x7fffffff);
+    }
 
     /**
      * Returns the absolute value of the argument.
      * <p>
      * If the argument is {@code Integer.MIN_VALUE}, {@code Integer.MIN_VALUE}
      * is returned.
-     *
-     * @param i
-     *            the value whose absolute value has to be computed.
-     * @return the argument if it is positive, otherwise the negation of the
-     *         argument.
      */
     public static int abs(int i) {
-        // RoboVM note: This is native in Android
         return (i >= 0) ? i : -i;
     }
 
     /**
      * Returns the absolute value of the argument. If the argument is {@code
      * Long.MIN_VALUE}, {@code Long.MIN_VALUE} is returned.
-     *
-     * @param l
-     *            the value whose absolute value has to be computed.
-     * @return the argument if it is positive, otherwise the negation of the
-     *         argument.
      */
     public static long abs(long l) {
-        // RoboVM note: This is native in Android
         return (l >= 0) ? l : -l;
     }
 
@@ -225,7 +208,7 @@ public final class Math {
 
     /**
      * Returns the double conversion of the most negative (closest to negative
-     * infinity) integer value which is greater than the argument.
+     * infinity) integer value greater than or equal to the argument.
      * <p>
      * Special cases:
      * <ul>
@@ -236,10 +219,6 @@ public final class Math {
      * <li>{@code ceil(-infinity) = -infinity}</li>
      * <li>{@code ceil(NaN) = NaN}</li>
      * </ul>
-     *
-     * @param d
-     *            the value whose closest integer value has to be computed.
-     * @return the ceiling of the argument.
      */
     public static native double ceil(double d);
 
@@ -326,7 +305,7 @@ public final class Math {
 
     /**
      * Returns the double conversion of the most positive (closest to positive
-     * infinity) integer value which is less than the argument.
+     * infinity) integer value less than or equal to the argument.
      * <p>
      * Special cases:
      * <ul>
@@ -336,10 +315,6 @@ public final class Math {
      * <li>{@code floor(-infinity) = -infinity}</li>
      * <li>{@code floor(NaN) = NaN}</li>
      * </ul>
-     *
-     * @param d
-     *            the value whose closest integer value has to be computed.
-     * @return the floor of the argument.
      */
     public static native double floor(double d);
 
@@ -473,12 +448,6 @@ public final class Math {
      * <li>{@code max(+0.0, -0.0) = +0.0}</li>
      * <li>{@code max(-0.0, +0.0) = +0.0}</li>
      * </ul>
-     *
-     * @param d1
-     *            the first argument.
-     * @param d2
-     *            the second argument.
-     * @return the larger of {@code d1} and {@code d2}.
      */
     public static double max(double d1, double d2) {
         if (d1 > d2) {
@@ -510,12 +479,6 @@ public final class Math {
      * <li>{@code max(+0.0, -0.0) = +0.0}</li>
      * <li>{@code max(-0.0, +0.0) = +0.0}</li>
      * </ul>
-     *
-     * @param f1
-     *            the first argument.
-     * @param f2
-     *            the second argument.
-     * @return the larger of {@code f1} and {@code f2}.
      */
     public static float max(float f1, float f2) {
         if (f1 > f2) {
@@ -539,27 +502,14 @@ public final class Math {
     /**
      * Returns the most positive (closest to positive infinity) of the two
      * arguments.
-     *
-     * @param i1
-     *            the first argument.
-     * @param i2
-     *            the second argument.
-     * @return the larger of {@code i1} and {@code i2}.
      */
     public static int max(int i1, int i2) {
-        // RoboVM note: This is native in Android
         return i1 > i2 ? i1 : i2;
     }
 
     /**
      * Returns the most positive (closest to positive infinity) of the two
      * arguments.
-     *
-     * @param l1
-     *            the first argument.
-     * @param l2
-     *            the second argument.
-     * @return the larger of {@code l1} and {@code l2}.
      */
     public static long max(long l1, long l2) {
         return l1 > l2 ? l1 : l2;
@@ -576,12 +526,6 @@ public final class Math {
      * <li>{@code min(+0.0, -0.0) = -0.0}</li>
      * <li>{@code min(-0.0, +0.0) = -0.0}</li>
      * </ul>
-     *
-     * @param d1
-     *            the first argument.
-     * @param d2
-     *            the second argument.
-     * @return the smaller of {@code d1} and {@code d2}.
      */
     public static double min(double d1, double d2) {
         if (d1 > d2) {
@@ -613,12 +557,6 @@ public final class Math {
      * <li>{@code min(+0.0, -0.0) = -0.0}</li>
      * <li>{@code min(-0.0, +0.0) = -0.0}</li>
      * </ul>
-     *
-     * @param f1
-     *            the first argument.
-     * @param f2
-     *            the second argument.
-     * @return the smaller of {@code f1} and {@code f2}.
      */
     public static float min(float f1, float f2) {
         if (f1 > f2) {
@@ -642,27 +580,14 @@ public final class Math {
     /**
      * Returns the most negative (closest to negative infinity) of the two
      * arguments.
-     *
-     * @param i1
-     *            the first argument.
-     * @param i2
-     *            the second argument.
-     * @return the smaller of {@code i1} and {@code i2}.
      */
     public static int min(int i1, int i2) {
-        // RoboVM note: This is native in Android
         return i1 < i2 ? i1 : i2;
     }
 
     /**
      * Returns the most negative (closest to negative infinity) of the two
      * arguments.
-     *
-     * @param l1
-     *            the first argument.
-     * @param l2
-     *            the second argument.
-     * @return the smaller of {@code l1} and {@code l2}.
      */
     public static long min(long l1, long l2) {
         return l1 < l2 ? l1 : l2;
@@ -896,10 +821,6 @@ public final class Math {
      * <li>{@code sqrt(+infinity) = +infinity}</li>
      * <li>{@code sqrt(NaN) = NaN}</li>
      * </ul>
-     *
-     * @param d
-     *            the value whose square root has to be computed.
-     * @return the square root of the argument.
      */
     public static native double sqrt(double d);
 

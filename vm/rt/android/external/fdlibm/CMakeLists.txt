@@ -3,7 +3,7 @@ project(android-external-fdlibm)
 # This is necessary to guarantee that the FDLIBM functions are in
 # "IEEE spirit", i.e. to guarantee that the IEEE 754 core functions
 # are used.
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_LIB_VERSION_TYPE=\"const enum _IEEE_\"")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_IEEE_LIBM")
 
 # Disable GCC optimizations that interact badly with this crufty
 # library (see their own admission in 'readme'). Without this, we

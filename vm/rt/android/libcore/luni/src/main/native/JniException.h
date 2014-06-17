@@ -18,13 +18,10 @@
 #define JNI_EXCEPTION_H_included
 
 #include "jni.h"
-#include "unicode/utypes.h" // For UErrorCode.
 
 void jniThrowExceptionWithErrno(JNIEnv* env, const char* exceptionClassName, int error);
 
 void jniThrowOutOfMemoryError(JNIEnv* env, const char* message);
 void jniThrowSocketException(JNIEnv* env, int error);
-
-bool maybeThrowIcuException(JNIEnv* env, UErrorCode error);
 
 #endif  // JNI_EXCEPTION_H_included

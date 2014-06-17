@@ -1,4 +1,4 @@
-// Copyright (C) 2011, International Business Machines
+// Copyright (C) 2009-2012, International Business Machines
 // Corporation and others. All Rights Reserved.
 //
 // Copyright 2001 and onwards Google Inc.
@@ -71,7 +71,7 @@ class U_COMMON_API StringPiece : public UMemory {
    * Constructs from a std::string.
    * @stable ICU 4.2
    */
-  StringPiece(const U_STD_NSQ string& str)
+  StringPiece(const std::string& str)
     : ptr_(str.data()), length_(static_cast<int32_t>(str.size())) { }
 #endif
   /**
@@ -138,14 +138,14 @@ class U_COMMON_API StringPiece : public UMemory {
    * Reset the stringpiece to refer to new data.
    * @param xdata pointer the new string data.  Need not be nul terminated.
    * @param len the length of the new data
-   * @draft ICU 4.8
+   * @stable ICU 4.8
    */
   void set(const char* xdata, int32_t len) { ptr_ = xdata; length_ = len; }
 
   /**
    * Reset the stringpiece to refer to new data.
    * @param str a pointer to a NUL-terminated string. 
-   * @draft ICU 4.8
+   * @stable ICU 4.8
    */
   void set(const char* str);
 
@@ -203,7 +203,7 @@ class U_COMMON_API StringPiece : public UMemory {
  * @param x The first StringPiece to compare.
  * @param y The second StringPiece to compare.
  * @return TRUE if the string data is equal
- * @draft ICU 4.8
+ * @stable ICU 4.8
  */
 U_EXPORT UBool U_EXPORT2 
 operator==(const StringPiece& x, const StringPiece& y);
@@ -213,7 +213,7 @@ operator==(const StringPiece& x, const StringPiece& y);
  * @param x The first StringPiece to compare.
  * @param y The second StringPiece to compare.
  * @return TRUE if the string data is not equal
- * @draft ICU 4.8
+ * @stable ICU 4.8
  */
 inline UBool operator!=(const StringPiece& x, const StringPiece& y) {
   return !(x == y);

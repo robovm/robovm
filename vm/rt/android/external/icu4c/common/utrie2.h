@@ -1,7 +1,7 @@
 /*
 ******************************************************************************
 *
-*   Copyright (C) 2001-2010, International Business Machines
+*   Copyright (C) 2001-2011, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 ******************************************************************************
@@ -18,6 +18,7 @@
 #define __UTRIE2_H__
 
 #include "unicode/utypes.h"
+#include "putilimp.h"
 #include "udataswp.h"
 
 U_CDECL_BEGIN
@@ -618,8 +619,9 @@ U_CDECL_END
 
 /* C++ convenience wrappers ------------------------------------------------- */
 
-#ifdef XP_CPLUSPLUS
+#ifdef __cplusplus
 
+#include "unicode/utf.h"
 #include "mutex.h"
 
 U_NAMESPACE_BEGIN

@@ -104,7 +104,7 @@ public class CipherInputStream extends FilterInputStream {
                 try {
                     outputLength = cipher.doFinal(outputBuffer, 0);
                 } catch (Exception e) {
-                    throw new IOException(e.getMessage());
+                    throw new IOException("Error while finalizing cipher", e);
                 }
                 finished = true;
                 break;
@@ -135,7 +135,7 @@ public class CipherInputStream extends FilterInputStream {
     @Override
     public int read(byte[] buf, int off, int len) throws IOException {
         if (in == null) {
-            throw new NullPointerException("Underlying input stream is null");
+            throw new NullPointerException("in == null");
         }
 
         int i;

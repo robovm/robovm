@@ -115,8 +115,10 @@ public class NullCipherSpi extends CipherSpi {
     @Override
     public int engineUpdate(ByteBuffer input, ByteBuffer output)
             throws ShortBufferException {
-        if (input == null || output == null) {
-            throw new NullPointerException();
+        if (input == null) {
+            throw new NullPointerException("input == null");
+        } else if (output == null) {
+            throw new NullPointerException("output == null");
         }
         int result = input.limit() - input.position();
         try {

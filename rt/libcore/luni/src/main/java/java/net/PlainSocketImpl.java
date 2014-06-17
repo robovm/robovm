@@ -96,10 +96,11 @@ public class PlainSocketImpl extends SocketImpl {
 
         try {
             // RovmVM note: accept() on Darwin does not honor the SO_RCVTIMEO
-            // set using setSoTimeout(). As a work around we do poll() if a 
-            // timeout has been set followed by an accept().
+            // set using setSoTimeout() on blocking sockets. As a work around we 
+            // do poll() if a timeout has been set followed by an accept().
             int timeout = (Integer) getOption(SO_TIMEOUT);
-            if (timeout > 0) {
+            int flags = Libcore.os.fcntlVoid(fd, F_GETFL);
+            if (timeout > 0 && (flags & O_NONBLOCK) == 0) {
                 StructPollfd pfd = new StructPollfd();
                 pfd.fd = fd;
                 pfd.events = (short) (POLLIN | POLLERR);
@@ -133,7 +134,7 @@ public class PlainSocketImpl extends SocketImpl {
             newImpl.address = peerAddress.getAddress();
             newImpl.port = peerAddress.getPort();
         } catch (ErrnoException errnoException) {
-            if (errnoException.errno == EAGAIN || errnoException.errno == EWOULDBLOCK) {
+            if (errnoException.errno == EAGAIN) {
                 throw new SocketTimeoutException(errnoException);
             }
             throw errnoException.rethrowAsSocketException();
@@ -265,8 +266,8 @@ public class PlainSocketImpl extends SocketImpl {
             return Streams.readSingleByte(this);
         }
 
-        @Override public int read(byte[] buffer, int offset, int byteCount) throws IOException {
-            return socketImpl.read(buffer, offset, byteCount);
+        @Override public int read(byte[] buffer, int byteOffset, int byteCount) throws IOException {
+            return socketImpl.read(buffer, byteOffset, byteCount);
         }
     }
 

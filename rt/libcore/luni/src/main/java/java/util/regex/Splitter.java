@@ -18,6 +18,7 @@ package java.util.regex;
 
 import java.util.ArrayList;
 import java.util.List;
+import libcore.util.EmptyArray;
 
 /**
  * Used to make {@code String.split} fast (and to help {@code Pattern.split} too).
@@ -63,16 +64,41 @@ public class Splitter {
             return new String[] { "" };
         }
 
-        // Collect text preceding each occurrence of the separator, while there's enough space.
-        ArrayList<String> list = new ArrayList<String>();
-        int maxSize = limit <= 0 ? Integer.MAX_VALUE : limit;
+        // Count separators
+        int separatorCount = 0;
         int begin = 0;
         int end;
-        while ((end = input.indexOf(ch, begin)) != -1 && list.size() + 1 < maxSize) {
-            list.add(input.substring(begin, end));
+        while (separatorCount + 1 != limit && (end = input.indexOf(ch, begin)) != -1) {
+            ++separatorCount;
             begin = end + 1;
         }
-        return finishSplit(list, input, begin, maxSize, limit);
+        int lastPartEnd = input.length();
+        if (limit == 0 && begin == lastPartEnd) {
+            // Last part is empty for limit == 0, remove all trailing empty matches.
+            if (separatorCount == lastPartEnd) {
+                // Input contains only separators.
+                return EmptyArray.STRING;
+            }
+            // Find the beginning of trailing separators.
+            do {
+                --begin;
+            } while (input.charAt(begin - 1) == ch);
+            // Reduce separatorCount and fix lastPartEnd.
+            separatorCount -= input.length() - begin;
+            lastPartEnd = begin;
+        }
+
+        // Collect the result parts.
+        String[] result = new String[separatorCount + 1];
+        begin = 0;
+        for (int i = 0; i != separatorCount; ++i) {
+            end = input.indexOf(ch, begin);
+            result[i] = input.substring(begin, end);
+            begin = end + 1;
+        }
+        // Add last part.
+        result[separatorCount] = input.substring(begin, lastPartEnd);
+        return result;
     }
 
     public static String[] split(Pattern pattern, String re, String input, int limit) {
@@ -89,25 +115,23 @@ public class Splitter {
 
         // Collect text preceding each occurrence of the separator, while there's enough space.
         ArrayList<String> list = new ArrayList<String>();
-        int maxSize = limit <= 0 ? Integer.MAX_VALUE : limit;
         Matcher matcher = new Matcher(pattern, input);
         int begin = 0;
-        while (matcher.find() && list.size() + 1 < maxSize) {
+        while (list.size() + 1 != limit && matcher.find()) {
             list.add(input.substring(begin, matcher.start()));
             begin = matcher.end();
         }
-        return finishSplit(list, input, begin, maxSize, limit);
+        return finishSplit(list, input, begin, limit);
     }
 
-    private static String[] finishSplit(List<String> list, String input, int begin, int maxSize, int limit) {
+    private static String[] finishSplit(List<String> list, String input, int begin, int limit) {
         // Add trailing text.
         if (begin < input.length()) {
             list.add(input.substring(begin));
-        } else if (limit != 0) { // No point adding the empty string if limit == 0, just to remove it below.
+        } else if (limit != 0) {
             list.add("");
-        }
-        // Remove all trailing empty matches in the limit == 0 case.
-        if (limit == 0) {
+        } else {
+            // Remove all trailing empty matches in the limit == 0 case.
             int i = list.size() - 1;
             while (i >= 0 && list.get(i).isEmpty()) {
                 list.remove(i);

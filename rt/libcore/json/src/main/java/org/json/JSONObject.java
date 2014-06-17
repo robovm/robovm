@@ -17,6 +17,7 @@
 package org.json;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -41,12 +42,12 @@ import java.util.Map;
  *       be coerced using {@link Number#intValue() intValue}. Strings
  *       that can be coerced using {@link Double#valueOf(String)} will be,
  *       and then cast to int.
- *   <li>When the requested type is a long, other {@link Number} types will
+ *   <li><a name="lossy">When the requested type is a long, other {@link Number} types will
  *       be coerced using {@link Number#longValue() longValue}. Strings
  *       that can be coerced using {@link Double#valueOf(String)} will be,
  *       and then cast to long. This two-step conversion is lossy for very
  *       large values. For example, the string "9223372036854775806" yields the
- *       long 9223372036854775807.
+ *       long 9223372036854775807.</a>
  *   <li>When the requested type is a String, other non-null values will be
  *       coerced using {@link String#valueOf(Object)}. Although null cannot be
  *       coerced, the sentinel value {@link JSONObject#NULL} is coerced to the
@@ -131,9 +132,9 @@ public class JSONObject {
              */
             String key = (String) entry.getKey();
             if (key == null) {
-                throw new NullPointerException();
+                throw new NullPointerException("key == null");
             }
-            nameValuePairs.put(key, entry.getValue());
+            nameValuePairs.put(key, wrap(entry.getValue()));
         }
     }
 
@@ -468,7 +469,8 @@ public class JSONObject {
 
     /**
      * Returns the value mapped by {@code name} if it exists and is a long or
-     * can be coerced to a long.
+     * can be coerced to a long. Note that JSON represents numbers as doubles,
+     * so this is <a href="#lossy">lossy</a>; use strings to transfer numbers via JSON.
      *
      * @throws JSONException if the mapping doesn't exist or cannot be coerced
      *     to a long.
@@ -484,7 +486,8 @@ public class JSONObject {
 
     /**
      * Returns the value mapped by {@code name} if it exists and is a long or
-     * can be coerced to a long. Returns 0 otherwise.
+     * can be coerced to a long. Returns 0 otherwise. Note that JSON represents numbers as doubles,
+     * so this is <a href="#lossy">lossy</a>; use strings to transfer numbers via JSON.
      */
     public long optLong(String name) {
         return optLong(name, 0L);
@@ -492,7 +495,9 @@ public class JSONObject {
 
     /**
      * Returns the value mapped by {@code name} if it exists and is a long or
-     * can be coerced to a long. Returns {@code fallback} otherwise.
+     * can be coerced to a long. Returns {@code fallback} otherwise. Note that JSON represents
+     * numbers as doubles, so this is <a href="#lossy">lossy</a>; use strings to transfer
+     * numbers via JSON.
      */
     public long optLong(String name, long fallback) {
         Object object = opt(name);
@@ -716,5 +721,55 @@ public class JSONObject {
         } catch (JSONException e) {
             throw new AssertionError();
         }
+    }
+
+    /**
+     * Wraps the given object if necessary.
+     *
+     * <p>If the object is null or , returns {@link #NULL}.
+     * If the object is a {@code JSONArray} or {@code JSONObject}, no wrapping is necessary.
+     * If the object is {@code NULL}, no wrapping is necessary.
+     * If the object is an array or {@code Collection}, returns an equivalent {@code JSONArray}.
+     * If the object is a {@code Map}, returns an equivalent {@code JSONObject}.
+     * If the object is a primitive wrapper type or {@code String}, returns the object.
+     * Otherwise if the object is from a {@code java} package, returns the result of {@code toString}.
+     * If wrapping fails, returns null.
+     */
+    public static Object wrap(Object o) {
+        if (o == null) {
+            return NULL;
+        }
+        if (o instanceof JSONArray || o instanceof JSONObject) {
+            return o;
+        }
+        if (o.equals(NULL)) {
+            return o;
+        }
+        try {
+            if (o instanceof Collection) {
+                return new JSONArray((Collection) o);
+            } else if (o.getClass().isArray()) {
+                return new JSONArray(o);
+            }
+            if (o instanceof Map) {
+                return new JSONObject((Map) o);
+            }
+            if (o instanceof Boolean ||
+                o instanceof Byte ||
+                o instanceof Character ||
+                o instanceof Double ||
+                o instanceof Float ||
+                o instanceof Integer ||
+                o instanceof Long ||
+                o instanceof Short ||
+                o instanceof String) {
+                return o;
+            }
+            if (o.getClass().getPackage().getName().startsWith("java.")) {
+                return o.toString();
+            }
+        } catch (Exception ignored) {
+        }
+        return null;
     }
 }

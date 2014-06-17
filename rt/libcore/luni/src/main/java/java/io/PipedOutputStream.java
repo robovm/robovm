@@ -81,7 +81,7 @@ public class PipedOutputStream extends OutputStream {
      */
     public void connect(PipedInputStream stream) throws IOException {
         if (stream == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("stream == null");
         }
         synchronized (stream) {
             if (this.target != null) {

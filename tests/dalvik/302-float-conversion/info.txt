@@ -1,0 +1,4 @@
+Tests whether constant conversions of double values to long values are
+properly handled by the VM. For example, x86 systems using the x87 stack
+ should not overflow under constant conversions.
+

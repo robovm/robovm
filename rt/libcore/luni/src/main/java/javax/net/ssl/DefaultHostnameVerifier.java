@@ -80,7 +80,8 @@ public final class DefaultHostnameVerifier implements HostnameVerifier {
 
         if (!hasDns) {
             X500Principal principal = certificate.getSubjectX500Principal();
-            String cn = new DistinguishedNameParser(principal).find("cn");
+            // RFC 2818 advises using the most specific name for matching.
+            String cn = new DistinguishedNameParser(principal).findMostSpecific("cn");
             if (cn != null) {
                 return verifyHostName(hostName, cn);
             }

@@ -1,7 +1,7 @@
 /*
 *******************************************************************************
 *
-*   Copyright (C) 1999-2011, International Business Machines
+*   Copyright (C) 1999-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 *******************************************************************************
@@ -74,7 +74,7 @@ U_NAMESPACE_USE
 //static const UChar POSIX_OPEN[]  = { SET_OPEN,COLON,0 };  // "[:"
 static const UChar POSIX_CLOSE[] = { COLON,SET_CLOSE,0 };  // ":]"
 //static const UChar PERL_OPEN[]   = { BACKSLASH,LOWER_P,0 }; // "\\p"
-static const UChar PERL_CLOSE[]  = { CLOSE_BRACE,0 };    // "}"
+//static const UChar PERL_CLOSE[]  = { CLOSE_BRACE,0 };    // "}"
 //static const UChar NAME_OPEN[]   = { BACKSLASH,UPPER_N,0 };  // "\\N"
 static const UChar HYPHEN_RIGHT_BRACE[] = {HYPHEN,SET_CLOSE,0}; /*-]*/
 
@@ -332,65 +332,15 @@ UnicodeSet::UnicodeSet(const UnicodeString& pattern,
     len(0), capacity(START_EXTRA), list(0), bmpSet(0), buffer(0),
     bufferCapacity(0), patLen(0), pat(NULL), strings(NULL), stringSpan(NULL),
     fFlags(0)
-{   
-    if(U_SUCCESS(status)){
-        list = (UChar32*) uprv_malloc(sizeof(UChar32) * capacity);
-        /* test for NULL */
-        if(list == NULL) {
-            status = U_MEMORY_ALLOCATION_ERROR;  
-        }else{
-            allocateStrings(status);
-            applyPattern(pattern, USET_IGNORE_SPACE, NULL, status);
-        }
-    }
-    _dbgct(this);
-}
-
-/**
- * Constructs a set from the given pattern, optionally ignoring
- * white space.  See the class description for the syntax of the
- * pattern language.
- * @param pattern a string specifying what characters are in the set
- * @param options bitmask for options to apply to the pattern.
- * Valid options are USET_IGNORE_SPACE and USET_CASE_INSENSITIVE.
- */
-UnicodeSet::UnicodeSet(const UnicodeString& pattern,
-                       uint32_t options,
-                       const SymbolTable* symbols,
-                       UErrorCode& status) :
-    len(0), capacity(START_EXTRA), list(0), bmpSet(0), buffer(0),
-    bufferCapacity(0), patLen(0), pat(NULL), strings(NULL), stringSpan(NULL),
-    fFlags(0)
-{   
-    if(U_SUCCESS(status)){
-        list = (UChar32*) uprv_malloc(sizeof(UChar32) * capacity);
-        /* test for NULL */
-        if(list == NULL) {
-            status = U_MEMORY_ALLOCATION_ERROR;  
-        }else{
-            allocateStrings(status);
-            applyPattern(pattern, options, symbols, status);
-        }
-    }
-    _dbgct(this);
-}
-
-UnicodeSet::UnicodeSet(const UnicodeString& pattern, ParsePosition& pos,
-                       uint32_t options,
-                       const SymbolTable* symbols,
-                       UErrorCode& status) :
-    len(0), capacity(START_EXTRA), list(0), bmpSet(0), buffer(0),
-    bufferCapacity(0), patLen(0), pat(NULL), strings(NULL), stringSpan(NULL),
-    fFlags(0)
 {
     if(U_SUCCESS(status)){
         list = (UChar32*) uprv_malloc(sizeof(UChar32) * capacity);
         /* test for NULL */
         if(list == NULL) {
-            status = U_MEMORY_ALLOCATION_ERROR;   
+            status = U_MEMORY_ALLOCATION_ERROR;  
         }else{
             allocateStrings(status);
-            applyPattern(pattern, pos, options, symbols, status);
+            applyPattern(pattern, status);
         }
     }
     _dbgct(this);
@@ -402,64 +352,46 @@ UnicodeSet::UnicodeSet(const UnicodeString& pattern, ParsePosition& pos,
 
 UnicodeSet& UnicodeSet::applyPattern(const UnicodeString& pattern,
                                      UErrorCode& status) {
-    return applyPattern(pattern, USET_IGNORE_SPACE, NULL, status);
-}
-
-
-/**
- * Modifies this set to represent the set specified by the given
- * pattern, optionally ignoring white space.  See the class
- * description for the syntax of the pattern language.
- * @param pattern a string specifying what characters are in the set
- * @param options bitmask for options to apply to the pattern.
- * Valid options are USET_IGNORE_SPACE and USET_CASE_INSENSITIVE.
- */
-UnicodeSet& UnicodeSet::applyPattern(const UnicodeString& pattern,
-                                     uint32_t options,
-                                     const SymbolTable* symbols,
-                                     UErrorCode& status) {
-    if (U_FAILURE(status) || isFrozen()) {
-        return *this;
-    }
-
+    // Equivalent to
+    //   return applyPattern(pattern, USET_IGNORE_SPACE, NULL, status);
+    // but without dependency on closeOver().
     ParsePosition pos(0);
-    applyPattern(pattern, pos, options, symbols, status);
+    applyPatternIgnoreSpace(pattern, pos, NULL, status);
     if (U_FAILURE(status)) return *this;
 
     int32_t i = pos.getIndex();
-
-    if (options & USET_IGNORE_SPACE) {
-        // Skip over trailing whitespace
-        ICU_Utility::skipWhitespace(pattern, i, TRUE);
-    }
-
+    // Skip over trailing whitespace
+    ICU_Utility::skipWhitespace(pattern, i, TRUE);
     if (i != pattern.length()) {
         status = U_ILLEGAL_ARGUMENT_ERROR;
     }
     return *this;
 }
 
-UnicodeSet& UnicodeSet::applyPattern(const UnicodeString& pattern,
-                              ParsePosition& pos,
-                              uint32_t options,
-                              const SymbolTable* symbols,
-                              UErrorCode& status) {
-    if (U_FAILURE(status) || isFrozen()) {
-        return *this;
+void
+UnicodeSet::applyPatternIgnoreSpace(const UnicodeString& pattern,
+                                    ParsePosition& pos,
+                                    const SymbolTable* symbols,
+                                    UErrorCode& status) {
+    if (U_FAILURE(status)) {
+        return;
+    }
+    if (isFrozen()) {
+        status = U_NO_WRITE_PERMISSION;
+        return;
     }
     // Need to build the pattern in a temporary string because
     // _applyPattern calls add() etc., which set pat to empty.
     UnicodeString rebuiltPat;
     RuleCharacterIterator chars(pattern, symbols, pos);
-    applyPattern(chars, symbols, rebuiltPat, options, status);
-    if (U_FAILURE(status)) return *this;
+    applyPattern(chars, symbols, rebuiltPat, USET_IGNORE_SPACE, NULL, status);
+    if (U_FAILURE(status)) return;
     if (chars.inVariable()) {
         // syntaxError(chars, "Extra chars in variable value");
         status = U_MALFORMED_SET;
-        return *this;
+        return;
     }
     setPattern(rebuiltPat);
-    return *this;
 }
 
 /**
@@ -512,6 +444,7 @@ void UnicodeSet::applyPattern(RuleCharacterIterator& chars,
                               const SymbolTable* symbols,
                               UnicodeString& rebuiltPat,
                               uint32_t options,
+                              UnicodeSet& (UnicodeSet::*caseClosure)(int32_t attribute),
                               UErrorCode& ec) {
     if (U_FAILURE(ec)) return;
 
@@ -648,7 +581,7 @@ void UnicodeSet::applyPattern(RuleCharacterIterator& chars,
             }
             switch (setMode) {
             case 1:
-                nested->applyPattern(chars, symbols, patLocal, options, ec);
+                nested->applyPattern(chars, symbols, patLocal, options, caseClosure, ec);
                 break;
             case 2:
                 chars.skipIgnored(opts);
@@ -727,7 +660,7 @@ void UnicodeSet::applyPattern(RuleCharacterIterator& chars,
                         c = chars.next(opts, literal, ec);
                         if (U_FAILURE(ec)) return;
                         if (c == 0x5D /*']'*/ && !literal) {
-                            patLocal.append(HYPHEN_RIGHT_BRACE);
+                            patLocal.append(HYPHEN_RIGHT_BRACE, 2);
                             mode = 2;
                             continue;
                         }
@@ -880,10 +813,10 @@ void UnicodeSet::applyPattern(RuleCharacterIterator& chars,
      * patterns like /[^abc]/i work.
      */
     if ((options & USET_CASE_INSENSITIVE) != 0) {
-        closeOver(USET_CASE_INSENSITIVE);
+        (this->*caseClosure)(USET_CASE_INSENSITIVE);
     }
     else if ((options & USET_ADD_CASE_MAPPINGS) != 0) {
-        closeOver(USET_ADD_CASE_MAPPINGS);
+        (this->*caseClosure)(USET_ADD_CASE_MAPPINGS);
     }
     if (invert) {
         complement();
@@ -1105,17 +1038,13 @@ UnicodeSet::applyPropertyAlias(const UnicodeString& prop,
                     applyFilter(numericValueFilter, &value, UPROPS_SRC_CHAR, ec);
                     return *this;
                 }
-                break;
             case UCHAR_NAME:
-            case UCHAR_UNICODE_1_NAME:
                 {
                     // Must munge name, since u_charFromName() does not do
                     // 'loose' matching.
                     char buf[128]; // it suffices that this be > uprv_getMaxCharNameLength
                     if (!mungeCharName(buf, vname.data(), sizeof(buf))) FAIL(ec);
-                    UCharNameChoice choice = (p == UCHAR_NAME) ?
-                        U_EXTENDED_CHAR_NAME : U_UNICODE_10_CHAR_NAME;
-                    UChar32 ch = u_charFromName(choice, buf, &ec);
+                    UChar32 ch = u_charFromName(U_EXTENDED_CHAR_NAME, buf, &ec);
                     if (U_SUCCESS(ec)) {
                         clear();
                         add(ch);
@@ -1124,7 +1053,9 @@ UnicodeSet::applyPropertyAlias(const UnicodeString& prop,
                         FAIL(ec);
                     }
                 }
-                break;
+            case UCHAR_UNICODE_1_NAME:
+                // ICU 49 deprecates the Unicode_1_Name property APIs.
+                FAIL(ec);
             case UCHAR_AGE:
                 {
                     // Must munge name, since u_versionFromString() does not do
@@ -1136,7 +1067,6 @@ UnicodeSet::applyPropertyAlias(const UnicodeString& prop,
                     applyFilter(versionFilter, &version, UPROPS_SRC_PROPSVEC, ec);
                     return *this;
                 }
-                break;
             case UCHAR_SCRIPT_EXTENSIONS:
                 v = u_getPropertyValueEnum(UCHAR_SCRIPT, vname.data());
                 if (v == UCHAR_INVALID_CODE) {
@@ -1291,7 +1221,12 @@ UnicodeSet& UnicodeSet::applyPropertyPattern(const UnicodeString& pattern,
     }
 
     // Look for the matching close delimiter, either :] or }
-    int32_t close = pattern.indexOf(posix ? POSIX_CLOSE : PERL_CLOSE, pos);
+    int32_t close;
+    if (posix) {
+      close = pattern.indexOf(POSIX_CLOSE, 2, pos);
+    } else {
+      close = pattern.indexOf(CLOSE_BRACE, pos);
+    }
     if (close < 0) {
         // Syntax error; close delimiter missing
         FAIL(ec);
@@ -1364,128 +1299,6 @@ void UnicodeSet::applyPropertyPattern(RuleCharacterIterator& chars,
     }
     chars.jumpahead(pos.getIndex());
     rebuiltPat.append(pattern, 0, pos.getIndex());
-}
-
-//----------------------------------------------------------------
-// Case folding API
-//----------------------------------------------------------------
-
-// add the result of a full case mapping to the set
-// use str as a temporary string to avoid constructing one
-static inline void
-addCaseMapping(UnicodeSet &set, int32_t result, const UChar *full, UnicodeString &str) {
-    if(result >= 0) {
-        if(result > UCASE_MAX_STRING_LENGTH) {
-            // add a single-code point case mapping
-            set.add(result);
-        } else {
-            // add a string case mapping from full with length result
-            str.setTo((UBool)FALSE, full, result);
-            set.add(str);
-        }
-    }
-    // result < 0: the code point mapped to itself, no need to add it
-    // see ucase.h
-}
-
-UnicodeSet& UnicodeSet::closeOver(int32_t attribute) {
-    if (isFrozen() || isBogus()) {
-        return *this;
-    }
-    if (attribute & (USET_CASE_INSENSITIVE | USET_ADD_CASE_MAPPINGS)) {
-        const UCaseProps *csp = ucase_getSingleton();
-        {
-            UnicodeSet foldSet(*this);
-            UnicodeString str;
-            USetAdder sa = {
-                foldSet.toUSet(),
-                _set_add,
-                _set_addRange,
-                _set_addString,
-                NULL, // don't need remove()
-                NULL // don't need removeRange()
-            };
-
-            // start with input set to guarantee inclusion
-            // USET_CASE: remove strings because the strings will actually be reduced (folded);
-            //            therefore, start with no strings and add only those needed
-            if (attribute & USET_CASE_INSENSITIVE) {
-                foldSet.strings->removeAllElements();
-            }
-
-            int32_t n = getRangeCount();
-            UChar32 result;
-            const UChar *full;
-            int32_t locCache = 0;
-
-            for (int32_t i=0; i<n; ++i) {
-                UChar32 start = getRangeStart(i);
-                UChar32 end   = getRangeEnd(i);
-
-                if (attribute & USET_CASE_INSENSITIVE) {
-                    // full case closure
-                    for (UChar32 cp=start; cp<=end; ++cp) {
-                        ucase_addCaseClosure(csp, cp, &sa);
-                    }
-                } else {
-                    // add case mappings
-                    // (does not add long s for regular s, or Kelvin for k, for example)
-                    for (UChar32 cp=start; cp<=end; ++cp) {
-                        result = ucase_toFullLower(csp, cp, NULL, NULL, &full, "", &locCache);
-                        addCaseMapping(foldSet, result, full, str);
-
-                        result = ucase_toFullTitle(csp, cp, NULL, NULL, &full, "", &locCache);
-                        addCaseMapping(foldSet, result, full, str);
-
-                        result = ucase_toFullUpper(csp, cp, NULL, NULL, &full, "", &locCache);
-                        addCaseMapping(foldSet, result, full, str);
-
-                        result = ucase_toFullFolding(csp, cp, &full, 0);
-                        addCaseMapping(foldSet, result, full, str);
-                    }
-                }
-            }
-            if (strings != NULL && strings->size() > 0) {
-                if (attribute & USET_CASE_INSENSITIVE) {
-                    for (int32_t j=0; j<strings->size(); ++j) {
-                        str = *(const UnicodeString *) strings->elementAt(j);
-                        str.foldCase();
-                        if(!ucase_addStringCaseClosure(csp, str.getBuffer(), str.length(), &sa)) {
-                            foldSet.add(str); // does not map to code points: add the folded string itself
-                        }
-                    }
-                } else {
-                    Locale root("");
-#if !UCONFIG_NO_BREAK_ITERATION
-                    UErrorCode status = U_ZERO_ERROR;
-                    BreakIterator *bi = BreakIterator::createWordInstance(root, status);
-                    if (U_SUCCESS(status)) {
-#endif
-                        const UnicodeString *pStr;
-
-                        for (int32_t j=0; j<strings->size(); ++j) {
-                            pStr = (const UnicodeString *) strings->elementAt(j);
-                            (str = *pStr).toLower(root);
-                            foldSet.add(str);
-#if !UCONFIG_NO_BREAK_ITERATION
-                            (str = *pStr).toTitle(bi, root);
-                            foldSet.add(str);
-#endif
-                            (str = *pStr).toUpper(root);
-                            foldSet.add(str);
-                            (str = *pStr).foldCase();
-                            foldSet.add(str);
-                        }
-#if !UCONFIG_NO_BREAK_ITERATION
-                    }
-                    delete bi;
-#endif
-                }
-            }
-            *this = foldSet;
-        }
-    }
-    return *this;
 }
 
 U_NAMESPACE_END

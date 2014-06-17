@@ -34,6 +34,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
 import org.apache.harmony.security.asn1.ASN1Any;
 import org.apache.harmony.security.asn1.ASN1Explicit;
 import org.apache.harmony.security.asn1.ASN1Implicit;
@@ -72,118 +73,151 @@ import org.apache.harmony.security.x509.Certificate;
  * &nbsp;
  */
 public class X509CertPathImpl extends CertPath {
-
     /**
      * @serial
      */
     private static final long serialVersionUID = 7989755106209515436L;
 
-    // supported encoding types:
-    public static final int PKI_PATH = 0;
-    public static final int PKCS7 = 1;
-
-    // supported encoding names
-    private static final String[] encodingsArr = new String[] {"PkiPath", "PKCS7"};
-    static final List encodings = Collections.unmodifiableList(Arrays.asList(encodingsArr));
-    // the list of certificates representing this certification path
-    private final List certificates;
-    // PkiPath encoding of the certification path
-    private byte[] pkiPathEncoding;
-    // PKCS7 encoding of the certification path
-    private byte[] pkcs7Encoding;
-
     /**
-     * Creates an instance of X.509 Certification Path over the specified
-     * list of certificates.
-     * @throws CertificateException if some of the object in the list
-     * is not an instance of subclass of X509Certificate.
+     * Supported encoding types for CerthPath. Used by the various APIs that
+     * encode this into bytes such as {@link #getEncoded()}.
      */
-    public X509CertPathImpl(List certs) throws CertificateException {
-        super("X.509");
-        int size = certs.size();
-        certificates = new ArrayList(size);
-        for (int i=0; i<size; i++) {
-            Object cert = certs.get(i);
-            if (!(cert instanceof X509Certificate) ) {
-                throw new CertificateException(
-                        "One of the provided certificates is not an X509 certificate");
+    private enum Encoding {
+        PKI_PATH("PkiPath"),
+        PKCS7("PKCS7");
+
+        private final String apiName;
+
+        Encoding(String apiName) {
+            this.apiName = apiName;
+        }
+
+        static Encoding findByApiName(String apiName) throws CertificateEncodingException {
+            for (Encoding element : values()) {
+                if (element.apiName.equals(apiName)) {
+                    return element;
+                }
             }
-            certificates.add(cert);
+
+            return null;
         }
     }
 
-    /*
-     * Internally used constructor.
-     * Creates an X.509 Certification Path over the specified
-     * list of certificates and their encoded form of specified type.
-     * @param certs - the list of certificates
-     * @param type - the type of the encoded form on the base of which
-     * this list of certificates had been built.
-     * @param encoding - encoded form of certification path.
+    /** Unmodifiable list of encodings for the API. */
+    static final List<String> encodings = Collections.unmodifiableList(Arrays.asList(new String[] {
+            Encoding.PKI_PATH.apiName,
+            Encoding.PKCS7.apiName,
+    }));
+
+    /** The list of certificates in the order of target toward trust anchor. */
+    private final List<X509Certificate> certificates;
+
+    /** PkiPath encoding of the certification path. */
+    private byte[] pkiPathEncoding;
+
+    /** PKCS7 encoding of the certification path. */
+    private byte[] pkcs7Encoding;
+
+    /**
+     * Creates an instance of X.509 CertPath over the specified list of
+     * certificates.
+     *
+     * @throws CertificateException if some of the object in the list is not an
+     *             instance of subclass of X509Certificate.
      */
-    private X509CertPathImpl(List certs, int type, byte[] encoding) {
+    public X509CertPathImpl(List<? extends java.security.cert.Certificate> certs)
+            throws CertificateException {
         super("X.509");
-        if (type == PKI_PATH) {
-            this.pkiPathEncoding = encoding;
-        } else { // PKCS7
-            this.pkcs7Encoding = encoding;
+
+        final int size = certs.size();
+        certificates = new ArrayList<X509Certificate>(size);
+
+        for (int i = 0; i < size; i++) {
+            final java.security.cert.Certificate cert = certs.get(i);
+            if (!(cert instanceof X509Certificate)) {
+                throw new CertificateException("Certificate " + i + " is not an X.509 certificate");
+            }
+
+            certificates.add((X509Certificate) cert);
         }
-        // We do not need the type check and list cloning here,
-        // because it has been done during decoding.
+    }
+
+    /**
+     * Creates an X.509 CertPath over the specified {@code certs}. The
+     * {@code certs} should be sorted correctly when calling into the
+     * constructor. Additionally, the {@code encodedPath} should match the
+     * expected output for the {@code type} of encoding.
+     */
+    private X509CertPathImpl(List<X509Certificate> certs, Encoding type) {
+        super("X.509");
+
         certificates = certs;
     }
 
     /**
-     * Generates certification path object on the base of PkiPath
-     * encoded form provided via input stream.
-     * @throws CertificateException if some problems occurred during
-     * the decoding.
+     * Extract a CertPath from a PKCS#7 {@code contentInfo} object.
+     */
+    private static X509CertPathImpl getCertPathFromContentInfo(ContentInfo contentInfo)
+            throws CertificateException {
+        final SignedData sd = contentInfo.getSignedData();
+        if (sd == null) {
+            throw new CertificateException("Incorrect PKCS7 encoded form: missing signed data");
+        }
+
+        List<Certificate> certs = sd.getCertificates();
+        if (certs == null) {
+            certs = Collections.emptyList();
+        }
+
+        final List<X509Certificate> result = new ArrayList<X509Certificate>(certs.size());
+        for (Certificate cert : certs) {
+            result.add(new X509CertImpl(cert));
+        }
+
+        return new X509CertPathImpl(result, Encoding.PKCS7);
+    }
+
+    /**
+     * Generates certification path object on the base of PkiPath encoded form
+     * provided via input stream.
+     *
+     * @throws CertificateException if some problems occurred during the
+     *         decoding.
      */
     public static X509CertPathImpl getInstance(InputStream in) throws CertificateException {
         try {
             return (X509CertPathImpl) ASN1.decode(in);
         } catch (IOException e) {
-            throw new CertificateException("Incorrect encoded form: " + e.getMessage());
+            throw new CertificateException("Failed to decode CertPath", e);
         }
     }
 
     /**
-     * Generates certification path object on the base of encoding provided via
+     * Generates certification path object on the basis of encoding provided via
      * input stream. The format of provided encoded form is specified by
      * parameter <code>encoding</code>.
+     *
      * @throws CertificateException if specified encoding form is not supported,
-     * or some problems occurred during the decoding.
+     *         or some problems occurred during the decoding.
      */
     public static X509CertPathImpl getInstance(InputStream in, String encoding)
             throws CertificateException {
-        if (!encodings.contains(encoding)) {
-            throw new CertificateException("Unsupported encoding");
-        }
         try {
-            if (encodingsArr[0].equals(encoding)) {
-                // generate the object from PkiPath encoded form
-                return (X509CertPathImpl) ASN1.decode(in);
-            } else {
-                // generate the object from PKCS #7 encoded form
-                ContentInfo ci = (ContentInfo) ContentInfo.ASN1.decode(in);
-                SignedData sd = ci.getSignedData();
-                if (sd == null) {
-                    throw new CertificateException(
-                            "Incorrect PKCS7 encoded form: missing signed data");
-                }
-                List<Certificate> certs = sd.getCertificates();
-                if (certs == null) {
-                    // empty chain of certificates
-                    certs = new ArrayList<Certificate>();
-                }
-                List<X509CertImpl> result = new ArrayList<X509CertImpl>();
-                for (Certificate cert : certs) {
-                    result.add(new X509CertImpl(cert));
-                }
-                return new X509CertPathImpl(result, PKCS7, ci.getEncoded());
+            final Encoding encType = Encoding.findByApiName(encoding);
+            if (encType == null) {
+                throw new CertificateException("Unsupported encoding: " + encoding);
+            }
+
+            switch (encType) {
+                case PKI_PATH:
+                    return (X509CertPathImpl) ASN1.decode(in);
+                case PKCS7:
+                    return getCertPathFromContentInfo((ContentInfo) ContentInfo.ASN1.decode(in));
+                default:
+                    throw new CertificateException("Unsupported encoding: " + encoding);
             }
         } catch (IOException e) {
-            throw new CertificateException("Incorrect encoded form: " + e.getMessage());
+            throw new CertificateException("Failed to decode CertPath", e);
         }
     }
 
@@ -197,45 +231,36 @@ public class X509CertPathImpl extends CertPath {
         try {
             return (X509CertPathImpl) ASN1.decode(in);
         } catch (IOException e) {
-            throw new CertificateException("Incorrect encoded form: " + e.getMessage());
+            throw new CertificateException("Failed to decode CertPath", e);
         }
     }
 
     /**
      * Generates certification path object on the base of encoding provided via
      * array of bytes. The format of provided encoded form is specified by
-     * parameter <code>encoding</code>.
+     * parameter {@code encoding}.
+     *
      * @throws CertificateException if specified encoding form is not supported,
-     * or some problems occurred during the decoding.
+     *             or some problems occurred during the decoding.
      */
     public static X509CertPathImpl getInstance(byte[] in, String encoding)
             throws CertificateException {
-        if (!encodings.contains(encoding)) {
-            throw new CertificateException("Unsupported encoding");
-        }
         try {
-            if (encodingsArr[0].equals(encoding)) {
-                // generate the object from PkiPath encoded form
-                return (X509CertPathImpl) ASN1.decode(in);
-            } else {
-                // generate the object from PKCS #7 encoded form
-                ContentInfo ci = (ContentInfo) ContentInfo.ASN1.decode(in);
-                SignedData sd = ci.getSignedData();
-                if (sd == null) {
-                    throw new CertificateException("Incorrect PKCS7 encoded form: missing signed data");
-                }
-                List<Certificate> certs = sd.getCertificates();
-                if (certs == null) {
-                    certs = new ArrayList<Certificate>();
-                }
-                List<X509CertImpl> result = new ArrayList<X509CertImpl>();
-                for (Certificate cert : certs) {
-                    result.add(new X509CertImpl(cert));
-                }
-                return new X509CertPathImpl(result, PKCS7, ci.getEncoded());
+            final Encoding encType = Encoding.findByApiName(encoding);
+            if (encType == null) {
+                throw new CertificateException("Unsupported encoding: " + encoding);
+            }
+
+            switch (encType) {
+                case PKI_PATH:
+                    return (X509CertPathImpl) ASN1.decode(in);
+                case PKCS7:
+                    return getCertPathFromContentInfo((ContentInfo) ContentInfo.ASN1.decode(in));
+                default:
+                    throw new CertificateException("Unsupported encoding: " + encoding);
             }
         } catch (IOException e) {
-            throw new CertificateException("Incorrect encoded form: " + e.getMessage());
+            throw new CertificateException("Failed to decode CertPath", e);
         }
     }
 
@@ -247,81 +272,90 @@ public class X509CertPathImpl extends CertPath {
      * @see java.security.cert.CertPath#getCertificates()
      * method documentation for more info
      */
-    public List getCertificates() {
+    @Override
+    public List<X509Certificate> getCertificates() {
         return Collections.unmodifiableList(certificates);
     }
 
     /**
+     * Returns in PkiPath format which is our default encoding.
+     *
      * @see java.security.cert.CertPath#getEncoded()
-     * method documentation for more info
      */
+    @Override
     public byte[] getEncoded() throws CertificateEncodingException {
-        if (pkiPathEncoding == null) {
-            pkiPathEncoding = ASN1.encode(this);
+        return getEncoded(Encoding.PKI_PATH);
+    }
+
+    /**
+     * @see #getEncoded(String)
+     */
+    private byte[] getEncoded(Encoding encoding) throws CertificateEncodingException {
+        switch (encoding) {
+            case PKI_PATH:
+                if (pkiPathEncoding == null) {
+                    pkiPathEncoding = ASN1.encode(this);
+                }
+
+                return pkiPathEncoding.clone();
+            case PKCS7:
+                if (pkcs7Encoding == null) {
+                    pkcs7Encoding = PKCS7_SIGNED_DATA_OBJECT.encode(this);
+                }
+
+                return pkcs7Encoding.clone();
+            default:
+                throw new CertificateEncodingException("Unsupported encoding: " + encoding);
         }
-        byte[] result = new byte[pkiPathEncoding.length];
-        System.arraycopy(pkiPathEncoding, 0, result, 0, pkiPathEncoding.length);
-        return result;
     }
 
     /**
      * @see java.security.cert.CertPath#getEncoded(String)
-     * method documentation for more info
      */
+    @Override
     public byte[] getEncoded(String encoding) throws CertificateEncodingException {
-        if (!encodings.contains(encoding)) {
-            throw new CertificateEncodingException("Unsupported encoding");
+        final Encoding encType = Encoding.findByApiName(encoding);
+        if (encType == null) {
+            throw new CertificateEncodingException("Unsupported encoding: " + encoding);
         }
-        if (encodingsArr[0].equals(encoding)) {
-            // PkiPath encoded form
-            return getEncoded();
-        } else {
-            // PKCS7 encoded form
-            if (pkcs7Encoding == null) {
-                pkcs7Encoding = PKCS7_SIGNED_DATA_OBJECT.encode(this);
-            }
-            byte[] result = new byte[pkcs7Encoding.length];
-            System.arraycopy(pkcs7Encoding, 0, result, 0,
-                                        pkcs7Encoding.length);
-            return result;
-        }
+
+        return getEncoded(encType);
     }
 
     /**
      * @see java.security.cert.CertPath#getEncodings()
      * method documentation for more info
      */
-    public Iterator getEncodings() {
+    @Override
+    public Iterator<String> getEncodings() {
         return encodings.iterator();
     }
 
     /**
      * ASN.1 DER Encoder/Decoder for PkiPath structure.
      */
-    public static final ASN1SequenceOf ASN1 =
-                                    new ASN1SequenceOf(ASN1Any.getInstance()) {
-
+    public static final ASN1SequenceOf ASN1 = new ASN1SequenceOf(ASN1Any.getInstance()) {
         /**
-         * Builds the instance of X509CertPathImpl on the base of the list
-         * of ASN.1 encodings of X.509 certificates provided via
-         * PkiPath structure.
+         * Builds the instance of X509CertPathImpl on the base of the list of
+         * ASN.1 encodings of X.509 certificates provided via PkiPath structure.
          * This method participates in decoding process.
          */
         public Object getDecodedObject(BerInputStream in) throws IOException {
             // retrieve the decoded content
-            List encodings = (List) in.content;
-            int size = encodings.size();
-            List certificates = new ArrayList(size);
-            for (int i=0; i<size; i++) {
+            final List<byte[]> encodedCerts = (List<byte[]>) in.content;
+
+            final int size = encodedCerts.size();
+            final List<X509Certificate> certificates = new ArrayList<X509Certificate>(size);
+
+            for (int i = size - 1; i >= 0; i--) {
                 // create the X.509 certificate on the base of its encoded form
                 // and add it to the list.
-                certificates.add(
-                    new X509CertImpl((Certificate)
-                        Certificate.ASN1.decode((byte[]) encodings.get(i))));
+                certificates.add(new X509CertImpl((Certificate) Certificate.ASN1
+                        .decode(encodedCerts.get(i))));
             }
+
             // create and return the resulting object
-            return new X509CertPathImpl(
-                    certificates, PKI_PATH, in.getEncoded());
+            return new X509CertPathImpl(certificates, Encoding.PKI_PATH);
         }
 
         /**
@@ -329,36 +363,37 @@ public class X509CertPathImpl extends CertPath {
          * in the X509CertPathImpl object to be encoded.
          * This method participates in encoding process.
          */
-        public Collection getValues(Object object) {
+        public Collection<byte[]> getValues(Object object) {
             // object to be encoded
-            X509CertPathImpl cp = (X509CertPathImpl) object;
+            final X509CertPathImpl cp = (X509CertPathImpl) object;
+
             // if it has no certificates in it - create the sequence of size 0
             if (cp.certificates == null) {
-                return new ArrayList();
+                return Collections.emptyList();
             }
-            int size = cp.certificates.size();
-            List encodings = new ArrayList(size);
+
+            final int size = cp.certificates.size();
+            final List<byte[]> encodings = new ArrayList<byte[]>(size);
+
             try {
-                for (int i=0; i<size; i++) {
+                for (int i = size - 1; i >= 0; i--) {
                     // get the encoded form of certificate and place it into the
                     // list to be encoded in PkiPath format
-                    encodings.add(((X509Certificate) cp.certificates.get(i)).getEncoded());
+                    encodings.add(cp.certificates.get(i).getEncoded());
                 }
             } catch (CertificateEncodingException e) {
-                throw new IllegalArgumentException("Encoding Error occurred");
+                throw new IllegalArgumentException("Encoding error occurred", e);
             }
+
             return encodings;
         }
     };
 
 
-    //
-    // encoder for PKCS#7 SignedData
-    // it is assumed that only certificate field is important
-    // all other fields contain precalculated encodings:
-    //
-    // encodes X509CertPathImpl objects
-    //
+    /**
+     * Encoder for PKCS#7 SignedData. It is assumed that only certificate field
+     * is important all other fields contain pre-calculated encodings.
+     */
     private static final ASN1Sequence ASN1_SIGNED_DATA = new ASN1Sequence(
             new ASN1Type[] {
                     // version ,digestAlgorithms, content info

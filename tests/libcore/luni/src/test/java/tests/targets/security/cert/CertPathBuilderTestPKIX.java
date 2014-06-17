@@ -44,8 +44,7 @@ public class CertPathBuilderTestPKIX extends CertPathBuilderTest {
 
         keyStore.load(null, null);
 
-        CertificateFactory certificateFactory = CertificateFactory.getInstance(
-                "X509");
+        CertificateFactory certificateFactory = CertificateFactory.getInstance("X509");
 
         X509Certificate selfSignedcertificate =
                 (X509Certificate) certificateFactory.generateCertificate(

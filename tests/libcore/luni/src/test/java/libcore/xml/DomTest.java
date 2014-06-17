@@ -1655,6 +1655,19 @@ public class DomTest extends TestCase {
         assertNull(text.getNextSibling());
     }
 
+    // http://code.google.com/p/android/issues/detail?id=24530
+    public void testInsertBefore() throws Exception {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        Document d = factory.newDocumentBuilder().newDocument();
+        d.appendChild(d.createElement("root"));
+        d.getFirstChild().insertBefore(d.createElement("foo"), null);
+        assertEquals("foo", d.getFirstChild().getFirstChild().getNodeName());
+        assertEquals("foo", d.getFirstChild().getLastChild().getNodeName());
+        d.getFirstChild().insertBefore(d.createElement("bar"), null);
+        assertEquals("foo", d.getFirstChild().getFirstChild().getNodeName());
+        assertEquals("bar", d.getFirstChild().getLastChild().getNodeName());
+    }
+
     public void testBomAndByteInput() throws Exception {
         byte[] xml = {
                 (byte) 0xef, (byte) 0xbb, (byte) 0xbf,

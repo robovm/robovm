@@ -1,6 +1,6 @@
 /*
 ********************************************************************************
-*   Copyright (C) 1997-2010, International Business Machines
+*   Copyright (C) 1997-2013, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 ********************************************************************************
 *
@@ -182,6 +182,11 @@ public:
      * Utext that was passed as a parameter, but that the underlying text itself
      * must not be altered while being referenced by the break iterator.
      *
+     * All index positions returned by break iterator functions are
+     * native indices from the UText. For example, when breaking UTF-8
+     * encoded text, the break positions returned by next(), previous(), etc.
+     * will be UTF-8 string indices, not UTF-16 positions.
+     *
      * @param text The UText used to change the text.
      * @param status receives any error codes.
      * @stable ICU 3.4
@@ -208,19 +213,21 @@ public:
     };
 
     /**
-     * Return the index of the first character in the text being scanned.
+     * Set the iterator position to the index of the first character in the text being scanned.
+     * @return The index of the first character in the text being scanned.
      * @stable ICU 2.0
      */
     virtual int32_t first(void) = 0;
 
     /**
-     * Return the index immediately BEYOND the last character in the text being scanned.
+     * Set the iterator position to the index immediately BEYOND the last character in the text being scanned.
+     * @return The index immediately BEYOND the last character in the text being scanned.
      * @stable ICU 2.0
      */
     virtual int32_t last(void) = 0;
 
     /**
-     * Return the boundary preceding the current boundary.
+     * Set the iterator position to the boundary preceding the current boundary.
      * @return The character index of the previous text boundary or DONE if all
      * boundaries have been returned.
      * @stable ICU 2.0
@@ -228,7 +235,7 @@ public:
     virtual int32_t previous(void) = 0;
 
     /**
-     * Return the boundary following the current boundary.
+     * Advance the iterator to the boundary following the current boundary.
      * @return The character index of the next text boundary or DONE if all
      * boundaries have been returned.
      * @stable ICU 2.0
@@ -243,7 +250,7 @@ public:
     virtual int32_t current(void) const = 0;
 
     /**
-     * Return the first boundary following the specified offset.
+     * Advance the iterator to the first boundary following the specified offset.
      * The value returned is always greater than the offset or
      * the value BreakIterator.DONE
      * @param offset the offset to begin scanning.
@@ -253,7 +260,7 @@ public:
     virtual int32_t following(int32_t offset) = 0;
 
     /**
-     * Return the first boundary preceding the specified offset.
+     * Set the iterator position to the first boundary preceding the specified offset.
      * The value returned is always smaller than the offset or
      * the value BreakIterator.DONE
      * @param offset the offset to begin scanning.
@@ -273,11 +280,11 @@ public:
     virtual UBool isBoundary(int32_t offset) = 0;
 
     /**
-     * Return the nth boundary from the current boundary
-     * @param n which boundary to return.  A value of 0
+     * Set the iterator position to the nth boundary from the current boundary
+     * @param n the number of boundaries to move by.  A value of 0
      * does nothing.  Negative values move to previous boundaries
      * and positive values move to later boundaries.
-     * @return The index of the nth boundary from the current position, or
+     * @return The new iterator position, or
      * DONE if there are fewer than |n| boundaries in the specfied direction.
      * @stable ICU 2.0
      */
@@ -506,6 +513,7 @@ public:
      */
     Locale getLocale(ULocDataLocaleType type, UErrorCode& status) const;
 
+#ifndef U_HIDE_INTERNAL_API
     /** Get the locale for this break iterator object. You can choose between valid and actual locale.
      *  @param type type of the locale we're looking for (valid or actual)
      *  @param status error code for the operation
@@ -513,6 +521,34 @@ public:
      *  @internal
      */
     const char *getLocaleID(ULocDataLocaleType type, UErrorCode& status) const;
+#endif  /* U_HIDE_INTERNAL_API */
+
+    /**
+     *  Set the subject text string upon which the break iterator is operating
+     *  without changing any other aspect of the matching state.
+     *  The new and previous text strings must have the same content.
+     *
+     *  This function is intended for use in environments where ICU is operating on
+     *  strings that may move around in memory.  It provides a mechanism for notifying
+     *  ICU that the string has been relocated, and providing a new UText to access the
+     *  string in its new position.
+     *
+     *  Note that the break iterator implementation never copies the underlying text
+     *  of a string being processed, but always operates directly on the original text
+     *  provided by the user. Refreshing simply drops the references to the old text
+     *  and replaces them with references to the new.
+     *
+     *  Caution:  this function is normally used only by very specialized,
+     *  system-level code.  One example use case is with garbage collection that moves
+     *  the text in memory.
+     *
+     * @param input      The new (moved) text string.
+     * @param status     Receives errors detected by this function.
+     * @return           *this
+     *
+     * @stable ICU 49
+     */
+    virtual BreakIterator &refreshInputText(UText *input, UErrorCode &status) = 0;
 
  private:
     static BreakIterator* buildInstance(const Locale& loc, const char *type, int32_t kind, UErrorCode& status);
@@ -523,6 +559,8 @@ public:
     friend class ICUBreakIteratorService;
 
 protected:
+    // Do not enclose protected default/copy constructors with #ifndef U_HIDE_INTERNAL_API
+    // or else the compiler will create a public ones.
     /** @internal */
     BreakIterator();
     /** @internal */

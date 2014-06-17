@@ -441,7 +441,7 @@ public class TreeMap<K, V> extends AbstractMap<K, V>
             if (parent.left == node) {
                 parent.left = replacement;
             } else {
-                assert (parent.right == node);
+                // assert (parent.right == node);
                 parent.right = replacement;
             }
         } else {
@@ -474,7 +474,7 @@ public class TreeMap<K, V> extends AbstractMap<K, V>
                 if (rightDelta == -1 || (rightDelta == 0 && !insert)) {
                     rotateLeft(node); // AVL right right
                 } else {
-                    assert (rightDelta == 1);
+                    // assert (rightDelta == 1);
                     rotateRight(right); // AVL right left
                     rotateLeft(node);
                 }
@@ -492,7 +492,7 @@ public class TreeMap<K, V> extends AbstractMap<K, V>
                 if (leftDelta == 1 || (leftDelta == 0 && !insert)) {
                     rotateRight(node); // AVL left left
                 } else {
-                    assert (leftDelta == -1);
+                    // assert (leftDelta == -1);
                     rotateLeft(left); // AVL left right
                     rotateRight(node);
                 }
@@ -507,7 +507,7 @@ public class TreeMap<K, V> extends AbstractMap<K, V>
                 }
 
             } else {
-                assert (delta == -1 || delta == 1);
+                // assert (delta == -1 || delta == 1);
                 node.height = Math.max(leftHeight, rightHeight) + 1;
                 if (!insert) {
                     break; // the height hasn't changed, so rebalancing is done!

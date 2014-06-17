@@ -18,8 +18,10 @@
 #define LOG_TAG "Inflater"
 
 #include "JniConstants.h"
+#include "JniException.h"
 #include "ScopedPrimitiveArray.h"
-#include "zip.h"
+#include "ZipUtilities.h"
+#include "zutil.h" // For DEF_WBITS and DEF_MEM_LEVEL.
 #include <errno.h>
 
 extern "C" jlong Java_java_util_zip_Inflater_createStream(JNIEnv* env, jobject, jboolean noHeader) {
@@ -40,7 +42,7 @@ extern "C" jlong Java_java_util_zip_Inflater_createStream(JNIEnv* env, jobject, 
      */
     int err = inflateInit2(&jstream->stream, noHeader ? -DEF_WBITS : DEF_WBITS);
     if (err != Z_OK) {
-        throwExceptionForZlibError(env, "java/lang/IllegalArgumentException", err);
+        throwExceptionForZlibError(env, "java/lang/IllegalArgumentException", err, jstream.get());
         return -1;
     }
     return reinterpret_cast<uintptr_t>(jstream.release());
@@ -113,7 +115,7 @@ extern "C" jint Java_java_util_zip_Inflater_inflateImpl(JNIEnv* env, jobject rec
     case Z_STREAM_ERROR:
         return 0;
     default:
-        throwExceptionForZlibError(env, "java/util/zip/DataFormatException", err);
+        throwExceptionForZlibError(env, "java/util/zip/DataFormatException", err, stream);
         return -1;
     }
 
@@ -142,9 +144,10 @@ extern "C" void Java_java_util_zip_Inflater_setDictionaryImpl(JNIEnv* env, jobje
 }
 
 extern "C" void Java_java_util_zip_Inflater_resetImpl(JNIEnv* env, jobject, jlong handle) {
-    int err = inflateReset(&toNativeZipStream(handle)->stream);
+    NativeZipStream* stream = toNativeZipStream(handle);
+    int err = inflateReset(&stream->stream);
     if (err != Z_OK) {
-        throwExceptionForZlibError(env, "java/lang/IllegalArgumentException", err);
+        throwExceptionForZlibError(env, "java/lang/IllegalArgumentException", err, stream);
     }
 }
 

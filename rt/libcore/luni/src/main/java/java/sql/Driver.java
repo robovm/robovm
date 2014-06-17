@@ -20,17 +20,13 @@ package java.sql;
 import java.util.Properties;
 
 /**
- * An interface to a JDBC driver.
- * <p>
- * The JDBC driver uses URLs to specify the location of specific data. URL
+ * An interface to a JDBC driver. Instances are returned by {@link DriverManager}.
+ *
+ * <p>The JDBC driver uses URLs to specify the location of specific data. URL
  * format typically takes the form " {@code xxxx:yyyy:SpecificData}", where "
  * {@code xxxx:yyyy}" is referred to as the <i>subprotocol</i> and is normally
  * the same for all of a particular driver. " {@code SpecificData}" is a string
  * which identifies the particular data source that the driver should use.
- * <p>
- * A driver needs to be registered with a {@link DriverManager}. It is
- * registered and instantiated by calling {@code Class.forName("DriverURL")}
- * with the URL string as argument.
  *
  * @see DriverManager
  */

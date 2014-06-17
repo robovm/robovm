@@ -104,4 +104,20 @@ public class OldPriorityQueueTest extends TestCase {
         }
     }
 
+    /**
+     * removeAt(.) must sometimes perform siftUp(.).
+     */
+    public void test_removeAt_siftUp() {
+        PriorityQueue<Integer> q = new PriorityQueue<Integer>();
+        // Adding a valid heap will keep elements in the same order
+        for (int i : new int[] { 0, 3, 1, 4, 5, 6, 2 }) {
+            q.add(i);
+        }
+        q.remove(4);  // 2 replaces 4 but parent is 3, siftUp(.) is needed
+        for (int i : new int[] { 0, 1, 2, 3, 5, 6 }) {
+            assertEquals(i, (int) q.poll());
+        }
+        assertNull(q.poll());
+    }
+
 }

@@ -56,35 +56,24 @@ public interface ObjectInput extends DataInput, AutoCloseable {
 
     /**
      * Reads bytes from this stream into the byte array {@code buffer}. Blocks
-     * while waiting for input.
+     * while waiting for input. Returns the number of bytes read,
+     * or -1 if the end of this stream has been reached.
      *
-     * @param buffer
-     *            the array in which to store the bytes read.
-     * @return the number of bytes read or -1 if the end of this stream has been
-     *         reached.
      * @throws IOException
      *             if this stream is closed or another I/O error occurs.
      */
     public int read(byte[] buffer) throws IOException;
 
     /**
-     * Reads at most {@code count} bytes from this stream and stores them in
-     * byte array {@code buffer} starting at offset {@code count}. Blocks while
-     * waiting for input.
+     * Reads up to {@code byteCount} bytes from this stream and stores them in
+     * byte array {@code buffer} starting at offset {@code byteOffset}. Blocks while
+     * waiting for input. Returns the number of bytes read or -1 if the end of this stream has been
+     * reached.
      *
-     * @param buffer
-     *            the array in which to store the bytes read.
-     * @param offset
-     *            the initial position in {@code buffer} to store the bytes read
-     *            from this stream.
-     * @param count
-     *            the maximum number of bytes to store in {@code buffer}.
-     * @return the number of bytes read or -1 if the end of this stream has been
-     *         reached.
      * @throws IOException
      *             if this stream is closed or another I/O error occurs.
      */
-    public int read(byte[] buffer, int offset, int count) throws IOException;
+    public int read(byte[] buffer, int byteOffset, int byteCount) throws IOException;
 
     /**
      * Reads the next object from this stream.

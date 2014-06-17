@@ -190,7 +190,7 @@ public final class ObjectIdentifier {
             if (! shouldThrow) {
                 return null;
             }
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("str == null");
         }
 
         int length = str.length();

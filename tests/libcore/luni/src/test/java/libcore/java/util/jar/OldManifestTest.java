@@ -141,4 +141,44 @@ public class OldManifestTest extends TestCase {
         assertTrue(manifest1.equals(manifest2));
     }
 
+    public void test_write_no_version() throws Exception {
+        // If you write a manifest with no MANIFEST_VERSION, your attributes don't get written out.
+        assertEquals(null, doRoundTrip(null));
+        // But they do if you supply a MANIFEST_VERSION.
+        assertEquals("image/pr0n", doRoundTrip(Attributes.Name.MANIFEST_VERSION));
+        assertEquals("image/pr0n", doRoundTrip("Signature-Version"));
+        assertEquals(null, doRoundTrip("Random-String-Version"));
+    }
+
+    private String doRoundTrip(Object versionName) throws Exception {
+        Manifest m1 = new Manifest();
+        m1.getMainAttributes().put(Attributes.Name.CONTENT_TYPE, "image/pr0n");
+        if (versionName != null) {
+            m1.getMainAttributes().putValue(versionName.toString(), "1.2.3");
+        }
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        m1.write(os);
+
+        ByteArrayInputStream is = new ByteArrayInputStream(os.toByteArray());
+        Manifest m2 = new Manifest();
+        m2.read(is);
+        return (String) m2.getMainAttributes().get(Attributes.Name.CONTENT_TYPE);
+    }
+
+    public void test_write_two_versions() throws Exception {
+        // It's okay to have two versions.
+        Manifest m1 = new Manifest();
+        m1.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, "1.0");
+        m1.getMainAttributes().put(Attributes.Name.SIGNATURE_VERSION, "2.0");
+        m1.getMainAttributes().putValue("Aardvark-Version", "3.0");
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        m1.write(os);
+
+        // The Manifest-Version takes precedence,
+        // and the Signature-Version gets no special treatment.
+        String[] lines = new String(os.toByteArray(), "UTF-8").split("\r\n");
+        assertEquals("Manifest-Version: 1.0", lines[0]);
+        assertEquals("Aardvark-Version: 3.0", lines[1]);
+        assertEquals("Signature-Version: 2.0", lines[2]);
+    }
 }

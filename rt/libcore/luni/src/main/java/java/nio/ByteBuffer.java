@@ -35,6 +35,10 @@ import libcore.io.Memory;
  *
  */
 public abstract class ByteBuffer extends Buffer implements Comparable<ByteBuffer> {
+    /**
+     * The byte order of this buffer, default is {@code BIG_ENDIAN}.
+     */
+    ByteOrder order = ByteOrder.BIG_ENDIAN;
 
     /**
      * Creates a byte buffer based on a newly allocated byte array.
@@ -47,9 +51,9 @@ public abstract class ByteBuffer extends Buffer implements Comparable<ByteBuffer
      */
     public static ByteBuffer allocate(int capacity) {
         if (capacity < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("capacity < 0: " + capacity);
         }
-        return new ReadWriteHeapByteBuffer(capacity);
+        return new ByteArrayBuffer(new byte[capacity]);
     }
 
     /**
@@ -63,9 +67,9 @@ public abstract class ByteBuffer extends Buffer implements Comparable<ByteBuffer
      */
     public static ByteBuffer allocateDirect(int capacity) {
         if (capacity < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("capacity < 0: " + capacity);
         }
-        return new ReadWriteDirectByteBuffer(capacity);
+        return new DirectByteBuffer(MemoryBlock.allocate(capacity), capacity, 0, false, null);
     }
 
     /**
@@ -79,7 +83,7 @@ public abstract class ByteBuffer extends Buffer implements Comparable<ByteBuffer
      * @return the created byte buffer.
      */
     public static ByteBuffer wrap(byte[] array) {
-        return new ReadWriteHeapByteBuffer(array);
+        return new ByteArrayBuffer(array);
     }
 
     /**
@@ -102,16 +106,11 @@ public abstract class ByteBuffer extends Buffer implements Comparable<ByteBuffer
      */
     public static ByteBuffer wrap(byte[] array, int start, int byteCount) {
         Arrays.checkOffsetAndCount(array.length, start, byteCount);
-        ByteBuffer buf = new ReadWriteHeapByteBuffer(array);
+        ByteBuffer buf = new ByteArrayBuffer(array);
         buf.position = start;
         buf.limit = start + byteCount;
         return buf;
     }
-
-    /**
-     * The byte order of this buffer, default is {@code BIG_ENDIAN}.
-     */
-    ByteOrder order = ByteOrder.BIG_ENDIAN;
 
     ByteBuffer(int capacity, MemoryBlock block) {
         super(0, capacity, block);
@@ -126,7 +125,7 @@ public abstract class ByteBuffer extends Buffer implements Comparable<ByteBuffer
      * @exception UnsupportedOperationException
      *                if this buffer is not based on an array.
      */
-    public final byte[] array() {
+    @Override public final byte[] array() {
         return protectedArray();
     }
 
@@ -143,7 +142,7 @@ public abstract class ByteBuffer extends Buffer implements Comparable<ByteBuffer
      * @exception UnsupportedOperationException
      *                if this buffer is not based on an array.
      */
-    public final int arrayOffset() {
+    @Override public final int arrayOffset() {
         return protectedArrayOffset();
     }
 
@@ -157,10 +156,8 @@ public abstract class ByteBuffer extends Buffer implements Comparable<ByteBuffer
      * The new buffer is direct if this byte buffer is direct.
      * <p>
      * The new buffer shares its content with this buffer, which means either
-     * buffer's change of content will be visible to the other. The two buffer's
+     * buffer's change of content will be visible to the other. The two buffers'
      * position, limit and mark are independent.
-     *
-     * @return a char buffer which is based on the content of this byte buffer.
      */
     public abstract CharBuffer asCharBuffer();
 
@@ -174,11 +171,8 @@ public abstract class ByteBuffer extends Buffer implements Comparable<ByteBuffer
      * The new buffer is direct if this byte buffer is direct.
      * <p>
      * The new buffer shares its content with this buffer, which means either
-     * buffer's change of content will be visible to the other. The two buffer's
+     * buffer's change of content will be visible to the other. The two buffers'
      * position, limit and mark are independent.
-     *
-     * @return a double buffer which is based on the content of this byte
-     *         buffer.
      */
     public abstract DoubleBuffer asDoubleBuffer();
 
@@ -192,10 +186,8 @@ public abstract class ByteBuffer extends Buffer implements Comparable<ByteBuffer
      * The new buffer is direct if this byte buffer is direct.
      * <p>
      * The new buffer shares its content with this buffer, which means either
-     * buffer's change of content will be visible to the other. The two buffer's
+     * buffer's change of content will be visible to the other. The two buffers'
      * position, limit and mark are independent.
-     *
-     * @return a float buffer which is based on the content of this byte buffer.
      */
     public abstract FloatBuffer asFloatBuffer();
 
@@ -209,10 +201,8 @@ public abstract class ByteBuffer extends Buffer implements Comparable<ByteBuffer
      * The new buffer is direct if this byte buffer is direct.
      * <p>
      * The new buffer shares its content with this buffer, which means either
-     * buffer's change of content will be visible to the other. The two buffer's
+     * buffer's change of content will be visible to the other. The two buffers'
      * position, limit and mark are independent.
-     *
-     * @return a int buffer which is based on the content of this byte buffer.
      */
     public abstract IntBuffer asIntBuffer();
 
@@ -226,10 +216,8 @@ public abstract class ByteBuffer extends Buffer implements Comparable<ByteBuffer
      * The new buffer is direct if this byte buffer is direct.
      * <p>
      * The new buffer shares its content with this buffer, which means either
-     * buffer's change of content will be visible to the other. The two buffer's
+     * buffer's change of content will be visible to the other. The two buffers'
      * position, limit and mark are independent.
-     *
-     * @return a long buffer which is based on the content of this byte buffer.
      */
     public abstract LongBuffer asLongBuffer();
 
@@ -258,10 +246,8 @@ public abstract class ByteBuffer extends Buffer implements Comparable<ByteBuffer
      * The new buffer is direct if this byte buffer is direct.
      * <p>
      * The new buffer shares its content with this buffer, which means either
-     * buffer's change of content will be visible to the other. The two buffer's
+     * buffer's change of content will be visible to the other. The two buffers'
      * position, limit and mark are independent.
-     *
-     * @return a short buffer which is based on the content of this byte buffer.
      */
     public abstract ShortBuffer asShortBuffer();
 
@@ -291,7 +277,7 @@ public abstract class ByteBuffer extends Buffer implements Comparable<ByteBuffer
      * @exception ClassCastException
      *                if {@code other} is not a byte buffer.
      */
-    public int compareTo(ByteBuffer otherBuffer) {
+    @Override public int compareTo(ByteBuffer otherBuffer) {
         int compareRemaining = (remaining() < otherBuffer.remaining()) ? remaining()
                 : otherBuffer.remaining();
         int thisPos = position;
@@ -314,14 +300,16 @@ public abstract class ByteBuffer extends Buffer implements Comparable<ByteBuffer
      * Returns a duplicated buffer that shares its content with this buffer.
      * <p>
      * The duplicated buffer's position, limit, capacity and mark are the same
-     * as this buffer's. The duplicated buffer's read-only property and byte
-     * order are the same as this buffer's too.
-     * <p>
-     * The new buffer shares its content with this buffer, which means either
-     * buffer's change of content will be visible to the other. The two buffer's
-     * position, limit and mark are independent.
+     * as this buffer's. The duplicated buffer's read-only property is the same
+     * as this buffer's.
      *
-     * @return a duplicated buffer that shares its content with this buffer.
+     * <p>Note that <i>in contrast to all non-{@code byte} buffers</i>,
+     * byte order is not preserved in the duplicate, and is instead set to
+     * big-endian.
+     *
+     * <p>The new buffer shares its content with this buffer, which means either
+     * buffer's change of content will be visible to the other. The two buffers'
+     * position, limit and mark are independent.
      */
     public abstract ByteBuffer duplicate();
 
@@ -593,7 +581,7 @@ public abstract class ByteBuffer extends Buffer implements Comparable<ByteBuffer
      */
     public abstract short getShort(int index);
 
-    public final boolean hasArray() {
+    @Override public final boolean hasArray() {
         return protectedHasArray();
     }
 
@@ -618,7 +606,7 @@ public abstract class ByteBuffer extends Buffer implements Comparable<ByteBuffer
      *
      * @return {@code true} if this buffer is direct, {@code false} otherwise.
      */
-    public abstract boolean isDirect();
+    @Override public abstract boolean isDirect();
 
     /**
      * Returns the byte order used by this buffer when converting bytes from/to
@@ -644,18 +632,11 @@ public abstract class ByteBuffer extends Buffer implements Comparable<ByteBuffer
      * @see ByteOrder
      */
     public final ByteBuffer order(ByteOrder byteOrder) {
-        orderImpl(byteOrder);
-        return this;
-    }
-
-    /**
-     * Subverts the fact that order(ByteOrder) is final, for the benefit of MappedByteBufferAdapter.
-     */
-    void orderImpl(ByteOrder byteOrder) {
         if (byteOrder == null) {
             byteOrder = ByteOrder.LITTLE_ENDIAN;
         }
         order = byteOrder;
+        return this;
     }
 
     /**
@@ -761,6 +742,9 @@ public abstract class ByteBuffer extends Buffer implements Comparable<ByteBuffer
      *                if no changes may be made to the contents of this buffer.
      */
     public ByteBuffer put(ByteBuffer src) {
+        if (isReadOnly()) {
+            throw new ReadOnlyBufferException();
+        }
         if (src == this) {
             throw new IllegalArgumentException("src == this");
         }
@@ -1025,10 +1009,8 @@ public abstract class ByteBuffer extends Buffer implements Comparable<ByteBuffer
      * read-only property and byte order are the same as this buffer's.
      * <p>
      * The new buffer shares its content with this buffer, which means either
-     * buffer's change of content will be visible to the other. The two buffer's
+     * buffer's change of content will be visible to the other. The two buffers'
      * position, limit and mark are independent.
-     *
-     * @return a sliced buffer that shares its content with this buffer.
      */
     public abstract ByteBuffer slice();
 }

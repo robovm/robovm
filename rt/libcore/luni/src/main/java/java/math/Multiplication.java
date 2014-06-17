@@ -136,9 +136,13 @@ class Multiplication {
          */
         long byteArraySize = 1 + (long)(exp / 2.4082399653118496);
 
-        if (byteArraySize > Runtime.getRuntime().freeMemory()) {
+        // RoboVM note: Start change. It is unreliable to depend on 
+        // Runtime.freeMemory() here. As a workaround we always assume there's 
+        // at least 64k (1<<16) bytes of free memory.
+        if (byteArraySize > (1 << 16) && byteArraySize > Runtime.getRuntime().freeMemory()) {
             throw new ArithmeticException();
         }
+        // RoboVM note: End change.
         if (exp <= Integer.MAX_VALUE) {
             // To calculate:    5^exp * 2^exp
             return bigFivePows[1].pow(intExp).shiftLeft(intExp);

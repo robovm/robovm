@@ -18,6 +18,7 @@
 package java.io;
 
 import java.util.Arrays;
+import libcore.io.IoUtils;
 
 /**
  * Receives information from a communications pipe. When two threads want to
@@ -235,7 +236,7 @@ public class PipedInputStream extends InputStream {
                 wait(1000);
             }
         } catch (InterruptedException e) {
-            throw new InterruptedIOException();
+            IoUtils.throwInterruptedIoException();
         }
 
         int result = buffer[out++] & 0xff;
@@ -255,20 +256,20 @@ public class PipedInputStream extends InputStream {
     }
 
     /**
-     * Reads at most {@code byteCount} bytes from this stream and stores them in the
-     * byte array {@code bytes} starting at {@code offset}. Blocks until at
+     * Reads up to {@code byteCount} bytes from this stream and stores them in the
+     * byte array {@code bytes} starting at {@code byteOffset}. Blocks until at
      * least one byte has been read, the end of the stream is detected or an
      * exception is thrown.
-     * <p>
-     * Separate threads should be used to read from a {@code PipedInputStream}
+     *
+     * <p>Separate threads should be used to read from a {@code PipedInputStream}
      * and to write to the connected {@link PipedOutputStream}. If the same
      * thread is used, a deadlock may occur.
      *
-     * @return the number of bytes actually read or -1 if the end of the stream
-     *         has been reached.
+     * <p>Returns the number of bytes actually read or -1 if the end of the stream
+     * has been reached.
+     *
      * @throws IndexOutOfBoundsException
-     *             if {@code offset < 0} or {@code byteCount < 0}, or if {@code
-     *             offset + byteCount} is greater than the size of {@code bytes}.
+     *     if {@code byteOffset < 0 || byteCount < 0 || byteOffset + byteCount > bytes.length}.
      * @throws InterruptedIOException
      *             if the thread reading from this stream is interrupted.
      * @throws IOException
@@ -278,9 +279,8 @@ public class PipedInputStream extends InputStream {
      * @throws NullPointerException
      *             if {@code bytes} is {@code null}.
      */
-    @Override
-    public synchronized int read(byte[] bytes, int offset, int byteCount) throws IOException {
-        Arrays.checkOffsetAndCount(bytes.length, offset, byteCount);
+    @Override public synchronized int read(byte[] bytes, int byteOffset, int byteCount) throws IOException {
+        Arrays.checkOffsetAndCount(bytes.length, byteOffset, byteCount);
         if (byteCount == 0) {
             return 0;
         }
@@ -314,7 +314,7 @@ public class PipedInputStream extends InputStream {
                 wait(1000);
             }
         } catch (InterruptedException e) {
-            throw new InterruptedIOException();
+            IoUtils.throwInterruptedIoException();
         }
 
         int totalCopied = 0;
@@ -323,7 +323,7 @@ public class PipedInputStream extends InputStream {
         if (out >= in) {
             int leftInBuffer = buffer.length - out;
             int length = leftInBuffer < byteCount ? leftInBuffer : byteCount;
-            System.arraycopy(buffer, out, bytes, offset, length);
+            System.arraycopy(buffer, out, bytes, byteOffset, length);
             out += length;
             if (out == buffer.length) {
                 out = 0;
@@ -341,7 +341,7 @@ public class PipedInputStream extends InputStream {
             int leftInBuffer = in - out;
             int leftToCopy = byteCount - totalCopied;
             int length = leftToCopy < leftInBuffer ? leftToCopy : leftInBuffer;
-            System.arraycopy(buffer, out, bytes, offset + totalCopied, length);
+            System.arraycopy(buffer, out, bytes, byteOffset + totalCopied, length);
             out += length;
             if (out == in) {
                 // empty buffer
@@ -394,7 +394,7 @@ public class PipedInputStream extends InputStream {
                 wait(1000);
             }
         } catch (InterruptedException e) {
-            throw new InterruptedIOException();
+            IoUtils.throwInterruptedIoException();
         }
         if (buffer == null) {
             throw new IOException("Pipe is closed");

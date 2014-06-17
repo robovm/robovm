@@ -44,7 +44,8 @@ import java.security.cert.X509Certificate;
  * <p>For example, to trust a set of certificates specified by a {@code KeyStore}:
  * <pre>   {@code
  *   KeyStore keyStore = ...;
- *   TrustManagerFactory tmf = TrustManagerFactory.getInstance("X509");
+ *   String algorithm = TrustManagerFactory.getDefaultAlgorithm();
+ *   TrustManagerFactory tmf = TrustManagerFactory.getInstance(algorithm);
  *   tmf.init(keyStore);
  *
  *   SSLContext context = SSLContext.getInstance("TLS");
@@ -77,7 +78,8 @@ import java.security.cert.X509Certificate;
  * <p>For example, to supply client certificates from a {@code KeyStore}:
  * <pre>   {@code
  *   KeyStore keyStore = ...;
- *   KeyManagerFactory kmf = KeyManagerFactory.getInstance("X509");
+ *   String algorithm = KeyManagerFactory.getDefaultAlgorithm();
+ *   KeyManagerFactory kmf = KeyManagerFactory.getInstance(algorithm);
  *   kmf.init(keyStore);
  *
  *   SSLContext context = SSLContext.getInstance("TLS");
@@ -102,11 +104,16 @@ import java.security.cert.X509Certificate;
  * connection will be retried with SSLv3 only.
  */
 public abstract class HttpsURLConnection extends HttpURLConnection {
+    /*
+     * Holds default instances so class preloading doesn't create an instance of
+     * it.
+     */
+    private static class NoPreloadHolder {
+        public static HostnameVerifier defaultHostnameVerifier = new DefaultHostnameVerifier();
 
-    private static HostnameVerifier defaultHostnameVerifier = new DefaultHostnameVerifier();
-
-    private static SSLSocketFactory defaultSSLSocketFactory = (SSLSocketFactory) SSLSocketFactory
-            .getDefault();
+        public static SSLSocketFactory defaultSSLSocketFactory = (SSLSocketFactory) SSLSocketFactory
+                .getDefault();
+    }
 
     /**
      * Sets the default hostname verifier to be used by new instances.
@@ -120,7 +127,7 @@ public abstract class HttpsURLConnection extends HttpURLConnection {
         if (v == null) {
             throw new IllegalArgumentException("HostnameVerifier is null");
         }
-        defaultHostnameVerifier = v;
+        NoPreloadHolder.defaultHostnameVerifier = v;
     }
 
     /**
@@ -129,7 +136,7 @@ public abstract class HttpsURLConnection extends HttpURLConnection {
      * @return the default hostname verifier.
      */
     public static HostnameVerifier getDefaultHostnameVerifier() {
-        return defaultHostnameVerifier;
+        return NoPreloadHolder.defaultHostnameVerifier;
     }
 
     /**
@@ -144,7 +151,7 @@ public abstract class HttpsURLConnection extends HttpURLConnection {
         if (sf == null) {
             throw new IllegalArgumentException("SSLSocketFactory is null");
         }
-        defaultSSLSocketFactory = sf;
+        NoPreloadHolder.defaultSSLSocketFactory = sf;
     }
 
     /**
@@ -153,7 +160,7 @@ public abstract class HttpsURLConnection extends HttpURLConnection {
      * @return the default SSL socket factory for new instances.
      */
     public static SSLSocketFactory getDefaultSSLSocketFactory() {
-        return defaultSSLSocketFactory;
+        return NoPreloadHolder.defaultSSLSocketFactory;
     }
 
     /**
@@ -174,8 +181,8 @@ public abstract class HttpsURLConnection extends HttpURLConnection {
      */
     protected HttpsURLConnection(URL url) {
         super(url);
-        hostnameVerifier = defaultHostnameVerifier;
-        sslSocketFactory = defaultSSLSocketFactory;
+        hostnameVerifier = NoPreloadHolder.defaultHostnameVerifier;
+        sslSocketFactory = NoPreloadHolder.defaultSSLSocketFactory;
     }
 
     /**

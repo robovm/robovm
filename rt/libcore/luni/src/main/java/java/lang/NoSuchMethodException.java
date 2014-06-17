@@ -21,7 +21,7 @@ package java.lang;
  * Thrown when the VM notices that a program tries to reference,
  * on a class or object, a method that does not exist.
  */
-public class NoSuchMethodException extends Exception {
+public class NoSuchMethodException extends ReflectiveOperationException {
 
     private static final long serialVersionUID = 5034388446362600923L;
 

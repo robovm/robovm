@@ -25,9 +25,9 @@ package org.apache.harmony.security.x509;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.harmony.security.utils.ObjectIdentifier;
 import org.apache.harmony.security.x501.AttributeTypeAndValue;
 import org.apache.harmony.security.x501.AttributeValue;
-
 
 /**
  * Distinguished Name Parser.
@@ -227,7 +227,7 @@ public final class DNParser {
             case '+':
             case ',':
             case ';':
-                // separator char has beed found
+                // separator char has been found
                 return new String(chars, beg, end - beg);
             case '\\':
                 // escaped char
@@ -247,7 +247,7 @@ public final class DNParser {
                 }
                 if (pos == chars.length || chars[pos] == ',' || chars[pos] == '+'
                         || chars[pos] == ';') {
-                    // separator char or the end of DN has beed found
+                    // separator char or the end of DN has been found
                     return new String(chars, beg, cur - beg);
                 }
                 break;
@@ -380,7 +380,7 @@ public final class DNParser {
     /**
      * Parses DN
      *
-     * @return a list of Relative Distinguished Names(RND),
+     * @return a list of Relative Distinguished Names(RDN),
      *         each RDN is represented as a list of AttributeTypeAndValue objects
      */
     public List<List<AttributeTypeAndValue>> parse() throws IOException {
@@ -390,32 +390,33 @@ public final class DNParser {
         if (attType == null) {
             return list; //empty list of RDNs
         }
+        ObjectIdentifier oid = AttributeTypeAndValue.getObjectIdentifier(attType);
 
         List<AttributeTypeAndValue> atav = new ArrayList<AttributeTypeAndValue>();
         while (true) {
             if (pos == chars.length) {
                 //empty Attribute Value
-                atav.add(new AttributeTypeAndValue(attType, new AttributeValue("", false)));
+                atav.add(new AttributeTypeAndValue(oid, new AttributeValue("", false, oid)));
                 list.add(0, atav);
                 return list;
             }
 
             switch (chars[pos]) {
             case '"':
-                atav.add(new AttributeTypeAndValue(attType, new AttributeValue(quotedAV(), hasQE)));
+                atav.add(new AttributeTypeAndValue(oid, new AttributeValue(quotedAV(), hasQE, oid)));
                 break;
             case '#':
-                atav.add(new AttributeTypeAndValue(attType, new AttributeValue(hexAV(), encoded)));
+                atav.add(new AttributeTypeAndValue(oid, new AttributeValue(hexAV(), encoded)));
                 break;
             case '+':
             case ',':
             case ';': // compatibility with RFC 1779: semicolon can separate RDNs
                 //empty attribute value
-                atav.add(new AttributeTypeAndValue(attType, new AttributeValue("", false)));
+                atav.add(new AttributeTypeAndValue(oid, new AttributeValue("", false, oid)));
                 break;
             default:
-                atav.add(new AttributeTypeAndValue(attType, new AttributeValue(
-                        escapedAV(), hasQE)));
+                atav.add(new AttributeTypeAndValue(oid,
+                                                   new AttributeValue(escapedAV(), hasQE, oid)));
             }
 
             if (pos >= chars.length) {
@@ -435,6 +436,7 @@ public final class DNParser {
             if (attType == null) {
                 throw new IOException("Invalid distinguished name string");
             }
+            oid = AttributeTypeAndValue.getObjectIdentifier(attType);
         }
     }
 }

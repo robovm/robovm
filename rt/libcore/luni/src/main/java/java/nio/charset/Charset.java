@@ -175,10 +175,11 @@ public abstract class Charset implements Comparable<Charset> {
      *             <code>aliases</code>.
      */
     protected Charset(String canonicalName, String[] aliases) {
-        // check whether the given canonical name is legal
+        // Check whether the given canonical name is legal.
         checkCharsetName(canonicalName);
         this.canonicalName = canonicalName;
-        // check each alias and put into a set
+
+        // Collect and check each unique alias.
         this.aliasesSet = new HashSet<String>();
         if (aliases != null) {
             for (String alias : aliases) {
@@ -192,15 +193,21 @@ public abstract class Charset implements Comparable<Charset> {
         if (name.isEmpty()) {
             throw new IllegalCharsetNameException(name);
         }
-        int length = name.length();
-        for (int i = 0; i < length; ++i) {
-            if (!isValidCharsetNameCharacter(name.charAt(i))) {
+        if (!isValidCharsetNameStart(name.charAt(0))) {
+            throw new IllegalCharsetNameException(name);
+        }
+        for (int i = 1; i < name.length(); ++i) {
+            if (!isValidCharsetNamePart(name.charAt(i))) {
                 throw new IllegalCharsetNameException(name);
             }
         }
     }
 
-    private static boolean isValidCharsetNameCharacter(char c) {
+    private static boolean isValidCharsetNameStart(char c) {
+        return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9');
+    }
+
+    private static boolean isValidCharsetNamePart(char c) {
         return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') ||
                 c == '-' || c == '.' || c == ':' || c == '_';
     }
@@ -210,14 +217,17 @@ public abstract class Charset implements Comparable<Charset> {
      * If multiple charsets have the same canonical name, it is unspecified which is returned in
      * the map. This method may be slow. If you know which charset you're looking for, use
      * {@link #forName}.
-     * @return an immutable case-insensitive map from canonical names to {@code Charset} instances
      */
     public static SortedMap<String, Charset> availableCharsets() {
         // Start with a copy of the built-in charsets...
         TreeMap<String, Charset> charsets = new TreeMap<String, Charset>(String.CASE_INSENSITIVE_ORDER);
         for (String charsetName : NativeConverter.getAvailableCharsetNames()) {
-            Charset charset = NativeConverter.charsetForName(charsetName);
-            charsets.put(charset.name(), charset);
+            // RoboVM note: Added try-catch to ignore charsets with bad names (e.g. "x-UTF-16,version=1")
+            try {
+                Charset charset = NativeConverter.charsetForName(charsetName);
+                charsets.put(charset.name(), charset);
+            } catch (IllegalCharsetNameException e) {
+            }
         }
 
         // Add all charsets provided by all charset providers...
@@ -357,69 +367,56 @@ public abstract class Charset implements Comparable<Charset> {
     public abstract boolean contains(Charset charset);
 
     /**
-     * Gets a new instance of an encoder for this charset.
-     *
-     * @return a new instance of an encoder for this charset.
+     * Returns a new instance of an encoder for this charset.
      */
     public abstract CharsetEncoder newEncoder();
 
     /**
-     * Gets a new instance of a decoder for this charset.
-     *
-     * @return a new instance of a decoder for this charset.
+     * Returns a new instance of a decoder for this charset.
      */
     public abstract CharsetDecoder newDecoder();
 
     /**
-     * Gets the canonical name of this charset.
+     * Returns the canonical name of this charset.
      *
-     * @return this charset's name in canonical form.
+     * <p>If a charset is in the IANA registry, this will be the MIME-preferred name (a charset
+     * may have multiple IANA-registered names). Otherwise the canonical name will begin with "x-"
+     * or "X-".
      */
     public final String name() {
         return this.canonicalName;
     }
 
     /**
-     * Gets the set of this charset's aliases.
-     *
-     * @return an unmodifiable set of this charset's aliases.
+     * Returns an unmodifiable set of this charset's aliases.
      */
     public final Set<String> aliases() {
         return Collections.unmodifiableSet(this.aliasesSet);
     }
 
     /**
-     * Gets the name of this charset for the default locale.
+     * Returns the name of this charset for the default locale.
      *
      * <p>The default implementation returns the canonical name of this charset.
      * Subclasses may return a localized display name.
-     *
-     * @return the name of this charset for the default locale.
      */
     public String displayName() {
         return this.canonicalName;
     }
 
     /**
-     * Gets the name of this charset for the specified locale.
+     * Returns the name of this charset for the specified locale.
      *
      * <p>The default implementation returns the canonical name of this charset.
      * Subclasses may return a localized display name.
-     *
-     * @param l
-     *            a certain locale
-     * @return the name of this charset for the specified locale
      */
     public String displayName(Locale l) {
         return this.canonicalName;
     }
 
     /**
-     * Indicates whether this charset is known to be registered in the IANA
+     * Returns true if this charset is known to be registered in the IANA
      * Charset Registry.
-     *
-     * @return true if the charset is known to be registered, otherwise returns
-     *         false.
      */
     public final boolean isRegistered() {
         return !canonicalName.startsWith("x-") && !canonicalName.startsWith("X-");
@@ -427,8 +424,6 @@ public abstract class Charset implements Comparable<Charset> {
 
     /**
      * Returns true if this charset supports encoding, false otherwise.
-     *
-     * @return true if this charset supports encoding, false otherwise.
      */
     public boolean canEncode() {
         return true;

@@ -22,6 +22,7 @@ import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
+import libcore.java.lang.ref.FinalizationTester;
 
 public class ReferenceQueueTest extends junit.framework.TestCase {
     static Boolean b;
@@ -97,8 +98,7 @@ public class ReferenceQueueTest extends junit.framework.TestCase {
         sr.enqueue();
         wr.enqueue();
 
-        System.gc();
-        System.runFinalization();
+        FinalizationTester.induceFinalization();
 
         assertNull(rq.poll());
     }

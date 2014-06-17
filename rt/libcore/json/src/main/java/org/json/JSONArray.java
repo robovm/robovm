@@ -16,8 +16,10 @@
 
 package org.json;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 // Note: this class was written without inspecting the non-free org.json sourcecode.
@@ -66,8 +68,11 @@ public class JSONArray {
     /* Accept a raw type for API compatibility */
     public JSONArray(Collection copyFrom) {
         this();
-        Collection<?> copyFromTyped = (Collection<?>) copyFrom;
-        values.addAll(copyFromTyped);
+        if (copyFrom != null) {
+            for (Iterator it = copyFrom.iterator(); it.hasNext();) {
+                put(JSONObject.wrap(it.next()));
+            }
+        }
     }
 
     /**
@@ -101,6 +106,20 @@ public class JSONArray {
      */
     public JSONArray(String json) throws JSONException {
         this(new JSONTokener(json));
+    }
+
+    /**
+     * Creates a new {@code JSONArray} with values from the given primitive array.
+     */
+    public JSONArray(Object array) throws JSONException {
+        if (!array.getClass().isArray()) {
+            throw new JSONException("Not a primitive array: " + array.getClass());
+        }
+        final int length = Array.getLength(array);
+        values = new ArrayList<Object>(length);
+        for (int i = 0; i < length; ++i) {
+            put(JSONObject.wrap(Array.get(array, i)));
+        }
     }
 
     /**
@@ -273,6 +292,17 @@ public class JSONArray {
             return null;
         }
         return values.get(index);
+    }
+
+    /**
+     * Removes and returns the value at {@code index}, or null if the array has no value
+     * at {@code index}.
+     */
+    public Object remove(int index) {
+        if (index < 0 || index >= values.size()) {
+            return null;
+        }
+        return values.remove(index);
     }
 
     /**

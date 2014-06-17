@@ -94,3 +94,10 @@ annotations on TYPE class android.test.anno.FullyNoted(1):
 
 SimplyNoted.get(AnnoSimpleType) = @android.test.anno.AnnoSimpleType()
 SubNoted.get(AnnoSimpleType) = @android.test.anno.AnnoSimpleType()
+
+Package annotations:
+      @android.test.anno.AnnoSimplePackage()
+        interface android.test.anno.AnnoSimplePackage
+Package declared annotations:
+      @android.test.anno.AnnoSimplePackage()
+        interface android.test.anno.AnnoSimplePackage

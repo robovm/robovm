@@ -86,14 +86,10 @@ public class KeyFactory2Test extends junit.framework.TestCase {
         return null;
     }
 
-    public void test_constructor() {
+    public void test_constructor() throws Exception {
         KeyFactorySpi kfs = new KeyFactorySpiStub();
 
-        try {
-            new KeyFactoryStub(null, null, null);
-        } catch (Exception e) {
-            fail("Unexpected exception " + e.getMessage());
-        }
+        new KeyFactoryStub(null, null, null);
 
         Provider[] providers = Security.getProviders("KeyFactory.DSA");
         if (providers != null) {
@@ -108,265 +104,200 @@ public class KeyFactory2Test extends junit.framework.TestCase {
         }
     }
 
-    public void test_generatePrivateLjava_security_spec_KeySpec() {
+    public void test_generatePrivateLjava_security_spec_KeySpec() throws Exception {
         // Test for method java.security.PrivateKey
         // java.security.KeyFactory.generatePrivate(java.security.spec.KeySpec)
         for (int i = 0; i < keyfactAlgs.length; i++) {
-            try {
-                KeyFactory fact = KeyFactory.getInstance(keyfactAlgs[i],
-                        providerName);
-                KeyPairGenerator keyGen = KeyPairGenerator
-                        .getInstance(keyfactAlgs[i]);
-                SecureRandom random = new SecureRandom(); // We don't use
-                // getInstance
-                keyGen.initialize(StandardNames.getMinimumKeySize(keyfactAlgs[i]), random);
-                KeepAlive keepalive = createKeepAlive(keyfactAlgs[i]);
-                KeyPair keys = keyGen.generateKeyPair();
-                if (keepalive != null) {
-                    keepalive.interrupt();
-                }
-
-                KeySpec privateKeySpec = fact.getKeySpec(keys.getPrivate(),
-                        StandardNames.getPrivateKeySpecClass(keyfactAlgs[i]));
-                PrivateKey privateKey = fact.generatePrivate(privateKeySpec);
-                boolean samePrivate = Arrays.equals(keys.getPrivate()
-                        .getEncoded(), privateKey.getEncoded());
-                assertTrue(
-                        "generatePrivate generated different key for algorithm "
-                                + keyfactAlgs[i], samePrivate);
-                fact.generatePrivate(new PKCS8EncodedKeySpec(keys.getPrivate()
-                        .getEncoded()));
-
-            } catch (InvalidKeySpecException e) {
-                fail("invalid key spec for algorithm " + keyfactAlgs[i]);
-            } catch (NoSuchAlgorithmException e) {
-                fail("getInstance did not find algorithm " + keyfactAlgs[i]);
-            } catch (NoSuchProviderException e) {
-                fail("getInstance did not find provider " + providerName);
+            KeyFactory fact = KeyFactory.getInstance(keyfactAlgs[i], providerName);
+            KeyPairGenerator keyGen = KeyPairGenerator.getInstance(keyfactAlgs[i]);
+            SecureRandom random = new SecureRandom(); // We don't use
+            // getInstance
+            keyGen.initialize(StandardNames.getMinimumKeySize(keyfactAlgs[i]), random);
+            KeepAlive keepalive = createKeepAlive(keyfactAlgs[i]);
+            KeyPair keys = keyGen.generateKeyPair();
+            if (keepalive != null) {
+                keepalive.interrupt();
             }
+
+            KeySpec privateKeySpec = fact.getKeySpec(keys.getPrivate(),
+                    StandardNames.getPrivateKeySpecClass(keyfactAlgs[i]));
+            PrivateKey privateKey = fact.generatePrivate(privateKeySpec);
+            assertEquals("generatePrivate generated different key for algorithm " + keyfactAlgs[i],
+                    Arrays.toString(keys.getPrivate().getEncoded()),
+                    Arrays.toString(privateKey.getEncoded()));
+            privateKey = fact.generatePrivate(new PKCS8EncodedKeySpec(keys.getPrivate().getEncoded()));
+            assertEquals("generatePrivate generated different key for algorithm " + keyfactAlgs[i],
+                    Arrays.toString(keys.getPrivate().getEncoded()),
+                    Arrays.toString(privateKey.getEncoded()));
         }
     }
 
-    public void test_generatePublicLjava_security_spec_KeySpec() {
+    public void test_generatePublicLjava_security_spec_KeySpec() throws Exception {
         // Test for method java.security.PublicKey
         // java.security.KeyFactory.generatePublic(java.security.spec.KeySpec)
         for (int i = 0; i < keyfactAlgs.length; i++) {
-            try {
-                KeyFactory fact = KeyFactory.getInstance(keyfactAlgs[i],
-                        providerName);
-                KeyPairGenerator keyGen = KeyPairGenerator
-                        .getInstance(keyfactAlgs[i]);
-                // We don't use getInstance
-                SecureRandom random = new SecureRandom();
-                keyGen.initialize(StandardNames.getMinimumKeySize(keyfactAlgs[i]), random);
-                KeepAlive keepalive = createKeepAlive(keyfactAlgs[i]);
-                KeyPair keys = keyGen.generateKeyPair();
-                if (keepalive != null) {
-                    keepalive.interrupt();
-                }
-                KeySpec publicKeySpec = fact.getKeySpec(keys.getPublic(),
-                        StandardNames.getPublicKeySpecClass(keyfactAlgs[i]));
-                PublicKey publicKey = fact.generatePublic(publicKeySpec);
-                boolean samePublic = Arrays.equals(keys.getPublic()
-                        .getEncoded(), publicKey.getEncoded());
-                assertTrue(
-                        "generatePublic generated different key for algorithm "
-                                + keyfactAlgs[i], samePublic);
-            } catch (NoSuchAlgorithmException e) {
-                fail("getInstance did not find algorithm " + keyfactAlgs[i]);
-            } catch (NoSuchProviderException e) {
-                fail("getInstance did not find provider " + providerName);
-            } catch (InvalidKeySpecException e) {
-                fail("invalid key spec for algorithm " + keyfactAlgs[i]);
+            KeyFactory fact = KeyFactory.getInstance(keyfactAlgs[i],
+                    providerName);
+            KeyPairGenerator keyGen = KeyPairGenerator
+                    .getInstance(keyfactAlgs[i]);
+            // We don't use getInstance
+            SecureRandom random = new SecureRandom();
+            keyGen.initialize(StandardNames.getMinimumKeySize(keyfactAlgs[i]), random);
+            KeepAlive keepalive = createKeepAlive(keyfactAlgs[i]);
+            KeyPair keys = keyGen.generateKeyPair();
+            if (keepalive != null) {
+                keepalive.interrupt();
             }
+            KeySpec publicKeySpec = fact.getKeySpec(keys.getPublic(),
+                    StandardNames.getPublicKeySpecClass(keyfactAlgs[i]));
+            PublicKey publicKey = fact.generatePublic(publicKeySpec);
+            assertEquals(
+                    "generatePublic generated different key for algorithm "
+                            + keyfactAlgs[i] + " (provider="
+                            + fact.getProvider().getName() + ")",
+                            Arrays.toString(keys.getPublic().getEncoded()),
+                            Arrays.toString(publicKey.getEncoded()));
         }
     }
 
-    public void test_getAlgorithm() {
+    public void test_getAlgorithm() throws Exception {
         // Test for method java.lang.String
         // java.security.KeyFactory.getAlgorithm()
         for (int i = 0; i < keyfactAlgs.length; i++) {
-            try {
-                KeyFactory fact = KeyFactory.getInstance(keyfactAlgs[i],
-                        providerName);
-                assertTrue("getAlgorithm ok for algorithm " + keyfactAlgs[i],
-                        fact.getAlgorithm().equals(keyfactAlgs[i]));
-            } catch (NoSuchAlgorithmException e) {
-                fail("getInstance did not find algorithm " + keyfactAlgs[i]);
-            } catch (NoSuchProviderException e) {
-                fail("getInstance did not find provider " + providerName);
-            }
-        }// end for
+            KeyFactory fact = KeyFactory.getInstance(keyfactAlgs[i],
+                    providerName);
+            assertTrue("getAlgorithm ok for algorithm " + keyfactAlgs[i],
+                    fact.getAlgorithm().equals(keyfactAlgs[i]));
+        }
     }
 
-    public void test_getInstanceLjava_lang_String() {
+    public void test_getInstanceLjava_lang_String() throws Exception {
         // Test for method java.security.KeyFactory
         // java.security.KeyFactory.getInstance(java.lang.String)
         for (int i = 0; i < keyfactAlgs.length; i++) {
-            try {
-                assertNotNull(KeyFactory.getInstance(keyfactAlgs[i]));
-            } catch (NoSuchAlgorithmException e) {
-                fail("getInstance did not find algorithm " + keyfactAlgs[i]);
-            }
-        }// end for
+            assertNotNull(KeyFactory.getInstance(keyfactAlgs[i]));
+        }
     }
 
-    public void test_getInstanceLjava_lang_StringLjava_lang_String() {
+    public void test_getInstanceLjava_lang_StringLjava_lang_String() throws Exception {
         // Test1: Test for method java.security.KeyFactory
         // java.security.KeyFactory.getInstance(java.lang.String,
         // java.lang.String)
-        try {
-            Provider[] providers = Security.getProviders("KeyFactory.DSA");
-            if (providers != null) {
-                for (int i = 0; i < providers.length; i++) {
-                    KeyFactory.getInstance("DSA", providers[i].getName());
-                }// end for
-            } else {
-                fail("No providers support KeyFactory.DSA");
-            }
-        } catch (NoSuchAlgorithmException e) {
-            fail("getInstance did not find algorithm");
-        } catch (NoSuchProviderException e) {
-            fail("getInstance did not find the provider");
+        Provider[] providers = Security.getProviders("KeyFactory.DSA");
+        assertNotNull(providers);
+
+        for (int i = 0; i < providers.length; i++) {
+            KeyFactory.getInstance("DSA", providers[i].getName());
         }
+
 
         // Test2: Test with null provider name
         try {
             KeyFactory.getInstance("DSA", (String) null);
             fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // Expected
+        } catch (IllegalArgumentException expected) {
         } catch (Exception e) {
             fail("Expected IllegalArgumentException, got " + e);
         }
     }
 
-    public void test_getInstanceLjava_lang_StringLjava_security_Provider() {
+    public void test_getInstanceLjava_lang_StringLjava_security_Provider() throws Exception {
         // Test1: Test for method java.security.KeyFactory
         // java.security.KeyFactory.getInstance(java.lang.String,
         // java.security.Provider)
-        try {
-            Provider[] providers = Security.getProviders("KeyFactory.DSA");
-            if (providers != null) {
-                for (int i = 0; i < providers.length; i++) {
-                    KeyFactory.getInstance("DSA", providers[i]);
-                }// end for
-            } else {
-                fail("No providers support KeyFactory.DSA");
-            }
-        } catch (NoSuchAlgorithmException e) {
-            fail("getInstance did not find algorithm");
-        } catch (Exception e) {
-            fail("unexpected exception " + e.getMessage());
+        Provider[] providers = Security.getProviders("KeyFactory.DSA");
+        assertNotNull(providers);
+
+        for (int i = 0; i < providers.length; i++) {
+            KeyFactory.getInstance("DSA", providers[i]);
         }
 
         // Test2: Test with null provider name
         try {
             KeyFactory.getInstance("DSA", (Provider) null);
             fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            // Expected
+        } catch (IllegalArgumentException expected) {
         } catch (Exception e) {
             fail("Expected IllegalArgumentException, got " + e);
         }
     }
 
-    public void test_getKeySpecLjava_security_KeyLjava_lang_Class() {
+    public void test_getKeySpecLjava_security_KeyLjava_lang_Class() throws Exception {
         // Test for method java.security.spec.KeySpec
         // java.security.KeyFactory.getKeySpec(java.security.Key,
         // java.lang.Class)
         for (int i = 0; i < keyfactAlgs.length; i++) {
-            try {
-                KeyFactory fact = KeyFactory.getInstance(keyfactAlgs[i],
-                        providerName);
-                KeyPairGenerator keyGen = KeyPairGenerator
-                        .getInstance(keyfactAlgs[i]);
+            KeyFactory fact = KeyFactory.getInstance(keyfactAlgs[i],
+                    providerName);
+            KeyPairGenerator keyGen = KeyPairGenerator
+                    .getInstance(keyfactAlgs[i]);
 
-                // We don't use getInstance
-                SecureRandom random = new SecureRandom();
-                keyGen.initialize(StandardNames.getMinimumKeySize(keyfactAlgs[i]), random);
-                KeepAlive keepalive = createKeepAlive(keyfactAlgs[i]);
-                KeyPair keys = keyGen.generateKeyPair();
-                if (keepalive != null) {
-                    keepalive.interrupt();
-                }
-                KeySpec privateKeySpec = fact.getKeySpec(keys.getPrivate(),
-                        StandardNames.getPrivateKeySpecClass(keyfactAlgs[i]));
-                KeySpec publicKeySpec = fact.getKeySpec(keys.getPublic(),
-                        StandardNames.getPublicKeySpecClass(keyfactAlgs[i]));
-                PrivateKey privateKey = fact.generatePrivate(privateKeySpec);
-                PublicKey publicKey = fact.generatePublic(publicKeySpec);
-                boolean samePublic = Arrays.equals(keys.getPublic()
-                        .getEncoded(), publicKey.getEncoded());
-                boolean samePrivate = Arrays.equals(keys.getPrivate()
-                        .getEncoded(), privateKey.getEncoded());
-                assertTrue(
-                        "generatePrivate generated different key for algorithm "
-                                + keyfactAlgs[i], samePrivate);
-                assertTrue(
-                        "generatePublic generated different key for algorithm "
-                                + keyfactAlgs[i], samePublic);
-                KeySpec encodedSpec = fact.getKeySpec(keys.getPublic(),
-                        X509EncodedKeySpec.class);
-                assertTrue("improper key spec for encoded public key",
-                        encodedSpec.getClass().equals(X509EncodedKeySpec.class));
-                encodedSpec = fact.getKeySpec(keys.getPrivate(),
-                        PKCS8EncodedKeySpec.class);
-                assertTrue("improper key spec for encoded private key",
-                        encodedSpec.getClass()
-                                .equals(PKCS8EncodedKeySpec.class));
-            } catch (NoSuchAlgorithmException e) {
-                fail("getInstance did not find algorithm " + keyfactAlgs[i]);
-            } catch (NoSuchProviderException e) {
-                fail("getInstance did not find provider " + providerName);
-            } catch (InvalidKeySpecException e) {
-                fail("invalid key spec for algorithm " + keyfactAlgs[i]);
+            // We don't use getInstance
+            SecureRandom random = new SecureRandom();
+            keyGen.initialize(StandardNames.getMinimumKeySize(keyfactAlgs[i]), random);
+            KeepAlive keepalive = createKeepAlive(keyfactAlgs[i]);
+            KeyPair keys = keyGen.generateKeyPair();
+            if (keepalive != null) {
+                keepalive.interrupt();
             }
+            KeySpec privateKeySpec = fact.getKeySpec(keys.getPrivate(),
+                    StandardNames.getPrivateKeySpecClass(keyfactAlgs[i]));
+            KeySpec publicKeySpec = fact.getKeySpec(keys.getPublic(),
+                    StandardNames.getPublicKeySpecClass(keyfactAlgs[i]));
+            PrivateKey privateKey = fact.generatePrivate(privateKeySpec);
+            PublicKey publicKey = fact.generatePublic(publicKeySpec);
+            assertEquals(
+                    "generatePrivate generated different key for algorithm "
+                            + keyfactAlgs[i] + " (provider="
+                            + fact.getProvider().getName() + ")",
+                            Arrays.toString(keys.getPrivate().getEncoded()),
+                            Arrays.toString(privateKey.getEncoded()));
+            assertEquals(
+                    "generatePublic generated different key for algorithm "
+                            + keyfactAlgs[i] + " (provider="
+                            + fact.getProvider().getName() + ")",
+                            Arrays.toString(keys.getPublic().getEncoded()),
+                            Arrays.toString(publicKey.getEncoded()));
+            KeySpec encodedSpec = fact.getKeySpec(keys.getPublic(),
+                    X509EncodedKeySpec.class);
+            assertTrue("improper key spec for encoded public key",
+                    encodedSpec.getClass().equals(X509EncodedKeySpec.class));
+            encodedSpec = fact.getKeySpec(keys.getPrivate(),
+                    PKCS8EncodedKeySpec.class);
+            assertTrue("improper key spec for encoded private key",
+                    encodedSpec.getClass()
+                            .equals(PKCS8EncodedKeySpec.class));
         }
     }
 
-    public void test_getProvider() {
+    public void test_getProvider() throws Exception {
         // Test for method java.security.Provider
         // java.security.KeyFactory.getProvider()
         for (int i = 0; i < keyfactAlgs.length; i++) {
-            try {
-                KeyFactory fact = KeyFactory.getInstance(keyfactAlgs[i]);
-                Provider p = fact.getProvider();
-                assertNotNull("provider is null for algorithm "
-                        + keyfactAlgs[i], p);
-            } catch (NoSuchAlgorithmException e) {
-                fail("getInstance did not find algorithm " + keyfactAlgs[i]);
-            }
-        }// end for
+            KeyFactory fact = KeyFactory.getInstance(keyfactAlgs[i]);
+            Provider p = fact.getProvider();
+            assertNotNull("provider is null for algorithm " + keyfactAlgs[i], p);
+        }
     }
 
-    public void test_translateKeyLjava_security_Key() {
+    public void test_translateKeyLjava_security_Key() throws Exception {
         // Test for method java.security.Key
         // java.security.KeyFactory.translateKey(java.security.Key)
         for (int i = 0; i < keyfactAlgs.length; i++) {
-            try {
-                KeyFactory fact = KeyFactory.getInstance(keyfactAlgs[i],
-                        providerName);
-                KeyPairGenerator keyGen = KeyPairGenerator
-                        .getInstance(keyfactAlgs[i]);
+            KeyFactory fact = KeyFactory.getInstance(keyfactAlgs[i],
+                    providerName);
+            KeyPairGenerator keyGen = KeyPairGenerator
+                    .getInstance(keyfactAlgs[i]);
 
-                // We don't use getInstance
-                SecureRandom random = new SecureRandom();
-                keyGen.initialize(StandardNames.getMinimumKeySize(keyfactAlgs[i]), random);
-                KeepAlive keepalive = createKeepAlive(keyfactAlgs[i]);
-                KeyPair keys = keyGen.generateKeyPair();
-                if (keepalive != null) {
-                    keepalive.interrupt();
-                }
-                fact.translateKey(keys.getPrivate());
-            } catch (NoSuchAlgorithmException e) {
-                fail("getInstance did not find algorithm " + keyfactAlgs[i]);
-            } catch (NoSuchProviderException e) {
-                fail("getInstance did not find provider " + providerName);
-            } catch (InvalidKeyException e) {
-                fail("generatePublic did not generate right spec for algorithm "
-                        + keyfactAlgs[i]);
+            // We don't use getInstance
+            SecureRandom random = new SecureRandom();
+            keyGen.initialize(StandardNames.getMinimumKeySize(keyfactAlgs[i]), random);
+            KeepAlive keepalive = createKeepAlive(keyfactAlgs[i]);
+            KeyPair keys = keyGen.generateKeyPair();
+            if (keepalive != null) {
+                keepalive.interrupt();
             }
+            fact.translateKey(keys.getPrivate());
         }
     }
 

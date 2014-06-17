@@ -27,7 +27,7 @@ import libcore.io.ErrnoException;
 import libcore.io.IoUtils;
 import libcore.io.Libcore;
 import libcore.io.StructStat;
-import libcore.io.StructStatFs;
+import libcore.io.StructStatVfs;
 import org.apache.harmony.luni.util.DeleteOnExit;
 import static libcore.io.OsConstants.*;
 
@@ -147,7 +147,7 @@ public class File implements Serializable, Comparable<File> {
      */
     public File(String dirPath, String name) {
         if (name == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("name == null");
         }
         if (dirPath == null || dirPath.isEmpty()) {
             this.path = fixSlashes(name);
@@ -487,8 +487,6 @@ public class File implements Serializable, Comparable<File> {
 
     /**
      * Returns the path of this file.
-     *
-     * @return this file's path.
      */
     public String getPath() {
         return path;
@@ -855,57 +853,65 @@ public class File implements Serializable, Comparable<File> {
     }
 
     /**
-     * Creates the directory named by the trailing filename of this file. Does
-     * not create the complete path required to create this directory.
+     * Creates the directory named by this file, assuming its parents exist.
+     * Use {@link #mkdirs} if you also want to create missing parents.
      *
      * <p>Note that this method does <i>not</i> throw {@code IOException} on failure.
-     * Callers must check the return value.
+     * Callers must check the return value. Note also that this method returns
+     * false if the directory already existed. If you want to know whether the
+     * directory exists on return, either use {@code (f.mkdir() || f.isDirectory())}
+     * or simply ignore the return value from this method and simply call {@link #isDirectory}.
      *
-     * @return {@code true} if the directory has been created, {@code false}
-     *         otherwise.
-     * @see #mkdirs
+     * @return {@code true} if the directory was created,
+     *         {@code false} on failure or if the directory already existed.
      */
     public boolean mkdir() {
         try {
-            // On Android, we don't want default permissions to allow global access.
-            Libcore.os.mkdir(path, S_IRWXU);
+            mkdirErrno();
             return true;
         } catch (ErrnoException errnoException) {
             return false;
         }
     }
 
+    private void mkdirErrno() throws ErrnoException {
+        // On Android, we don't want default permissions to allow global access.
+        Libcore.os.mkdir(path, S_IRWXU);
+    }
+
     /**
-     * Creates the directory named by the trailing filename of this file,
-     * including the complete directory path required to create this directory.
+     * Creates the directory named by this file, creating missing parent
+     * directories if necessary.
+     * Use {@link #mkdir} if you don't want to create missing parents.
      *
      * <p>Note that this method does <i>not</i> throw {@code IOException} on failure.
-     * Callers must check the return value.
+     * Callers must check the return value. Note also that this method returns
+     * false if the directory already existed. If you want to know whether the
+     * directory exists on return, either use {@code (f.mkdirs() || f.isDirectory())}
+     * or simply ignore the return value from this method and simply call {@link #isDirectory}.
      *
-     * @return {@code true} if the necessary directories have been created,
-     *         {@code false} if the target directory already exists or one of
-     *         the directories can not be created.
-     * @see #mkdir
+     * @return {@code true} if the directory was created,
+     *         {@code false} on failure or if the directory already existed.
      */
     public boolean mkdirs() {
-        /* If the terminal directory already exists, answer false */
-        if (exists()) {
-            return false;
-        }
+        return mkdirs(false);
+    }
 
-        /* If the receiver can be created, answer true */
-        if (mkdir()) {
+    private boolean mkdirs(boolean resultIfExists) {
+        try {
+            // Try to create the directory directly.
+            mkdirErrno();
             return true;
-        }
-
-        String parentDir = getParent();
-        /* If there is no parent and we were not created, answer false */
-        if (parentDir == null) {
+        } catch (ErrnoException errnoException) {
+            if (errnoException.errno == ENOENT) {
+                // If the parent was missing, try to create it and then try again.
+                File parent = getParentFile();
+                return parent != null && parent.mkdirs(true) && mkdir();
+            } else if (errnoException.errno == EEXIST) {
+                return resultIfExists;
+            }
             return false;
         }
-
-        /* Otherwise, try to create a parent directory and then this directory */
-        return (new File(parentDir).mkdirs() && mkdir());
     }
 
     /**
@@ -1076,8 +1082,8 @@ public class File implements Serializable, Comparable<File> {
      * @return a URL for this file.
      * @throws java.net.MalformedURLException
      *             if the path cannot be transformed into a URL.
-     * @deprecated use {@link #toURI} and {@link java.net.URI#toURL} to get
-     * correct escaping of illegal characters.
+     * @deprecated Use {@link #toURI} and {@link java.net.URI#toURL} to
+     * correctly escape illegal characters.
      */
     @Deprecated
     public URL toURL() throws java.net.MalformedURLException {
@@ -1124,7 +1130,7 @@ public class File implements Serializable, Comparable<File> {
      */
     public long getTotalSpace() {
         try {
-            StructStatFs sb = Libcore.os.statfs(path);
+            StructStatVfs sb = Libcore.os.statvfs(path);
             return sb.f_blocks * sb.f_bsize; // total block count * block size in bytes.
         } catch (ErrnoException errnoException) {
             return 0;
@@ -1146,7 +1152,7 @@ public class File implements Serializable, Comparable<File> {
      */
     public long getUsableSpace() {
         try {
-            StructStatFs sb = Libcore.os.statfs(path);
+            StructStatVfs sb = Libcore.os.statvfs(path);
             return sb.f_bavail * sb.f_bsize; // non-root free block count * block size in bytes.
         } catch (ErrnoException errnoException) {
             return 0;
@@ -1164,7 +1170,7 @@ public class File implements Serializable, Comparable<File> {
      */
     public long getFreeSpace() {
         try {
-            StructStatFs sb = Libcore.os.statfs(path);
+            StructStatVfs sb = Libcore.os.statvfs(path);
             return sb.f_bfree * sb.f_bsize; // free block count * block size in bytes.
         } catch (ErrnoException errnoException) {
             return 0;

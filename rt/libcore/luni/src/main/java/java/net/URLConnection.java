@@ -123,8 +123,8 @@ public abstract class URLConnection {
     protected boolean doInput = true;
 
     /**
-     * Specifies whether this {@code URLConnection} allows user interaction as
-     * it is needed for authentication purposes.
+     * Unused by Android. This field can be accessed via {@link #getAllowUserInteraction}
+     * and {@link #setAllowUserInteraction}.
      */
     protected boolean allowUserInteraction = defaultAllowUserInteraction;
 
@@ -167,11 +167,7 @@ public abstract class URLConnection {
     public abstract void connect() throws IOException;
 
     /**
-     * Returns the option value which indicates whether user interaction is allowed
-     * on this {@code URLConnection}.
-     *
-     * @return the value of the option {@code allowUserInteraction}.
-     * @see #allowUserInteraction
+     * Returns {@code allowUserInteraction}. Unused by Android.
      */
     public boolean getAllowUserInteraction() {
         return allowUserInteraction;
@@ -342,11 +338,7 @@ public abstract class URLConnection {
     }
 
     /**
-     * Returns the default setting whether this connection allows user interaction.
-     *
-     * @return the value of the default setting {@code
-     *         defaultAllowUserInteraction}.
-     * @see #allowUserInteraction
+     * Returns the default value of {@code allowUserInteraction}. Unused by Android.
      */
     public static boolean getDefaultAllowUserInteraction() {
         return defaultAllowUserInteraction;
@@ -355,7 +347,7 @@ public abstract class URLConnection {
     /**
      * Returns null.
      *
-     * @deprecated Use {@link #getRequestProperty}
+     * @deprecated Use {@link #getRequestProperty} instead.
      */
     @Deprecated
     public static String getDefaultRequestProperty(String field) {
@@ -804,16 +796,7 @@ public abstract class URLConnection {
     }
 
     /**
-     * Sets the flag indicating whether this connection allows user interaction
-     * or not. This method can only be called prior to the connection
-     * establishment.
-     *
-     * @param newValue
-     *            the value of the flag to be set.
-     * @throws IllegalStateException
-     *             if this method attempts to change the flag after the
-     *             connection has been established.
-     * @see #allowUserInteraction
+     * Sets {@code allowUserInteraction}. Unused by Android.
      */
     public void setAllowUserInteraction(boolean newValue) {
         checkNotConnected();
@@ -837,14 +820,7 @@ public abstract class URLConnection {
     }
 
     /**
-     * Sets the default value for the flag indicating whether this connection
-     * allows user interaction or not. Existing {@code URLConnection}s are
-     * unaffected.
-     *
-     * @param allows
-     *            the default value of the flag to be used for new connections.
-     * @see #defaultAllowUserInteraction
-     * @see #allowUserInteraction
+     * Sets the default value for {@code allowUserInteraction}. Unused by Android.
      */
     public static void setDefaultAllowUserInteraction(boolean allows) {
         defaultAllowUserInteraction = allows;
@@ -853,7 +829,7 @@ public abstract class URLConnection {
     /**
      * Does nothing.
      *
-     * @deprecated Use {@link URLConnection#setRequestProperty(String, String)}.
+     * @deprecated Use {@link URLConnection#setRequestProperty(String, String)} instead.
      */
     @Deprecated
     public static void setDefaultRequestProperty(String field, String value) {
@@ -972,11 +948,12 @@ public abstract class URLConnection {
     }
 
     /**
-     * Sets the maximum time to wait for a connect to complete before giving up.
+     * Sets the maximum time in milliseconds to wait while connecting.
      * Connecting to a server will fail with a {@link SocketTimeoutException} if
      * the timeout elapses before a connection is established. The default value
-     * of {@code 0} disables connect timeouts; connect attempts may wait
-     * indefinitely.
+     * of {@code 0} causes us to do a blocking connect. This does not mean we
+     * will never time out, but it probably means you'll get a TCP timeout
+     * after several minutes.
      *
      * <p><strong>Warning:</strong> if the hostname resolves to multiple IP
      * addresses, this client will try each in <a
@@ -985,7 +962,7 @@ public abstract class URLConnection {
      * elapse before the connect attempt throws an exception. Host names that
      * support both IPv6 and IPv4 always have at least 2 IP addresses.
      *
-     * @param timeoutMillis the connect timeout in milliseconds. Non-negative.
+     * @throws IllegalArgumentException if {@code timeoutMillis &lt; 0}.
      */
     public void setConnectTimeout(int timeoutMillis) {
         if (timeoutMillis < 0) {
@@ -995,8 +972,7 @@ public abstract class URLConnection {
     }
 
     /**
-     * Returns the connect timeout in milliseconds, or {@code 0} if connect
-     * attempts never timeout.
+     * Returns the connect timeout in milliseconds. (See {#setConnectTimeout}.)
      */
     public int getConnectTimeout() {
         return connectTimeout;

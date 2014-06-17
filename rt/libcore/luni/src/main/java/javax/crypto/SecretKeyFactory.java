@@ -103,7 +103,7 @@ public class SecretKeyFactory {
     public static final SecretKeyFactory getInstance(String algorithm)
             throws NoSuchAlgorithmException {
         if (algorithm == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("algorithm == null");
         }
         Engine.SpiAndProvider sap = ENGINE.getInstance(algorithm, null);
         return new SecretKeyFactory((SecretKeyFactorySpi) sap.spi, sap.provider, algorithm);
@@ -165,7 +165,7 @@ public class SecretKeyFactory {
             throw new IllegalArgumentException("provider == null");
         }
         if (algorithm == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("algorithm == null");
         }
         Object spi = ENGINE.getInstance(algorithm, provider, null);
         return new SecretKeyFactory((SecretKeyFactorySpi) spi, provider, algorithm);

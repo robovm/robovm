@@ -39,11 +39,11 @@ public class CertStore {
     private static final Engine ENGINE = new Engine(SERVICE);
 
     // Store default property name
-    private static final String PROPERTYNAME = "certstore.type";
+    private static final String PROPERTY_NAME = "certstore.type";
 
     // Default value of CertStore type. It returns if certpathbuild.type
     // property is not defined in java.security file
-    private static final String DEFAULTPROPERTY = "LDAP";
+    private static final String DEFAULT_PROPERTY = "LDAP";
 
     // Store used provider
     private final Provider provider;
@@ -97,7 +97,7 @@ public class CertStore {
     public static CertStore getInstance(String type, CertStoreParameters params)
             throws InvalidAlgorithmParameterException, NoSuchAlgorithmException {
         if (type == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("type == null");
         }
         try {
             Engine.SpiAndProvider sap = ENGINE.getInstance(type, params);
@@ -140,7 +140,7 @@ public class CertStore {
             throws InvalidAlgorithmParameterException,
             NoSuchAlgorithmException, NoSuchProviderException {
         if (provider == null || provider.isEmpty()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("provider == null || provider.isEmpty()");
         }
         Provider impProvider = Security.getProvider(provider);
         if (impProvider == null) {
@@ -172,10 +172,10 @@ public class CertStore {
             CertStoreParameters params, Provider provider)
             throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
         if (provider == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("provider == null");
         }
         if (type == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("type == null");
         }
         try {
             Object spi = ENGINE.getInstance(type, provider, params);
@@ -266,7 +266,7 @@ public class CertStore {
      *         determined.
      */
     public static final String getDefaultType() {
-        String defaultType = Security.getProperty(PROPERTYNAME);
-        return (defaultType == null ? DEFAULTPROPERTY : defaultType);
+        String defaultType = Security.getProperty(PROPERTY_NAME);
+        return (defaultType == null ? DEFAULT_PROPERTY : defaultType);
     }
 }

@@ -1,6 +1,6 @@
 /*
 *******************************************************************************
-*   Copyright (C) 2010, International Business Machines
+*   Copyright (C) 2010-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *******************************************************************************
 *   file name:  idna.h
@@ -31,7 +31,7 @@
 
 U_NAMESPACE_BEGIN
 
-class U_COMMON_API IDNAInfo;
+class IDNAInfo;
 
 /**
  * Abstract base class for IDNA processing.
@@ -43,10 +43,16 @@ class U_COMMON_API IDNAInfo;
  * This C++ API currently only implements UTS #46.
  * The uidna.h C API implements both UTS #46 (functions using UIDNA service object)
  * and IDNA2003 (functions that do not use a service object).
- * @draft ICU 4.6
+ * @stable ICU 4.6
  */
 class U_COMMON_API IDNA : public UObject {
 public:
+    /**
+     * Destructor.
+     * @stable ICU 4.6
+     */
+    ~IDNA();
+
     /**
      * Returns an IDNA instance which implements UTS #46.
      * Returns an unmodifiable instance, owned by the caller.
@@ -78,7 +84,7 @@ public:
      *                  immediately. Check for U_FAILURE() on output or use with
      *                  function chaining. (See User Guide for details.)
      * @return the UTS #46 IDNA instance, if successful
-     * @draft ICU 4.6
+     * @stable ICU 4.6
      */
     static IDNA *
     createUTS46Instance(uint32_t options, UErrorCode &errorCode);
@@ -101,7 +107,7 @@ public:
      *                  immediately. Check for U_FAILURE() on output or use with
      *                  function chaining. (See User Guide for details.)
      * @return dest
-     * @draft ICU 4.6
+     * @stable ICU 4.6
      */
     virtual UnicodeString &
     labelToASCII(const UnicodeString &label, UnicodeString &dest,
@@ -123,7 +129,7 @@ public:
      *                  immediately. Check for U_FAILURE() on output or use with
      *                  function chaining. (See User Guide for details.)
      * @return dest
-     * @draft ICU 4.6
+     * @stable ICU 4.6
      */
     virtual UnicodeString &
     labelToUnicode(const UnicodeString &label, UnicodeString &dest,
@@ -147,7 +153,7 @@ public:
      *                  immediately. Check for U_FAILURE() on output or use with
      *                  function chaining. (See User Guide for details.)
      * @return dest
-     * @draft ICU 4.6
+     * @stable ICU 4.6
      */
     virtual UnicodeString &
     nameToASCII(const UnicodeString &name, UnicodeString &dest,
@@ -169,7 +175,7 @@ public:
      *                  immediately. Check for U_FAILURE() on output or use with
      *                  function chaining. (See User Guide for details.)
      * @return dest
-     * @draft ICU 4.6
+     * @stable ICU 4.6
      */
     virtual UnicodeString &
     nameToUnicode(const UnicodeString &name, UnicodeString &dest,
@@ -189,7 +195,7 @@ public:
      *                  immediately. Check for U_FAILURE() on output or use with
      *                  function chaining. (See User Guide for details.)
      * @return dest
-     * @draft ICU 4.6
+     * @stable ICU 4.6
      */
     virtual void
     labelToASCII_UTF8(const StringPiece &label, ByteSink &dest,
@@ -207,7 +213,7 @@ public:
      *                  immediately. Check for U_FAILURE() on output or use with
      *                  function chaining. (See User Guide for details.)
      * @return dest
-     * @draft ICU 4.6
+     * @stable ICU 4.6
      */
     virtual void
     labelToUnicodeUTF8(const StringPiece &label, ByteSink &dest,
@@ -225,7 +231,7 @@ public:
      *                  immediately. Check for U_FAILURE() on output or use with
      *                  function chaining. (See User Guide for details.)
      * @return dest
-     * @draft ICU 4.6
+     * @stable ICU 4.6
      */
     virtual void
     nameToASCII_UTF8(const StringPiece &name, ByteSink &dest,
@@ -243,15 +249,11 @@ public:
      *                  immediately. Check for U_FAILURE() on output or use with
      *                  function chaining. (See User Guide for details.)
      * @return dest
-     * @draft ICU 4.6
+     * @stable ICU 4.6
      */
     virtual void
     nameToUnicodeUTF8(const StringPiece &name, ByteSink &dest,
                       IDNAInfo &info, UErrorCode &errorCode) const;
-
-private:
-    // No ICU "poor man's RTTI" for this class nor its subclasses.
-    virtual UClassID getDynamicClassID() const;
 };
 
 class UTS46;
@@ -259,26 +261,26 @@ class UTS46;
 /**
  * Output container for IDNA processing errors.
  * The IDNAInfo class is not suitable for subclassing.
- * @draft ICU 4.6
+ * @stable ICU 4.6
  */
 class U_COMMON_API IDNAInfo : public UMemory {
 public:
     /**
      * Constructor for stack allocation.
-     * @draft ICU 4.6
+     * @stable ICU 4.6
      */
     IDNAInfo() : errors(0), labelErrors(0), isTransDiff(FALSE), isBiDi(FALSE), isOkBiDi(TRUE) {}
     /**
      * Were there IDNA processing errors?
      * @return TRUE if there were processing errors
-     * @draft ICU 4.6
+     * @stable ICU 4.6
      */
     UBool hasErrors() const { return errors!=0; }
     /**
      * Returns a bit set indicating IDNA processing errors.
      * See UIDNA_ERROR_... constants in uidna.h.
      * @return bit set of processing errors
-     * @draft ICU 4.6
+     * @stable ICU 4.6
      */
     uint32_t getErrors() const { return errors; }
     /**
@@ -292,7 +294,7 @@ public:
      * mapped (sharp s/sigma) or removed (joiner/nonjoiner).
      * </ul>
      * @return TRUE if transitional and nontransitional processing produce different results
-     * @draft ICU 4.6
+     * @stable ICU 4.6
      */
     UBool isTransitionalDifferent() const { return isTransDiff; }
 

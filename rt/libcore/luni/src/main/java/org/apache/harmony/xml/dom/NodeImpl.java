@@ -697,7 +697,7 @@ public abstract class NodeImpl implements Node {
 
     public final Object setUserData(String key, Object data, UserDataHandler handler) {
         if (key == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("key == null");
         }
         Map<String, UserData> map = document.getUserDataMap(this);
         UserData previous = data == null
@@ -708,7 +708,7 @@ public abstract class NodeImpl implements Node {
 
     public final Object getUserData(String key) {
         if (key == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("key == null");
         }
         Map<String, UserData> map = document.getUserDataMapForRead(this);
         UserData userData = map.get(key);

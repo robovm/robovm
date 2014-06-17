@@ -45,6 +45,10 @@ public class CipherRSAThread extends CipherThread {
         cip.init(Cipher.DECRYPT_MODE, kp.getPrivate());
         cip.doFinal(output, 0, outputSize, decrypted);
 
-        checkEncodedData(input, decrypted);
+        if ("NOPADDING".equals(getPadding())) {
+            checkPaddedEncodedData(input, decrypted, outputSize - input.length);
+        } else {
+            checkEncodedData(input, decrypted);
+        }
     }
 }

@@ -1,7 +1,7 @@
 /*
 ******************************************************************************
 *
-*   Copyright (C) 2000-2007, International Business Machines
+*   Copyright (C) 2000-2013, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 ******************************************************************************
@@ -59,6 +59,9 @@
  * The first of these versions is 5.3, which is like 4.3 except for the differences above.
  *
  * When possible, makeconv continues to generate version 4.m files.
+ *
+ * _MBCSHeader.version 5.4/4.4 supports "good one-way" mappings (|4)
+ * in the extension tables (fromUTableValues bit 30). See ucnv_ext.h for details.
  *
  * _MBCSHeader.version 4.3 optionally modifies the fromUnicode data structures
  * slightly and optionally adds a table for conversion to MBCS (non-SBCS)
@@ -274,17 +277,17 @@ enum {
 
 #define MBCS_ENTRY_SET_STATE(entry, state) (int32_t)(((entry)&0x80ffffff)|((int32_t)(state)<<24L))
 
-#define MBCS_ENTRY_STATE(entry) (((entry)>>24)&0x7f)
+#define MBCS_ENTRY_STATE(entry) ((((uint32_t)entry)>>24)&0x7f)
 
 #define MBCS_ENTRY_IS_TRANSITION(entry) ((entry)>=0)
 #define MBCS_ENTRY_IS_FINAL(entry) ((entry)<0)
 
-#define MBCS_ENTRY_TRANSITION_STATE(entry) ((entry)>>24)
+#define MBCS_ENTRY_TRANSITION_STATE(entry) (((uint32_t)entry)>>24)
 #define MBCS_ENTRY_TRANSITION_OFFSET(entry) ((entry)&0xffffff)
 
-#define MBCS_ENTRY_FINAL_STATE(entry) (((entry)>>24)&0x7f)
+#define MBCS_ENTRY_FINAL_STATE(entry) ((((uint32_t)entry)>>24)&0x7f)
 #define MBCS_ENTRY_FINAL_IS_VALID_DIRECT_16(entry) ((entry)<(int32_t)0x80100000)
-#define MBCS_ENTRY_FINAL_ACTION(entry) (((entry)>>20)&0xf)
+#define MBCS_ENTRY_FINAL_ACTION(entry) ((((uint32_t)entry)>>20)&0xf)
 #define MBCS_ENTRY_FINAL_VALUE(entry) ((entry)&0xfffff)
 #define MBCS_ENTRY_FINAL_VALUE_16(entry) (uint16_t)(entry)
 
@@ -397,6 +400,41 @@ typedef struct UConverterMBCSTable {
     const int32_t *extIndexes;
 } UConverterMBCSTable;
 
+#define UCNV_MBCS_TABLE_INITIALIZER { \
+    /* toUnicode */ \
+    0, 0, 0, \
+    0, \
+     \
+    NULL, \
+    NULL, \
+    NULL, \
+    NULL, \
+     \
+    /* fromUnicode */ \
+    NULL, \
+    NULL, \
+    { 0 }, \
+    NULL, \
+    NULL, \
+    0, \
+    0, 0, \
+    FALSE, \
+    0, \
+     \
+    /* roundtrips */ \
+    0, \
+     \
+    /* reconstituted data that was omitted from the .cnv file */ \
+    NULL, \
+     \
+    /* converter name for swaplfnl */ \
+    NULL, \
+     \
+    /* extension data */ \
+    NULL, \
+    NULL \
+}
+
 enum {
     MBCS_OPT_LENGTH_MASK=0x3f,
     MBCS_OPT_NO_FROM_U=0x40,
@@ -436,6 +474,8 @@ typedef struct {
     /* new and optional in version 5; used if options&MBCS_OPT_NO_FROM_U */
     uint32_t fullStage2Length;  /* number of 32-bit units */
 } _MBCSHeader;
+
+#define UCNV_MBCS_HEADER_INITIALIZER { { 0 },  0, 0, 0, 0, 0, 0, 0,  0,  0 }
 
 /*
  * This is a simple version of _MBCSGetNextUChar() that is used

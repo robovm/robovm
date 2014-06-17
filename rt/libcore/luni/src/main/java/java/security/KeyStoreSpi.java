@@ -414,14 +414,14 @@ public abstract class KeyStoreSpi {
         }
 
         char[] passW = null;
-        if (protParam instanceof KeyStore.PasswordProtection) {
-            try {
-                passW = ((KeyStore.PasswordProtection) protParam).getPassword();
-            } catch (IllegalStateException ee) {
-                throw new KeyStoreException("Password was destroyed", ee);
-            }
-        } else {
-            if (protParam instanceof KeyStore.CallbackHandlerProtection) {
+        if (protParam != null) {
+            if (protParam instanceof KeyStore.PasswordProtection) {
+                try {
+                    passW = ((KeyStore.PasswordProtection) protParam).getPassword();
+                } catch (IllegalStateException ee) {
+                    throw new KeyStoreException("Password was destroyed", ee);
+                }
+            } else if (protParam instanceof KeyStore.CallbackHandlerProtection) {
                 try {
                     passW = getPasswordFromCallBack(protParam);
                 } catch (Exception e) {

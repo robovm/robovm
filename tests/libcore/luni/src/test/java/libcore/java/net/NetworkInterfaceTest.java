@@ -16,12 +16,17 @@
 
 package libcore.java.net;
 
-import java.net.*;
-import java.util.Arrays;
+import junit.framework.TestCase;
+import java.net.Inet4Address;
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.net.InterfaceAddress;
+import java.net.NetworkInterface;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import junit.framework.TestCase;
 
 public class NetworkInterfaceTest extends TestCase {
     
@@ -51,6 +56,37 @@ public class NetworkInterfaceTest extends TestCase {
         assertTrue(actual.contains(Inet4Address.LOOPBACK));
         assertTrue(actual.contains(Inet6Address.getByAddress("localhost", new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 }, null)));
     }
+
+    // RoboVM note: Tests a method we have removed.
+    // // http://code.google.com/p/android/issues/detail?id=34022
+    // public void test_collectIpv6Addresses_3digitInterfaceIndex() throws Exception {
+    //     String lines[] = new String[] {
+    //             "fe800000000000000000000000000000 407 40 20 80    wlan0" };
+    //     List<InetAddress> addresses = new ArrayList<InetAddress>(1);
+    //     List<InterfaceAddress> ifAddresses = new ArrayList<InterfaceAddress>(1);
+
+    //     NetworkInterface.collectIpv6Addresses("wlan0", 1, addresses,
+    //             ifAddresses, lines);
+    //     assertEquals(1, addresses.size());
+    //     assertEquals(1, ifAddresses.size());
+    //     // Make sure the prefix length (field #3) is parsed correctly
+    //     assertEquals(4*16 + 0, ifAddresses.get(0).getNetworkPrefixLength());
+    // }
+
+    // RoboVM note: Tests a method we have removed.
+    // public void test_collectIpv6Addresses_skipsUnmatchedLines() throws Exception {
+    //     String[] lines = new String[] {
+    //             "fe800000000000000000000000000000 40 40 20 80    wlan0",
+    //             "fe100000000000000000000000000000 41 40 20 80    wlan1",
+    //             "feb00000000000000000000000000000 42 40 20 80    wlan2" };
+    //     List<InetAddress> addresses = new ArrayList<InetAddress>(1);
+    //     List<InterfaceAddress> ifAddresses = new ArrayList<InterfaceAddress>(1);
+
+    //     NetworkInterface.collectIpv6Addresses("wlan0", 1, addresses,
+    //             ifAddresses, lines);
+    //     assertEquals(1, addresses.size());
+    //     assertEquals(1, ifAddresses.size());
+    // }
 
     public void testLoopback() throws Exception {
         // We know lo shouldn't have a hardware address or an IPv4 broadcast address.

@@ -40,14 +40,14 @@ class RuleBasedBreakIterator extends BreakIterator {
     }
 
     @Override public int following(int offset) {
-        validateOffset(offset);
+        checkOffset(offset);
         return wrapped.following(offset);
     }
 
-    /*
-     * check the offset, throw exception if it is invalid
-     */
-    private void validateOffset(int offset) {
+    private void checkOffset(int offset) {
+        if (!wrapped.hasText()) {
+            throw new IllegalArgumentException("BreakIterator has no text");
+        }
         CharacterIterator it = wrapped.getText();
         if (offset < it.getBeginIndex() || offset > it.getEndIndex()) {
             String message = "Valid range is [" + it.getBeginIndex() + " " + it.getEndIndex() + "]";
@@ -76,18 +76,20 @@ class RuleBasedBreakIterator extends BreakIterator {
     }
 
     @Override public void setText(CharacterIterator newText) {
-        // call a method to check if null pointer
+        if (newText == null) {
+            throw new NullPointerException("newText == null");
+        }
         newText.current();
         wrapped.setText(newText);
     }
 
     @Override public boolean isBoundary(int offset) {
-        validateOffset(offset);
+        checkOffset(offset);
         return wrapped.isBoundary(offset);
     }
 
     @Override public int preceding(int offset) {
-        validateOffset(offset);
+        checkOffset(offset);
         return wrapped.preceding(offset);
     }
 

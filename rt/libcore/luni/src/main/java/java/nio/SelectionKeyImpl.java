@@ -87,11 +87,13 @@ final class SelectionKeyImpl extends AbstractSelectionKey {
         return selector;
     }
 
-    /*
-     * package private method for setting the ready operation by selector
+    /**
+     * Allows SelectorImpl to set the ready operations.
      */
     void setReadyOps(int readyOps) {
-        this.readyOps = readyOps;
+        // We mask here (rather than assert, say) so that SelectorImpl doesn't have to worry
+        // about what operations a key is interested in. SelectorImpl is already too complicated.
+        this.readyOps = readyOps & interestOps;
     }
 
     private void checkValid() {

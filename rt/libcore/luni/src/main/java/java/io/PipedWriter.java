@@ -85,7 +85,7 @@ public class PipedWriter extends Writer {
      */
     public void connect(PipedReader reader) throws IOException {
         if (reader == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("reader == null");
         }
         synchronized (reader) {
             if (this.destination != null) {

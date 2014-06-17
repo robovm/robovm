@@ -31,6 +31,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import javax.crypto.spec.DHPrivateKeySpec;
@@ -64,16 +65,14 @@ import junit.framework.Assert;
  */
 public final class StandardNames extends Assert {
 
-//    public static final boolean IS_RI
-//            = !"Dalvik Core Library".equals(System.getProperty("java.specification.name"));
     // RoboVM note: Changed to detect RoboVM properly
     public static final boolean IS_RI
             = !"RoboVM Core Library".equals(System.getProperty("java.specification.name"));
     public static final String JSSE_PROVIDER_NAME = (IS_RI) ? "SunJSSE" : "AndroidOpenSSL";
     public static final String SECURITY_PROVIDER_NAME = (IS_RI) ? "SUN" : "BC";
 
-    public static final String KEY_MANAGER_FACTORY_DEFAULT = (IS_RI) ? "SunX509" : "X509";
-    public static final String TRUST_MANAGER_FACTORY_DEFAULT = (IS_RI) ? "PKIX" : "X509";
+    public static final String KEY_MANAGER_FACTORY_DEFAULT = (IS_RI) ? "SunX509" : "PKIX";
+    public static final String TRUST_MANAGER_FACTORY_DEFAULT = "PKIX";
 
     public static final String KEY_STORE_ALGORITHM = (IS_RI) ? "JKS" : "BKS";
 
@@ -88,6 +87,13 @@ public final class StandardNames extends Assert {
      */
     public static final Map<String,Set<String>> PROVIDER_ALGORITHMS
             = new HashMap<String,Set<String>>();
+
+    public static final Map<String,Set<String>> CIPHER_MODES
+            = new HashMap<String,Set<String>>();
+
+    public static final Map<String,Set<String>> CIPHER_PADDINGS
+            = new HashMap<String,Set<String>>();
+
     private static void provide(String type, String algorithm) {
         Set<String> algorithms = PROVIDER_ALGORITHMS.get(type);
         if (algorithms == null) {
@@ -95,15 +101,31 @@ public final class StandardNames extends Assert {
             PROVIDER_ALGORITHMS.put(type, algorithms);
         }
         assertTrue("Duplicate " + type + " " + algorithm,
-                   algorithms.add(algorithm.toUpperCase()));
+                   algorithms.add(algorithm.toUpperCase(Locale.ROOT)));
     }
     private static void unprovide(String type, String algorithm) {
         Set<String> algorithms = PROVIDER_ALGORITHMS.get(type);
         assertNotNull(algorithms);
-        assertTrue(algorithm, algorithms.remove(algorithm.toUpperCase()));
+        assertTrue(algorithm, algorithms.remove(algorithm.toUpperCase(Locale.ROOT)));
         if (algorithms.isEmpty()) {
             assertNotNull(PROVIDER_ALGORITHMS.remove(type));
         }
+    }
+    private static void provideCipherModes(String algorithm, String newModes[]) {
+        Set<String> modes = CIPHER_MODES.get(algorithm);
+        if (modes == null) {
+            modes = new HashSet<String>();
+            CIPHER_MODES.put(algorithm, modes);
+        }
+        modes.addAll(Arrays.asList(newModes));
+    }
+    private static void provideCipherPaddings(String algorithm, String newPaddings[]) {
+        Set<String> paddings = CIPHER_PADDINGS.get(algorithm);
+        if (paddings == null) {
+            paddings = new HashSet<String>();
+            CIPHER_PADDINGS.put(algorithm, paddings);
+        }
+        paddings.addAll(Arrays.asList(newPaddings));
     }
     static {
         provide("AlgorithmParameterGenerator", "DSA");
@@ -125,7 +147,10 @@ public final class StandardNames extends Assert {
         provide("CertStore", "Collection");
         provide("CertStore", "LDAP");
         provide("CertificateFactory", "X.509");
+        // TODO: provideCipherModes and provideCipherPaddings for other Ciphers
         provide("Cipher", "AES");
+        provideCipherModes("AES", new String[] { "CBC", "CFB", "CTR", "CTS", "ECB", "OFB" });
+        provideCipherPaddings("AES", new String[] { "NoPadding", "PKCS5Padding" });
         provide("Cipher", "AESWrap");
         provide("Cipher", "ARCFOUR");
         provide("Cipher", "Blowfish");
@@ -138,6 +163,10 @@ public final class StandardNames extends Assert {
         provide("Cipher", "PBEWithSHA1AndRC2_40");
         provide("Cipher", "RC2");
         provide("Cipher", "RSA");
+        // TODO: None?
+        provideCipherModes("RSA", new String[] { "ECB" });
+        // TODO: OAEPPadding
+        provideCipherPaddings("RSA", new String[] { "NoPadding", "PKCS1Padding" });
         provide("Configuration", "JavaLoginConfig");
         provide("KeyAgreement", "DiffieHellman");
         provide("KeyFactory", "DSA");
@@ -155,7 +184,7 @@ public final class StandardNames extends Assert {
         provide("KeyGenerator", "HmacSHA512");
         provide("KeyGenerator", "RC2");
         provide("KeyInfoFactory", "DOM");
-        provide("KeyManagerFactory", "SunX509");
+        provide("KeyManagerFactory", "PKIX");
         provide("KeyPairGenerator", "DSA");
         provide("KeyPairGenerator", "DiffieHellman");
         provide("KeyPairGenerator", "RSA");
@@ -167,6 +196,7 @@ public final class StandardNames extends Assert {
         provide("Mac", "HmacSHA256");
         provide("Mac", "HmacSHA384");
         provide("Mac", "HmacSHA512");
+        // If adding a new MessageDigest, consider adding it to JarVerifier
         provide("MessageDigest", "MD2");
         provide("MessageDigest", "MD5");
         provide("MessageDigest", "SHA-256");
@@ -184,6 +214,7 @@ public final class StandardNames extends Assert {
         provide("SecretKeyFactory", "PBEWithSHA1AndDESede");
         provide("SecretKeyFactory", "PBEWithSHA1AndRC2_40");
         provide("SecretKeyFactory", "PBKDF2WithHmacSHA1");
+        provide("SecretKeyFactory", "PBKDF2WithHmacSHA1And8bit");
         provide("SecureRandom", "SHA1PRNG");
         provide("Signature", "MD2withRSA");
         provide("Signature", "MD5withRSA");
@@ -239,7 +270,6 @@ public final class StandardNames extends Assert {
             provide("KeyGenerator", "SunTlsMasterSecret");
             provide("KeyGenerator", "SunTlsPrf");
             provide("KeyGenerator", "SunTlsRsaPremasterSecret");
-            provide("KeyManagerFactory", "NewSunX509");
             provide("KeyStore", "CaseExactJKS");
             provide("Mac", "HmacPBESHA1");
             provide("Mac", "SslMacMD5");
@@ -277,6 +307,20 @@ public final class StandardNames extends Assert {
             provide("Signature", "SHA512WITHECDSA");
         }
 
+        // Documented as Standard Names, but do not exit in RI 6
+        if (IS_RI) {
+            unprovide("SSLContext", "TLSv1.1");
+            unprovide("SSLContext", "TLSv1.2");
+        }
+
+        // Fixups for the RI
+        if (IS_RI) {
+            // different names: Standard Names says PKIX, JSSE Reference Guide says SunX509 or NewSunX509
+            unprovide("KeyManagerFactory", "PKIX");
+            provide("KeyManagerFactory", "SunX509");
+            provide("KeyManagerFactory", "NewSunX509");
+        }
+
         // Fixups for dalvik
         if (!IS_RI) {
 
@@ -311,29 +355,14 @@ public final class StandardNames extends Assert {
             provide("Cipher", "PBEWithSHAAnd3-KEYTripleDES-CBC");
             provide("SecretKeyFactory", "PBEWithSHAAnd3-KEYTripleDES-CBC");
 
-            // different names: dropped Sun
-            unprovide("KeyManagerFactory", "SunX509");
-            provide("KeyManagerFactory", "X509");
-
             // different names: BouncyCastle actually uses the Standard name of SHA-1 vs SHA
             unprovide("MessageDigest", "SHA");
             provide("MessageDigest", "SHA-1");
 
-            // different names: added "Encryption" suffix
-            unprovide("Signature", "MD5withRSA");
-            provide("Signature", "MD5WithRSAEncryption");
-            unprovide("Signature", "SHA1withRSA");
-            provide("Signature", "SHA1WithRSAEncryption");
-            unprovide("Signature", "SHA256WithRSA");
-            provide("Signature", "SHA256WithRSAEncryption");
-            unprovide("Signature", "SHA384WithRSA");
-            provide("Signature", "SHA384WithRSAEncryption");
-            unprovide("Signature", "SHA512WithRSA");
-            provide("Signature", "SHA512WithRSAEncryption");
-
-            // different names: JSSE Reference Guide says PKIX aka X509
-            unprovide("TrustManagerFactory", "PKIX");
-            provide("TrustManagerFactory", "X509");
+            // Added to support Android KeyStore operations
+            provide("Signature", "NONEwithRSA");
+            provide("Cipher", "RSA/ECB/NOPADDING");
+            provide("Cipher", "RSA/ECB/PKCS1PADDING");
 
             // different names: ARCFOUR vs ARC4
             unprovide("Cipher", "ARCFOUR");
@@ -400,6 +429,26 @@ public final class StandardNames extends Assert {
             provide("SecretKeyFactory", "PBEWITHSHAAND40BITRC4");
             provide("SecretKeyFactory", "PBEWITHSHAANDTWOFISH-CBC");
 
+            // Needed by our OpenSSL provider
+            provide("Cipher", "AES/CBC/NOPADDING");
+            provide("Cipher", "AES/CBC/PKCS5PADDING");
+            provide("Cipher", "AES/CFB/NOPADDING");
+            provide("Cipher", "AES/CFB/PKCS5PADDING");
+            provide("Cipher", "AES/CTR/NOPADDING");
+            provide("Cipher", "AES/CTR/PKCS5PADDING");
+            provide("Cipher", "AES/ECB/NOPADDING");
+            provide("Cipher", "AES/ECB/PKCS5PADDING");
+            provide("Cipher", "AES/OFB/NOPADDING");
+            provide("Cipher", "AES/OFB/PKCS5PADDING");
+            provide("Cipher", "DESEDE/CBC/NOPADDING");
+            provide("Cipher", "DESEDE/CBC/PKCS5PADDING");
+            provide("Cipher", "DESEDE/CFB/NOPADDING");
+            provide("Cipher", "DESEDE/CFB/PKCS5PADDING");
+            provide("Cipher", "DESEDE/ECB/NOPADDING");
+            provide("Cipher", "DESEDE/ECB/PKCS5PADDING");
+            provide("Cipher", "DESEDE/OFB/NOPADDING");
+            provide("Cipher", "DESEDE/OFB/PKCS5PADDING");
+
             // removed LDAP
             unprovide("CertStore", "LDAP");
 
@@ -443,6 +492,11 @@ public final class StandardNames extends Assert {
 
             // Android's CA store
             provide("KeyStore", "AndroidCAStore");
+
+            // Android's KeyStore provider
+            if (Security.getProvider("AndroidKeyStore") != null) {
+                provide("KeyStore", "AndroidKeyStore");
+            }
         }
     }
 
@@ -841,5 +895,19 @@ public final class StandardNames extends Assert {
     public static void assertDefaultCipherSuites(String[] cipherSuites) {
         assertValidCipherSuites(CIPHER_SUITES, cipherSuites);
         assertEquals(CIPHER_SUITES_DEFAULT, Arrays.asList(cipherSuites));
+    }
+
+    /**
+     * Get all supported mode names for the given cipher.
+     */
+    public static Set<String> getModesForCipher(String cipher) {
+        return CIPHER_MODES.get(cipher);
+    }
+
+    /**
+     * Get all supported padding names for the given cipher.
+     */
+    public static Set<String> getPaddingsForCipher(String cipher) {
+        return CIPHER_PADDINGS.get(cipher);
     }
 }

@@ -126,6 +126,17 @@ public class AnnotationTest extends TestCase {
                 m2.getDeclaredAnnotations()[0].hashCode());
 
     }
+
+    public static void test35304() throws Exception {
+        Class c = AnnotationTest.class;
+        Class[] parameterTypes = new Class[] { String.class, String.class };
+        Annotation[][] annotations = c.getDeclaredMethod("test35304_method", parameterTypes).getParameterAnnotations();
+        assertEquals(2, annotations.length); // Two parameters.
+        assertEquals(0, annotations[0].length); // No annotations on the first.
+        assertEquals(1, annotations[1].length); // One annotation on the second.
+    }
+
+    private static String test35304_method(String s1, @Deprecated String s2) { return null; }
 }
 
 class AnnotatedClass2 {

@@ -468,7 +468,7 @@ public class KXmlParser implements XmlPullParser, Closeable {
 
         search:
         while (true) {
-            if (position + delimiter.length >= limit) {
+            if (position + delimiter.length > limit) {
                 if (start < position && returnText) {
                     if (result == null) {
                         result = new StringBuilder();
@@ -756,6 +756,9 @@ public class KXmlParser implements XmlPullParser, Closeable {
                     depth++;
                 } else if (c == ')') {
                     depth--;
+                } else if (c == -1) {
+                    throw new XmlPullParserException(
+                            "Unterminated element content spec", this, null);
                 }
                 position++;
                 c = peekCharacter();
@@ -857,7 +860,9 @@ public class KXmlParser implements XmlPullParser, Closeable {
                 position++;
                 // TODO: does this do escaping correctly?
                 String value = readValue((char) c, true, true, ValueContext.ATTRIBUTE);
-                position++;
+                if (peekCharacter() == c) {
+                    position++;
+                }
                 defineAttributeDefault(elementName, attributeName, value);
             }
         }
@@ -907,7 +912,9 @@ public class KXmlParser implements XmlPullParser, Closeable {
         if (quote == '"' || quote == '\'') {
             position++;
             entityValue = readValue((char) quote, true, false, ValueContext.ENTITY_DECLARATION);
-            position++;
+            if (peekCharacter() == quote) {
+                position++;
+            }
         } else if (readExternalId(true, false)) {
             /*
              * Map external entities to the empty string. This is dishonest,
@@ -1109,7 +1116,7 @@ public class KXmlParser implements XmlPullParser, Closeable {
                 attributes[i + 3] = readValue(delimiter, true, throwOnResolveFailure,
                         ValueContext.ATTRIBUTE);
 
-                if (delimiter != ' ') {
+                if (delimiter != ' ' && peekCharacter() == delimiter) {
                     position++; // end quote
                 }
             } else if (relaxed) {
@@ -1424,12 +1431,15 @@ public class KXmlParser implements XmlPullParser, Closeable {
         int c = peekCharacter();
         if (c != expected) {
             checkRelaxed("expected: '" + expected + "' actual: '" + ((char) c) + "'");
+            if (c == -1) {
+                return; // On EOF, don't move position beyond limit
+            }
         }
         position++;
     }
 
     private void read(char[] chars) throws IOException, XmlPullParserException {
-        if (position + chars.length >= limit && !fillBuffer(chars.length)) {
+        if (position + chars.length > limit && !fillBuffer(chars.length)) {
             checkRelaxed("expected: '" + new String(chars) + "' but was EOF");
             return;
         }
@@ -1612,7 +1622,7 @@ public class KXmlParser implements XmlPullParser, Closeable {
         boolean detectCharset = (charset == null);
 
         if (is == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("is == null");
         }
 
         try {

@@ -21,7 +21,7 @@
 
 package libcore.io;
 
-import java.nio.charset.Charsets;
+import java.nio.charset.StandardCharsets;
 import libcore.util.EmptyArray;
 
 /**
@@ -156,6 +156,6 @@ public final class Base64 {
                 out[index++] = '=';
                 break;
         }
-        return new String(out, 0, index, Charsets.US_ASCII);
+        return new String(out, 0, index, StandardCharsets.US_ASCII);
     }
 }

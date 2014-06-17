@@ -15,8 +15,6 @@
  */
 package org.apache.harmony.crypto.tests.javax.crypto.func;
 
-import dalvik.annotation.AndroidOnly;
-
 import junit.framework.TestCase;
 
 public class CipherRSATest extends TestCase {
@@ -55,7 +53,6 @@ public class CipherRSATest extends TestCase {
         assertEquals(rsa.getFailureMessages(), 0, rsa.getTotalFailuresNumber());
     }
 
-    @AndroidOnly("Fails on RI but succeeds on Android.")
     public void test_RSANoPadding() {
         CipherRSAThread rsa = new CipherRSAThread("RSA", new int[] {1024},
                 new String[] {"ECB"}, new String[] {"NOPADDING"});

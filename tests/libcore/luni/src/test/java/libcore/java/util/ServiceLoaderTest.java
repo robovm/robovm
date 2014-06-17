@@ -17,23 +17,54 @@
 package libcore.java.util;
 
 import java.util.Iterator;
+import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 
 public class ServiceLoaderTest extends junit.framework.TestCase {
-    public static interface UnimplementedInterface { }
-    public void test_noImplementations() {
-        assertFalse(ServiceLoader.load(UnimplementedInterface.class).iterator().hasNext());
-    }
+  public static interface UnimplementedInterface { }
+  public void test_noImplementations() {
+    assertFalse(ServiceLoader.load(UnimplementedInterface.class).iterator().hasNext());
+  }
 
-    public static class Impl1 implements ServiceLoaderTestInterface { }
-    public static class Impl2 implements ServiceLoaderTestInterface { }
-    public void test_implementations() {
-        ServiceLoader<ServiceLoaderTestInterface> loader = ServiceLoader.load(ServiceLoaderTestInterface.class);
-        Iterator<ServiceLoaderTestInterface> it = loader.iterator();
-        assertTrue(it.hasNext());
-        assertTrue(it.next() instanceof Impl1);
-        assertTrue(it.hasNext());
-        assertTrue(it.next() instanceof Impl2);
-        assertFalse(it.hasNext());
+  public static class Impl1 implements ServiceLoaderTestInterface { }
+  public static class Impl2 implements ServiceLoaderTestInterface { }
+  public void test_implementations() {
+    ServiceLoader<ServiceLoaderTestInterface> loader = ServiceLoader.load(ServiceLoaderTestInterface.class);
+    Iterator<ServiceLoaderTestInterface> it = loader.iterator();
+    assertTrue(it.hasNext());
+    assertTrue(it.next() instanceof Impl1);
+    assertTrue(it.hasNext());
+    assertTrue(it.next() instanceof Impl2);
+    assertFalse(it.hasNext());
+  }
+
+  // Something like "does.not.Exist", that is a well-formed class name, but just doesn't exist.
+  public void test_missingRegisteredClass() throws Exception {
+    try {
+      ServiceLoader.load(ServiceLoaderTestInterfaceMissingClass.class).iterator().next();
+      fail();
+    } catch (ServiceConfigurationError expected) {
+      assertTrue(expected.getCause() instanceof ClassNotFoundException);
     }
+  }
+
+  // Something like "java.lang.String", that is a class that exists,
+  // but doesn't implement the interface.
+  public void test_wrongTypeRegisteredClass() throws Exception {
+    try {
+      ServiceLoader.load(ServiceLoaderTestInterfaceWrongType.class).iterator().next();
+      fail();
+    } catch (ServiceConfigurationError expected) {
+      assertTrue(expected.getCause() instanceof ClassCastException);
+    }
+  }
+
+  // Something like "This is not a class name!" that's just a parse error.
+  public void test_invalidRegisteredClass() throws Exception {
+    try {
+      ServiceLoader.load(ServiceLoaderTestInterfaceParseError.class).iterator().next();
+      fail();
+    } catch (ServiceConfigurationError expected) {
+    }
+  }
 }

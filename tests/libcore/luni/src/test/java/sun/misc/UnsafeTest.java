@@ -18,6 +18,7 @@ package sun.misc;
 
 import junit.framework.TestCase;
 
+import java.lang.reflect.Field;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 
@@ -47,5 +48,26 @@ public class UnsafeTest extends TestCase {
             fail();
         } catch (SecurityException expected) {
         }
+    }
+
+    private class AllocateInstanceTestClass {
+        public int i = 123;
+        public String s = "hello";
+        public Object getThis() { return AllocateInstanceTestClass.this; }
+    }
+
+    private static Unsafe getUnsafe() throws Exception {
+        Class<?> unsafeClass = Class.forName("sun.misc.Unsafe");
+        Field f = unsafeClass.getDeclaredField("theUnsafe");
+        f.setAccessible(true);
+        return (Unsafe) f.get(null);
+    }
+
+    public void test_allocateInstance() throws Exception {
+        AllocateInstanceTestClass i = (AllocateInstanceTestClass)
+                getUnsafe().allocateInstance(AllocateInstanceTestClass.class);
+        assertEquals(0, i.i);
+        assertEquals(null, i.s);
+        assertEquals(i, i.getThis());
     }
 }

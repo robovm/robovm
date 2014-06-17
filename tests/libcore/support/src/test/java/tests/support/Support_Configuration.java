@@ -91,17 +91,7 @@ public class Support_Configuration {
     // than one addresses returned for this host name as needed by a test
     // END android-changed
 
-    public static String testURL = "harmony.apache.org";
-
-    public static String hTTPURLwExpiration = "http://phpwiki.sourceforge.net/phpwiki-1.2/";
-
     public static String hTTPURLwLastModified = "http://www.php.net/manual/en/function.explode.php";
-
-    public static String hTTPURLyahoo = "http://news.yahoo.com/";
-
-    public static String hTTPURLgoogle = "http://www.google.com/ie";
-
-    public static String testContentEncoding = "http://www.amazon.com/";
 
     public static int SpecialInetTestAddressNumber = 4;
 

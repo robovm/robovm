@@ -59,29 +59,8 @@ public class DataInputStream extends FilterInputStream implements DataInput {
         return super.read(buffer);
     }
 
-    /**
-     * Reads at most {@code length} bytes from this stream and stores them in
-     * the byte array {@code buffer} starting at {@code offset}. Returns the
-     * number of bytes that have been read or -1 if no bytes have been read and
-     * the end of the stream has been reached.
-     *
-     * @param buffer
-     *            the byte array in which to store the bytes read.
-     * @param offset
-     *            the initial position in {@code buffer} to store the bytes
-     *            read from this stream.
-     * @param length
-     *            the maximum number of bytes to store in {@code buffer}.
-     * @return the number of bytes that have been read or -1 if the end of the
-     *         stream has been reached.
-     * @throws IOException
-     *             if a problem occurs while reading from this stream.
-     * @see DataOutput#write(byte[])
-     * @see DataOutput#write(byte[], int, int)
-     */
-    @Override
-    public final int read(byte[] buffer, int offset, int length) throws IOException {
-        return in.read(buffer, offset, length);
+    @Override public final int read(byte[] buffer, int byteOffset, int byteCount) throws IOException {
+        return in.read(buffer, byteOffset, byteCount);
     }
 
     public final boolean readBoolean() throws IOException {
@@ -125,6 +104,10 @@ public class DataInputStream extends FilterInputStream implements DataInput {
         return Memory.peekInt(scratch, 0, ByteOrder.BIG_ENDIAN);
     }
 
+    /**
+     * @deprecated This method cannot be trusted to convert bytes to characters correctly.
+     * Wrap this stream with a {@link BufferedReader} instead.
+     */
     @Deprecated
     public final String readLine() throws IOException {
         StringBuilder line = new StringBuilder(80); // Typical line length

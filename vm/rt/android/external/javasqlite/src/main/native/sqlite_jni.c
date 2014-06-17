@@ -1,4 +1,3 @@
-#include "JNIHelp.h"
 #include "sqlite_jni_defs.h"
 
 #include <stdlib.h>

@@ -17,10 +17,12 @@
 
 package java.net;
 
+import java.io.Closeable;
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.nio.channels.DatagramChannel;
 import libcore.io.ErrnoException;
+import libcore.io.IoBridge;
 import libcore.io.Libcore;
 import static libcore.io.OsConstants.*;
 
@@ -32,7 +34,7 @@ import static libcore.io.OsConstants.*;
  * @see DatagramPacket
  * @see DatagramSocketImplFactory
  */
-public class DatagramSocket {
+public class DatagramSocket implements Closeable {
 
     DatagramSocketImpl impl;
 
@@ -150,20 +152,15 @@ public class DatagramSocket {
     }
 
     /**
-     * Gets the {@code InetAddress} instance representing the bound local
-     * address of this UDP datagram socket.
-     *
-     * @return the local address to which this socket is bound to or {@code
-     *         null} if this socket is closed.
+     * Returns the local address to which this socket is bound,
+     * or {@code null} if this socket is closed.
      */
     public InetAddress getLocalAddress() {
-        if (isClosed()) {
+        try {
+            return IoBridge.getSocketLocalAddress(impl.fd);
+        } catch (SocketException ex) {
             return null;
         }
-        if (!isBound()) {
-            return Inet4Address.ANY;
-        }
-        return impl.getLocalAddress();
     }
 
     /**
@@ -244,7 +241,7 @@ public class DatagramSocket {
         checkOpen();
         ensureBound();
         if (pack == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("pack == null");
         }
         if (pendingConnectException != null) {
             throw new SocketException("Pending connect failure", pendingConnectException);
@@ -295,7 +292,7 @@ public class DatagramSocket {
      */
     public void setNetworkInterface(NetworkInterface netInterface) throws SocketException {
         if (netInterface == null) {
-            throw new NullPointerException("networkInterface == null");
+            throw new NullPointerException("netInterface == null");
         }
         try {
             Libcore.os.setsockoptIfreq(impl.fd, SOL_SOCKET, SO_BINDTODEVICE, netInterface.getName());
@@ -374,7 +371,7 @@ public class DatagramSocket {
      */
     protected DatagramSocket(DatagramSocketImpl socketImpl) {
         if (socketImpl == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("socketImpl == null");
         }
         impl = socketImpl;
     }
@@ -614,7 +611,7 @@ public class DatagramSocket {
     public void setTrafficClass(int value) throws SocketException {
         checkOpen();
         if (value < 0 || value > 255) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Value doesn't fit in an unsigned byte: " + value);
         }
         impl.setOption(SocketOptions.IP_TOS, Integer.valueOf(value));
     }

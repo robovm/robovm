@@ -1125,7 +1125,7 @@ OPENSSL_GLOBAL SSL_CIPHER ssl3_ciphers[]={
 	0, /* not implemented (non-ephemeral DH) */
 	TLS1_TXT_DH_DSS_WITH_AES_128_SHA256,
 	TLS1_CK_DH_DSS_WITH_AES_128_SHA256,
-	SSL_kDHr,
+	SSL_kDHd,
 	SSL_aDH,
 	SSL_AES128,
 	SSL_SHA256,
@@ -1407,7 +1407,7 @@ OPENSSL_GLOBAL SSL_CIPHER ssl3_ciphers[]={
 	0, /* not implemented (non-ephemeral DH) */
 	TLS1_TXT_DH_DSS_WITH_AES_256_SHA256,
 	TLS1_CK_DH_DSS_WITH_AES_256_SHA256,
-	SSL_kDHr,
+	SSL_kDHd,
 	SSL_aDH,
 	SSL_AES256,
 	SSL_SHA256,
@@ -1958,7 +1958,7 @@ OPENSSL_GLOBAL SSL_CIPHER ssl3_ciphers[]={
 	0,
 	TLS1_TXT_DH_DSS_WITH_AES_128_GCM_SHA256,
 	TLS1_CK_DH_DSS_WITH_AES_128_GCM_SHA256,
-	SSL_kDHr,
+	SSL_kDHd,
 	SSL_aDH,
 	SSL_AES128GCM,
 	SSL_AEAD,
@@ -1974,7 +1974,7 @@ OPENSSL_GLOBAL SSL_CIPHER ssl3_ciphers[]={
 	0,
 	TLS1_TXT_DH_DSS_WITH_AES_256_GCM_SHA384,
 	TLS1_CK_DH_DSS_WITH_AES_256_GCM_SHA384,
-	SSL_kDHr,
+	SSL_kDHd,
 	SSL_aDH,
 	SSL_AES256GCM,
 	SSL_AEAD,
@@ -2669,7 +2669,7 @@ OPENSSL_GLOBAL SSL_CIPHER ssl3_ciphers[]={
 	1,
 	TLS1_TXT_ECDH_RSA_WITH_AES_128_SHA256,
 	TLS1_CK_ECDH_RSA_WITH_AES_128_SHA256,
-	SSL_kECDHe,
+	SSL_kECDHr,
 	SSL_aECDH,
 	SSL_AES128,
 	SSL_SHA256,
@@ -2685,7 +2685,7 @@ OPENSSL_GLOBAL SSL_CIPHER ssl3_ciphers[]={
 	1,
 	TLS1_TXT_ECDH_RSA_WITH_AES_256_SHA384,
 	TLS1_CK_ECDH_RSA_WITH_AES_256_SHA384,
-	SSL_kECDHe,
+	SSL_kECDHr,
 	SSL_aECDH,
 	SSL_AES256,
 	SSL_SHA384,
@@ -2799,7 +2799,7 @@ OPENSSL_GLOBAL SSL_CIPHER ssl3_ciphers[]={
 	1,
 	TLS1_TXT_ECDH_RSA_WITH_AES_128_GCM_SHA256,
 	TLS1_CK_ECDH_RSA_WITH_AES_128_GCM_SHA256,
-	SSL_kECDHe,
+	SSL_kECDHr,
 	SSL_aECDH,
 	SSL_AES128GCM,
 	SSL_AEAD,
@@ -2815,7 +2815,7 @@ OPENSSL_GLOBAL SSL_CIPHER ssl3_ciphers[]={
 	1,
 	TLS1_TXT_ECDH_RSA_WITH_AES_256_GCM_SHA384,
 	TLS1_CK_ECDH_RSA_WITH_AES_256_GCM_SHA384,
-	SSL_kECDHe,
+	SSL_kECDHr,
 	SSL_aECDH,
 	SSL_AES256GCM,
 	SSL_AEAD,
@@ -2951,6 +2951,11 @@ int ssl3_new(SSL *s)
 #ifndef OPENSSL_NO_SRP
 	SSL_SRP_CTX_init(s);
 #endif
+#if !defined(OPENSSL_NO_TLSEXT)
+	s->tlsext_channel_id_enabled = s->ctx->tlsext_channel_id_enabled;
+	if (s->ctx->tlsext_channel_id_private)
+		s->tlsext_channel_id_private = EVP_PKEY_dup(s->ctx->tlsext_channel_id_private);
+#endif
 	s->method->ssl_clear(s);
 	return(1);
 err:
@@ -2991,6 +2996,11 @@ void ssl3_free(SSL *s)
 		BIO_free(s->s3->handshake_buffer);
 	}
 	if (s->s3->handshake_dgst) ssl3_free_digest_list(s);
+#ifndef OPENSSL_NO_TLSEXT
+	if (s->s3->alpn_selected)
+		OPENSSL_free(s->s3->alpn_selected);
+#endif
+
 #ifndef OPENSSL_NO_SRP
 	SSL_SRP_CTX_free(s);
 #endif
@@ -3050,6 +3060,14 @@ void ssl3_clear(SSL *s)
 	if (s->s3->handshake_dgst) {
 		ssl3_free_digest_list(s);
 	}	
+
+#if !defined(OPENSSL_NO_TLSEXT)
+	if (s->s3->alpn_selected)
+		{
+		free(s->s3->alpn_selected);
+		s->s3->alpn_selected = NULL;
+		}
+#endif
 	memset(s->s3,0,sizeof *s->s3);
 	s->s3->rbuf.buf = rp;
 	s->s3->wbuf.buf = wp;
@@ -3073,6 +3091,10 @@ void ssl3_clear(SSL *s)
 		s->next_proto_negotiated = NULL;
 		s->next_proto_negotiated_len = 0;
 		}
+#endif
+
+#if !defined(OPENSSL_NO_TLSEXT)
+	s->s3->tlsext_channel_id_valid = 0;
 #endif
 	}
 
@@ -3348,6 +3370,35 @@ long ssl3_ctrl(SSL *s, int cmd, long larg, void *parg)
 		ret = 1;
 		break;
 #endif
+	case SSL_CTRL_CHANNEL_ID:
+		if (!s->server)
+			break;
+		s->tlsext_channel_id_enabled = 1;
+		ret = 1;
+		break;
+
+	case SSL_CTRL_SET_CHANNEL_ID:
+		if (s->server)
+			break;
+		s->tlsext_channel_id_enabled = 1;
+		if (EVP_PKEY_bits(parg) != 256)
+			{
+			SSLerr(SSL_F_SSL3_CTRL,SSL_R_CHANNEL_ID_NOT_P256);
+			break;
+			}
+		if (s->tlsext_channel_id_private)
+			EVP_PKEY_free(s->tlsext_channel_id_private);
+		s->tlsext_channel_id_private = (EVP_PKEY*) parg;
+		ret = 1;
+		break;
+
+	case SSL_CTRL_GET_CHANNEL_ID:
+		if (!s->server)
+			break;
+		if (!s->s3->tlsext_channel_id_valid)
+			break;
+		memcpy(parg, s->s3->tlsext_channel_id, larg < 64 ? larg : 64);
+		return 64;
 
 #endif /* !OPENSSL_NO_TLSEXT */
 	default:
@@ -3569,6 +3620,12 @@ long ssl3_ctx_ctrl(SSL_CTX *ctx, int cmd, long larg, void *parg)
 			}
 		return 1;
 		}
+	case SSL_CTRL_CHANNEL_ID:
+		/* must be called on a server */
+		if (ctx->method->ssl_accept == ssl_undefined_function)
+			return 0;
+		ctx->tlsext_channel_id_enabled=1;
+		return 1;
 
 #ifdef TLSEXT_TYPE_opaque_prf_input
 	case SSL_CTRL_SET_TLSEXT_OPAQUE_PRF_INPUT_CB_ARG:
@@ -3635,6 +3692,18 @@ long ssl3_ctx_ctrl(SSL_CTX *ctx, int cmd, long larg, void *parg)
 			sk_X509_pop_free(ctx->extra_certs, X509_free);
 			ctx->extra_certs = NULL;
 			}
+		break;
+
+	case SSL_CTRL_SET_CHANNEL_ID:
+		ctx->tlsext_channel_id_enabled = 1;
+		if (EVP_PKEY_bits(parg) != 256)
+			{
+			SSLerr(SSL_F_SSL3_CTX_CTRL,SSL_R_CHANNEL_ID_NOT_P256);
+			break;
+			}
+		if (ctx->tlsext_channel_id_private)
+			EVP_PKEY_free(ctx->tlsext_channel_id_private);
+		ctx->tlsext_channel_id_private = (EVP_PKEY*) parg;
 		break;
 
 	default:

@@ -82,6 +82,7 @@ public class AppCompiler {
         "java/net/Inet6Address",
         "java/net/InetAddress",
         "java/net/InetSocketAddress",
+        "java/net/InetUnixAddress",
         "java/net/Socket",
         "java/net/SocketImpl",
         "java/nio/charset/CharsetICU",
@@ -101,7 +102,7 @@ public class AppCompiler {
         "libcore/io/StructPasswd",
         "libcore/io/StructPollfd",
         "libcore/io/StructStat",
-        "libcore/io/StructStatFs",
+        "libcore/io/StructStatVfs",
         "libcore/io/StructTimeval",
         "libcore/io/StructUtsname",
         "libcore/util/MutableInt",
@@ -109,7 +110,7 @@ public class AppCompiler {
     };
 
     private static final String TRUSTED_CERTIFICATE_STORE_CLASS = 
-            "org/apache/harmony/xnet/provider/jsse/TrustedCertificateStore";
+            "com/android/org/conscrypt/TrustedCertificateStore";
     
     private final Config config;
     private final ClassCompiler classCompiler;
@@ -157,7 +158,11 @@ public class AppCompiler {
             classes.addAll(getMatchingClasses(rootClassPattern));            
         }
         for (String rootClassName : ROOT_CLASSES) {
-            classes.add(config.getClazzes().load(rootClassName));            
+            Clazz clazz = config.getClazzes().load(rootClassName);
+            if (clazz == null) {
+                throw new CompilerException("Root class " + rootClassName + " not found");
+            }
+            classes.add(clazz);            
         }
 
         if (config.getMainClass() != null) {

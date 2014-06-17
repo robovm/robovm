@@ -36,13 +36,14 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import javax.security.auth.x500.X500Principal;
+
+import org.apache.harmony.security.asn1.ASN1OctetString;
 import org.apache.harmony.security.asn1.BerInputStream;
 import org.apache.harmony.security.pkcs7.ContentInfo;
 import org.apache.harmony.security.pkcs7.SignedData;
 import org.apache.harmony.security.pkcs7.SignerInfo;
 import org.apache.harmony.security.provider.cert.X509CertImpl;
 import org.apache.harmony.security.x501.AttributeTypeAndValue;
-import org.apache.harmony.xnet.provider.jsse.OpenSSLProvider;
 
 public class JarUtils {
 
@@ -114,27 +115,56 @@ public class JarUtils {
         }
 
         // Get Signature instance
-        Signature sig = null;
-        String da = sigInfo.getDigestAlgorithm();
-        String dea = sigInfo.getDigestEncryptionAlgorithm();
+        final String daOid = sigInfo.getDigestAlgorithm();
+        final String daName = sigInfo.getDigestAlgorithmName();
+        final String deaOid = sigInfo.getDigestEncryptionAlgorithm();
+
         String alg = null;
-        if (da != null && dea != null) {
-            alg = da + "with" +  dea;
+        Signature sig = null;
+
+        if (daOid != null && deaOid != null) {
+            alg = daOid + "with" + deaOid;
             try {
-                sig = Signature.getInstance(alg, OpenSSLProvider.PROVIDER_NAME);
-            } catch (NoSuchAlgorithmException e) {}
-        }
-        if (sig == null) {
-            alg = da;
-            if (alg == null) {
-                return null;
-            }
-            try {
-                sig = Signature.getInstance(alg, OpenSSLProvider.PROVIDER_NAME);
+                sig = Signature.getInstance(alg);
             } catch (NoSuchAlgorithmException e) {
-                return null;
+            }
+
+            // Try to convert to names instead of OID.
+            if (sig == null) {
+                final String deaName = sigInfo.getDigestEncryptionAlgorithmName();
+                alg = daName + "with" + deaName;
+                try {
+                    sig = Signature.getInstance(alg);
+                } catch (NoSuchAlgorithmException e) {
+                }
             }
         }
+
+        /*
+         * TODO figure out the case in which we'd only use digestAlgorithm and
+         * add a test for it.
+         */
+        if (sig == null && daOid != null) {
+            alg = daOid;
+            try {
+                sig = Signature.getInstance(alg);
+            } catch (NoSuchAlgorithmException e) {
+            }
+
+            if (sig == null && daName != null) {
+                alg = daName;
+                try {
+                    sig = Signature.getInstance(alg);
+                } catch (NoSuchAlgorithmException e) {
+                }
+            }
+        }
+
+        // We couldn't find a valid Signature type.
+        if (sig == null) {
+            return null;
+        }
+
         sig.initVerify(certs[issuerSertIndex]);
 
         // If the authenticatedAttributes field of SignerInfo contains more than zero attributes,
@@ -155,15 +185,37 @@ public class JarUtils {
             byte[] existingDigest = null;
             for (AttributeTypeAndValue a : atr) {
                 if (Arrays.equals(a.getType().getOid(), MESSAGE_DIGEST_OID)) {
-//TODO value                    existingDigest = a.AttributeValue;
+                    if (existingDigest != null) {
+                        throw new SecurityException("Too many MessageDigest attributes");
+                    }
+                    Collection<?> entries = a.getValue().getValues(ASN1OctetString.getInstance());
+                    if (entries.size() != 1) {
+                        throw new SecurityException("Too many values for MessageDigest attribute");
+                    }
+                    existingDigest = (byte[]) entries.iterator().next();
                 }
             }
-            if (existingDigest != null) {
-                MessageDigest md = MessageDigest.getInstance(sigInfo.getDigestAlgorithm());
-                byte[] computedDigest = md.digest(sfBytes);
-                if (!Arrays.equals(existingDigest, computedDigest)) {
-                    throw new SecurityException("Incorrect MD");
-                }
+
+            // RFC 3852 section 9.2: it authAttrs is present, it must have a
+            // message digest entry.
+            if (existingDigest == null) {
+                throw new SecurityException("Missing MessageDigest in Authenticated Attributes");
+            }
+
+            MessageDigest md = null;
+            if (daOid != null) {
+                md = MessageDigest.getInstance(daOid);
+            }
+            if (md == null && daName != null) {
+                md = MessageDigest.getInstance(daName);
+            }
+            if (md == null) {
+                return null;
+            }
+
+            byte[] computedDigest = md.digest(sfBytes);
+            if (!Arrays.equals(existingDigest, computedDigest)) {
+                throw new SecurityException("Incorrect MD");
             }
         }
 

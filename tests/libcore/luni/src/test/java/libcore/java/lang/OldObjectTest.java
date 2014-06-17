@@ -16,8 +16,6 @@
  */
 package libcore.java.lang;
 
-import dalvik.annotation.SideEffect;
-import java.util.Vector;
 import junit.framework.TestCase;
 
 public class OldObjectTest extends TestCase {
@@ -187,7 +185,36 @@ public class OldObjectTest extends TestCase {
             fail("InterruptedException was thrown.");
         }
         assertEquals(3, status);
+    }
 
+    public void test_waitJI_invalid() throws Exception {
+        Object o = new Object();
+        synchronized (o) {
+            try {
+                o.wait(-1, 0);
+                fail();
+            } catch (IllegalArgumentException expected) {
+            }
+
+            try {
+                o.wait(0, -1);
+                fail();
+            } catch (IllegalArgumentException expected) {
+            }
+
+            try {
+                o.wait(-1, -1);
+                fail();
+            } catch (IllegalArgumentException expected) {
+            }
+
+            // The ms timeout must fit in 32 bits.
+            try {
+                o.wait(Integer.MAX_VALUE + 1, 0);
+                fail();
+            } catch (IllegalArgumentException expected) {
+            }
+        }
     }
 
     public void test_waitJ() {

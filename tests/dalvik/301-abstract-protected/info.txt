@@ -1,0 +1,3 @@
+Tests a dalvik bug where we'd treat an abstract method as an implementation
+of an interface method; the RI only cares about the visibility of the actual
+implementation in non-abstract subclasses.

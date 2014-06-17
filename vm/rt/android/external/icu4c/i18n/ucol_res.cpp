@@ -1,6 +1,6 @@
 /*
 *******************************************************************************
-*   Copyright (C) 1996-2011, International Business Machines
+*   Copyright (C) 1996-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *******************************************************************************
 *   file name:  ucol_res.cpp
@@ -434,7 +434,8 @@ ucol_openRulesForImport( const UChar        *rules,
         goto cleanup;
     }
 
-    if(src.resultLen > 0 || src.removeSet != NULL) { /* we have a set of rules, let's make something of it */
+     /* if we have a set of rules, let's make something of it */
+    if(src.resultLen > 0 || src.removeSet != NULL) {
         /* also, if we wanted to remove some contractions, we should make a tailoring */
         table = ucol_assembleTailoringTable(&src, status);
         if(U_SUCCESS(*status)) {
@@ -452,6 +453,8 @@ ucol_openRulesForImport( const UChar        *rules,
             }
             result->hasRealData = TRUE;
             result->freeImageOnClose = TRUE;
+        } else {
+            goto cleanup;
         }
     } else { /* no rules, but no error either */
         // must be only options
@@ -470,16 +473,12 @@ ucol_openRulesForImport( const UChar        *rules,
         }
         uprv_memcpy(opts, src.opts, sizeof(UColOptionSet));
         ucol_setOptionsFromHeader(result, opts, status);
-        ucol_setReorderCodesFromParser(result, &src, status);
         result->freeOptionsOnClose = TRUE;
         result->hasRealData = FALSE;
         result->freeImageOnClose = FALSE;
     }
 
-    // BEGIN android-added
-    // Apply the fixes for ICU ticket#9095
     ucol_setReorderCodesFromParser(result, &src, status);
-    // END android-added
 
     if(U_SUCCESS(*status)) {
         UChar *newRules;
@@ -759,7 +758,7 @@ ucol_openAvailableLocales(UErrorCode *status) {
     if (U_FAILURE(*status)) {
         return NULL;
     }
-    StringEnumeration *s = Collator::getAvailableLocales();
+    StringEnumeration *s = icu::Collator::getAvailableLocales();
     if (s == NULL) {
         *status = U_MEMORY_ALLOCATION_ERROR;
         return NULL;
@@ -952,6 +951,9 @@ ucol_getLocaleByType(const UCollator *coll, ULocDataLocaleType type, UErrorCode 
     UTRACE_ENTRY(UTRACE_UCOL_GETLOCALE);
     UTRACE_DATA1(UTRACE_INFO, "coll=%p", coll);
 
+    if(coll->delegate!=NULL) {
+      return ((const Collator*)coll->delegate)->getLocale(type, *status).getName();
+    }
     switch(type) {
     case ULOC_ACTUAL_LOCALE:
         result = coll->actualLocale;

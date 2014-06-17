@@ -68,7 +68,7 @@ import java.io.IOException;
  * Further care should be exercised when locking files maintained on network
  * file systems, since they often have further limitations.
  */
-public abstract class FileLock {
+public abstract class FileLock implements AutoCloseable {
 
     // The underlying file channel.
     private final FileChannel channel;
@@ -98,7 +98,7 @@ public abstract class FileLock {
      */
     protected FileLock(FileChannel channel, long position, long size, boolean shared) {
         if (position < 0 || size < 0 || position + size < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("position=" + position + " size=" + size);
         }
         this.channel = channel;
         this.position = position;
@@ -185,10 +185,16 @@ public abstract class FileLock {
     public abstract void release() throws IOException;
 
     /**
-     * Returns a string that shows the details of the lock suitable for display
-     * to an end user.
+     * Calls {@link #release} for {@code AutoCloseable}.
      *
-     * @return the display string.
+     * @since 1.7
+     */
+    public final void close() throws IOException {
+        release();
+    }
+
+    /**
+     * Returns a string that shows the details of the lock suitable for debugging.
      */
     @Override
     public final String toString() {

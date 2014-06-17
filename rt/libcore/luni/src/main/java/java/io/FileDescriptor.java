@@ -68,7 +68,11 @@ public final class FileDescriptor {
      */
     public void sync() throws SyncFailedException {
         try {
-            Libcore.os.fsync(this);
+            if (Libcore.os.isatty(this)) {
+                Libcore.os.tcdrain(this);
+            } else {
+                Libcore.os.fsync(this);
+            }
         } catch (ErrnoException errnoException) {
             SyncFailedException sfe = new SyncFailedException(errnoException.getMessage());
             sfe.initCause(errnoException);

@@ -123,17 +123,17 @@ public class RoboVMAllTests {
     
     @SuppressWarnings("unchecked")
     private static void cleanupHttpConnectionPool() throws Throwable {
-        Class<?> poolClass = Class.forName("libcore.net.http.HttpConnectionPool");
-        Map<Object, List<Object>> connections = 
-                (Map<Object, List<Object>>) field(poolClass, "connectionPool").get(field(poolClass, "INSTANCE").get(null));
-        Method closeSocketAndStreamsMethod = Class.forName("libcore.net.http.HttpConnection").getDeclaredMethod("closeSocketAndStreams");
-        closeSocketAndStreamsMethod.setAccessible(true);
-        for (List<Object> l : connections.values()) {
-            for (Object connection : l) {
-                closeSocketAndStreamsMethod.invoke(connection);
-            }
-        }
-        connections.clear();
+        // Class<?> poolClass = Class.forName("libcore.net.http.HttpConnectionPool");
+        // Map<Object, List<Object>> connections = 
+        //         (Map<Object, List<Object>>) field(poolClass, "connectionPool").get(field(poolClass, "INSTANCE").get(null));
+        // Method closeSocketAndStreamsMethod = Class.forName("libcore.net.http.HttpConnection").getDeclaredMethod("closeSocketAndStreams");
+        // closeSocketAndStreamsMethod.setAccessible(true);
+        // for (List<Object> l : connections.values()) {
+        //     for (Object connection : l) {
+        //         closeSocketAndStreamsMethod.invoke(connection);
+        //     }
+        // }
+        // connections.clear();
     }
     
     /**

@@ -54,11 +54,24 @@ public class SSLSessionTest extends TestCase {
     }
 
     public void test_SSLSession_getCreationTime() {
+        // We use OpenSSL, which only returns times accurate to the nearest second.
+        // NativeCrypto just multiplies by 1000, which looks like truncation, which
+        // would make it appear as if the OpenSSL side of things was created before
+        // we called it.
+        long t0 = System.currentTimeMillis() / 1000;
         TestSSLSessions s = TestSSLSessions.create();
+        long t1 = System.currentTimeMillis() / 1000;
+
         assertTrue(s.invalid.getCreationTime() > 0);
-        assertTrue(s.server.getCreationTime() > 0);
-        assertTrue(s.client.getCreationTime() > 0);
-        assertTrue(Math.abs(s.server.getCreationTime() - s.client.getCreationTime()) < 1 * 1000);
+
+        long sTime = s.server.getCreationTime() / 1000;
+        assertTrue(sTime + " >= " + t0, sTime >= t0);
+        assertTrue(sTime + " <= " + t1, sTime <= t1);
+
+        long cTime = s.client.getCreationTime() / 1000;
+        assertTrue(cTime + " >= " + t0, cTime >= t0);
+        assertTrue(cTime + " <= " + t1, cTime <= t1);
+
         s.close();
     }
 
@@ -83,7 +96,9 @@ public class SSLSessionTest extends TestCase {
         assertTrue(s.invalid.getLastAccessedTime() > 0);
         assertTrue(s.server.getLastAccessedTime() > 0);
         assertTrue(s.client.getLastAccessedTime() > 0);
-        assertTrue(Math.abs(s.server.getLastAccessedTime()
+        assertTrue("s.server.getLastAccessedTime()=" + s.server.getLastAccessedTime() + " " +
+                   "s.client.getLastAccessedTime()=" + s.client.getLastAccessedTime(),
+                   Math.abs(s.server.getLastAccessedTime()
                             - s.client.getLastAccessedTime()) < 1 * 1000);
         assertTrue(s.server.getLastAccessedTime() >=
                    s.server.getCreationTime());

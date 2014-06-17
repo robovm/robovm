@@ -23,8 +23,9 @@
 package org.apache.harmony.security.asn1;
 
 import java.io.IOException;
-import java.nio.charset.Charsets;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.TimeZone;
 
 /**
@@ -94,9 +95,9 @@ public final class ASN1UTCTime extends ASN1Time {
     private static final String UTC_PATTERN = "yyMMddHHmmss'Z'";
 
     @Override public void setEncodingContent(BerOutputStream out) {
-        SimpleDateFormat sdf = new SimpleDateFormat(UTC_PATTERN);
+        SimpleDateFormat sdf = new SimpleDateFormat(UTC_PATTERN, Locale.US);
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        out.content = sdf.format(out.content).getBytes(Charsets.UTF_8);
+        out.content = sdf.format(out.content).getBytes(StandardCharsets.UTF_8);
         out.length = ((byte[]) out.content).length;
     }
 }

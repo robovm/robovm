@@ -202,18 +202,6 @@ int ssl3_connect(SSL *s)
 	
 	s->in_handshake++;
 	if (!SSL_in_init(s) || SSL_in_before(s)) SSL_clear(s); 
-#if 0	/* Send app data in separate packet, otherwise, some particular site
-	 * (only one site so far) closes the socket.
-	 * Note: there is a very small chance that two TCP packets
-	 * could be arriving at server combined into a single TCP packet,
-	 * then trigger that site to break. We haven't encounter that though.
-	 */
-	if (SSL_get_mode(s) & SSL_MODE_HANDSHAKE_CUTTHROUGH)
-		{
-		/* Send app data along with CCS/Finished */
-		s->s3->flags |= SSL3_FLAGS_DELAY_CLIENT_FINISHED;
-		}
-#endif
 
 #ifndef OPENSSL_NO_HEARTBEATS
 	/* If we're awaiting a HeartbeatResponse, pretend we
@@ -227,6 +215,24 @@ int ssl3_connect(SSL *s)
 		}
 #endif
 
+// BEGIN android-added
+#if 0
+/* Send app data in separate packet, otherwise, some particular site
+ * (only one site so far) closes the socket. http://b/2511073
+ * Note: there is a very small chance that two TCP packets
+ * could be arriving at server combined into a single TCP packet,
+ * then trigger that site to break. We haven't encounter that though.
+ */
+// END android-added
+	if (SSL_get_mode(s) & SSL_MODE_HANDSHAKE_CUTTHROUGH)
+		{
+		/* Send app data along with CCS/Finished */
+		s->s3->flags |= SSL3_FLAGS_DELAY_CLIENT_FINISHED;
+		}
+
+// BEGIN android-added
+#endif
+// END android-added
 	for (;;)
 		{
 		state=s->state;
@@ -471,14 +477,14 @@ int ssl3_connect(SSL *s)
 				SSL3_ST_CW_CHANGE_A,SSL3_ST_CW_CHANGE_B);
 			if (ret <= 0) goto end;
 
-
-#if defined(OPENSSL_NO_TLSEXT) || defined(OPENSSL_NO_NEXTPROTONEG)
 			s->state=SSL3_ST_CW_FINISHED_A;
-#else
+#if !defined(OPENSSL_NO_TLSEXT)
+			if (s->s3->tlsext_channel_id_valid)
+				s->state=SSL3_ST_CW_CHANNEL_ID_A;
+# if !defined(OPENSSL_NO_NEXTPROTONEG)
 			if (s->s3->next_proto_neg_seen)
 				s->state=SSL3_ST_CW_NEXT_PROTO_A;
-			else
-				s->state=SSL3_ST_CW_FINISHED_A;
+# endif
 #endif
 			s->init_num=0;
 
@@ -511,6 +517,18 @@ int ssl3_connect(SSL *s)
 		case SSL3_ST_CW_NEXT_PROTO_A:
 		case SSL3_ST_CW_NEXT_PROTO_B:
 			ret=ssl3_send_next_proto(s);
+			if (ret <= 0) goto end;
+			if (s->s3->tlsext_channel_id_valid)
+				s->state=SSL3_ST_CW_CHANNEL_ID_A;
+			else
+				s->state=SSL3_ST_CW_FINISHED_A;
+			break;
+#endif
+
+#if !defined(OPENSSL_NO_TLSEXT)
+		case SSL3_ST_CW_CHANNEL_ID_A:
+		case SSL3_ST_CW_CHANNEL_ID_B:
+			ret=ssl3_send_channel_id(s);
 			if (ret <= 0) goto end;
 			s->state=SSL3_ST_CW_FINISHED_A;
 			break;
@@ -1046,7 +1064,10 @@ int ssl3_get_server_hello(SSL *s)
 	 * client authentication.
 	 */
 	if (TLS1_get_version(s) < TLS1_2_VERSION && !ssl3_digest_cached_records(s))
+		{
+		al = SSL_AD_INTERNAL_ERROR;
 		goto f_err;
+		}
 	/* lets get the compression algorithm */
 	/* COMPRESSION */
 #ifdef OPENSSL_NO_COMP
@@ -1993,12 +2014,13 @@ int ssl3_get_certificate_request(SSL *s)
 			SSLerr(SSL_F_SSL3_GET_CERTIFICATE_REQUEST,SSL_R_DATA_LENGTH_TOO_LONG);
 			goto err;
 			}
-		if ((llen & 1) || !tls1_process_sigalgs(s, p, llen))
+		if (llen & 1)
 			{
 			ssl3_send_alert(s,SSL3_AL_FATAL,SSL_AD_DECODE_ERROR);
 			SSLerr(SSL_F_SSL3_GET_CERTIFICATE_REQUEST,SSL_R_SIGNATURE_ALGORITHMS_ERROR);
 			goto err;
 			}
+		tls1_process_sigalgs(s, p, llen);
 		p += llen;
 		}
 
@@ -3020,7 +3042,28 @@ int ssl3_send_client_verify(SSL *s)
 			{
 			long hdatalen = 0;
 			void *hdata;
-			const EVP_MD *md = s->cert->key->digest;
+			const EVP_MD *md;
+			switch (ssl_cert_type(NULL, pkey))
+				{
+			case SSL_PKEY_RSA_ENC:
+				md = s->s3->digest_rsa;
+				break;
+			case SSL_PKEY_DSA_SIGN:
+				md = s->s3->digest_dsa;
+				break;
+			case SSL_PKEY_ECC:
+				md = s->s3->digest_ecdsa;
+				break;
+			default:
+				md = NULL;
+				}
+			if (!md)
+				/* Unlike with the SignatureAlgorithm extension (sent by clients),
+				 * there are no default algorithms for the CertificateRequest message
+				 * (sent by servers). However, now that we've sent a certificate
+				 * for which we don't really know what hash to use for signing, the
+				 * best we can do is try a default algorithm. */
+				md = EVP_sha1();
 			hdatalen = BIO_get_mem_data(s->s3->handshake_buffer,
 								&hdata);
 			if (hdatalen <= 0 || !tls12_get_sigandhash(p, pkey, md))
@@ -3354,7 +3397,8 @@ err:
 	return(0);
 	}
 
-#if !defined(OPENSSL_NO_TLSEXT) && !defined(OPENSSL_NO_NEXTPROTONEG)
+#if !defined(OPENSSL_NO_TLSEXT)
+# if !defined(OPENSSL_NO_NEXTPROTONEG)
 int ssl3_send_next_proto(SSL *s)
 	{
 	unsigned int len, padding_len;
@@ -3378,7 +3422,116 @@ int ssl3_send_next_proto(SSL *s)
 
 	return ssl3_do_write(s, SSL3_RT_HANDSHAKE);
 }
-#endif  /* !OPENSSL_NO_TLSEXT && !OPENSSL_NO_NEXTPROTONEG */
+# endif  /* !OPENSSL_NO_NEXTPROTONEG */
+
+int ssl3_send_channel_id(SSL *s)
+	{
+	unsigned char *d;
+	int ret = -1, public_key_len;
+	EVP_MD_CTX md_ctx;
+	size_t sig_len;
+	ECDSA_SIG *sig = NULL;
+	unsigned char *public_key = NULL, *derp, *der_sig = NULL;
+
+	if (s->state != SSL3_ST_CW_CHANNEL_ID_A)
+		return ssl3_do_write(s, SSL3_RT_HANDSHAKE);
+
+	d = (unsigned char *)s->init_buf->data;
+	*(d++)=SSL3_MT_ENCRYPTED_EXTENSIONS;
+	l2n3(2 + 2 + TLSEXT_CHANNEL_ID_SIZE, d);
+	s2n(TLSEXT_TYPE_channel_id, d);
+	s2n(TLSEXT_CHANNEL_ID_SIZE, d);
+
+	EVP_MD_CTX_init(&md_ctx);
+
+	public_key_len = i2d_PublicKey(s->tlsext_channel_id_private, NULL);
+	if (public_key_len <= 0)
+		{
+		SSLerr(SSL_F_SSL3_SEND_CHANNEL_ID,SSL_R_CANNOT_SERIALIZE_PUBLIC_KEY);
+		goto err;
+		}
+	// i2d_PublicKey will produce an ANSI X9.62 public key which, for a
+	// P-256 key, is 0x04 (meaning uncompressed) followed by the x and y
+	// field elements as 32-byte, big-endian numbers.
+	if (public_key_len != 65)
+		{
+		SSLerr(SSL_F_SSL3_SEND_CHANNEL_ID,SSL_R_CHANNEL_ID_NOT_P256);
+		goto err;
+		}
+	public_key = OPENSSL_malloc(public_key_len);
+	if (!public_key)
+		{
+		SSLerr(SSL_F_SSL3_SEND_CHANNEL_ID,ERR_R_MALLOC_FAILURE);
+		goto err;
+		}
+
+	derp = public_key;
+	i2d_PublicKey(s->tlsext_channel_id_private, &derp);
+
+	if (EVP_DigestSignInit(&md_ctx, NULL, EVP_sha256(), NULL,
+			       s->tlsext_channel_id_private) != 1)
+		{
+		SSLerr(SSL_F_SSL3_SEND_CHANNEL_ID,SSL_R_EVP_DIGESTSIGNINIT_FAILED);
+		goto err;
+		}
+
+	if (!tls1_channel_id_hash(&md_ctx, s))
+		goto err;
+
+	if (!EVP_DigestSignFinal(&md_ctx, NULL, &sig_len))
+		{
+		SSLerr(SSL_F_SSL3_SEND_CHANNEL_ID,SSL_R_EVP_DIGESTSIGNFINAL_FAILED);
+		goto err;
+		}
+
+	der_sig = OPENSSL_malloc(sig_len);
+	if (!der_sig)
+		{
+		SSLerr(SSL_F_SSL3_SEND_CHANNEL_ID,ERR_R_MALLOC_FAILURE);
+		goto err;
+		}
+
+	if (!EVP_DigestSignFinal(&md_ctx, der_sig, &sig_len))
+		{
+		SSLerr(SSL_F_SSL3_SEND_CHANNEL_ID,SSL_R_EVP_DIGESTSIGNFINAL_FAILED);
+		goto err;
+		}
+
+	derp = der_sig;
+	sig = d2i_ECDSA_SIG(NULL, (const unsigned char**)&derp, sig_len);
+	if (sig == NULL)
+		{
+		SSLerr(SSL_F_SSL3_SEND_CHANNEL_ID,SSL_R_D2I_ECDSA_SIG);
+		goto err;
+		}
+
+	// The first byte of public_key will be 0x4, denoting an uncompressed key.
+	memcpy(d, public_key + 1, 64);
+	d += 64;
+	memset(d, 0, 2 * 32);
+	BN_bn2bin(sig->r, d + 32 - BN_num_bytes(sig->r));
+	d += 32;
+	BN_bn2bin(sig->s, d + 32 - BN_num_bytes(sig->s));
+	d += 32;
+
+	s->state = SSL3_ST_CW_CHANNEL_ID_B;
+	s->init_num = 4 + 2 + 2 + TLSEXT_CHANNEL_ID_SIZE;
+	s->init_off = 0;
+
+	ret = ssl3_do_write(s, SSL3_RT_HANDSHAKE);
+
+err:
+	EVP_MD_CTX_cleanup(&md_ctx);
+	if (public_key)
+		OPENSSL_free(public_key);
+	if (der_sig)
+		OPENSSL_free(der_sig);
+	if (sig)
+		ECDSA_SIG_free(sig);
+
+	return ret;
+	}
+#endif  /* !OPENSSL_NO_TLSEXT */
 
 /* Check to see if handshake is full or resumed. Usually this is just a
  * case of checking to see if a cache hit has occurred. In the case of

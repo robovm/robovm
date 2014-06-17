@@ -1,4 +1,6 @@
 
-trouble writing output: Too many fields: 131000; max is 65536. By package:
+trouble writing output: Too many field references: 131000; max is 65536.
+You may try using --multi-dex option.
+References by package:
 131000 default
 build exit status: 2

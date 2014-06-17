@@ -33,6 +33,7 @@ import java.io.Serializable;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchProviderException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.crypto.Cipher;
@@ -42,6 +43,8 @@ import javax.crypto.NullCipher;
 import javax.crypto.SealedObject;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+
+import libcore.util.SerializationTester;
 
 /**
  */
@@ -291,4 +294,23 @@ public class SealedObjectTest extends TestCase {
         }
     }
 
+    // http://code.google.com/p/android/issues/detail?id=4834
+    public void testDeserialization() throws Exception {
+        // (Boilerplate so we can create SealedObject instances.)
+        KeyGenerator kg = KeyGenerator.getInstance("DES");
+        Key key = kg.generateKey();
+        Cipher cipher = Cipher.getInstance("DES");
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+
+        // Incorrect use of readUnshared meant you couldn't have two SealedObjects
+        // with the same algorithm or parameters algorithm...
+        ArrayList<SealedObject> sealedObjects = new ArrayList<SealedObject>();
+        for (int i = 0; i < 10; ++i) {
+            sealedObjects.add(new SealedObject("hello", cipher));
+        }
+        String serializedForm = SerializationTester.serializeHex(sealedObjects);
+
+        // ...so this would throw "java.io.InvalidObjectException: Unshared read of back reference".
+        SerializationTester.deserializeHex(serializedForm);
+    }
 }

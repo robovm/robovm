@@ -1,7 +1,7 @@
 /*
 ******************************************************************************
 *
-*   Copyright (C) 2007, International Business Machines
+*   Copyright (C) 2007-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 ******************************************************************************
@@ -17,6 +17,8 @@
 #include "unicode/utypes.h"
 #include "unicode/uniset.h"
 #include "unicode/ustring.h"
+#include "unicode/utf8.h"
+#include "unicode/utf16.h"
 #include "cmemory.h"
 #include "uvector.h"
 #include "unisetspan.h"
@@ -501,9 +503,9 @@ spanOneUTF8(const UnicodeSet &set, const uint8_t *s, int32_t length) {
     if((int8_t)c>=0) {
         return set.contains(c) ? 1 : -1;
     }
-    // Take advantage of non-ASCII fastpaths in U8_NEXT().
+    // Take advantage of non-ASCII fastpaths in U8_NEXT_OR_FFFD().
     int32_t i=0;
-    U8_NEXT(s, i, length, c);
+    U8_NEXT_OR_FFFD(s, i, length, c);
     return set.contains(c) ? i : -i;
 }
 
@@ -514,7 +516,7 @@ spanOneBackUTF8(const UnicodeSet &set, const uint8_t *s, int32_t length) {
         return set.contains(c) ? 1 : -1;
     }
     int32_t i=length-1;
-    c=utf8_prevCharSafeBody(s, 0, &i, c, -1);
+    c=utf8_prevCharSafeBody(s, 0, &i, c, -3);
     length-=i;
     return set.contains(c) ? length : -length;
 }

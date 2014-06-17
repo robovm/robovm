@@ -28,6 +28,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedByInterruptException;
+import java.nio.channels.ClosedChannelException;
 import java.nio.channels.Pipe;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.ServerSocketChannel;
@@ -44,6 +45,13 @@ public final class InterruptedStreamTest extends TestCase {
     private static final int BUFFER_SIZE = 1024 * 1024;
 
     private Socket[] sockets;
+
+    @Override protected void setUp() throws Exception {
+        // Clear the interrupted bit to make sure an earlier test did
+        // not leave us in a bad state.
+        Thread.interrupted();
+        super.tearDown();
+    }
 
     @Override protected void tearDown() throws Exception {
         if (sockets != null) {
@@ -93,7 +101,7 @@ public final class InterruptedStreamTest extends TestCase {
 
     public void testInterruptWritableSocketChannel() throws Exception {
         sockets = newSocketChannelPair();
-        testInterruptReadableChannel(sockets[0].getChannel());
+        testInterruptWritableChannel(sockets[0].getChannel());
     }
 
     /**
@@ -110,71 +118,96 @@ public final class InterruptedStreamTest extends TestCase {
     }
 
     private void testInterruptInputStream(final InputStream in) throws Exception {
-        interruptMeLater();
+        Thread thread = interruptMeLater();
         try {
             in.read();
             fail();
         } catch (InterruptedIOException expected) {
+        } finally {
+            confirmInterrupted(thread);
         }
     }
 
     private void testInterruptReader(final PipedReader reader) throws Exception {
-        interruptMeLater();
+        Thread thread = interruptMeLater();
         try {
             reader.read();
             fail();
         } catch (InterruptedIOException expected) {
+        } finally {
+            confirmInterrupted(thread);
         }
     }
 
     private void testInterruptReadableChannel(final ReadableByteChannel channel) throws Exception {
-        interruptMeLater();
+        Thread thread = interruptMeLater();
         try {
             channel.read(ByteBuffer.allocate(BUFFER_SIZE));
             fail();
         } catch (ClosedByInterruptException expected) {
+        } finally {
+            confirmInterrupted(thread);
         }
     }
 
     private void testInterruptOutputStream(final OutputStream out) throws Exception {
-        interruptMeLater();
+        Thread thread = interruptMeLater();
         try {
             // this will block when the receiving buffer fills up
             while (true) {
                 out.write(new byte[BUFFER_SIZE]);
             }
         } catch (InterruptedIOException expected) {
+        } finally {
+            confirmInterrupted(thread);
         }
     }
 
     private void testInterruptWriter(final PipedWriter writer) throws Exception {
-        interruptMeLater();
+        Thread thread = interruptMeLater();
         try {
             // this will block when the receiving buffer fills up
             while (true) {
                 writer.write(new char[BUFFER_SIZE]);
             }
         } catch (InterruptedIOException expected) {
+        } finally {
+            confirmInterrupted(thread);
         }
     }
 
     private void testInterruptWritableChannel(final WritableByteChannel channel) throws Exception {
-        interruptMeLater();
+        Thread thread = interruptMeLater();
         try {
             // this will block when the receiving buffer fills up
             while (true) {
                 channel.write(ByteBuffer.allocate(BUFFER_SIZE));
             }
         } catch (ClosedByInterruptException expected) {
+        } catch (ClosedChannelException expected) {
+        } finally {
+            confirmInterrupted(thread);
         }
     }
 
-    private void interruptMeLater() throws Exception {
+    private Thread interruptMeLater() throws Exception {
         final Thread toInterrupt = Thread.currentThread();
-        new Thread(new Runnable () {
+        Thread thread = new Thread(new Runnable () {
             @Override public void run() {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                }
                 toInterrupt.interrupt();
             }
-        }).start();
+        });
+        thread.start();
+        return thread;
+    }
+
+    private static void confirmInterrupted(Thread thread) throws InterruptedException {
+        // validate and clear interrupted bit before join
+        assertTrue(Thread.interrupted());
+        thread.join();
     }
 }

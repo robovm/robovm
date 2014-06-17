@@ -1,7 +1,7 @@
 /*
  * Written by Doug Lea with assistance from members of JCP JSR-166
  * Expert Group and released to the public domain, as explained at
- * http://creativecommons.org/licenses/publicdomain
+ * http://creativecommons.org/publicdomain/zero/1.0/
  */
 
 package java.util.concurrent;
@@ -13,13 +13,12 @@ package java.util.concurrent;
  *
  * <p>
  * The simplest implementation of this interface is just:
- * <pre>
+ *  <pre> {@code
  * class SimpleThreadFactory implements ThreadFactory {
  *   public Thread newThread(Runnable r) {
  *     return new Thread(r);
  *   }
- * }
- * </pre>
+ * }}</pre>
  *
  * The {@link Executors#defaultThreadFactory} method provides a more
  * useful simple implementation, that sets the created thread context

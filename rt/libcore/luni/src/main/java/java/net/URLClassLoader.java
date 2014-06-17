@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charsets;
+import java.nio.charset.StandardCharsets;
 import java.security.CodeSource;
 import java.security.PermissionCollection;
 import java.security.SecureClassLoader;
@@ -76,7 +76,7 @@ public class URLClassLoader extends SecureClassLoader {
                 String parentURLString = getParentURL(url).toExternalForm();
                 String prefix = "jar:" + parentURLString + "/";
                 is = jf.getInputStream(indexEntry);
-                in = new BufferedReader(new InputStreamReader(is, Charsets.UTF_8));
+                in = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
                 HashMap<String, ArrayList<URL>> pre_map = new HashMap<String, ArrayList<URL>>();
                 // Ignore the 2 first lines (index version)
                 if (in.readLine() == null) return null;
@@ -822,7 +822,7 @@ public class URLClassLoader extends SecureClassLoader {
         while (!searchList.isEmpty()) {
             URL nextCandidate = searchList.remove(0);
             if (nextCandidate == null) {
-                throw new NullPointerException("A URL is null");
+                throw new NullPointerException("nextCandidate == null");
             }
             if (!handlerMap.containsKey(nextCandidate)) {
                 URLHandler result;

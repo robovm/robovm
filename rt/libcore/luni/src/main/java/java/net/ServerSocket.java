@@ -17,6 +17,7 @@
 
 package java.net;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.nio.channels.ServerSocketChannel;
 
@@ -26,7 +27,7 @@ import java.nio.channels.ServerSocketChannel;
  * appropriate reply. The actual tasks that a server socket must accomplish are
  * implemented by an internal {@code SocketImpl} instance.
  */
-public class ServerSocket {
+public class ServerSocket implements Closeable {
     /**
      * The RI specifies that where the caller doesn't give an explicit backlog,
      * the default is 50. The OS disagrees, so we need to explicitly call listen(2).

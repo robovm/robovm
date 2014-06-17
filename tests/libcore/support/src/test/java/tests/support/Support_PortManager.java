@@ -27,7 +27,7 @@ import java.util.TimeZone;
  * network port on the machine; however, it uses strange
  * logic, so leave it to the OS.
  *
- * @deprecated Use OS to find free ports.
+ * @deprecated Use the OS to find free ports.
  */
 public class Support_PortManager {
 

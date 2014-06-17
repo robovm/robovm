@@ -284,7 +284,7 @@ public class RuleBasedCollator extends Collator {
      */
     public RuleBasedCollator(String rules) throws ParseException {
         if (rules == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("rules == null");
         }
         if (rules.isEmpty()) {
             throw new ParseException("empty rules", 0);
@@ -314,7 +314,7 @@ public class RuleBasedCollator extends Collator {
      */
     public CollationElementIterator getCollationElementIterator(CharacterIterator source) {
         if (source == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("source == null");
         }
         return new CollationElementIterator(icuColl.getCollationElementIterator(source));
     }
@@ -328,7 +328,7 @@ public class RuleBasedCollator extends Collator {
      */
     public CollationElementIterator getCollationElementIterator(String source) {
         if (source == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("source == null");
         }
         return new CollationElementIterator(icuColl.getCollationElementIterator(source));
     }
@@ -385,8 +385,10 @@ public class RuleBasedCollator extends Collator {
      */
     @Override
     public int compare(String source, String target) {
-        if (source == null || target == null) {
-            throw new NullPointerException();
+        if (source == null) {
+            throw new NullPointerException("source == null");
+        } else if (target == null) {
+            throw new NullPointerException("target == null");
         }
         return icuColl.compare(source, target);
     }

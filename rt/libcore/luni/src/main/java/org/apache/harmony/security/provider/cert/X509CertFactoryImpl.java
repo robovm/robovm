@@ -24,7 +24,7 @@ package org.apache.harmony.security.provider.cert;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charsets;
+import java.nio.charset.StandardCharsets;
 import java.security.cert.CRL;
 import java.security.cert.CRLException;
 import java.security.cert.CertPath;
@@ -197,7 +197,8 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
                 // some Certificates have been read
                 return result;
             } else if (ch == -1) {
-                throw new CertificateException("There is no data in the stream");
+                /* No data in the stream, so return the empty collection. */
+                return result;
             }
             // else: check if it is PKCS7
             if (second_asn1_tag == ASN1Constants.TAG_OID) {
@@ -414,7 +415,7 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
      * @see java.security.cert.CertificateFactorySpi#engineGenerateCertPath(List)
      * method documentation for more info
      */
-    public CertPath engineGenerateCertPath(List certificates)
+    public CertPath engineGenerateCertPath(List<? extends Certificate> certificates)
             throws CertificateException {
         return new X509CertPathImpl(certificates);
     }
@@ -431,8 +432,8 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
     // ------------------------ Staff methods ------------------------------
     // ---------------------------------------------------------------------
 
-    private static final byte[] PEM_BEGIN = "-----BEGIN".getBytes(Charsets.UTF_8);
-    private static final byte[] PEM_END = "-----END".getBytes(Charsets.UTF_8);
+    private static final byte[] PEM_BEGIN = "-----BEGIN".getBytes(StandardCharsets.UTF_8);
+    private static final byte[] PEM_END = "-----END".getBytes(StandardCharsets.UTF_8);
     /**
      * Code describing free format for PEM boundary suffix:
      * "^-----BEGIN.*\n"         at the beginning, and<br>
@@ -444,7 +445,7 @@ public class X509CertFactoryImpl extends CertificateFactorySpi {
      * "^-----BEGIN CERTIFICATE-----\n"   at the beginning, and<br>
      * "\n-----END CERTIFICATE-----"   at the end.
      */
-    private static final byte[] CERT_BOUND_SUFFIX = " CERTIFICATE-----".getBytes(Charsets.UTF_8);
+    private static final byte[] CERT_BOUND_SUFFIX = " CERTIFICATE-----".getBytes(StandardCharsets.UTF_8);
 
     /**
      * Method retrieves the PEM encoded data from the stream

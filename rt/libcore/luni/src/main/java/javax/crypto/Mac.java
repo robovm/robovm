@@ -101,7 +101,7 @@ public class Mac implements Cloneable {
     public static final Mac getInstance(String algorithm)
             throws NoSuchAlgorithmException {
         if (algorithm == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("algorithm == null");
         }
         Engine.SpiAndProvider sap = ENGINE.getInstance(algorithm, null);
         return new Mac((MacSpi) sap.spi, sap.provider, algorithm);
@@ -163,7 +163,7 @@ public class Mac implements Cloneable {
             throw new IllegalArgumentException("provider == null");
         }
         if (algorithm == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("algorithm == null");
         }
         Object spi = ENGINE.getInstance(algorithm, provider, null);
         return new Mac((MacSpi) spi, provider, algorithm);
@@ -265,7 +265,9 @@ public class Mac implements Cloneable {
             return;
         }
         if ((offset < 0) || (len < 0) || ((offset + len) > input.length)) {
-            throw new IllegalArgumentException("Incorrect arguments");
+            throw new IllegalArgumentException("Incorrect arguments."
+                                               + " input.length=" + input.length
+                                               + " offset=" + offset + ", len=" + len);
         }
         spiImpl.engineUpdate(input, offset, len);
     }

@@ -1,22 +1,24 @@
 /*
  *******************************************************************************
- * Copyright (C) 2008-2011, Google, International Business Machines Corporation
+ * Copyright (C) 2008-2012, Google, International Business Machines Corporation
  * and others. All Rights Reserved.
  *******************************************************************************
  */
 
-#include <typeinfo>  // for 'typeid' to work
+#include "utypeinfo.h"  // for 'typeid' to work
 
 #include "unicode/tmutfmt.h"
 
 #if !UCONFIG_NO_FORMATTING
 
+#include "uvector.h"
 #include "charstr.h"
 #include "cmemory.h"
 #include "cstring.h"
 #include "hash.h"
 #include "uresimp.h"
 #include "unicode/msgfmt.h"
+#include "uassert.h"
 
 #define LEFT_CURLY_BRACKET  ((UChar)0x007B)
 #define RIGHT_CURLY_BRACKET ((UChar)0x007D)
@@ -385,10 +387,21 @@ TimeUnitFormat::create(const Locale& locale, UTimeUnitFormatStyle style, UErrorC
 void 
 TimeUnitFormat::setup(UErrorCode& err) {
     initDataMembers(err);
-    readFromCurrentLocale(UTMUTFMT_FULL_STYLE, gUnitsTag, err);
+
+    UVector pluralCounts(0, uhash_compareUnicodeString, 6, err);
+    StringEnumeration* keywords = fPluralRules->getKeywords(err);
+    if (U_FAILURE(err)) {
+        return;
+    }
+    UnicodeString* pluralCount;
+    while ((pluralCount = const_cast<UnicodeString*>(keywords->snext(err))) != NULL) {
+      pluralCounts.addElement(pluralCount, err);
+    }
+    readFromCurrentLocale(UTMUTFMT_FULL_STYLE, gUnitsTag, pluralCounts, err);
     checkConsistency(UTMUTFMT_FULL_STYLE, gUnitsTag, err);
-    readFromCurrentLocale(UTMUTFMT_ABBREVIATED_STYLE, gShortUnitsTag, err);
+    readFromCurrentLocale(UTMUTFMT_ABBREVIATED_STYLE, gShortUnitsTag, pluralCounts, err);
     checkConsistency(UTMUTFMT_ABBREVIATED_STYLE, gShortUnitsTag, err);
+    delete keywords;
 }
 
 
@@ -414,7 +427,8 @@ TimeUnitFormat::initDataMembers(UErrorCode& err){
 
 
 void
-TimeUnitFormat::readFromCurrentLocale(UTimeUnitFormatStyle style, const char* key, UErrorCode& err) {
+TimeUnitFormat::readFromCurrentLocale(UTimeUnitFormatStyle style, const char* key,
+                                      const UVector& pluralCounts, UErrorCode& err) {
     if (U_FAILURE(err)) {
         return;
     }
@@ -489,12 +503,15 @@ TimeUnitFormat::readFromCurrentLocale(UTimeUnitFormatStyle style, const char* ke
                 if (U_FAILURE(status)) {
                     continue;
                 }
+                UnicodeString pluralCountUniStr(pluralCount, -1, US_INV);
+                if (!pluralCounts.contains(&pluralCountUniStr)) {
+                  continue;
+                }
                 MessageFormat* messageFormat = new MessageFormat(pattern, fLocale, err);
                 if ( U_SUCCESS(err) ) {
                   if (fNumberFormat != NULL) {
                     messageFormat->setFormat(0, *fNumberFormat);
                   }
-                  UnicodeString pluralCountUniStr(pluralCount, -1, US_INV);
                   MessageFormat** formatters = (MessageFormat**)countToPatterns->get(pluralCountUniStr);
                   if (formatters == NULL) {
                     formatters = (MessageFormat**)uprv_malloc(UTMUTFMT_FORMAT_STYLE_COUNT*sizeof(MessageFormat*));
@@ -614,6 +631,7 @@ TimeUnitFormat::searchInLocaleChain(UTimeUnitFormatStyle style, const char* key,
     char parentLocale[ULOC_FULLNAME_CAPACITY];
     uprv_strcpy(parentLocale, localeName);
     int32_t locNameLen;
+    U_ASSERT(countToPatterns != NULL);
     while ((locNameLen = uloc_getParent(parentLocale, parentLocale,
                                         ULOC_FULLNAME_CAPACITY, &status)) >= 0){
         // look for pattern for srcPluralCount in locale tree
@@ -677,9 +695,9 @@ TimeUnitFormat::searchInLocaleChain(UTimeUnitFormatStyle style, const char* key,
         uprv_strcat(pLocale, "_");
         searchInLocaleChain(style, gUnitsTag, pLocale, srcTimeUnitField, srcPluralCount,
                              searchPluralCount, countToPatterns, err);
-        if (countToPatterns != NULL) {
-            MessageFormat** formatters = (MessageFormat**)countToPatterns->get(srcPluralCount);
-            if (formatters != NULL && formatters[style] != NULL) return;
+        MessageFormat** formatters = (MessageFormat**)countToPatterns->get(srcPluralCount);
+        if (formatters != NULL && formatters[style] != NULL) {
+            return;
         }
     }
 
@@ -761,6 +779,7 @@ TimeUnitFormat::setNumberFormat(const NumberFormat& format, UErrorCode& status){
         while ((elem = fTimeUnitToCountToPatterns[i]->nextElement(pos)) != NULL){
             const UHashTok keyTok = elem->value;
             MessageFormat** pattern = (MessageFormat**)keyTok.pointer;
+
             pattern[UTMUTFMT_FULL_STYLE]->setFormat(0, format);
             pattern[UTMUTFMT_ABBREVIATED_STYLE]->setFormat(0, format);
         }

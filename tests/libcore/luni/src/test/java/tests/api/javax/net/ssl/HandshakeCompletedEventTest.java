@@ -42,7 +42,6 @@ import javax.security.cert.X509Certificate;
 import junit.framework.TestCase;
 import libcore.io.Base64;
 import org.apache.harmony.xnet.tests.support.mySSLSession;
-import tests.support.Support_PortManager;
 
 /**
  * Tests for <code>HandshakeCompletedEvent</code> class constructors and methods.
@@ -50,7 +49,7 @@ import tests.support.Support_PortManager;
  */
 public class HandshakeCompletedEventTest extends TestCase {
 
-    String certificate = "-----BEGIN CERTIFICATE-----\n"
+    private String certificate = "-----BEGIN CERTIFICATE-----\n"
         + "MIICZTCCAdICBQL3AAC2MA0GCSqGSIb3DQEBAgUAMF8xCzAJBgNVBAYTAlVTMSAw\n"
         + "HgYDVQQKExdSU0EgRGF0YSBTZWN1cml0eSwgSW5jLjEuMCwGA1UECxMlU2VjdXJl\n"
         + "IFNlcnZlciBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTAeFw05NzAyMjAwMDAwMDBa\n"
@@ -200,11 +199,10 @@ public class HandshakeCompletedEventTest extends TestCase {
     // TrustManager
 
 
-    SSLSocket socket;
-    SSLSocket serverSocket;
-    MyHandshakeListener listener;
-    int port = Support_PortManager.getNextPort();
-    String host = "localhost";
+    private SSLSocket socket;
+    private SSLServerSocket serverSocket;
+    private MyHandshakeListener listener;
+    private String host = "localhost";
 
     private String PASSWORD = "android";
 
@@ -398,35 +396,34 @@ public class HandshakeCompletedEventTest extends TestCase {
 
         private boolean provideKeys;
 
-        public TestServer(boolean provideKeys, int clientAuth, String keys) {
+        public TestServer(boolean provideKeys, int clientAuth, String keys) throws Exception {
             this.keys = keys;
             this.clientAuth = clientAuth;
             this.provideKeys = provideKeys;
 
             trustManager = new TestTrustManager();
+
+            KeyManager[] keyManagers = provideKeys ? getKeyManagers(keys) : null;
+            TrustManager[] trustManagers = new TrustManager[] { trustManager };
+
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(keyManagers, trustManagers, null);
+
+            serverSocket = (SSLServerSocket) sslContext.getServerSocketFactory().createServerSocket();
+
+            if (clientAuth == CLIENT_AUTH_WANTED) {
+                serverSocket.setWantClientAuth(true);
+            } else if (clientAuth == CLIENT_AUTH_NEEDED) {
+                serverSocket.setNeedClientAuth(true);
+            } else {
+                serverSocket.setWantClientAuth(false);
+            }
+
+            serverSocket.bind(new InetSocketAddress(0));
         }
 
         public void run() {
             try {
-                KeyManager[] keyManagers = provideKeys ? getKeyManagers(keys) : null;
-                TrustManager[] trustManagers = new TrustManager[] { trustManager };
-
-                SSLContext sslContext = SSLContext.getInstance("TLS");
-                sslContext.init(keyManagers, trustManagers, null);
-
-                SSLServerSocket serverSocket = (SSLServerSocket)
-                        sslContext.getServerSocketFactory().createServerSocket();
-
-                if (clientAuth == CLIENT_AUTH_WANTED) {
-                    serverSocket.setWantClientAuth(true);
-                } else if (clientAuth == CLIENT_AUTH_NEEDED) {
-                    serverSocket.setNeedClientAuth(true);
-                } else {
-                    serverSocket.setWantClientAuth(false);
-                }
-
-                serverSocket.bind(new InetSocketAddress(port));
-
                 SSLSocket clientSocket = (SSLSocket)serverSocket.accept();
 
                 InputStream istream = clientSocket.getInputStream();
@@ -497,7 +494,7 @@ public class HandshakeCompletedEventTest extends TestCase {
 
                 SSLSocket socket = (SSLSocket)sslContext.getSocketFactory().createSocket();
 
-                socket.connect(new InetSocketAddress(port));
+                socket.connect(serverSocket.getLocalSocketAddress());
                 socket.addHandshakeCompletedListener(listener);
                 socket.startHandshake();
 

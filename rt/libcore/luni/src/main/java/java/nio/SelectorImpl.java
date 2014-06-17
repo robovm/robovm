@@ -84,7 +84,7 @@ final class SelectorImpl extends AbstractSelector {
         super(selectorProvider);
 
         /*
-         * Create a pipes to trigger wakeup. We can't use a NIO pipe because it
+         * Create a pipe to trigger wakeup. We can't use a NIO pipe because it
          * would be closed if the selecting thread is interrupted. Also
          * configure the pipe so we can fully drain it without blocking.
          */
@@ -150,7 +150,7 @@ final class SelectorImpl extends AbstractSelector {
 
     @Override public int select(long timeout) throws IOException {
         if (timeout < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("timeout < 0: " + timeout);
         }
         // Our timeout is interpreted differently to Unix's --- 0 means block. See selectNow.
         return selectInternal((timeout == 0) ? -1 : timeout);
@@ -166,13 +166,13 @@ final class SelectorImpl extends AbstractSelector {
             synchronized (unmodifiableKeys) {
                 synchronized (selectedKeys) {
                     doCancel();
-                    boolean isBlock = (timeout != 0);
+                    boolean isBlocking = (timeout != 0);
                     synchronized (keysLock) {
                         preparePollFds();
                     }
                     int rc = -1;
                     try {
-                        if (isBlock) {
+                        if (isBlocking) {
                             begin();
                         }
                         try {
@@ -183,7 +183,7 @@ final class SelectorImpl extends AbstractSelector {
                             }
                         }
                     } finally {
-                        if (isBlock) {
+                        if (isBlocking) {
                             end();
                         }
                     }
@@ -254,24 +254,30 @@ final class SelectorImpl extends AbstractSelector {
             pollFd.userData = null;
 
             int ops = key.interestOpsNoCheck();
-            int selectedOp = 0;
+            int selectedOps = 0;
+            if ((pollFd.revents & POLLHUP) != 0) {
+                // If there was an error condition, we definitely want to wake listeners,
+                // regardless of what they're waiting for. Failure is always interesting.
+                selectedOps |= ops;
+            }
             if ((pollFd.revents & POLLIN) != 0) {
-                selectedOp = ops & (OP_ACCEPT | OP_READ);
-            } else if ((pollFd.revents & POLLOUT) != 0) {
+                selectedOps |= ops & (OP_ACCEPT | OP_READ);
+            }
+            if ((pollFd.revents & POLLOUT) != 0) {
                 if (key.isConnected()) {
-                    selectedOp = ops & OP_WRITE;
+                    selectedOps |= ops & OP_WRITE;
                 } else {
-                    selectedOp = ops & OP_CONNECT;
+                    selectedOps |= ops & OP_CONNECT;
                 }
             }
 
-            if (selectedOp != 0) {
+            if (selectedOps != 0) {
                 boolean wasSelected = mutableSelectedKeys.contains(key);
-                if (wasSelected && key.readyOps() != selectedOp) {
-                    key.setReadyOps(key.readyOps() | selectedOp);
+                if (wasSelected && key.readyOps() != selectedOps) {
+                    key.setReadyOps(key.readyOps() | selectedOps);
                     ++readyKeyCount;
                 } else if (!wasSelected) {
-                    key.setReadyOps(selectedOp);
+                    key.setReadyOps(selectedOps);
                     mutableSelectedKeys.add(key);
                     ++readyKeyCount;
                 }
@@ -288,7 +294,7 @@ final class SelectorImpl extends AbstractSelector {
 
     /**
      * Removes cancelled keys from the key set and selected key set, and
-     * deregisters the corresponding channels. Returns the number of keys
+     * unregisters the corresponding channels. Returns the number of keys
      * removed from the selected key set.
      */
     private int doCancel() {

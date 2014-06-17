@@ -16,9 +16,10 @@
 
 package libcore.javax.net.ssl;
 
+import com.android.org.bouncycastle.asn1.x509.KeyPurposeId;
 import java.security.InvalidAlgorithmParameterException;
-import java.security.KeyStore;
 import java.security.KeyStore.PrivateKeyEntry;
+import java.security.KeyStore;
 import java.security.Provider;
 import java.security.Security;
 import java.security.cert.CertificateException;
@@ -53,17 +54,20 @@ public class TrustManagerFactoryTest extends TestCase {
         return TEST_KEY_STORE;
     }
 
+    private static boolean supportsManagerFactoryParameters(String algorithm) {
+        return (StandardNames.IS_RI && algorithm.equals("PKIX"));
+    }
+
     public void test_TrustManagerFactory_getDefaultAlgorithm() throws Exception {
         String algorithm = TrustManagerFactory.getDefaultAlgorithm();
         assertEquals(StandardNames.TRUST_MANAGER_FACTORY_DEFAULT, algorithm);
         TrustManagerFactory tmf = TrustManagerFactory.getInstance(algorithm);
-        test_TrustManagerFactory(tmf, StandardNames.IS_RI);
+        test_TrustManagerFactory(tmf);
     }
 
     private static class UselessManagerFactoryParameters implements ManagerFactoryParameters {}
 
-    private void test_TrustManagerFactory(TrustManagerFactory tmf,
-                                          boolean supportsManagerFactoryParameters)
+    private void test_TrustManagerFactory(TrustManagerFactory tmf)
             throws Exception {
         assertNotNull(tmf);
         assertNotNull(tmf.getAlgorithm());
@@ -103,7 +107,7 @@ public class TrustManagerFactoryTest extends TestCase {
         X509CertSelector xcs = new X509CertSelector();
         PKIXBuilderParameters pbp = new PKIXBuilderParameters(getTestKeyStore().keyStore, xcs);
         CertPathTrustManagerParameters cptmp = new CertPathTrustManagerParameters(pbp);
-        if (supportsManagerFactoryParameters) {
+        if (supportsManagerFactoryParameters(tmf.getAlgorithm())) {
             tmf.init(cptmp);
             test_TrustManagerFactory_getTrustManagers(tmf);
         } else {
@@ -179,11 +183,10 @@ public class TrustManagerFactoryTest extends TestCase {
                     continue;
                 }
                 String algorithm = service.getAlgorithm();
-                boolean supportsManagerFactoryParameters = algorithm.equals("PKIX");
                 {
                     TrustManagerFactory tmf = TrustManagerFactory.getInstance(algorithm);
                     assertEquals(algorithm, tmf.getAlgorithm());
-                    test_TrustManagerFactory(tmf, supportsManagerFactoryParameters);
+                    test_TrustManagerFactory(tmf);
                 }
 
                 {
@@ -191,7 +194,7 @@ public class TrustManagerFactoryTest extends TestCase {
                                                                           provider);
                     assertEquals(algorithm, tmf.getAlgorithm());
                     assertEquals(provider, tmf.getProvider());
-                    test_TrustManagerFactory(tmf, supportsManagerFactoryParameters);
+                    test_TrustManagerFactory(tmf);
                 }
 
                 {
@@ -199,7 +202,7 @@ public class TrustManagerFactoryTest extends TestCase {
                                                                           provider.getName());
                     assertEquals(algorithm, tmf.getAlgorithm());
                     assertEquals(provider, tmf.getProvider());
-                    test_TrustManagerFactory(tmf, supportsManagerFactoryParameters);
+                    test_TrustManagerFactory(tmf);
                 }
             }
         }
@@ -255,4 +258,55 @@ public class TrustManagerFactoryTest extends TestCase {
         trustManager.checkServerTrusted((X509Certificate[]) pke.getCertificateChain(), "RSA");
     }
 
+    public void test_TrustManagerFactory_extendedKeyUsage() throws Exception {
+        // anyExtendedKeyUsage should work for client or server
+        test_TrustManagerFactory_extendedKeyUsage(KeyPurposeId.anyExtendedKeyUsage, false, true, true);
+        test_TrustManagerFactory_extendedKeyUsage(KeyPurposeId.anyExtendedKeyUsage, true,  true, true);
+
+        // critical clientAuth should work for client
+        test_TrustManagerFactory_extendedKeyUsage(KeyPurposeId.id_kp_clientAuth,    false, true, false);
+        test_TrustManagerFactory_extendedKeyUsage(KeyPurposeId.id_kp_clientAuth,    true,  true, false);
+
+        // critical serverAuth should work for server
+        test_TrustManagerFactory_extendedKeyUsage(KeyPurposeId.id_kp_serverAuth,    false, false, true);
+        test_TrustManagerFactory_extendedKeyUsage(KeyPurposeId.id_kp_serverAuth,    true,  false, true);
+
+        // codeSigning should not work
+        test_TrustManagerFactory_extendedKeyUsage(KeyPurposeId.id_kp_codeSigning,   false, false, false);
+        test_TrustManagerFactory_extendedKeyUsage(KeyPurposeId.id_kp_codeSigning,   true,  false, false);
+    }
+
+    private void test_TrustManagerFactory_extendedKeyUsage(KeyPurposeId keyPurposeId,
+                                                           boolean critical,
+                                                           boolean client,
+                                                           boolean server)
+            throws Exception {
+        String algorithm = "RSA";
+        TestKeyStore intermediateCa = TestKeyStore.getIntermediateCa();
+        TestKeyStore leaf = new TestKeyStore.Builder()
+                .keyAlgorithms(new String[] { algorithm })
+                .aliasPrefix("criticalCodeSigning")
+                .signer(intermediateCa.getPrivateKey("RSA", "RSA"))
+                .rootCa(intermediateCa.getRootCertificate("RSA"))
+                .addExtendedKeyUsage(keyPurposeId, critical)
+                .build();
+        // leaf.dump("test_TrustManagerFactory_criticalCodeSigning");
+        PrivateKeyEntry privateKeyEntry = leaf.getPrivateKey(algorithm, algorithm);
+        X509Certificate[] chain = (X509Certificate[]) privateKeyEntry.getCertificateChain();
+
+        TestKeyStore rootCa = TestKeyStore.getRootCa();
+        X509TrustManager trustManager = (X509TrustManager) rootCa.trustManagers[0];
+        try {
+            trustManager.checkClientTrusted(chain, algorithm);
+            assertTrue(client);
+        } catch (Exception e) {
+            assertFalse(client);
+        }
+        try {
+            trustManager.checkServerTrusted(chain, algorithm);
+            assertTrue(server);
+        } catch (Exception e) {
+            assertFalse(server);
+        }
+    }
 }

@@ -46,9 +46,9 @@ public abstract class FloatBuffer extends Buffer implements
      */
     public static FloatBuffer allocate(int capacity) {
         if (capacity < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("capacity < 0: " + capacity);
         }
-        return new ReadWriteFloatArrayBuffer(capacity);
+        return new FloatArrayBuffer(new float[capacity]);
     }
 
     /**
@@ -87,7 +87,7 @@ public abstract class FloatBuffer extends Buffer implements
      */
     public static FloatBuffer wrap(float[] array, int start, int floatCount) {
         Arrays.checkOffsetAndCount(array.length, start, floatCount);
-        FloatBuffer buf = new ReadWriteFloatArrayBuffer(array);
+        FloatBuffer buf = new FloatArrayBuffer(array);
         buf.position = start;
         buf.limit = start + floatCount;
         return buf;
@@ -174,10 +174,8 @@ public abstract class FloatBuffer extends Buffer implements
      * are same as this buffer too.
      * <p>
      * The new buffer shares its content with this buffer, which means either
-     * buffer's change of content will be visible to the other. The two buffer's
+     * buffer's change of content will be visible to the other. The two buffers'
      * position, limit and mark are independent.
-     *
-     * @return a duplicated buffer that shares its content with this buffer.
      */
     public abstract FloatBuffer duplicate();
 
@@ -436,8 +434,11 @@ public abstract class FloatBuffer extends Buffer implements
      *                if no changes may be made to the contents of this buffer.
      */
     public FloatBuffer put(FloatBuffer src) {
+        if (isReadOnly()) {
+            throw new ReadOnlyBufferException();
+        }
         if (src == this) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("src == this");
         }
         if (src.remaining() > remaining()) {
             throw new BufferOverflowException();
@@ -474,10 +475,8 @@ public abstract class FloatBuffer extends Buffer implements
      * same as this buffer's.
      * <p>
      * The new buffer shares its content with this buffer, which means either
-     * buffer's change of content will be visible to the other. The two buffer's
+     * buffer's change of content will be visible to the other. The two buffers'
      * position, limit and mark are independent.
-     *
-     * @return a sliced buffer that shares its content with this buffer.
      */
     public abstract FloatBuffer slice();
 }

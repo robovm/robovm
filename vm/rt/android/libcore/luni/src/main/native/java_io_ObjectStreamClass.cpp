@@ -47,11 +47,11 @@ extern "C" jboolean Java_java_io_ObjectStreamClass_hasClinit(JNIEnv * env, jclas
     return (mid != 0);
 }
 
-extern "C" jint Java_java_io_ObjectStreamClass_getConstructorId(JNIEnv* env, jclass, jclass constructorClass) {
-    return reinterpret_cast<jint>(env->GetMethodID(constructorClass, "<init>", "()V"));
+extern "C" jlong Java_java_io_ObjectStreamClass_getConstructorId(JNIEnv* env, jclass, jclass constructorClass) {
+    return reinterpret_cast<jlong>(env->GetMethodID(constructorClass, "<init>", "()V"));
 }
 
-extern "C" jobject Java_java_io_ObjectStreamClass_newInstance(JNIEnv* env, jclass, jclass instantiationClass, jint methodId) {
+extern "C" jobject Java_java_io_ObjectStreamClass_newInstance(JNIEnv* env, jclass, jclass instantiationClass, jlong methodId) {
     return env->NewObject(instantiationClass, reinterpret_cast<jmethodID>(methodId));
 }
 

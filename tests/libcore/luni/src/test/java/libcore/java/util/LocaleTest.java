@@ -25,18 +25,37 @@ import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.MissingResourceException;
 
 public class LocaleTest extends junit.framework.TestCase {
     // http://b/2611311; if there's no display language/country/variant, use the raw codes.
-    public void test_getDisplayName_raw() throws Exception {
-        Locale weird = new Locale("AaBbCc", "DdEeFf", "GgHhIi");
-        assertEquals("aabbcc", weird.getLanguage());
-        assertEquals("", weird.getDisplayLanguage());
-        assertEquals("DDEEFF", weird.getCountry());
-        assertEquals("", weird.getDisplayCountry());
-        assertEquals("GgHhIi", weird.getVariant());
-        assertEquals("", weird.getDisplayVariant());
-        assertEquals("aabbcc (DDEEFF,GgHhIi)", weird.getDisplayName());
+    public void test_getDisplayName_invalid() throws Exception {
+        Locale invalid = new Locale("AaBbCc", "DdEeFf", "GgHhIi");
+
+        assertEquals("aabbcc", invalid.getLanguage());
+        assertEquals("DDEEFF", invalid.getCountry());
+        assertEquals("GgHhIi", invalid.getVariant());
+
+        // Android using icu4c < 49.2 returned empty strings for display language, country,
+        // and variant, but a display name made up of the raw strings.
+        // Newer releases return slightly different results, but no less unreasonable.
+        assertEquals("aabbcc", invalid.getDisplayLanguage());
+        assertEquals("", invalid.getDisplayCountry());
+        assertEquals("DDEEFF_GGHHII", invalid.getDisplayVariant());
+        assertEquals("aabbcc (DDEEFF,DDEEFF_GGHHII)", invalid.getDisplayName());
+    }
+
+    // http://b/2611311; if there's no display language/country/variant, use the raw codes.
+    public void test_getDisplayName_unknown() throws Exception {
+        Locale unknown = new Locale("xx", "YY", "Traditional");
+        assertEquals("xx", unknown.getLanguage());
+        assertEquals("YY", unknown.getCountry());
+        assertEquals("Traditional", unknown.getVariant());
+
+        assertEquals("xx", unknown.getDisplayLanguage());
+        assertEquals("YY", unknown.getDisplayCountry());
+        assertEquals("TRADITIONAL", unknown.getDisplayVariant());
+        assertEquals("xx (YY,TRADITIONAL)", unknown.getDisplayName());
     }
 
     public void test_getDisplayName_easy() throws Exception {
@@ -45,6 +64,37 @@ public class LocaleTest extends junit.framework.TestCase {
         assertEquals("Englisch", Locale.ENGLISH.getDisplayLanguage(Locale.GERMAN));
         assertEquals("Deutsch", Locale.GERMAN.getDisplayLanguage(Locale.GERMAN));
     }
+
+    public void test_getDisplayCountry_8870289() throws Exception {
+        assertEquals("Hong Kong", new Locale("", "HK").getDisplayCountry(Locale.US));
+        assertEquals("Macau", new Locale("", "MO").getDisplayCountry(Locale.US));
+        assertEquals("Palestine", new Locale("", "PS").getDisplayCountry(Locale.US));
+
+        assertEquals("Cocos [Keeling] Islands", new Locale("", "CC").getDisplayCountry(Locale.US));
+        assertEquals("Congo [DRC]", new Locale("", "CD").getDisplayCountry(Locale.US));
+        assertEquals("Congo [Republic]", new Locale("", "CG").getDisplayCountry(Locale.US));
+        assertEquals("Falkland Islands [Islas Malvinas]", new Locale("", "FK").getDisplayCountry(Locale.US));
+        assertEquals("Macedonia [FYROM]", new Locale("", "MK").getDisplayCountry(Locale.US));
+        assertEquals("Myanmar [Burma]", new Locale("", "MM").getDisplayCountry(Locale.US));
+        assertEquals("Taiwan", new Locale("", "TW").getDisplayCountry(Locale.US));
+    }
+
+    public void test_tl() throws Exception {
+        // In jb-mr1, we had a last-minute hack to always return "Filipino" because
+        // icu4c 4.8 didn't have any localizations for fil. (http://b/7291355)
+        Locale tl = new Locale("tl");
+        Locale tl_PH = new Locale("tl", "PH");
+        assertEquals("Filipino", tl.getDisplayLanguage(Locale.ENGLISH));
+        assertEquals("Filipino", tl_PH.getDisplayLanguage(Locale.ENGLISH));
+        assertEquals("Filipino", tl.getDisplayLanguage(tl));
+        assertEquals("Filipino", tl_PH.getDisplayLanguage(tl_PH));
+
+        // After the icu4c 4.9 upgrade, we could localize "fil" correctly, though we
+        // needed another hack to supply "fil" instead of "tl" to icu4c. (http://b/8023288)
+        Locale es_MX = new Locale("es", "MX");
+        assertEquals("filipino", tl.getDisplayLanguage(es_MX));
+        assertEquals("filipino", tl_PH.getDisplayLanguage(es_MX));
+      }
 
     // http://b/3452611; Locale.getDisplayLanguage fails for the obsolete language codes.
     public void test_getDisplayName_obsolete() throws Exception {
@@ -90,4 +140,42 @@ public class LocaleTest extends junit.framework.TestCase {
         }
         assertEquals(1, count);
     }
-}
+
+    public void test_getISO3Country() {
+        // Empty country code.
+        assertEquals("", new Locale("en", "").getISO3Country());
+
+        // Invalid country code.
+        try {
+            assertEquals("", new Locale("en", "XX").getISO3Country());
+            fail();
+        } catch (MissingResourceException expected) {
+            assertEquals("FormatData_en_XX", expected.getClassName());
+            assertEquals("ShortCountry", expected.getKey());
+        }
+
+        // Valid country code.
+        assertEquals("CAN", new Locale("", "CA").getISO3Country());
+        assertEquals("CAN", new Locale("en", "CA").getISO3Country());
+        assertEquals("CAN", new Locale("xx", "CA").getISO3Country());
+    }
+
+    public void test_getISO3Language() {
+        // Empty language code.
+        assertEquals("", new Locale("", "US").getISO3Language());
+
+        // Invalid language code.
+        try {
+            assertEquals("", new Locale("xx", "US").getISO3Language());
+            fail();
+        } catch (MissingResourceException expected) {
+            assertEquals("FormatData_xx_US", expected.getClassName());
+            assertEquals("ShortLanguage", expected.getKey());
+        }
+
+        // Valid language code.
+        assertEquals("eng", new Locale("en", "").getISO3Language());
+        assertEquals("eng", new Locale("en", "CA").getISO3Language());
+        assertEquals("eng", new Locale("en", "XX").getISO3Language());
+    }
+  }

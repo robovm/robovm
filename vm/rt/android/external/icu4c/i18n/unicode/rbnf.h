@@ -1,6 +1,6 @@
 /*
 *******************************************************************************
-* Copyright (C) 1997-2010, International Business Machines Corporation and others.
+* Copyright (C) 1997-2013, International Business Machines Corporation and others.
 * All Rights Reserved.
 *******************************************************************************
 */
@@ -964,6 +964,27 @@ public:
      */
     virtual UClassID getDynamicClassID(void) const;
 
+    /**
+     * Sets the decimal format symbols, which is generally not changed
+     * by the programmer or user. The formatter takes ownership of
+     * symbolsToAdopt; the client must not delete it.
+     *
+     * @param symbolsToAdopt DecimalFormatSymbols to be adopted.
+     * @stable ICU 49
+     */
+    virtual void adoptDecimalFormatSymbols(DecimalFormatSymbols* symbolsToAdopt);
+
+    /**
+     * Sets the decimal format symbols, which is generally not changed
+     * by the programmer or user. A clone of the symbols is created and
+     * the symbols is _not_ adopted; the client is still responsible for
+     * deleting it.
+     *
+     * @param symbols DecimalFormatSymbols.
+     * @stable ICU 49
+     */
+    virtual void setDecimalFormatSymbols(const DecimalFormatSymbols& symbols);
+
 private:
     RuleBasedNumberFormat(); // default constructor not implemented
 
@@ -990,6 +1011,8 @@ private:
 
 private:
     NFRuleSet **ruleSets;
+    UnicodeString* ruleSetDescriptions;
+    int32_t numRuleSets;
     NFRuleSet *defaultRuleSet;
     Locale locale;
     Collator* collator;
@@ -997,10 +1020,6 @@ private:
     UBool lenient;
     UnicodeString* lenientParseRules;
     LocalizationInfo* localizations;
-
-    // Temporary workaround - when noParse is true, do noting in parse.
-    // TODO: We need a real fix - see #6895/#6896
-    UBool noParse;
 };
 
 // ---------------

@@ -22,7 +22,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.SocketException;
-import java.nio.charset.Charsets;
 
 /**
  * Mechanism to let threads set restrictions on what code is allowed

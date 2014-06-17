@@ -55,7 +55,7 @@ public class KeyStore {
     private static final Engine ENGINE = new Engine(SERVICE);
 
     //  Store KeyStore property name
-    private static final String PROPERTYNAME = "keystore.type";
+    private static final String PROPERTY_NAME = "keystore.type";
 
     //  Store default KeyStore type
     private static final String DEFAULT_KEYSTORE_TYPE = "jks";
@@ -110,7 +110,7 @@ public class KeyStore {
      */
     public static KeyStore getInstance(String type) throws KeyStoreException {
         if (type == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("type == null");
         }
         try {
             Engine.SpiAndProvider sap = ENGINE.getInstance(type, null);
@@ -179,10 +179,10 @@ public class KeyStore {
     public static KeyStore getInstance(String type, Provider provider) throws KeyStoreException {
         // check parameters
         if (provider == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("provider == null");
         }
         if (type == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("type == null");
         }
         // return KeyStore instance
         try {
@@ -204,7 +204,7 @@ public class KeyStore {
      * @return the default type for {@code KeyStore} instances
      */
     public static final String getDefaultType() {
-        String dt = Security.getProperty(PROPERTYNAME);
+        String dt = Security.getProperty(PROPERTY_NAME);
         return (dt == null ? DEFAULT_KEYSTORE_TYPE : dt);
     }
 

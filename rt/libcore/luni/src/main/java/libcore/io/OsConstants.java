@@ -46,6 +46,43 @@ public final class OsConstants {
     public static final int AI_NUMERICSERV = placeholder();
     public static final int AI_PASSIVE = placeholder();
     public static final int AI_V4MAPPED = placeholder();
+    public static final int CAP_AUDIT_CONTROL = placeholder();
+    public static final int CAP_AUDIT_WRITE = placeholder();
+    public static final int CAP_CHOWN = placeholder();
+    public static final int CAP_DAC_OVERRIDE = placeholder();
+    public static final int CAP_DAC_READ_SEARCH = placeholder();
+    public static final int CAP_FOWNER = placeholder();
+    public static final int CAP_FSETID = placeholder();
+    public static final int CAP_IPC_LOCK = placeholder();
+    public static final int CAP_IPC_OWNER = placeholder();
+    public static final int CAP_KILL = placeholder();
+    public static final int CAP_LAST_CAP = placeholder();
+    public static final int CAP_LEASE = placeholder();
+    public static final int CAP_LINUX_IMMUTABLE = placeholder();
+    public static final int CAP_MAC_ADMIN = placeholder();
+    public static final int CAP_MAC_OVERRIDE = placeholder();
+    public static final int CAP_MKNOD = placeholder();
+    public static final int CAP_NET_ADMIN = placeholder();
+    public static final int CAP_NET_BIND_SERVICE = placeholder();
+    public static final int CAP_NET_BROADCAST = placeholder();
+    public static final int CAP_NET_RAW = placeholder();
+    public static final int CAP_SETFCAP = placeholder();
+    public static final int CAP_SETGID = placeholder();
+    public static final int CAP_SETPCAP = placeholder();
+    public static final int CAP_SETUID = placeholder();
+    public static final int CAP_SYS_ADMIN = placeholder();
+    public static final int CAP_SYS_BOOT = placeholder();
+    public static final int CAP_SYS_CHROOT = placeholder();
+    public static final int CAP_SYSLOG = placeholder();
+    public static final int CAP_SYS_MODULE = placeholder();
+    public static final int CAP_SYS_NICE = placeholder();
+    public static final int CAP_SYS_PACCT = placeholder();
+    public static final int CAP_SYS_PTRACE = placeholder();
+    public static final int CAP_SYS_RAWIO = placeholder();
+    public static final int CAP_SYS_RESOURCE = placeholder();
+    public static final int CAP_SYS_TIME = placeholder();
+    public static final int CAP_SYS_TTY_CONFIG = placeholder();
+    public static final int CAP_WAKE_ALARM = placeholder();
     public static final int E2BIG = placeholder();
     public static final int EACCES = placeholder();
     public static final int EADDRINUSE = placeholder();
@@ -134,7 +171,7 @@ public final class OsConstants {
     public static final int ETIME = placeholder();
     public static final int ETIMEDOUT = placeholder();
     public static final int ETXTBSY = placeholder();
-    public static final int EWOULDBLOCK = placeholder();
+    // On Linux, EWOULDBLOCK == EAGAIN. Use EAGAIN instead, to reduce confusion.
     public static final int EXDEV = placeholder();
     public static final int EXIT_FAILURE = placeholder();
     public static final int EXIT_SUCCESS = placeholder();
@@ -174,6 +211,7 @@ public final class OsConstants {
     public static final int IFF_SLAVE = placeholder();
     public static final int IFF_UP = placeholder();
     public static final int IPPROTO_ICMP = placeholder();
+    public static final int IPPROTO_ICMPV6 = placeholder();
     public static final int IPPROTO_IP = placeholder();
     public static final int IPPROTO_IPV6 = placeholder();
     public static final int IPPROTO_RAW = placeholder();
@@ -224,6 +262,7 @@ public final class OsConstants {
     public static final int O_CREAT = placeholder();
     public static final int O_EXCL = placeholder();
     public static final int O_NOCTTY = placeholder();
+    public static final int O_NOFOLLOW = placeholder();
     public static final int O_NONBLOCK = placeholder();
     public static final int O_RDONLY = placeholder();
     public static final int O_RDWR = placeholder();
@@ -301,6 +340,8 @@ public final class OsConstants {
     public static final int SO_KEEPALIVE = placeholder();
     public static final int SO_LINGER = placeholder();
     public static final int SO_OOBINLINE = placeholder();
+    public static final int SO_PASSCRED = placeholder();
+    public static final int SO_PEERCRED = placeholder();
     public static final int SO_RCVBUF = placeholder();
     public static final int SO_RCVLOWAT = placeholder();
     public static final int SO_RCVTIMEO = placeholder();
@@ -703,9 +744,6 @@ public final class OsConstants {
         }
         if (errno == ETXTBSY) {
             return "ETXTBSY";
-        }
-        if (errno == EWOULDBLOCK) {
-            return "EWOULDBLOCK";
         }
         if (errno == EXDEV) {
             return "EXDEV";

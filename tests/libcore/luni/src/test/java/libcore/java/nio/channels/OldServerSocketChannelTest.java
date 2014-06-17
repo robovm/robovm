@@ -25,16 +25,10 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.spi.SelectorProvider;
 import junit.framework.TestCase;
-import tests.support.Support_PortManager;
 
-/*
- * test for ServerSocketChannel
- */
 public class OldServerSocketChannelTest extends TestCase {
 
     private static final int TIME_UNIT = 200;
-
-    private InetSocketAddress localAddr1;
 
     private ServerSocketChannel serverChannel;
 
@@ -42,9 +36,6 @@ public class OldServerSocketChannelTest extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        this.localAddr1 = new InetSocketAddress(
-                "127.0.0.1", Support_PortManager
-                        .getNextPort());
         this.serverChannel = ServerSocketChannel.open();
         this.clientChannel = SocketChannel.open();
     }
@@ -87,7 +78,7 @@ public class OldServerSocketChannelTest extends TestCase {
     public void test_accept_Block_NoConnect_interrupt() throws IOException {
         assertTrue(this.serverChannel.isBlocking());
         ServerSocket gotSocket = this.serverChannel.socket();
-        gotSocket.bind(localAddr1);
+        gotSocket.bind(null);
 
         class MyThread extends Thread {
             public String errMsg = null;

@@ -25,9 +25,8 @@ import libcore.util.Objects;
 /**
  * {@code Identity} represents an identity like a person or a company.
  *
- * @deprecated The functionality of this class has been replace by
- *             {@link Principal}, {@link KeyStore} and the {@code
- *             java.security.cert} package.
+ * @deprecated Use {@link Principal}, {@link KeyStore} and the {@code java.security.cert} package
+ * instead.
  */
 @Deprecated
 public abstract class Identity implements Principal, Serializable {

@@ -310,10 +310,10 @@ public class X509CertificateTest extends TestCase {
             // Test can not be applied.
             return;
         }
-        Date[] date = new Date[4];
+        Date[] date = new Date[8];
         Calendar calendar = Calendar.getInstance();
         for (int i = 0; i < date.length; i++) {
-            calendar.set(i * 50, Calendar.JANUARY, 1);
+            calendar.set(i * 500, Calendar.JANUARY, 1);
             date[i] = calendar.getTime();
         }
         Date nb_date = tbt_cert.getNotBefore();

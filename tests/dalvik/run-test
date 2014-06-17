@@ -35,7 +35,7 @@ prog="${progdir}"/`basename "${prog}"`
 
 export ROBOVM_DEV_ROOT=$(cd $(dirname $0)/../..; pwd -P)
 export JAVA="java"
-export JAVAC="javac"
+export JAVAC="javac -source 1.5 -target 1.5"
 export RUN="${progdir}/etc/push-and-run-test-jar"
 
 info="info.txt"
@@ -147,8 +147,8 @@ if [ "$usage" = "yes" ]; then
         echo '  Omitting the test name or specifying "-" will use the' \
              "current directory."
         echo "  Runtime Options:"
-        echo "    --fast         Use the fast interpreter (the default)."
-        echo "    --jit          Use the jit."
+        echo "    --fast         Use the fast interpreter."
+        echo "    --jit          Use the jit (the default)."
         echo "    --portable     Use the portable interpreter."
         echo "    --debug        Wait for a debugger to attach."
         #echo "    --gdb          Run under gdb; incompatible with some tests."

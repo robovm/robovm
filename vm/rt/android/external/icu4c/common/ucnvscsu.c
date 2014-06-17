@@ -1,7 +1,7 @@
 /*
 ******************************************************************************
 *
-*   Copyright (C) 2000-2009, International Business Machines
+*   Copyright (C) 2000-2011, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 ******************************************************************************
@@ -25,6 +25,7 @@
 
 #include "unicode/ucnv.h"
 #include "unicode/ucnv_cb.h"
+#include "unicode/utf16.h"
 #include "ucnv_bld.h"
 #include "ucnv_cnv.h"
 #include "cmemory.h"
@@ -1098,17 +1099,17 @@ loop:
                     *offsets++=sourceIndex;
                 }
                 --targetCapacity;
-            } else if(UTF_IS_SURROGATE(c)) {
-                if(UTF_IS_SURROGATE_FIRST(c)) {
+            } else if(U16_IS_SURROGATE(c)) {
+                if(U16_IS_SURROGATE_LEAD(c)) {
 getTrailSingle:
                     lead=(UChar)c;
                     if(source<sourceLimit) {
                         /* test the following code unit */
                         trail=*source;
-                        if(UTF_IS_SECOND_SURROGATE(trail)) {
+                        if(U16_IS_TRAIL(trail)) {
                             ++source;
                             ++nextSourceIndex;
-                            c=UTF16_GET_PAIR_VALUE(c, trail);
+                            c=U16_GET_SUPPLEMENTARY(c, trail);
                             /* convert this surrogate code point */
                             /* exit this condition tree */
                         } else {
@@ -1296,16 +1297,16 @@ getTrailSingle:
                 goto outputBytes;
             } else if(c<0xe000) {
                 /* c is a surrogate */
-                if(UTF_IS_SURROGATE_FIRST(c)) {
+                if(U16_IS_SURROGATE_LEAD(c)) {
 getTrailUnicode:
                     lead=(UChar)c;
                     if(source<sourceLimit) {
                         /* test the following code unit */
                         trail=*source;
-                        if(UTF_IS_SECOND_SURROGATE(trail)) {
+                        if(U16_IS_TRAIL(trail)) {
                             ++source;
                             ++nextSourceIndex;
-                            c=UTF16_GET_PAIR_VALUE(c, trail);
+                            c=U16_GET_SUPPLEMENTARY(c, trail);
                             /* convert this surrogate code point */
                             /* exit this condition tree */
                         } else {
@@ -1394,11 +1395,11 @@ outputBytes:
                 /* each branch falls through to the next one */
             case 4:
                 *target++=(uint8_t)(c>>24);
-            case 3:
+            case 3: /*fall through*/
                 *target++=(uint8_t)(c>>16);
-            case 2:
+            case 2: /*fall through*/
                 *target++=(uint8_t)(c>>8);
-            case 1:
+            case 1: /*fall through*/
                 *target++=(uint8_t)c;
             default:
                 /* will never occur */
@@ -1410,13 +1411,13 @@ outputBytes:
             case 4:
                 *target++=(uint8_t)(c>>24);
                 *offsets++=sourceIndex;
-            case 3:
+            case 3: /*fall through*/
                 *target++=(uint8_t)(c>>16);
                 *offsets++=sourceIndex;
-            case 2:
+            case 2: /*fall through*/
                 *target++=(uint8_t)(c>>8);
                 *offsets++=sourceIndex;
-            case 1:
+            case 1: /*fall through*/
                 *target++=(uint8_t)c;
                 *offsets++=sourceIndex;
             default:
@@ -1447,11 +1448,11 @@ outputBytes:
             /* each branch falls through to the next one */
         case 4:
             *p++=(uint8_t)(c>>24);
-        case 3:
+        case 3: /*fall through*/
             *p++=(uint8_t)(c>>16);
-        case 2:
+        case 2: /*fall through*/
             *p++=(uint8_t)(c>>8);
-        case 1:
+        case 1: /*fall through*/
             *p=(uint8_t)c;
         default:
             /* will never occur */
@@ -1468,12 +1469,12 @@ outputBytes:
             if(offsets!=NULL) {
                 *offsets++=sourceIndex;
             }
-        case 2:
+        case 2: /*fall through*/
             *target++=(uint8_t)(c>>8);
             if(offsets!=NULL) {
                 *offsets++=sourceIndex;
             }
-        case 1:
+        case 1: /*fall through*/
             *target++=(uint8_t)c;
             if(offsets!=NULL) {
                 *offsets++=sourceIndex;
@@ -1573,16 +1574,16 @@ loop:
                 /* use the current dynamic window */
                 *target++=(uint8_t)(delta|0x80);
                 --targetCapacity;
-            } else if(UTF_IS_SURROGATE(c)) {
-                if(UTF_IS_SURROGATE_FIRST(c)) {
+            } else if(U16_IS_SURROGATE(c)) {
+                if(U16_IS_SURROGATE_LEAD(c)) {
 getTrailSingle:
                     lead=(UChar)c;
                     if(source<sourceLimit) {
                         /* test the following code unit */
                         trail=*source;
-                        if(UTF_IS_SECOND_SURROGATE(trail)) {
+                        if(U16_IS_TRAIL(trail)) {
                             ++source;
-                            c=UTF16_GET_PAIR_VALUE(c, trail);
+                            c=U16_GET_SUPPLEMENTARY(c, trail);
                             /* convert this surrogate code point */
                             /* exit this condition tree */
                         } else {
@@ -1758,15 +1759,15 @@ getTrailSingle:
                 goto outputBytes;
             } else if(c<0xe000) {
                 /* c is a surrogate */
-                if(UTF_IS_SURROGATE_FIRST(c)) {
+                if(U16_IS_SURROGATE_LEAD(c)) {
 getTrailUnicode:
                     lead=(UChar)c;
                     if(source<sourceLimit) {
                         /* test the following code unit */
                         trail=*source;
-                        if(UTF_IS_SECOND_SURROGATE(trail)) {
+                        if(U16_IS_TRAIL(trail)) {
                             ++source;
-                            c=UTF16_GET_PAIR_VALUE(c, trail);
+                            c=U16_GET_SUPPLEMENTARY(c, trail);
                             /* convert this surrogate code point */
                             /* exit this condition tree */
                         } else {
@@ -1852,11 +1853,11 @@ outputBytes:
             /* each branch falls through to the next one */
         case 4:
             *target++=(uint8_t)(c>>24);
-        case 3:
+        case 3: /*fall through*/
             *target++=(uint8_t)(c>>16);
-        case 2:
+        case 2: /*fall through*/
             *target++=(uint8_t)(c>>8);
-        case 1:
+        case 1: /*fall through*/
             *target++=(uint8_t)c;
         default:
             /* will never occur */
@@ -1884,11 +1885,11 @@ outputBytes:
             /* each branch falls through to the next one */
         case 4:
             *p++=(uint8_t)(c>>24);
-        case 3:
+        case 3: /*fall through*/
             *p++=(uint8_t)(c>>16);
-        case 2:
+        case 2: /*fall through*/
             *p++=(uint8_t)(c>>8);
-        case 1:
+        case 1: /*fall through*/
             *p=(uint8_t)c;
         default:
             /* will never occur */
@@ -1902,9 +1903,9 @@ outputBytes:
             /* each branch falls through to the next one */
         case 3:
             *target++=(uint8_t)(c>>16);
-        case 2:
+        case 2: /*fall through*/
             *target++=(uint8_t)(c>>8);
-        case 1:
+        case 1: /*fall through*/
             *target++=(uint8_t)c;
         default:
             break;

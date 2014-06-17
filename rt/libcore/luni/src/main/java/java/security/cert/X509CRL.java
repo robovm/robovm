@@ -218,7 +218,7 @@ public abstract class X509CRL extends CRL implements X509Extension {
      */
     public X509CRLEntry getRevokedCertificate(X509Certificate certificate) {
         if (certificate == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("certificate == null");
         }
         return getRevokedCertificate(certificate.getSerialNumber());
     }

@@ -1,7 +1,7 @@
 /*
 *******************************************************************************
 *
-*   Copyright (C) 1999-2005,2008 International Business Machines
+*   Copyright (C) 1999-2011 International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 *******************************************************************************
@@ -45,7 +45,7 @@ ubrk_swap(const UDataSwapper *ds,
           const void *inData, int32_t length, void *outData,
           UErrorCode *pErrorCode);
 
-#ifdef XP_CPLUSPLUS
+#ifdef __cplusplus
 
 #include "unicode/uobject.h"
 #include "unicode/unistr.h"
@@ -113,8 +113,8 @@ struct  RBBIStateTableRow {
                                     /*     tags (rule status values)                      */
     int16_t          fReserved;
     uint16_t         fNextState[2]; /*  Next State, indexed by char category.             */
-                                    /*    Array Size is fNumCols from the                 */
-                                    /*    state table header.                             */
+                                    /*  This array does not have two elements             */
+                                    /*    Array Size is actually fData->fHeader->fCatCount         */
                                     /*    CAUTION:  see RBBITableBuilder::getTableSize()  */
                                     /*              before changing anything here.        */
 };

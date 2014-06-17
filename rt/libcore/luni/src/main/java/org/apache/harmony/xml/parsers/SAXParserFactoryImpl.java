@@ -41,7 +41,7 @@ public class SAXParserFactoryImpl extends SAXParserFactory {
     @Override
     public boolean getFeature(String name) throws SAXNotRecognizedException {
         if (name == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("name == null");
         }
 
         if (!name.startsWith("http://xml.org/sax/features/")) {
@@ -86,7 +86,7 @@ public class SAXParserFactoryImpl extends SAXParserFactory {
     @Override
     public void setFeature(String name, boolean value) throws SAXNotRecognizedException {
         if (name == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("name == null");
         }
 
         if (!name.startsWith("http://xml.org/sax/features/")) {

@@ -46,7 +46,7 @@ public class BufferedWriter extends Writer {
 
     /**
      * Constructs a new {@code BufferedWriter}, providing {@code out} with a buffer
-     * of 8192 bytes.
+     * of 8192 chars.
      *
      * @param out the {@code Writer} the buffer writes to.
      */
@@ -55,11 +55,11 @@ public class BufferedWriter extends Writer {
     }
 
     /**
-     * Constructs a new {@code BufferedWriter}, providing {@code out} with {@code size} bytes
+     * Constructs a new {@code BufferedWriter}, providing {@code out} with {@code size} chars
      * of buffer.
      *
      * @param out the {@code OutputStream} the buffer writes to.
-     * @param size the size of buffer in bytes.
+     * @param size the size of buffer in chars.
      * @throws IllegalArgumentException if {@code size <= 0}.
      */
     public BufferedWriter(Writer out, int size) {
@@ -163,33 +163,33 @@ public class BufferedWriter extends Writer {
 
     /**
      * Writes {@code count} characters starting at {@code offset} in
-     * {@code cbuf} to this writer. If {@code count} is greater than this
+     * {@code buffer} to this writer. If {@code count} is greater than this
      * writer's buffer, then the buffer is flushed and the characters are
      * written directly to the target writer.
      *
-     * @param cbuf
+     * @param buffer
      *            the array containing characters to write.
      * @param offset
-     *            the start position in {@code cbuf} for retrieving characters.
+     *            the start position in {@code buffer} for retrieving characters.
      * @param count
      *            the maximum number of characters to write.
      * @throws IndexOutOfBoundsException
      *             if {@code offset < 0} or {@code count < 0}, or if
      *             {@code offset + count} is greater than the size of
-     *             {@code cbuf}.
+     *             {@code buffer}.
      * @throws IOException
      *             if this writer is closed or another I/O error occurs.
      */
     @Override
-    public void write(char[] cbuf, int offset, int count) throws IOException {
+    public void write(char[] buffer, int offset, int count) throws IOException {
         synchronized (lock) {
             checkNotClosed();
-            if (cbuf == null) {
+            if (buffer == null) {
                 throw new NullPointerException("buffer == null");
             }
-            Arrays.checkOffsetAndCount(cbuf.length, offset, count);
+            Arrays.checkOffsetAndCount(buffer.length, offset, count);
             if (pos == 0 && count >= this.buf.length) {
-                out.write(cbuf, offset, count);
+                out.write(buffer, offset, count);
                 return;
             }
             int available = this.buf.length - pos;
@@ -197,7 +197,7 @@ public class BufferedWriter extends Writer {
                 available = count;
             }
             if (available > 0) {
-                System.arraycopy(cbuf, offset, this.buf, pos, available);
+                System.arraycopy(buffer, offset, this.buf, pos, available);
                 pos += available;
             }
             if (pos == this.buf.length) {
@@ -207,11 +207,11 @@ public class BufferedWriter extends Writer {
                     offset += available;
                     available = count - available;
                     if (available >= this.buf.length) {
-                        out.write(cbuf, offset, available);
+                        out.write(buffer, offset, available);
                         return;
                     }
 
-                    System.arraycopy(cbuf, offset, this.buf, pos, available);
+                    System.arraycopy(buffer, offset, this.buf, pos, available);
                     pos += available;
                 }
             }

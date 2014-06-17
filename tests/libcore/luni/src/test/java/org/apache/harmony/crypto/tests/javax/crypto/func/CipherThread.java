@@ -57,6 +57,20 @@ public abstract class CipherThread implements Runnable {
         }
     }
 
+    public void checkPaddedEncodedData(byte[] original, byte[] encoded, int offset)
+            throws Exception {
+        for (int i = 0; i < offset; i++) {
+            if (encoded[i] != 0) {
+                throw new Exception("Encoded data is not properly padded at offset " + i);
+            }
+        }
+        for (int i = 0; i < original.length; i++) {
+            if (original[i] != encoded[i + offset]) {
+                throw new Exception("Source and encoded data not match " + getCipherParameters());
+            }
+        }
+    }
+
     public void launcher() {
         Thread thread = null;
 

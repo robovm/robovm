@@ -184,34 +184,23 @@ public class CharArrayReader extends Reader {
     }
 
     /**
-     * Reads at most {@code count} characters from this CharArrayReader and
-     * stores them at {@code offset} in the character array {@code buf}.
+     * Reads up to {@code count} characters from this CharArrayReader and
+     * stores them at {@code offset} in the character array {@code buffer}.
      * Returns the number of characters actually read or -1 if the end of reader
      * was encountered.
      *
-     * @param buffer
-     *            the character array to store the characters read.
-     * @param offset
-     *            the initial position in {@code buffer} to store the characters
-     *            read from this reader.
-     * @param len
-     *            the maximum number of characters to read.
-     * @return number of characters read or -1 if the end of the reader has been
-     *         reached.
      * @throws IndexOutOfBoundsException
-     *             if {@code offset < 0} or {@code len < 0}, or if
-     *             {@code offset + len} is bigger than the size of
-     *             {@code buffer}.
+     * if {@code offset < 0 || count < 0 || offset + count > buffer.length}.
      * @throws IOException
      *             if this reader is closed.
      */
     @Override
-    public int read(char[] buffer, int offset, int len) throws IOException {
-        Arrays.checkOffsetAndCount(buffer.length, offset, len);
+    public int read(char[] buffer, int offset, int count) throws IOException {
+        Arrays.checkOffsetAndCount(buffer.length, offset, count);
         synchronized (lock) {
             checkNotClosed();
             if (pos < this.count) {
-                int bytesRead = pos + len > this.count ? this.count - pos : len;
+                int bytesRead = pos + count > this.count ? this.count - pos : count;
                 System.arraycopy(this.buf, pos, buffer, offset, bytesRead);
                 pos += bytesRead;
                 return bytesRead;

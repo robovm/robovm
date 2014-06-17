@@ -58,6 +58,10 @@ public final class BasicConstraints extends ExtensionValue {
         }
     }
 
+    public boolean getCa() {
+        return ca;
+    }
+
     public int getPathLenConstraint() {
         return pathLenConstraint;
     }

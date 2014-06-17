@@ -70,7 +70,7 @@ public class ArrayList<E> extends AbstractList<E> implements Cloneable, Serializ
      */
     public ArrayList(int capacity) {
         if (capacity < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("capacity < 0: " + capacity);
         }
         array = (capacity == 0 ? EmptyArray.OBJECT : new Object[capacity]);
     }
@@ -90,6 +90,10 @@ public class ArrayList<E> extends AbstractList<E> implements Cloneable, Serializ
      *            the collection of elements to add.
      */
     public ArrayList(Collection<? extends E> collection) {
+        if (collection == null) {
+            throw new NullPointerException("collection == null");
+        }
+
         Object[] a = collection.toArray();
         if (a.getClass() != Object[].class) {
             Object[] newArray = new Object[a.length];

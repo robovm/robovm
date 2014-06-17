@@ -1,14 +1,13 @@
 /*
  * Written by Doug Lea and Josh Bloch with assistance from members of
  * JCP JSR-166 Expert Group and released to the public domain, as explained
- * at http://creativecommons.org/licenses/publicdomain
+ * at http://creativecommons.org/publicdomain/zero/1.0/
  */
 
 package java.util;
 
 // BEGIN android-note
 // removed link to collections framework docs
-// changed {@link #offer(Object)} to {@link #offer} to satisfy DroidDoc
 // END android-note
 
 /**
@@ -356,7 +355,7 @@ public interface Deque<E> extends Queue<E> {
      * <tt>true</tt> upon success and throwing an
      * <tt>IllegalStateException</tt> if no space is currently available.
      * When using a capacity-restricted deque, it is generally preferable to
-     * use {@link #offer offer}.
+     * use {@link #offer(Object) offer}.
      *
      * <p>This method is equivalent to {@link #addLast}.
      *

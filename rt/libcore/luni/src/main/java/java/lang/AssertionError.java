@@ -35,7 +35,6 @@ public class AssertionError extends Error {
     /**
      * Constructs a new {@code AssertionError} with the given detail message and cause.
      * @since 1.7
-     * @hide 1.7
      */
     public AssertionError(String detailMessage, Throwable cause) {
         super(detailMessage, cause);

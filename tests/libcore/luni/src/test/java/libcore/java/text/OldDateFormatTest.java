@@ -90,7 +90,7 @@ public class OldDateFormatTest extends junit.framework.TestCase {
                     DateFormat.SHORT, DateFormat.SHORT, Locale.US);
             Date current = new Date();
             String dtf = format.format(current);
-            SimpleDateFormat sdf = new SimpleDateFormat("M/d/yy h:mm a");
+            SimpleDateFormat sdf = new SimpleDateFormat("M/d/yy h:mm a", Locale.US);
             assertTrue("Incorrect date format", sdf.format(current).equals(dtf));
         } catch (Exception e) {
             fail("Unexpected exception " + e.toString());
@@ -110,7 +110,7 @@ public class OldDateFormatTest extends junit.framework.TestCase {
             StringBuffer toAppend = new StringBuffer();
             FieldPosition fp = new FieldPosition(DateFormat.YEAR_FIELD);
             StringBuffer sb = format.format(current, toAppend, fp);
-            SimpleDateFormat sdf = new SimpleDateFormat("M/d/yy h:mm a");
+            SimpleDateFormat sdf = new SimpleDateFormat("M/d/yy h:mm a", Locale.US);
             assertTrue("Incorrect date format", sdf.format(current).equals(
                     sb.toString()));
             assertTrue("Incorrect beginIndex of filed position", fp
@@ -203,7 +203,7 @@ public class OldDateFormatTest extends junit.framework.TestCase {
     /**
      * java.text.DateFormat#parse(String)
      */
-    public void test_parseLString() {
+    public void test_parseLString() throws Exception {
         DateFormat format = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.US);
 
         try {
@@ -338,35 +338,29 @@ public class OldDateFormatTest extends junit.framework.TestCase {
         try {
             format.parse("January 31 1970 7:52:34 AM PST");
             fail("ParseException was not thrown.");
-        } catch(ParseException pe) {
-            //expected
+        } catch (ParseException expected) {
         }
 
         try {
             format.parse("January 31 1970");
             fail("ParseException was not thrown.");
-        } catch(ParseException pe) {
-            //expected
+        } catch (ParseException expected) {
         }
 
         format = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL, Locale.US);
-        try {
-            Date date = format.parse(format.format(current).toString());
-            assertEquals(current.getDate(), date.getDate());
-            assertEquals(current.getDay(), date.getDay());
-            assertEquals(current.getMonth(), date.getMonth());
-            assertEquals(current.getYear(), date.getYear());
-            assertEquals(current.getHours(), date.getHours());
-            assertEquals(current.getMinutes(), date.getMinutes());
-        } catch(ParseException pe) {
-            fail("ParseException was thrown for current Date.");
+        String formatPattern = ((SimpleDateFormat) format).toPattern();
+        String formattedCurrent = format.format(current);
+        Date date = format.parse(formattedCurrent);
+        // Date has millisecond accuracy, but humans don't use time formats that precise.
+        if (date.getTime() / 1000 != current.getTime() / 1000) {
+            fail(date.getTime() + " != " + current.getTime() +
+                    "; " + formatPattern + "; " + formattedCurrent);
         }
 
         try {
             format.parse("January 16, 1970 8:03:52 PM CET");
             fail("ParseException was not thrown.");
-        } catch(ParseException pe) {
-            //expected
+        } catch (ParseException expected) {
         }
     }
 

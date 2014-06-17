@@ -76,7 +76,7 @@ public class PatternTest extends TestCase {
         assertNotSame(p.matcher("a"), p.matcher("a"));
     }
 
-    public void testSplitCharSequenceint() {
+    public void testSplitCharSequenceInt() {
         // splitting CharSequence which ends with pattern
         // bug6193
         assertEquals(",,".split(",", 3).length, 3);
@@ -414,7 +414,7 @@ public class PatternTest extends TestCase {
         }
     }
 
-    public void testCompileStringint() {
+    public void testCompileStringInt() {
         /*
          * these tests are needed to verify that appropriate exceptions are
          * thrown
@@ -455,6 +455,7 @@ public class PatternTest extends TestCase {
 
         /*
          * This pattern should compile - HARMONY-2127
+         * icu4c doesn't support canonical equivalence.
          */
 //        pattern = "x(?c)y";
 //        Pattern.compile(pattern);
@@ -628,8 +629,26 @@ public class PatternTest extends TestCase {
         assertTrue(mat.matches());
     }
 
-    public void testBug181() {
+    public void test_bug_181() {
         Pattern.compile("[\\t-\\r]");
+    }
+
+    // https://code.google.com/p/android/issues/detail?id=40103
+    public void test_bug_40103() {
+        Pattern.compile("(?<!abc {1,100}|def {1,100}|ghi {1,100})jkl");
+
+        // Looks like harmony had a similar "Bug187"...
+        Pattern.compile("|(?idmsux-idmsux)|(?idmsux-idmsux)|[^|\\[-\\0274|\\,-\\\\[^|W\\}\\nq\\x65\\002\\xFE\\05\\06\\00\\x66\\x47i\\,\\xF2\\=\\06\\u0EA4\\x9B\\x3C\\f\\|\\{\\xE5\\05\\r\\u944A\\xCA\\e|\\x19\\04\\x07\\04\\u607B\\023\\0073\\x91Tr\\0150\\x83]]?(?idmsux-idmsux:\\p{Alpha}{7}?)||(?<=[^\\uEC47\\01\\02\\u3421\\a\\f\\a\\013q\\035w\\e])(?<=\\p{Punct}{0,}?)(?=^\\p{Lower})(?!\\b{8,14})(?<![|\\00-\\0146[^|\\04\\01\\04\\060\\f\\u224DO\\x1A\\xC4\\00\\02\\0315\\0351\\u84A8\\xCBt\\xCC\\06|\\0141\\00\\=\\e\\f\\x6B\\0026Tb\\040\\x76xJ&&[\\\\-\\]\\05\\07\\02\\u2DAF\\t\\x9C\\e\\0023\\02\\,X\\e|\\u6058flY\\u954C]]]{5}?)(?<=\\p{Sc}{8}+)[^|\\026-\\u89BA|o\\u6277\\t\\07\\x50&&\\p{Punct}]{8,14}+((?<=^\\p{Punct})|(?idmsux-idmsux)||(?>[\\x3E-\\]])|(?idmsux-idmsux:\\p{Punct})|(?<![\\0111\\0371\\xDF\\u6A49\\07\\u2A4D\\00\\0212\\02Xd-\\xED[^\\a-\\0061|\\0257\\04\\f\\[\\0266\\043\\03\\x2D\\042&&[^\\f-\\]&&\\s]]])|(?>[|\\n\\042\\uB09F\\06\\u0F2B\\uC96D\\x89\\uC166\\xAA|\\04-\\][^|\\a\\|\\rx\\04\\uA770\\n\\02\\t\\052\\056\\0274\\|\\=\\07\\e|\\00-\\x1D&&[^\\005\\uB15B\\uCDAC\\n\\x74\\0103\\0147\\uD91B\\n\\062G\\u9B4B\\077\\}\\0324&&[^\\0302\\,\\0221\\04\\u6D16\\04xy\\uD193\\[\\061\\06\\045\\x0F|\\e\\xBB\\f\\u1B52\\023\\u3AD2\\033\\007\\022\\}\\x66\\uA63FJ-\\0304]]]]{0,0})||(?<![^|\\0154U\\u0877\\03\\fy\\n\\|\\0147\\07-\\=[|q\\u69BE\\0243\\rp\\053\\02\\x33I\\u5E39\\u9C40\\052-\\xBC[|\\0064-\\?|\\uFC0C\\x30\\0060\\x45\\\\\\02\\?p\\xD8\\0155\\07\\0367\\04\\uF07B\\000J[^|\\0051-\\{|\\u9E4E\\u7328\\]\\u6AB8\\06\\x71\\a\\]\\e\\|KN\\u06AA\\0000\\063\\u2523&&[\\005\\0277\\x41U\\034\\}R\\u14C7\\u4767\\x09\\n\\054Ev\\0144\\<\\f\\,Q-\\xE4]]]]]{3}+)|(?>^+)|(?![^|\\|\\nJ\\t\\<\\04E\\\\\\t\\01\\\\\\02\\|\\=\\}\\xF3\\uBEC2\\032K\\014\\uCC5F\\072q\\|\\0153\\xD9\\0322\\uC6C8[^\\t\\0342\\x34\\x91\\06\\{\\xF1\\a\\u1710\\?\\xE7\\uC106\\02pF\\<&&[^|\\]\\064\\u381D\\u50CF\\eO&&[^|\\06\\x2F\\04\\045\\032\\u8536W\\0377\\0017|\\x06\\uE5FA\\05\\xD4\\020\\04c\\xFC\\02H\\x0A\\r]]]]+?)(?idmsux-idmsux)|(?<![|\\r-\\,&&[I\\t\\r\\0201\\xDB\\e&&[^|\\02\\06\\00\\<\\a\\u7952\\064\\051\\073\\x41\\?n\\040\\0053\\031&&[\\x15-\\|]]]]{8,11}?)(?![^|\\<-\\uA74B\\xFA\\u7CD2\\024\\07n\\<\\x6A\\0042\\uE4FF\\r\\u896B\\[\\=\\042Y&&^\\p{ASCII}]++)|(?<![R-\\|&&[\\a\\0120A\\u6145\\<\\050-d[|\\e-\\uA07C|\\016-\\u80D9]]]{1,}+)|(?idmsux-idmsux)|(?idmsux-idmsux)|(?idmsux-idmsux:\\B{6,}?)|(?<=\\D{5,8}?)|(?>[\\{-\\0207|\\06-\\0276\\p{XDigit}])(?idmsux-idmsux:[^|\\x52\\0012\\]u\\xAD\\0051f\\0142\\\\l\\|\\050\\05\\f\\t\\u7B91\\r\\u7763\\{|h\\0104\\a\\f\\0234\\u2D4F&&^\\P{InGreek}]))");
+    }
+
+    public void test_bug_4472() {
+        // HARMONY-4472
+        Pattern.compile("a*.+");
+    }
+
+    public void test_bug_5858() {
+        // HARMONY-5858
+        Pattern.compile("\\u6211", Pattern.LITERAL);
     }
 
     public void testOrphanQuantifiers() {
@@ -682,13 +701,13 @@ public class PatternTest extends TestCase {
         String IPV4_REGEXP_STR = "^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$";
         String HOSTNAME_REGEXP_STR = "\\w+[\\w\\-\\.]*";
 
-        Pattern URI_REGEXP = Pattern.compile(URI_REGEXP_STR);
-        Pattern REL_URI_REGEXP = Pattern.compile(REL_URI_REGEXP_STR);
-        Pattern SCHEME_REGEXP = Pattern.compile(SCHEME_REGEXP_STR);
-        Pattern IPV4_REGEXP = Pattern.compile(IPV4_REGEXP_STR);
-        Pattern IPV6_REGEXP = Pattern.compile(IPV6_REGEXP_STR);
-        Pattern IPV6_REGEXP2 = Pattern.compile(IPV6_REGEXP_STR2);
-        Pattern HOSTNAME_REGEXP = Pattern.compile(HOSTNAME_REGEXP_STR);
+        Pattern.compile(URI_REGEXP_STR);
+        Pattern.compile(REL_URI_REGEXP_STR);
+        Pattern.compile(SCHEME_REGEXP_STR);
+        Pattern.compile(IPV4_REGEXP_STR);
+        Pattern.compile(IPV6_REGEXP_STR);
+        Pattern.compile(IPV6_REGEXP_STR2);
+        Pattern.compile(HOSTNAME_REGEXP_STR);
     }
 
     public void testFindBoundaryCases1() {
@@ -739,16 +758,15 @@ public class PatternTest extends TestCase {
         Pattern pat = Pattern.compile(".*");
         Matcher mat = pat.matcher("\na\n");
         int k = 0;
-
         for (; mat.find(); k++) {
             assertEquals(res[k], mat.group());
         }
+        assertEquals(4, k);
     }
 
     public void testBackReferences() {
         Pattern pat = Pattern.compile("(\\((\\w*):(.*):(\\2)\\))");
-        Matcher mat = pat
-                .matcher("(start1: word :start1)(start2: word :start2)");
+        Matcher mat = pat.matcher("(start1: word :start1)(start2: word :start2)");
         int k = 1;
         for (; mat.find(); k++) {
             assertEquals("start" + k, mat.group(2));
@@ -813,7 +831,6 @@ public class PatternTest extends TestCase {
 
     public void testEmptyFamily() {
         Pattern.compile("\\p{Lower}");
-        String a = "*";
     }
 
     public void testNonCaptConstr() {
@@ -886,21 +903,21 @@ public class PatternTest extends TestCase {
     }
 
     public void testCorrectReplacementBackreferencedJointSet() {
-        Pattern pat = Pattern.compile("ab(a)*\\1");
-        pat = Pattern.compile("abc(cd)fg");
-        pat = Pattern.compile("aba*cd");
-        pat = Pattern.compile("ab(a)*+cd");
-        pat = Pattern.compile("ab(a)*?cd");
-        pat = Pattern.compile("ab(a)+cd");
-        pat = Pattern.compile(".*(.)\\1");
-        pat = Pattern.compile("ab((a)|c|d)e");
-        pat = Pattern.compile("abc((a(b))cd)");
-        pat = Pattern.compile("ab(a)++cd");
-        pat = Pattern.compile("ab(a)?(c)d");
-        pat = Pattern.compile("ab(a)?+cd");
-        pat = Pattern.compile("ab(a)??cd");
-        pat = Pattern.compile("ab(a)??cd");
-        pat = Pattern.compile("ab(a){1,3}?(c)d");
+        Pattern.compile("ab(a)*\\1");
+        Pattern.compile("abc(cd)fg");
+        Pattern.compile("aba*cd");
+        Pattern.compile("ab(a)*+cd");
+        Pattern.compile("ab(a)*?cd");
+        Pattern.compile("ab(a)+cd");
+        Pattern.compile(".*(.)\\1");
+        Pattern.compile("ab((a)|c|d)e");
+        Pattern.compile("abc((a(b))cd)");
+        Pattern.compile("ab(a)++cd");
+        Pattern.compile("ab(a)?(c)d");
+        Pattern.compile("ab(a)?+cd");
+        Pattern.compile("ab(a)??cd");
+        Pattern.compile("ab(a)??cd");
+        Pattern.compile("ab(a){1,3}?(c)d");
     }
 
     public void testCompilePatternWithTerminatorMark() {
@@ -1020,24 +1037,6 @@ public class PatternTest extends TestCase {
         assertTrue(mat.matches());
     }
 
-    public void testCompileNonCaptGroup() {
-        boolean isCompiled = false;
-
-        try {
-// BEGIN android-change
-// We don't have canonical equivalence.
-            Pattern pat = Pattern.compile("(?:)");
-            pat = Pattern.compile("(?:)", Pattern.DOTALL);
-            pat = Pattern.compile("(?:)", Pattern.CASE_INSENSITIVE);
-            pat = Pattern.compile("(?:)", Pattern.COMMENTS | Pattern.UNIX_LINES);
-// END android-change
-            isCompiled = true;
-        } catch (PatternSyntaxException e) {
-            System.out.println(e);
-        }
-        assertTrue(isCompiled);
-    }
-
     public void testEmbeddedFlags() {
         String baseString = "(?i)((?s)a)";
         String testString = "A";
@@ -1071,15 +1070,7 @@ public class PatternTest extends TestCase {
     }
 
     public void testAltWithFlags() {
-        boolean isCompiled = false;
-
-        try {
-            Pattern pat = Pattern.compile("|(?i-xi)|()");
-            isCompiled = true;
-        } catch (PatternSyntaxException e) {
-            System.out.println(e);
-        }
-        assertTrue(isCompiled);
+        Pattern.compile("|(?i-xi)|()");
     }
 
     public void testRestoreFlagsAfterGroup() {
@@ -1145,276 +1136,6 @@ public class PatternTest extends TestCase {
         pattern = Pattern.compile("\\p{javaUnicodeIdentifierStart}");
         assertNotNull(pattern);
     }
-
-    /**
-     * s original test was fixed to pass on RI
-     */
-
-// BEGIN android-removed
-// We don't have canonical equivalence.
-//    public void testCanonEqFlag() {
-//
-//        /*
-//         * for decompositions see
-//         * http://www.unicode.org/Public/4.0-Update/UnicodeData-4.0.0.txt
-//         * http://www.unicode.org/reports/tr15/#Decomposition
-//         */
-//        String baseString;
-//        String testString;
-//        Pattern pat;
-//        Matcher mat;
-//
-//        baseString = "ab(a*)\\1";
-//        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
-//
-//        baseString = "a(abcdf)d";
-//        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
-//
-//        baseString = "aabcdfd";
-//        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
-//
-//        // \u01E0 -> \u0226\u0304 ->\u0041\u0307\u0304
-//        // \u00CC -> \u0049\u0300
-//
-//        /*
-//         * baseString = "\u01E0\u00CCcdb(ac)"; testString =
-//         * "\u0226\u0304\u0049\u0300cdbac"; pat = Pattern.compile(baseString,
-//         * Pattern.CANON_EQ); mat = pat.matcher(testString);
-//         * assertTrue(mat.matches());
-//         */
-//        baseString = "\u01E0cdb(a\u00CCc)";
-//        testString = "\u0041\u0307\u0304cdba\u0049\u0300c";
-//        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
-//        mat = pat.matcher(testString);
-//        assertTrue(mat.matches());
-//
-//        baseString = "a\u00CC";
-//        testString = "a\u0049\u0300";
-//        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
-//        mat = pat.matcher(testString);
-//        assertTrue(mat.matches());
-//
-//        /*
-//         * baseString = "\u0226\u0304cdb(ac\u0049\u0300)"; testString =
-//         * "\u01E0cdbac\u00CC"; pat = Pattern.compile(baseString,
-//         * Pattern.CANON_EQ); mat = pat.matcher(testString);
-//         * assertTrue(mat.matches());
-//         *
-//         * baseString = "cdb(?:\u0041\u0307\u0304\u00CC)"; testString =
-//         * "cdb\u0226\u0304\u0049\u0300"; pat = Pattern.compile(baseString,
-//         * Pattern.CANON_EQ); mat = pat.matcher(testString);
-//         * assertTrue(mat.matches());
-//         *
-//         * baseString = "\u01E0[a-c]\u0049\u0300cdb(ac)"; testString =
-//         * "\u01E0b\u00CCcdbac"; pat = Pattern.compile(baseString,
-//         * Pattern.CANON_EQ); mat = pat.matcher(testString);
-//         * assertTrue(mat.matches());
-//         *
-//         * baseString = "\u01E0|\u00CCcdb(ac)"; testString =
-//         * "\u0041\u0307\u0304"; pat = Pattern.compile(baseString,
-//         * Pattern.CANON_EQ); mat = pat.matcher(testString);
-//         * assertTrue(mat.matches());
-//         *
-//         * baseString = "\u00CC?cdb(ac)*(\u01E0)*[a-c]"; testString =
-//         * "cdb\u0041\u0307\u0304b"; pat = Pattern.compile(baseString,
-//         * Pattern.CANON_EQ); mat = pat.matcher(testString);
-//         * assertTrue(mat.matches());
-//         */
-//        baseString = "a\u0300";
-//        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
-//        mat = pat.matcher("a\u00E0a");
-//        assertTrue(mat.find());
-//
-//        /*
-//         * baseString = "\u7B20\uF9F8abc"; pat = Pattern.compile(baseString,
-//         * Pattern.CANON_EQ); mat = pat.matcher("\uF9F8\uF9F8abc");
-//         * assertTrue(mat.matches());
-//         *
-//         * //\u01F9 -> \u006E\u0300 //\u00C3 -> \u0041\u0303
-//         *
-//         * baseString = "cdb(?:\u00C3\u006E\u0300)"; testString =
-//         * "cdb\u0041\u0303\u01F9"; pat = Pattern.compile(baseString,
-//         * Pattern.CANON_EQ); mat = pat.matcher(testString);
-//         * assertTrue(mat.matches());
-//         *
-//         * //\u014C -> \u004F\u0304 //\u0163 -> \u0074\u0327
-//         *
-//         * baseString = "cdb(?:\u0163\u004F\u0304)"; testString =
-//         * "cdb\u0074\u0327\u014C"; pat = Pattern.compile(baseString,
-//         * Pattern.CANON_EQ); mat = pat.matcher(testString);
-//         * assertTrue(mat.matches());
-//         */
-//        // \u00E1->a\u0301
-//        // canonical ordering takes place \u0301\u0327 -> \u0327\u0301
-//        baseString = "c\u0327\u0301";
-//        testString = "c\u0301\u0327";
-//        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
-//        mat = pat.matcher(testString);
-//        assertTrue(mat.matches());
-//
-//        /*
-//         * Hangul decompositions
-//         */
-//        // \uD4DB->\u1111\u1171\u11B6
-//        // \uD21E->\u1110\u116D\u11B5
-//        // \uD264->\u1110\u1170
-//        // not Hangul:\u0453->\u0433\u0301
-//        baseString = "a\uD4DB\u1111\u1171\u11B6\uD264";
-//        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
-//
-//        baseString = "\u0453c\uD4DB";
-//        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
-//
-//        baseString = "a\u1110\u116D\u11B5b\uD21Ebc";
-//        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
-//
-//        /*
-//         * baseString = "\uD4DB\uD21E\u1110\u1170cdb(ac)"; testString =
-//         * "\u1111\u1171\u11B6\u1110\u116D\u11B5\uD264cdbac"; pat =
-//         * Pattern.compile(baseString, Pattern.CANON_EQ); mat =
-//         * pat.matcher(testString); assertTrue(mat.matches());
-//         */
-//        baseString = "\uD4DB\uD264cdb(a\uD21Ec)";
-//        testString = "\u1111\u1171\u11B6\u1110\u1170cdba\u1110\u116D\u11B5c";
-//        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
-//        mat = pat.matcher(testString);
-//        assertTrue(mat.matches());
-//
-//        baseString = "a\uD4DB";
-//        testString = "a\u1111\u1171\u11B6";
-//        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
-//        mat = pat.matcher(testString);
-//        assertTrue(mat.matches());
-//
-//        baseString = "a\uD21E";
-//        testString = "a\u1110\u116D\u11B5";
-//        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
-//        mat = pat.matcher(testString);
-//        assertTrue(mat.matches());
-//
-//        /*
-//         * baseString = "\u1111\u1171\u11B6cdb(ac\u1110\u116D\u11B5)";
-//         * testString = "\uD4DBcdbac\uD21E"; pat = Pattern.compile(baseString,
-//         * Pattern.CANON_EQ); mat = pat.matcher(testString);
-//         * assertTrue(mat.matches());
-//         *
-//         * baseString = "cdb(?:\u1111\u1171\u11B6\uD21E)"; testString =
-//         * "cdb\uD4DB\u1110\u116D\u11B5"; pat = Pattern.compile(baseString,
-//         * Pattern.CANON_EQ); mat = pat.matcher(testString);
-//         * assertTrue(mat.matches());
-//         *
-//         * baseString = "\uD4DB[a-c]\u1110\u116D\u11B5cdb(ac)"; testString =
-//         * "\uD4DBb\uD21Ecdbac"; pat = Pattern.compile(baseString,
-//         * Pattern.CANON_EQ); mat = pat.matcher(testString);
-//         * assertTrue(mat.matches());
-//         */
-//        baseString = "\uD4DB|\u00CCcdb(ac)";
-//        testString = "\u1111\u1171\u11B6";
-//        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
-//        mat = pat.matcher(testString);
-//        assertTrue(mat.matches());
-//
-//        baseString = "\uD4DB|\u00CCcdb(ac)";
-//        testString = "\u1111\u1171";
-//        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
-//        mat = pat.matcher(testString);
-//        assertFalse(mat.matches());
-//
-//        baseString = "\u00CC?cdb(ac)*(\uD4DB)*[a-c]";
-//        testString = "cdb\u1111\u1171\u11B6b";
-//        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
-//        mat = pat.matcher(testString);
-//        assertTrue(mat.matches());
-//
-//        baseString = "\uD4DB";
-//        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
-//        mat = pat.matcher("a\u1111\u1171\u11B6a");
-//        assertTrue(mat.find());
-//
-//        baseString = "\u1111";
-//        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
-//        mat = pat.matcher("bcda\uD4DBr");
-//        assertFalse(mat.find());
-//    }
-//
-//    /**
-//     * s original test was fixed to pass on RI
-//     */
-//
-//    public void testIndexesCanonicalEq() {
-//        String baseString;
-//        String testString;
-//        Pattern pat;
-//        Matcher mat;
-//
-//        baseString = "\uD4DB";
-//        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
-//        mat = pat.matcher("bcda\u1111\u1171\u11B6awr");
-//        assertTrue(mat.find());
-//        assertEquals(mat.start(), 4);
-//        assertEquals(mat.end(), 7);
-//
-//        /*
-//         * baseString = "\uD4DB\u1111\u1171\u11B6"; pat =
-//         * Pattern.compile(baseString, Pattern.CANON_EQ); mat =
-//         * pat.matcher("bcda\u1111\u1171\u11B6\uD4DBawr");
-//         * assertTrue(mat.find()); assertEquals(mat.start(), 4);
-//         * assertEquals(mat.end(), 8);
-//         *
-//         * baseString = "\uD4DB\uD21E\u1110\u1170"; testString =
-//         * "abcabc\u1111\u1171\u11B6\u1110\u116D\u11B5\uD264cdbac"; pat =
-//         * Pattern.compile(baseString, Pattern.CANON_EQ); mat =
-//         * pat.matcher(testString); assertTrue(mat.find());
-//         * assertEquals(mat.start(), 6); assertEquals(mat.end(), 13);
-//         */}
-//
-//    /**
-//     * s original test was fixed to pass on RI
-//     */
-//
-//    public void testCanonEqFlagWithSupplementaryCharacters() {
-//
-//        /*
-//         * \u1D1BF->\u1D1BB\u1D16F->\u1D1B9\u1D165\u1D16F in UTF32
-//         * \uD834\uDDBF->\uD834\uDDBB\uD834\uDD6F
-//         * ->\uD834\uDDB9\uD834\uDD65\uD834\uDD6F in UTF16
-//         */
-//        String patString = "abc\uD834\uDDBFef";
-//        String testString = "abc\uD834\uDDB9\uD834\uDD65\uD834\uDD6Fef";
-//        Pattern pat = Pattern.compile(patString, Pattern.CANON_EQ);
-//        Matcher mat = pat.matcher(testString);
-//        assertTrue(mat.matches());
-//        /*
-//         * testString = "abc\uD834\uDDBB\uD834\uDD6Fef"; mat =
-//         * pat.matcher(testString); assertTrue(mat.matches());
-//         *
-//         * patString = "abc\uD834\uDDBB\uD834\uDD6Fef"; testString =
-//         * "abc\uD834\uDDBFef"; pat = Pattern.compile(patString,
-//         * Pattern.CANON_EQ); mat = pat.matcher(testString);
-//         * assertTrue(mat.matches());
-//         */
-//        testString = "abc\uD834\uDDB9\uD834\uDD65\uD834\uDD6Fef";
-//        mat = pat.matcher(testString);
-//        assertTrue(mat.matches());
-//        /*
-//         * patString = "abc\uD834\uDDB9\uD834\uDD65\uD834\uDD6Fef"; testString =
-//         * "abc\uD834\uDDBFef"; pat = Pattern.compile(patString,
-//         * Pattern.CANON_EQ); mat = pat.matcher(testString);
-//         * assertTrue(mat.matches());
-//         *
-//         * testString = "abc\uD834\uDDBB\uD834\uDD6Fef"; mat =
-//         * pat.matcher(testString); assertTrue(mat.matches());
-//         */
-//        /*
-//         * testSupplementary characters with no decomposition
-//         */
-//        /*
-//         * patString = "a\uD9A0\uDE8Ebc\uD834\uDDBB\uD834\uDD6Fe\uDE8Ef";
-//         * testString = "a\uD9A0\uDE8Ebc\uD834\uDDBFe\uDE8Ef"; pat =
-//         * Pattern.compile(patString, Pattern.CANON_EQ); mat =
-//         * pat.matcher(testString); assertTrue(mat.matches());
-//         */}
-// END android-removed
 
     public void testRangesWithSurrogatesSupplementary() {
         String patString = "[abc\uD8D2]";
@@ -1493,6 +1214,7 @@ public class PatternTest extends TestCase {
 // might want to duplicate.
 //        assertFalse(mat.find());
 // END android-changed
+
         testString = "abcd\uD8D3abc";
         mat = pat.matcher(testString);
         assertTrue(mat.find());
@@ -1774,4 +1496,348 @@ public class PatternTest extends TestCase {
         }
     }
 
+    // http://code.google.com/p/android/issues/detail?id=19308
+    public void test_hitEnd() {
+        Pattern p = Pattern.compile("^2(2[4-9]|3\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}$");
+        Matcher m = p.matcher("224..");
+        boolean isPartialMatch = !m.matches() && m.hitEnd();
+        assertFalse(isPartialMatch);
+    }
+
+    public void testCommentsInPattern() {
+        Pattern p = Pattern.compile("ab# this is a comment\ncd", Pattern.COMMENTS);
+        assertTrue(p.matcher("abcd").matches());
+    }
+
+    public void testCompileNonCaptGroup() {
+        // icu4c doesn't support CANON_EQ.
+        Pattern.compile("(?:)"/*, Pattern.CANON_EQ*/);
+        Pattern.compile("(?:)", /*Pattern.CANON_EQ |*/ Pattern.DOTALL);
+        Pattern.compile("(?:)", /*Pattern.CANON_EQ |*/ Pattern.CASE_INSENSITIVE);
+        Pattern.compile("(?:)", /*Pattern.CANON_EQ |*/ Pattern.COMMENTS | Pattern.UNIX_LINES);
+    }
+
+    public void testFlagsMethod() {
+        // icu4c doesn't count inline flags that span the entire regex as being global flags.
+        // Android just returns those flags actually passed to Pattern.compile.
+        if (true) {
+            return;
+        }
+
+        String baseString;
+        Pattern pat;
+
+        // These tests are for compatibility with RI only. Logically we have to
+        // return only flags specified during the compilation. For example
+        // pat.flags() == 0 when we compile Pattern pat =
+        // Pattern.compile("(?i)abc(?-i)"); but the whole expression is compiled
+        // in a case insensitive manner. So there is little sense to do calls to
+        // flags() now.
+        baseString = "(?-i)";
+        pat = Pattern.compile(baseString);
+
+        baseString = "(?idmsux)abc(?-i)vg(?-dmu)";
+        pat = Pattern.compile(baseString);
+        assertEquals(pat.flags(), Pattern.DOTALL | Pattern.COMMENTS);
+
+        baseString = "(?idmsux)abc|(?-i)vg|(?-dmu)";
+        pat = Pattern.compile(baseString);
+        assertEquals(pat.flags(), Pattern.DOTALL | Pattern.COMMENTS);
+
+        baseString = "(?is)a((?x)b.)";
+        pat = Pattern.compile(baseString);
+        assertEquals(pat.flags(), Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
+
+        baseString = "(?i)a((?-i))";
+        pat = Pattern.compile(baseString);
+        assertEquals(pat.flags(), Pattern.CASE_INSENSITIVE);
+
+        baseString = "((?i)a)";
+        pat = Pattern.compile(baseString);
+        assertEquals(pat.flags(), 0);
+
+        pat = Pattern.compile("(?is)abc");
+        assertEquals(pat.flags(), Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+    }
+
+    public void testCanonEqFlag() {
+        // icu4c doesn't support CANON_EQ.
+        if (true) {
+            return;
+        }
+
+        // for decompositions see
+        // http://www.unicode.org/Public/4.0-Update/UnicodeData-4.0.0.txt
+        // http://www.unicode.org/reports/tr15/#Decomposition
+        String baseString;
+        String testString;
+        Pattern pat;
+        Matcher mat;
+
+        baseString = "ab(a*)\\1";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+
+        baseString = "a(abcdf)d";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+
+        baseString = "aabcdfd";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+
+        // \u01E0 -> \u0226\u0304 ->\u0041\u0307\u0304
+        // \u00CC -> \u0049\u0300
+
+        baseString = "\u01E0\u00CCcdb(ac)";
+        testString = "\u0226\u0304\u0049\u0300cdbac";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+
+        baseString = "\u01E0cdb(a\u00CCc)";
+        testString = "\u0041\u0307\u0304cdba\u0049\u0300c";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+
+        baseString = "a\u00CC";
+        testString = "a\u0049\u0300";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+
+        baseString = "\u0226\u0304cdb(ac\u0049\u0300)";
+        testString = "\u01E0cdbac\u00CC";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+
+        baseString = "cdb(?:\u0041\u0307\u0304\u00CC)";
+        testString = "cdb\u0226\u0304\u0049\u0300";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+
+        baseString = "\u01E0[a-c]\u0049\u0300cdb(ac)";
+        testString = "\u01E0b\u00CCcdbac";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+
+        baseString = "\u01E0|\u00CCcdb(ac)";
+        testString = "\u0041\u0307\u0304";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+
+        baseString = "\u00CC?cdb(ac)*(\u01E0)*[a-c]";
+        testString = "cdb\u0041\u0307\u0304b";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+
+        baseString = "a\u0300";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher("a\u00E0a");
+        assertTrue(mat.find());
+
+        baseString = "\u7B20\uF9F8abc";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher("\uF9F8\uF9F8abc");
+        assertTrue(mat.matches());
+
+        // \u01F9 -> \u006E\u0300
+        // \u00C3 -> \u0041\u0303
+
+        baseString = "cdb(?:\u00C3\u006E\u0300)";
+        testString = "cdb\u0041\u0303\u01F9";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+
+        // \u014C -> \u004F\u0304
+        // \u0163 -> \u0074\u0327
+
+        baseString = "cdb(?:\u0163\u004F\u0304)";
+        testString = "cdb\u0074\u0327\u014C";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+
+        // \u00E1->a\u0301
+        // canonical ordering takes place \u0301\u0327 -> \u0327\u0301
+
+        baseString = "c\u0327\u0301";
+        testString = "c\u0301\u0327";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+
+        /*
+        Hangul decompositions
+        */
+        // \uD4DB->\u1111\u1171\u11B6
+        // \uD21E->\u1110\u116D\u11B5
+        // \uD264->\u1110\u1170
+        // not Hangul:\u0453->\u0433\u0301
+        baseString = "a\uD4DB\u1111\u1171\u11B6\uD264";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+
+        baseString = "\u0453c\uD4DB";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+
+        baseString = "a\u1110\u116D\u11B5b\uD21Ebc";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+
+        baseString = "\uD4DB\uD21E\u1110\u1170cdb(ac)";
+        testString = "\u1111\u1171\u11B6\u1110\u116D\u11B5\uD264cdbac";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+
+        baseString = "\uD4DB\uD264cdb(a\uD21Ec)";
+        testString = "\u1111\u1171\u11B6\u1110\u1170cdba\u1110\u116D\u11B5c";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+
+        baseString = "a\uD4DB";
+        testString = "a\u1111\u1171\u11B6";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+
+        baseString = "a\uD21E";
+        testString = "a\u1110\u116D\u11B5";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+
+        baseString = "\u1111\u1171\u11B6cdb(ac\u1110\u116D\u11B5)";
+        testString = "\uD4DBcdbac\uD21E";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+
+        baseString = "cdb(?:\u1111\u1171\u11B6\uD21E)";
+        testString = "cdb\uD4DB\u1110\u116D\u11B5";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+
+        baseString = "\uD4DB[a-c]\u1110\u116D\u11B5cdb(ac)";
+        testString = "\uD4DBb\uD21Ecdbac";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+
+        baseString = "\uD4DB|\u00CCcdb(ac)";
+        testString = "\u1111\u1171\u11B6";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+
+        baseString = "\uD4DB|\u00CCcdb(ac)";
+        testString = "\u1111\u1171";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher(testString);
+        assertFalse(mat.matches());
+
+        baseString = "\u00CC?cdb(ac)*(\uD4DB)*[a-c]";
+        testString = "cdb\u1111\u1171\u11B6b";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+
+        baseString = "\uD4DB";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher("a\u1111\u1171\u11B6a");
+        assertTrue(mat.find());
+
+        baseString = "\u1111";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher("bcda\uD4DBr");
+        assertFalse(mat.find());
+    }
+
+    public void testIndexesCanonicalEq() {
+        // icu4c doesn't support CANON_EQ.
+        if (true) {
+            return;
+        }
+
+        String baseString;
+        String testString;
+        Pattern pat;
+        Matcher mat;
+
+        baseString = "\uD4DB";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher("bcda\u1111\u1171\u11B6awr");
+        assertTrue(mat.find());
+        assertEquals(mat.start(), 4);
+        assertEquals(mat.end(), 7);
+
+        baseString = "\uD4DB\u1111\u1171\u11B6";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher("bcda\u1111\u1171\u11B6\uD4DBawr");
+        assertTrue(mat.find());
+        assertEquals(mat.start(), 4);
+        assertEquals(mat.end(), 8);
+
+        baseString = "\uD4DB\uD21E\u1110\u1170";
+        testString = "abcabc\u1111\u1171\u11B6\u1110\u116D\u11B5\uD264cdbac";
+        pat = Pattern.compile(baseString, Pattern.CANON_EQ);
+        mat = pat.matcher(testString);
+        assertTrue(mat.find());
+        assertEquals(mat.start(), 6);
+        assertEquals(mat.end(), 13);
+    }
+
+    public void testCanonEqFlagWithSupplementaryCharacters() {
+        // icu4c doesn't support CANON_EQ.
+        if (true) {
+            return;
+        }
+
+        /*
+        \u1D1BF->\u1D1BB\u1D16F->\u1D1B9\u1D165\u1D16F in UTF32
+        \uD834\uDDBF->\uD834\uDDBB\uD834\uDD6F
+        ->\uD834\uDDB9\uD834\uDD65\uD834\uDD6F in UTF16
+        */
+        String patString = "abc\uD834\uDDBFef";
+        String testString = "abc\uD834\uDDB9\uD834\uDD65\uD834\uDD6Fef";
+        Pattern pat = Pattern.compile(patString, Pattern.CANON_EQ);
+        Matcher mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+
+        testString = "abc\uD834\uDDBB\uD834\uDD6Fef";
+        mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+
+        patString = "abc\uD834\uDDBB\uD834\uDD6Fef";
+        testString = "abc\uD834\uDDBFef";
+        pat = Pattern.compile(patString, Pattern.CANON_EQ);
+        mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+
+        testString = "abc\uD834\uDDB9\uD834\uDD65\uD834\uDD6Fef";
+        mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+
+        patString = "abc\uD834\uDDB9\uD834\uDD65\uD834\uDD6Fef";
+        testString = "abc\uD834\uDDBFef";
+        pat = Pattern.compile(patString, Pattern.CANON_EQ);
+        mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+
+        testString = "abc\uD834\uDDBB\uD834\uDD6Fef";
+        mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+
+        // Test supplementary characters with no decomposition
+        patString = "a\uD9A0\uDE8Ebc\uD834\uDDBB\uD834\uDD6Fe\uDE8Ef";
+        testString = "a\uD9A0\uDE8Ebc\uD834\uDDBFe\uDE8Ef";
+        pat = Pattern.compile(patString, Pattern.CANON_EQ);
+        mat = pat.matcher(testString);
+        assertTrue(mat.matches());
+    }
 }

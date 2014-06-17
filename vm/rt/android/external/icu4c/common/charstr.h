@@ -1,6 +1,6 @@
 /*
 **********************************************************************
-*   Copyright (c) 2001-2010, International Business Machines
+*   Copyright (c) 2001-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 **********************************************************************
 *   Date        Name        Description
@@ -21,7 +21,7 @@ U_NAMESPACE_BEGIN
 
 // Windows needs us to DLL-export the MaybeStackArray template specialization,
 // but MacOS X cannot handle it. Same as in digitlst.h.
-#if !defined(U_DARWIN)
+#if !U_PLATFORM_IS_DARWIN_BASED
 template class U_COMMON_API MaybeStackArray<char, 40>;
 #endif
 
@@ -61,9 +61,9 @@ public:
      */
     CharString &copyFrom(const CharString &other, UErrorCode &errorCode);
 
-    UBool isEmpty() { return len==0; }
+    UBool isEmpty() const { return len==0; }
     int32_t length() const { return len; }
-    char operator[] (int32_t index) const { return buffer[index]; }
+    char operator[](int32_t index) const { return buffer[index]; }
     StringPiece toStringPiece() const { return StringPiece(buffer.getAlias(), len); }
 
     const char *data() const { return buffer.getAlias(); }
@@ -106,6 +106,13 @@ public:
                           UErrorCode &errorCode);
 
     CharString &appendInvariantChars(const UnicodeString &s, UErrorCode &errorCode);
+
+    /**
+     * Appends a filename/path part, e.g., a directory name.
+     * First appends a U_FILE_SEP_CHAR if necessary.
+     * Does nothing if s is empty.
+     */
+    CharString &appendPathPart(const StringPiece &s, UErrorCode &errorCode);
 
 private:
     MaybeStackArray<char, 40> buffer;

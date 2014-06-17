@@ -1,6 +1,6 @@
 /*
 *******************************************************************************
-* Copyright (C) 2007-2011, International Business Machines Corporation and    *
+* Copyright (C) 2007-2013, International Business Machines Corporation and    *
 * others. All Rights Reserved.                                                *
 *******************************************************************************
 */
@@ -14,6 +14,7 @@
 #include "unicode/timezone.h"
 #include "unicode/ustring.h"
 #include "unicode/putil.h"
+#include "unicode/simpletz.h"
 
 #include "umutex.h"
 #include "uvector.h"
@@ -26,7 +27,7 @@
 #include "uhash.h"
 #include "olsontz.h"
 
-static UMTX gZoneMetaLock = NULL;
+static UMutex gZoneMetaLock = U_MUTEX_INITIALIZER;
 
 // CLDR Canonical ID mapping table
 static UHashtable *gCanonicalIDCache = NULL;
@@ -37,13 +38,13 @@ static UHashtable *gOlsonToMeta = NULL;
 static UBool gOlsonToMetaInitialized = FALSE;
 
 // Available metazone IDs vector and table
-static U_NAMESPACE_QUALIFIER UVector *gMetaZoneIDs = NULL;
+static icu::UVector *gMetaZoneIDs = NULL;
 static UHashtable *gMetaZoneIDTable = NULL;
 static UBool gMetaZoneIDsInitialized = FALSE;
 
 // Country info vectors
-static U_NAMESPACE_QUALIFIER UVector *gSingleZoneCountries = NULL;
-static U_NAMESPACE_QUALIFIER UVector *gMultiZonesCountries = NULL;
+static icu::UVector *gSingleZoneCountries = NULL;
+static icu::UVector *gMultiZonesCountries = NULL;
 static UBool gCountryInfoVectorsInitialized = FALSE;
 
 U_CDECL_BEGIN
@@ -53,8 +54,6 @@ U_CDECL_BEGIN
  */
 static UBool U_CALLCONV zoneMeta_cleanup(void)
 {
-    umtx_destroy(&gZoneMetaLock);
-
     if (gCanonicalIDCache != NULL) {
         uhash_close(gCanonicalIDCache);
         gCanonicalIDCache = NULL;
@@ -96,7 +95,7 @@ deleteUCharString(void *obj) {
  */
 static void U_CALLCONV
 deleteUVector(void *obj) {
-   delete (U_NAMESPACE_QUALIFIER UVector*) obj;
+   delete (icu::UVector*) obj;
 }
 
 /**
@@ -104,7 +103,7 @@ deleteUVector(void *obj) {
  */
 static void U_CALLCONV
 deleteOlsonToMetaMappingEntry(void *obj) {
-    U_NAMESPACE_QUALIFIER OlsonToMetaMappingEntry *entry = (U_NAMESPACE_QUALIFIER OlsonToMetaMappingEntry*)obj;
+    icu::OlsonToMetaMappingEntry *entry = (icu::OlsonToMetaMappingEntry*)obj;
     uprv_free(entry);
 }
 
@@ -118,10 +117,12 @@ static const char gMetaZones[]          = "metaZones";
 static const char gMetazoneInfo[]       = "metazoneInfo";
 static const char gMapTimezonesTag[]    = "mapTimezones";
 
-static const char gTimeZoneTypes[]      = "timezoneTypes";
+static const char gKeyTypeData[]        = "keyTypeData";
 static const char gTypeAliasTag[]       = "typeAlias";
 static const char gTypeMapTag[]         = "typeMap";
 static const char gTimezoneTag[]        = "timezone";
+
+static const char gPrimaryZonesTag[]    = "primaryZones";
 
 static const char gWorldTag[]           = "001";
 
@@ -131,6 +132,8 @@ static const UChar gDefaultFrom[] = {0x31, 0x39, 0x37, 0x30, 0x2D, 0x30, 0x31, 0
                                      0x20, 0x30, 0x30, 0x3A, 0x30, 0x30, 0x00}; // "1970-01-01 00:00"
 static const UChar gDefaultTo[]   = {0x39, 0x39, 0x39, 0x39, 0x2D, 0x31, 0x32, 0x2D, 0x33, 0x31,
                                      0x20, 0x32, 0x33, 0x3A, 0x35, 0x39, 0x00}; // "9999-12-31 23:59"
+
+static const UChar gCustomTzPrefix[]    = {0x47, 0x4D, 0x54, 0};    // "GMT"
 
 #define ASCII_DIGIT(c) (((c)>=0x30 && (c)<=0x39) ? (c)-0x30 : -1)
 
@@ -279,7 +282,7 @@ ZoneMeta::getCanonicalCLDRID(const UnicodeString &tzid, UErrorCode& status) {
         }
     }
 
-    UResourceBundle *top = ures_openDirect(NULL, gTimeZoneTypes, &tmpStatus);
+    UResourceBundle *top = ures_openDirect(NULL, gKeyTypeData, &tmpStatus);
     UResourceBundle *rb = ures_getByKey(top, gTypeMapTag, NULL, &tmpStatus);
     ures_getByKey(rb, gTimezoneTag, rb, &tmpStatus);
     ures_getByKey(rb, id, rb, &tmpStatus);
@@ -390,119 +393,136 @@ ZoneMeta::getCanonicalCLDRID(const TimeZone& tz) {
     return getCanonicalCLDRID(tz.getID(tzID), status);
 }
 
-
-
 UnicodeString& U_EXPORT2
-ZoneMeta::getCanonicalCountry(const UnicodeString &tzid, UnicodeString &canonicalCountry) {
+ZoneMeta::getCanonicalCountry(const UnicodeString &tzid, UnicodeString &country, UBool *isPrimary /* = NULL */) {
+    if (isPrimary != NULL) {
+        *isPrimary = FALSE;
+    }
+
     const UChar *region = TimeZone::getRegion(tzid);
     if (region != NULL && u_strcmp(gWorld, region) != 0) {
-        canonicalCountry.setTo(region, -1);
+        country.setTo(region, -1);
     } else {
-        canonicalCountry.setToBogus();
-    }
-    return canonicalCountry;
-}
-
-UnicodeString& U_EXPORT2
-ZoneMeta::getSingleCountry(const UnicodeString &tzid, UnicodeString &country) {
-    // Get canonical country for the zone
-    const UChar *region = TimeZone::getRegion(tzid);
-    if (region == NULL || u_strcmp(gWorld, region) == 0) {
-        // special case - unknown or "001"
         country.setToBogus();
         return country;
     }
 
-    // Checking the cached results
-    UErrorCode status = U_ZERO_ERROR;
-    UBool initialized;
-    UMTX_CHECK(&gZoneMetaLock, gCountryInfoVectorsInitialized, initialized);
-    if (!initialized) {
-        // Create empty vectors
+    if (isPrimary != NULL) {
+        char regionBuf[] = {0, 0, 0};
+
+        // Checking the cached results
+        UErrorCode status = U_ZERO_ERROR;
+        UBool initialized;
+        UMTX_CHECK(&gZoneMetaLock, gCountryInfoVectorsInitialized, initialized);
+        if (!initialized) {
+            // Create empty vectors
+            umtx_lock(&gZoneMetaLock);
+            {
+                if (!gCountryInfoVectorsInitialized) {
+                    // No deleters for these UVectors, it's a reference to a resource bundle string.
+                    gSingleZoneCountries = new UVector(NULL, uhash_compareUChars, status);
+                    if (gSingleZoneCountries == NULL) {
+                        status = U_MEMORY_ALLOCATION_ERROR;
+                    }
+                    gMultiZonesCountries = new UVector(NULL, uhash_compareUChars, status);
+                    if (gMultiZonesCountries == NULL) {
+                        status = U_MEMORY_ALLOCATION_ERROR;
+                    }
+
+                    if (U_SUCCESS(status)) {
+                        gCountryInfoVectorsInitialized = TRUE;
+                        ucln_i18n_registerCleanup(UCLN_I18N_ZONEMETA, zoneMeta_cleanup);
+                    } else {
+                        delete gSingleZoneCountries;
+                        delete gMultiZonesCountries;
+                    }
+                }
+            }
+            umtx_unlock(&gZoneMetaLock);
+
+            if (U_FAILURE(status)) {
+                return country;
+            }
+            U_ASSERT(gSingleZoneCountries != NULL);
+            U_ASSERT(gMultiZonesCountries != NULL);
+        }
+
+        // Check if it was already cached
+        UBool cached = FALSE;
+        UBool singleZone = FALSE;
         umtx_lock(&gZoneMetaLock);
         {
-            if (!gCountryInfoVectorsInitialized) {
-                // No deleters for these UVectors, it's a reference to a resource bundle string.
-                gSingleZoneCountries = new UVector(NULL, uhash_compareUChars, status);
-                if (gSingleZoneCountries == NULL) {
-                    status = U_MEMORY_ALLOCATION_ERROR;
-                }
-                gMultiZonesCountries = new UVector(NULL, uhash_compareUChars, status);
-                if (gMultiZonesCountries == NULL) {
-                    status = U_MEMORY_ALLOCATION_ERROR;
-                }
+            singleZone = cached = gSingleZoneCountries->contains((void*)region);
+            if (!cached) {
+                cached = gMultiZonesCountries->contains((void*)region);
+            }
+        }
+        umtx_unlock(&gZoneMetaLock);
 
-                if (U_SUCCESS(status)) {
-                    gCountryInfoVectorsInitialized = TRUE;
+        if (!cached) {
+            // We need to go through all zones associated with the region.
+            // This is relatively heavy operation.
+
+            U_ASSERT(u_strlen(region) == 2);
+
+            u_UCharsToChars(region, regionBuf, 2);
+
+            StringEnumeration *ids = TimeZone::createTimeZoneIDEnumeration(UCAL_ZONE_TYPE_CANONICAL_LOCATION, regionBuf, NULL, status);
+            int32_t idsLen = ids->count(status);
+            if (U_SUCCESS(status) && idsLen == 1) {
+                // only the single zone is available for the region
+                singleZone = TRUE;
+            }
+            delete ids;
+
+            // Cache the result
+            umtx_lock(&gZoneMetaLock);
+            {
+                UErrorCode ec = U_ZERO_ERROR;
+                if (singleZone) {
+                    if (!gSingleZoneCountries->contains((void*)region)) {
+                        gSingleZoneCountries->addElement((void*)region, ec);
+                    }
                 } else {
-                    delete gSingleZoneCountries;
-                    delete gMultiZonesCountries;
+                    if (!gMultiZonesCountries->contains((void*)region)) {
+                        gMultiZonesCountries->addElement((void*)region, ec);
+                    }
                 }
             }
+            umtx_unlock(&gZoneMetaLock);
         }
-        umtx_unlock(&gZoneMetaLock);
 
-        if (U_FAILURE(status)) {
-            country.setToBogus();
-            return country;
-        }
-    }
+        if (singleZone) {
+            *isPrimary = TRUE;
+        } else {
+            // Note: We may cache the primary zone map in future.
 
-    // Check if it was already cached
-    UBool cached = FALSE;
-    UBool multiZones = FALSE;
-    umtx_lock(&gZoneMetaLock);
-    {
-        multiZones = cached = gMultiZonesCountries->contains((void*)region);
-        if (!multiZones) {
-            cached = gSingleZoneCountries->contains((void*)region);
-        }
-    }
-    umtx_unlock(&gZoneMetaLock);
+            // Even a country has multiple zones, one of them might be
+            // dominant and treated as a primary zone
+            int32_t idLen = 0;
+            if (regionBuf[0] == 0) {
+                u_UCharsToChars(region, regionBuf, 2);
+            }
 
-    if (!cached) {
-        // We need to go through all zones associated with the region.
-        // This is relatively heavy operation.
-
-        U_ASSERT(u_strlen(region) == 2);
-
-        char buf[] = {0, 0, 0};
-        u_UCharsToChars(region, buf, 2);
-
-        StringEnumeration *ids = TimeZone::createTimeZoneIDEnumeration(UCAL_ZONE_TYPE_CANONICAL_LOCATION, buf, NULL, status);
-        int32_t idsLen = ids->count(status);
-        if (U_SUCCESS(status) && idsLen > 1) {
-            // multiple canonical zones are available for the region
-            multiZones = TRUE;
-        }
-        if (U_FAILURE(status)) {
-            // no single country by default for any error cases
-            multiZones = TRUE;
-        }
-        delete ids;
-
-        // Cache the result
-        umtx_lock(&gZoneMetaLock);
-        {
-            UErrorCode ec = U_ZERO_ERROR;
-            if (multiZones) {
-                if (!gMultiZonesCountries->contains((void*)region)) {
-                    gMultiZonesCountries->addElement((void*)region, ec);
-                }
-            } else {
-                if (!gSingleZoneCountries->contains((void*)region)) {
-                    gSingleZoneCountries->addElement((void*)region, ec);
+            UResourceBundle *rb = ures_openDirect(NULL, gMetaZones, &status);
+            ures_getByKey(rb, gPrimaryZonesTag, rb, &status);
+            const UChar *primaryZone = ures_getStringByKey(rb, regionBuf, &idLen, &status);
+            if (U_SUCCESS(status)) {
+                if (tzid.compare(primaryZone, idLen) == 0) {
+                    *isPrimary = TRUE;
+                } else {
+                    // The given ID might not be a canonical ID
+                    UnicodeString canonicalID;
+                    TimeZone::getCanonicalID(tzid, canonicalID, status);
+                    if (U_SUCCESS(status) && canonicalID.compare(primaryZone, idLen) == 0) {
+                        *isPrimary = TRUE;
+                    }
                 }
             }
+            ures_close(rb);
         }
-        umtx_unlock(&gZoneMetaLock);
     }
 
-    if (multiZones) {
-        country.setToBogus();
-    } else {
-        country.setTo(region, -1);
-    }
     return country;
 }
 
@@ -763,7 +783,7 @@ ZoneMeta::initAvailableMetaZoneIDs () {
             if (!gMetaZoneIDsInitialized) {
                 UErrorCode status = U_ZERO_ERROR;
                 UHashtable *metaZoneIDTable = uhash_open(uhash_hashUnicodeString, uhash_compareUnicodeString, NULL, &status);
-                uhash_setKeyDeleter(metaZoneIDTable, uhash_deleteUnicodeString);
+                uhash_setKeyDeleter(metaZoneIDTable, uprv_deleteUObject);
                 // No valueDeleter, because the vector maintain the value objects
                 UVector *metaZoneIDs = NULL;
                 if (U_SUCCESS(status)) {
@@ -775,7 +795,8 @@ ZoneMeta::initAvailableMetaZoneIDs () {
                     uhash_close(metaZoneIDTable);
                 }
                 if (U_SUCCESS(status)) {
-                    metaZoneIDs->setDeleter(uhash_freeBlock);
+                    U_ASSERT(metaZoneIDs != NULL);
+                    metaZoneIDs->setDeleter(uprv_free);
 
                     UResourceBundle *rb = ures_openDirect(NULL, gMetaZones, &status);
                     UResourceBundle *bundle = ures_getByKey(rb, gMapTimezonesTag, NULL, &status);
@@ -808,6 +829,7 @@ ZoneMeta::initAvailableMetaZoneIDs () {
                         gMetaZoneIDs = metaZoneIDs;
                         gMetaZoneIDTable = metaZoneIDTable;
                         gMetaZoneIDsInitialized = TRUE;
+                        ucln_i18n_registerCleanup(UCLN_I18N_ZONEMETA, zoneMeta_cleanup);
                     } else {
                         uhash_close(metaZoneIDTable);
                         delete metaZoneIDs;
@@ -837,6 +859,104 @@ ZoneMeta::findMetaZoneID(const UnicodeString& mzid) {
 const UChar*
 ZoneMeta::findTimeZoneID(const UnicodeString& tzid) {
     return TimeZone::findID(tzid);
+}
+
+
+TimeZone*
+ZoneMeta::createCustomTimeZone(int32_t offset) {
+    UBool negative = FALSE;
+    int32_t tmp = offset;
+    if (offset < 0) {
+        negative = TRUE;
+        tmp = -offset;
+    }
+    int32_t hour, min, sec;
+
+    tmp /= 1000;
+    sec = tmp % 60;
+    tmp /= 60;
+    min = tmp % 60;
+    hour = tmp / 60;
+
+    UnicodeString zid;
+    formatCustomID(hour, min, sec, negative, zid);
+    return new SimpleTimeZone(offset, zid);
+}
+
+UnicodeString&
+ZoneMeta::formatCustomID(uint8_t hour, uint8_t min, uint8_t sec, UBool negative, UnicodeString& id) {
+    // Create normalized time zone ID - GMT[+|-]HH:mm[:ss]
+    id.setTo(gCustomTzPrefix, -1);
+    if (hour != 0 || min != 0) {
+        if (negative) {
+          id.append((UChar)0x2D);    // '-'
+        } else {
+          id.append((UChar)0x2B);    // '+'
+        }
+        // Always use US-ASCII digits
+        id.append((UChar)(0x30 + (hour%100)/10));
+        id.append((UChar)(0x30 + (hour%10)));
+        id.append((UChar)0x3A);    // ':'
+        id.append((UChar)(0x30 + (min%100)/10));
+        id.append((UChar)(0x30 + (min%10)));
+        if (sec != 0) {
+          id.append((UChar)0x3A);    // ':'
+          id.append((UChar)(0x30 + (sec%100)/10));
+          id.append((UChar)(0x30 + (sec%10)));
+        }
+    }
+    return id;
+}
+
+const UChar*
+ZoneMeta::getShortID(const TimeZone& tz) {
+    const UChar* canonicalID = NULL;
+    if (dynamic_cast<const OlsonTimeZone *>(&tz) != NULL) {
+        // short cut for OlsonTimeZone
+        const OlsonTimeZone *otz = (const OlsonTimeZone*)&tz;
+        canonicalID = otz->getCanonicalID();
+    }
+    if (canonicalID == NULL) {
+        return NULL;
+    }
+    return getShortIDFromCanonical(canonicalID);
+}
+
+const UChar*
+ZoneMeta::getShortID(const UnicodeString& id) {
+    UErrorCode status = U_ZERO_ERROR;
+    const UChar* canonicalID = ZoneMeta::getCanonicalCLDRID(id, status);
+    if (U_FAILURE(status) || canonicalID == NULL) {
+        return NULL;
+    }
+    return ZoneMeta::getShortIDFromCanonical(canonicalID);
+}
+
+const UChar*
+ZoneMeta::getShortIDFromCanonical(const UChar* canonicalID) {
+    const UChar* shortID = NULL;
+    int32_t len = u_strlen(canonicalID);
+    char tzidKey[ZID_KEY_MAX + 1];
+
+    u_UCharsToChars(canonicalID, tzidKey, len);
+    tzidKey[len] = (char) 0; // Make sure it is null terminated.
+
+    // replace '/' with ':'
+    char *p = tzidKey;
+    while (*p++) {
+        if (*p == '/') {
+            *p = ':';
+        }
+    }
+
+    UErrorCode status = U_ZERO_ERROR;
+    UResourceBundle *rb = ures_openDirect(NULL, gKeyTypeData, &status);
+    ures_getByKey(rb, gTypeMapTag, rb, &status);
+    ures_getByKey(rb, gTimezoneTag, rb, &status);
+    shortID = ures_getStringByKey(rb, tzidKey, NULL, &status);
+    ures_close(rb);
+
+    return shortID;
 }
 
 U_NAMESPACE_END

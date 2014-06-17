@@ -1,12 +1,14 @@
 /*
  * Written by Doug Lea with assistance from members of JCP JSR-166
  * Expert Group and released to the public domain, as explained at
- * http://creativecommons.org/licenses/publicdomain
+ * http://creativecommons.org/publicdomain/zero/1.0/
  */
 
 package java.util.concurrent.atomic;
+
+import java.util.Arrays;
+import java.lang.reflect.Array;
 import sun.misc.Unsafe;
-import java.util.*;
 
 /**
  * An array of object references in which elements may be updated
@@ -20,16 +22,25 @@ import java.util.*;
 public class AtomicReferenceArray<E> implements java.io.Serializable {
     private static final long serialVersionUID = -6209656149925076980L;
 
-    private static final Unsafe unsafe = UnsafeAccess.THE_ONE; // android-changed
-    private static final int base = unsafe.arrayBaseOffset(Object[].class);
+    private static final Unsafe unsafe;
+    private static final int base;
     private static final int shift;
-    private final Object[] array;
+    private static final long arrayFieldOffset;
+    private final Object[] array; // must have exact type Object[]
 
     static {
-        int scale = unsafe.arrayIndexScale(Object[].class);
-        if ((scale & (scale - 1)) != 0)
-            throw new Error("data type scale not a power of two");
-        shift = 31 - Integer.numberOfLeadingZeros(scale);
+        try {
+            unsafe = Unsafe.getUnsafe();
+            arrayFieldOffset = unsafe.objectFieldOffset
+                (AtomicReferenceArray.class.getDeclaredField("array"));
+            base = unsafe.arrayBaseOffset(Object[].class);
+            int scale = unsafe.arrayIndexScale(Object[].class);
+            if ((scale & (scale - 1)) != 0)
+                throw new Error("data type scale not a power of two");
+            shift = 31 - Integer.numberOfLeadingZeros(scale);
+        } catch (Exception e) {
+            throw new Error(e);
+        }
     }
 
     private long checkedByteOffset(int i) {
@@ -45,7 +56,7 @@ public class AtomicReferenceArray<E> implements java.io.Serializable {
 
     /**
      * Creates a new AtomicReferenceArray of the given length, with all
-     * elements initially zero.
+     * elements initially null.
      *
      * @param length the length of the array
      */
@@ -62,7 +73,7 @@ public class AtomicReferenceArray<E> implements java.io.Serializable {
      */
     public AtomicReferenceArray(E[] array) {
         // Visibility guaranteed by final field guarantees
-        this.array = array.clone();
+        this.array = Arrays.copyOf(array, array.length, Object[].class);
     }
 
     /**
@@ -84,6 +95,7 @@ public class AtomicReferenceArray<E> implements java.io.Serializable {
         return getRaw(checkedByteOffset(i));
     }
 
+    @SuppressWarnings("unchecked")
     private E getRaw(long offset) {
         return (E) unsafe.getObjectVolatile(array, offset);
     }
@@ -109,7 +121,6 @@ public class AtomicReferenceArray<E> implements java.io.Serializable {
         unsafe.putOrderedObject(array, checkedByteOffset(i), newValue);
     }
 
-
     /**
      * Atomically sets the element at position {@code i} to the given
      * value and returns the old value.
@@ -121,7 +132,7 @@ public class AtomicReferenceArray<E> implements java.io.Serializable {
     public final E getAndSet(int i, E newValue) {
         long offset = checkedByteOffset(i);
         while (true) {
-            E current = (E) getRaw(offset);
+            E current = getRaw(offset);
             if (compareAndSetRaw(offset, current, newValue))
                 return current;
         }
@@ -149,14 +160,14 @@ public class AtomicReferenceArray<E> implements java.io.Serializable {
      * Atomically sets the element at position {@code i} to the given
      * updated value if the current value {@code ==} the expected value.
      *
-     * <p>May <a href="package-summary.html#Spurious">fail spuriously</a>
-     * and does not provide ordering guarantees, so is only rarely an
-     * appropriate alternative to {@code compareAndSet}.
+     * <p><a href="package-summary.html#weakCompareAndSet">May fail
+     * spuriously and does not provide ordering guarantees</a>, so is
+     * only rarely an appropriate alternative to {@code compareAndSet}.
      *
      * @param i the index
      * @param expect the expected value
      * @param update the new value
-     * @return true if successful.
+     * @return true if successful
      */
     public final boolean weakCompareAndSet(int i, E expect, E update) {
         return compareAndSet(i, expect, update);
@@ -167,7 +178,7 @@ public class AtomicReferenceArray<E> implements java.io.Serializable {
      * @return the String representation of the current values of array
      */
     public String toString() {
-           int iMax = array.length - 1;
+        int iMax = array.length - 1;
         if (iMax == -1)
             return "[]";
 
@@ -179,6 +190,21 @@ public class AtomicReferenceArray<E> implements java.io.Serializable {
                 return b.append(']').toString();
             b.append(',').append(' ');
         }
+    }
+
+    /**
+     * Reconstitutes the instance from a stream (that is, deserializes it).
+     */
+    private void readObject(java.io.ObjectInputStream s)
+        throws java.io.IOException, ClassNotFoundException,
+        java.io.InvalidObjectException {
+        // Note: This must be changed if any additional fields are defined
+        Object a = s.readFields().get("array", null);
+        if (a == null || !a.getClass().isArray())
+            throw new java.io.InvalidObjectException("Not array type");
+        if (a.getClass() != Object[].class)
+            a = Arrays.copyOf((Object[])a, Array.getLength(a), Object[].class);
+        unsafe.putObjectVolatile(this, arrayFieldOffset, a);
     }
 
 }

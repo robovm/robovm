@@ -47,8 +47,10 @@ import java.util.StringTokenizer;
 
 import org.robovm.rt.VM;
 
+import libcore.io.IoUtils;
 import libcore.io.Libcore;
-import static libcore.io.OsConstants._SC_NPROCESSORS_ONLN;
+import libcore.util.EmptyArray;
+import static libcore.io.OsConstants._SC_NPROCESSORS_CONF;
 
 /**
  * Allows Java applications to interface with the environment in which they are
@@ -67,7 +69,22 @@ public class Runtime {
     /**
      * Holds the library paths, used for native library lookup.
      */
-    private final String[] mLibPaths;
+    private final String[] mLibPaths = initLibPaths();
+
+    private static String[] initLibPaths() {
+        String javaLibraryPath = System.getProperty("java.library.path");
+        if (javaLibraryPath == null) {
+            return EmptyArray.STRING;
+        }
+        String[] paths = javaLibraryPath.split(":");
+        // Add a '/' to the end of each directory so we don't have to do it every time.
+        for (int i = 0; i < paths.length; ++i) {
+            if (!paths[i].endsWith("/")) {
+                paths[i] += "/";
+            }
+        }
+        return paths;
+    }
 
     /**
      * Holds the list of threads to run when the VM terminates
@@ -93,20 +110,7 @@ public class Runtime {
     /**
      * Prevent this class from being instantiated.
      */
-    private Runtime(){
-        String pathList = System.getProperty("java.library.path", ".");
-        String pathSep = System.getProperty("path.separator", ":");
-        String fileSep = System.getProperty("file.separator", "/");
-
-        mLibPaths = pathList.split(pathSep);
-
-        // Add a '/' to the end so we don't have to do the property lookup
-        // and concatenation later.
-        for (int i = 0; i < mLibPaths.length; i++) {
-            if (!mLibPaths[i].endsWith(fileSep)) {
-                mLibPaths[i] += fileSep;
-            }
-        }
+    private Runtime() {
     }
 
     /**
@@ -227,9 +231,9 @@ public class Runtime {
     public Process exec(String prog, String[] envp, File directory) throws java.io.IOException {
         // Sanity checks
         if (prog == null) {
-            throw new NullPointerException();
-        } else if (prog.length() == 0) {
-            throw new IllegalArgumentException();
+            throw new NullPointerException("prog == null");
+        } else if (prog.isEmpty()) {
+            throw new IllegalArgumentException("prog is empty");
         }
 
         // Break down into tokens, as described in Java docs
@@ -245,14 +249,12 @@ public class Runtime {
     }
 
     /**
-     * Causes the VM to stop running and the program to exit. If
-     * {@link #runFinalizersOnExit(boolean)} has been previously invoked with a
+     * Causes the VM to stop running and the program to exit.
+     * If {@link #runFinalizersOnExit(boolean)} has been previously invoked with a
      * {@code true} argument, then all objects will be properly
      * garbage-collected and finalized first.
-     *
-     * @param code
-     *            the return code. By convention, non-zero return codes indicate
-     *            abnormal terminations.
+     * Use 0 to signal success to the calling process and 1 to signal failure.
+     * This method is unlikely to be useful to an Android application.
      */
     public void exit(int code) {
         // Make sure we don't try this several times
@@ -293,14 +295,6 @@ public class Runtime {
     }
 
     /**
-     * Returns the amount of free memory resources which are available to the
-     * running program.
-     *
-     * @return the approximate amount of free memory, measured in bytes.
-     */
-    public native long freeMemory();
-
-    /**
      * Indicates to the VM that it would be a good time to run the
      * garbage collector. Note that this is a hint only. There is no guarantee
      * that the garbage collector will actually be run.
@@ -308,9 +302,7 @@ public class Runtime {
     public native void gc();
 
     /**
-     * Returns the single {@code Runtime} instance.
-     *
-     * @return the {@code Runtime} object for the current application.
+     * Returns the single {@code Runtime} instance for the current application.
      */
     public static Runtime getRuntime() {
         return mRuntime;
@@ -332,14 +324,14 @@ public class Runtime {
     }
 
     /*
-     * Loads and links a library without security checks.
+     * Loads and links the given library without security checks.
      */
-    void load(String filename, ClassLoader loader) {
-        if (filename == null) {
-            throw new NullPointerException("library path was null.");
+    void load(String pathName, ClassLoader loader) {
+        if (pathName == null) {
+            throw new NullPointerException("pathName == null");
         }
         // RoboVM note: See note on nativeLoad() method.
-        nativeLoad(filename, loader);
+        nativeLoad(pathName, loader);
     }
 
     /**
@@ -357,7 +349,7 @@ public class Runtime {
     }
 
     /*
-     * Loads and links a library without security checks.
+     * Searches for a library, then loads and links it without security checks.
      */
     void loadLibrary(String libraryName, ClassLoader loader) {
         if (libraryName == null) {
@@ -374,8 +366,9 @@ public class Runtime {
         if (loader != null) {
             String filename = loader.findLibrary(libraryName);
             if (filename == null) {
-                throw new UnsatisfiedLinkError("Couldn't load " + libraryName + ": " +
-                        "findLibrary returned null");
+                throw new UnsatisfiedLinkError("Couldn't load " + libraryName +
+                                               " from loader " + loader +
+                                               ": findLibrary returned null");
             }
             // RoboVM note: See note on nativeLoad() method.
             nativeLoad(filename, loader);
@@ -388,7 +381,8 @@ public class Runtime {
         for (String directory : mLibPaths) {
             String candidate = directory + filename;
             candidates.add(candidate);
-            if (new File(candidate).exists()) {
+
+            if (IoUtils.canOpenReadOnly(candidate)) {
                 try {
                     // RoboVM note: See note on nativeLoad() method.
                     nativeLoad(candidate, loader);
@@ -410,6 +404,7 @@ public class Runtime {
     // RoboVM note: On Android nativeLoad() returns an error message String 
     // on errors which is then wrapped in an UnsatisfiedLinkError. Our 
     // nativeLoad() throws UnsatisfiedLinkError directly.
+    // TODO: Synchronize?
     private static native void nativeLoad(String filename, ClassLoader loader);
 
     /**
@@ -441,30 +436,14 @@ public class Runtime {
     }
 
     /**
-     * Returns the total amount of memory which is available to the running
-     * program.
-     *
-     * @return the total amount of memory, measured in bytes.
-     */
-    public native long totalMemory();
-
-    /**
      * Switches the output of debug information for instructions on or off.
      * On Android, this method does nothing.
-     *
-     * @param enable
-     *            {@code true} to switch tracing on, {@code false} to switch it
-     *            off.
      */
     public void traceInstructions(boolean enable) {
     }
 
     /**
      * Switches the output of debug information for methods on or off.
-     *
-     * @param enable
-     *            {@code true} to switch tracing on, {@code false} to switch it
-     *            off.
      */
     public void traceMethodCalls(boolean enable) {
         // RoboVM note: Method tracing is not supported by RoboVM.
@@ -487,7 +466,7 @@ public class Runtime {
      * @param stream
      *            the input stream to localize.
      * @return the localized input stream.
-     * @deprecated Use {@link InputStreamReader}.
+     * @deprecated Use {@link InputStreamReader} instead.
      */
     @Deprecated
     public InputStream getLocalizedInputStream(InputStream stream) {
@@ -507,7 +486,7 @@ public class Runtime {
      * @param stream
      *            the output stream to localize.
      * @return the localized output stream.
-     * @deprecated Use {@link OutputStreamWriter}.
+     * @deprecated Use {@link OutputStreamWriter} instead.
      */
     @Deprecated
     public OutputStream getLocalizedOutputStream(OutputStream stream) {
@@ -553,7 +532,7 @@ public class Runtime {
     public void addShutdownHook(Thread hook) {
         // Sanity checks
         if (hook == null) {
-            throw new NullPointerException("Hook may not be null.");
+            throw new NullPointerException("hook == null");
         }
 
         if (shuttingDown) {
@@ -586,7 +565,7 @@ public class Runtime {
     public boolean removeShutdownHook(Thread hook) {
         // Sanity checks
         if (hook == null) {
-            throw new NullPointerException("Hook may not be null.");
+            throw new NullPointerException("hook == null");
         }
 
         if (shuttingDown) {
@@ -599,15 +578,10 @@ public class Runtime {
     }
 
     /**
-     * Causes the VM to stop running, and the program to exit.
-     * Neither shutdown hooks nor finalizers are run before.
-     *
-     * @param code
-     *            the return code. By convention, non-zero return codes indicate
-     *            abnormal terminations.
-     * @see #addShutdownHook(Thread)
-     * @see #removeShutdownHook(Thread)
-     * @see #runFinalizersOnExit(boolean)
+     * Causes the VM to stop running, and the program to exit with the given return code.
+     * Use 0 to signal success to the calling process and 1 to signal failure.
+     * Neither shutdown hooks nor finalizers are run before exiting.
+     * This method is unlikely to be useful to an Android application.
      */
     public void halt(int code) {
         // Get out of here...
@@ -615,18 +589,36 @@ public class Runtime {
     }
 
     /**
-     * Returns the number of processors available to the VM, at least 1.
+     * Returns the number of processor cores available to the VM, at least 1.
+     * Traditionally this returned the number currently online,
+     * but many mobile devices are able to take unused cores offline to
+     * save power, so releases newer than Android 4.2 (Jelly Bean) return the maximum number of
+     * cores that could be made available if there were no power or heat
+     * constraints.
      */
     public int availableProcessors() {
-        return (int) Libcore.os.sysconf(_SC_NPROCESSORS_ONLN);
+        return (int) Libcore.os.sysconf(_SC_NPROCESSORS_CONF);
     }
 
     /**
-     * Returns the maximum amount of memory that may be used by the virtual
-     * machine, or {@code Long.MAX_VALUE} if there is no such limit.
-     *
-     * @return the maximum amount of memory that the VM will try to
-     *         allocate, measured in bytes.
+     * Returns the number of bytes currently available on the heap without expanding the heap. See
+     * {@link #totalMemory} for the heap's current size. When these bytes are exhausted, the heap
+     * may expand. See {@link #maxMemory} for that limit.
+     */
+    public native long freeMemory();
+
+    /**
+     * Returns the number of bytes taken by the heap at its current size. The heap may expand or
+     * contract over time, as the number of live objects increases or decreases. See
+     * {@link #maxMemory} for the maximum heap size, and {@link #freeMemory} for an idea of how much
+     * the heap could currently contract.
+     */
+    public native long totalMemory();
+
+    /**
+     * Returns the maximum number of bytes the heap can expand to. See {@link #totalMemory} for the
+     * current number of bytes taken by the heap, and {@link #freeMemory} for the current number of
+     * those bytes actually used by live objects.
      */
     public native long maxMemory();
 }

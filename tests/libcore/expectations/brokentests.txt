@@ -8,14 +8,14 @@
   bug: 5834665
 },
 {
-  description: "libcore.java.net.URLConnectionTest#testServerShutdownInput fails on ICL27 mysid-userdebug",
-  name: "libcore.java.net.URLConnectionTest#testServerShutdownInput",
-  bug: 5534202
+  description: "FIONREAD/SIOCINQ returns the wrong result on sockets (5731252 is the root cause of 5534202)",
+  name: "libcore.java.net.SocketTest#testAvailable",
+  bug: 5731252
 },
 {
-  description: "libcore.java.security.KeyPairGeneratorTest long test is too long",
-  name: "libcore.java.security.KeyPairGeneratorTest#test_getInstance",
-  bug: 5513723
+  description: "libcore.java.net.URLConnectionTest#testServerShutdownInput fails on ICL27 mysid-userdebug (5534202 is caused by 5731252)",
+  name: "libcore.java.net.URLConnectionTest#testServerShutdownInput",
+  bug: 5534202
 },
 {
   description: "Support digest authentication in HttpURLConnection",
@@ -543,17 +543,6 @@
   substring: "GMT-07:00"
 },
 {
-  description: "These harmony tests are broken. The RI doesn't ship with es__TRADITIONAL, so
-                they have incorrect expectations.
-                http://b/2608750",
-  result: EXEC_FAILED,
-  names: [
-    "org.apache.harmony.text.tests.java.text.RuleBasedCollatorTest#testGetCollationElementIteratorCharacterIterator",
-    "org.apache.harmony.text.tests.java.text.RuleBasedCollatorTest#testGetCollationElementIteratorString"
-  ],
-  substring: "expected:<1> but was:<2>"
-},
-{
   description: "This test fails because on Android, RuleBasedCollators default to
                 CANONICAL_DECOMPOSITION, not NO_DECOMPOSITION.",
   result: EXEC_FAILED,
@@ -768,12 +757,6 @@
   substring: "junit.framework.AssertionFailedError: expected:<3> but was:<2>"
 },
 {
-  description: "this is testing exception priorities",
-  result: EXEC_FAILED,
-  name: "org.apache.harmony.nio.tests.java.nio.channels.DatagramChannelTest#testReadByteBuffer_readOnlyBuf",
-  substring: "java.lang.IllegalArgumentException: read-only buffer"
-},
-{
   description: "ICU doesn't provide localized pattern characters, and these tests assume the locale they're using has them.",
   result: EXEC_FAILED,
   name: "org.apache.harmony.text.tests.java.text.SimpleDateFormatTest#test_applyLocalizedPatternLjava_lang_String",
@@ -808,12 +791,6 @@
   result: EXEC_FAILED,
   name: "tests.api.java.nio.charset.UTFCharsetEncoderTest#testSpecificDefaultValue",
   substring: "junit.framework.AssertionFailedError: expected:<1.1> but was:<2.0>"
-},
-{
-  description: "We don't permit runtime switching of the default charset (and neither does the RI)",
-  result: EXEC_FAILED,
-  name: "org.apache.harmony.nio_char.tests.java.nio.charset.CharsetTest#test_defaultCharset",
-  substring: "expected:<ISO-8859-1> but was:<UTF-8>"
 },
 {
   description: "this test needs external interaction",
@@ -883,15 +860,6 @@
     "org.apache.harmony.luni.tests.java.util.FormatterTest#test_formatLjava_lang_String$Ljava_lang_Object_Width"
   ],
   substring: "java.util.IllegalFormatFlagsException: %% doesn't take an argument"
-},
-{
-  description: "These tests expect to be able to load resources from the file system",
-  result: EXEC_FAILED,
-  names: [
-    "libcore.java.lang.OldClassTest#test_getResourceAsStreamLjava_lang_String",
-    "libcore.java.lang.OldClassTest#test_getResourceAsStream_withSharpChar",
-    "libcore.java.lang.OldClassTest#test_getResourceLjava_lang_String"
-  ]
 },
 {
   description: "Some tests (ExcludedProxyTest) connect to a public webserver to check that the HTTP client works",

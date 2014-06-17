@@ -18,6 +18,9 @@ package libcore.java.lang;
 
 import junit.framework.TestCase;
 
+/**
+ * Tests that all intrinsic methods are still invokable via reflection.
+ */
 public final class IntrinsicTest extends TestCase {
     public void testString_charAt() throws Exception {
         "hello".charAt(0);
@@ -58,6 +61,32 @@ public final class IntrinsicTest extends TestCase {
         Math.class.getMethod("abs", float.class).invoke(null, 1.0f);
         Math.abs(1.0);
         Math.class.getMethod("abs", double.class).invoke(null, 1.0);
+    }
+
+    public void testStrictMath_abs() throws Exception {
+        StrictMath.abs(1);
+        StrictMath.class.getMethod("abs", int.class).invoke(null, 1);
+        StrictMath.abs(1L);
+        StrictMath.class.getMethod("abs", long.class).invoke(null, 1L);
+        StrictMath.abs(1.0f);
+        StrictMath.class.getMethod("abs", float.class).invoke(null, 1.0f);
+        StrictMath.abs(1.0);
+        StrictMath.class.getMethod("abs", double.class).invoke(null, 1.0);
+    }
+
+    public void testStrictMath_min() throws Exception {
+        StrictMath.min(1, 2);
+        StrictMath.class.getMethod("min", int.class, int.class).invoke(null, 1, 2);
+    }
+
+    public void testStrictMath_max() throws Exception {
+        StrictMath.max(1, 2);
+        StrictMath.class.getMethod("max", int.class, int.class).invoke(null, 1, 2);
+    }
+
+    public void testStrictMath_sqrt() throws Exception {
+        StrictMath.sqrt(2.0);
+        StrictMath.class.getMethod("sqrt", double.class).invoke(null, 2.0);
     }
 
     public void testMath_min() throws Exception {

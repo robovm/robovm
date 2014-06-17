@@ -43,11 +43,11 @@ public class LDAPCertStoreParameters implements CertStoreParameters {
      *             is {@code serverName} is {@code null}.
      */
     public LDAPCertStoreParameters(String serverName, int port) {
+        if (serverName == null) {
+            throw new NullPointerException("serverName == null");
+        }
         this.port = port;
         this.serverName = serverName;
-        if (this.serverName == null) {
-            throw new NullPointerException();
-        }
     }
 
     /**
@@ -71,11 +71,11 @@ public class LDAPCertStoreParameters implements CertStoreParameters {
      *             if {@code serverName} is {@code null}.
      */
     public LDAPCertStoreParameters(String serverName) {
+        if (serverName == null) {
+            throw new NullPointerException("serverName == null");
+        }
         this.port = DEFAULT_LDAP_PORT;
         this.serverName = serverName;
-        if (this.serverName == null) {
-            throw new NullPointerException();
-        }
     }
 
     /**

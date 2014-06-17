@@ -1,11 +1,11 @@
 /*
 *******************************************************************************
-* Copyright (C) 1997-2011, International Business Machines Corporation
+* Copyright (C) 1997-2012, International Business Machines Corporation
 * and others. All Rights Reserved.
 *******************************************************************************
 */
 
-#include <typeinfo>  // for 'typeid' to work
+#include "utypeinfo.h"  // for 'typeid' to work
 
 #include "unicode/rbnf.h"
 
@@ -58,10 +58,6 @@ static const UChar gSemiPercent[] =
 #define kHalfMaxDouble (double)(1 << kSomeNumberOfBitsDiv2)
 #define kMaxDouble (kHalfMaxDouble * kHalfMaxDouble)
 
-// Temporary workaround - when noParse is true, do noting in parse.
-// TODO: We need a real fix - see #6895/#6896
-static const char *NO_SPELLOUT_PARSE_LANGUAGES[] = { "ga", NULL };
-
 U_NAMESPACE_BEGIN
 
 UOBJECT_DEFINE_RTTI_IMPLEMENTATION(RuleBasedNumberFormat)
@@ -75,7 +71,7 @@ The RTTI code was also removed due to lack of code coverage.
 */
 class LocalizationInfo : public UMemory {
 protected:
-    virtual ~LocalizationInfo() {}
+    virtual ~LocalizationInfo();
     uint32_t refcount;
     
 public:
@@ -108,6 +104,8 @@ public:
 //    virtual UClassID getDynamicClassID() const = 0;
 //    static UClassID getStaticClassID(void);
 };
+
+LocalizationInfo::~LocalizationInfo() {}
 
 //UOBJECT_DEFINE_ABSTRACT_RTTI_IMPLEMENTATION(LocalizationInfo)
 
@@ -651,6 +649,8 @@ RuleBasedNumberFormat::RuleBasedNumberFormat(const UnicodeString& description,
                                              const UnicodeString& locs,
                                              const Locale& alocale, UParseError& perror, UErrorCode& status)
   : ruleSets(NULL)
+  , ruleSetDescriptions(NULL)
+  , numRuleSets(0)
   , defaultRuleSet(NULL)
   , locale(alocale)
   , collator(NULL)
@@ -658,7 +658,6 @@ RuleBasedNumberFormat::RuleBasedNumberFormat(const UnicodeString& description,
   , lenient(FALSE)
   , lenientParseRules(NULL)
   , localizations(NULL)
-  , noParse(FALSE) //TODO: to be removed after #6895
 {
   LocalizationInfo* locinfo = StringLocalizationInfo::create(locs, perror, status);
   init(description, locinfo, perror, status);
@@ -668,6 +667,8 @@ RuleBasedNumberFormat::RuleBasedNumberFormat(const UnicodeString& description,
                                              const UnicodeString& locs,
                                              UParseError& perror, UErrorCode& status)
   : ruleSets(NULL)
+  , ruleSetDescriptions(NULL)
+  , numRuleSets(0)
   , defaultRuleSet(NULL)
   , locale(Locale::getDefault())
   , collator(NULL)
@@ -675,7 +676,6 @@ RuleBasedNumberFormat::RuleBasedNumberFormat(const UnicodeString& description,
   , lenient(FALSE)
   , lenientParseRules(NULL)
   , localizations(NULL)
-  , noParse(FALSE) //TODO: to be removed after #6895
 {
   LocalizationInfo* locinfo = StringLocalizationInfo::create(locs, perror, status);
   init(description, locinfo, perror, status);
@@ -685,6 +685,8 @@ RuleBasedNumberFormat::RuleBasedNumberFormat(const UnicodeString& description,
                                              LocalizationInfo* info,
                                              const Locale& alocale, UParseError& perror, UErrorCode& status)
   : ruleSets(NULL)
+  , ruleSetDescriptions(NULL)
+  , numRuleSets(0)
   , defaultRuleSet(NULL)
   , locale(alocale)
   , collator(NULL)
@@ -692,7 +694,6 @@ RuleBasedNumberFormat::RuleBasedNumberFormat(const UnicodeString& description,
   , lenient(FALSE)
   , lenientParseRules(NULL)
   , localizations(NULL)
-  , noParse(FALSE) //TODO: to be removed after #6895
 {
   init(description, info, perror, status);
 }
@@ -701,6 +702,8 @@ RuleBasedNumberFormat::RuleBasedNumberFormat(const UnicodeString& description,
                          UParseError& perror, 
                          UErrorCode& status) 
   : ruleSets(NULL)
+  , ruleSetDescriptions(NULL)
+  , numRuleSets(0)
   , defaultRuleSet(NULL)
   , locale(Locale::getDefault())
   , collator(NULL)
@@ -708,7 +711,6 @@ RuleBasedNumberFormat::RuleBasedNumberFormat(const UnicodeString& description,
   , lenient(FALSE)
   , lenientParseRules(NULL)
   , localizations(NULL)
-  , noParse(FALSE) //TODO: to be removed after #6895
 {
     init(description, NULL, perror, status);
 }
@@ -718,6 +720,8 @@ RuleBasedNumberFormat::RuleBasedNumberFormat(const UnicodeString& description,
                          UParseError& perror, 
                          UErrorCode& status) 
   : ruleSets(NULL)
+  , ruleSetDescriptions(NULL)
+  , numRuleSets(0)
   , defaultRuleSet(NULL)
   , locale(aLocale)
   , collator(NULL)
@@ -725,13 +729,14 @@ RuleBasedNumberFormat::RuleBasedNumberFormat(const UnicodeString& description,
   , lenient(FALSE)
   , lenientParseRules(NULL)
   , localizations(NULL)
-  , noParse(FALSE) //TODO: to be removed after #6895
 {
     init(description, NULL, perror, status);
 }
 
 RuleBasedNumberFormat::RuleBasedNumberFormat(URBNFRuleSetTag tag, const Locale& alocale, UErrorCode& status)
   : ruleSets(NULL)
+  , ruleSetDescriptions(NULL)
+  , numRuleSets(0)
   , defaultRuleSet(NULL)
   , locale(alocale)
   , collator(NULL)
@@ -757,7 +762,6 @@ RuleBasedNumberFormat::RuleBasedNumberFormat(URBNFRuleSetTag tag, const Locale& 
     // TODO: read localization info from resource
     LocalizationInfo* locinfo = NULL;
 
-    int32_t len = 0;
     UResourceBundle* nfrb = ures_open(U_ICUDATA_RBNF, locale.getName(), &status);
     if (U_SUCCESS(status)) {
         setLocaleIDs(ures_getLocaleByType(nfrb, ULOC_VALID_LOCALE, &status),
@@ -773,29 +777,14 @@ RuleBasedNumberFormat::RuleBasedNumberFormat(URBNFRuleSetTag tag, const Locale& 
             ures_close(nfrb);
             return;
         }
-        
+
         UnicodeString desc;
         while (ures_hasNext(ruleSets)) {
-           const UChar* currentString = ures_getNextString(ruleSets,&len,NULL,&status);
-           desc.append(currentString);
+           desc.append(ures_getNextUnicodeString(ruleSets,NULL,&status));
         }
         UParseError perror;
-        
 
         init (desc, locinfo, perror, status);
-
-        //TODO: we need a real fix - see #6895 / #6896
-        noParse = FALSE;
-        if (tag == URBNF_SPELLOUT) {
-            const char *lang = alocale.getLanguage();
-            for (int32_t i = 0; NO_SPELLOUT_PARSE_LANGUAGES[i] != NULL; i++) {
-                if (uprv_strcmp(lang, NO_SPELLOUT_PARSE_LANGUAGES[i]) == 0) {
-                    noParse = TRUE;
-                    break;
-                }
-            }
-        }
-        //TODO: end
 
         ures_close(ruleSets);
         ures_close(rbnfRules);
@@ -806,6 +795,8 @@ RuleBasedNumberFormat::RuleBasedNumberFormat(URBNFRuleSetTag tag, const Locale& 
 RuleBasedNumberFormat::RuleBasedNumberFormat(const RuleBasedNumberFormat& rhs)
   : NumberFormat(rhs)
   , ruleSets(NULL)
+  , ruleSetDescriptions(NULL)
+  , numRuleSets(0)
   , defaultRuleSet(NULL)
   , locale(rhs.locale)
   , collator(NULL)
@@ -830,9 +821,6 @@ RuleBasedNumberFormat::operator=(const RuleBasedNumberFormat& rhs)
     UnicodeString rules = rhs.getRules();
     UParseError perror;
     init(rules, rhs.localizations ? rhs.localizations->ref() : NULL, perror, status);
-
-    //TODO: remove below when we fix the parse bug - See #6895 / #6896
-    noParse = rhs.noParse;
 
     return *this;
 }
@@ -860,9 +848,6 @@ RuleBasedNumberFormat::clone(void) const
         result = 0;
     } else {
         result->lenient = lenient;
-
-        //TODO: remove below when we fix the parse bug - See #6895 / #6896
-        result->noParse = noParse;
     }
     return result;
 }
@@ -1089,7 +1074,7 @@ RuleBasedNumberFormat::format(int32_t number,
 {
     // return format((int64_t)number, ruleSetName, toAppendTo, pos, status);
     if (U_SUCCESS(status)) {
-        if (ruleSetName.indexOf(gPercentPercent) == 0) {
+        if (ruleSetName.indexOf(gPercentPercent, 2, 0) == 0) {
             // throw new IllegalArgumentException("Can't use internal rule set");
             status = U_ILLEGAL_ARGUMENT_ERROR;
         } else {
@@ -1111,7 +1096,7 @@ RuleBasedNumberFormat::format(int64_t number,
                               UErrorCode& status) const
 {
     if (U_SUCCESS(status)) {
-        if (ruleSetName.indexOf(gPercentPercent) == 0) {
+        if (ruleSetName.indexOf(gPercentPercent, 2, 0) == 0) {
             // throw new IllegalArgumentException("Can't use internal rule set");
             status = U_ILLEGAL_ARGUMENT_ERROR;
         } else {
@@ -1143,7 +1128,7 @@ RuleBasedNumberFormat::format(double number,
                               UErrorCode& status) const
 {
     if (U_SUCCESS(status)) {
-        if (ruleSetName.indexOf(gPercentPercent) == 0) {
+        if (ruleSetName.indexOf(gPercentPercent, 2, 0) == 0) {
             // throw new IllegalArgumentException("Can't use internal rule set");
             status = U_ILLEGAL_ARGUMENT_ERROR;
         } else {
@@ -1161,13 +1146,6 @@ RuleBasedNumberFormat::parse(const UnicodeString& text,
                              Formattable& result,
                              ParsePosition& parsePosition) const
 {
-    //TODO: We need a real fix.  See #6895 / #6896
-    if (noParse) {
-        // skip parsing
-        parsePosition.setErrorIndex(0);
-        return;
-    }
-
     if (!ruleSets) {
         parsePosition.setErrorIndex(0);
         return;
@@ -1324,7 +1302,7 @@ RuleBasedNumberFormat::init(const UnicodeString& rules, LocalizationInfo* locali
     // is, pull them out into our temporary holding place for them,
     // and delete them from the description before the real desciption-
     // parsing code sees them
-    int32_t lp = description.indexOf(gLenientParse);
+    int32_t lp = description.indexOf(gLenientParse, -1, 0);
     if (lp != -1) {
         // we've got to make sure we're not in the middle of a rule
         // (where "%%lenient-parse" would actually get treated as
@@ -1333,7 +1311,7 @@ RuleBasedNumberFormat::init(const UnicodeString& rules, LocalizationInfo* locali
             // locate the beginning and end of the actual collation
             // rules (there may be whitespace between the name and
             // the first token in the description)
-            int lpEnd = description.indexOf(gSemiPercent, lp);
+            int lpEnd = description.indexOf(gSemiPercent, 2, lp);
 
             if (lpEnd == -1) {
                 lpEnd = description.length() - 1;
@@ -1360,8 +1338,8 @@ RuleBasedNumberFormat::init(const UnicodeString& rules, LocalizationInfo* locali
     // pre-flight parsing the description and count the number of
     // rule sets (";%" marks the end of one rule set and the beginning
     // of the next)
-    int numRuleSets = 0;
-    for (int32_t p = description.indexOf(gSemiPercent); p != -1; p = description.indexOf(gSemiPercent, p)) {
+    numRuleSets = 0;
+    for (int32_t p = description.indexOf(gSemiPercent, 2, 0); p != -1; p = description.indexOf(gSemiPercent, 2, p)) {
         ++numRuleSets;
         ++p;
     }
@@ -1390,7 +1368,8 @@ RuleBasedNumberFormat::init(const UnicodeString& rules, LocalizationInfo* locali
         status = U_ILLEGAL_ARGUMENT_ERROR;
         return;
     }
-    UnicodeString* ruleSetDescriptions = new UnicodeString[numRuleSets];
+
+    ruleSetDescriptions = new UnicodeString[numRuleSets];
     if (ruleSetDescriptions == 0) {
         status = U_MEMORY_ALLOCATION_ERROR;
         return;
@@ -1399,12 +1378,12 @@ RuleBasedNumberFormat::init(const UnicodeString& rules, LocalizationInfo* locali
     {
         int curRuleSet = 0;
         int32_t start = 0;
-        for (int32_t p = description.indexOf(gSemiPercent); p != -1; p = description.indexOf(gSemiPercent, start)) {
+        for (int32_t p = description.indexOf(gSemiPercent, 2, 0); p != -1; p = description.indexOf(gSemiPercent, 2, start)) {
             ruleSetDescriptions[curRuleSet].setTo(description, start, p + 1 - start);
             ruleSets[curRuleSet] = new NFRuleSet(ruleSetDescriptions, curRuleSet, status);
             if (ruleSets[curRuleSet] == 0) {
                 status = U_MEMORY_ALLOCATION_ERROR;
-                goto cleanup;
+                return;
             }
             ++curRuleSet;
             start = p + 1;
@@ -1413,7 +1392,7 @@ RuleBasedNumberFormat::init(const UnicodeString& rules, LocalizationInfo* locali
         ruleSets[curRuleSet] = new NFRuleSet(ruleSetDescriptions, curRuleSet, status);
         if (ruleSets[curRuleSet] == 0) {
             status = U_MEMORY_ALLOCATION_ERROR;
-            goto cleanup;
+            return;
         }
     }
 
@@ -1460,9 +1439,6 @@ RuleBasedNumberFormat::init(const UnicodeString& rules, LocalizationInfo* locali
     } else {
         defaultRuleSet = getDefaultRuleSet();
     }
-
-cleanup:
-    delete[] ruleSetDescriptions;
 }
 
 void
@@ -1515,6 +1491,10 @@ RuleBasedNumberFormat::dispose()
         }
         uprv_free(ruleSets);
         ruleSets = NULL;
+    }
+
+    if (ruleSetDescriptions) {
+        delete [] ruleSetDescriptions;
     }
 
 #if !UCONFIG_NO_COLLATION
@@ -1615,6 +1595,37 @@ RuleBasedNumberFormat::getDecimalFormatSymbols() const
         }
     }
     return decimalFormatSymbols;
+}
+
+// De-owning the current localized symbols and adopt the new symbols.
+void
+RuleBasedNumberFormat::adoptDecimalFormatSymbols(DecimalFormatSymbols* symbolsToAdopt)
+{
+    if (symbolsToAdopt == NULL) {
+        return; // do not allow caller to set decimalFormatSymbols to NULL
+    }
+
+    if (decimalFormatSymbols != NULL) {
+        delete decimalFormatSymbols;
+    }
+
+    decimalFormatSymbols = symbolsToAdopt;
+
+    {
+        // Apply the new decimalFormatSymbols by reparsing the rulesets
+        UErrorCode status = U_ZERO_ERROR;
+
+        for (int32_t i = 0; i < numRuleSets; i++) {
+            ruleSets[i]->parseRules(ruleSetDescriptions[i], this, status);
+        }
+    }
+}
+
+// Setting the symbols is equlivalent to adopting a newly created localized symbols.
+void
+RuleBasedNumberFormat::setDecimalFormatSymbols(const DecimalFormatSymbols& symbols)
+{
+    adoptDecimalFormatSymbols(new DecimalFormatSymbols(symbols));
 }
 
 U_NAMESPACE_END

@@ -38,7 +38,6 @@ import java.nio.channels.IllegalBlockingModeException;
 import java.nio.channels.SocketChannel;
 import java.security.Permission;
 import tests.support.Support_Configuration;
-import tests.support.Support_PortManager;
 
 public class OldSocketTest extends OldSocketTestCase {
 
@@ -115,17 +114,15 @@ public class OldSocketTest extends OldSocketTestCase {
 
     public void test_ConstructorLjava_lang_StringILjava_net_InetAddressI1() throws IOException {
         int sport = startServer("Cons String,I,InetAddress,I");
-        int portNumber = Support_PortManager.getNextPort();
         s = new Socket(InetAddress.getLocalHost().getHostName(), sport,
-                InetAddress.getLocalHost(), portNumber);
+                InetAddress.getLocalHost(), 0);
         assertTrue("Failed to create socket", s.getPort() == sport);
     }
 
     public void test_ConstructorLjava_lang_StringILjava_net_InetAddressI2() throws IOException {
-        int testPort = Support_PortManager.getNextPort();
-        Socket s1 = new Socket("www.google.com", 80, null, testPort);
+        Socket s1 = new Socket("www.google.com", 80, null, 0);
         try {
-            Socket s2 = new Socket("www.google.com", 80, null, testPort);
+            Socket s2 = new Socket("www.google.com", 80, null, s1.getLocalPort());
             try {
                 s2.close();
             } catch (IOException ignored) {
@@ -162,10 +159,8 @@ public class OldSocketTest extends OldSocketTestCase {
         // Test for method java.net.Socket(java.net.InetAddress, int,
         // java.net.InetAddress, int)
         int sport = startServer("Cons InetAddress,I,InetAddress,I");
-        int portNumber = Support_PortManager.getNextPort();
         s = new Socket(InetAddress.getLocalHost().getHostName(), sport,
-                InetAddress.getLocalHost(), portNumber);
-        assertTrue("Failed to create socket", s.getLocalPort() == portNumber);
+                InetAddress.getLocalHost(), 0);
     }
 
     public void test_ConstructorLjava_net_InetAddressIZ() throws IOException {
@@ -180,8 +175,7 @@ public class OldSocketTest extends OldSocketTestCase {
     public void test_close() throws IOException {
         // Test for method void java.net.Socket.close()
         int sport = startServer("SServer close");
-        int portNumber = Support_PortManager.getNextPort();
-        s = new Socket(InetAddress.getLocalHost(), sport, null, portNumber);
+        s = new Socket(InetAddress.getLocalHost(), sport, null, 0);
         try {
             s.setSoLinger(false, 100);
         } catch (IOException e) {
@@ -199,8 +193,7 @@ public class OldSocketTest extends OldSocketTestCase {
     public void test_getInetAddress() throws IOException {
         // Test for method java.net.InetAddress java.net.Socket.getInetAddress()
         int sport = startServer("SServer getInetAddress");
-        int portNumber = Support_PortManager.getNextPort();
-        s = new Socket(InetAddress.getLocalHost(), sport, null, portNumber);
+        s = new Socket(InetAddress.getLocalHost(), sport, null, 0);
         assertTrue("Returned incorrect InetAddress", s.getInetAddress().equals(
                 InetAddress.getLocalHost()));
 
@@ -220,9 +213,7 @@ public class OldSocketTest extends OldSocketTestCase {
     public void test_getKeepAlive() {
         try {
             int sport = startServer("SServer getKeepAlive");
-            int portNumber = Support_PortManager.getNextPort();
-            Socket theSocket = new Socket(InetAddress.getLocalHost(), sport,
-                    null, portNumber);
+            Socket theSocket = new Socket(InetAddress.getLocalHost(), sport, null, 0);
             theSocket.setKeepAlive(true);
             assertTrue("getKeepAlive false when it should be true", theSocket
                     .getKeepAlive());
@@ -254,8 +245,7 @@ public class OldSocketTest extends OldSocketTestCase {
         // Test for method java.net.InetAddress
         // java.net.Socket.getLocalAddress()
         int sport = startServer("SServer getLocAddress");
-        int portNumber = Support_PortManager.getNextPort();
-        s = new Socket(InetAddress.getLocalHost(), sport, null, portNumber);
+        s = new Socket(InetAddress.getLocalHost(), sport, null, 0);
         assertEquals("Returned incorrect InetAddress",
                 InetAddress.getLocalHost(), s.getLocalAddress());
 
@@ -271,10 +261,10 @@ public class OldSocketTest extends OldSocketTestCase {
     public void test_getLocalPort() throws IOException {
         // Test for method int java.net.Socket.getLocalPort()
         int sport = startServer("SServer getLocalPort");
-        int portNumber = Support_PortManager.getNextPort();
         s = new Socket(InetAddress.getLocalHost().getHostName(), sport,
-                InetAddress.getLocalHost(), portNumber);
-        assertTrue("Returned incorrect port", s.getLocalPort() == portNumber);
+                InetAddress.getLocalHost(), 0);
+        // There's nothing we can usefully assert about the kernel-assigned port.
+        s.getLocalPort();
     }
 
     @SuppressWarnings("deprecation")
@@ -282,15 +272,13 @@ public class OldSocketTest extends OldSocketTestCase {
         // Test for method java.io.OutputStream
         // java.net.Socket.getOutputStream()
         int sport = startServer("SServer getOutputStream");
-        int portNumber = Support_PortManager.getNextPort();
-        s = new Socket(InetAddress.getLocalHost(), sport, null, portNumber);
+        s = new Socket(InetAddress.getLocalHost(), sport);
         java.io.OutputStream os = s.getOutputStream();
         assertNotNull("Failed to get stream", os);
         os.write(1);
         s.close();
         // Regression test for harmony-2934
-        s = new Socket("127.0.0.1", Support_PortManager.getNextPort(),
-                false);
+        s = new Socket("127.0.0.1", sport, false);
         OutputStream o = s.getOutputStream();
         o.write(1);
         try {
@@ -301,8 +289,7 @@ public class OldSocketTest extends OldSocketTestCase {
         s.close();
 
         // Regression test for harmony-2942
-        s = new Socket("0.0.0.0", Support_PortManager.getNextPort(),
-                false);
+        s = new Socket("0.0.0.0", sport, false);
         o = s.getOutputStream();
         o.write(1);
         try {
@@ -316,18 +303,15 @@ public class OldSocketTest extends OldSocketTestCase {
     public void test_getPort() throws IOException {
         // Test for method int java.net.Socket.getPort()
         int sport = startServer("SServer getPort");
-        int portNumber = Support_PortManager.getNextPort();
-        s = new Socket(InetAddress.getLocalHost(), sport, null, portNumber);
-        assertTrue("Returned incorrect port" + s.getPort(),
-                s.getPort() == sport);
+        s = new Socket(InetAddress.getLocalHost(), sport, null, 0);
+        assertTrue("Returned incorrect port" + s.getPort(), s.getPort() == sport);
     }
 
     public void test_getSoLinger() {
         // Test for method int java.net.Socket.getSoLinger()
         int sport = startServer("SServer getSoLinger");
         try {
-            int portNumber = Support_PortManager.getNextPort();
-            s = new Socket(InetAddress.getLocalHost(), sport, null, portNumber);
+            s = new Socket(InetAddress.getLocalHost(), sport, null, 0);
             s.setSoLinger(true, 200);
             assertEquals("Returned incorrect linger", 200, s.getSoLinger());
             ensureExceptionThrownIfOptionIsUnsupportedOnOS(SO_LINGER);
@@ -337,8 +321,7 @@ public class OldSocketTest extends OldSocketTestCase {
         }
 
         try {
-            int portNumber = Support_PortManager.getNextPort();
-            s = new Socket(InetAddress.getLocalHost(), sport, null, portNumber);
+            s = new Socket(InetAddress.getLocalHost(), sport, null, 0);
             s.close();
             try {
                 s.getSoLinger();
@@ -354,9 +337,7 @@ public class OldSocketTest extends OldSocketTestCase {
     public void test_getReceiveBufferSize() {
         try {
             int sport = startServer("SServer getReceiveBufferSize");
-            int portNumber = Support_PortManager.getNextPort();
-            s = new Socket(InetAddress.getLocalHost().getHostName(), sport,
-                    null, portNumber);
+            s = new Socket(InetAddress.getLocalHost().getHostName(), sport, null, 0);
             s.setReceiveBufferSize(130);
             assertTrue("Incorrect buffer size", s.getReceiveBufferSize() >= 130);
             ensureExceptionThrownIfOptionIsUnsupportedOnOS(SO_RCVBUF);
@@ -381,9 +362,7 @@ public class OldSocketTest extends OldSocketTestCase {
     public void test_getSendBufferSize() {
         int sport = startServer("SServer setSendBufferSize");
         try {
-            int portNumber = Support_PortManager.getNextPort();
-            s = new Socket(InetAddress.getLocalHost().getHostName(), sport,
-                    null, portNumber);
+            s = new Socket(InetAddress.getLocalHost().getHostName(), sport, null, 0);
             s.setSendBufferSize(134);
             assertTrue("Incorrect buffer size", s.getSendBufferSize() >= 134);
             ensureExceptionThrownIfOptionIsUnsupportedOnOS(SO_SNDBUF);
@@ -391,8 +370,7 @@ public class OldSocketTest extends OldSocketTestCase {
             handleException(e, SO_SNDBUF);
         }
         try {
-            int portNumber = Support_PortManager.getNextPort();
-            s = new Socket(InetAddress.getLocalHost(), sport, null, portNumber);
+            s = new Socket(InetAddress.getLocalHost(), sport, null, 0);
             s.close();
             try {
                 s.getSendBufferSize();
@@ -430,8 +408,7 @@ public class OldSocketTest extends OldSocketTestCase {
         // Test for method boolean java.net.Socket.getTcpNoDelay()
         int sport = startServer("SServer getTcpNoDelay");
         try {
-            int portNumber = Support_PortManager.getNextPort();
-            s = new Socket(InetAddress.getLocalHost(), sport, null, portNumber);
+            s = new Socket(InetAddress.getLocalHost(), sport, null, 0);
             boolean bool = !s.getTcpNoDelay();
             s.setTcpNoDelay(bool);
             assertTrue("Failed to get no delay setting: " + s.getTcpNoDelay(),
@@ -442,8 +419,7 @@ public class OldSocketTest extends OldSocketTestCase {
         }
 
         try {
-            int portNumber = Support_PortManager.getNextPort();
-            s = new Socket(InetAddress.getLocalHost(), sport, null, portNumber);
+            s = new Socket(InetAddress.getLocalHost(), sport, null, 0);
             s.close();
             try {
                 s.getTcpNoDelay();
@@ -461,9 +437,7 @@ public class OldSocketTest extends OldSocketTestCase {
         // crashed machines. Just make sure we can set it
         try {
             int sport = startServer("SServer setKeepAlive");
-            int portNumber = Support_PortManager.getNextPort();
-            Socket theSocket = new Socket(InetAddress.getLocalHost(), sport,
-                    null, portNumber);
+            Socket theSocket = new Socket(InetAddress.getLocalHost(), sport, null, 0);
             theSocket.setKeepAlive(true);
             theSocket.setKeepAlive(false);
             ensureExceptionThrownIfOptionIsUnsupportedOnOS(SO_KEEPALIVE);
@@ -509,8 +483,7 @@ public class OldSocketTest extends OldSocketTestCase {
     public void test_setSendBufferSizeI() {
         try {
             int sport = startServer("SServer setSendBufferSizeI");
-            int portNumber = Support_PortManager.getNextPort();
-            s = new Socket(InetAddress.getLocalHost(), sport, null, portNumber);
+            s = new Socket(InetAddress.getLocalHost(), sport, null, 0);
             s.setSendBufferSize(134);
             assertTrue("Incorrect buffer size", s.getSendBufferSize() >= 134);
             ensureExceptionThrownIfOptionIsUnsupportedOnOS(SO_SNDBUF);
@@ -533,8 +506,7 @@ public class OldSocketTest extends OldSocketTestCase {
     public void test_setReceiveBufferSizeI() {
         try {
             int sport = startServer("SServer setReceiveBufferSizeI");
-            int portNumber = Support_PortManager.getNextPort();
-            s = new Socket(InetAddress.getLocalHost(), sport, null, portNumber);
+            s = new Socket(InetAddress.getLocalHost(), sport, null, 0);
             s.setReceiveBufferSize(130);
             assertTrue("Incorrect buffer size", s.getReceiveBufferSize() >= 130);
             ensureExceptionThrownIfOptionIsUnsupportedOnOS(SO_RCVBUF);
@@ -558,8 +530,7 @@ public class OldSocketTest extends OldSocketTestCase {
         // Test for method void java.net.Socket.setSoLinger(boolean, int)
         try {
             int sport = startServer("SServer setSoLingerZI");
-            int portNumber = Support_PortManager.getNextPort();
-            s = new Socket(InetAddress.getLocalHost(), sport, null, portNumber);
+            s = new Socket(InetAddress.getLocalHost(), sport, null, 0);
             s.setSoLinger(true, 500);
             assertEquals("Set incorrect linger", 500, s.getSoLinger());
             ensureExceptionThrownIfOptionIsUnsupportedOnOS(SO_LINGER);
@@ -584,8 +555,7 @@ public class OldSocketTest extends OldSocketTestCase {
         // Test for method void java.net.Socket.setTcpNoDelay(boolean)
         try {
             int sport = startServer("SServer setTcpNoDelayZ");
-            int portNumber = Support_PortManager.getNextPort();
-            s = new Socket(InetAddress.getLocalHost(), sport, null, portNumber);
+            s = new Socket(InetAddress.getLocalHost(), sport, null, 0);
             boolean bool;
             s.setTcpNoDelay(bool = !s.getTcpNoDelay());
             assertTrue("Failed to set no delay setting: " + s.getTcpNoDelay(),
@@ -610,9 +580,8 @@ public class OldSocketTest extends OldSocketTestCase {
     public void test_toString() throws IOException {
         // Test for method java.lang.String java.net.Socket.toString()
         int sport = startServer("SServer toString");
-        int portNumber = Support_PortManager.getNextPort();
         s = new Socket(InetAddress.getLocalHost().getHostName(), sport,
-                InetAddress.getLocalHost(), portNumber);
+                InetAddress.getLocalHost(), 0);
         assertEquals("Socket[address=" + InetAddress.getLocalHost() + ",port=" + s.getPort()
                 + ",localPort=" + s.getLocalPort() + "]", s.toString());
     }
@@ -620,9 +589,8 @@ public class OldSocketTest extends OldSocketTestCase {
     // AndroidOnly: RI returns wrong value for EOF
     public void test_shutdownInput() throws Exception {
         InetAddress addr = InetAddress.getLocalHost();
-        int port = Support_PortManager.getNextPort();
-        ServerSocket serverSocket = new ServerSocket(port, 5, addr);
-        Socket theSocket = new Socket(addr, port);
+        ServerSocket serverSocket = new ServerSocket(0, 5, addr);
+        Socket theSocket = new Socket(addr, serverSocket.getLocalPort());
         Socket servSock = serverSocket.accept();
 
         InputStream theInput = theSocket.getInputStream();
@@ -656,10 +624,8 @@ public class OldSocketTest extends OldSocketTestCase {
     }
 
     public void test_shutdownOutput() throws IOException {
-        InetAddress addr = InetAddress.getLocalHost();
-        int port = Support_PortManager.getNextPort();
-        ServerSocket serverSocket = new ServerSocket(port, 5, addr);
-        Socket theSocket = new Socket(addr, port);
+        ServerSocket serverSocket = new ServerSocket(0, 5);
+        Socket theSocket = new Socket(serverSocket.getInetAddress(), serverSocket.getLocalPort());
         Socket servSock = serverSocket.accept();
 
         InputStream theInput = theSocket.getInputStream();
@@ -692,17 +658,9 @@ public class OldSocketTest extends OldSocketTestCase {
         // set up server connect and then validate that we get the right
         // response for the local address
         int sport = startServer("SServer getLocSocketAddress");
-        int portNumber = Support_PortManager.getNextPort();
-        s = new Socket(InetAddress.getLocalHost(), sport, null, portNumber);
-        assertTrue(
-                "Returned incorrect InetSocketAddress(1):"
-                        + s.getLocalSocketAddress().toString()
-                        + "Expected: "
-                        + (new InetSocketAddress(InetAddress.getLocalHost(),
-                                portNumber)).toString(), s
-                        .getLocalSocketAddress().equals(
-                                new InetSocketAddress(InetAddress
-                                        .getLocalHost(), portNumber)));
+        s = new Socket(InetAddress.getLocalHost(), sport, null, 0);
+        assertEquals(new InetSocketAddress(InetAddress.getLocalHost(), s.getLocalPort()),
+                     s.getLocalSocketAddress());
         s.close();
 
         // now create a socket that is not bound and validate we get the
@@ -713,21 +671,12 @@ public class OldSocketTest extends OldSocketTestCase {
                 theSocket.getLocalSocketAddress());
 
         // now bind the socket and make sure we get the right answer
-        portNumber = Support_PortManager.getNextPort();
-        theSocket.bind(new InetSocketAddress(InetAddress.getLocalHost(),
-                portNumber));
-        assertTrue(
-                "Returned incorrect InetSocketAddress(2):"
-                        + theSocket.getLocalSocketAddress().toString()
-                        + "Expected: "
-                        + (new InetSocketAddress(InetAddress.getLocalHost(),
-                                portNumber)).toString(), theSocket
-                        .getLocalSocketAddress().equals(
-                                new InetSocketAddress(InetAddress
-                                        .getLocalHost(), portNumber)));
+        theSocket.bind(new InetSocketAddress(InetAddress.getLocalHost(), 0));
+        assertEquals(new InetSocketAddress(InetAddress.getLocalHost(), theSocket.getLocalPort()),
+                     theSocket.getLocalSocketAddress());
         theSocket.close();
 
-        // now validate that behaviour when the any address is returned
+        // now validate that behavior when the any address is returned
         s = new Socket();
         s.bind(new InetSocketAddress(InetAddress.getByName("0.0.0.0"), 0));
 
@@ -747,8 +696,7 @@ public class OldSocketTest extends OldSocketTestCase {
         // set up server connect and then validate that we get the right
         // response for the remote address
         int sport = startServer("SServer getLocRemoteAddress");
-        int portNumber = Support_PortManager.getNextPort();
-        s = new Socket(InetAddress.getLocalHost(), sport, null, portNumber);
+        s = new Socket(InetAddress.getLocalHost(), sport, null, 0);
         assertTrue("Returned incorrect InetSocketAddress(1):"
                 + s.getLocalSocketAddress().toString(),
                 s.getRemoteSocketAddress()
@@ -760,9 +708,7 @@ public class OldSocketTest extends OldSocketTestCase {
         // now create one that is not connect and validate that we get the
         // right answer
         Socket theSocket = new Socket();
-        portNumber = Support_PortManager.getNextPort();
-        theSocket.bind(new InetSocketAddress(InetAddress.getLocalHost(),
-                portNumber));
+        theSocket.bind(new InetSocketAddress(InetAddress.getLocalHost(), 0));
 
         assertNull("Returned incorrect InetSocketAddress -unconnected socket:"
                 + "Expected: NULL", theSocket.getRemoteSocketAddress());
@@ -781,10 +727,8 @@ public class OldSocketTest extends OldSocketTestCase {
     }
 
     public void test_isBound() throws IOException {
-        InetAddress addr = InetAddress.getLocalHost();
-        int port = Support_PortManager.getNextPort();
-        ServerSocket serverSocket = new ServerSocket(port, 5, addr);
-        Socket theSocket = new Socket(addr, port);
+        ServerSocket serverSocket = new ServerSocket(0, 5);
+        Socket theSocket = new Socket(serverSocket.getInetAddress(), serverSocket.getLocalPort());
         Socket servSock = serverSocket.accept();
         assertTrue("Socket indicated  not bound when it should be (1)",
                 theSocket.isBound());
@@ -793,14 +737,11 @@ public class OldSocketTest extends OldSocketTestCase {
 
         // now do it with the new constructors and revalidate. Connect causes
         // the socket to be bound
-        InetSocketAddress theAddress = new InetSocketAddress(InetAddress
-                .getLocalHost(), Support_PortManager.getNextPort());
         theSocket = new Socket();
         assertFalse("Socket indicated bound when it was not (2)", theSocket
                 .isBound());
-        serverSocket = new ServerSocket();
-        serverSocket.bind(theAddress);
-        theSocket.connect(theAddress);
+        serverSocket = new ServerSocket(0, 5);
+        theSocket.connect(serverSocket.getLocalSocketAddress());
         servSock = serverSocket.accept();
         assertTrue("Socket indicated not bound when it should be (2)",
                 theSocket.isBound());
@@ -808,12 +749,10 @@ public class OldSocketTest extends OldSocketTestCase {
         serverSocket.close();
 
         // now test when we bind explicitly
-        InetSocketAddress theLocalAddress = new InetSocketAddress(InetAddress
-                .getLocalHost(), Support_PortManager.getNextPort());
         theSocket = new Socket();
         assertFalse("Socket indicated bound when it was not (3)", theSocket
                 .isBound());
-        theSocket.bind(theLocalAddress);
+        theSocket.bind(null);
         assertTrue("Socket indicated not bound when it should be (3a)",
                 theSocket.isBound());
         theSocket.close();
@@ -822,10 +761,8 @@ public class OldSocketTest extends OldSocketTestCase {
     }
 
     public void test_isConnected() throws IOException {
-        InetAddress addr = InetAddress.getLocalHost();
-        int port = Support_PortManager.getNextPort();
-        ServerSocket serverSocket = new ServerSocket(port, 5, addr);
-        Socket theSocket = new Socket(addr, port);
+        ServerSocket serverSocket = new ServerSocket(0, 5);
+        Socket theSocket = new Socket(serverSocket.getInetAddress(), serverSocket.getLocalPort());
         Socket servSock = serverSocket.accept();
         assertTrue("Socket indicated  not connected when it should be",
                 theSocket.isConnected());
@@ -833,14 +770,11 @@ public class OldSocketTest extends OldSocketTestCase {
         serverSocket.close();
 
         // now do it with the new constructors and revalidate
-        InetSocketAddress theAddress = new InetSocketAddress(InetAddress
-                .getLocalHost(), Support_PortManager.getNextPort());
         theSocket = new Socket();
         assertFalse("Socket indicated connected when it was not", theSocket
                 .isConnected());
-        serverSocket = new ServerSocket();
-        serverSocket.bind(theAddress);
-        theSocket.connect(theAddress);
+        serverSocket = new ServerSocket(0, 5);
+        theSocket.connect(serverSocket.getLocalSocketAddress());
         servSock = serverSocket.accept();
         assertTrue("Socket indicated  not connected when it should be",
                 theSocket.isConnected());
@@ -849,10 +783,8 @@ public class OldSocketTest extends OldSocketTestCase {
     }
 
     public void test_isClosed() throws IOException {
-        InetAddress addr = InetAddress.getLocalHost();
-        int port = Support_PortManager.getNextPort();
-        ServerSocket serverSocket = new ServerSocket(port, 5, addr);
-        Socket theSocket = new Socket(addr, port);
+        ServerSocket serverSocket = new ServerSocket(0, 5);
+        Socket theSocket = new Socket(serverSocket.getInetAddress(), serverSocket.getLocalPort());
         Socket servSock = serverSocket.accept();
 
         // validate isClosed returns expected values
@@ -862,7 +794,7 @@ public class OldSocketTest extends OldSocketTestCase {
         assertTrue("Socket should indicate it is closed(1):", theSocket
                 .isClosed());
 
-        theSocket = new Socket(addr, port);
+        theSocket = new Socket(serverSocket.getInetAddress(), serverSocket.getLocalPort());
         assertFalse("Socket should indicate it is not closed(2):", theSocket
                 .isClosed());
         theSocket.close();
@@ -891,7 +823,7 @@ public class OldSocketTest extends OldSocketTestCase {
         try {
             theSocket.bind(new InetSocketAddress(InetAddress
                     .getByAddress(Support_Configuration.nonLocalAddressBytes),
-                    Support_PortManager.getNextPort()));
+                    80));
             fail("No exception when binding to bad address:"
                    + theSocket.getLocalSocketAddress().toString());
         } catch (IOException ex) {
@@ -900,39 +832,21 @@ public class OldSocketTest extends OldSocketTestCase {
 
         // now create a socket that is not bound and then bind it
         theSocket = new Socket();
-        int portNumber = Support_PortManager.getNextPort();
         theSocket.bind(new InetSocketAddress(InetAddress.getLocalHost(),
-                portNumber));
+                0));
 
         // validate that the localSocketAddress reflects the address we
         // bound to
-        assertTrue(
-                "Local address not correct after bind:"
-                        + theSocket.getLocalSocketAddress().toString()
-                        + " Expected: "
-                        + (new InetSocketAddress(InetAddress.getLocalHost(),
-                                portNumber)).toString(), theSocket
-                        .getLocalSocketAddress().equals(
-                                new InetSocketAddress(InetAddress
-                                        .getLocalHost(), portNumber)));
+        assertEquals(new InetSocketAddress(InetAddress.getLocalHost(), theSocket.getLocalPort()),
+                     theSocket.getLocalSocketAddress());
 
         // make sure we can now connect and that connections appear to come
         // from the address we bound to.
-        InetSocketAddress theAddress = new InetSocketAddress(InetAddress
-                .getLocalHost(), Support_PortManager.getNextPort());
-        ServerSocket serverSocket = new ServerSocket();
-        serverSocket.bind(theAddress);
-        theSocket.connect(theAddress);
+        ServerSocket serverSocket = new ServerSocket(0, 5);
+        theSocket.connect(serverSocket.getLocalSocketAddress());
         Socket servSock = serverSocket.accept();
-        assertTrue(
-                "Returned Remote address from server connected to does not match expected local address:"
-                        + servSock.getRemoteSocketAddress().toString()
-                        + " Expected: "
-                        + (new InetSocketAddress(InetAddress.getLocalHost(),
-                                portNumber)).toString(), servSock
-                        .getRemoteSocketAddress().equals(
-                                new InetSocketAddress(InetAddress
-                                        .getLocalHost(), portNumber)));
+        assertEquals(new InetSocketAddress(InetAddress.getLocalHost(), theSocket.getLocalPort()),
+                     servSock.getRemoteSocketAddress());
         theSocket.close();
         servSock.close();
         serverSocket.close();
@@ -951,10 +865,8 @@ public class OldSocketTest extends OldSocketTestCase {
         theSocket = new Socket();
         Socket theSocket2 = new Socket();
         try {
-            theAddress = new InetSocketAddress(InetAddress.getLocalHost(),
-                    Support_PortManager.getNextPort());
-            theSocket.bind(theAddress);
-            theSocket2.bind(theAddress);
+            theSocket.bind(null);
+            theSocket2.bind(theSocket.getLocalSocketAddress());
             fail("No exception binding to address that is not available");
         } catch (IOException ex) {
         }
@@ -1020,7 +932,7 @@ public class OldSocketTest extends OldSocketTestCase {
         }
 
         // start by validating the error checks
-        int portNumber = Support_PortManager.getNextPort();
+        int portNumber = 0;
         Socket theSocket = null;
         ServerSocket serverSocket = null;
         SocketAddress theAddress = null;
@@ -1084,17 +996,8 @@ public class OldSocketTest extends OldSocketTestCase {
 
         // now validate that we can actually connect when somebody is listening
         theSocket = new Socket();
-        serverSocket = new ServerSocket();
-        serverSocket.bind(theAddress);
-        theSocket.connect(theAddress);
-        theSocket.close();
-        serverSocket.close();
-
-        // now validate that we can actually connect when somebody is listening
-        theSocket = new Socket();
-        serverSocket = new ServerSocket();
-        serverSocket.bind(theAddress);
-        theSocket.connect(theAddress);
+        serverSocket = new ServerSocket(0, 5);
+        theSocket.connect(serverSocket.getLocalSocketAddress());
 
         // validate that when a socket is connected that it answers
         // correctly to related queries
@@ -1119,10 +1022,9 @@ public class OldSocketTest extends OldSocketTestCase {
         // are already connected
         try {
             theSocket = new Socket();
-            serverSocket = new ServerSocket();
-            serverSocket.bind(theAddress);
-            theSocket.connect(theAddress);
-            theSocket.connect(theAddress);
+            serverSocket = new ServerSocket(0, 5);
+            theSocket.connect(serverSocket.getLocalSocketAddress());
+            theSocket.connect(serverSocket.getLocalSocketAddress());
             theSocket.close();
             serverSocket.close();
             fail("No exception when we try to connect on a connected socket: ");
@@ -1145,9 +1047,8 @@ public class OldSocketTest extends OldSocketTestCase {
 
         // now validate that connected socket can be used to read/write
         theSocket = new Socket();
-        serverSocket = new ServerSocket();
-        serverSocket.bind(theAddress);
-        theSocket.connect(theAddress);
+        serverSocket = new ServerSocket(0, 5);
+        theSocket.connect(serverSocket.getLocalSocketAddress());
         Socket servSock = serverSocket.accept();
         InputStream theInput = theSocket.getInputStream();
         OutputStream theOutput = servSock.getOutputStream();
@@ -1197,10 +1098,8 @@ public class OldSocketTest extends OldSocketTestCase {
         SocketChannel channel = SocketChannel.open();
         channel.configureBlocking(false);
         Socket socket = channel.socket();
-        int port = Support_PortManager.getNextPort();
         try {
-            socket.connect( new InetSocketAddress(InetAddress.getLocalHost(),
-                    Support_PortManager.getNextPort()));
+            socket.connect(serverSocket.getLocalSocketAddress());
             fail("IllegalBlockingModeException was not thrown.");
         } catch (IllegalBlockingModeException expected) {
         }
@@ -1263,28 +1162,14 @@ public class OldSocketTest extends OldSocketTestCase {
         }
 
         // start by validating the error checks
-        int portNumber = Support_PortManager.getNextPort();
+        byte[] theBytes = { 0, 0, 0, 0 };
+        SocketAddress theAddress = new InetSocketAddress(InetAddress.getLocalHost(), 0);
+        SocketAddress nonConnectableAddress = new InetSocketAddress(InetAddress.getByAddress(theBytes), 0);
+        SocketAddress nonReachableAddress = new InetSocketAddress(InetAddress.getByName(Support_Configuration.ResolvedNotExistingHost), 0);
+        SocketAddress invalidType = new mySocketAddress();
+
         Socket theSocket = null;
         ServerSocket serverSocket = null;
-        SocketAddress theAddress = null;
-        SocketAddress nonConnectableAddress = null;
-        SocketAddress nonReachableAddress = null;
-        SocketAddress nonListeningAddress = null;
-        SocketAddress invalidType = null;
-        byte[] theBytes = { 0, 0, 0, 0 };
-
-        theAddress = new InetSocketAddress(InetAddress.getLocalHost(),
-                portNumber);
-        nonConnectableAddress = new InetSocketAddress(InetAddress
-                .getByAddress(theBytes), portNumber);
-        nonReachableAddress = new InetSocketAddress(InetAddress
-                .getByName(Support_Configuration.ResolvedNotExistingHost),
-                portNumber);
-        // make sure we get another port
-        Thread.sleep(7000);
-        nonListeningAddress = new InetSocketAddress(InetAddress.getLocalHost(),
-                Support_PortManager.getNextPort());
-        invalidType = new mySocketAddress();
 
         try {
             theSocket = new Socket();
@@ -1340,9 +1225,8 @@ public class OldSocketTest extends OldSocketTestCase {
 
         // now validate that we can actually connect when somebody is listening
         theSocket = new Socket();
-        serverSocket = new ServerSocket();
-        serverSocket.bind(theAddress);
-        theSocket.connect(theAddress, 0);
+        serverSocket = new ServerSocket(0, 5);
+        theSocket.connect(serverSocket.getLocalSocketAddress());
         theSocket.close();
         serverSocket.close();
 
@@ -1350,7 +1234,7 @@ public class OldSocketTest extends OldSocketTestCase {
         // an address on which nobody is listening
         try {
             theSocket = new Socket();
-            theSocket.connect(nonListeningAddress, 100000);
+            theSocket.connect(new InetSocketAddress(InetAddress.getLocalHost(), 80), 100000);
             theSocket.close();
             fail("No exception when connecting to address nobody listening on: ");
         } catch (Exception e) {
@@ -1390,12 +1274,9 @@ public class OldSocketTest extends OldSocketTestCase {
         }
 
         // now validate that we can actually connect when somebody is listening
-        new InetSocketAddress(InetAddress.getLocalHost(), Support_PortManager
-                .getNextPort());
         theSocket = new Socket();
-        serverSocket = new ServerSocket();
-        serverSocket.bind(theAddress);
-        theSocket.connect(theAddress, 100000);
+        serverSocket = new ServerSocket(0, 5);
+        theSocket.connect(serverSocket.getLocalSocketAddress());
 
         // validate that when a socket is connected that it answers
         // correctly to related queries
@@ -1419,8 +1300,6 @@ public class OldSocketTest extends OldSocketTestCase {
         // now validate that we get the right exception if we connect when we
         // are already connected
         try {
-            new InetSocketAddress(InetAddress.getLocalHost(),
-                    Support_PortManager.getNextPort());
             theSocket = new Socket();
             serverSocket = new ServerSocket();
             serverSocket.bind(theAddress);
@@ -1447,12 +1326,9 @@ public class OldSocketTest extends OldSocketTestCase {
         }
 
         // now validate that connected socket can be used to read/write
-        new InetSocketAddress(InetAddress.getLocalHost(), Support_PortManager
-                .getNextPort());
         theSocket = new Socket();
-        serverSocket = new ServerSocket();
-        serverSocket.bind(theAddress);
-        theSocket.connect(theAddress, 100000);
+        serverSocket = new ServerSocket(0, 5);
+        theSocket.connect(serverSocket.getLocalSocketAddress());
         Socket servSock = serverSocket.accept();
         InputStream theInput = theSocket.getInputStream();
         OutputStream theOutput = servSock.getOutputStream();
@@ -1515,10 +1391,8 @@ public class OldSocketTest extends OldSocketTestCase {
         SocketChannel channel = SocketChannel.open();
         channel.configureBlocking(false);
         Socket socket = channel.socket();
-        int port = Support_PortManager.getNextPort();
         try {
-            socket.connect( new InetSocketAddress(InetAddress.getLocalHost(),
-                    Support_PortManager.getNextPort()), port);
+            socket.connect(serverSocket.getLocalSocketAddress());
             fail("IllegalBlockingModeException was not thrown.");
         } catch (IllegalBlockingModeException expected) {
         }
@@ -1526,12 +1400,9 @@ public class OldSocketTest extends OldSocketTestCase {
     }
 
     public void test_isInputShutdown() throws IOException {
-        InetSocketAddress theAddress = new InetSocketAddress(InetAddress
-                .getLocalHost(), Support_PortManager.getNextPort());
         Socket theSocket = new Socket();
-        ServerSocket serverSocket = new ServerSocket();
-        serverSocket.bind(theAddress);
-        theSocket.connect(theAddress);
+        ServerSocket serverSocket = new ServerSocket(0, 5);
+        theSocket.connect(serverSocket.getLocalSocketAddress());
         Socket servSock = serverSocket.accept();
         InputStream theInput = theSocket.getInputStream();
         OutputStream theOutput = servSock.getOutputStream();
@@ -1559,12 +1430,9 @@ public class OldSocketTest extends OldSocketTestCase {
     }
 
     public void test_isOutputShutdown() throws IOException {
-        InetSocketAddress theAddress = new InetSocketAddress(InetAddress
-                .getLocalHost(), Support_PortManager.getNextPort());
         Socket theSocket = new Socket();
-        ServerSocket serverSocket = new ServerSocket();
-        serverSocket.bind(theAddress);
-        theSocket.connect(theAddress);
+        ServerSocket serverSocket = new ServerSocket(0, 5);
+        theSocket.connect(serverSocket.getLocalSocketAddress());
         Socket servSock = serverSocket.accept();
         InputStream theInput = theSocket.getInputStream();
         OutputStream theOutput = servSock.getOutputStream();
@@ -1591,18 +1459,14 @@ public class OldSocketTest extends OldSocketTestCase {
 
     }
 
-    public void test_setReuseAddressZ() {
+    public void test_setReuseAddressZ() throws Exception {
 
         try {
             InetAddress allAddresses[] = InetAddress.getAllByName(InetAddress
                     .getLocalHost().getHostName());
             if (allAddresses.length > 1) {
 
-                InetSocketAddress theAddress = new InetSocketAddress(
-                        InetAddress.getLocalHost(), Support_PortManager
-                                .getNextPort());
-                ServerSocket serverSocket = new ServerSocket();
-                serverSocket.bind(theAddress);
+                ServerSocket serverSocket = new ServerSocket(0, 5);
 
                 // try to bind to port address that is already in use with
                 // reuseAddress = false.
@@ -1612,17 +1476,15 @@ public class OldSocketTest extends OldSocketTestCase {
                 // what the expected result is. It seems that on linux
                 // platforms we also don't get an exception.
                 InetSocketAddress theLocalAddress = new InetSocketAddress(
-                        (InetAddress) allAddresses[1], Support_PortManager
-                                .getNextPort());
+                        (InetAddress) allAddresses[1], 0);
                 InetSocketAddress theOtherLocalAddress = new InetSocketAddress(
-                        (InetAddress) allAddresses[0], theLocalAddress
-                                .getPort());
+                        (InetAddress) allAddresses[0], theLocalAddress.getPort());
                 Socket theSocket = new Socket();
                 theSocket.setReuseAddress(false);
                 theSocket.bind(theLocalAddress);
                 Socket theSocket2 = null;
                 String platform = System.getProperty("os.name");
-                try {
+
                     theSocket2 = new Socket();
                     theSocket2.setReuseAddress(false);
                     theSocket2.bind(theOtherLocalAddress);
@@ -1639,69 +1501,34 @@ public class OldSocketTest extends OldSocketTestCase {
                                 + ":"
                                 + theOtherLocalAddress.toString());
                     }
-                } catch (IOException ex) {
-                    if ((platform.startsWith("Linux"))
-                            || ((platform.startsWith("Windows")) && ((((InetAddress) allAddresses[0]) instanceof Inet4Address) && (((InetAddress) allAddresses[1]) instanceof Inet4Address)))) {
-                        fail("Got unexpected exception when binding with setReuseAddress false on windows platform:"
-                                + theAddress.toString() + ":" + ex.toString());
-                    }
-                }
                 theSocket.close();
                 theSocket2.close();
 
                 // try to bind to port that is already in use with reuseAddress
                 // = true
-                theLocalAddress = new InetSocketAddress(
-                        (InetAddress) allAddresses[0], Support_PortManager
-                                .getNextPort());
-                theOtherLocalAddress = new InetSocketAddress(
-                        (InetAddress) allAddresses[1], theLocalAddress
-                                .getPort());
+                theLocalAddress = new InetSocketAddress((InetAddress) allAddresses[0], 0);
 
                 theSocket = new Socket();
                 theSocket.setReuseAddress(true);
                 theSocket.bind(theLocalAddress);
-                try {
-                    theSocket2 = new Socket();
-                    theSocket2.setReuseAddress(true);
-                    theSocket2.bind(theOtherLocalAddress);
-                    theSocket2.close();
-                } catch (IOException ex) {
-                    fail("IOException when setReuseAddress is true and we bind :"
-                            + ex.toString());
-                }
+                theSocket2 = new Socket();
+                theSocket2.setReuseAddress(true);
+                theOtherLocalAddress = new InetSocketAddress((InetAddress) allAddresses[1], theSocket.getLocalPort());
+                theSocket2.bind(theOtherLocalAddress);
+                theSocket2.close();
                 theSocket.close();
                 serverSocket.close();
 
                 // try with default behavior which should be the same on all
                 // platforms
-                theLocalAddress = new InetSocketAddress(
-                        (InetAddress) allAddresses[0], Support_PortManager
-                                .getNextPort());
-                theOtherLocalAddress = new InetSocketAddress(
-                        (InetAddress) allAddresses[1], theLocalAddress
-                                .getPort());
+                theLocalAddress = new InetSocketAddress((InetAddress) allAddresses[0], 0);
 
                 theSocket = new Socket();
                 theSocket.bind(theLocalAddress);
-                try {
-                    theSocket2 = new Socket();
-                    theSocket2.bind(theOtherLocalAddress);
-                    theSocket2.close();
-                    if ((!platform.startsWith("Linux") && !platform.contains("iOS") && !platform.contains("Mac"))
-                            && ((!platform.startsWith("Windows")) || !((((InetAddress) allAddresses[0]) instanceof Inet4Address) && (((InetAddress) allAddresses[1]) instanceof Inet4Address)))) {
-                        fail("No exception when setReuseAddress is default and we bind:"
-                                + theLocalAddress.toString()
-                                + ":"
-                                + theOtherLocalAddress.toString());
-                    }
-                } catch (IOException ex) {
-                    if ((platform.startsWith("Linux") || platform.contains("iOS") || platform.contains("Mac"))
-                            || ((platform.startsWith("Windows")) && ((((InetAddress) allAddresses[0]) instanceof Inet4Address) && (((InetAddress) allAddresses[1]) instanceof Inet4Address)))) {
-                        fail("Got unexpected exception when binding with setReuseAddress default on windows platform:"
-                                + theAddress.toString() + ":" + ex.toString());
-                    }
-                }
+                theSocket2 = new Socket();
+                theOtherLocalAddress = new InetSocketAddress((InetAddress) allAddresses[1], theSocket.getLocalPort());
+                theSocket2.bind(theOtherLocalAddress);
+                theSocket2.close();
                 theSocket.close();
                 serverSocket.close();
 
@@ -1754,8 +1581,6 @@ public class OldSocketTest extends OldSocketTestCase {
     public void test_setOOBInlineZ() {
         // mostly tested in getOOBInline. Just set to make sure call works ok
         try {
-            new InetSocketAddress(InetAddress.getLocalHost(),
-                    Support_PortManager.getNextPort());
             Socket theSocket = new Socket();
             theSocket.setOOBInline(true);
             assertTrue("expected OOBIline to be true", theSocket.getOOBInline());
@@ -1779,8 +1604,6 @@ public class OldSocketTest extends OldSocketTestCase {
     public void test_getOOBInline() {
 
         try {
-            new InetSocketAddress(InetAddress.getLocalHost(),
-                    Support_PortManager.getNextPort());
             Socket theSocket = new Socket();
 
             // validate that value reflects what we set it to true after true,
@@ -1812,8 +1635,6 @@ public class OldSocketTest extends OldSocketTestCase {
             int IPTOS_LOWCOST = 0x2;
             int IPTOS_THROUGHPUT = 0x8;
 
-            new InetSocketAddress(InetAddress.getLocalHost(),
-                    Support_PortManager.getNextPort());
             Socket theSocket = new Socket();
 
             // validate that value set must be between 0 and 255
@@ -1851,8 +1672,6 @@ public class OldSocketTest extends OldSocketTestCase {
 
     public void test_getTrafficClass() {
         try {
-            new InetSocketAddress(InetAddress.getLocalHost(),
-                    Support_PortManager.getNextPort());
             Socket theSocket = new Socket();
 
             /*
@@ -1888,13 +1707,9 @@ public class OldSocketTest extends OldSocketTestCase {
             // is silently ignored
             String urgentData = "U";
             try {
-                InetSocketAddress theAddress = new InetSocketAddress(
-                        InetAddress.getLocalHost(), Support_PortManager
-                                .getNextPort());
                 Socket theSocket = new Socket();
-                ServerSocket serverSocket = new ServerSocket();
-                serverSocket.bind(theAddress);
-                theSocket.connect(theAddress);
+                ServerSocket serverSocket = new ServerSocket(0, 5);
+                theSocket.connect(serverSocket.getLocalSocketAddress());
                 Socket servSock = serverSocket.accept();
                 InputStream theInput = theSocket.getInputStream();
                 OutputStream theOutput = servSock.getOutputStream();
@@ -1931,12 +1746,9 @@ public class OldSocketTest extends OldSocketTestCase {
 
                 // now validate that urgent data is received as expected. Expect
                 // that it should be between the two writes.
-                theAddress = new InetSocketAddress(InetAddress.getLocalHost(),
-                        Support_PortManager.getNextPort());
                 theSocket = new Socket();
-                serverSocket = new ServerSocket();
-                serverSocket.bind(theAddress);
-                theSocket.connect(theAddress);
+                serverSocket = new ServerSocket(0, 5);
+                theSocket.connect(serverSocket.getLocalSocketAddress());
                 servSock = serverSocket.accept();
                 theInput = theSocket.getInputStream();
                 theOutput = servSock.getOutputStream();
@@ -1973,12 +1785,9 @@ public class OldSocketTest extends OldSocketTestCase {
                 serverSocket.close();
 
                 // now test case where we try to send two urgent bytes.
-                theAddress = new InetSocketAddress(InetAddress.getLocalHost(),
-                        Support_PortManager.getNextPort());
                 theSocket = new Socket();
-                serverSocket = new ServerSocket();
-                serverSocket.bind(theAddress);
-                theSocket.connect(theAddress);
+                serverSocket = new ServerSocket(0, 5);
+                theSocket.connect(serverSocket.getLocalSocketAddress());
                 servSock = serverSocket.accept();
                 theInput = theSocket.getInputStream();
                 theOutput = servSock.getOutputStream();
@@ -2022,12 +1831,9 @@ public class OldSocketTest extends OldSocketTestCase {
                  */
                 if (!platform.startsWith("Windows")) {
                     // now test the case were we send turn the OOBInline on/off
-                    theAddress = new InetSocketAddress(InetAddress
-                            .getLocalHost(), Support_PortManager.getNextPort());
                     theSocket = new Socket();
-                    serverSocket = new ServerSocket();
-                    serverSocket.bind(theAddress);
-                    theSocket.connect(theAddress);
+                    serverSocket = new ServerSocket(0, 5);
+                    theSocket.connect(serverSocket.getLocalSocketAddress());
                     servSock = serverSocket.accept();
                     theInput = theSocket.getInputStream();
                     theOutput = servSock.getOutputStream();
@@ -2139,12 +1945,9 @@ public class OldSocketTest extends OldSocketTestCase {
                 }
 
                 // now test the case where there is only urgent data
-                theAddress = new InetSocketAddress(InetAddress.getLocalHost(),
-                        Support_PortManager.getNextPort());
                 theSocket = new Socket();
-                serverSocket = new ServerSocket();
-                serverSocket.bind(theAddress);
-                theSocket.connect(theAddress);
+                serverSocket = new ServerSocket(0, 5);
+                theSocket.connect(serverSocket.getLocalSocketAddress());
                 servSock = serverSocket.accept();
                 theInput = theSocket.getInputStream();
                 theOutput = servSock.getOutputStream();
@@ -2376,13 +2179,9 @@ public class OldSocketTest extends OldSocketTestCase {
 
     }
 
-    /**
-     *
-     */
     protected int startServer(String name) {
-        int portNumber = Support_PortManager.getNextPort();
         try {
-            ss = new ServerSocket(portNumber, 5);
+            ss = new ServerSocket(0, 5);
         } catch (IOException e) {
             fail(name + ": " + e);
         }

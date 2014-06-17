@@ -21,71 +21,40 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import tests.support.Support_PortManager;
 
 public class OldDatagramPacketTest extends junit.framework.TestCase {
 
-    DatagramPacket dp;
-
-    volatile boolean started = false;
-
-    public void test_getPort() throws IOException {
-        dp = new DatagramPacket("Hello".getBytes(), 5, InetAddress.getLocalHost(), 1000);
+    public void test_getPort() throws Exception {
+        DatagramPacket dp = new DatagramPacket("Hello".getBytes(), 5, InetAddress.getLocalHost(), 1000);
         assertEquals("Incorrect port returned", 1000, dp.getPort());
 
-        InetAddress localhost = InetAddress.getByName("localhost");
-
-        int[] ports = Support_PortManager.getNextPortsForUDP(2);
-        final int port = ports[0];
-        final Object lock = new Object();
-
+        final DatagramSocket ss = new DatagramSocket();
         Thread thread = new Thread(new Runnable() {
             public void run() {
-                DatagramSocket socket = null;
                 try {
-                    socket = new DatagramSocket(port);
-                    synchronized (lock) {
-                        started = true;
-                        lock.notifyAll();
-                    }
-                    socket.setSoTimeout(3000);
-                    DatagramPacket packet = new DatagramPacket(new byte[256],
-                            256);
-                    socket.receive(packet);
-                    socket.send(packet);
-                    socket.close();
+                    DatagramPacket packet = new DatagramPacket(new byte[256], 256);
+                    ss.setSoTimeout(3000);
+                    ss.receive(packet);
+                    ss.send(packet);
                 } catch (IOException e) {
                     System.out.println("thread exception: " + e);
-                    if (socket != null)
-                        socket.close();
                 }
             }
         });
         thread.start();
 
-        DatagramSocket socket = null;
+        DatagramSocket cs = new DatagramSocket();
         try {
-            socket = new DatagramSocket(ports[1]);
-            socket.setSoTimeout(3000);
-            DatagramPacket packet = new DatagramPacket(new byte[] { 1, 2, 3, 4,
-                    5, 6 }, 6, localhost, port);
-            synchronized (lock) {
-                try {
-                    if (!started)
-                        lock.wait();
-                } catch (InterruptedException e) {
-                    fail(e.toString());
-                }
-            }
-            socket.send(packet);
-            socket.receive(packet);
-            socket.close();
-            assertTrue("datagram received wrong port: " + packet.getPort(),
-                    packet.getPort() == port);
+            byte[] bytes = new byte[] { 1, 2, 3, 4, 5, 6 };
+            DatagramPacket packet = new DatagramPacket(bytes, 6, InetAddress.getByName("localhost"), ss.getLocalPort());
+            cs.send(packet);
+            cs.setSoTimeout(3000);
+            cs.receive(packet);
+            cs.close();
+            assertEquals(packet.getPort(), ss.getLocalPort());
         } finally {
-            if (socket != null) {
-                socket.close();
-            }
+            cs.close();
+            ss.close();
         }
     }
 
@@ -104,7 +73,7 @@ public class OldDatagramPacketTest extends junit.framework.TestCase {
     }
 
     public void test_setData$BII() {
-        dp = new DatagramPacket("Hello".getBytes(), 5);
+        DatagramPacket dp = new DatagramPacket("Hello".getBytes(), 5);
         try {
             dp.setData(null, 2, 3);
             fail("NullPointerException was not thrown.");
@@ -113,7 +82,7 @@ public class OldDatagramPacketTest extends junit.framework.TestCase {
     }
 
     public void test_setData$B() {
-        dp = new DatagramPacket("Hello".getBytes(), 5);
+        DatagramPacket dp = new DatagramPacket("Hello".getBytes(), 5);
         try {
             dp.setData(null);
             fail("NullPointerException was not thrown.");

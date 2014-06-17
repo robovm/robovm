@@ -148,29 +148,25 @@ public class GZIPInputStream extends InflaterInputStream {
         super.close();
     }
 
-    /**
-     * Reads and decompresses GZIP data from the underlying stream into the
-     * given buffer.
-     */
     @Override
-    public int read(byte[] buffer, int offset, int byteCount) throws IOException {
+    public int read(byte[] buffer, int byteOffset, int byteCount) throws IOException {
         if (closed) {
             throw new IOException("Stream is closed");
         }
         if (eos) {
             return -1;
         }
-        Arrays.checkOffsetAndCount(buffer.length, offset, byteCount);
+        Arrays.checkOffsetAndCount(buffer.length, byteOffset, byteCount);
 
         int bytesRead;
         try {
-            bytesRead = super.read(buffer, offset, byteCount);
+            bytesRead = super.read(buffer, byteOffset, byteCount);
         } finally {
             eos = eof; // update eos after every read(), even when it throws
         }
 
         if (bytesRead != -1) {
-            crc.update(buffer, offset, bytesRead);
+            crc.update(buffer, byteOffset, bytesRead);
         }
 
         if (eos) {

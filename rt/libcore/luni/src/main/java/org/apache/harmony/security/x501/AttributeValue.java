@@ -23,21 +23,25 @@
 package org.apache.harmony.security.x501;
 
 import java.io.IOException;
+import java.util.Collection;
+import org.apache.harmony.security.asn1.ASN1SetOf;
 import org.apache.harmony.security.asn1.ASN1StringType;
+import org.apache.harmony.security.asn1.ASN1Type;
 import org.apache.harmony.security.asn1.DerInputStream;
+import org.apache.harmony.security.utils.ObjectIdentifier;
 
 /**
  * X.501 Attribute Value
  */
 public final class AttributeValue {
 
-    public final boolean wasEncoded;
+    public boolean wasEncoded;
 
-    public String escapedString;
+    public final String escapedString;
 
     private String hexString;
 
-    private int tag = -1;
+    private final int tag;
 
     public byte[] encoded;
 
@@ -45,15 +49,26 @@ public final class AttributeValue {
 
     public boolean hasQE; // raw string contains '"' or '\'
 
-    public String rawString;
+    public final String rawString;
 
-    public AttributeValue(String parsedString, boolean hasQorE) {
+    public AttributeValue(String parsedString, boolean hasQorE, ObjectIdentifier oid) {
         wasEncoded = false;
 
         this.hasQE = hasQorE;
-
         this.rawString = parsedString;
-        this.escapedString = makeEscaped(rawString);
+        this.escapedString = makeEscaped(rawString); // overwrites hasQE
+
+        int tag;
+        if (oid == AttributeTypeAndValue.EMAILADDRESS || oid == AttributeTypeAndValue.DC) {
+            // http://www.rfc-editor.org/rfc/rfc5280.txt
+            // says that EmailAddress and DomainComponent should be a IA5String
+            tag = ASN1StringType.IA5STRING.id;
+        } else if (isPrintableString(rawString)) {
+            tag = ASN1StringType.PRINTABLESTRING.id;
+        } else {
+            tag = ASN1StringType.UTF8STRING.id;
+        }
+        this.tag = tag;
     }
 
     public AttributeValue(String hexString, byte[] encoded) {
@@ -117,11 +132,6 @@ public final class AttributeValue {
     }
 
     public int getTag() {
-        if (tag == -1) {
-            tag = isPrintableString(rawString)
-                    ? ASN1StringType.PRINTABLESTRING.id
-                    : ASN1StringType.UTF8STRING.id;
-        }
         return tag;
     }
 
@@ -129,9 +139,14 @@ public final class AttributeValue {
         if (hexString == null) {
             if (!wasEncoded) {
                 //FIXME optimize me: what about reusable OutputStream???
-                encoded = isPrintableString(rawString)
-                        ? ASN1StringType.PRINTABLESTRING.encode(rawString)
-                        : ASN1StringType.UTF8STRING.encode(rawString);
+                if (tag == ASN1StringType.IA5STRING.id) {
+                    encoded = ASN1StringType.IA5STRING.encode(rawString);
+                } else if (tag == ASN1StringType.PRINTABLESTRING.id) {
+                    encoded = ASN1StringType.PRINTABLESTRING.encode(rawString);
+                } else {
+                    encoded = ASN1StringType.UTF8STRING.encode(rawString);
+                }
+                wasEncoded = true;
             }
 
             StringBuilder buf = new StringBuilder(encoded.length * 2 + 1);
@@ -155,6 +170,10 @@ public final class AttributeValue {
             hexString = buf.toString();
         }
         return hexString;
+    }
+
+    public Collection<?> getValues(ASN1Type type) throws IOException {
+        return (Collection<?>) new ASN1SetOf(type).decode(encoded);
     }
 
     public void appendQEString(StringBuilder sb) {

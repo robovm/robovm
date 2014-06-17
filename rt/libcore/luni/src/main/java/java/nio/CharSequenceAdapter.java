@@ -139,8 +139,7 @@ final class CharSequenceAdapter extends CharBuffer {
         return new CharSequenceAdapter(sequence.subSequence(position, limit));
     }
 
-    @Override
-    public CharSequence subSequence(int start, int end) {
+    @Override public CharBuffer subSequence(int start, int end) {
         checkStartEndRemaining(start, end);
         CharSequenceAdapter result = copy(this);
         result.position = position + start;

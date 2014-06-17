@@ -260,11 +260,9 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
      * byte array {@code buffer}. The maximum number of bytes read corresponds
      * to the size of {@code buffer}. Blocks until at least one byte has been
      * read, the end of the file is detected, or an exception is thrown.
+     * Returns the number of bytes actually read or -1 if the end of the file
+     * has been reached. See also {@link #readFully}.
      *
-     * @param buffer
-     *            the byte array in which to store the bytes read.
-     * @return the number of bytes actually read or -1 if the end of the file
-     *         has been reached.
      * @throws IOException
      *             if this file is closed or another I/O error occurs.
      */
@@ -273,16 +271,15 @@ public class RandomAccessFile implements DataInput, DataOutput, Closeable {
     }
 
     /**
-     * Reads at most {@code byteCount} bytes from the current position in this file
+     * Reads up to {@code byteCount} bytes from the current position in this file
      * and stores them in the byte array {@code buffer} starting at {@code
      * byteOffset}. Blocks until at least one byte has been
      * read, the end of the file is detected, or an exception is thrown.
+     * Returns the number of bytes actually read or -1 if the end of the stream has been reached.
+     * See also {@link #readFully}.
      *
-     * @return the number of bytes actually read or -1 if the end of the stream
-     *         has been reached.
      * @throws IndexOutOfBoundsException
-     *             if {@code byteOffset < 0} or {@code byteCount < 0}, or if {@code
-     *             byteOffset + byteCount} is greater than the size of {@code buffer}.
+     *     if {@code byteOffset < 0 || byteCount < 0 || byteOffset + byteCount > buffer.length}.
      * @throws IOException
      *             if this file is closed or another I/O error occurs.
      */

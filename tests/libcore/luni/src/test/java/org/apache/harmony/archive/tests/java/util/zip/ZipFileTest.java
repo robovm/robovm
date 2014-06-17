@@ -32,6 +32,7 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
+import libcore.java.lang.ref.FinalizationTester;
 
 public class ZipFileTest extends junit.framework.TestCase {
 
@@ -150,11 +151,8 @@ public class ZipFileTest extends junit.framework.TestCase {
          * entry1); entry1 = null; zip = null;
          */
 
-        assertNotNull("Did not find entry",
-                test_finalize1(test_finalize2(file)));
-        System.gc();
-        System.gc();
-        System.runFinalization();
+        assertNotNull("Did not find entry", test_finalize1(test_finalize2(file)));
+        FinalizationTester.induceFinalization();
         file.delete();
         assertTrue("Zip should not exist", !file.exists());
     }

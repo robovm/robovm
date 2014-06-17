@@ -495,7 +495,6 @@ public class InetAddress implements Serializable {
     /**
      * Returns the IPv6 loopback address {@code ::1} or the IPv4 loopback address {@code 127.0.0.1}.
      * @since 1.7
-     * @hide 1.7
      */
     public static InetAddress getLoopbackAddress() {
         return Inet6Address.LOOPBACK;

@@ -58,8 +58,10 @@ public class ObjectStreamField implements Comparable<Object> {
      *             if {@code name} or {@code cl} is {@code null}.
      */
     public ObjectStreamField(String name, Class<?> cl) {
-        if (name == null || cl == null) {
-            throw new NullPointerException();
+        if (name == null) {
+            throw new NullPointerException("name == null");
+        } else if (cl == null) {
+            throw new NullPointerException("cl == null");
         }
         this.name = name;
         this.type = new WeakReference<Class<?>>(cl);
@@ -81,8 +83,10 @@ public class ObjectStreamField implements Comparable<Object> {
      * @see ObjectOutputStream#writeUnshared(Object)
      */
     public ObjectStreamField(String name, Class<?> cl, boolean unshared) {
-        if (name == null || cl == null) {
-            throw new NullPointerException();
+        if (name == null) {
+            throw new NullPointerException("name == null");
+        } else if (cl == null) {
+            throw new NullPointerException("cl == null");
         }
         this.name = name;
         this.type = (cl.getClassLoader() == null) ? cl : new WeakReference<Class<?>>(cl);
@@ -100,7 +104,7 @@ public class ObjectStreamField implements Comparable<Object> {
      */
     ObjectStreamField(String signature, String name) {
         if (name == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("name == null");
         }
         this.name = name;
         this.typeString = signature.replace('.', '/').intern();

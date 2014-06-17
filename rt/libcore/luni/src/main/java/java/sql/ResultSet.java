@@ -298,8 +298,7 @@ public interface ResultSet extends Wrapper, AutoCloseable {
      * Gets the value of a column specified by column index as a {@code
      * java.math.BigDecimal}.
      *
-     * @deprecated use {@link #getBigDecimal(int)} or
-     *             {@link #getBigDecimal(String)}
+     * @deprecated Use {@link #getBigDecimal(int)} or {@link #getBigDecimal(String)} instead.
      * @param columnIndex
      *            the index of the column to read.
      * @param scale
@@ -328,8 +327,7 @@ public interface ResultSet extends Wrapper, AutoCloseable {
      * Gets the value of a column specified by column name, as a {@code
      * java.math.BigDecimal}.
      *
-     * @deprecated use {@link #getBigDecimal(int)} or
-     *             {@link #getBigDecimal(String)}
+     * @deprecated Use {@link #getBigDecimal(int)} or {@link #getBigDecimal(String)} instead.
      * @param columnName
      *            the name of the column to read.
      * @param scale
@@ -1050,7 +1048,7 @@ public interface ResultSet extends Wrapper, AutoCloseable {
      * Gets the value of the column as an {@code InputStream} of unicode
      * characters.
      *
-     * @deprecated Use {@link #getCharacterStream}.
+     * @deprecated Use {@link #getCharacterStream} instead.
      * @param columnIndex
      *            the index of the column to read.
      * @return an {@code InputStream} holding the value of the column. {@code
@@ -1065,7 +1063,7 @@ public interface ResultSet extends Wrapper, AutoCloseable {
      * Gets the value of the column as an {@code InputStream} of Unicode
      * characters.
      *
-     * @deprecated Use {@link #getCharacterStream}
+     * @deprecated Use {@link #getCharacterStream} instead.
      * @param columnName
      *            the name of the column to read.
      * @return an {@code InputStream} holding the value of the column. {@code

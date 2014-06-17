@@ -990,12 +990,12 @@ public class OldClassTest extends junit.framework.TestCase {
         Class clazz = getClass();
 
         InputStream stream = clazz.getResourceAsStream("HelloWorld.txt");
-        assert(stream != null);
+        assertNotNull(stream);
 
         byte[] buffer = new byte[20];
         int length = stream.read(buffer);
         String s = new String(buffer, 0, length);
-        assert("Hello, World.".equals(s));
+        assertEquals("Hello, World.\n",  s);
 
         stream.close();
     }
@@ -1004,12 +1004,12 @@ public class OldClassTest extends junit.framework.TestCase {
         Class clazz = getClass();
 
         InputStream stream = clazz.getResourceAsStream("/libcore/java/lang/HelloWorld.txt");
-        assert(stream != null);
+        assertNotNull(stream);
 
         byte[] buffer = new byte[20];
         int length = stream.read(buffer);
         String s = new String(buffer, 0, length);
-        assert("Hello, World.".equals(s));
+        assertEquals("Hello, World.\n", s);
 
         stream.close();
 

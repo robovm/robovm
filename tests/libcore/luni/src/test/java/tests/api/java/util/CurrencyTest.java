@@ -17,8 +17,6 @@
 
 package tests.api.java.util;
 
-import tests.support.Support_Locale;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;

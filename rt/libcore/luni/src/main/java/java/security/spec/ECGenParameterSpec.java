@@ -35,7 +35,7 @@ public class ECGenParameterSpec implements AlgorithmParameterSpec {
     public ECGenParameterSpec(String name) {
         this.name = name;
         if (this.name == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("name == null");
         }
     }
 

@@ -46,9 +46,9 @@ public abstract class LongBuffer extends Buffer implements
      */
     public static LongBuffer allocate(int capacity) {
         if (capacity < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("capacity < 0: " + capacity);
         }
-        return new ReadWriteLongArrayBuffer(capacity);
+        return new LongArrayBuffer(new long[capacity]);
     }
 
     /**
@@ -85,7 +85,7 @@ public abstract class LongBuffer extends Buffer implements
      */
     public static LongBuffer wrap(long[] array, int start, int longCount) {
         Arrays.checkOffsetAndCount(array.length, start, longCount);
-        LongBuffer buf = new ReadWriteLongArrayBuffer(array);
+        LongBuffer buf = new LongArrayBuffer(array);
         buf.position = start;
         buf.limit = start + longCount;
         return buf;
@@ -170,10 +170,8 @@ public abstract class LongBuffer extends Buffer implements
      * are same as this buffer's, too.
      * <p>
      * The new buffer shares its content with this buffer, which means either
-     * buffer's change of content will be visible to the other. The two buffer's
+     * buffer's change of content will be visible to the other. The two buffers'
      * position, limit and mark are independent.
-     *
-     * @return a duplicated buffer that shares its content with this buffer.
      */
     public abstract LongBuffer duplicate();
 
@@ -426,8 +424,11 @@ public abstract class LongBuffer extends Buffer implements
      *                if no changes may be made to the contents of this buffer.
      */
     public LongBuffer put(LongBuffer src) {
+        if (isReadOnly()) {
+            throw new ReadOnlyBufferException();
+        }
         if (src == this) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("src == this");
         }
         if (src.remaining() > remaining()) {
             throw new BufferOverflowException();
@@ -464,10 +465,8 @@ public abstract class LongBuffer extends Buffer implements
      * same as this buffer's.
      * <p>
      * The new buffer shares its content with this buffer, which means either
-     * buffer's change of content will be visible to the other. The two buffer's
+     * buffer's change of content will be visible to the other. The two buffers'
      * position, limit and mark are independent.
-     *
-     * @return a sliced buffer that shares its content with this buffer.
      */
     public abstract LongBuffer slice();
 }

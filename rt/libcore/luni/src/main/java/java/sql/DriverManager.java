@@ -28,9 +28,13 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Provides facilities for managing JDBC drivers.
- * <p>
- * The {@code DriverManager} class loads JDBC drivers during its initialization,
+ * Provides facilities for managing JDBC drivers. The <code>android.database</code> and
+ * <code>android.database.sqlite</code> packages offer a higher-performance alternative for new
+ * code.
+ *
+ * <p>Note that Android does not include any JDBC drivers by default; you must provide your own.
+ *
+ * <p>The {@code DriverManager} class loads JDBC drivers during its initialization,
  * from the list of drivers referenced by the system property {@code
  * "jdbc.drivers"}.
  */
@@ -277,7 +281,7 @@ public class DriverManager {
      * Gets the log {@code PrintStream} used by the {@code DriverManager} and
      * all the JDBC Drivers.
      *
-     * @deprecated use {@link #getLogWriter()} instead.
+     * @deprecated Use {@link #getLogWriter()} instead.
      * @return the {@code PrintStream} used for logging activities.
      */
     @Deprecated
@@ -329,7 +333,7 @@ public class DriverManager {
      */
     public static void registerDriver(Driver driver) throws SQLException {
         if (driver == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("driver == null");
         }
         synchronized (theDrivers) {
             theDrivers.add(driver);

@@ -39,7 +39,7 @@ public class Time extends Date {
      * <p>
      * The result is undefined if any argument is out of bounds.
      *
-     * @deprecated Use the constructor {@link #Time(long)}.
+     * @deprecated Use the constructor {@link #Time(long)} instead.
      * @param theHour
      *            a value in the range {@code [0,23]}.
      * @param theMinute
@@ -67,7 +67,7 @@ public class Time extends Date {
 
     /**
      * @deprecated This method is deprecated and must not be used. An SQL
-     *             {@code Time} object does not have a {@code Date} component.
+     *             {@code Time} object does not have a date component.
      * @return does not return anything.
      * @throws IllegalArgumentException
      *             if this method is called.
@@ -76,12 +76,12 @@ public class Time extends Date {
     @Deprecated
     @Override
     public int getDate() {
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("unimplemented");
     }
 
     /**
      * @deprecated This method is deprecated and must not be used. An SQL
-     *             {@code Time} object does not have a <i>Day</i> component.
+     *             {@code Time} object does not have a day component.
      * @return does not return anything.
      * @throws IllegalArgumentException
      *             if this method is called.
@@ -90,12 +90,12 @@ public class Time extends Date {
     @Deprecated
     @Override
     public int getDay() {
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("unimplemented");
     }
 
     /**
      * @deprecated This method is deprecated and must not be used. An SQL
-     *             {@code Time} object does not have a <i>Month</i> component.
+     *             {@code Time} object does not have a month component.
      * @return does not return anything.
      * @throws IllegalArgumentException
      *             if this method is called.
@@ -104,12 +104,12 @@ public class Time extends Date {
     @Deprecated
     @Override
     public int getMonth() {
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("unimplemented");
     }
 
     /**
      * @deprecated This method is deprecated and must not be used. An SQL
-     *             {@code Time} object does not have a <i>Year</i> component.
+     *             {@code Time} object does not have a year component.
      * @return does not return anything.
      * @throws IllegalArgumentException
      *             if this method is called.
@@ -118,12 +118,12 @@ public class Time extends Date {
     @Deprecated
     @Override
     public int getYear() {
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("unimplemented");
     }
 
     /**
      * @deprecated This method is deprecated and must not be used. An SQL
-     *             {@code Time} object does not have a {@code Date} component.
+     *             {@code Time} object does not have a date component.
      * @throws IllegalArgumentException
      *             if this method is called.
      */
@@ -131,12 +131,12 @@ public class Time extends Date {
     @Deprecated
     @Override
     public void setDate(int i) {
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("unimplemented");
     }
 
     /**
      * @deprecated This method is deprecated and must not be used. An SQL
-     *             {@code Time} object does not have a <i>Month</i> component.
+     *             {@code Time} object does not have a month component.
      * @throws IllegalArgumentException
      *             if this method is called.
      */
@@ -144,12 +144,12 @@ public class Time extends Date {
     @Deprecated
     @Override
     public void setMonth(int i) {
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("unimplemented");
     }
 
     /**
      * @deprecated This method is deprecated and must not be used. An SQL
-     *             {@code Time} object does not have a <i>Year</i> component.
+     *             {@code Time} object does not have a year component.
      * @throws IllegalArgumentException
      *             if this method is called.
      */
@@ -157,7 +157,7 @@ public class Time extends Date {
     @Deprecated
     @Override
     public void setYear(int i) {
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("unimplemented");
     }
 
     /**
@@ -223,7 +223,7 @@ public class Time extends Date {
      */
     public static Time valueOf(String timeString) {
         if (timeString == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("timeString == null");
         }
         int firstIndex = timeString.indexOf(':');
         int secondIndex = timeString.indexOf(':', firstIndex + 1);

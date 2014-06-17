@@ -20,7 +20,7 @@ package libcore.net;
 import java.io.ByteArrayOutputStream;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
-import java.nio.charset.Charsets;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Encodes and decodes {@code application/x-www-form-urlencoded} content.
@@ -94,7 +94,7 @@ public abstract class UriCodec {
     private void appendEncoded(StringBuilder builder, String s, Charset charset,
             boolean isPartiallyEncoded) {
         if (s == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("s == null");
         }
 
         int escapeStart = -1;
@@ -111,7 +111,7 @@ public abstract class UriCodec {
                 }
                 if (c == '%' && isPartiallyEncoded) {
                     // this is an encoded 3-character sequence like "%20"
-                    builder.append(s, i, i + 3);
+                    builder.append(s, i, Math.min(i + 3, s.length()));
                     i += 2;
                 } else if (c == ' ') {
                     builder.append('+');
@@ -135,11 +135,11 @@ public abstract class UriCodec {
     }
 
     public final void appendEncoded(StringBuilder builder, String s) {
-        appendEncoded(builder, s, Charsets.UTF_8, false);
+        appendEncoded(builder, s, StandardCharsets.UTF_8, false);
     }
 
     public final void appendPartiallyEncoded(StringBuilder builder, String s) {
-        appendEncoded(builder, s, Charsets.UTF_8, true);
+        appendEncoded(builder, s, StandardCharsets.UTF_8, true);
     }
 
     /**
@@ -203,7 +203,7 @@ public abstract class UriCodec {
     }
 
     public static String decode(String s) {
-        return decode(s, false, Charsets.UTF_8, true);
+        return decode(s, false, StandardCharsets.UTF_8, true);
     }
 
     private static void appendHex(StringBuilder builder, String s, Charset charset) {

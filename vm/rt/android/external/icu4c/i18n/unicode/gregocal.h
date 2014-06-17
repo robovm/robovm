@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1997-2011, International Business Machines Corporation and others.
+* Copyright (C) 1997-2013, International Business Machines Corporation and others.
 * All Rights Reserved.
 ********************************************************************************
 *
@@ -374,6 +374,7 @@ public:
      */
     virtual void roll(UCalendarDateFields field, int32_t amount, UErrorCode& status);
 
+#ifndef U_HIDE_DEPRECATED_API
     /**
      * Return the minimum value that this field could have, given the current date.
      * For the Gregorian calendar, this is the same as getMinimum() and getGreatestMinimum().
@@ -392,6 +393,7 @@ public:
      * @deprecated ICU 2.6. Use getActualMinimum(UCalendarDateFields field) instead. (Added to ICU 3.0 for signature consistency)
      */
     int32_t getActualMinimum(EDateFields field, UErrorCode& status) const;
+#endif  /* U_HIDE_DEPRECATED_API */
 
     /**
      * Return the minimum value that this field could have, given the current date.
@@ -403,6 +405,7 @@ public:
      */
     int32_t getActualMinimum(UCalendarDateFields field, UErrorCode &status) const;
 
+#ifndef U_HIDE_DEPRECATED_API
     /**
      * Return the maximum value that this field could have, given the current date.
      * For example, with the date "Feb 3, 1997" and the DAY_OF_MONTH field, the actual
@@ -413,6 +416,7 @@ public:
      * @deprecated ICU 2.6. Use getActualMaximum(UCalendarDateFields field) instead.
      */
     int32_t getActualMaximum(EDateFields field) const;
+#endif  /* U_HIDE_DEPRECATED_API */
 
     /**
      * Return the maximum value that this field could have, given the current date.
@@ -465,10 +469,14 @@ public:
     static UClassID U_EXPORT2 getStaticClassID(void);
 
     /**
-     * Get the calendar type, "gregorian", for use in DateFormatSymbols.
+     * Returns the calendar type name string for this Calendar object.
+     * The returned string is the legacy ICU calendar attribute value,
+     * for example, "gregorian" or "japanese".
      *
-     * @return calendar type
-     * @internal
+     * For more details see the Calendar::getType() documentation.
+     *
+     * @return legacy calendar type name string
+     * @stable ICU 49
      */
     virtual const char * getType() const;
 
@@ -544,7 +552,8 @@ public:
      * @internal
      */
     virtual int32_t monthLength(int32_t month, int32_t year) const;
-    
+
+#ifndef U_HIDE_INTERNAL_API
     /**
      * return the length of the given year.
      * @param year    the given year.
@@ -568,6 +577,7 @@ public:
      * @internal
      */
     void pinDayOfMonth(void);
+#endif  /* U_HIDE_INTERNAL_API */
 
     /**
      * Return the day number with respect to the epoch.  January 1, 1970 (Gregorian)

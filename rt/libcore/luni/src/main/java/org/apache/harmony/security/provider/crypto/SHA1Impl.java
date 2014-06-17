@@ -22,6 +22,7 @@
 
 package org.apache.harmony.security.provider.crypto;
 
+import static org.apache.harmony.security.provider.crypto.SHA1Constants.*;
 
 /**
  * This class contains methods providing SHA-1 functionality to use in classes. <BR>
@@ -48,9 +49,7 @@ package org.apache.harmony.security.provider.crypto;
  * The resulting hash value replaces the previous hash value in the array;
  * original bits of the message are not preserved.
  */
-
-
-public class SHA1Impl implements SHA1_Data {
+public class SHA1Impl {
 
 
     /**

@@ -38,7 +38,10 @@ public class TrustManagerFactory {
     private static final Engine ENGINE = new Engine(SERVICE);
 
     // Store default property name
-    private static final String PROPERTYNAME = "ssl.TrustManagerFactory.algorithm";
+    private static final String PROPERTY_NAME = "ssl.TrustManagerFactory.algorithm";
+
+    // Default value of TrustManagerFactory type.
+    private static final String DEFAULT_PROPERTY = "PKIX";
 
     /**
      * Returns the default algorithm name for the {@code TrustManagerFactory}. The
@@ -48,7 +51,8 @@ public class TrustManagerFactory {
      * @return the default algorithm name.
      */
     public static final String getDefaultAlgorithm() {
-        return Security.getProperty(PROPERTYNAME);
+        String algorithm = Security.getProperty(PROPERTY_NAME);
+        return (algorithm != null ? algorithm : DEFAULT_PROPERTY);
     }
 
     /**
@@ -67,7 +71,7 @@ public class TrustManagerFactory {
     public static final TrustManagerFactory getInstance(String algorithm)
             throws NoSuchAlgorithmException {
         if (algorithm == null) {
-            throw new NullPointerException("algorithm is null");
+            throw new NullPointerException("algorithm == null");
         }
         Engine.SpiAndProvider sap = ENGINE.getInstance(algorithm, null);
         return new TrustManagerFactory((TrustManagerFactorySpi) sap.spi, sap.provider, algorithm);
@@ -126,7 +130,7 @@ public class TrustManagerFactory {
             throw new IllegalArgumentException("Provider is null");
         }
         if (algorithm == null) {
-            throw new NullPointerException("algorithm is null");
+            throw new NullPointerException("algorithm == null");
         }
         Object spi = ENGINE.getInstance(algorithm, provider, null);
         return new TrustManagerFactory((TrustManagerFactorySpi) spi, provider, algorithm);

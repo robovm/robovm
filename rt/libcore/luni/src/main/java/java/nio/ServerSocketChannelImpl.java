@@ -31,7 +31,9 @@ import java.nio.channels.NotYetBoundException;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.spi.SelectorProvider;
+import libcore.io.ErrnoException;
 import libcore.io.IoUtils;
+import static libcore.io.OsConstants.*;
 
 /**
  * The default ServerSocketChannel.
@@ -65,21 +67,17 @@ final class ServerSocketChannelImpl extends ServerSocketChannel implements FileD
 
         // Create an empty socket channel. This will be populated by ServerSocketAdapter.accept.
         SocketChannelImpl result = new SocketChannelImpl(provider(), false);
-        boolean connected = false;
         try {
             begin();
             synchronized (acceptLock) {
-                synchronized (blockingLock()) {
-                    do {
-                        try {
-                            socket.implAccept(result);
-                            // select successfully, break out immediately.
-                            break;
-                        } catch (SocketTimeoutException e) {
-                            // continue to accept if the channel is in blocking mode.
-                            // TODO: does this make sense? why does blocking imply no timeouts?
-                        }
-                    } while (isBlocking());
+                try {
+                    socket.implAccept(result);
+                } catch (SocketTimeoutException e) {
+                    if (shouldThrowSocketTimeoutExceptionFromAccept(e)) {
+                        throw e;
+                    }
+                    // Otherwise, this is a non-blocking socket and there's nothing ready, so we'll
+                    // fall through and return null.
                 }
             }
         } finally {
@@ -88,10 +86,21 @@ final class ServerSocketChannelImpl extends ServerSocketChannel implements FileD
         return result.socket().isConnected() ? result : null;
     }
 
-    @Override protected void implConfigureBlocking(boolean blocking) throws IOException {
-        synchronized (blockingLock()) {
-            IoUtils.setBlocking(impl.getFD$(), blocking);
+    private boolean shouldThrowSocketTimeoutExceptionFromAccept(SocketTimeoutException e) {
+        if (isBlocking()) {
+            return true;
         }
+        Throwable cause = e.getCause();
+        if (cause instanceof ErrnoException) {
+            if (((ErrnoException) cause).errno == EAGAIN) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override protected void implConfigureBlocking(boolean blocking) throws IOException {
+        IoUtils.setBlocking(impl.getFD$(), blocking);
     }
 
     synchronized protected void implCloseSelectableChannel() throws IOException {

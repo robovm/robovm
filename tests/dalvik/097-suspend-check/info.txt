@@ -1,0 +1,2 @@
+To support garbage collection, debugging and profiling the VM must be able to send all threads
+to a safepoint.  This tests the ability of the VM to do this for a tight loop.

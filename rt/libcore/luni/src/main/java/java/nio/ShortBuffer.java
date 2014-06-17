@@ -46,9 +46,9 @@ public abstract class ShortBuffer extends Buffer implements
      */
     public static ShortBuffer allocate(int capacity) {
         if (capacity < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("capacity < 0: " + capacity);
         }
-        return new ReadWriteShortArrayBuffer(capacity);
+        return new ShortArrayBuffer(new short[capacity]);
     }
 
     /**
@@ -85,7 +85,7 @@ public abstract class ShortBuffer extends Buffer implements
      */
     public static ShortBuffer wrap(short[] array, int start, int shortCount) {
         Arrays.checkOffsetAndCount(array.length, start, shortCount);
-        ShortBuffer buf = new ReadWriteShortArrayBuffer(array);
+        ShortBuffer buf = new ShortArrayBuffer(array);
         buf.position = start;
         buf.limit = start + shortCount;
         return buf;
@@ -170,10 +170,8 @@ public abstract class ShortBuffer extends Buffer implements
      * are the same as this buffer's.
      * <p>
      * The new buffer shares its content with this buffer, which means either
-     * buffer's change of content will be visible to the other. The two buffer's
+     * buffer's change of content will be visible to the other. The two buffers'
      * position, limit and mark are independent.
-     *
-     * @return a duplicated buffer that shares its content with this buffer.
      */
     public abstract ShortBuffer duplicate();
 
@@ -425,8 +423,11 @@ public abstract class ShortBuffer extends Buffer implements
      *                if no changes may be made to the contents of this buffer.
      */
     public ShortBuffer put(ShortBuffer src) {
+        if (isReadOnly()) {
+            throw new ReadOnlyBufferException();
+        }
         if (src == this) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("src == this");
         }
         if (src.remaining() > remaining()) {
             throw new BufferOverflowException();
@@ -463,10 +464,8 @@ public abstract class ShortBuffer extends Buffer implements
      * same as this buffer's.
      * <p>
      * The new buffer shares its content with this buffer, which means either
-     * buffer's change of content will be visible to the other. The two buffer's
+     * buffer's change of content will be visible to the other. The two buffers'
      * position, limit and mark are independent.
-     *
-     * @return a sliced buffer that shares its content with this buffer.
      */
     public abstract ShortBuffer slice();
 }

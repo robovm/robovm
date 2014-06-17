@@ -85,6 +85,10 @@ public abstract class InnerNodeImpl extends LeafNodeImpl {
     public Node insertBefore(Node newChild, Node refChild) throws DOMException {
         LeafNodeImpl refChildImpl = (LeafNodeImpl) refChild;
 
+        if (refChildImpl == null) {
+            return appendChild(newChild);
+        }
+
         if (refChildImpl.document != document) {
             throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, null);
         }

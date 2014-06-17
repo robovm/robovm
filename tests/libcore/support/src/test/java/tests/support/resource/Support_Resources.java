@@ -18,6 +18,7 @@
 package tests.support.resource;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -34,12 +35,25 @@ public class Support_Resources {
     public static final String RESOURCE_PACKAGE_NAME = "tests.resources";
 
     public static InputStream getStream(String name) {
+        // If we have the resources packaged up in our jar file, get them that way.
         String path = RESOURCE_PACKAGE + name;
         InputStream result = Support_Resources.class.getResourceAsStream(path);
-        if (result == null) {
-            throw new IllegalArgumentException("No such resource: " + path);
+        if (result != null) {
+            return result;
         }
-        return result;
+        // Otherwise, if we're in an Android build tree, get the files directly.
+        String ANDROID_BUILD_TOP = System.getenv("ANDROID_BUILD_TOP");
+        if (ANDROID_BUILD_TOP != null) {
+            File resource = new File(ANDROID_BUILD_TOP + "/libcore/support/src/test/java" + path);
+            if (resource.exists()) {
+                try {
+                    return new FileInputStream(resource);
+                } catch (IOException ex) {
+                    throw new IllegalArgumentException("Couldn't open: " + resource, ex);
+                }
+            }
+        }
+        throw new IllegalArgumentException("No such resource: " + path);
     }
 
     public static String getURL(String name) {

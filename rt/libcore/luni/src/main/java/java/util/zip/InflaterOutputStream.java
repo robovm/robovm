@@ -70,11 +70,13 @@ public class InflaterOutputStream extends FilterOutputStream {
      */
     public InflaterOutputStream(OutputStream out, Inflater inf, int bufferSize) {
         super(out);
-        if (out == null || inf == null) {
-            throw new NullPointerException();
+        if (out == null) {
+            throw new NullPointerException("out == null");
+        } else if (inf == null) {
+            throw new NullPointerException("inf == null");
         }
         if (bufferSize <= 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("bufferSize <= 0: " + bufferSize);
         }
         this.inf = inf;
         this.buf = new byte[bufferSize];

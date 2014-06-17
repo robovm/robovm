@@ -230,4 +230,45 @@ public class FileTest extends junit.framework.TestCase {
         assertTrue(new File("/").getTotalSpace() >= 0);
         assertTrue(new File("/").getUsableSpace() >= 0);
     }
+
+    public void test_mkdirs() throws Exception {
+        // Set up a directory to test in.
+        File base = createTemporaryDirectory();
+
+        // mkdirs returns true only if it _creates_ a directory.
+        // So we get false for a directory that already exists...
+        assertTrue(base.exists());
+        assertFalse(base.mkdirs());
+        // But true if we had to create something.
+        File a = new File(base, "a");
+        assertFalse(a.exists());
+        assertTrue(a.mkdirs());
+        assertTrue(a.exists());
+
+        // Test the recursive case where we need to create multiple parents.
+        File b = new File(a, "b");
+        File c = new File(b, "c");
+        File d = new File(c, "d");
+        assertTrue(a.exists());
+        assertFalse(b.exists());
+        assertFalse(c.exists());
+        assertFalse(d.exists());
+        assertTrue(d.mkdirs());
+        assertTrue(a.exists());
+        assertTrue(b.exists());
+        assertTrue(c.exists());
+        assertTrue(d.exists());
+
+        // Test the case where the 'directory' exists as a file.
+        File existsAsFile = new File(base, "existsAsFile");
+        existsAsFile.createNewFile();
+        assertTrue(existsAsFile.exists());
+        assertFalse(existsAsFile.mkdirs());
+
+        // Test the case where the parent exists as a file.
+        File badParent = new File(existsAsFile, "sub");
+        assertTrue(existsAsFile.exists());
+        assertFalse(badParent.exists());
+        assertFalse(badParent.mkdirs());
+    }
 }

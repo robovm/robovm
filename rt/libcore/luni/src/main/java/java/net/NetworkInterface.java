@@ -95,8 +95,7 @@ public final class NetworkInterface extends Object {
 
     /**
      * Returns the index for the network interface, or -1 if unknown.
-     *
-     * @hide 1.7
+     * @since 1.7
      */
     public int getIndex() {
         return interfaceIndex;
@@ -263,7 +262,7 @@ public final class NetworkInterface extends Object {
      * interface has this index.
      *
      * @throws SocketException if an error occurs.
-     * @hide 1.7
+     * @since 1.7
      */
     public static NetworkInterface getByIndex(int index) throws SocketException {
         String name = Libcore.os.if_indextoname(index);
@@ -343,9 +342,9 @@ public final class NetworkInterface extends Object {
             if (done[counter]) {
                 continue;
             }
-            int counter2 = counter;
+
             // Checks whether the following interfaces are children.
-            for (; counter2 < interfaces.length; counter2++) {
+            for (int counter2 = counter; counter2 < interfaces.length; counter2++) {
                 if (done[counter2]) {
                     continue;
                 }
@@ -354,7 +353,7 @@ public final class NetworkInterface extends Object {
                     interfaces[counter2].parent = interfaces[counter];
                     interfaces[counter].addresses.addAll(interfaces[counter2].addresses);
                     done[counter2] = true;
-                  }
+                }
             }
             result.add(interfaces[counter]);
             done[counter] = true;

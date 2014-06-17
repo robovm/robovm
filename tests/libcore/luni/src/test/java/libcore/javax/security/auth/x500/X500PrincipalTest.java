@@ -19,9 +19,11 @@ package libcore.javax.security.auth.x500;
 import java.io.ByteArrayInputStream;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
 import javax.security.auth.x500.X500Principal;
 import junit.framework.TestCase;
 import libcore.util.SerializationTester;
+
 
 public class X500PrincipalTest extends TestCase {
 
@@ -89,5 +91,24 @@ public class X500PrincipalTest extends TestCase {
         assertEquals(expected,
                      certBC.getSubjectX500Principal().getName(X500Principal.CANONICAL));
 
+    }
+
+    // http://code.google.com/p/android/issues/detail?id=21531
+    // http://b/5580664
+    public void testIA5StringEncodings() {
+        testIA5StringEncoding("emailAddress=root@android.com",
+                              new byte[] { 48, 33, 49, 31, 48, 29, 6, 9, 42, -122, 72, -122, -9, 13, 1, 9, 1, 22, 16, 114, 111, 111, 116, 64, 97, 110, 100, 114, 111, 105, 100, 46, 99, 111, 109 });
+        testIA5StringEncoding("dc=com",
+                              new byte[] { 48, 21, 49, 19, 48, 17, 6, 10, 9, -110, 38, -119, -109, -14, 44, 100, 1, 25, 22, 3, 99, 111, 109 });
+    }
+
+    private void testIA5StringEncoding(String name, byte[] expectedEncoded) {
+        X500Principal original = new X500Principal(name);
+
+        byte[] actualEncoded = original.getEncoded();
+        assertEquals(Arrays.toString(expectedEncoded), Arrays.toString(actualEncoded));
+
+        X500Principal decoded = new X500Principal(actualEncoded);
+        assertEquals(original, decoded);
     }
 }

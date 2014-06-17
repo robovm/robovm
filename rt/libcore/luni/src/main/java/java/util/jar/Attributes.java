@@ -50,8 +50,6 @@ public class Attributes implements Cloneable, Map<Object, Object> {
      * </pre>
      */
     public static class Name {
-        private final String name;
-
         /** The class path (a main attribute). */
         public static final Name CLASS_PATH = new Name("Class-Path");
 
@@ -140,7 +138,12 @@ public class Attributes implements Cloneable, Map<Object, Object> {
          */
         public static final Name IMPLEMENTATION_URL = new Name("Implementation-URL");
 
-        static final Name NAME = new Name("Name");
+        /**
+         * @hide
+         */
+        public static final Name NAME = new Name("Name");
+
+        private final String name;
 
         public Name(String name) {
             // encoded name + "\r\n" must be <= 72 bytes; ASCII-only so byte count equals char count
@@ -409,20 +412,16 @@ public class Attributes implements Cloneable, Map<Object, Object> {
      *         valid key.
      */
     public String getValue(String name) {
-        return (String) map.get(new Attributes.Name(name));
+        return getValue(new Attributes.Name(name));
     }
 
     /**
-     * Stores the value {@code val} associated with the key {@code name} in this
+     * Stores the value {@code value} associated with the key {@code name} in this
      * {@code Attributes}.
      *
-     * @param name
-     *            the key to store.
-     * @param val
-     *            the value to store in this {@code Attributes}.
      * @return the value being stored.
      */
-    public String putValue(String name, String val) {
-        return (String) map.put(new Attributes.Name(name), val);
+    public String putValue(String name, String value) {
+        return (String) map.put(new Attributes.Name(name), value);
     }
 }

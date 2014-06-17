@@ -130,25 +130,18 @@ public class JarInputStream extends ZipInputStream {
     }
 
     /**
-     * Reads up to {@code length} of decompressed data and stores it in
-     * {@code buffer} starting at {@code offset}.
+     * Reads up to {@code byteCount} bytes of decompressed data and stores it in
+     * {@code buffer} starting at {@code byteOffset}. Returns the number of uncompressed bytes read.
      *
-     * @param buffer
-     *            Buffer to store into
-     * @param offset
-     *            offset in buffer to store at
-     * @param length
-     *            number of bytes to store
-     * @return Number of uncompressed bytes read
      * @throws IOException
      *             if an IOException occurs.
      */
     @Override
-    public int read(byte[] buffer, int offset, int length) throws IOException {
+    public int read(byte[] buffer, int byteOffset, int byteCount) throws IOException {
         if (mEntry != null) {
             return -1;
         }
-        int r = super.read(buffer, offset, length);
+        int r = super.read(buffer, byteOffset, byteCount);
         if (verStream != null && !eos) {
             if (r == -1) {
                 eos = true;
@@ -168,7 +161,7 @@ public class JarInputStream extends ZipInputStream {
                     }
                 }
             } else {
-                verStream.write(buffer, offset, r);
+                verStream.write(buffer, byteOffset, r);
             }
         }
         return r;

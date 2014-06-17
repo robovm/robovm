@@ -115,7 +115,6 @@ public final class Long extends Number implements Comparable<Long> {
      * Compares two {@code long} values.
      * @return 0 if lhs = rhs, less than 0 if lhs &lt; rhs, and greater than 0 if lhs &gt; rhs.
      * @since 1.7
-     * @hide 1.7
      */
     public static int compare(long lhs, long rhs) {
         return lhs < rhs ? -1 : (lhs == rhs ? 0 : 1);

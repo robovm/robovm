@@ -1,7 +1,7 @@
 /*
  * Written by Doug Lea with assistance from members of JCP JSR-166
  * Expert Group and released to the public domain, as explained at
- * http://creativecommons.org/licenses/publicdomain
+ * http://creativecommons.org/publicdomain/zero/1.0/
  */
 
 package java.util.concurrent.atomic;
@@ -24,7 +24,7 @@ public class AtomicLong extends Number implements java.io.Serializable {
     private static final long serialVersionUID = 1927816293512124184L;
 
     // setup to use Unsafe.compareAndSwapLong for updates
-    private static final Unsafe unsafe = UnsafeAccess.THE_ONE; // android-changed
+    private static final Unsafe unsafe = Unsafe.getUnsafe();
     private static final long valueOffset;
 
     /**
@@ -42,10 +42,10 @@ public class AtomicLong extends Number implements java.io.Serializable {
     private static native boolean VMSupportsCS8();
 
     static {
-      try {
-        valueOffset = unsafe.objectFieldOffset
-            (AtomicLong.class.getDeclaredField("value"));
-      } catch (Exception ex) { throw new Error(ex); }
+        try {
+            valueOffset = unsafe.objectFieldOffset
+                (AtomicLong.class.getDeclaredField("value"));
+        } catch (Exception ex) { throw new Error(ex); }
     }
 
     private volatile long value;
@@ -124,13 +124,13 @@ public class AtomicLong extends Number implements java.io.Serializable {
      * Atomically sets the value to the given updated value
      * if the current value {@code ==} the expected value.
      *
-     * <p>May <a href="package-summary.html#Spurious">fail spuriously</a>
-     * and does not provide ordering guarantees, so is only rarely an
-     * appropriate alternative to {@code compareAndSet}.
+     * <p><a href="package-summary.html#weakCompareAndSet">May fail
+     * spuriously and does not provide ordering guarantees</a>, so is
+     * only rarely an appropriate alternative to {@code compareAndSet}.
      *
      * @param expect the expected value
      * @param update the new value
-     * @return true if successful.
+     * @return true if successful
      */
     public final boolean weakCompareAndSet(long expect, long update) {
         return unsafe.compareAndSwapLong(this, valueOffset, expect, update);
@@ -224,25 +224,39 @@ public class AtomicLong extends Number implements java.io.Serializable {
 
     /**
      * Returns the String representation of the current value.
-     * @return the String representation of the current value.
+     * @return the String representation of the current value
      */
     public String toString() {
         return Long.toString(get());
     }
 
-
+    /**
+     * Returns the value of this {@code AtomicLong} as an {@code int}
+     * after a narrowing primitive conversion.
+     */
     public int intValue() {
         return (int)get();
     }
 
+    /**
+     * Returns the value of this {@code AtomicLong} as a {@code long}.
+     */
     public long longValue() {
         return get();
     }
 
+    /**
+     * Returns the value of this {@code AtomicLong} as a {@code float}
+     * after a widening primitive conversion.
+     */
     public float floatValue() {
         return (float)get();
     }
 
+    /**
+     * Returns the value of this {@code AtomicLong} as a {@code double}
+     * after a widening primitive conversion.
+     */
     public double doubleValue() {
         return (double)get();
     }

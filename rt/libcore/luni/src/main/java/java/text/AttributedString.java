@@ -519,7 +519,7 @@ public class AttributedString {
      */
     public AttributedString(String value) {
         if (value == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("value == null");
         }
         text = value;
         attributeMap = new HashMap<Attribute, List<Range>>(11);
@@ -542,7 +542,7 @@ public class AttributedString {
     public AttributedString(String value,
             Map<? extends AttributedCharacterIterator.Attribute, ?> attributes) {
         if (value == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("value == null");
         }
         if (value.length() == 0 && !attributes.isEmpty()) {
             throw new IllegalArgumentException("Cannot add attributes to empty string");
@@ -575,10 +575,10 @@ public class AttributedString {
      */
     public void addAttribute(AttributedCharacterIterator.Attribute attribute, Object value) {
         if (attribute == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("attribute == null");
         }
-        if (text.length() == 0) {
-            throw new IllegalArgumentException();
+        if (text.isEmpty()) {
+            throw new IllegalArgumentException("text is empty");
         }
 
         List<Range> ranges = attributeMap.get(attribute);
@@ -612,7 +612,7 @@ public class AttributedString {
     public void addAttribute(AttributedCharacterIterator.Attribute attribute,
             Object value, int start, int end) {
         if (attribute == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("attribute == null");
         }
         if (start < 0 || end > text.length() || start >= end) {
             throw new IllegalArgumentException();

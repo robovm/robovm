@@ -59,7 +59,7 @@ public class PrintStream extends FilterOutputStream implements Appendable, Close
     public PrintStream(OutputStream out) {
         super(out);
         if (out == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("out == null");
         }
     }
 
@@ -80,14 +80,14 @@ public class PrintStream extends FilterOutputStream implements Appendable, Close
     public PrintStream(OutputStream out, boolean autoFlush) {
         super(out);
         if (out == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("out == null");
         }
         this.autoFlush = autoFlush;
     }
 
     /**
      * Constructs a new {@code PrintStream} with {@code out} as its target
-     * stream and using the character encoding {@code enc} while writing. The
+     * stream and using the character encoding {@code charsetName} while writing. The
      * parameter {@code autoFlush} determines if the print stream automatically
      * flushes its contents to the target stream when a newline is encountered.
      *
@@ -96,28 +96,30 @@ public class PrintStream extends FilterOutputStream implements Appendable, Close
      * @param autoFlush
      *            indicates whether or not to flush contents upon encountering a
      *            newline sequence.
-     * @param enc
+     * @param charsetName
      *            the non-null string describing the desired character encoding.
      * @throws NullPointerException
-     *             if {@code out} or {@code enc} are {@code null}.
+     *             if {@code out} or {@code charsetName} are {@code null}.
      * @throws UnsupportedEncodingException
-     *             if the encoding specified by {@code enc} is not supported.
+     *             if the encoding specified by {@code charsetName} is not supported.
      */
-    public PrintStream(OutputStream out, boolean autoFlush, String enc)
+    public PrintStream(OutputStream out, boolean autoFlush, String charsetName)
             throws UnsupportedEncodingException {
         super(out);
-        if (out == null || enc == null) {
-            throw new NullPointerException();
+        if (out == null) {
+            throw new NullPointerException("out == null");
+        } else if (charsetName == null) {
+            throw new NullPointerException("charsetName == null");
         }
         this.autoFlush = autoFlush;
         try {
-            if (!Charset.isSupported(enc)) {
-                throw new UnsupportedEncodingException(enc);
+            if (!Charset.isSupported(charsetName)) {
+                throw new UnsupportedEncodingException(charsetName);
             }
         } catch (IllegalCharsetNameException e) {
-            throw new UnsupportedEncodingException(enc);
+            throw new UnsupportedEncodingException(charsetName);
         }
-        encoding = enc;
+        encoding = charsetName;
     }
 
     /**
@@ -136,30 +138,30 @@ public class PrintStream extends FilterOutputStream implements Appendable, Close
 
     /**
      * Constructs a new {@code PrintStream} with {@code file} as its target. The
-     * character set named {@code csn} is used for character encoding.
+     * character set named {@code charsetName} is used for character encoding.
      *
      * @param file
      *            the target file. If the file already exists, its contents are
      *            removed, otherwise a new file is created.
-     * @param csn
+     * @param charsetName
      *            the name of the character set used for character encoding.
      * @throws FileNotFoundException
      *             if an error occurs while opening or creating the target file.
      * @throws NullPointerException
-     *             if {@code csn} is {@code null}.
+     *             if {@code charsetName} is {@code null}.
      * @throws UnsupportedEncodingException
-     *             if the encoding specified by {@code csn} is not supported.
+     *             if the encoding specified by {@code charsetName} is not supported.
      */
-    public PrintStream(File file, String csn) throws FileNotFoundException,
+    public PrintStream(File file, String charsetName) throws FileNotFoundException,
             UnsupportedEncodingException {
         super(new FileOutputStream(file));
-        if (csn == null) {
-            throw new NullPointerException();
+        if (charsetName == null) {
+            throw new NullPointerException("charsetName == null");
         }
-        if (!Charset.isSupported(csn)) {
-            throw new UnsupportedEncodingException(csn);
+        if (!Charset.isSupported(charsetName)) {
+            throw new UnsupportedEncodingException(charsetName);
         }
-        encoding = csn;
+        encoding = charsetName;
     }
 
     /**
@@ -179,24 +181,24 @@ public class PrintStream extends FilterOutputStream implements Appendable, Close
 
     /**
      * Constructs a new {@code PrintStream} with the file identified by
-     * {@code fileName} as its target. The character set named {@code csn} is
+     * {@code fileName} as its target. The character set named {@code charsetName} is
      * used for character encoding.
      *
      * @param fileName
      *            the target file's name. If the file already exists, its
      *            contents are removed, otherwise a new file is created.
-     * @param csn
+     * @param charsetName
      *            the name of the character set used for character encoding.
      * @throws FileNotFoundException
      *             if an error occurs while opening or creating the target file.
      * @throws NullPointerException
-     *             if {@code csn} is {@code null}.
+     *             if {@code charsetName} is {@code null}.
      * @throws UnsupportedEncodingException
-     *             if the encoding specified by {@code csn} is not supported.
+     *             if the encoding specified by {@code charsetName} is not supported.
      */
-    public PrintStream(String fileName, String csn)
+    public PrintStream(String fileName, String charsetName)
             throws FileNotFoundException, UnsupportedEncodingException {
-        this(new File(fileName), csn);
+        this(new File(fileName), charsetName);
     }
 
     /**

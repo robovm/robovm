@@ -217,10 +217,17 @@ public class SimpleTimeZone extends TimeZone {
             throw new IllegalArgumentException("Invalid daylightSavings: " + daylightSavings);
         }
         dstSavings = daylightSavings;
-        // TODO: do we need to set useDaylight is dstSavings != 0?
 
-        setStartRule(startMonth, startDay, startDayOfWeek, startTime);
-        setEndRule(endMonth, endDay, endDayOfWeek, endTime);
+        this.startMonth = startMonth;
+        this.startDay = startDay;
+        this.startDayOfWeek = startDayOfWeek;
+        this.startTime = startTime;
+        setStartMode();
+        this.endMonth = endMonth;
+        this.endDay = endDay;
+        this.endDayOfWeek = endDayOfWeek;
+        this.endTime = endTime;
+        setEndMode();
     }
 
     /**
@@ -539,11 +546,10 @@ public class SimpleTimeZone extends TimeZone {
      *            the daylight savings offset in milliseconds.
      */
     public void setDSTSavings(int milliseconds) {
-        if (milliseconds > 0) {
-            dstSavings = milliseconds;
-        } else {
-            throw new IllegalArgumentException();
+        if (milliseconds <= 0) {
+            throw new IllegalArgumentException("milliseconds <= 0: " + milliseconds);
         }
+        dstSavings = milliseconds;
     }
 
     private void checkRange(int month, int dayOfWeek, int time) {

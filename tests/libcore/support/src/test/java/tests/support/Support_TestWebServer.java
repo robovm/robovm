@@ -94,51 +94,21 @@ public class Support_TestWebServer implements Support_HttpConstants {
     }
 
     /**
-     * Initialize a new server with default port and timeout.
-     * @param log Set true if you want trace output
-     */
-    public int initServer(boolean log) throws Exception {
-        return initServer(0, DEFAULT_TIMEOUT, log);
-    }
-
-    /**
-     * Initialize a new server with default timeout.
-     * @param port Sets the server to listen on this port, or 0 to let the OS choose.
-     *             Hard-coding ports is evil, so always pass 0.
-     * @param log Set true if you want trace output
-     */
-    public int initServer(int port, boolean log) throws Exception {
-        return initServer(port, DEFAULT_TIMEOUT, log);
-    }
-
-    /**
-     * Initialize a new server with default timeout and disabled log.
-     * @param port Sets the server to listen on this port, or 0 to let the OS choose.
-     *             Hard-coding ports is evil, so always pass 0.
      * @param servePath the path to the dynamic web test data
      * @param contentType the type of the dynamic web test data
      */
-    public int initServer(int port, String servePath, String contentType)
-            throws Exception {
+    public int initServer(String servePath, String contentType) throws Exception {
         Support_TestWebData.initDynamicTestWebData(servePath, contentType);
-        return initServer(port, DEFAULT_TIMEOUT, false);
+        return initServer();
     }
 
-    /**
-     * Initialize a new server with default port and timeout.
-     * @param port Sets the server to listen on this port, or 0 to let the OS choose.
-     *             Hard-coding ports is evil, so always pass 0.
-     * @param timeout Indicates the period of time to wait until a socket is
-     *                closed
-     * @param log Set true if you want trace output
-     */
-    public int initServer(int port, int timeout, boolean log) throws Exception {
-        mTimeout = timeout;
-        mLog = log;
+    public int initServer() throws Exception {
+        mTimeout = DEFAULT_TIMEOUT;
+        mLog = false;
         keepAlive = true;
         if (acceptT == null) {
             acceptT = new AcceptThread();
-            mPort = acceptT.init(port);
+            mPort = acceptT.init();
             acceptT.start();
         }
         return mPort;
@@ -253,8 +223,8 @@ public class Support_TestWebServer implements Support_HttpConstants {
          * @param port the port to use, or 0 to let the OS choose.
          * Hard-coding ports is evil, so always pass 0!
          */
-        public int init(int port) throws IOException {
-            ss = new ServerSocket(port);
+        public int init() throws IOException {
+            ss = new ServerSocket(0);
             ss.setSoTimeout(5000);
             ss.setReuseAddress(true);
             return ss.getLocalPort();

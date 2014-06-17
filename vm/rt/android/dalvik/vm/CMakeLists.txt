@@ -5,7 +5,6 @@ include_directories(
 )
 
 set(SRC
-  InlineNative.cpp
   native/java_util_concurrent_atomic_AtomicLong.cpp
 )
 

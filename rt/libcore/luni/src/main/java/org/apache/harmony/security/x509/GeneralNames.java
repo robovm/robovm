@@ -84,7 +84,18 @@ public final class GeneralNames {
             return result;
         }
         for (GeneralName generalName : generalNames) {
-            result.add(generalName.getAsList());
+            /*
+             * If we have an error decoding one of the GeneralNames, we'll just
+             * omit it from the final list.
+             */
+            final List<Object> genNameList;
+            try {
+                genNameList = generalName.getAsList();
+            } catch (IllegalArgumentException ignored) {
+                continue;
+            }
+
+            result.add(genNameList);
         }
         return result;
     }

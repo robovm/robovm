@@ -59,7 +59,7 @@ public final class ProcessBuilder {
      */
     public ProcessBuilder(List<String> command) {
         if (command == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("command == null");
         }
         this.command = command;
 
@@ -102,7 +102,7 @@ public final class ProcessBuilder {
      */
     public ProcessBuilder command(List<String> command) {
         if (command == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("command == null");
         }
         this.command = command;
         return this;

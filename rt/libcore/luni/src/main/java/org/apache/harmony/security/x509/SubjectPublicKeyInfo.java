@@ -26,13 +26,13 @@ import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import org.apache.harmony.security.asn1.ASN1BitString;
 import org.apache.harmony.security.asn1.ASN1Sequence;
 import org.apache.harmony.security.asn1.ASN1Type;
 import org.apache.harmony.security.asn1.BerInputStream;
 import org.apache.harmony.security.asn1.BitString;
-import org.apache.harmony.security.utils.AlgNameMapper;
 
 /**
  * The class encapsulates the ASN.1 DER encoding/decoding work
@@ -103,30 +103,52 @@ public final class SubjectPublicKeyInfo {
     }
 
     /**
-     * Returns The PublicKey corresponding to this SubjectPublicKeyInfo
+     * Returns the PublicKey corresponding to this SubjectPublicKeyInfo
      * instance.
      */
     public PublicKey getPublicKey() {
         if (publicKey == null) {
-            String alg_oid = algorithmID.getAlgorithm();
-            try {
-                String alg =
-                    AlgNameMapper.map2AlgName(alg_oid);
+            final byte[] encoded = getEncoded();
+            final KeySpec keySpec = new X509EncodedKeySpec(encoded);
 
-                if (alg == null) {
-                    alg = alg_oid;
-                }
-                publicKey = KeyFactory.getInstance(alg)
-                    .generatePublic(new X509EncodedKeySpec(getEncoded()));
-            } catch (InvalidKeySpecException ignored) {
-            } catch (NoSuchAlgorithmException ignored) {
+            /* Try using the algorithm name first. */
+            final String algName = algorithmID.getAlgorithmName();
+            publicKey = generateKeyForAlgorithm(keySpec, algName);
+
+            /*
+             * Fall back to using the algorithm OID if it's not the same as the
+             * algorithm name.
+             */
+            final String algOid = algorithmID.getAlgorithm();
+            if (publicKey == null && !algOid.equals(algName)) {
+                publicKey = generateKeyForAlgorithm(keySpec, algOid);
             }
+
+            /*
+             * Encode this as an X.509 public key since we didn't have any
+             * KeyFactory that could handle this algorithm name or OID. Perhaps
+             * the thing that's using this can decode it.
+             */
             if (publicKey == null) {
-                publicKey = new X509PublicKey(alg_oid, getEncoded(),
-                        subjectPublicKey);
+                publicKey = new X509PublicKey(algOid, encoded, subjectPublicKey);
             }
         }
         return publicKey;
+    }
+
+    /**
+     * Try to generate a PublicKey for a given {@code keySpec} and
+     * {@code algorithm} identifier. If there a problem generating the key like
+     * a missing {@code KeyFactory} or invalid {@code KeySpec}, it will return
+     * {@code null}.
+     */
+    private static PublicKey generateKeyForAlgorithm(KeySpec keySpec, String algorithm) {
+        try {
+            return KeyFactory.getInstance(algorithm).generatePublic(keySpec);
+        } catch (InvalidKeySpecException ignored) {
+        } catch (NoSuchAlgorithmException ignored) {
+        }
+        return null;
     }
 
     public static final ASN1Sequence ASN1 = new ASN1Sequence(new ASN1Type[] {

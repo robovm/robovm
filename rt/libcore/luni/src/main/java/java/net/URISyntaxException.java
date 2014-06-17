@@ -49,12 +49,14 @@ public class URISyntaxException extends Exception {
     public URISyntaxException(String input, String reason, int index) {
         super(reason);
 
-        if (input == null || reason == null) {
-            throw new NullPointerException();
+        if (input == null) {
+            throw new NullPointerException("input == null");
+        } else if (reason == null) {
+            throw new NullPointerException("reason == null");
         }
 
         if (index < -1) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Bad index: " + index);
         }
 
         this.input = input;
@@ -76,8 +78,10 @@ public class URISyntaxException extends Exception {
     public URISyntaxException(String input, String reason) {
         super(reason);
 
-        if (input == null || reason == null) {
-            throw new NullPointerException();
+        if (input == null) {
+            throw new NullPointerException("input == null");
+        } else if (reason == null) {
+            throw new NullPointerException("reason == null");
         }
 
         this.input = input;

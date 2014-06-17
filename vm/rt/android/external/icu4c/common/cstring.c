@@ -1,7 +1,7 @@
 /*
 ******************************************************************************
 *
-*   Copyright (C) 1997-2003, International Business Machines
+*   Copyright (C) 1997-2011, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 ******************************************************************************
@@ -45,6 +45,17 @@
  * Note that the set of lowercase Latin letters is discontiguous in EBCDIC
  * and the set of uppercase Latin letters is discontiguous as well.
  */
+
+U_CAPI UBool U_EXPORT2
+uprv_isASCIILetter(char c) {
+#if U_CHARSET_FAMILY==U_EBCDIC_FAMILY
+    return
+        ('a'<=c && c<='i') || ('j'<=c && c<='r') || ('s'<=c && c<='z') ||
+        ('A'<=c && c<='I') || ('J'<=c && c<='R') || ('S'<=c && c<='Z');
+#else
+    return ('a'<=c && c<='z') || ('A'<=c && c<='Z');
+#endif
+}
 
 U_CAPI char U_EXPORT2
 uprv_toupper(char c) {
@@ -217,9 +228,9 @@ T_CString_stringToInteger(const char *integerString, int32_t radix)
     return uprv_strtoul(integerString, &end, radix);
 
 }
-    
+
 U_CAPI int U_EXPORT2
-T_CString_stricmp(const char *str1, const char *str2) {
+uprv_stricmp(const char *str1, const char *str2) {
     if(str1==NULL) {
         if(str2==NULL) {
             return 0;
@@ -258,7 +269,7 @@ T_CString_stricmp(const char *str1, const char *str2) {
 }
 
 U_CAPI int U_EXPORT2
-T_CString_strnicmp(const char *str1, const char *str2, uint32_t n) {
+uprv_strnicmp(const char *str1, const char *str2, uint32_t n) {
     if(str1==NULL) {
         if(str2==NULL) {
             return 0;

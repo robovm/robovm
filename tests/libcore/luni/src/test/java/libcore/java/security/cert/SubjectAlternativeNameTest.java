@@ -38,7 +38,9 @@ public final class SubjectAlternativeNameTest extends TestCase {
 
     public void testFormatIpv4MappedAddress() throws Exception {
         byte[] mappedAddress = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, 127, 0, 0, 1 };
-        assertEquals("127.0.0.1", formatIpAddress(mappedAddress));
+        String decoded = formatIpAddress(mappedAddress);
+        assertTrue(decoded,
+                decoded.equals("127.0.0.1") || decoded.equalsIgnoreCase("::ffff:127.0.0.1"));
     }
 
     public void testFormatIpv6Address() throws Exception {

@@ -27,102 +27,39 @@ import libcore.icu.ICU;
 import libcore.icu.LocaleData;
 
 /**
- * An abstract class for date/time formatting subclasses which formats and
- * parses dates or time in a language-independent manner. The date/time
- * formatting subclass, such as {@link SimpleDateFormat}, allows for formatting
- * (i.e., date -> text), parsing (text -> date), and normalization. The date is
- * represented as a {@code Date} object or as the milliseconds since January 1,
- * 1970, 00:00:00 GMT.
- * <p>
- * DateFormat provides many class methods for obtaining default date/time
- * formatters based on the default or a given locale and a number of formatting
- * styles. The formatting styles include FULL, LONG, MEDIUM, and SHORT. More
- * details and examples for using these styles are provided in the method
- * descriptions.
- * <p>
- * {@code DateFormat} helps you to format and parse dates for any locale. Your
- * code can be completely independent of the locale conventions for months, days
- * of the week, or even the calendar format: lunar vs. solar.
- * <p>
- * To format a date for the current Locale, use one of the static factory
- * methods:
- * <blockquote>
+ * Formats or parses dates and times.
  *
+ * <p>This class provides factories for obtaining instances configured for a specific locale.
+ * The most common subclass is {@link SimpleDateFormat}.
+ *
+ * <h4>Sample Code</h4>
+ * <p>This code:
  * <pre>
- * myString = DateFormat.getDateInstance().format(myDate);
- * </pre>
- *
- * </blockquote>
- * <p>
- * If you are formatting multiple dates, it is more efficient to get the format
- * and use it multiple times so that the system doesn't have to fetch the
- * information about the local language and country conventions multiple times.
- * <blockquote>
- *
- * <pre>
- * DateFormat df = DateFormat.getDateInstance();
- * for (int i = 0; i &lt; a.length; ++i) {
- *     output.println(df.format(myDate[i]) + &quot;; &quot;);
+ * DateFormat[] formats = new DateFormat[] {
+ *   DateFormat.getDateInstance(),
+ *   DateFormat.getDateTimeInstance(),
+ *   DateFormat.getTimeInstance(),
+ * };
+ * for (DateFormat df : formats) {
+ *   System.out.println(df.format(new Date(0)));
+ *   df.setTimeZone(TimeZone.getTimeZone("UTC"));
+ *   System.out.println(df.format(new Date(0)));
  * }
  * </pre>
  *
- * </blockquote>
- * <p>
- * To format a number for a different locale, specify it in the call to
- * {@code getDateInstance}:
- * <blockquote>
- *
+ * <p>Produces this output when run on an {@code en_US} device in the America/Los_Angeles time zone:
  * <pre>
- * DateFormat df = DateFormat.getDateInstance(DateFormat.LONG, Locale.FRANCE);
+ * Dec 31, 1969
+ * Jan 1, 1970
+ * Dec 31, 1969 4:00:00 PM
+ * Jan 1, 1970 12:00:00 AM
+ * 4:00:00 PM
+ * 12:00:00 AM
  * </pre>
- *
- * </blockquote>
- * <p>
- * {@code DateFormat} can also be used to parse strings:
- * <blockquote>
- *
- * <pre>
- * myDate = df.parse(myString);
- * </pre>
- *
- * </blockquote>
- * <p>
- * Use {@code getDateInstance} to get the normal date format for a country.
- * Other static factory methods are available: Use {@code getTimeInstance} to
- * get the time format for a country. Use {@code getDateTimeInstance} to get the
- * date and time format. You can pass in different options to these factory
- * methods to control the length of the result; from SHORT to MEDIUM to LONG to
- * FULL. The exact result depends on the locale, but generally:
- * <ul>
- * <li>SHORT is completely numeric, such as 12.13.52 or 3:30pm
- * <li>MEDIUM is longer, such as Jan 12, 1952
- * <li>LONG is longer, such as January 12, 1952 or 3:30:32pm
- * <li>FULL is pretty completely specified, such as Tuesday, April 12, 1952 AD
- * or 3:30:42pm PST.
- * </ul>
- * <p>
- * If needed, the time zone can be set on the format. For even greater control
- * over the formatting or parsing, try casting the {@code DateFormat} you get
- * from the factory methods to a {@code SimpleDateFormat}. This will work for
- * the majority of countries; just remember to put it in a try block in case you
- * encounter an unusual one.
- * <p>
- * There are versions of the parse and format methods which use
- * {@code ParsePosition} and {@code FieldPosition} to allow you to
- * <ul>
- * <li>progressively parse through pieces of a string;
- * <li>align any particular field.
- * </ul>
- * <h4>Synchronization</h4>
- * <p>
- * Date formats are not synchronized. It is recommended to create separate
- * format instances for each thread. If multiple threads access a format
- * concurrently, it must be synchronized externally.
- *
- * @see NumberFormat
- * @see SimpleDateFormat
- * @see Calendar
- * @see TimeZone
+ * And will produce similarly appropriate localized human-readable output on any user's system.
+ * Notice how the same point in time when formatted can appear to be a different time when rendered
+ * for a different time zone. This is one reason why formatting should be left until the data will
+ * only be presented to a human. Machines should interchange "Unix time" integers.
  */
 public abstract class DateFormat extends Format {
 
@@ -286,10 +223,6 @@ public abstract class DateFormat extends Format {
 
     /**
      * Returns a new instance of {@code DateFormat} with the same properties.
-     *
-     * @return a shallow copy of this {@code DateFormat}.
-     *
-     * @see java.lang.Cloneable
      */
     @Override
     public Object clone() {
@@ -353,16 +286,14 @@ public abstract class DateFormat extends Format {
      *            {@code Number} instance.
      */
     @Override
-    public final StringBuffer format(Object object, StringBuffer buffer,
-            FieldPosition field) {
+    public final StringBuffer format(Object object, StringBuffer buffer, FieldPosition field) {
         if (object instanceof Date) {
             return format((Date) object, buffer, field);
         }
         if (object instanceof Number) {
-            return format(new Date(((Number) object).longValue()), buffer,
-                    field);
+            return format(new Date(((Number) object).longValue()), buffer, field);
         }
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("Bad class: " + object.getClass());
     }
 
     /**
@@ -373,8 +304,7 @@ public abstract class DateFormat extends Format {
      * @return the formatted string.
      */
     public final String format(Date date) {
-        return format(date, new StringBuffer(), new FieldPosition(0))
-                .toString();
+        return format(date, new StringBuffer(), new FieldPosition(0)).toString();
     }
 
     /**
@@ -395,8 +325,7 @@ public abstract class DateFormat extends Format {
      *            of the alignment field in the formatted text.
      * @return the string buffer.
      */
-    public abstract StringBuffer format(Date date, StringBuffer buffer,
-            FieldPosition field);
+    public abstract StringBuffer format(Date date, StringBuffer buffer, FieldPosition field);
 
     /**
      * Returns an array of locales for which custom {@code DateFormat} instances
@@ -878,9 +807,8 @@ public abstract class DateFormat extends Format {
          */
         public static Field ofCalendarField(int calendarField) {
             if (calendarField < 0 || calendarField >= Calendar.FIELD_COUNT) {
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("Field out of range: " + calendarField);
             }
-
             return table.get(Integer.valueOf(calendarField));
         }
     }
@@ -888,14 +816,14 @@ public abstract class DateFormat extends Format {
     private static void checkDateStyle(int style) {
         if (!(style == SHORT || style == MEDIUM || style == LONG
                 || style == FULL || style == DEFAULT)) {
-            throw new IllegalArgumentException("Illegal date style " + style);
+            throw new IllegalArgumentException("Illegal date style: " + style);
         }
     }
 
     private static void checkTimeStyle(int style) {
         if (!(style == SHORT || style == MEDIUM || style == LONG
                 || style == FULL || style == DEFAULT)) {
-            throw new IllegalArgumentException("Illegal time style " + style);
+            throw new IllegalArgumentException("Illegal time style: " + style);
         }
     }
 }

@@ -49,7 +49,6 @@ public class LinkageError extends Error {
     /**
      * Constructs a new {@code LinkageError} with the given detail message and cause.
      * @since 1.7
-     * @hide 1.7
      */
     public LinkageError(String detailMessage, Throwable cause) {
         super(detailMessage, cause);

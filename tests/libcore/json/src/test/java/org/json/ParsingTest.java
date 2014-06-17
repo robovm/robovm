@@ -261,6 +261,8 @@ public class ParsingTest extends TestCase {
                 result.put(key, canonicalize(object.get(key)));
             }
             return result;
+        } else if (input == null || input.equals(JSONObject.NULL)) {
+            return JSONObject.NULL;
         } else {
             return input;
         }

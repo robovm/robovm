@@ -17,10 +17,13 @@
 #define LOG_TAG "Posix"
 
 #include "AsynchronousSocketCloseMonitor.h"
+#include "cutils/log.h"
+#include "ExecStrings.h"
 #include "JNIHelp.h"
 #include "JniConstants.h"
 #include "JniException.h"
 #include "NetworkUtilities.h"
+#include "Portability.h"
 #include "ScopedBytes.h"
 #include "ScopedLocalRef.h"
 #include "ScopedPrimitiveArray.h"
@@ -35,62 +38,26 @@
 #include <net/if.h>
 #include <netdb.h>
 #include <netinet/in.h>
-#include <netinet/in.h>
 #include <poll.h>
 #include <pwd.h>
 #include <signal.h>
 #include <stdlib.h>
 #include <sys/ioctl.h>
 #include <sys/mman.h>
-// RoboVM note: On Darwin sendfile is defined in sys/mman.h.
-#if !defined(__APPLE__)
-#   include <sys/sendfile.h>
-#endif
-#include <sys/socket.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
+#include <sys/syscall.h>
 #include <sys/time.h>
 #include <sys/types.h>
 #include <sys/uio.h>
 #include <sys/utsname.h>
-// RoboVM note: Darwin needs these to be included for struct statfs.
-#if defined(__APPLE__)
-#   include <sys/param.h>
-#   include <sys/mount.h>
-#else
-#   include <sys/vfs.h> // Bionic doesn't have <sys/statvfs.h>
-#endif
 #include <sys/wait.h>
+#include <termios.h>
 #include <unistd.h>
 
-
-// RoboVM note: Darwin doesn't have fdatasync. Use fsync instead.
 #if defined(__APPLE__)
-#   define fdatasync(fd) fsync(fd)
-#endif
-// RoboVM note: On Darwin struct flock, ftruncate, lseek, pread and pwrite are already 64-bit so there are no *64 versions.
-#if defined(__APPLE__)
-#   define flock64 flock
-#   define ftruncate64 ftruncate
-#   define lseek64 lseek
-#   define pread64 pread
-#   define pwrite64 pwrite
-#endif
- // RoboVM note: The signature for sendfile on Linux and Darwin differs. This maps Linux's sendfile to Darwin's. 
-#if defined(__APPLE__)
-    static ssize_t sendfile(int out_fd, int in_fd, off_t* offset, size_t count) {
-        if (count <= 0) {
-            return 0;
-        }
-        off_t len = count;
-        int ret = sendfile(out_fd, in_fd, offset != NULL ? *offset : 0, &len, NULL, 0);
-        if (ret == 0 || ((errno == EAGAIN || errno == EINTR) && len > 0)) {
-            errno = 0;
-            if (offset != NULL) *offset += len;
-            return len;
-        }
-        return -1;
-    }
+// RoboVM note: For SOL_LOCAL, LOCAL_PEERPID on Darwin.
+  #include <sys/un.h>
 #endif
 
 #define TO_JAVA_STRING(NAME, EXP) \
@@ -106,36 +73,27 @@ struct addrinfo_deleter {
 };
 
 /**
- * Used to retry syscalls that can return EINTR. This differs from TEMP_FAILURE_RETRY in that
- * it also considers the case where the reason for failure is that another thread called
- * Socket.close.
- *
- * Assumes 'JNIEnv* env' and 'jobject javaFd' (which is a java.io.FileDescriptor) are in scope.
+ * Used to retry networking system calls that can return EINTR. Unlike TEMP_FAILURE_RETRY,
+ * this also handles the case where the reason for failure is that another thread called
+ * Socket.close. This macro also throws exceptions on failure.
  *
  * Returns the result of 'exp', though a Java exception will be pending if the result is -1.
- *
- * Correct usage looks like this:
- *
- * void Posix_syscall(JNIEnv* env, jobject javaFd, ...) {
- *     ...
- *     int fd;
- *     NET_FAILURE_RETRY("syscall", syscall(fd, ...)); // Throws on error.
- * }
  */
-#define NET_FAILURE_RETRY(syscall_name, exp) ({ \
-    typeof (exp) _rc = -1; \
+#define NET_FAILURE_RETRY(jni_env, return_type, syscall_name, java_fd, ...) ({ \
+    return_type _rc = -1; \
     do { \
         { \
-            fd = jniGetFDFromFileDescriptor(env, javaFd); \
-            AsynchronousSocketCloseMonitor monitor(fd); \
-            _rc = (exp); \
+            int _fd = jniGetFDFromFileDescriptor(jni_env, java_fd); \
+            AsynchronousSocketCloseMonitor _monitor(_fd); \
+            _rc = syscall_name(_fd, __VA_ARGS__); \
         } \
         if (_rc == -1) { \
-            if (jniGetFDFromFileDescriptor(env, javaFd) == -1) { \
-                jniThrowException(env, "java/net/SocketException", "Socket closed"); \
+            if (jniGetFDFromFileDescriptor(jni_env, java_fd) == -1) { \
+                jniThrowException(jni_env, "java/net/SocketException", "Socket closed"); \
                 break; \
             } else if (errno != EINTR) { \
-                throwErrnoException(env, syscall_name); \
+                /* TODO: with a format string we could show the arguments too, like strace(1). */ \
+                throwErrnoException(jni_env, # syscall_name); \
                 break; \
             } \
         } \
@@ -176,7 +134,12 @@ static void throwErrnoException(JNIEnv* env, const char* functionName) {
 }
 
 static void throwGaiException(JNIEnv* env, const char* functionName, int error) {
-    if (errno != 0) {
+  // Cache the methods ids before we throw, so we don't call GetMethodID with a pending exception.
+  static jmethodID ctor3 = env->GetMethodID(JniConstants::gaiExceptionClass, "<init>",
+                                            "(Ljava/lang/String;ILjava/lang/Throwable;)V");
+  static jmethodID ctor2 = env->GetMethodID(JniConstants::gaiExceptionClass, "<init>",
+                                            "(Ljava/lang/String;I)V");
+  if (errno != 0) {
         // EAI_SYSTEM should mean "look at errno instead", but both glibc and bionic seem to
         // mess this up. In particular, if you don't have INTERNET permission, errno will be EACCES
         // but you'll get EAI_NONAME or EAI_NODATA. So we want our GaiException to have a
@@ -185,10 +148,6 @@ static void throwGaiException(JNIEnv* env, const char* functionName, int error) 
         throwErrnoException(env, functionName);
         // Deliberately fall through to throw another exception...
     }
-    static jmethodID ctor3 = env->GetMethodID(JniConstants::gaiExceptionClass,
-            "<init>", "(Ljava/lang/String;ILjava/lang/Throwable;)V");
-    static jmethodID ctor2 = env->GetMethodID(JniConstants::gaiExceptionClass,
-            "<init>", "(Ljava/lang/String;I)V");
     throwException(env, JniConstants::gaiExceptionClass, ctor3, ctor2, functionName, error);
 }
 
@@ -258,8 +217,7 @@ private:
     std::vector<ScopedT*> mScopedBuffers;
 };
 
-static jobject makeSocketAddress(JNIEnv* env, const sockaddr_storage* ss) {
-    // TODO: support AF_UNIX and AF_UNSPEC (and other families?)
+static jobject makeSocketAddress(JNIEnv* env, const sockaddr_storage& ss) {
     jint port;
     jobject inetAddress = sockaddrToInetAddress(env, ss, &port);
     if (inetAddress == NULL) {
@@ -293,24 +251,28 @@ static jobject makeStructStat(JNIEnv* env, const struct stat& sb) {
             static_cast<jlong>(sb.st_blocks));
 }
 
-static jobject makeStructStatFs(JNIEnv* env, const struct statfs& sb) {
-    STATIC_ASSERT(sizeof(sb.f_bavail) == sizeof(jlong), statfs_not_64_bit);
-    STATIC_ASSERT(sizeof(sb.f_bfree) == sizeof(jlong), statfs_not_64_bit);
-    STATIC_ASSERT(sizeof(sb.f_blocks) == sizeof(jlong), statfs_not_64_bit);
-
-    static jmethodID ctor = env->GetMethodID(JniConstants::structStatFsClass, "<init>",
-            "(JJJJJJJJ)V");
-    return env->NewObject(JniConstants::structStatFsClass, ctor, static_cast<jlong>(sb.f_bsize),
-            static_cast<jlong>(sb.f_blocks), static_cast<jlong>(sb.f_bfree),
-            static_cast<jlong>(sb.f_bavail), static_cast<jlong>(sb.f_files),
-// RoboVM note: Darwin's statfs doesn't have f_namelen and f_frsize. We use NAME_MAX and f_bsize instead.
+static jobject makeStructStatVfs(JNIEnv* env, const struct statvfs& sb) {
 #if defined(__APPLE__)
-            static_cast<jlong>(sb.f_ffree), static_cast<jlong>(NAME_MAX),
-            static_cast<jlong>(sb.f_bsize));
+    // Mac OS has no f_namelen field in struct statfs.
+    jlong max_name_length = 255; // __DARWIN_MAXNAMLEN
 #else
-            static_cast<jlong>(sb.f_ffree), static_cast<jlong>(sb.f_namelen),
-            static_cast<jlong>(sb.f_frsize));
+    jlong max_name_length = static_cast<jlong>(sb.f_namemax);
 #endif
+
+    static jmethodID ctor = env->GetMethodID(JniConstants::structStatVfsClass, "<init>",
+            "(JJJJJJJJJJJ)V");
+    return env->NewObject(JniConstants::structStatVfsClass, ctor,
+                          static_cast<jlong>(sb.f_bsize),
+                          static_cast<jlong>(sb.f_frsize),
+                          static_cast<jlong>(sb.f_blocks),
+                          static_cast<jlong>(sb.f_bfree),
+                          static_cast<jlong>(sb.f_bavail),
+                          static_cast<jlong>(sb.f_files),
+                          static_cast<jlong>(sb.f_ffree),
+                          static_cast<jlong>(sb.f_favail),
+                          static_cast<jlong>(sb.f_fsid),
+                          static_cast<jlong>(sb.f_flag),
+                          max_name_length);
 }
 
 static jobject makeStructLinger(JNIEnv* env, const struct linger& l) {
@@ -323,6 +285,19 @@ static jobject makeStructTimeval(JNIEnv* env, const struct timeval& tv) {
     return env->NewObject(JniConstants::structTimevalClass, ctor,
             static_cast<jlong>(tv.tv_sec), static_cast<jlong>(tv.tv_usec));
 }
+
+// RoboVM note: Darwin doesn't have a compatible struct ucred
+#if !defined(__APPLE__)
+static jobject makeStructUcred(JNIEnv* env, const struct ucred& u) {
+  static jmethodID ctor = env->GetMethodID(JniConstants::structUcredClass, "<init>", "(III)V");
+  return env->NewObject(JniConstants::structUcredClass, ctor, u.pid, u.uid, u.gid);
+}
+#else
+static jobject makeStructUcred(JNIEnv* env, pid_t pid, uid_t uid, gid_t gid) {
+  static jmethodID ctor = env->GetMethodID(JniConstants::structUcredClass, "<init>", "(III)V");
+  return env->NewObject(JniConstants::structUcredClass, ctor, (jint) pid, (jint) uid, (jint) gid);
+}
+#endif
 
 static jobject makeStructUtsname(JNIEnv* env, const struct utsname& buf) {
     TO_JAVA_STRING(sysname, buf.sysname);
@@ -347,7 +322,7 @@ static bool fillIfreq(JNIEnv* env, jstring javaInterfaceName, struct ifreq& req)
     return true;
 }
 
-static bool fillInetSocketAddress(JNIEnv* env, jint rc, jobject javaInetSocketAddress, const sockaddr_storage* ss) {
+static bool fillInetSocketAddress(JNIEnv* env, jint rc, jobject javaInetSocketAddress, const sockaddr_storage& ss) {
     if (rc == -1 || javaInetSocketAddress == NULL) {
         return true;
     }
@@ -379,15 +354,25 @@ static jobject doStat(JNIEnv* env, jstring javaPath, bool isLstat) {
     return makeStructStat(env, sb);
 }
 
+static jobject doGetSockName(JNIEnv* env, jobject javaFd, bool is_sockname) {
+  int fd = jniGetFDFromFileDescriptor(env, javaFd);
+  sockaddr_storage ss;
+  sockaddr* sa = reinterpret_cast<sockaddr*>(&ss);
+  socklen_t byteCount = sizeof(ss);
+  memset(&ss, 0, byteCount);
+  int rc = is_sockname ? TEMP_FAILURE_RETRY(getsockname(fd, sa, &byteCount))
+      : TEMP_FAILURE_RETRY(getpeername(fd, sa, &byteCount));
+  if (rc == -1) {
+    throwErrnoException(env, is_sockname ? "getsockname" : "getpeername");
+    return NULL;
+  }
+  return makeSocketAddress(env, ss);
+}
+
 class Passwd {
 public:
     Passwd(JNIEnv* env) : mEnv(env), mResult(NULL) {
         mBufferSize = sysconf(_SC_GETPW_R_SIZE_MAX);
-        if (mBufferSize == -1UL) {
-            // We're probably on bionic, where 1KiB should be enough for anyone.
-            // TODO: fix bionic to return 1024 like glibc.
-            mBufferSize = 1024;
-        }
         mBuffer.reset(new char[mBufferSize]);
     }
 
@@ -424,11 +409,10 @@ extern "C" jobject Java_libcore_io_Posix_accept(JNIEnv* env, jobject, jobject ja
     sockaddr_storage ss;
     socklen_t sl = sizeof(ss);
     memset(&ss, 0, sizeof(ss));
-    int fd;
     sockaddr* peer = (javaInetSocketAddress != NULL) ? reinterpret_cast<sockaddr*>(&ss) : NULL;
     socklen_t* peerLength = (javaInetSocketAddress != NULL) ? &sl : 0;
-    jint clientFd = NET_FAILURE_RETRY("accept", accept(fd, peer, peerLength));
-    if (clientFd == -1 || !fillInetSocketAddress(env, clientFd, javaInetSocketAddress, &ss)) {
+    jint clientFd = NET_FAILURE_RETRY(env, int, accept, javaFd, peer, peerLength);
+    if (clientFd == -1 || !fillInetSocketAddress(env, clientFd, javaInetSocketAddress, ss)) {
         close(clientFd);
         return NULL;
     }
@@ -449,13 +433,13 @@ extern "C" jboolean Java_libcore_io_Posix_access(JNIEnv* env, jobject, jstring j
 
 extern "C" void Java_libcore_io_Posix_bind(JNIEnv* env, jobject, jobject javaFd, jobject javaAddress, jint port) {
     sockaddr_storage ss;
-    if (!inetAddressToSockaddr(env, javaAddress, port, &ss)) {
+    socklen_t sa_len;
+    if (!inetAddressToSockaddr(env, javaAddress, port, ss, sa_len)) {
         return;
     }
-    int fd;
     const sockaddr* sa = reinterpret_cast<const sockaddr*>(&ss);
-    // RoboVM note: bind() on Darwin is picky about the the length specified. It has to match the family type.
-    NET_FAILURE_RETRY("bind", bind(fd, sa, (sa->sa_family == AF_INET6) ? sizeof(sockaddr_in6) : sizeof(sockaddr_in)));
+    // We don't need the return value because we'll already have thrown.
+    (void) NET_FAILURE_RETRY(env, int, bind, javaFd, sa, sa_len);
 }
 
 extern "C" void Java_libcore_io_Posix_chmod(JNIEnv* env, jobject, jstring javaPath, jint mode) {
@@ -464,6 +448,14 @@ extern "C" void Java_libcore_io_Posix_chmod(JNIEnv* env, jobject, jstring javaPa
         return;
     }
     throwIfMinusOne(env, "chmod", TEMP_FAILURE_RETRY(chmod(path.c_str(), mode)));
+}
+
+extern "C" void Java_libcore_io_Posix_chown(JNIEnv* env, jobject, jstring javaPath, jint uid, jint gid) {
+    ScopedUtfChars path(env, javaPath);
+    if (path.c_str() == NULL) {
+        return;
+    }
+    throwIfMinusOne(env, "chown", TEMP_FAILURE_RETRY(chown(path.c_str(), uid, gid)));
 }
 
 extern "C" void Java_libcore_io_Posix_close(JNIEnv* env, jobject, jobject javaFd) {
@@ -480,23 +472,23 @@ extern "C" void Java_libcore_io_Posix_close(JNIEnv* env, jobject, jobject javaFd
 
 extern "C" void Java_libcore_io_Posix_connect(JNIEnv* env, jobject, jobject javaFd, jobject javaAddress, jint port) {
     sockaddr_storage ss;
-    if (!inetAddressToSockaddr(env, javaAddress, port, &ss)) {
+    socklen_t sa_len;
+    if (!inetAddressToSockaddr(env, javaAddress, port, ss, sa_len)) {
         return;
     }
 #if defined(__APPLE__)
     // RoboVM note: On Linux we can just call connect() with an AF_UNSPEC address to "disconnect" a datagram socket.
-    // On Darwin this is supposed to work too but fails with EINVAL probably because address_len in the connect() call
+    // On Darwin this is supposed to work too but fails with EINVAL probably because sa_len in the connect() call
     // below is incorrect. The docs also says that another option is to use an invalid address so that's what we do.
     bool disconnect = false;
     if (ss.ss_family == AF_UNSPEC) {
         disconnect = true;
         ss.ss_family = AF_INET6;
+        sa_len = sizeof(sockaddr_in6);
     }
 #endif
-    int fd;
     const sockaddr* sa = reinterpret_cast<const sockaddr*>(&ss);
-    // RoboVM note: connect() on Darwin is picky about the the length specified. It has to match the family type.
-    int rc = NET_FAILURE_RETRY("connect", connect(fd, sa, (sa->sa_family == AF_INET6) ? sizeof(sockaddr_in6) : sizeof(sockaddr_in)));
+    int rc = NET_FAILURE_RETRY(env, int, connect, javaFd, sa, sa_len);
 #if defined(__APPLE__)
     // RoboVM note: If this was a "disconnect" EADDRNOTAVAIL will be set and we need to ignore the thrown exception.
     if (rc == -1 && disconnect && errno == EADDRNOTAVAIL) {
@@ -521,6 +513,41 @@ extern "C" jobject Java_libcore_io_Posix_dup2(JNIEnv* env, jobject, jobject java
 extern "C" jobjectArray Java_libcore_io_Posix_environ(JNIEnv* env, jobject) {
     extern char** environ; // Standard, but not in any header file.
     return toStringArray(env, environ);
+}
+
+extern "C" void Java_libcore_io_Posix_execve(JNIEnv* env, jobject, jstring javaFilename, jobjectArray javaArgv, jobjectArray javaEnvp) {
+    ScopedUtfChars path(env, javaFilename);
+    if (path.c_str() == NULL) {
+        return;
+    }
+
+    ExecStrings argv(env, javaArgv);
+    ExecStrings envp(env, javaEnvp);
+    execve(path.c_str(), argv.get(), envp.get());
+
+    throwErrnoException(env, "execve");
+}
+
+extern "C" void Java_libcore_io_Posix_execv(JNIEnv* env, jobject, jstring javaFilename, jobjectArray javaArgv) {
+    ScopedUtfChars path(env, javaFilename);
+    if (path.c_str() == NULL) {
+        return;
+    }
+
+    ExecStrings argv(env, javaArgv);
+    execv(path.c_str(), argv.get());
+
+    throwErrnoException(env, "execv");
+}
+
+extern "C" void Java_libcore_io_Posix_fchmod(JNIEnv* env, jobject, jobject javaFd, jint mode) {
+    int fd = jniGetFDFromFileDescriptor(env, javaFd);
+    throwIfMinusOne(env, "fchmod", TEMP_FAILURE_RETRY(fchmod(fd, mode)));
+}
+
+extern "C" void Java_libcore_io_Posix_fchown(JNIEnv* env, jobject, jobject javaFd, jint uid, jint gid) {
+    int fd = jniGetFDFromFileDescriptor(env, javaFd);
+    throwIfMinusOne(env, "fchown", TEMP_FAILURE_RETRY(fchown(fd, uid, gid)));
 }
 
 extern "C" jint Java_libcore_io_Posix_fcntlVoid(JNIEnv* env, jobject, jobject javaFd, jint cmd) {
@@ -576,15 +603,15 @@ extern "C" jobject Java_libcore_io_Posix_fstat(JNIEnv* env, jobject, jobject jav
     return makeStructStat(env, sb);
 }
 
-extern "C" jobject Java_libcore_io_Posix_fstatfs(JNIEnv* env, jobject, jobject javaFd) {
+extern "C" jobject Java_libcore_io_Posix_fstatvfs(JNIEnv* env, jobject, jobject javaFd) {
     int fd = jniGetFDFromFileDescriptor(env, javaFd);
-    struct statfs sb;
-    int rc = TEMP_FAILURE_RETRY(fstatfs(fd, &sb));
+    struct statvfs sb;
+    int rc = TEMP_FAILURE_RETRY(fstatvfs(fd, &sb));
     if (rc == -1) {
-        throwErrnoException(env, "fstatfs");
+        throwErrnoException(env, "fstatvfs");
         return NULL;
     }
-    return makeStructStatFs(env, sb);
+    return makeStructStatVfs(env, sb);
 }
 
 extern "C" void Java_libcore_io_Posix_fsync(JNIEnv* env, jobject, jobject javaFd) {
@@ -657,7 +684,7 @@ extern "C" jobjectArray Java_libcore_io_Posix_getaddrinfo(JNIEnv* env, jobject, 
         }
 
         // Convert each IP address into a Java byte array.
-        sockaddr_storage* address = reinterpret_cast<sockaddr_storage*>(ai->ai_addr);
+        sockaddr_storage& address = *reinterpret_cast<sockaddr_storage*>(ai->ai_addr);
         ScopedLocalRef<jobject> inetAddress(env, sockaddrToInetAddress(env, address, NULL));
         if (inetAddress.get() == NULL) {
             return NULL;
@@ -690,22 +717,22 @@ extern "C" jstring Java_libcore_io_Posix_getenv(JNIEnv* env, jobject, jstring ja
 
 extern "C" jstring Java_libcore_io_Posix_getnameinfo(JNIEnv* env, jobject, jobject javaAddress, jint flags) {
     sockaddr_storage ss;
-    if (!inetAddressToSockaddrVerbatim(env, javaAddress, 0, &ss)) {
+    socklen_t sa_len;
+    if (!inetAddressToSockaddrVerbatim(env, javaAddress, 0, ss, sa_len)) {
         return NULL;
     }
-    // TODO: bionic's getnameinfo(3) seems to want its length parameter to be exactly
-    // sizeof(sockaddr_in) for an IPv4 address and sizeof (sockaddr_in6) for an
-    // IPv6 address. Fix getnameinfo so it accepts sizeof(sockaddr_storage), and
-    // then remove this hack.
-    socklen_t size = (ss.ss_family == AF_INET) ? sizeof(sockaddr_in) : sizeof(sockaddr_in6);
     char buf[NI_MAXHOST]; // NI_MAXHOST is longer than INET6_ADDRSTRLEN.
     errno = 0;
-    int rc = getnameinfo(reinterpret_cast<sockaddr*>(&ss), size, buf, sizeof(buf), NULL, 0, flags);
+    int rc = getnameinfo(reinterpret_cast<sockaddr*>(&ss), sa_len, buf, sizeof(buf), NULL, 0, flags);
     if (rc != 0) {
         throwGaiException(env, "getnameinfo", rc);
         return NULL;
     }
     return env->NewStringUTF(buf);
+}
+
+extern "C" jobject Java_libcore_io_Posix_getpeername(JNIEnv* env, jobject, jobject javaFd) {
+  return doGetSockName(env, javaFd, false);
 }
 
 extern "C" jint Java_libcore_io_Posix_getpid(JNIEnv*, jobject) {
@@ -729,17 +756,7 @@ extern "C" jobject Java_libcore_io_Posix_getpwuid(JNIEnv* env, jobject, jint uid
 }
 
 extern "C" jobject Java_libcore_io_Posix_getsockname(JNIEnv* env, jobject, jobject javaFd) {
-    int fd = jniGetFDFromFileDescriptor(env, javaFd);
-    sockaddr_storage ss;
-    sockaddr* sa = reinterpret_cast<sockaddr*>(&ss);
-    socklen_t byteCount = sizeof(ss);
-    memset(&ss, 0, byteCount);
-    int rc = TEMP_FAILURE_RETRY(getsockname(fd, sa, &byteCount));
-    if (rc == -1) {
-        throwErrnoException(env, "getsockname");
-        return NULL;
-    }
-    return makeSocketAddress(env, &ss);
+  return doGetSockName(env, javaFd, true);
 }
 
 extern "C" jint Java_libcore_io_Posix_getsockoptByte(JNIEnv* env, jobject, jobject javaFd, jint level, jint option) {
@@ -762,7 +779,7 @@ extern "C" jobject Java_libcore_io_Posix_getsockoptInAddr(JNIEnv* env, jobject, 
         throwErrnoException(env, "getsockopt");
         return NULL;
     }
-    return sockaddrToInetAddress(env, &ss, NULL);
+    return sockaddrToInetAddress(env, ss, NULL);
 }
 
 extern "C" jint Java_libcore_io_Posix_getsockoptInt(JNIEnv* env, jobject, jobject javaFd, jint level, jint option) {
@@ -799,6 +816,56 @@ extern "C" jobject Java_libcore_io_Posix_getsockoptTimeval(JNIEnv* env, jobject,
     return makeStructTimeval(env, tv);
 }
 
+// RoboVM note: Darwin doesn't have a compatible struct ucred
+#if !defined(__APPLE__)
+extern "C" jobject Java_libcore_io_Posix_getsockoptUcred(JNIEnv* env, jobject, jobject javaFd, jint level, jint option) {
+  int fd = jniGetFDFromFileDescriptor(env, javaFd);
+  struct ucred u;
+  socklen_t size = sizeof(u);
+  memset(&u, 0, size);
+  int rc = TEMP_FAILURE_RETRY(getsockopt(fd, level, option, &u, &size));
+  if (rc == -1) {
+    throwErrnoException(env, "getsockopt");
+    return NULL;
+  }
+  return makeStructUcred(env, u);
+}
+#else
+// RoboVM note: Hacked up version of Posix.getsockoptUcred() which only supports SO_PEERCRED for now.
+extern "C" jobject Java_libcore_io_Posix_getsockoptUcred(JNIEnv* env, jobject, jobject javaFd, jint level, jint option) {
+  int fd = jniGetFDFromFileDescriptor(env, javaFd);
+  if (level == SOL_SOCKET && option == SO_PEERCRED) {
+      pid_t pid;
+      uid_t uid;
+      gid_t gid;
+      socklen_t size = sizeof(pid);
+      int rc = TEMP_FAILURE_RETRY(getsockopt(fd, SOL_LOCAL, LOCAL_PEERPID, &pid, &size));
+      if (rc == -1) {
+        throwErrnoException(env, "getsockopt");
+        return NULL;
+      }
+      rc = getpeereid(fd, &uid, &gid);
+      if (rc == -1) {
+        throwErrnoException(env, "getpeereid");
+        return NULL;
+      }
+      return makeStructUcred(env, pid, uid, gid);
+  } else {
+      // Unsupported option
+      jniThrowExceptionFmt(env, "java/lang/UnsupportedOperationException", "level = %d, option = %d", level, option);
+      return NULL;
+  }
+}
+#endif
+
+// RoboVM note: Darwin doesn't have gettid()
+#if !defined(__APPLE__)
+extern "C" jint Java_libcore_io_Posix_gettid(JNIEnv*, jobject) {
+  // Neither bionic nor glibc exposes gettid(2).
+  return syscall(__NR_gettid);
+}
+#endif
+
 extern "C" jint Java_libcore_io_Posix_getuid(JNIEnv*, jobject) {
     return getuid();
 }
@@ -824,7 +891,7 @@ extern "C" jobject Java_libcore_io_Posix_inet_1pton(JNIEnv* env, jobject, jint f
         return NULL;
     }
     ss.ss_family = family;
-    return sockaddrToInetAddress(env, &ss, NULL);
+    return sockaddrToInetAddress(env, ss, NULL);
 }
 
 extern "C" jobject Java_libcore_io_Posix_ioctlInetAddress(JNIEnv* env, jobject, jobject javaFd, jint cmd, jstring javaInterfaceName) {
@@ -837,7 +904,7 @@ extern "C" jobject Java_libcore_io_Posix_ioctlInetAddress(JNIEnv* env, jobject, 
     if (rc == -1) {
         return NULL;
     }
-    return sockaddrToInetAddress(env, reinterpret_cast<sockaddr_storage*>(&req.ifr_addr), NULL);
+    return sockaddrToInetAddress(env, reinterpret_cast<sockaddr_storage&>(req.ifr_addr), NULL);
 }
 
 extern "C" jint Java_libcore_io_Posix_ioctlInt(JNIEnv* env, jobject, jobject javaFd, jint cmd, jobject javaArg) {
@@ -855,11 +922,19 @@ extern "C" jint Java_libcore_io_Posix_ioctlInt(JNIEnv* env, jobject, jobject jav
 
 extern "C" jboolean Java_libcore_io_Posix_isatty(JNIEnv* env, jobject, jobject javaFd) {
     int fd = jniGetFDFromFileDescriptor(env, javaFd);
-    return TEMP_FAILURE_RETRY(isatty(fd)) == 0;
+    return TEMP_FAILURE_RETRY(isatty(fd)) == 1;
 }
 
 extern "C" void Java_libcore_io_Posix_kill(JNIEnv* env, jobject, jint pid, jint sig) {
     throwIfMinusOne(env, "kill", TEMP_FAILURE_RETRY(kill(pid, sig)));
+}
+
+extern "C" void Java_libcore_io_Posix_lchown(JNIEnv* env, jobject, jstring javaPath, jint uid, jint gid) {
+    ScopedUtfChars path(env, javaPath);
+    if (path.c_str() == NULL) {
+        return;
+    }
+    throwIfMinusOne(env, "lchown", TEMP_FAILURE_RETRY(lchown(path.c_str(), uid, gid)));
 }
 
 extern "C" void Java_libcore_io_Posix_listen(JNIEnv* env, jobject, jobject javaFd, jint backlog) {
@@ -882,12 +957,7 @@ extern "C" void Java_libcore_io_Posix_mincore(JNIEnv* env, jobject, jlong addres
         return;
     }
     void* ptr = reinterpret_cast<void*>(static_cast<uintptr_t>(address));
-// RoboVM note: On Darwin mincore takes a char* as third argument.
-#if !defined(__APPLE__)
     unsigned char* vec = reinterpret_cast<unsigned char*>(vector.get());
-#else
-    char* vec = reinterpret_cast<char*>(vector.get());
-#endif
     throwIfMinusOne(env, "mincore", TEMP_FAILURE_RETRY(mincore(ptr, byteCount, vec)));
 }
 
@@ -1052,11 +1122,10 @@ extern "C" jint Java_libcore_io_Posix_recvfromBytes(JNIEnv* env, jobject, jobjec
     sockaddr_storage ss;
     socklen_t sl = sizeof(ss);
     memset(&ss, 0, sizeof(ss));
-    int fd;
     sockaddr* from = (javaInetSocketAddress != NULL) ? reinterpret_cast<sockaddr*>(&ss) : NULL;
     socklen_t* fromLength = (javaInetSocketAddress != NULL) ? &sl : 0;
-    jint recvCount = NET_FAILURE_RETRY("recvfrom", recvfrom(fd, bytes.get() + byteOffset, byteCount, flags, from, fromLength));
-    fillInetSocketAddress(env, recvCount, javaInetSocketAddress, &ss);
+    jint recvCount = NET_FAILURE_RETRY(env, ssize_t, recvfrom, javaFd, bytes.get() + byteOffset, byteCount, flags, from, fromLength);
+    fillInetSocketAddress(env, recvCount, javaInetSocketAddress, ss);
     return recvCount;
 }
 
@@ -1104,10 +1173,10 @@ extern "C" jint Java_libcore_io_Posix_sendtoBytes(JNIEnv* env, jobject, jobject 
         return -1;
     }
     sockaddr_storage ss;
-    if (javaInetAddress != NULL && !inetAddressToSockaddr(env, javaInetAddress, port, &ss)) {
+    socklen_t sa_len = 0;
+    if (javaInetAddress != NULL && !inetAddressToSockaddr(env, javaInetAddress, port, ss, sa_len)) {
         return -1;
     }
-    int fd;
     const sockaddr* to = (javaInetAddress != NULL) ? reinterpret_cast<const sockaddr*>(&ss) : NULL;
 #if defined(__APPLE__)
     // RoboVM note: sendto() fails on Darwin for connected datagram sockets if a destination address is specified even if
@@ -1117,7 +1186,7 @@ extern "C" jint Java_libcore_io_Posix_sendtoBytes(JNIEnv* env, jobject, jobject 
     // DatagramChannelImpl.send() however still passes the address into this function. When this happens we have to call
     // sendto() with a NULL address.
     if (to) {
-        fd = jniGetFDFromFileDescriptor(env, javaFd);
+        int fd = jniGetFDFromFileDescriptor(env, javaFd);
         if (fd != -1) {
             int type = 0;
             socklen_t size = sizeof(type);
@@ -1136,13 +1205,23 @@ extern "C" jint Java_libcore_io_Posix_sendtoBytes(JNIEnv* env, jobject, jobject 
         }
     }
 #endif
-    // RoboVM note: sendto() on Darwin is picky about the the length specified. It has to match the family type.
-    socklen_t toLength = (to != NULL) ? ((to->sa_family == AF_INET6) ? sizeof(sockaddr_in6) : sizeof(sockaddr_in)) : 0;
-    return NET_FAILURE_RETRY("sendto", sendto(fd, bytes.get() + byteOffset, byteCount, flags, to, toLength));
+    return NET_FAILURE_RETRY(env, ssize_t, sendto, javaFd, bytes.get() + byteOffset, byteCount, flags, to, sa_len);
 }
 
 extern "C" void Java_libcore_io_Posix_setegid(JNIEnv* env, jobject, jint egid) {
     throwIfMinusOne(env, "setegid", TEMP_FAILURE_RETRY(setegid(egid)));
+}
+
+extern "C" void Java_libcore_io_Posix_setenv(JNIEnv* env, jobject, jstring javaName, jstring javaValue, jboolean overwrite) {
+    ScopedUtfChars name(env, javaName);
+    if (name.c_str() == NULL) {
+        return;
+    }
+    ScopedUtfChars value(env, javaValue);
+    if (value.c_str() == NULL) {
+        return;
+    }
+    throwIfMinusOne(env, "setenv", setenv(name.c_str(), value.c_str(), overwrite));
 }
 
 extern "C" void Java_libcore_io_Posix_seteuid(JNIEnv* env, jobject, jint euid) {
@@ -1151,6 +1230,10 @@ extern "C" void Java_libcore_io_Posix_seteuid(JNIEnv* env, jobject, jint euid) {
 
 extern "C" void Java_libcore_io_Posix_setgid(JNIEnv* env, jobject, jint gid) {
     throwIfMinusOne(env, "setgid", TEMP_FAILURE_RETRY(setgid(gid)));
+}
+
+extern "C" jint Java_libcore_io_Posix_setsid(JNIEnv* env, jobject) {
+    return throwIfMinusOne(env, "setsid", TEMP_FAILURE_RETRY(setsid()));
 }
 
 extern "C" void Java_libcore_io_Posix_setsockoptByte(JNIEnv* env, jobject, jobject javaFd, jint level, jint option, jint value) {
@@ -1213,6 +1296,11 @@ extern "C" void Java_libcore_io_Posix_setsockoptInt(JNIEnv* env, jobject, jobjec
     throwIfMinusOne(env, "setsockopt", TEMP_FAILURE_RETRY(setsockopt(fd, level, option, &value, sizeof(value))));
 }
 
+#if defined(__APPLE__) && MAC_OS_X_VERSION_MAX_ALLOWED < 1070
+// Mac OS didn't support modern multicast APIs until 10.7.
+extern "C" void Java_libcore_io_Posix_setsockoptIpMreqn(JNIEnv*, jobject, jobject, jint, jint, jint) { abort(); }
+extern "C" void Java_libcore_io_Posix_setsockoptGroupReq(JNIEnv*, jobject, jobject, jint, jint, jobject) { abort(); }
+#else
 extern "C" void Java_libcore_io_Posix_setsockoptIpMreqn(JNIEnv* env, jobject, jobject javaFd, jint level, jint option, jint value) {
     ip_mreqn req;
     memset(&req, 0, sizeof(req));
@@ -1241,14 +1329,15 @@ extern "C" void Java_libcore_io_Posix_setsockoptGroupReq(JNIEnv* env, jobject, j
     // Get the IPv4 or IPv6 multicast address to join or leave.
     static jfieldID grGroupFid = env->GetFieldID(JniConstants::structGroupReqClass, "gr_group", "Ljava/net/InetAddress;");
     ScopedLocalRef<jobject> javaGroup(env, env->GetObjectField(javaGroupReq, grGroupFid));
+    socklen_t sa_len;
 #if defined(__APPLE__)
     sockaddr_storage ss;
-    if (!inetAddressToSockaddr(env, javaGroup.get(), 0, &ss)) {
+    if (!inetAddressToSockaddr(env, javaGroup.get(), 0, ss, sa_len)) {
         return;
     }
     req.ipv6mr_multiaddr = ((sockaddr_in6*) &ss)->sin6_addr;
 #else
-    if (!inetAddressToSockaddrVerbatim(env, javaGroup.get(), 0, &req.gr_group)) {
+    if (!inetAddressToSockaddrVerbatim(env, javaGroup.get(), 0, req.gr_group, sa_len)) {
         return;
     }
 #endif
@@ -1259,7 +1348,7 @@ extern "C" void Java_libcore_io_Posix_setsockoptGroupReq(JNIEnv* env, jobject, j
     if (rc == -1 && errno == EINVAL) {
         // Maybe we're a 32-bit binary talking to a 64-bit kernel?
         // glibc doesn't automatically handle this.
-        struct GCC_HIDDEN group_req64 {
+        struct group_req64 {
             uint32_t gr_interface;
             uint32_t my_padding;
             sockaddr_storage gr_group;
@@ -1272,6 +1361,7 @@ extern "C" void Java_libcore_io_Posix_setsockoptGroupReq(JNIEnv* env, jobject, j
 #endif
     throwIfMinusOne(env, "setsockopt", rc);
 }
+#endif
 
 extern "C" void Java_libcore_io_Posix_setsockoptLinger(JNIEnv* env, jobject, jobject javaFd, jint level, jint option, jobject javaLinger) {
     static jfieldID lOnoffFid = env->GetFieldID(JniConstants::structLingerClass, "l_onoff", "I");
@@ -1304,6 +1394,7 @@ extern "C" void Java_libcore_io_Posix_shutdown(JNIEnv* env, jobject, jobject jav
 
 extern "C" jobject Java_libcore_io_Posix_socket(JNIEnv* env, jobject, jint domain, jint type, jint protocol) {
     int fd = throwIfMinusOne(env, "socket", TEMP_FAILURE_RETRY(socket(domain, type, protocol)));
+// RoboVM note: Prevent SIGPIPE from interrupting operations on this socket.
 #if defined(__APPLE__)
     if (fd != -1) {
         int value = 1;
@@ -1313,28 +1404,41 @@ extern "C" jobject Java_libcore_io_Posix_socket(JNIEnv* env, jobject, jint domai
     return fd != -1 ? jniCreateFileDescriptor(env, fd) : NULL;
 }
 
+extern "C" void Java_libcore_io_Posix_socketpair(JNIEnv* env, jobject, jint domain, jint type, jint protocol, jobject javaFd1, jobject javaFd2) {
+    int fds[2];
+    int rc = throwIfMinusOne(env, "socketpair", TEMP_FAILURE_RETRY(socketpair(domain, type, protocol, fds)));
+    if (rc != -1) {
+        jniSetFileDescriptorOfFD(env, javaFd1, fds[0]);
+        jniSetFileDescriptorOfFD(env, javaFd2, fds[1]);
+    }
+}
+
 extern "C" jobject Java_libcore_io_Posix_stat(JNIEnv* env, jobject, jstring javaPath) {
     return doStat(env, javaPath, false);
 }
 
-extern "C" jobject Java_libcore_io_Posix_statfs(JNIEnv* env, jobject, jstring javaPath) {
+extern "C" jobject Java_libcore_io_Posix_statvfs(JNIEnv* env, jobject, jstring javaPath) {
     ScopedUtfChars path(env, javaPath);
     if (path.c_str() == NULL) {
         return NULL;
     }
-    struct statfs sb;
-    int rc = TEMP_FAILURE_RETRY(statfs(path.c_str(), &sb));
+    struct statvfs sb;
+    int rc = TEMP_FAILURE_RETRY(statvfs(path.c_str(), &sb));
     if (rc == -1) {
-        throwErrnoException(env, "statfs");
+        throwErrnoException(env, "statvfs");
         return NULL;
     }
-    return makeStructStatFs(env, sb);
+    return makeStructStatVfs(env, sb);
 }
 
 extern "C" jstring Java_libcore_io_Posix_strerror(JNIEnv* env, jobject, jint errnum) {
     char buffer[BUFSIZ];
     const char* message = jniStrError(errnum, buffer, sizeof(buffer));
     return env->NewStringUTF(message);
+}
+
+extern "C" jstring Java_libcore_io_Posix_strsignal(JNIEnv* env, jobject, jint signal) {
+    return env->NewStringUTF(strsignal(signal));
 }
 
 extern "C" void Java_libcore_io_Posix_symlink(JNIEnv* env, jobject, jstring javaOldPath, jstring javaNewPath) {
@@ -1359,12 +1463,34 @@ extern "C" jlong Java_libcore_io_Posix_sysconf(JNIEnv* env, jobject, jint name) 
     return result;
 }
 
+extern "C" void Java_libcore_io_Posix_tcdrain(JNIEnv* env, jobject, jobject javaFd) {
+    int fd = jniGetFDFromFileDescriptor(env, javaFd);
+    throwIfMinusOne(env, "tcdrain", TEMP_FAILURE_RETRY(tcdrain(fd)));
+}
+
+extern "C" void Java_libcore_io_Posix_tcsendbreak(JNIEnv* env, jobject, jobject javaFd, jint duration) {
+  int fd = jniGetFDFromFileDescriptor(env, javaFd);
+  throwIfMinusOne(env, "tcsendbreak", TEMP_FAILURE_RETRY(tcsendbreak(fd, duration)));
+}
+
+extern "C" jint Java_libcore_io_Posix_umaskImpl(JNIEnv*, jobject, jint mask) {
+    return umask(mask);
+}
+
 extern "C" jobject Java_libcore_io_Posix_uname(JNIEnv* env, jobject) {
     struct utsname buf;
     if (TEMP_FAILURE_RETRY(uname(&buf)) == -1) {
         return NULL; // Can't happen.
     }
     return makeStructUtsname(env, buf);
+}
+
+extern "C" void Java_libcore_io_Posix_unsetenv(JNIEnv* env, jobject, jstring javaName) {
+    ScopedUtfChars name(env, javaName);
+    if (name.c_str() == NULL) {
+        return;
+    }
+    throwIfMinusOne(env, "unsetenv", unsetenv(name.c_str()));
 }
 
 extern "C" jint Java_libcore_io_Posix_waitpid(JNIEnv* env, jobject, jint pid, jobject javaStatus, jint options) {

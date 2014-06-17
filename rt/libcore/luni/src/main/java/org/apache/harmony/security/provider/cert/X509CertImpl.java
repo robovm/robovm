@@ -48,7 +48,6 @@ import org.apache.harmony.security.x509.Certificate;
 import org.apache.harmony.security.x509.Extension;
 import org.apache.harmony.security.x509.Extensions;
 import org.apache.harmony.security.x509.TBSCertificate;
-import org.apache.harmony.xnet.provider.jsse.OpenSSLProvider;
 
 /**
  * This class is an implementation of X509Certificate. It wraps
@@ -67,11 +66,11 @@ public final class X509CertImpl extends X509Certificate {
     /** the core object to be wrapped in X509Certificate */
     private final Certificate certificate;
 
+    private final TBSCertificate tbsCert;
+    private final Extensions extensions;
     // to speed up access to the info, the following fields
     // cache values retrieved from the certificate object,
     // initialized using the "single-check idiom".
-    private final TBSCertificate tbsCert;
-    private final Extensions extensions;
     private volatile long notBefore = -1;
     private volatile long notAfter = -1;
     private volatile BigInteger serialNumber;
@@ -305,9 +304,9 @@ public final class X509CertImpl extends X509Certificate {
 
     public int getBasicConstraints() {
         if (extensions == null) {
-            return Integer.MAX_VALUE;
+            return -1;
         }
-        return extensions.valueOfBasicConstrains();
+        return extensions.valueOfBasicConstraints();
     }
 
     public Collection<List<?>> getSubjectAlternativeNames() throws CertificateParsingException {
@@ -369,12 +368,7 @@ public final class X509CertImpl extends X509Certificate {
             throws CertificateException, NoSuchAlgorithmException, InvalidKeyException,
             NoSuchProviderException, SignatureException {
 
-        Signature signature;
-        try {
-            signature = Signature.getInstance(getSigAlgName(), OpenSSLProvider.PROVIDER_NAME);
-        } catch (NoSuchAlgorithmException ignored) {
-            signature = Signature.getInstance(getSigAlgName());
-        }
+        Signature signature = Signature.getInstance(getSigAlgName());
         signature.initVerify(key);
         // retrieve the encoding of the TBSCertificate structure
         byte[] tbsCertificateLocal = getTbsCertificateInternal();
@@ -389,16 +383,7 @@ public final class X509CertImpl extends X509Certificate {
             throws CertificateException, NoSuchAlgorithmException, InvalidKeyException,
             NoSuchProviderException, SignatureException {
 
-        Signature signature;
-        try {
-            if (sigProvider == null) {
-                signature = Signature.getInstance(getSigAlgName(), OpenSSLProvider.PROVIDER_NAME);
-            } else {
-                signature = Signature.getInstance(getSigAlgName(), sigProvider);
-            }
-        } catch (NoSuchAlgorithmException ignored) {
-            signature = Signature.getInstance(getSigAlgName(), sigProvider);
-        }
+        Signature signature = Signature.getInstance(getSigAlgName(), sigProvider);
         signature.initVerify(key);
         // retrieve the encoding of the TBSCertificate structure
         byte[] tbsCertificateLocal = getTbsCertificateInternal();

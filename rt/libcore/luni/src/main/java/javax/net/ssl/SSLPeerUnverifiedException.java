@@ -18,7 +18,7 @@
 package javax.net.ssl;
 
 /**
- * The exception that is thrown when the identity of a peer has not beed
+ * The exception that is thrown when the identity of a peer has not been
  * verified.
  */
 public class SSLPeerUnverifiedException extends SSLException {

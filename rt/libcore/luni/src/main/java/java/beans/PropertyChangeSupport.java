@@ -66,7 +66,7 @@ public class PropertyChangeSupport implements Serializable {
      */
     public PropertyChangeSupport(Object sourceBean) {
         if (sourceBean == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("sourceBean == null");
         }
         this.sourceBean = sourceBean;
     }

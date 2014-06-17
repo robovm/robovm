@@ -129,7 +129,6 @@ public final class Boolean implements Serializable, Comparable<Boolean> {
      * @return 0 if lhs = rhs, less than 0 if lhs &lt; rhs, and greater than 0 if lhs &gt; rhs.
      *         (Where true &gt; false.)
      * @since 1.7
-     * @hide 1.7
      */
     public static int compare(boolean lhs, boolean rhs) {
         return lhs == rhs ? 0 : lhs ? 1 : -1;

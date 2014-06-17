@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 
 /**
  * Marks a test case as a known failure. This means the underlying
- * implementation should be fixed. Seems to be similar to @code{@ToBeFixed}, so
+ * implementation should be fixed. Seems to be similar to {@code @ToBeFixed}, so
  * maybe the two can be merged at some point.
  *
  * @hide

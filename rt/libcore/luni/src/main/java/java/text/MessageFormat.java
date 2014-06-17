@@ -506,7 +506,7 @@ public class MessageFormat extends Format {
     @Override
     public AttributedCharacterIterator formatToCharacterIterator(Object object) {
         if (object == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("object == null");
         }
 
         StringBuffer buffer = new StringBuffer();

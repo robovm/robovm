@@ -1,2 +1,2 @@
-Array allocation failed
-Instance allocation failed
+NEW_ARRAY correctly threw OOME
+NEW_INSTANCE correctly threw OOME

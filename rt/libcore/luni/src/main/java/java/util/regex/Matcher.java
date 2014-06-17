@@ -28,9 +28,10 @@ public final class Matcher implements MatchResult {
     private Pattern pattern;
 
     /**
-     * Holds the handle for the native version of the pattern.
+     * The address of the native peer.
+     * Uses of this must be manually synchronized to avoid native crashes.
      */
-    private int address;
+    private long address;
 
     /**
      * Holds the input text.
@@ -48,11 +49,6 @@ public final class Matcher implements MatchResult {
      * go until the end of the input.
      */
     private int regionEnd;
-
-    /**
-     * Holds the position where the next find operation will take place.
-     */
-    private int findPos;
 
     /**
      * Holds the position where the next append operation will take place.
@@ -199,7 +195,7 @@ public final class Matcher implements MatchResult {
      */
     private Matcher reset(CharSequence input, int start, int end) {
         if (input == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("input == null");
         }
 
         if (start < 0 || end < 0 || start > input.length() || end > input.length() || start > end) {
@@ -212,7 +208,6 @@ public final class Matcher implements MatchResult {
         resetForInput();
 
         matchFound = false;
-        findPos = regionStart;
         appendPos = 0;
 
         return this;
@@ -230,16 +225,18 @@ public final class Matcher implements MatchResult {
      */
     public Matcher usePattern(Pattern pattern) {
         if (pattern == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("pattern == null");
         }
 
         this.pattern = pattern;
 
-        if (address != 0) {
-            closeImpl(address);
-            address = 0;
+        synchronized (this) {
+            if (address != 0) {
+                closeImpl(address);
+                address = 0; // In case openImpl throws.
+            }
+            address = openImpl(pattern.address);
         }
-        address = openImpl(pattern.address);
 
         if (input != null) {
             resetForInput();
@@ -251,9 +248,11 @@ public final class Matcher implements MatchResult {
     }
 
     private void resetForInput() {
-        setInputImpl(address, input, regionStart, regionEnd);
-        useAnchoringBoundsImpl(address, anchoringBounds);
-        useTransparentBoundsImpl(address, transparentBounds);
+        synchronized (this) {
+            setInputImpl(address, input, regionStart, regionEnd);
+            useAnchoringBoundsImpl(address, anchoringBounds);
+            useTransparentBoundsImpl(address, transparentBounds);
+        }
     }
 
     /**
@@ -377,29 +376,18 @@ public final class Matcher implements MatchResult {
     }
 
     /**
-     * Returns the next occurrence of the {@link Pattern} in the input. The
-     * method starts the search from the given character in the input.
+     * Returns true if there is another match in the input, starting
+     * from the given position. The region is ignored.
      *
-     * @param start
-     *            The index in the input at which the find operation is to
-     *            begin. If this is less than the start of the region, it is
-     *            automatically adjusted to that value. If it is beyond the end
-     *            of the region, the method will fail.
-     * @return true if (and only if) a match has been found.
+     * @throws IndexOutOfBoundsException if {@code start < 0 || start > input.length()}
      */
     public boolean find(int start) {
-        findPos = start;
-
-        if (findPos < regionStart) {
-            findPos = regionStart;
-        } else if (findPos >= regionEnd) {
-            matchFound = false;
-            return false;
+        if (start < 0 || start > input.length()) {
+            throw new IndexOutOfBoundsException("start=" + start + "; length=" + input.length());
         }
 
-        matchFound = findImpl(address, input, findPos, matchOffsets);
-        if (matchFound) {
-            findPos = matchOffsets[1];
+        synchronized (this) {
+            matchFound = findImpl(address, input, start, matchOffsets);
         }
         return matchFound;
     }
@@ -413,9 +401,8 @@ public final class Matcher implements MatchResult {
      * @return true if (and only if) a match has been found.
      */
     public boolean find() {
-        matchFound = findNextImpl(address, input, matchOffsets);
-        if (matchFound) {
-            findPos = matchOffsets[1];
+        synchronized (this) {
+            matchFound = findNextImpl(address, input, matchOffsets);
         }
         return matchFound;
     }
@@ -428,9 +415,8 @@ public final class Matcher implements MatchResult {
      * @return true if (and only if) the {@code Pattern} matches.
      */
     public boolean lookingAt() {
-        matchFound = lookingAtImpl(address, input, matchOffsets);
-        if (matchFound) {
-            findPos = matchOffsets[1];
+        synchronized (this) {
+            matchFound = lookingAtImpl(address, input, matchOffsets);
         }
         return matchFound;
     }
@@ -443,9 +429,8 @@ public final class Matcher implements MatchResult {
      *         region.
      */
     public boolean matches() {
-        matchFound = matchesImpl(address, input, matchOffsets);
-        if (matchFound) {
-            findPos = matchOffsets[1];
+        synchronized (this) {
+            matchFound = matchesImpl(address, input, matchOffsets);
         }
         return matchFound;
     }
@@ -522,7 +507,9 @@ public final class Matcher implements MatchResult {
      * @return the number of groups.
      */
     public int groupCount() {
-        return groupCountImpl(address);
+        synchronized (this) {
+            return groupCountImpl(address);
+        }
     }
 
     /**
@@ -562,18 +549,18 @@ public final class Matcher implements MatchResult {
      * @return the {@code Matcher} itself.
      */
     public Matcher useAnchoringBounds(boolean value) {
-        anchoringBounds = value;
-        useAnchoringBoundsImpl(address, value);
+        synchronized (this) {
+            anchoringBounds = value;
+            useAnchoringBoundsImpl(address, value);
+        }
         return this;
     }
 
     /**
-     * Indicates whether this matcher has anchoring bounds enabled. When
+     * Returns true if this matcher has anchoring bounds enabled. When
      * anchoring bounds are enabled, the start and end of the input match the
      * '^' and '$' meta-characters, otherwise not. Anchoring bounds are enabled
      * by default.
-     *
-     * @return true if (and only if) the {@code Matcher} uses anchoring bounds.
      */
     public boolean hasAnchoringBounds() {
         return anchoringBounds;
@@ -590,8 +577,10 @@ public final class Matcher implements MatchResult {
      * @return the {@code Matcher} itself.
      */
     public Matcher useTransparentBounds(boolean value) {
-        transparentBounds = value;
-        useTransparentBoundsImpl(address, value);
+        synchronized (this) {
+            transparentBounds = value;
+            useTransparentBoundsImpl(address, value);
+        }
         return this;
     }
 
@@ -609,75 +598,84 @@ public final class Matcher implements MatchResult {
     }
 
     /**
-     * Indicates whether this matcher has transparent bounds enabled. When
+     * Returns true if this matcher has transparent bounds enabled. When
      * transparent bounds are enabled, the parts of the input outside the region
      * are subject to lookahead and lookbehind, otherwise they are not.
      * Transparent bounds are disabled by default.
-     *
-     * @return true if (and only if) the {@code Matcher} uses anchoring bounds.
      */
     public boolean hasTransparentBounds() {
         return transparentBounds;
     }
 
     /**
-     * Returns this matcher's region start, that is, the first character that is
+     * Returns this matcher's region start, that is, the index of the first character that is
      * considered for a match.
-     *
-     * @return the start of the region.
      */
     public int regionStart() {
         return regionStart;
     }
 
     /**
-     * Returns this matcher's region end, that is, the first character that is
+     * Returns this matcher's region end, that is, the index of the first character that is
      * not considered for a match.
-     *
-     * @return the end of the region.
      */
     public int regionEnd() {
         return regionEnd;
     }
 
     /**
-     * Indicates whether more input might change a successful match into an
-     * unsuccessful one.
-     *
-     * @return true if (and only if) more input might change a successful match
-     *         into an unsuccessful one.
+     * Returns true if the most recent match succeeded and additional input could cause
+     * it to fail. If this method returns false and a match was found, then more input
+     * might change the match but the match won't be lost. If a match was not found,
+     * then requireEnd has no meaning.
      */
     public boolean requireEnd() {
-        return requireEndImpl(address);
+        synchronized (this) {
+            return requireEndImpl(address);
+        }
     }
 
     /**
-     * Indicates whether the last match hit the end of the input.
-     *
-     * @return true if (and only if) the last match hit the end of the input.
+     * Returns true if the most recent matching operation attempted to access
+     * additional text beyond the available input, meaning that additional input
+     * could change the results of the match.
      */
     public boolean hitEnd() {
-        return hitEndImpl(address);
+        synchronized (this) {
+            return hitEndImpl(address);
+        }
     }
 
     @Override protected void finalize() throws Throwable {
         try {
-            closeImpl(address);
+            synchronized (this) {
+                closeImpl(address);
+            }
         } finally {
             super.finalize();
         }
     }
 
-    private static native void closeImpl(int addr);
-    private static native boolean findImpl(int addr, String s, int startIndex, int[] offsets);
-    private static native boolean findNextImpl(int addr, String s, int[] offsets);
-    private static native int groupCountImpl(int addr);
-    private static native boolean hitEndImpl(int addr);
-    private static native boolean lookingAtImpl(int addr, String s, int[] offsets);
-    private static native boolean matchesImpl(int addr, String s, int[] offsets);
-    private static native int openImpl(int patternAddr);
-    private static native boolean requireEndImpl(int addr);
-    private static native void setInputImpl(int addr, String s, int start, int end);
-    private static native void useAnchoringBoundsImpl(int addr, boolean value);
-    private static native void useTransparentBoundsImpl(int addr, boolean value);
+    /**
+     * Returns a string representing this {@code Matcher}.
+     * The format of this string is unspecified.
+     */
+    @Override public String toString() {
+        return getClass().getName() + "[pattern=" + pattern() +
+            " region=" + regionStart() + "," + regionEnd() +
+            " lastmatch=" + (matchFound ? group() : "") + "]";
+    }
+
+    private static native void closeImpl(long addr);
+    private static native boolean findImpl(long addr, String s, int startIndex, int[] offsets);
+    private static native boolean findNextImpl(long addr, String s, int[] offsets);
+    private static native int groupCountImpl(long addr);
+    private static native boolean hitEndImpl(long addr);
+    private static native boolean lookingAtImpl(long addr, String s, int[] offsets);
+    private static native boolean matchesImpl(long addr, String s, int[] offsets);
+    private static native long openImpl(long patternAddr);
+    private static native boolean requireEndImpl(long addr);
+    private static native void setInputImpl(long addr, String s, int start, int end);
+    private static native void useAnchoringBoundsImpl(long addr, boolean value);
+    private static native void useTransparentBoundsImpl(long addr, boolean value);
 }

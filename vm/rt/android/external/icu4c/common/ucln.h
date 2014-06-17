@@ -1,11 +1,11 @@
 /*
 ******************************************************************************
-*                                                                            *
-* Copyright (C) 2001-2010, International Business Machines                   *
-*                Corporation and others. All Rights Reserved.                *
-*                                                                            *
+*
+* Copyright (C) 2001-2012, International Business Machines
+*                Corporation and others. All Rights Reserved.
+*
 ******************************************************************************
-*   file name:  ucln_cmn.h
+*   file name:  ucln.h
 *   encoding:   US-ASCII
 *   tab size:   8 (not used)
 *   indentation:4
@@ -68,6 +68,7 @@ typedef enum ECleanupLibraryType {
  */
 U_CDECL_BEGIN
 typedef UBool U_CALLCONV cleanupFunc(void);
+typedef void U_CALLCONV initFunc(UErrorCode *);
 U_CDECL_END
 
 /**
@@ -81,9 +82,11 @@ U_CAPI void U_EXPORT2 ucln_registerCleanup(ECleanupLibraryType type,
 /**
  * Request cleanup for one specific library.
  * Not thread safe.
- * Calling this with UCLN_COMMON just calls u_cleanup();
  * @param type which library to cleanup
  */
 U_CAPI void U_EXPORT2 ucln_cleanupOne(ECleanupLibraryType type);
+
+/* ucln_cmn.c variables shared with uinit.c */
+U_CFUNC UBool ucln_mutexedInit(initFunc *func, UErrorCode *status);
 
 #endif

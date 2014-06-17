@@ -9,7 +9,7 @@
 */
 
 #include "unicode/unimatch.h"
-#include "unicode/uniset.h"
+#include "unicode/utf16.h"
 #include "patternprops.h"
 #include "util.h"
 
@@ -171,9 +171,9 @@ int32_t ICU_Utility::skipWhitespace(const UnicodeString& str, int32_t& pos,
 //?    while (pos != stop &&
 //?           PatternProps::isWhiteSpace(c = text.char32At(pos))) {
 //?        if (isForward) {
-//?            pos += UTF_CHAR_LENGTH(c);
+//?            pos += U16_LENGTH(c);
 //?        } else {
-//?            pos -= UTF_CHAR_LENGTH(c);
+//?            pos -= U16_LENGTH(c);
 //?        }
 //?    }
 //?
@@ -243,7 +243,7 @@ int32_t ICU_Utility::parsePattern(const UnicodeString& pat,
         // parse \s*
         if (cpat == 126 /*~*/) {
             if (PatternProps::isWhiteSpace(c)) {
-                index += UTF_CHAR_LENGTH(c);
+                index += U16_LENGTH(c);
                 continue;
             } else {
                 if (++ipat == pat.length()) {
@@ -255,8 +255,8 @@ int32_t ICU_Utility::parsePattern(const UnicodeString& pat,
 
         // parse literal
         else if (c == cpat) {
-            index += UTF_CHAR_LENGTH(c);
-            ipat += UTF_CHAR_LENGTH(cpat);
+            index += U16_LENGTH(c);
+            ipat += U16_LENGTH(cpat);
             if (ipat == pat.length()) {
                 return index; // success; c parsed
             }
@@ -407,22 +407,3 @@ void ICU_Utility::appendToRule(UnicodeString& rule,
 }
 
 U_NAMESPACE_END
-
-U_CAPI U_NAMESPACE_QUALIFIER UnicodeSet* U_EXPORT2
-uprv_openPatternWhiteSpaceSet(UErrorCode* ec) {
-    if(U_FAILURE(*ec)) {
-        return NULL;
-    }
-    // create a set with the Pattern_White_Space characters,
-    // without a pattern string for fewer code dependencies
-    U_NAMESPACE_QUALIFIER UnicodeSet *set=new U_NAMESPACE_QUALIFIER UnicodeSet(9, 0xd);
-    // Check for new failure.
-    if (set == NULL) {
-        *ec = U_MEMORY_ALLOCATION_ERROR;
-        return NULL;
-    }
-    set->UnicodeSet::add(0x20).add(0x85).add(0x200e, 0x200f).add(0x2028, 0x2029);
-    return set;
-}
-
-//eof

@@ -552,11 +552,7 @@ public abstract class   Duration {
 
         // check data parameter
         if (date == null) {
-            throw new NullPointerException(
-                    "Cannot call "
-                    + this.getClass().getName()
-                    + "#addTo(Date date) with date == null."
-            );
+            throw new NullPointerException("date == null");
         }
 
         Calendar cal = new GregorianCalendar();

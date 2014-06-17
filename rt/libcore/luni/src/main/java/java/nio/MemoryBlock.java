@@ -31,7 +31,7 @@ class MemoryBlock {
      * Handles calling munmap(2) on a memory-mapped region.
      */
     private static class MemoryMappedBlock extends MemoryBlock {
-        private MemoryMappedBlock(int address, long byteCount) {
+        private MemoryMappedBlock(long address, long byteCount) {
             super(address, byteCount);
         }
 
@@ -63,7 +63,7 @@ class MemoryBlock {
     private static class NonMovableHeapBlock extends MemoryBlock {
         private byte[] array;
 
-        private NonMovableHeapBlock(byte[] array, int address, long byteCount) {
+        private NonMovableHeapBlock(byte[] array, long address, long byteCount) {
             super(address, byteCount);
             this.array = array;
         }
@@ -83,13 +83,12 @@ class MemoryBlock {
      * to direct buffers created by the JNI NewDirectByteBuffer function.)
      */
     private static class UnmanagedBlock extends MemoryBlock {
-        private UnmanagedBlock(int address, long byteCount) {
+        private UnmanagedBlock(long address, long byteCount) {
             super(address, byteCount);
         }
     }
 
-    // TODO: should be long on 64-bit devices; int for performance.
-    protected int address;
+    protected long address;
     protected final long size;
 
     public static MemoryBlock mmap(FileDescriptor fd, long offset, long size, MapMode mapMode) throws IOException {
@@ -114,7 +113,7 @@ class MemoryBlock {
             flags = MAP_SHARED;
         }
         try {
-            int address = (int) Libcore.os.mmap(0L, size, prot, flags, fd, offset);
+            long address = Libcore.os.mmap(0L, size, prot, flags, fd, offset);
             return new MemoryMappedBlock(address, size);
         } catch (ErrnoException errnoException) {
             throw errnoException.rethrowAsIOException();
@@ -124,15 +123,15 @@ class MemoryBlock {
     public static MemoryBlock allocate(int byteCount) {
         VMRuntime runtime = VMRuntime.getRuntime();
         byte[] array = (byte[]) runtime.newNonMovableArray(byte.class, byteCount);
-        int address = (int) runtime.addressOf(array);
+        long address = runtime.addressOf(array);
         return new NonMovableHeapBlock(array, address, byteCount);
     }
 
-    public static MemoryBlock wrapFromJni(int address, long byteCount) {
+    public static MemoryBlock wrapFromJni(long address, long byteCount) {
         return new UnmanagedBlock(address, byteCount);
     }
 
-    private MemoryBlock(int address, long size) {
+    private MemoryBlock(long address, long size) {
         this.address = address;
         this.size = size;
     }
@@ -233,7 +232,7 @@ class MemoryBlock {
         return Memory.peekLong(address + offset, order.needsSwap);
     }
 
-    public final int toInt() {
+    public final long toLong() {
         return address;
     }
 

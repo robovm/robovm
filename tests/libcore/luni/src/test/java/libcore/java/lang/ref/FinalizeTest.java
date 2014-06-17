@@ -33,19 +33,43 @@ public final class FinalizeTest extends TestCase {
 
         FinalizationTester.induceFinalization();
         if (!finalized.get()) {
-            fail();
+            fail("object not yet finalized");
+        }
+    }
+
+    /**
+     * Test verifies that runFinalization() does not mess up objects
+     * that should be finalized later on. http://b/6907299
+     */
+    public void testInducedFinalization() throws Exception {
+        AtomicBoolean finalized1 = new AtomicBoolean();
+        AtomicBoolean finalized2 = new AtomicBoolean();
+        createFinalizableObject(finalized1);
+        createFinalizableObject(finalized2);
+        FinalizationTester.induceFinalization();
+        if (!finalized1.get() || !finalized2.get()) {
+            fail("not yet finalized: " + finalized1.get() + " " + finalized2.get());
         }
     }
 
     /** Do not inline this method; that could break non-precise GCs. See FinalizationTester. */
-    private void createFinalizableObject(final AtomicBoolean finalized) {
-        new X() {
+    private X createFinalizableObject(final AtomicBoolean finalized) {
+        X result = new X() {
             private final byte[] bytes = new byte[1024 * 16]; // RoboVM note: Added
             @Override protected void finalize() throws Throwable {
                 super.finalize();
                 finalized.set(true);
             }
         };
+        FinalizationTester.induceFinalization();
+        // Dance around a bit to discourage dx from realizing that 'result' is no longer live.
+        boolean wasFinalized = finalized.get();
+        if (wasFinalized) {
+            fail("finalizer called early"); // ...because 'result' is still live until we return.
+        }
+        // But we don't actually want to return 'result' because then we'd have to worry about
+        // the caller accidentally keeping it live.
+        return wasFinalized ? result : null;
     }
 
     static class X {}

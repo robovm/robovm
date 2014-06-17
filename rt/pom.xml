@@ -23,13 +23,17 @@
   <build>
     <resources>
       <resource><directory>robovm/src/main/resources</directory></resource>
+      <resource><directory>libcore/crypto/src/main/resources</directory></resource>
       <resource><directory>libcore/dalvik/src/main/resources</directory></resource>
       <resource><directory>libcore/json/src/main/resources</directory></resource>
+      <resource><directory>libcore/libdvm/src/main/resources</directory></resource>
       <resource><directory>libcore/luni/src/main/resources</directory></resource>
       <resource><directory>libcore/xml/src/main/resources</directory></resource>
       <resource><directory>external/apache-xml/src/main/resources</directory></resource>
-      <resource><directory>external/bouncycastle/src/main/resources</directory></resource>
+      <resource><directory>external/bouncycastle/bcpkix/src/main/resources</directory></resource>
+      <resource><directory>external/bouncycastle/bcprov/src/main/resources</directory></resource>
       <resource><directory>external/javasqlite/src/main/resources</directory></resource>
+      <resource><directory>external/okhttp/src/main/resources</directory></resource>
       <resource>
         <directory>libcore/luni/src/main/java</directory>
         <includes>
@@ -60,6 +64,8 @@
         <configuration>
           <excludes>
             <exclude>org/bouncycastle/**</exclude>
+            <exclude>org/conscrypt/**</exclude>
+            <exclude>com/squareup/**</exclude>
           </excludes>
         </configuration>
       </plugin>
@@ -75,13 +81,19 @@
               <sources>
                 <source>${project.build.directory}/generated-sources/filtered-java</source>
                 <source>robovm/src/main/java</source>
+                <source>libcore/crypto/src/main/java</source>
                 <source>libcore/dalvik/src/main/java</source>
                 <source>libcore/json/src/main/java</source>
+                <source>libcore/libdvm/src/main/java</source>
                 <source>libcore/luni/src/main/java</source>
                 <source>libcore/xml/src/main/java</source>
+                <source>external/apache-http/src</source>
                 <source>external/apache-xml/src/main/java</source>
-                <source>external/bouncycastle/src/main/java</source>
+                <source>external/bouncycastle/bcpkix/src/main/java</source>
+                <source>external/bouncycastle/bcprov/src/main/java</source>
                 <source>external/javasqlite/src/main/java</source>
+                <source>external/okhttp/src/main/java</source>
+                <source>external/okhttp/android/main/java</source>
               </sources>
             </configuration>
           </execution>
@@ -93,6 +105,8 @@
         <configuration>
           <excludes>
             <exclude>org/bouncycastle/**/*</exclude>
+            <exclude>org/conscrypt/**/*</exclude>
+            <exclude>com/squareup/**/*</exclude>
           </excludes>
         </configuration>
       </plugin>
@@ -101,6 +115,8 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
           <excludePackageNames>org.bouncycastle.*</excludePackageNames>
+          <excludePackageNames>org.conscrypt.*</excludePackageNames>
+          <excludePackageNames>com.squareup.*</excludePackageNames>
           <maxmemory>2g</maxmemory>
         </configuration>
       </plugin>
@@ -116,20 +132,26 @@
               <target>
                 <taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpathref="maven.plugin.classpath" />
 
-                <!-- Use jarjar to change the package name org.bouncycastle to com.android.org.bouncycastle and save
-                     the result to target/bouncycastle.jarjar.jar -->
-                <jarjar jarfile="${project.build.directory}/bouncycastle.jarjar.jar">
+                <!-- Use jarjar to change the package name org.bouncycastle to com.android.org.bouncycastle and 
+                     org.conscrypt to com.android.org.conscrypt and save the result to target/jarjar.jar -->
+                <jarjar jarfile="${project.build.directory}/jarjar.jar">
                   <fileset dir="${project.build.outputDirectory}">
                     <include name="org/bouncycastle/**" />
+                    <include name="org/conscrypt/**" />
+                    <include name="com/squareup/**" />
                   </fileset>
                   <rule pattern="org.bouncycastle.**" result="com.android.@0" />
+                  <rule pattern="org.conscrypt.**" result="com.android.@0" />
+                  <rule pattern="com.squareup.**" result="com.android.@1" />
                 </jarjar>
 
                 <!-- Explode the jarjar jar to target/classes -->
-                <unzip src="${project.build.directory}/bouncycastle.jarjar.jar" dest="${project.build.directory}/classes">
+                <unzip src="${project.build.directory}/jarjar.jar" dest="${project.build.directory}/classes">
                   <patternset>
                     <exclude name="META-INF/**" />
                     <exclude name="org/bouncycastle/**" />
+                    <exclude name="org/conscrypt/**" />
+                    <exclude name="com/squareup/**" />
                   </patternset>
                 </unzip>
 

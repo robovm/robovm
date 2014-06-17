@@ -25,7 +25,7 @@
 #include "cbigint.h"
 
 /* ************************* Defines ************************* */
-#if defined(__linux__) || defined(FREEBSD)
+#if defined(__linux__) || defined(__APPLE__)
 #define USE_LL
 #endif
 

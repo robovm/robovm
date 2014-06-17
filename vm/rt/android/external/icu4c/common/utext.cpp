@@ -1,7 +1,7 @@
 /*
 *******************************************************************************
 *
-*   Copyright (C) 2005-2011, International Business Machines
+*   Copyright (C) 2005-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 *******************************************************************************
@@ -19,6 +19,9 @@
 #include "unicode/unistr.h"
 #include "unicode/chariter.h"
 #include "unicode/utext.h"
+#include "unicode/utf.h"
+#include "unicode/utf8.h"
+#include "unicode/utf16.h"
 #include "ustr_imp.h"
 #include "cmemory.h"
 #include "cstring.h"
@@ -118,13 +121,13 @@ utext_setNativeIndex(UText *ut, int64_t index) {
     // Adjust the index position if it is in the middle of a surrogate pair.
     if (ut->chunkOffset<ut->chunkLength) {
         UChar c= ut->chunkContents[ut->chunkOffset];
-        if (UTF16_IS_TRAIL(c)) {
+        if (U16_IS_TRAIL(c)) {
             if (ut->chunkOffset==0) {
                 ut->pFuncs->access(ut, ut->chunkNativeStart, FALSE);
             }
             if (ut->chunkOffset>0) {
                 UChar lead = ut->chunkContents[ut->chunkOffset-1];
-                if (UTF16_IS_LEAD(lead)) {
+                if (U16_IS_LEAD(lead)) {
                     ut->chunkOffset--;
                 }
             }
@@ -450,355 +453,6 @@ utext_equals(const UText *a, const UText *b) {
 
     return TRUE;
 }
-
-U_CAPI int32_t U_EXPORT2
-utext_compare(UText *s1, int32_t length1,
-              UText *s2, int32_t length2) {
-    UChar32 c1 = 0, c2 = 0;
-    
-    if(length1<0 && length2<0) {
-        /* strcmp style, go until end of string */
-        for(;;) {
-            c1 = UTEXT_NEXT32(s1);
-            c2 = UTEXT_NEXT32(s2);
-            if(c1 != c2) {
-                break;
-            } else if(c1 == U_SENTINEL) {
-                return 0;
-            }
-        }
-    } else {
-        if(length1 < 0) {
-            length1 = INT32_MIN;
-        } else if (length2 < 0) {
-            length2 = INT32_MIN;
-        }
-        
-        /* memcmp/UnicodeString style, both length-specified */        
-        while((length1 > 0 || length1 == INT32_MIN) && (length2 > 0 || length2 == INT32_MIN)) {
-            c1 = UTEXT_NEXT32(s1);
-            c2 = UTEXT_NEXT32(s2);
-                       
-            if(c1 != c2) {
-                break;
-            } else if(c1 == U_SENTINEL) {
-                return 0;
-            }
-            
-            if (length1 != INT32_MIN) {
-                length1 -= 1;
-            }
-            if (length2 != INT32_MIN) {
-                length2 -= 1;
-            }
-        }
-        
-        if(length1 <= 0 && length1 != INT32_MIN) {
-            if(length2 <= 0) {
-                return 0;
-            } else {
-                return -1;
-            }
-        } else if(length2 <= 0 && length2 != INT32_MIN) {
-            if (length1 <= 0) {
-                return 0;
-            } else {
-                return 1;
-            }
-        }
-    }
-    
-    return (int32_t)c1-(int32_t)c2;
-}
-
-U_CAPI int32_t U_EXPORT2
-utext_compareNativeLimit(UText *s1, int64_t limit1,
-                         UText *s2, int64_t limit2) {
-    UChar32 c1, c2;
-    
-    if(limit1<0 && limit2<0) {
-        /* strcmp style, go until end of string */
-        for(;;) {
-            c1 = UTEXT_NEXT32(s1);
-            c2 = UTEXT_NEXT32(s2);
-            if(c1 != c2) {
-                return (int32_t)c1-(int32_t)c2;
-            } else if(c1 == U_SENTINEL) {
-                return 0;
-            }
-        }
-    } else {
-        /* memcmp/UnicodeString style, both length-specified */   
-        int64_t index1 = (limit1 >= 0 ? UTEXT_GETNATIVEINDEX(s1) : 0);
-        int64_t index2 = (limit2 >= 0 ? UTEXT_GETNATIVEINDEX(s2) : 0);
-        
-        while((limit1 < 0 || index1 < limit1) && (limit2 < 0 || index2 < limit2)) {
-            c1 = UTEXT_NEXT32(s1);
-            c2 = UTEXT_NEXT32(s2);
-            
-            if(c1 != c2) {
-                return (int32_t)c1-(int32_t)c2;
-            } else if(c1 == U_SENTINEL) {
-                return 0;
-            }
-            
-            if (limit1 >= 0) {
-                index1 = UTEXT_GETNATIVEINDEX(s1);
-            }
-            if (limit2 >= 0) {
-                index2 = UTEXT_GETNATIVEINDEX(s2);
-            }
-        }
-        
-        if(limit1 >= 0 && index1 >= limit1) {
-            if(index2 >= limit2) {
-                return 0;
-            } else {
-                return -1;
-            }
-        } else {
-            if(index1 >= limit1) {
-                return 0;
-            } else {
-                return 1;
-            }
-        }
-    }
-}
-
-U_CAPI int32_t U_EXPORT2
-utext_caseCompare(UText *s1, int32_t length1,
-                     UText *s2, int32_t length2,
-                     uint32_t options, UErrorCode *pErrorCode) {
-    const UCaseProps *csp;
-    
-    /* case folding variables */
-    const UChar *p;
-    int32_t length;
-    
-    /* case folding buffers, only use current-level start/limit */
-    UChar fold1[UCASE_MAX_STRING_LENGTH+1], fold2[UCASE_MAX_STRING_LENGTH+1];
-    int32_t foldOffset1, foldOffset2, foldLength1, foldLength2;
-    
-    /* current code points */
-    UChar32 c1, c2;
-    uint8_t cLength1, cLength2;
-
-    /* argument checking */
-    if(U_FAILURE(*pErrorCode)) {
-        return 0;
-    }
-    if(s1==NULL || s2==NULL) {
-        *pErrorCode=U_ILLEGAL_ARGUMENT_ERROR;
-        return 0;
-    }
-
-    csp=ucase_getSingleton();
-
-    /* for variable-length strings */
-    if(length1 < 0) {
-        length1 = INT32_MIN;
-    }
-    if (length2 < 0) {
-        length2 = INT32_MIN;
-    }
-    
-    /* initialize */
-    foldOffset1 = foldOffset2 = foldLength1 = foldLength2 = 0;
-    
-    /* comparison loop */
-    while((foldOffset1 < foldLength1 || length1 > 0 || length1 == INT32_MIN) &&
-          (foldOffset2 < foldLength2 || length2 > 0 || length2 == INT32_MIN)) {
-        if(foldOffset1 < foldLength1) {
-            U16_NEXT_UNSAFE(fold1, foldOffset1, c1);
-            cLength1 = 0;
-        } else {
-            c1 = UTEXT_NEXT32(s1);
-            if (c1 != U_SENTINEL) {
-                cLength1 = U16_LENGTH(c1);
-                
-                length = ucase_toFullFolding(csp, c1, &p, options);
-                if(length >= 0) {
-                    if(length <= UCASE_MAX_STRING_LENGTH) {   // !!!: Does not correctly handle 0-length folded-case strings
-                        u_memcpy(fold1, p, length);
-                        foldOffset1 = 0;
-                        foldLength1 = length;
-                        U16_NEXT_UNSAFE(fold1, foldOffset1, c1);
-                    } else {
-                        c1 = length;
-                    }
-                }
-            }
-            
-            if(length1 != INT32_MIN) {
-                length1 -= 1;
-            }
-        }
-        
-        if(foldOffset2 < foldLength2) {
-            U16_NEXT_UNSAFE(fold2, foldOffset2, c2);
-            cLength2 = 0;
-        } else {
-            c2 = UTEXT_NEXT32(s2);
-            if (c2 != U_SENTINEL) {
-                cLength2 = U16_LENGTH(c2);
-                
-                length = ucase_toFullFolding(csp, c2, &p, options);
-                if(length >= 0) {
-                    if(length <= UCASE_MAX_STRING_LENGTH) {   // !!!: Does not correctly handle 0-length folded-case strings
-                        u_memcpy(fold2, p, length);
-                        foldOffset2 = 0;
-                        foldLength2 = length;
-                        U16_NEXT_UNSAFE(fold2, foldOffset2, c2);
-                    } else {
-                        c2 = length;
-                    }
-                }
-            } else if(c1 == U_SENTINEL) {
-                return 0; // end of both strings at once
-            }
-            
-            if(length2 != INT32_MIN) {
-                length2 -= 1;
-            }
-        }
-        
-        if(c1 != c2) {
-            return (int32_t)c1-(int32_t)c2;
-        }
-    }
-    
-    /* By now at least one of the strings is out of characters */
-    length1 += foldLength1 - foldOffset1;
-    length2 += foldLength2 - foldOffset2;
-    
-    if(length1 <= 0 && length1 != INT32_MIN) {
-        if(length2 <= 0) {
-            return 0;
-        } else {
-            return -1;
-        }
-    } else {
-        if (length1 <= 0) {
-            return 0;
-        } else {
-            return 1;
-        }
-    }
-}
-
-U_CAPI int32_t U_EXPORT2
-utext_caseCompareNativeLimit(UText *s1, int64_t limit1,
-                                UText *s2, int64_t limit2,
-                                uint32_t options, UErrorCode *pErrorCode) {
-    const UCaseProps *csp;
-    
-    /* case folding variables */
-    const UChar *p;
-    int32_t length;
-    
-    /* case folding buffers, only use current-level start/limit */
-    UChar fold1[UCASE_MAX_STRING_LENGTH+1], fold2[UCASE_MAX_STRING_LENGTH+1];
-    int32_t foldOffset1, foldOffset2, foldLength1, foldLength2;
-    
-    /* current code points */
-    UChar32 c1, c2;
-    
-    /* native indexes into s1 and s2 */
-    int64_t index1, index2;
-
-    /* argument checking */
-    if(U_FAILURE(*pErrorCode)) {
-        return 0;
-    }
-    if(s1==NULL || s2==NULL) {
-        *pErrorCode=U_ILLEGAL_ARGUMENT_ERROR;
-        return 0;
-    }
-
-    csp=ucase_getSingleton();
-
-    /* initialize */
-    index1 = (limit1 >= 0 ? UTEXT_GETNATIVEINDEX(s1) : 0);
-    index2 = (limit2 >= 0 ? UTEXT_GETNATIVEINDEX(s2) : 0);
-
-    foldOffset1 = foldOffset2 = foldLength1 = foldLength2 = 0;
-    
-    /* comparison loop */
-    while((foldOffset1 < foldLength1 || limit1 < 0 || index1 < limit1) &&
-          (foldOffset2 < foldLength2 || limit2 < 0 || index2 < limit2)) {
-        if(foldOffset1 < foldLength1) {
-            U16_NEXT_UNSAFE(fold1, foldOffset1, c1);
-        } else {
-            c1 = UTEXT_NEXT32(s1);
-            if (c1 != U_SENTINEL) {
-                length = ucase_toFullFolding(csp, c1, &p, options);
-                if(length >= 0) {
-                    if(length <= UCASE_MAX_STRING_LENGTH) {   // !!!: Does not correctly handle 0-length folded-case strings
-                        u_memcpy(fold1, p, length);
-                        foldOffset1 = 0;
-                        foldLength1 = length;
-                        U16_NEXT_UNSAFE(fold1, foldOffset1, c1);
-                    } else {
-                        c1 = length;
-                    }
-                }
-            }
-            
-            if (limit1 >= 0) {
-                index1 = UTEXT_GETNATIVEINDEX(s1);
-            }
-        }
-        
-        if(foldOffset2 < foldLength2) {
-            U16_NEXT_UNSAFE(fold2, foldOffset2, c2);
-        } else {
-            c2 = UTEXT_NEXT32(s2);
-            if (c2 != U_SENTINEL) {
-                length = ucase_toFullFolding(csp, c2, &p, options);
-                if(length >= 0) {
-                    if(length <= UCASE_MAX_STRING_LENGTH) {   // !!!: Does not correctly handle 0-length folded-case strings
-                        u_memcpy(fold2, p, length);
-                        foldOffset2 = 0;
-                        foldLength2 = length;
-                        U16_NEXT_UNSAFE(fold2, foldOffset2, c2);
-                    } else {
-                        c2 = length;
-                    }
-                }
-            } else if(c1 == U_SENTINEL) {
-                return 0;
-            }
-            
-            if (limit2 >= 0) {
-                index2 = UTEXT_GETNATIVEINDEX(s2);
-            }
-        }
-        
-        if(c1 != c2) {
-            return (int32_t)c1-(int32_t)c2;
-        }
-    }
-    
-    /* By now at least one of the strings is out of characters */
-    index1 -= foldLength1 - foldOffset1;
-    index2 -= foldLength2 - foldOffset2;
-    
-    if(limit1 >= 0 && index1 >= limit1) {
-        if(index2 >= limit2) {
-            return 0;
-        } else {
-            return -1;
-        }
-    } else {
-        if(index1 >= limit1) {
-            return 0;
-        } else {
-            return 1;
-        }
-    }
-}
-
 
 U_CAPI UBool U_EXPORT2
 utext_isWritable(const UText *ut)
@@ -1563,14 +1217,10 @@ fillForward:
                 int32_t  cIx      = srcIx;
                 int32_t  dIx      = destIx;
                 int32_t  dIxSaved = destIx;
-                U8_NEXT(s8, srcIx, strLen, c);
+                U8_NEXT_OR_FFFD(s8, srcIx, strLen, c);
                 if (c==0 && nulTerminated) {
                     srcIx--;
                     break;
-                }
-                if (c<0) {
-                    // Illegal UTF-8.  Replace with sub character.
-                    c = 0x0fffd;
                 }
 
                 U16_APPEND_UNSAFE(buf, destIx, c);
@@ -1680,15 +1330,11 @@ fillReverse:
                 int32_t  sIx      = srcIx;  // ix of last byte of multi-byte u8 char
 
                 // Get the full character from the UTF8 string.
-                //   use code derived from tbe macros in utf.8
+                //   use code derived from tbe macros in utf8.h
                 //   Leaves srcIx pointing at the first byte of the UTF-8 char.
                 //
-                if (c<=0xbf) {
-                    c=utf8_prevCharSafeBody(s8, 0, &srcIx, c, -1);
-                    // leaves srcIx at first byte of the multi-byte char.
-                } else {
-                    c=0x0fffd;
-                }
+                c=utf8_prevCharSafeBody(s8, 0, &srcIx, c, -3);
+                // leaves srcIx at first byte of the multi-byte char.
 
                 // Store the character in UTF-16 buffer.
                 if (c<0x10000) {
@@ -1749,7 +1395,7 @@ utext_strFromUTF8(UChar *dest,
 {
 
     UChar *pDest = dest;
-    UChar *pDestLimit = dest+destCapacity;
+    UChar *pDestLimit = (dest!=NULL)?(dest+destCapacity):NULL;
     UChar32 ch=0;
     int32_t index = 0;
     int32_t reqLength = 0;
@@ -1761,16 +1407,13 @@ utext_strFromUTF8(UChar *dest,
         if(ch <=0x7f){
             *pDest++=(UChar)ch;
         }else{
-            ch=utf8_nextCharSafeBody(pSrc, &index, srcLength, ch, -1);
-            if(ch<0){
-                ch = 0xfffd;
-            }
+            ch=utf8_nextCharSafeBody(pSrc, &index, srcLength, ch, -3);
             if(U_IS_BMP(ch)){
                 *(pDest++)=(UChar)ch;
             }else{
-                *(pDest++)=UTF16_LEAD(ch);
+                *(pDest++)=U16_LEAD(ch);
                 if(pDest<pDestLimit){
-                    *(pDest++)=UTF16_TRAIL(ch);
+                    *(pDest++)=U16_TRAIL(ch);
                 }else{
                     reqLength++;
                     break;
@@ -1784,10 +1427,7 @@ utext_strFromUTF8(UChar *dest,
         if(ch <= 0x7f){
             reqLength++;
         }else{
-            ch=utf8_nextCharSafeBody(pSrc, &index, srcLength, ch, -1);
-            if(ch<0){
-                ch = 0xfffd;
-            }
+            ch=utf8_nextCharSafeBody(pSrc, &index, srcLength, ch, -3);
             reqLength+=U16_LENGTH(ch);
         }
     }
@@ -2861,7 +2501,6 @@ ucstrTextExtract(UText *ut,
     } else {
         limit32 = pinIndex(limit, INT32_MAX);
     }
-
     di = 0;
     for (si=start32; si<limit32; si++) {
         if (strLength<0 && s[si]==0) {
@@ -2873,6 +2512,7 @@ ucstrTextExtract(UText *ut,
             strLength               = si;
             break;
         }
+        U_ASSERT(di>=0); /* to ensure di never exceeds INT32_MAX, which must not happen logically */
         if (di<destCapacity) {
             // only store if there is space.
             dest[di] = s[si];
@@ -3115,6 +2755,7 @@ charIterTextExtract(UText *ut,
     while (srci<limit32) {
         UChar32 c = ci->next32PostInc();
         int32_t  len = U16_LENGTH(c);
+        U_ASSERT(desti+len>0); /* to ensure desti+len never exceeds MAX_INT32, which must not happen logically */
         if (desti+len <= destCapacity) {
             U16_APPEND_UNSAFE(dest, desti, c);
             copyLimit = srci+len;

@@ -98,7 +98,7 @@ public class ExemptionMechanism {
     public static final ExemptionMechanism getInstance(String algorithm)
             throws NoSuchAlgorithmException {
         if (algorithm == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("algorithm == null");
         }
         Engine.SpiAndProvider sap = ENGINE.getInstance(algorithm, null);
         return new ExemptionMechanism((ExemptionMechanismSpi) sap.spi, sap.provider, algorithm);
@@ -134,7 +134,7 @@ public class ExemptionMechanism {
             throw new NoSuchProviderException(provider);
         }
         if (algorithm == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("algorithm == null");
         }
         return getInstance(algorithm, impProvider);
     }
@@ -159,7 +159,7 @@ public class ExemptionMechanism {
     public static final ExemptionMechanism getInstance(String algorithm,
             Provider provider) throws NoSuchAlgorithmException {
         if (algorithm == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("algorithm == null");
         }
         if (provider == null) {
             throw new IllegalArgumentException("provider == null");

@@ -73,8 +73,12 @@ public class OAEPParameterSpec implements AlgorithmParameterSpec {
      */
     public OAEPParameterSpec(String mdName, String mgfName,
                                 AlgorithmParameterSpec mgfSpec, PSource pSrc) {
-        if ((mdName == null) || (mgfName == null) || (pSrc == null)) {
-            throw new NullPointerException();
+        if (mdName == null) {
+            throw new NullPointerException("mdName == null");
+        } else if (mgfName == null) {
+            throw new NullPointerException("mgfName == null");
+        } else if (pSrc == null) {
+            throw new NullPointerException("pSrc == null");
         }
         this.mdName = mdName;
         this.mgfName = mgfName;

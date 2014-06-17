@@ -30,158 +30,77 @@ import javax.net.ServerSocketFactory;
 
 import junit.framework.TestCase;
 
-import tests.support.Support_PortManager;
-
-
-/**
- * Tests for <code>ServerSocketFactory</code> class constructors and methods.
- */
 public class ServerSocketFactoryTest extends TestCase {
 
-    /**
-     * javax.net.SocketFactory#SocketFactory()
-     */
     public void test_Constructor() {
-        try {
-            ServerSocketFactory sf = new MyServerSocketFactory();
-        } catch (Exception e) {
-            fail("Unexpected exception " + e.toString());
-        }
+        ServerSocketFactory sf = new MyServerSocketFactory();
     }
 
-    /**
-     * javax.net.ServerSocketFactory#createServerSocket()
-     */
-    public final void test_createServerSocket_01() {
+    public final void test_createServerSocket() throws Exception {
         ServerSocketFactory sf = ServerSocketFactory.getDefault();
-        try {
-            ServerSocket ss = sf.createServerSocket();
-            assertNotNull(ss);
-        } catch (SocketException e) {
-        } catch (Exception e) {
-            fail(e.toString());
-        }
+        ServerSocket ss = sf.createServerSocket();
+        assertNotNull(ss);
+        ss.close();
     }
 
-    /**
-     * javax.net.ServerSocketFactory#createServerSocket(int port)
-     */
-    public final void test_createServerSocket_02() {
+    public final void test_createServerSocket_I() throws Exception {
         ServerSocketFactory sf = ServerSocketFactory.getDefault();
-        int portNumber = Support_PortManager.getNextPort();
+        ServerSocket ss = sf.createServerSocket(0);
+        assertNotNull(ss);
 
         try {
-            ServerSocket ss = sf.createServerSocket(portNumber);
-            assertNotNull(ss);
-        } catch (Exception ex) {
-            fail("Unexpected exception: " + ex);
-        }
-
-        try {
-            sf.createServerSocket(portNumber);
+            sf.createServerSocket(ss.getLocalPort());
             fail("IOException wasn't thrown");
-        } catch (IOException ioe) {
-            //expected
-        } catch (Exception ex) {
-            fail(ex + " was thrown instead of IOException");
+        } catch (IOException expected) {
         }
+
+        ss.close();
 
         try {
             sf.createServerSocket(-1);
             fail("IllegalArgumentException wasn't thrown");
-        } catch (IllegalArgumentException ioe) {
-            //expected
-        } catch (Exception ex) {
-            fail(ex + " was thrown instead of IllegalArgumentException");
+        } catch (IllegalArgumentException expected) {
         }
     }
 
-    /**
-     * javax.net.ServerSocketFactory#createServerSocket(int port, int backlog)
-     */
-    public final void test_createServerSocket_03() {
+    public final void test_createServerSocket_II() throws Exception {
         ServerSocketFactory sf = ServerSocketFactory.getDefault();
-        int portNumber = Support_PortManager.getNextPort();
+        ServerSocket ss = sf.createServerSocket(0, 0);
+        assertNotNull(ss);
 
         try {
-            ServerSocket ss = sf.createServerSocket(portNumber, 0);
-            assertNotNull(ss);
-        } catch (Exception ex) {
-            fail("Unexpected exception: " + ex);
-        }
-
-        try {
-            sf.createServerSocket(portNumber, 0);
+            sf.createServerSocket(ss.getLocalPort(), 0);
             fail("IOException wasn't thrown");
-        } catch (IOException ioe) {
-            //expected
-        } catch (Exception ex) {
-            fail(ex + " was thrown instead of IOException");
+        } catch (IOException expected) {
         }
+
+        ss.close();
 
         try {
             sf.createServerSocket(65536, 0);
             fail("IllegalArgumentException wasn't thrown");
-        } catch (IllegalArgumentException ioe) {
-            //expected
-        } catch (Exception ex) {
-            fail(ex + " was thrown instead of IllegalArgumentException");
+        } catch (IllegalArgumentException expected) {
         }
     }
 
-    /**
-     * javax.net.ServerSocketFactory#createServerSocket(int port, int backlog, InetAddress ifAddress)
-     */
-    public final void test_createServerSocket_04() {
+    public final void test_createServerSocket_IIInetAddress() throws Exception {
         ServerSocketFactory sf = ServerSocketFactory.getDefault();
-        int portNumber = Support_PortManager.getNextPort();
+
+        ServerSocket ss = sf.createServerSocket(0, 0, InetAddress.getLocalHost());
+        assertNotNull(ss);
 
         try {
-            ServerSocket ss = sf.createServerSocket(portNumber, 0, InetAddress.getLocalHost());
-            assertNotNull(ss);
-        } catch (Exception ex) {
-            fail("Unexpected exception: " + ex);
-        }
-
-        try {
-            sf.createServerSocket(portNumber, 0, InetAddress.getLocalHost());
+            sf.createServerSocket(ss.getLocalPort(), 0, InetAddress.getLocalHost());
             fail("IOException wasn't thrown");
-        } catch (IOException ioe) {
-            //expected
-        } catch (Exception ex) {
-            fail(ex + " was thrown instead of IOException");
+        } catch (IOException expected) {
         }
+
+        ss.close();
 
         try {
             sf.createServerSocket(Integer.MAX_VALUE, 0, InetAddress.getLocalHost());
             fail("IllegalArgumentException wasn't thrown");
-        } catch (IllegalArgumentException ioe) {
-            //expected
-        } catch (Exception ex) {
-            fail(ex + " was thrown instead of IllegalArgumentException");
-        }
-    }
-
-    /**
-     * javax.net.ServerSocketFactory#getDefault()
-     */
-    public final void test_getDefault() {
-        ServerSocketFactory sf = ServerSocketFactory.getDefault();
-        ServerSocket s;
-        try {
-            s = sf.createServerSocket(0);
-            s.close();
-        } catch (IOException e) {
-        }
-        try {
-            s = sf.createServerSocket(0, 50);
-            s.close();
-        } catch (IOException e) {
-        }
-        try {
-            s = sf.createServerSocket(0, 50, InetAddress.getLocalHost());
-            s.close();
-        } catch (IOException e) {
+        } catch (IllegalArgumentException expected) {
         }
     }
 }

@@ -26,199 +26,146 @@ import java.io.NotSerializableException;
 import java.io.ObjectStreamException;
 import java.security.KeyRep;
 import java.security.Security;
-import java.util.Iterator;
 import java.util.Set;
-
 import junit.framework.TestCase;
 
-/**
- *
- *
- */
 public class KeyRepTest extends TestCase {
 
-    private static final Set<String> keyFactoryAlgorithm;
+    private static final Set<String> keyFactoryAlgorithms = Security.getAlgorithms("KeyFactory");
     static {
-        keyFactoryAlgorithm = Security.getAlgorithms("KeyFactory");
+        assertFalse(keyFactoryAlgorithms.isEmpty());
     }
 
     public final void testKeyRep01() {
-        try {
-            assertNotNull(new KeyRep(KeyRep.Type.SECRET, "", "", new byte[] {}));
-        } catch (Exception e) {
-            fail("Unexpected exception " + e.getMessage());
-        }
-
-        try {
-            assertNotNull(new KeyRep(KeyRep.Type.PUBLIC, "", "", new byte[] {}));
-        } catch (Exception e) {
-            fail("Unexpected exception " + e.getMessage());
-        }
-
-        try {
-            assertNotNull(new KeyRep(KeyRep.Type.PRIVATE, "", "", new byte[] {}));
-        } catch (Exception e) {
-            fail("Unexpected exception " + e.getMessage());
-        }
+        assertNotNull(new KeyRep(KeyRep.Type.SECRET, "", "", new byte[] {}));
+        assertNotNull(new KeyRep(KeyRep.Type.PUBLIC, "", "", new byte[] {}));
+        assertNotNull(new KeyRep(KeyRep.Type.PRIVATE, "", "", new byte[] {}));
     }
 
     public final void testKeyRep02() {
         try {
             new KeyRep(null, "", "", new byte[] {});
             fail("NullPointerException has not been thrown (type)");
-        } catch (NullPointerException ok) {
-
+        } catch (NullPointerException expected) {
         }
         try {
             new KeyRep(KeyRep.Type.SECRET, null, "", new byte[] {});
             fail("NullPointerException has not been thrown (alg)");
-        } catch (NullPointerException ok) {
-
+        } catch (NullPointerException expected) {
         }
         try {
             new KeyRep(KeyRep.Type.PRIVATE, "", null, new byte[] {});
             fail("NullPointerException has not been thrown (format)");
-        } catch (NullPointerException ok) {
-
+        } catch (NullPointerException expected) {
         }
         try {
             new KeyRep(KeyRep.Type.PUBLIC, "", "", null);
             fail("NullPointerException has not been thrown (encoding)");
-        } catch (NullPointerException ok) {
-
+        } catch (NullPointerException expected) {
         }
     }
 
-    public final void testReadResolve01() throws ObjectStreamException {
-        KeyRepChild kr = new KeyRepChild(KeyRep.Type.SECRET, "", "",
-                new byte[] {});
+    public final void testReadResolve01() throws Exception {
+        KeyRepChild kr = new KeyRepChild(KeyRep.Type.SECRET, "", "", new byte[] {});
         try {
             kr.readResolve();
             fail("NotSerializableException has not been thrown (no format)");
-        } catch (NotSerializableException ok) {
-
+        } catch (NotSerializableException expected) {
         }
 
         kr = new KeyRepChild(KeyRep.Type.SECRET, "", "X.509", new byte[] {});
         try {
             kr.readResolve();
             fail("NotSerializableException has not been thrown (unacceptable format)");
-        } catch (NotSerializableException ok) {
-
+        } catch (NotSerializableException expected) {
         }
 
         kr = new KeyRepChild(KeyRep.Type.SECRET, "", "RAW", new byte[] {});
         try {
             kr.readResolve();
             fail("NotSerializableException has not been thrown (empty key)");
-        } catch (NotSerializableException ok) {
-
+        } catch (NotSerializableException expected) {
         }
     }
 
-    public final void testReadResolve02() throws ObjectStreamException {
-        KeyRepChild kr = new KeyRepChild(KeyRep.Type.PUBLIC, "", "",
-                new byte[] {});
+    public final void testReadResolve02() throws Exception {
+        KeyRepChild kr = new KeyRepChild(KeyRep.Type.PUBLIC, "", "", new byte[] {});
         try {
             kr.readResolve();
             fail("NotSerializableException has not been thrown (no format)");
-        } catch (NotSerializableException ok) {
-
+        } catch (NotSerializableException expected) {
         }
 
         kr = new KeyRepChild(KeyRep.Type.PUBLIC, "", "RAW", new byte[] {});
         try {
             kr.readResolve();
             fail("NotSerializableException has not been thrown (unacceptable format)");
-        } catch (NotSerializableException ok) {
-
+        } catch (NotSerializableException expected) {
         }
 
-        kr = new KeyRepChild(KeyRep.Type.PUBLIC, "bla-bla", "X.509",
-                new byte[] {});
+        kr = new KeyRepChild(KeyRep.Type.PUBLIC, "bla-bla", "X.509", new byte[] {});
         try {
             kr.readResolve();
             fail("NotSerializableException has not been thrown (unknown KeyFactory algorithm)");
-        } catch (NotSerializableException ok) {
-
+        } catch (NotSerializableException expected) {
         }
     }
 
-    public final void testReadResolve03() throws ObjectStreamException {
-        KeyRepChild kr = new KeyRepChild(KeyRep.Type.PRIVATE, "", "",
-                new byte[] {});
+    public final void testReadResolve03() throws Exception {
+        KeyRepChild kr = new KeyRepChild(KeyRep.Type.PRIVATE, "", "", new byte[] {});
         try {
             kr.readResolve();
             fail("NotSerializableException has not been thrown (no format)");
-        } catch (NotSerializableException ok) {
-
+        } catch (NotSerializableException expected) {
         }
 
         kr = new KeyRepChild(KeyRep.Type.PRIVATE, "", "RAW", new byte[] {});
         try {
             kr.readResolve();
             fail("NotSerializableException has not been thrown (unacceptable format)");
-        } catch (NotSerializableException ok) {
-
+        } catch (NotSerializableException expected) {
         }
 
-        kr = new KeyRepChild(KeyRep.Type.PRIVATE, "bla-bla", "PKCS#8",
-                new byte[] {});
+        kr = new KeyRepChild(KeyRep.Type.PRIVATE, "bla-bla", "PKCS#8", new byte[] {});
         try {
             kr.readResolve();
             fail("NotSerializableException has not been thrown (unknown KeyFactory algorithm)");
-        } catch (NotSerializableException ok) {
-
+        } catch (NotSerializableException expected) {
         }
     }
 
-    public final void testReadResolve04() throws ObjectStreamException {
-        if (keyFactoryAlgorithm.isEmpty()) {
-            System.err.println(getName()
-                    + ": skipped - no KeyFactory algorithms available");
-            return;
-        } else {
-        }
-        for (Iterator<String> i = keyFactoryAlgorithm.iterator(); i.hasNext();) {
-            KeyRepChild kr = new KeyRepChild(KeyRep.Type.PUBLIC, i.next(),
-                    "X.509", new byte[] { 1, 2, 3 });
+    public final void testReadResolve04() throws Exception {
+        for (String algorithm : keyFactoryAlgorithms) {
+            KeyRepChild kr = new KeyRepChild(KeyRep.Type.PUBLIC, algorithm, "X.509",
+                                             new byte[] { 1, 2, 3 });
             try {
                 kr.readResolve();
-                fail("NotSerializableException has not been thrown (no format)");
-            } catch (NotSerializableException ok) {
-
+                fail("NotSerializableException has not been thrown (no format) " + algorithm);
+            } catch (NotSerializableException expected) {
             }
         }
     }
 
-    public final void testReadResolve05() throws ObjectStreamException {
-        if (keyFactoryAlgorithm.isEmpty()) {
-            System.err.println(getName()
-                    + ": skipped - no KeyFactory algorithms available");
-            return;
-        } else {
-        }
-        for (Iterator<String> i = keyFactoryAlgorithm.iterator(); i.hasNext();) {
-            KeyRepChild kr = new KeyRepChild(KeyRep.Type.PRIVATE, i.next(),
-                    "PKCS#8", new byte[] { 1, 2, 3 });
+    public final void testReadResolve05() throws Exception {
+        for (String algorithm : keyFactoryAlgorithms) {
+            KeyRepChild kr = new KeyRepChild(KeyRep.Type.PRIVATE, algorithm, "PKCS#8",
+                                             new byte[] { 1, 2, 3 });
             try {
                 kr.readResolve();
-                fail("NotSerializableException has not been thrown (no format)");
-            } catch (NotSerializableException ok) {
-
+                fail("NotSerializableException has not been thrown (no format) " + algorithm);
+            } catch (NotSerializableException expected) {
             }
         }
     }
 
     class KeyRepChild extends KeyRep {
-        public KeyRepChild(KeyRep.Type type, String algorithm, String format,
-                byte[] encoded) {
+        public KeyRepChild(KeyRep.Type type, String algorithm, String format, byte[] encoded) {
             super(type, algorithm, format, encoded);
         }
 
-        public Object readResolve() throws ObjectStreamException {
+        // Overriden to make public for testing
+        @Override public Object readResolve() throws ObjectStreamException {
             return super.readResolve();
         }
-
     }
 }

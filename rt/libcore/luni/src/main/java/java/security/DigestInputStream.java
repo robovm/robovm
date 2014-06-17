@@ -96,33 +96,26 @@ public class DigestInputStream extends FilterInputStream {
     }
 
     /**
-     * Reads {@code len} bytes into the specified {@code byte[]}, starting from
-     * the specified offset. Updates the digest if this function is
+     * Reads up to {@code byteCount} bytes into {@code buffer}, starting at
+     * {@code byteOffset}. Updates the digest if this function is
      * {@link #on(boolean)}.
-     * <p>
-     * This operation is blocking.
      *
-     * @param b
-     *            the byte array in which to store the bytes
-     * @param off
-     *            the initial position in {@code b} to store the bytes read from
-     *            this stream
-     * @param len
-     *            the maximum number of bytes to store in {@code b}
-     * @return the number of bytes actually read or -1 if the end of the
-     *         filtered stream has been reached while reading
+     * <p>This operation is blocking.
+     *
+     * <p>Returns the number of bytes actually read or -1 if the end of the
+     * filtered stream has been reached while reading.
+     *
      * @throws IOException
      *             if reading the source stream causes an {@code IOException}
      */
     @Override
-    public int read(byte[] b, int off, int len) throws IOException {
-        // read next up to len bytes
-        int bytesRead = in.read(b, off, len);
+    public int read(byte[] buffer, int byteOffset, int byteCount) throws IOException {
+        int bytesRead = in.read(buffer, byteOffset, byteCount);
         // update digest only if
         // - digest functionality is on
         // - eos has not been reached
         if (isOn && (bytesRead != -1)) {
-            digest.update(b, off, bytesRead);
+            digest.update(buffer, byteOffset, bytesRead);
         }
         // return number of bytes read
         return bytesRead;

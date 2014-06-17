@@ -65,4 +65,19 @@ public class URLEncoderTest extends TestCase {
         } catch (UnsupportedCharsetException expected) {
         }
     }
+
+    // http://b/11571917
+    public void test11571917() throws Exception {
+        assertEquals("%82%A0", URLEncoder.encode("あ", "Shift_JIS"));
+        assertEquals("%82%A9", URLEncoder.encode("か", "Shift_JIS"));
+        assertEquals("%97%43", URLEncoder.encode("佑", "Shift_JIS"));
+        assertEquals("%24", URLEncoder.encode("$", "Shift_JIS"));
+        assertEquals("%E3%81%8B", URLEncoder.encode("か", "UTF-8"));
+
+        assertEquals("%82%A0%82%A9%97%43%24%E3%81%8B", URLEncoder.encode("あ", "Shift_JIS") +
+            URLEncoder.encode("か", "Shift_JIS") +
+            URLEncoder.encode("佑", "Shift_JIS") +
+            URLEncoder.encode("$", "Shift_JIS") +
+            URLEncoder.encode("か", "UTF-8"));
+    }
 }

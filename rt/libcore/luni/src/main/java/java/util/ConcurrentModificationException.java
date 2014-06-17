@@ -51,7 +51,6 @@ public class ConcurrentModificationException extends RuntimeException {
      * Constructs a new {@code ConcurrentModificationException} with the given detail
      * message and cause.
      * @since 1.7
-     * @hide 1.7
      */
     public ConcurrentModificationException(String detailMessage, Throwable cause) {
         super(detailMessage, cause);
@@ -60,7 +59,6 @@ public class ConcurrentModificationException extends RuntimeException {
     /**
      * Constructs a new {@code ConcurrentModificationException} with the given cause.
      * @since 1.7
-     * @hide 1.7
      */
     public ConcurrentModificationException(Throwable cause) {
         super(cause);

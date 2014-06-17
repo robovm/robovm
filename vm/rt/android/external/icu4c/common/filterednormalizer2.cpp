@@ -1,7 +1,7 @@
 /*
 *******************************************************************************
 *
-*   Copyright (C) 2009-2010, International Business Machines
+*   Copyright (C) 2009-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 *******************************************************************************
@@ -25,6 +25,8 @@
 #include "cpputils.h"
 
 U_NAMESPACE_BEGIN
+
+FilteredNormalizer2::~FilteredNormalizer2() {}
 
 UnicodeString &
 FilteredNormalizer2::normalize(const UnicodeString &src,
@@ -154,6 +156,21 @@ FilteredNormalizer2::getDecomposition(UChar32 c, UnicodeString &decomposition) c
 }
 
 UBool
+FilteredNormalizer2::getRawDecomposition(UChar32 c, UnicodeString &decomposition) const {
+    return set.contains(c) && norm2.getRawDecomposition(c, decomposition);
+}
+
+UChar32
+FilteredNormalizer2::composePair(UChar32 a, UChar32 b) const {
+    return (set.contains(a) && set.contains(b)) ? norm2.composePair(a, b) : U_SENTINEL;
+}
+
+uint8_t
+FilteredNormalizer2::getCombiningClass(UChar32 c) const {
+    return set.contains(c) ? norm2.getCombiningClass(c) : 0;
+}
+
+UBool
 FilteredNormalizer2::isNormalized(const UnicodeString &s, UErrorCode &errorCode) const {
     uprv_checkCanGetBuffer(s, errorCode);
     if(U_FAILURE(errorCode)) {
@@ -251,7 +268,7 @@ U_NAMESPACE_END
 
 U_NAMESPACE_USE
 
-U_DRAFT UNormalizer2 * U_EXPORT2
+U_CAPI UNormalizer2 * U_EXPORT2
 unorm2_openFiltered(const UNormalizer2 *norm2, const USet *filterSet, UErrorCode *pErrorCode) {
     if(U_FAILURE(*pErrorCode)) {
         return NULL;

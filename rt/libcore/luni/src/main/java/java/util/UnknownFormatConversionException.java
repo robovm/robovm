@@ -35,7 +35,7 @@ public class UnknownFormatConversionException extends IllegalFormatException {
      */
     public UnknownFormatConversionException(String s) {
         if (s == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("s == null");
         }
         this.s = s;
     }

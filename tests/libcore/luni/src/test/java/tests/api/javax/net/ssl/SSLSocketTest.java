@@ -38,7 +38,6 @@ import javax.security.cert.X509Certificate;
 import junit.framework.TestCase;
 import libcore.io.Base64;
 import tests.api.javax.net.ssl.HandshakeCompletedEventTest.TestTrustManager;
-import tests.support.Support_PortManager;
 import libcore.java.security.StandardNames;
 
 public class SSLSocketTest extends TestCase {
@@ -51,7 +50,7 @@ public class SSLSocketTest extends TestCase {
     /**
      * javax.net.ssl.SSLSocket#SSLSocket()
      */
-    public void testConstructor_01() throws Exception {
+    public void testConstructor() throws Exception {
         SSLSocket ssl = getSSLSocket();
         assertNotNull(ssl);
         ssl.close();
@@ -60,7 +59,7 @@ public class SSLSocketTest extends TestCase {
     /**
      * javax.net.ssl.SSLSocket#SSLSocket(InetAddress address, int port)
      */
-    public void testConstructor_02() throws UnknownHostException, IOException {
+    public void testConstructor_InetAddressI() throws Exception {
         int sport = startServer("Cons InetAddress,I");
         int[] invalidPort = {-1, Integer.MIN_VALUE, 65536, Integer.MAX_VALUE};
 
@@ -88,15 +87,13 @@ public class SSLSocketTest extends TestCase {
      * javax.net.ssl.SSLSocket#SSLSocket(InetAddress address, int port,
      *                                          InetAddress clientAddress, int clientPort)
      */
-    public void testConstructor_03() throws UnknownHostException, IOException {
+    public void testConstructor_InetAddressIInetAddressI() throws Exception {
         int sport = startServer("Cons InetAddress,I,InetAddress,I");
-        int portNumber = Support_PortManager.getNextPort();
 
         SSLSocket ssl = getSSLSocket(InetAddress.getLocalHost(), sport,
-                                     InetAddress.getLocalHost(), portNumber);
+                                     InetAddress.getLocalHost(), 0);
         assertNotNull(ssl);
         assertEquals(sport, ssl.getPort());
-        assertEquals(portNumber, ssl.getLocalPort());
         ssl.close();
 
         try {
@@ -137,7 +134,7 @@ public class SSLSocketTest extends TestCase {
     /**
      * javax.net.ssl.SSLSocket#SSLSocket(String host, int port)
      */
-    public void testConstructor_04() throws UnknownHostException, IOException {
+    public void testConstructor_StringI() throws Exception {
         int sport = startServer("Cons String,I");
         int[] invalidPort = {-1, Integer.MIN_VALUE, 65536, Integer.MAX_VALUE};
 
@@ -171,28 +168,25 @@ public class SSLSocketTest extends TestCase {
      * javax.net.ssl.SSLSocket#SSLSocket(String host, int port, InetAddress clientAddress,
      *           int clientPort)
      */
-    public void testConstructor_05() throws UnknownHostException, IOException {
+    public void testConstructor_StringIInetAddressI() throws Exception {
         int sport = startServer("Cons String,I,InetAddress,I");
-        int portNumber = Support_PortManager.getNextPort();
         int[] invalidPort = {-1, Integer.MIN_VALUE, 65536, Integer.MAX_VALUE};
 
         SSLSocket ssl = getSSLSocket(InetAddress.getLocalHost().getHostName(), sport,
-                                     InetAddress.getLocalHost(), portNumber);
+                                     InetAddress.getLocalHost(), 0);
         assertNotNull(ssl);
         assertEquals(sport, ssl.getPort());
-        assertEquals(portNumber, ssl.getLocalPort());
 
         try {
-            getSSLSocket("localhost", 8081, InetAddress.getLocalHost(), 8082);
+            getSSLSocket(InetAddress.getLocalHost().getHostName(), 8081, InetAddress.getLocalHost(), 8082);
             fail();
         } catch (IOException expected) {
         }
 
         for (int i = 0; i < invalidPort.length; i++) {
-            portNumber = Support_PortManager.getNextPort();
             try {
                 getSSLSocket(InetAddress.getLocalHost().getHostName(), invalidPort[i],
-                             InetAddress.getLocalHost(), portNumber);
+                             InetAddress.getLocalHost(), 0);
                 fail();
             } catch (IllegalArgumentException expected) {
             }
@@ -204,9 +198,8 @@ public class SSLSocketTest extends TestCase {
             }
         }
 
-        portNumber = Support_PortManager.getNextPort();
         try {
-            getSSLSocket("bla-bla", sport, InetAddress.getLocalHost(), portNumber);
+            getSSLSocket("bla-bla", sport, InetAddress.getLocalHost(), 0);
             fail();
         } catch (UnknownHostException expected) {
         }
@@ -422,11 +415,9 @@ public class SSLSocketTest extends TestCase {
         ssl.close();
     }
 
-    boolean useBKS = !StandardNames.IS_RI;
+    private boolean useBKS = !StandardNames.IS_RI;
 
     private String PASSWORD = "android";
-
-    private int port = Support_PortManager.getNextPort();
 
     private boolean serverReady = false;
 
@@ -551,7 +542,7 @@ public class SSLSocketTest extends TestCase {
                 SSLServerSocket serverSocket = (SSLServerSocket)
                         sslContext.getServerSocketFactory().createServerSocket();
                 try {
-                    serverSocket.bind(new InetSocketAddress(port));
+                    serverSocket.bind(new InetSocketAddress(0));
                     sport = serverSocket.getLocalPort();
                     serverReady = true;
 

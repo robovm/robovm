@@ -49,9 +49,9 @@ public abstract class CharBuffer extends Buffer implements
      */
     public static CharBuffer allocate(int capacity) {
         if (capacity < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("capacity < 0: " + capacity);
         }
-        return new ReadWriteCharArrayBuffer(capacity);
+        return new CharArrayBuffer(new char[capacity]);
     }
 
     /**
@@ -88,7 +88,7 @@ public abstract class CharBuffer extends Buffer implements
      */
     public static CharBuffer wrap(char[] array, int start, int charCount) {
         Arrays.checkOffsetAndCount(array.length, start, charCount);
-        CharBuffer buf = new ReadWriteCharArrayBuffer(array);
+        CharBuffer buf = new CharArrayBuffer(array);
         buf.position = start;
         buf.limit = start + charCount;
         return buf;
@@ -236,10 +236,8 @@ public abstract class CharBuffer extends Buffer implements
      * byte order are the same as this buffer's, too.
      * <p>
      * The new buffer shares its content with this buffer, which means either
-     * buffer's change of content will be visible to the other. The two buffer's
+     * buffer's change of content will be visible to the other. The two buffers'
      * position, limit and mark are independent.
-     *
-     * @return a duplicated buffer that shares its content with this buffer.
      */
     public abstract CharBuffer duplicate();
 
@@ -499,8 +497,11 @@ public abstract class CharBuffer extends Buffer implements
      *                if no changes may be made to the contents of this buffer.
      */
     public CharBuffer put(CharBuffer src) {
+        if (isReadOnly()) {
+            throw new ReadOnlyBufferException();
+        }
         if (src == this) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("src == this");
         }
         if (src.remaining() > remaining()) {
             throw new BufferOverflowException();
@@ -568,6 +569,9 @@ public abstract class CharBuffer extends Buffer implements
      *                if no changes may be made to the contents of this buffer.
      */
     public CharBuffer put(String str, int start, int end) {
+        if (isReadOnly()) {
+            throw new ReadOnlyBufferException();
+        }
         if (start < 0 || end < start || end > str.length()) {
             throw new IndexOutOfBoundsException("str.length()=" + str.length() +
                     ", start=" + start + ", end=" + end);
@@ -591,10 +595,8 @@ public abstract class CharBuffer extends Buffer implements
      * same as this buffer.
      * <p>
      * The new buffer shares its content with this buffer, which means either
-     * buffer's change of content will be visible to the other. The two buffer's
+     * buffer's change of content will be visible to the other. The two buffers'
      * position, limit and mark are independent.
-     *
-     * @return a sliced buffer that shares its content with this buffer.
      */
     public abstract CharBuffer slice();
 
@@ -608,7 +610,7 @@ public abstract class CharBuffer extends Buffer implements
      * buffer.
      * <p>
      * The new buffer shares its content with this buffer, which means either
-     * buffer's change of content will be visible to the other. The two buffer's
+     * buffer's change of content will be visible to the other. The two buffers'
      * position, limit and mark are independent.
      *
      * @param start
@@ -626,7 +628,7 @@ public abstract class CharBuffer extends Buffer implements
      * @exception IndexOutOfBoundsException
      *                if either {@code start} or {@code end} is invalid.
      */
-    public abstract CharSequence subSequence(int start, int end);
+    public abstract CharBuffer subSequence(int start, int end);
 
     /**
      * Returns a string representing the current remaining chars of this buffer.
@@ -734,7 +736,7 @@ public abstract class CharBuffer extends Buffer implements
             if (remaining == 0) {
                 return -1;
             }
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("target == this");
         }
         if (remaining == 0) {
             return limit > 0 && target.remaining() == 0 ? 0 : -1;

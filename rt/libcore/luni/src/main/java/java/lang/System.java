@@ -48,6 +48,9 @@
 
 package java.lang;
 
+import dalvik.system.VMRuntime;
+import dalvik.system.VMStack;
+import java.io.BufferedInputStream;
 import java.io.Console;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
@@ -63,15 +66,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-
 import libcore.icu.ICU;
+import libcore.io.ErrnoException;
 import libcore.io.Libcore;
+import libcore.io.StructPasswd;
 import libcore.io.StructUtsname;
+import libcore.util.ZoneInfoDB;
 
 import org.robovm.rt.VM;
-
-import dalvik.system.VMRuntime;
-import dalvik.system.VMStack;
 
 /**
  * Provides access to system-related information and resources including
@@ -102,10 +104,9 @@ public final class System {
     private static Properties systemProperties;
 
     static {
-        // TODO: all three streams are buffered in Harmony.
         err = new PrintStream(new FileOutputStream(FileDescriptor.err));
         out = new PrintStream(new FileOutputStream(FileDescriptor.out));
-        in = new FileInputStream(FileDescriptor.in);
+        in = new BufferedInputStream(new FileInputStream(FileDescriptor.in));
         lineSeparator = System.getProperty("line.separator");
     }
 
@@ -153,6 +154,11 @@ public final class System {
      * Copies {@code length} elements from the array {@code src},
      * starting at offset {@code srcPos}, into the array {@code dst},
      * starting at offset {@code dstPos}.
+     *
+     * <p>The source and destination arrays can be the same array,
+     * in which case copying is performed as if the source elements
+     * are first copied into a temporary array and then into the
+     * destination array.
      *
      * @param src
      *            the source array to copy the content.
@@ -311,33 +317,35 @@ public final class System {
     }
     
     /**
-     * Returns the current system time in milliseconds since January 1, 1970
-     * 00:00:00 UTC. This method shouldn't be used for measuring timeouts or
-     * other elapsed time measurements, as changing the system time can affect
-     * the results.
+     * Returns the current time in milliseconds since January 1, 1970 00:00:00.0 UTC.
      *
-     * @return the local system time in milliseconds.
+     * <p>This method always returns UTC times, regardless of the system's time zone.
+     * This is often called "Unix time" or "epoch time".
+     * Use a {@link java.text.DateFormat} instance to format this time for display to a human.
+     *
+     * <p>This method shouldn't be used for measuring timeouts or
+     * other elapsed time measurements, as changing the system time can affect
+     * the results. Use {@link #nanoTime} for that.
      */
     public static native long currentTimeMillis();
 
     /**
      * Returns the current timestamp of the most precise timer available on the
-     * local system. This timestamp can only be used to measure an elapsed
-     * period by comparing it against another timestamp. It cannot be used as a
-     * very exact system time expression.
+     * local system, in nanoseconds. Equivalent to Linux's {@code CLOCK_MONOTONIC}.
      *
-     * @return the current timestamp in nanoseconds.
+     * <p>This timestamp should only be used to measure a duration by comparing it
+     * against another timestamp on the same device.
+     * Values returned by this method do not have a defined correspondence to
+     * wall clock times; the zero value is typically whenever the device last booted.
+     * Use {@link #currentTimeMillis} if you want to know what time it is.
      */
     public static native long nanoTime();
 
     /**
-     * Causes the VM to stop running and the program to exit. If
-     * {@link #runFinalizersOnExit(boolean)} has been previously invoked with a
+     * Causes the VM to stop running and the program to exit with the given exit status.
+     * If {@link #runFinalizersOnExit(boolean)} has been previously invoked with a
      * {@code true} argument, then all objects will be properly
      * garbage-collected and finalized first.
-     *
-     * @param code
-     *            the return code.
      */
     public static void exit(int code) {
         Runtime.getRuntime().exit(code);
@@ -353,30 +361,18 @@ public final class System {
     }
 
     /**
-     * Returns the value of the environment variable with the given name {@code
-     * var}.
-     *
-     * @param name
-     *            the name of the environment variable.
-     * @return the value of the specified environment variable or {@code null}
-     *         if no variable exists with the given name.
+     * Returns the value of the environment variable with the given name, or null if no such
+     * variable exists.
      */
     public static String getenv(String name) {
-        return getenv(name, null);
-    }
-
-    private static String getenv(String name, String defaultValue) {
         if (name == null) {
             throw new NullPointerException("name == null");
         }
-        String value = Libcore.os.getenv(name);
-        return (value != null) ? value : defaultValue;
+        return Libcore.os.getenv(name);
     }
 
     /**
-     * Returns an unmodifiable map of all available environment variables.
-     *
-     * @return the map representing all environment variables.
+     * Returns an unmodifiable map of all environment variables to their values.
      */
     public static Map<String, String> getenv() {
         Map<String, String> map = new HashMap<String, String>();
@@ -439,7 +435,11 @@ public final class System {
         p.put("java.home", VM.basePath());
 
         p.put("java.io.tmpdir", "/tmp");
-        p.put("java.library.path", getenv("LD_LIBRARY_PATH", ""));
+
+        String ldLibraryPath = getenv("LD_LIBRARY_PATH");
+        if (ldLibraryPath != null) {
+            p.put("java.library.path", ldLibraryPath);
+        }
 
         p.put("java.specification.name", "RoboVM Core Library");
         p.put("java.specification.vendor", projectName);
@@ -466,8 +466,13 @@ public final class System {
         p.put("user.language", "en");
         p.put("user.region", "US");
 
-        p.put("user.home", getenv("HOME", ""));
-        p.put("user.name", getenv("USER", ""));
+        try {
+            StructPasswd passwd = Libcore.os.getpwuid(Libcore.os.getuid());
+            p.put("user.home", passwd.pw_dir);
+            p.put("user.name", passwd.pw_name);
+        } catch (ErrnoException exception) {
+            throw new AssertionError(exception);
+        }
 
         StructUtsname info = Libcore.os.uname();
         p.put("os.arch", info.machine);
@@ -477,8 +482,8 @@ public final class System {
         // Undocumented Android-only properties.
         p.put("android.icu.library.version", ICU.getIcuVersion());
         p.put("android.icu.unicode.version", ICU.getUnicodeVersion());
-        // TODO: it would be nice to have this but currently it causes circularity.
-        // p.put("android.tzdata.version", ZoneInfoDB.getVersion());
+        p.put("android.icu.cldr.version", ICU.getCldrVersion());
+
         parsePropertyAssignments(p, specialProperties());
 
         parsePropertyAssignments(p, robovmSpecialProperties());
@@ -526,7 +531,7 @@ public final class System {
      * <tr><td>java.ext.dirs</td>      <td>(Not useful on Android)</td>           <td>Empty</td></tr>
      * <tr><td>java.home</td>          <td>Location of the VM on the file system</td> <td>{@code /system}</td></tr>
      * <tr><td>java.io.tmpdir</td>     <td>See {@link java.io.File#createTempFile}</td> <td>{@code /sdcard}</td></tr>
-     * <tr><td>java.library.path</td>  <td>Search path for JNI libraries</td>     <td>{@code /system/lib}</td></tr>
+     * <tr><td>java.library.path</td>  <td>Search path for JNI libraries</td>     <td>{@code /vendor/lib:/system/lib}</td></tr>
      * <tr><td>java.vendor</td>        <td>Human-readable VM vendor</td>          <td>{@code The Android Project}</td></tr>
      * <tr><td>java.vendor.url</td>    <td>URL for VM vendor's web site</td>      <td>{@code http://www.android.com/}</td></tr>
      * <tr><td>java.version</td>       <td>(Not useful on Android)</td>           <td>{@code 0}</td></tr>
@@ -569,58 +574,44 @@ public final class System {
     /**
      * Returns the value of a particular system property. The {@code
      * defaultValue} will be returned if no such property has been found.
-     *
-     * @param prop
-     *            the name of the system property to look up.
-     * @param defaultValue
-     *            the return value if the system property with the given name
-     *            does not exist.
-     * @return the value of the specified system property or the {@code
-     *         defaultValue} if the property does not exist.
      */
-    public static String getProperty(String prop, String defaultValue) {
-        if (prop.isEmpty()) {
-            throw new IllegalArgumentException();
-        }
-        return getProperties().getProperty(prop, defaultValue);
+    public static String getProperty(String name, String defaultValue) {
+        checkPropertyName(name);
+        return getProperties().getProperty(name, defaultValue);
     }
 
     /**
      * Sets the value of a particular system property.
      *
-     * @param prop
-     *            the name of the system property to be changed.
-     * @param value
-     *            the value to associate with the given property {@code prop}.
      * @return the old value of the property or {@code null} if the property
      *         didn't exist.
      */
-    public static String setProperty(String prop, String value) {
-        if (prop.isEmpty()) {
-            throw new IllegalArgumentException();
-        }
-        return (String) getProperties().setProperty(prop, value);
+    public static String setProperty(String name, String value) {
+        checkPropertyName(name);
+        return (String) getProperties().setProperty(name, value);
     }
 
     /**
      * Removes a specific system property.
      *
-     * @param key
-     *            the name of the system property to be removed.
      * @return the property value or {@code null} if the property didn't exist.
      * @throws NullPointerException
-     *             if the argument {@code key} is {@code null}.
+     *             if the argument is {@code null}.
      * @throws IllegalArgumentException
-     *             if the argument {@code key} is empty.
+     *             if the argument is empty.
      */
-    public static String clearProperty(String key) {
-        if (key == null) {
-            throw new NullPointerException();
+    public static String clearProperty(String name) {
+        checkPropertyName(name);
+        return (String) getProperties().remove(name);
+    }
+
+    private static void checkPropertyName(String name) {
+        if (name == null) {
+            throw new NullPointerException("name == null");
         }
-        if (key.isEmpty()) {
-            throw new IllegalArgumentException();
+        if (name.isEmpty()) {
+            throw new IllegalArgumentException("name is empty");
         }
-        return (String) getProperties().remove(key);
     }
 
     /**
@@ -662,7 +653,6 @@ public final class System {
      * starts. Later changes to the property will not affect the value returned by this
      * method.
      * @since 1.7
-     * @hide 1.7 - fix documentation references to "line.separator" in Formatter.
      */
     public static String lineSeparator() {
         return lineSeparator;
@@ -754,7 +744,7 @@ public final class System {
      *
      * @param flag
      *            the flag determines if finalization on exit is enabled.
-     * @deprecated this method is unsafe.
+     * @deprecated This method is unsafe.
      */
     @SuppressWarnings("deprecation")
     @Deprecated
@@ -798,7 +788,7 @@ public final class System {
      */
     public static String mapLibraryName(String userLibName) {
         if (userLibName == null) {
-            throw new NullPointerException(userLibName);
+            throw new NullPointerException("userLibName == null");
         }
         return mapLibraryName0(userLibName);
     }
@@ -846,7 +836,7 @@ public final class System {
 
         private String toNonNullString(Object o) {
             if (o == null) {
-                throw new NullPointerException();
+                throw new NullPointerException("o == null");
             }
             return (String) o;
         }

@@ -21,7 +21,7 @@ public final class NativeConverter {
     public static native int encode(long converterHandle, char[] input, int inEnd,
             byte[] output, int outEnd, int[] data, boolean flush);
 
-    public static native long openConverter(String encoding);
+    public static native long openConverter(String charsetName);
     public static native void closeConverter(long converterHandle);
 
     public static native void resetByteToChar(long converterHandle);
@@ -35,8 +35,6 @@ public final class NativeConverter {
     public static native float getAveCharsPerByte(long converterHandle);
 
     public static native boolean contains(String converterName1, String converterName2);
-
-    public static native boolean canEncode(long converterHandle, int codeUnit);
 
     public static native String[] getAvailableCharsetNames();
     public static native Charset charsetForName(String charsetName);
@@ -54,19 +52,19 @@ public final class NativeConverter {
         }
     }
 
-    public static int setCallbackDecode(long converterHandle, CharsetDecoder decoder) {
-        return setCallbackDecode(converterHandle,
-                translateCodingErrorAction(decoder.malformedInputAction()),
-                translateCodingErrorAction(decoder.unmappableCharacterAction()),
-                decoder.replacement());
+    public static void setCallbackDecode(long converterHandle, CharsetDecoder decoder) {
+        setCallbackDecode(converterHandle,
+                          translateCodingErrorAction(decoder.malformedInputAction()),
+                          translateCodingErrorAction(decoder.unmappableCharacterAction()),
+                          decoder.replacement());
     }
-    private static native int setCallbackDecode(long converterHandle, int onMalformedInput, int onUnmappableInput, String subChars);
+    private static native void setCallbackDecode(long converterHandle, int onMalformedInput, int onUnmappableInput, String subChars);
 
-    public static int setCallbackEncode(long converterHandle, CharsetEncoder encoder) {
-        return setCallbackEncode(converterHandle,
-                translateCodingErrorAction(encoder.malformedInputAction()),
-                translateCodingErrorAction(encoder.unmappableCharacterAction()),
-                encoder.replacement());
+    public static void setCallbackEncode(long converterHandle, CharsetEncoder encoder) {
+        setCallbackEncode(converterHandle,
+                          translateCodingErrorAction(encoder.malformedInputAction()),
+                          translateCodingErrorAction(encoder.unmappableCharacterAction()),
+                          encoder.replacement());
     }
-    private static native int setCallbackEncode(long converterHandle, int onMalformedInput, int onUnmappableInput, byte[] subBytes);
+    private static native void setCallbackEncode(long converterHandle, int onMalformedInput, int onUnmappableInput, byte[] subBytes);
 }

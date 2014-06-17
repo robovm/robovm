@@ -1,6 +1,6 @@
 /*
 *******************************************************************************
-* Copyright (C) 2007-2011, International Business Machines Corporation and
+* Copyright (C) 2007-2012, International Business Machines Corporation and
 * others. All Rights Reserved.                                                *
 *******************************************************************************
 *
@@ -51,6 +51,7 @@
 #define CAP_Q             ((UChar)0x0051)
 #define CAP_S             ((UChar)0x0053)
 #define CAP_T             ((UChar)0x0054)
+#define CAP_U             ((UChar)0x0055)
 #define CAP_V             ((UChar)0x0056)
 #define CAP_W             ((UChar)0x0057)
 #define CAP_Y             ((UChar)0x0059)
@@ -166,7 +167,7 @@ public:
     int32_t extraFieldMask;
 
     DistanceInfo() {}
-    virtual ~DistanceInfo() {}
+    virtual ~DistanceInfo();
     void clear() { missingFieldMask = extraFieldMask = 0; }
     void setTo(DistanceInfo& other);
     void addMissing(int32_t field) { missingFieldMask |= (1<<field); }
@@ -188,7 +189,7 @@ public:
     int32_t getDistance(const DateTimeMatcher& other, int32_t includeMask, DistanceInfo& distanceInfo);
     DateTimeMatcher();
     DateTimeMatcher(const DateTimeMatcher& other);
-    virtual ~DateTimeMatcher() {}
+    virtual ~DateTimeMatcher();
     int32_t getFieldMask();
 };
 

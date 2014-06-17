@@ -18,20 +18,18 @@
 
 package org.apache.harmony.security.provider.crypto;
 
-
 import java.security.DigestException;
 import java.security.MessageDigestSpi;
 import java.util.Arrays;
 
+import static org.apache.harmony.security.provider.crypto.SHA1Constants.*;
 
 /**
  * This class extends the MessageDigestSpi class implementing all its abstract methods;
  * it overrides the "Object clone()" and "int engineGetDigestLength()" methods. <BR>
  * The class implements the Cloneable interface.
  */
-
-
-public class SHA1_MessageDigestImpl extends MessageDigestSpi implements Cloneable, SHA1_Data {
+public class SHA1_MessageDigestImpl extends MessageDigestSpi implements Cloneable {
     private int[] buffer;        // buffer has the following structure:
                                  // -  0-16 - frame for accumulating a message
                                  // - 17-79 - for SHA1Impl methods

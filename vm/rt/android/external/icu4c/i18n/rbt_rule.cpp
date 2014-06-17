@@ -1,6 +1,6 @@
 /*
  **********************************************************************
- *   Copyright (C) 1999-2008, International Business Machines
+ *   Copyright (C) 1999-2011, International Business Machines
  *   Corporation and others.  All Rights Reserved.
  **********************************************************************
  *   Date        Name        Description
@@ -15,6 +15,7 @@
 #include "unicode/rep.h"
 #include "unicode/unifilt.h"
 #include "unicode/uniset.h"
+#include "unicode/utf16.h"
 #include "rbt_rule.h"
 #include "rbt_data.h"
 #include "cmemory.h"
@@ -315,13 +316,13 @@ UBool TransliterationRule::masks(const TransliterationRule& r2) const {
 
 static inline int32_t posBefore(const Replaceable& str, int32_t pos) {
     return (pos > 0) ?
-        pos - UTF_CHAR_LENGTH(str.char32At(pos-1)) :
+        pos - U16_LENGTH(str.char32At(pos-1)) :
         pos - 1;
 }
 
 static inline int32_t posAfter(const Replaceable& str, int32_t pos) {
     return (pos >= 0 && pos < str.length()) ?
-        pos + UTF_CHAR_LENGTH(str.char32At(pos)) :
+        pos + U16_LENGTH(str.char32At(pos)) :
         pos + 1;
 }
 
@@ -501,7 +502,7 @@ UnicodeString& TransliterationRule::toRule(UnicodeString& rule,
         rule.append((UChar)36/*$*/);
     }
 
-    ICU_Utility::appendToRule(rule, FORWARD_OP, TRUE, escapeUnprintable, quoteBuf);
+    ICU_Utility::appendToRule(rule, UnicodeString(TRUE, FORWARD_OP, 3), TRUE, escapeUnprintable, quoteBuf);
 
     // Emit the output pattern
 
@@ -531,7 +532,7 @@ void TransliterationRule::addSourceSetTo(UnicodeSet& toUnionTo) const {
     int32_t limit = anteContextLength + keyLength;
     for (int32_t i=anteContextLength; i<limit; ) {
         UChar32 ch = pattern.char32At(i);
-        i += UTF_CHAR_LENGTH(ch);
+        i += U16_LENGTH(ch);
         const UnicodeMatcher* matcher = data->lookupMatcher(ch);
         if (matcher == NULL) {
             toUnionTo.add(ch);

@@ -99,7 +99,7 @@ public abstract class Signature extends SignatureSpi {
     public static Signature getInstance(String algorithm)
             throws NoSuchAlgorithmException {
         if (algorithm == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("algorithm == null");
         }
         Engine.SpiAndProvider sap = ENGINE.getInstance(algorithm, null);
         Object spi = sap.spi;
@@ -134,7 +134,7 @@ public abstract class Signature extends SignatureSpi {
     public static Signature getInstance(String algorithm, String provider)
             throws NoSuchAlgorithmException, NoSuchProviderException {
         if (algorithm == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("algorithm == null");
         }
         if (provider == null || provider.isEmpty()) {
             throw new IllegalArgumentException();
@@ -165,10 +165,10 @@ public abstract class Signature extends SignatureSpi {
     public static Signature getInstance(String algorithm, Provider provider)
             throws NoSuchAlgorithmException {
         if (algorithm == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("algorithm == null");
         }
         if (provider == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("provider == null");
         }
         return getSignatureInstance(algorithm, provider);
     }
@@ -523,7 +523,7 @@ public abstract class Signature extends SignatureSpi {
      * @throws InvalidParameterException
      *             if the parameter is invalid, already set or is not allowed to
      *             be changed.
-     * @deprecated Use {@link #setParameter(AlgorithmParameterSpec)}
+     * @deprecated Use {@link #setParameter(AlgorithmParameterSpec)} instead.
      */
     @Deprecated
     public final void setParameter(String param, Object value)
@@ -565,7 +565,7 @@ public abstract class Signature extends SignatureSpi {
      *         null}.
      * @throws InvalidParameterException
      *             if {@code param} is not a valid parameter for this {@code
-     *             Signature} or an other error occures.
+     *             Signature} or an other error occurs.
      * @deprecated There is no generally accepted parameter naming convention.
      */
     @Deprecated

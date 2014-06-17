@@ -31,15 +31,10 @@ package java.lang;
  * }</pre>
  *
  * @since 1.7
- * @hide 1.7
  */
 public interface AutoCloseable {
-
     /**
      * Closes the object and release any system resources it holds.
-     *
-     * <p>Unless the implementing class specifies otherwise, it is an error to
-     * call {@link #close} more than once.
      */
     void close() throws Exception;
 }

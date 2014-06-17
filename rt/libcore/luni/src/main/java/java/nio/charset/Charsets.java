@@ -17,30 +17,11 @@
 package java.nio.charset;
 
 /**
- * Provides convenient access to the most important built-in charsets. Saves a hash lookup and
- * unnecessary handling of UnsupportedEncodingException at call sites, compared to using the
- * charset's name.
- *
- * Also various special-case charset conversions (for performance).
+ * Various special-case charset conversions (for performance).
  *
  * @hide internal use only
  */
-public class Charsets {
-    /**
-     * A cheap and type-safe constant for the ISO-8859-1 Charset.
-     */
-    public static final Charset ISO_8859_1 = Charset.forName("ISO-8859-1");
-
-    /**
-     * A cheap and type-safe constant for the US-ASCII Charset.
-     */
-    public static final Charset US_ASCII = Charset.forName("US-ASCII");
-
-    /**
-     * A cheap and type-safe constant for the UTF-8 Charset.
-     */
-    public static final Charset UTF_8 = Charset.forName("UTF-8");
-
+public final class Charsets {
     /**
      * Returns a new byte array containing the bytes corresponding to the given characters,
      * encoded in US-ASCII. Unrepresentable characters are replaced by (byte) '?'.

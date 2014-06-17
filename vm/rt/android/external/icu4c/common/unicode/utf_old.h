@@ -1,11 +1,11 @@
 /*
 *******************************************************************************
 *
-*   Copyright (C) 2002-2008, International Business Machines
+*   Copyright (C) 2002-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 *******************************************************************************
-*   file name:  utf.h
+*   file name:  utf_old.h
 *   encoding:   US-ASCII
 *   tab size:   8 (not used)
 *   indentation:4
@@ -27,9 +27,6 @@
  * Almost all of the old "UTF macros" are at least renamed.
  * If you are looking for a new equivalent to an old macro, please see the
  * comment at the old one.
- *
- * utf_old.h is included by utf.h after unicode/umachine.h
- * and some common definitions, to not break old code.
  *
  * Brief summary of reasons for deprecation:
  * - Switch on UTF_SIZE (selection of UTF-8/16/32 default string processing)
@@ -148,10 +145,9 @@
 
 #ifndef U_HIDE_DEPRECATED_API
 
-/* utf.h must be included first. */
-#ifndef __UTF_H__
-#   include "unicode/utf.h"
-#endif
+#include "unicode/utf.h"
+#include "unicode/utf8.h"
+#include "unicode/utf16.h"
 
 /* Formerly utf.h, part 1 --------------------------------------------------- */
 
@@ -302,7 +298,7 @@ typedef int32_t UTextOffset;
  * Code point comparisons need to be in uint32_t because UChar32
  * may be a signed type, and negative values must be recognized.
  *
- * @deprecated ICU 2.4. Use U8_LENGTH instead, see utf_old.h.
+ * @deprecated ICU 2.4. Use U8_LENGTH instead, see utf.h.
  */
 #if 1
 #   define UTF8_CHAR_LENGTH(c) \

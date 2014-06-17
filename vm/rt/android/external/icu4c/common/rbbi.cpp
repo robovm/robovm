@@ -1,6 +1,6 @@
 /*
 ***************************************************************************
-*   Copyright (C) 1999-2011 International Business Machines Corporation
+*   Copyright (C) 1999-2012 International Business Machines Corporation
 *   and others. All rights reserved.
 ***************************************************************************
 */
@@ -10,7 +10,7 @@
 //                   class RuleBasedBreakIterator
 //
 
-#include <typeinfo>  // for 'typeid' to work
+#include "utypeinfo.h"  // for 'typeid' to work
 
 #include "unicode/utypes.h"
 
@@ -486,6 +486,37 @@ RuleBasedBreakIterator::setText(const UnicodeString& newText) {
 }
 
 
+/**
+ *  Provide a new UText for the input text.  Must reference text with contents identical
+ *  to the original.
+ *  Intended for use with text data originating in Java (garbage collected) environments
+ *  where the data may be moved in memory at arbitrary times.
+ */
+RuleBasedBreakIterator &RuleBasedBreakIterator::refreshInputText(UText *input, UErrorCode &status) {
+    if (U_FAILURE(status)) {
+        return *this;
+    }
+    if (input == NULL) {
+        status = U_ILLEGAL_ARGUMENT_ERROR;
+        return *this;
+    }
+    int64_t pos = utext_getNativeIndex(fText);
+    //  Shallow read-only clone of the new UText into the existing input UText
+    fText = utext_clone(fText, input, FALSE, TRUE, &status);
+    if (U_FAILURE(status)) {
+        return *this;
+    }
+    utext_setNativeIndex(fText, pos);
+    if (utext_getNativeIndex(fText) != pos) {
+        // Sanity check.  The new input utext is supposed to have the exact same
+        // contents as the old.  If we can't set to the same position, it doesn't.
+        // The contents underlying the old utext might be invalid at this point,
+        // so it's not safe to check directly.
+        status = U_ILLEGAL_ARGUMENT_ERROR;
+    }
+    return *this;
+}
+
 
 /**
  * Sets the current iteration position to the beginning of the text.
@@ -957,7 +988,7 @@ enum RBBIRunMode {
 //-----------------------------------------------------------------------------------
 int32_t RuleBasedBreakIterator::handleNext(const RBBIStateTable *statetable) {
     int32_t             state;
-    int16_t             category        = 0;
+    uint16_t            category        = 0;
     RBBIRunMode         mode;
     
     RBBIStateTableRow  *row;
@@ -1052,7 +1083,7 @@ int32_t RuleBasedBreakIterator::handleNext(const RBBIStateTable *statetable) {
             }
         }
 
-        #ifdef RBBI_DEBUG
+       #ifdef RBBI_DEBUG
             if (fTrace) {
                 RBBIDebugPrintf("             %4ld   ", utext_getNativeIndex(fText));
                 if (0x20<=c && c<0x7f) {
@@ -1066,7 +1097,12 @@ int32_t RuleBasedBreakIterator::handleNext(const RBBIStateTable *statetable) {
 
         // State Transition - move machine to its next state
         //
-        state = row->fNextState[category];
+
+        // Note: fNextState is defined as uint16_t[2], but we are casting
+        // a generated RBBI table to RBBIStateTableRow and some tables
+        // actually have more than 2 categories.
+        U_ASSERT(category<fData->fHeader->fCatCount);
+        state = row->fNextState[category];  /*Not accessing beyond memory*/
         row = (RBBIStateTableRow *)
             // (statetable->fTableData + (statetable->fRowLen * state));
             (tableData + tableRowLen * state);
@@ -1169,7 +1205,7 @@ continueOn:
 //-----------------------------------------------------------------------------------
 int32_t RuleBasedBreakIterator::handlePrevious(const RBBIStateTable *statetable) {
     int32_t             state;
-    int16_t             category        = 0;
+    uint16_t            category        = 0;
     RBBIRunMode         mode;
     RBBIStateTableRow  *row;
     UChar32             c;
@@ -1281,7 +1317,12 @@ int32_t RuleBasedBreakIterator::handlePrevious(const RBBIStateTable *statetable)
 
         // State Transition - move machine to its next state
         //
-        state = row->fNextState[category];
+
+        // Note: fNextState is defined as uint16_t[2], but we are casting
+        // a generated RBBI table to RBBIStateTableRow and some tables
+        // actually have more than 2 categories.
+        U_ASSERT(category<fData->fHeader->fCatCount);
+        state = row->fNextState[category];  /*Not accessing beyond memory*/
         row = (RBBIStateTableRow *)
             (statetable->fTableData + (statetable->fRowLen * state));
 
@@ -1574,10 +1615,12 @@ int32_t RuleBasedBreakIterator::checkDictionary(int32_t startPos,
                             int32_t endPos,
                             UBool reverse) {
     // Reset the old break cache first.
-    uint32_t dictionaryCount = fDictionaryCharCount;
     reset();
 
-    if (dictionaryCount <= 1 || (endPos - startPos) <= 1) {
+    // note: code segment below assumes that dictionary chars are in the 
+    // startPos-endPos range
+    // value returned should be next character in sequence
+    if ((endPos - startPos) <= 1) {
         return (reverse ? startPos : endPos);
     }
     
@@ -1730,7 +1773,7 @@ int32_t RuleBasedBreakIterator::checkDictionary(int32_t startPos,
             // proposed break by one of the breaks we found. Use following() and
             // preceding() to do the work. They should never recurse in this case.
             if (reverse) {
-                return preceding(endPos - 1);
+                return preceding(endPos);
             }
             else {
                 return following(startPos);
@@ -1749,7 +1792,7 @@ U_NAMESPACE_END
 
 // defined in ucln_cmn.h
 
-static U_NAMESPACE_QUALIFIER UStack *gLanguageBreakFactories = NULL;
+static icu::UStack *gLanguageBreakFactories = NULL;
 
 /**
  * Release all static memory held by breakiterator.  
@@ -1766,7 +1809,7 @@ U_CDECL_END
 
 U_CDECL_BEGIN
 static void U_CALLCONV _deleteFactory(void *obj) {
-    delete (U_NAMESPACE_QUALIFIER LanguageBreakFactory *) obj;
+    delete (icu::LanguageBreakFactory *) obj;
 }
 U_CDECL_END
 U_NAMESPACE_BEGIN
@@ -1820,7 +1863,7 @@ getLanguageBreakEngineFromFactory(UChar32 c, int32_t breakType)
 //-------------------------------------------------------------------------------
 //
 //  getLanguageBreakEngine  Find an appropriate LanguageBreakEngine for the
-//                          the characer c.
+//                          the character c.
 //
 //-------------------------------------------------------------------------------
 const LanguageBreakEngine *

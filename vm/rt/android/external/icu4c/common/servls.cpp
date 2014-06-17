@@ -1,6 +1,6 @@
 /**
  *******************************************************************************
- * Copyright (C) 2001-2011, International Business Machines Corporation and    *
+ * Copyright (C) 2001-2012, International Business Machines Corporation and    *
  * others. All Rights Reserved.                                                *
  *******************************************************************************
  *
@@ -15,7 +15,6 @@
 #include "cmemory.h"
 #include "servloc.h"
 #include "ustrfmt.h"
-#include "uhash.h"
 #include "charstr.h"
 #include "ucln_cmn.h"
 #include "uassert.h"
@@ -26,7 +25,7 @@
 
 U_NAMESPACE_BEGIN
 
-static UMTX llock;
+static UMutex llock = U_MUTEX_INITIALIZER;
 ICULocaleService::ICULocaleService()
   : fallbackLocale(Locale::getDefault())
 {
@@ -163,7 +162,7 @@ private:
     ServiceEnumeration(const ICULocaleService* service, UErrorCode &status)
         : _service(service)
         , _timestamp(service->getTimestamp())
-        , _ids(uhash_deleteUnicodeString, NULL, status)
+        , _ids(uprv_deleteUObject, NULL, status)
         , _pos(0)
     {
         _service->getVisibleIDs(_ids, status);
@@ -172,7 +171,7 @@ private:
     ServiceEnumeration(const ServiceEnumeration &other, UErrorCode &status)
         : _service(other._service)
         , _timestamp(other._timestamp)
-        , _ids(uhash_deleteUnicodeString, NULL, status)
+        , _ids(uprv_deleteUObject, NULL, status)
         , _pos(0)
     {
         if(U_SUCCESS(status)) {
@@ -200,7 +199,7 @@ public:
         return NULL;
     }
 
-    virtual ~ServiceEnumeration() {}
+    virtual ~ServiceEnumeration();
 
     virtual StringEnumeration *clone() const {
         UErrorCode status = U_ZERO_ERROR;
@@ -248,6 +247,8 @@ public:
     static UClassID U_EXPORT2 getStaticClassID(void);
     virtual UClassID getDynamicClassID(void) const;
 };
+
+ServiceEnumeration::~ServiceEnumeration() {}
 
 UOBJECT_DEFINE_RTTI_IMPLEMENTATION(ServiceEnumeration)
 

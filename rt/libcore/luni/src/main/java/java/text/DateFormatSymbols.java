@@ -23,9 +23,10 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.TimeZone;
 import libcore.icu.ICU;
 import libcore.icu.LocaleData;
-import libcore.icu.TimeZones;
+import libcore.icu.TimeZoneNames;
 
 /**
  * Encapsulates localized date-time formatting data, such as the names of the
@@ -57,11 +58,8 @@ public class DateFormatSymbols implements Serializable, Cloneable {
 
     String[] ampms, eras, months, shortMonths, shortWeekdays, weekdays;
 
-    // These are used to implement ICU/Android extensions.
-    transient String[] longStandAloneMonths;
-    transient String[] shortStandAloneMonths;
-    transient String[] longStandAloneWeekdays;
-    transient String[] shortStandAloneWeekdays;
+    // This is used to implement parts of Unicode UTS #35 not historically supported.
+    transient LocaleData localeData;
 
     // Localized display names.
     String[][] zoneStrings;
@@ -82,7 +80,7 @@ public class DateFormatSymbols implements Serializable, Cloneable {
      */
     synchronized String[][] internalZoneStrings() {
         if (zoneStrings == null) {
-            zoneStrings = TimeZones.getZoneStrings(locale);
+            zoneStrings = TimeZoneNames.getZoneStrings(locale);
         }
         return zoneStrings;
     }
@@ -106,19 +104,14 @@ public class DateFormatSymbols implements Serializable, Cloneable {
     public DateFormatSymbols(Locale locale) {
         this.locale = locale;
         this.localPatternChars = SimpleDateFormat.PATTERN_CHARS;
-        LocaleData localeData = LocaleData.get(locale);
+
+        this.localeData = LocaleData.get(locale);
         this.ampms = localeData.amPm;
         this.eras = localeData.eras;
         this.months = localeData.longMonthNames;
         this.shortMonths = localeData.shortMonthNames;
         this.weekdays = localeData.longWeekdayNames;
         this.shortWeekdays = localeData.shortWeekdayNames;
-
-        // ICU/Android extensions.
-        this.longStandAloneMonths = localeData.longStandAloneMonthNames;
-        this.shortStandAloneMonths = localeData.shortStandAloneMonthNames;
-        this.longStandAloneWeekdays = localeData.longStandAloneWeekdayNames;
-        this.shortStandAloneWeekdays = localeData.shortStandAloneWeekdayNames;
     }
 
     /**
@@ -142,7 +135,7 @@ public class DateFormatSymbols implements Serializable, Cloneable {
      */
     public static final DateFormatSymbols getInstance(Locale locale) {
         if (locale == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("locale == null");
         }
         return new DateFormatSymbols(locale);
     }
@@ -159,12 +152,7 @@ public class DateFormatSymbols implements Serializable, Cloneable {
 
     private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
         ois.defaultReadObject();
-
-        // The RI doesn't have these fields, so we'll have to fall back and do the best we can.
-        longStandAloneMonths = months;
-        shortStandAloneMonths = shortMonths;
-        longStandAloneWeekdays = weekdays;
-        shortStandAloneWeekdays = shortWeekdays;
+        this.localeData = LocaleData.get(locale);
     }
 
     private void writeObject(ObjectOutputStream oos) throws IOException {
@@ -331,7 +319,25 @@ public class DateFormatSymbols implements Serializable, Cloneable {
      * </ul>
      */
     public String[][] getZoneStrings() {
-        return clone2dStringArray(internalZoneStrings());
+        String[][] result = clone2dStringArray(internalZoneStrings());
+        // If icu4c doesn't have a name, our array contains a null. TimeZone.getDisplayName
+        // knows how to format GMT offsets (and, unlike icu4c, has accurate data). http://b/8128460.
+        for (String[] zone : result) {
+            String id = zone[0];
+            if (zone[1] == null) {
+                zone[1] = TimeZone.getTimeZone(id).getDisplayName(false, TimeZone.LONG, locale);
+            }
+            if (zone[2] == null) {
+                zone[2] = TimeZone.getTimeZone(id).getDisplayName(false, TimeZone.SHORT, locale);
+            }
+            if (zone[3] == null) {
+                zone[3] = TimeZone.getTimeZone(id).getDisplayName(true, TimeZone.LONG, locale);
+            }
+            if (zone[4] == null) {
+                zone[4] = TimeZone.getTimeZone(id).getDisplayName(true, TimeZone.SHORT, locale);
+            }
+        }
+        return result;
     }
 
     private static String[][] clone2dStringArray(String[][] array) {
@@ -410,7 +416,7 @@ public class DateFormatSymbols implements Serializable, Cloneable {
      */
     public void setLocalPatternChars(String data) {
         if (data == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("data == null");
         }
         localPatternChars = data;
     }
@@ -471,7 +477,7 @@ public class DateFormatSymbols implements Serializable, Cloneable {
      */
     public void setZoneStrings(String[][] zoneStrings) {
         if (zoneStrings == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("zoneStrings == null");
         }
         for (String[] row : zoneStrings) {
             if (row.length < 5) {

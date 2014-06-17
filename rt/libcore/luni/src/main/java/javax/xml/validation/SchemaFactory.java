@@ -203,8 +203,10 @@ public abstract class SchemaFactory {
      */
     public static SchemaFactory newInstance(String schemaLanguage, String factoryClassName,
             ClassLoader classLoader) {
-        if (schemaLanguage == null || factoryClassName == null) {
-            throw new NullPointerException("schemaLanguage == null || factoryClassName == null");
+        if (schemaLanguage == null) {
+            throw new NullPointerException("schemaLanguage == null");
+        } else if (factoryClassName == null) {
+            throw new NullPointerException("factoryClassName == null");
         }
         if (classLoader == null) {
             classLoader = Thread.currentThread().getContextClassLoader();
@@ -265,7 +267,7 @@ public abstract class SchemaFactory {
     public boolean getFeature(String name) throws SAXNotRecognizedException, SAXNotSupportedException {
 
         if (name == null) {
-            throw new NullPointerException("the name parameter is null");
+            throw new NullPointerException("name == null");
         }
         throw new SAXNotRecognizedException(name);
     }
@@ -313,7 +315,7 @@ public abstract class SchemaFactory {
      */
     public void setFeature(String name, boolean value) throws SAXNotRecognizedException, SAXNotSupportedException {
         if (name == null) {
-            throw new NullPointerException("the name parameter is null");
+            throw new NullPointerException("name == null");
         }
         throw new SAXNotRecognizedException(name);
     }
@@ -340,7 +342,7 @@ public abstract class SchemaFactory {
      */
     public void setProperty(String name, Object object) throws SAXNotRecognizedException, SAXNotSupportedException {
         if (name == null) {
-            throw new NullPointerException("the name parameter is null");
+            throw new NullPointerException("name == null");
         }
         throw new SAXNotRecognizedException(name);
     }
@@ -371,7 +373,7 @@ public abstract class SchemaFactory {
      */
     public Object getProperty(String name) throws SAXNotRecognizedException, SAXNotSupportedException {
         if (name == null) {
-            throw new NullPointerException("the name parameter is null");
+            throw new NullPointerException("name == null");
         }
         throw new SAXNotRecognizedException(name);
     }

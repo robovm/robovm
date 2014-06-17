@@ -246,5 +246,14 @@ public class TestAnnotations {
         // this is non-null if the @Inherited tag is present
         anno = SubNoted.class.getAnnotation(AnnoSimpleType.class);
         System.out.println("SubNoted.get(AnnoSimpleType) = " + anno);
+
+        System.out.println();
+
+        // Package annotations aren't inherited, so getAnnotations and getDeclaredAnnotations are
+        // the same.
+        System.out.println("Package annotations:");
+        printAnnotationArray("    ", TestAnnotations.class.getPackage().getAnnotations());
+        System.out.println("Package declared annotations:");
+        printAnnotationArray("    ", TestAnnotations.class.getPackage().getDeclaredAnnotations());
     }
 }

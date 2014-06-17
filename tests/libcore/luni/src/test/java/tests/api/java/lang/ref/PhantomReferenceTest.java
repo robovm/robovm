@@ -20,6 +20,7 @@ package tests.api.java.lang.ref;
 import java.lang.ref.PhantomReference;
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
+import libcore.java.lang.ref.FinalizationTester;
 
 //TODO: write a test to verify that the referent's finalize() happens
 //      before the PhantomReference is enqueued.
@@ -81,8 +82,8 @@ public class PhantomReferenceTest extends junit.framework.TestCase {
             Thread t = new TestThread();
             t.start();
             t.join();
-            System.gc();
-            System.runFinalization();
+
+            FinalizationTester.induceFinalization();
 
             assertNull("get() should return null.", tprs[0].get());
             assertNull("get() should return null.", tprs[1].get());

@@ -24,8 +24,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.charset.Charsets;
-import static java.nio.charset.Charsets.UTF_8;
+import java.nio.charset.StandardCharsets;
 import libcore.io.IoUtils;
 
 /**
@@ -211,8 +210,10 @@ public abstract class ResourceBundle {
      */
     public static ResourceBundle getBundle(String bundleName, Locale locale,
             ClassLoader loader) throws MissingResourceException {
-        if (loader == null || bundleName == null) {
-            throw new NullPointerException();
+        if (loader == null) {
+            throw new NullPointerException("loader == null");
+        } else if (bundleName == null) {
+            throw new NullPointerException("bundleName == null");
         }
         Locale defaultLocale = Locale.getDefault();
         if (!cacheLocale.equals(defaultLocale)) {
@@ -516,7 +517,7 @@ public abstract class ResourceBundle {
                     : ClassLoader.getSystemResourceAsStream(fileName);
             if (stream != null) {
                 try {
-                    bundle = new PropertyResourceBundle(new InputStreamReader(stream, UTF_8));
+                    bundle = new PropertyResourceBundle(new InputStreamReader(stream, StandardCharsets.UTF_8));
                     bundle.setLocale(locale);
                 } catch (IOException ignored) {
                 } finally {
@@ -610,14 +611,14 @@ public abstract class ResourceBundle {
 
     public static void clearCache(ClassLoader loader) {
         if (loader == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("loader == null");
         }
         cache.remove(loader);
     }
 
     public boolean containsKey(String key) {
         if (key == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("key == null");
         }
         return keySet().contains(key);
     }
@@ -665,8 +666,10 @@ public abstract class ResourceBundle {
 
         @Override
         public Locale getFallbackLocale(String baseName, Locale locale) {
-            if (baseName == null || locale == null) {
-                throw new NullPointerException();
+            if (baseName == null) {
+                throw new NullPointerException("baseName == null");
+            } else if (locale == null) {
+                throw new NullPointerException("locale == null");
             }
             return null;
         }
@@ -804,8 +807,10 @@ public abstract class ResourceBundle {
          * {@code locale}.
          */
         public List<Locale> getCandidateLocales(String baseName, Locale locale) {
-            if (baseName == null || locale == null) {
-                throw new NullPointerException();
+            if (baseName == null) {
+                throw new NullPointerException("baseName == null");
+            } else if (locale == null) {
+                throw new NullPointerException("locale == null");
             }
             List<Locale> retList = new ArrayList<Locale>();
             String language = locale.getLanguage();
@@ -829,7 +834,7 @@ public abstract class ResourceBundle {
          */
         public List<String> getFormats(String baseName) {
             if (baseName == null) {
-                throw new NullPointerException();
+                throw new NullPointerException("baseName == null");
             }
             return format;
         }
@@ -838,8 +843,10 @@ public abstract class ResourceBundle {
          * Returns the fallback locale for {@code baseName} in {@code locale}.
          */
         public Locale getFallbackLocale(String baseName, Locale locale) {
-            if (baseName == null || locale == null) {
-                throw new NullPointerException();
+            if (baseName == null) {
+                throw new NullPointerException("baseName == null");
+            } else if (locale == null) {
+                throw new NullPointerException("locale == null");
             }
             if (Locale.getDefault() != locale) {
                 return Locale.getDefault();
@@ -872,8 +879,10 @@ public abstract class ResourceBundle {
                 String format, ClassLoader loader, boolean reload)
                 throws IllegalAccessException, InstantiationException,
                 IOException {
-            if (format == null || loader == null) {
-                throw new NullPointerException();
+            if (format == null) {
+                throw new NullPointerException("format == null");
+            } else if (loader == null) {
+                throw new NullPointerException("loader == null");
             }
             final String bundleName = toBundleName(baseName, locale);
             final ClassLoader clsloader = loader;
@@ -938,8 +947,10 @@ public abstract class ResourceBundle {
          * default is TTL_NO_EXPIRATION_CONTROL.
          */
         public long getTimeToLive(String baseName, Locale locale) {
-            if (baseName == null || locale == null) {
-                throw new NullPointerException();
+            if (baseName == null) {
+                throw new NullPointerException("baseName == null");
+            } else if (locale == null) {
+                throw new NullPointerException("locale == null");
             }
             return TTL_NO_EXPIRATION_CONTROL;
         }
@@ -966,7 +977,7 @@ public abstract class ResourceBundle {
                 long loadTime) {
             if (bundle == null) {
                 // FIXME what's the use of bundle?
-                throw new NullPointerException();
+                throw new NullPointerException("bundle == null");
             }
             String bundleName = toBundleName(baseName, locale);
             String suffix = format;
@@ -1004,7 +1015,7 @@ public abstract class ResourceBundle {
             final String preString = UNDER_SCORE;
             final String underline = UNDER_SCORE;
             if (baseName == null) {
-                throw new NullPointerException();
+                throw new NullPointerException("baseName == null");
             }
             StringBuilder ret = new StringBuilder();
             StringBuilder prefix = new StringBuilder();
@@ -1044,7 +1055,7 @@ public abstract class ResourceBundle {
          */
         public final String toResourceName(String bundleName, String suffix) {
             if (suffix == null) {
-                throw new NullPointerException();
+                throw new NullPointerException("suffix == null");
             }
             StringBuilder ret = new StringBuilder(bundleName.replace('.', '/'));
             ret.append('.');

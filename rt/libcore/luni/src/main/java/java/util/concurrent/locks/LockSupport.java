@@ -1,13 +1,11 @@
 /*
  * Written by Doug Lea with assistance from members of JCP JSR-166
  * Expert Group and released to the public domain, as explained at
- * http://creativecommons.org/licenses/publicdomain
+ * http://creativecommons.org/publicdomain/zero/1.0/
  */
 
 package java.util.concurrent.locks;
-import java.util.concurrent.*;
 import sun.misc.Unsafe;
-
 
 /**
  * Basic thread blocking primitives for creating locks and other
@@ -49,7 +47,10 @@ import sun.misc.Unsafe;
  * higher-level synchronization utilities, and are not in themselves
  * useful for most concurrency control applications.  The {@code park}
  * method is designed for use only in constructions of the form:
- * <pre>while (!canProceed()) { ... LockSupport.park(this); }</pre>
+ *
+ *  <pre> {@code
+ * while (!canProceed()) { ... LockSupport.park(this); }}</pre>
+ *
  * where neither {@code canProceed} nor any other actions prior to the
  * call to {@code park} entail locking or blocking.  Because only one
  * permit is associated with each thread, any intermediary uses of
@@ -57,7 +58,7 @@ import sun.misc.Unsafe;
  *
  * <p><b>Sample Usage.</b> Here is a sketch of a first-in-first-out
  * non-reentrant lock class:
- * <pre>{@code
+ *  <pre> {@code
  * class FIFOMutex {
  *   private final AtomicBoolean locked = new AtomicBoolean(false);
  *   private final Queue<Thread> waiters
@@ -71,14 +72,14 @@ import sun.misc.Unsafe;
  *     // Block while not first in queue or cannot acquire lock
  *     while (waiters.peek() != current ||
  *            !locked.compareAndSet(false, true)) {
- *        LockSupport.park(this);
- *        if (Thread.interrupted()) // ignore interrupts while waiting
- *          wasInterrupted = true;
+ *       LockSupport.park(this);
+ *       if (Thread.interrupted()) // ignore interrupts while waiting
+ *         wasInterrupted = true;
  *     }
  *
  *     waiters.remove();
  *     if (wasInterrupted)          // reassert interrupt status on exit
- *        current.interrupt();
+ *       current.interrupt();
  *   }
  *
  *   public void unlock() {
@@ -87,12 +88,11 @@ import sun.misc.Unsafe;
  *   }
  * }}</pre>
  */
-
 public class LockSupport {
     private LockSupport() {} // Cannot be instantiated.
 
     // Hotspot implementation via intrinsics API
-    private static final Unsafe unsafe = UnsafeAccess.THE_ONE; // android-changed
+    private static final Unsafe unsafe = Unsafe.getUnsafe();
     private static final long parkBlockerOffset;
 
     static {
@@ -246,10 +246,14 @@ public class LockSupport {
      * snapshot -- the thread may have since unblocked or blocked on a
      * different blocker object.
      *
+     * @param t the thread
      * @return the blocker
+     * @throws NullPointerException if argument is null
      * @since 1.6
      */
     public static Object getBlocker(Thread t) {
+        if (t == null)
+            throw new NullPointerException();
         return unsafe.getObjectVolatile(t, parkBlockerOffset);
     }
 

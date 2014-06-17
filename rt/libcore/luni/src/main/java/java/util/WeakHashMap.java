@@ -55,7 +55,7 @@ public class WeakHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
 
     private static final class Entry<K, V> extends WeakReference<K> implements
             Map.Entry<K, V> {
-        int hash;
+        final int hash;
 
         boolean isNull;
 
@@ -70,7 +70,7 @@ public class WeakHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
         Entry(K key, V object, ReferenceQueue<K> queue) {
             super(key, queue);
             isNull = key == null;
-            hash = isNull ? 0 : key.hashCode();
+            hash = isNull ? 0 : Collections.secondaryHash(key);
             value = object;
         }
 
@@ -198,15 +198,14 @@ public class WeakHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
      *                if the capacity is less than zero.
      */
     public WeakHashMap(int capacity) {
-        if (capacity >= 0) {
-            elementCount = 0;
-            elementData = newEntryArray(capacity == 0 ? 1 : capacity);
-            loadFactor = 7500; // Default load factor of 0.75
-            computeMaxSize();
-            referenceQueue = new ReferenceQueue<K>();
-        } else {
-            throw new IllegalArgumentException();
+        if (capacity < 0) {
+            throw new IllegalArgumentException("capacity < 0: " + capacity);
         }
+        elementCount = 0;
+        elementData = newEntryArray(capacity == 0 ? 1 : capacity);
+        loadFactor = 7500; // Default load factor of 0.75
+        computeMaxSize();
+        referenceQueue = new ReferenceQueue<K>();
     }
 
     /**
@@ -222,15 +221,17 @@ public class WeakHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
      *             or equal to zero.
      */
     public WeakHashMap(int capacity, float loadFactor) {
-        if (capacity >= 0 && loadFactor > 0) {
-            elementCount = 0;
-            elementData = newEntryArray(capacity == 0 ? 1 : capacity);
-            this.loadFactor = (int) (loadFactor * 10000);
-            computeMaxSize();
-            referenceQueue = new ReferenceQueue<K>();
-        } else {
-            throw new IllegalArgumentException();
+        if (capacity < 0) {
+            throw new IllegalArgumentException("capacity < 0: " + capacity);
         }
+        if (loadFactor <= 0) {
+            throw new IllegalArgumentException("loadFactor <= 0: " + loadFactor);
+        }
+        elementCount = 0;
+        elementData = newEntryArray(capacity == 0 ? 1 : capacity);
+        this.loadFactor = (int) (loadFactor * 10000);
+        computeMaxSize();
+        referenceQueue = new ReferenceQueue<K>();
     }
 
     /**
@@ -383,26 +384,6 @@ public class WeakHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
                         }
                     });
                 }
-
-                @Override
-                public Object[] toArray() {
-                    Collection<K> coll = new ArrayList<K>(size());
-
-                    for (Iterator<K> iter = iterator(); iter.hasNext();) {
-                        coll.add(iter.next());
-                    }
-                    return coll.toArray();
-                }
-
-                @Override
-                public <T> T[] toArray(T[] contents) {
-                    Collection<K> coll = new ArrayList<K>(size());
-
-                    for (Iterator<K> iter = iterator(); iter.hasNext();) {
-                        coll.add(iter.next());
-                    }
-                    return coll.toArray(contents);
-                }
             };
         }
         return keySet;
@@ -472,7 +453,7 @@ public class WeakHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
     public V get(Object key) {
         poll();
         if (key != null) {
-            int index = (key.hashCode() & 0x7FFFFFFF) % elementData.length;
+            int index = (Collections.secondaryHash(key) & 0x7FFFFFFF) % elementData.length;
             Entry<K, V> entry = elementData[index];
             while (entry != null) {
                 if (key.equals(entry.get())) {
@@ -495,7 +476,7 @@ public class WeakHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
     Entry<K, V> getEntry(Object key) {
         poll();
         if (key != null) {
-            int index = (key.hashCode() & 0x7FFFFFFF) % elementData.length;
+            int index = (Collections.secondaryHash(key) & 0x7FFFFFFF) % elementData.length;
             Entry<K, V> entry = elementData[index];
             while (entry != null) {
                 if (key.equals(entry.get())) {
@@ -609,7 +590,7 @@ public class WeakHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
         int index = 0;
         Entry<K, V> entry;
         if (key != null) {
-            index = (key.hashCode() & 0x7FFFFFFF) % elementData.length;
+            index = (Collections.secondaryHash(key) & 0x7FFFFFFF) % elementData.length;
             entry = elementData[index];
             while (entry != null && !key.equals(entry.get())) {
                 entry = entry.next;
@@ -624,7 +605,7 @@ public class WeakHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
             modCount++;
             if (++elementCount > threshold) {
                 rehash();
-                index = key == null ? 0 : (key.hashCode() & 0x7FFFFFFF)
+                index = key == null ? 0 : (Collections.secondaryHash(key) & 0x7FFFFFFF)
                         % elementData.length;
             }
             entry = new Entry<K, V>(key, value, referenceQueue);
@@ -687,7 +668,7 @@ public class WeakHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V> {
         int index = 0;
         Entry<K, V> entry, last = null;
         if (key != null) {
-            index = (key.hashCode() & 0x7FFFFFFF) % elementData.length;
+            index = (Collections.secondaryHash(key) & 0x7FFFFFFF) % elementData.length;
             entry = elementData[index];
             while (entry != null && !key.equals(entry.get())) {
                 last = entry;

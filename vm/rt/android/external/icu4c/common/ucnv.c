@@ -1,7 +1,7 @@
 /*
 ******************************************************************************
 *
-*   Copyright (C) 1998-2011, International Business Machines
+*   Copyright (C) 1998-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 ******************************************************************************
@@ -27,6 +27,8 @@
 #include "unicode/ucnv.h"
 #include "unicode/ucnv_err.h"
 #include "unicode/uset.h"
+#include "unicode/utf.h"
+#include "unicode/utf16.h"
 #include "putilimp.h"
 #include "cmemory.h"
 #include "cstring.h"
@@ -678,7 +680,7 @@ ucnv_getCCSID(const UConverter * converter,
     ccsid = converter->sharedData->staticData->codepage;
     if (ccsid == 0) {
         /* Rare case. This is for cases like gb18030,
-        which doesn't have an IBM cannonical name, but does have an IBM alias. */
+        which doesn't have an IBM canonical name, but does have an IBM alias. */
         const char *standardName = ucnv_getStandardName(ucnv_getName(converter, err), "IBM", err);
         if (U_SUCCESS(*err) && standardName) {
             const char *ccsidStr = uprv_strchr(standardName, '-');
@@ -2849,14 +2851,12 @@ ucnv_fromUCountPending(const UConverter* cnv, UErrorCode* status)
         return -1;
     }
 
-    if(cnv->preFromULength > 0){
+    if(cnv->preFromUFirstCP >= 0){
         return U16_LENGTH(cnv->preFromUFirstCP)+cnv->preFromULength ;
     }else if(cnv->preFromULength < 0){
         return -cnv->preFromULength ;
     }else if(cnv->fromUChar32 > 0){
         return 1;
-    }else if(cnv->preFromUFirstCP >0){
-        return U16_LENGTH(cnv->preFromUFirstCP);
     }
     return 0; 
 
@@ -2883,7 +2883,7 @@ ucnv_toUCountPending(const UConverter* cnv, UErrorCode* status){
     return 0;
 }
 
-U_DRAFT UBool U_EXPORT2
+U_CAPI UBool U_EXPORT2
 ucnv_isFixedWidth(UConverter *cnv, UErrorCode *status){
     if (U_FAILURE(*status)) {
         return FALSE;

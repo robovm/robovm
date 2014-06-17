@@ -149,7 +149,7 @@ public class ByteArrayOutputStream extends OutputStream {
      *            the high byte of each resulting Unicode character.
      * @return this stream's current contents as a string with the high byte set
      *         to {@code hibyte}.
-     * @deprecated Use {@link #toString()}.
+     * @deprecated Use {@link #toString()} instead.
      */
     @Deprecated
     public String toString(int hibyte) {
@@ -162,17 +162,17 @@ public class ByteArrayOutputStream extends OutputStream {
 
     /**
      * Returns the contents of this ByteArrayOutputStream as a string converted
-     * according to the encoding declared in {@code enc}.
+     * according to the encoding declared in {@code charsetName}.
      *
-     * @param enc
+     * @param charsetName
      *            a string representing the encoding to use when translating
      *            this stream to a string.
      * @return this stream's current contents as an encoded string.
      * @throws UnsupportedEncodingException
      *             if the provided encoding is not supported.
      */
-    public String toString(String enc) throws UnsupportedEncodingException {
-        return new String(buf, 0, count, enc);
+    public String toString(String charsetName) throws UnsupportedEncodingException {
+        return new String(buf, 0, count, charsetName);
     }
 
     /**

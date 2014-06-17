@@ -27,7 +27,7 @@ import java.lang.annotation.Target;
  * organized according to the API classes they test. Might be too strict for
  * some cases.
  *
- * @deprecated Obsolete
+ * @deprecated Obsolete.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE })

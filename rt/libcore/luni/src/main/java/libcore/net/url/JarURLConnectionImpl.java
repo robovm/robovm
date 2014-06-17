@@ -47,7 +47,7 @@ import libcore.net.UriCodec;
  */
 public class JarURLConnectionImpl extends JarURLConnection {
 
-    static HashMap<URL, JarFile> jarCache = new HashMap<URL, JarFile>();
+    private static final HashMap<URL, JarFile> jarCache = new HashMap<URL, JarFile>();
 
     private URL jarFileURL;
 
@@ -67,8 +67,7 @@ public class JarURLConnectionImpl extends JarURLConnection {
      * @throws IOException
      *             if there is a problem opening the connection.
      */
-    public JarURLConnectionImpl(URL url) throws MalformedURLException,
-            IOException {
+    public JarURLConnectionImpl(URL url) throws MalformedURLException, IOException {
         super(url);
         jarFileURL = getJarFileURL();
         jarFileURLConnection = jarFileURL.openConnection();
@@ -89,8 +88,6 @@ public class JarURLConnectionImpl extends JarURLConnection {
     /**
      * Returns the Jar file referred by this {@code URLConnection}.
      *
-     * @return the JAR file referenced by this connection
-     *
      * @throws IOException
      *             thrown if an IO error occurs while connecting to the
      *             resource.
@@ -108,13 +105,12 @@ public class JarURLConnectionImpl extends JarURLConnection {
      *             if an IO error occurs while connecting to the resource.
      */
     private void findJarFile() throws IOException {
-        JarFile jar = null;
         if (getUseCaches()) {
             synchronized (jarCache) {
                 jarFile = jarCache.get(jarFileURL);
             }
             if (jarFile == null) {
-                jar = openJarFile();
+                JarFile jar = openJarFile();
                 synchronized (jarCache) {
                     jarFile = jarCache.get(jarFileURL);
                     if (jarFile == null) {
@@ -134,7 +130,7 @@ public class JarURLConnectionImpl extends JarURLConnection {
         }
     }
 
-    JarFile openJarFile() throws IOException {
+    private JarFile openJarFile() throws IOException {
         if (jarFileURL.getProtocol().equals("file")) {
             String decodedFile = UriCodec.decode(jarFileURL.getFile());
             return new JarFile(new File(decodedFile), true, ZipFile.OPEN_READ);
@@ -344,26 +340,6 @@ public class JarURLConnectionImpl extends JarURLConnection {
     @Override
     public void setDefaultUseCaches(boolean defaultusecaches) {
         jarFileURLConnection.setDefaultUseCaches(defaultusecaches);
-    }
-
-    /**
-     * Closes the cached files.
-     */
-    public static void closeCachedFiles() {
-        Set<Map.Entry<URL, JarFile>> s = jarCache.entrySet();
-        synchronized (jarCache) {
-            Iterator<Map.Entry<URL, JarFile>> i = s.iterator();
-            while (i.hasNext()) {
-                try {
-                    ZipFile zip = i.next().getValue();
-                    if (zip != null) {
-                        zip.close();
-                    }
-                } catch (IOException e) {
-                    // Ignored
-                }
-            }
-        }
     }
 
     private class JarURLConnectionInputStream extends FilterInputStream {

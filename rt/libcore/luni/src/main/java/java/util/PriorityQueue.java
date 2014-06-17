@@ -26,8 +26,8 @@ import java.io.Serializable;
  * construction time. If the queue uses natural ordering, only elements that are
  * comparable are permitted to be inserted into the queue.
  * <p>
- * The least element of the specified ordering is stored at the head of the
- * queue and the greatest element is stored at the tail of the queue.
+ * The least element of the specified ordering is the first retrieved with
+ * {@link #poll()} and the greatest element is the last.
  * <p>
  * A PriorityQueue is not synchronized. If multiple threads will have to access
  * it concurrently, use the {@link java.util.concurrent.PriorityBlockingQueue}.
@@ -82,7 +82,7 @@ public class PriorityQueue<E> extends AbstractQueue<E> implements Serializable {
      */
     public PriorityQueue(int initialCapacity, Comparator<? super E> comparator) {
         if (initialCapacity < 1) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("initialCapacity < 1: " + initialCapacity);
         }
         elements = newElementArray(initialCapacity);
         this.comparator = comparator;
@@ -186,7 +186,7 @@ public class PriorityQueue<E> extends AbstractQueue<E> implements Serializable {
      */
     public boolean offer(E o) {
         if (o == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("o == null");
         }
         growToSize(size + 1);
         elements[size] = o;
@@ -341,9 +341,13 @@ public class PriorityQueue<E> extends AbstractQueue<E> implements Serializable {
 
     private void removeAt(int index) {
         size--;
-        elements[index] = elements[size];
+        E moved = elements[size];
+        elements[index] = moved;
         siftDown(index);
         elements[size] = null;
+        if (moved == elements[index]) {
+            siftUp(index);
+        }
     }
 
     private int compare(E o1, E o2) {
@@ -387,7 +391,7 @@ public class PriorityQueue<E> extends AbstractQueue<E> implements Serializable {
 
     private void initSize(Collection<? extends E> c) {
         if (c == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("c == null");
         }
         if (c.isEmpty()) {
             elements = newElementArray(1);

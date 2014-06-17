@@ -127,7 +127,7 @@ public class MulticastSocket extends DatagramSocket {
      * Returns the time-to-live (TTL) for multicast packets sent on this socket.
      *
      * @throws IOException if an error occurs.
-     * @deprecated Replaced by {@link #getTimeToLive}
+     * @deprecated Use {@link #getTimeToLive} instead.
      */
     @Deprecated
     public byte getTTL() throws IOException {
@@ -239,7 +239,7 @@ public class MulticastSocket extends DatagramSocket {
      * deprecated because it modifies the TTL socket option for this socket twice on each call.
      *
      * @throws IOException if an error occurs.
-     * @deprecated use {@link #setTimeToLive}.
+     * @deprecated Use {@link #setTimeToLive} instead.
      */
     @Deprecated
     public void send(DatagramPacket packet, byte ttl) throws IOException {
@@ -314,7 +314,7 @@ public class MulticastSocket extends DatagramSocket {
      * Valid TTL values are between 0 and 255 inclusive.
      *
      * @throws IOException if an error occurs.
-     * @deprecated Replaced by {@link #setTimeToLive}
+     * @deprecated Use {@link #setTimeToLive} instead.
      */
     @Deprecated
     public void setTTL(byte ttl) throws IOException {

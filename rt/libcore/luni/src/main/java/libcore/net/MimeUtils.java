@@ -43,6 +43,10 @@ public final class MimeUtils {
         //
         // and "active" MIME types (due to potential security issues).
 
+        // Note that this list is _not_ in alphabetical order and must not be sorted.
+        // The "most popular" extension must come first, so that it's the one returned
+        // by guessExtensionFromMimeType.
+
         add("application/andrew-inset", "ez");
         add("application/dsptype", "tsp");
         add("application/futuresplash", "spl");
@@ -57,6 +61,7 @@ public final class MimeUtils {
         add("application/pgp-keys", "key");
         add("application/pgp-signature", "pgp");
         add("application/pics-rules", "prf");
+        add("application/pkix-cert", "cer");
         add("application/rar", "rar");
         add("application/rdf+xml", "rdf");
         add("application/rss+xml", "rss");
@@ -139,8 +144,8 @@ public final class MimeUtils {
         add("application/x-gnumeric", "gnumeric");
         add("application/x-go-sgf", "sgf");
         add("application/x-graphing-calculator", "gcf");
-        add("application/x-gtar", "gtar");
         add("application/x-gtar", "tgz");
+        add("application/x-gtar", "gtar");
         add("application/x-gtar", "taz");
         add("application/x-hdf", "hdf");
         add("application/x-ica", "ica");
@@ -178,6 +183,7 @@ public final class MimeUtils {
         add("application/x-nwc", "nwc");
         add("application/x-object", "o");
         add("application/x-oz-application", "oza");
+        add("application/x-pem-file", "pem");
         add("application/x-pkcs12", "p12");
         add("application/x-pkcs12", "pfx");
         add("application/x-pkcs7-certreqresp", "p7r");
@@ -201,6 +207,7 @@ public final class MimeUtils {
         add("application/x-webarchive-xml", "webarchivexml");
         add("application/x-x509-ca-cert", "crt");
         add("application/x-x509-user-cert", "crt");
+        add("application/x-x509-server-cert", "crt");
         add("application/x-xcf", "xcf");
         add("application/x-xfig", "fig");
         add("application/xhtml+xml", "xhtml");
@@ -212,10 +219,11 @@ public final class MimeUtils {
         add("audio/midi", "kar");
         add("audio/midi", "xmf");
         add("audio/mobile-xmf", "mxmf");
+        // add ".mp3" first so it will be the default for guessExtensionFromMimeType
+        add("audio/mpeg", "mp3");
         add("audio/mpeg", "mpga");
         add("audio/mpeg", "mpega");
         add("audio/mpeg", "mp2");
-        add("audio/mpeg", "mp3");
         add("audio/mpeg", "m4a");
         add("audio/mpegurl", "m3u");
         add("audio/prs.sid", "sid");
@@ -282,7 +290,7 @@ public final class MimeUtils {
         add("text/h323", "323");
         add("text/iuls", "uls");
         add("text/mathml", "mml");
-        // add ".txt" first so it will be the default for ExtensionFromMimeType
+        // add ".txt" first so it will be the default for guessExtensionFromMimeType
         add("text/plain", "txt");
         add("text/plain", "asc");
         add("text/plain", "text");
@@ -296,12 +304,13 @@ public final class MimeUtils {
         add("text/xml", "xml");
         add("text/x-bibtex", "bib");
         add("text/x-boo", "boo");
-        add("text/x-c++hdr", "h++");
         add("text/x-c++hdr", "hpp");
+        add("text/x-c++hdr", "h++");
         add("text/x-c++hdr", "hxx");
         add("text/x-c++hdr", "hh");
-        add("text/x-c++src", "c++");
         add("text/x-c++src", "cpp");
+        add("text/x-c++src", "c++");
+        add("text/x-c++src", "cc");
         add("text/x-c++src", "cxx");
         add("text/x-chdr", "h");
         add("text/x-component", "htc");
@@ -350,6 +359,7 @@ public final class MimeUtils {
         add("video/x-ms-wvx", "wvx");
         add("video/x-msvideo", "avi");
         add("video/x-sgi-movie", "movie");
+        add("video/x-webex", "wrf");
         add("x-conference/x-cooltalk", "ice");
         add("x-epoc/x-sisx-app", "sisx");
         applyOverrides();

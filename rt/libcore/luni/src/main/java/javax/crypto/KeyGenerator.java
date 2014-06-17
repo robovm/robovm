@@ -98,7 +98,7 @@ public class KeyGenerator {
     public static final KeyGenerator getInstance(String algorithm)
             throws NoSuchAlgorithmException {
         if (algorithm == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("algorithm == null");
         }
         Engine.SpiAndProvider sap = ENGINE.getInstance(algorithm, null);
         return new KeyGenerator((KeyGeneratorSpi) sap.spi, sap.provider, algorithm);
@@ -158,7 +158,7 @@ public class KeyGenerator {
             throw new IllegalArgumentException("provider == null");
         }
         if (algorithm == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("algorithm == null");
         }
         Object spi = ENGINE.getInstance(algorithm, provider, null);
         return new KeyGenerator((KeyGeneratorSpi) spi, provider, algorithm);

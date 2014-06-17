@@ -141,10 +141,10 @@ public class Cipher {
     protected Cipher(CipherSpi cipherSpi, Provider provider,
             String transformation) {
         if (cipherSpi == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("cipherSpi == null");
         }
         if (!(cipherSpi instanceof NullCipherSpi) && provider == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("provider == null");
         }
         this.provider = provider;
         this.transformation = transformation;
@@ -875,7 +875,7 @@ public class Cipher {
      *             if this cipher instance is not initialized for encryption or
      *             decryption.
      * @throws IllegalArgumentException
-     *             if the input is {@code null}, or if {@code inputOffset} and
+     *             if {@code input} is {@code null}, or if {@code inputOffset} and
      *             {@code inputLen} do not specify a valid chunk in the input
      *             buffer.
      */
@@ -1023,6 +1023,99 @@ public class Cipher {
             throw new IllegalArgumentException("input == output");
         }
         return spiImpl.engineUpdate(input, output);
+    }
+
+    /**
+     * Continues a multi-part transformation (encryption or decryption) with
+     * Authenticated Additional Data (AAD). AAD may only be added after the
+     * {@code Cipher} is initialized and before any data is passed to the
+     * instance.
+     * <p>
+     * This is only usable with cipher modes that support Authenticated
+     * Encryption with Additional Data (AEAD) such as Galois/Counter Mode (GCM).
+     *
+     * @param input bytes of AAD to use with the cipher
+     * @throws IllegalStateException
+     *             if this cipher instance is not initialized for encryption or
+     *             decryption.
+     * @throws IllegalArgumentException
+     *             if {@code input} is {@code null}
+     * @throws UnsupportedOperationException if the cipher does not support AEAD
+     * @since 1.7
+     */
+    public final void updateAAD(byte[] input) {
+        if (input == null) {
+            throw new IllegalArgumentException("input == null");
+        }
+        if (mode != ENCRYPT_MODE && mode != DECRYPT_MODE) {
+            throw new IllegalStateException();
+        }
+        if (input.length == 0) {
+            return;
+        }
+        spiImpl.engineUpdateAAD(input, 0, input.length);
+    }
+
+    /**
+     * Continues a multi-part transformation (encryption or decryption) with
+     * Authenticated Additional Data (AAD). AAD may only be added after the
+     * {@code Cipher} is initialized and before any data is passed to the
+     * instance.
+     * <p>
+     * This is only usable with cipher modes that support Authenticated
+     * Encryption with Additional Data (AEAD) such as Galois/Counter Mode (GCM).
+     *
+     * @param input bytes of AAD to use with the cipher
+     * @param inputOffset offset within bytes of additional data to add to cipher
+     * @param inputLen length of bytes of additional data to add to cipher
+     * @throws IllegalStateException
+     *             if this cipher instance is not initialized for encryption or
+     *             decryption.
+     * @throws IllegalArgumentException
+     *             if {@code input} is {@code null}, or if {@code inputOffset} and
+     *             {@code inputLen} do not specify a valid chunk in the input
+     *             buffer.
+     * @throws UnsupportedOperationException if the cipher does not support AEAD
+     * @since 1.7
+     */
+    public final void updateAAD(byte[] input, int inputOffset, int inputLen) {
+        if (mode != ENCRYPT_MODE && mode != DECRYPT_MODE) {
+            throw new IllegalStateException();
+        }
+        if (input == null) {
+            throw new IllegalArgumentException("input == null");
+        }
+        checkInputOffsetAndCount(input.length, inputOffset, inputLen);
+        if (input.length == 0) {
+            return;
+        }
+        spiImpl.engineUpdateAAD(input, inputOffset, inputLen);
+    }
+
+    /**
+     * Continues a multi-part transformation (encryption or decryption) with
+     * Authenticated Additional Data (AAD). AAD may only be added after the
+     * {@code Cipher} is initialized and before any data is passed to the
+     * instance.
+     * <p>
+     * This is only usable with cipher modes that support Authenticated
+     * Encryption with Additional Data (AEAD) such as Galois/Counter Mode (GCM).
+     *
+     * @param input buffer of AAD to be used
+     * @throws IllegalStateException
+     *             if this cipher instance is not initialized for encryption or
+     *             decryption.
+     * @throws UnsupportedOperationException if the cipher does not support AEAD
+     * @since 1.7
+     */
+    public final void updateAAD(ByteBuffer input) {
+        if (mode != ENCRYPT_MODE && mode != DECRYPT_MODE) {
+            throw new IllegalStateException("Cipher is not initialized");
+        }
+        if (input == null) {
+            throw new IllegalArgumentException("input == null");
+        }
+        spiImpl.engineUpdateAAD(input);
     }
 
     /**
@@ -1332,7 +1425,7 @@ public class Cipher {
     public static final int getMaxAllowedKeyLength(String transformation)
             throws NoSuchAlgorithmException {
         if (transformation == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("transformation == null");
         }
         checkTransformation(transformation);
         //FIXME jurisdiction policy files
@@ -1356,7 +1449,7 @@ public class Cipher {
     public static final AlgorithmParameterSpec getMaxAllowedParameterSpec(
             String transformation) throws NoSuchAlgorithmException {
         if (transformation == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("transformation == null");
         }
         checkTransformation(transformation);
         //FIXME jurisdiction policy files

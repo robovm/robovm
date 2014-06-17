@@ -139,37 +139,26 @@ public class Support_DecimalFormat extends Support_Format {
         Locale us = Locale.US;
         Locale tr = new Locale("de", "CH");
 
-        if (Support_Locale.isLocaleAvailable(us)) {
-            // locale dependent test, bug 1943269
+        // test number instance
+        t_Format(1, number, NumberFormat.getNumberInstance(us), getNumberVectorUS());
 
-            // test number instance
-            t_Format(1, number, NumberFormat.getNumberInstance(us),
-                    getNumberVectorUS());
+        // test integer instance
+        t_Format(2, number, NumberFormat.getIntegerInstance(us), getIntegerVectorUS());
 
-            // test integer instance
-            t_Format(2, number, NumberFormat.getIntegerInstance(us),
-                    getIntegerVectorUS());
+        // test percent instance
+        t_Format(3, number, NumberFormat.getPercentInstance(us), getPercentVectorUS());
 
-            // test percent instance
-            t_Format(3, number, NumberFormat.getPercentInstance(us),
-                    getPercentVectorUS());
+        // test currency instance with US Locale
+        t_Format(4, number, NumberFormat.getCurrencyInstance(us), getPositiveCurrencyVectorUS());
 
-            // test currency instance with US Locale
-            t_Format(4, number, NumberFormat.getCurrencyInstance(us),
-                    getPositiveCurrencyVectorUS());
+        // test negative currency instance with US Locale
+        t_Format(5, negativeNumber, NumberFormat.getCurrencyInstance(us), getNegativeCurrencyVectorUS());
 
-            // test negative currency instance with US Locale
-            t_Format(5, negativeNumber, NumberFormat.getCurrencyInstance(us),
-                    getNegativeCurrencyVectorUS());
+        // test multiple grouping separators
+        t_Format(6, longNumber, NumberFormat.getNumberInstance(us), getNumberVector2US());
 
-            // test multiple grouping seperators
-            t_Format(6, longNumber, NumberFormat.getNumberInstance(us),
-                    getNumberVector2US());
-
-            // test 0
-            t_Format(7, zeroNumber, NumberFormat.getNumberInstance(us),
-                    getZeroVector());
-        }
+        // test 0
+        t_Format(7, zeroNumber, NumberFormat.getNumberInstance(us), getZeroVector());
 
         // test permille pattern
         DecimalFormat format = new DecimalFormat("###0.##\u2030");
@@ -183,15 +172,11 @@ public class Support_DecimalFormat extends Support_Format {
         format = new DecimalFormat("0000.0#E0");
         t_Format(10, number, format, getNegativeExponentVector());
 
-        if (Support_Locale.isLocaleAvailable(tr)) {
-            // test currency instance with TR Locale
-            t_Format(11, number, NumberFormat.getCurrencyInstance(tr),
-                    getPositiveCurrencyVectorCH());
+        // test currency instance with TR Locale
+        t_Format(11, number, NumberFormat.getCurrencyInstance(tr), getPositiveCurrencyVectorCH());
 
-            // test negative currency instance with TR Locale
-            t_Format(12, negativeNumber, NumberFormat.getCurrencyInstance(tr),
-                    getNegativeCurrencyVectorCH());
-        }
+        // test negative currency instance with TR Locale
+        t_Format(12, negativeNumber, NumberFormat.getCurrencyInstance(tr), getNegativeCurrencyVectorCH());
     }
 
     private static Vector<FieldContainer> getNumberVectorUS() {

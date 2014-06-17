@@ -16,7 +16,9 @@
 
 package libcore.javax.net.ssl;
 
+import java.io.IOException;
 import java.util.Arrays;
+import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLEngineResult.HandshakeStatus;
@@ -83,6 +85,20 @@ public class SSLEngineTest extends TestCase {
                                                                  boolean secureRenegotiation)
             throws Exception {
         TestSSLContext c = TestSSLContext.create(testKeyStore, testKeyStore);
+
+        // Create a TestSSLContext where the KeyManager returns wrong (randomly generated) private
+        // keys, matching the algorithm and parameters of the correct keys.
+        // I couldn't find a more elegant way to achieve this other than temporarily replacing the
+        // first element of TestKeyStore.keyManagers while invoking TestSSLContext.create.
+        TestSSLContext cWithWrongPrivateKeys;
+        {
+            KeyManager originalKeyManager = testKeyStore.keyManagers[0];
+            testKeyStore.keyManagers[0] =
+                    new RandomPrivateKeyX509ExtendedKeyManager(c.serverKeyManager);
+            cWithWrongPrivateKeys = TestSSLContext.create(testKeyStore, testKeyStore);
+            testKeyStore.keyManagers[0] = originalKeyManager;
+        }
+
         String[] cipherSuites = c.clientContext.createSSLEngine().getSupportedCipherSuites();
         for (String cipherSuite : cipherSuites) {
             boolean errorExpected = StandardNames.IS_RI && cipherSuite.endsWith("_SHA256");
@@ -109,6 +125,8 @@ public class SSLEngineTest extends TestCase {
                            ? new String[] { cipherSuite,
                                             StandardNames.CIPHER_SUITE_SECURE_RENEGOTIATION }
                            : new String[] { cipherSuite });
+
+                // Check that handshake succeeds.
                 assertConnected(TestSSLEnginePair.create(c, new TestSSLEnginePair.Hooks() {
                         @Override
                                 void beforeBeginHandshake(SSLEngine client, SSLEngine server) {
@@ -117,6 +135,27 @@ public class SSLEngineTest extends TestCase {
                         }
                     }));
                 assertFalse(errorExpected);
+
+                // Check that handshake fails when the server does not possess the private key
+                // corresponding to the server's certificate. This is achieved by using SSLContext
+                // cWithWrongPrivateKeys whose KeyManager returns wrong private keys that match
+                // the algorithm (and parameters) of the correct keys.
+                if (!cipherSuite.contains("_anon_")) {
+                    // The identity of the server is verified only in non-anonymous key exchanges.
+                    try {
+                        TestSSLEnginePair p = TestSSLEnginePair.create(
+                                cWithWrongPrivateKeys, new TestSSLEnginePair.Hooks() {
+                            @Override
+                                    void beforeBeginHandshake(SSLEngine client, SSLEngine server) {
+                                client.setEnabledCipherSuites(cipherSuiteArray);
+                                server.setEnabledCipherSuites(cipherSuiteArray);
+                            }
+                        });
+                        assertConnected(p);
+                        fail("Handshake succeeded for " + cipherSuite
+                                + " despite server not having the correct private key");
+                    } catch (IOException expected) {}
+                }
             } catch (Exception maybeExpected) {
                 if (!errorExpected) {
                     throw new Exception("Problem trying to connect cipher suite " + cipherSuite,
@@ -345,6 +384,51 @@ public class SSLEngineTest extends TestCase {
                                                     p.client.getSession().getLocalCertificates());
         clientAuthContext.close();
         c.close();
+    }
+
+   /**
+    * http://code.google.com/p/android/issues/detail?id=31903
+    * This test case directly tests the fix for the issue.
+    */
+    public void test_SSLEngine_clientAuthWantedNoClientCert() throws Exception {
+        TestSSLContext clientAuthContext
+                = TestSSLContext.create(TestKeyStore.getClient(),
+                                        TestKeyStore.getServer());
+        TestSSLEnginePair p = TestSSLEnginePair.create(clientAuthContext,
+                                                       new TestSSLEnginePair.Hooks() {
+            @Override
+            void beforeBeginHandshake(SSLEngine client, SSLEngine server) {
+                server.setWantClientAuth(true);
+            }
+        });
+        assertConnected(p);
+        clientAuthContext.close();
+    }
+
+   /**
+    * http://code.google.com/p/android/issues/detail?id=31903
+    * This test case verifies that if the server requires a client cert
+    * (setNeedClientAuth) but the client does not provide one SSL connection
+    * establishment will fail
+    */
+    public void test_SSLEngine_clientAuthNeededNoClientCert() throws Exception {
+        boolean handshakeExceptionCaught = false;
+        TestSSLContext clientAuthContext
+                = TestSSLContext.create(TestKeyStore.getClient(),
+                                        TestKeyStore.getServer());
+        try {
+            TestSSLEnginePair.create(clientAuthContext,
+                             new TestSSLEnginePair.Hooks() {
+                @Override
+                void beforeBeginHandshake(SSLEngine client, SSLEngine server) {
+                    server.setNeedClientAuth(true);
+                }
+            });
+            fail();
+        } catch (SSLHandshakeException expected) {
+        } finally {
+            clientAuthContext.close();
+        }
     }
 
     public void test_SSLEngine_getEnableSessionCreation() throws Exception {

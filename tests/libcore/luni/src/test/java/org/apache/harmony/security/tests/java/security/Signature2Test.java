@@ -37,6 +37,7 @@ import java.security.cert.Certificate;
 import java.security.spec.DSAParameterSpec;
 import java.util.HashSet;
 import java.util.Set;
+import libcore.java.security.StandardNames;
 
 public class Signature2Test extends junit.framework.TestCase {
 
@@ -467,10 +468,17 @@ public class Signature2Test extends junit.framework.TestCase {
         } catch (IllegalArgumentException expected) {
         }
 
-        try {
-            sig.verify(signature, signature.length, 0);
-            fail();
-        } catch (SignatureException expected) {
+        if (StandardNames.IS_RI) {
+            try {
+                sig.verify(signature, signature.length, 0);
+                fail();
+            } catch (SignatureException expected) {
+            }
+        } else {
+            // Calling Signature.verify a second time should not throw
+            // http://code.google.com/p/android/issues/detail?id=34933
+            boolean verified = sig.verify(signature, signature.length, 0);
+            assertFalse(verified);
         }
 
         try {

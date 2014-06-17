@@ -1,7 +1,7 @@
 /*
 ******************************************************************************
 *                                                                            *
-* Copyright (C) 1999-2011, International Business Machines                   *
+* Copyright (C) 1999-2012, International Business Machines                   *
 *                Corporation and others. All Rights Reserved.                *
 *                                                                            *
 ******************************************************************************
@@ -21,6 +21,7 @@
 #include "unicode/utypes.h"
 #include "unicode/udata.h"
 #include "unicode/ures.h"
+#include "putilimp.h"
 #include "udataswp.h"
 
 /**
@@ -66,7 +67,12 @@ typedef uint32_t Resource;
 #define RES_GET_POINTER(pRoot, res) ((pRoot)+RES_GET_OFFSET(res))
 
 /* get signed and unsigned integer values directly from the Resource handle */
-#define RES_GET_INT(res) (((int32_t)((res)<<4L))>>4L)
+#if U_SIGNED_RIGHT_SHIFT_IS_ARITHMETIC
+#   define RES_GET_INT(res) (((int32_t)((res)<<4L))>>4L)
+#else
+#   define RES_GET_INT(res) (int32_t)(((res)&0x08000000) ? (res)|0xf0000000 : (res)&0x07ffffff)
+#endif
+
 #define RES_GET_UINT(res) ((res)&0x0fffffff)
 
 #define URES_IS_ARRAY(type) ((int32_t)(type)==URES_ARRAY || (int32_t)(type)==URES_ARRAY16)

@@ -44,9 +44,9 @@ public abstract class IntBuffer extends Buffer implements Comparable<IntBuffer> 
      */
     public static IntBuffer allocate(int capacity) {
         if (capacity < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("capacity < 0: " + capacity);
         }
-        return new ReadWriteIntArrayBuffer(capacity);
+        return new IntArrayBuffer(new int[capacity]);
     }
 
     /**
@@ -83,7 +83,7 @@ public abstract class IntBuffer extends Buffer implements Comparable<IntBuffer> 
      */
     public static IntBuffer wrap(int[] array, int start, int intCount) {
         Arrays.checkOffsetAndCount(array.length, start, intCount);
-        IntBuffer buf = new ReadWriteIntArrayBuffer(array);
+        IntBuffer buf = new IntArrayBuffer(array);
         buf.position = start;
         buf.limit = start + intCount;
         return buf;
@@ -168,10 +168,8 @@ public abstract class IntBuffer extends Buffer implements Comparable<IntBuffer> 
      * are the same as this buffer's.
      * <p>
      * The new buffer shares its content with this buffer, which means either
-     * buffer's change of content will be visible to the other. The two buffer's
+     * buffer's change of content will be visible to the other. The two buffers'
      * position, limit and mark are independent.
-     *
-     * @return a duplicated buffer that shares its content with this buffer.
      */
     public abstract IntBuffer duplicate();
 
@@ -395,6 +393,9 @@ public abstract class IntBuffer extends Buffer implements Comparable<IntBuffer> 
      *                if no changes may be made to the contents of this buffer.
      */
     public IntBuffer put(int[] src, int srcOffset, int intCount) {
+        if (isReadOnly()) {
+            throw new ReadOnlyBufferException();
+        }
         Arrays.checkOffsetAndCount(src.length, srcOffset, intCount);
         if (intCount > remaining()) {
             throw new BufferOverflowException();
@@ -422,8 +423,11 @@ public abstract class IntBuffer extends Buffer implements Comparable<IntBuffer> 
      *                if no changes may be made to the contents of this buffer.
      */
     public IntBuffer put(IntBuffer src) {
+        if (isReadOnly()) {
+            throw new ReadOnlyBufferException();
+        }
         if (src == this) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("src == this");
         }
         if (src.remaining() > remaining()) {
             throw new BufferOverflowException();
@@ -460,10 +464,8 @@ public abstract class IntBuffer extends Buffer implements Comparable<IntBuffer> 
      * same as this buffer's.
      * <p>
      * The new buffer shares its content with this buffer, which means either
-     * buffer's change of content will be visible to the other. The two buffer's
+     * buffer's change of content will be visible to the other. The two buffers'
      * position, limit and mark are independent.
-     *
-     * @return a sliced buffer that shares its content with this buffer.
      */
     public abstract IntBuffer slice();
 }

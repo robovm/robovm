@@ -48,8 +48,8 @@ public class XPathException extends Exception {
      */
     public XPathException(String message) {
         super(message);
-        if ( message == null ) {
-            throw new NullPointerException ( "message can't be null");
+        if (message == null) {
+            throw new NullPointerException("message == null");
         }
         this.cause = null;
     }
@@ -66,8 +66,8 @@ public class XPathException extends Exception {
     public XPathException(Throwable cause) {
         super(cause == null ? null : cause.toString());
         this.cause = cause;
-        if ( cause == null ) {
-            throw new NullPointerException ( "cause can't be null");
+        if (cause == null) {
+            throw new NullPointerException("cause == null");
         }
     }
 

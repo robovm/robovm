@@ -1,7 +1,7 @@
 /*
 ******************************************************************************
 *
-*   Copyright (C) 2008-2011, International Business Machines
+*   Copyright (C) 2008-2013, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 ******************************************************************************
@@ -29,6 +29,7 @@
 #include "unicode/uregex.h"
 #include "unicode/ustring.h"
 #include "cmemory.h"
+#include "scriptset.h"
 #include "uspoof_impl.h"
 #include "uhash.h"
 #include "uvector.h"
@@ -86,6 +87,8 @@ static void extractGroup(
 }
 
 
+
+U_NAMESPACE_BEGIN
 
 //  Build the Whole Script Confusable data
 //
@@ -242,8 +245,8 @@ void buildWSConfusableData(SpoofImpl *spImpl, const char * confusablesWS,
                 scriptSets->addElement(bsset, status);
                 utrie2_set32(table, cp, setIndex, &status);
             }
-            bsset->sset->Union(targScript);
-            bsset->sset->Union(srcScript);
+            bsset->sset->set(targScript, status);
+            bsset->sset->set(srcScript, status);
 
             if (U_FAILURE(status)) {
                 goto cleanup;
@@ -397,17 +400,19 @@ cleanup:
     uprv_free(input);
 
     int32_t i;
-    for (i=0; i<scriptSets->size(); i++) {
-        BuilderScriptSet *bsset = static_cast<BuilderScriptSet *>(scriptSets->elementAt(i));
-        delete bsset;
+    if (scriptSets != NULL) {
+        for (i=0; i<scriptSets->size(); i++) {
+            BuilderScriptSet *bsset = static_cast<BuilderScriptSet *>(scriptSets->elementAt(i));
+            delete bsset;
+        }
+        delete scriptSets;
     }
-    delete scriptSets;
     utrie2_close(anyCaseTrie);
     utrie2_close(lowerCaseTrie);
     return;
 }
 
-
+U_NAMESPACE_END
 
 
 

@@ -106,7 +106,7 @@ failNames=""
 
 for i in *; do
     if [ -d "$i" -a -r "$i" -a -r "${i}/info.txt" ]; then
-        if ! grep "$i" robovm-excluded-tests > /dev/null; then
+        if ! grep "^$i" robovm-excluded-tests > /dev/null; then
             ./run-test ${run_args} "$i"
             if [ "$?" = "0" ]; then
                 ((passed += 1))

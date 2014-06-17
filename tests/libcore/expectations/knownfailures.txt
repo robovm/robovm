@@ -3,6 +3,26 @@
  */
 [
 {
+  description: "four known CharsetDecoder-/CharsetEncoder-related failures",
+  names: [
+    "org.apache.harmony.nio_char.tests.java.nio.charset.ASCIICharsetEncoderTest#testCanEncodeSurrogate",
+    "org.apache.harmony.nio_char.tests.java.nio.charset.ASCIICharsetEncoderTest#testMultiStepEncode",
+    "org.apache.harmony.nio_char.tests.java.nio.charset.CharsetDecoderTest#testInvalidDecoding",
+    "org.apache.harmony.nio_char.tests.java.nio.charset.CharsetDecoderTest#test_decode"
+  ],
+  bug: 10729779
+},
+{
+  description: "can't compile a pattern with negative look-behind and quantifiers with upper bounds",
+  name: "org.apache.harmony.regex.tests.java.util.regex.PatternTest#test_bug_40103",
+  bug: 40103
+},
+{
+  description: "our regex implementation calls toString on CharSequences",
+  name: "org.apache.harmony.luni.tests.java.util.ScannerParseLargeFileBenchmarkTest#testParseLargeFile",
+  bug: 10133206
+},
+{
   description: "Package.getPackages(), ClassLoader.getPackages() both omit results",
   name: "libcore.java.lang.PackageTest#testGetPackages",
   bug: 5171136
@@ -26,14 +46,6 @@
   bug: 4723412
 },
 {
-  description: "Encoded bytes don't match for EC elliptic curve keys created through KeyFactory.generatePrivate()",
-  names: [
-    "org.apache.harmony.security.tests.java.security.KeyFactory2Test#test_generatePrivateLjava_security_spec_KeySpec",
-    "org.apache.harmony.security.tests.java.security.KeyFactory2Test#test_getKeySpecLjava_security_KeyLjava_lang_Class"
-  ],
-  bug: 3483365
-},
-{
   description: "Expat uses an unbounded number of global references",
   name: "libcore.xml.ExpatSaxParserTest#testGlobalReferenceTableOverflow",
   bug: 2772628
@@ -54,30 +66,12 @@
   bug: 3473300
 },
 {
-  description: "CipherTest.test_doFinal() is flaky",
-  name: "org.apache.harmony.crypto.tests.javax.crypto.CipherTest#test_doFinal",
-  bug: 3469872
-},
-{
   name: "libcore.java.lang.StringTest#testCaseMapping_en_US",
   bug: 3387655
 },
 {
-  name: "org.apache.harmony.crypto.tests.javax.crypto.CipherTest#testGetMaxAllowedKeyLength",
-  bug: 3387688
-},
-{
   name: "libcore.java.io.FileTest#test_emptyFilename",
   bug: 3387758
-},
-{
-  description: "Turkish dotless i behaves differently on dalvik vs. RI",
-  names: [
-    "libcore.java.lang.StringTest#testChangeCase_en_US",
-    "libcore.java.lang.StringTest#testEqualsIgnoreCase_en_US",
-    "libcore.java.lang.StringTest#testEqualsIgnoreCase_tr_TR"
-  ],
-  bug: 3325799
 },
 {
   description: "KxmlPullParser doesn't enforce top-level document element",
@@ -92,12 +86,6 @@
   name: "libcore.java.net.URLConnectionTest#testMalformedUrl",
   bug: 1158780,
   substring: "java.net.URISyntaxException"
-},
-{
-  description: "Test regression",
-  name: "libcore.javax.crypto.spec.KeyFactoryTestDSA#testKeyFactory",
-  substring: "not implemented yet",
-  bug: 3286592
 },
 {
   description: "KxmlParser doesn't expose DTD text",
@@ -205,15 +193,6 @@
   bug: 2400429
 },
 {
-  description: "Concurrent close tests fail on the device",
-  names: [
-    "libcore.java.net.ConcurrentCloseTest#test_connect",
-    "libcore.java.net.ConcurrentCloseTest#test_connect_nonBlocking"
-  ],
-  modes: [ "device" ],
-  bug: 3044772
-},
-{
   description: "HTTPS connections should not be pooled.",
   name: "libcore.java.net.URLConnectionTest#testConnectViaHttpsReusingConnectionsDifferentFactories",
   bug: 3042192
@@ -276,23 +255,18 @@
   description: "UTF-16 and UTF-32 encoders don't write big-endian output on little-endian devices",
   names: [
     "libcore.java.nio.charset.CharsetEncoderTest#test_defaultReplacementBytesUtf_16",
-    "libcore.java.nio.charset.CharsetTest#test_UTF_16",
-    "libcore.java.nio.charset.CharsetTest#test_UTF_32",
-    "libcore.java.nio.charset.CharsetTest#test_UTF_16BE",
-    "libcore.java.nio.charset.CharsetTest#test_UTF_16LE",
-    "libcore.java.nio.charset.CharsetTest#test_UTF_32BE",
-    "libcore.java.nio.charset.CharsetTest#test_UTF_32LE",
-    "libcore.java.nio.charset.CharsetTest#test_x_UTF_16LE_BOM",
-    "libcore.java.nio.charset.CharsetTest#test_X_UTF_32BE_BOM",
-    "libcore.java.nio.charset.CharsetTest#test_X_UTF_32LE_BOM",
-    "libcore.java.nio.charset.OldCharset_MultiByte_UTF_16#test_Encode"
+    "libcore.java.nio.charset.OldCharset_MultiByte_UTF_16#test_Encode",
+    "tests.api.java.nio.charset.CharsetTest#test_UTF_16",
+    "tests.api.java.nio.charset.CharsetTest#test_UTF_32",
+    "tests.api.java.nio.charset.CharsetTest#test_UTF_16BE",
+    "tests.api.java.nio.charset.CharsetTest#test_UTF_16LE",
+    "tests.api.java.nio.charset.CharsetTest#test_UTF_32BE",
+    "tests.api.java.nio.charset.CharsetTest#test_UTF_32LE",
+    "tests.api.java.nio.charset.CharsetTest#test_x_UTF_16LE_BOM",
+    "tests.api.java.nio.charset.CharsetTest#test_X_UTF_32BE_BOM",
+    "tests.api.java.nio.charset.CharsetTest#test_X_UTF_32LE_BOM"
   ],
   bug: 2702411
-},
-{
-  description: "Pre-NIO aliases not implemented",
-  name: "libcore.java.nio.charset.CharsetTest#test_preNioAliases",
-  bug: 3032697
 },
 {
   description: "HTTPS proxy broken on host",
@@ -352,11 +326,6 @@
   description: "Android doesn't allow null parent.",
   result: EXEC_FAILED,
   name: "tests.java.security.SecureClassLoaderTest#testSecureClassLoaderClassLoader"
-},
-{
-  description: "Assertion does not evaluate to true... Works in javax.Certificate",
-  result: EXEC_FAILED,
-  name: "tests.security.cert.CertificateTest#testGetEncoded"
 },
 {
   description: "Not all Drivers are loaded in testsetup. ClassLoader issue in DriverManager.",
@@ -998,7 +967,7 @@
   name: "tests.api.javax.net.ssl.SSLEngineTest#testHandshake"
 },
 {
-  description: "org.apache.harmony.xnet.provider.jsse.SSLEngineImpl#getDelegatedTask() throws NPE instead of
+  description: "com.android.org.conscrypt.SSLEngineImpl#getDelegatedTask() throws NPE instead of
                 returning null",
   bug: 3403706,
   name: "tests.api.javax.net.ssl.SSLEngineTest#test_getDelegatedTask"
@@ -1699,6 +1668,43 @@
     "libcore.xml.JaxenXPathTestSuite$4#xml/web.xml /web-app/servlet[1] upper-case( servlet-class, 'es-ES-Traditional_WIN' )",
     "libcore.xml.JaxenXPathTestSuite$4#xml/web.xml /web-app/servlet[1] upper-case( servlet-class, 'fr' )",
     "libcore.xml.JaxenXPathTestSuite$4#xml/web.xml /web-app/servlet[1] upper-case( servlet-class, 'fr-CA' )"
+  ]
+},
+{
+  description: "Android's PKIX validation fails on many NIST PKIX tests",
+  bug: 8030138,
+  names: [
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testBasicCertificateRevocationTests_InvalidLongSerialNumberTest18",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testBasicCertificateRevocationTests_InvalidNegativeSerialNumberTest15",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testBasicCertificateRevocationTests_InvalidRevokedCATest2",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testBasicCertificateRevocationTests_InvalidRevokedEETest3",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testBasicCertificateRevocationTests_InvalidSeparateCertificateandCRLKeysTest20",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testBasicCertificateRevocationTests_InvalidSeparateCertificateandCRLKeysTest21",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testBasicCertificateRevocationTests_InvalidUnknownCRLEntryExtensionTest8",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testBasicCertificateRevocationTests_ValidSeparateCertificateandCRLKeysTest19",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testDeltaCRLs_InvaliddeltaCRLTest3",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testDeltaCRLs_InvaliddeltaCRLTest4",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testDeltaCRLs_InvaliddeltaCRLTest6",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testDeltaCRLs_InvaliddeltaCRLTest9",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testDistributionPoints_InvalidIDPwithindirectCRLTest23",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testDistributionPoints_InvalidcRLIssuerTest34",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testDistributionPoints_InvaliddistributionPointTest2",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testDistributionPoints_InvaliddistributionPointTest6",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testDistributionPoints_InvalidonlySomeReasonsTest15",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testDistributionPoints_InvalidonlySomeReasonsTest16",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testDistributionPoints_InvalidonlySomeReasonsTest20",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testDistributionPoints_InvalidonlySomeReasonsTest21",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testDistributionPoints_ValidIDPwithindirectCRLTest24",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testDistributionPoints_ValidIDPwithindirectCRLTest25",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testDistributionPoints_ValidcRLIssuerTest28",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testDistributionPoints_ValidcRLIssuerTest29",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testDistributionPoints_ValidcRLIssuerTest30",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testDistributionPoints_ValidcRLIssuerTest33",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testKeyUsage_ValidSelfIssuedDNnameConstraintsTest19",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testVerifyingNameChaining_ValidRFC3280OptionalAttributeTypesTest8",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testVerifyingPathswithSelfIssuedCertificates_InvalidBasicSelfIssuedOldWithNewTest2",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testVerifyingPathswithSelfIssuedCertificates_ValidBasicSelfIssuedCRLSigningKeyTest6",
+    "libcore.java.security.cert.X509CertificateNistPkitsTest#testVerifyingPathswithSelfIssuedCertificates_ValidBasicSelfIssuedNewWithOldTest4"
   ]
 }
 ]

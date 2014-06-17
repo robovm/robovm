@@ -1,6 +1,6 @@
 /*
 *******************************************************************************
-* Copyright (C) 1997-2011, International Business Machines Corporation and    *
+* Copyright (C) 1997-2013, International Business Machines Corporation and    *
 * others. All Rights Reserved.                                                *
 *******************************************************************************
 *
@@ -24,13 +24,17 @@
 *******************************************************************************
 */
 
-#include <typeinfo>  // for 'typeid' to work 
+#include "utypeinfo.h"  // for 'typeid' to work 
 
 #include "unicode/utypes.h"
 
 #if !UCONFIG_NO_FORMATTING
 
 #include "unicode/gregocal.h"
+#include "unicode/basictz.h"
+#include "unicode/simpletz.h"
+#include "unicode/rbtz.h"
+#include "unicode/vtzone.h"
 #include "gregoimp.h"
 #include "buddhcal.h"
 #include "taiwncal.h"
@@ -41,6 +45,7 @@
 #include "indiancal.h"
 #include "chnsecal.h"
 #include "coptccal.h"
+#include "dangical.h"
 #include "ethpccal.h"
 #include "unicode/calendar.h"
 #include "cpputils.h"
@@ -50,6 +55,8 @@
 #include "locbased.h"
 #include "uresimp.h"
 #include "ustrenum.h"
+#include "uassert.h"
+#include "olsontz.h"
 
 #if !UCONFIG_NO_SERVICE
 static icu::ICULocaleService* gService = NULL;
@@ -82,9 +89,11 @@ U_CDECL_END
 /** 
  * fldName was removed as a duplicate implementation. 
  * use  udbg_ services instead, 
- * which depend on include files and library from ../tools/ctestfw
+ * which depend on include files and library from ../tools/toolutil, the following circular link:
+ *   CPPFLAGS+=-I$(top_srcdir)/tools/toolutil
+ *   LIBS+=$(LIBICUTOOLUTIL)
  */
-#include "unicode/udbgutil.h"
+#include "udbgutil.h"
 #include <stdio.h>
 
 /**
@@ -156,6 +165,7 @@ static const char * const gCalTypes[] = {
     "ethiopic",
     "ethiopic-amete-alem",
     "iso8601",
+    "dangi",
     NULL
 };
 
@@ -175,7 +185,8 @@ typedef enum ECalType {
     CALTYPE_COPTIC,
     CALTYPE_ETHIOPIC,
     CALTYPE_ETHIOPIC_AMETE_ALEM,
-    CALTYPE_ISO8601
+    CALTYPE_ISO8601,
+    CALTYPE_DANGI
 } ECalType;
 
 U_NAMESPACE_BEGIN
@@ -246,8 +257,7 @@ static ECalType getCalendarTypeForLocale(const char *locid) {
     regionLen = uloc_getCountry(canonicalName, region, sizeof(region) - 1, &status);
     if (regionLen == 0) {
         char fullLoc[256];
-        int32_t fullLocLen = 0;
-        fullLocLen = uloc_addLikelySubtags(locid, fullLoc, sizeof(fullLoc) - 1, &status);
+        uloc_addLikelySubtags(locid, fullLoc, sizeof(fullLoc) - 1, &status);
         regionLen = uloc_getCountry(fullLoc, region, sizeof(region) - 1, &status);
     }
     if (U_FAILURE(status)) {
@@ -334,6 +344,9 @@ static Calendar *createStandardCalendar(ECalType calType, const Locale &loc, UEr
             cal->setFirstDayOfWeek(UCAL_MONDAY);
             cal->setMinimalDaysInFirstWeek(4);
             break;
+        case CALTYPE_DANGI:
+            cal = new DangiCalendar(loc, status);
+            break;
         default:
             status = U_UNSUPPORTED_ERROR;
     }
@@ -357,7 +370,7 @@ public:
     BasicCalendarFactory()
         : LocaleKeyFactory(LocaleKeyFactory::INVISIBLE) { }
 
-        virtual ~BasicCalendarFactory() {}
+    virtual ~BasicCalendarFactory();
 
 protected:
     //virtual UBool isSupportedID( const UnicodeString& id, UErrorCode& status) const { 
@@ -416,6 +429,7 @@ protected:
     }
 };
 
+BasicCalendarFactory::~BasicCalendarFactory() {}
 
 /** 
 * A factory which looks up the DefaultCalendar resource to determine which class of calendar to use
@@ -423,7 +437,8 @@ protected:
 
 class DefaultCalendarFactory : public ICUResourceBundleFactory {
 public:
-    DefaultCalendarFactory():  ICUResourceBundleFactory() { } 
+    DefaultCalendarFactory() : ICUResourceBundleFactory() { }
+    virtual ~DefaultCalendarFactory();
 protected:
     virtual UObject* create(const ICUServiceKey& key, const ICUService* /*service*/, UErrorCode& status) const  {
 
@@ -443,6 +458,8 @@ protected:
     }
 };
 
+DefaultCalendarFactory::~DefaultCalendarFactory() {}
+
 // -------------------------------------
 class CalendarService : public ICULocaleService {
 public:
@@ -452,6 +469,8 @@ public:
         UErrorCode status = U_ZERO_ERROR;
         registerFactory(new DefaultCalendarFactory(), status);
     }
+
+    virtual ~CalendarService();
 
     virtual UObject* cloneInstance(UObject* instance) const {
         UnicodeString *s = dynamic_cast<UnicodeString *>(instance);
@@ -491,6 +510,8 @@ public:
         return countFactories() == 1;
     }
 };
+
+CalendarService::~CalendarService() {}
 
 // -------------------------------------
 
@@ -657,7 +678,9 @@ fAreFieldsVirtuallySet(FALSE),
 fNextStamp((int32_t)kMinimumUserStamp),
 fTime(0),
 fLenient(TRUE),
-fZone(0)
+fZone(0),
+fRepeatedWallTime(UCAL_WALLTIME_LAST),
+fSkippedWallTime(UCAL_WALLTIME_LAST)
 {
     clear();
     fZone = TimeZone::createDefault();
@@ -678,7 +701,9 @@ fAreFieldsVirtuallySet(FALSE),
 fNextStamp((int32_t)kMinimumUserStamp),
 fTime(0),
 fLenient(TRUE),
-fZone(0)
+fZone(0),
+fRepeatedWallTime(UCAL_WALLTIME_LAST),
+fSkippedWallTime(UCAL_WALLTIME_LAST)
 {
     if(zone == 0) {
 #if defined (U_DEBUG_CAL)
@@ -706,7 +731,9 @@ fAreFieldsVirtuallySet(FALSE),
 fNextStamp((int32_t)kMinimumUserStamp),
 fTime(0),
 fLenient(TRUE),
-fZone(0)
+fZone(0),
+fRepeatedWallTime(UCAL_WALLTIME_LAST),
+fSkippedWallTime(UCAL_WALLTIME_LAST)
 {
     clear();
     fZone = zone.clone();
@@ -747,6 +774,8 @@ Calendar::operator=(const Calendar &right)
         fAreFieldsSet            = right.fAreFieldsSet;
         fAreFieldsVirtuallySet   = right.fAreFieldsVirtuallySet;
         fLenient                 = right.fLenient;
+        fRepeatedWallTime        = right.fRepeatedWallTime;
+        fSkippedWallTime         = right.fSkippedWallTime;
         if (fZone != NULL) {
             delete fZone;
         }
@@ -760,6 +789,8 @@ Calendar::operator=(const Calendar &right)
         fWeekendCease            = right.fWeekendCease;
         fWeekendCeaseMillis      = right.fWeekendCeaseMillis;
         fNextStamp               = right.fNextStamp;
+        uprv_strcpy(validLocale, right.validLocale);
+        uprv_strcpy(actualLocale, right.actualLocale);
     }
 
     return *this;
@@ -928,6 +959,8 @@ Calendar::isEquivalentTo(const Calendar& other) const
 {
     return typeid(*this) == typeid(other) &&
         fLenient                == other.fLenient &&
+        fRepeatedWallTime       == other.fRepeatedWallTime &&
+        fSkippedWallTime        == other.fSkippedWallTime &&
         fFirstDayOfWeek         == other.fFirstDayOfWeek &&
         fMinimalDaysInFirstWeek == other.fMinimalDaysInFirstWeek &&
         fWeekendOnset           == other.fWeekendOnset &&
@@ -1023,6 +1056,9 @@ Calendar::getTimeInMillis(UErrorCode& status) const
 
 /**
 * Sets this Calendar's current time from the given long value.
+* A status of U_ILLEGAL_ARGUMENT_ERROR is set when millis is
+* outside the range permitted by a Calendar object when not in lenient mode.
+* when in lenient mode the out of range values are pinned to their respective min/max.
 * @param date the new time in UTC milliseconds from the epoch.
 */
 void 
@@ -1031,9 +1067,19 @@ Calendar::setTimeInMillis( double millis, UErrorCode& status ) {
         return;
 
     if (millis > MAX_MILLIS) {
-        millis = MAX_MILLIS;
+        if(isLenient()) {
+            millis = MAX_MILLIS;
+        } else {
+		    status = U_ILLEGAL_ARGUMENT_ERROR;
+		    return;
+        }
     } else if (millis < MIN_MILLIS) {
-        millis = MIN_MILLIS;
+        if(isLenient()) {
+            millis = MIN_MILLIS;
+        } else {
+    		status = U_ILLEGAL_ARGUMENT_ERROR;
+	    	return;
+        }
     }
 
     fTime = millis;
@@ -1573,6 +1619,45 @@ void Calendar::roll(UCalendarDateFields field, int32_t amount, UErrorCode& statu
 
     case UCAL_YEAR:
     case UCAL_YEAR_WOY:
+        {
+            // * If era==0 and years go backwards in time, change sign of amount.
+            // * Until we have new API per #9393, we temporarily hardcode knowledge of
+            //   which calendars have era 0 years that go backwards.
+            UBool era0WithYearsThatGoBackwards = FALSE;
+            int32_t era = get(UCAL_ERA, status);
+            if (era == 0) {
+                const char * calType = getType();
+                if ( uprv_strcmp(calType,"gregorian")==0 || uprv_strcmp(calType,"roc")==0 || uprv_strcmp(calType,"coptic")==0 ) {
+                    amount = -amount;
+                    era0WithYearsThatGoBackwards = TRUE;
+                }
+            }
+            int32_t newYear = internalGet(field) + amount;
+            if (era > 0 || newYear >= 1) {
+                int32_t maxYear = getActualMaximum(field, status);
+                if (maxYear < 32768) {
+                    // this era has real bounds, roll should wrap years
+                    if (newYear < 1) {
+                        newYear = maxYear - ((-newYear) % maxYear);
+                    } else if (newYear > maxYear) {
+                        newYear = ((newYear - 1) % maxYear) + 1;
+                    }
+                // else era is unbounded, just pin low year instead of wrapping
+                } else if (newYear < 1) {
+                    newYear = 1;
+                }
+            // else we are in era 0 with newYear < 1;
+            // calendars with years that go backwards must pin the year value at 0,
+            // other calendars can have years < 0 in era 0
+            } else if (era0WithYearsThatGoBackwards) {
+                newYear = 1;
+            }
+            set(field, newYear);
+            pinField(UCAL_MONTH,status);
+            pinField(UCAL_DAY_OF_MONTH,status);
+            return;
+        }
+
     case UCAL_EXTENDED_YEAR:
         // Rolling the year can involve pinning the DAY_OF_MONTH.
         set(field, internalGet(field) + amount);
@@ -1805,7 +1890,8 @@ void Calendar::add(UCalendarDateFields field, int32_t amount, UErrorCode& status
 
     // We handle most fields in the same way.  The algorithm is to add
     // a computed amount of millis to the current millis.  The only
-    // wrinkle is with DST -- for some fields, like the DAY_OF_MONTH,
+    // wrinkle is with DST (and/or a change to the zone's UTC offset, which
+    // we'll include with DST) -- for some fields, like the DAY_OF_MONTH,
     // we don't want the HOUR to shift due to changes in DST.  If the
     // result of the add operation is to move from DST to Standard, or
     // vice versa, we need to adjust by an hour forward or back,
@@ -1833,12 +1919,37 @@ void Calendar::add(UCalendarDateFields field, int32_t amount, UErrorCode& status
         return;
 
     case UCAL_YEAR:
-    case UCAL_EXTENDED_YEAR:
     case UCAL_YEAR_WOY:
+      {
+        // * If era=0 and years go backwards in time, change sign of amount.
+        // * Until we have new API per #9393, we temporarily hardcode knowledge of
+        //   which calendars have era 0 years that go backwards.
+        // * Note that for UCAL_YEAR (but not UCAL_YEAR_WOY) we could instead handle
+        //   this by applying the amount to the UCAL_EXTENDED_YEAR field; but since
+        //   we would still need to handle UCAL_YEAR_WOY as below, might as well
+        //   also handle UCAL_YEAR the same way.
+        int32_t era = get(UCAL_ERA, status);
+        if (era == 0) {
+          const char * calType = getType();
+          if ( uprv_strcmp(calType,"gregorian")==0 || uprv_strcmp(calType,"roc")==0 || uprv_strcmp(calType,"coptic")==0 ) {
+            amount = -amount;
+          }
+        }
+      }
+      // Fall through into normal handling
+    case UCAL_EXTENDED_YEAR:
     case UCAL_MONTH:
+      {
+        UBool oldLenient = isLenient();
+        setLenient(TRUE);
         set(field, get(field, status) + amount);
         pinField(UCAL_DAY_OF_MONTH, status);
-        return;
+        if(oldLenient==FALSE) {
+          complete(status); /* force recalculate */
+          setLenient(oldLenient);
+        }
+      }
+      return;
 
     case UCAL_WEEK_OF_YEAR:
     case UCAL_WEEK_OF_MONTH:
@@ -1891,32 +2002,41 @@ void Calendar::add(UCalendarDateFields field, int32_t amount, UErrorCode& status
     }
 
     // In order to keep the hour invariant (for fields where this is
-    // appropriate), record the DST_OFFSET before and after the add()
-    // operation.  If it has changed, then adjust the millis to
-    // compensate.
-    int32_t dst = 0;
+    // appropriate), check the combined DST & ZONE offset before and
+    // after the add() operation. If it changes, then adjust the millis
+    // to compensate.
+    int32_t prevOffset = 0;
     int32_t hour = 0;
     if (keepHourInvariant) {
-        dst = get(UCAL_DST_OFFSET, status);
+        prevOffset = get(UCAL_DST_OFFSET, status) + get(UCAL_ZONE_OFFSET, status);
         hour = internalGet(UCAL_HOUR_OF_DAY);
     }
 
     setTimeInMillis(getTimeInMillis(status) + delta, status);
 
     if (keepHourInvariant) {
-        dst -= get(UCAL_DST_OFFSET, status);
-        if (dst != 0) {
+        int32_t newOffset = get(UCAL_DST_OFFSET, status) + get(UCAL_ZONE_OFFSET, status);
+        if (newOffset != prevOffset) {
             // We have done an hour-invariant adjustment but the
-            // DST offset has altered.  We adjust millis to keep
-            // the hour constant.  In cases such as midnight after
+            // combined offset has changed. We adjust millis to keep
+            // the hour constant. In cases such as midnight after
             // a DST change which occurs at midnight, there is the
-            // danger of adjusting into a different day.  To avoid
+            // danger of adjusting into a different day. To avoid
             // this we make the adjustment only if it actually
             // maintains the hour.
-            double t = internalGetTime();
-            setTimeInMillis(t + dst, status);
-            if (get(UCAL_HOUR_OF_DAY, status) != hour) {
-                setTimeInMillis(t, status);
+
+            // When the difference of the previous UTC offset and
+            // the new UTC offset exceeds 1 full day, we do not want
+            // to roll over/back the date. For now, this only happens
+            // in Samoa (Pacific/Apia) on Dec 30, 2011. See ticket:9452.
+            int32_t adjAmount = prevOffset - newOffset;
+            adjAmount = adjAmount >= 0 ? adjAmount % (int32_t)kOneDay : -(-adjAmount % (int32_t)kOneDay);
+            if (adjAmount != 0) {
+                double t = internalGetTime();
+                setTimeInMillis(t + adjAmount, status);
+                if (get(UCAL_HOUR_OF_DAY, status) != hour) {
+                    setTimeInMillis(t, status);
+                }
             }
         }
     } 
@@ -1948,22 +2068,24 @@ int32_t Calendar::fieldDifference(UDate targetMs, UCalendarDateFields field, UEr
                 return max;
             } else if (ms > targetMs) {
                 break;
-            } else {
+            } else if (max < INT32_MAX) {
                 min = max;
                 max <<= 1;
                 if (max < 0) {
-                    // Field difference too large to fit into int32_t
-#if defined (U_DEBUG_CAL)
-                    fprintf(stderr, "%s:%d: ILLEGAL ARG because field %s's max too large for int32_t\n",
-                        __FILE__, __LINE__, fldName(field));
-#endif
-                    ec = U_ILLEGAL_ARGUMENT_ERROR;
+                    max = INT32_MAX;
                 }
+            } else {
+                // Field difference too large to fit into int32_t
+#if defined (U_DEBUG_CAL)
+                fprintf(stderr, "%s:%d: ILLEGAL ARG because field %s's max too large for int32_t\n",
+                    __FILE__, __LINE__, fldName(field));
+#endif
+                ec = U_ILLEGAL_ARGUMENT_ERROR;
             }
         }
         // Do a binary search
         while ((max - min) > 1 && U_SUCCESS(ec)) {
-            int32_t t = (min + max) / 2;
+            int32_t t = min + (max - min)/2; // make sure intermediate values don't exceed INT32_MAX
             setTimeInMillis(startMs, ec);
             add(field, t, ec);
             double ms = getTimeInMillis(ec);
@@ -2001,7 +2123,7 @@ int32_t Calendar::fieldDifference(UDate targetMs, UCalendarDateFields field, UEr
         }
         // Do a binary search
         while ((min - max) > 1 && U_SUCCESS(ec)) {
-            int32_t t = (min + max) / 2;
+            int32_t t = min + (max - min)/2; // make sure intermediate values don't exceed INT32_MAX
             setTimeInMillis(startMs, ec);
             add(field, t, ec);
             double ms = getTimeInMillis(ec);
@@ -2081,6 +2203,40 @@ UBool
 Calendar::isLenient() const
 {
     return fLenient;
+}
+
+// -------------------------------------
+
+void
+Calendar::setRepeatedWallTimeOption(UCalendarWallTimeOption option)
+{
+    if (option == UCAL_WALLTIME_LAST || option == UCAL_WALLTIME_FIRST) {
+        fRepeatedWallTime = option;
+    }
+}
+
+// -------------------------------------
+
+UCalendarWallTimeOption
+Calendar::getRepeatedWallTimeOption(void) const
+{
+    return fRepeatedWallTime;
+}
+
+// -------------------------------------
+
+void
+Calendar::setSkippedWallTimeOption(UCalendarWallTimeOption option)
+{
+    fSkippedWallTime = option;
+}
+
+// -------------------------------------
+
+UCalendarWallTimeOption
+Calendar::getSkippedWallTimeOption(void) const
+{
+    return fSkippedWallTime;
 }
 
 // -------------------------------------
@@ -2470,12 +2626,14 @@ UCalendarDateFields Calendar::newerField(UCalendarDateFields defaultField, UCale
 
 UCalendarDateFields Calendar::resolveFields(const UFieldResolutionTable* precedenceTable) {
     int32_t bestField = UCAL_FIELD_COUNT;
+    int32_t tempBestField;
     for (int32_t g=0; precedenceTable[g][0][0] != -1 && (bestField == UCAL_FIELD_COUNT); ++g) {
         int32_t bestStamp = kUnset;
         for (int32_t l=0; precedenceTable[g][l][0] != -1; ++l) {
             int32_t lineStamp = kUnset;
             // Skip over first entry if it is negative
             for (int32_t i=((precedenceTable[g][l][0]>=kResolveRemap)?1:0); precedenceTable[g][l][i]!=-1; ++i) {
+                U_ASSERT(precedenceTable[g][l][i] < UCAL_FIELD_COUNT);
                 int32_t s = fStamp[precedenceTable[g][l][i]];
                 // If any field is unset then don't use this line
                 if (s == kUnset) {
@@ -2486,14 +2644,26 @@ UCalendarDateFields Calendar::resolveFields(const UFieldResolutionTable* precede
             }
             // Record new maximum stamp & field no.
             if (lineStamp > bestStamp) {
-                bestStamp = lineStamp;
-                bestField = precedenceTable[g][l][0]; // First field refers to entire line
+                tempBestField = precedenceTable[g][l][0]; // First field refers to entire line
+                if (tempBestField >= kResolveRemap) {
+                    tempBestField &= (kResolveRemap-1);
+                    // This check is needed to resolve some issues with UCAL_YEAR precedence mapping
+                    if (tempBestField != UCAL_DATE || (fStamp[UCAL_WEEK_OF_MONTH] < fStamp[tempBestField])) {
+                        bestField = tempBestField;
+                    }
+                } else {
+                    bestField = tempBestField;
+                }
+
+                if (bestField == tempBestField) {
+                    bestStamp = lineStamp;
+                }
             }
 linesInGroup:
             ;
         }
     }
-    return (UCalendarDateFields)( (bestField>=kResolveRemap)?(bestField&(kResolveRemap-1)):bestField  );
+    return (UCalendarDateFields)bestField;
 }
 
 const UFieldResolutionTable Calendar::kDatePrecedence[] =
@@ -2579,33 +2749,97 @@ void Calendar::computeTime(UErrorCode& status) {
     // is legacy behavior.  Without this, clear(MONTH) has no effect,
     // since the internally set JULIAN_DAY is used.
     if (fStamp[UCAL_MILLISECONDS_IN_DAY] >= ((int32_t)kMinimumUserStamp) &&
-        newestStamp(UCAL_AM_PM, UCAL_MILLISECOND, kUnset) <= fStamp[UCAL_MILLISECONDS_IN_DAY]) {
-            millisInDay = internalGet(UCAL_MILLISECONDS_IN_DAY);
-        } else {
-            millisInDay = computeMillisInDay();
-        }
+            newestStamp(UCAL_AM_PM, UCAL_MILLISECOND, kUnset) <= fStamp[UCAL_MILLISECONDS_IN_DAY]) {
+        millisInDay = internalGet(UCAL_MILLISECONDS_IN_DAY);
+    } else {
+        millisInDay = computeMillisInDay();
+    }
 
+    UDate t = 0;
+    if (fStamp[UCAL_ZONE_OFFSET] >= ((int32_t)kMinimumUserStamp) || fStamp[UCAL_DST_OFFSET] >= ((int32_t)kMinimumUserStamp)) {
+        t = millis + millisInDay - (internalGet(UCAL_ZONE_OFFSET) + internalGet(UCAL_DST_OFFSET));
+    } else {
         // Compute the time zone offset and DST offset.  There are two potential
         // ambiguities here.  We'll assume a 2:00 am (wall time) switchover time
         // for discussion purposes here.
-        // 1. The transition into DST.  Here, a designated time of 2:00 am - 2:59 am
-        //    can be in standard or in DST depending.  However, 2:00 am is an invalid
-        //    representation (the representation jumps from 1:59:59 am Std to 3:00:00 am DST).
-        //    We assume standard time, that is, 2:30 am is interpreted as 3:30 am DST.
-        // 2. The transition out of DST.  Here, a designated time of 1:00 am - 1:59 am
-        //    can be in standard or DST.  Both are valid representations (the rep
-        //    jumps from 1:59:59 DST to 1:00:00 Std).
-        //    Again, we assume standard time, that is, 1:30 am is interpreted as 1:30 am Std.
+        //
+        // 1. The positive offset change such as transition into DST.
+        //    Here, a designated time of 2:00 am - 2:59 am does not actually exist.
+        //    For this case, skippedWallTime option specifies the behavior.
+        //    For example, 2:30 am is interpreted as;
+        //      - WALLTIME_LAST(default): 3:30 am (DST) (interpreting 2:30 am as 31 minutes after 1:59 am (STD))
+        //      - WALLTIME_FIRST: 1:30 am (STD) (interpreting 2:30 am as 30 minutes before 3:00 am (DST))
+        //      - WALLTIME_NEXT_VALID: 3:00 am (DST) (next valid time after 2:30 am on a wall clock)
+        // 2. The negative offset change such as transition out of DST.
+        //    Here, a designated time of 1:00 am - 1:59 am can be in standard or DST.  Both are valid
+        //    representations (the rep jumps from 1:59:59 DST to 1:00:00 Std).
+        //    For this case, repeatedWallTime option specifies the behavior.
+        //    For example, 1:30 am is interpreted as;
+        //      - WALLTIME_LAST(default): 1:30 am (STD) - latter occurrence
+        //      - WALLTIME_FIRST: 1:30 am (DST) - former occurrence
+        //
+        // In addition to above, when calendar is strict (not default), wall time falls into
+        // the skipped time range will be processed as an error case.
+        //
+        // These special cases are mostly handled in #computeZoneOffset(long), except WALLTIME_NEXT_VALID
+        // at positive offset change. The protected method computeZoneOffset(long) is exposed to Calendar
+        // subclass implementations and marked as @stable. Strictly speaking, WALLTIME_NEXT_VALID
+        // should be also handled in the same place, but we cannot change the code flow without deprecating
+        // the protected method.
+        //
         // We use the TimeZone object, unless the user has explicitly set the ZONE_OFFSET
         // or DST_OFFSET fields; then we use those fields.
-        if (fStamp[UCAL_ZONE_OFFSET] >= ((int32_t)kMinimumUserStamp) ||
-            fStamp[UCAL_DST_OFFSET] >= ((int32_t)kMinimumUserStamp)) {
-                millisInDay -= internalGet(UCAL_ZONE_OFFSET) + internalGet(UCAL_DST_OFFSET);
-            } else {
-                millisInDay -= computeZoneOffset(millis, millisInDay,status);
-            }
 
-            internalSetTime(millis + millisInDay);
+        if (!isLenient() || fSkippedWallTime == UCAL_WALLTIME_NEXT_VALID) {
+            // When strict, invalidate a wall time falls into a skipped wall time range.
+            // When lenient and skipped wall time option is WALLTIME_NEXT_VALID,
+            // the result time will be adjusted to the next valid time (on wall clock).
+            int32_t zoneOffset = computeZoneOffset(millis, millisInDay, status);
+            UDate tmpTime = millis + millisInDay - zoneOffset;
+
+            int32_t raw, dst;
+            fZone->getOffset(tmpTime, FALSE, raw, dst, status);
+
+            if (U_SUCCESS(status)) {
+                // zoneOffset != (raw + dst) only when the given wall time fall into
+                // a skipped wall time range caused by positive zone offset transition.
+                if (zoneOffset != (raw + dst)) {
+                    if (!isLenient()) {
+                        status = U_ILLEGAL_ARGUMENT_ERROR;
+                    } else {
+                        U_ASSERT(fSkippedWallTime == UCAL_WALLTIME_NEXT_VALID);
+                        // Adjust time to the next valid wall clock time.
+                        // At this point, tmpTime is on or after the zone offset transition causing
+                        // the skipped time range.
+
+                        BasicTimeZone *btz = getBasicTimeZone();
+                        if (btz) {
+                            TimeZoneTransition transition;
+                            UBool hasTransition = btz->getPreviousTransition(tmpTime, TRUE, transition);
+                            if (hasTransition) {
+                                t = transition.getTime();
+                            } else {
+                                // Could not find any transitions.
+                                // Note: This should never happen.
+                                status = U_INTERNAL_PROGRAM_ERROR;
+                            }
+                        } else {
+                            // If not BasicTimeZone, return unsupported error for now.
+                            // TODO: We may support non-BasicTimeZone in future.
+                            status = U_UNSUPPORTED_ERROR;
+                        }
+                    }
+                } else {
+                    t = tmpTime;
+                }
+            }
+        } else {
+            t = millis + millisInDay - computeZoneOffset(millis, millisInDay, status);
+        }
+    }
+    if (U_SUCCESS(status)) {
+        internalSetTime(t);
+    }
 }
 
 /**
@@ -2662,12 +2896,49 @@ int32_t Calendar::computeMillisInDay() {
 */
 int32_t Calendar::computeZoneOffset(double millis, int32_t millisInDay, UErrorCode &ec) {
     int32_t rawOffset, dstOffset;
-    getTimeZone().getOffset(millis+millisInDay, TRUE, rawOffset, dstOffset, ec);
+    UDate wall = millis + millisInDay;
+    BasicTimeZone* btz = getBasicTimeZone();
+    if (btz) {
+        int duplicatedTimeOpt = (fRepeatedWallTime == UCAL_WALLTIME_FIRST) ? BasicTimeZone::kFormer : BasicTimeZone::kLatter;
+        int nonExistingTimeOpt = (fSkippedWallTime == UCAL_WALLTIME_FIRST) ? BasicTimeZone::kLatter : BasicTimeZone::kFormer;
+        btz->getOffsetFromLocal(wall, nonExistingTimeOpt, duplicatedTimeOpt, rawOffset, dstOffset, ec);
+    } else {
+        const TimeZone& tz = getTimeZone();
+        // By default, TimeZone::getOffset behaves UCAL_WALLTIME_LAST for both.
+        tz.getOffset(wall, TRUE, rawOffset, dstOffset, ec);
+
+        UBool sawRecentNegativeShift = FALSE;
+        if (fRepeatedWallTime == UCAL_WALLTIME_FIRST) {
+            // Check if the given wall time falls into repeated time range
+            UDate tgmt = wall - (rawOffset + dstOffset);
+
+            // Any negative zone transition within last 6 hours?
+            // Note: The maximum historic negative zone transition is -3 hours in the tz database.
+            // 6 hour window would be sufficient for this purpose.
+            int32_t tmpRaw, tmpDst;
+            tz.getOffset(tgmt - 6*60*60*1000, FALSE, tmpRaw, tmpDst, ec);
+            int32_t offsetDelta = (rawOffset + dstOffset) - (tmpRaw + tmpDst);
+
+            U_ASSERT(offsetDelta < -6*60*60*1000);
+            if (offsetDelta < 0) {
+                sawRecentNegativeShift = TRUE;
+                // Negative shift within last 6 hours. When UCAL_WALLTIME_FIRST is used and the given wall time falls
+                // into the repeated time range, use offsets before the transition.
+                // Note: If it does not fall into the repeated time range, offsets remain unchanged below.
+                tz.getOffset(wall + offsetDelta, TRUE, rawOffset, dstOffset, ec);
+            }
+        }
+        if (!sawRecentNegativeShift && fSkippedWallTime == UCAL_WALLTIME_FIRST) {
+            // When skipped wall time option is WALLTIME_FIRST,
+            // recalculate offsets from the resolved time (non-wall).
+            // When the given wall time falls into skipped wall time,
+            // the offsets will be based on the zone offsets AFTER
+            // the transition (which means, earliest possibe interpretation).
+            UDate tgmt = wall - (rawOffset + dstOffset);
+            tz.getOffset(tgmt, FALSE, rawOffset, dstOffset, ec);
+        }
+    }
     return rawOffset + dstOffset;
-    // Note: Because we pass in wall millisInDay, rather than
-    // standard millisInDay, we interpret "1:00 am" on the day
-    // of cessation of DST as "1:00 am Std" (assuming the time
-    // of cessation is 2:00 am).
 }
 
 int32_t Calendar::computeJulianDay() 
@@ -3012,7 +3283,6 @@ int32_t Calendar::handleGetExtendedYearFromWeekFields(int32_t yearWoy, int32_t w
             // we're not possibly in the last week -must be ywoy
             return yearWoy;
         }
-        break;
 
     case UCAL_DATE:
         if((internalGet(UCAL_MONTH)==0) &&
@@ -3032,18 +3302,10 @@ int32_t Calendar::handleGetExtendedYearFromWeekFields(int32_t yearWoy, int32_t w
             //within 1st week and in this month.. 
             //return yearWoy+1;
             return yearWoy;
-            break;
 
     default: // assume the year is appropriate
         return yearWoy;
-        break;
     }
-
-#if defined (U_DEBUG_CAL) 
-    fprintf(stderr, "%s:%d - forgot a return on field %s\n", __FILE__, __LINE__, fldName(bestField));
-#endif 
-
-    return yearWoy;
 }
 
 int32_t Calendar::handleGetMonthLength(int32_t extendedYear, int32_t month) const
@@ -3408,6 +3670,17 @@ void
 Calendar::internalSet(EDateFields field, int32_t value)
 {
     internalSet((UCalendarDateFields) field, value);
+}
+
+BasicTimeZone*
+Calendar::getBasicTimeZone(void) const {
+    if (dynamic_cast<const OlsonTimeZone *>(fZone) != NULL
+        || dynamic_cast<const SimpleTimeZone *>(fZone) != NULL
+        || dynamic_cast<const RuleBasedTimeZone *>(fZone) != NULL
+        || dynamic_cast<const VTimeZone *>(fZone) != NULL) {
+        return (BasicTimeZone*)fZone;
+    }
+    return NULL;
 }
 
 U_NAMESPACE_END

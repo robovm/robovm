@@ -1,7 +1,7 @@
 /*
 ******************************************************************************
 *
-*   Copyright (C) 2001-2010, International Business Machines
+*   Copyright (C) 2001-2011, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 ******************************************************************************
@@ -27,9 +27,13 @@
 #endif
 
 #include "unicode/utypes.h"
+#include "unicode/utf.h"
+#include "unicode/utf8.h"
+#include "unicode/utf16.h"
 #include "cmemory.h"
 #include "utrie2.h"
 #include "utrie2_impl.h"
+#include "uassert.h"
 
 /* Public UTrie2 API implementation ----------------------------------------- */
 
@@ -79,7 +83,7 @@ utrie2_get32FromLeadSurrogateCodeUnit(const UTrie2 *trie, UChar32 c) {
     }
 }
 
-static U_INLINE int32_t
+static inline int32_t
 u8Index(const UTrie2 *trie, UChar32 c, int32_t i) {
     int32_t idx=
         _UTRIE2_INDEX_FROM_CP(
@@ -529,6 +533,7 @@ enumEitherTrie(const UTrie2 *trie,
     if(trie->newTrie==NULL) {
         /* frozen trie */
         idx=trie->index;
+        U_ASSERT(idx!=NULL); /* the following code assumes trie->newTrie is not NULL when idx is NULL */
         data32=trie->data32;
 
         index2NullOffset=trie->index2NullOffset;
@@ -537,6 +542,7 @@ enumEitherTrie(const UTrie2 *trie,
         /* unfrozen, mutable trie */
         idx=NULL;
         data32=trie->newTrie->data;
+        U_ASSERT(data32!=NULL); /* the following code assumes idx is not NULL when data32 is NULL */
 
         index2NullOffset=trie->newTrie->index2NullOffset;
         nullBlock=trie->newTrie->dataNullOffset;

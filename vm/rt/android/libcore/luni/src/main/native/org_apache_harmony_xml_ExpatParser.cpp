@@ -77,6 +77,7 @@ public:
             }
             memcpy(newArray, array, capacity * sizeof(jstring));
 
+            delete[] array;
             array = newArray;
             capacity = newCapacity;
         }
@@ -139,7 +140,7 @@ struct ParsingContext {
             if (javaBuffer == NULL) return NULL;
 
             // Create a global reference.
-            javaBuffer = (jcharArray) env->NewGlobalRef(javaBuffer);
+            javaBuffer = reinterpret_cast<jcharArray>(env->NewGlobalRef(javaBuffer));
             if (javaBuffer == NULL) return NULL;
 
             buffer = javaBuffer;
@@ -197,6 +198,14 @@ static ParsingContext* toParsingContext(void* data) {
 
 static ParsingContext* toParsingContext(XML_Parser parser) {
     return reinterpret_cast<ParsingContext*>(XML_GetUserData(parser));
+}
+
+static XML_Parser toXMLParser(jlong address) {
+  return reinterpret_cast<XML_Parser>(address);
+}
+
+static jlong fromXMLParser(XML_Parser parser) {
+  return reinterpret_cast<uintptr_t>(parser);
 }
 
 static jmethodID commentMethod;
@@ -278,7 +287,7 @@ static InternedString* newInternedString(JNIEnv* env, const char* bytes, int has
     }
 
     // Create a global reference to the interned string.
-    wrapper->interned = (jstring) env->NewGlobalRef(interned.get());
+    wrapper->interned = reinterpret_cast<jstring>(env->NewGlobalRef(interned.get()));
     if (env->ExceptionCheck()) {
         return NULL;
     }
@@ -323,6 +332,7 @@ static InternedString** expandInternedStringBucket(
     memcpy(newBucket, existingBucket, size * sizeof(InternedString*));
     newBucket[size] = entry;
     newBucket[size + 1] = NULL;
+    delete[] existingBucket;
 
     return newBucket;
 }
@@ -376,6 +386,7 @@ static jstring internString(JNIEnv* env, ParsingContext* parsingContext, const c
         // Expand the bucket.
         bucket = expandInternedStringBucket(bucket, internedString);
         if (bucket == NULL) {
+            delete internedString;
             jniThrowOutOfMemoryError(env, NULL);
             return NULL;
         }
@@ -391,6 +402,7 @@ static jstring internString(JNIEnv* env, ParsingContext* parsingContext, const c
         // Create a new bucket with one entry.
         bucket = newInternedStringBucket(internedString);
         if (bucket == NULL) {
+            delete internedString;
             jniThrowOutOfMemoryError(env, NULL);
             return NULL;
         }
@@ -417,7 +429,9 @@ static size_t fillBuffer(ParsingContext* parsingContext, const char* utf8, int b
 
     // Grow buffer if necessary (the length in bytes is always >= the length in chars).
     jcharArray javaChars = parsingContext->ensureCapacity(byteCount);
-    if (javaChars == NULL) return -1;
+    if (javaChars == NULL) {
+        return -1;
+    }
 
     // Decode UTF-8 characters into our char[].
     ScopedCharArrayRW chars(env, javaChars);
@@ -454,7 +468,7 @@ static void bufferAndInvoke(jmethodID method, void* data, const char* text, size
     env->CallVoidMethod(javaParser, method, buffer, utf16length);
 }
 
-static const char** toAttributes(jint attributePointer) {
+static const char** toAttributes(jlong attributePointer) {
     return reinterpret_cast<const char**>(static_cast<uintptr_t>(attributePointer));
 }
 
@@ -463,7 +477,7 @@ static const char** toAttributes(jint attributePointer) {
  */
 class ExpatElementName {
 public:
-    ExpatElementName(JNIEnv* env, ParsingContext* parsingContext, jint attributePointer, jint index) {
+    ExpatElementName(JNIEnv* env, ParsingContext* parsingContext, jlong attributePointer, jint index) {
         const char** attributes = toAttributes(attributePointer);
         const char* name = attributes[index * 2];
         init(env, parsingContext, name);
@@ -503,7 +517,7 @@ public:
         }
 
         // return prefix + ":" + localName
-        LocalArray<1024> qName(strlen(mPrefix) + 1 + strlen(mLocalName) + 1);
+        ::LocalArray<1024> qName(strlen(mPrefix) + 1 + strlen(mLocalName) + 1);
         snprintf(&qName[0], qName.size(), "%s:%s", mPrefix, mLocalName);
         return internString(mEnv, mParsingContext, &qName[0]);
     }
@@ -831,19 +845,19 @@ static void processingInstruction(void* data, const char* target, const char* in
  * @param javaContext that was provided to handleExternalEntity
  * @returns the pointer to the C Expat entity parser
  */
-extern "C" jint Java_org_apache_harmony_xml_ExpatParser_createEntityParser(JNIEnv* env, jobject, jint parentParser, jstring javaContext) {
+extern "C" jlong Java_org_apache_harmony_xml_ExpatParser_createEntityParser(JNIEnv* env, jobject, jlong parentParser, jstring javaContext) {
     ScopedUtfChars context(env, javaContext);
     if (context.c_str() == NULL) {
         return 0;
     }
 
-    XML_Parser parent = (XML_Parser) parentParser;
+    XML_Parser parent = toXMLParser(parentParser);
     XML_Parser entityParser = XML_ExternalEntityParserCreate(parent, context.c_str(), NULL);
     if (entityParser == NULL) {
         jniThrowOutOfMemoryError(env, NULL);
     }
 
-    return (jint) entityParser;
+    return fromXMLParser(entityParser);
 }
 
 /**
@@ -944,7 +958,7 @@ static void notationDecl(void* data, const char* name, const char* /*base*/, con
  * @param processNamespaces true if the parser should handle namespaces
  * @returns the pointer to the C Expat parser
  */
-extern "C" jint Java_org_apache_harmony_xml_ExpatParser_initialize(JNIEnv* env, jobject object, jstring javaEncoding,
+extern "C" jlong Java_org_apache_harmony_xml_ExpatParser_initialize(JNIEnv* env, jobject object, jstring javaEncoding,
         jboolean processNamespaces) {
     // Allocate parsing context.
     UniquePtr<ParsingContext> context(new ParsingContext(object));
@@ -953,7 +967,7 @@ extern "C" jint Java_org_apache_harmony_xml_ExpatParser_initialize(JNIEnv* env, 
         return 0;
     }
 
-    context->processNamespaces = (bool) processNamespaces;
+    context->processNamespaces = processNamespaces;
 
     // Create a parser.
     XML_Parser parser;
@@ -989,7 +1003,7 @@ extern "C" jint Java_org_apache_harmony_xml_ExpatParser_initialize(JNIEnv* env, 
         return 0;
     }
 
-    return (jint) parser;
+    return fromXMLParser(parser);
 }
 
 /**
@@ -999,9 +1013,9 @@ extern "C" jint Java_org_apache_harmony_xml_ExpatParser_initialize(JNIEnv* env, 
  * can be reinterpreted as a UTF-16 encoded byte[]. appendBytes, appendChars
  * and appendString all call through this method.
  */
-static void append(JNIEnv* env, jobject object, jint pointer,
+static void append(JNIEnv* env, jobject object, jlong pointer,
         const char* bytes, size_t byteOffset, size_t byteCount, jboolean isFinal) {
-    XML_Parser parser = (XML_Parser) pointer;
+    XML_Parser parser = toXMLParser(pointer);
     ParsingContext* context = toParsingContext(parser);
     context->env = env;
     context->object = object;
@@ -1012,7 +1026,7 @@ static void append(JNIEnv* env, jobject object, jint pointer,
     context->env = NULL;
 }
 
-extern "C" void Java_org_apache_harmony_xml_ExpatParser_appendBytes(JNIEnv* env, jobject object, jint pointer,
+extern "C" void Java_org_apache_harmony_xml_ExpatParser_appendBytes(JNIEnv* env, jobject object, jlong pointer,
         jbyteArray xml, jint byteOffset, jint byteCount) {
     ScopedByteArrayRO byteArray(env, xml);
     if (byteArray.get() == NULL) {
@@ -1023,7 +1037,7 @@ extern "C" void Java_org_apache_harmony_xml_ExpatParser_appendBytes(JNIEnv* env,
     append(env, object, pointer, bytes, byteOffset, byteCount, XML_FALSE);
 }
 
-extern "C" void Java_org_apache_harmony_xml_ExpatParser_appendChars(JNIEnv* env, jobject object, jint pointer,
+extern "C" void Java_org_apache_harmony_xml_ExpatParser_appendChars(JNIEnv* env, jobject object, jlong pointer,
         jcharArray xml, jint charOffset, jint charCount) {
     ScopedCharArrayRO charArray(env, xml);
     if (charArray.get() == NULL) {
@@ -1036,7 +1050,7 @@ extern "C" void Java_org_apache_harmony_xml_ExpatParser_appendChars(JNIEnv* env,
     append(env, object, pointer, bytes, byteOffset, byteCount, XML_FALSE);
 }
 
-extern "C" void Java_org_apache_harmony_xml_ExpatParser_appendString(JNIEnv* env, jobject object, jint pointer, jstring javaXml, jboolean isFinal) {
+extern "C" void Java_org_apache_harmony_xml_ExpatParser_appendString(JNIEnv* env, jobject object, jlong pointer, jstring javaXml, jboolean isFinal) {
     ScopedStringChars xml(env, javaXml);
     if (xml.get() == NULL) {
         return;
@@ -1048,101 +1062,69 @@ extern "C" void Java_org_apache_harmony_xml_ExpatParser_appendString(JNIEnv* env
 
 /**
  * Releases parser only.
- *
- * @param object the Java ExpatParser instance
- * @param i pointer to the C expat parser
  */
-extern "C" void Java_org_apache_harmony_xml_ExpatParser_releaseParser(JNIEnv*, jobject, jint i) {
-    XML_Parser parser = (XML_Parser) i;
-    XML_ParserFree(parser);
+extern "C" void Java_org_apache_harmony_xml_ExpatParser_releaseParser(JNIEnv*, jobject, jlong address) {
+  XML_ParserFree(toXMLParser(address));
 }
 
 /**
  * Cleans up after the parser. Called at garbage collection time.
- *
- * @param object the Java ExpatParser instance
- * @param i pointer to the C expat parser
  */
-extern "C" void Java_org_apache_harmony_xml_ExpatParser_release(JNIEnv* env, jobject, jint i) {
-    XML_Parser parser = (XML_Parser) i;
+extern "C" void Java_org_apache_harmony_xml_ExpatParser_release(JNIEnv* env, jobject, jlong address) {
+  XML_Parser parser = toXMLParser(address);
 
-    ParsingContext* context = toParsingContext(parser);
-    context->env = env;
-    delete context;
+  ParsingContext* context = toParsingContext(parser);
+  context->env = env;
+  delete context;
 
-    XML_ParserFree(parser);
+  XML_ParserFree(parser);
 }
 
-/**
- * Gets the current line.
- *
- * @param object the Java ExpatParser instance
- * @param pointer to the C expat parser
- * @returns current line number
- */
-extern "C" int Java_org_apache_harmony_xml_ExpatParser_line(JNIEnv*, jobject, jint pointer) {
-    XML_Parser parser = (XML_Parser) pointer;
-    return XML_GetCurrentLineNumber(parser);
+extern "C" int Java_org_apache_harmony_xml_ExpatParser_line(JNIEnv*, jobject, jlong address) {
+  return XML_GetCurrentLineNumber(toXMLParser(address));
 }
 
-/**
- * Gets the current column.
- *
- * @param object the Java ExpatParser instance
- * @param pointer to the C expat parser
- * @returns current column number
- */
-extern "C" int Java_org_apache_harmony_xml_ExpatParser_column(JNIEnv*, jobject, jint pointer) {
-    XML_Parser parser = (XML_Parser) pointer;
-    return XML_GetCurrentColumnNumber(parser);
+extern "C" int Java_org_apache_harmony_xml_ExpatParser_column(JNIEnv*, jobject, jlong address) {
+  return XML_GetCurrentColumnNumber(toXMLParser(address));
 }
 
 /**
  * Gets the URI of the attribute at the given index.
  *
- * @param object Java ExpatParser instance
- * @param pointer to the C expat parser
  * @param attributePointer to the attribute array
  * @param index of the attribute
  * @returns interned Java string containing attribute's URI
  */
-extern "C" jstring Java_org_apache_harmony_xml_ExpatAttributes_getURI(JNIEnv* env, jobject, jint pointer,
-        jint attributePointer, jint index) {
-    XML_Parser parser = (XML_Parser) pointer;
-    ParsingContext* context = toParsingContext(parser);
-    return ExpatElementName(env, context, attributePointer, index).uri();
+extern "C" jstring Java_org_apache_harmony_xml_ExpatAttributes_getURI(JNIEnv* env, jobject, jlong address,
+        jlong attributePointer, jint index) {
+  ParsingContext* context = toParsingContext(toXMLParser(address));
+  return ExpatElementName(env, context, attributePointer, index).uri();
 }
 
 /**
  * Gets the local name of the attribute at the given index.
  *
- * @param object Java ExpatParser instance
- * @param pointer to the C expat parser
  * @param attributePointer to the attribute array
  * @param index of the attribute
  * @returns interned Java string containing attribute's local name
  */
-extern "C" jstring Java_org_apache_harmony_xml_ExpatAttributes_getLocalName(JNIEnv* env, jobject, jint pointer,
-        jint attributePointer, jint index) {
-    XML_Parser parser = (XML_Parser) pointer;
-    ParsingContext* context = toParsingContext(parser);
-    return ExpatElementName(env, context, attributePointer, index).localName();
+extern "C" jstring Java_org_apache_harmony_xml_ExpatAttributes_getLocalName(JNIEnv* env, jobject, jlong address,
+        jlong attributePointer, jint index) {
+  ParsingContext* context = toParsingContext(toXMLParser(address));
+  return ExpatElementName(env, context, attributePointer, index).localName();
 }
 
 /**
  * Gets the qualified name of the attribute at the given index.
  *
- * @param object Java ExpatParser instance
- * @param pointer to the C expat parser
  * @param attributePointer to the attribute array
  * @param index of the attribute
  * @returns interned Java string containing attribute's local name
  */
-extern "C" jstring Java_org_apache_harmony_xml_ExpatAttributes_getQName(JNIEnv* env, jobject, jint pointer,
-        jint attributePointer, jint index) {
-    XML_Parser parser = (XML_Parser) pointer;
-    ParsingContext* context = toParsingContext(parser);
-    return ExpatElementName(env, context, attributePointer, index).qName();
+extern "C" jstring Java_org_apache_harmony_xml_ExpatAttributes_getQName(JNIEnv* env, jobject, jlong address,
+        jlong attributePointer, jint index) {
+  ParsingContext* context = toParsingContext(toXMLParser(address));
+  return ExpatElementName(env, context, attributePointer, index).qName();
 }
 
 /**
@@ -1154,7 +1136,7 @@ extern "C" jstring Java_org_apache_harmony_xml_ExpatAttributes_getQName(JNIEnv* 
  * @returns Java string containing attribute's value
  */
 extern "C" jstring Java_org_apache_harmony_xml_ExpatAttributes_getValueByIndex(JNIEnv* env, jobject,
-        jint attributePointer, jint index) {
+        jlong attributePointer, jint index) {
     const char** attributes = toAttributes(attributePointer);
     const char* value = attributes[(index * 2) + 1];
     return env->NewStringUTF(value);
@@ -1169,7 +1151,7 @@ extern "C" jstring Java_org_apache_harmony_xml_ExpatAttributes_getValueByIndex(J
  *  found
  */
 extern "C" jint Java_org_apache_harmony_xml_ExpatAttributes_getIndexForQName(JNIEnv* env, jobject,
-        jint attributePointer, jstring qName) {
+        jlong attributePointer, jstring qName) {
     ScopedUtfChars qNameBytes(env, qName);
     if (qNameBytes.c_str() == NULL) {
         return -1;
@@ -1196,7 +1178,7 @@ extern "C" jint Java_org_apache_harmony_xml_ExpatAttributes_getIndexForQName(JNI
  * @returns index of attribute with the given uri and local name or -1 if not
  *  found
  */
-extern "C" jint Java_org_apache_harmony_xml_ExpatAttributes_getIndex(JNIEnv* env, jobject, jint attributePointer,
+extern "C" jint Java_org_apache_harmony_xml_ExpatAttributes_getIndex(JNIEnv* env, jobject, jlong attributePointer,
         jstring uri, jstring localName) {
     ScopedUtfChars uriBytes(env, uri);
     if (uriBytes.c_str() == NULL) {
@@ -1228,7 +1210,7 @@ extern "C" jint Java_org_apache_harmony_xml_ExpatAttributes_getIndex(JNIEnv* env
  *  found
  */
 extern "C" jstring Java_org_apache_harmony_xml_ExpatAttributes_getValueForQName(JNIEnv* env, jobject clazz,
-        jint attributePointer, jstring qName) {
+        jlong attributePointer, jstring qName) {
     jint index = Java_org_apache_harmony_xml_ExpatAttributes_getIndexForQName(env, clazz, attributePointer, qName);
     return index == -1 ? NULL
             : Java_org_apache_harmony_xml_ExpatAttributes_getValueByIndex(env, clazz, attributePointer, index);
@@ -1244,7 +1226,7 @@ extern "C" jstring Java_org_apache_harmony_xml_ExpatAttributes_getValueForQName(
  *  found
  */
 extern "C" jstring Java_org_apache_harmony_xml_ExpatAttributes_getValue(JNIEnv* env, jobject clazz,
-        jint attributePointer, jstring uri, jstring localName) {
+        jlong attributePointer, jstring uri, jstring localName) {
     jint index = Java_org_apache_harmony_xml_ExpatAttributes_getIndex(env, clazz, attributePointer, uri, localName);
     return index == -1 ? NULL
             : Java_org_apache_harmony_xml_ExpatAttributes_getValueByIndex(env, clazz, attributePointer, index);
@@ -1257,7 +1239,7 @@ extern "C" jstring Java_org_apache_harmony_xml_ExpatAttributes_getValue(JNIEnv* 
  * @param address char** to clone
  * @param count number of attributes
  */
-extern "C" jint Java_org_apache_harmony_xml_ExpatParser_cloneAttributes(JNIEnv* env, jobject, jint address, jint count) {
+extern "C" jlong Java_org_apache_harmony_xml_ExpatParser_cloneAttributes(JNIEnv* env, jobject, jlong address, jint count) {
     const char** source = reinterpret_cast<const char**>(static_cast<uintptr_t>(address));
     count *= 2;
 
@@ -1291,13 +1273,13 @@ extern "C" jint Java_org_apache_harmony_xml_ExpatParser_cloneAttributes(JNIEnv* 
         destinationString += stringLength + 1;
     }
 
-    return static_cast<jint>(reinterpret_cast<uintptr_t>(buffer));
+    return reinterpret_cast<uintptr_t>(buffer);
 }
 
 /**
  * Frees cloned attributes.
  */
-extern "C" void Java_org_apache_harmony_xml_ExpatAttributes_freeAttributes(JNIEnv*, jobject, jint pointer) {
+extern "C" void Java_org_apache_harmony_xml_ExpatAttributes_freeAttributes(JNIEnv*, jobject, jlong pointer) {
     delete[] reinterpret_cast<char*>(static_cast<uintptr_t>(pointer));
 }
 
@@ -1364,6 +1346,6 @@ extern "C" void Java_org_apache_harmony_xml_ExpatParser_staticInitialize(JNIEnv*
     if (internMethod == NULL) return;
 
     // Reference to "".
-    emptyString = (jstring) env->NewGlobalRef(empty);
+    emptyString = reinterpret_cast<jstring>(env->NewGlobalRef(empty));
 }
 

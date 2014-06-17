@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
  * specifies a single method target for the test (but can be used multiple
  * times).
  *
- * @deprecated Obsolete
+ * @deprecated Obsolete.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.ANNOTATION_TYPE })

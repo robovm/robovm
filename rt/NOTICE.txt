@@ -5,7 +5,7 @@
    =========================================================================
 
 RoboVM Runtime Library
-Copyright (C) 2012 Trillian Mobile AB
+Copyright (C) 2012-2014 Trillian Mobile AB
 
 The RoboVM Runtime Library includes software developed as part of the dalvik
 module of The Android Open Source Project which is copyright 2005-2012, The
@@ -35,7 +35,7 @@ National de Recherche en Informatique et en Automatique, Keio University) and
 released under the W3C License. http://www.w3.org
 
 The RoboVM Runtime Library includes the Bouncy Castle Crypto APIs which is
-copyright 2000-2010 The Legion Of The Bouncy Castle and released under an
+copyright 2000-2013 The Legion Of The Bouncy Castle and released under an
 adaptation of the MIT X11 License. http://www.bouncycastle.org
 
 The RoboVM Runtime Library includes the SQLite JDBC driver which is copyright
@@ -53,3 +53,11 @@ The RoboVM Runtime Library includes the Apache Xerces project which is copyright
 The RoboVM Runtime Library includes the Apache XML Commons project which is
 copyright 2001-2003,2006 The Apache Software Foundation and released under the
 Apache License 2.0. http://xerces.apache.org/xml-commons/
+
+The RoboVM Runtime Library includes code from the Apache HttpComponents Client
+project which is copyright 1999-2014 The Apache Software Foundation and
+released under the Apache License 2.0. http://hc.apache.org
+
+The RoboVM Runtime Library includes the OkHttp library which is copyright 2014
+Square, Inc. and released under the Apache License 2.0.
+http://square.github.io/okhttp/

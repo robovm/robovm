@@ -42,7 +42,7 @@ static inline int sem_post(sem_t* sem) {
 
 #define LOG_TAG "core.signal"
 
-#define DUMP_THREAD_STACK_TRACE_SIGNAL SIGUSR2
+#define DUMP_THREAD_STACK_TRACE_SIGNAL SIGUSR1
 
 /*
  * The common way to implement stack overflow detection is to catch SIGSEGV and see if the

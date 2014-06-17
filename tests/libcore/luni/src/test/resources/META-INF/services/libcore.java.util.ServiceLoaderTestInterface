@@ -5,3 +5,4 @@ libcore.java.util.ServiceLoaderTest$Impl1
 libcore.java.util.ServiceLoaderTest$Impl2 # this comment is valid
 libcore.java.util.ServiceLoaderTest$Impl2#as is this
 libcore.java.util.ServiceLoaderTest$Impl2 # and duplicates are allowed too
+  libcore.java.util.ServiceLoaderTest$Impl2 # as is leading whitespace

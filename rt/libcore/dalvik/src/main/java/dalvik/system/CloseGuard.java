@@ -197,7 +197,7 @@ public final class CloseGuard {
     /**
      * If CloseGuard is enabled, logs a warning if the caller did not
      * properly cleanup by calling an explicit close method
-     * before finalization. If CloseGuard is disable, no action is
+     * before finalization. If CloseGuard is disabled, no action is
      * performed.
      */
     public void warnIfOpen() {
@@ -223,7 +223,7 @@ public final class CloseGuard {
      * Default Reporter which reports CloseGuard violations to the log.
      */
     private static final class DefaultReporter implements Reporter {
-        public void report (String message, Throwable allocationSite) {
+        @Override public void report (String message, Throwable allocationSite) {
             System.logW(message, allocationSite);
         }
     }

@@ -121,7 +121,7 @@ public class CoderResult {
                 return r;
             }
         }
-        throw new IllegalArgumentException("Length must be greater than 0; was " + length);
+        throw new IllegalArgumentException("length <= 0: " + length);
     }
 
     /**
@@ -149,13 +149,11 @@ public class CoderResult {
                 return r;
             }
         }
-        throw new IllegalArgumentException("Length must be greater than 0; was " + length);
+        throw new IllegalArgumentException("length <= 0: " + length);
     }
 
     /**
      * Returns true if this result is an underflow condition.
-     *
-     * @return true if an underflow, otherwise false.
      */
     public boolean isUnderflow() {
         return this.type == TYPE_UNDERFLOW;
@@ -164,19 +162,13 @@ public class CoderResult {
     /**
      * Returns true if this result represents a malformed-input error or an
      * unmappable-character error.
-     *
-     * @return true if this is a malformed-input error or an
-     *         unmappable-character error, otherwise false.
      */
     public boolean isError() {
-        return this.type == TYPE_MALFORMED_INPUT
-                || this.type == TYPE_UNMAPPABLE_CHAR;
+        return this.type == TYPE_MALFORMED_INPUT || this.type == TYPE_UNMAPPABLE_CHAR;
     }
 
     /**
      * Returns true if this result represents a malformed-input error.
-     *
-     * @return true if this is a malformed-input error, otherwise false.
      */
     public boolean isMalformed() {
         return this.type == TYPE_MALFORMED_INPUT;
@@ -184,8 +176,6 @@ public class CoderResult {
 
     /**
      * Returns true if this result is an overflow condition.
-     *
-     * @return true if this is an overflow, otherwise false.
      */
     public boolean isOverflow() {
         return this.type == TYPE_OVERFLOW;
@@ -193,18 +183,15 @@ public class CoderResult {
 
     /**
      * Returns true if this result represents an unmappable-character error.
-     *
-     * @return true if this is an unmappable-character error, otherwise false.
      */
     public boolean isUnmappable() {
         return this.type == TYPE_UNMAPPABLE_CHAR;
     }
 
     /**
-     * Gets the length of the erroneous input. The length is only meaningful to
+     * Returns the length of the erroneous input. The length is only meaningful for
      * a malformed-input error or an unmappable character error.
      *
-     * @return the length, as an integer, of this object's erroneous input.
      * @throws UnsupportedOperationException
      *             if this result is an overflow or underflow.
      */

@@ -219,14 +219,6 @@ public class GregorianCalendar extends Calendar {
     private static int[] leastMaximums = new int[] { 1, 292269054, 11, 50, 3,
             28, 355, 7, 3, 1, 11, 23, 59, 59, 999, 50400000, 1200000 };
 
-    private boolean isCached;
-
-    private int[] cachedFields = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-
-    private long nextMidnightMillis = 0L;
-
-    private long lastMidnightMillis = 0L;
-
     private int currentYearSkew = 10;
 
     private int lastYearSkew = 0;
@@ -365,8 +357,6 @@ public class GregorianCalendar extends Calendar {
             throw new IllegalArgumentException();
         }
 
-        isCached = false;
-
         if (field == ERA) {
             complete();
             if (fields[ERA] == AD) {
@@ -468,19 +458,8 @@ public class GregorianCalendar extends Calendar {
         complete();
     }
 
-    /**
-     * Creates new instance of {@code GregorianCalendar} with the same properties.
-     *
-     * @return a shallow copy of this {@code GregorianCalendar}.
-     */
-    @Override
-    public Object clone() {
-        GregorianCalendar thisClone = (GregorianCalendar) super.clone();
-        thisClone.cachedFields = cachedFields.clone();
-        return thisClone;
-    }
-
-    private final void fullFieldsCalc(long timeVal, int millis, int zoneOffset) {
+    private void fullFieldsCalc(long timeVal, int zoneOffset) {
+        int millis = (int) (time % 86400000);
         long days = timeVal / 86400000;
 
         if (millis < 0) {
@@ -583,31 +562,6 @@ public class GregorianCalendar extends Calendar {
         }
     }
 
-    private final void cachedFieldsCheckAndGet(long timeVal,
-            long newTimeMillis, long newTimeMillisAdjusted, int millis,
-            int zoneOffset) {
-        int dstOffset = fields[DST_OFFSET];
-        if (!isCached
-                || newTimeMillis >= nextMidnightMillis
-                || newTimeMillis <= lastMidnightMillis
-                || cachedFields[4] != zoneOffset
-                || (dstOffset == 0 && (newTimeMillisAdjusted >= nextMidnightMillis))
-                || (dstOffset != 0 && (newTimeMillisAdjusted <= lastMidnightMillis))) {
-            fullFieldsCalc(timeVal, millis, zoneOffset);
-            isCached = false;
-        } else {
-            fields[YEAR] = cachedFields[0];
-            fields[MONTH] = cachedFields[1];
-            fields[DATE] = cachedFields[2];
-            fields[DAY_OF_WEEK] = cachedFields[3];
-            fields[ERA] = cachedFields[5];
-            fields[WEEK_OF_YEAR] = cachedFields[6];
-            fields[WEEK_OF_MONTH] = cachedFields[7];
-            fields[DAY_OF_YEAR] = cachedFields[8];
-            fields[DAY_OF_WEEK_IN_MONTH] = cachedFields[9];
-        }
-    }
-
     @Override
     protected void computeFields() {
         TimeZone timeZone = getTimeZone();
@@ -616,98 +570,10 @@ public class GregorianCalendar extends Calendar {
         fields[DST_OFFSET] = dstOffset;
         fields[ZONE_OFFSET] = zoneOffset;
 
-        int millis = (int) (time % 86400000);
-        int savedMillis = millis;
-        // compute without a change in daylight saving time
-        int offset = zoneOffset + dstOffset;
-        long newTime = time + offset;
-
-        if (time > 0L && newTime < 0L && offset > 0) {
-            newTime = 0x7fffffffffffffffL;
-        } else if (time < 0L && newTime > 0L && offset < 0) {
-            newTime = 0x8000000000000000L;
-        }
-
-        // FIXME: I don't think this caching ever really gets used, because it requires that the
-        // time zone doesn't use daylight savings (ever). So unless you're somewhere like Taiwan...
-        if (isCached) {
-            if (millis < 0) {
-                millis += 86400000;
-            }
-
-            // Cannot add ZONE_OFFSET to time as it might overflow
-            millis += zoneOffset;
-            millis += dstOffset;
-
-            if (millis < 0) {
-                millis += 86400000;
-            } else if (millis >= 86400000) {
-                millis -= 86400000;
-            }
-
-            fields[MILLISECOND] = (millis % 1000);
-            millis /= 1000;
-            fields[SECOND] = (millis % 60);
-            millis /= 60;
-            fields[MINUTE] = (millis % 60);
-            millis /= 60;
-            fields[HOUR_OF_DAY] = (millis % 24);
-            millis /= 24;
-            fields[AM_PM] = fields[HOUR_OF_DAY] > 11 ? 1 : 0;
-            fields[HOUR] = fields[HOUR_OF_DAY] % 12;
-
-            // FIXME: this has to be wrong; useDaylightTime doesn't mean what they think it means!
-            long newTimeAdjusted = newTime;
-            if (timeZone.useDaylightTime()) {
-                int dstSavings = timeZone.getDSTSavings();
-                newTimeAdjusted += (dstOffset == 0) ? dstSavings : -dstSavings;
-            }
-
-            if (newTime > 0L && newTimeAdjusted < 0L && dstOffset == 0) {
-                newTimeAdjusted = 0x7fffffffffffffffL;
-            } else if (newTime < 0L && newTimeAdjusted > 0L && dstOffset != 0) {
-                newTimeAdjusted = 0x8000000000000000L;
-            }
-
-            cachedFieldsCheckAndGet(time, newTime, newTimeAdjusted,
-                    savedMillis, zoneOffset);
-        } else {
-            fullFieldsCalc(time, savedMillis, zoneOffset);
-        }
+        fullFieldsCalc(time, zoneOffset);
 
         for (int i = 0; i < FIELD_COUNT; i++) {
             isSet[i] = true;
-        }
-
-        // Caching
-        if (!isCached
-                && newTime != 0x7fffffffffffffffL
-                && newTime != 0x8000000000000000L
-                && (!timeZone.useDaylightTime() || timeZone instanceof SimpleTimeZone)) {
-            int cacheMillis = 0;
-
-            cachedFields[0] = fields[YEAR];
-            cachedFields[1] = fields[MONTH];
-            cachedFields[2] = fields[DATE];
-            cachedFields[3] = fields[DAY_OF_WEEK];
-            cachedFields[4] = zoneOffset;
-            cachedFields[5] = fields[ERA];
-            cachedFields[6] = fields[WEEK_OF_YEAR];
-            cachedFields[7] = fields[WEEK_OF_MONTH];
-            cachedFields[8] = fields[DAY_OF_YEAR];
-            cachedFields[9] = fields[DAY_OF_WEEK_IN_MONTH];
-
-            cacheMillis += (23 - fields[HOUR_OF_DAY]) * 60 * 60 * 1000;
-            cacheMillis += (59 - fields[MINUTE]) * 60 * 1000;
-            cacheMillis += (59 - fields[SECOND]) * 1000;
-            nextMidnightMillis = newTime + cacheMillis;
-
-            cacheMillis = fields[HOUR_OF_DAY] * 60 * 60 * 1000;
-            cacheMillis += fields[MINUTE] * 60 * 1000;
-            cacheMillis += fields[SECOND] * 1000;
-            lastMidnightMillis = newTime - cacheMillis;
-
-            isCached = true;
         }
     }
 
@@ -939,19 +805,17 @@ public class GregorianCalendar extends Calendar {
         return (int) days + 1;
     }
 
-    private long daysFromBaseYear(int iyear) {
-        long year = iyear;
-
+    private long daysFromBaseYear(long year) {
         if (year >= 1970) {
             long days = (year - 1970) * 365 + ((year - 1969) / 4);
             if (year > changeYear) {
                 days -= ((year - 1901) / 100) - ((year - 1601) / 400);
             } else {
-                if(year == changeYear){
+                if (year == changeYear) {
                     days += currentYearSkew;
-                }else if(year == changeYear -1){
+                } else if (year == changeYear - 1) {
                     days += lastYearSkew;
-                }else{
+                } else {
                     days += julianSkew;
                 }
             }
@@ -995,21 +859,10 @@ public class GregorianCalendar extends Calendar {
     }
 
     /**
-     * Compares the specified {@code Object} to this {@code GregorianCalendar} and returns whether
-     * they are equal. To be equal, the {@code Object} must be an instance of {@code GregorianCalendar} and
-     * have the same properties.
-     *
-     * @param object
-     *            the {@code Object} to compare with this {@code GregorianCalendar}.
-     * @return {@code true} if {@code object} is equal to this
-     *         {@code GregorianCalendar}, {@code false} otherwise.
-     * @throws IllegalArgumentException
-     *                if the time is not set and the time cannot be computed
-     *                from the current field values.
-     * @see #hashCode
+     * Returns true if {@code object} is a GregorianCalendar with the same
+     * properties.
      */
-    @Override
-    public boolean equals(Object object) {
+    @Override public boolean equals(Object object) {
         if (!(object instanceof GregorianCalendar)) {
             return false;
         }
@@ -1020,26 +873,10 @@ public class GregorianCalendar extends Calendar {
                 && gregorianCutover == ((GregorianCalendar) object).gregorianCutover;
     }
 
-    /**
-     * Gets the maximum value of the specified field for the current date. For
-     * example, the maximum number of days in the current month.
-     *
-     * @param field
-     *            the field.
-     * @return the maximum value of the specified field.
-     */
-    @Override
-    public int getActualMaximum(int field) {
+    @Override public int getActualMaximum(int field) {
         int value;
         if ((value = maximums[field]) == leastMaximums[field]) {
             return value;
-        }
-
-        switch (field) {
-            case WEEK_OF_YEAR:
-            case WEEK_OF_MONTH:
-                isCached = false;
-                break;
         }
 
         complete();
@@ -1216,32 +1053,16 @@ public class GregorianCalendar extends Calendar {
             month++;
         }
         int dayOfWeek = mod7(dayCount - 3) + 1;
-        int offset = timeZone.getOffset(AD, year, month, date, dayOfWeek,
-                millis);
-        return offset;
+        return timeZone.getOffset(AD, year, month, date, dayOfWeek, millis);
     }
 
-    /**
-     * Returns an integer hash code for the receiver. Objects which are equal
-     * return the same value for this method.
-     *
-     * @return the receiver's hash.
-     *
-     * @see #equals
-     */
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         return super.hashCode()
                 + ((int) (gregorianCutover >>> 32) ^ (int) gregorianCutover);
     }
 
     /**
-     * Returns whether the specified year is a leap year.
-     *
-     * @param year
-     *            the year.
-     * @return {@code true} if the specified year is a leap year, {@code false}
-     *         otherwise.
+     * Returns true if {@code year} is a leap year.
      */
     public boolean isLeapYear(int year) {
         if (year > changeYear) {
@@ -1293,8 +1114,6 @@ public class GregorianCalendar extends Calendar {
         if (field < 0 || field >= ZONE_OFFSET) {
             throw new IllegalArgumentException();
         }
-
-        isCached = false;
 
         complete();
         int days, day, mod, maxWeeks, newWeek;
@@ -1410,13 +1229,10 @@ public class GregorianCalendar extends Calendar {
 
     /**
      * Sets the gregorian change date of this calendar.
-     *
-     * @param date
-     *            a {@code Date} which represents the gregorian change date.
      */
     public void setGregorianChange(Date date) {
         gregorianCutover = date.getTime();
-        GregorianCalendar cal = new GregorianCalendar(TimeZone.GMT);
+        GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
         cal.setTime(date);
         changeYear = cal.get(YEAR);
         if (cal.get(ERA) == BC) {
@@ -1424,7 +1240,6 @@ public class GregorianCalendar extends Calendar {
         }
         julianSkew = ((changeYear - 2000) / 400) + julianError()
                 - ((changeYear - 2000) / 100);
-        isCached = false;
         int dayOfYear = cal.get(DAY_OF_YEAR);
         if (dayOfYear < julianSkew) {
             currentYearSkew = dayOfYear-1;
@@ -1433,30 +1248,14 @@ public class GregorianCalendar extends Calendar {
             lastYearSkew = 0;
             currentYearSkew = julianSkew;
         }
-        isCached = false;
     }
 
     private void writeObject(ObjectOutputStream stream) throws IOException {
         stream.defaultWriteObject();
     }
 
-    private void readObject(ObjectInputStream stream) throws IOException,
-            ClassNotFoundException {
-
+    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
         stream.defaultReadObject();
         setGregorianChange(new Date(gregorianCutover));
-        isCached = false;
-    }
-
-    @Override
-    public void setFirstDayOfWeek(int value) {
-        super.setFirstDayOfWeek(value);
-        isCached = false;
-    }
-
-    @Override
-    public void setMinimalDaysInFirstWeek(int value) {
-        super.setMinimalDaysInFirstWeek(value);
-        isCached = false;
     }
 }

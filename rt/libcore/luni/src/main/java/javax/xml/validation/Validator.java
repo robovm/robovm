@@ -339,7 +339,9 @@ public abstract class Validator {
      * @see #setFeature(String, boolean)
      */
     public boolean getFeature(String name) throws SAXNotRecognizedException, SAXNotSupportedException {
-        if(name==null) throw new NullPointerException("the name parameter is null");
+        if (name == null) {
+            throw new NullPointerException("name == null");
+        }
         throw new SAXNotRecognizedException(name);
     }
 
@@ -372,7 +374,9 @@ public abstract class Validator {
      * @see #getFeature(String)
      */
     public void setFeature(String name, boolean value) throws SAXNotRecognizedException, SAXNotSupportedException {
-        if(name==null) throw new NullPointerException("the name parameter is null");
+        if (name == null) {
+            throw new NullPointerException("name == null");
+        }
         throw new SAXNotRecognizedException(name);
     }
 
@@ -400,7 +404,9 @@ public abstract class Validator {
      *          When the name parameter is null.
      */
     public void setProperty(String name, Object object) throws SAXNotRecognizedException, SAXNotSupportedException {
-        if(name==null) throw new NullPointerException("the name parameter is null");
+        if (name == null) {
+            throw new NullPointerException("name == null");
+        }
         throw new SAXNotRecognizedException(name);
     }
 
@@ -431,7 +437,9 @@ public abstract class Validator {
      * @see #setProperty(String, Object)
      */
     public Object getProperty(String name) throws SAXNotRecognizedException, SAXNotSupportedException {
-        if(name==null) throw new NullPointerException("the name parameter is null");
+        if (name == null) {
+            throw new NullPointerException("name == null");
+        }
         throw new SAXNotRecognizedException(name);
     }
 }

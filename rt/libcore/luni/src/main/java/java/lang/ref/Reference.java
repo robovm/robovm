@@ -39,6 +39,61 @@ package java.lang.ref;
  * also not desirable to do so, since references require very close cooperation
  * with the system's garbage collector. The existing, specialized reference
  * classes should be used instead.
+ *
+ * <p>Three different type of references exist, each being weaker than the preceding one:
+ * {@link java.lang.ref.SoftReference}, {@link java.lang.ref.WeakReference}, and
+ * {@link java.lang.ref.PhantomReference}. "Weakness" here means that less restrictions are
+ * being imposed on the garbage collector as to when it is allowed to
+ * actually garbage-collect the referenced object.
+ *
+ * <p>In order to use reference objects properly it is important to understand
+ * the different types of reachability that trigger their clearing and
+ * enqueueing. The following table lists these, from strongest to weakest.
+ * For each row, an object is said to have the reachability on the left side
+ * if (and only if) it fulfills all of the requirements on the right side. In
+ * all rows, consider the <em>root set</em> to be a set of references that
+ * are "resistant" to garbage collection (that is, running threads, method
+ * parameters, local variables, static fields and the like).
+ *
+ * <p><table>
+ * <tr>
+ * <td>Strongly reachable</td>
+ * <td> <ul>
+ * <li>There exists at least one path from the root set to the object that does not traverse any
+ * instance of a {@code java.lang.ref.Reference} subclass.
+ * </li>
+ * </ul> </td>
+ * </tr>
+ *
+ * <tr>
+ * <td>Softly reachable</td>
+ * <td> <ul>
+ * <li>The object is not strongly reachable.</li>
+ * <li>There exists at least one path from the root set to the object that does traverse
+ * a {@code java.lang.ref.SoftReference} instance, but no {@code java.lang.ref.WeakReference}
+ * or {@code java.lang.ref.PhantomReference} instances.</li>
+ * </ul> </td>
+ * </tr>
+ *
+ * <tr>
+ * <td>Weakly reachable</td>
+ * <td> <ul>
+ * <li>The object is neither strongly nor softly reachable.</li>
+ * <li>There exists at least one path from the root set to the object that does traverse a
+ * {@code java.lang.ref.WeakReference} instance, but no {@code java.lang.ref.PhantomReference}
+ * instances.</li>
+ * </ul> </td>
+ * </tr>
+ *
+ * <tr>
+ * <td>Phantom-reachable</td>
+ * <td> <ul>
+ * <li>The object is neither strongly, softly, nor weakly reachable.</li>
+ * <li>The object is referenced by a {@code java.lang.ref.PhantomReference} instance.</li>
+ * <li>The object has already been finalized.</li>
+ * </ul> </td>
+ * </tr>
+ * </table>
  */
 public abstract class Reference<T> {
 
@@ -55,8 +110,7 @@ public abstract class Reference<T> {
      * VM requirement: this field <em>must</em> be called "queue"
      * and be a java.lang.ref.ReferenceQueue.
      */
-    @SuppressWarnings("unchecked")
-    volatile ReferenceQueue queue;
+    volatile ReferenceQueue<? super T> queue;
 
     /**
      * Used internally by java.lang.ref.ReferenceQueue.
@@ -83,7 +137,7 @@ public abstract class Reference<T> {
         register(null);
     }
 
-    Reference(T r, ReferenceQueue q) {
+    Reference(T r, ReferenceQueue<? super T> q) {
         referent = r;
         queue = q;
         register(r);

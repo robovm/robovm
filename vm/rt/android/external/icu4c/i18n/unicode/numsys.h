@@ -1,6 +1,6 @@
 /*
 *******************************************************************************
-* Copyright (C) 2010, International Business Machines Corporation and
+* Copyright (C) 2010-2013, International Business Machines Corporation and
 * others. All Rights Reserved.
 *******************************************************************************
 *
@@ -16,14 +16,17 @@
 #ifndef NUMSYS
 #define NUMSYS
 
+#include "unicode/utypes.h"
+
+#ifndef U_HIDE_INTERNAL_API
 /**
  * \def NUMSYS_NAME_CAPACITY
  * Size of a numbering system name.
  * @internal
  */
 #define NUMSYS_NAME_CAPACITY 8
+#endif  /* U_HIDE_INTERNAL_API */
 
-#include "unicode/utypes.h"
 
 /**
  * \file
@@ -125,7 +128,7 @@ public:
     /**
      * Returns the name of this numbering system if it was created using one of the predefined names
      * known to ICU.  Otherwise, returns NULL.
-     * @draft ICU 4.6
+     * @stable ICU 4.6
      */
     const char * getName();
 

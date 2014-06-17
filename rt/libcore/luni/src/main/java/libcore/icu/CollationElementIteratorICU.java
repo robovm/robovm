@@ -155,12 +155,12 @@ public final class CollationElementIteratorICU {
         return order & TERTIARY_ORDER_MASK_;
     }
 
-    public static CollationElementIteratorICU getInstance(int collatorAddress, String source) {
-        int iteratorAddress = NativeCollation.getCollationElementIterator(collatorAddress, source);
+    public static CollationElementIteratorICU getInstance(long collatorAddress, String source) {
+        long iteratorAddress = NativeCollation.getCollationElementIterator(collatorAddress, source);
         return new CollationElementIteratorICU(iteratorAddress);
     }
 
-    private CollationElementIteratorICU(int address) {
+    private CollationElementIteratorICU(long address) {
         this.address = address;
     }
 
@@ -184,7 +184,7 @@ public final class CollationElementIteratorICU {
     /**
      * C collator
      */
-    private int address;
+    private final long address;
 
     /**
      * ICU constant primary order mask for collation elements

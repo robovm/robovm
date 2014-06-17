@@ -1,0 +1,294 @@
+# This is based on the default OpenSSL configuration file which is
+# licensed with the following license:
+
+# Copyright (c) 1998-2011 The OpenSSL Project.  All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+#
+# 1. Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# 2. Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in
+#    the documentation and/or other materials provided with the
+#    distribution.
+#
+# 3. All advertising materials mentioning features or use of this
+#    software must display the following acknowledgment:
+#    "This product includes software developed by the OpenSSL Project
+#    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
+#
+# 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
+#    endorse or promote products derived from this software without
+#    prior written permission. For written permission, please contact
+#    openssl-core@openssl.org.
+#
+# 5. Products derived from this software may not be called "OpenSSL"
+#    nor may "OpenSSL" appear in their names without prior written
+#    permission of the OpenSSL Project.
+#
+# 6. Redistributions of any form whatsoever must retain the following
+#    acknowledgment:
+#    "This product includes software developed by the OpenSSL Project
+#    for use in the OpenSSL Toolkit (http://www.openssl.org/)"
+#
+# THIS SOFTWARE IS PROVIDED BY THE OpenSSL PROJECT ``AS IS'' AND ANY
+# EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+# PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE OpenSSL PROJECT OR
+# ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+# NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+# HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+# STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+# OF THE POSSIBILITY OF SUCH DAMAGE.
+# ====================================================================
+#
+# This product includes cryptographic software written by Eric Young
+# (eay@cryptsoft.com).  This product includes software written by Tim
+# Hudson (tjh@cryptsoft.com).
+#
+
+HOME            = .
+RANDFILE        = $ENV::HOME/.rnd
+
+# Extra OBJECT IDENTIFIER info:
+#oid_file        = $ENV::HOME/.oid
+oid_section        = new_oids
+
+# To use this configuration file with the "-extfile" option of the
+# "openssl x509" utility, name here the section containing the
+# X.509v3 extensions to use:
+# extensions        =
+# (Alternatively, use a configuration file that has only
+# X.509v3 extensions in its main [= default] section.)
+
+[ new_oids ]
+
+# We can add new OIDs in here for use by 'ca' and 'req'.
+# Add a simple OID like this:
+# testoid1=1.2.3.4
+# Or use config file substitution like this:
+# testoid2=${testoid1}.5.6
+
+####################################################################
+[ ca ]
+default_ca    = CA_default        # The default ca section
+
+####################################################################
+[ CA_default ]
+
+dir        = /tmp/ca        # Where everything is kept
+certs        = $dir/certs        # Where the issued certs are kept
+crl_dir        = $dir/crl        # Where the issued crl are kept
+database    = $dir/index.txt    # database index file.
+new_certs_dir    = $dir/newcerts        # default place for new certs.
+
+certificate    = $dir/cacert.pem     # The CA certificate
+serial        = $dir/serial         # The current serial number
+crl        = $dir/crl.pem         # The current CRL
+private_key    = $dir/private/cakey.pem# The private key
+RANDFILE    = $dir/private/.rand    # private random number file
+
+x509_extensions    = usr_cert        # The extentions to add to the cert
+
+# Comment out the following two lines for the "traditional"
+# (and highly broken) format.
+name_opt     = ca_default        # Subject Name options
+cert_opt     = ca_default        # Certificate field options
+
+# Extension copying option: use with caution.
+# copy_extensions = copy
+
+# Extensions to add to a CRL. Note: Netscape communicator chokes on V2 CRLs
+# so this is commented out by default to leave a V1 CRL.
+# crl_extensions    = crl_ext
+
+default_days    = 365            # how long to certify for
+default_crl_days= 30            # how long before next CRL
+default_md    = sha1            # which md to use.
+preserve    = no            # keep passed DN ordering
+
+policy        = policy_anything
+
+[ policy_match ]
+countryName        = match
+stateOrProvinceName    = match
+organizationName    = match
+organizationalUnitName    = optional
+commonName        = supplied
+emailAddress        = optional
+
+[ policy_anything ]
+countryName        = optional
+stateOrProvinceName    = optional
+localityName        = optional
+organizationName    = optional
+organizationalUnitName    = optional
+commonName        = supplied
+emailAddress        = optional
+
+####################################################################
+[ req ]
+default_bits        = 1024
+default_keyfile     = /tmp/privkey.pem
+distinguished_name    = req_distinguished_name
+attributes        = req_attributes
+x509_extensions    = v3_ca    # The extentions to add to the self signed cert
+string_mask = nombstr
+req_extensions = v3_req # The extensions to add to a certificate request
+
+[ req_distinguished_name ]
+countryName            = Country Name (2 letter code)
+countryName_default        = US
+countryName_min            = 2
+countryName_max            = 2
+
+stateOrProvinceName        = State or Province Name (full name)
+stateOrProvinceName_default    = California
+
+localityName            = Locality Name (eg, city)
+localityName_default        = San Mateo
+
+0.organizationName        = Organization Name (eg, company)
+0.organizationName_default    = Genius.com Inc
+
+organizationalUnitName        = Organizational Unit Name (eg, section)
+organizationalUnitName_default    = NetOps
+
+commonName            = Common Name (eg, your name or your server\'s hostname)
+commonName_max            = 64
+
+emailAddress            = Email Address
+emailAddress_max        = 64
+
+[ req_attributes ]
+challengePassword        = A challenge password
+challengePassword_min        = 4
+challengePassword_max        = 20
+unstructuredName        = An optional company name
+
+[ unsupported_cert ]
+# Just a made-up OID
+1.2.3.4.99999.1.2.3.4 = critical,ASN1:FORMAT:BITLIST,BITSTRING:0,1,2
+
+[ keyUsage_critical_cert ]
+basicConstraints=CA:FALSE
+keyUsage = critical, decipherOnly, keyAgreement
+
+[ keyUsage_extraLong_cert ]
+keyUsage=ASN1:FORMAT:BITLIST,BITSTRING:0,1,2,3,4,5,6,7,8,9,10
+
+[ keyUsage_cert ]
+basicConstraints=CA:FALSE
+keyUsage = encipherOnly, keyEncipherment, dataEncipherment, keyCertSign, cRLSign, cRLSign, keyEncipherment, dataEncipherment, keyCertSign, cRLSign
+
+[ extendedKeyUsage_cert ]
+extendedKeyUsage=1.2.3.4
+
+[ userWithPathLen_cert ]
+basicConstraints=CA:false,pathlen:10
+
+[ ca_cert ]
+basicConstraints=CA:true
+
+[ caWithPathLen_cert ]
+basicConstraints=CA:true,pathlen:10
+
+[ invalid_ip_cert ]
+subjectAltName = ASN1:SEQUENCE:invalid_ip_SEQ
+issuerAltName = ASN1:SEQUENCE:invalid_ip_SEQ
+
+[ invalid_ip_SEQ ]
+IP.1 = IMPLICIT:7,FORMAT:HEX,OCTETSTRING:0A
+
+[ ipv6_cert ]
+subjectAltName = ASN1:SEQUENCE:ipv6_SEQ
+issuerAltName = ASN1:SEQUENCE:ipv6_SEQ
+
+[ ipv6_SEQ ]
+IP.1 = IMPLICIT:7,FORMAT:HEX,OCTETSTRING:20010DB8000000000000FF0000428329
+
+[ usr_cert ]
+basicConstraints=CA:FALSE
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid,issuer:always
+nsComment            = "X.509 Unit Test"
+
+subjectAltName = @alt_names
+issuerAltName = @alt_names
+#subjectAltName = ASN1:SEQUENCE:raw_alt_names
+
+[ alt_none_cert ]
+
+[ alt_names ]
+otherName.0 = 1.2.3.4;UTF8:test1
+email.0 = x509@example.com
+DNS.0 = x509.example.com
+dirName.0 = dir_example
+URI.0 = http://www.example.com/?q=awesomeness
+IP.0 = 192.168.0.1
+RID.0 = 1.2.3.4
+
+[ alt_other_cert ]
+subjectAltName = otherName:1.2.3.4;UTF8:test1
+
+[ alt_email_cert ]
+subjectAltName = email:x509@example.com
+
+[ alt_dns_cert ]
+subjectAltName = DNS:x509.example.com
+
+[ alt_dirname_cert ]
+subjectAltName = dirName:dir_example
+
+[ alt_uri_cert ]
+subjectAltName = URI:http://www.example.com/?q=awesomeness
+
+[ alt_rid_cert ]
+subjectAltName = RID:1.2.3.4
+
+[ raw_alt_names ]
+ediPartyName = IMPLICIT:5,SEQUENCE:ediPartyName_SEQ
+x400 = IMPLICIT:3,SEQUENCE:x400_SEQ
+
+[ x400_SEQ ]
+BuiltInStandardAttributes = SEQUENCE:x400_BuiltInStandardAddtributes_SEQ
+
+[ x400_BuiltInStandardAddtributes_SEQ ]
+PersonalName=IMPLICIT:5,SET:x400_PersonalName_SET
+
+[ x400_PersonalName_SET ]
+Surname=IMPLICIT:0,PRINTABLESTRING:Root
+GivenName=IMPLICIT:1,PRINTABLESTRING:Kenny
+
+[ ediPartyName_SEQ ]
+partyName = IMPLICIT:1,PRINTABLESTRING:Joe
+
+[ dir_example ]
+C=US
+O=Awesome Dudes
+OU=Über Frîends
+CN=example X.509
+CN=∆ƒ
+
+[ v3_req ]
+basicConstraints = CA:FALSE
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+subjectAltName = @alt_names
+issuerAltName = @alt_names
+basicConstraints=CA:FALSE
+nsComment            = "X.509 Unit Test"
+
+[ v3_ca ]
+subjectKeyIdentifier=hash
+authorityKeyIdentifier=keyid:always,issuer:always
+basicConstraints = CA:true
+
+[ crl_ext ]
+authorityKeyIdentifier=keyid:always,issuer:always

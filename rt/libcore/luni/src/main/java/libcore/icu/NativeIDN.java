@@ -34,7 +34,7 @@ public final class NativeIDN {
 
     private static String convert(String s, int flags, boolean toAscii) {
         if (s == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("s == null");
         }
         return convertImpl(s, flags, toAscii);
     }

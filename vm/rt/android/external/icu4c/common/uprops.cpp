@@ -1,7 +1,7 @@
 /*
 *******************************************************************************
 *
-*   Copyright (C) 2002-2010, International Business Machines
+*   Copyright (C) 2002-2011, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 *******************************************************************************
@@ -214,7 +214,7 @@ static const BinaryProperty binProps[UCHAR_BINARY_LIMIT]={
      * Must be in order of corresponding UProperty,
      * and there must be exactly one entry per binary UProperty.
      *
-     * Properties with mask==0 and contains==NULL are handled in code.
+     * Properties with mask==0 are handled in code.
      * For them, column is the UPropertySource value.
      */
     { 1,                U_MASK(UPROPS_ALPHABETIC), defaultContains },
@@ -288,32 +288,6 @@ u_hasBinaryProperty(UChar32 c, UProperty which) {
     }
 }
 
-#if !UCONFIG_NO_NORMALIZATION
-
-U_CAPI uint8_t U_EXPORT2
-u_getCombiningClass(UChar32 c) {
-    UErrorCode errorCode=U_ZERO_ERROR;
-    const Normalizer2Impl *impl=Normalizer2Factory::getNFCImpl(errorCode);
-    if(U_SUCCESS(errorCode)) {
-        return impl->getCC(impl->getNorm16(c));
-    } else {
-        return 0;
-    }
-}
-
-static uint16_t
-getFCD16(UChar32 c) {
-    UErrorCode errorCode=U_ZERO_ERROR;
-    const UTrie2 *trie=Normalizer2Factory::getFCDTrie(errorCode);
-    if(U_SUCCESS(errorCode)) {
-        return UTRIE2_GET16(trie, c);
-    } else {
-        return 0;
-    }
-}
-
-#endif
-
 struct IntProperty;
 
 typedef int32_t IntPropertyGetValue(const IntProperty &prop, UChar32 c, UProperty which);
@@ -371,7 +345,7 @@ static int32_t getJoiningType(const IntProperty &/*prop*/, UChar32 c, UProperty 
 }
 
 static int32_t getNumericType(const IntProperty &/*prop*/, UChar32 c, UProperty /*which*/) {
-    int32_t ntv=(int32_t)GET_NUMERIC_TYPE_VALUE(u_getUnicodeProperties(c, -1));
+    int32_t ntv=(int32_t)GET_NUMERIC_TYPE_VALUE(u_getMainProperties(c));
     return UPROPS_NTV_GET_TYPE(ntv);
 }
 
@@ -427,7 +401,7 @@ static int32_t getLeadCombiningClass(const IntProperty &, UChar32, UProperty) {
 }
 #else
 static int32_t getLeadCombiningClass(const IntProperty &/*prop*/, UChar32 c, UProperty /*which*/) {
-    return getFCD16(c)>>8;
+    return unorm_getFCD16(c)>>8;
 }
 #endif
 
@@ -437,7 +411,7 @@ static int32_t getTrailCombiningClass(const IntProperty &, UChar32, UProperty) {
 }
 #else
 static int32_t getTrailCombiningClass(const IntProperty &/*prop*/, UChar32 c, UProperty /*which*/) {
-    return getFCD16(c)&0xff;
+    return unorm_getFCD16(c)&0xff;
 }
 #endif
 
@@ -447,7 +421,7 @@ static const IntProperty intProps[UCHAR_INT_LIMIT-UCHAR_INT_START]={
      * Must be in order of corresponding UProperty,
      * and there must be exactly one entry per int UProperty.
      *
-     * Properties with mask==0 and getValue==NULL are handled in code.
+     * Properties with mask==0 are handled in code.
      * For them, column is the UPropertySource value.
      */
     { UPROPS_SRC_BIDI,  0, 0,                               getBiDiClass, biDiGetMaxValue },

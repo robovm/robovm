@@ -19,7 +19,6 @@ package java.net;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
-import libcore.io.IoBridge;
 
 /**
  * The abstract superclass for datagram and multicast socket implementations.
@@ -82,13 +81,6 @@ public abstract class DatagramSocketImpl implements SocketOptions {
     }
 
     /**
-     * Returns the local address to which the socket is bound.
-     */
-    InetAddress getLocalAddress() {
-        return IoBridge.getSocketLocalAddress(fd);
-    }
-
-    /**
      * Returns the local port to which this socket is bound.
      */
     protected int getLocalPort() {
@@ -102,7 +94,7 @@ public abstract class DatagramSocketImpl implements SocketOptions {
      * @throws IOException
      *             if an error occurs while getting the time-to-live option
      *             value.
-     * @deprecated Replaced by {@link #getTimeToLive}
+     * @deprecated Use {@link #getTimeToLive} instead.
      * @see #getTimeToLive()
      */
     @Deprecated
@@ -233,7 +225,7 @@ public abstract class DatagramSocketImpl implements SocketOptions {
      *            &lt;= 255.
      * @throws IOException
      *             if an error occurs while setting the option.
-     * @deprecated Replaced by {@link #setTimeToLive}
+     * @deprecated Use {@link #setTimeToLive} instead.
      * @see #setTimeToLive(int)
      */
     @Deprecated

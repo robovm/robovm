@@ -21,9 +21,8 @@ package java.security;
  * {@link Signer} represents an identity (individual or corporation) that owns a
  * private key and the corresponding public key.
  *
- * @deprecated Replaced by behavior in {@link java.security.cert
- *             java.security.cert} package and {@link java.security.Principal
- *             Principal}
+ * @deprecated Use the {@link java.security.cert java.security.cert} package
+ * and {@link java.security.Principal} instead.
  */
 @Deprecated
 public abstract class Signer extends Identity {
@@ -83,7 +82,7 @@ public abstract class Signer extends Identity {
      */
     public final void setKeyPair(KeyPair pair) throws InvalidParameterException, KeyException {
         if (pair == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("pair == null");
         }
 
         if (pair.getPrivate() == null || pair.getPublic() == null) {

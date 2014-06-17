@@ -35,17 +35,13 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-// RoboVM note: There's no sys/vfs.h on Darwin and it's not required to compile this file
-#if !defined(__APPLE__)
-#   include <sys/vfs.h>
-#endif
 #include <time.h>
 #include <unistd.h>
 #include <utime.h>
 
 // RoboVM note: This prototype used to be local to the Java_java_io_File_realpath below.
 // This made clang confused and thought the call to realpath was to the system's C version 
- // and not to the one in realpath.cpp.
+// and not to the one in realpath.cpp.
 extern bool realpath(const char* path, std::string& resolved);
 
 extern "C" jstring Java_java_io_File_readlink(JNIEnv* env, jclass, jstring javaPath) {
@@ -114,13 +110,15 @@ public:
         if (mIsBad) {
             return NULL;
         }
-        dirent* result = NULL;
-        int rc = readdir_r(mDirStream, &mEntry, &result);
-        if (rc != 0) {
-            mIsBad = true;
-            return NULL;
+        errno = 0;
+        dirent* result = readdir(mDirStream);
+        if (result != NULL) {
+            return result->d_name;
         }
-        return (result != NULL) ? result->d_name : NULL;
+        if (errno != 0) {
+            mIsBad = true;
+        }
+        return NULL;
     }
 
     // Has an error occurred on this stream?
@@ -130,7 +128,6 @@ public:
 
 private:
     DIR* mDirStream;
-    dirent mEntry;
     bool mIsBad;
 
     // Disallow copy and assignment.

@@ -43,7 +43,7 @@ public class BasicLruCache<K, V> {
      */
     public synchronized final V get(K key) {
         if (key == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("key == null");
         }
 
         V result = map.get(key);
@@ -68,8 +68,10 @@ public class BasicLruCache<K, V> {
      *     no longer cached, it has not been passed to {@link #entryEvicted}.
      */
     public synchronized final V put(K key, V value) {
-        if (key == null || value == null) {
-            throw new NullPointerException();
+        if (key == null) {
+            throw new NullPointerException("key == null");
+        } else if (value == null) {
+            throw new NullPointerException("value == null");
         }
 
         V previous = map.put(key, value);

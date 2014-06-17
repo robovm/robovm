@@ -1,7 +1,7 @@
 /*
 ******************************************************************************
 *
-*   Copyright (C) 1997-2011, International Business Machines
+*   Copyright (C) 1997-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 ******************************************************************************
@@ -24,24 +24,55 @@
 #ifndef CMEMORY_H
 #define CMEMORY_H
 
+#include "unicode/utypes.h"
+
 #include <stddef.h>
 #include <string.h>
-#include "unicode/utypes.h"
 #include "unicode/localpointer.h"
+
+#if U_DEBUG && defined(UPRV_MALLOC_COUNT)
+#include <stdio.h>
+#endif
+
+#if U_DEBUG
+
+/*
+ * The C++ standard requires that the source pointer for memcpy() & memmove()
+ * is valid, not NULL, and not at the end of an allocated memory block.
+ * In debug mode, we read one byte from the source point to verify that it's
+ * a valid, readable pointer.
+ */
+
+U_CAPI void uprv_checkValidMemory(const void *p, size_t n);
+
+#define uprv_memcpy(dst, src, size) ( \
+    uprv_checkValidMemory(src, 1), \
+    U_STANDARD_CPP_NAMESPACE memcpy(dst, src, size))
+#define uprv_memmove(dst, src, size) ( \
+    uprv_checkValidMemory(src, 1), \
+    U_STANDARD_CPP_NAMESPACE memmove(dst, src, size))
+
+#else
 
 #define uprv_memcpy(dst, src, size) U_STANDARD_CPP_NAMESPACE memcpy(dst, src, size)
 #define uprv_memmove(dst, src, size) U_STANDARD_CPP_NAMESPACE memmove(dst, src, size)
+
+#endif  /* U_DEBUG */
+
 #define uprv_memset(buffer, mark, size) U_STANDARD_CPP_NAMESPACE memset(buffer, mark, size)
 #define uprv_memcmp(buffer1, buffer2, size) U_STANDARD_CPP_NAMESPACE memcmp(buffer1, buffer2,size)
 
 U_CAPI void * U_EXPORT2
-uprv_malloc(size_t s);
+uprv_malloc(size_t s) U_MALLOC_ATTR U_ALLOC_SIZE_ATTR(1);
 
 U_CAPI void * U_EXPORT2
-uprv_realloc(void *mem, size_t size);
+uprv_realloc(void *mem, size_t size) U_ALLOC_SIZE_ATTR(2);
 
 U_CAPI void U_EXPORT2
 uprv_free(void *mem);
+
+U_CAPI void * U_EXPORT2
+uprv_calloc(size_t num, size_t size) U_MALLOC_ATTR U_ALLOC_SIZE_ATTR2(1,2);
 
 /**
  * This should align the memory properly on any machine.
@@ -91,7 +122,23 @@ cmemory_inUse(void);
 U_CFUNC UBool 
 cmemory_cleanup(void);
 
-#ifdef XP_CPLUSPLUS
+/**
+ * A function called by <TT>uhash_remove</TT>,
+ * <TT>uhash_close</TT>, or <TT>uhash_put</TT> to delete
+ * an existing key or value.
+ * @param obj A key or value stored in a hashtable
+ * @see uprv_deleteUObject
+ */
+typedef void U_CALLCONV UObjectDeleter(void* obj);
+
+/**
+ * Deleter for UObject instances.
+ * Works for all subclasses of UObject because it has a virtual destructor.
+ */
+U_CAPI void U_EXPORT2
+uprv_deleteUObject(void *obj);
+
+#ifdef __cplusplus
 
 U_NAMESPACE_BEGIN
 
@@ -228,12 +275,15 @@ public:
      * @return getAlias()+getCapacity()
      */
     T *getArrayLimit() const { return getAlias()+capacity; }
+    // No "operator T *() const" because that can make
+    // expressions like mbs[index] ambiguous for some compilers.
     /**
-     * Access without ownership change. Same as getAlias().
-     * A class instance can be used directly in expressions that take a T *.
-     * @return the array pointer
+     * Array item access (const).
+     * No index bounds check.
+     * @param i array index
+     * @return reference to the array item
      */
-    operator T *() const { return ptr; }
+    const T &operator[](ptrdiff_t i) const { return ptr[i]; }
     /**
      * Array item access (writable).
      * No index bounds check.
@@ -312,6 +362,9 @@ private:
 template<typename T, int32_t stackCapacity>
 inline T *MaybeStackArray<T, stackCapacity>::resize(int32_t newCapacity, int32_t length) {
     if(newCapacity>0) {
+#if U_DEBUG && defined(UPRV_MALLOC_COUNT)
+      ::fprintf(::stderr,"MaybeStacArray (resize) alloc %d * %lu\n", newCapacity,sizeof(T));
+#endif
         T *p=(T *)uprv_malloc(newCapacity*sizeof(T));
         if(p!=NULL) {
             if(length>0) {
@@ -346,6 +399,9 @@ inline T *MaybeStackArray<T, stackCapacity>::orphanOrClone(int32_t length, int32
             length=capacity;
         }
         p=(T *)uprv_malloc(length*sizeof(T));
+#if U_DEBUG && defined(UPRV_MALLOC_COUNT)
+      ::fprintf(::stderr,"MaybeStacArray (orphan) alloc %d * %lu\n", length,sizeof(T));
+#endif
         if(p==NULL) {
             return NULL;
         }
@@ -482,6 +538,9 @@ template<typename H, typename T, int32_t stackCapacity>
 inline H *MaybeStackHeaderAndArray<H, T, stackCapacity>::resize(int32_t newCapacity,
                                                                 int32_t length) {
     if(newCapacity>=0) {
+#if U_DEBUG && defined(UPRV_MALLOC_COUNT)
+      ::fprintf(::stderr,"MaybeStackHeaderAndArray alloc %d + %d * %ul\n", sizeof(H),newCapacity,sizeof(T));
+#endif
         H *p=(H *)uprv_malloc(sizeof(H)+newCapacity*sizeof(T));
         if(p!=NULL) {
             if(length<0) {
@@ -518,6 +577,9 @@ inline H *MaybeStackHeaderAndArray<H, T, stackCapacity>::orphanOrClone(int32_t l
         } else if(length>capacity) {
             length=capacity;
         }
+#if U_DEBUG && defined(UPRV_MALLOC_COUNT)
+      ::fprintf(::stderr,"MaybeStackHeaderAndArray (orphan) alloc %ul + %d * %lu\n", sizeof(H),length,sizeof(T));
+#endif
         p=(H *)uprv_malloc(sizeof(H)+length*sizeof(T));
         if(p==NULL) {
             return NULL;
@@ -533,5 +595,5 @@ inline H *MaybeStackHeaderAndArray<H, T, stackCapacity>::orphanOrClone(int32_t l
 
 U_NAMESPACE_END
 
-#endif  /* XP_CPLUSPLUS */
+#endif  /* __cplusplus */
 #endif  /* CMEMORY_H */

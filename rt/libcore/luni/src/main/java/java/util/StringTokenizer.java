@@ -91,13 +91,13 @@ public class StringTokenizer implements Enumeration<Object> {
      */
     public StringTokenizer(String string, String delimiters,
             boolean returnDelimiters) {
-        if (string != null) {
-            this.string = string;
-            this.delimiters = delimiters;
-            this.returnDelimiters = returnDelimiters;
-            this.position = 0;
-        } else
-            throw new NullPointerException();
+        if (string == null) {
+            throw new NullPointerException("string == null");
+        }
+        this.string = string;
+        this.delimiters = delimiters;
+        this.returnDelimiters = returnDelimiters;
+        this.position = 0;
     }
 
     /**
@@ -143,7 +143,7 @@ public class StringTokenizer implements Enumeration<Object> {
      */
     public boolean hasMoreTokens() {
         if (delimiters == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("delimiters == null");
         }
         int length = string.length();
         if (position < length) {
@@ -180,7 +180,7 @@ public class StringTokenizer implements Enumeration<Object> {
      */
     public String nextToken() {
         if (delimiters == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("delimiters == null");
         }
         int i = position;
         int length = string.length();

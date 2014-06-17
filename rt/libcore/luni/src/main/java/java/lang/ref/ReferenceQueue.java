@@ -131,8 +131,6 @@ public class ReferenceQueue<T> {
      *
      * @param reference
      *            reference object to be enqueued.
-     * @return boolean true if reference is enqueued. false if reference failed
-     *         to enqueue.
      */
     synchronized void enqueue(Reference<? extends T> reference) {
         if (head == null) {
@@ -145,7 +143,7 @@ public class ReferenceQueue<T> {
     }
 
     /** @hide */
-    public static Reference unenqueued = null;
+    public static Reference<?> unenqueued = null;
 
     static void add(Reference<?> list) {
         synchronized (ReferenceQueue.class) {

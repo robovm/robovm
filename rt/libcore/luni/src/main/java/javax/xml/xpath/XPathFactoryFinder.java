@@ -126,7 +126,9 @@ final class XPathFactoryFinder {
      *      If the parameter is null.
      */
     public XPathFactory newFactory(String uri) {
-        if(uri==null)        throw new NullPointerException();
+        if (uri == null) {
+            throw new NullPointerException("uri == null");
+        }
         XPathFactory f = _newFactory(uri);
         if (debug) {
             if (f != null) {

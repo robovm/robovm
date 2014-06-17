@@ -37,7 +37,7 @@ public class UnknownFormatFlagsException extends IllegalFormatException {
      */
     public UnknownFormatFlagsException(String f) {
         if (f == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("f == null");
         }
         flags = f;
     }

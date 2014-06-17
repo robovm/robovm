@@ -42,7 +42,7 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
     @Override
     public boolean getFeature(String name) throws ParserConfigurationException {
         if (name == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("name == null");
         }
 
         if (NAMESPACES.equals(name)) {
@@ -90,7 +90,7 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
     public void setFeature(String name, boolean value)
             throws ParserConfigurationException {
         if (name == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("name == null");
         }
 
         if (NAMESPACES.equals(name)) {

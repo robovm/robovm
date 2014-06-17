@@ -31,7 +31,6 @@ ClassLoader* systemClassLoader = NULL;
 static Class* java_lang_Daemons = NULL;
 static Method* java_lang_Daemons_start = NULL;
 
-extern int registerJniHelp(JNIEnv* env);
 extern int registerCoreLibrariesJni(JNIEnv* env);
 
 static inline jint startsWith(char* s, char* prefix) {
@@ -252,9 +251,6 @@ Env* rvmStartup(Options* options) {
 
     // Initialize the RoboVM rt JNI code
 //    RT_JNI_OnLoad(&vm->javaVM, NULL);
-    // Initialize dalvik's JNIHelp code in libnativehelper
-    TRACE("Initializing dalvik's libnativehelper");
-    registerJniHelp((JNIEnv*) env);
     // Initialize the dalvik rt JNI code
     TRACE("Initializing dalvik's runtime JNI code");
     registerCoreLibrariesJni((JNIEnv*) env);

@@ -67,9 +67,10 @@ public class DateFormatSymbolsTest extends junit.framework.TestCase {
         assertEquals("stycznia", formatDate(pl, "MMMM", originalDfs));
         assertEquals("stycze\u0144", formatDate(pl, "LLLL", originalDfs));
 
-        // Whereas the deserialized object can't, because it lost the strings...
+        // But the deserialized object is screwed because the RI's serialized form doesn't
+        // contain the locale or the necessary strings. Don't serialize DateFormatSymbols, folks!
         assertEquals("stycznia", formatDate(pl, "MMMM", deserializedDfs));
-        assertEquals("stycznia", formatDate(pl, "LLLL", deserializedDfs));
+        assertEquals("January", formatDate(pl, "LLLL", deserializedDfs));
     }
 
     private String formatDate(Locale l, String fmt, DateFormatSymbols dfs) {
@@ -122,5 +123,39 @@ public class DateFormatSymbolsTest extends junit.framework.TestCase {
         // On the RI, the long names are localized. ICU doesn't have those, so we just use UTC.
         assertEquals(Arrays.toString(row), "UTC", row[2]);
         assertEquals(Arrays.toString(row), "UTC", row[4]);
+    }
+
+    // http://b/8128460
+    // If icu4c doesn't actually have a name, we arrange to return null from native code rather
+    // that use icu4c's probably-out-of-date time zone transition data.
+    // getZoneStrings has to paper over this.
+    public void test_getZoneStrings_no_nulls() throws Exception {
+        String[][] array = DateFormatSymbols.getInstance(Locale.US).getZoneStrings();
+        int failCount = 0;
+        for (String[] row : array) {
+            for (String element : row) {
+                if (element == null) {
+                    System.err.println(Arrays.toString(row));
+                    ++failCount;
+                }
+            }
+        }
+        assertEquals(0, failCount);
+    }
+
+    // http://b/7955614
+    public void test_getZoneStrings_Apia() throws Exception {
+        String[][] array = DateFormatSymbols.getInstance(Locale.US).getZoneStrings();
+        for (int i = 0; i < array.length; ++i) {
+            String[] row = array[i];
+            // Pacific/Apia is somewhat arbitrary; we just want a zone we have to generate
+            // "GMT" strings for the short names.
+            if (row[0].equals("Pacific/Apia")) {
+                assertEquals("Samoa Standard Time", row[1]);
+                assertEquals("GMT+13:00", row[2]);
+                assertEquals("Samoa Daylight Time", row[3]);
+                assertEquals("GMT+14:00", row[4]);
+            }
+        }
     }
 }

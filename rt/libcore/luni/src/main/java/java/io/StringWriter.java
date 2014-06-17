@@ -49,11 +49,11 @@ public class StringWriter extends Writer {
      * writer.
      *
      * @param initialSize
-     *            the intial size of the target string buffer.
+     *            the initial size of the target string buffer.
      */
     public StringWriter(int initialSize) {
         if (initialSize < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("initialSize < 0: " + initialSize);
         }
         buf = new StringBuffer(initialSize);
         lock = buf;

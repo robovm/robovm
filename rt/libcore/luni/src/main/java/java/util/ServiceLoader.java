@@ -78,7 +78,7 @@ public final class ServiceLoader<S> implements Iterable<S> {
         // It makes no sense for service to be null.
         // classLoader is null if you want the system class loader.
         if (service == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("service == null");
         }
         this.service = service;
         this.classLoader = classLoader;

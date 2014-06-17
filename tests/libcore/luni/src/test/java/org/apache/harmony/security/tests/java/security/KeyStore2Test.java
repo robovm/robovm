@@ -49,6 +49,7 @@ import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
+import libcore.java.security.StandardNames;
 import tests.support.Support_TestProvider;
 
 public class KeyStore2Test extends junit.framework.TestCase {
@@ -817,8 +818,9 @@ public class KeyStore2Test extends junit.framework.TestCase {
 
         try {
             keyTest.setEntry("alias", pke, null);
-            fail();
-        } catch (Exception expected) {
+            assertFalse(StandardNames.IS_RI);  // BKS KeyStore does not require a password
+        } catch (KeyStoreException e) {
+            assertTrue(StandardNames.IS_RI);  // JKS KeyStore requires a password
         }
 
         keyTest.setEntry("alias", pke, pp);

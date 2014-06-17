@@ -18,7 +18,7 @@
 package java.net;
 
 import java.nio.ByteOrder;
-import java.nio.charset.Charsets;
+import java.nio.charset.StandardCharsets;
 import libcore.io.Memory;
 
 class Socks4Message {
@@ -188,7 +188,7 @@ class Socks4Message {
         while (index < lastIndex && (buffer[index] != 0)) {
             index++;
         }
-        return new String(buffer, offset, index - offset, Charsets.ISO_8859_1);
+        return new String(buffer, offset, index - offset, StandardCharsets.ISO_8859_1);
     }
 
     /**
@@ -202,7 +202,7 @@ class Socks4Message {
      * Put a string into the buffer at the offset given.
      */
     private void setString(int offset, int maxLength, String theString) {
-        byte[] stringBytes = theString.getBytes(Charsets.ISO_8859_1);
+        byte[] stringBytes = theString.getBytes(StandardCharsets.ISO_8859_1);
         int length = Math.min(stringBytes.length, maxLength);
         System.arraycopy(stringBytes, 0, buffer, offset, length);
         buffer[offset + length] = 0;

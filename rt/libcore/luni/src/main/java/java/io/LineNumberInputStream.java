@@ -27,7 +27,7 @@ import libcore.io.Streams;
  * When using {@code read}, line terminator sequences are always translated into
  * {@code '\n'}.
  *
- * @deprecated Use {@link LineNumberReader}
+ * @deprecated Use {@link LineNumberReader} instead.
  */
 @Deprecated
 public class LineNumberInputStream extends FilterInputStream {
@@ -138,38 +138,27 @@ public class LineNumberInputStream extends FilterInputStream {
     }
 
     /**
-     * Reads at most {@code length} bytes from the filtered stream and stores
-     * them in the byte array {@code buffer} starting at {@code offset}.
+     * Reads up to {@code byteCount} bytes from the filtered stream and stores
+     * them in the byte array {@code buffer} starting at {@code byteOffset}.
      * Returns the number of bytes actually read or -1 if no bytes have been
      * read and the end of this stream has been reached.
-     * <p>
-     * The line number count is incremented if a line terminator is encountered.
+     *
+     * <p>The line number count is incremented if a line terminator is encountered.
      * Recognized line terminator sequences are {@code '\r'}, {@code '\n'} and
      * {@code "\r\n"}. Line terminator sequences are always translated into
      * {@code '\n'}.
      *
-     * @param buffer
-     *            the array in which to store the bytes read.
-     * @param offset
-     *            the initial position in {@code buffer} to store the bytes read
-     *            from this stream.
-     * @param length
-     *            the maximum number of bytes to store in {@code buffer}.
-     * @return the number of bytes actually read or -1 if the end of the
-     *         filtered stream has been reached while reading.
      * @throws IndexOutOfBoundsException
-     *             if {@code offset < 0} or {@code length < 0}, or if
-     *             {@code offset + length} is greater than the length of
-     *             {@code buffer}.
+     *     if {@code byteOffset < 0 || byteCount < 0 || byteOffset + byteCount > buffer.length}.
      * @throws IOException
      *             if this stream is closed or another IOException occurs.
      * @throws NullPointerException
-     *             if {@code buffer} is {@code null}.
+     *             if {@code buffer == null}.
      */
     @Override
-    public int read(byte[] buffer, int offset, int length) throws IOException {
-        Arrays.checkOffsetAndCount(buffer.length, offset, length);
-        for (int i = 0; i < length; i++) {
+    public int read(byte[] buffer, int byteOffset, int byteCount) throws IOException {
+        Arrays.checkOffsetAndCount(buffer.length, byteOffset, byteCount);
+        for (int i = 0; i < byteCount; ++i) {
             int currentChar;
             try {
                 currentChar = read();
@@ -182,9 +171,9 @@ public class LineNumberInputStream extends FilterInputStream {
             if (currentChar == -1) {
                 return i == 0 ? -1 : i;
             }
-            buffer[offset + i] = (byte) currentChar;
+            buffer[byteOffset + i] = (byte) currentChar;
         }
-        return length;
+        return byteCount;
     }
 
     /**

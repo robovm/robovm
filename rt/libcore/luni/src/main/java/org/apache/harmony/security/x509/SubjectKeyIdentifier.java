@@ -58,6 +58,13 @@ public final class SubjectKeyIdentifier extends ExtensionValue {
         return res;
     }
 
+    /**
+     * The key identifier for this subject.
+     */
+    public byte[] getKeyIdentifier() {
+        return keyIdentifier;
+    }
+
     @Override public byte[] getEncoded() {
         if (encoding == null) {
             encoding = ASN1OctetString.getInstance().encode(keyIdentifier);

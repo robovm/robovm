@@ -1,6 +1,6 @@
 /*
 *******************************************************************************
-*   Copyright (C) 2010-2011, International Business Machines
+*   Copyright (C) 2010-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *******************************************************************************
 *   file name:  bytestriebuilder.h
@@ -11,6 +11,11 @@
 *   created on: 2010sep25
 *   created by: Markus W. Scherer
 */
+
+/**
+ * \file
+ * \brief C++ API: Builder for icu::BytesTrie
+ */
 
 #ifndef __BYTESTRIEBUILDER_H__
 #define __BYTESTRIEBUILDER_H__
@@ -29,20 +34,20 @@ class CharString;
  * Builder class for BytesTrie.
  *
  * This class is not intended for public subclassing.
- * @draft ICU 4.8
+ * @stable ICU 4.8
  */
 class U_COMMON_API BytesTrieBuilder : public StringTrieBuilder {
 public:
     /**
      * Constructs an empty builder.
      * @param errorCode Standard ICU error code.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     BytesTrieBuilder(UErrorCode &errorCode);
 
     /**
      * Destructor.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     virtual ~BytesTrieBuilder();
 
@@ -58,7 +63,7 @@ public:
      *                  immediately. Check for U_FAILURE() on output or use with
      *                  function chaining. (See User Guide for details.)
      * @return *this
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     BytesTrieBuilder &add(const StringPiece &s, int32_t value, UErrorCode &errorCode);
 
@@ -75,7 +80,7 @@ public:
      *                  immediately. Check for U_FAILURE() on output or use with
      *                  function chaining. (See User Guide for details.)
      * @return A new BytesTrie for the add()ed data.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     BytesTrie *build(UStringTrieBuildOption buildOption, UErrorCode &errorCode);
 
@@ -96,7 +101,7 @@ public:
      *                  immediately. Check for U_FAILURE() on output or use with
      *                  function chaining. (See User Guide for details.)
      * @return A StringPiece which refers to the byte-serialized BytesTrie for the add()ed data.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     StringPiece buildStringPiece(UStringTrieBuildOption buildOption, UErrorCode &errorCode);
 
@@ -104,7 +109,7 @@ public:
      * Removes all (byte sequence, value) pairs.
      * New data can then be add()ed and a new trie can be built.
      * @return *this
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     BytesTrieBuilder &clear();
 
@@ -130,6 +135,7 @@ private:
     virtual int32_t getMinLinearMatch() const { return BytesTrie::kMinLinearMatch; }
     virtual int32_t getMaxLinearMatchLength() const { return BytesTrie::kMaxLinearMatchLength; }
 
+#ifndef U_HIDE_INTERNAL_API
     /**
      * @internal
      */
@@ -141,6 +147,7 @@ private:
     private:
         const char *s;
     };
+#endif  /* U_HIDE_INTERNAL_API */
 
     virtual Node *createLinearMatchNode(int32_t i, int32_t byteIndex, int32_t length,
                                         Node *nextNode) const;

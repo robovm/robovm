@@ -1,7 +1,7 @@
 /*
 ******************************************************************************
 *
-*   Copyright (C) 1999-2011, International Business Machines
+*   Copyright (C) 1999-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 ******************************************************************************
@@ -450,7 +450,7 @@ enum UBiDiDirection {
    * <p>As return value for <code>ubidi_getBaseDirection()</code>, it means
    *    that the source string is missing or empty, or contains neither left-to-right
    *    nor right-to-left characters.
-   * @draft ICU 4.6
+   * @stable ICU 4.6
    */
   UBIDI_NEUTRAL
 };
@@ -1126,9 +1126,9 @@ ubidi_getReorderingOptions(UBiDi *pBiDi);
  * @param pErrorCode must be a valid pointer to an error code value.
  *
  * @see ubidi_setPara
- * @draft ICU 4.8
+ * @stable ICU 4.8
  */
-U_DRAFT void U_EXPORT2
+U_STABLE void U_EXPORT2
 ubidi_setContext(UBiDi *pBiDi,
                  const UChar *prologue, int32_t proLength,
                  const UChar *epilogue, int32_t epiLength,
@@ -1313,9 +1313,9 @@ ubidi_getDirection(const UBiDi *pBiDi);
  *          <code>UBIDI_NEUTRAL</code>
  *
  * @see UBiDiDirection
- * @draft ICU 4.6
+ * @stable ICU 4.6
  */
-U_DRAFT UBiDiDirection U_EXPORT2
+U_STABLE UBiDiDirection U_EXPORT2
 ubidi_getBaseDirection(const UChar *text,  int32_t length );
 
 /**

@@ -20,7 +20,6 @@ package java.net;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
-import libcore.net.http.HttpEngine;
 
 /**
  * An {@link URLConnection} for HTTP (<a
@@ -236,9 +235,9 @@ import libcore.net.http.HttpEngine;
  * until a connection is established.
  *
  * <h3>Response Caching</h3>
- * Android 4.0 (Ice Cream Sandwich) includes a response cache. See {@code
- * android.net.http.HttpResponseCache} for instructions on enabling HTTP caching
- * in your application.
+ * Android 4.0 (Ice Cream Sandwich, API level 15) includes a response cache. See
+ * {@code android.net.http.HttpResponseCache} for instructions on enabling HTTP
+ * caching in your application.
  *
  * <h3>Avoiding Bugs In Earlier Releases</h3>
  * Prior to Android 2.2 (Froyo), this class had some frustrating bugs. In
@@ -257,19 +256,20 @@ import libcore.net.http.HttpEngine;
  * request/response pair. Instances of this class are not thread safe.
  */
 public abstract class HttpURLConnection extends URLConnection {
+    private static final int DEFAULT_CHUNK_LENGTH = 1024;
 
     /**
      * The subset of HTTP methods that the user may select via {@link
      * #setRequestMethod(String)}.
      */
     private static final String[] PERMITTED_USER_METHODS = {
-            HttpEngine.OPTIONS,
-            HttpEngine.GET,
-            HttpEngine.HEAD,
-            HttpEngine.POST,
-            HttpEngine.PUT,
-            HttpEngine.DELETE,
-            HttpEngine.TRACE
+            "OPTIONS",
+            "GET",
+            "HEAD",
+            "POST",
+            "PUT",
+            "DELETE",
+            "TRACE"
             // Note: we don't allow users to specify "CONNECT"
     };
 
@@ -277,7 +277,7 @@ public abstract class HttpURLConnection extends URLConnection {
      * The HTTP request method of this {@code HttpURLConnection}. The default
      * value is {@code "GET"}.
      */
-    protected String method = HttpEngine.GET;
+    protected String method = "GET";
 
     /**
      * The status code of the response obtained from the HTTP request. The
@@ -312,11 +312,19 @@ public abstract class HttpURLConnection extends URLConnection {
     protected int chunkLength = -1;
 
     /**
-     * If using HTTP fixed-length streaming mode this parameter defines the
-     * fixed length of content. Default value is {@code -1} that means the
-     * fixed-length streaming mode is disabled.
+     * The byte count in the request body if it is both known and streamed; and
+     * -1 otherwise. If the byte count exceeds {@link Integer#MAX_VALUE} (2 GiB)
+     * then the value of this field will be {@link Integer#MAX_VALUE}. In that
+     * case use {@link #fixedContentLengthLong} to access the exact byte count.
      */
     protected int fixedContentLength = -1;
+
+    /**
+     * The byte count in the request body if it is both known and streamed; and
+     * -1 otherwise. Prefer this field over the {@code int}-valued {@code
+     * fixedContentLength} on platforms that support both.
+     */
+    protected long fixedContentLengthLong = -1;
 
     // 2XX: generally "OK"
     // 3XX: relocation/redirect
@@ -475,7 +483,7 @@ public abstract class HttpURLConnection extends URLConnection {
     /**
      * Numeric status code, 500: Internal error
      *
-     * @deprecated Use {@link #HTTP_INTERNAL_ERROR}
+     * @deprecated Use {@link #HTTP_INTERNAL_ERROR} instead.
      */
     @Deprecated
     public static final int HTTP_SERVER_ERROR = 500;
@@ -737,9 +745,8 @@ public abstract class HttpURLConnection extends URLConnection {
     }
 
     /**
-     * If the length of a HTTP request body is known ahead, sets fixed length to
-     * enable streaming without buffering. Sets after connection will cause an
-     * exception.
+     * Configures this connection to stream the request body with the known
+     * fixed byte count of {@code contentLength}.
      *
      * @see #setChunkedStreamingMode
      * @param contentLength
@@ -748,8 +755,9 @@ public abstract class HttpURLConnection extends URLConnection {
      *             if already connected or another mode already set.
      * @throws IllegalArgumentException
      *             if {@code contentLength} is less than zero.
+     * @since 1.7
      */
-    public void setFixedLengthStreamingMode(int contentLength) {
+    public void setFixedLengthStreamingMode(long contentLength) {
         if (super.connected) {
             throw new IllegalStateException("Already connected");
         }
@@ -759,7 +767,16 @@ public abstract class HttpURLConnection extends URLConnection {
         if (contentLength < 0) {
             throw new IllegalArgumentException("contentLength < 0");
         }
-        this.fixedContentLength = contentLength;
+        this.fixedContentLength = (int) Math.min(contentLength, Integer.MAX_VALUE);
+        this.fixedContentLengthLong = contentLength;
+    }
+
+    /**
+     * Equivalent to {@code setFixedLengthStreamingMode((long) contentLength)},
+     * but available on earlier versions of Android and limited to 2 GiB.
+     */
+    public void setFixedLengthStreamingMode(int contentLength) {
+      setFixedLengthStreamingMode((long) contentLength);
     }
 
     /**
@@ -787,7 +804,7 @@ public abstract class HttpURLConnection extends URLConnection {
             throw new IllegalStateException("Already in fixed-length mode");
         }
         if (chunkLength <= 0) {
-            this.chunkLength = HttpEngine.DEFAULT_CHUNK_LENGTH;
+            this.chunkLength = DEFAULT_CHUNK_LENGTH;
         } else {
             this.chunkLength = chunkLength;
         }

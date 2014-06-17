@@ -59,13 +59,24 @@ public class CurrencyTest extends junit.framework.TestCase {
         assertEquals("Schweizer Franken", Currency.getInstance("CHF").getDisplayName(new Locale("de", "CH")));
         assertEquals("franc suisse", Currency.getInstance("CHF").getDisplayName(new Locale("fr", "CH")));
         assertEquals("Franco Svizzero", Currency.getInstance("CHF").getDisplayName(new Locale("it", "CH")));
-        // Test behavior with unknown locales; should return the currency code.
-        assertEquals("CHF", Currency.getInstance("CHF").getDisplayName(new Locale("xx", "YY")));
     }
 
     public void test_getDefaultFractionDigits() throws Exception {
         assertEquals(2, Currency.getInstance("USD").getDefaultFractionDigits());
         assertEquals(0, Currency.getInstance("JPY").getDefaultFractionDigits());
         assertEquals(-1, Currency.getInstance("XXX").getDefaultFractionDigits());
+    }
+
+    // http://code.google.com/p/android/issues/detail?id=38622
+    public void test_getSymbol_38622() throws Exception {
+        // The CLDR data had the Portuguese symbol for "EUR" in pt, not in pt_PT.
+        // We weren't falling back from pt_PT to pt, so we didn't find it and would
+        // default to U+00A4 CURRENCY SIGN (¤) rather than €.
+        Locale pt_BR = new Locale("pt", "BR");
+        Locale pt_PT = new Locale("pt", "PT");
+        assertEquals("R$", Currency.getInstance(pt_BR).getSymbol(pt_BR));
+        assertEquals("R$", Currency.getInstance(pt_BR).getSymbol(pt_PT));
+        assertEquals("€", Currency.getInstance(pt_PT).getSymbol(pt_BR));
+        assertEquals("€", Currency.getInstance(pt_PT).getSymbol(pt_PT));
     }
 }

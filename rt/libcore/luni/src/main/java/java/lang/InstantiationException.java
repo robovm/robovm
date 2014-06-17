@@ -21,7 +21,7 @@ package java.lang;
  * Thrown when a program attempts to access a constructor which is not
  * accessible from the location where the reference is made.
  */
-public class InstantiationException extends Exception {
+public class InstantiationException extends ReflectiveOperationException {
     private static final long serialVersionUID = -8441929162975509110L;
 
     /**

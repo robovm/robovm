@@ -336,29 +336,20 @@ public abstract class AbstractCollection<E> implements Collection<E> {
     public abstract int size();
 
     public Object[] toArray() {
-        int size = size(), index = 0;
-        Iterator<?> it = iterator();
-        Object[] array = new Object[size];
-        while (index < size) {
-            array[index++] = it.next();
-        }
-        return array;
+        return toArrayList().toArray();
+    }
+
+    public <T> T[] toArray(T[] contents) {
+        return toArrayList().toArray(contents);
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T[] toArray(T[] contents) {
-        int size = size(), index = 0;
-        if (size > contents.length) {
-            Class<?> ct = contents.getClass().getComponentType();
-            contents = (T[]) Array.newInstance(ct, size);
-        }
+    private ArrayList<Object> toArrayList() {
+        ArrayList<Object> result = new ArrayList<Object>(size());
         for (E entry : this) {
-            contents[index++] = (T) entry;
+            result.add(entry);
         }
-        if (index < contents.length) {
-            contents[index] = null;
-        }
-        return contents;
+        return result;
     }
 
     /**

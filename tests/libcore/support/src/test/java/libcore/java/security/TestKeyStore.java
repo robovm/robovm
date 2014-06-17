@@ -18,9 +18,11 @@ package libcore.java.security;
 
 import com.android.org.bouncycastle.asn1.DEROctetString;
 import com.android.org.bouncycastle.asn1.x509.BasicConstraints;
+import com.android.org.bouncycastle.asn1.x509.ExtendedKeyUsage;
 import com.android.org.bouncycastle.asn1.x509.GeneralName;
 import com.android.org.bouncycastle.asn1.x509.GeneralNames;
 import com.android.org.bouncycastle.asn1.x509.GeneralSubtree;
+import com.android.org.bouncycastle.asn1.x509.KeyPurposeId;
 import com.android.org.bouncycastle.asn1.x509.KeyUsage;
 import com.android.org.bouncycastle.asn1.x509.NameConstraints;
 import com.android.org.bouncycastle.asn1.x509.X509Extensions;
@@ -75,6 +77,7 @@ import libcore.javax.net.ssl.TestTrustManager;
 public final class TestKeyStore extends Assert {
 
     private static TestKeyStore ROOT_CA;
+    private static TestKeyStore INTERMEDIATE_CA;
 
     private static TestKeyStore SERVER;
     private static TestKeyStore CLIENT;
@@ -145,7 +148,7 @@ public final class TestKeyStore extends Assert {
                 .subject("CN=Test Root Certificate Authority")
                 .ca(true)
                 .build();
-        TestKeyStore intermediateCa = new Builder()
+        INTERMEDIATE_CA = new Builder()
                 .aliasPrefix("IntermediateCA")
                 .subject("CN=Test Intermediate Certificate Authority")
                 .ca(true)
@@ -154,15 +157,15 @@ public final class TestKeyStore extends Assert {
                 .build();
         SERVER = new Builder()
                 .aliasPrefix("server")
-                .signer(intermediateCa.getPrivateKey("RSA", "RSA"))
-                .rootCa(intermediateCa.getRootCertificate("RSA"))
+                .signer(INTERMEDIATE_CA.getPrivateKey("RSA", "RSA"))
+                .rootCa(INTERMEDIATE_CA.getRootCertificate("RSA"))
                 .build();
-        CLIENT = new TestKeyStore(createClient(intermediateCa.keyStore), null, null);
+        CLIENT = new TestKeyStore(createClient(INTERMEDIATE_CA.keyStore), null, null);
         CLIENT_CERTIFICATE = new Builder()
                 .aliasPrefix("client")
                 .subject("emailAddress=test@user")
-                .signer(intermediateCa.getPrivateKey("RSA", "RSA"))
-                .rootCa(intermediateCa.getRootCertificate("RSA"))
+                .signer(INTERMEDIATE_CA.getPrivateKey("RSA", "RSA"))
+                .rootCa(INTERMEDIATE_CA.getRootCertificate("RSA"))
                 .build();
         TestKeyStore rootCa2 = new Builder()
                 .aliasPrefix("RootCA2")
@@ -170,6 +173,22 @@ public final class TestKeyStore extends Assert {
                 .ca(true)
                 .build();
         CLIENT_2 = new TestKeyStore(createClient(rootCa2.keyStore), null, null);
+    }
+
+    /**
+     * Return an root CA that can be used to issue new certificates.
+     */
+    public static TestKeyStore getRootCa() {
+        initCerts();
+        return ROOT_CA;
+    }
+
+    /**
+     * Return an intermediate CA that can be used to issue new certificates.
+     */
+    public static TestKeyStore getIntermediateCa() {
+        initCerts();
+        return INTERMEDIATE_CA;
     }
 
     /**
@@ -223,10 +242,13 @@ public final class TestKeyStore extends Assert {
         private boolean ca;
         private PrivateKeyEntry signer;
         private Certificate rootCa;
+        private final List<KeyPurposeId> extendedKeyUsages = new ArrayList<KeyPurposeId>();
+        private final List<Boolean> criticalExtendedKeyUsages = new ArrayList<Boolean>();
         private final List<GeneralName> subjectAltNames = new ArrayList<GeneralName>();
-        private final Vector<GeneralSubtree> permittedNameConstraints
-                = new Vector<GeneralSubtree>();
-        private final Vector<GeneralSubtree> excludedNameConstraints = new Vector<GeneralSubtree>();
+        private final List<GeneralSubtree> permittedNameConstraints
+                = new ArrayList<GeneralSubtree>();
+        private final List<GeneralSubtree> excludedNameConstraints
+                = new ArrayList<GeneralSubtree>();
 
         public Builder() {
             subject = localhost();
@@ -284,7 +306,13 @@ public final class TestKeyStore extends Assert {
             return this;
         }
 
-        private Builder addSubjectAltName(GeneralName generalName) {
+        public Builder addExtendedKeyUsage(KeyPurposeId keyPurposeId, boolean critical) {
+            extendedKeyUsages.add(keyPurposeId);
+            criticalExtendedKeyUsages.add(critical);
+            return this;
+        }
+
+        public Builder addSubjectAltName(GeneralName generalName) {
             subjectAltNames.add(generalName);
             return this;
         }
@@ -413,6 +441,7 @@ public final class TestKeyStore extends Assert {
                                         : subject);
                 PrivateKey signingKey = (caKey == null) ? privateKey : caKey;
                 x509c = createCertificate(publicKey, signingKey, subject, issuer, keyUsage, ca,
+                                          extendedKeyUsages, criticalExtendedKeyUsages,
                                           subjectAltNames,
                                           permittedNameConstraints, excludedNameConstraints);
             }
@@ -456,9 +485,11 @@ public final class TestKeyStore extends Assert {
             return createCertificate(publicKey, privateKey,
                                      principal, principal,
                                      0, true,
-                                     new Vector<GeneralName>(),
-                                     new Vector<GeneralSubtree>(),
-                                     new Vector<GeneralSubtree>());
+                                     new ArrayList<KeyPurposeId>(),
+                                     new ArrayList<Boolean>(),
+                                     new ArrayList<GeneralName>(),
+                                     new ArrayList<GeneralSubtree>(),
+                                     new ArrayList<GeneralSubtree>());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -471,9 +502,11 @@ public final class TestKeyStore extends Assert {
             X500Principal issuer,
             int keyUsage,
             boolean ca,
+            List<KeyPurposeId> extendedKeyUsages,
+            List<Boolean> criticalExtendedKeyUsages,
             List<GeneralName> subjectAltNames,
-            Vector<GeneralSubtree> permittedNameConstraints,
-            Vector<GeneralSubtree> excludedNameConstraints) throws Exception {
+            List<GeneralSubtree> permittedNameConstraints,
+            List<GeneralSubtree> excludedNameConstraints) throws Exception {
         // Note that there is no way to programmatically make a
         // Certificate using java.* or javax.* APIs. The
         // CertificateFactory interface assumes you want to read
@@ -520,6 +553,13 @@ public final class TestKeyStore extends Assert {
                                 true,
                                 new BasicConstraints(true));
         }
+        for (int i = 0; i < extendedKeyUsages.size(); i++) {
+            KeyPurposeId keyPurposeId = extendedKeyUsages.get(i);
+            boolean critical = criticalExtendedKeyUsages.get(i);
+            x509cg.addExtension(X509Extensions.ExtendedKeyUsage,
+                                critical,
+                                new ExtendedKeyUsage(keyPurposeId));
+        }
         for (GeneralName subjectAltName : subjectAltNames) {
             x509cg.addExtension(X509Extensions.SubjectAlternativeName,
                                 false,
@@ -528,8 +568,12 @@ public final class TestKeyStore extends Assert {
         if (!permittedNameConstraints.isEmpty() || !excludedNameConstraints.isEmpty()) {
             x509cg.addExtension(X509Extensions.NameConstraints,
                                 true,
-                                new NameConstraints(permittedNameConstraints,
-                                                    excludedNameConstraints));
+                                new NameConstraints(permittedNameConstraints.toArray(
+                                                        new GeneralSubtree[
+                                                            permittedNameConstraints.size()]),
+                                                    excludedNameConstraints.toArray(
+                                                        new GeneralSubtree[
+                                                            excludedNameConstraints.size()])));
         }
 
         if (privateKey instanceof ECPrivateKey) {
@@ -588,10 +632,6 @@ public final class TestKeyStore extends Assert {
 
     /**
      * Create an empty KeyStore
-     *
-     * The KeyStore is optionally password protected by the
-     * keyStorePassword argument, which can be null if a password is
-     * not desired.
      */
     public static KeyStore createKeyStore() {
         try {
@@ -806,6 +846,13 @@ public final class TestKeyStore extends Assert {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Dump a key store for debugging.
+     */
+    public void dump(String context) throws KeyStoreException, NoSuchAlgorithmException {
+        dump(context, keyStore, keyPassword);
     }
 
     /**

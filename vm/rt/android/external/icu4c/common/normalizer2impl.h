@@ -25,6 +25,7 @@
 #include "unicode/udata.h"
 #include "unicode/unistr.h"
 #include "unicode/unorm.h"
+#include "unicode/utf16.h"
 #include "mutex.h"
 #include "uset_imp.h"
 #include "utrie2.h"
@@ -83,6 +84,24 @@ public:
         } else {
             buffer[2]=(UChar)(JAMO_T_BASE+c2);
             return 3;
+        }
+    }
+
+    /**
+     * Decomposes c, which must be a Hangul syllable, into buffer.
+     * This is the raw, not recursive, decomposition. Its length is always 2.
+     */
+    static inline void getRawDecomposition(UChar32 c, UChar buffer[2]) {
+        UChar32 orig=c;
+        c-=HANGUL_BASE;
+        UChar32 c2=c%JAMO_T_COUNT;
+        if(c2==0) {
+            c/=JAMO_T_COUNT;
+            buffer[0]=(UChar)(JAMO_L_BASE+c/JAMO_V_COUNT);
+            buffer[1]=(UChar)(JAMO_V_BASE+c%JAMO_V_COUNT);
+        } else {
+            buffer[0]=orig-c2;  // LV syllable
+            buffer[1]=(UChar)(JAMO_T_BASE+c2);
         }
     }
 private:
@@ -197,7 +216,6 @@ private:
 class U_COMMON_API Normalizer2Impl : public UMemory {
 public:
     Normalizer2Impl() : memory(NULL), normTrie(NULL) {
-        fcdTrieSingleton.fInstance=NULL;
         canonIterDataSingleton.fInstance=NULL;
     }
     ~Normalizer2Impl();
@@ -210,7 +228,6 @@ public:
     // low-level properties ------------------------------------------------ ***
 
     const UTrie2 *getNormTrie() const { return normTrie; }
-    const UTrie2 *getFCDTrie(UErrorCode &errorCode) const ;
 
     UBool ensureCanonIterData(UErrorCode &errorCode) const;
 
@@ -241,31 +258,102 @@ public:
         return norm16>=MIN_NORMAL_MAYBE_YES ? (uint8_t)norm16 : 0;
     }
 
-    uint16_t getFCD16(UChar32 c) const { return UTRIE2_GET16(fcdTrie(), c); }
-    uint16_t getFCD16FromSingleLead(UChar c) const {
-        return UTRIE2_GET16_FROM_U16_SINGLE_LEAD(fcdTrie(), c);
+    /**
+     * Returns the FCD data for code point c.
+     * @param c A Unicode code point.
+     * @return The lccc(c) in bits 15..8 and tccc(c) in bits 7..0.
+     */
+    uint16_t getFCD16(UChar32 c) const {
+        if(c<0) {
+            return 0;
+        } else if(c<0x180) {
+            return tccc180[c];
+        } else if(c<=0xffff) {
+            if(!singleLeadMightHaveNonZeroFCD16(c)) { return 0; }
+        }
+        return getFCD16FromNormData(c);
     }
-    uint16_t getFCD16FromSupplementary(UChar32 c) const {
-        return UTRIE2_GET16_FROM_SUPP(fcdTrie(), c);
+    /**
+     * Returns the FCD data for the next code point (post-increment).
+     * Might skip only a lead surrogate rather than the whole surrogate pair if none of
+     * the supplementary code points associated with the lead surrogate have non-zero FCD data.
+     * @param s A valid pointer into a string. Requires s!=limit.
+     * @param limit The end of the string, or NULL.
+     * @return The lccc(c) in bits 15..8 and tccc(c) in bits 7..0.
+     */
+    uint16_t nextFCD16(const UChar *&s, const UChar *limit) const {
+        UChar32 c=*s++;
+        if(c<0x180) {
+            return tccc180[c];
+        } else if(!singleLeadMightHaveNonZeroFCD16(c)) {
+            return 0;
+        }
+        UChar c2;
+        if(U16_IS_LEAD(c) && s!=limit && U16_IS_TRAIL(c2=*s)) {
+            c=U16_GET_SUPPLEMENTARY(c, c2);
+            ++s;
+        }
+        return getFCD16FromNormData(c);
     }
-    uint16_t getFCD16FromSurrogatePair(UChar c, UChar c2) const {
-        return getFCD16FromSupplementary(U16_GET_SUPPLEMENTARY(c, c2));
+    /**
+     * Returns the FCD data for the previous code point (pre-decrement).
+     * @param start The start of the string.
+     * @param s A valid pointer into a string. Requires start<s.
+     * @return The lccc(c) in bits 15..8 and tccc(c) in bits 7..0.
+     */
+    uint16_t previousFCD16(const UChar *start, const UChar *&s) const {
+        UChar32 c=*--s;
+        if(c<0x180) {
+            return tccc180[c];
+        }
+        if(!U16_IS_TRAIL(c)) {
+            if(!singleLeadMightHaveNonZeroFCD16(c)) {
+                return 0;
+            }
+        } else {
+            UChar c2;
+            if(start<s && U16_IS_LEAD(c2=*(s-1))) {
+                c=U16_GET_SUPPLEMENTARY(c2, c);
+                --s;
+            }
+        }
+        return getFCD16FromNormData(c);
     }
 
-    void setFCD16FromNorm16(UChar32 start, UChar32 end, uint16_t norm16,
-                            UTrie2 *newFCDTrie, UErrorCode &errorCode) const;
+    /** Returns the FCD data for U+0000<=c<U+0180. */
+    uint16_t getFCD16FromBelow180(UChar32 c) const { return tccc180[c]; }
+    /** Returns TRUE if the single-or-lead code unit c might have non-zero FCD data. */
+    UBool singleLeadMightHaveNonZeroFCD16(UChar32 lead) const {
+        // 0<=lead<=0xffff
+        uint8_t bits=smallFCD[lead>>8];
+        if(bits==0) { return false; }
+        return (UBool)((bits>>((lead>>5)&7))&1);
+    }
+    /** Returns the FCD value from the regular normalization data. */
+    uint16_t getFCD16FromNormData(UChar32 c) const;
 
     void makeCanonIterDataFromNorm16(UChar32 start, UChar32 end, uint16_t norm16,
                                      CanonIterData &newData, UErrorCode &errorCode) const;
 
     /**
-     * Get the decomposition for one code point.
+     * Gets the decomposition for one code point.
      * @param c code point
      * @param buffer out-only buffer for algorithmic decompositions
      * @param length out-only, takes the length of the decomposition, if any
      * @return pointer to the decomposition, or NULL if none
      */
     const UChar *getDecomposition(UChar32 c, UChar buffer[4], int32_t &length) const;
+
+    /**
+     * Gets the raw decomposition for one code point.
+     * @param c code point
+     * @param buffer out-only buffer for algorithmic decompositions
+     * @param length out-only, takes the length of the decomposition, if any
+     * @return pointer to the decomposition, or NULL if none
+     */
+    const UChar *getRawDecomposition(UChar32 c, UChar buffer[30], int32_t &length) const;
+
+    UChar32 composePair(UChar32 a, UChar32 b) const;
 
     UBool isCanonSegmentStarter(UChar32 c) const;
     UBool getCanonStartSet(UChar32 c, UnicodeSet &set) const;
@@ -286,7 +374,7 @@ public:
         // Byte offsets from the start of the data, after the generic header.
         IX_NORM_TRIE_OFFSET,
         IX_EXTRA_DATA_OFFSET,
-        IX_RESERVED2_OFFSET,
+        IX_SMALL_FCD_OFFSET,
         IX_RESERVED3_OFFSET,
         IX_RESERVED4_OFFSET,
         IX_RESERVED5_OFFSET,
@@ -298,19 +386,20 @@ public:
         IX_MIN_COMP_NO_MAYBE_CP,
 
         // Norm16 value thresholds for quick check combinations and types of extra data.
-        IX_MIN_YES_NO,
+        IX_MIN_YES_NO,  // Mappings & compositions in [minYesNo..minYesNoMappingsOnly[.
         IX_MIN_NO_NO,
         IX_LIMIT_NO_NO,
         IX_MIN_MAYBE_YES,
 
-        IX_RESERVED14,
+        IX_MIN_YES_NO_MAPPINGS_ONLY,  // Mappings only in [minYesNoMappingsOnly..minNoNo[.
+
         IX_RESERVED15,
         IX_COUNT
     };
 
     enum {
         MAPPING_HAS_CCC_LCCC_WORD=0x80,
-        MAPPING_PLUS_COMPOSITION_LIST=0x40,
+        MAPPING_HAS_RAW_MAPPING=0x40,
         MAPPING_NO_COMP_BOUNDARY_AFTER=0x20,
         MAPPING_LENGTH_MASK=0x1f
     };
@@ -377,7 +466,7 @@ private:
     UBool isMaybe(uint16_t norm16) const { return minMaybeYes<=norm16 && norm16<=JAMO_VT; }
     UBool isMaybeOrNonZeroCC(uint16_t norm16) const { return norm16>=minMaybeYes; }
     static UBool isInert(uint16_t norm16) { return norm16==0; }
-    // static UBool isJamoL(uint16_t norm16) const { return norm16==1; }
+    static UBool isJamoL(uint16_t norm16) { return norm16==1; }
     static UBool isJamoVT(uint16_t norm16) { return norm16==JAMO_VT; }
     UBool isHangul(uint16_t norm16) const { return norm16==minYesNo; }
     UBool isCompYesAndZeroCC(uint16_t norm16) const { return norm16<minNoNo; }
@@ -413,7 +502,7 @@ private:
     uint8_t getCCFromNoNo(uint16_t norm16) const {
         const uint16_t *mapping=getMapping(norm16);
         if(*mapping&MAPPING_HAS_CCC_LCCC_WORD) {
-            return (uint8_t)mapping[1];
+            return (uint8_t)*(mapping-1);
         } else {
             return 0;
         }
@@ -441,8 +530,7 @@ private:
         const uint16_t *list=extraData+norm16;  // composite has both mapping & compositions list
         return list+  // mapping pointer
             1+  // +1 to skip the first unit with the mapping lenth
-            (*list&MAPPING_LENGTH_MASK)+  // + mapping length
-            ((*list>>7)&1);  // +1 if MAPPING_HAS_CCC_LCCC_WORD
+            (*list&MAPPING_LENGTH_MASK);  // + mapping length
     }
     /**
      * @param c code point must have compositions
@@ -472,8 +560,6 @@ private:
     const UChar *findPreviousCompBoundary(const UChar *start, const UChar *p) const;
     const UChar *findNextCompBoundary(const UChar *p, const UChar *limit) const;
 
-    const UTrie2 *fcdTrie() const { return (const UTrie2 *)fcdTrieSingleton.fInstance; }
-
     const UChar *findPreviousFCDBoundary(const UChar *start, const UChar *p) const;
     const UChar *findNextFCDBoundary(const UChar *p, const UChar *limit) const;
 
@@ -489,6 +575,7 @@ private:
 
     // Norm16 value thresholds for quick check combinations and types of extra data.
     uint16_t minYesNo;
+    uint16_t minYesNoMappingsOnly;
     uint16_t minNoNo;
     uint16_t limitNoNo;
     uint16_t minMaybeYes;
@@ -496,8 +583,9 @@ private:
     UTrie2 *normTrie;
     const uint16_t *maybeYesCompositions;
     const uint16_t *extraData;  // mappings and/or compositions for yesYes, yesNo & noNo characters
+    const uint8_t *smallFCD;  // [0x100] one bit per 32 BMP code points, set if any FCD!=0
+    uint8_t tccc180[0x180];  // tccc values for U+0000..U+017F
 
-    SimpleSingleton fcdTrieSingleton;
     SimpleSingleton canonIterDataSingleton;
 };
 
@@ -530,8 +618,6 @@ public:
     // Get the Impl instance of the Normalizer2.
     // Must be used only when it is known that norm2 is a Normalizer2WithImpl instance.
     static const Normalizer2Impl *getImpl(const Normalizer2 *norm2);
-
-    static const UTrie2 *getFCDTrie(UErrorCode &errorCode);
 private:
     Normalizer2Factory();  // No instantiation.
 };
@@ -547,102 +633,19 @@ unorm2_swap(const UDataSwapper *ds,
  * Get the NF*_QC property for a code point, for u_getIntPropertyValue().
  * @internal
  */
-U_CFUNC UNormalizationCheckResult U_EXPORT2
+U_CFUNC UNormalizationCheckResult
 unorm_getQuickCheck(UChar32 c, UNormalizationMode mode);
 
 /**
- * Internal API, used by collation code.
- * Get access to the internal FCD trie table to be able to perform
- * incremental, per-code unit, FCD checks in collation.
- * One pointer is sufficient because the trie index values are offset
- * by the index size, so that the same pointer is used to access the trie data.
- * Code points at fcdHighStart and above have a zero FCD value.
+ * Gets the 16-bit FCD value (lead & trail CCs) for a code point, for u_getIntPropertyValue().
  * @internal
  */
-U_CAPI const uint16_t * U_EXPORT2
-unorm_getFCDTrieIndex(UChar32 &fcdHighStart, UErrorCode *pErrorCode);
-
-/**
- * Internal API, used by collation code.
- * Get the FCD value for a code unit, with
- * bits 15..8   lead combining class
- * bits  7..0   trail combining class
- *
- * If c is a lead surrogate and the value is not 0,
- * then some of c's associated supplementary code points have a non-zero FCD value.
- *
- * @internal
- */
-static inline uint16_t
-unorm_getFCD16(const uint16_t *fcdTrieIndex, UChar c) {
-    return fcdTrieIndex[_UTRIE2_INDEX_FROM_U16_SINGLE_LEAD(fcdTrieIndex, c)];
-}
-
-/**
- * Internal API, used by collation code.
- * Get the FCD value of the next code point (post-increment), with
- * bits 15..8   lead combining class
- * bits  7..0   trail combining class
- *
- * @internal
- */
-static inline uint16_t
-unorm_nextFCD16(const uint16_t *fcdTrieIndex, UChar32 fcdHighStart,
-                const UChar *&s, const UChar *limit) {
-    UChar32 c=*s++;
-    uint16_t fcd=fcdTrieIndex[_UTRIE2_INDEX_FROM_U16_SINGLE_LEAD(fcdTrieIndex, c)];
-    if(fcd!=0 && U16_IS_LEAD(c)) {
-        UChar c2;
-        if(s!=limit && U16_IS_TRAIL(c2=*s)) {
-            ++s;
-            c=U16_GET_SUPPLEMENTARY(c, c2);
-            if(c<fcdHighStart) {
-                fcd=fcdTrieIndex[_UTRIE2_INDEX_FROM_SUPP(fcdTrieIndex, c)];
-            } else {
-                fcd=0;
-            }
-        } else /* unpaired lead surrogate */ {
-            fcd=0;
-        }
-    }
-    return fcd;
-}
-
-/**
- * Internal API, used by collation code.
- * Get the FCD value of the previous code point (pre-decrement), with
- * bits 15..8   lead combining class
- * bits  7..0   trail combining class
- *
- * @internal
- */
-static inline uint16_t
-unorm_prevFCD16(const uint16_t *fcdTrieIndex, UChar32 fcdHighStart,
-                const UChar *start, const UChar *&s) {
-    UChar32 c=*--s;
-    uint16_t fcd;
-    if(!U16_IS_SURROGATE(c)) {
-        fcd=fcdTrieIndex[_UTRIE2_INDEX_FROM_U16_SINGLE_LEAD(fcdTrieIndex, c)];
-    } else {
-        UChar c2;
-        if(U16_IS_SURROGATE_TRAIL(c) && s!=start && U16_IS_LEAD(c2=*(s-1))) {
-            --s;
-            c=U16_GET_SUPPLEMENTARY(c2, c);
-            if(c<fcdHighStart) {
-                fcd=fcdTrieIndex[_UTRIE2_INDEX_FROM_SUPP(fcdTrieIndex, c)];
-            } else {
-                fcd=0;
-            }
-        } else /* unpaired surrogate */ {
-            fcd=0;
-        }
-    }
-    return fcd;
-}
+U_CFUNC uint16_t
+unorm_getFCD16(UChar32 c);
 
 /**
  * Format of Normalizer2 .nrm data files.
- * Format version 1.0.
+ * Format version 2.0.
  *
  * Normalizer2 .nrm data files provide data for the Unicode Normalization algorithms.
  * ICU ships with data files for standard Unicode Normalization Forms
@@ -680,12 +683,13 @@ unorm_prevFCD16(const uint16_t *fcdTrieIndex, UChar32 fcdHighStart,
  *      minCompNoMaybeCP=indexes[IX_MIN_COMP_NO_MAYBE_CP] is the lowest code point
  *      with NF*C_QC=No (has a one-way mapping) or Maybe (combines backward).
  *
- *      The next four indexes are thresholds of 16-bit trie values for ranges of
+ *      The next five indexes are thresholds of 16-bit trie values for ranges of
  *      values indicating multiple normalization properties.
  *          minYesNo=indexes[IX_MIN_YES_NO];
  *          minNoNo=indexes[IX_MIN_NO_NO];
  *          limitNoNo=indexes[IX_LIMIT_NO_NO];
  *          minMaybeYes=indexes[IX_MIN_MAYBE_YES];
+ *          minYesNoMappingsOnly=indexes[IX_MIN_YES_NO_MAPPINGS_ONLY];
  *      See the normTrie description below and the design doc for details.
  *
  * UTrie2 normTrie; -- see utrie2_impl.h and utrie2.h
@@ -697,7 +701,7 @@ unorm_prevFCD16(const uint16_t *fcdTrieIndex, UChar32 fcdHighStart,
  *      means that the character has NF*C_QC=Yes and NF*D_QC=No properties,
  *      which means it has a two-way (round-trip) decomposition mapping.
  *      Values in the range 2<=norm16<limitNoNo are also directly indexes into the extraData
- *      pointing to mappings, composition lists, or both.
+ *      pointing to mappings, compositions lists, or both.
  *      Value norm16==0 means that the character is normalization-inert, that is,
  *      it does not have a mapping, does not participate in composition, has a zero
  *      canonical combining class, and forms a boundary where text before it and after it
@@ -722,7 +726,7 @@ unorm_prevFCD16(const uint16_t *fcdTrieIndex, UChar32 fcdHighStart,
  *      There is only one byte offset for the end of these two arrays.
  *      The split between them is given by the constant and variable mentioned above.
  *
- *      The maybeYesCompositions array contains composition lists for characters that
+ *      The maybeYesCompositions array contains compositions lists for characters that
  *      combine both forward (as starters in composition pairs)
  *      and backward (as trailing characters in composition pairs).
  *      Such characters do not occur in Unicode 5.2 but are allowed by
@@ -732,13 +736,41 @@ unorm_prevFCD16(const uint16_t *fcdTrieIndex, UChar32 fcdHighStart,
  *      If there are such characters, then minMaybeYes is subtracted from their norm16 values
  *      to get the index into this array.
  *
- *      The extraData array contains composition lists for "YesYes" characters,
- *      followed by mappings and optional composition lists for "YesNo" characters,
+ *      The extraData array contains compositions lists for "YesYes" characters,
+ *      followed by mappings and optional compositions lists for "YesNo" characters,
  *      followed by only mappings for "NoNo" characters.
  *      (Referring to pairs of NFC/NFD quick check values.)
  *      The norm16 values of those characters are directly indexes into the extraData array.
  *
- *      The data structures for composition lists and mappings are described in the design doc.
+ *      The data structures for compositions lists and mappings are described in the design doc.
+ *
+ * uint8_t smallFCD[0x100]; -- new in format version 2
+ *
+ *      This is a bit set to help speed up FCD value lookups in the absence of a full
+ *      UTrie2 or other large data structure with the full FCD value mapping.
+ *
+ *      Each smallFCD bit is set if any of the corresponding 32 BMP code points
+ *      has a non-zero FCD value (lccc!=0 or tccc!=0).
+ *      Bit 0 of smallFCD[0] is for U+0000..U+001F. Bit 7 of smallFCD[0xff] is for U+FFE0..U+FFFF.
+ *      A bit for 32 lead surrogates is set if any of the 32k corresponding
+ *      _supplementary_ code points has a non-zero FCD value.
+ *
+ *      This bit set is most useful for the large blocks of CJK characters with FCD=0.
+ *
+ * Changes from format version 1 to format version 2 ---------------------------
+ *
+ * - Addition of data for raw (not recursively decomposed) mappings.
+ *   + The MAPPING_NO_COMP_BOUNDARY_AFTER bit in the extraData is now also set when
+ *     the mapping is to an empty string or when the character combines-forward.
+ *     This subsumes the one actual use of the MAPPING_PLUS_COMPOSITION_LIST bit which
+ *     is then repurposed for the MAPPING_HAS_RAW_MAPPING bit.
+ *   + For details see the design doc.
+ * - Addition of indexes[IX_MIN_YES_NO_MAPPINGS_ONLY] and separation of the yesNo extraData into
+ *   distinct ranges (combines-forward vs. not)
+ *   so that a range check can be used to find out if there is a compositions list.
+ *   This is fully equivalent with formatVersion 1's MAPPING_PLUS_COMPOSITION_LIST flag.
+ *   It is needed for the new (in ICU 49) composePair(), not for other normalization.
+ * - Addition of the smallFCD[] bit set.
  */
 
 #endif  /* !UCONFIG_NO_NORMALIZATION */

@@ -1,6 +1,6 @@
 /* 
 **********************************************************************
-*   Copyright (C) 2000-2007, International Business Machines
+*   Copyright (C) 2000-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 **********************************************************************
 *   file name:  ucnvlat1.cpp
@@ -18,6 +18,7 @@
 
 #include "unicode/ucnv.h"
 #include "unicode/uset.h"
+#include "unicode/utf8.h"
 #include "ucnv_bld.h"
 #include "ucnv_cnv.h"
 
@@ -405,7 +406,7 @@ ucnv_Latin1FromUTF8(UConverterFromUnicodeArgs *pFromUArgs,
     if(U_SUCCESS(*pErrorCode) && source<(sourceLimit=(uint8_t *)pToUArgs->sourceLimit)) {
         utf8->toUnicodeStatus=utf8->toUBytes[0]=b=*source++;
         utf8->toULength=1;
-        utf8->mode=utf8_countTrailBytes[b]+1;
+        utf8->mode=U8_COUNT_TRAIL_BYTES(b)+1;
     }
 
     /* write back the updated pointers */

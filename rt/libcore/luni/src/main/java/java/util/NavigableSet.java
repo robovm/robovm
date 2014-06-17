@@ -1,14 +1,13 @@
 /*
  * Written by Doug Lea and Josh Bloch with assistance from members of JCP
  * JSR-166 Expert Group and released to the public domain, as explained at
- * http://creativecommons.org/licenses/publicdomain
+ * http://creativecommons.org/publicdomain/zero/1.0/
  */
 
 package java.util;
 
 // BEGIN android-note
 // removed link to collections framework docs
-// changed {@link #subSet(Object)} to {@link #subSet} to satisfy DroidDoc
 // END android-note
 
 /**
@@ -41,9 +40,9 @@ package java.util;
  * Comparable} elements intrinsically do not permit {@code null}.)
  *
  * <p>Methods
- * {@link #subSet subSet(E, E)},
- * {@link #headSet headSet(E)}, and
- * {@link #tailSet tailSet(E)}
+ * {@link #subSet(Object, Object) subSet(E, E)},
+ * {@link #headSet(Object) headSet(E)}, and
+ * {@link #tailSet(Object) tailSet(E)}
  * are specified to return {@code SortedSet} to allow existing
  * implementations of {@code SortedSet} to be compatibly retrofitted to
  * implement {@code NavigableSet}, but extensions and implementations

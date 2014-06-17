@@ -1,6 +1,6 @@
 /*
 **********************************************************************
-*   Copyright (c) 2002-2008, International Business Machines Corporation
+*   Copyright (c) 2002-2012, International Business Machines Corporation
 *   and others.  All Rights Reserved.
 **********************************************************************
 *   Date        Name        Description
@@ -66,7 +66,10 @@ UnicodeFunctor* FunctionReplacer::clone() const {
  * and return the pointer.
  */
 UnicodeReplacer* FunctionReplacer::toReplacer() const {
-    return (UnicodeReplacer*) this;
+  FunctionReplacer  *nonconst_this = const_cast<FunctionReplacer *>(this);
+  UnicodeReplacer *nonconst_base = static_cast<UnicodeReplacer *>(nonconst_this);
+  
+  return nonconst_base;
 }
 
 /**
@@ -97,9 +100,9 @@ UnicodeString& FunctionReplacer::toReplacerPattern(UnicodeString& rule,
     rule.truncate(0);
     rule.append(AMPERSAND);
     rule.append(translit->getID());
-    rule.append(OPEN);
+    rule.append(OPEN, 2);
     rule.append(replacer->toReplacer()->toReplacerPattern(str, escapeUnprintable));
-    rule.append(CLOSE);
+    rule.append(CLOSE, 2);
     return rule;
 }
 

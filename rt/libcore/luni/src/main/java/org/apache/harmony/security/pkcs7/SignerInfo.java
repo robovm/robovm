@@ -93,8 +93,16 @@ public final class SignerInfo {
         return digestAlgorithm.getAlgorithm();
     }
 
+    public String getDigestAlgorithmName() {
+        return digestAlgorithm.getAlgorithmName();
+    }
+
     public String getDigestEncryptionAlgorithm() {
         return digestEncryptionAlgorithm.getAlgorithm();
+    }
+
+    public String getDigestEncryptionAlgorithmName() {
+        return digestEncryptionAlgorithm.getAlgorithmName();
     }
 
     public List<AttributeTypeAndValue> getAuthenticatedAttributes() {
@@ -104,11 +112,16 @@ public final class SignerInfo {
         return authenticatedAttributes.getAttributes();
     }
 
+    /**
+     * Returns the non-IMPLICIT ASN.1 encoding of the "authAttrs" from this
+     * SignerInfo. That is, it will return as the encoding of a generic ASN.1
+     * SET.
+     */
     public byte[] getEncodedAuthenticatedAttributes() {
         if (authenticatedAttributes == null) {
             return null;
         }
-        return authenticatedAttributes.getEncoded();
+        return AuthenticatedAttributes.ASN1.encode(authenticatedAttributes.getAttributes());
     }
 
     public byte[] getEncryptedDigest() {

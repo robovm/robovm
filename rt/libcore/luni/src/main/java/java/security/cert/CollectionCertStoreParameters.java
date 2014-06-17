@@ -58,10 +58,10 @@ public class CollectionCertStoreParameters implements CertStoreParameters {
      *             if {@code collection is null}.
      */
     public CollectionCertStoreParameters(Collection<?> collection) {
-        this.collection = collection;
-        if (this.collection == null) {
-            throw new NullPointerException();
+        if (collection == null) {
+            throw new NullPointerException("collection == null");
         }
+        this.collection = collection;
     }
 
     /**

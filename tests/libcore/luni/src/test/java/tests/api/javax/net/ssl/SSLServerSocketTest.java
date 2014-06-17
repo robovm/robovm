@@ -20,8 +20,6 @@ import junit.framework.TestCase;
 
 import libcore.io.Base64;
 
-import tests.support.Support_PortManager;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -120,127 +118,78 @@ public class SSLServerSocketTest extends TestCase {
     /**
      * javax.net.ssl.SSLServerSocket#SSLServerSocket()
      */
-    public void testConstructor_01() {
-        try {
-            SSLServerSocket ssl = new mySSLServerSocket();
-        } catch (Exception ex) {
-            fail("Unexpected exception was thrown " + ex);
-        }
+    public void testConstructor() throws Exception {
+        SSLServerSocket ssl = new mySSLServerSocket();
     }
 
     /**
      * javax.net.ssl.SSLServerSocket#SSLServerSocket(int port)
      */
-    public void testConstructor_02() {
-        SSLServerSocket ssl;
-        int portNumber = Support_PortManager.getNextPort();
+    public void testConstructor_I() throws Exception {
         int[] port_invalid = {-1, 65536, Integer.MIN_VALUE, Integer.MAX_VALUE};
 
-        try {
-            ssl = new mySSLServerSocket(portNumber);
-            assertEquals(portNumber, ssl.getLocalPort());
-        } catch (Exception ex) {
-            fail("Unexpected exception was thrown " + ex);
-        }
+        SSLServerSocket ssl = new mySSLServerSocket(0);
 
         for (int i = 0; i < port_invalid.length; i++) {
             try {
-                ssl = new mySSLServerSocket(port_invalid[i]);
+                new mySSLServerSocket(port_invalid[i]);
                 fail("IllegalArgumentException should be thrown");
-            } catch (IllegalArgumentException iae) {
-                //expected
-            } catch (Exception e) {
-                fail(e + " was thrown instead of IllegalArgumentException");
+            } catch (IllegalArgumentException expected) {
             }
         }
 
         try {
-            ssl = new mySSLServerSocket(portNumber);
-            new mySSLServerSocket(portNumber);
+            new mySSLServerSocket(ssl.getLocalPort());
             fail("IOException Expected when opening an already opened port");
-        } catch (IOException ioe) {
-            // expected
-        } catch (Exception ex) {
-            fail("Unexpected exception was thrown " + ex);
+        } catch (IOException expected) {
         }
     }
 
     /**
      * javax.net.ssl.SSLServerSocket#SSLServerSocket(int port, int backlog)
      */
-    public void testConstructor_03() {
-        mySSLServerSocket ssl;
-        int portNumber = Support_PortManager.getNextPort();
+    public void testConstructor_II() throws Exception {
+        mySSLServerSocket ssl = new mySSLServerSocket(0, 1);
         int[] port_invalid = {-1, Integer.MIN_VALUE, Integer.MAX_VALUE};
-
-        try {
-            ssl = new mySSLServerSocket(portNumber, 1);
-            assertEquals(portNumber, ssl.getLocalPort());
-        } catch (Exception ex) {
-            fail("Unexpected exception was thrown");
-        }
 
         for (int i = 0; i < port_invalid.length; i++) {
             try {
-                ssl = new mySSLServerSocket(port_invalid[i], 1);
+                new mySSLServerSocket(port_invalid[i], 1);
                 fail("IllegalArgumentException should be thrown");
-            } catch (IllegalArgumentException iae) {
-                // expected
-            } catch (Exception e) {
-                fail(e + " was thrown instead of IllegalArgumentException");
+            } catch (IllegalArgumentException expected) {
             }
         }
 
-        portNumber = Support_PortManager.getNextPort();
         try {
-            ssl = new mySSLServerSocket(portNumber, 1);
-            new mySSLServerSocket(portNumber, 1);
+            new mySSLServerSocket(ssl.getLocalPort(), 1);
             fail("IOException should be thrown");
-        } catch (IOException ioe) {
+        } catch (IOException expected) {
         }
     }
 
     /**
      * javax.net.ssl.SSLServerSocket#SSLServerSocket(int port, int backlog, InetAddress address)
      */
-    public void testConstructor_04() {
-        mySSLServerSocket ssl;
-        InetAddress ia = null;
-        int portNumber = Support_PortManager.getNextPort();
+    public void testConstructor_IIInetAddress() throws Exception {
+        // A null InetAddress is okay.
+        new mySSLServerSocket(0, 0, null);
+
         int[] port_invalid = {-1, 65536, Integer.MIN_VALUE, Integer.MAX_VALUE};
 
-        try {
-            ssl = new mySSLServerSocket(portNumber, 0, ia);
-            assertEquals(portNumber, ssl.getLocalPort());
-        } catch (Exception ex) {
-            fail("Unexpected exception was thrown");
-        }
-
-        portNumber = Support_PortManager.getNextPort();
-        try {
-            ssl = new mySSLServerSocket(portNumber, 0, InetAddress.getLocalHost());
-            assertEquals(portNumber, ssl.getLocalPort());
-        } catch (Exception ex) {
-            fail("Unexpected exception was thrown");
-        }
+        mySSLServerSocket ssl = new mySSLServerSocket(0, 0, InetAddress.getLocalHost());
 
         for (int i = 0; i < port_invalid.length; i++) {
             try {
-                ssl = new mySSLServerSocket(port_invalid[i], 1, InetAddress.getLocalHost());
+                new mySSLServerSocket(port_invalid[i], 1, InetAddress.getLocalHost());
                 fail("IllegalArgumentException should be thrown");
-            } catch (IllegalArgumentException iae) {
-                // expected
-            } catch (Exception e) {
-                fail(e + " was thrown instead of IllegalArgumentException");
+            } catch (IllegalArgumentException expected) {
             }
         }
 
-        portNumber = Support_PortManager.getNextPort();
         try {
-           ssl = new mySSLServerSocket(portNumber, 0, InetAddress.getLocalHost());
-           new mySSLServerSocket(portNumber, 0, InetAddress.getLocalHost());
-           fail("IOException should be thrown for");
-        } catch (IOException ioe) {
+            new mySSLServerSocket(ssl.getLocalPort(), 0, InetAddress.getLocalHost());
+            fail("IOException should be thrown for");
+        } catch (IOException expected) {
         }
     }
 

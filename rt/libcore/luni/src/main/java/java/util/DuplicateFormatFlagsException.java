@@ -37,7 +37,7 @@ public class DuplicateFormatFlagsException extends IllegalFormatException {
      */
     public DuplicateFormatFlagsException(String f) {
         if (f == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("f == null");
         }
         flags = f;
     }

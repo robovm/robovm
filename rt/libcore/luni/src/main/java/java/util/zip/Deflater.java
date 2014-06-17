@@ -50,21 +50,37 @@ import libcore.util.EmptyArray;
  * {@link #setInput setInput} repeatedly, but you're much better off using
  * {@link DeflaterOutputStream} to handle all this for you. {@link DeflaterOutputStream} also helps
  * minimize memory requirements&nbsp;&mdash; the sample code above is very expensive.
+ *
+ * <a name="compression_level"><h3>Compression levels</h3></a>
+ * <p>A compression level must be {@link #DEFAULT_COMPRESSION} to compromise between speed and
+ * compression (currently equivalent to level 6), or between 0 ({@link #NO_COMPRESSION}, where
+ * the input is simply copied) and 9 ({@link #BEST_COMPRESSION}). Level 1 ({@link #BEST_SPEED})
+ * performs some compression, but with minimal speed overhead.
  */
 public class Deflater {
 
     /**
-     * Upper bound for the compression level range.
+     * This <a href="#compression_level">compression level</a> gives the best compression,
+     * but takes the most time.
      */
     public static final int BEST_COMPRESSION = 9;
 
     /**
-     * Lower bound for compression level range.
+     * This <a href="#compression_level">compression level</a> gives minimal compression,
+     * but takes the least time (of any level that actually performs compression;
+     * see {@link #NO_COMPRESSION}).
      */
     public static final int BEST_SPEED = 1;
 
     /**
-     * The default compression level.
+     * This <a href="#compression_level">compression level</a> does no compression.
+     * It is even faster than {@link #BEST_SPEED}.
+     */
+    public static final int NO_COMPRESSION = 0;
+
+    /**
+     * The default <a href="#compression_level">compression level</a>.
+     * This is a trade-off between speed and compression, currently equivalent to level 6.
      */
     public static final int DEFAULT_COMPRESSION = -1;
 
@@ -89,14 +105,7 @@ public class Deflater {
     public static final int HUFFMAN_ONLY = 2;
 
     /**
-     * A compression level.
-     */
-    public static final int NO_COMPRESSION = 0;
-
-    /**
      * Use buffering for best compression.
-     *
-     * @hide
      * @since 1.7
      */
     public static final int NO_FLUSH = 0;
@@ -104,8 +113,6 @@ public class Deflater {
     /**
      * Flush buffers so recipients can immediately decode the data sent thus
      * far. This mode may degrade compression.
-     *
-     * @hide
      * @since 1.7
      */
     public static final int SYNC_FLUSH = 2;
@@ -115,8 +122,6 @@ public class Deflater {
      * far. The compression state is also reset to permit random access and
      * recovery for clients who have discarded or damaged their own copy. This
      * mode may degrade compression.
-     *
-     * @hide
      * @since 1.7
      */
     public static final int FULL_FLUSH = 3;
@@ -150,8 +155,9 @@ public class Deflater {
     private final CloseGuard guard = CloseGuard.get();
 
     /**
-     * Constructs a new {@code Deflater} instance using the default compression
-     * level. The strategy can be specified with {@link #setStrategy}. A
+     * Constructs a new {@code Deflater} instance using the
+     * default <a href="#compression_level">compression level</a>.
+     * The compression strategy can be specified with {@link #setStrategy}. A
      * header is added to the output by default; use {@link
      * #Deflater(int, boolean)} if you need to omit the header.
      */
@@ -160,32 +166,26 @@ public class Deflater {
     }
 
     /**
-     * Constructs a new {@code Deflater} instance using compression
-     * level {@code level}. The strategy can be specified with {@link #setStrategy}.
+     * Constructs a new {@code Deflater} instance with the
+     * given <a href="#compression_level">compression level</a>.
+     * The compression strategy can be specified with {@link #setStrategy}.
      * A header is added to the output by default; use
      * {@link #Deflater(int, boolean)} if you need to omit the header.
-     *
-     * @param level
-     *            the compression level in the range between 0 and 9.
      */
     public Deflater(int level) {
         this(level, false);
     }
 
     /**
-     * Constructs a new {@code Deflater} instance with a specific compression
-     * level. If {@code noHeader} is true, no ZLIB header is added to the
-     * output. In a ZIP archive every entry (compressed file) comes with such a
+     * Constructs a new {@code Deflater} instance with the
+     * given <a href="#compression_level">compression level</a>.
+     * If {@code noHeader} is true, no ZLIB header is added to the
+     * output. In a zip file, every entry (compressed file) comes with such a
      * header. The strategy can be specified using {@link #setStrategy}.
-     *
-     * @param level
-     *            the compression level in the range between 0 and 9.
-     * @param noHeader
-     *            {@code true} indicates that no ZLIB header should be written.
      */
     public Deflater(int level, boolean noHeader) {
         if (level < DEFAULT_COMPRESSION || level > BEST_COMPRESSION) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Bad level: " + level);
         }
         compressLevel = level;
         streamHandle = createStream(compressLevel, strategy, noHeader);
@@ -222,7 +222,7 @@ public class Deflater {
      *      may have exceeded the output buffer's capacity. In this case,
      *      finishing a flush will require the output buffer to be drained
      *      and additional calls to {@link #deflate} to be made.
-     * @hide
+     * @throws IllegalArgumentException if {@code flush} is invalid.
      * @since 1.7
      */
     public synchronized int deflate(byte[] buf, int offset, int byteCount, int flush) {
@@ -414,8 +414,8 @@ public class Deflater {
     private native void setInputImpl(byte[] buf, int offset, int byteCount, long handle);
 
     /**
-     * Sets the compression level to be used when compressing data. The
-     * compression level must be a value between 0 and 9. This value must be set
+     * Sets the given <a href="#compression_level">compression level</a>
+     * to be used when compressing data. This value must be set
      * prior to calling {@link #setInput setInput}.
      * @exception IllegalArgumentException
      *                If the compression level is invalid.

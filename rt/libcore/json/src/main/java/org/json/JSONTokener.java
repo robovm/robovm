@@ -543,7 +543,7 @@ public class JSONTokener {
      */
     public String nextTo(String excluded) {
         if (excluded == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("excluded == null");
         }
         return nextToInternal(excluded).trim();
     }

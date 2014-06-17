@@ -58,8 +58,10 @@ public final class StackTraceElement implements Serializable {
      *             if {@code cls} or {@code method} is {@code null}.
      */
     public StackTraceElement(String cls, String method, String file, int line) {
-        if (cls == null || method == null) {
-            throw new NullPointerException();
+        if (cls == null) {
+            throw new NullPointerException("cls == null");
+        } else if (method == null) {
+            throw new NullPointerException("method == null");
         }
         declaringClass = cls;
         methodName = method;

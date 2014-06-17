@@ -20,14 +20,14 @@ package org.apache.harmony.security.tests.java.security;
 import java.security.InvalidParameterException;
 import java.security.Provider;
 import java.security.Security;
-import java.util.Hashtable;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import junit.framework.TestCase;
 import tests.support.Support_ProviderTrust;
 import tests.support.Support_TestProvider;
 
-public class Security2Test extends junit.framework.TestCase {
+public class Security2Test extends TestCase {
 
     /**
      * java.security.Security#getProviders(java.lang.String)
@@ -36,16 +36,13 @@ public class Security2Test extends junit.framework.TestCase {
         // Test for method void
         // java.security.Security.getProviders(java.lang.String)
 
-        Hashtable<String, Integer> allSupported = new Hashtable<String, Integer>();
+        Map<String, Integer> allSupported = new HashMap<String, Integer>();
         Provider[] allProviders = Security.getProviders();
 
         // Add all non-alias entries to allSupported
-        for (int i = 0; i < allProviders.length; i++) {
-            Provider provider = allProviders[i];
-            Iterator it = provider.entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry entry = (Map.Entry) it.next();
-                String key = (String) entry.getKey();
+        for (Provider provider : allProviders) {
+            for (Object k : provider.keySet()) {
+                String key = (String) k;
                 // No aliases and no provider data
                 if (!isAlias(key) && !isProviderData(key)) {
                     addOrIncrementTable(allSupported, key);
@@ -56,42 +53,32 @@ public class Security2Test extends junit.framework.TestCase {
         // Now walk through aliases. If an alias has actually been added
         // to the allSupported table then increment the count of the
         // entry that is being aliased.
-        for (int i = 0; i < allProviders.length; i++) {
-            Provider provider = allProviders[i];
-            Iterator it = provider.entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry entry = (Map.Entry) it.next();
+        for (Provider provider : allProviders) {
+            for (Map.Entry entry : provider.entrySet()) {
                 String key = (String) entry.getKey();
                 if (isAlias(key)) {
-                    String aliasVal = key.substring("ALG.ALIAS.".length());
-                    String aliasKey = aliasVal.substring(0, aliasVal
-                            .indexOf(".") + 1)
-                            + entry.getValue();
+                    String aliasName = key.substring("ALG.ALIAS.".length()).toUpperCase();
+                    String realName = aliasName.substring(0, aliasName.indexOf(".") + 1) + entry.getValue();
                     // Skip over nonsense alias declarations where alias and
                     // aliased are identical. Such entries can occur.
-                    if (!aliasVal.equals(aliasKey)) {
-                        // Has a real entry been added for aliasValue ?
-                        if (allSupported.containsKey(aliasVal)) {
-                            // Add 1 to the provider count of the thing being
-                            // aliased
-                            addOrIncrementTable(allSupported, aliasKey);
+                    if (!aliasName.equalsIgnoreCase(realName)) {
+                        // Has a real entry been added for aliasName ?
+                        if (allSupported.containsKey(aliasName)) {
+                            // Add 1 to the provider count of the thing being aliased
+                            addOrIncrementTable(allSupported, aliasName);
                         }
                     }
                 }
             }// end while more entries
         }// end for all providers
 
-        Provider provTest[] = null;
-        Iterator it = allSupported.keySet().iterator();
-        while (it.hasNext()) {
-            String filterString = (String) it.next();
+        for (String filterString : allSupported.keySet()) {
             try {
-                provTest = Security.getProviders(filterString);
-                int expected = ((Integer) allSupported.get(filterString))
-                        .intValue();
-                assertEquals(
-                        "Unexpected number of providers returned for filter "
-                                + filterString, expected, provTest.length);
+                Provider[] provTest = Security.getProviders(filterString);
+                int expected = allSupported.get(filterString);
+                assertEquals("Unexpected number of providers returned for filter " + filterString
+                             + ":\n" + allSupported,
+                             expected, provTest.length);
             } catch (InvalidParameterException e) {
                 // NO OP
             }
@@ -99,62 +86,43 @@ public class Security2Test extends junit.framework.TestCase {
 
         // exception
         try {
-            provTest = Security.getProviders("Signature.SHA1withDSA :512");
+            Security.getProviders("Signature.SHA1withDSA :512");
             fail("InvalidParameterException should be thrown <Signature.SHA1withDSA :512>");
         } catch (InvalidParameterException e) {
             // Expected
         }
     }
 
-    /**
-     * @param key
-     * @return
-     */
     private boolean isProviderData(String key) {
         return key.toUpperCase().startsWith("PROVIDER.");
     }
 
-    /**
-     * @param key
-     * @return
-     */
     private boolean isAlias(String key) {
         return key.toUpperCase().startsWith("ALG.ALIAS.");
     }
 
-    /**
-     * @param table
-     * @param key
-     */
-    private void addOrIncrementTable(Hashtable<String, Integer> table, String key) {
+    private void addOrIncrementTable(Map<String, Integer> table, String k) {
+        String key = k.toUpperCase(); 
         if (table.containsKey(key)) {
-            Integer before = (Integer) table.get(key);
-            table.put(key, new Integer(before.intValue() + 1));
+            int before = table.get(key);
+            table.put(key, before + 1);
         } else {
-            table.put(key, new Integer(1));
+            table.put(key, 1);
         }
     }
 
-    /**
-     * @param filterMap
-     * @return
-     */
     private int getProvidersCount(Map filterMap) {
         int result = 0;
         Provider[] allProviders = Security.getProviders();
 
         // for each provider
-        for (int i = 0; i < allProviders.length; i++) {
-            Provider provider = allProviders[i];
+        for (Provider provider : allProviders) {
             Set allProviderKeys = provider.keySet();
             boolean noMatchFoundForFilterEntry = false;
 
             // for each filter item
-            Set allFilterKeys = filterMap.keySet();
-            Iterator fkIter = allFilterKeys.iterator();
-            while (fkIter.hasNext()) {
-                String filterString = ((String) fkIter.next()).trim();
-
+            for (Object filter : filterMap.keySet()) {
+                String filterString = (String) filter;
                 // Remove any "=" characters that may be on the end of the
                 // map keys (no, I don't know why they might be there either
                 // but I have seen them)
@@ -211,10 +179,10 @@ public class Security2Test extends junit.framework.TestCase {
         // Test for method void
         // java.security.Security.getProviders(java.util.Map)
 
-        Map<String, String> filter = new Hashtable<String, String>();
+        Map<String, String> filter = new HashMap<String, String>();
         filter.put("KeyStore.BKS", "");
         filter.put("Signature.SHA1withDSA", "");
-        Provider provTest[] = Security.getProviders(filter);
+        Provider[] provTest = Security.getProviders(filter);
         if (provTest == null) {
             assertEquals("Filter : <KeyStore.BKS>,<Signature.SHA1withDSA>",
                     0, getProvidersCount(filter));
@@ -223,7 +191,7 @@ public class Security2Test extends junit.framework.TestCase {
                     getProvidersCount(filter), provTest.length);
         }
 
-        filter = new Hashtable<String, String>();
+        filter = new HashMap<String, String>();
         filter.put("MessageDigest.SHA-384", "");
         filter.put("CertificateFactory.X.509", "");
         filter.put("KeyFactory.RSA", "");
@@ -237,7 +205,7 @@ public class Security2Test extends junit.framework.TestCase {
                     getProvidersCount(filter), provTest.length);
         }
 
-        filter = new Hashtable<String, String>();
+        filter = new HashMap<String, String>();
         filter.put("MessageDigest.SHA1", "");
         filter.put("TrustManagerFactory.X509", "");
         provTest = Security.getProviders(filter);
@@ -250,7 +218,7 @@ public class Security2Test extends junit.framework.TestCase {
                     getProvidersCount(filter), provTest.length);
         }
 
-        filter = new Hashtable<String, String>();
+        filter = new HashMap<String, String>();
         filter.put("CertificateFactory.X509", "");
         provTest = Security.getProviders(filter);
         if (provTest == null) {
@@ -261,7 +229,7 @@ public class Security2Test extends junit.framework.TestCase {
                     getProvidersCount(filter), provTest.length);
         }
 
-        filter = new Hashtable<String, String>();
+        filter = new HashMap<String, String>();
         filter.put("Provider.id name", "DRLCertFactory");
         provTest = Security.getProviders(filter);
         assertNull("Filter : <Provider.id name, DRLCertFactory >",
@@ -270,7 +238,7 @@ public class Security2Test extends junit.framework.TestCase {
         // exception - no attribute name after the service.algorithm yet we
         // still supply an expected value. This is not valid.
         try {
-            filter = new Hashtable<String, String>();
+            filter = new HashMap<String, String>();
             filter.put("Signature.SHA1withDSA", "512");
             provTest = Security.getProviders(filter);
             fail("InvalidParameterException should be thrown <Signature.SHA1withDSA><512>");
@@ -280,7 +248,7 @@ public class Security2Test extends junit.framework.TestCase {
 
         // exception - space character in the service.algorithm pair. Not valid.
         try {
-            filter = new Hashtable<String, String>();
+            filter = new HashMap<String, String>();
             filter.put("Signature. KeySize", "512");
             provTest = Security.getProviders(filter);
             fail("InvalidParameterException should be thrown <Signature. KeySize><512>");
@@ -320,11 +288,9 @@ public class Security2Test extends junit.framework.TestCase {
             assertTrue("Failed to add provider", addResult != -1);
 
             Security.removeProvider(entrust.getName());
-            Provider provTest[] = Security.getProviders();
-            for (int i = 0; i < provTest.length; i++) {
-                assertTrue(
-                        "the provider entrust is found after it was removed",
-                        provTest[i].getName() != entrust.getName());
+            for (Provider provider : Security.getProviders()) {
+                assertTrue("the provider entrust is found after it was removed",
+                           provider.getName() != entrust.getName());
             }
         } finally {
             // Tidy up - the following calls do nothing if the providers were

@@ -1,12 +1,13 @@
 /*
  * Written by Doug Lea with assistance from members of JCP JSR-166
  * Expert Group and released to the public domain, as explained at
- * http://creativecommons.org/licenses/publicdomain
+ * http://creativecommons.org/publicdomain/zero/1.0/
  */
 
 package java.util.concurrent;
 
-import java.util.concurrent.locks.*;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.*;
 
 // BEGIN android-note
@@ -65,6 +66,7 @@ import java.util.*;
  * @author Doug Lea
  * @param <E> the type of elements held in this collection
  */
+@SuppressWarnings("unchecked")
 public class PriorityBlockingQueue<E> extends AbstractQueue<E>
     implements BlockingQueue<E>, java.io.Serializable {
     private static final long serialVersionUID = 5595510919245408276L;
@@ -81,7 +83,7 @@ public class PriorityBlockingQueue<E> extends AbstractQueue<E>
      * java.util.PriorityQueue operations within a lock, as was done
      * in a previous version of this class. To maintain
      * interoperability, a plain PriorityQueue is still used during
-     * serialization, which maintains compatibility at the espense of
+     * serialization, which maintains compatibility at the expense of
      * transiently doubling overhead.
      */
 
@@ -139,7 +141,7 @@ public class PriorityBlockingQueue<E> extends AbstractQueue<E>
      * to maintain compatibility with previous versions
      * of this class. Non-null only during serialization/deserialization.
      */
-    private PriorityQueue q;
+    private PriorityQueue<E> q;
 
     /**
      * Creates a {@code PriorityBlockingQueue} with the default
@@ -278,14 +280,13 @@ public class PriorityBlockingQueue<E> extends AbstractQueue<E>
     /**
      * Mechanics for poll().  Call only while holding lock.
      */
-    private E extract() {
-        E result;
+    private E dequeue() {
         int n = size - 1;
         if (n < 0)
-            result = null;
+            return null;
         else {
             Object[] array = queue;
-            result = (E) array[0];
+            E result = (E) array[0];
             E x = (E) array[n];
             array[n] = null;
             Comparator<? super E> cmp = comparator;
@@ -294,8 +295,8 @@ public class PriorityBlockingQueue<E> extends AbstractQueue<E>
             else
                 siftDownUsingComparator(0, x, array, n, cmp);
             size = n;
+            return result;
         }
-        return result;
     }
 
     /**
@@ -351,39 +352,43 @@ public class PriorityBlockingQueue<E> extends AbstractQueue<E>
      */
     private static <T> void siftDownComparable(int k, T x, Object[] array,
                                                int n) {
-        Comparable<? super T> key = (Comparable<? super T>)x;
-        int half = n >>> 1;           // loop while a non-leaf
-        while (k < half) {
-            int child = (k << 1) + 1; // assume left child is least
-            Object c = array[child];
-            int right = child + 1;
-            if (right < n &&
-                ((Comparable<? super T>) c).compareTo((T) array[right]) > 0)
-                c = array[child = right];
-            if (key.compareTo((T) c) <= 0)
-                break;
-            array[k] = c;
-            k = child;
+        if (n > 0) {
+            Comparable<? super T> key = (Comparable<? super T>)x;
+            int half = n >>> 1;           // loop while a non-leaf
+            while (k < half) {
+                int child = (k << 1) + 1; // assume left child is least
+                Object c = array[child];
+                int right = child + 1;
+                if (right < n &&
+                    ((Comparable<? super T>) c).compareTo((T) array[right]) > 0)
+                    c = array[child = right];
+                if (key.compareTo((T) c) <= 0)
+                    break;
+                array[k] = c;
+                k = child;
+            }
+            array[k] = key;
         }
-        array[k] = key;
     }
 
     private static <T> void siftDownUsingComparator(int k, T x, Object[] array,
                                                     int n,
                                                     Comparator<? super T> cmp) {
-        int half = n >>> 1;
-        while (k < half) {
-            int child = (k << 1) + 1;
-            Object c = array[child];
-            int right = child + 1;
-            if (right < n && cmp.compare((T) c, (T) array[right]) > 0)
-                c = array[child = right];
-            if (cmp.compare(x, (T) c) <= 0)
-                break;
-            array[k] = c;
-            k = child;
+        if (n > 0) {
+            int half = n >>> 1;
+            while (k < half) {
+                int child = (k << 1) + 1;
+                Object c = array[child];
+                int right = child + 1;
+                if (right < n && cmp.compare((T) c, (T) array[right]) > 0)
+                    c = array[child = right];
+                if (cmp.compare(x, (T) c) <= 0)
+                    break;
+                array[k] = c;
+                k = child;
+            }
+            array[k] = x;
         }
-        array[k] = x;
     }
 
     /**
@@ -476,7 +481,7 @@ public class PriorityBlockingQueue<E> extends AbstractQueue<E>
      * @param timeout This parameter is ignored as the method never blocks
      * @param unit This parameter is ignored as the method never blocks
      * @return {@code true} (as specified by
-     *  {@link BlockingQueue#offer BlockingQueue.offer})
+     *  {@link BlockingQueue#offer(Object,long,TimeUnit) BlockingQueue.offer})
      * @throws ClassCastException if the specified element cannot be compared
      *         with elements currently in the priority queue according to the
      *         priority queue's ordering
@@ -489,13 +494,11 @@ public class PriorityBlockingQueue<E> extends AbstractQueue<E>
     public E poll() {
         final ReentrantLock lock = this.lock;
         lock.lock();
-        E result;
         try {
-            result = extract();
+            return dequeue();
         } finally {
             lock.unlock();
         }
-        return result;
     }
 
     public E take() throws InterruptedException {
@@ -503,7 +506,7 @@ public class PriorityBlockingQueue<E> extends AbstractQueue<E>
         lock.lockInterruptibly();
         E result;
         try {
-            while ( (result = extract()) == null)
+            while ( (result = dequeue()) == null)
                 notEmpty.await();
         } finally {
             lock.unlock();
@@ -517,7 +520,7 @@ public class PriorityBlockingQueue<E> extends AbstractQueue<E>
         lock.lockInterruptibly();
         E result;
         try {
-            while ( (result = extract()) == null && nanos > 0)
+            while ( (result = dequeue()) == null && nanos > 0)
                 nanos = notEmpty.awaitNanos(nanos);
         } finally {
             lock.unlock();
@@ -528,13 +531,11 @@ public class PriorityBlockingQueue<E> extends AbstractQueue<E>
     public E peek() {
         final ReentrantLock lock = this.lock;
         lock.lock();
-        E result;
         try {
-            result = size > 0 ? (E) queue[0] : null;
+            return (size == 0) ? null : (E) queue[0];
         } finally {
             lock.unlock();
         }
-        return result;
     }
 
     /**
@@ -618,32 +619,28 @@ public class PriorityBlockingQueue<E> extends AbstractQueue<E>
      * @return {@code true} if this queue changed as a result of the call
      */
     public boolean remove(Object o) {
-        boolean removed = false;
         final ReentrantLock lock = this.lock;
         lock.lock();
         try {
             int i = indexOf(o);
-            if (i != -1) {
-                removeAt(i);
-                removed = true;
-            }
+            if (i == -1)
+                return false;
+            removeAt(i);
+            return true;
         } finally {
             lock.unlock();
         }
-        return removed;
     }
-
 
     /**
      * Identity-based version for use in Itr.remove
      */
-    private void removeEQ(Object o) {
+    void removeEQ(Object o) {
         final ReentrantLock lock = this.lock;
         lock.lock();
         try {
             Object[] array = queue;
-            int n = size;
-            for (int i = 0; i < n; i++) {
+            for (int i = 0, n = size; i < n; i++) {
                 if (o == array[i]) {
                     removeAt(i);
                     break;
@@ -663,15 +660,13 @@ public class PriorityBlockingQueue<E> extends AbstractQueue<E>
      * @return {@code true} if this queue contains the specified element
      */
     public boolean contains(Object o) {
-        int index;
         final ReentrantLock lock = this.lock;
         lock.lock();
         try {
-            index = indexOf(o);
+            return indexOf(o) != -1;
         } finally {
             lock.unlock();
         }
-        return index != -1;
     }
 
     /**
@@ -697,7 +692,6 @@ public class PriorityBlockingQueue<E> extends AbstractQueue<E>
         }
     }
 
-
     public String toString() {
         final ReentrantLock lock = this.lock;
         lock.lock();
@@ -708,7 +702,7 @@ public class PriorityBlockingQueue<E> extends AbstractQueue<E>
             StringBuilder sb = new StringBuilder();
             sb.append('[');
             for (int i = 0; i < n; ++i) {
-                E e = (E)queue[i];
+                Object e = queue[i];
                 sb.append(e == this ? "(this Collection)" : e);
                 if (i != n - 1)
                     sb.append(',').append(' ');
@@ -726,23 +720,7 @@ public class PriorityBlockingQueue<E> extends AbstractQueue<E>
      * @throws IllegalArgumentException      {@inheritDoc}
      */
     public int drainTo(Collection<? super E> c) {
-        if (c == null)
-            throw new NullPointerException();
-        if (c == this)
-            throw new IllegalArgumentException();
-        final ReentrantLock lock = this.lock;
-        lock.lock();
-        try {
-            int n = 0;
-            E e;
-            while ( (e = extract()) != null) {
-                c.add(e);
-                ++n;
-            }
-            return n;
-        } finally {
-            lock.unlock();
-        }
+        return drainTo(c, Integer.MAX_VALUE);
     }
 
     /**
@@ -761,11 +739,10 @@ public class PriorityBlockingQueue<E> extends AbstractQueue<E>
         final ReentrantLock lock = this.lock;
         lock.lock();
         try {
-            int n = 0;
-            E e;
-            while (n < maxElements && (e = extract()) != null) {
-                c.add(e);
-                ++n;
+            int n = Math.min(size, maxElements);
+            for (int i = 0; i < n; i++) {
+                c.add((E) queue[0]); // In this order, in case add() throws.
+                dequeue();
             }
             return n;
         } finally {
@@ -813,8 +790,7 @@ public class PriorityBlockingQueue<E> extends AbstractQueue<E>
      * The following code can be used to dump the queue into a newly
      * allocated array of {@code String}:
      *
-     * <pre>
-     *     String[] y = x.toArray(new String[0]);</pre>
+     *  <pre> {@code String[] y = x.toArray(new String[0]);}</pre>
      *
      * Note that {@code toArray(new Object[0])} is identical in function to
      * {@code toArray()}.
@@ -867,7 +843,7 @@ public class PriorityBlockingQueue<E> extends AbstractQueue<E>
      */
     final class Itr implements Iterator<E> {
         final Object[] array; // Array of all elements
-        int cursor;           // index of next element to return;
+        int cursor;           // index of next element to return
         int lastRet;          // index of last element, or -1 if no such
 
         Itr(Object[] array) {
@@ -895,17 +871,18 @@ public class PriorityBlockingQueue<E> extends AbstractQueue<E>
     }
 
     /**
-     * Saves the state to a stream (that is, serializes it).  For
-     * compatibility with previous version of this class,
-     * elements are first copied to a java.util.PriorityQueue,
-     * which is then serialized.
+     * Saves this queue to a stream (that is, serializes it).
+     *
+     * For compatibility with previous version of this class, elements
+     * are first copied to a java.util.PriorityQueue, which is then
+     * serialized.
      */
     private void writeObject(java.io.ObjectOutputStream s)
         throws java.io.IOException {
         lock.lock();
         try {
-            int n = size; // avoid zero capacity argument
-            q = new PriorityQueue<E>(n == 0 ? 1 : n, comparator);
+            // avoid zero capacity argument
+            q = new PriorityQueue<E>(Math.max(size, 1), comparator);
             q.addAll(this);
             s.defaultWriteObject();
         } finally {
@@ -915,10 +892,7 @@ public class PriorityBlockingQueue<E> extends AbstractQueue<E>
     }
 
     /**
-     * Reconstitutes the {@code PriorityBlockingQueue} instance from a stream
-     * (that is, deserializes it).
-     *
-     * @param s the stream
+     * Reconstitutes this queue from a stream (that is, deserializes it).
      */
     private void readObject(java.io.ObjectInputStream s)
         throws java.io.IOException, ClassNotFoundException {
@@ -933,21 +907,16 @@ public class PriorityBlockingQueue<E> extends AbstractQueue<E>
     }
 
     // Unsafe mechanics
-    private static final sun.misc.Unsafe UNSAFE = sun.misc.Unsafe.getUnsafe();
-    private static final long allocationSpinLockOffset =
-        objectFieldOffset(UNSAFE, "allocationSpinLock",
-                          PriorityBlockingQueue.class);
-
-    static long objectFieldOffset(sun.misc.Unsafe UNSAFE,
-                                  String field, Class<?> klazz) {
+    private static final sun.misc.Unsafe UNSAFE;
+    private static final long allocationSpinLockOffset;
+    static {
         try {
-            return UNSAFE.objectFieldOffset(klazz.getDeclaredField(field));
-        } catch (NoSuchFieldException e) {
-            // Convert Exception to corresponding Error
-            NoSuchFieldError error = new NoSuchFieldError(field);
-            error.initCause(e);
-            throw error;
+            UNSAFE = sun.misc.Unsafe.getUnsafe();
+            Class<?> k = PriorityBlockingQueue.class;
+            allocationSpinLockOffset = UNSAFE.objectFieldOffset
+                (k.getDeclaredField("allocationSpinLock"));
+        } catch (Exception e) {
+            throw new Error(e);
         }
     }
-
 }

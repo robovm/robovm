@@ -131,7 +131,9 @@ final class SchemaFactoryFinder  {
      *      If the <tt>schemaLanguage</tt> parameter is null.
      */
     public SchemaFactory newFactory(String schemaLanguage) {
-        if(schemaLanguage==null)        throw new NullPointerException();
+        if (schemaLanguage == null) {
+            throw new NullPointerException("schemaLanguage == null");
+        }
         SchemaFactory f = _newFactory(schemaLanguage);
         if (debug) {
             if (f != null) {

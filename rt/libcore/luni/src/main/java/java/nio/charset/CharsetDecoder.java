@@ -82,22 +82,22 @@ import java.nio.CharBuffer;
  * @see java.nio.charset.CharsetEncoder
  */
 public abstract class CharsetDecoder {
-    private static final int INIT = 0;
-    private static final int ONGOING = 1;
-    private static final int END = 2;
-    private static final int FLUSH = 3;
+    private static final String RESET = "RESET";
+    private static final String ONGOING = "ONGOING";
+    private static final String END_OF_INPUT = "END_OF_INPUT";
+    private static final String FLUSHED = "FLUSHED";
+
+    private final Charset charset;
 
     private final float averageCharsPerByte;
     private final float maxCharsPerByte;
 
-    private final Charset cs;
+    private String replacementChars = "\ufffd";
 
-    private CodingErrorAction malformedInputAction;
-    private CodingErrorAction unmappableCharacterAction;
+    private String state = RESET;
 
-    private String replacementChars;
-
-    private int status;
+    private CodingErrorAction malformedInputAction = CodingErrorAction.REPORT;
+    private CodingErrorAction unmappableCharacterAction = CodingErrorAction.REPORT;
 
     /**
      * Constructs a new <code>CharsetDecoder</code> using the given
@@ -114,8 +114,7 @@ public abstract class CharsetDecoder {
      *            the maximum number of characters created by this decoder for
      *            one input byte, must be positive.
      * @throws IllegalArgumentException
-     *             if <code>averageCharsPerByte</code> or
-     *             <code>maxCharsPerByte</code> is negative.
+     *     if {@code averageCharsPerByte <= 0 || maxCharsPerByte <= 0 || averageCharsPerByte > maxCharsPerByte}.
      */
     protected CharsetDecoder(Charset charset, float averageCharsPerByte, float maxCharsPerByte) {
         if (averageCharsPerByte <= 0 || maxCharsPerByte <= 0) {
@@ -126,11 +125,7 @@ public abstract class CharsetDecoder {
         }
         this.averageCharsPerByte = averageCharsPerByte;
         this.maxCharsPerByte = maxCharsPerByte;
-        cs = charset;
-        status = INIT;
-        malformedInputAction = CodingErrorAction.REPORT;
-        unmappableCharacterAction = CodingErrorAction.REPORT;
-        replacementChars = "\ufffd";
+        this.charset = charset;
     }
 
     /**
@@ -145,7 +140,7 @@ public abstract class CharsetDecoder {
      * Returns the {@link Charset} which this decoder uses.
      */
     public final Charset charset() {
-        return cs;
+        return charset;
     }
 
     /**
@@ -182,35 +177,30 @@ public abstract class CharsetDecoder {
      *             if another exception happened during the decode operation.
      */
     public final CharBuffer decode(ByteBuffer in) throws CharacterCodingException {
-        reset();
         int length = (int) (in.remaining() * averageCharsPerByte);
-        CharBuffer output = CharBuffer.allocate(length);
-        CoderResult result = null;
-        while (true) {
-            result = decode(in, output, false);
-            checkCoderResult(result);
-            if (result.isUnderflow()) {
-                break;
-            } else if (result.isOverflow()) {
-                output = allocateMore(output);
-            }
-        }
-        result = decode(in, output, true);
-        checkCoderResult(result);
+        CharBuffer out = CharBuffer.allocate(length);
 
-        while (true) {
-            result = flush(output);
-            checkCoderResult(result);
-            if (result.isOverflow()) {
-                output = allocateMore(output);
+        reset();
+
+        while (state != FLUSHED) {
+            CoderResult result = decode(in, out, true);
+            if (result == CoderResult.OVERFLOW) {
+                out = allocateMore(out);
+                continue; // No point trying to flush to an already-full buffer.
             } else {
-                break;
+                checkCoderResult(result);
+            }
+
+            result = flush(out);
+            if (result == CoderResult.OVERFLOW) {
+                out = allocateMore(out);
+            } else {
+                checkCoderResult(result);
             }
         }
 
-        output.flip();
-        status = FLUSH;
-        return output;
+        out.flip();
+        return out;
     }
 
     /*
@@ -303,59 +293,43 @@ public abstract class CharsetDecoder {
      *             method threw an <code>BufferUnderflowException</code> or
      *             <code>BufferOverflowException</code>.
      */
-    public final CoderResult decode(ByteBuffer in, CharBuffer out,
-            boolean endOfInput) {
-        /*
-         * status check
-         */
-        if ((status == FLUSH) || (!endOfInput && status == END)) {
-            throw new IllegalStateException();
+    public final CoderResult decode(ByteBuffer in, CharBuffer out, boolean endOfInput) {
+        if (state != RESET && state != ONGOING && !(endOfInput && state == END_OF_INPUT)) {
+            throw illegalStateException();
         }
 
-        CoderResult result = null;
+        state = endOfInput ? END_OF_INPUT : ONGOING;
 
-        // begin to decode
         while (true) {
-            CodingErrorAction action = null;
+            CoderResult result;
             try {
                 result = decodeLoop(in, out);
             } catch (BufferOverflowException ex) {
-                // unexpected exception
                 throw new CoderMalfunctionError(ex);
             } catch (BufferUnderflowException ex) {
-                // unexpected exception
                 throw new CoderMalfunctionError(ex);
             }
 
-            /*
-             * result handling
-             */
-            if (result.isUnderflow()) {
-                int remaining = in.remaining();
-                status = endOfInput ? END : ONGOING;
-                if (endOfInput && remaining > 0) {
-                    result = CoderResult.malformedForLength(remaining);
+            if (result == CoderResult.UNDERFLOW) {
+                if (endOfInput && in.hasRemaining()) {
+                    result = CoderResult.malformedForLength(in.remaining());
                 } else {
                     return result;
                 }
-            }
-            if (result.isOverflow()) {
+            } else if (result == CoderResult.OVERFLOW) {
                 return result;
             }
-            // set coding error handle action
-            action = malformedInputAction;
-            if (result.isUnmappable()) {
-                action = unmappableCharacterAction;
-            }
-            // If the action is IGNORE or REPLACE, we should continue decoding.
-            if (action == CodingErrorAction.REPLACE) {
+
+            // We have a real error, so do what the appropriate action tells us what to do...
+            CodingErrorAction action =
+                    result.isUnmappable() ? unmappableCharacterAction : malformedInputAction;
+            if (action == CodingErrorAction.REPORT) {
+                return result;
+            } else if (action == CodingErrorAction.REPLACE) {
                 if (out.remaining() < replacementChars.length()) {
                     return CoderResult.OVERFLOW;
                 }
                 out.put(replacementChars);
-            } else {
-                if (action != CodingErrorAction.IGNORE)
-                    return result;
             }
             in.position(in.position() + result.length());
         }
@@ -446,20 +420,15 @@ public abstract class CharsetDecoder {
      * @return <code>CoderResult.UNDERFLOW</code> or
      *         <code>CoderResult.OVERFLOW</code>.
      * @throws IllegalStateException
-     *             if this decoder hasn't read all input bytes during one
-     *             decoding process, which means neither after calling
-     *             {@link #decode(ByteBuffer) decode(ByteBuffer)} nor after
-     *             calling {@link #decode(ByteBuffer, CharBuffer, boolean)
-     *             decode(ByteBuffer, CharBuffer, boolean)} with true as value
-     *             for the last boolean parameter.
+     *             if this decoder isn't already flushed or at end of input.
      */
     public final CoderResult flush(CharBuffer out) {
-        if (status != END && status != INIT) {
-            throw new IllegalStateException();
+        if (state != FLUSHED && state != END_OF_INPUT) {
+            throw illegalStateException();
         }
         CoderResult result = implFlush(out);
         if (result == CoderResult.UNDERFLOW) {
-            status = FLUSH;
+            state = FLUSHED;
         }
         return result;
     }
@@ -586,11 +555,11 @@ public abstract class CharsetDecoder {
      *            the new action on malformed input error.
      * @return this decoder.
      * @throws IllegalArgumentException
-     *             if {@code newAction} is {@code null}.
+     *             if {@code newAction == null}.
      */
     public final CharsetDecoder onMalformedInput(CodingErrorAction newAction) {
         if (newAction == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("newAction == null");
         }
         malformedInputAction = newAction;
         implOnMalformedInput(newAction);
@@ -608,11 +577,11 @@ public abstract class CharsetDecoder {
      *            the new action on unmappable character error.
      * @return this decoder.
      * @throws IllegalArgumentException
-     *             if {@code newAction} is {@code null}.
+     *             if {@code newAction == null}.
      */
     public final CharsetDecoder onUnmappableCharacter(CodingErrorAction newAction) {
         if (newAction == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("newAction == null");
         }
         unmappableCharacterAction = newAction;
         implOnUnmappableCharacter(newAction);
@@ -635,8 +604,8 @@ public abstract class CharsetDecoder {
      * new replacement as argument.
      *
      * @param replacement
-     *            the replacement string, cannot be null or empty. Its length
-     *            cannot be larger than {@link #maxCharsPerByte()}.
+     *            the replacement string cannot be null, empty, or longer
+     *            than {@link #maxCharsPerByte()}.
      * @return this decoder.
      * @throws IllegalArgumentException
      *             if the given replacement cannot satisfy the requirement
@@ -659,14 +628,12 @@ public abstract class CharsetDecoder {
     }
 
     /**
-     * Resets this decoder. This method will reset the internal status, and then
-     * calls <code>implReset()</code> to reset any status related to the
+     * Resets this decoder. This method will reset the internal state, and then
+     * calls {@link #implReset} to reset any state related to the
      * specific charset.
-     *
-     * @return this decoder.
      */
     public final CharsetDecoder reset() {
-        status = INIT;
+        state = RESET;
         implReset();
         return this;
     }
@@ -677,5 +644,9 @@ public abstract class CharsetDecoder {
      */
     public CodingErrorAction unmappableCharacterAction() {
         return unmappableCharacterAction;
+    }
+
+    private IllegalStateException illegalStateException() {
+        throw new IllegalStateException("State: " + state);
     }
 }

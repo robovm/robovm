@@ -34,7 +34,7 @@ public final class SelectorProviderImpl extends SelectorProvider {
     }
 
     public Pipe openPipe() throws IOException {
-        return new PipeImpl();
+        return new PipeImpl(this);
     }
 
     public AbstractSelector openSelector() throws IOException {

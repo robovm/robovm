@@ -168,10 +168,10 @@ public class ChoiceFormat extends NumberFormat {
                     next = nextDouble(value.doubleValue());
                     break;
                 default:
-                    throw new IllegalArgumentException();
+                    throw new IllegalArgumentException("Bad character '" + ch + "' in template: " + template);
             }
             if (limitCount > 0 && next <= limits[limitCount - 1]) {
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("Bad template: " + template);
             }
             buffer.setLength(0);
             position.setIndex(index);
@@ -426,7 +426,8 @@ public class ChoiceFormat extends NumberFormat {
      */
     public void setChoices(double[] limits, String[] formats) {
         if (limits.length != formats.length) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("limits.length != formats.length: " +
+                                               limits.length + " != " + formats.length);
         }
         choiceLimits = limits;
         choiceFormats = formats;

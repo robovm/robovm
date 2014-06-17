@@ -17,6 +17,7 @@
 
 package java.net;
 
+import java.io.Closeable;
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +28,7 @@ import libcore.io.IoBridge;
 /**
  * Provides a client-side TCP socket.
  */
-public class Socket {
+public class Socket implements Closeable {
     private static SocketImplFactory factory;
 
     final SocketImpl impl;
@@ -482,7 +483,7 @@ public class Socket {
     }
 
     /**
-     * Sets this socket's {@link SocketOptions#SO_SNDBUF receive buffer size}.
+     * Sets this socket's {@link SocketOptions#SO_RCVBUF receive buffer size}.
      */
     public synchronized void setReceiveBufferSize(int size) throws SocketException {
         checkOpenAndCreate(true);
@@ -909,7 +910,7 @@ public class Socket {
     public void setTrafficClass(int value) throws SocketException {
         checkOpenAndCreate(true);
         if (value < 0 || value > 255) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Value doesn't fit in an unsigned byte: " + value);
         }
         impl.setOption(SocketOptions.IP_TOS, Integer.valueOf(value));
     }
@@ -941,12 +942,12 @@ public class Socket {
      *
      * @see ServerSocket#implAccept
      */
-    void accepted() {
+    void accepted() throws SocketException {
         isCreated = isBound = isConnected = true;
         cacheLocalAddress();
     }
 
-    private void cacheLocalAddress() {
+    private void cacheLocalAddress() throws SocketException {
         this.localAddress = IoBridge.getSocketLocalAddress(impl.fd);
     }
 

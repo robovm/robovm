@@ -16,6 +16,7 @@
 
 package java.nio.channels;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.nio.channels.spi.SelectorProvider;
 import java.util.Set;
@@ -33,7 +34,7 @@ import java.util.Set;
  * selector are checked to see whether they are ready for operation according to
  * their {@link SelectionKey interest set}.
  */
-public abstract class Selector {
+public abstract class Selector implements Closeable {
 
     /**
      * Returns a selector returned by {@link SelectorProvider#provider}'s

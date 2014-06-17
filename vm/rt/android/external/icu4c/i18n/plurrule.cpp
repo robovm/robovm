@@ -1,21 +1,16 @@
 /*
 *******************************************************************************
-* Copyright (C) 2007-2011, International Business Machines Corporation and
+* Copyright (C) 2007-2012, International Business Machines Corporation and
 * others. All Rights Reserved.
 *******************************************************************************
 *
-* File PLURRULE.CPP
-*
-* Modification History:
-*
-*   Date        Name        Description
-*******************************************************************************
+* File plurrule.cpp
 */
-
 
 #include "unicode/utypes.h"
 #include "unicode/localpointer.h"
 #include "unicode/plurrule.h"
+#include "unicode/upluralrules.h"
 #include "unicode/ures.h"
 #include "cmemory.h"
 #include "cstring.h"
@@ -25,16 +20,16 @@
 #include "plurrule_impl.h"
 #include "putilimp.h"
 #include "ucln_in.h"
-#include "uhash.h"
 #include "ustrfmt.h"
 #include "locutil.h"
+#include "uassert.h"
 
 #if !UCONFIG_NO_FORMATTING
 
 U_NAMESPACE_BEGIN
 
 // shared by all instances when lazy-initializing samples
-static UMTX pluralMutex;
+static UMutex pluralMutex = U_MUTEX_INITIALIZER;
 
 #define ARRAY_SIZE(array) (int32_t)(sizeof array  / sizeof array[0])
 
@@ -141,13 +136,22 @@ PluralRules::createRules(const UnicodeString& description, UErrorCode& status) {
 
 PluralRules* U_EXPORT2
 PluralRules::createDefaultRules(UErrorCode& status) {
-    return createRules(PLURAL_DEFAULT_RULE, status);
+    return createRules(UnicodeString(TRUE, PLURAL_DEFAULT_RULE, -1), status);
 }
 
 PluralRules* U_EXPORT2
 PluralRules::forLocale(const Locale& locale, UErrorCode& status) {
+    return forLocale(locale, UPLURAL_TYPE_CARDINAL, status);
+}
+
+PluralRules* U_EXPORT2
+PluralRules::forLocale(const Locale& locale, UPluralType type, UErrorCode& status) {
     RuleChain   rChain;
     if (U_FAILURE(status)) {
+        return NULL;
+    }
+    if (type >= UPLURAL_TYPE_COUNT) {
+        status = U_ILLEGAL_ARGUMENT_ERROR;
         return NULL;
     }
     PluralRules *newObj = new PluralRules(status);
@@ -155,7 +159,7 @@ PluralRules::forLocale(const Locale& locale, UErrorCode& status) {
         delete newObj;
         return NULL;
     }
-    UnicodeString locRule = newObj->getRuleFromResource(locale, status);
+    UnicodeString locRule = newObj->getRuleFromResource(locale, type, status);
     if ((locRule.length() != 0) && U_SUCCESS(status)) {
         newObj->parseDescription(locRule, rChain, status);
         if (U_SUCCESS(status)) {
@@ -176,7 +180,7 @@ PluralRules::forLocale(const Locale& locale, UErrorCode& status) {
 UnicodeString
 PluralRules::select(int32_t number) const {
     if (mRules == NULL) {
-        return PLURAL_DEFAULT_RULE;
+        return UnicodeString(TRUE, PLURAL_DEFAULT_RULE, -1);
     }
     else {
         return mRules->select(number);
@@ -186,7 +190,7 @@ PluralRules::select(int32_t number) const {
 UnicodeString
 PluralRules::select(double number) const {
     if (mRules == NULL) {
-        return PLURAL_DEFAULT_RULE;
+        return UnicodeString(TRUE, PLURAL_DEFAULT_RULE, -1);
     }
     else {
         return mRules->select(number);
@@ -271,7 +275,7 @@ PluralRules::getSamplesInternal(const UnicodeString &keyword, double *dest,
 
 UBool
 PluralRules::isKeyword(const UnicodeString& keyword) const {
-    if ( keyword == PLURAL_KEYWORD_OTHER ) {
+    if (0 == keyword.compare(PLURAL_KEYWORD_OTHER, 5)) {
         return true;
     }
     else {
@@ -286,7 +290,7 @@ PluralRules::isKeyword(const UnicodeString& keyword) const {
 
 UnicodeString
 PluralRules::getKeywordOther() const {
-    return PLURAL_KEYWORD_OTHER;
+    return UnicodeString(TRUE, PLURAL_KEYWORD_OTHER, 5);
 }
 
 UBool
@@ -352,7 +356,7 @@ PluralRules::parseDescription(UnicodeString& data, RuleChain& rules, UErrorCode 
     if (U_FAILURE(status)) {
         return;
     }
-    UnicodeString ruleData = data.toLower();
+    UnicodeString ruleData = data.toLower("");
     while (ruleIndex< ruleData.length()) {
         mParser->getNextToken(ruleData, &ruleIndex, token, type, status);
         if (U_FAILURE(status)) {
@@ -364,6 +368,7 @@ PluralRules::parseDescription(UnicodeString& data, RuleChain& rules, UErrorCode 
         }
         switch (type) {
         case tAnd:
+            U_ASSERT(curAndConstraint != NULL);
             curAndConstraint = curAndConstraint->add();
             break;
         case tOr:
@@ -381,19 +386,24 @@ PluralRules::parseDescription(UnicodeString& data, RuleChain& rules, UErrorCode 
             curAndConstraint = orNode->add();
             break;
         case tIs:
+            U_ASSERT(curAndConstraint != NULL);
             curAndConstraint->rangeHigh=-1;
             break;
         case tNot:
+            U_ASSERT(curAndConstraint != NULL);
             curAndConstraint->notIn=TRUE;
             break;
         case tIn:
+            U_ASSERT(curAndConstraint != NULL);
             curAndConstraint->rangeHigh=PLURAL_RANGE_HIGH;
             curAndConstraint->integerOnly = TRUE;
             break;
         case tWithin:
+            U_ASSERT(curAndConstraint != NULL);
             curAndConstraint->rangeHigh=PLURAL_RANGE_HIGH;
             break;
         case tNumber:
+            U_ASSERT(curAndConstraint != NULL);
             if ( (curAndConstraint->op==AndConstraint::MOD)&&
                  (curAndConstraint->opNum == -1 ) ) {
                 curAndConstraint->opNum=getNumberValue(token);
@@ -408,6 +418,7 @@ PluralRules::parseDescription(UnicodeString& data, RuleChain& rules, UErrorCode 
             }
             break;
         case tMod:
+            U_ASSERT(curAndConstraint != NULL);
             curAndConstraint->op=AndConstraint::MOD;
             break;
         case tKeyword:
@@ -493,7 +504,7 @@ PluralRules::getKeywordIndex(const UnicodeString& keyword,
             }
             rc = rc->next;
         }
-        if (keyword == PLURAL_KEYWORD_OTHER) {
+        if (0 == keyword.compare(PLURAL_KEYWORD_OTHER, 5)) {
             return n;
         }
     }
@@ -529,7 +540,7 @@ PluralRules::initSamples(UErrorCode& status) {
     RuleChain* rc = mRules;
     while (rc != NULL) {
         if (rc->ruleHeader != NULL) {
-            if (otherIndex == -1 && rc->keyword == PLURAL_KEYWORD_OTHER) {
+            if (otherIndex == -1 && 0 == rc->keyword.compare(PLURAL_KEYWORD_OTHER, 5)) {
                 otherIndex = maxIndex;
             }
             ++maxIndex;
@@ -653,38 +664,48 @@ PluralRules::addRules(RuleChain& rules) {
 }
 
 UnicodeString
-PluralRules::getRuleFromResource(const Locale& locale, UErrorCode& errCode) {
+PluralRules::getRuleFromResource(const Locale& locale, UPluralType type, UErrorCode& errCode) {
     UnicodeString emptyStr;
 
     if (U_FAILURE(errCode)) {
         return emptyStr;
     }
-    UResourceBundle *rb=ures_openDirect(NULL, "plurals", &errCode);
+    LocalUResourceBundlePointer rb(ures_openDirect(NULL, "plurals", &errCode));
     if(U_FAILURE(errCode)) {
-        /* total failure, not even root could be opened */
         return emptyStr;
     }
-    UResourceBundle *locRes=ures_getByKey(rb, "locales", NULL, &errCode);
+    const char *typeKey;
+    switch (type) {
+    case UPLURAL_TYPE_CARDINAL:
+        typeKey = "locales";
+        break;
+    case UPLURAL_TYPE_ORDINAL:
+        typeKey = "locales_ordinals";
+        break;
+    default:
+        // Must not occur: The caller should have checked for valid types.
+        errCode = U_ILLEGAL_ARGUMENT_ERROR;
+        return emptyStr;
+    }
+    LocalUResourceBundlePointer locRes(ures_getByKey(rb.getAlias(), typeKey, NULL, &errCode));
     if(U_FAILURE(errCode)) {
-        ures_close(rb);
         return emptyStr;
     }
     int32_t resLen=0;
     const char *curLocaleName=locale.getName();
-    const UChar* s = ures_getStringByKey(locRes, curLocaleName, &resLen, &errCode);
+    const UChar* s = ures_getStringByKey(locRes.getAlias(), curLocaleName, &resLen, &errCode);
 
     if (s == NULL) {
         // Check parent locales.
         UErrorCode status = U_ZERO_ERROR;
         char parentLocaleName[ULOC_FULLNAME_CAPACITY];
         const char *curLocaleName=locale.getName();
-        int32_t localeNameLen=0;
         uprv_strcpy(parentLocaleName, curLocaleName);
 
-        while ((localeNameLen=uloc_getParent(parentLocaleName, parentLocaleName,
-                                       ULOC_FULLNAME_CAPACITY, &status)) > 0) {
+        while (uloc_getParent(parentLocaleName, parentLocaleName,
+                                       ULOC_FULLNAME_CAPACITY, &status) > 0) {
             resLen=0;
-            s = ures_getStringByKey(locRes, parentLocaleName, &resLen, &status);
+            s = ures_getStringByKey(locRes.getAlias(), parentLocaleName, &resLen, &status);
             if (s != NULL) {
                 errCode = U_ZERO_ERROR;
                 break;
@@ -693,8 +714,6 @@ PluralRules::getRuleFromResource(const Locale& locale, UErrorCode& errCode) {
         }
     }
     if (s==NULL) {
-        ures_close(locRes);
-        ures_close(rb);
         return emptyStr;
     }
 
@@ -704,28 +723,23 @@ PluralRules::getRuleFromResource(const Locale& locale, UErrorCode& errCode) {
     // printf("\n PluralRule: %s\n", setKey);
 
 
-    UResourceBundle *ruleRes=ures_getByKey(rb, "rules", NULL, &errCode);
+    LocalUResourceBundlePointer ruleRes(ures_getByKey(rb.getAlias(), "rules", NULL, &errCode));
     if(U_FAILURE(errCode)) {
-        ures_close(locRes);
-        ures_close(rb);
         return emptyStr;
     }
     resLen=0;
-    UResourceBundle *setRes = ures_getByKey(ruleRes, setKey, NULL, &errCode);
+    LocalUResourceBundlePointer setRes(ures_getByKey(ruleRes.getAlias(), setKey, NULL, &errCode));
     if (U_FAILURE(errCode)) {
-        ures_close(ruleRes);
-        ures_close(locRes);
-        ures_close(rb);
         return emptyStr;
     }
 
-    int32_t numberKeys = ures_getSize(setRes);
+    int32_t numberKeys = ures_getSize(setRes.getAlias());
     char *key=NULL;
     int32_t len=0;
     for(int32_t i=0; i<numberKeys; ++i) {
         int32_t keyLen;
         resLen=0;
-        s=ures_getNextString(setRes, &resLen, (const char**)&key, &errCode);
+        s=ures_getNextString(setRes.getAlias(), &resLen, (const char**)&key, &errCode);
         keyLen = (int32_t)uprv_strlen(key);
         u_charsToUChars(key, result+len, keyLen);
         len += keyLen;
@@ -738,10 +752,6 @@ PluralRules::getRuleFromResource(const Locale& locale, UErrorCode& errCode) {
     u_UCharsToChars(result, setKey, len);
     // printf(" Rule: %s\n", setKey);
 
-    ures_close(setRes);
-    ures_close(ruleRes);
-    ures_close(locRes);
-    ures_close(rb);
     return UnicodeString(result);
 }
 
@@ -982,7 +992,7 @@ RuleChain::select(double number) const {
        return next->select(number);
    }
    else {
-       return PLURAL_KEYWORD_OTHER;
+       return UnicodeString(TRUE, PLURAL_KEYWORD_OTHER, 5);
    }
 
 }
@@ -1055,11 +1065,11 @@ RuleChain::dumpRules(UnicodeString& result) {
                     }
                 }
                 if ( (andRule=andRule->next) != NULL) {
-                    result += PK_AND;
+                    result.append(PK_AND, 3);
                 }
             }
             if ( (orRule = orRule->next) != NULL ) {
-                result += PK_OR;
+                result.append(PK_OR, 2);
             }
         }
     }
@@ -1281,7 +1291,6 @@ RuleParser::getNextToken(const UnicodeString& ruleData,
                     return;
                  }
              }
-             break;
          default:
              status = U_UNEXPECTED_TOKEN;
              return;
@@ -1342,28 +1351,28 @@ RuleParser::getKeyType(const UnicodeString& token, tokenType& keyType, UErrorCod
     }
     if ( keyType==tNumber) {
     }
-    else if (token==PK_VAR_N) {
+    else if (0 == token.compare(PK_VAR_N, 1)) {
         keyType = tVariableN;
     }
-    else if (token==PK_IS) {
+    else if (0 == token.compare(PK_IS, 2)) {
         keyType = tIs;
     }
-    else if (token==PK_AND) {
+    else if (0 == token.compare(PK_AND, 3)) {
         keyType = tAnd;
     }
-    else if (token==PK_IN) {
+    else if (0 == token.compare(PK_IN, 2)) {
         keyType = tIn;
     }
-    else if (token==PK_WITHIN) {
+    else if (0 == token.compare(PK_WITHIN, 6)) {
         keyType = tWithin;
     }
-    else if (token==PK_NOT) {
+    else if (0 == token.compare(PK_NOT, 3)) {
         keyType = tNot;
     }
-    else if (token==PK_MOD) {
+    else if (0 == token.compare(PK_MOD, 3)) {
         keyType = tMod;
     }
-    else if (token==PK_OR) {
+    else if (0 == token.compare(PK_OR, 2)) {
         keyType = tOr;
     }
     else if ( isValidKeyword(token) ) {
@@ -1384,7 +1393,7 @@ PluralKeywordEnumeration::PluralKeywordEnumeration(RuleChain *header, UErrorCode
     if (U_FAILURE(status)) {
         return;
     }
-    fKeywordNames.setDeleter(uhash_deleteUObject);
+    fKeywordNames.setDeleter(uprv_deleteUObject);
     UBool  addKeywordOther=TRUE;
     RuleChain *node=header;
     while(node!=NULL) {
@@ -1392,7 +1401,7 @@ PluralKeywordEnumeration::PluralKeywordEnumeration(RuleChain *header, UErrorCode
         if (U_FAILURE(status)) {
             return;
         }
-        if (node->keyword == PLURAL_KEYWORD_OTHER) {
+        if (0 == node->keyword.compare(PLURAL_KEYWORD_OTHER, 5)) {
             addKeywordOther= FALSE;
         }
         node=node->next;

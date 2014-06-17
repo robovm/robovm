@@ -442,8 +442,18 @@ public class SimpleTimeZoneTest extends junit.framework.TestCase {
         st.setStartRule(0, 1, 1, 1);
         st.setEndRule(11, 1, 1, 1);
         st.setDSTSavings(1);
-        assertEquals("Daylight savings amount not set", 1, st.getDSTSavings());
-    }
+        assertEquals(1, st.getDSTSavings());
+        try {
+            st.setDSTSavings(0);
+            fail();
+        } catch (IllegalArgumentException expected) {
+        }
+        try {
+            st.setDSTSavings(-1);
+            fail();
+        } catch (IllegalArgumentException expected) {
+        }
+      }
 
     /**
      * java.util.SimpleTimeZone#setEndRule(int, int, int)
@@ -691,6 +701,7 @@ public class SimpleTimeZoneTest extends junit.framework.TestCase {
      * java.util.SimpleTimeZone#setStartRule(int, int, int, int, boolean)
      */
     public void test_setStartRuleIIIIZ() {
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
         // Test for method void java.util.SimpleTimeZone.setStartRule(int, int,
         // int, int, boolean)
         SimpleTimeZone st = new SimpleTimeZone(TimeZone.getTimeZone("EST").getRawOffset(), "EST");

@@ -24,6 +24,7 @@ U_NAMESPACE_BEGIN
 
 class BMPSet;
 class ParsePosition;
+class RBBIRuleScanner;
 class SymbolTable;
 class UnicodeSetStringSpan;
 class UVector;
@@ -376,6 +377,7 @@ public:
     UnicodeSet(const UnicodeString& pattern,
                UErrorCode& status);
 
+#ifndef U_HIDE_INTERNAL_API
     /**
      * Constructs a set from the given pattern.  See the class
      * description for the syntax of the pattern language.
@@ -392,6 +394,7 @@ public:
                uint32_t options,
                const SymbolTable* symbols,
                UErrorCode& status);
+#endif  /* U_HIDE_INTERNAL_API */
 
     /**
      * Constructs a set from the given pattern.  See the class description
@@ -588,6 +591,7 @@ public:
     UnicodeSet& applyPattern(const UnicodeString& pattern,
                              UErrorCode& status);
 
+#ifndef U_HIDE_INTERNAL_API
     /**
      * Modifies this set to represent the set specified by the given
      * pattern, optionally ignoring Unicode Pattern_White_Space characters.
@@ -608,6 +612,7 @@ public:
                              uint32_t options,
                              const SymbolTable* symbols,
                              UErrorCode& status);
+#endif  /* U_HIDE_INTERNAL_API */
 
     /**
      * Parses the given pattern, starting at the given position.  The
@@ -1467,6 +1472,7 @@ private:
     virtual UBool matchesIndexValue(uint8_t v) const;
 
 private:
+    friend class RBBIRuleScanner;
 
     //----------------------------------------------------------------
     // Implementation: Clone as thawed (see ICU4J Freezable)
@@ -1478,10 +1484,16 @@ private:
     // Implementation: Pattern parsing
     //----------------------------------------------------------------
 
+    void applyPatternIgnoreSpace(const UnicodeString& pattern,
+                                 ParsePosition& pos,
+                                 const SymbolTable* symbols,
+                                 UErrorCode& status);
+
     void applyPattern(RuleCharacterIterator& chars,
                       const SymbolTable* symbols,
                       UnicodeString& rebuiltPat,
                       uint32_t options,
+                      UnicodeSet& (UnicodeSet::*caseClosure)(int32_t attribute),
                       UErrorCode& ec);
 
     //----------------------------------------------------------------

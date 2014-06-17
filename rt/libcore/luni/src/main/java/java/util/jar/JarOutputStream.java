@@ -37,20 +37,20 @@ public class JarOutputStream extends ZipOutputStream {
      *
      * @param os
      *            the {@code OutputStream} to write to
-     * @param mf
+     * @param manifest
      *            the {@code Manifest} to output for this JAR file.
      * @throws IOException
      *             if an error occurs creating the {@code JarOutputStream}.
      */
-    public JarOutputStream(OutputStream os, Manifest mf) throws IOException {
+    public JarOutputStream(OutputStream os, Manifest manifest) throws IOException {
         super(os);
-        if (mf == null) {
-            throw new NullPointerException();
+        if (manifest == null) {
+            throw new NullPointerException("manifest == null");
         }
-        manifest = mf;
+        this.manifest = manifest;
         ZipEntry ze = new ZipEntry(JarFile.MANIFEST_NAME);
         putNextEntry(ze);
-        manifest.write(this);
+        this.manifest.write(this);
         closeEntry();
     }
 

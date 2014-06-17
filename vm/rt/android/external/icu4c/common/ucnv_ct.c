@@ -1,6 +1,6 @@
 /*
 **********************************************************************
-*   Copyright (C) 2010-2011, International Business Machines
+*   Copyright (C) 2010-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 **********************************************************************
 *   file name:  ucnv_ct.c
@@ -20,6 +20,7 @@
 #include "unicode/uset.h"
 #include "unicode/ucnv_err.h"
 #include "unicode/ucnv_cb.h"
+#include "unicode/utf16.h"
 #include "ucnv_imp.h"
 #include "ucnv_bld.h"
 #include "ucnv_cnv.h"
@@ -180,7 +181,7 @@ _CompoundTextgetName(const UConverter* cnv);
 static int32_t findNextEsc(const char *source, const char *sourceLimit) {
     int32_t length = sourceLimit - source;
     int32_t i;
-    for (i = 0; i < length; i++) {
+    for (i = 1; i < length; i++) {
         if (*(source + i) == 0x1B) {
             return i;
         }
@@ -292,7 +293,7 @@ _CompoundTextOpen(UConverter *cnv, UConverterLoadArgs *pArgs, UErrorCode *errorC
             return;
         }
 
-        myConverterData->state = 0;
+        myConverterData->state = (COMPOUND_TEXT_CONVERTERS)0;
     } else {
         *errorCode = U_MEMORY_ALLOCATION_ERROR;
     }
@@ -340,7 +341,7 @@ UConverter_fromUnicode_CompoundText_OFFSETS(UConverterFromUnicodeArgs* args, UEr
     COMPOUND_TEXT_CONVERTERS currentState, tmpState;
     uint32_t pValue;
     int32_t pValueLength = 0;
-    int32_t i, n;
+    int32_t i, n, j;
 
     UConverterDataCompoundText *myConverterData = (UConverterDataCompoundText *) cnv->extraInfo;
 
@@ -356,16 +357,16 @@ UConverter_fromUnicode_CompoundText_OFFSETS(UConverterFromUnicodeArgs* args, UEr
 
             sourceChar  = *(source++);
             /*check if the char is a First surrogate*/
-             if(UTF_IS_SURROGATE(sourceChar)) {
-                if(UTF_IS_SURROGATE_FIRST(sourceChar)) {
+             if(U16_IS_SURROGATE(sourceChar)) {
+                if(U16_IS_SURROGATE_LEAD(sourceChar)) {
 getTrail:
                     /*look ahead to find the trail surrogate*/
                     if(source < sourceLimit) {
                         /* test the following code unit */
                         UChar trail=(UChar) *source;
-                        if(UTF_IS_SECOND_SURROGATE(trail)) {
+                        if(U16_IS_TRAIL(trail)) {
                             source++;
-                            sourceChar=UTF16_GET_PAIR_VALUE(sourceChar, trail);
+                            sourceChar=U16_GET_SUPPLEMENTARY(sourceChar, trail);
                             cnv->fromUChar32=0x00;
                             /* convert this supplementary code point */
                             /* exit this condition tree */
@@ -409,8 +410,8 @@ getTrail:
                          tmpState = (COMPOUND_TEXT_CONVERTERS)i;
                          if (currentState != tmpState) {
                              currentState = tmpState;
-                             for (i = 0; escSeqCompoundText[currentState][i] != 0; i++) {
-                                 tmpTargetBuffer[tmpTargetBufferLength++] = escSeqCompoundText[currentState][i];
+                             for (j = 0; escSeqCompoundText[currentState][j] != 0; j++) {
+                                 tmpTargetBuffer[tmpTargetBufferLength++] = escSeqCompoundText[currentState][j];
                              }
                          }
                          for (n = (pValueLength - 1); n >= 0; n--) {
@@ -503,6 +504,9 @@ UConverter_toUnicode_CompoundText_OFFSETS(UConverterToUnicodeArgs *args,
                     *err = U_ZERO_ERROR;
                     break;
                 } else if (tmpState == INVALID) {
+                    if (args->converter->toULength == 0) {
+                        mySource++; /* skip over the 0x1b byte */
+                    }
                     *err = U_ILLEGAL_CHAR_FOUND;
                     break;
                 }

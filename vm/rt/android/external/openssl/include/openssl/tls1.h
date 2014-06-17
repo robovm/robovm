@@ -230,6 +230,9 @@ extern "C" {
 /* ExtensionType value from RFC5620 */
 #define TLSEXT_TYPE_heartbeat	15
 
+/* ExtensionType value from draft-ietf-tls-applayerprotoneg-00 */
+#define TLSEXT_TYPE_application_layer_protocol_negotiation 16
+
 /* ExtensionType value from RFC4507 */
 #define TLSEXT_TYPE_session_ticket		35
 
@@ -247,6 +250,9 @@ extern "C" {
 /* This is not an IANA defined extension number */
 #define TLSEXT_TYPE_next_proto_neg		13172
 #endif
+
+/* This is not an IANA defined extension number */
+#define TLSEXT_TYPE_channel_id			30031
 
 /* NameType value from RFC 3546 */
 #define TLSEXT_NAMETYPE_host_name 0

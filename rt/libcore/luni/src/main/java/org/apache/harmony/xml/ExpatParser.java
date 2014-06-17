@@ -44,7 +44,7 @@ class ExpatParser {
     private static final int BUFFER_SIZE = 8096; // in bytes
 
     /** Pointer to XML_Parser instance. */
-    private int pointer;
+    private long pointer;
 
     private boolean inStartElement = false;
     private int attributeCount = -1;
@@ -100,7 +100,7 @@ class ExpatParser {
     /**
      * Used by {@link EntityParser}.
      */
-    private ExpatParser(String encoding, ExpatReader xmlReader, int pointer,
+    private ExpatParser(String encoding, ExpatReader xmlReader, long pointer,
             String publicId, String systemId) {
         this.encoding = encoding;
         this.xmlReader = xmlReader;
@@ -114,7 +114,7 @@ class ExpatParser {
      *
      * @return the pointer to the native parser
      */
-    private native int initialize(String encoding, boolean namespacesEnabled);
+    private native long initialize(String encoding, boolean namespacesEnabled);
 
     /**
      * Called at the start of an element.
@@ -302,7 +302,7 @@ class ExpatParser {
         }
 
         String encoding = pickEncoding(inputSource);
-        int pointer = createEntityParser(this.pointer, context);
+        long pointer = createEntityParser(this.pointer, context);
         try {
             EntityParser entityParser = new EntityParser(encoding, xmlReader,
                     pointer, inputSource.getPublicId(),
@@ -392,7 +392,7 @@ class ExpatParser {
      * @param context passed to {@link #handleExternalEntity}
      * @return pointer to native parser
      */
-    private static native int createEntityParser(int parentPointer, String context);
+    private static native long createEntityParser(long parentPointer, String context);
 
     /**
      * Appends part of an XML document. This parser will parse the given XML to
@@ -409,7 +409,7 @@ class ExpatParser {
         }
     }
 
-    private native void appendString(int pointer, String xml, boolean isFinal)
+    private native void appendString(long pointer, String xml, boolean isFinal)
             throws SAXException, ExpatException;
 
     /**
@@ -430,7 +430,7 @@ class ExpatParser {
         }
     }
 
-    private native void appendChars(int pointer, char[] xml, int offset,
+    private native void appendChars(long pointer, char[] xml, int offset,
             int length) throws SAXException, ExpatException;
 
     /**
@@ -462,7 +462,7 @@ class ExpatParser {
         }
     }
 
-    private native void appendBytes(int pointer, byte[] xml, int offset,
+    private native void appendBytes(long pointer, byte[] xml, int offset,
             int length) throws SAXException, ExpatException;
 
     /**
@@ -560,12 +560,12 @@ class ExpatParser {
     /**
      * Releases all native objects.
      */
-    private native void release(int pointer);
+    private native void release(long pointer);
 
     /**
      * Releases native parser only.
      */
-    private static native void releaseParser(int pointer);
+    private static native void releaseParser(long pointer);
 
     /**
      * Initialize static resources.
@@ -583,7 +583,7 @@ class ExpatParser {
         return line(this.pointer);
     }
 
-    private static native int line(int pointer);
+    private static native int line(long pointer);
 
     /**
      * Gets the current column number within the XML file.
@@ -592,7 +592,7 @@ class ExpatParser {
         return column(this.pointer);
     }
 
-    private static native int column(int pointer);
+    private static native int column(long pointer);
 
     /**
      * Clones the current attributes so they can be used outside of
@@ -607,12 +607,12 @@ class ExpatParser {
             return ClonedAttributes.EMPTY;
         }
 
-        int clonePointer
+        long clonePointer
                 = cloneAttributes(this.attributePointer, this.attributeCount);
         return new ClonedAttributes(pointer, clonePointer, attributeCount);
     }
 
-    private static native int cloneAttributes(int pointer, int attributeCount);
+    private static native long cloneAttributes(long pointer, int attributeCount);
 
     /**
      * Used for cloned attributes.
@@ -621,8 +621,8 @@ class ExpatParser {
 
         private static final Attributes EMPTY = new ClonedAttributes(0, 0, 0);
 
-        private final int parserPointer;
-        private int pointer;
+        private final long parserPointer;
+        private long pointer;
         private final int length;
 
         /**
@@ -633,19 +633,19 @@ class ExpatParser {
          *  length is 0.
          * @param length number of attributes
          */
-        private ClonedAttributes(int parserPointer, int pointer, int length) {
+        private ClonedAttributes(long parserPointer, long pointer, int length) {
             this.parserPointer = parserPointer;
             this.pointer = pointer;
             this.length = length;
         }
 
         @Override
-        public int getParserPointer() {
+        public long getParserPointer() {
             return this.parserPointer;
         }
 
         @Override
-        public int getPointer() {
+        public long getPointer() {
             return pointer;
         }
 
@@ -698,12 +698,12 @@ class ExpatParser {
     private class CurrentAttributes extends ExpatAttributes {
 
         @Override
-        public int getParserPointer() {
+        public long getParserPointer() {
             return pointer;
         }
 
         @Override
-        public int getPointer() {
+        public long getPointer() {
             if (!inStartElement) {
                 throw new IllegalStateException(OUTSIDE_START_ELEMENT);
             }
@@ -766,7 +766,7 @@ class ExpatParser {
         private int depth = 0;
 
         private EntityParser(String encoding, ExpatReader xmlReader,
-                int pointer, String publicId, String systemId) {
+                long pointer, String publicId, String systemId) {
             super(encoding, xmlReader, pointer, publicId, systemId);
         }
 

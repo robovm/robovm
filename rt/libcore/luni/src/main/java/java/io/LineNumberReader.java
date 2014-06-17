@@ -132,24 +132,15 @@ public class LineNumberReader extends BufferedReader {
     }
 
     /**
-     * Reads at most {@code count} characters from the source reader and stores
+     * Reads up to {@code count} characters from the source reader and stores
      * them in the character array {@code buffer} starting at {@code offset}.
      * Returns the number of characters actually read or -1 if no characters
      * have been read and the end of this reader has been reached.
-     * <p>
-     * The line number count is incremented if a line terminator is encountered.
+     *
+     * <p>The line number count is incremented if a line terminator is encountered.
      * Recognized line terminator sequences are {@code '\r'}, {@code '\n'} and
      * {@code "\r\n"}.
      *
-     * @param buffer
-     *            the array in which to store the characters read.
-     * @param offset
-     *            the initial position in {@code buffer} to store the characters
-     *            read from this reader.
-     * @param count
-     *            the maximum number of characters to store in {@code buffer}.
-     * @return the number of characters actually read or -1 if the end of the
-     *         source reader has been reached while reading.
      * @throws IOException
      *             if this reader is closed or another IOException occurs.
      */

@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -55,22 +56,31 @@ public final class Extensions {
             "2.5.29.30", "2.5.29.36", "2.5.29.37", "2.5.29.54");
 
     // the values of extensions of the structure
-    private List<Extension> extensions;
-    private Set<String> critical;
-    private Set<String> noncritical;
+    private final List<Extension> extensions;
+
+    // to speed up access, the following fields cache values computed
+    // from the extensions field, initialized using the "single-check
+    // idiom".
+
+    private volatile Set<String> critical;
+    private volatile Set<String> noncritical;
     // the flag showing is there any unsupported critical extension
     // in the list of extensions or not.
-    private boolean hasUnsupported;
+    private volatile Boolean hasUnsupported;
+
     // map containing the oid of extensions as a keys and
     // Extension objects as values
-    private HashMap<String, Extension> oidMap;
+    private volatile HashMap<String, Extension> oidMap;
+
     // the ASN.1 encoded form of Extensions
     private byte[] encoding;
 
     /**
      * Constructs an object representing the value of Extensions.
      */
-    public Extensions() {}
+    public Extensions() {
+        this.extensions = null;
+    }
 
     public Extensions(List<Extension> extensions) {
         this.extensions = extensions;
@@ -84,27 +94,33 @@ public final class Extensions {
      * Returns the list of critical extensions.
      */
     public Set<String> getCriticalExtensions() {
-        if (critical == null) {
+        Set<String> resultCritical = critical;
+        if (resultCritical == null) {
             makeOidsLists();
+            resultCritical = critical;
         }
-        return critical;
+        return resultCritical;
     }
 
     /**
      * Returns the list of critical extensions.
      */
     public Set<String> getNonCriticalExtensions() {
-        if (noncritical == null) {
+        Set<String> resultNoncritical = noncritical;
+        if (resultNoncritical == null) {
             makeOidsLists();
+            resultNoncritical = noncritical;
         }
-        return noncritical;
+        return resultNoncritical;
     }
 
     public boolean hasUnsupportedCritical() {
-        if (critical == null) {
+        Boolean resultHasUnsupported = hasUnsupported;
+        if (resultHasUnsupported == null) {
             makeOidsLists();
+            resultHasUnsupported = hasUnsupported;
         }
-        return hasUnsupported;
+        return resultHasUnsupported.booleanValue();
     }
 
     //
@@ -116,19 +132,23 @@ public final class Extensions {
             return;
         }
         int size = extensions.size();
-        critical = new HashSet<String>(size);
-        noncritical = new HashSet<String>(size);
+        Set<String> localCritical = new HashSet<String>(size);
+        Set<String> localNoncritical = new HashSet<String>(size);
+        Boolean localHasUnsupported = Boolean.FALSE;
         for (Extension extension : extensions) {
             String oid = extension.getExtnID();
             if (extension.getCritical()) {
                 if (!SUPPORTED_CRITICAL.contains(oid)) {
-                    hasUnsupported = true;
+                    localHasUnsupported = Boolean.TRUE;
                 }
-                critical.add(oid);
+                localCritical.add(oid);
             } else {
-                noncritical.add(oid);
+                localNoncritical.add(oid);
             }
         }
+        this.critical = localCritical;
+        this.noncritical = localNoncritical;
+        this.hasUnsupported = localHasUnsupported;
     }
 
     /**
@@ -138,13 +158,15 @@ public final class Extensions {
         if (extensions == null) {
             return null;
         }
-        if (oidMap == null) {
-            oidMap = new HashMap<String, Extension>();
+        HashMap<String, Extension> localOidMap = oidMap;
+        if (localOidMap == null) {
+            localOidMap = new HashMap<String, Extension>();
             for (Extension extension : extensions) {
-                oidMap.put(extension.getExtnID(), extension);
+                localOidMap.put(extension.getExtnID(), extension);
             }
+            this.oidMap = localOidMap;
         }
-        return oidMap.get(oid);
+        return localOidMap.get(oid);
     }
 
 
@@ -222,14 +244,20 @@ public final class Extensions {
      * </pre>
      * (as specified in RFC 3280)
      *
-     * @return the value of pathLenConstraint field if extension presents,
-     * and Integer.MAX_VALUE if does not.
+     * @return-1 if the Basic Constraints Extension is not present or
+     * it is present but it indicates the certificate is not a
+     * certificate authority. If the certificate is a certificate
+     * authority, returns the path length constraint if present, or
+     * Integer.MAX_VALUE if it is not.
      */
-    public int valueOfBasicConstrains() {
+    public int valueOfBasicConstraints() {
         Extension extension = getExtensionByOID("2.5.29.19");
-        BasicConstraints bc;
-        if ((extension == null) || ((bc = extension.getBasicConstraintsValue()) == null)) {
-            return Integer.MAX_VALUE;
+        if (extension == null) {
+            return -1;
+        }
+        BasicConstraints bc = extension.getBasicConstraintsValue();
+        if (bc == null || !bc.getCa()) {
+            return -1;
         }
         return bc.getPathLenConstraint();
     }
@@ -250,11 +278,7 @@ public final class Extensions {
      * null if does not.
      */
     public Collection<List<?>> valueOfSubjectAlternativeName() throws IOException {
-        Extension extension = getExtensionByOID("2.5.29.17");
-        if (extension == null) {
-            return null;
-        }
-        return ((GeneralNames) GeneralNames.ASN1.decode(extension.getExtnValue())).getPairsList();
+        return decodeGeneralNames(getExtensionByOID("2.5.29.17"));
     }
 
     /**
@@ -273,11 +297,31 @@ public final class Extensions {
      * null if does not.
      */
     public Collection<List<?>> valueOfIssuerAlternativeName() throws IOException {
-        Extension extension = getExtensionByOID("2.5.29.18");
+        return decodeGeneralNames(getExtensionByOID("2.5.29.18"));
+    }
+
+    /**
+     * Given an X.509 extension that encodes GeneralNames, return it in the
+     * format expected by APIs.
+     */
+    private static Collection<List<?>> decodeGeneralNames(Extension extension)
+            throws IOException {
         if (extension == null) {
             return null;
         }
-        return ((GeneralNames) GeneralNames.ASN1.decode(extension.getExtnValue())).getPairsList();
+
+        Collection<List<?>> collection = ((GeneralNames) GeneralNames.ASN1.decode(extension
+                .getExtnValue())).getPairsList();
+
+        /*
+         * If the extension had any invalid entries, we may have an empty
+         * collection at this point, so just return null.
+         */
+        if (collection.size() == 0) {
+            return null;
+        }
+
+        return Collections.unmodifiableCollection(collection);
     }
 
     /**

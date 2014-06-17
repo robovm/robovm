@@ -307,6 +307,7 @@ public class OldThreadTest extends junit.framework.TestCase {
         assertNotNull(state);
         assertEquals(Thread.State.RUNNABLE, state);
 
+        run = true;
         final Semaphore sem = new Semaphore(0);
         final Object lock = new Object();
         Thread th = new Thread() {
@@ -369,7 +370,7 @@ public class OldThreadTest extends junit.framework.TestCase {
         th.join(1000);
         assertEquals(Thread.State.TERMINATED, th.getState());
     }
-    volatile boolean run = true;
+    volatile boolean run;
 
     public void test_holdsLock() {
         MonitoredClass monitor = new MonitoredClass();

@@ -84,7 +84,7 @@ public class CertificateFactory {
     public static final CertificateFactory getInstance(String type)
             throws CertificateException {
         if (type == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("type == null");
         }
         try {
             Engine.SpiAndProvider sap = ENGINE.getInstance(type, null);
@@ -117,7 +117,7 @@ public class CertificateFactory {
             String provider) throws CertificateException,
             NoSuchProviderException {
         if (provider == null || provider.isEmpty()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("provider == null || provider.isEmpty()");
         }
         Provider impProvider = Security.getProvider(provider);
         if (impProvider == null) {
@@ -147,10 +147,10 @@ public class CertificateFactory {
     public static final CertificateFactory getInstance(String type,
             Provider provider) throws CertificateException {
         if (provider == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("provider == null");
         }
         if (type == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("type == null");
         }
         try {
             Object spi = ENGINE.getInstance(type, provider, null);
@@ -225,23 +225,18 @@ public class CertificateFactory {
     }
 
     /**
-     * Generates a {@code CertPath} (a certificate chain) from the provided
-     * {@code InputStream} and the specified encoding scheme.
+     * Generates a {@code CertPath} (a certificate chain) from the given
+     * {@code inputStream}, assuming the given {@code encoding} from
+     * {@link #getCertPathEncodings()}.
      *
-     * @param inStream
-     *            {@code InputStream} containing certificate path data in
-     *            specified encoding.
-     * @param encoding
-     *            encoding of the data in the input stream.
-     * @return a {@code CertPath} initialized from the provided data.
      * @throws CertificateException
      *             if parsing problems are detected.
      * @throws UnsupportedOperationException
      *             if the provider does not implement this method.
      */
-    public final CertPath generateCertPath(InputStream inStream, String encoding)
+    public final CertPath generateCertPath(InputStream inputStream, String encoding)
             throws CertificateException {
-        return spiImpl.engineGenerateCertPath(inStream, encoding);
+        return spiImpl.engineGenerateCertPath(inputStream, encoding);
     }
 
     /**

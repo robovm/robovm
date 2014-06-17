@@ -8,22 +8,9 @@ add_definitions(-DNO_WINDOWS_BRAINDEATH)
 #endif()
 
 set(SRC
-  aes/aes_core.c
-  bn/bn_asm.c
-  cryptlib.c
-  mem.c
-  mem_clr.c
-  mem_dbg.c
-  cversion.c
-  ex_data.c
-  cpt_err.c
-  ebcdic.c
-  uid.c
-  o_time.c
-  o_str.c
-  o_dir.c
   aes/aes_cbc.c
   aes/aes_cfb.c
+  aes/aes_core.c
   aes/aes_ctr.c
   aes/aes_ecb.c
   aes/aes_misc.c
@@ -131,6 +118,7 @@ set(SRC
   bio/bss_null.c
   bio/bss_sock.c
   bn/bn_add.c
+  bn/bn_asm.c
   bn/bn_blind.c
   bn/bn_const.c
   bn/bn_ctx.c
@@ -172,6 +160,9 @@ set(SRC
   conf/conf_mall.c
   conf/conf_mod.c
   conf/conf_sap.c
+  cpt_err.c
+  cryptlib.c
+  cversion.c
   des/cbc_cksm.c
   des/cbc_enc.c
   des/cfb64ede.c
@@ -225,6 +216,7 @@ set(SRC
   dso/dso_lib.c
   dso/dso_null.c
   dso/dso_openssl.c
+  ebcdic.c
   ec/ec2_mult.c
   ec/ec2_oct.c
   ec/ec2_smpl.c
@@ -302,6 +294,7 @@ set(SRC
   evp/e_xcbc_d.c
   evp/encode.c
   evp/evp_acnf.c
+  evp/evp_cnf.c
   evp/evp_enc.c
   evp/evp_err.c
   evp/evp_key.c
@@ -332,6 +325,7 @@ set(SRC
   evp/pmeth_fn.c
   evp/pmeth_gn.c
   evp/pmeth_lib.c
+  ex_data.c
   hmac/hm_ameth.c
   hmac/hm_pmeth.c
   hmac/hmac.c
@@ -342,6 +336,9 @@ set(SRC
   md4/md4_one.c
   md5/md5_dgst.c
   md5/md5_one.c
+  mem.c
+  mem_clr.c
+  mem_dbg.c
   modes/cbc128.c
   modes/ccm128.c
   modes/cfb128.c
@@ -349,7 +346,10 @@ set(SRC
   modes/gcm128.c
   modes/ofb128.c
   modes/xts128.c
+  o_dir.c
   o_init.c
+  o_str.c
+  o_time.c
   objects/o_names.c
   objects/obj_dat.c
   objects/obj_err.c
@@ -394,7 +394,7 @@ set(SRC
   pkcs7/pk7_asn1.c
   pkcs7/pk7_attr.c
   pkcs7/pk7_doit.c
-  pkcs7/pk7_lib.c 
+  pkcs7/pk7_lib.c
   pkcs7/pk7_mime.c
   pkcs7/pk7_smime.c
   pkcs7/pkcs7err.c
@@ -404,6 +404,7 @@ set(SRC
   rand/rand_err.c
   rand/rand_lib.c
   rand/rand_unix.c
+  rand/rand_win.c
   rand/randfile.c
   rc2/rc2_cbc.c
   rc2/rc2_ecb.c
@@ -449,6 +450,7 @@ set(SRC
   ui/ui_lib.c
   ui/ui_openssl.c
   ui/ui_util.c
+  uid.c
   x509/by_dir.c
   x509/by_file.c
   x509/x509_att.c

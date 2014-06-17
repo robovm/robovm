@@ -16,6 +16,10 @@
 
 package libcore.java.security;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigInteger;
 import java.security.Key;
 import java.security.KeyFactory;
@@ -30,7 +34,11 @@ import java.security.Security;
 import java.security.interfaces.DSAParams;
 import java.security.interfaces.DSAPrivateKey;
 import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.ECPrivateKey;
+import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.DSAParameterSpec;
+import java.security.spec.ECGenParameterSpec;
+import java.security.spec.ECParameterSpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
@@ -39,6 +47,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.crypto.spec.DHParameterSpec;
 
 import junit.framework.TestCase;
 
@@ -54,16 +63,35 @@ public class KeyPairGeneratorTest extends TestCase {
                     continue;
                 }
                 String algorithm = service.getAlgorithm();
+
+                // AndroidKeyStore is tested in CTS.
+                if ("AndroidKeyStore".equals(provider.getName())) {
+                    continue;
+                }
+
+                AlgorithmParameterSpec params = null;
+
+                // TODO: detect if we're running in vogar and run the full test
+                if ("DH".equals(algorithm)) {
+                    params = getDHParams();
+                }
+
                 try {
                     // KeyPairGenerator.getInstance(String)
                     KeyPairGenerator kpg1 = KeyPairGenerator.getInstance(algorithm);
                     assertEquals(algorithm, kpg1.getAlgorithm());
+                    if (params != null) {
+                        kpg1.initialize(params);
+                    }
                     test_KeyPairGenerator(kpg1);
 
                     // KeyPairGenerator.getInstance(String, Provider)
                     KeyPairGenerator kpg2 = KeyPairGenerator.getInstance(algorithm, provider);
                     assertEquals(algorithm, kpg2.getAlgorithm());
                     assertEquals(provider, kpg2.getProvider());
+                    if (params != null) {
+                        kpg2.initialize(params);
+                    }
                     test_KeyPairGenerator(kpg2);
 
                     // KeyPairGenerator.getInstance(String, String)
@@ -71,6 +99,9 @@ public class KeyPairGeneratorTest extends TestCase {
                                                                         provider.getName());
                     assertEquals(algorithm, kpg3.getAlgorithm());
                     assertEquals(provider, kpg3.getProvider());
+                    if (params != null) {
+                        kpg3.initialize(params);
+                    }
                     test_KeyPairGenerator(kpg3);
                 } catch (Exception e) {
                     throw new Exception("Problem testing KeyPairGenerator." + algorithm, e);
@@ -109,8 +140,20 @@ public class KeyPairGeneratorTest extends TestCase {
         putKeySize("DiffieHellman", 512);
         putKeySize("DiffieHellman", 512+64);
         putKeySize("DiffieHellman", 1024);
+        putKeySize("EC", 192);
+        putKeySize("EC", 224);
         putKeySize("EC", 256);
+        putKeySize("EC", 384);
+        putKeySize("EC", 521);
     }
+
+    /** Elliptic Curve Crypto named curves that should be supported. */
+    private static final String[] EC_NAMED_CURVES = {
+        // NIST P-192 aka SECG secp192r1 aka ANSI X9.62 prime192v1
+        "secp192r1", "prime192v1",
+        // NIST P-256 aka SECG secp256r1 aka ANSI X9.62 prime256v1
+        "secp256r1", "prime256v1",
+    };
 
     private void test_KeyPairGenerator(KeyPairGenerator kpg) throws Exception {
         // without a call to initialize
@@ -132,6 +175,23 @@ public class KeyPairGeneratorTest extends TestCase {
             test_KeyPair(kpg, kpg.genKeyPair());
             test_KeyPair(kpg, kpg.generateKeyPair());
         }
+
+        if (("EC".equals(algorithm)) || ("ECDH".equals(algorithm))
+                || ("ECDSA".equals(algorithm))) {
+            for (String curveName : EC_NAMED_CURVES) {
+                kpg.initialize(new ECGenParameterSpec(curveName));
+                test_KeyPair(kpg, kpg.genKeyPair());
+                test_KeyPair(kpg, kpg.generateKeyPair());
+
+                kpg.initialize(new ECGenParameterSpec(curveName), (SecureRandom) null);
+                test_KeyPair(kpg, kpg.genKeyPair());
+                test_KeyPair(kpg, kpg.generateKeyPair());
+
+                kpg.initialize(new ECGenParameterSpec(curveName), new SecureRandom());
+                test_KeyPair(kpg, kpg.genKeyPair());
+                test_KeyPair(kpg, kpg.generateKeyPair());
+            }
+        }
     }
 
     private void test_KeyPair(KeyPairGenerator kpg, KeyPair kp) throws Exception {
@@ -148,6 +208,19 @@ public class KeyPairGeneratorTest extends TestCase {
         assertEquals(expectedAlgorithm, k.getAlgorithm().toUpperCase());
         assertNotNull(k.getEncoded());
         assertNotNull(k.getFormat());
+
+        // Test serialization
+        {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream(16384);
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(k);
+
+            ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            Key inflatedKey = (Key) ois.readObject();
+
+            assertEquals(k, inflatedKey);
+        }
 
         test_KeyWithAllKeyFactories(k);
     }
@@ -172,8 +245,19 @@ public class KeyPairGeneratorTest extends TestCase {
                     PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(encoded);
                     KeyFactory kf = KeyFactory.getInstance(k.getAlgorithm(), p);
                     PrivateKey privKey = kf.generatePrivate(spec);
-                    assertNotNull(privKey);
-                    assertTrue(Arrays.equals(privKey.getEncoded(), encoded));
+                    assertNotNull(k.getAlgorithm() + ", provider=" + p.getName(), privKey);
+
+                    /*
+                     * EC keys are unique because they can have explicit parameters or a curve
+                     * name. Check them specially so this test can continue to function.
+                     */
+                    if (k instanceof ECPrivateKey) {
+                        assertECPrivateKeyEquals((ECPrivateKey) k, (ECPrivateKey) privKey);
+                    } else {
+                        assertEquals(k.getAlgorithm() + ", provider=" + p.getName(),
+                                Arrays.toString(encoded),
+                                Arrays.toString(privKey.getEncoded()));
+                    }
                 } else if ("X.509".equals(k.getFormat())) {
                     X509EncodedKeySpec spec = new X509EncodedKeySpec(encoded);
                     KeyFactory kf = KeyFactory.getInstance(k.getAlgorithm(), p);
@@ -183,6 +267,30 @@ public class KeyPairGeneratorTest extends TestCase {
                 }
             }
         }
+    }
+
+    private static void assertECPrivateKeyEquals(ECPrivateKey expected, ECPrivateKey actual) {
+        assertEquals(expected.getS(), actual.getS());
+        assertECParametersEquals(expected.getParams(), actual.getParams());
+    }
+
+    private static void assertECParametersEquals(ECParameterSpec expected, ECParameterSpec actual) {
+        assertEquals(expected.getCurve(), actual.getCurve());
+        assertEquals(expected.getGenerator(), actual.getGenerator());
+        assertEquals(expected.getOrder(), actual.getOrder());
+        assertEquals(expected.getCofactor(), actual.getCofactor());
+    }
+
+    /**
+     * DH parameters pre-generated so that the test doesn't take too long.
+     * These parameters were generated with:
+     *
+     * openssl gendh 512 | openssl dhparams -C
+     */
+    private static AlgorithmParameterSpec getDHParams() {
+        BigInteger p = new BigInteger("E7AB1768BD75CD24700960FFA32D3F1557344E587101237532CC641646ED7A7C104743377F6D46251698B665CE2A6CBAB6714C2569A7D2CA22C0CF03FA40AC93", 16);
+        BigInteger g = new BigInteger("02", 16);
+        return new DHParameterSpec(p, g, 512);
     }
 
     private static final BigInteger DSA_P = new BigInteger(new byte[] {

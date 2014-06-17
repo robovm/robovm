@@ -41,7 +41,7 @@ public class Date extends java.util.Date {
      * Constructs a {@code Date} object corresponding to the supplied year,
      * month and day.
      *
-     * @deprecated Use the constructor {@link #Date(long)}.
+     * @deprecated Use the constructor {@link #Date(long)} instead.
      * @param theYear
      *            the year, specified as the year minus 1900. Must be in the
      *            range {@code [0,8099]}.
@@ -81,7 +81,7 @@ public class Date extends java.util.Date {
     @Deprecated
     @Override
     public int getHours() {
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("unimplemented");
     }
 
     /**
@@ -94,7 +94,7 @@ public class Date extends java.util.Date {
     @Deprecated
     @Override
     public int getMinutes() {
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("unimplemented");
     }
 
     /**
@@ -107,7 +107,7 @@ public class Date extends java.util.Date {
     @Deprecated
     @Override
     public int getSeconds() {
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("unimplemented");
     }
 
     /**
@@ -121,7 +121,7 @@ public class Date extends java.util.Date {
     @Deprecated
     @Override
     public void setHours(int theHours) {
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("unimplemented");
     }
 
     /**
@@ -135,7 +135,7 @@ public class Date extends java.util.Date {
     @Deprecated
     @Override
     public void setMinutes(int theMinutes) {
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("unimplemented");
     }
 
     /**
@@ -149,7 +149,7 @@ public class Date extends java.util.Date {
     @Deprecated
     @Override
     public void setSeconds(int theSeconds) {
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("unimplemented");
     }
 
     /**
@@ -212,7 +212,7 @@ public class Date extends java.util.Date {
      */
     public static Date valueOf(String dateString) {
         if (dateString == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("dateString == null");
         }
         int firstIndex = dateString.indexOf('-');
         int secondIndex = dateString.indexOf('-', firstIndex + 1);

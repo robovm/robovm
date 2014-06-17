@@ -23,9 +23,8 @@ import java.util.Enumeration;
 /**
  * {@code IdentityScope} represents a scope for {@link Identity} objects.
  *
- * @deprecated The functionality of this class has been replace by
- *             {@link Principal}, {@link KeyStore} and the {@code
- *             java.security.cert} package.
+ * @deprecated Use {@link Principal}, {@link KeyStore} and the {@code java.security.cert} package
+ * instead.
  */
 @Deprecated
 public abstract class IdentityScope extends Identity {

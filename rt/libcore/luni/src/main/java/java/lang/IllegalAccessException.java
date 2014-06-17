@@ -21,7 +21,7 @@ package java.lang;
  * Thrown when a program attempts to access a field or method which is not
  * accessible from the location where the reference is made.
  */
-public class IllegalAccessException extends Exception {
+public class IllegalAccessException extends ReflectiveOperationException {
 
     private static final long serialVersionUID = 6616958222490762034L;
 

@@ -31,7 +31,6 @@ import junit.framework.TestCase;
  * resource bundles.
  */
 public class OldAndroidLocaleTest extends TestCase {
-
     // Test basic Locale infrastructure.
     public void testLocale() throws Exception {
         Locale locale = new Locale("en");
@@ -47,49 +46,6 @@ public class OldAndroidLocaleTest extends TestCase {
         assertEquals("en_US_POSIX", locale.toString());
     }
 
-    /*
-     * Tests some must-have locales. TODO: Add back "de". See discussion
-     * immediately below this method.
-     */
-    public void testResourceBundles() throws Exception {
-        Locale eng = new Locale("en", "US");
-        DateFormatSymbols engSymbols = new DateFormatSymbols(eng);
-
-        //Locale deu = new Locale("de", "DE");
-        //DateFormatSymbols deuSymbols = new DateFormatSymbols(deu);
-
-        TimeZone berlin = TimeZone.getTimeZone("Europe/Berlin");
-
-        assertEquals("January", engSymbols.getMonths()[0]);
-        //assertEquals("Januar", deuSymbols.getMonths()[0]);
-
-        assertEquals("Sunday", engSymbols.getWeekdays()[Calendar.SUNDAY]);
-        //assertEquals("Sonntag", deuSymbols.getWeekdays()[Calendar.SUNDAY]);
-
-        assertEquals("Central European Time",
-                berlin.getDisplayName(false, TimeZone.LONG, eng));
-        assertEquals("Central European Summer Time",
-                berlin.getDisplayName(true, TimeZone.LONG, eng));
-
-        //assertEquals("Mitteleurop\u00E4ische Zeit",
-        //        berlin.getDisplayName(false, TimeZone.LONG, deu));
-        //assertEquals("Mitteleurop\u00E4ische Sommerzeit",
-        //        berlin.getDisplayName(true, TimeZone.LONG, deu));
-
-        assertTrue(engSymbols.getZoneStrings().length > 100);
-    }
-
-    /*
-     * Disabled version of the above test. The version above omits
-     * checks for stuff in the "de" locale, because we stripped that
-     * out as part of the flash reduction effort (so that we could
-     * still ship on Dream). We expect to have a baseline target that
-     * includes a large enough system partition to include "de"
-     * immediately after the last official release for Dream (whenever
-     * that may be).
-     *
-    // Test some must-have locales.
-    @LargeTest
     public void testResourceBundles() throws Exception {
         Locale eng = new Locale("en", "US");
         DateFormatSymbols engSymbols = new DateFormatSymbols(eng);
@@ -105,22 +61,20 @@ public class OldAndroidLocaleTest extends TestCase {
         assertEquals("Sunday", engSymbols.getWeekdays()[Calendar.SUNDAY]);
         assertEquals("Sonntag", deuSymbols.getWeekdays()[Calendar.SUNDAY]);
 
-        assertEquals("Central European Time",
+        assertEquals("Central European Standard Time",
                 berlin.getDisplayName(false, TimeZone.LONG, eng));
         assertEquals("Central European Summer Time",
                 berlin.getDisplayName(true, TimeZone.LONG, eng));
 
-        assertEquals("Mitteleurop\u00E4ische Zeit",
+        assertEquals("Mitteleuropäische Normalzeit",
                 berlin.getDisplayName(false, TimeZone.LONG, deu));
-        assertEquals("Mitteleurop\u00E4ische Sommerzeit",
+        assertEquals("Mitteleuropäische Sommerzeit",
                 berlin.getDisplayName(true, TimeZone.LONG, deu));
 
         assertTrue(engSymbols.getZoneStrings().length > 100);
     }
-    */
 
     // This one makes sure we have all necessary locales installed.
-    // Suppress this flaky test for now.
     public void testICULocales() {
         String[] locales = new String[] {
                 // List of locales currently required for Android.
@@ -176,7 +130,6 @@ public class OldAndroidLocaleTest extends TestCase {
                 "ISO-8859-13",
                 "ISO-8859-14",
                 "ISO-8859-15",
-                "ISO-8859-16",
                 "ISO-2022-JP",
                 "Windows-950",
                 "Windows-1250",
@@ -198,34 +151,16 @@ public class OldAndroidLocaleTest extends TestCase {
                 "GBK",
                 "GB2312",
                 "EUC-KR",
+                "GSM0338"
+        };
 
-                // Additional encoding not included in standard ICU.
-                "GSM0338" };
+        for (String encoding : encodings) {
+            assertTrue("Charset " + encoding + " must be supported", Charset.isSupported(encoding));
 
-        for (int i = 0; i < encodings.length; i++) {
-            assertTrue("Charset " + encodings[i] + " must be supported",
-                    Charset.isSupported(encodings[i]));
-
-            Charset cs = Charset.forName(encodings[i]);
-
+            Charset cs = Charset.forName(encoding);
             Set<String> aliases = cs.aliases();
-            System.out.println(aliases);
+            System.out.println(cs.name() + ": " + aliases);
         }
-
-        // Test for valid encoding that is not included in Android. IBM-37 is
-        // a perfect candidate for this, as it is being used for mainframes and
-        // thus somewhat out of the scope of Android.
-        assertFalse("Charset IBM-37 must not be supported",
-                Charset.isSupported("IBM-37"));
-
-        // Test for a bogus encoding.
-        assertFalse("Charset KLINGON must not be supported",
-                Charset.isSupported("KLINGON"));
-
-        // Make sure our local change to the real translation table used for
-        // EUC-JP doesn't get lost.
-        Charset cs = Charset.forName("EUC-JP");
-        assertTrue("EUC-JP must use 'ibm-954_P101-2007'", cs.aliases().contains("ibm-954_P101-2007"));
     }
 
 }

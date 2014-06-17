@@ -20,6 +20,7 @@ import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
+import libcore.util.Objects;
 
 /**
  * Passes locale-specific from ICU native code to Java.
@@ -46,18 +47,27 @@ public final class LocaleData {
     public Integer minimalDaysInFirstWeek;
 
     // Used by DateFormatSymbols.
-    public String[] amPm;
-    public String[] eras;
+    public String[] amPm; // "AM", "PM".
+    public String[] eras; // "BC", "AD".
 
-    public String[] longMonthNames;
-    public String[] shortMonthNames;
-    public String[] longStandAloneMonthNames;
-    public String[] shortStandAloneMonthNames;
+    public String[] longMonthNames; // "January", ...
+    public String[] shortMonthNames; // "Jan", ...
+    public String[] tinyMonthNames; // "J", ...
+    public String[] longStandAloneMonthNames; // "January", ...
+    public String[] shortStandAloneMonthNames; // "Jan", ...
+    public String[] tinyStandAloneMonthNames; // "J", ...
 
-    public String[] longWeekdayNames;
-    public String[] shortWeekdayNames;
-    public String[] longStandAloneWeekdayNames;
-    public String[] shortStandAloneWeekdayNames;
+    public String[] longWeekdayNames; // "Sunday", ...
+    public String[] shortWeekdayNames; // "Sun", ...
+    public String[] tinyWeekdayNames; // "S", ...
+    public String[] longStandAloneWeekdayNames; // "Sunday", ...
+    public String[] shortStandAloneWeekdayNames; // "Sun", ...
+    public String[] tinyStandAloneWeekdayNames; // "S", ...
+
+    // Used by frameworks/base DateSorter and DateUtils.
+    public String yesterday; // "Yesterday".
+    public String today; // "Today".
+    public String tomorrow; // "Tomorrow".
 
     public String fullTimeFormat;
     public String longTimeFormat;
@@ -68,6 +78,14 @@ public final class LocaleData {
     public String longDateFormat;
     public String mediumDateFormat;
     public String shortDateFormat;
+
+    // shortDateFormat, but guaranteed to have 4-digit years.
+    // Used by android.text.format.DateFormat.getDateFormatStringForSetting.
+    public String shortDateFormat4;
+
+    // Used by android.text.format.DateFormat.getTimeFormat.
+    public String timeFormat12; // "hh:mm a"
+    public String timeFormat24; // "HH:mm"
 
     // Used by DecimalFormatSymbols.
     public char zeroDigit;
@@ -120,44 +138,7 @@ public final class LocaleData {
     }
 
     @Override public String toString() {
-        return "LocaleData[" +
-                "firstDayOfWeek=" + firstDayOfWeek + "," +
-                "minimalDaysInFirstWeek=" + minimalDaysInFirstWeek + "," +
-                "amPm=" + Arrays.toString(amPm) + "," +
-                "eras=" + Arrays.toString(eras) + "," +
-                "longMonthNames=" + Arrays.toString(longMonthNames) + "," +
-                "shortMonthNames=" + Arrays.toString(shortMonthNames) + "," +
-                "longStandAloneMonthNames=" + Arrays.toString(longStandAloneMonthNames) + "," +
-                "shortStandAloneMonthNames=" + Arrays.toString(shortStandAloneMonthNames) + "," +
-                "longWeekdayNames=" + Arrays.toString(longWeekdayNames) + "," +
-                "shortWeekdayNames=" + Arrays.toString(shortWeekdayNames) + "," +
-                "longStandAloneWeekdayNames=" + Arrays.toString(longStandAloneWeekdayNames) + "," +
-                "shortStandAloneWeekdayNames=" + Arrays.toString(shortStandAloneWeekdayNames) + "," +
-                "fullTimeFormat=" + fullTimeFormat + "," +
-                "longTimeFormat=" + longTimeFormat + "," +
-                "mediumTimeFormat=" + mediumTimeFormat + "," +
-                "shortTimeFormat=" + shortTimeFormat + "," +
-                "fullDateFormat=" + fullDateFormat + "," +
-                "longDateFormat=" + longDateFormat + "," +
-                "mediumDateFormat=" + mediumDateFormat + "," +
-                "shortDateFormat=" + shortDateFormat + "," +
-                "zeroDigit=" + zeroDigit + "," +
-                "decimalSeparator=" + decimalSeparator + "," +
-                "groupingSeparator=" + groupingSeparator + "," +
-                "patternSeparator=" + patternSeparator + "," +
-                "percent=" + percent + "," +
-                "perMill=" + perMill + "," +
-                "monetarySeparator=" + monetarySeparator + "," +
-                "minusSign=" + minusSign + "," +
-                "exponentSeparator=" + exponentSeparator + "," +
-                "infinity=" + infinity + "," +
-                "NaN=" + NaN + "," +
-                "currencySymbol=" + currencySymbol + "," +
-                "internationalCurrencySymbol=" + internationalCurrencySymbol + "," +
-                "numberPattern=" + numberPattern + "," +
-                "integerPattern=" + integerPattern + "," +
-                "currencyPattern=" + currencyPattern + "," +
-                "percentPattern=" + percentPattern + "]";
+        return Objects.toString(this);
     }
 
     public String getDateFormat(int style) {
@@ -190,9 +171,15 @@ public final class LocaleData {
 
     private static LocaleData initLocaleData(Locale locale) {
         LocaleData localeData = new LocaleData();
-        if (!ICU.initLocaleDataImpl(locale.toString(), localeData)) {
+        if (!ICU.initLocaleDataNative(locale.toString(), localeData)) {
             throw new AssertionError("couldn't initialize LocaleData for locale " + locale);
         }
+
+        // Get the "h:mm a" and "HH:mm" 12- and 24-hour time format strings.
+        localeData.timeFormat12 = ICU.getBestDateTimePattern("hm", locale.toString());
+        localeData.timeFormat24 = ICU.getBestDateTimePattern("Hm", locale.toString());
+
+        // Fix up a couple of patterns.
         if (localeData.fullTimeFormat != null) {
             // There are some full time format patterns in ICU that use the pattern character 'v'.
             // Java doesn't accept this, so we replace it with 'z' which has about the same result
@@ -210,6 +197,7 @@ public final class LocaleData {
             // accidentally eat too much.
             localeData.integerPattern = localeData.numberPattern.replaceAll("\\.[#,]*", "");
         }
+        localeData.shortDateFormat4 = localeData.shortDateFormat.replaceAll("\\byy\\b", "y");
         return localeData;
     }
 }

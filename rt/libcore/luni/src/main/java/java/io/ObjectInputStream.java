@@ -23,8 +23,8 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
-import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -531,38 +531,13 @@ public class ObjectInputStream extends InputStream implements ObjectInput, Objec
         return primitiveData.read();
     }
 
-    /**
-     * Reads at most {@code length} bytes from the source stream and stores them
-     * in byte array {@code buffer} starting at offset {@code count}. Blocks
-     * until {@code count} bytes have been read, the end of the source stream is
-     * detected or an exception is thrown.
-     *
-     * @param buffer
-     *            the array in which to store the bytes read.
-     * @param offset
-     *            the initial position in {@code buffer} to store the bytes
-     *            read from the source stream.
-     * @param length
-     *            the maximum number of bytes to store in {@code buffer}.
-     * @return the number of bytes read or -1 if the end of the source input
-     *         stream has been reached.
-     * @throws IndexOutOfBoundsException
-     *             if {@code offset < 0} or {@code length < 0}, or if
-     *             {@code offset + length} is greater than the length of
-     *             {@code buffer}.
-     * @throws IOException
-     *             if an error occurs while reading from this stream.
-     * @throws NullPointerException
-     *             if {@code buffer} is {@code null}.
-     */
-    @Override
-    public int read(byte[] buffer, int offset, int length) throws IOException {
-        Arrays.checkOffsetAndCount(buffer.length, offset, length);
-        if (length == 0) {
+    @Override public int read(byte[] buffer, int byteOffset, int byteCount) throws IOException {
+        Arrays.checkOffsetAndCount(buffer.length, byteOffset, byteCount);
+        if (byteCount == 0) {
             return 0;
         }
         checkReadPrimitiveTypes();
-        return primitiveData.read(buffer, offset, length);
+        return primitiveData.read(buffer, byteOffset, byteCount);
     }
 
     /**
@@ -1089,8 +1064,11 @@ public class ObjectInputStream extends InputStream implements ObjectInput, Objec
 
         for (ObjectStreamField fieldDesc : fields) {
             Field field = classDesc.getReflectionField(fieldDesc);
-            // We may not have been able to find the field, but we still need to read the value
-            // and do the other checking, so there's no null check on 'field' here.
+            if (field != null && Modifier.isTransient(field.getModifiers())) {
+                field = null; // No setting transient fields! (http://b/4471249)
+            }
+            // We may not have been able to find the field, or it may be transient, but we still
+            // need to read the value and do the other checking...
             try {
                 Class<?> type = fieldDesc.getTypeInternal();
                 if (type == byte.class) {
@@ -1401,7 +1379,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput, Objec
      * @return the string read from the source stream.
      * @throws IOException
      *             if an error occurs while reading from the source stream.
-     * @deprecated Use {@link BufferedReader}
+     * @deprecated Use {@link BufferedReader} instead.
      */
     @Deprecated
     public String readLine() throws IOException {
@@ -1997,7 +1975,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput, Objec
             // original/outside caller
             if (++nestedLevels == 1) {
                 // Remember the caller's class loader
-                callerClassLoader = getClosestUserClassLoader();
+                callerClassLoader = VMStack.getClosestUserClassLoader(bootstrapLoader, systemLoader);
             }
 
             result = readNonPrimitiveContent(unshared);
@@ -2036,23 +2014,6 @@ public class ObjectInputStream extends InputStream implements ObjectInput, Objec
 
     private static final ClassLoader bootstrapLoader = Object.class.getClassLoader();
     private static final ClassLoader systemLoader = ClassLoader.getSystemClassLoader();
-
-    /**
-     * Searches up the call stack to find the closest user-defined class loader.
-     *
-     * @return a user-defined class loader or null if one isn't found
-     */
-    private static ClassLoader getClosestUserClassLoader() {
-        Class<?>[] stackClasses = VMStack.getClasses(-1);
-        for (Class<?> stackClass : stackClasses) {
-            ClassLoader loader = stackClass.getClassLoader();
-            if (loader != null && loader != bootstrapLoader
-                    && loader != systemLoader) {
-                return loader;
-            }
-        }
-        return null;
-    }
 
     /**
      * Method to be overridden by subclasses to read the next object from the
@@ -2341,7 +2302,7 @@ public class ObjectInputStream extends InputStream implements ObjectInput, Objec
     public int skipBytes(int length) throws IOException {
         // To be used with available. Ok to call if reading primitive buffer
         if (input == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("source stream is null");
         }
 
         int offset = 0;

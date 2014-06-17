@@ -57,7 +57,7 @@ public class SHA1withDSA_SignatureImpl extends Signature {
     protected Object engineGetParameter(String param)
             throws InvalidParameterException {
         if (param == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("param == null");
         }
         return null;
     }

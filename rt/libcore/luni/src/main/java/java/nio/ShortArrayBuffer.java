@@ -18,69 +18,141 @@
 package java.nio;
 
 /**
- * ShortArrayBuffer, ReadWriteShortArrayBuffer and ReadOnlyShortArrayBuffer
- * compose the implementation of array based short buffers.
- * <p>
- * ShortArrayBuffer implements all the shared readonly methods and is extended
- * by the other two classes.
- * </p>
- * <p>
- * All methods are marked final for runtime performance.
- * </p>
- *
+ * ShortArrayBuffer implements short[]-based ShortBuffers.
  */
-abstract class ShortArrayBuffer extends ShortBuffer {
+final class ShortArrayBuffer extends ShortBuffer {
 
-    protected final short[] backingArray;
+  private final short[] backingArray;
 
-    protected final int offset;
+  private final int arrayOffset;
 
-    ShortArrayBuffer(short[] array) {
-        this(array.length, array, 0);
+  private final boolean isReadOnly;
+
+  ShortArrayBuffer(short[] array) {
+    this(array.length, array, 0, false);
+  }
+
+  private ShortArrayBuffer(int capacity, short[] backingArray, int arrayOffset, boolean isReadOnly) {
+    super(capacity);
+    this.backingArray = backingArray;
+    this.arrayOffset = arrayOffset;
+    this.isReadOnly = isReadOnly;
+  }
+
+  private static ShortArrayBuffer copy(ShortArrayBuffer other, int markOfOther, boolean isReadOnly) {
+    ShortArrayBuffer buf = new ShortArrayBuffer(other.capacity(), other.backingArray, other.arrayOffset, isReadOnly);
+    buf.limit = other.limit;
+    buf.position = other.position();
+    buf.mark = markOfOther;
+    return buf;
+  }
+
+  @Override public ShortBuffer asReadOnlyBuffer() {
+    return copy(this, mark, true);
+  }
+
+  @Override public ShortBuffer compact() {
+    if (isReadOnly) {
+      throw new ReadOnlyBufferException();
     }
+    System.arraycopy(backingArray, position + arrayOffset, backingArray, arrayOffset, remaining());
+    position = limit - position;
+    limit = capacity;
+    mark = UNSET_MARK;
+    return this;
+  }
 
-    ShortArrayBuffer(int capacity) {
-        this(capacity, new short[capacity], 0);
+  @Override public ShortBuffer duplicate() {
+    return copy(this, mark, isReadOnly);
+  }
+
+  @Override public ShortBuffer slice() {
+    return new ShortArrayBuffer(remaining(), backingArray, arrayOffset + position, isReadOnly);
+  }
+
+  @Override public boolean isReadOnly() {
+    return isReadOnly;
+  }
+
+  @Override short[] protectedArray() {
+    if (isReadOnly) {
+      throw new ReadOnlyBufferException();
     }
+    return backingArray;
+  }
 
-    ShortArrayBuffer(int capacity, short[] backingArray, int offset) {
-        super(capacity);
-        this.backingArray = backingArray;
-        this.offset = offset;
+  @Override int protectedArrayOffset() {
+    if (isReadOnly) {
+      throw new ReadOnlyBufferException();
     }
+    return arrayOffset;
+  }
 
-    @Override
-    public final short get() {
-        if (position == limit) {
-            throw new BufferUnderflowException();
-        }
-        return backingArray[offset + position++];
+  @Override boolean protectedHasArray() {
+    if (isReadOnly) {
+      return false;
     }
+    return true;
+  }
 
-    @Override
-    public final short get(int index) {
-        checkIndex(index);
-        return backingArray[offset + index];
+  @Override public final short get() {
+    if (position == limit) {
+      throw new BufferUnderflowException();
     }
+    return backingArray[arrayOffset + position++];
+  }
 
-    @Override
-    public final ShortBuffer get(short[] dst, int dstOffset, int shortCount) {
-        if (shortCount > remaining()) {
-            throw new BufferUnderflowException();
-        }
-        System.arraycopy(backingArray, offset + position, dst, dstOffset, shortCount);
-        position += shortCount;
-        return this;
+  @Override public final short get(int index) {
+    checkIndex(index);
+    return backingArray[arrayOffset + index];
+  }
+
+  @Override public final ShortBuffer get(short[] dst, int dstOffset, int shortCount) {
+    if (shortCount > remaining()) {
+      throw new BufferUnderflowException();
     }
+    System.arraycopy(backingArray, arrayOffset + position, dst, dstOffset, shortCount);
+    position += shortCount;
+    return this;
+  }
 
-    @Override
-    public final boolean isDirect() {
-        return false;
+  @Override public final boolean isDirect() {
+    return false;
+  }
+
+  @Override public final ByteOrder order() {
+    return ByteOrder.nativeOrder();
+  }
+
+  @Override public ShortBuffer put(short c) {
+    if (isReadOnly) {
+      throw new ReadOnlyBufferException();
     }
-
-    @Override
-    public final ByteOrder order() {
-        return ByteOrder.nativeOrder();
+    if (position == limit) {
+      throw new BufferOverflowException();
     }
+    backingArray[arrayOffset + position++] = c;
+    return this;
+  }
 
+  @Override public ShortBuffer put(int index, short c) {
+    if (isReadOnly) {
+      throw new ReadOnlyBufferException();
+    }
+    checkIndex(index);
+    backingArray[arrayOffset + index] = c;
+    return this;
+  }
+
+  @Override public ShortBuffer put(short[] src, int srcOffset, int shortCount) {
+    if (isReadOnly) {
+      throw new ReadOnlyBufferException();
+    }
+    if (shortCount > remaining()) {
+      throw new BufferOverflowException();
+    }
+    System.arraycopy(src, srcOffset, backingArray, arrayOffset + position, shortCount);
+    position += shortCount;
+    return this;
+  }
 }

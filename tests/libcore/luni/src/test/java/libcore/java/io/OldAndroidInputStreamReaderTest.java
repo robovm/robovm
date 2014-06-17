@@ -38,7 +38,7 @@ public class OldAndroidInputStreamReaderTest extends TestCase {
             assertEquals('A', x);
             char[] c = new char[26];
             x = a.read(c, 0, 26);
-            assertTrue(a.getEncoding().equalsIgnoreCase("ISO8859_1"));
+            assertEquals("ISO-8859-1", a.getEncoding());
             assertEquals(26, x);
             assertEquals("bCdEfGhIjKlMnOpQrStUvWxYzX", String.valueOf(c));
         } finally {
@@ -58,7 +58,7 @@ public class OldAndroidInputStreamReaderTest extends TestCase {
         InputStreamReader a = new InputStreamReader(aa);
 
         try {
-            assertEquals("UTF8", a.getEncoding());
+            assertEquals("UTF-8", a.getEncoding());
 
             int x = a.read();
             assertEquals('A', x);

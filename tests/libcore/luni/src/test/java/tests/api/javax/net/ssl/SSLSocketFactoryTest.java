@@ -25,16 +25,13 @@ import javax.net.ssl.SSLSocketFactory;
 
 import junit.framework.TestCase;
 
-import tests.support.Support_PortManager;
-
 public class SSLSocketFactoryTest extends TestCase {
 
     private ServerSocket ss;
 
     protected int startServer(String name) {
-        int portNumber = Support_PortManager.getNextPort();
         try {
-            ss = new ServerSocket(portNumber);
+            ss = new ServerSocket(0);
         } catch (IOException e) {
             fail(name + ": " + e);
         }

@@ -72,6 +72,14 @@ public final class AlgorithmIdentifier {
     }
 
     /**
+     * For testing when algorithmName is not known, but algorithm OID is.
+     */
+    public AlgorithmIdentifier(String algorithm, String algorithmName) {
+        this(algorithm, null, null);
+        this.algorithmName = algorithmName;
+    }
+
+    /**
      * Returns the value of algorithm field of the structure.
      */
     public String getAlgorithm() {

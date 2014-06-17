@@ -72,11 +72,13 @@ public class DeflaterInputStream extends FilterInputStream {
      */
     public DeflaterInputStream(InputStream in, Deflater deflater, int bufferSize) {
         super(in);
-        if (in == null || deflater == null) {
-            throw new NullPointerException();
+        if (in == null) {
+            throw new NullPointerException("in == null");
+        } else if (deflater == null) {
+            throw new NullPointerException("deflater == null");
         }
         if (bufferSize <= 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("bufferSize <= 0: " + bufferSize);
         }
         this.def = deflater;
         this.buf = new byte[bufferSize];
@@ -104,14 +106,14 @@ public class DeflaterInputStream extends FilterInputStream {
     }
 
     /**
-     * Reads compressed data into a byte buffer. The result will be bytes of compressed
+     * Reads up to {@code byteCount} bytes of compressed data into a byte buffer. The result will be bytes of compressed
      * data corresponding to an uncompressed byte or bytes read from the underlying stream.
-     * @return the number of bytes read or -1 if the end of the compressed input
-     *         stream has been reached.
+     * Returns the number of bytes read or -1 if the end of the compressed input
+     * stream has been reached.
      */
-    @Override public int read(byte[] buffer, int offset, int byteCount) throws IOException {
+    @Override public int read(byte[] buffer, int byteOffset, int byteCount) throws IOException {
         checkClosed();
-        Arrays.checkOffsetAndCount(buffer.length, offset, byteCount);
+        Arrays.checkOffsetAndCount(buffer.length, byteOffset, byteCount);
         if (byteCount == 0) {
             return 0;
         }
@@ -135,7 +137,7 @@ public class DeflaterInputStream extends FilterInputStream {
             if (bytesDeflated == -1) {
                 break;
             }
-            System.arraycopy(buf, 0, buffer, offset + count, bytesDeflated);
+            System.arraycopy(buf, 0, buffer, byteOffset + count, bytesDeflated);
             count += bytesDeflated;
         }
         if (count == 0) {

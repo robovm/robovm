@@ -68,35 +68,26 @@ public class CheckedInputStream extends java.io.FilterInputStream {
     }
 
     /**
-     * Reads up to n bytes of data from the underlying input stream, storing it
-     * into {@code buf}, starting at offset {@code off}. The checksum is
+     * Reads up to {@code byteCount} bytes of data from the underlying input stream, storing it
+     * into {@code buffer}, starting at offset {@code byteOffset}. The checksum is
      * updated with the bytes read.
+     * Returns the number of bytes actually read or {@code -1} if arrived at the
+     * end of the filtered stream while reading the data.
      *
-     * @param buf
-     *            the byte array in which to store the bytes read.
-     * @param off
-     *            the initial position in {@code buf} to store the bytes read
-     *            from this stream.
-     * @param nbytes
-     *            the maximum number of bytes to store in {@code buf}.
-     * @return the number of bytes actually read or {@code -1} if arrived at the
-     *         end of the filtered stream while reading the data.
      * @throws IOException
      *             if this stream is closed or some I/O error occurs.
      */
     @Override
-    public int read(byte[] buf, int off, int nbytes) throws IOException {
-        int x = in.read(buf, off, nbytes);
-        if (x != -1) {
-            check.update(buf, off, x);
+    public int read(byte[] buffer, int byteOffset, int byteCount) throws IOException {
+        int bytesRead = in.read(buffer, byteOffset, byteCount);
+        if (bytesRead != -1) {
+            check.update(buffer, byteOffset, bytesRead);
         }
-        return x;
+        return bytesRead;
     }
 
     /**
      * Returns the checksum calculated on the stream read so far.
-     *
-     * @return the updated checksum.
      */
     public Checksum getChecksum() {
         return check;

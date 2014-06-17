@@ -167,7 +167,7 @@ public class StreamHandler extends Handler {
      */
     protected void setOutputStream(OutputStream os) {
         if (os == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("os == null");
         }
         LogManager.getLogManager().checkAccess();
         close(true);
@@ -180,16 +180,13 @@ public class StreamHandler extends Handler {
      * Sets the character encoding used by this handler. A {@code null} value
      * indicates that the default encoding should be used.
      *
-     * @param encoding
-     *            the character encoding to set.
-     * @throws UnsupportedEncodingException
-     *             if the specified encoding is not supported by the runtime.
+     * @throws UnsupportedEncodingException if {@code charsetName} is not supported.
      */
     @Override
-    public void setEncoding(String encoding) throws UnsupportedEncodingException {
-        // flush first before set new encoding
+    public void setEncoding(String charsetName) throws UnsupportedEncodingException {
+        // Flush any existing data first.
         this.flush();
-        super.setEncoding(encoding);
+        super.setEncoding(charsetName);
         // renew writer only if the writer exists
         if (this.writer != null) {
             if (getEncoding() == null) {

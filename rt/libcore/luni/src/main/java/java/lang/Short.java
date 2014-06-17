@@ -112,9 +112,8 @@ public final class Short extends Number implements Comparable<Short> {
      * Compares two {@code short} values.
      * @return 0 if lhs = rhs, less than 0 if lhs &lt; rhs, and greater than 0 if lhs &gt; rhs.
      * @since 1.7
-     * @hide 1.7
      */
-    public static int compare(long lhs, long rhs) {
+    public static int compare(short lhs, short rhs) {
         return lhs > rhs ? 1 : (lhs < rhs ? -1 : 0);
     }
 

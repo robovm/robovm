@@ -99,7 +99,7 @@ public final class Extension {
     // the decoded extension value
     protected ExtensionValue extnValueObject;
     // tells whether extension value has been decoded or not
-    private boolean valueDecoded = false;
+    private volatile boolean valueDecoded = false;
 
     public Extension(String extnID, boolean critical,
             ExtensionValue extnValueObject) {
@@ -240,7 +240,6 @@ public final class Extension {
         if (valueDecoded) {
             return;
         }
-        valueDecoded = true;
         if (Arrays.equals(extnID, SUBJ_KEY_ID)) {
             extnValueObject = SubjectKeyIdentifier.decode(extnValue);
         } else if (Arrays.equals(extnID, KEY_USAGE)) {
@@ -284,6 +283,7 @@ public final class Extension {
         } else if (Arrays.equals(extnID, SUBJECT_INFO_ACCESS)) {
             extnValueObject = InfoAccessSyntax.decode(extnValue);
         }
+        valueDecoded = true;
     }
 
     public void dumpValue(StringBuilder sb, String prefix) {

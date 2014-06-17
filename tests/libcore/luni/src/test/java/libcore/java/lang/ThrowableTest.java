@@ -38,10 +38,35 @@ public class ThrowableTest extends TestCase {
         }
     }
 
+    public void testNonWritableStackTrace() {
+        try {
+            // The 4th argument, writableStackTrace, is false...
+            throw new SuppressionsThrowable("hi", null, true, false);
+        } catch (Throwable th) {
+            assertEquals("hi", th.getMessage());
+
+            // We see an empty stack trace.
+            assertEquals(0, th.getStackTrace().length);
+
+            // setStackTrace is a no-op.
+            th.setStackTrace(new StackTraceElement[] { new StackTraceElement("c", "m", "f", -2) });
+            assertEquals(0, th.getStackTrace().length);
+
+            // fillInStackTrace is a no-op.
+            th.fillInStackTrace();
+            assertEquals(0, th.getStackTrace().length);
+
+            // It's still possible to print an exception with writableStackTrace == false.
+            th.printStackTrace(new PrintWriter(new StringWriter()));
+        }
+    }
+
     private static class SuppressionsThrowable extends Throwable {
+        private static final long serialVersionUID = 202649043897209143L;
+
         public SuppressionsThrowable(String detailMessage, Throwable throwable,
-                boolean enableSuppression) {
-            super(detailMessage, throwable, enableSuppression);
+                boolean enableSuppression, boolean writableStackTrace) {
+            super(detailMessage, throwable, enableSuppression, writableStackTrace);
         }
     }
 
@@ -78,7 +103,7 @@ public class ThrowableTest extends TestCase {
     }
 
     public void testAddSuppressedWithSuppressionDisabled() {
-        Throwable throwable = new SuppressionsThrowable("foo", null, false);
+        Throwable throwable = new SuppressionsThrowable("foo", null, false, true);
         assertSuppressed(throwable);
         throwable.addSuppressed(new Throwable());
         assertSuppressed(throwable);
@@ -246,7 +271,7 @@ public class ThrowableTest extends TestCase {
                 + "4696f6e737400104c6a6176612f7574696c2f4c6973743b787070740003666f6f7572001e5b4c6a6"
                 + "176612e6c616e672e537461636b5472616365456c656d656e743b02462a3c3cfd223902000078700"
                 + "00000007078";
-        Throwable throwable = new SuppressionsThrowable("foo", null, false);
+        Throwable throwable = new SuppressionsThrowable("foo", null, false, true);
         throwable.setStackTrace(new StackTraceElement[0]);
         new SerializationTester<Throwable>(throwable, s) {
             @Override protected boolean equals(Throwable a, Throwable b) {
@@ -275,7 +300,7 @@ public class ThrowableTest extends TestCase {
                 + "0cb5ef71e0200014c0001637400164c6a6176612f7574696c2f436f6c6c656374696f6e3b7870737"
                 + "200136a6176612e7574696c2e41727261794c6973747881d21d99c7619d03000149000473697a657"
                 + "870000000007704000000007871007e000f78";
-        Throwable throwable = new SuppressionsThrowable("foo", null, true);
+        Throwable throwable = new SuppressionsThrowable("foo", null, true, true);
         throwable.setStackTrace(new StackTraceElement[0]);
         new SerializationTester<Throwable>(throwable, s) {
             @Override protected boolean equals(Throwable a, Throwable b) {

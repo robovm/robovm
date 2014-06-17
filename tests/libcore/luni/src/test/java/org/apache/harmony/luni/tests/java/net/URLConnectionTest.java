@@ -19,7 +19,6 @@ package org.apache.harmony.luni.tests.java.net;
 import dalvik.annotation.BrokenTest;
 import junit.framework.TestCase;
 import tests.support.Support_Configuration;
-import tests.support.Support_PortManager;
 import tests.support.Support_TestWebData;
 import tests.support.Support_TestWebServer;
 import tests.support.resource.Support_Resources;
@@ -220,11 +219,8 @@ public class URLConnectionTest extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
 
-//        ftpURL = new URL(Support_Configuration.testFTPURL);
-
-        port = Support_PortManager.getNextPort();
         server = new Support_TestWebServer();
-        server.initServer(port, false);
+        port = server.initServer();
         url = new URL("http://localhost:" + port + "/test1");
         uc = url.openConnection();
         url2 =  new URL("http://localhost:" + port + "/test2");
@@ -243,9 +239,6 @@ public class URLConnectionTest extends TestCase {
         server.close();
         ((HttpURLConnection) uc).disconnect();
         ((HttpURLConnection) uc2).disconnect();
-//        if (((FtpURLConnection) ftpURLCon).getInputStream() !=  null) {
-//        ((FtpURLConnection) ftpURLCon).getInputStream().close();
-//        }
     }
 
     /**
@@ -312,66 +305,21 @@ public class URLConnectionTest extends TestCase {
         // TODO: test User-Agent?
     }
 
-    /**
-     * @throws IOException
-     * {@link java.net.URLConnection#getAllowUserInteraction()}
-     */
-    public void test_getAllowUserInteraction() throws IOException {
+    public void test_getAllowUserInteraction() throws Exception {
         uc.setAllowUserInteraction(false);
-        assertFalse("getAllowUserInteraction should have returned false", uc
-                .getAllowUserInteraction());
+        assertFalse(uc.getAllowUserInteraction());
 
         uc.setAllowUserInteraction(true);
-        assertTrue("getAllowUserInteraction should have returned true", uc
-                .getAllowUserInteraction());
+        assertTrue(uc.getAllowUserInteraction());
 
         uc.connect();
 
+        // Can't call the setter after connecting.
         try {
             uc.setAllowUserInteraction(false);
-            fail("Exception expected");
-        } catch (IllegalStateException e) {
-            //ok
+            fail();
+        } catch (IllegalStateException expected) {
         }
-
-        // test if setAllowUserInteraction works
-        URL serverURL = new URL("http://onearth.jpl.nasa.gov/landsat.cgi");
-
-        // connect to server
-        URLConnection uc2 = serverURL.openConnection();
-        HttpURLConnection conn = (HttpURLConnection) uc2;
-        uc2.setAllowUserInteraction(true);
-
-        uc2.setDoInput(true);
-        uc2.setDoOutput(true);
-
-        // get reference to stream to post to
-        OutputStream os = uc2.getOutputStream();
-
-        InputStream in = uc2.getInputStream();
-
-
-        int contentLength = uc2.getContentLength();
-        String contentType = uc2.getContentType();
-        int numBytesRead = 0;
-        int allBytesRead = 0;
-
-        byte[] buffer = new byte[4096];
-
-        do {
-
-        numBytesRead = in.read(buffer);
-        allBytesRead += allBytesRead + numBytesRead;
-
-        } while (numBytesRead > 0);
-
-        assertTrue(allBytesRead > 0);
-
-        uc2.connect();
-
-        numBytesRead = in.read(buffer);
-
-        assertEquals(-1, numBytesRead);
     }
 
     /**
@@ -409,8 +357,9 @@ public class URLConnectionTest extends TestCase {
             buf = r.readLine();
             assertTrue("Incorrect content returned from fileURL: "+buf,
                     testString.equals(buf.trim()));
+            i.close();
         } else {
-            fail("Some unkown type is returned "+obj.toString());
+            fail("Some unknown type is returned "+obj.toString());
         }
 
         //Exception test
@@ -478,6 +427,8 @@ public class URLConnectionTest extends TestCase {
         } catch (NullPointerException e) {
             // expected
         }
+
+        fileURLCon.getInputStream().close();
     }
 
     /**
@@ -516,43 +467,28 @@ public class URLConnectionTest extends TestCase {
     /**
      * {@link java.net.URLConnection#getContentLength()}
      */
-    public void test_getContentLength() {
-        assertEquals(testString.getBytes().length,
-                fileURLCon.getContentLength());
+    public void test_getContentLength() throws Exception {
+        assertEquals(testString.getBytes().length, fileURLCon.getContentLength());
         assertEquals(Support_TestWebData.test1.length, uc.getContentLength());
         assertEquals(Support_TestWebData.test2.length, uc2.getContentLength());
 
         assertNotNull(jarURLCon.getContentLength());
         assertNotNull(gifURLCon.getContentLength());
+
+        fileURLCon.getInputStream().close();
     }
 
-    /**
-     * {@link java.net.URLConnection#getContentType()}
-     */
-    public void test_getContentType() throws IOException, MalformedURLException {
-
+    public void test_getContentType() throws Exception {
         assertTrue("getContentType failed: " + fileURLCon.getContentType(),
                 fileURLCon.getContentType().contains("text/plain"));
+
+        fileURLCon.getInputStream().close();
 
         URLConnection htmlFileCon = openHTMLFile();
         String contentType = htmlFileCon.getContentType();
         if (contentType != null) {
             assertTrue(contentType.equalsIgnoreCase("text/html"));
         }
-
-
-        /*
-        contentType = uc.getContentType();
-        if (contentType != null) {
-        assertTrue(contentType.equalsIgnoreCase("text/html"));
-        }
-
-        contentType = gifURLCon.getContentType();
-        if (contentType != null) {
-        assertTrue(contentType.equalsIgnoreCase("image/gif"));
-        }
-        */
-
     }
 
     /**
@@ -616,15 +552,13 @@ public class URLConnectionTest extends TestCase {
         assertFalse("Should have been set to false", uc2.getDoInput());
 
         fileURLCon.connect();
-        fileURLCon.getInputStream();
+        fileURLCon.getInputStream().close();
 
         uc2.connect();
         try {
             uc2.getInputStream();
-        } catch (Throwable e) {
-            // ok
+        } catch (Throwable expected) {
         }
-
     }
 
     /**
@@ -917,43 +851,13 @@ public class URLConnectionTest extends TestCase {
         ((HttpURLConnection) uc).disconnect();
     }
 
-    public void test_getOutputStream() throws IOException {
-        String posted = "this is a test";
-        URLConnection uc3 = new URL(Support_Configuration.hTTPURLgoogle)
-                .openConnection();
-        uc3.setDoOutput(true);
-        uc3.connect();
-
-        BufferedWriter w = new BufferedWriter(new OutputStreamWriter(uc3
-                .getOutputStream()), posted.getBytes().length);
-
-        w.write(posted);
-        w.flush();
-        w.close();
-
-        int code = ((HttpURLConnection) uc3).getResponseCode();
-
-
-        // writing to url not allowed
-        assertEquals("Got different responseCode ", 405, code);
-
-
-        // try exception testing
-        try {
-            fileURLCon.setDoOutput(true);
-            fileURLCon.connect();
-            fileURLCon.getOutputStream();
-        } catch (UnknownServiceException e) {
-            // ok cannot write to fileURL
-        }
-
+    public void test_getOutputStream_failAfterDisconnect() throws IOException {
         ((HttpURLConnection) uc2).disconnect();
 
         try {
             uc2.getOutputStream();
-            fail("Exception expected");
-        } catch (IOException e) {
-            // ok
+            fail();
+        } catch (IOException expected) {
         }
     }
 

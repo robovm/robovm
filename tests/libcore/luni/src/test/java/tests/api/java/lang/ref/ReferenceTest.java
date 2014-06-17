@@ -22,6 +22,7 @@ import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 import junit.framework.AssertionFailedError;
+import libcore.java.lang.ref.FinalizationTester;
 
 public class ReferenceTest extends junit.framework.TestCase {
     Object tmpA, tmpB, tmpC, obj;
@@ -146,16 +147,14 @@ public class ReferenceTest extends junit.framework.TestCase {
         ReferenceQueue<Object> queue = new ReferenceQueue<Object>();
 
         r = newWeakReference(queue);
-        System.gc();
-        System.runFinalization();
+        FinalizationTester.induceFinalization();
         Reference ref = queue.remove(10 * 1000); // RoboVM note: Don't wait indefinitely.
         assertNotNull("Object not enqueued.", ref);
         assertSame("Unexpected ref1", ref, r);
         assertNull("Object could not be reclaimed1.", r.get());
 
         r = newWeakReference(queue);
-        System.gc();
-        System.runFinalization();
+        FinalizationTester.induceFinalization();
 
         // wait for the reference queue thread to enqueue the newly-finalized object
         Thread.yield();
@@ -213,8 +212,7 @@ public class ReferenceTest extends junit.framework.TestCase {
             Thread t = new TestThread();
             t.start();
             t.join();
-            System.gc();
-            System.runFinalization();
+            FinalizationTester.induceFinalization();
             ref = rq.remove(5000L);    // Give up after five seconds.
 
             assertNotNull("Object not garbage collected.", ref);
@@ -238,8 +236,7 @@ public class ReferenceTest extends junit.framework.TestCase {
     public void test_get() {
         WeakReference ref = newWeakReference(null);
 
-        System.gc();
-        System.runFinalization();
+        FinalizationTester.induceFinalization();
         assertNull("get() doesn't return null after gc for WeakReference", ref.get());
 
         obj = new Object();
@@ -322,8 +319,7 @@ public class ReferenceTest extends junit.framework.TestCase {
             Thread t = new TestThread();
             t.start();
             t.join();
-            System.gc();
-            System.runFinalization();
+            FinalizationTester.induceFinalization();
             Thread.sleep(1000);
             if (error != null) {
                 throw error;

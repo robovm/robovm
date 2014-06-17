@@ -25,26 +25,46 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+import java.util.zip.InflaterInputStream;
 import junit.framework.TestCase;
 
 public final class GZIPOutputStreamTest extends TestCase {
-    public void testShortMessage() throws IOException {
-        byte[] data = gzip(("Hello World").getBytes("UTF-8"));
-        assertEquals("[31, -117, 8, 0, 0, 0, 0, 0, 0, 0, -13, 72, -51, -55, -55, 87, 8, -49, " +
-                "47, -54, 73, 1, 0, 86, -79, 23, 74, 11, 0, 0, 0]", Arrays.toString(data));
-    }
+  public void testShortMessage() throws IOException {
+    byte[] data = gzip(("Hello World").getBytes("UTF-8"));
+    assertEquals("[31, -117, 8, 0, 0, 0, 0, 0, 0, 0, -13, 72, -51, -55, -55, 87, 8, -49, " +
+                 "47, -54, 73, 1, 0, 86, -79, 23, 74, 11, 0, 0, 0]", Arrays.toString(data));
+  }
 
-    public void testLongMessage() throws IOException {
-        byte[] data = new byte[1024 * 1024];
-        new Random().nextBytes(data);
-        assertTrue(Arrays.equals(data, GZIPInputStreamTest.gunzip(gzip(data))));
-    }
+  public void testLongMessage() throws IOException {
+    byte[] data = new byte[1024 * 1024];
+    new Random().nextBytes(data);
+    assertTrue(Arrays.equals(data, GZIPInputStreamTest.gunzip(gzip(data))));
+  }
 
-    public static byte[] gzip(byte[] bytes) throws IOException {
-        ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
-        OutputStream gzippedOut = new GZIPOutputStream(bytesOut);
-        gzippedOut.write(bytes);
-        gzippedOut.close();
-        return bytesOut.toByteArray();
+  public static byte[] gzip(byte[] bytes) throws IOException {
+    ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+    OutputStream gzippedOut = new GZIPOutputStream(bytesOut);
+    gzippedOut.write(bytes);
+    gzippedOut.close();
+    return bytesOut.toByteArray();
+  }
+
+  public void testSyncFlushEnabled() throws Exception {
+    InputStream in = DeflaterOutputStreamTest.createInflaterStream(GZIPOutputStream.class, true);
+    assertEquals(1, in.read());
+    assertEquals(2, in.read());
+    assertEquals(3, in.read());
+    in.close();
+  }
+
+  public void testSyncFlushDisabled() throws Exception {
+    InputStream in = DeflaterOutputStreamTest.createInflaterStream(GZIPOutputStream.class, false);
+    try {
+      in.read();
+      fail();
+    } catch (IOException expected) {
     }
+    in.close();
+  }
+
 }

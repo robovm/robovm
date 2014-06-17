@@ -301,40 +301,15 @@ public class SecureRandom2Test extends TestCase {
      * as it tends to be error prone and open up security holes.
      * See {@link SecureRandom} for more details about insecure seeding.
      *
-     * @see #testSameSeedGeneratesSameResultsWhenConstructorIsUsed()
+     * Note that this only works with the Harmony "Crypto" provider.
      */
     public void testSameSeedGeneratesSameResults() throws Exception {
         byte[] seed1 = { 'a', 'b', 'c' };
-        SecureRandom sr1 = SecureRandom.getInstance("SHA1PRNG");
+        SecureRandom sr1 = SecureRandom.getInstance("SHA1PRNG", "Crypto");
         sr1.setSeed(seed1);
 
         byte[] seed2 = { 'a', 'b', 'c' };
-        SecureRandom sr2 = SecureRandom.getInstance("SHA1PRNG");
-        sr2.setSeed(seed2);
-
-        assertTrue(sr1.nextLong() == sr2.nextLong());
-    }
-
-    /**
-     * Same tests as {@link #testSameSeedGeneratesSameResults()}, except
-     * here we use the constructor, not {@link SecureRandom#getInstance(String)}.
-     *
-     * Note that Android behaves differently than the reference implementation.
-     * This test fails on the reference implementation.
-     *
-     * In the future, it may make sense to change our implementation to
-     * match the reference implementation.  It may also make sense to
-     * disallow seeding {@code SecureRandom} completely, as it tends to
-     * be error prone and open up security holes.  See {@link SecureRandom}
-     * for more details about insecure seeding.
-     */
-    public void testSameSeedGeneratesSameResultsWhenConstructorIsUsed() {
-        byte[] seed1 = { 'a', 'b', 'c' };
-        SecureRandom sr1 = new SecureRandom();
-        sr1.setSeed(seed1);
-
-        byte[] seed2 = { 'a', 'b', 'c' };
-        SecureRandom sr2 = new SecureRandom();
+        SecureRandom sr2 = SecureRandom.getInstance("SHA1PRNG", "Crypto");
         sr2.setSeed(seed2);
 
         assertTrue(sr1.nextLong() == sr2.nextLong());
@@ -348,10 +323,12 @@ public class SecureRandom2Test extends TestCase {
      * SHA1PRNG, so users of {@code SecureRandom} should not assume
      * the same seed will always produce the same value.  This test
      * is not a guarantee of future compatibility.
+     *
+     * In fact, this test only works with the Harmony "Crypto" provider.
      */
     public void testAlwaysSameValueWithSameSeed() throws Exception {
         byte[] seed1 = { 'a', 'b', 'c' };
-        SecureRandom sr1 = SecureRandom.getInstance("SHA1PRNG");
+        SecureRandom sr1 = SecureRandom.getInstance("SHA1PRNG", "Crypto");
         sr1.setSeed(seed1);
 
         // This long value has no special meaning and may change in the future.

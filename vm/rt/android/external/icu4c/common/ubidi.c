@@ -1,7 +1,7 @@
 /*
 ******************************************************************************
 *
-*   Copyright (C) 1999-2011, International Business Machines
+*   Copyright (C) 1999-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 ******************************************************************************
@@ -19,6 +19,7 @@
 #include "unicode/ustring.h"
 #include "unicode/uchar.h"
 #include "unicode/ubidi.h"
+#include "unicode/utf16.h"
 #include "ubidi_props.h"
 #include "ubidiimp.h"
 #include "uassert.h"
@@ -1663,7 +1664,7 @@ adjustWSLevels(UBiDi *pBiDi) {
     }
 }
 
-U_DRAFT void U_EXPORT2
+U_CAPI void U_EXPORT2
 ubidi_setContext(UBiDi *pBiDi,
                  const UChar *prologue, int32_t proLength,
                  const UChar *epilogue, int32_t epiLength,

@@ -86,20 +86,23 @@ public class CharsetEncoderTest extends junit.framework.TestCase {
         assertEquals(1, cr.length());
     }
 
-    public void testCharsetEncoderSurrogatesBrokenByDesign_IGNORE_RI() throws Exception {
-        testCharsetEncoderSurrogatesBrokenByDesign_RI(CodingErrorAction.IGNORE);
+    public void testCharsetEncoderSplitSurrogates_IGNORE() throws Exception {
+        testCharsetEncoderSplitSurrogates(CodingErrorAction.IGNORE);
     }
 
-    public void testCharsetEncoderSurrogatesBrokenByDesign_REPORT_RI() throws Exception {
-        testCharsetEncoderSurrogatesBrokenByDesign_RI(CodingErrorAction.REPORT);
+    public void testCharsetEncoderSplitSurrogates_REPORT() throws Exception {
+        testCharsetEncoderSplitSurrogates(CodingErrorAction.REPORT);
     }
 
-    public void testCharsetEncoderSurrogatesBrokenByDesign_REPLACE_RI() throws Exception {
-        testCharsetEncoderSurrogatesBrokenByDesign_RI(CodingErrorAction.REPLACE);
+    public void testCharsetEncoderSplitSurrogates_REPLACE() throws Exception {
+        testCharsetEncoderSplitSurrogates(CodingErrorAction.REPLACE);
     }
 
-    private void testCharsetEncoderSurrogatesBrokenByDesign_RI(CodingErrorAction cea) throws Exception {
-        // stupid: on the RI, writing the two halves of the surrogate pair in separate writes
+    private void testCharsetEncoderSplitSurrogates(CodingErrorAction cea) throws Exception {
+        // Writing the two halves of the surrogate pair in separate writes should work just fine.
+        // This is true of Android and ICU, but not of the RI.
+
+        // On the RI, writing the two halves of the surrogate pair in separate writes
         // is an error because the CharsetEncoder doesn't remember it's half-way through a
         // surrogate pair across the two calls!
 
@@ -108,55 +111,8 @@ public class CharsetEncoderTest extends junit.framework.TestCase {
         // replacement character U+fffd when it sees the second character (because it too
         // doesn't remember seeing the first).
 
-        Charset cs = Charset.forName("UTF-32BE");
-        CharsetEncoder e = cs.newEncoder();
-        e.onMalformedInput(cea);
-        e.onUnmappableCharacter(cea);
-        ByteBuffer bb = ByteBuffer.allocate(128);
-        CoderResult cr = e.encode(CharBuffer.wrap(new char[] { '\ud842' }), bb, false);
-        assertEquals(CoderResult.UNDERFLOW, cr);
-        assertEquals(0, bb.position());
-        cr = e.encode(CharBuffer.wrap(new char[] { '\udf9f' }), bb, false);
-        if (cea == CodingErrorAction.REPORT) {
-            assertTrue(cr.toString(), cr.isMalformed());
-            assertEquals(1, cr.length());
-            return;
-        }
-        assertEquals(CoderResult.UNDERFLOW, cr);
-        int expectedPosition = 0;
-        if (cea == CodingErrorAction.REPLACE) {
-            expectedPosition = 4;
-            assertEquals(expectedPosition, bb.position());
-            System.err.println(Arrays.toString(Arrays.copyOfRange(bb.array(), 0, bb.position())));
-            assertEquals((byte) 0x00, bb.get(0));
-            assertEquals((byte) 0x00, bb.get(1));
-            assertEquals((byte) 0xff, bb.get(2));
-            assertEquals((byte) 0xfd, bb.get(3));
-        }
-        assertEquals(expectedPosition, bb.position());
-        cr = e.encode(CharBuffer.wrap(new char[] { }), bb, true);
-        assertEquals(CoderResult.UNDERFLOW, cr);
-        assertEquals(expectedPosition, bb.position());
-        cr = e.flush(bb);
-        assertEquals(CoderResult.UNDERFLOW, cr);
-        assertEquals(expectedPosition, bb.position());
-    }
+        // Android just does the right thing.
 
-    public void testCharsetEncoderSurrogatesBrokenByDesign_IGNORE() throws Exception {
-        testCharsetEncoderSurrogatesBrokenByDesign(CodingErrorAction.IGNORE);
-    }
-
-    public void testCharsetEncoderSurrogatesBrokenByDesign_REPORT() throws Exception {
-        testCharsetEncoderSurrogatesBrokenByDesign(CodingErrorAction.REPORT);
-    }
-
-    public void testCharsetEncoderSurrogatesBrokenByDesign_REPLACE() throws Exception {
-        testCharsetEncoderSurrogatesBrokenByDesign(CodingErrorAction.REPLACE);
-    }
-
-    private void testCharsetEncoderSurrogatesBrokenByDesign(CodingErrorAction cea) throws Exception {
-        // Writing the two halves of the surrogate pair in separate writes works just fine.
-        // This is true of Android and ICU, but not of the RI.
         Charset cs = Charset.forName("UTF-32BE");
         CharsetEncoder e = cs.newEncoder();
         e.onMalformedInput(cea);
@@ -191,8 +147,9 @@ public class CharsetEncoderTest extends junit.framework.TestCase {
         assertEquals(4, bb.position());
         try {
             cr = e.flush(bb);
+            fail();
         } catch (IllegalStateException expected) {
-            // you must call encode with endOfInput true before you can flush.
+            // You must call encode with endOfInput true before you can flush.
         }
 
         // We had a bug where we wouldn't reset inEnd before calling encode in implFlush.

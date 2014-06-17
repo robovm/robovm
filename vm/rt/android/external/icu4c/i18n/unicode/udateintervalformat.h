@@ -1,6 +1,6 @@
 /*
 *****************************************************************************************
-* Copyright (C) 2010-2011, International Business Machines
+* Copyright (C) 2010-2012, International Business Machines
 * Corporation and others. All Rights Reserved.
 *****************************************************************************************
 */
@@ -16,6 +16,9 @@
 #include "unicode/localpointer.h"
 
 /**
+ * \file
+ * \brief C API: Format a date interval.
+ *
  * A UDateIntervalFormat is used to format the range between two UDate values
  * in a locale-sensitive way, using a skeleton that specifies the precision and
  * completeness of the information to show. If the range smaller than the resolution
@@ -71,10 +74,10 @@
 
 /**
  * Opaque UDateIntervalFormat object for use in C programs.
- * @draft ICU 4.8
+ * @stable ICU 4.8
  */
 struct UDateIntervalFormat;
-typedef struct UDateIntervalFormat UDateIntervalFormat;  /**< C typedef for struct UDateIntervalFormat. @draft ICU 4.8 */
+typedef struct UDateIntervalFormat UDateIntervalFormat;  /**< C typedef for struct UDateIntervalFormat. @stable ICU 4.8 */
 
 /**
  * Open a new UDateIntervalFormat object using the predefined rules for a
@@ -98,9 +101,9 @@ typedef struct UDateIntervalFormat UDateIntervalFormat;  /**< C typedef for stru
  * @return
  *            A pointer to a UDateIntervalFormat object for the specified locale,
  *            or NULL if an error occurred.
- * @draft ICU 4.8
+ * @stable ICU 4.8
  */
-U_DRAFT UDateIntervalFormat* U_EXPORT2
+U_STABLE UDateIntervalFormat* U_EXPORT2
 udtitvfmt_open(const char*  locale,
               const UChar* skeleton,
               int32_t      skeletonLength,
@@ -112,9 +115,9 @@ udtitvfmt_open(const char*  locale,
  * Close a UDateIntervalFormat object. Once closed it may no longer be used.
  * @param formatter
  *            The UDateIntervalFormat object to close.
- * @draft ICU 4.8
+ * @stable ICU 4.8
  */
-U_DRAFT void U_EXPORT2
+U_STABLE void U_EXPORT2
 udtitvfmt_close(UDateIntervalFormat *formatter);
 
 
@@ -129,7 +132,7 @@ U_NAMESPACE_BEGIN
  *
  * @see LocalPointerBase
  * @see LocalPointer
- * @draft ICU 4.8
+ * @stable ICU 4.8
  */
 U_DEFINE_LOCAL_OPEN_POINTER(LocalUDateIntervalFormatPointer, UDateIntervalFormat, udtitvfmt_close);
 
@@ -162,9 +165,9 @@ U_NAMESPACE_END
  * @return
  *            The total buffer size needed; if greater than resultLength, the
  *            output was truncated.
- * @draft ICU 4.8
+ * @stable ICU 4.8
  */
-U_DRAFT int32_t U_EXPORT2
+U_STABLE int32_t U_EXPORT2
 udtitvfmt_format(const UDateIntervalFormat* formatter,
                 UDate           fromDate,
                 UDate           toDate,

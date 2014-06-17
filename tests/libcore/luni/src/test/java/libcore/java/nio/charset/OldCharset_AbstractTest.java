@@ -43,13 +43,13 @@ public abstract class OldCharset_AbstractTest extends TestCase {
     static char[] testChars;
     static byte[] testBytes;
 
-    static char[] theseChars (int[] codes) {
+    static char[] theseChars (int... codes) {
         char[] chars = new char[codes.length];
         for (int i = 0; i < codes.length; i++) chars[i] = (char) codes[i];
         return chars;
     }
 
-    static byte[] theseBytes (int[] codes) {
+    static byte[] theseBytes (int... codes) {
         byte[] bytes = new byte[codes.length];
         for (int i = 0; i < codes.length; i++) bytes[i] = (byte) codes[i];
         return bytes;
@@ -102,7 +102,7 @@ public abstract class OldCharset_AbstractTest extends TestCase {
     public void test_dumpEncoded () throws CharacterCodingException {
         if (testChars == null) return;
         if (testChars.length == 0) return;
-        if (testBytes.length > 0) return;
+        if (testBytes != null) return;
         System.out.format("\ntest_dumpEncoded() for name %s => %s (class = %s)\n",
                 charsetName, charset.name(), getClass().getName());
         Charset_TestGenerator.Dumper out = new Charset_TestGenerator.Dumper1();
@@ -122,30 +122,10 @@ public abstract class OldCharset_AbstractTest extends TestCase {
 
     static void decode (byte[] input, char[] expectedOutput) throws CharacterCodingException {
         ByteBuffer inputBB = ByteBuffer.wrap(input);
-        CharBuffer outputCB;
         decoder.onMalformedInput(CodingErrorAction.REPORT);
-        outputCB = decoder.decode(inputBB);
+        CharBuffer outputCB = decoder.decode(inputBB);
         outputCB.rewind();
-
-//        assertTrue("Decoded charactes must match!",
-//                Arrays.equals(expectedOutput, outputCB.array()));
-        assertEqualChars("Decoded charactes must match!",
-                expectedOutput, outputCB);
-
-//        assertEqualChars2("Decoded charactes must match!",
-//                expectedOutput,
-//                outputCB.array(),
-//                input);
-//        assertTrue("Decoded charactes (REPLACEed ones INCLUSIVE) must match!",
-//                Arrays.equals(expectedOutput, outputCB.array()));
-
-//        assertEqualChars("Decoded charactes (REPLACEed ones INCLUSIVE) must match!",
-//                expectedOutput,
-//                outputCB.array());
-
-//        assertEquals("Decoded charactes must match!",
-//                String.valueOf(allChars),
-//                outputCB.toString());
+        assertEqualChars(expectedOutput, outputCB);
     }
 
     public void test_Decode () throws CharacterCodingException {
@@ -197,7 +177,12 @@ public abstract class OldCharset_AbstractTest extends TestCase {
         encoder.onUnmappableCharacter(CodingErrorAction.REPORT);
         decoder.onMalformedInput(CodingErrorAction.REPORT);
         CharBuffer inputCB = CharBuffer.allocate(65536);
-        for (int code = 32; code <= 65533; code ++) {
+        for (int code = 32; code <= 65533; ++code) {
+            // icu4c seems to accept any surrogate as a sign that "more is coming",
+            // even for charsets like US-ASCII. http://b/10310751
+            if (code >= 0xd800 && code <= 0xdfff) {
+                continue;
+            }
             if (encoder.canEncode((char) code)) {
                 inputCB.put((char) code);
             }
@@ -241,32 +226,16 @@ public abstract class OldCharset_AbstractTest extends TestCase {
 //        assertTrue(msg, Arrays.equals(actual, expected));
     }
 
-    static void assertEqualChars (String msg, char[] expected, CharBuffer actualCB) {
-        boolean match = true;
-        boolean lenMatch = true;
-        char actual;
-        int len = actualCB.length();
-        if (expected.length != len) {
-            lenMatch = false;
-            if (expected.length < len) len = expected.length;
-        }
-        for (int i = 0; i < len; i++) {
-            actual = actualCB.get();
+    static void assertEqualChars(char[] expected, CharBuffer actualCB) {
+        assertEquals(expected.length, actualCB.length());
+        for (int i = 0; i < actualCB.length(); ++i) {
+            char actual = actualCB.get();
             if (actual != expected[i]) {
-                String detail = String.format(
-                        "Mismatch at index %d: %d instead of expected %d.\n",
-                        i, (int) actual, (int) expected[i]);
-                match = false;
-                fail(msg + ": " + detail);
+                String detail = String.format("Mismatch at index %d: %d instead of expected %d.\n",
+                                              i, (int) actual, (int) expected[i]);
+                fail(detail);
             }
-//            else {
-//                System.out.format("Match index %d: %d = %d\n",
-//                        i, (int) actual[i], (int) expected[i]);
-//            }
         }
-        assertTrue(msg, match);
-        assertTrue(msg + "(IN LENGTH ALSO!)", lenMatch);
-//        assertTrue(msg, Arrays.equals(actual, expected));
     }
 
     static void assertEqualBytes (String msg, byte[] expected, ByteBuffer actualBB) {

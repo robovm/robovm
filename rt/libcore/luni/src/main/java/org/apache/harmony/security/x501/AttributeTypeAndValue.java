@@ -23,7 +23,7 @@
 package org.apache.harmony.security.x501;
 
 import java.io.IOException;
-import java.nio.charset.Charsets;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
@@ -68,7 +68,7 @@ public final class AttributeTypeAndValue {
             = new ObjectIdentifier(new int[] { 2, 5, 4, 3 }, "CN", RFC1779_NAMES);
 
     /** Domain component attribute (name from RFC 2253) */
-    private static final ObjectIdentifier DC = new ObjectIdentifier(
+    public static final ObjectIdentifier DC = new ObjectIdentifier(
             new int[] { 0, 9, 2342, 19200300, 100, 1, 25 }, "DC", RFC2253_NAMES);
 
     /** DN qualifier attribute (name from API spec) */
@@ -79,7 +79,7 @@ public final class AttributeTypeAndValue {
             = new ObjectIdentifier(new int[] { 2, 5, 4, 46 }, "DNQUALIFIER", RFC2459_NAMES);
 
     /** Email Address attribute (name from API spec) */
-    private static final ObjectIdentifier EMAILADDRESS = new ObjectIdentifier(
+    public static final ObjectIdentifier EMAILADDRESS = new ObjectIdentifier(
             new int[] { 1, 2, 840, 113549, 1, 9, 1}, "EMAILADDRESS", RFC2459_NAMES);
 
     /** Generation attribute (qualifies an individual's name) (name from API spec) */
@@ -179,6 +179,32 @@ public final class AttributeTypeAndValue {
         KNOWN_NAMES.putAll(RFC2459_NAMES);
     }
 
+    /**
+     * Parses OID string representation.
+     *
+     * @param sOid
+     *            string representation of OID
+     *
+     * @throws IOException
+     *             if OID can not be created from its string representation
+     */
+    public static ObjectIdentifier getObjectIdentifier(String sOid) throws IOException {
+        if (sOid.charAt(0) >= '0' && sOid.charAt(0) <= '9') {
+            int[] array = org.apache.harmony.security.asn1.ObjectIdentifier.toIntArray(sOid);
+            ObjectIdentifier thisOid = getOID(array);
+            if (thisOid == null) {
+                thisOid = new ObjectIdentifier(array);
+            }
+            return thisOid;
+
+        }
+        ObjectIdentifier thisOid = KNOWN_NAMES.get(sOid.toUpperCase(Locale.US));
+        if (thisOid == null) {
+            throw new IOException("Unrecognizable attribute name: " + sOid);
+        }
+        return thisOid;
+    }
+
     /** Attribute type */
     private final ObjectIdentifier oid;
 
@@ -196,31 +222,15 @@ public final class AttributeTypeAndValue {
     }
 
     /**
-     * Creates AttributeTypeAndValue with OID and AttributeValue. Parses OID
-     * string representation
+     * Creates AttributeTypeAndValue with OID and AttributeValue.
      *
-     * @param sOid
-     *            string representation of OID
+     * @param oid
+     *            object identifier
      * @param value
      *            attribute value
-     * @throws IOException
-     *             if OID can not be created from its string representation
      */
-    public AttributeTypeAndValue(String sOid, AttributeValue value) throws IOException {
-        if (sOid.charAt(0) >= '0' && sOid.charAt(0) <= '9') {
-            int[] array = org.apache.harmony.security.asn1.ObjectIdentifier.toIntArray(sOid);
-            ObjectIdentifier thisOid = getOID(array);
-            if (thisOid == null) {
-                thisOid = new ObjectIdentifier(array);
-            }
-            this.oid = thisOid;
-
-        } else {
-            this.oid = KNOWN_NAMES.get(sOid.toUpperCase(Locale.US));
-            if (this.oid == null) {
-                throw new IOException("Unrecognizable attribute name: " + sOid);
-            }
-        }
+    public AttributeTypeAndValue(ObjectIdentifier oid, AttributeValue value) throws IOException {
+        this.oid = oid;
         this.value = value;
     }
 
@@ -289,6 +299,10 @@ public final class AttributeTypeAndValue {
      */
     public ObjectIdentifier getType() {
         return oid;
+    }
+
+    public AttributeValue getValue() {
+        return value;
     }
 
     /**
@@ -368,7 +382,7 @@ public final class AttributeTypeAndValue {
                     av.bytes = (byte[]) out.content;
                     out.content = av;
                 } else {
-                    av.bytes = av.rawString.getBytes(Charsets.UTF_8);
+                    av.bytes = av.rawString.getBytes(StandardCharsets.UTF_8);
                     out.length = av.bytes.length;
                 }
             }

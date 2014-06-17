@@ -1,6 +1,6 @@
 /*
 *******************************************************************************
-* Copyright (C) 1997-2011, International Business Machines Corporation and others.
+* Copyright (C) 1997-2013, International Business Machines Corporation and others.
 * All Rights Reserved.
 * Modification History:
 *
@@ -107,7 +107,7 @@
  * formatters.
  * <P>
  * You can also control the display of numbers with such function as
- * unum_getAttribues() and unum_setAtributes(), which let you set the
+ * unum_getAttributes() and unum_setAttributes(), which let you set the
  * miminum fraction digits, grouping, etc.
  * @see UNumberFormatAttributes for more details
  * <P>
@@ -185,18 +185,18 @@ typedef enum UNumberFormatStyle {
     UNUM_PATTERN_RULEBASED,
     /**
      * Currency format with an ISO currency code, e.g., "USD1.00".
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UNUM_CURRENCY_ISO,
     /**
      * Currency format with a pluralized currency name,
      * e.g., "1.00 US dollar" and "3.00 US dollars".
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UNUM_CURRENCY_PLURAL,
     /**
      * One more than the highest number format style constant.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UNUM_FORMAT_STYLE_COUNT,
     /**
@@ -220,22 +220,24 @@ typedef enum UNumberFormatRoundingMode {
     UNUM_ROUND_DOWN,
     UNUM_ROUND_UP,
     /**
+     * Half-even rounding
+     * @stable, ICU 3.8
+     */
+    UNUM_ROUND_HALFEVEN,
+#ifndef U_HIDE_DEPRECATED_API
+    /**
      * Half-even rounding, misspelled name
      * @deprecated, ICU 3.8
      */
-    UNUM_FOUND_HALFEVEN,
+    UNUM_FOUND_HALFEVEN = UNUM_ROUND_HALFEVEN,
+#endif  /* U_HIDE_DEPRECATED_API */
     UNUM_ROUND_HALFDOWN,
     UNUM_ROUND_HALFUP,
     /** 
       * ROUND_UNNECESSARY reports an error if formatted result is not exact.
-      * @draft ICU 4.8
+      * @stable ICU 4.8
       */
-    UNUM_ROUND_UNNECESSARY,
-    /**
-     * Half-even rounding
-     * @stable, ICU 3.8
-     */
-    UNUM_ROUND_HALFEVEN = UNUM_FOUND_HALFEVEN
+    UNUM_ROUND_UNNECESSARY
 } UNumberFormatRoundingMode;
 
 /** The possible number format pad positions. 
@@ -248,17 +250,69 @@ typedef enum UNumberFormatPadPosition {
     UNUM_PAD_AFTER_SUFFIX
 } UNumberFormatPadPosition;
 
+#ifndef U_HIDE_DRAFT_API
+/**
+ * Constants for specifying short or long format.
+ * @draft ICU 51
+ */
+typedef enum UNumberCompactStyle {
+  /** @draft ICU 51 */
+  UNUM_SHORT,
+  /** @draft ICU 51 */
+  UNUM_LONG
+  /** @draft ICU 51 */
+} UNumberCompactStyle;
+#endif /* U_HIDE_DRAFT_API */
+
 /**
  * Constants for specifying currency spacing
- * @draft ICU 4.8
+ * @stable ICU 4.8
  */
 enum UCurrencySpacing {
+    /** @stable ICU 4.8 */
     UNUM_CURRENCY_MATCH,
+    /** @stable ICU 4.8 */
     UNUM_CURRENCY_SURROUNDING_MATCH,
+    /** @stable ICU 4.8 */
     UNUM_CURRENCY_INSERT,
+    /** @stable ICU 4.8 */
     UNUM_CURRENCY_SPACING_COUNT
 };
-typedef enum UCurrencySpacing UCurrencySpacing; /**< @draft ICU 4.8 */
+typedef enum UCurrencySpacing UCurrencySpacing; /**< @stable ICU 4.8 */
+
+
+/**
+ * FieldPosition and UFieldPosition selectors for format fields
+ * defined by NumberFormat and UNumberFormat.
+ * @stable ICU 49
+ */
+typedef enum UNumberFormatFields {
+    /** @stable ICU 49 */
+    UNUM_INTEGER_FIELD,
+    /** @stable ICU 49 */
+    UNUM_FRACTION_FIELD,
+    /** @stable ICU 49 */
+    UNUM_DECIMAL_SEPARATOR_FIELD,
+    /** @stable ICU 49 */
+    UNUM_EXPONENT_SYMBOL_FIELD,
+    /** @stable ICU 49 */
+    UNUM_EXPONENT_SIGN_FIELD,
+    /** @stable ICU 49 */
+    UNUM_EXPONENT_FIELD,
+    /** @stable ICU 49 */
+    UNUM_GROUPING_SEPARATOR_FIELD,
+    /** @stable ICU 49 */
+    UNUM_CURRENCY_FIELD,
+    /** @stable ICU 49 */
+    UNUM_PERCENT_FIELD,
+    /** @stable ICU 49 */
+    UNUM_PERMILL_FIELD,
+    /** @stable ICU 49 */
+    UNUM_SIGN_FIELD,
+    /** @stable ICU 49 */
+    UNUM_FIELD_COUNT
+} UNumberFormatFields;
+
 
 /**
  * Create and return a new UNumberFormat for formatting and parsing
@@ -627,7 +681,7 @@ unum_parseDoubleCurrency(const UNumberFormat* fmt,
 
 /**
  * Set the pattern used by a UNumberFormat.  This can only be used
- * on a DecimalFormat, other formats return U_ILLEGAL_ARGUMENT_ERROR
+ * on a DecimalFormat, other formats return U_UNSUPPORTED_ERROR
  * in the status.
  * @param format The formatter to set.
  * @param localized TRUE if the pattern is localized, FALSE otherwise.
@@ -675,6 +729,20 @@ unum_getAvailable(int32_t localeIndex);
 U_STABLE int32_t U_EXPORT2 
 unum_countAvailable(void);
 
+#if UCONFIG_HAVE_PARSEALLINPUT
+/**
+ * @internal
+ */
+typedef enum UNumberFormatAttributeValue {
+  /** @internal */
+  UNUM_NO = 0,
+  /** @internal */
+  UNUM_YES = 1,
+  /** @internal */
+  UNUM_MAYBE = 2
+} UNumberFormatAttributeValue;
+#endif
+
 /** The possible UNumberFormat numeric attributes @stable ICU 2.0 */
 typedef enum UNumberFormatAttribute {
   /** Parse integers only */
@@ -721,7 +789,58 @@ typedef enum UNumberFormatAttribute {
   /** Lenient parse mode used by rule-based formats.
    * @stable ICU 3.0
    */
-  UNUM_LENIENT_PARSE
+  UNUM_LENIENT_PARSE,
+#if UCONFIG_HAVE_PARSEALLINPUT
+  /** Consume all input. (may use fastpath). Set to UNUM_YES (require fastpath), UNUM_NO (skip fastpath), or UNUM_MAYBE (heuristic).
+   * This is an internal ICU API. Do not use.
+   * @internal
+   */
+  UNUM_PARSE_ALL_INPUT,
+#endif
+#ifndef U_HIDE_DRAFT_API
+  /** 
+    * Scale, which adjusts the position of the
+    * decimal point when formatting.  Amounts will be multiplied by 10 ^ (scale)
+    * before they are formatted.  The default value for the scale is 0 ( no adjustment ).
+    *
+    * <p>Example: setting the scale to 3, 123 formats as "123,000"
+    * <p>Example: setting the scale to -4, 123 formats as "0.0123"
+    *
+   * @draft ICU 51 */
+  UNUM_SCALE = UNUM_LENIENT_PARSE + 2,
+#endif /* U_HIDE_DRAFT_API */
+#ifndef U_HIDE_INTERNAL_API
+  /** Count of "regular" numeric attributes.
+   * @internal */
+  UNUM_NUMERIC_ATTRIBUTE_COUNT,
+
+  /** One below the first bitfield-boolean item.
+   * All items after this one are stored in boolean form.
+   * @internal */
+  UNUM_MAX_NONBOOLEAN_ATTRIBUTE = 0x0FFF,
+#endif  /* U_HIDE_INTERNAL_API */
+
+#ifndef U_HIDE_DRAFT_API
+  /** If 1, specifies that if setting the "max integer digits" attribute would truncate a value, set an error status rather than silently truncating.
+   * For example,  formatting the value 1234 with 4 max int digits would succeed, but formatting 12345 would fail. There is no effect on parsing.
+   * Default: 0 (not set)
+   * @draft ICU 50
+   */
+  UNUM_FORMAT_FAIL_IF_MORE_THAN_MAX_DIGITS = 0x1000,
+  /** 
+   * if this attribute is set to 1, specifies that, if the pattern doesn't contain an exponent, the exponent will not be parsed. If the pattern does contain an exponent, this attribute has no effect.
+   * Has no effect on formatting.
+   * Default: 0 (unset)
+   * @draft ICU 50
+   */
+  UNUM_PARSE_NO_EXPONENT,
+#endif /* U_HIDE_DRAFT_API */
+
+#ifndef U_HIDE_INTERNAL_API
+  /** Limit of boolean attributes.
+   * @internal */
+  UNUM_LIMIT_BOOLEAN_ATTRIBUTE
+#endif  /* U_HIDE_INTERNAL_API */
 } UNumberFormatAttribute;
 
 /**
@@ -731,7 +850,8 @@ typedef enum UNumberFormatAttribute {
 * @param attr The attribute to query; one of UNUM_PARSE_INT_ONLY, UNUM_GROUPING_USED,
 * UNUM_DECIMAL_ALWAYS_SHOWN, UNUM_MAX_INTEGER_DIGITS, UNUM_MIN_INTEGER_DIGITS, UNUM_INTEGER_DIGITS,
 * UNUM_MAX_FRACTION_DIGITS, UNUM_MIN_FRACTION_DIGITS, UNUM_FRACTION_DIGITS, UNUM_MULTIPLIER,
-* UNUM_GROUPING_SIZE, UNUM_ROUNDING_MODE, UNUM_FORMAT_WIDTH, UNUM_PADDING_POSITION, UNUM_SECONDARY_GROUPING_SIZE.
+* UNUM_GROUPING_SIZE, UNUM_ROUNDING_MODE, UNUM_FORMAT_WIDTH, UNUM_PADDING_POSITION, UNUM_SECONDARY_GROUPING_SIZE,
+* UNUM_SCALE.
 * @return The value of attr.
 * @see unum_setAttribute
 * @see unum_getDoubleAttribute
@@ -754,7 +874,7 @@ unum_getAttribute(const UNumberFormat*          fmt,
 * UNUM_DECIMAL_ALWAYS_SHOWN, UNUM_MAX_INTEGER_DIGITS, UNUM_MIN_INTEGER_DIGITS, UNUM_INTEGER_DIGITS,
 * UNUM_MAX_FRACTION_DIGITS, UNUM_MIN_FRACTION_DIGITS, UNUM_FRACTION_DIGITS, UNUM_MULTIPLIER,
 * UNUM_GROUPING_SIZE, UNUM_ROUNDING_MODE, UNUM_FORMAT_WIDTH, UNUM_PADDING_POSITION, UNUM_SECONDARY_GROUPING_SIZE,
-* or UNUM_LENIENT_PARSE.
+* UNUM_LENIENT_PARSE, or UNUM_SCALE.
 * @param newValue The new value of attr.
 * @see unum_getAttribute
 * @see unum_getDoubleAttribute
@@ -837,7 +957,7 @@ typedef enum UNumberFormatTextAttribute {
 /**
 * Get a text attribute associated with a UNumberFormat.
 * An example of a text attribute is the suffix for positive numbers.  If the formatter
-* does not understand the attributre, U_UNSUPPORTED_ERROR is returned as the status.
+* does not understand the attribute, U_UNSUPPORTED_ERROR is returned as the status.
 * Rule-based formatters only understand UNUM_DEFAULT_RULESET and UNUM_PUBLIC_RULESETS.
 * @param fmt The formatter to query.
 * @param tag The attribute to query; one of UNUM_POSITIVE_PREFIX, UNUM_POSITIVE_SUFFIX,
@@ -949,41 +1069,41 @@ typedef enum UNumberFormatSymbol {
   /** The monetary grouping separator 
    * @stable ICU 3.6
    */
-  UNUM_MONETARY_GROUPING_SEPARATOR_SYMBOL = 17,  
+  UNUM_MONETARY_GROUPING_SEPARATOR_SYMBOL = 17,
   /** One
-   * @draft ICU 4.6
+   * @stable ICU 4.6
    */
   UNUM_ONE_DIGIT_SYMBOL = 18,
   /** Two
-   * @draft ICU 4.6
+   * @stable ICU 4.6
    */
   UNUM_TWO_DIGIT_SYMBOL = 19,
   /** Three
-   * @draft ICU 4.6
+   * @stable ICU 4.6
    */
   UNUM_THREE_DIGIT_SYMBOL = 20,
   /** Four
-   * @draft ICU 4.6
+   * @stable ICU 4.6
    */
   UNUM_FOUR_DIGIT_SYMBOL = 21,
   /** Five
-   * @draft ICU 4.6
+   * @stable ICU 4.6
    */
   UNUM_FIVE_DIGIT_SYMBOL = 22,
   /** Six
-   * @draft ICU 4.6
+   * @stable ICU 4.6
    */
   UNUM_SIX_DIGIT_SYMBOL = 23,
   /** Seven
-    * @draft ICU 4.6
+    * @stable ICU 4.6
    */
   UNUM_SEVEN_DIGIT_SYMBOL = 24,
   /** Eight
-   * @draft ICU 4.6
+   * @stable ICU 4.6
    */
   UNUM_EIGHT_DIGIT_SYMBOL = 25,
   /** Nine
-   * @draft ICU 4.6
+   * @stable ICU 4.6
    */
   UNUM_NINE_DIGIT_SYMBOL = 26,
   /** count symbol constants */

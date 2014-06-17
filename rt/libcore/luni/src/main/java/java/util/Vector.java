@@ -92,7 +92,7 @@ public class Vector<E> extends AbstractList<E> implements List<E>,
      */
     public Vector(int capacity, int capacityIncrement) {
         if (capacity < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("capacity < 0: " + capacity);
         }
         elementData = newElementArray(capacity);
         elementCount = 0;
@@ -445,7 +445,7 @@ public class Vector<E> extends AbstractList<E> implements List<E>,
     private void grow(int newCapacity) {
         E[] newData = newElementArray(newCapacity);
         // Assumes elementCount is <= newCapacity
-        assert elementCount <= newCapacity;
+        // assert elementCount <= newCapacity;
         System.arraycopy(elementData, 0, newData, 0, elementCount);
         elementData = newData;
     }

@@ -18,6 +18,7 @@
 package libcore.io;
 
 import dalvik.system.VMRuntime;
+import java.util.Arrays;
 import junit.framework.TestCase;
 
 public class MemoryTest extends TestCase {
@@ -28,65 +29,116 @@ public class MemoryTest extends TestCase {
             swappedValues[i] = Integer.reverseBytes(values[i]);
         }
 
-        int scale = 4;
+        int scale = SizeOf.INT;
         VMRuntime runtime = VMRuntime.getRuntime();
-        byte[] array = (byte[]) runtime.newNonMovableArray(byte.class, scale * values.length);
-        int ptr = (int) runtime.addressOf(array);
+        byte[] array = (byte[]) runtime.newNonMovableArray(byte.class, scale * values.length + 1);
+        int base_ptr = (int) runtime.addressOf(array);
 
-        // Regular copy.
-        Memory.pokeIntArray(ptr, values, 0, values.length, false);
-        assertIntsEqual(values, ptr, false);
-        assertIntsEqual(swappedValues, ptr, true);
+        for (int ptr_offset = 0; ptr_offset < 2; ++ptr_offset) {
+            int ptr = base_ptr + ptr_offset; // To test aligned and unaligned accesses.
+            Arrays.fill(array, (byte) 0);
 
-        // Swapped copy.
-        Memory.pokeIntArray(ptr, values, 0, values.length, true);
-        assertIntsEqual(values, ptr, true);
-        assertIntsEqual(swappedValues, ptr, false);
+            // Regular copy.
+            Memory.pokeIntArray(ptr, values, 0, values.length, false);
+            assertIntsEqual(values, ptr, false);
+            assertIntsEqual(swappedValues, ptr, true);
 
-        // Swapped copies of slices (to ensure we test non-zero offsets).
-        for (int i = 0; i < values.length; ++i) {
-            Memory.pokeIntArray(ptr + i * scale, values, i, 1, true);
+            // Swapped copy.
+            Memory.pokeIntArray(ptr, values, 0, values.length, true);
+            assertIntsEqual(values, ptr, true);
+            assertIntsEqual(swappedValues, ptr, false);
+
+            // Swapped copies of slices (to ensure we test non-zero offsets).
+            for (int i = 0; i < values.length; ++i) {
+                Memory.pokeIntArray(ptr + i * scale, values, i, 1, true);
+            }
+            assertIntsEqual(values, ptr, true);
+            assertIntsEqual(swappedValues, ptr, false);
         }
-        assertIntsEqual(values, ptr, true);
-        assertIntsEqual(swappedValues, ptr, false);
     }
 
     private void assertIntsEqual(int[] expectedValues, int ptr, boolean swap) {
         for (int i = 0; i < expectedValues.length; ++i) {
-            assertEquals(expectedValues[i], Memory.peekInt(ptr + 4 * i, swap));
+            assertEquals(expectedValues[i], Memory.peekInt(ptr + SizeOf.INT * i, swap));
         }
+    }
+
+    public void testSetLongArray() {
+        long[] values = { 0x1020304050607080L, 0xffeeddccbbaa9988L };
+        long[] swappedValues = new long[values.length];
+        for (int i = 0; i < values.length; ++i) {
+            swappedValues[i] = Long.reverseBytes(values[i]);
+        }
+
+        int scale = SizeOf.LONG;
+        VMRuntime runtime = VMRuntime.getRuntime();
+        byte[] array = (byte[]) runtime.newNonMovableArray(byte.class, scale * values.length + 1);
+        int base_ptr = (int) runtime.addressOf(array);
+
+        for (int ptr_offset = 0; ptr_offset < 2; ++ptr_offset) {
+            int ptr = base_ptr + ptr_offset; // To test aligned and unaligned accesses.
+            Arrays.fill(array, (byte) 0);
+
+            // Regular copy.
+            Memory.pokeLongArray(ptr, values, 0, values.length, false);
+            assertLongsEqual(values, ptr, false);
+            assertLongsEqual(swappedValues, ptr, true);
+
+            // Swapped copy.
+            Memory.pokeLongArray(ptr, values, 0, values.length, true);
+            assertLongsEqual(values, ptr, true);
+            assertLongsEqual(swappedValues, ptr, false);
+
+            // Swapped copies of slices (to ensure we test non-zero offsets).
+            for (int i = 0; i < values.length; ++i) {
+                Memory.pokeLongArray(ptr + i * scale, values, i, 1, true);
+            }
+            assertLongsEqual(values, ptr, true);
+            assertLongsEqual(swappedValues, ptr, false);
+        }
+    }
+
+    private void assertLongsEqual(long[] expectedValues, int ptr, boolean swap) {
+      for (int i = 0; i < expectedValues.length; ++i) {
+        assertEquals(expectedValues[i], Memory.peekLong(ptr + SizeOf.LONG * i, swap));
+      }
     }
 
     public void testSetShortArray() {
         short[] values = { 0x0001, 0x0020, 0x0300, 0x4000 };
         short[] swappedValues = { 0x0100, 0x2000, 0x0003, 0x0040 };
 
-        int scale = 2;
+        int scale = SizeOf.SHORT;
         VMRuntime runtime = VMRuntime.getRuntime();
-        byte[] array = (byte[]) runtime.newNonMovableArray(byte.class, scale * values.length);
-        int ptr = (int) runtime.addressOf(array);
+        byte[] array = (byte[]) runtime.newNonMovableArray(byte.class, scale * values.length + 1);
+        int base_ptr = (int) runtime.addressOf(array);
 
-        // Regular copy. Memset first so we start from a known state.
-        Memory.pokeShortArray(ptr, values, 0, values.length, false);
-        assertShortsEqual(values, ptr, false);
-        assertShortsEqual(swappedValues, ptr, true);
+        for (int ptr_offset = 0; ptr_offset < 2; ++ptr_offset) {
+            int ptr = base_ptr + ptr_offset; // To test aligned and unaligned accesses.
+            Arrays.fill(array, (byte) 0);
 
-        // Swapped copy.
-        Memory.pokeShortArray(ptr, values, 0, values.length, true);
-        assertShortsEqual(values, ptr, true);
-        assertShortsEqual(swappedValues, ptr, false);
+            // Regular copy.
+            Memory.pokeShortArray(ptr, values, 0, values.length, false);
+            assertShortsEqual(values, ptr, false);
+            assertShortsEqual(swappedValues, ptr, true);
 
-        // Swapped copies of slices (to ensure we test non-zero offsets).
-        for (int i = 0; i < values.length; ++i) {
-            Memory.pokeShortArray(ptr + i * scale, values, i, 1, true);
+            // Swapped copy.
+            Memory.pokeShortArray(ptr, values, 0, values.length, true);
+            assertShortsEqual(values, ptr, true);
+            assertShortsEqual(swappedValues, ptr, false);
+
+            // Swapped copies of slices (to ensure we test non-zero offsets).
+            for (int i = 0; i < values.length; ++i) {
+                Memory.pokeShortArray(ptr + i * scale, values, i, 1, true);
+            }
+            assertShortsEqual(values, ptr, true);
+            assertShortsEqual(swappedValues, ptr, false);
         }
-        assertShortsEqual(values, ptr, true);
-        assertShortsEqual(swappedValues, ptr, false);
     }
 
     private void assertShortsEqual(short[] expectedValues, int ptr, boolean swap) {
         for (int i = 0; i < expectedValues.length; ++i) {
-            assertEquals(expectedValues[i], Memory.peekShort(ptr + 2 * i, swap));
+            assertEquals(expectedValues[i], Memory.peekShort(ptr + SizeOf.SHORT * i, swap));
         }
     }
 }

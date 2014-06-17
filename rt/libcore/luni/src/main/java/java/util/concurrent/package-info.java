@@ -1,11 +1,11 @@
 /*
  * Written by Doug Lea with assistance from members of JCP JSR-166
  * Expert Group and released to the public domain, as explained at
- * http://creativecommons.org/licenses/publicdomain
+ * http://creativecommons.org/publicdomain/zero/1.0/
  */
 
 // BEGIN android-note
-// Dropped references to unreleased APIs (ForkJoinPool, Phaser, etc.)
+// omit links to ForkJoinPool, ForkJoinTask, LinkedTransferQueue, Phaser, TransferQueue
 // END android-note
 
 /**
@@ -23,7 +23,7 @@
  *
  * {@link java.util.concurrent.Executor} is a simple standardized
  * interface for defining custom thread-like subsystems, including
- * thread pools, asynchronous IO, and lightweight task frameworks.
+ * thread pools, asynchronous I/O, and lightweight task frameworks.
  * Depending on which concrete Executor class is being used, tasks may
  * execute in a newly created thread, an existing task-execution thread,
  * or the thread calling {@link java.util.concurrent.Executor#execute
@@ -111,7 +111,7 @@
  *
  * <h2>Synchronizers</h2>
  *
- * Five classes aid common special-purpose synchronization idioms.
+ * Four classes aid common special-purpose synchronization idioms.
  * <ul>
  *
  * <li>{@link java.util.concurrent.Semaphore} is a classic concurrency tool.
@@ -146,7 +146,7 @@
  * A {@code CopyOnWriteArrayList} is preferable to a synchronized
  * {@code ArrayList} when the expected number of reads and traversals
  * greatly outnumber the number of updates to a list.
-
+ *
  * <p>The "Concurrent" prefix used with some classes in this package
  * is a shorthand indicating several differences from similar
  * "synchronized" classes.  For example {@code java.util.Hashtable} and
@@ -174,7 +174,7 @@
  * it may (or may not) reflect any updates since the iterator was
  * created.
  *
- * <h2><a name="MemoryVisibility">Memory Consistency Properties</a></h2>
+ * <h2 id="MemoryVisibility">Memory Consistency Properties</h2>
  *
  * <a href="http://java.sun.com/docs/books/jls/third_edition/html/memory.html">
  * Chapter 17 of the Java Language Specification</a> defines the

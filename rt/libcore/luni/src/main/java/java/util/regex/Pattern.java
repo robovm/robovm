@@ -82,23 +82,30 @@ import java.io.Serializable;
  * </table>
  * <p>Most of the time, the built-in character classes are more useful:
  * <table>
- * <tr> <td> \d </td> <td>Any digit character.</td> </tr>
- * <tr> <td> \D </td> <td>Any non-digit character.</td> </tr>
- * <tr> <td> \s </td> <td>Any whitespace character.</td> </tr>
- * <tr> <td> \S </td> <td>Any non-whitespace character.</td> </tr>
- * <tr> <td> \w </td> <td>Any word character.</td> </tr>
- * <tr> <td> \W </td> <td>Any non-word character.</td> </tr>
+ * <tr> <td> \d </td> <td>Any digit character (see note below).</td> </tr>
+ * <tr> <td> \D </td> <td>Any non-digit character (see note below).</td> </tr>
+ * <tr> <td> \s </td> <td>Any whitespace character (see note below).</td> </tr>
+ * <tr> <td> \S </td> <td>Any non-whitespace character (see note below).</td> </tr>
+ * <tr> <td> \w </td> <td>Any word character (see note below).</td> </tr>
+ * <tr> <td> \W </td> <td>Any non-word character (see note below).</td> </tr>
  * <tr> <td> \p{<i>NAME</i>} </td> <td> Any character in the class with the given <i>NAME</i>. </td> </tr>
  * <tr> <td> \P{<i>NAME</i>} </td> <td> Any character <i>not</i> in the named class. </td> </tr>
  * </table>
- * <p>There are a variety of named classes:
+ * <p>Note that these built-in classes don't just cover the traditional ASCII range. For example,
+ * <code>\w</code> is equivalent to the character class <code>[\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}]</code>.
+ * For more details see <a href="http://www.unicode.org/reports/tr18/#Compatibility_Properties">Unicode TR-18</a>,
+ * and bear in mind that the set of characters in each class can vary between Unicode releases.
+ * If you actually want to match only ASCII characters, specify the explicit characters you want;
+ * if you mean 0-9 use <code>[0-9]</code> rather than <code>\d</code>, which would also include
+ * Gurmukhi digits and so forth.
+ * <p>There are also a variety of named classes:
  * <ul>
  * <li><a href="../../lang/Character.html#unicode_categories">Unicode category names</a>,
  * prefixed by {@code Is}. For example {@code \p{IsLu}} for all uppercase letters.
  * <li>POSIX class names. These are 'Alnum', 'Alpha', 'ASCII', 'Blank', 'Cntrl', 'Digit',
  * 'Graph', 'Lower', 'Print', 'Punct', 'Upper', 'XDigit'.
- * <li>Unicode block names, as used by {@link java.lang.Character.UnicodeBlock#forName} prefixed
- * by {@code In}. For example {@code \p{InHebrew}} for all characters in the Hebrew block.
+ * <li>Unicode block names, as accepted as input to {@link java.lang.Character.UnicodeBlock#forName},
+ * prefixed by {@code In}. For example {@code \p{InHebrew}} for all characters in the Hebrew block.
  * <li>Character method names. These are all non-deprecated methods from {@link java.lang.Character}
  * whose name starts with {@code is}, but with the {@code is} replaced by {@code java}.
  * For example, {@code \p{javaLowerCase}}.
@@ -278,7 +285,7 @@ public final class Pattern implements Serializable {
     private final String pattern;
     private final int flags;
 
-    transient int address;
+    transient long address;
 
     /**
      * Returns a {@link Matcher} for this pattern applied to the given {@code input}.
@@ -378,6 +385,10 @@ public final class Pattern implements Serializable {
         if ((flags & CANON_EQ) != 0) {
             throw new UnsupportedOperationException("CANON_EQ flag not supported");
         }
+        int supportedFlags = CASE_INSENSITIVE | COMMENTS | DOTALL | LITERAL | MULTILINE | UNICODE_CASE | UNIX_LINES;
+        if ((flags & ~supportedFlags) != 0) {
+            throw new IllegalArgumentException("Unsupported flags: " + (flags & ~supportedFlags));
+        }
         this.pattern = pattern;
         this.flags = flags;
         compile();
@@ -445,6 +456,6 @@ public final class Pattern implements Serializable {
         compile();
     }
 
-    private static native void closeImpl(int addr);
-    private static native int compileImpl(String regex, int flags);
+    private static native void closeImpl(long addr);
+    private static native long compileImpl(String regex, int flags);
 }

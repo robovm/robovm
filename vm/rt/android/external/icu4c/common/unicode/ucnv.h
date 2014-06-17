@@ -1,6 +1,6 @@
 /*
 **********************************************************************
-*   Copyright (C) 1999-2011, International Business Machines
+*   Copyright (C) 1999-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 **********************************************************************
  *  ucnv.h:
@@ -159,7 +159,7 @@ typedef enum {
     UCNV_CESU8,
     /** @stable ICU 2.4 */
     UCNV_IMAP_MAILBOX,
-    /** @draft ICU 4.8 */
+    /** @stable ICU 4.8 */
     UCNV_COMPOUND_TEXT,
 
     /* Number of converter types for which we have conversion routines. */
@@ -340,6 +340,8 @@ ucnv_compareNames(const char *name1, const char *name2);
  * Guide</a>. Aliases starting with a "cp" prefix have no specific meaning
  * other than its an alias starting with the letters "cp". Please do not
  * associate any meaning to these aliases.</p>
+ *
+ * \snippet samples/ucnv/convsamp.cpp ucnv_open
  *
  * @param converterName Name of the coded character set table.
  *          This may have options appended to the string.
@@ -1857,6 +1859,7 @@ ucnv_getCanonicalName(const char *alias, const char *standard, UErrorCode *pErro
 U_STABLE const char * U_EXPORT2
 ucnv_getDefaultName(void);
 
+#ifndef U_HIDE_SYSTEM_API
 /**
  * This function is not thread safe. DO NOT call this function when ANY ICU
  * function is being used from more than one thread! This function sets the
@@ -1875,6 +1878,7 @@ ucnv_getDefaultName(void);
  */
 U_STABLE void U_EXPORT2
 ucnv_setDefaultName(const char *name);
+#endif  /* U_HIDE_SYSTEM_API */
 
 /**
  * Fixes the backslash character mismapping.  For example, in SJIS, the backslash 
@@ -1954,34 +1958,7 @@ ucnv_usesFallback(const UConverter *cnv);
  * instead of the input signature bytes.
  * <p>
  * Usage:
- * @code     
- *      UErrorCode err = U_ZERO_ERROR;
- *      char input[] = { '\xEF','\xBB', '\xBF','\x41','\x42','\x43' };
- *      int32_t signatureLength = 0;
- *      char *encoding = ucnv_detectUnicodeSignature(input,sizeof(input),&signatureLength,&err);
- *      UConverter *conv = NULL;
- *      UChar output[100];
- *      UChar *target = output, *out;
- *      char *source = input;
- *      if(encoding!=NULL && U_SUCCESS(err)){
- *          // should signature be discarded ?
- *          conv = ucnv_open(encoding, &err);
- *          // do the conversion
- *          ucnv_toUnicode(conv,
- *                         target, output + sizeof(output)/U_SIZEOF_UCHAR,
- *                         source, input + sizeof(input),
- *                         NULL, TRUE, &err);
- *          out = output;
- *          if (discardSignature){
- *              ++out; // ignore initial U+FEFF
- *          }
- *          while(out != target) {
- *              printf("%04x ", *out++);
- *          }
- *          puts("");
- *      }
- *     
- * @endcode
+ * \snippet samples/ucnv/convsamp.cpp ucnv_detectUnicodeSignature
  *
  * @param source            The source string in which the signature should be detected.
  * @param sourceLength      Length of the input string, or -1 if terminated with a NUL byte.
@@ -2040,9 +2017,9 @@ ucnv_toUCountPending(const UConverter* cnv, UErrorCode* status);
  * @param cnv       The converter to be tested
  * @param status    ICU error code in/out paramter
  * @return TRUE if the converter is fixed-width
- * @draft ICU 4.8
+ * @stable ICU 4.8
  */
-U_DRAFT UBool U_EXPORT2
+U_STABLE UBool U_EXPORT2
 ucnv_isFixedWidth(UConverter *cnv, UErrorCode *status);
 
 #endif

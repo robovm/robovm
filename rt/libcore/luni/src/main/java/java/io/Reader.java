@@ -61,7 +61,7 @@ public abstract class Reader implements Readable, Closeable {
      */
     protected Reader(Object lock) {
         if (lock == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("lock == null");
         }
         this.lock = lock;
     }
@@ -131,39 +131,26 @@ public abstract class Reader implements Readable, Closeable {
 
     /**
      * Reads characters from this reader and stores them in the character array
-     * {@code buf} starting at offset 0. Returns the number of characters
+     * {@code buffer} starting at offset 0. Returns the number of characters
      * actually read or -1 if the end of the reader has been reached.
      *
-     * @param buf
-     *            character array to store the characters read.
-     * @return the number of characters read or -1 if the end of the reader has
-     *         been reached.
      * @throws IOException
      *             if this reader is closed or some other I/O error occurs.
      */
-    public int read(char[] buf) throws IOException {
-        return read(buf, 0, buf.length);
+    public int read(char[] buffer) throws IOException {
+        return read(buffer, 0, buffer.length);
     }
 
     /**
-     * Reads at most {@code count} characters from this reader and stores them
-     * at {@code offset} in the character array {@code buf}. Returns the number
+     * Reads up to {@code count} characters from this reader and stores them
+     * at {@code offset} in the character array {@code buffer}. Returns the number
      * of characters actually read or -1 if the end of the reader has been
      * reached.
      *
-     * @param buf
-     *            the character array to store the characters read.
-     * @param offset
-     *            the initial position in {@code buffer} to store the characters
-     *            read from this reader.
-     * @param count
-     *            the maximum number of characters to read.
-     * @return the number of characters read or -1 if the end of the reader has
-     *         been reached.
      * @throws IOException
      *             if this reader is closed or some other I/O error occurs.
      */
-    public abstract int read(char[] buf, int offset, int count) throws IOException;
+    public abstract int read(char[] buffer, int offset, int count) throws IOException;
 
     /**
      * Indicates whether this reader is ready to be read without blocking.

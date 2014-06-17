@@ -127,7 +127,7 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
      */
     public static DecimalFormatSymbols getInstance(Locale locale) {
         if (locale == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("locale == null");
         }
         return new DecimalFormatSymbols(locale);
     }
@@ -389,7 +389,7 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
      */
     public void setCurrency(Currency currency) {
         if (currency == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("currency == null");
         }
         if (currency == this.currency) {
             return;
@@ -558,7 +558,7 @@ public class DecimalFormatSymbols implements Cloneable, Serializable {
      */
     public void setExponentSeparator(String value) {
         if (value == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("value == null");
         }
         this.exponentSeparator = value;
     }

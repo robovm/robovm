@@ -216,6 +216,8 @@ public class PlainDatagramSocketImpl extends DatagramSocketImpl {
             Libcore.os.connect(fd, InetAddress.UNSPECIFIED, 0);
         } catch (ErrnoException errnoException) {
             throw new AssertionError(errnoException);
+        } catch (SocketException ignored) {
+            // Thrown if the socket has already been closed, but this method can't throw anything.
         }
         connectedPort = -1;
         connectedAddress = null;

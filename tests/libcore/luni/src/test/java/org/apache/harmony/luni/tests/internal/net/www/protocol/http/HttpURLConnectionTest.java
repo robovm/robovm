@@ -261,6 +261,10 @@ public class HttpURLConnectionTest extends TestCase {
             assertTrue("Connection does not use proxy",
                                             connection.usingProxy());
             assertTrue("Proxy server was not used", proxy.accepted);
+
+            connection.disconnect();
+            assertTrue("usingProxy broken after disconnect",
+                   connection.usingProxy());
         } finally {
             // restore default proxy selector
             ProxySelector.setDefault(defPS);

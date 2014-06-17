@@ -55,10 +55,8 @@ public final class CryptoProvider extends Provider {
         put("Alg.Alias.MessageDigest.SHA1", "SHA-1");
         put("Alg.Alias.MessageDigest.SHA", "SHA-1");
 
-        if (RandomBitsSupplier.isServiceAvailable()) {
-            put("SecureRandom.SHA1PRNG", SR_NAME);
-            put("SecureRandom.SHA1PRNG ImplementedIn", "Software");
-        }
+        put("SecureRandom.SHA1PRNG", SR_NAME);
+        put("SecureRandom.SHA1PRNG ImplementedIn", "Software");
 
         put("Signature.SHA1withDSA", SIGN_NAME);
         put("Signature.SHA1withDSA ImplementedIn", "Software");

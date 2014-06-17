@@ -104,7 +104,7 @@ public abstract class EnumSet<E extends Enum<E>> extends AbstractSet<E>
             return copyOf((EnumSet<E>) c);
         }
         if (c.isEmpty()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("empty collection");
         }
         Iterator<E> iterator = c.iterator();
         E element = iterator.next();
@@ -259,6 +259,7 @@ public abstract class EnumSet<E extends Enum<E>> extends AbstractSet<E>
      * @throws NullPointerException
      *             if any of the specified elements is {@code null}.
      */
+    @SafeVarargs
     public static <E extends Enum<E>> EnumSet<E> of(E start, E... others) {
         EnumSet<E> set = of(start);
         for (E e : others) {
@@ -284,7 +285,7 @@ public abstract class EnumSet<E extends Enum<E>> extends AbstractSet<E>
      */
     public static <E extends Enum<E>> EnumSet<E> range(E start, E end) {
         if (start.compareTo(end) > 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("start is behind end");
         }
         EnumSet<E> set = EnumSet.noneOf(start.getDeclaringClass());
         set.setRange(start, end);

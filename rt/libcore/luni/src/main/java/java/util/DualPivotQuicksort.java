@@ -1565,7 +1565,7 @@ final class DualPivotQuicksort {
 
         for (int k = left; k <= n; k++) {
             float ak = a[k];
-            if (ak == 0.0f && NEGATIVE_ZERO == Float.floatToIntBits(ak)) {
+            if (ak == 0.0f && NEGATIVE_ZERO == Float.floatToRawIntBits(ak)) {
                 a[k] = 0.0f;
                 numNegativeZeros++;
             } else if (ak != ak) { // i.e., ak is NaN
@@ -1938,7 +1938,7 @@ final class DualPivotQuicksort {
 
         for (int k = left; k <= n; k++) {
             double ak = a[k];
-            if (ak == 0.0d && NEGATIVE_ZERO == Double.doubleToLongBits(ak)) {
+            if (ak == 0.0d && NEGATIVE_ZERO == Double.doubleToRawLongBits(ak)) {
                 a[k] = 0.0d;
                 numNegativeZeros++;
             } else if (ak != ak) { // i.e., ak is NaN

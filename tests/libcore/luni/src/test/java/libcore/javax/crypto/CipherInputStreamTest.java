@@ -24,6 +24,7 @@ import java.util.Arrays;
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import junit.framework.TestCase;
 
@@ -70,5 +71,14 @@ public final class CipherInputStreamTest extends TestCase {
             out.write(buffer, 0, count);
         }
         return out.toByteArray();
+    }
+
+    public void testCipherInputStream_TruncatedInput_Failure() throws Exception {
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(new byte[16], "AES"),
+                new IvParameterSpec(new byte[16]));
+        InputStream is = new CipherInputStream(new ByteArrayInputStream(new byte[31]), cipher);
+        is.read(new byte[4]);
+        is.close();
     }
 }

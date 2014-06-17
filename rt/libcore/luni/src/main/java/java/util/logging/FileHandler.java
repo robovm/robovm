@@ -214,8 +214,10 @@ public class FileHandler extends StreamHandler {
         String className = this.getClass().getName();
         pattern = (p == null) ? getStringProperty(className + ".pattern",
                 DEFAULT_PATTERN) : p;
-        if (pattern == null || pattern.isEmpty()) {
-            throw new NullPointerException("Pattern cannot be empty or null");
+        if (pattern == null) {
+            throw new NullPointerException("pattern == null");
+        } else if (pattern.isEmpty()) {
+            throw new NullPointerException("pattern.isEmpty()");
         }
         append = (a == null) ? getBooleanProperty(className + ".append",
                 DEFAULT_APPEND) : a.booleanValue();

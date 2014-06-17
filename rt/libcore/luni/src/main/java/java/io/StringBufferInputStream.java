@@ -23,7 +23,7 @@ import java.util.Arrays;
  * A specialized {@link InputStream} that reads bytes from a {@code String} in
  * a sequential manner.
  *
- * @deprecated Use {@link StringReader}
+ * @deprecated Use {@link StringReader} instead.
  */
 @Deprecated
 public class StringBufferInputStream extends InputStream {
@@ -54,7 +54,7 @@ public class StringBufferInputStream extends InputStream {
      */
     public StringBufferInputStream(String str) {
         if (str == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("str == null");
         }
         buffer = str;
         count = str.length();
@@ -78,39 +78,18 @@ public class StringBufferInputStream extends InputStream {
         return pos < count ? buffer.charAt(pos++) & 0xFF : -1;
     }
 
-    /**
-     * Reads at most {@code length} bytes from the source string and stores them
-     * in the byte array {@code b} starting at {@code offset}.
-     *
-     * @param buffer
-     *            the byte array in which to store the bytes read.
-     * @param offset
-     *            the initial position in {@code b} to store the bytes read from
-     *            this stream.
-     * @param length
-     *            the maximum number of bytes to store in {@code b}.
-     * @return the number of bytes actually read or -1 if the end of the source
-     *         string has been reached.
-     * @throws IndexOutOfBoundsException
-     *             if {@code offset < 0} or {@code length < 0}, or if
-     *             {@code offset + length} is greater than the length of
-     *             {@code b}.
-     * @throws NullPointerException
-     *             if {@code b} is {@code null}.
-     */
-    @Override
-    public synchronized int read(byte[] buffer, int offset, int length) {
+    @Override public synchronized int read(byte[] buffer, int byteOffset, int byteCount) {
         if (buffer == null) {
             throw new NullPointerException("buffer == null");
         }
-        Arrays.checkOffsetAndCount(buffer.length, offset, length);
-        if (length == 0) {
+        Arrays.checkOffsetAndCount(buffer.length, byteOffset, byteCount);
+        if (byteCount == 0) {
             return 0;
         }
 
-        int copylen = count - pos < length ? count - pos : length;
-        for (int i = 0; i < copylen; i++) {
-            buffer[offset + i] = (byte) this.buffer.charAt(pos + i);
+        int copylen = count - pos < byteCount ? count - pos : byteCount;
+        for (int i = 0; i < copylen; ++i) {
+            buffer[byteOffset + i] = (byte) this.buffer.charAt(pos + i);
         }
         pos += copylen;
         return copylen;

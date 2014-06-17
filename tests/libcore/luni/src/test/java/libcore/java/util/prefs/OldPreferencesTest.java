@@ -29,8 +29,10 @@ import junit.framework.TestCase;
 
 public final class OldPreferencesTest extends TestCase {
 
-    final static String longKey;
-    final static String longValue;
+    private static final boolean ENCOURAGE_RACES = false;
+
+    private static final String longKey;
+    private static final String longValue;
 
     static {
         StringBuilder key = new StringBuilder(Preferences.MAX_KEY_LENGTH);
@@ -316,8 +318,7 @@ public final class OldPreferencesTest extends TestCase {
         String longName = name.toString();
 
         Preferences root = Preferences.userRoot();
-        Preferences parent = Preferences
-                .userNodeForPackage(Preferences.class);
+        Preferences parent = Preferences.userNodeForPackage(Preferences.class);
         Preferences pref = parent.node("mock");
 
         try {
@@ -352,8 +353,7 @@ public final class OldPreferencesTest extends TestCase {
 
     public void testNodeExists() throws BackingStoreException {
 
-        Preferences parent = Preferences
-                .userNodeForPackage(Preferences.class);
+        Preferences parent = Preferences.userNodeForPackage(Preferences.class);
         Preferences pref = parent.node("mock");
 
         try {
@@ -393,16 +393,14 @@ public final class OldPreferencesTest extends TestCase {
     }
 
     public void testParent() {
-        Preferences parent = Preferences
-                .userNodeForPackage(Preferences.class);
+        Preferences parent = Preferences.userNodeForPackage(Preferences.class);
         Preferences pref = parent.node("mock");
 
         assertSame(parent, pref.parent());
     }
 
     public void testPut() throws BackingStoreException {
-        Preferences pref = Preferences
-        .userNodeForPackage(Preferences.class);
+        Preferences pref = Preferences.userNodeForPackage(Preferences.class);
         pref.put("", "emptyvalue");
         assertEquals("emptyvalue", pref.get("", null));
         pref.put("testPutkey", "value1");
@@ -468,8 +466,7 @@ public final class OldPreferencesTest extends TestCase {
     }
 
     public void testPutDouble() {
-        Preferences pref = Preferences
-        .userNodeForPackage(Preferences.class);
+        Preferences pref = Preferences.userNodeForPackage(Preferences.class);
         try {
             pref.putDouble(null, 3);
             fail();
@@ -580,8 +577,7 @@ public final class OldPreferencesTest extends TestCase {
     }
 
     public void testRemove() throws BackingStoreException {
-        Preferences pref = Preferences
-        .userNodeForPackage(Preferences.class);
+        Preferences pref = Preferences.userNodeForPackage(Preferences.class);
         pref.remove("key");
 
         pref.put("key", "value");
@@ -606,8 +602,7 @@ public final class OldPreferencesTest extends TestCase {
     }
 
     public void testRemoveNode() throws BackingStoreException {
-        Preferences pref = Preferences
-        .userNodeForPackage(Preferences.class);
+        Preferences pref = Preferences.userNodeForPackage(Preferences.class);
         Preferences child = pref.node("child");
         Preferences child1 = pref.node("child1");
         Preferences grandchild = child.node("grandchild");
@@ -636,11 +631,12 @@ public final class OldPreferencesTest extends TestCase {
             nl = new MockNodeChangeListener();
             pref.addNodeChangeListener(nl);
             child1 = pref.node("mock1");
-            nl.waitForEvent();
+            nl.waitForEvent(1);
             assertEquals(1, nl.getAdded());
             nl.reset();
             pref.node("mock1");
-            nl.waitForEvent();
+            // There shouldn't be an event, but wait in case one arrives...
+            try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
             assertEquals(0, nl.getAdded());
             nl.reset();
         } finally {
@@ -653,7 +649,7 @@ public final class OldPreferencesTest extends TestCase {
             pref.addNodeChangeListener(nl);
             pref.addNodeChangeListener(nl);
             child1 = pref.node("mock2");
-            nl.waitForEvent();
+            nl.waitForEvent(2);
             assertEquals(2, nl.getAdded());
             nl.reset();
         } finally {
@@ -667,7 +663,7 @@ public final class OldPreferencesTest extends TestCase {
             pref.addNodeChangeListener(nl);
             child1 = pref.node("mock3");
             child1.removeNode();
-            nl.waitForEvent();
+            nl.waitForEvent(2);
             assertEquals(1, nl.getRemoved());
             nl.reset();
         } finally {
@@ -680,7 +676,7 @@ public final class OldPreferencesTest extends TestCase {
             pref.addNodeChangeListener(nl);
             child1 = pref.node("mock6");
             child1.removeNode();
-            nl.waitForEvent();
+            nl.waitForEvent(4);
             assertEquals(2, nl.getRemoved());
             nl.reset();
         } finally {
@@ -695,27 +691,29 @@ public final class OldPreferencesTest extends TestCase {
             child1 = pref.node("mock4");
             child1.addNodeChangeListener(nl);
             pref.node("mock4/mock5");
-            nl.waitForEvent();
+            nl.waitForEvent(1);
             assertEquals(1, nl.getAdded());
             nl.reset();
             child3 = pref.node("mock4/mock5/mock6");
-            nl.waitForEvent();
+            // There shouldn't be an event, but wait in case one arrives...
+            try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
             assertEquals(0, nl.getAdded());
             nl.reset();
 
             child3.removeNode();
-            nl.waitForEvent();
+            // There shouldn't be an event, but wait in case one arrives...
+            try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
             assertEquals(0, nl.getRemoved());
             nl.reset();
 
             pref.node("mock4/mock7");
-            nl.waitForEvent();
+            nl.waitForEvent(1);
             assertEquals(1, nl.getAdded());
             nl.reset();
 
             child1.removeNode();
-            nl.waitForEvent();
-            assertEquals(2, nl.getRemoved()); // fail 1
+            nl.waitForEvent(2);
+            assertEquals(2, nl.getRemoved());
             nl.reset();
         } finally {
             try {
@@ -749,7 +747,7 @@ public final class OldPreferencesTest extends TestCase {
             try {
                 pref.clear();
                 pl.waitForEvent(2);
-                assertEquals(2, pl.getChanged()); // fail 1
+                assertEquals(2, pl.getChanged());
             } catch(BackingStoreException bse) {
                 pl.reset();
                 fail("BackingStoreException is thrown");
@@ -784,7 +782,7 @@ public final class OldPreferencesTest extends TestCase {
             try {
                 pref.clear();
                 pl.waitForEvent(3);
-                assertEquals(3, pl.getChanged()); // fails
+                assertEquals(3, pl.getChanged());
             } catch(BackingStoreException bse) {
                 fail("BackingStoreException is thrown");
             }
@@ -868,25 +866,38 @@ public final class OldPreferencesTest extends TestCase {
     static class MockNodeChangeListener implements NodeChangeListener {
         private int added = 0;
         private int removed = 0;
+        private int eventCount = 0;
 
-        public synchronized void waitForEvent() {
-            try {
-                wait(500);
-            } catch (InterruptedException ignored) {
+        public void waitForEvent(int count) {
+            synchronized (this) {
+                while (eventCount < count) {
+                    try {
+                        wait();
+                    } catch (InterruptedException ignored) {
+                    }
+                }
             }
         }
 
-        public synchronized void childAdded(NodeChangeEvent e) {
-            ++added;
-            notifyAll();
+        public void childAdded(NodeChangeEvent e) {
+            if (ENCOURAGE_RACES) try { Thread.sleep(1000); } catch (InterruptedException ignored) { }
+            synchronized (this) {
+                ++eventCount;
+                ++added;
+                notifyAll();
+            }
         }
 
-        public synchronized void childRemoved(NodeChangeEvent e) {
-            removed++;
-            notifyAll();
+        public void childRemoved(NodeChangeEvent e) {
+            if (ENCOURAGE_RACES) try { Thread.sleep(1000); } catch (InterruptedException ignored) { }
+            synchronized (this) {
+                ++eventCount;
+                ++removed;
+                notifyAll();
+            }
         }
 
-        public synchronized  int getAdded() {
+        public synchronized int getAdded() {
             return added;
         }
 
@@ -894,7 +905,8 @@ public final class OldPreferencesTest extends TestCase {
             return removed;
         }
 
-        public void reset() {
+        public synchronized void reset() {
+            eventCount = 0;
             added = 0;
             removed = 0;
         }
@@ -902,47 +914,35 @@ public final class OldPreferencesTest extends TestCase {
 
     private static class MockPreferenceChangeListener implements PreferenceChangeListener {
         private int changed = 0;
-        private boolean addDispatched = false;
-        private boolean result = false;
+        private int eventCount = 0;
 
         public void waitForEvent(int count) {
-            for (int i = 0; i < count; i++) {
-                try {
-                    synchronized (this) {
-                        wait(500);
+            synchronized (this) {
+                while (eventCount < count) {
+                    try {
+                        wait();
+                    } catch (InterruptedException ignored) {
                     }
-                } catch (InterruptedException ignored) {
                 }
             }
         }
 
-        public synchronized void preferenceChange(PreferenceChangeEvent pce) {
-            changed++;
-            addDispatched = true;
-            notifyAll();
+        public void preferenceChange(PreferenceChangeEvent pce) {
+            if (ENCOURAGE_RACES) try { Thread.sleep(1000); } catch (InterruptedException ignored) { }
+            synchronized (this) {
+                ++eventCount;
+                ++changed;
+                notifyAll();
+            }
         }
 
-        public boolean getResult() throws InterruptedException {
-            if (!addDispatched) {
-                // TODO: don't know why must add limitation
-                wait(100);
-            }
-            addDispatched = false;
-            return result;
-        }
-
-        public synchronized int getChanged() throws InterruptedException {
-            if (!addDispatched) {
-                // TODO: don't know why must add limitation
-                wait(1000);
-            }
-            addDispatched = false;
+        public synchronized int getChanged() {
             return changed;
         }
 
-        public void reset() {
+        public synchronized void reset() {
+            eventCount = 0;
             changed = 0;
-            result = false;
         }
     }
 

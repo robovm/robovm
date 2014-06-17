@@ -29,7 +29,7 @@ import java.text.ParsePosition;
 import java.util.Currency;
 import java.util.NoSuchElementException;
 
-public final class NativeDecimalFormat {
+public final class NativeDecimalFormat implements Cloneable {
     /**
      * Constants corresponding to the native type UNumberFormatSymbol, for setSymbol.
      */
@@ -94,7 +94,7 @@ public final class NativeDecimalFormat {
     /**
      * The address of the ICU DecimalFormat* on the native heap.
      */
-    private int address;
+    private long address;
 
     /**
      * The last pattern we gave to ICU, so we can make repeated applications cheap.
@@ -144,22 +144,6 @@ public final class NativeDecimalFormat {
         this.lastPattern = pattern;
     }
 
-    // Used to implement clone.
-    private NativeDecimalFormat(NativeDecimalFormat other) {
-        this.address = cloneImpl(other.address);
-        this.lastPattern = other.lastPattern;
-        this.negPrefNull = other.negPrefNull;
-        this.negSuffNull = other.negSuffNull;
-        this.posPrefNull = other.posPrefNull;
-        this.posSuffNull = other.posSuffNull;
-    }
-
-    // TODO: remove this and just have DecimalFormat.hashCode do the right thing itself.
-    @Override
-    public int hashCode() {
-        return this.getPositivePrefix().hashCode();
-    }
-
     public synchronized void close() {
         if (address != 0) {
             close(address);
@@ -167,9 +151,27 @@ public final class NativeDecimalFormat {
         }
     }
 
-    @Override
-    public Object clone() {
-        return new NativeDecimalFormat(this);
+    @Override protected void finalize() throws Throwable {
+        try {
+            close();
+        } finally {
+            super.finalize();
+        }
+    }
+
+    @Override public Object clone() {
+        try {
+            NativeDecimalFormat clone = (NativeDecimalFormat) super.clone();
+            clone.address = cloneImpl(address);
+            clone.lastPattern = lastPattern;
+            clone.negPrefNull = negPrefNull;
+            clone.negSuffNull = negSuffNull;
+            clone.posPrefNull = posPrefNull;
+            clone.posSuffNull = posSuffNull;
+            return clone;
+        } catch (CloneNotSupportedException unexpected) {
+            throw new AssertionError(unexpected);
+        }
     }
 
     /**
@@ -278,8 +280,11 @@ public final class NativeDecimalFormat {
     }
 
     public AttributedCharacterIterator formatToCharacterIterator(Object object) {
+        if (object == null) {
+            throw new NullPointerException("object == null");
+        }
         if (!(object instanceof Number)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("object not a Number: " + object.getClass());
         }
         Number number = (Number) object;
         FieldPositionIterator fpIter = new FieldPositionIterator();
@@ -476,7 +481,7 @@ public final class NativeDecimalFormat {
         setAttribute(this.address, UNUM_PARSE_INT_ONLY, i);
     }
 
-    private static void applyPattern(int addr, boolean localized, String pattern) {
+    private static void applyPattern(long addr, boolean localized, String pattern) {
         try {
             applyPatternImpl(addr, localized, pattern);
         } catch (NullPointerException npe) {
@@ -615,28 +620,28 @@ public final class NativeDecimalFormat {
         }
     }
 
-    private static native void applyPatternImpl(int addr, boolean localized, String pattern);
-    private static native int cloneImpl(int addr);
-    private static native void close(int addr);
-    private static native char[] formatLong(int addr, long value, FieldPositionIterator iter);
-    private static native char[] formatDouble(int addr, double value, FieldPositionIterator iter);
-    private static native char[] formatDigitList(int addr, String value, FieldPositionIterator iter);
-    private static native int getAttribute(int addr, int symbol);
-    private static native String getTextAttribute(int addr, int symbol);
-    private static native int open(String pattern, String currencySymbol,
+    private static native void applyPatternImpl(long addr, boolean localized, String pattern);
+    private static native long cloneImpl(long addr);
+    private static native void close(long addr);
+    private static native char[] formatLong(long addr, long value, FieldPositionIterator iter);
+    private static native char[] formatDouble(long addr, double value, FieldPositionIterator iter);
+    private static native char[] formatDigitList(long addr, String value, FieldPositionIterator iter);
+    private static native int getAttribute(long addr, int symbol);
+    private static native String getTextAttribute(long addr, int symbol);
+    private static native long open(String pattern, String currencySymbol,
             char decimalSeparator, char digit, String exponentSeparator, char groupingSeparator,
             String infinity, String internationalCurrencySymbol, char minusSign,
             char monetaryDecimalSeparator, String nan, char patternSeparator, char percent,
             char perMill, char zeroDigit);
-    private static native Number parse(int addr, String string, ParsePosition position, boolean parseBigDecimal);
-    private static native void setDecimalFormatSymbols(int addr, String currencySymbol,
+    private static native Number parse(long addr, String string, ParsePosition position, boolean parseBigDecimal);
+    private static native void setDecimalFormatSymbols(long addr, String currencySymbol,
             char decimalSeparator, char digit, String exponentSeparator, char groupingSeparator,
             String infinity, String internationalCurrencySymbol, char minusSign,
             char monetaryDecimalSeparator, String nan, char patternSeparator, char percent,
             char perMill, char zeroDigit);
-    private static native void setSymbol(int addr, int symbol, String str);
-    private static native void setAttribute(int addr, int symbol, int i);
-    private static native void setRoundingMode(int addr, int roundingMode, double roundingIncrement);
-    private static native void setTextAttribute(int addr, int symbol, String str);
-    private static native String toPatternImpl(int addr, boolean localized);
+    private static native void setSymbol(long addr, int symbol, String str);
+    private static native void setAttribute(long addr, int symbol, int i);
+    private static native void setRoundingMode(long addr, int roundingMode, double roundingIncrement);
+    private static native void setTextAttribute(long addr, int symbol, String str);
+    private static native String toPatternImpl(long addr, boolean localized);
 }

@@ -19,7 +19,7 @@ package java.util.prefs;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.charset.Charsets;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.EventListener;
 import java.util.EventObject;
@@ -372,7 +372,7 @@ public abstract class AbstractPreferences extends Preferences {
     @Override
     public void exportNode(OutputStream ostream) throws IOException, BackingStoreException {
         if (ostream == null) {
-            throw new NullPointerException("Stream is null");
+            throw new NullPointerException("ostream == null");
         }
         checkState();
         XMLParser.exportPrefs(this, ostream, false);
@@ -381,7 +381,7 @@ public abstract class AbstractPreferences extends Preferences {
     @Override
     public void exportSubtree(OutputStream ostream) throws IOException, BackingStoreException {
         if (ostream == null) {
-            throw new NullPointerException("Stream is null");
+            throw new NullPointerException("ostream == null");
         }
         checkState();
         XMLParser.exportPrefs(this, ostream, true);
@@ -402,7 +402,7 @@ public abstract class AbstractPreferences extends Preferences {
     @Override
     public String get(String key, String deflt) {
         if (key == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("key == null");
         }
         String result = null;
         synchronized (lock) {
@@ -441,7 +441,7 @@ public abstract class AbstractPreferences extends Preferences {
             return EmptyArray.BYTE;
         }
         try {
-            byte[] bavalue = svalue.getBytes(Charsets.US_ASCII);
+            byte[] bavalue = svalue.getBytes(StandardCharsets.US_ASCII);
             if (bavalue.length % 4 != 0) {
                 return deflt;
             }
@@ -597,7 +597,7 @@ public abstract class AbstractPreferences extends Preferences {
     @Override
     public boolean nodeExists(String name) throws BackingStoreException {
         if (name == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("name == null");
         }
         AbstractPreferences startNode = null;
         synchronized (lock) {
@@ -640,8 +640,10 @@ public abstract class AbstractPreferences extends Preferences {
 
     @Override
     public void put(String key, String value) {
-        if (key == null || value == null) {
-            throw new NullPointerException();
+        if (key == null) {
+            throw new NullPointerException("key == null");
+        } else if (value == null) {
+            throw new NullPointerException("value == null");
         }
         if (key.length() > MAX_KEY_LENGTH || value.length() > MAX_VALUE_LENGTH) {
             throw new IllegalArgumentException();
@@ -730,7 +732,7 @@ public abstract class AbstractPreferences extends Preferences {
     @Override
     public void addNodeChangeListener(NodeChangeListener ncl) {
         if (ncl == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("ncl == null");
         }
         checkState();
         synchronized (nodeChangeListeners) {
@@ -741,7 +743,7 @@ public abstract class AbstractPreferences extends Preferences {
     @Override
     public void addPreferenceChangeListener(PreferenceChangeListener pcl) {
         if (pcl == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("pcl == null");
         }
         checkState();
         synchronized (preferenceChangeListeners) {

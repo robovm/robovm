@@ -134,15 +134,19 @@ public class CollatorTest extends junit.framework.TestCase {
         assertCollationElementIterator(coll.getCollationElementIterator(it), offsets);
     }
 
-    public void testGetCollationElementIteratorString() throws Exception {
-        assertGetCollationElementIteratorString(new Locale("es", "", "TRADITIONAL"), "cha", 0, 2, 3);
+    public void testGetCollationElementIteratorString_es() throws Exception {
         assertGetCollationElementIteratorString(new Locale("es", "", ""), "cha", 0, 1, 2, 3);
+    }
+
+    public void testGetCollationElementIteratorString_de_DE() throws Exception {
         assertGetCollationElementIteratorString(new Locale("de", "DE", ""), "\u00e6b", 0, 1, 1, 1, 1, 2);
     }
 
-    public void testGetCollationElementIteratorCharacterIterator() throws Exception {
-        assertGetCollationElementIteratorCharacterIterator(new Locale("es", "", "TRADITIONAL"), "cha", 0, 2, 3);
+    public void testGetCollationElementIteratorCharacterIterator_es() throws Exception {
         assertGetCollationElementIteratorCharacterIterator(new Locale("es", "", ""), "cha", 0, 1, 2, 3);
+    }
+
+    public void testGetCollationElementIteratorCharacterIterator_de_DE() throws Exception {
         assertGetCollationElementIteratorCharacterIterator(new Locale("de", "DE", ""), "\u00e6b", 0, 1, 1, 1, 1, 2);
     }
 }

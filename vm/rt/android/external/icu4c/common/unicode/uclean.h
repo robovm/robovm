@@ -1,9 +1,7 @@
 /*
 ******************************************************************************
-*                                                                            *
-* Copyright (C) 2001-2009, International Business Machines                   *
-*                Corporation and others. All Rights Reserved.                *
-*                                                                            *
+* Copyright (C) 2001-2012, International Business Machines
+*                Corporation and others. All Rights Reserved.
 ******************************************************************************
 *   file name:  uclean.h
 *   encoding:   US-ASCII
@@ -52,6 +50,7 @@
 U_STABLE void U_EXPORT2 
 u_init(UErrorCode *status);
 
+#ifndef U_HIDE_SYSTEM_API
 /**
  * Clean up the system resources, such as allocated memory or open files,
  * used in all ICU libraries. This will free/delete all memory owned by the
@@ -149,8 +148,6 @@ typedef void U_CALLCONV UMtxFn   (const void *context, UMTX  *mutex);
   *  directly access system functions for mutex operations
   *  This function can only be used when ICU is in an initial, unused state, before
   *  u_init() has been called.
-  *  This function may be used even when ICU has been built without multi-threaded
-  *  support  (see ICU_USE_THREADS pre-processor variable, umutex.h)
   *  @param context This pointer value will be saved, and then (later) passed as
   *                 a parameter to the user-supplied mutex functions each time they
   *                 are called. 
@@ -247,5 +244,6 @@ typedef void  U_CALLCONV UMemFreeFn (const void *context, void *mem);
 U_STABLE void U_EXPORT2 
 u_setMemoryFunctions(const void *context, UMemAllocFn *a, UMemReallocFn *r, UMemFreeFn *f, 
                     UErrorCode *status);
+#endif  /* U_HIDE_SYSTEM_API */
 
 #endif

@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
+import libcore.java.lang.ref.FinalizationTester;
 
 import tests.support.Support_MapTest2;
 
@@ -208,7 +209,7 @@ public class WeakHashMapTest extends junit.framework.TestCase {
         do {
             System.gc();
             System.gc();
-            Runtime.getRuntime().runFinalization();
+            FinalizationTester.induceFinalization();
             count++;
         } while (count <= 5 && entrySet.size() == 100);
 
@@ -240,7 +241,8 @@ public class WeakHashMapTest extends junit.framework.TestCase {
         WeakHashMap map = new WeakHashMap();
         map.put(null, "value"); // add null key
         System.gc();
-        System.runFinalization();
+        System.gc();
+        FinalizationTester.induceFinalization();
         map.remove("nothing"); // Cause objects in queue to be removed
         assertEquals("null key was removed", 1, map.size());
     }
@@ -315,7 +317,7 @@ public class WeakHashMapTest extends junit.framework.TestCase {
         do {
             System.gc();
             System.gc();
-            Runtime.getRuntime().runFinalization();
+            FinalizationTester.induceFinalization();
             count++;
         } while (count <= 5 && keySet.size() == 100);
 
@@ -352,7 +354,7 @@ public class WeakHashMapTest extends junit.framework.TestCase {
         do {
             System.gc();
             System.gc();
-            Runtime.getRuntime().runFinalization();
+            FinalizationTester.induceFinalization();
             count++;
         } while (count <= 5 && valuesCollection.size() == 100);
 

@@ -21,6 +21,7 @@
 #include "ScopedUtfChars.h"
 #include "unicode/uchar.h"
 #include <math.h>
+#include <stdio.h> // For BUFSIZ
 #include <stdlib.h>
 
 extern "C" jint Java_java_lang_Character_digitImpl(JNIEnv*, jclass, jint codePoint, jint radix) {
@@ -135,3 +136,10 @@ extern "C" int Java_java_lang_Character_ofImpl(JNIEnv*, jclass, jint codePoint) 
     return ublock_getCode(codePoint);
 }
 
+extern "C" jboolean Java_java_lang_Character_isAlphabetic(JNIEnv*, jclass, jint codePoint) {
+  return u_hasBinaryProperty(codePoint, UCHAR_ALPHABETIC);
+}
+
+extern "C" jboolean Java_java_lang_Character_isIdeographic(JNIEnv*, jclass, jint codePoint) {
+  return u_hasBinaryProperty(codePoint, UCHAR_IDEOGRAPHIC);
+}

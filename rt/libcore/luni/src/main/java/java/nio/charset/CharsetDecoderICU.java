@@ -16,7 +16,7 @@ package java.nio.charset;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
-import libcore.icu.ErrorCode;
+import libcore.icu.ICU;
 import libcore.icu.NativeConverter;
 import libcore.util.EmptyArray;
 
@@ -46,7 +46,6 @@ final class CharsetDecoderICU extends CharsetDecoder {
     // is inherently thread-unsafe so we don't have to worry about synchronization.
     private int inEnd;
     private int outEnd;
-    private int ec;
 
     public static CharsetDecoderICU newInstance(Charset cs, String icuCanonicalName) {
         // This complexity is necessary to ensure that even if the constructor, superclass
@@ -84,10 +83,7 @@ final class CharsetDecoderICU extends CharsetDecoder {
     }
 
     private void updateCallback() {
-        ec = NativeConverter.setCallbackDecode(converterHandle, this);
-        if (ErrorCode.isFailure(ec)) {
-            throw ErrorCode.throwException(ec);
-        }
+        NativeConverter.setCallbackDecode(converterHandle, this);
     }
 
     @Override protected void implReset() {
@@ -99,7 +95,6 @@ final class CharsetDecoderICU extends CharsetDecoder {
         input = null;
         allocatedInput = null;
         allocatedOutput = null;
-        ec = 0;
         inEnd = 0;
         outEnd = 0;
     }
@@ -114,16 +109,14 @@ final class CharsetDecoderICU extends CharsetDecoder {
             data[OUTPUT_OFFSET] = getArray(out);
             data[INVALID_BYTES] = 0; // Make sure we don't see earlier errors.
 
-            ec = NativeConverter.decode(converterHandle, input, inEnd, output, outEnd, data, true);
-            if (ErrorCode.isFailure(ec)) {
-                if (ec == ErrorCode.U_BUFFER_OVERFLOW_ERROR) {
+            int error = NativeConverter.decode(converterHandle, input, inEnd, output, outEnd, data, true);
+            if (ICU.U_FAILURE(error)) {
+                if (error == ICU.U_BUFFER_OVERFLOW_ERROR) {
                     return CoderResult.OVERFLOW;
-                } else if (ec == ErrorCode.U_TRUNCATED_CHAR_FOUND) {
+                } else if (error == ICU.U_TRUNCATED_CHAR_FOUND) {
                     if (data[INPUT_OFFSET] > 0) {
                         return CoderResult.malformedForLength(data[INPUT_OFFSET]);
                     }
-                } else {
-                    throw ErrorCode.throwException(ec);
                 }
             }
             return CoderResult.UNDERFLOW;
@@ -142,13 +135,17 @@ final class CharsetDecoderICU extends CharsetDecoder {
         data[OUTPUT_OFFSET]= getArray(out);
 
         try {
-            ec = NativeConverter.decode(converterHandle, input, inEnd, output, outEnd, data, false);
-            if (ec == ErrorCode.U_BUFFER_OVERFLOW_ERROR) {
-                return CoderResult.OVERFLOW;
-            } else if (ec == ErrorCode.U_INVALID_CHAR_FOUND) {
-                return CoderResult.unmappableForLength(data[INVALID_BYTES]);
-            } else if (ec == ErrorCode.U_ILLEGAL_CHAR_FOUND) {
-                return CoderResult.malformedForLength(data[INVALID_BYTES]);
+            int error = NativeConverter.decode(converterHandle, input, inEnd, output, outEnd, data, false);
+            if (ICU.U_FAILURE(error)) {
+                if (error == ICU.U_BUFFER_OVERFLOW_ERROR) {
+                    return CoderResult.OVERFLOW;
+                } else if (error == ICU.U_INVALID_CHAR_FOUND) {
+                    return CoderResult.unmappableForLength(data[INVALID_BYTES]);
+                } else if (error == ICU.U_ILLEGAL_CHAR_FOUND) {
+                    return CoderResult.malformedForLength(data[INVALID_BYTES]);
+                } else {
+                    throw new AssertionError(error);
+                }
             }
             // Decoding succeeded: give us more data.
             return CoderResult.UNDERFLOW;

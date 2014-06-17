@@ -222,7 +222,7 @@ public abstract class URLStreamHandler {
      *            the file component.
      * @param ref
      *            the reference.
-     * @deprecated use setURL(URL, String String, int, String, String, String,
+     * @deprecated Use setURL(URL, String String, int, String, String, String,
      *             String, String) instead.
      */
     @Deprecated

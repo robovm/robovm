@@ -141,41 +141,19 @@ public class ByteArrayInputStream extends InputStream {
         return pos < count ? buf[pos++] & 0xFF : -1;
     }
 
-    /**
-     * Reads at most {@code len} bytes from this stream and stores
-     * them in byte array {@code b} starting at {@code offset}. This
-     * implementation reads bytes from the source byte array.
-     *
-     * @param buffer
-     *            the byte array in which to store the bytes read.
-     * @param offset
-     *            the initial position in {@code b} to store the bytes read from
-     *            this stream.
-     * @param length
-     *            the maximum number of bytes to store in {@code b}.
-     * @return the number of bytes actually read or -1 if no bytes were read and
-     *         the end of the stream was encountered.
-     * @throws IndexOutOfBoundsException
-     *             if {@code offset < 0} or {@code length < 0}, or if
-     *             {@code offset + length} is greater than the size of
-     *             {@code b}.
-     * @throws NullPointerException
-     *             if {@code b} is {@code null}.
-     */
-    @Override
-    public synchronized int read(byte[] buffer, int offset, int length) {
-        Arrays.checkOffsetAndCount(buffer.length, offset, length);
+    @Override public synchronized int read(byte[] buffer, int byteOffset, int byteCount) {
+        Arrays.checkOffsetAndCount(buffer.length, byteOffset, byteCount);
 
         // Are there any bytes available?
         if (this.pos >= this.count) {
             return -1;
         }
-        if (length == 0) {
+        if (byteCount == 0) {
             return 0;
         }
 
-        int copylen = this.count - pos < length ? this.count - pos : length;
-        System.arraycopy(this.buf, pos, buffer, offset, copylen);
+        int copylen = this.count - pos < byteCount ? this.count - pos : byteCount;
+        System.arraycopy(this.buf, pos, buffer, byteOffset, copylen);
         pos += copylen;
         return copylen;
     }

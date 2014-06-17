@@ -19,7 +19,7 @@ package java.net;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
-import java.nio.charset.Charsets;
+import java.nio.charset.StandardCharsets;
 import libcore.net.UriCodec;
 
 /**
@@ -43,11 +43,11 @@ public class URLEncoder {
     /**
      * Equivalent to {@code encode(s, "UTF-8")}.
      *
-     * @deprecated use {@link #encode(String, String)} instead.
+     * @deprecated Use {@link #encode(String, String)} instead.
      */
     @Deprecated
     public static String encode(String s) {
-        return ENCODER.encode(s, Charsets.UTF_8);
+        return ENCODER.encode(s, StandardCharsets.UTF_8);
     }
 
     /**

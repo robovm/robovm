@@ -1,7 +1,7 @@
 /*
 *******************************************************************************
 *
-*   Copyright (C) 2009-2011, International Business Machines
+*   Copyright (C) 2009-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 *******************************************************************************
@@ -21,11 +21,12 @@
 #include "unicode/normalizer2.h"
 #include "unicode/udata.h"
 #include "unicode/ustring.h"
+#include "unicode/utf16.h"
 #include "cmemory.h"
 #include "mutex.h"
 #include "normalizer2impl.h"
+#include "putilimp.h"
 #include "uassert.h"
-#include "uhash.h"
 #include "uset_imp.h"
 #include "utrie2.h"
 #include "uvector.h"
@@ -254,7 +255,6 @@ struct CanonIterData : public UMemory {
 Normalizer2Impl::~Normalizer2Impl() {
     udata_close(memory);
     utrie2_close(normTrie);
-    UTrie2Singleton(fcdTrieSingleton).deleteInstance();
     delete (CanonIterData *)canonIterDataSingleton.fInstance;
 }
 
@@ -270,7 +270,7 @@ Normalizer2Impl::isAcceptable(void *context,
         pInfo->dataFormat[1]==0x72 &&
         pInfo->dataFormat[2]==0x6d &&
         pInfo->dataFormat[3]==0x32 &&
-        pInfo->formatVersion[0]==1
+        pInfo->formatVersion[0]==2
     ) {
         Normalizer2Impl *me=(Normalizer2Impl *)context;
         uprv_memcpy(me->dataVersion, pInfo->dataVersion, 4);
@@ -301,6 +301,7 @@ Normalizer2Impl::load(const char *packageName, const char *name, UErrorCode &err
     minCompNoMaybeCP=inIndexes[IX_MIN_COMP_NO_MAYBE_CP];
 
     minYesNo=inIndexes[IX_MIN_YES_NO];
+    minYesNoMappingsOnly=inIndexes[IX_MIN_YES_NO_MAPPINGS_ONLY];
     minNoNo=inIndexes[IX_MIN_NO_NO];
     limitNoNo=inIndexes[IX_LIMIT_NO_NO];
     minMaybeYes=inIndexes[IX_MIN_MAYBE_YES];
@@ -315,8 +316,30 @@ Normalizer2Impl::load(const char *packageName, const char *name, UErrorCode &err
     }
 
     offset=nextOffset;
+    nextOffset=inIndexes[IX_SMALL_FCD_OFFSET];
     maybeYesCompositions=(const uint16_t *)(inBytes+offset);
     extraData=maybeYesCompositions+(MIN_NORMAL_MAYBE_YES-minMaybeYes);
+
+    // smallFCD: new in formatVersion 2
+    offset=nextOffset;
+    smallFCD=inBytes+offset;
+
+    // Build tccc180[].
+    // gennorm2 enforces lccc=0 for c<MIN_CCC_LCCC_CP=U+0300.
+    uint8_t bits=0;
+    for(UChar c=0; c<0x180; bits>>=1) {
+        if((c&0xff)==0) {
+            bits=smallFCD[c>>8];  // one byte per 0x100 code points
+        }
+        if(bits&1) {
+            for(int i=0; i<0x20; ++i, ++c) {
+                tccc180[c]=(uint8_t)getFCD16FromNormData(c);
+            }
+        } else {
+            uprv_memset(tccc180+c, 0, 0x20);
+            c+=0x20;
+        }
+    }
 }
 
 uint8_t Normalizer2Impl::getTrailCCFromCompYesAndZeroCC(const UChar *cpStart, const UChar *cpLimit) const {
@@ -524,16 +547,16 @@ UBool Normalizer2Impl::decompose(UChar32 c, uint16_t norm16,
         } else {
             // c decomposes, get everything from the variable-length extra data
             const uint16_t *mapping=getMapping(norm16);
-            uint16_t firstUnit=*mapping++;
+            uint16_t firstUnit=*mapping;
             int32_t length=firstUnit&MAPPING_LENGTH_MASK;
             uint8_t leadCC, trailCC;
             trailCC=(uint8_t)(firstUnit>>8);
             if(firstUnit&MAPPING_HAS_CCC_LCCC_WORD) {
-                leadCC=(uint8_t)(*mapping++>>8);
+                leadCC=(uint8_t)(*(mapping-1)>>8);
             } else {
                 leadCC=0;
             }
-            return buffer.append((const UChar *)mapping, length, leadCC, trailCC, errorCode);
+            return buffer.append((const UChar *)mapping+1, length, leadCC, trailCC, errorCode);
         }
     }
 }
@@ -558,12 +581,57 @@ Normalizer2Impl::getDecomposition(UChar32 c, UChar buffer[4], int32_t &length) c
         } else {
             // c decomposes, get everything from the variable-length extra data
             const uint16_t *mapping=getMapping(norm16);
-            uint16_t firstUnit=*mapping++;
-            length=firstUnit&MAPPING_LENGTH_MASK;
-            if(firstUnit&MAPPING_HAS_CCC_LCCC_WORD) {
-                ++mapping;
+            length=*mapping&MAPPING_LENGTH_MASK;
+            return (const UChar *)mapping+1;
+        }
+    }
+}
+
+// The capacity of the buffer must be 30=MAPPING_LENGTH_MASK-1
+// so that a raw mapping fits that consists of one unit ("rm0")
+// plus all but the first two code units of the normal mapping.
+// The maximum length of a normal mapping is 31=MAPPING_LENGTH_MASK.
+const UChar *
+Normalizer2Impl::getRawDecomposition(UChar32 c, UChar buffer[30], int32_t &length) const {
+    // We do not loop in this method because an algorithmic mapping itself
+    // becomes a final result rather than having to be decomposed recursively.
+    uint16_t norm16;
+    if(c<minDecompNoCP || isDecompYes(norm16=getNorm16(c))) {
+        // c does not decompose
+        return NULL;
+    } else if(isHangul(norm16)) {
+        // Hangul syllable: decompose algorithmically
+        Hangul::getRawDecomposition(c, buffer);
+        length=2;
+        return buffer;
+    } else if(isDecompNoAlgorithmic(norm16)) {
+        c=mapAlgorithmic(c, norm16);
+        length=0;
+        U16_APPEND_UNSAFE(buffer, length, c);
+        return buffer;
+    } else {
+        // c decomposes, get everything from the variable-length extra data
+        const uint16_t *mapping=getMapping(norm16);
+        uint16_t firstUnit=*mapping;
+        int32_t mLength=firstUnit&MAPPING_LENGTH_MASK;  // length of normal mapping
+        if(firstUnit&MAPPING_HAS_RAW_MAPPING) {
+            // Read the raw mapping from before the firstUnit and before the optional ccc/lccc word.
+            // Bit 7=MAPPING_HAS_CCC_LCCC_WORD
+            const uint16_t *rawMapping=mapping-((firstUnit>>7)&1)-1;
+            uint16_t rm0=*rawMapping;
+            if(rm0<=MAPPING_LENGTH_MASK) {
+                length=rm0;
+                return (const UChar *)rawMapping-rm0;
+            } else {
+                // Copy the normal mapping and replace its first two code units with rm0.
+                buffer[0]=(UChar)rm0;
+                u_memcpy(buffer+1, (const UChar *)mapping+1+2, mLength-2);
+                length=mLength-1;
+                return buffer;
             }
-            return (const UChar *)mapping;
+        } else {
+            length=mLength;
+            return (const UChar *)mapping+1;
         }
     }
 }
@@ -589,8 +657,10 @@ void Normalizer2Impl::decomposeAndAppend(const UChar *src, const UChar *limit,
     if(limit==NULL) {  // appendZeroCC() needs limit!=NULL
         limit=u_strchr(iter.codePointStart, 0);
     }
-    buffer.append(src, (int32_t)(iter.codePointStart-src), firstCC, prevCC, errorCode) &&
+
+    if (buffer.append(src, (int32_t)(iter.codePointStart-src), firstCC, prevCC, errorCode)) {
         buffer.appendZeroCC(iter.codePointStart, limit, errorCode);
+    }
 }
 
 // Note: hasDecompBoundary() could be implemented as aliases to
@@ -611,7 +681,7 @@ UBool Normalizer2Impl::hasDecompBoundary(UChar32 c, UBool before) const {
         } else {
             // c decomposes, get everything from the variable-length extra data
             const uint16_t *mapping=getMapping(norm16);
-            uint16_t firstUnit=*mapping++;
+            uint16_t firstUnit=*mapping;
             if((firstUnit&MAPPING_LENGTH_MASK)==0) {
                 return FALSE;
             }
@@ -627,7 +697,7 @@ UBool Normalizer2Impl::hasDecompBoundary(UChar32 c, UBool before) const {
                 // if(trailCC==1) test leadCC==0, same as checking for before-boundary
             }
             // TRUE if leadCC==0 (hasFCDBoundaryBefore())
-            return (firstUnit&MAPPING_HAS_CCC_LCCC_WORD)==0 || (*mapping&0xff00)==0;
+            return (firstUnit&MAPPING_HAS_CCC_LCCC_WORD)==0 || (*(mapping-1)&0xff00)==0;
         }
     }
 }
@@ -898,6 +968,55 @@ void Normalizer2Impl::recompose(ReorderingBuffer &buffer, int32_t recomposeStart
         }
     }
     buffer.setReorderingLimit(limit);
+}
+
+UChar32
+Normalizer2Impl::composePair(UChar32 a, UChar32 b) const {
+    uint16_t norm16=getNorm16(a);  // maps an out-of-range 'a' to inert norm16=0
+    const uint16_t *list;
+    if(isInert(norm16)) {
+        return U_SENTINEL;
+    } else if(norm16<minYesNoMappingsOnly) {
+        if(isJamoL(norm16)) {
+            b-=Hangul::JAMO_V_BASE;
+            if(0<=b && b<Hangul::JAMO_V_COUNT) {
+                return
+                    (Hangul::HANGUL_BASE+
+                     ((a-Hangul::JAMO_L_BASE)*Hangul::JAMO_V_COUNT+b)*
+                     Hangul::JAMO_T_COUNT);
+            } else {
+                return U_SENTINEL;
+            }
+        } else if(isHangul(norm16)) {
+            b-=Hangul::JAMO_T_BASE;
+            if(Hangul::isHangulWithoutJamoT(a) && 0<b && b<Hangul::JAMO_T_COUNT) {  // not b==0!
+                return a+b;
+            } else {
+                return U_SENTINEL;
+            }
+        } else {
+            // 'a' has a compositions list in extraData
+            list=extraData+norm16;
+            if(norm16>minYesNo) {  // composite 'a' has both mapping & compositions list
+                list+=  // mapping pointer
+                    1+  // +1 to skip the first unit with the mapping lenth
+                    (*list&MAPPING_LENGTH_MASK);  // + mapping length
+            }
+        }
+    } else if(norm16<minMaybeYes || MIN_NORMAL_MAYBE_YES<=norm16) {
+        return U_SENTINEL;
+    } else {
+        list=maybeYesCompositions+norm16-minMaybeYes;
+    }
+    if(b<0 || 0x10ffff<b) {  // combine(list, b) requires a valid code point b
+        return U_SENTINEL;
+    }
+#if U_SIGNED_RIGHT_SHIFT_IS_ARITHMETIC
+    return combine(list, b)>>1;
+#else
+    int32_t compositeAndFwd=combine(list, b);
+    return compositeAndFwd>=0 ? compositeAndFwd>>1 : U_SENTINEL;
+#endif
 }
 
 // Very similar to composeQuickCheck(): Make the same changes in both places if relevant.
@@ -1327,14 +1446,14 @@ UBool Normalizer2Impl::hasCompBoundaryBefore(UChar32 c, uint16_t norm16) const {
         } else {
             // c decomposes, get everything from the variable-length extra data
             const uint16_t *mapping=getMapping(norm16);
-            uint16_t firstUnit=*mapping++;
+            uint16_t firstUnit=*mapping;
             if((firstUnit&MAPPING_LENGTH_MASK)==0) {
                 return FALSE;
             }
-            if((firstUnit&MAPPING_HAS_CCC_LCCC_WORD) && (*mapping++&0xff00)) {
+            if((firstUnit&MAPPING_HAS_CCC_LCCC_WORD) && (*(mapping-1)&0xff00)) {
                 return FALSE;  // non-zero leadCC
             }
-            int32_t i=0;
+            int32_t i=1;  // skip over the firstUnit
             UChar32 c;
             U16_NEXT_UNSAFE(mapping, i, c);
             return isCompYesAndZeroCC(getNorm16(c));
@@ -1348,7 +1467,8 @@ UBool Normalizer2Impl::hasCompBoundaryAfter(UChar32 c, UBool onlyContiguous, UBo
         if(isInert(norm16)) {
             return TRUE;
         } else if(norm16<=minYesNo) {
-            // Hangul LVT (==minYesNo) has a boundary after it.
+            // Hangul: norm16==minYesNo
+            // Hangul LVT has a boundary after it.
             // Hangul LV and non-inert yesYes characters combine forward.
             return isHangul(norm16) && !Hangul::isHangulWithoutJamoT((UChar)c);
         } else if(norm16>= (testInert ? minNoNo : minMaybeYes)) {
@@ -1362,12 +1482,13 @@ UBool Normalizer2Impl::hasCompBoundaryAfter(UChar32 c, UBool onlyContiguous, UBo
             const uint16_t *mapping=getMapping(norm16);
             uint16_t firstUnit=*mapping;
             // TRUE if
-            //      c is not deleted, and
-            //      it and its decomposition do not combine forward, and it has a starter, and
-            //      if FCC then trailCC<=1
+            //   not MAPPING_NO_COMP_BOUNDARY_AFTER
+            //     (which is set if
+            //       c is not deleted, and
+            //       it and its decomposition do not combine forward, and it has a starter)
+            //   and if FCC then trailCC<=1
             return
-                (firstUnit&MAPPING_LENGTH_MASK)!=0 &&
-                (firstUnit&(MAPPING_PLUS_COMPOSITION_LIST|MAPPING_NO_COMP_BOUNDARY_AFTER))==0 &&
+                (firstUnit&MAPPING_NO_COMP_BOUNDARY_AFTER)==0 &&
                 (!onlyContiguous || firstUnit<=0x1ff);
         }
     }
@@ -1393,95 +1514,30 @@ const UChar *Normalizer2Impl::findNextCompBoundary(const UChar *p, const UChar *
     return iter.codePointStart;
 }
 
-class FCDTrieSingleton : public UTrie2Singleton {
-public:
-    FCDTrieSingleton(SimpleSingleton &s, Normalizer2Impl &ni, UErrorCode &ec) :
-        UTrie2Singleton(s), impl(ni), errorCode(ec) {}
-    UTrie2 *getInstance(UErrorCode &errorCode) {
-        return UTrie2Singleton::getInstance(createInstance, this, errorCode);
-    }
-    static void *createInstance(const void *context, UErrorCode &errorCode);
-    UBool rangeHandler(UChar32 start, UChar32 end, uint32_t value) {
-        if(value!=0) {
-            impl.setFCD16FromNorm16(start, end, (uint16_t)value, newFCDTrie, errorCode);
-        }
-        return U_SUCCESS(errorCode);
-    }
+// Note: normalizer2impl.cpp r30982 (2011-nov-27)
+// still had getFCDTrie() which built and cached an FCD trie.
+// That provided faster access to FCD data than getFCD16FromNormData()
+// but required synchronization and consumed some 10kB of heap memory
+// in any process that uses FCD (e.g., via collation).
+// tccc180[] and smallFCD[] are intended to help with any loss of performance,
+// at least for Latin & CJK.
 
-    Normalizer2Impl &impl;
-    UTrie2 *newFCDTrie;
-    UErrorCode &errorCode;
-};
-
-U_CDECL_BEGIN
-
-// Set the FCD value for a range of same-norm16 characters.
-static UBool U_CALLCONV
-enumRangeHandler(const void *context, UChar32 start, UChar32 end, uint32_t value) {
-    return ((FCDTrieSingleton *)context)->rangeHandler(start, end, value);
-}
-
-// Collect (OR together) the FCD values for a range of supplementary characters,
-// for their lead surrogate code unit.
-static UBool U_CALLCONV
-enumRangeOrValue(const void *context, UChar32 /*start*/, UChar32 /*end*/, uint32_t value) {
-    *((uint32_t *)context)|=value;
-    return TRUE;
-}
-
-U_CDECL_END
-
-void *FCDTrieSingleton::createInstance(const void *context, UErrorCode &errorCode) {
-    FCDTrieSingleton *me=(FCDTrieSingleton *)context;
-    me->newFCDTrie=utrie2_open(0, 0, &errorCode);
-    if(U_SUCCESS(errorCode)) {
-        utrie2_enum(me->impl.getNormTrie(), NULL, enumRangeHandler, me);
-        for(UChar lead=0xd800; lead<0xdc00; ++lead) {
-            uint32_t oredValue=utrie2_get32(me->newFCDTrie, lead);
-            utrie2_enumForLeadSurrogate(me->newFCDTrie, lead, NULL, enumRangeOrValue, &oredValue);
-            if(oredValue!=0) {
-                // Set a "bad" value for makeFCD() to break the quick check loop
-                // and look up the value for the supplementary code point.
-                // If there is any lccc, then set the worst-case lccc of 1.
-                // The ORed-together value's tccc is already the worst case.
-                if(oredValue>0xff) {
-                    oredValue=0x100|(oredValue&0xff);
-                }
-                utrie2_set32ForLeadSurrogateCodeUnit(me->newFCDTrie, lead, oredValue, &errorCode);
-            }
-        }
-        utrie2_freeze(me->newFCDTrie, UTRIE2_16_VALUE_BITS, &errorCode);
-        if(U_SUCCESS(errorCode)) {
-            return me->newFCDTrie;
-        }
-    }
-    utrie2_close(me->newFCDTrie);
-    return NULL;
-}
-
-void Normalizer2Impl::setFCD16FromNorm16(UChar32 start, UChar32 end, uint16_t norm16,
-                                         UTrie2 *newFCDTrie, UErrorCode &errorCode) const {
+// Gets the FCD value from the regular normalization data.
+uint16_t Normalizer2Impl::getFCD16FromNormData(UChar32 c) const {
     // Only loops for 1:1 algorithmic mappings.
     for(;;) {
-        if(norm16>=MIN_NORMAL_MAYBE_YES) {
-            norm16&=0xff;
-            norm16|=norm16<<8;
-        } else if(norm16<=minYesNo || minMaybeYes<=norm16) {
+        uint16_t norm16=getNorm16(c);
+        if(norm16<=minYesNo) {
             // no decomposition or Hangul syllable, all zeros
-            break;
-        } else if(limitNoNo<=norm16) {
-            int32_t delta=norm16-(minMaybeYes-MAX_DELTA-1);
-            if(start==end) {
-                start+=delta;
-                norm16=getNorm16(start);
-            } else {
-                // the same delta leads from different original characters to different mappings
-                do {
-                    UChar32 c=start+delta;
-                    setFCD16FromNorm16(c, c, getNorm16(c), newFCDTrie, errorCode);
-                } while(++start<=end);
-                break;
-            }
+            return 0;
+        } else if(norm16>=MIN_NORMAL_MAYBE_YES) {
+            // combining mark
+            norm16&=0xff;
+            return norm16|(norm16<<8);
+        } else if(norm16>=minMaybeYes) {
+            return 0;
+        } else if(isDecompNoAlgorithmic(norm16)) {
+            c=mapAlgorithmic(c, norm16);
         } else {
             // c decomposes, get everything from the variable-length extra data
             const uint16_t *mapping=getMapping(norm16);
@@ -1490,25 +1546,16 @@ void Normalizer2Impl::setFCD16FromNorm16(UChar32 start, UChar32 end, uint16_t no
                 // A character that is deleted (maps to an empty string) must
                 // get the worst-case lccc and tccc values because arbitrary
                 // characters on both sides will become adjacent.
-                norm16=0x1ff;
+                return 0x1ff;
             } else {
+                norm16=firstUnit>>8;  // tccc
                 if(firstUnit&MAPPING_HAS_CCC_LCCC_WORD) {
-                    norm16=mapping[1]&0xff00;  // lccc
-                } else {
-                    norm16=0;
+                    norm16|=*(mapping-1)&0xff00;  // lccc
                 }
-                norm16|=firstUnit>>8;  // tccc
+                return norm16;
             }
         }
-        utrie2_setRange32(newFCDTrie, start, end, norm16, TRUE, &errorCode);
-        break;
     }
-}
-
-const UTrie2 *Normalizer2Impl::getFCDTrie(UErrorCode &errorCode) const {
-    // Logically const: Synchronized instantiation.
-    Normalizer2Impl *me=const_cast<Normalizer2Impl *>(this);
-    return FCDTrieSingleton(me->fcdTrieSingleton, *me, errorCode).getInstance(errorCode);
 }
 
 // Dual functionality:
@@ -1531,7 +1578,7 @@ Normalizer2Impl::makeFCD(const UChar *src, const UChar *limit,
             prevBoundary=src;
             // We know that the previous character's lccc==0.
             // Fetching the fcd16 value was deferred for this below-U+0300 code point.
-            prevFCD16=getFCD16FromSingleLead(*(src-1));
+            prevFCD16=getFCD16(*(src-1));
             if(prevFCD16>1) {
                 --prevBoundary;
             }
@@ -1545,8 +1592,6 @@ Normalizer2Impl::makeFCD(const UChar *src, const UChar *limit,
     // The exception is the call to decomposeShort() which uses the buffer
     // in the normal way.
 
-    const UTrie2 *trie=fcdTrie();
-
     const UChar *prevSrc;
     UChar32 c=0;
     uint16_t fcd16=0;
@@ -1557,24 +1602,24 @@ Normalizer2Impl::makeFCD(const UChar *src, const UChar *limit,
             if((c=*src)<MIN_CCC_LCCC_CP) {
                 prevFCD16=~c;
                 ++src;
-            } else if((fcd16=UTRIE2_GET16_FROM_U16_SINGLE_LEAD(trie, c))<=0xff) {
-                prevFCD16=fcd16;
+            } else if(!singleLeadMightHaveNonZeroFCD16(c)) {
+                prevFCD16=0;
                 ++src;
-            } else if(!U16_IS_SURROGATE(c)) {
-                break;
             } else {
-                UChar c2;
-                if(U16_IS_SURROGATE_LEAD(c)) {
-                    if((src+1)!=limit && U16_IS_TRAIL(c2=src[1])) {
-                        c=U16_GET_SUPPLEMENTARY(c, c2);
-                    }
-                } else /* trail surrogate */ {
-                    if(prevSrc<src && U16_IS_LEAD(c2=*(src-1))) {
-                        --src;
-                        c=U16_GET_SUPPLEMENTARY(c2, c);
+                if(U16_IS_SURROGATE(c)) {
+                    UChar c2;
+                    if(U16_IS_SURROGATE_LEAD(c)) {
+                        if((src+1)!=limit && U16_IS_TRAIL(c2=src[1])) {
+                            c=U16_GET_SUPPLEMENTARY(c, c2);
+                        }
+                    } else /* trail surrogate */ {
+                        if(prevSrc<src && U16_IS_LEAD(c2=*(src-1))) {
+                            --src;
+                            c=U16_GET_SUPPLEMENTARY(c2, c);
+                        }
                     }
                 }
-                if((fcd16=getFCD16(c))<=0xff) {
+                if((fcd16=getFCD16FromNormData(c))<=0xff) {
                     prevFCD16=fcd16;
                     src+=U16_LENGTH(c);
                 } else {
@@ -1594,7 +1639,8 @@ Normalizer2Impl::makeFCD(const UChar *src, const UChar *limit,
             // We know that the previous character's lccc==0.
             if(prevFCD16<0) {
                 // Fetching the fcd16 value was deferred for this below-U+0300 code point.
-                prevFCD16=getFCD16FromSingleLead((UChar)~prevFCD16);
+                UChar32 prev=~prevFCD16;
+                prevFCD16= prev<0x180 ? tccc180[prev] : getFCD16FromNormData(prev);
                 if(prevFCD16>1) {
                     --prevBoundary;
                 }
@@ -1604,7 +1650,7 @@ Normalizer2Impl::makeFCD(const UChar *src, const UChar *limit,
                     --p;
                     // Need to fetch the previous character's FCD value because
                     // prevFCD16 was just for the trail surrogate code point.
-                    prevFCD16=getFCD16FromSurrogatePair(p[0], p[1]);
+                    prevFCD16=getFCD16FromNormData(U16_GET_SUPPLEMENTARY(p[0], p[1]));
                     // Still known to have lccc==0 because its lead surrogate unit had lccc==0.
                 }
                 if(prevFCD16>1) {
@@ -1692,28 +1738,25 @@ void Normalizer2Impl::makeFCDAndAppend(const UChar *src, const UChar *limit,
 }
 
 const UChar *Normalizer2Impl::findPreviousFCDBoundary(const UChar *start, const UChar *p) const {
-    BackwardUTrie2StringIterator iter(fcdTrie(), start, p);
-    uint16_t fcd16;
-    do {
-        fcd16=iter.previous16();
-    } while(fcd16>0xff);
-    return iter.codePointStart;
+    while(start<p && previousFCD16(start, p)>0xff) {}
+    return p;
 }
 
 const UChar *Normalizer2Impl::findNextFCDBoundary(const UChar *p, const UChar *limit) const {
-    ForwardUTrie2StringIterator iter(fcdTrie(), p, limit);
-    uint16_t fcd16;
-    do {
-        fcd16=iter.next16();
-    } while(fcd16>0xff);
-    return iter.codePointStart;
+    while(p<limit) {
+        const UChar *codePointStart=p;
+        if(nextFCD16(p, limit)<=0xff) {
+            return codePointStart;
+        }
+    }
+    return p;
 }
 
 // CanonicalIterator data -------------------------------------------------- ***
 
 CanonIterData::CanonIterData(UErrorCode &errorCode) :
         trie(utrie2_open(0, 0, &errorCode)),
-        canonStartSets(uhash_deleteUObject, NULL, errorCode) {}
+        canonStartSets(uprv_deleteUObject, NULL, errorCode) {}
 
 CanonIterData::~CanonIterData() {
     utrie2_close(trie);
@@ -1836,16 +1879,16 @@ void Normalizer2Impl::makeCanonIterDataFromNorm16(UChar32 start, UChar32 end, ui
             if(minYesNo<=norm16_2 && norm16_2<limitNoNo) {
                 // c decomposes, get everything from the variable-length extra data
                 const uint16_t *mapping=getMapping(norm16_2);
-                uint16_t firstUnit=*mapping++;
+                uint16_t firstUnit=*mapping;
                 int32_t length=firstUnit&MAPPING_LENGTH_MASK;
                 if((firstUnit&MAPPING_HAS_CCC_LCCC_WORD)!=0) {
-                    if(c==c2 && (*mapping&0xff)!=0) {
+                    if(c==c2 && (*(mapping-1)&0xff)!=0) {
                         newValue|=CANON_NOT_SEGMENT_STARTER;  // original c has cc!=0
                     }
-                    ++mapping;
                 }
                 // Skip empty mappings (no characters in the decomposition).
                 if(length!=0) {
+                    ++mapping;  // skip over the firstUnit
                     // add c to first code point's start set
                     int32_t i=0;
                     U16_NEXT_UNSAFE(mapping, i, c2);
@@ -1954,7 +1997,7 @@ unorm2_swap(const UDataSwapper *ds,
         pInfo->dataFormat[1]==0x72 &&
         pInfo->dataFormat[2]==0x6d &&
         pInfo->dataFormat[3]==0x32 &&
-        pInfo->formatVersion[0]==1
+        (pInfo->formatVersion[0]==1 || pInfo->formatVersion[0]==2)
     )) {
         udata_printError(ds, "unorm2_swap(): data format %02x.%02x.%02x.%02x (format version %02x) is not recognized as Normalizer2 data\n",
                          pInfo->dataFormat[0], pInfo->dataFormat[1],
@@ -2013,8 +2056,12 @@ unorm2_swap(const UDataSwapper *ds,
         offset=nextOffset;
 
         /* swap the uint16_t extraData[] */
-        nextOffset=indexes[Normalizer2Impl::IX_EXTRA_DATA_OFFSET+1];
+        nextOffset=indexes[Normalizer2Impl::IX_SMALL_FCD_OFFSET];
         ds->swapArray16(ds, inBytes+offset, nextOffset-offset, outBytes+offset, pErrorCode);
+        offset=nextOffset;
+
+        /* no need to swap the uint8_t smallFCD[] (new in formatVersion 2) */
+        nextOffset=indexes[Normalizer2Impl::IX_SMALL_FCD_OFFSET+1];
         offset=nextOffset;
 
         U_ASSERT(offset==size);

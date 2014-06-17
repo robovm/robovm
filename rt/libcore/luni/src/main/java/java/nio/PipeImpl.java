@@ -19,8 +19,8 @@ package java.nio;
 import java.io.Closeable;
 import java.io.FileDescriptor;
 import java.io.IOException;
-import java.nio.channels.FileChannel;
 import java.nio.channels.Pipe;
+import java.nio.channels.SocketChannel;
 import java.nio.channels.spi.SelectorProvider;
 import libcore.io.ErrnoException;
 import libcore.io.IoUtils;
@@ -34,13 +34,16 @@ final class PipeImpl extends Pipe {
     private final PipeSinkChannel sink;
     private final PipeSourceChannel source;
 
-    public PipeImpl() throws IOException {
+    public PipeImpl(SelectorProvider selectorProvider) throws IOException {
         try {
-            FileDescriptor[] fds = Libcore.os.pipe();
-            // Which fd is used for which channel is important. Unix pipes are only guaranteed to be
-            // unidirectional, and indeed are only unidirectional on Linux.
-            this.sink = new PipeSinkChannel(fds[1]);
-            this.source = new PipeSourceChannel(fds[0]);
+            FileDescriptor fd1 = new FileDescriptor();
+            FileDescriptor fd2 = new FileDescriptor();
+            Libcore.os.socketpair(AF_UNIX, SOCK_STREAM, 0, fd1, fd2);
+
+            // It doesn't matter which file descriptor we use for which end;
+            // they're guaranteed to be indistinguishable.
+            this.sink = new PipeSinkChannel(selectorProvider, fd1);
+            this.source = new PipeSourceChannel(selectorProvider, fd2);
         } catch (ErrnoException errnoException) {
             throw errnoException.rethrowAsIOException();
         }
@@ -54,27 +57,14 @@ final class PipeImpl extends Pipe {
         return source;
     }
 
-    /**
-     * FileChannelImpl doesn't close its fd itself; it calls close on the object it's given.
-     */
-    private static class FdCloser implements Closeable {
-        private final FileDescriptor fd;
-        private FdCloser(FileDescriptor fd) {
-            this.fd = fd;
-        }
-        public void close() throws IOException {
-            IoUtils.close(fd);
-        }
-    }
-
     private class PipeSourceChannel extends Pipe.SourceChannel implements FileDescriptorChannel {
         private final FileDescriptor fd;
-        private final FileChannel channel;
+        private final SocketChannel channel;
 
-        private PipeSourceChannel(FileDescriptor fd) throws IOException {
-            super(SelectorProvider.provider());
+        private PipeSourceChannel(SelectorProvider selectorProvider, FileDescriptor fd) throws IOException {
+            super(selectorProvider);
             this.fd = fd;
-            this.channel = NioUtils.newFileChannel(new FdCloser(fd), fd, O_RDONLY);
+            this.channel = new SocketChannelImpl(selectorProvider, fd);
         }
 
         @Override protected void implCloseSelectableChannel() throws IOException {
@@ -104,12 +94,12 @@ final class PipeImpl extends Pipe {
 
     private class PipeSinkChannel extends Pipe.SinkChannel implements FileDescriptorChannel {
         private final FileDescriptor fd;
-        private final FileChannel channel;
+        private final SocketChannel channel;
 
-        private PipeSinkChannel(FileDescriptor fd) throws IOException {
-            super(SelectorProvider.provider());
+        private PipeSinkChannel(SelectorProvider selectorProvider, FileDescriptor fd) throws IOException {
+            super(selectorProvider);
             this.fd = fd;
-            this.channel = NioUtils.newFileChannel(new FdCloser(fd), fd, O_WRONLY);
+            this.channel = new SocketChannelImpl(selectorProvider, fd);
         }
 
         @Override protected void implCloseSelectableChannel() throws IOException {

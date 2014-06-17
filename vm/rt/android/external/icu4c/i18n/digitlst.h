@@ -1,7 +1,7 @@
 /*
 ******************************************************************************
 *
-*   Copyright (C) 1997-2011, International Business Machines
+*   Copyright (C) 1997-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 ******************************************************************************
@@ -61,10 +61,14 @@ class CharString;
 //    Macintosh produces duplicate definition linker errors with the explicit template
 //    instantiation.
 //
-#if !defined(U_DARWIN)
+#if !U_PLATFORM_IS_DARWIN_BASED
 template class U_I18N_API MaybeStackHeaderAndArray<decNumber, char, DEFAULT_DIGITS>;
 #endif
 
+
+enum EStackMode { kOnStack };
+
+enum EFastpathBits { kFastpathOk = 1, kNoDecimal = 2 };
 
 /**
  * Digit List is actually a Decimal Floating Point number.
@@ -247,12 +251,22 @@ public:
      */
     void set(int64_t source);
 
+    /**
+     * Utility routine to set the value of the digit list from an int64.
+     * Does not set the decnumber unless requested later
+     * If a non-zero maximumDigits is specified, no more than that number of
+     * significant digits will be produced.
+     * @param source The value to be set
+     */
+    void setInteger(int64_t source);
+
    /**
      * Utility routine to set the value of the digit list from a decimal number
      * string.
      * @param source The value to be set.  The string must be nul-terminated.
+     * @param fastpathBits special flags for fast parsing
      */
-    void set(const StringPiece &source, UErrorCode &status);
+    void set(const StringPiece &source, UErrorCode &status, uint32_t fastpathBits = 0);
 
     /**
      * Multiply    this = this * arg
@@ -383,12 +397,49 @@ private:
      * This is an optimization for the formatting implementation, which may
      * ask for the double value multiple times.
      */
-    double        fDouble;
-    UBool         fHaveDouble;
+    union DoubleOrInt64 {
+      double        fDouble;
+      int64_t       fInt64;
+    } fUnion;
+    enum EHave {
+      kNone=0,
+      kDouble,
+      kInt64
+    } fHave;
 
 
 
     UBool shouldRoundUp(int32_t maximumDigits) const;
+
+ public:
+
+    using UMemory::operator new;
+    using UMemory::operator delete;
+
+    /**
+     * Placement new for stack usage
+     * @internal
+     */
+    static inline void * U_EXPORT2 operator new(size_t /*size*/, void * onStack, EStackMode  /*mode*/) U_NO_THROW { return onStack; }
+
+    /**
+     * Placement delete for stack usage
+     * @internal
+     */
+    static inline void U_EXPORT2 operator delete(void * /*ptr*/, void * /*onStack*/, EStackMode /*mode*/)  U_NO_THROW {}
+
+ private:
+    inline void internalSetDouble(double d) {
+      fHave = kDouble;
+      fUnion.fDouble=d;
+    }
+    inline void internalSetInt64(int64_t d) {
+      fHave = kInt64;
+      fUnion.fInt64=d;
+    }
+    inline void internalClear() {
+      fHave = kNone;
+    }
 };
 
 

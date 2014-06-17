@@ -1,5 +1,5 @@
 /*************************************************************************
-* Copyright (c) 1997-2011, International Business Machines Corporation
+* Copyright (c) 1997-2013, International Business Machines Corporation
 * and others. All Rights Reserved.
 **************************************************************************
 *
@@ -67,7 +67,8 @@ class StringEnumeration;
  * </pre>
  * \htmlonly</blockquote>\endhtmlonly
  * You can use <code>getAvailableIDs</code> method to iterate through
- * all the supported time zone IDs. You can then choose a
+ * all the supported time zone IDs, or getCanonicalID method to check
+ * if a time zone ID is supported or not.  You can then choose a
  * supported ID to get a <code>TimeZone</code>.
  * If the time zone you want is not represented by one of the
  * supported IDs, then you can create a custom time zone ID with
@@ -81,8 +82,13 @@ class StringEnumeration;
  *
  * For example, you might specify GMT+14:00 as a custom
  * time zone ID.  The <code>TimeZone</code> that is returned
- * when you specify a custom time zone ID does not include
- * daylight savings time.
+ * when you specify a custom time zone ID uses the specified
+ * offset from GMT(=UTC) and does not observe daylight saving
+ * time. For example, you might specify GMT+14:00 as a custom
+ * time zone ID to create a TimeZone representing 14 hours ahead
+ * of GMT (with no daylight saving time). In addition,
+ * <code>getCanonicalID</code> can also be used to
+ * normalize a custom time zone ID.
  *
  * TimeZone is an abstract class representing a time zone.  A TimeZone is needed for
  * Calendar to produce local time for a particular time zone.  A TimeZone comprises
@@ -98,8 +104,8 @@ class StringEnumeration;
  * </ul>
  *
  * (Only the ID is actually implemented in TimeZone; subclasses of TimeZone may handle
- * daylight savings time and GMT offset in different ways.  Currently we only have one
- * TimeZone subclass: SimpleTimeZone.)
+ * daylight savings time and GMT offset in different ways.  Currently we have the following
+ * TimeZone subclasses: RuleBasedTimeZone, SimpleTimeZone, and VTimeZone.)
  * <P>
  * The TimeZone class contains a static list containing a TimeZone object for every
  * combination of GMT offset and daylight-savings time rules currently in use in the
@@ -128,9 +134,29 @@ public:
     virtual ~TimeZone();
 
     /**
-     * The GMT time zone has a raw offset of zero and does not use daylight
+     * Returns the "unknown" time zone.
+     * It behaves like the GMT/UTC time zone but has the
+     * <code>UCAL_UNKNOWN_ZONE_ID</code> = "Etc/Unknown".
+     * createTimeZone() returns a mutable clone of this time zone if the input ID is not recognized.
+     *
+     * @return the "unknown" time zone.
+     * @see UCAL_UNKNOWN_ZONE_ID
+     * @see createTimeZone
+     * @see getGMT
+     * @stable ICU 49
+     */
+    static const TimeZone& U_EXPORT2 getUnknown();
+
+    /**
+     * The GMT (=UTC) time zone has a raw offset of zero and does not use daylight
      * savings time. This is a commonly used time zone.
-     * @return the GMT time zone.
+     *
+     * <p>Note: For backward compatibility reason, the ID used by the time
+     * zone returned by this method is "GMT", although the ICU's canonical
+     * ID for the GMT time zone is "Etc/GMT".
+     *
+     * @return the GMT/UTC time zone.
+     * @see getUnknown
      * @stable ICU 2.0
      */
     static const TimeZone* U_EXPORT2 getGMT(void);
@@ -139,14 +165,14 @@ public:
      * Creates a <code>TimeZone</code> for the given ID.
      * @param ID the ID for a <code>TimeZone</code>, such as "America/Los_Angeles",
      * or a custom ID such as "GMT-8:00".
-     * @return the specified <code>TimeZone</code>, or the GMT zone with ID
-     * <code>UCAL_UNKNOWN_ZONE_ID</code> ("Etc/Unknown") if the given ID cannot be understood.
-     * Return result guaranteed to be non-null. If you require that the specific zone asked
-     * for be returned, check the ID of the return result.
+     * @return the specified <code>TimeZone</code>, or a mutable clone of getUnknown()
+     * if the given ID cannot be understood or if the given ID is "Etc/Unknown".
+     * The return result is guaranteed to be non-NULL.
+     * If you require that the specific zone asked for be returned,
+     * compare the result with getUnknown() or check the ID of the return result.
      * @stable ICU 2.0
      */
     static TimeZone* U_EXPORT2 createTimeZone(const UnicodeString& ID);
-
 
     /**
      * Returns an enumeration over system time zone IDs with the given
@@ -161,7 +187,7 @@ public:
      * @param ec            Output param to filled in with a success or
      *                      an error.
      * @return an enumeration object, owned by the caller.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     static StringEnumeration* U_EXPORT2 createTimeZoneIDEnumeration(
         USystemTimeZoneType zoneType,
@@ -272,14 +298,17 @@ public:
      */
     static void U_EXPORT2 adoptDefault(TimeZone* zone);
 
+#ifndef U_HIDE_SYSTEM_API
     /**
      * Same as adoptDefault(), except that the TimeZone object passed in is NOT adopted;
      * the caller remains responsible for deleting it.
      *
      * @param zone  The given timezone.
      * @system
+     * @stable ICU 2.0
      */
     static void U_EXPORT2 setDefault(const TimeZone& zone);
+#endif  /* U_HIDE_SYSTEM_API */
 
     /**
      * Returns the timezone data version currently used by ICU.
@@ -587,6 +616,24 @@ public:
      * The default implementation of this method returns <code>TRUE</code>
      * when the time zone uses daylight savings time in the current
      * (Gregorian) calendar year.
+     * <p>In Java 7, <code>observesDaylightTime()</code> was added in
+     * addition to <code>useDaylightTime()</code>. In Java, <code>useDaylightTime()</code>
+     * only checks if daylight saving time is observed by the last known
+     * rule. This specification might not be what most users would expect
+     * if daylight saving time is currently observed, but not scheduled
+     * in future. In this case, Java's <code>userDaylightTime()</code> returns
+     * <code>false</code>. To resolve the issue, Java 7 added <code>observesDaylightTime()</code>,
+     * which takes the current rule into account. The method <code>observesDaylightTime()</code>
+     * was added in ICU4J for supporting API signature compatibility with JDK.
+     * In general, ICU4C also provides JDK compatible methods, but the current
+     * implementation <code>userDaylightTime()</code> serves the purpose
+     * (takes the current rule into account), <code>observesDaylightTime()</code>
+     * is not added in ICU4C. In addition to <code>useDaylightTime()</code>, ICU4C
+     * <code>BasicTimeZone</code> class (Note that <code>TimeZone::createTimeZone(const UnicodeString &ID)</code>
+     * always returns a <code>BasicTimeZone</code>) provides a series of methods allowing
+     * historic and future time zone rule iteration, so you can check if daylight saving
+     * time is observed or not within a given period.
+     * 
      * @stable ICU 2.0
      */
     virtual UBool useDaylightTime(void) const = 0;
@@ -663,7 +710,7 @@ public:
      */
     virtual int32_t getDSTSavings() const;
 
-    /** 
+    /**
      * Gets the region code associated with the given
      * system time zone ID. The region code is either ISO 3166
      * 2-letter country code or UN M.49 3-digit area code.
@@ -678,7 +725,7 @@ public:
      *                      is not a known system time zone ID,
      *                      U_ILLEGAL_ARGUMENT_ERROR is set.
      * @return The length of the output region code.
-     * @draft ICU 4.8 
+     * @stable ICU 4.8 
      */ 
     static int32_t U_EXPORT2 getRegion(const UnicodeString& id, 
         char *region, int32_t capacity, UErrorCode& status); 
@@ -712,6 +759,7 @@ protected:
      */
     TimeZone& operator=(const TimeZone& right);
 
+#ifndef U_HIDE_INTERNAL_API
     /**
      * Utility function. For internally loading rule data.
      * @param top Top resource bundle for tz data
@@ -722,7 +770,7 @@ protected:
      * @internal
      */
     static UResourceBundle* loadRule(const UResourceBundle* top, const UnicodeString& ruleid, UResourceBundle* oldbundle, UErrorCode&status);
-
+#endif  /* U_HIDE_INTERNAL_API */
 
 private:
     friend class ZoneMeta;

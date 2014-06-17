@@ -85,7 +85,7 @@ public class BitSet implements Serializable, Cloneable {
      */
     public BitSet(int bitCount) {
         if (bitCount < 0) {
-            throw new NegativeArraySizeException();
+            throw new NegativeArraySizeException(Integer.toString(bitCount));
         }
         this.bits = arrayForBits(bitCount);
         this.longCount = 0;
@@ -611,7 +611,7 @@ public class BitSet implements Serializable, Cloneable {
      * Returns the index of the first bit that is set on or before {@code index}, or -1 if
      * no lower bits are set or {@code index == -1}.
      * @throws IndexOutOfBoundsException if {@code index < -1}.
-     * @hide 1.7
+     * @since 1.7
      */
     public int previousSetBit(int index) {
         if (index == -1) {
@@ -631,7 +631,7 @@ public class BitSet implements Serializable, Cloneable {
      * Returns the index of the first bit that is clear on or before {@code index}, or -1 if
      * no lower bits are clear or {@code index == -1}.
      * @throws IndexOutOfBoundsException if {@code index < -1}.
-     * @hide 1.7
+     * @since 1.7
      */
     public int previousClearBit(int index) {
         if (index == -1) {
@@ -669,7 +669,7 @@ public class BitSet implements Serializable, Cloneable {
      * Equivalent to {@code BitSet.valueOf(LongBuffer.wrap(longs))}, but likely to be faster.
      * This is likely to be the fastest way to create a {@code BitSet} because it's closest
      * to the internal representation.
-     * @hide 1.7
+     * @since 1.7
      */
     public static BitSet valueOf(long[] longs) {
         return new BitSet(longs.clone());
@@ -678,7 +678,7 @@ public class BitSet implements Serializable, Cloneable {
     /**
      * Returns a {@code BitSet} corresponding to {@code longBuffer}, interpreted as a little-endian
      * sequence of bits. This method does not alter the {@code LongBuffer}.
-     * @hide 1.7
+     * @since 1.7
      */
     public static BitSet valueOf(LongBuffer longBuffer) {
         // The bulk get would mutate LongBuffer (even if we reset position later), and it's not
@@ -693,7 +693,7 @@ public class BitSet implements Serializable, Cloneable {
 
     /**
      * Equivalent to {@code BitSet.valueOf(ByteBuffer.wrap(bytes))}.
-     * @hide 1.7
+     * @since 1.7
      */
     public static BitSet valueOf(byte[] bytes) {
         return BitSet.valueOf(ByteBuffer.wrap(bytes));
@@ -702,7 +702,7 @@ public class BitSet implements Serializable, Cloneable {
     /**
      * Returns a {@code BitSet} corresponding to {@code byteBuffer}, interpreted as a little-endian
      * sequence of bits. This method does not alter the {@code ByteBuffer}.
-     * @hide 1.7
+     * @since 1.7
      */
     public static BitSet valueOf(ByteBuffer byteBuffer) {
         byteBuffer = byteBuffer.slice().order(ByteOrder.LITTLE_ENDIAN);
@@ -721,7 +721,7 @@ public class BitSet implements Serializable, Cloneable {
      * Returns a new {@code long[]} containing a little-endian representation of the bits of
      * this {@code BitSet}, suitable for passing to {@code valueOf} to reconstruct
      * this {@code BitSet}.
-     * @hide 1.7
+     * @since 1.7
      */
     public long[] toLongArray() {
         return Arrays.copyOf(bits, longCount);
@@ -731,7 +731,7 @@ public class BitSet implements Serializable, Cloneable {
      * Returns a new {@code byte[]} containing a little-endian representation the bits of
      * this {@code BitSet}, suitable for passing to {@code valueOf} to reconstruct
      * this {@code BitSet}.
-     * @hide 1.7
+     * @since 1.7
      */
     public byte[] toByteArray() {
         int bitCount = length();

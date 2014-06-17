@@ -16,249 +16,215 @@
 
 #define LOG_TAG "ProcessManager"
 
-#include <sys/resource.h>
-#include <sys/types.h>
-#include <unistd.h>
+#include <dirent.h>
+#include <errno.h>
 #include <fcntl.h>
 #include <stdlib.h>
 #include <string.h>
-#include <errno.h>
+#include <sys/resource.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
+#include "cutils/log.h"
 #include "jni.h"
+#include "ExecStrings.h"
 #include "JNIHelp.h"
 #include "JniConstants.h"
+#include "Portability.h"
 #include "ScopedLocalRef.h"
-#include "cutils/log.h"
+#include "toStringArray.h"
 
-/** Close all open fds > 2 (i.e. everything but stdin/out/err), != skipFd. */
-static void closeNonStandardFds(int skipFd1, int skipFd2) {
-    // TODO: rather than close all these non-open files, we could look in /proc/self/fd.
-    rlimit rlimit;
-    getrlimit(RLIMIT_NOFILE, &rlimit);
-    const int max_fd = rlimit.rlim_max;
-    for (int fd = 3; fd < max_fd; ++fd) {
-        if (fd != skipFd1 && fd != skipFd2) {
-            close(fd);
-        }
+static void CloseNonStandardFds(int status_pipe_fd) {
+  // On Cygwin, Linux, and Solaris, the best way to close iterates over "/proc/self/fd/".
+  const char* fd_path = "/proc/self/fd";
+#ifdef __APPLE__
+  // On Mac OS, there's "/dev/fd/" which Linux seems to link to "/proc/self/fd/",
+  // but which on Solaris appears to be something quite different.
+  fd_path = "/dev/fd";
+#endif
+
+  // Keep track of the system properties fd so we don't close it.
+  int properties_fd = -1;
+  char* properties_fd_string = getenv("ANDROID_PROPERTY_WORKSPACE");
+  if (properties_fd_string != NULL) {
+    properties_fd = atoi(properties_fd_string);
+  }
+
+  DIR* d = opendir(fd_path);
+  int dir_fd = dirfd(d);
+  dirent* e;
+  while ((e = readdir(d)) != NULL) {
+    char* end;
+    int fd = strtol(e->d_name, &end, 10);
+    if (!*end) {
+      if (fd > STDERR_FILENO && fd != dir_fd && fd != status_pipe_fd && fd != properties_fd) {
+        close(fd);
+      }
     }
+  }
+  closedir(d);
 }
 
-#define PIPE_COUNT (4) // number of pipes used to communicate with child proc
+#define PIPE_COUNT 4 // Number of pipes used to communicate with child.
 
-/** Closes all pipes in the given array. */
-static void closePipes(int pipes[], int skipFd) {
-    for (int i = 0; i < PIPE_COUNT * 2; i++) {
-        int fd = pipes[i];
-        if (fd == -1) {
-            return;
-        }
-        if (fd != skipFd) {
-            close(pipes[i]);
-        }
+static void ClosePipes(int pipes[], int skip_fd) {
+  for (int i = 0; i < PIPE_COUNT * 2; i++) {
+    int fd = pipes[i];
+    if (fd != -1 && fd != skip_fd) {
+      close(pipes[i]);
     }
+  }
+}
+
+static void AbortChild(int status_pipe_fd) {
+  int error = errno;
+  TEMP_FAILURE_RETRY(write(status_pipe_fd, &error, sizeof(int)));
+  close(status_pipe_fd);
+  _exit(127);
 }
 
 /** Executes a command in a child process. */
-static pid_t executeProcess(JNIEnv* env, char** commands, char** environment,
-        const char* workingDirectory, jobject inDescriptor,
-        jobject outDescriptor, jobject errDescriptor,
-        jboolean redirectErrorStream) {
+static pid_t ExecuteProcess(JNIEnv* env, char** commands, char** environment,
+                            const char* workingDirectory, jobject inDescriptor,
+                            jobject outDescriptor, jobject errDescriptor,
+                            jboolean redirectErrorStream) {
 
-    // Keep track of the system properties fd so we don't close it.
-    int androidSystemPropertiesFd = -1;
-    char* fdString = getenv("ANDROID_PROPERTY_WORKSPACE");
-    if (fdString) {
-        androidSystemPropertiesFd = atoi(fdString);
+  // Create 4 pipes: stdin, stdout, stderr, and an exec() status pipe.
+  int pipes[PIPE_COUNT * 2] = { -1, -1, -1, -1, -1, -1, -1, -1 };
+  for (int i = 0; i < PIPE_COUNT; i++) {
+    if (pipe(pipes + i * 2) == -1) {
+      jniThrowIOException(env, errno);
+      ClosePipes(pipes, -1);
+      return -1;
+    }
+  }
+  int stdinIn = pipes[0];
+  int stdinOut = pipes[1];
+  int stdoutIn = pipes[2];
+  int stdoutOut = pipes[3];
+  int stderrIn = pipes[4];
+  int stderrOut = pipes[5];
+  int statusIn = pipes[6];
+  int statusOut = pipes[7];
+
+  pid_t childPid = fork();
+
+  // If fork() failed...
+  if (childPid == -1) {
+    jniThrowIOException(env, errno);
+    ClosePipes(pipes, -1);
+    return -1;
+  }
+
+  // If this is the child process...
+  if (childPid == 0) {
+    // Note: We cannot malloc(3) or free(3) after this point!
+    // A thread in the parent that no longer exists in the child may have held the heap lock
+    // when we forked, so an attempt to malloc(3) or free(3) would result in deadlock.
+
+    // Replace stdin, out, and err with pipes.
+    dup2(stdinIn, 0);
+    dup2(stdoutOut, 1);
+    if (redirectErrorStream) {
+      dup2(stdoutOut, 2);
+    } else {
+      dup2(stderrOut, 2);
     }
 
-    // Create 4 pipes: stdin, stdout, stderr, and an exec() status pipe.
-    int pipes[PIPE_COUNT * 2] = { -1, -1, -1, -1, -1, -1, -1, -1 };
-    for (int i = 0; i < PIPE_COUNT; i++) {
-        if (pipe(pipes + i * 2) == -1) {
-            jniThrowIOException(env, errno);
-            closePipes(pipes, -1);
-            return -1;
-        }
-    }
-    int stdinIn = pipes[0];
-    int stdinOut = pipes[1];
-    int stdoutIn = pipes[2];
-    int stdoutOut = pipes[3];
-    int stderrIn = pipes[4];
-    int stderrOut = pipes[5];
-    int statusIn = pipes[6];
-    int statusOut = pipes[7];
+    // Close all but statusOut. This saves some work in the next step.
+    ClosePipes(pipes, statusOut);
 
-    pid_t childPid = fork();
+    // Make statusOut automatically close if execvp() succeeds.
+    fcntl(statusOut, F_SETFD, FD_CLOEXEC);
 
-    // If fork() failed...
-    if (childPid == -1) {
-        jniThrowIOException(env, errno);
-        closePipes(pipes, -1);
-        return -1;
+    // Close remaining unwanted open fds.
+    CloseNonStandardFds(statusOut);
+
+    // Switch to working directory.
+    if (workingDirectory != NULL) {
+      if (chdir(workingDirectory) == -1) {
+        AbortChild(statusOut);
+      }
     }
 
-    // If this is the child process...
-    if (childPid == 0) {
-        /*
-         * Note: We cannot malloc() or free() after this point!
-         * A no-longer-running thread may be holding on to the heap lock, and
-         * an attempt to malloc() or free() would result in deadlock.
-         */
-
-        // Replace stdin, out, and err with pipes.
-        dup2(stdinIn, 0);
-        dup2(stdoutOut, 1);
-        if (redirectErrorStream) {
-            dup2(stdoutOut, 2);
-        } else {
-            dup2(stderrOut, 2);
-        }
-
-        // Close all but statusOut. This saves some work in the next step.
-        closePipes(pipes, statusOut);
-
-        // Make statusOut automatically close if execvp() succeeds.
-        fcntl(statusOut, F_SETFD, FD_CLOEXEC);
-
-        // Close remaining unwanted open fds.
-        closeNonStandardFds(statusOut, androidSystemPropertiesFd);
-
-        // Switch to working directory.
-        if (workingDirectory != NULL) {
-            if (chdir(workingDirectory) == -1) {
-                goto execFailed;
-            }
-        }
-
-        // Set up environment.
-        if (environment != NULL) {
-            extern char** environ; // Standard, but not in any header file.
-            environ = environment;
-        }
-
-        // Execute process. By convention, the first argument in the arg array
-        // should be the command itself. In fact, I get segfaults when this
-        // isn't the case.
-        execvp(commands[0], commands);
-
-        // If we got here, execvp() failed or the working dir was invalid.
-        execFailed:
-            int error = errno;
-            write(statusOut, &error, sizeof(int));
-            close(statusOut);
-            exit(error);
+    // Set up environment.
+    if (environment != NULL) {
+      extern char** environ; // Standard, but not in any header file.
+      environ = environment;
     }
 
-    // This is the parent process.
+    // Execute process. By convention, the first argument in the arg array
+    // should be the command itself.
+    execvp(commands[0], commands);
+    AbortChild(statusOut);
+  }
 
-    // Close child's pipe ends.
-    close(stdinIn);
-    close(stdoutOut);
-    close(stderrOut);
-    close(statusOut);
+  // This is the parent process.
 
-    // Check status pipe for an error code. If execvp() succeeds, the other
-    // end of the pipe should automatically close, in which case, we'll read
-    // nothing.
-    int result;
-    int count = read(statusIn, &result, sizeof(int));
-    close(statusIn);
-    if (count > 0) {
-        jniThrowIOException(env, result);
+  // Close child's pipe ends.
+  close(stdinIn);
+  close(stdoutOut);
+  close(stderrOut);
+  close(statusOut);
 
-        close(stdoutIn);
-        close(stdinOut);
-        close(stderrIn);
+  // Check status pipe for an error code. If execvp(2) succeeds, the other
+  // end of the pipe should automatically close, in which case, we'll read
+  // nothing.
+  int child_errno;
+  ssize_t count = TEMP_FAILURE_RETRY(read(statusIn, &child_errno, sizeof(int)));
+  close(statusIn);
+  if (count > 0) {
+    // chdir(2) or execvp(2) in the child failed.
+    // TODO: track which so we can be more specific in the detail message.
+    jniThrowIOException(env, child_errno);
 
-        return -1;
+    close(stdoutIn);
+    close(stdinOut);
+    close(stderrIn);
+
+    // Reap our zombie child right away.
+    int status;
+    int rc = TEMP_FAILURE_RETRY(waitpid(childPid, &status, 0));
+    if (rc == -1) {
+      ALOGW("waitpid on failed exec failed: %s", strerror(errno));
     }
 
-    // Fill in file descriptor wrappers.
-    jniSetFileDescriptorOfFD(env, inDescriptor, stdoutIn);
-    jniSetFileDescriptorOfFD(env, outDescriptor, stdinOut);
-    jniSetFileDescriptorOfFD(env, errDescriptor, stderrIn);
+    return -1;
+  }
 
-    return childPid;
-}
+  // Fill in file descriptor wrappers.
+  jniSetFileDescriptorOfFD(env, inDescriptor, stdoutIn);
+  jniSetFileDescriptorOfFD(env, outDescriptor, stdinOut);
+  jniSetFileDescriptorOfFD(env, errDescriptor, stderrIn);
 
-/** Converts a Java String[] to a 0-terminated char**. */
-static char** convertStrings(JNIEnv* env, jobjectArray javaArray) {
-    if (javaArray == NULL) {
-        return NULL;
-    }
-
-    jsize length = env->GetArrayLength(javaArray);
-    char** array = new char*[length + 1];
-    array[length] = 0;
-    for (jsize i = 0; i < length; ++i) {
-        ScopedLocalRef<jstring> javaEntry(env, reinterpret_cast<jstring>(env->GetObjectArrayElement(javaArray, i)));
-        // We need to pass these strings to const-unfriendly code.
-        char* entry = const_cast<char*>(env->GetStringUTFChars(javaEntry.get(), NULL));
-        array[i] = entry;
-    }
-
-    return array;
-}
-
-/** Frees a char** which was converted from a Java String[]. */
-static void freeStrings(JNIEnv* env, jobjectArray javaArray, char** array) {
-    if (javaArray == NULL) {
-        return;
-    }
-
-    jsize length = env->GetArrayLength(javaArray);
-    for (jsize i = 0; i < length; ++i) {
-        ScopedLocalRef<jstring> javaEntry(env, reinterpret_cast<jstring>(env->GetObjectArrayElement(javaArray, i)));
-        env->ReleaseStringUTFChars(javaEntry.get(), array[i]);
-    }
-
-    delete[] array;
+  return childPid;
 }
 
 /**
- * Converts Java String[] to char** and delegates to executeProcess().
+ * Converts Java String[] to char** and delegates to ExecuteProcess().
  */
 extern "C" pid_t Java_java_lang_ProcessManager_exec(JNIEnv* env, jclass, jobjectArray javaCommands,
-        jobjectArray javaEnvironment, jstring javaWorkingDirectory,
-        jobject inDescriptor, jobject outDescriptor, jobject errDescriptor,
-        jboolean redirectErrorStream) {
+                                 jobjectArray javaEnvironment, jstring javaWorkingDirectory,
+                                 jobject inDescriptor, jobject outDescriptor, jobject errDescriptor,
+                                 jboolean redirectErrorStream) {
 
-    // Copy commands into char*[].
-    char** commands = convertStrings(env, javaCommands);
+  ExecStrings commands(env, javaCommands);
+  ExecStrings environment(env, javaEnvironment);
 
-    // Extract working directory string.
-    const char* workingDirectory = NULL;
-    if (javaWorkingDirectory != NULL) {
-        workingDirectory = env->GetStringUTFChars(javaWorkingDirectory, NULL);
-    }
+  // Extract working directory string.
+  const char* workingDirectory = NULL;
+  if (javaWorkingDirectory != NULL) {
+    workingDirectory = env->GetStringUTFChars(javaWorkingDirectory, NULL);
+  }
 
-    // Convert environment array.
-    char** environment = convertStrings(env, javaEnvironment);
+  pid_t result = ExecuteProcess(env, commands.get(), environment.get(), workingDirectory,
+                                inDescriptor, outDescriptor, errDescriptor, redirectErrorStream);
 
-    pid_t result = executeProcess(env, commands, environment, workingDirectory,
-            inDescriptor, outDescriptor, errDescriptor, redirectErrorStream);
+  // Clean up working directory string.
+  if (javaWorkingDirectory != NULL) {
+    env->ReleaseStringUTFChars(javaWorkingDirectory, workingDirectory);
+  }
 
-    // Temporarily clear exception so we can clean up.
-    jthrowable exception = env->ExceptionOccurred();
-    env->ExceptionClear();
-
-    freeStrings(env, javaEnvironment, environment);
-
-    // Clean up working directory string.
-    if (javaWorkingDirectory != NULL) {
-        env->ReleaseStringUTFChars(javaWorkingDirectory, workingDirectory);
-    }
-
-    freeStrings(env, javaCommands, commands);
-
-    // Re-throw exception if present.
-    if (exception != NULL) {
-        if (env->Throw(exception) < 0) {
-            ALOGE("Error rethrowing exception!");
-        }
-    }
-
-    return result;
+  return result;
 }
-

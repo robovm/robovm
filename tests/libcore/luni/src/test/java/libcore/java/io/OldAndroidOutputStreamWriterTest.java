@@ -35,7 +35,7 @@ public class OldAndroidOutputStreamWriterTest extends TestCase {
             // We have to flush the OutputStreamWriter to guarantee
             // that the results will appear in the underlying OutputStream
             a.flush();
-            assertEquals("ISO8859_1", a.getEncoding());
+            assertEquals("ISO-8859-1", a.getEncoding());
             assertEquals(5, aa.size());
             assertEquals("AbCdA", aa.toString());
         } finally {

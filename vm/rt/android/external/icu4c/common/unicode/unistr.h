@@ -1,6 +1,6 @@
 /*
 **********************************************************************
-*   Copyright (C) 1998-2011, International Business Machines
+*   Copyright (C) 1998-2013, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 **********************************************************************
 *
@@ -31,6 +31,7 @@
 #include "unicode/std_string.h"
 #include "unicode/stringpiece.h"
 #include "unicode/bytestream.h"
+#include "unicode/ucasemap.h"
 
 struct UConverter;          // unicode/ucnv.h
 class  StringThreadTest;
@@ -53,6 +54,28 @@ U_STABLE int32_t U_EXPORT2
 u_strlen(const UChar *s);
 #endif
 
+#ifndef U_HIDE_INTERNAL_API
+/**
+ * \def U_STRING_CASE_MAPPER_DEFINED
+ * @internal
+ */
+
+#ifndef U_STRING_CASE_MAPPER_DEFINED
+#define U_STRING_CASE_MAPPER_DEFINED
+
+/**
+ * Internal string case mapping function type.
+ * @internal
+ */
+typedef int32_t U_CALLCONV
+UStringCaseMapper(const UCaseMap *csm,
+                  UChar *dest, int32_t destCapacity,
+                  const UChar *src, int32_t srcLength,
+                  UErrorCode *pErrorCode);
+
+#endif
+#endif  /* U_HIDE_INTERNAL_API */
+
 U_NAMESPACE_BEGIN
 
 class BreakIterator;        // unicode/brkiter.h
@@ -72,7 +95,7 @@ class UnicodeStringAppendable;  // unicode/appendable.h
  *
  * @stable ICU 3.2
  */
-#define US_INV U_NAMESPACE_QUALIFIER UnicodeString::kInvariant
+#define US_INV icu::UnicodeString::kInvariant
 
 /**
  * Unicode String literals in C++.
@@ -92,13 +115,13 @@ class UnicodeStringAppendable;  // unicode/appendable.h
  * @stable ICU 2.0
  */
 #if defined(U_DECLARE_UTF16)
-#   define UNICODE_STRING(cs, _length) U_NAMESPACE_QUALIFIER UnicodeString(TRUE, (const UChar *)U_DECLARE_UTF16(cs), _length)
+#   define UNICODE_STRING(cs, _length) icu::UnicodeString(TRUE, (const UChar *)U_DECLARE_UTF16(cs), _length)
 #elif U_SIZEOF_WCHAR_T==U_SIZEOF_UCHAR && (U_CHARSET_FAMILY==U_ASCII_FAMILY || (U_SIZEOF_UCHAR == 2 && defined(U_WCHAR_IS_UTF16)))
-#   define UNICODE_STRING(cs, _length) U_NAMESPACE_QUALIFIER UnicodeString(TRUE, (const UChar *)L ## cs, _length)
+#   define UNICODE_STRING(cs, _length) icu::UnicodeString(TRUE, (const UChar *)L ## cs, _length)
 #elif U_SIZEOF_UCHAR==1 && U_CHARSET_FAMILY==U_ASCII_FAMILY
-#   define UNICODE_STRING(cs, _length) U_NAMESPACE_QUALIFIER UnicodeString(TRUE, (const UChar *)cs, _length)
+#   define UNICODE_STRING(cs, _length) icu::UnicodeString(TRUE, (const UChar *)cs, _length)
 #else
-#   define UNICODE_STRING(cs, _length) U_NAMESPACE_QUALIFIER UnicodeString(cs, _length, US_INV)
+#   define UNICODE_STRING(cs, _length) icu::UnicodeString(cs, _length, US_INV)
 #endif
 
 /**
@@ -115,6 +138,43 @@ class UnicodeStringAppendable;  // unicode/appendable.h
  * @stable ICU 2.0
  */
 #define UNICODE_STRING_SIMPLE(cs) UNICODE_STRING(cs, -1)
+
+/**
+ * \def UNISTR_FROM_CHAR_EXPLICIT
+ * This can be defined to be empty or "explicit".
+ * If explicit, then the UnicodeString(UChar) and UnicodeString(UChar32)
+ * constructors are marked as explicit, preventing their inadvertent use.
+ * @stable ICU 49
+ */
+#ifndef UNISTR_FROM_CHAR_EXPLICIT
+# if defined(U_COMBINED_IMPLEMENTATION) || defined(U_COMMON_IMPLEMENTATION) || defined(U_I18N_IMPLEMENTATION) || defined(U_IO_IMPLEMENTATION)
+    // Auto-"explicit" in ICU library code.
+#   define UNISTR_FROM_CHAR_EXPLICIT explicit
+# else
+    // Empty by default for source code compatibility.
+#   define UNISTR_FROM_CHAR_EXPLICIT
+# endif
+#endif
+
+/**
+ * \def UNISTR_FROM_STRING_EXPLICIT
+ * This can be defined to be empty or "explicit".
+ * If explicit, then the UnicodeString(const char *) and UnicodeString(const UChar *)
+ * constructors are marked as explicit, preventing their inadvertent use.
+ *
+ * In particular, this helps prevent accidentally depending on ICU conversion code
+ * by passing a string literal into an API with a const UnicodeString & parameter.
+ * @stable ICU 49
+ */
+#ifndef UNISTR_FROM_STRING_EXPLICIT
+# if defined(U_COMBINED_IMPLEMENTATION) || defined(U_COMMON_IMPLEMENTATION) || defined(U_I18N_IMPLEMENTATION) || defined(U_IO_IMPLEMENTATION)
+    // Auto-"explicit" in ICU library code.
+#   define UNISTR_FROM_STRING_EXPLICIT explicit
+# else
+    // Empty by default for source code compatibility.
+#   define UNISTR_FROM_STRING_EXPLICIT
+# endif
+#endif
 
 /**
  * UnicodeString is a string class that stores Unicode characters directly and provides
@@ -1243,7 +1303,7 @@ public:
    *         or 0xffff if the offset is not valid for this string
    * @stable ICU 2.0
    */
-  inline UChar32 char32At(int32_t offset) const;
+  UChar32 char32At(int32_t offset) const;
 
   /**
    * Adjust a random-access offset so that
@@ -1260,7 +1320,7 @@ public:
    * @see U16_SET_CP_START
    * @stable ICU 2.0
    */
-  inline int32_t getChar32Start(int32_t offset) const;
+  int32_t getChar32Start(int32_t offset) const;
 
   /**
    * Adjust a random-access offset so that
@@ -1278,7 +1338,7 @@ public:
    * @see U16_SET_CP_LIMIT
    * @stable ICU 2.0
    */
-  inline int32_t getChar32Limit(int32_t offset) const;
+  int32_t getChar32Limit(int32_t offset) const;
 
   /**
    * Move the code unit index along the string by delta code points.
@@ -1763,16 +1823,18 @@ public:
    * Replace the characters in this UnicodeString
    * with the characters from <code>srcText</code>.
    *
-   * This function works the same for all strings except for ones that
-   * are readonly aliases.
+   * This function works the same as the assignment operator
+   * for all strings except for ones that are readonly aliases.
+   *
    * Starting with ICU 2.4, the assignment operator and the copy constructor
    * allocate a new buffer and copy the buffer contents even for readonly aliases.
    * This function implements the old, more efficient but less safe behavior
    * of making this string also a readonly alias to the same buffer.
+   *
    * The fastCopyFrom function must be used only if it is known that the lifetime of
-   * this UnicodeString is at least as long as the lifetime of the aliased buffer
+   * this UnicodeString does not exceed the lifetime of the aliased buffer
    * including its contents, for example for strings from resource bundles
-   * or aliases to string contents.
+   * or aliases to string constants.
    *
    * @param src The text containing the characters to replace.
    * @return a reference to this
@@ -1878,7 +1940,10 @@ public:
    * When the string is modified, then the buffer is first copied into
    * newly allocated memory.
    * The aliased buffer is never modified.
-   * In an assignment to another UnicodeString, the text will be aliased again,
+   *
+   * In an assignment to another UnicodeString, when using the copy constructor
+   * or the assignment operator, the text will be copied.
+   * When using fastCopyFrom(), the text will be aliased again,
    * so that both strings then alias the same readonly-text.
    *
    * @param isTerminated specifies if <code>text</code> is <code>NUL</code>-terminated.
@@ -2069,7 +2134,7 @@ public:
    * @return a reference to this
    * @stable ICU 2.0
    */
-  inline UnicodeString& append(UChar32 srcChar);
+  UnicodeString& append(UChar32 srcChar);
 
 
   /* Insert operations */
@@ -2264,9 +2329,7 @@ public:
    * @return a reference to this
    * @stable ICU 2.0
    */
-  inline UnicodeString& replace(int32_t start,
-             int32_t length,
-             UChar32 srcChar);
+  UnicodeString& replace(int32_t start, int32_t length, UChar32 srcChar);
 
   /**
    * Replace the characters in the range [<TT>start</TT>, <TT>limit</TT>)
@@ -2632,10 +2695,12 @@ public:
 #endif
 
   /**
-   * Case-fold the characters in this string.
+   * Case-folds the characters in this string.
+   *
    * Case-folding is locale-independent and not context-sensitive,
    * but there is an option for whether to include or exclude mappings for dotted I
-   * and dotless i that are marked with 'I' in CaseFolding.txt.
+   * and dotless i that are marked with 'T' in CaseFolding.txt.
+   *
    * The result may be longer or shorter than the original.
    *
    * @param options Either U_FOLD_CASE_DEFAULT or U_FOLD_CASE_EXCLUDE_SPECIAL_I
@@ -2789,7 +2854,7 @@ public:
   /** Construct an empty UnicodeString.
    * @stable ICU 2.0
    */
-  UnicodeString();
+  inline UnicodeString();
 
   /**
    * Construct a UnicodeString with capacity to hold <TT>capacity</TT> UChars
@@ -2806,25 +2871,37 @@ public:
 
   /**
    * Single UChar (code unit) constructor.
+   *
+   * It is recommended to mark this constructor "explicit" by
+   * <code>-DUNISTR_FROM_CHAR_EXPLICIT=explicit</code>
+   * on the compiler command line or similar.
    * @param ch the character to place in the UnicodeString
    * @stable ICU 2.0
    */
-  UnicodeString(UChar ch);
+  UNISTR_FROM_CHAR_EXPLICIT UnicodeString(UChar ch);
 
   /**
    * Single UChar32 (code point) constructor.
+   *
+   * It is recommended to mark this constructor "explicit" by
+   * <code>-DUNISTR_FROM_CHAR_EXPLICIT=explicit</code>
+   * on the compiler command line or similar.
    * @param ch the character to place in the UnicodeString
    * @stable ICU 2.0
    */
-  UnicodeString(UChar32 ch);
+  UNISTR_FROM_CHAR_EXPLICIT UnicodeString(UChar32 ch);
 
   /**
    * UChar* constructor.
+   *
+   * It is recommended to mark this constructor "explicit" by
+   * <code>-DUNISTR_FROM_STRING_EXPLICIT=explicit</code>
+   * on the compiler command line or similar.
    * @param text The characters to place in the UnicodeString.  <TT>text</TT>
    * must be NULL (U+0000) terminated.
    * @stable ICU 2.0
    */
-  UnicodeString(const UChar *text);
+  UNISTR_FROM_STRING_EXPLICIT UnicodeString(const UChar *text);
 
   /**
    * UChar* constructor.
@@ -2844,7 +2921,10 @@ public:
    * When the string is modified, then the buffer is first copied into
    * newly allocated memory.
    * The aliased buffer is never modified.
-   * In an assignment to another UnicodeString, the text will be aliased again,
+   *
+   * In an assignment to another UnicodeString, when using the copy constructor
+   * or the assignment operator, the text will be copied.
+   * When using fastCopyFrom(), the text will be aliased again,
    * so that both strings then alias the same readonly-text.
    *
    * @param isTerminated specifies if <code>text</code> is <code>NUL</code>-terminated.
@@ -2883,14 +2963,29 @@ public:
 
   /**
    * char* constructor.
+   * Uses the default converter (and thus depends on the ICU conversion code)
+   * unless U_CHARSET_IS_UTF8 is set to 1.
+   *
+   * For ASCII (really "invariant character") strings it is more efficient to use
+   * the constructor that takes a US_INV (for its enum EInvariant).
+   * For ASCII (invariant-character) string literals, see UNICODE_STRING and
+   * UNICODE_STRING_SIMPLE.
+   *
+   * It is recommended to mark this constructor "explicit" by
+   * <code>-DUNISTR_FROM_STRING_EXPLICIT=explicit</code>
+   * on the compiler command line or similar.
    * @param codepageData an array of bytes, null-terminated,
    *                     in the platform's default codepage.
    * @stable ICU 2.0
+   * @see UNICODE_STRING
+   * @see UNICODE_STRING_SIMPLE
    */
-  UnicodeString(const char *codepageData);
+  UNISTR_FROM_STRING_EXPLICIT UnicodeString(const char *codepageData);
 
   /**
    * char* constructor.
+   * Uses the default converter (and thus depends on the ICU conversion code)
+   * unless U_CHARSET_IS_UTF8 is set to 1.
    * @param codepageData an array of bytes in the platform's default codepage.
    * @param dataLength The number of bytes in <TT>codepageData</TT>.
    * @stable ICU 2.0
@@ -3112,7 +3207,7 @@ public:
    * character.  See unescape() for a listing of the recognized escape
    * sequences.  The character at offset-1 is assumed (without
    * checking) to be a backslash.  If the escape sequence is
-   * ill-formed, or the offset is out of range, (UChar32)0xFFFFFFFF is
+   * ill-formed, or the offset is out of range, U_SENTINEL=-1 is
    * returned.
    *
    * @param offset an input output parameter.  On input, it is the
@@ -3120,7 +3215,7 @@ public:
    * after the initial backslash.  On output, it is advanced after the
    * last character parsed.  On error, it is not advanced at all.
    * @return the character represented by the escape sequence at
-   * offset, or (UChar32)0xFFFFFFFF on error.
+   * offset, or U_SENTINEL=-1 on error.
    * @see UnicodeString#unescape()
    * @see u_unescape()
    * @see u_unescapeAt()
@@ -3179,6 +3274,11 @@ private:
   toUTF8(int32_t start, int32_t len,
          char *target, int32_t capacity) const;
 
+  /**
+   * Internal string contents comparison, called by operator==.
+   * Requires: this & text not bogus and have same lengths.
+   */
+  UBool doEquals(const UnicodeString &text, int32_t len) const;
 
   inline int8_t
   doCompare(int32_t start,
@@ -3355,12 +3455,13 @@ private:
                             int32_t **pBufferToDelete = 0,
                             UBool forceClone = FALSE);
 
-  // common function for case mappings
+  /**
+   * Common function for UnicodeString case mappings.
+   * The stringCaseMapper has the same type UStringCaseMapper
+   * as in ustr_imp.h for ustrcase_map().
+   */
   UnicodeString &
-  caseMap(BreakIterator *titleIter,
-          const char *locale,
-          uint32_t options,
-          int32_t toWhichCase);
+  caseMap(const UCaseMap *csm, UStringCaseMapper *stringCaseMapper);
 
   // ref counting
   void addRef(void);
@@ -3505,6 +3606,16 @@ UnicodeString::getArrayStart() const
 { return (fFlags&kUsingStackBuffer) ? fUnion.fStackBuffer : fUnion.fFields.fArray; }
 
 //========================================
+// Default constructor
+//========================================
+
+inline
+UnicodeString::UnicodeString()
+  : fShortLength(0),
+    fFlags(kShortString)
+{}
+
+//========================================
 // Read-only implementation methods
 //========================================
 inline int32_t
@@ -3571,10 +3682,7 @@ UnicodeString::operator== (const UnicodeString& text) const
     return text.isBogus();
   } else {
     int32_t len = length(), textLength = text.length();
-    return
-      !text.isBogus() &&
-      len == textLength &&
-      doCompare(0, len, text, 0, textLength) == 0;
+    return !text.isBogus() && len == textLength && doEquals(text, len);
   }
 }
 
@@ -4045,17 +4153,6 @@ UnicodeString::replace(int32_t start,
 { return doReplace(start, _length, &srcChar, 0, 1); }
 
 inline UnicodeString&
-UnicodeString::replace(int32_t start,
-               int32_t _length,
-               UChar32 srcChar) {
-  UChar buffer[U16_MAX_LENGTH];
-  int32_t count = 0;
-  UBool isError = FALSE;
-  U16_APPEND(buffer, count, U16_MAX_LENGTH, srcChar, isError);
-  return doReplace(start, _length, buffer, 0, count);
-}
-
-inline UnicodeString&
 UnicodeString::replaceBetween(int32_t start,
                   int32_t limit,
                   const UnicodeString& srcText)
@@ -4152,43 +4249,6 @@ UnicodeString::charAt(int32_t offset) const
 inline UChar
 UnicodeString::operator[] (int32_t offset) const
 { return doCharAt(offset); }
-
-inline UChar32
-UnicodeString::char32At(int32_t offset) const
-{
-  int32_t len = length();
-  if((uint32_t)offset < (uint32_t)len) {
-    const UChar *array = getArrayStart();
-    UChar32 c;
-    U16_GET(array, 0, offset, len, c);
-    return c;
-  } else {
-    return kInvalidUChar;
-  }
-}
-
-inline int32_t
-UnicodeString::getChar32Start(int32_t offset) const {
-  if((uint32_t)offset < (uint32_t)length()) {
-    const UChar *array = getArrayStart();
-    U16_SET_CP_START(array, 0, offset);
-    return offset;
-  } else {
-    return 0;
-  }
-}
-
-inline int32_t
-UnicodeString::getChar32Limit(int32_t offset) const {
-  int32_t len = length();
-  if((uint32_t)offset < (uint32_t)len) {
-    const UChar *array = getArrayStart();
-    U16_SET_CP_LIMIT(array, 0, offset, len);
-    return offset;
-  } else {
-    return len;
-  }
-}
 
 inline UBool
 UnicodeString::isEmpty() const {
@@ -4341,15 +4401,6 @@ UnicodeString::append(const UChar *srcChars,
 inline UnicodeString&
 UnicodeString::append(UChar srcChar)
 { return doReplace(length(), 0, &srcChar, 0, 1); }
-
-inline UnicodeString&
-UnicodeString::append(UChar32 srcChar) {
-  UChar buffer[U16_MAX_LENGTH];
-  int32_t _length = 0;
-  UBool isError = FALSE;
-  U16_APPEND(buffer, _length, U16_MAX_LENGTH, srcChar, isError);
-  return doReplace(length(), 0, buffer, 0, _length);
-}
 
 inline UnicodeString&
 UnicodeString::operator+= (UChar ch)

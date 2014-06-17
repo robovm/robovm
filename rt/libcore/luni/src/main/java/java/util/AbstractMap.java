@@ -33,10 +33,10 @@ import java.io.Serializable;
  * @since 1.2
  */
 public abstract class AbstractMap<K, V> implements Map<K, V> {
-
-    // Lazily initialized key set.
+    // Lazily-initialized key set (for implementing {@link #keySet}).
     Set<K> keySet;
 
+    // Lazily-initialized values collection (for implementing {@link #values}).
     Collection<V> valuesCollection;
 
     /**

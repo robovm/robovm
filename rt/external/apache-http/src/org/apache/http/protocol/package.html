@@ -1,0 +1,112 @@
+<html>
+<head>
+<!--
+/*
+ * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpcore/trunk/module-main/src/main/java/org/apache/http/protocol/package.html $
+ * $Revision: 496070 $
+ * $Date: 2007-01-14 04:18:34 -0800 (Sun, 14 Jan 2007) $
+ *
+ * ====================================================================
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ * ====================================================================
+ *
+ * This software consists of voluntary contributions made by many
+ * individuals on behalf of the Apache Software Foundation.  For more
+ * information on the Apache Software Foundation, please see
+ * <http://www.apache.org/>.
+ *
+ */
+-->
+</head>
+<body>
+HTTP protocol execution framework.
+
+Apart from simply sending and receiving messages, there are a lot
+of things to consider when communicating with HTTP. Many details
+such as transport encodings or connection management are handled
+by setting up or interpreting
+{@link org.apache.http.Header headers} in the messages.
+In order to relieve applications from the responsibility of
+implementing these nitty-gritty details of the protocol,
+HTTP components provides an execution framework that sets up
+some of the headers before sending a message, and interprets
+headers when a message has been received.
+<br/>
+An HTTP {@link org.apache.http.protocol.HttpProcessor processor}
+typically keeps lists of so-called interceptors that will be executed
+before a message is sent and after it has been received.
+An application should initialize a processor, set up the lists
+with the required and desired processors, and then communicate
+through that processor. There are four kinds of interceptors,
+depending on whether they act on
+{@link org.apache.http.HttpRequestInterceptor requests} or
+{@link org.apache.http.HttpResponseInterceptor responses},
+on the client or server side:
+
+<table border="1" cellpadding="5">
+<tr><th></th>
+    <th>Client</th>
+    <th>Server</th>
+</tr>
+<tr><th>Request</th>
+    <td>prepares headers before a request is sent</td>
+    <td>interprets headers when a request is received</td>
+</tr>
+<tr><th>Response</th>
+    <td>interprets headers when a response is received</td>
+    <td>prepares headers before a response is sent</td>
+</tr>
+</table>
+
+<p>
+{@link org.apache.http.protocol.HttpRequestExecutor HttpRequestExecutor}
+is a processor for the client side,
+{@link org.apache.http.protocol.HttpService HttpService}
+for the server side.
+On the client side, a {@link org.apache.http.protocol.HttpContext context}
+is used to tie together a request, the response to it, and other data
+that might be associated with the request execution. It is passed to
+the request executor whenever needed.
+</p>
+
+<p>
+<font size="+1">
+<i>
+Information about required and recommended interceptors for the
+client side will be provided elsewhere. For the time being, please
+refer to the comments in the example applications or ask on
+one of the mailing lists.
+</i>
+</font>
+</p>
+
+<p>
+<b>Note:</b>
+If you want to develop a server-side application, we recommend that
+you implement your application as a servlet running in a servlet engine
+like <a href="http://tomcat.apache.org/">Tomcat</a> or full-blown
+JSEE container like <a href="http://geronimo.apache.org/">Geronimo</a>.
+If you prefer to implement a server-side application based on our
+{@link org.apache.http.protocol.HttpService HttpService}, we'll
+assume that you know what you're doing and that you don't need
+help in figuring out which interceptors need to be configured.
+</p>
+
+
+</body>
+</html>

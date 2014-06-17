@@ -92,7 +92,7 @@ public class AlgorithmParameters {
     public static AlgorithmParameters getInstance(String algorithm)
             throws NoSuchAlgorithmException {
         if (algorithm == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("algorithm == null");
         }
         Engine.SpiAndProvider sap = ENGINE.getInstance(algorithm, null);
         return new AlgorithmParameters((AlgorithmParametersSpi) sap.spi, sap.provider, algorithm);
@@ -120,7 +120,7 @@ public class AlgorithmParameters {
             String provider) throws NoSuchAlgorithmException,
             NoSuchProviderException {
         if (provider == null || provider.isEmpty()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("provider == null || provider.isEmpty()");
         }
         Provider p = Security.getProvider(provider);
         if (p == null) {
@@ -148,10 +148,10 @@ public class AlgorithmParameters {
     public static AlgorithmParameters getInstance(String algorithm,
             Provider provider) throws NoSuchAlgorithmException {
         if (provider == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("provider == null");
         }
         if (algorithm == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("algorithm == null");
         }
         Object spi = ENGINE.getInstance(algorithm, provider, null);
         return new AlgorithmParameters((AlgorithmParametersSpi) spi, provider, algorithm);

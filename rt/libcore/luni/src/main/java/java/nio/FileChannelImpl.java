@@ -33,7 +33,6 @@ import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import libcore.io.ErrnoException;
-import libcore.io.IoUtils;
 import libcore.io.Libcore;
 import libcore.io.StructFlock;
 import libcore.util.MutableLong;
@@ -235,14 +234,24 @@ final class FileChannelImpl extends FileChannel {
             // and we only care about making our backing file longer here.
             try {
                 Libcore.os.ftruncate(fd, position + size);
-            } catch (ErrnoException errnoException) {
-                throw errnoException.rethrowAsIOException();
+            } catch (ErrnoException ftruncateException) {
+                // EINVAL can be thrown if we're dealing with non-regular
+                // files, for example, character devices such as /dev/zero.
+                // In those cases, we ignore the failed truncation and
+                // continue on.
+                try {
+                    if (S_ISREG(Libcore.os.fstat(fd).st_mode) || ftruncateException.errno != EINVAL) {
+                        throw ftruncateException.rethrowAsIOException();
+                    }
+                } catch (ErrnoException fstatException) {
+                    throw fstatException.rethrowAsIOException();
+                }
             }
         }
         long alignment = position - position % Libcore.os.sysconf(_SC_PAGE_SIZE);
         int offset = (int) (position - alignment);
         MemoryBlock block = MemoryBlock.mmap(fd, alignment, size + offset, mapMode);
-        return new MappedByteBufferAdapter(block, (int) size, offset, mapMode);
+        return new DirectByteBuffer(block, (int) size, offset, (mapMode == MapMode.READ_ONLY), mapMode);
     }
 
     public long position() throws IOException {
@@ -442,7 +451,7 @@ final class FileChannelImpl extends FileChannel {
     public FileChannel truncate(long size) throws IOException {
         checkOpen();
         if (size < 0) {
-            throw new IllegalArgumentException("size: " + size);
+            throw new IllegalArgumentException("size < 0: " + size);
         }
         checkWritable();
         if (size < size()) {
@@ -457,7 +466,7 @@ final class FileChannelImpl extends FileChannel {
 
     public int write(ByteBuffer buffer, long position) throws IOException {
         if (position < 0) {
-            throw new IllegalArgumentException("position: " + position);
+            throw new IllegalArgumentException("position < 0: " + position);
         }
         return writeImpl(buffer, position);
     }

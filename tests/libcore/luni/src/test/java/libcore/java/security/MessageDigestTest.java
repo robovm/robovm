@@ -141,12 +141,9 @@ public final class MessageDigestTest extends TestCase {
                                     99, -71, 49, -67, 71, 65, 122, -127,
                                     -91, 56, 50, 122, -7, 39, -38, 62 });
 
-        // Regression test input for problem SHA-1 with input of
-        // 256MBs.  However, its currently too slow to be practical on
-        // devices, so its disabled in that case. http://b/4501620
-        boolean enabled256mb = (System.getProperty("os.arch").contains("x86") // host
-                                || System.getProperty("os.arch").contains("amd64")); // RI
-        if (enabled256mb) {
+        // Regression test for a SHA-1 problem with inputs larger than 256 MiB. http://b/4501620
+        // In mid-2013 this takes 3 minutes even on the host, so let's not run it on devices.
+        if (System.getenv("ANDROID_BUILD_TOP") != null) {
             // INPUT_256MB
             putExpectation("MD2",
                            INPUT_256MB,

@@ -66,11 +66,34 @@ import libcore.icu.ICU;
  * <p>Here are the versions of ICU (and the corresponding CLDR and Unicode versions) used in
  * various Android releases:
  * <table BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
- * <tr><td>cupcake/donut/eclair</td> <td>ICU 3.8</td> <td><a href="http://cldr.unicode.org/index/downloads/cldr-1-5">CLDR 1.5</a></td> <td><a href="http://www.unicode.org/versions/Unicode5.0.0/">Unicode 5.0</a></td></tr>
- * <tr><td>froyo</td>                <td>ICU 4.2</td> <td><a href="http://cldr.unicode.org/index/downloads/cldr-1-7">CLDR 1.7</a></td> <td><a href="http://www.unicode.org/versions/Unicode5.1.0/">Unicode 5.1</a></td></tr>
- * <tr><td>gingerbread/honeycomb</td><td>ICU 4.4</td> <td><a href="http://cldr.unicode.org/index/downloads/cldr-1-8">CLDR 1.8</a></td> <td><a href="http://www.unicode.org/versions/Unicode5.2.0/">Unicode 5.2</a></td></tr>
- * <tr><td>ice cream sandwich</td>   <td>ICU 4.6</td> <td><a href="http://cldr.unicode.org/index/downloads/cldr-1-9">CLDR 1.9</a></td> <td><a href="http://www.unicode.org/versions/Unicode6.0.0/">Unicode 6.0</a></td></tr>
- * <tr><td>jelly bean</td>           <td>ICU 4.8</td> <td><a href="http://cldr.unicode.org/index/downloads/cldr-2-0">CLDR 2.0</a></td> <td><a href="http://www.unicode.org/versions/Unicode6.0.0/">Unicode 6.0</a></td></tr>
+ * <tr><td>Android 1.5 (Cupcake)/Android 1.6 (Donut)/Android 2.0 (Eclair)</td>
+ *     <td>ICU 3.8</td>
+ *     <td><a href="http://cldr.unicode.org/index/downloads/cldr-1-5">CLDR 1.5</a></td>
+ *     <td><a href="http://www.unicode.org/versions/Unicode5.0.0/">Unicode 5.0</a></td></tr>
+ * <tr><td>Android 2.2 (Froyo)</td>
+ *     <td>ICU 4.2</td>
+ *     <td><a href="http://cldr.unicode.org/index/downloads/cldr-1-7">CLDR 1.7</a></td>
+ *     <td><a href="http://www.unicode.org/versions/Unicode5.1.0/">Unicode 5.1</a></td></tr>
+ * <tr><td>Android 2.3 (Gingerbread)/Android 3.0 (Honeycomb)</td>
+ *     <td>ICU 4.4</td>
+ *     <td><a href="http://cldr.unicode.org/index/downloads/cldr-1-8">CLDR 1.8</a></td>
+ *     <td><a href="http://www.unicode.org/versions/Unicode5.2.0/">Unicode 5.2</a></td></tr>
+ * <tr><td>Android 4.0 (Ice Cream Sandwich)</td>
+ *     <td>ICU 4.6</td>
+ *     <td><a href="http://cldr.unicode.org/index/downloads/cldr-1-9">CLDR 1.9</a></td>
+ *     <td><a href="http://www.unicode.org/versions/Unicode6.0.0/">Unicode 6.0</a></td></tr>
+ * <tr><td>Android 4.1 (Jelly Bean)</td>
+ *     <td>ICU 4.8</td>
+ *     <td><a href="http://cldr.unicode.org/index/downloads/cldr-2-0">CLDR 2.0</a></td>
+ *     <td><a href="http://www.unicode.org/versions/Unicode6.0.0/">Unicode 6.0</a></td></tr>
+ * <tr><td>Android 4.3 (Jelly Bean MR2)</td>
+ *     <td>ICU 50</td>
+ *     <td><a href="http://cldr.unicode.org/index/downloads/cldr-22-1">CLDR 22.1</a></td>
+ *     <td><a href="http://www.unicode.org/versions/Unicode6.2.0/">Unicode 6.2</a></td></tr>
+ * <tr><td>Android 4.4 (KitKat)</td>
+ *     <td>ICU 51</td>
+ *     <td><a href="http://cldr.unicode.org/index/downloads/cldr-23">CLDR 23</a></td>
+ *     <td><a href="http://www.unicode.org/versions/Unicode6.2.0/">Unicode 6.2</a></td></tr>
  * </table>
  *
  * <a name="default_locale"><h3>Be wary of the default locale</h3></a>
@@ -270,7 +293,9 @@ public final class Locale implements Cloneable, Serializable {
      */
     public Locale(String language, String country, String variant) {
         if (language == null || country == null || variant == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("language=" + language +
+                                           ",country=" + country +
+                                           ",variant=" + variant);
         }
         if (language.isEmpty() && country.isEmpty()) {
             languageCode = "";
@@ -396,9 +421,18 @@ public final class Locale implements Cloneable, Serializable {
         if (languageCode.isEmpty()) {
             return "";
         }
-        String result = ICU.getDisplayLanguageNative(toString(), locale.toString());
+
+        // http://b/8049507 --- frameworks/base should use fil_PH instead of tl_PH.
+        // Until then, we're stuck covering their tracks, making it look like they're
+        // using "fil" when they're not.
+        String localeString = toString();
+        if (languageCode.equals("tl")) {
+            localeString = toNewString("fil", countryCode, variantCode);
+        }
+
+        String result = ICU.getDisplayLanguageNative(localeString, locale.toString());
         if (result == null) { // TODO: do we need to do this, or does ICU do it for us?
-            result = ICU.getDisplayLanguageNative(toString(), Locale.getDefault().toString());
+            result = ICU.getDisplayLanguageNative(localeString, Locale.getDefault().toString());
         }
         return result;
     }
@@ -483,29 +517,33 @@ public final class Locale implements Cloneable, Serializable {
     }
 
     /**
-     * Returns the three letter ISO country code which corresponds to the country
+     * Returns the three-letter ISO 3166 country code which corresponds to the country
      * code for this {@code Locale}.
+     * @throws MissingResourceException if there's no 3-letter country code for this locale.
      */
     public String getISO3Country() {
-        if (countryCode.length() == 0) {
-            return countryCode;
+        String code = ICU.getISO3CountryNative(toString());
+        if (!countryCode.isEmpty() && code.isEmpty()) {
+            throw new MissingResourceException("No 3-letter country code for locale: " + this, "FormatData_" + this, "ShortCountry");
         }
-        return ICU.getISO3CountryNative(toString());
+        return code;
     }
 
     /**
-     * Returns the three letter ISO language code which corresponds to the language
+     * Returns the three-letter ISO 639-2/T language code which corresponds to the language
      * code for this {@code Locale}.
+     * @throws MissingResourceException if there's no 3-letter language code for this locale.
      */
     public String getISO3Language() {
-        if (languageCode.length() == 0) {
-            return languageCode;
+        String code = ICU.getISO3LanguageNative(toString());
+        if (!languageCode.isEmpty() && code.isEmpty()) {
+            throw new MissingResourceException("No 3-letter language code for locale: " + this, "FormatData_" + this, "ShortLanguage");
         }
-        return ICU.getISO3LanguageNative(toString());
+        return code;
     }
 
     /**
-     * Returns an array of strings containing all the two-letter ISO country codes that can be
+     * Returns an array of strings containing all the two-letter ISO 3166 country codes that can be
      * used as the country code when constructing a {@code Locale}.
      */
     public static String[] getISOCountries() {
@@ -513,7 +551,7 @@ public final class Locale implements Cloneable, Serializable {
     }
 
     /**
-     * Returns an array of strings containing all the two-letter ISO language codes that can be
+     * Returns an array of strings containing all the two-letter ISO 639-1 language codes that can be
      * used as the language code when constructing a {@code Locale}.
      */
     public static String[] getISOLanguages() {
@@ -552,7 +590,7 @@ public final class Locale implements Cloneable, Serializable {
      */
     public synchronized static void setDefault(Locale locale) {
         if (locale == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("locale == null");
         }
         defaultLocale = locale;
     }
@@ -571,10 +609,13 @@ public final class Locale implements Cloneable, Serializable {
     @Override
     public final String toString() {
         String result = cachedToStringResult;
-        return (result == null) ? (cachedToStringResult = toNewString()) : result;
+        if (result == null) {
+            result = cachedToStringResult = toNewString(languageCode, countryCode, variantCode);
+        }
+        return result;
     }
 
-    private String toNewString() {
+    private static String toNewString(String languageCode, String countryCode, String variantCode) {
         // The string form of a locale that only has a variant is the empty string.
         if (languageCode.length() == 0 && countryCode.length() == 0) {
             return "";

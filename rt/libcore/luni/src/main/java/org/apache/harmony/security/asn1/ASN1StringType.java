@@ -23,7 +23,7 @@
 package org.apache.harmony.security.asn1;
 
 import java.io.IOException;
-import java.nio.charset.Charsets;
+import java.nio.charset.StandardCharsets;
 
 /**
  * This class is the super class for all string ASN.1 types
@@ -32,43 +32,39 @@ import java.nio.charset.Charsets;
  */
 public abstract class ASN1StringType extends ASN1Type {
 
-    // TODO: what about defining them as separate classes?
-    // TODO: check decoded/encoded characters
-    public static final ASN1StringType BMPSTRING = new ASN1StringType(
-            TAG_BMPSTRING) {
-    };
-
-    public static final ASN1StringType IA5STRING = new ASN1StringType(
-            TAG_IA5STRING) {
-    };
-
-    public static final ASN1StringType GENERALSTRING = new ASN1StringType(
-            TAG_GENERALSTRING) {
-    };
-
-    public static final ASN1StringType PRINTABLESTRING = new ASN1StringType(
-            TAG_PRINTABLESTRING) {
-    };
-
-    public static final ASN1StringType TELETEXSTRING = new ASN1StringType(
-            TAG_TELETEXSTRING) {
-    };
-
-    public static final ASN1StringType UNIVERSALSTRING = new ASN1StringType(
-            TAG_UNIVERSALSTRING) {
-    };
-
-    public static final ASN1StringType UTF8STRING = new ASN1StringType(TAG_UTF8STRING) {
-        @Override public Object getDecodedObject(BerInputStream in) throws IOException {
-            return new String(in.buffer, in.contentOffset, in.length, Charsets.UTF_8);
+    private static class ASN1StringUTF8Type extends ASN1StringType {
+        public ASN1StringUTF8Type(int tagNumber) {
+            super(tagNumber);
         }
 
-        @Override public void setEncodingContent(BerOutputStream out) {
-            byte[] bytes = ((String) out.content).getBytes(Charsets.UTF_8);
+        @Override
+        public Object getDecodedObject(BerInputStream in) throws IOException {
+            return new String(in.buffer, in.contentOffset, in.length, StandardCharsets.UTF_8);
+        }
+
+        @Override
+        public void setEncodingContent(BerOutputStream out) {
+            byte[] bytes = ((String) out.content).getBytes(StandardCharsets.UTF_8);
             out.content = bytes;
             out.length = bytes.length;
         }
-    };
+    }
+
+    // TODO: what about defining them as separate classes?
+    // TODO: check decoded/encoded characters
+    public static final ASN1StringType BMPSTRING = new ASN1StringType(TAG_BMPSTRING) {};
+
+    public static final ASN1StringType IA5STRING = new ASN1StringType(TAG_IA5STRING) {};
+
+    public static final ASN1StringType GENERALSTRING = new ASN1StringType(TAG_GENERALSTRING) {};
+
+    public static final ASN1StringType PRINTABLESTRING = new ASN1StringType(TAG_PRINTABLESTRING) {};
+
+    public static final ASN1StringType TELETEXSTRING = new ASN1StringUTF8Type(TAG_TELETEXSTRING) {};
+
+    public static final ASN1StringType UNIVERSALSTRING = new ASN1StringType(TAG_UNIVERSALSTRING) {};
+
+    public static final ASN1StringType UTF8STRING = new ASN1StringUTF8Type(TAG_UTF8STRING) {};
 
     public ASN1StringType(int tagNumber) {
         super(tagNumber);
@@ -100,7 +96,7 @@ public abstract class ASN1StringType extends ASN1Type {
     public Object getDecodedObject(BerInputStream in) throws IOException {
         /* To ensure we get the correct encoding on non-ASCII platforms, specify
            that we wish to convert from ASCII to the default platform encoding */
-        return new String(in.buffer, in.contentOffset, in.length, Charsets.ISO_8859_1);
+        return new String(in.buffer, in.contentOffset, in.length, StandardCharsets.ISO_8859_1);
     }
 
     public void encodeASN(BerOutputStream out) {
@@ -113,7 +109,7 @@ public abstract class ASN1StringType extends ASN1Type {
     }
 
     public void setEncodingContent(BerOutputStream out) {
-        byte[] bytes = ((String) out.content).getBytes(Charsets.UTF_8);
+        byte[] bytes = ((String) out.content).getBytes(StandardCharsets.UTF_8);
         out.content = bytes;
         out.length = bytes.length;
     }

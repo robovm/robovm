@@ -1,6 +1,6 @@
 /*
 *******************************************************************************
-* Copyright (C) 1997-2011, International Business Machines Corporation and    *
+* Copyright (C) 1997-2013, International Business Machines Corporation and    *
 * others. All Rights Reserved.                                                *
 *******************************************************************************
 *
@@ -26,6 +26,7 @@
 #include "unicode/dtfmtsym.h"
 #include "unicode/smpdtfmt.h"
 #include "unicode/msgfmt.h"
+#include "unicode/tznames.h"
 #include "cpputils.h"
 #include "ucln_in.h"
 #include "umutex.h"
@@ -36,7 +37,6 @@
 #include "hash.h"
 #include "uresimp.h"
 #include "ureslocs.h"
-#include "tznames.h"
 
 // *****************************************************************************
 // class DateFormatSymbols
@@ -47,17 +47,18 @@
  * resource data.
  */
 
-#define PATTERN_CHARS_LEN 30
+#define PATTERN_CHARS_LEN 34
 
 /**
  * Unlocalized date-time pattern characters. For example: 'y', 'd', etc. All
  * locales use the same these unlocalized pattern characters.
  */
 static const UChar gPatternChars[] = {
-    // GyMdkHmsSEDFwWahKzYeugAZvcLQqV
+    // GyMdkHmsSEDFwWahKzYeugAZvcLQqVUOXx
     0x47, 0x79, 0x4D, 0x64, 0x6B, 0x48, 0x6D, 0x73, 0x53, 0x45,
     0x44, 0x46, 0x77, 0x57, 0x61, 0x68, 0x4B, 0x7A, 0x59, 0x65,
-    0x75, 0x67, 0x41, 0x5A, 0x76, 0x63, 0x4c, 0x51, 0x71, 0x56, 0
+    0x75, 0x67, 0x41, 0x5A, 0x76, 0x63, 0x4c, 0x51, 0x71, 0x56,
+    0x55, 0x4F, 0x58, 0x78, 0
 };
 
 /* length of an array */
@@ -120,31 +121,6 @@ static const UChar gLastResortEras[2][3] =
     {0x0041, 0x0044, 0x0000}  /* "AD" */
 };
 
-// Not used now
-//// These are the zone strings of last resort.
-//static const UChar gLastResortZoneStrings[5][4] =
-//{
-//    {0x0047, 0x004D, 0x0054, 0x0000}, /* "GMT" */
-//    {0x0047, 0x004D, 0x0054, 0x0000}, /* "GMT" */
-//    {0x0047, 0x004D, 0x0054, 0x0000}, /* "GMT" */
-//    {0x0047, 0x004D, 0x0054, 0x0000}, /* "GMT" */
-//    {0x0047, 0x004D, 0x0054, 0x0000}, /* "GMT" */
-//};
-
-static const UChar gLastResortGmtZero[] =
-    {0x0047, 0x004D, 0x0054, 0x0000}; /* GMT */
-
-static const UChar gLastResortGmtFormat[] =
-    {0x0047, 0x004D, 0x0054, 0x007B, 0x0030, 0x007D, 0x0000}; /* GMT{0} */
-
-static const UChar gLastResortGmtHourFormats[4][10] =
-{
-    {0x002D, 0x0048, 0x0048, 0x003A, 0x006D, 0x006D, 0x003A, 0x0073, 0x0073, 0x0000}, /* -HH:mm:ss */
-    {0x002D, 0x0048, 0x0048, 0x003A, 0x006D, 0x006D, 0x0000, 0x0000, 0x0000, 0x0000}, /* -HH:mm */
-    {0x002B, 0x0048, 0x0048, 0x003A, 0x006D, 0x006D, 0x003A, 0x0073, 0x0073, 0x0000}, /* +HH:mm:ss */
-    {0x002B, 0x0048, 0x0048, 0x003A, 0x006D, 0x006D, 0x0000, 0x0000, 0x0000, 0x0000}  /* +HH:mm */
-};
-
 /* Sizes for the last resort string arrays */
 typedef enum LastResortSize {
     kMonthNum = 13,
@@ -180,23 +156,30 @@ UOBJECT_DEFINE_RTTI_IMPLEMENTATION(DateFormatSymbols)
  * with a locale and calendar
  */
 static const char gErasTag[]="eras";
+static const char gCyclicNameSetsTag[]="cyclicNameSets";
+static const char gNameSetYearsTag[]="years";
 static const char gMonthNamesTag[]="monthNames";
+static const char gMonthPatternsTag[]="monthPatterns";
 static const char gDayNamesTag[]="dayNames";
 static const char gNamesWideTag[]="wide";
 static const char gNamesAbbrTag[]="abbreviated";
+static const char gNamesShortTag[]="short";
 static const char gNamesNarrowTag[]="narrow";
+static const char gNamesAllTag[]="all";
+static const char gNamesLeapTag[]="leap";
+static const char gNamesFormatTag[]="format";
 static const char gNamesStandaloneTag[]="stand-alone";
+static const char gNamesNumericTag[]="numeric";
 static const char gAmPmMarkersTag[]="AmPmMarkers";
 static const char gQuartersTag[]="quarters";
 
-static const char gZoneStringsTag[]="zoneStrings";
-static const char gGmtZeroFormatTag[] = "gmtZeroFormat";
-static const char gGmtFormatTag[]="gmtFormat";
-static const char gHourFormatTag[]="hourFormat";
+// static const char gZoneStringsTag[]="zoneStrings";
 
-static const char gLocalPatternCharsTag[]="localPatternChars";
+// static const char gLocalPatternCharsTag[]="localPatternChars";
 
-static UMTX LOCK;
+static const char gContextTransformsTag[]="contextTransforms";
+
+static UMutex LOCK = U_MUTEX_INITIALIZER;
 
 /**
  * Jitterbug 2974: MSVC has a bug whereby new X[0] behaves badly.
@@ -322,18 +305,29 @@ DateFormatSymbols::copyData(const DateFormatSymbols& other) {
     assignArray(fStandaloneNarrowMonths, fStandaloneNarrowMonthsCount, other.fStandaloneNarrowMonths, other.fStandaloneNarrowMonthsCount);
     assignArray(fWeekdays, fWeekdaysCount, other.fWeekdays, other.fWeekdaysCount);
     assignArray(fShortWeekdays, fShortWeekdaysCount, other.fShortWeekdays, other.fShortWeekdaysCount);
+    assignArray(fShorterWeekdays, fShorterWeekdaysCount, other.fShorterWeekdays, other.fShorterWeekdaysCount);
     assignArray(fNarrowWeekdays, fNarrowWeekdaysCount, other.fNarrowWeekdays, other.fNarrowWeekdaysCount);
     assignArray(fStandaloneWeekdays, fStandaloneWeekdaysCount, other.fStandaloneWeekdays, other.fStandaloneWeekdaysCount);
     assignArray(fStandaloneShortWeekdays, fStandaloneShortWeekdaysCount, other.fStandaloneShortWeekdays, other.fStandaloneShortWeekdaysCount);
+    assignArray(fStandaloneShorterWeekdays, fStandaloneShorterWeekdaysCount, other.fStandaloneShorterWeekdays, other.fStandaloneShorterWeekdaysCount);
     assignArray(fStandaloneNarrowWeekdays, fStandaloneNarrowWeekdaysCount, other.fStandaloneNarrowWeekdays, other.fStandaloneNarrowWeekdaysCount);
     assignArray(fAmPms, fAmPmsCount, other.fAmPms, other.fAmPmsCount);
     assignArray(fQuarters, fQuartersCount, other.fQuarters, other.fQuartersCount);
     assignArray(fShortQuarters, fShortQuartersCount, other.fShortQuarters, other.fShortQuartersCount);
     assignArray(fStandaloneQuarters, fStandaloneQuartersCount, other.fStandaloneQuarters, other.fStandaloneQuartersCount);
     assignArray(fStandaloneShortQuarters, fStandaloneShortQuartersCount, other.fStandaloneShortQuarters, other.fStandaloneShortQuartersCount);
-    fGmtZero = other.fGmtZero;
-    fGmtFormat = other.fGmtFormat;
-    assignArray(fGmtHourFormats, fGmtHourFormatsCount, other.fGmtHourFormats, other.fGmtHourFormatsCount);
+    if (other.fLeapMonthPatterns != NULL) {
+        assignArray(fLeapMonthPatterns, fLeapMonthPatternsCount, other.fLeapMonthPatterns, other.fLeapMonthPatternsCount);
+    } else {
+        fLeapMonthPatterns = NULL;
+        fLeapMonthPatternsCount = 0;
+    }
+    if (other.fShortYearNames != NULL) {
+        assignArray(fShortYearNames, fShortYearNamesCount, other.fShortYearNames, other.fShortYearNamesCount);
+    } else {
+        fShortYearNames = NULL;
+        fShortYearNamesCount = 0;
+    }
  
     if (other.fZoneStrings != NULL) {
         fZoneStringsColCount = other.fZoneStringsColCount;
@@ -351,6 +345,8 @@ DateFormatSymbols::copyData(const DateFormatSymbols& other) {
 
     // fastCopyFrom() - see assignArray comments
     fLocalPatternChars.fastCopyFrom(other.fLocalPatternChars);
+    
+    uprv_memcpy(fCapitalization, other.fCapitalization, sizeof(fCapitalization));
 }
 
 /**
@@ -371,27 +367,30 @@ DateFormatSymbols::~DateFormatSymbols()
 
 void DateFormatSymbols::dispose()
 {
-    if (fEras)                     delete[] fEras;
-    if (fEraNames)                 delete[] fEraNames;
-    if (fNarrowEras)               delete[] fNarrowEras;
-    if (fMonths)                   delete[] fMonths;
-    if (fShortMonths)              delete[] fShortMonths;
-    if (fNarrowMonths)             delete[] fNarrowMonths;
-    if (fStandaloneMonths)         delete[] fStandaloneMonths;
-    if (fStandaloneShortMonths)    delete[] fStandaloneShortMonths;
-    if (fStandaloneNarrowMonths)   delete[] fStandaloneNarrowMonths;
-    if (fWeekdays)                 delete[] fWeekdays;
-    if (fShortWeekdays)            delete[] fShortWeekdays;
-    if (fNarrowWeekdays)           delete[] fNarrowWeekdays;
-    if (fStandaloneWeekdays)       delete[] fStandaloneWeekdays;
-    if (fStandaloneShortWeekdays)  delete[] fStandaloneShortWeekdays;
-    if (fStandaloneNarrowWeekdays) delete[] fStandaloneNarrowWeekdays;
-    if (fAmPms)                    delete[] fAmPms;
-    if (fQuarters)                 delete[] fQuarters;
-    if (fShortQuarters)            delete[] fShortQuarters;
-    if (fStandaloneQuarters)       delete[] fStandaloneQuarters;
-    if (fStandaloneShortQuarters)  delete[] fStandaloneShortQuarters;
-    if (fGmtHourFormats)           delete[] fGmtHourFormats;
+    if (fEras)                      delete[] fEras;
+    if (fEraNames)                  delete[] fEraNames;
+    if (fNarrowEras)                delete[] fNarrowEras;
+    if (fMonths)                    delete[] fMonths;
+    if (fShortMonths)               delete[] fShortMonths;
+    if (fNarrowMonths)              delete[] fNarrowMonths;
+    if (fStandaloneMonths)          delete[] fStandaloneMonths;
+    if (fStandaloneShortMonths)     delete[] fStandaloneShortMonths;
+    if (fStandaloneNarrowMonths)    delete[] fStandaloneNarrowMonths;
+    if (fWeekdays)                  delete[] fWeekdays;
+    if (fShortWeekdays)             delete[] fShortWeekdays;
+    if (fShorterWeekdays)           delete[] fShorterWeekdays;
+    if (fNarrowWeekdays)            delete[] fNarrowWeekdays;
+    if (fStandaloneWeekdays)        delete[] fStandaloneWeekdays;
+    if (fStandaloneShortWeekdays)   delete[] fStandaloneShortWeekdays;
+    if (fStandaloneShorterWeekdays) delete[] fStandaloneShorterWeekdays;
+    if (fStandaloneNarrowWeekdays)  delete[] fStandaloneNarrowWeekdays;
+    if (fAmPms)                     delete[] fAmPms;
+    if (fQuarters)                  delete[] fQuarters;
+    if (fShortQuarters)             delete[] fShortQuarters;
+    if (fStandaloneQuarters)        delete[] fStandaloneQuarters;
+    if (fStandaloneShortQuarters)   delete[] fStandaloneShortQuarters;
+    if (fLeapMonthPatterns)         delete[] fLeapMonthPatterns;
+    if (fShortYearNames)            delete[] fShortYearNames;
 
     disposeZoneStrings();
 }
@@ -449,18 +448,20 @@ DateFormatSymbols::operator==(const DateFormatSymbols& other) const
         fStandaloneNarrowMonthsCount == other.fStandaloneNarrowMonthsCount &&
         fWeekdaysCount == other.fWeekdaysCount &&
         fShortWeekdaysCount == other.fShortWeekdaysCount &&
+        fShorterWeekdaysCount == other.fShorterWeekdaysCount &&
         fNarrowWeekdaysCount == other.fNarrowWeekdaysCount &&
         fStandaloneWeekdaysCount == other.fStandaloneWeekdaysCount &&
         fStandaloneShortWeekdaysCount == other.fStandaloneShortWeekdaysCount &&
+        fStandaloneShorterWeekdaysCount == other.fStandaloneShorterWeekdaysCount &&
         fStandaloneNarrowWeekdaysCount == other.fStandaloneNarrowWeekdaysCount &&
         fAmPmsCount == other.fAmPmsCount &&
         fQuartersCount == other.fQuartersCount &&
         fShortQuartersCount == other.fShortQuartersCount &&
         fStandaloneQuartersCount == other.fStandaloneQuartersCount &&
         fStandaloneShortQuartersCount == other.fStandaloneShortQuartersCount &&
-        fGmtHourFormatsCount == other.fGmtHourFormatsCount &&
-        fGmtZero == other.fGmtZero &&
-        fGmtFormat == other.fGmtFormat)
+        fLeapMonthPatternsCount == other.fLeapMonthPatternsCount &&
+        fShortYearNamesCount == other.fShortYearNamesCount &&
+        (uprv_memcmp(fCapitalization, other.fCapitalization, sizeof(fCapitalization))==0))
     {
         // Now compare the arrays themselves
         if (arrayCompare(fEras, other.fEras, fErasCount) &&
@@ -474,16 +475,19 @@ DateFormatSymbols::operator==(const DateFormatSymbols& other) const
             arrayCompare(fStandaloneNarrowMonths, other.fStandaloneNarrowMonths, fStandaloneNarrowMonthsCount) &&
             arrayCompare(fWeekdays, other.fWeekdays, fWeekdaysCount) &&
             arrayCompare(fShortWeekdays, other.fShortWeekdays, fShortWeekdaysCount) &&
+            arrayCompare(fShorterWeekdays, other.fShorterWeekdays, fShorterWeekdaysCount) &&
             arrayCompare(fNarrowWeekdays, other.fNarrowWeekdays, fNarrowWeekdaysCount) &&
             arrayCompare(fStandaloneWeekdays, other.fStandaloneWeekdays, fStandaloneWeekdaysCount) &&
             arrayCompare(fStandaloneShortWeekdays, other.fStandaloneShortWeekdays, fStandaloneShortWeekdaysCount) &&
+            arrayCompare(fStandaloneShorterWeekdays, other.fStandaloneShorterWeekdays, fStandaloneShorterWeekdaysCount) &&
             arrayCompare(fStandaloneNarrowWeekdays, other.fStandaloneNarrowWeekdays, fStandaloneNarrowWeekdaysCount) &&
             arrayCompare(fAmPms, other.fAmPms, fAmPmsCount) &&
             arrayCompare(fQuarters, other.fQuarters, fQuartersCount) &&
             arrayCompare(fShortQuarters, other.fShortQuarters, fShortQuartersCount) &&
             arrayCompare(fStandaloneQuarters, other.fStandaloneQuarters, fStandaloneQuartersCount) &&
             arrayCompare(fStandaloneShortQuarters, other.fStandaloneShortQuarters, fStandaloneShortQuartersCount) &&
-            arrayCompare(fGmtHourFormats, other.fGmtHourFormats, fGmtHourFormatsCount))
+            arrayCompare(fLeapMonthPatterns, other.fLeapMonthPatterns, fLeapMonthPatternsCount) &&
+            arrayCompare(fShortYearNames, other.fShortYearNames, fShortYearNamesCount))
         {
             // Compare the contents of fZoneStrings
             if (fZoneStrings == NULL && other.fZoneStrings == NULL) {
@@ -556,6 +560,7 @@ DateFormatSymbols::getMonths(int32_t &count, DtContextType context, DtWidthType 
             returnValue = fMonths;
             break;
         case ABBREVIATED :
+        case SHORT : // no month data for this, defaults to ABBREVIATED
             count = fShortMonthsCount;
             returnValue = fShortMonths;
             break;
@@ -574,6 +579,7 @@ DateFormatSymbols::getMonths(int32_t &count, DtContextType context, DtWidthType 
             returnValue = fStandaloneMonths;
             break;
         case ABBREVIATED :
+        case SHORT : // no month data for this, defaults to ABBREVIATED
             count = fStandaloneShortMonthsCount;
             returnValue = fStandaloneShortMonths;
             break;
@@ -620,6 +626,10 @@ DateFormatSymbols::getWeekdays(int32_t &count, DtContextType context, DtWidthTyp
                 count = fShortWeekdaysCount;
                 returnValue = fShortWeekdays;
                 break;
+            case SHORT :
+                count = fShorterWeekdaysCount;
+                returnValue = fShorterWeekdays;
+                break;
             case NARROW :
                 count = fNarrowWeekdaysCount;
                 returnValue = fNarrowWeekdays;
@@ -637,6 +647,10 @@ DateFormatSymbols::getWeekdays(int32_t &count, DtContextType context, DtWidthTyp
             case ABBREVIATED :
                 count = fStandaloneShortWeekdaysCount;
                 returnValue = fStandaloneShortWeekdays;
+                break;
+            case SHORT :
+                count = fStandaloneShorterWeekdaysCount;
+                returnValue = fStandaloneShorterWeekdays;
                 break;
             case NARROW :
                 count = fStandaloneNarrowWeekdaysCount;
@@ -665,6 +679,7 @@ DateFormatSymbols::getQuarters(int32_t &count, DtContextType context, DtWidthTyp
             returnValue = fQuarters;
             break;
         case ABBREVIATED :
+        case SHORT : // no quarter data for this, defaults to ABBREVIATED
             count = fShortQuartersCount;
             returnValue = fShortQuarters;
             break;
@@ -683,6 +698,7 @@ DateFormatSymbols::getQuarters(int32_t &count, DtContextType context, DtWidthTyp
             returnValue = fStandaloneQuarters;
             break;
         case ABBREVIATED :
+        case SHORT : // no quarter data for this, defaults to ABBREVIATED
             count = fStandaloneShortQuartersCount;
             returnValue = fStandaloneShortQuarters;
             break;
@@ -705,6 +721,13 @@ DateFormatSymbols::getAmPmStrings(int32_t &count) const
 {
     count = fAmPmsCount;
     return fAmPms;
+}
+
+const UnicodeString*
+DateFormatSymbols::getLeapMonthPatterns(int32_t &count) const
+{
+    count = fLeapMonthPatternsCount;
+    return fLeapMonthPatterns;
 }
 
 //------------------------------------------------------
@@ -810,7 +833,7 @@ DateFormatSymbols::setMonths(const UnicodeString* monthsArray, int32_t count, Dt
             uprv_arrayCopy( monthsArray,fNarrowMonths,count);
             fNarrowMonthsCount = count;
             break; 
-        case DT_WIDTH_COUNT :
+        default :
             break;
         }
         break;
@@ -837,7 +860,7 @@ DateFormatSymbols::setMonths(const UnicodeString* monthsArray, int32_t count, Dt
             uprv_arrayCopy( monthsArray,fStandaloneNarrowMonths,count);
             fStandaloneNarrowMonthsCount = count;
             break; 
-        case DT_WIDTH_COUNT :
+        default :
             break;
         }
         break;
@@ -897,6 +920,13 @@ DateFormatSymbols::setWeekdays(const UnicodeString* weekdaysArray, int32_t count
             uprv_arrayCopy(weekdaysArray, fShortWeekdays, count);
             fShortWeekdaysCount = count;
             break;
+        case SHORT :
+            if (fShorterWeekdays)
+                delete[] fShorterWeekdays;
+            fShorterWeekdays = newUnicodeStringArray(count);
+            uprv_arrayCopy(weekdaysArray, fShorterWeekdays, count);
+            fShorterWeekdaysCount = count;
+            break;
         case NARROW :
             if (fNarrowWeekdays)
                 delete[] fNarrowWeekdays;
@@ -923,6 +953,13 @@ DateFormatSymbols::setWeekdays(const UnicodeString* weekdaysArray, int32_t count
             fStandaloneShortWeekdays = newUnicodeStringArray(count);
             uprv_arrayCopy(weekdaysArray, fStandaloneShortWeekdays, count);
             fStandaloneShortWeekdaysCount = count;
+            break;
+        case SHORT :
+            if (fStandaloneShorterWeekdays)
+                delete[] fStandaloneShorterWeekdays;
+            fStandaloneShorterWeekdays = newUnicodeStringArray(count);
+            uprv_arrayCopy(weekdaysArray, fStandaloneShorterWeekdays, count);
+            fStandaloneShorterWeekdaysCount = count;
             break;
         case NARROW :
             if (fStandaloneNarrowWeekdays)
@@ -973,7 +1010,7 @@ DateFormatSymbols::setQuarters(const UnicodeString* quartersArray, int32_t count
             fNarrowQuartersCount = count;
         */
             break; 
-        case DT_WIDTH_COUNT :
+        default :
             break;
         }
         break;
@@ -1002,7 +1039,7 @@ DateFormatSymbols::setQuarters(const UnicodeString* quartersArray, int32_t count
             fStandaloneNarrowQuartersCount = count;
         */
             break; 
-        case DT_WIDTH_COUNT :
+        default :
             break;
         }
         break;
@@ -1151,6 +1188,48 @@ DateFormatSymbols::getPatternUChars(void)
     return gPatternChars;
 }
 
+UDateFormatField U_EXPORT2
+DateFormatSymbols::getPatternCharIndex(UChar c) {
+    const UChar *p = u_strchr(gPatternChars, c);
+    if (p == NULL) {
+        return UDAT_FIELD_COUNT;
+    } else {
+        return static_cast<UDateFormatField>(p - gPatternChars);
+    }
+}
+
+static const uint32_t kNumericFields =
+    ((uint32_t)1 << UDAT_YEAR_FIELD) |                      // y
+    ((uint32_t)1 << UDAT_MONTH_FIELD) |                     // M or MM
+    ((uint32_t)1 << UDAT_DATE_FIELD) |                      // d
+    ((uint32_t)1 << UDAT_HOUR_OF_DAY1_FIELD) |              // k
+    ((uint32_t)1 << UDAT_HOUR_OF_DAY0_FIELD) |              // H
+    ((uint32_t)1 << UDAT_MINUTE_FIELD) |                    // m
+    ((uint32_t)1 << UDAT_SECOND_FIELD) |                    // s
+    ((uint32_t)1 << UDAT_FRACTIONAL_SECOND_FIELD) |         // S
+    ((uint32_t)1 << UDAT_DAY_OF_YEAR_FIELD) |               // D
+    ((uint32_t)1 << UDAT_DAY_OF_WEEK_IN_MONTH_FIELD) |      // F
+    ((uint32_t)1 << UDAT_WEEK_OF_YEAR_FIELD) |              // w
+    ((uint32_t)1 << UDAT_WEEK_OF_MONTH_FIELD) |             // W
+    ((uint32_t)1 << UDAT_HOUR1_FIELD) |                     // h
+    ((uint32_t)1 << UDAT_HOUR0_FIELD) |                     // K
+    ((uint32_t)1 << UDAT_YEAR_WOY_FIELD) |                  // Y
+    ((uint32_t)1 << UDAT_DOW_LOCAL_FIELD) |                 // e
+    ((uint32_t)1 << UDAT_EXTENDED_YEAR_FIELD);              // u
+
+UBool U_EXPORT2
+DateFormatSymbols::isNumericField(UDateFormatField f, int32_t count) {
+    return
+        f != UDAT_FIELD_COUNT &&
+        (kNumericFields & ((uint32_t)1 << f)) != 0 &&
+        (f != UDAT_MONTH_FIELD || count < 3);
+}
+
+UBool U_EXPORT2
+DateFormatSymbols::isNumericPatternChar(UChar c, int32_t count) {
+    return isNumericField(getPatternCharIndex(c), count);
+}
+
 //------------------------------------------------------
 
 UnicodeString&
@@ -1209,6 +1288,42 @@ initField(UnicodeString **field, int32_t& length, const UChar *data, LastResortS
     }
 }
 
+static void
+initLeapMonthPattern(UnicodeString *field, int32_t index, const UResourceBundle *data, UErrorCode &status) {
+    field[index].remove();
+    if (U_SUCCESS(status)) {
+        int32_t strLen = 0;
+        const UChar *resStr = ures_getStringByKey(data, gNamesLeapTag, &strLen, &status);
+        if (U_SUCCESS(status)) {
+            field[index].setTo(TRUE, resStr, strLen);
+        }
+    }
+    status = U_ZERO_ERROR;
+}
+
+typedef struct {
+    const char * usageTypeName;
+    DateFormatSymbols::ECapitalizationContextUsageType usageTypeEnumValue;
+} ContextUsageTypeNameToEnumValue;
+
+static const ContextUsageTypeNameToEnumValue contextUsageTypeMap[] = {
+   // Entries must be sorted by usageTypeName; entry with NULL name terminates list.
+    { "day-format-except-narrow", DateFormatSymbols::kCapContextUsageDayFormat },
+    { "day-narrow",     DateFormatSymbols::kCapContextUsageDayNarrow },
+    { "day-standalone-except-narrow", DateFormatSymbols::kCapContextUsageDayStandalone },
+    { "era-abbr",       DateFormatSymbols::kCapContextUsageEraAbbrev },
+    { "era-name",       DateFormatSymbols::kCapContextUsageEraWide },
+    { "era-narrow",     DateFormatSymbols::kCapContextUsageEraNarrow },
+    { "metazone-long",  DateFormatSymbols::kCapContextUsageMetazoneLong },
+    { "metazone-short", DateFormatSymbols::kCapContextUsageMetazoneShort },
+    { "month-format-except-narrow", DateFormatSymbols::kCapContextUsageMonthFormat },
+    { "month-narrow",   DateFormatSymbols::kCapContextUsageMonthNarrow },
+    { "month-standalone-except-narrow", DateFormatSymbols::kCapContextUsageMonthStandalone },
+    { "zone-long",      DateFormatSymbols::kCapContextUsageZoneLong },
+    { "zone-short",     DateFormatSymbols::kCapContextUsageZoneShort },
+    { NULL, (DateFormatSymbols::ECapitalizationContextUsageType)0 },
+};
+
 void
 DateFormatSymbols::initializeData(const Locale& locale, const char *type, UErrorCode& status, UBool useLastResortData)
 {
@@ -1238,12 +1353,16 @@ DateFormatSymbols::initializeData(const Locale& locale, const char *type, UError
     fWeekdaysCount=0;
     fShortWeekdays = NULL;
     fShortWeekdaysCount=0;
+    fShorterWeekdays = NULL;
+    fShorterWeekdaysCount=0;
     fNarrowWeekdays = NULL;
     fNarrowWeekdaysCount=0;
     fStandaloneWeekdays = NULL;
     fStandaloneWeekdaysCount=0;
     fStandaloneShortWeekdays = NULL;
     fStandaloneShortWeekdaysCount=0;
+    fStandaloneShorterWeekdays = NULL;
+    fStandaloneShorterWeekdaysCount=0;
     fStandaloneNarrowWeekdays = NULL;
     fStandaloneNarrowWeekdaysCount=0;
     fAmPms = NULL;
@@ -1256,12 +1375,15 @@ DateFormatSymbols::initializeData(const Locale& locale, const char *type, UError
     fStandaloneQuartersCount = 0;
     fStandaloneShortQuarters = NULL;
     fStandaloneShortQuartersCount = 0;
-    fGmtHourFormats = NULL;
-    fGmtHourFormatsCount = 0;
+    fLeapMonthPatterns = NULL;
+    fLeapMonthPatternsCount = 0;
+    fShortYearNames = NULL;
+    fShortYearNamesCount = 0;
     fZoneStringsRowCount = 0;
     fZoneStringsColCount = 0;
     fZoneStrings = NULL;
     fLocaleZoneStrings = NULL;
+    uprv_memset(fCapitalization, 0, sizeof(fCapitalization));
 
     // We need to preserve the requested locale for
     // lazy ZoneStringFormat instantiation.  ZoneStringFormat
@@ -1278,12 +1400,6 @@ DateFormatSymbols::initializeData(const Locale& locale, const char *type, UError
      */
     CalendarData calData(locale, type, status);
 
-    /**
-     * Use the localeBundle for getting zone GMT formatting patterns
-     */
-    UResourceBundle *zoneBundle = ures_open(U_ICUDATA_ZONE, locale.getName(), &status);
-    UResourceBundle *zoneStringsArray = ures_getByKeyWithFallback(zoneBundle, gZoneStringsTag, NULL, &status);
-
     // load the first data item
     UResourceBundle *erasMain = calData.getByKey(gErasTag, status);
     UResourceBundle *eras = ures_getByKeyWithFallback(erasMain, gNamesAbbrTag, NULL, &status);
@@ -1293,7 +1409,7 @@ DateFormatSymbols::initializeData(const Locale& locale, const char *type, UError
        status = oldStatus;
        eraNames = ures_getByKeyWithFallback(erasMain, gNamesAbbrTag, NULL, &status);
     }
-	// current ICU4J falls back to abbreviated if narrow eras are missing, so we will too
+    // current ICU4J falls back to abbreviated if narrow eras are missing, so we will too
     oldStatus = status;
     UResourceBundle *narrowEras = ures_getByKeyWithFallback(erasMain, gNamesNarrowTag, NULL, &status);
     if ( status == U_MISSING_RESOURCE_ERROR ) {
@@ -1301,11 +1417,83 @@ DateFormatSymbols::initializeData(const Locale& locale, const char *type, UError
        narrowEras = ures_getByKeyWithFallback(erasMain, gNamesAbbrTag, NULL, &status);
     }
 
-    UResourceBundle *lsweekdaysData = NULL; // Data closed by calData
+    UErrorCode tempStatus = U_ZERO_ERROR;
+    UResourceBundle *monthPatterns = calData.getByKey(gMonthPatternsTag, tempStatus);
+    if (U_SUCCESS(tempStatus) && monthPatterns != NULL) {
+        fLeapMonthPatterns = newUnicodeStringArray(kMonthPatternsCount);
+        if (fLeapMonthPatterns) {
+            initLeapMonthPattern(fLeapMonthPatterns, kLeapMonthPatternFormatWide, calData.getByKey2(gMonthPatternsTag, gNamesWideTag, tempStatus), tempStatus);
+            initLeapMonthPattern(fLeapMonthPatterns, kLeapMonthPatternFormatAbbrev, calData.getByKey2(gMonthPatternsTag, gNamesAbbrTag, tempStatus), tempStatus);
+            initLeapMonthPattern(fLeapMonthPatterns, kLeapMonthPatternFormatNarrow, calData.getByKey2(gMonthPatternsTag, gNamesNarrowTag, tempStatus), tempStatus);
+            initLeapMonthPattern(fLeapMonthPatterns, kLeapMonthPatternStandaloneWide, calData.getByKey3(gMonthPatternsTag, gNamesStandaloneTag, gNamesWideTag, tempStatus), tempStatus);
+            initLeapMonthPattern(fLeapMonthPatterns, kLeapMonthPatternStandaloneAbbrev, calData.getByKey3(gMonthPatternsTag, gNamesStandaloneTag, gNamesAbbrTag, tempStatus), tempStatus);
+            initLeapMonthPattern(fLeapMonthPatterns, kLeapMonthPatternStandaloneNarrow, calData.getByKey3(gMonthPatternsTag, gNamesStandaloneTag, gNamesNarrowTag, tempStatus), tempStatus);
+            initLeapMonthPattern(fLeapMonthPatterns, kLeapMonthPatternNumeric, calData.getByKey3(gMonthPatternsTag, gNamesNumericTag, gNamesAllTag, tempStatus), tempStatus);
+            if (U_SUCCESS(tempStatus)) {
+                fLeapMonthPatternsCount = kMonthPatternsCount;
+            } else {
+                delete[] fLeapMonthPatterns;
+                fLeapMonthPatterns = NULL;
+            }
+        }
+    }
+
+    tempStatus = U_ZERO_ERROR;
+    UResourceBundle *cyclicNameSets= calData.getByKey(gCyclicNameSetsTag, tempStatus);
+    if (U_SUCCESS(tempStatus) && cyclicNameSets != NULL) {
+        UResourceBundle *nameSetYears = ures_getByKeyWithFallback(cyclicNameSets, gNameSetYearsTag, NULL, &tempStatus);
+        if (U_SUCCESS(tempStatus)) {
+            UResourceBundle *nameSetYearsFmt = ures_getByKeyWithFallback(nameSetYears, gNamesFormatTag, NULL, &tempStatus);
+            if (U_SUCCESS(tempStatus)) {
+                UResourceBundle *nameSetYearsFmtAbbrev = ures_getByKeyWithFallback(nameSetYearsFmt, gNamesAbbrTag, NULL, &tempStatus);
+                if (U_SUCCESS(tempStatus)) {
+                    initField(&fShortYearNames, fShortYearNamesCount, nameSetYearsFmtAbbrev, tempStatus);
+                    ures_close(nameSetYearsFmtAbbrev);
+                }
+                ures_close(nameSetYearsFmt);
+            }
+            ures_close(nameSetYears);
+        }
+    }
+
+    tempStatus = U_ZERO_ERROR;
+    UResourceBundle *localeBundle = ures_open(NULL, locale.getName(), &tempStatus);
+    if (U_SUCCESS(tempStatus)) {
+        UResourceBundle *contextTransforms = ures_getByKeyWithFallback(localeBundle, gContextTransformsTag, NULL, &tempStatus);
+        if (U_SUCCESS(tempStatus)) {
+            UResourceBundle *contextTransformUsage;
+            while ( (contextTransformUsage = ures_getNextResource(contextTransforms, NULL, &tempStatus)) != NULL ) {
+                const int32_t * intVector = ures_getIntVector(contextTransformUsage, &len, &status);
+                if (U_SUCCESS(tempStatus) && intVector != NULL && len >= 2) {
+                    const char* usageType = ures_getKey(contextTransformUsage);
+                    if (usageType != NULL) {
+                        const ContextUsageTypeNameToEnumValue * typeMapPtr = contextUsageTypeMap;
+                        int32_t compResult = 0;
+                        // linear search; list is short and we cannot be sure that bsearch is available
+                        while ( typeMapPtr->usageTypeName != NULL && (compResult = uprv_strcmp(usageType, typeMapPtr->usageTypeName)) > 0 ) {
+                            ++typeMapPtr;
+                        }
+                        if (typeMapPtr->usageTypeName != NULL && compResult == 0) {
+                            fCapitalization[typeMapPtr->usageTypeEnumValue][0] = intVector[0];
+                            fCapitalization[typeMapPtr->usageTypeEnumValue][1] = intVector[1];
+                        }
+                    }
+                }
+                tempStatus = U_ZERO_ERROR;
+                ures_close(contextTransformUsage);
+            }
+            ures_close(contextTransforms);
+        }
+        ures_close(localeBundle);
+    }
+
     UResourceBundle *weekdaysData = NULL; // Data closed by calData
+    UResourceBundle *abbrWeekdaysData = NULL; // Data closed by calData
+    UResourceBundle *shorterWeekdaysData = NULL; // Data closed by calData
     UResourceBundle *narrowWeekdaysData = NULL; // Data closed by calData
     UResourceBundle *standaloneWeekdaysData = NULL; // Data closed by calData
-    UResourceBundle *standaloneShortWeekdaysData = NULL; // Data closed by calData
+    UResourceBundle *standaloneAbbrWeekdaysData = NULL; // Data closed by calData
+    UResourceBundle *standaloneShorterWeekdaysData = NULL; // Data closed by calData
     UResourceBundle *standaloneNarrowWeekdaysData = NULL; // Data closed by calData
 
     U_LOCALE_BASED(locBased, *this);
@@ -1331,18 +1519,17 @@ DateFormatSymbols::initializeData(const Locale& locale, const char *type, UError
             initField(&fStandaloneNarrowMonths, fStandaloneNarrowMonthsCount, (const UChar *)gLastResortMonthNames, kMonthNum, kMonthLen, status);
             initField(&fWeekdays, fWeekdaysCount, (const UChar *)gLastResortDayNames, kDayNum, kDayLen, status);
             initField(&fShortWeekdays, fShortWeekdaysCount, (const UChar *)gLastResortDayNames, kDayNum, kDayLen, status);
+            initField(&fShorterWeekdays, fShorterWeekdaysCount, (const UChar *)gLastResortDayNames, kDayNum, kDayLen, status);
             initField(&fNarrowWeekdays, fNarrowWeekdaysCount, (const UChar *)gLastResortDayNames, kDayNum, kDayLen, status);
             initField(&fStandaloneWeekdays, fStandaloneWeekdaysCount, (const UChar *)gLastResortDayNames, kDayNum, kDayLen, status);
             initField(&fStandaloneShortWeekdays, fStandaloneShortWeekdaysCount, (const UChar *)gLastResortDayNames, kDayNum, kDayLen, status);
+            initField(&fStandaloneShorterWeekdays, fStandaloneShorterWeekdaysCount, (const UChar *)gLastResortDayNames, kDayNum, kDayLen, status);
             initField(&fStandaloneNarrowWeekdays, fStandaloneNarrowWeekdaysCount, (const UChar *)gLastResortDayNames, kDayNum, kDayLen, status);
             initField(&fAmPms, fAmPmsCount, (const UChar *)gLastResortAmPmMarkers, kAmPmNum, kAmPmLen, status);
             initField(&fQuarters, fQuartersCount, (const UChar *)gLastResortQuarters, kQuarterNum, kQuarterLen, status);
             initField(&fShortQuarters, fShortQuartersCount, (const UChar *)gLastResortQuarters, kQuarterNum, kQuarterLen, status);
             initField(&fStandaloneQuarters, fStandaloneQuartersCount, (const UChar *)gLastResortQuarters, kQuarterNum, kQuarterLen, status);
             initField(&fStandaloneShortQuarters, fStandaloneShortQuartersCount, (const UChar *)gLastResortQuarters, kQuarterNum, kQuarterLen, status);
-            initField(&fGmtHourFormats, fGmtHourFormatsCount, (const UChar *)gLastResortGmtHourFormats, kGmtHourNum, kGmtHourLen, status);
-            fGmtZero.setTo(TRUE, gLastResortGmtZero, -1);
-            fGmtFormat.setTo(TRUE, gLastResortGmtFormat, -1);
             fLocalPatternChars.setTo(TRUE, gPatternChars, PATTERN_CHARS_LEN);
         }
         goto cleanup;
@@ -1407,50 +1594,6 @@ DateFormatSymbols::initializeData(const Locale& locale, const char *type, UError
         initField(&fStandaloneShortQuarters, fStandaloneShortQuartersCount, calData.getByKey2(gQuartersTag, gNamesAbbrTag, status), status);
     }
 
-    // GMT zero
-    resStr = ures_getStringByKeyWithFallback(zoneStringsArray, gGmtZeroFormatTag, &len, &status);
-    if (len > 0) {
-        fGmtZero.setTo(TRUE, resStr, len);
-    }
-
-    // GMT format patterns
-    resStr = ures_getStringByKeyWithFallback(zoneStringsArray, gGmtFormatTag, &len, &status);
-    if (len > 0) {
-        fGmtFormat.setTo(TRUE, resStr, len);
-    }
-
-    resStr = ures_getStringByKeyWithFallback(zoneStringsArray, gHourFormatTag, &len, &status);
-    if (len > 0) {
-        UChar *sep = u_strchr(resStr, (UChar)0x003B /* ';' */);
-        if (sep != NULL) {
-            fGmtHourFormats = newUnicodeStringArray(GMT_HOUR_COUNT);
-            if (fGmtHourFormats == NULL) {
-                status = U_MEMORY_ALLOCATION_ERROR;
-            } else {
-                fGmtHourFormatsCount = GMT_HOUR_COUNT;
-                fGmtHourFormats[GMT_NEGATIVE_HM].setTo(TRUE, sep + 1, -1);
-                fGmtHourFormats[GMT_POSITIVE_HM].setTo(FALSE, resStr, (int32_t)(sep - resStr));
-
-                // CLDR 1.5 does not have GMT offset pattern including second field.
-                // For now, append "ss" to the end.
-                if (fGmtHourFormats[GMT_NEGATIVE_HM].indexOf((UChar)0x003A /* ':' */) != -1) {
-                    fGmtHourFormats[GMT_NEGATIVE_HMS] = fGmtHourFormats[GMT_NEGATIVE_HM] + UNICODE_STRING_SIMPLE(":ss");
-                } else if (fGmtHourFormats[GMT_NEGATIVE_HM].indexOf((UChar)0x002E /* '.' */) != -1) {
-                    fGmtHourFormats[GMT_NEGATIVE_HMS] = fGmtHourFormats[GMT_NEGATIVE_HM] + UNICODE_STRING_SIMPLE(".ss");
-                } else {
-                    fGmtHourFormats[GMT_NEGATIVE_HMS] = fGmtHourFormats[GMT_NEGATIVE_HM] + UNICODE_STRING_SIMPLE("ss");
-                }
-                if (fGmtHourFormats[GMT_POSITIVE_HM].indexOf((UChar)0x003A /* ':' */) != -1) {
-                    fGmtHourFormats[GMT_POSITIVE_HMS] = fGmtHourFormats[GMT_POSITIVE_HM] + UNICODE_STRING_SIMPLE(":ss");
-                } else if (fGmtHourFormats[GMT_POSITIVE_HM].indexOf((UChar)0x002E /* '.' */) != -1) {
-                    fGmtHourFormats[GMT_POSITIVE_HMS] = fGmtHourFormats[GMT_POSITIVE_HM] + UNICODE_STRING_SIMPLE(".ss");
-                } else {
-                    fGmtHourFormats[GMT_POSITIVE_HMS] = fGmtHourFormats[GMT_POSITIVE_HM] + UNICODE_STRING_SIMPLE("ss");
-                }
-            }
-        }
-    }
-
     // ICU 3.8 or later version no longer uses localized date-time pattern characters by default (ticket#5597)
     /*
     // fastCopyFrom()/setTo() - see assignArray comments
@@ -1464,6 +1607,7 @@ DateFormatSymbols::initializeData(const Locale& locale, const char *type, UError
     */
     fLocalPatternChars.setTo(TRUE, gPatternChars, PATTERN_CHARS_LEN);
 
+    // Format wide weekdays -> fWeekdays
     // {sfb} fixed to handle 1-based weekdays
     weekdaysData = calData.getByKey2(gDayNamesTag, gNamesWideTag, status);
     fWeekdaysCount = ures_getSize(weekdaysData);
@@ -1481,8 +1625,9 @@ DateFormatSymbols::initializeData(const Locale& locale, const char *type, UError
     }
     fWeekdaysCount++;
 
-    lsweekdaysData = calData.getByKey2(gDayNamesTag, gNamesAbbrTag, status);
-    fShortWeekdaysCount = ures_getSize(lsweekdaysData);
+    // Format abbreviated weekdays -> fShortWeekdays
+    abbrWeekdaysData = calData.getByKey2(gDayNamesTag, gNamesAbbrTag, status);
+    fShortWeekdaysCount = ures_getSize(abbrWeekdaysData);
     fShortWeekdays = new UnicodeString[fShortWeekdaysCount+1];
     /* test for NULL */
     if (fShortWeekdays == 0) {
@@ -1491,12 +1636,34 @@ DateFormatSymbols::initializeData(const Locale& locale, const char *type, UError
     }
     // leave fShortWeekdays[0] empty
     for(i = 0; i<fShortWeekdaysCount; i++) {
-        resStr = ures_getStringByIndex(lsweekdaysData, i, &len, &status);
+        resStr = ures_getStringByIndex(abbrWeekdaysData, i, &len, &status);
         // setTo() - see assignArray comments
         fShortWeekdays[i+1].setTo(TRUE, resStr, len);
     }
     fShortWeekdaysCount++;
 
+   // Format short weekdays -> fShorterWeekdays (fall back to abbreviated)
+    shorterWeekdaysData = calData.getByKey2(gDayNamesTag, gNamesShortTag, status);
+    if ( status == U_MISSING_RESOURCE_ERROR ) {
+       status = U_ZERO_ERROR;
+       shorterWeekdaysData = calData.getByKey2(gDayNamesTag, gNamesAbbrTag, status);
+    }
+    fShorterWeekdaysCount = ures_getSize(shorterWeekdaysData);
+    fShorterWeekdays = new UnicodeString[fShorterWeekdaysCount+1];
+    /* test for NULL */
+    if (fShorterWeekdays == 0) {
+        status = U_MEMORY_ALLOCATION_ERROR;
+        goto cleanup;
+    }
+    // leave fShorterWeekdays[0] empty
+    for(i = 0; i<fShorterWeekdaysCount; i++) {
+        resStr = ures_getStringByIndex(shorterWeekdaysData, i, &len, &status);
+        // setTo() - see assignArray comments
+        fShorterWeekdays[i+1].setTo(TRUE, resStr, len);
+    }
+    fShorterWeekdaysCount++;
+
+   // Format narrow weekdays -> fNarrowWeekdays
     narrowWeekdaysData = calData.getByKey2(gDayNamesTag, gNamesNarrowTag, status);
     if(status == U_MISSING_RESOURCE_ERROR) {
         status = U_ZERO_ERROR;
@@ -1521,6 +1688,7 @@ DateFormatSymbols::initializeData(const Locale& locale, const char *type, UError
     }
     fNarrowWeekdaysCount++;
 
+   // Stand-alone wide weekdays -> fStandaloneWeekdays
     standaloneWeekdaysData = calData.getByKey3(gDayNamesTag, gNamesStandaloneTag, gNamesWideTag, status);
     if ( status == U_MISSING_RESOURCE_ERROR ) {
        status = U_ZERO_ERROR;
@@ -1541,12 +1709,13 @@ DateFormatSymbols::initializeData(const Locale& locale, const char *type, UError
     }
     fStandaloneWeekdaysCount++;
 
-    standaloneShortWeekdaysData = calData.getByKey3(gDayNamesTag, gNamesStandaloneTag, gNamesAbbrTag, status);
+   // Stand-alone abbreviated weekdays -> fStandaloneShortWeekdays
+    standaloneAbbrWeekdaysData = calData.getByKey3(gDayNamesTag, gNamesStandaloneTag, gNamesAbbrTag, status);
     if ( status == U_MISSING_RESOURCE_ERROR ) {
        status = U_ZERO_ERROR;
-       standaloneShortWeekdaysData = calData.getByKey2(gDayNamesTag, gNamesAbbrTag, status);
+       standaloneAbbrWeekdaysData = calData.getByKey2(gDayNamesTag, gNamesAbbrTag, status);
     }
-    fStandaloneShortWeekdaysCount = ures_getSize(standaloneShortWeekdaysData);
+    fStandaloneShortWeekdaysCount = ures_getSize(standaloneAbbrWeekdaysData);
     fStandaloneShortWeekdays = new UnicodeString[fStandaloneShortWeekdaysCount+1];
     /* test for NULL */
     if (fStandaloneShortWeekdays == 0) {
@@ -1555,12 +1724,34 @@ DateFormatSymbols::initializeData(const Locale& locale, const char *type, UError
     }
     // leave fStandaloneShortWeekdays[0] empty
     for(i = 0; i<fStandaloneShortWeekdaysCount; i++) {
-        resStr = ures_getStringByIndex(standaloneShortWeekdaysData, i, &len, &status);
+        resStr = ures_getStringByIndex(standaloneAbbrWeekdaysData, i, &len, &status);
         // setTo() - see assignArray comments
         fStandaloneShortWeekdays[i+1].setTo(TRUE, resStr, len);
     }
     fStandaloneShortWeekdaysCount++;
 
+    // Stand-alone short weekdays -> fStandaloneShorterWeekdays (fall back to format abbreviated)
+    standaloneShorterWeekdaysData = calData.getByKey3(gDayNamesTag, gNamesStandaloneTag, gNamesShortTag, status);
+    if ( status == U_MISSING_RESOURCE_ERROR ) {
+       status = U_ZERO_ERROR;
+       standaloneShorterWeekdaysData = calData.getByKey2(gDayNamesTag, gNamesAbbrTag, status);
+    }
+    fStandaloneShorterWeekdaysCount = ures_getSize(standaloneShorterWeekdaysData);
+    fStandaloneShorterWeekdays = new UnicodeString[fStandaloneShorterWeekdaysCount+1];
+    /* test for NULL */
+    if (fStandaloneShorterWeekdays == 0) {
+        status = U_MEMORY_ALLOCATION_ERROR;
+        goto cleanup;
+    }
+    // leave fStandaloneShorterWeekdays[0] empty
+    for(i = 0; i<fStandaloneShorterWeekdaysCount; i++) {
+        resStr = ures_getStringByIndex(standaloneShorterWeekdaysData, i, &len, &status);
+        // setTo() - see assignArray comments
+        fStandaloneShorterWeekdays[i+1].setTo(TRUE, resStr, len);
+    }
+    fStandaloneShorterWeekdaysCount++;
+
+    // Stand-alone narrow weekdays -> fStandaloneNarrowWeekdays
     standaloneNarrowWeekdaysData = calData.getByKey3(gDayNamesTag, gNamesStandaloneTag, gNamesNarrowTag, status);
     if ( status == U_MISSING_RESOURCE_ERROR ) {
        status = U_ZERO_ERROR;
@@ -1589,8 +1780,6 @@ cleanup:
     ures_close(eras);
     ures_close(eraNames);
     ures_close(narrowEras);
-    ures_close(zoneStringsArray);
-    ures_close(zoneBundle);
 }
 
 Locale 

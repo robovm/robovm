@@ -18,7 +18,9 @@ package org.json;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -156,7 +158,7 @@ public class JSONObjectTest extends TestCase {
     public void testPutNullRemoves() throws JSONException {
         JSONObject object = new JSONObject();
         object.put("foo", "bar");
-        object.put("foo", null);
+        object.put("foo", (Collection) null);
         assertEquals(0, object.length());
         assertFalse(object.has("foo"));
         try {
@@ -734,7 +736,7 @@ public class JSONObjectTest extends TestCase {
         }
     }
 
-    public void testStringonstructorParseFail() {
+    public void testStringConstructorParseFail() {
         try {
             new JSONObject("{");
             fail();
@@ -813,7 +815,7 @@ public class JSONObjectTest extends TestCase {
     public void testNullValue() throws JSONException {
         JSONObject object = new JSONObject();
         object.put("foo", JSONObject.NULL);
-        object.put("bar", null);
+        object.put("bar", (Collection) null);
 
         // there are two ways to represent null; each behaves differently!
         assertTrue(object.has("foo"));
@@ -960,5 +962,35 @@ public class JSONObjectTest extends TestCase {
             fail();
         } catch (JSONException e) {
         }
+    }
+
+    public void test_wrap() throws Exception {
+        assertEquals(JSONObject.NULL, JSONObject.wrap(null));
+
+        JSONArray a = new JSONArray();
+        assertEquals(a, JSONObject.wrap(a));
+
+        JSONObject o = new JSONObject();
+        assertEquals(o, JSONObject.wrap(o));
+
+        assertEquals(JSONObject.NULL, JSONObject.wrap(JSONObject.NULL));
+
+        assertTrue(JSONObject.wrap(new byte[0]) instanceof JSONArray);
+        assertTrue(JSONObject.wrap(new ArrayList<String>()) instanceof JSONArray);
+        assertTrue(JSONObject.wrap(new HashMap<String, String>()) instanceof JSONObject);
+        assertTrue(JSONObject.wrap(Double.valueOf(0)) instanceof Double);
+        assertTrue(JSONObject.wrap("hello") instanceof String);
+        assertTrue(JSONObject.wrap(java.nio.channels.Selector.open()) instanceof String);
+    }
+
+    // https://code.google.com/p/android/issues/detail?id=55114
+    public void test_toString_listAsMapValue() throws Exception {
+        ArrayList<Object> list = new ArrayList<Object>();
+        list.add("a");
+        list.add(new ArrayList<String>());
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("x", "l");
+        map.put("y", list);
+        assertEquals("{\"y\":[\"a\",[]],\"x\":\"l\"}", new JSONObject(map).toString());
     }
 }

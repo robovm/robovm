@@ -116,8 +116,12 @@ public final class Subject implements Serializable {
     public Subject(boolean readOnly, Set<? extends Principal> subjPrincipals,
             Set<?> pubCredentials, Set<?> privCredentials) {
 
-        if (subjPrincipals == null || pubCredentials == null || privCredentials == null) {
-            throw new NullPointerException();
+        if (subjPrincipals == null) {
+            throw new NullPointerException("subjPrincipals == null");
+        } else if (pubCredentials == null) {
+            throw new NullPointerException("pubCredentials == null");
+        } else if (privCredentials == null) {
+            throw new NullPointerException("privCredentials == null");
         }
 
         principals = new SecureSet<Principal>(_PRINCIPALS, subjPrincipals);
@@ -467,7 +471,7 @@ public final class Subject implements Serializable {
      */
     public static Subject getSubject(final AccessControlContext context) {
         if (context == null) {
-            throw new NullPointerException("AccessControlContext cannot be null");
+            throw new NullPointerException("context == null");
         }
         PrivilegedAction<DomainCombiner> action = new PrivilegedAction<DomainCombiner>() {
             public DomainCombiner run() {
@@ -554,7 +558,7 @@ public final class Subject implements Serializable {
         private void verifyElement(Object o) {
 
             if (o == null) {
-                throw new NullPointerException();
+                throw new NullPointerException("o == null");
             }
             if (permission == _PRINCIPALS && !(Principal.class.isAssignableFrom(o.getClass()))) {
                 throw new IllegalArgumentException("Element is not instance of java.security.Principal");
@@ -607,7 +611,7 @@ public final class Subject implements Serializable {
         public boolean retainAll(Collection<?> c) {
 
             if (c == null) {
-                throw new NullPointerException();
+                throw new NullPointerException("c == null");
             }
             return super.retainAll(c);
         }
@@ -624,7 +628,7 @@ public final class Subject implements Serializable {
         protected final <E> Set<E> get(final Class<E> c) {
 
             if (c == null) {
-                throw new NullPointerException();
+                throw new NullPointerException("c == null");
             }
 
             AbstractSet<E> s = new AbstractSet<E>() {
@@ -652,7 +656,7 @@ public final class Subject implements Serializable {
                 public boolean retainAll(Collection<?> c) {
 
                     if (c == null) {
-                        throw new NullPointerException();
+                        throw new NullPointerException("c == null");
                     }
                     return super.retainAll(c);
                 }

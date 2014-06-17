@@ -368,6 +368,69 @@ public abstract class CipherSpi {
     }
 
     /**
+     * Continues a multi-part transformation (encryption or decryption) with
+     * Authenticated Additional Data (AAD). AAD may only be added after the
+     * {@code Cipher} is initialized and before any data is passed to the
+     * instance.
+     * <p>
+     * This is only usable with cipher modes that support Authenticated
+     * Encryption with Additional Data (AEAD) such as Galois/Counter Mode (GCM).
+     *
+     * @param input bytes of AAD to use with the cipher
+     * @param inputOffset offset within bytes of additional data to add to cipher
+     * @param inputLen length of bytes of additional data to add to cipher
+     * @throws IllegalStateException
+     *             if this cipher instance is not initialized for encryption or
+     *             decryption.
+     * @throws IllegalArgumentException
+     *             if {@code input} is {@code null}, or if {@code inputOffset} and
+     *             {@code inputLen} do not specify a valid chunk in the input
+     *             buffer.
+     * @throws UnsupportedOperationException if the cipher does not support AEAD
+     * @since 1.7
+     */
+    protected void engineUpdateAAD(byte[] input, int inputOffset, int inputLen) {
+        throw new UnsupportedOperationException(
+                "This cipher does not support Authenticated Encryption with Additional Data");
+    }
+
+    /**
+     * Continues a multi-part transformation (encryption or decryption). The
+     * {@code input.remaining()} bytes starting at {@code input.position()} are
+     * used for the Additional Authenticated Data (AAD). AAD may only be added
+     * after the {@code Cipher} is initialized and before any data is passed to
+     * the instance.
+     * <p>
+     * This is only usable with cipher modes that support Authenticated
+     * Encryption with Additional Data (AEAD) such as Galois/Counter Mode (GCM).
+     *
+     * @param input the input buffer to transform.
+     * @since 1.7
+     */
+    protected void engineUpdateAAD(ByteBuffer input) {
+        if (input == null) {
+            throw new NullPointerException("input == null");
+        }
+        int position = input.position();
+        int limit = input.limit();
+        if ((limit - position) <= 0) {
+            return;
+        }
+        byte[] bInput;
+        if (input.hasArray()) {
+            bInput = input.array();
+            int offset = input.arrayOffset();
+            engineUpdateAAD(bInput, offset + position, limit - position);
+            input.position(limit);
+        } else {
+            int len = limit - position;
+            bInput = new byte[len];
+            input.get(bInput);
+            engineUpdateAAD(bInput, 0, len);
+        }
+    }
+
+    /**
      * Finishes a multi-part transformation (encryption or decryption).
      * <p>
      * Processes the {@code inputLen} bytes in {@code input} buffer at {@code

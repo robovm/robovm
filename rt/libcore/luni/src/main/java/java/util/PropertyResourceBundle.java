@@ -46,7 +46,7 @@ public class PropertyResourceBundle extends ResourceBundle {
      */
     public PropertyResourceBundle(InputStream stream) throws IOException {
         if (stream == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("stream == null");
         }
         resources = new Properties();
         resources.load(stream);

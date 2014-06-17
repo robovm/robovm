@@ -22,7 +22,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 import junit.framework.TestCase;
-import tests.support.Support_Locale;
 
 public class OldTimeZoneTest extends TestCase {
 
@@ -83,6 +82,7 @@ public class OldTimeZoneTest extends TestCase {
     }
 
     public void test_getDisplayName() {
+        Locale.setDefault(Locale.US);
         TimeZone tz = TimeZone.getTimeZone("GMT-6");
         assertEquals("GMT-06:00", tz.getDisplayName());
         tz = TimeZone.getTimeZone("America/Los_Angeles");
@@ -92,13 +92,11 @@ public class OldTimeZoneTest extends TestCase {
     public void test_getDisplayNameLjava_util_Locale() {
         TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
         assertEquals("Pacific Standard Time", tz.getDisplayName(new Locale("US")));
-        if (Support_Locale.isLocaleAvailable(Locale.FRANCE)) {
-            // BEGIN android-note: RI has "Heure", CLDR/ICU has "heure".
-            assertEquals("heure normale du Pacifique", tz.getDisplayName(Locale.FRANCE));
-        }
+        assertEquals("heure normale du Pacifique", tz.getDisplayName(Locale.FRANCE));
     }
 
     public void test_getDisplayNameZI() {
+        Locale.setDefault(Locale.US);
         TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
         assertEquals("PST",                   tz.getDisplayName(false, 0));
         assertEquals("Pacific Daylight Time", tz.getDisplayName(true, 1));
@@ -110,16 +108,12 @@ public class OldTimeZoneTest extends TestCase {
         TimeZone tz = TimeZone.getTimeZone("America/Los_Angeles");
         assertEquals("PST",                   tz.getDisplayName(false, 0, Locale.US));
         assertEquals("Pacific Daylight Time", tz.getDisplayName(true,  1, Locale.US));
-        if (Support_Locale.isLocaleAvailable(Locale.UK)) {
-            assertEquals("Pacific Standard Time", tz.getDisplayName(false, 1, Locale.UK));
-        }
-        if (Support_Locale.isLocaleAvailable(Locale.FRANCE)) {
-            //RI fails on following line. RI always returns short time zone name as "PST"
-            assertEquals("UTC-08:00",             tz.getDisplayName(false, 0, Locale.FRANCE));
-            // BEGIN android-note: RI has "Heure", CLDR/ICU has "heure".
-            assertEquals("heure avanc\u00e9e du Pacifique", tz.getDisplayName(true,  1, Locale.FRANCE));
-            assertEquals("heure normale du Pacifique", tz.getDisplayName(false, 1, Locale.FRANCE));
-        }
+        assertEquals("Pacific Standard Time", tz.getDisplayName(false, 1, Locale.UK));
+        // RI always returns short time zone name as "PST"
+        // ICU zone/root.txt patched to allow metazone names.
+        assertEquals("PST",             tz.getDisplayName(false, 0, Locale.FRANCE));
+        assertEquals("heure avanc\u00e9e du Pacifique", tz.getDisplayName(true,  1, Locale.FRANCE));
+        assertEquals("heure normale du Pacifique", tz.getDisplayName(false, 1, Locale.FRANCE));
     }
 
     public void test_getID() {
@@ -149,16 +143,5 @@ public class OldTimeZoneTest extends TestCase {
         assertEquals("GMT-06:00", tz.getID());
         tz.setID("New ID for GMT-6");
         assertEquals("New ID for GMT-6", tz.getID());
-    }
-
-    Locale loc = null;
-
-    protected void setUp() {
-        loc = Locale.getDefault();
-        Locale.setDefault(Locale.US);
-    }
-
-    protected void tearDown() {
-        Locale.setDefault(loc);
     }
 }

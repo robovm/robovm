@@ -46,7 +46,7 @@ public class IllegalFormatConversionException extends IllegalFormatException
     public IllegalFormatConversionException(char c, Class<?> arg) {
         this.c = c;
         if (arg == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("arg == null");
         }
         this.arg = arg;
     }

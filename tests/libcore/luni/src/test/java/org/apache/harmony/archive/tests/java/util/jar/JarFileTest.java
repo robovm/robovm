@@ -69,6 +69,14 @@ public class JarFileTest extends TestCase {
 
     private final String jarName5 = "hyts_signed_inc.jar";
 
+    private final String jarName6 = "hyts_signed_sha256withrsa.jar";
+
+    private final String jarName7 = "hyts_signed_sha256digest_sha256withrsa.jar";
+
+    private final String jarName8 = "hyts_signed_sha512digest_sha512withecdsa.jar";
+
+    private final String authAttrsJar = "hyts_signed_authAttrs.jar";
+
     private final String entryName = "foo/bar/A.class";
 
     private final String entryName3 = "coucou/FileAccess.class";
@@ -520,7 +528,7 @@ public class JarFileTest extends TestCase {
     // This test doesn't pass on RI. If entry size is set up incorrectly,
     // SecurityException is thrown. But SecurityException is thrown on RI only
     // if jar file is signed incorrectly.
-    public void test_getInputStreamLjava_util_jar_JarEntry_subtest0() {
+    public void test_getInputStreamLjava_util_jar_JarEntry_subtest0() throws Exception {
         File signedFile = null;
         try {
             Support_Resources.copyFile(resources, null, jarName4);
@@ -582,6 +590,45 @@ public class JarFileTest extends TestCase {
         } catch (Exception e) {
             fail("Exception during test 5: " + e);
         }
+
+        // SHA1 digest, SHA256withRSA signed JAR
+        checkSignedJar(jarName6);
+
+        // SHA-256 digest, SHA256withRSA signed JAR
+        checkSignedJar(jarName7);
+
+        // SHA-512 digest, SHA512withECDSA signed JAR
+        checkSignedJar(jarName8);
+
+        // JAR with a signature that has PKCS#7 Authenticated Attributes
+        checkSignedJar(authAttrsJar);
+    }
+
+    private void checkSignedJar(String jarName) throws Exception {
+        Support_Resources.copyFile(resources, null, jarName);
+
+        File file = new File(resources, jarName);
+
+        JarFile jarFile = new JarFile(file, true);
+
+        boolean foundCerts = false;
+
+        Enumeration<JarEntry> e = jarFile.entries();
+        while (e.hasMoreElements()) {
+            JarEntry entry = e.nextElement();
+            InputStream is = jarFile.getInputStream(entry);
+            is.skip(100000);
+            is.close();
+            Certificate[] certs = entry.getCertificates();
+            if (certs != null && certs.length > 0) {
+                foundCerts = true;
+                break;
+            }
+        }
+
+        assertTrue(
+                "No certificates found during signed jar test for jar \""
+                        + jarName + "\"", foundCerts);
     }
 
     /*

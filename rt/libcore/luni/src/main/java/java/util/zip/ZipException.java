@@ -21,7 +21,7 @@ import java.io.IOException;
 
 /**
  * This runtime exception is thrown by {@code ZipFile} and {@code
- * ZipInputStream} when the file or stream is not a valid ZIP file.
+ * ZipInputStream} when the file or stream is not a valid zip file.
  *
  * @see ZipFile
  * @see ZipInputStream

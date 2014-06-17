@@ -362,7 +362,7 @@ public class Timer {
      */
     public Timer(String name, boolean isDaemon) {
         if (name == null) {
-            throw new NullPointerException("name is null");
+            throw new NullPointerException("name == null");
         }
         this.impl = new TimerImpl(name, isDaemon);
         this.finalizer = new FinalizerHelper(impl);
@@ -433,7 +433,7 @@ public class Timer {
      */
     public void schedule(TimerTask task, Date when) {
         if (when.getTime() < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("when < 0: " + when.getTime());
         }
         long delay = when.getTime() - System.currentTimeMillis();
         scheduleImpl(task, delay < 0 ? 0 : delay, -1, false);
@@ -454,7 +454,7 @@ public class Timer {
      */
     public void schedule(TimerTask task, long delay) {
         if (delay < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("delay < 0: " + delay);
         }
         scheduleImpl(task, delay, -1, false);
     }

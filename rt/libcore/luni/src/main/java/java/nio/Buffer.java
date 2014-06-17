@@ -87,7 +87,7 @@ public abstract class Buffer {
      * This is set in the constructor.
      * TODO: make this final at the cost of loads of extra constructors? [how many?]
      */
-    int effectiveDirectAddress;
+    long effectiveDirectAddress;
 
     /**
      * For direct buffers, the underlying MemoryBlock; null otherwise.
@@ -271,7 +271,7 @@ public abstract class Buffer {
 
     final void checkWritable() {
         if (isReadOnly()) {
-            throw new IllegalArgumentException("read-only buffer");
+            throw new IllegalArgumentException("Read-only buffer");
         }
     }
 
@@ -300,14 +300,6 @@ public abstract class Buffer {
      *                if <code>newLimit</code> is invalid.
      */
     public final Buffer limit(int newLimit) {
-        limitImpl(newLimit);
-        return this;
-    }
-
-    /**
-     * Subverts the fact that limit(int) is final, for the benefit of MappedByteBufferAdapter.
-     */
-    void limitImpl(int newLimit) {
         if (newLimit < 0 || newLimit > capacity) {
             throw new IllegalArgumentException("Bad limit (capacity " + capacity + "): " + newLimit);
         }
@@ -319,6 +311,7 @@ public abstract class Buffer {
         if ((mark != UNSET_MARK) && (mark > newLimit)) {
             mark = UNSET_MARK;
         }
+        return this;
     }
 
     /**
@@ -409,15 +402,11 @@ public abstract class Buffer {
         return this;
     }
 
+    /**
+     * Returns a string describing this buffer.
+     */
     @Override public String toString() {
-        StringBuilder buf = new StringBuilder();
-        buf.append(getClass().getName());
-        buf.append(", status: capacity=");
-        buf.append(capacity);
-        buf.append(" position=");
-        buf.append(position);
-        buf.append(" limit=");
-        buf.append(limit);
-        return buf.toString();
+        return getClass().getName() +
+            "[position=" + position + ",limit=" + limit + ",capacity=" + capacity + "]";
     }
 }

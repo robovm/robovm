@@ -18,69 +18,142 @@
 package java.nio;
 
 /**
- * FloatArrayBuffer, ReadWriteFloatArrayBuffer and ReadOnlyFloatArrayBuffer
- * compose the implementation of array based float buffers.
- * <p>
- * FloatArrayBuffer implements all the shared readonly methods and is extended
- * by the other two classes.
- * </p>
- * <p>
- * All methods are marked final for runtime performance.
- * </p>
- *
+ * FloatArrayBuffer implements float[]-based FloatBuffers.
  */
-abstract class FloatArrayBuffer extends FloatBuffer {
+final class FloatArrayBuffer extends FloatBuffer {
 
-    protected final float[] backingArray;
+  private final float[] backingArray;
 
-    protected final int offset;
+  private final int arrayOffset;
 
-    FloatArrayBuffer(float[] array) {
-        this(array.length, array, 0);
+  private final boolean isReadOnly;
+
+  FloatArrayBuffer(float[] array) {
+    this(array.length, array, 0, false);
+  }
+
+  private FloatArrayBuffer(int capacity, float[] backingArray, int arrayOffset, boolean isReadOnly) {
+    super(capacity);
+    this.backingArray = backingArray;
+    this.arrayOffset = arrayOffset;
+    this.isReadOnly = isReadOnly;
+  }
+
+  private static FloatArrayBuffer copy(FloatArrayBuffer other, int markOfOther, boolean isReadOnly) {
+    FloatArrayBuffer buf = new FloatArrayBuffer(other.capacity(), other.backingArray, other.arrayOffset, isReadOnly);
+    buf.limit = other.limit;
+    buf.position = other.position();
+    buf.mark = markOfOther;
+    return buf;
+  }
+
+  @Override public FloatBuffer asReadOnlyBuffer() {
+    return copy(this, mark, true);
+  }
+
+
+  @Override public FloatBuffer compact() {
+    if (isReadOnly) {
+      throw new ReadOnlyBufferException();
     }
+    System.arraycopy(backingArray, position + arrayOffset, backingArray, arrayOffset, remaining());
+    position = limit - position;
+    limit = capacity;
+    mark = UNSET_MARK;
+    return this;
+  }
 
-    FloatArrayBuffer(int capacity) {
-        this(capacity, new float[capacity], 0);
+  @Override public FloatBuffer duplicate() {
+    return copy(this, mark, isReadOnly);
+  }
+
+  @Override public FloatBuffer slice() {
+    return new FloatArrayBuffer(remaining(), backingArray, arrayOffset + position, isReadOnly);
+  }
+
+  @Override public boolean isReadOnly() {
+    return isReadOnly;
+  }
+
+  @Override float[] protectedArray() {
+    if (isReadOnly) {
+      throw new ReadOnlyBufferException();
     }
+    return backingArray;
+  }
 
-    FloatArrayBuffer(int capacity, float[] backingArray, int offset) {
-        super(capacity);
-        this.backingArray = backingArray;
-        this.offset = offset;
+  @Override int protectedArrayOffset() {
+    if (isReadOnly) {
+      throw new ReadOnlyBufferException();
     }
+    return arrayOffset;
+  }
 
-    @Override
-    public final float get() {
-        if (position == limit) {
-            throw new BufferUnderflowException();
-        }
-        return backingArray[offset + position++];
+  @Override boolean protectedHasArray() {
+    if (isReadOnly) {
+      return false;
     }
+    return true;
+  }
 
-    @Override
-    public final float get(int index) {
-        checkIndex(index);
-        return backingArray[offset + index];
+  @Override public final float get() {
+    if (position == limit) {
+      throw new BufferUnderflowException();
     }
+    return backingArray[arrayOffset + position++];
+  }
 
-    @Override
-    public final FloatBuffer get(float[] dst, int dstOffset, int floatCount) {
-        if (floatCount > remaining()) {
-            throw new BufferUnderflowException();
-        }
-        System.arraycopy(backingArray, offset + position, dst, dstOffset, floatCount);
-        position += floatCount;
-        return this;
+  @Override public final float get(int index) {
+    checkIndex(index);
+    return backingArray[arrayOffset + index];
+  }
+
+  @Override public final FloatBuffer get(float[] dst, int dstOffset, int floatCount) {
+    if (floatCount > remaining()) {
+      throw new BufferUnderflowException();
     }
+    System.arraycopy(backingArray, arrayOffset + position, dst, dstOffset, floatCount);
+    position += floatCount;
+    return this;
+  }
 
-    @Override
-    public final boolean isDirect() {
-        return false;
+  @Override public final boolean isDirect() {
+    return false;
+  }
+
+  @Override public final ByteOrder order() {
+    return ByteOrder.nativeOrder();
+  }
+
+  @Override public FloatBuffer put(float c) {
+    if (isReadOnly) {
+      throw new ReadOnlyBufferException();
     }
-
-    @Override
-    public final ByteOrder order() {
-        return ByteOrder.nativeOrder();
+    if (position == limit) {
+      throw new BufferOverflowException();
     }
+    backingArray[arrayOffset + position++] = c;
+    return this;
+  }
 
+  @Override public FloatBuffer put(int index, float c) {
+    if (isReadOnly) {
+      throw new ReadOnlyBufferException();
+    }
+    checkIndex(index);
+    backingArray[arrayOffset + index] = c;
+    return this;
+  }
+
+  @Override public FloatBuffer put(float[] src, int srcOffset, int floatCount) {
+    if (isReadOnly) {
+      throw new ReadOnlyBufferException();
+    }
+    if (floatCount > remaining()) {
+      throw new BufferOverflowException();
+    }
+    System.arraycopy(src, srcOffset, backingArray, arrayOffset + position, floatCount);
+    position += floatCount;
+    return this;
+  }
 }

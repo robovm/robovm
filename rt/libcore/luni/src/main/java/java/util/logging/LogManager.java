@@ -446,7 +446,7 @@ public class LogManager {
      */
     public void addPropertyChangeListener(PropertyChangeListener l) {
         if (l == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("l == null");
         }
         checkAccess();
         listeners.addPropertyChangeListener(l);

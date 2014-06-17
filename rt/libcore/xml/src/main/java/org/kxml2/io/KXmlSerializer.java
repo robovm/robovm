@@ -327,7 +327,7 @@ public class KXmlSerializer implements XmlSerializer {
     public void setOutput(OutputStream os, String encoding)
         throws IOException {
         if (os == null)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("os == null");
         setOutput(
             encoding == null
                 ? new OutputStreamWriter(os)

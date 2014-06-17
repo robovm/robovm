@@ -116,20 +116,11 @@ public abstract class FilterReader extends Reader {
     }
 
     /**
-     * Reads at most {@code count} characters from the filtered reader and stores them
+     * Reads up to {@code count} characters from the filtered reader and stores them
      * in the byte array {@code buffer} starting at {@code offset}. Returns the
      * number of characters actually read or -1 if no characters were read and
      * the end of the filtered reader was encountered.
      *
-     * @param buffer
-     *            the char array in which to store the characters read.
-     * @param offset
-     *            the initial position in {@code buffer} to store the characters
-     *            read from this reader.
-     * @param count
-     *            the maximum number of characters to store in {@code buffer}.
-     * @return the number of characters actually read or -1 if the end of the
-     *         filtered reader has been reached while reading.
      * @throws IOException
      *             if an error occurs while reading from this reader.
      */

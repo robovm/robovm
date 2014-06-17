@@ -18,7 +18,7 @@
 #include <string.h>
 #include "cbigint.h"
 
-#if defined(__linux__) || defined(FREEBSD) || defined(ZOS) || defined(MACOSX) || defined(AIX)
+#if defined(__linux__) || defined(__APPLE__)
 #define USE_LL
 #endif
 
@@ -121,7 +121,8 @@ simpleAddHighPrecision (uint64_t * arg1, int32_t length, uint64_t arg2)
   else if (length == 1)
     return 1;
 
-  while (++arg1[index] == 0 && ++index < length);
+  while (++arg1[index] == 0 && ++index < length) {
+  }
 
   return index == length;
 }
@@ -166,7 +167,8 @@ addHighPrecision (uint64_t * arg1, int32_t length1, uint64_t * arg2, int32_t len
   else if (index == length1)
     return 1;
 
-  while (++arg1[index] == 0 && ++index < length1);
+  while (++arg1[index] == 0 && ++index < length1) {
+  }
 
   return index == length1;
 }
@@ -539,8 +541,10 @@ lowestSetBitHighPrecision (uint64_t * arg, int32_t length)
 int32_t
 compareHighPrecision (uint64_t * arg1, int32_t length1, uint64_t * arg2, int32_t length2)
 {
-  while (--length1 >= 0 && arg1[length1] == 0);
-  while (--length2 >= 0 && arg2[length2] == 0);
+  while (--length1 >= 0 && arg1[length1] == 0) {
+  }
+  while (--length2 >= 0 && arg2[length2] == 0) {
+  }
 
   if (length1 > length2)
     return 1;

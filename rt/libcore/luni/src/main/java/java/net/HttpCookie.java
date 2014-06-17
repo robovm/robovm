@@ -445,7 +445,7 @@ public final class HttpCookie implements Cloneable {
     public HttpCookie(String name, String value) {
         String ntrim = name.trim(); // erase leading and trailing whitespace
         if (!isValidName(ntrim)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid name: " + name);
         }
 
         this.name = ntrim;
@@ -650,11 +650,11 @@ public final class HttpCookie implements Cloneable {
      *
      * @throws IllegalArgumentException if v is neither 0 nor 1
      */
-    public void setVersion(int v) {
-        if (v != 0 && v != 1) {
-            throw new IllegalArgumentException();
+    public void setVersion(int newVersion) {
+        if (newVersion != 0 && newVersion != 1) {
+            throw new IllegalArgumentException("Bad version: " + newVersion);
         }
-        version = v;
+        version = newVersion;
     }
 
     @Override public Object clone() {

@@ -16,6 +16,7 @@
 
 package libcore.java.lang.reflect;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -62,5 +63,20 @@ public final class ProxyTest extends TestCase {
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
             return args[0];
         }
+    }
+
+    // https://code.google.com/p/android/issues/detail?id=24846
+    public void test24846() throws Exception {
+      ClassLoader cl = getClass().getClassLoader();
+      Class[] interfaces = { java.beans.PropertyChangeListener.class };
+      Object proxy = Proxy.newProxyInstance(cl, interfaces, new InvocationHandler() {
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+          return null;
+        }
+      });
+      for (Field field : proxy.getClass().getDeclaredFields()) {
+        field.setAccessible(true);
+        assertFalse(field.isAnnotationPresent(Deprecated.class));
+      }
     }
 }

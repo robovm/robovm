@@ -38,7 +38,7 @@ public class URLDecoder {
      * @param s
      *            the encoded string.
      * @return the decoded clear-text representation of the given string.
-     * @deprecated use {@link #decode(String, String)} instead.
+     * @deprecated Use {@link #decode(String, String)} instead.
      */
     @Deprecated
     public static String decode(String s) {
@@ -47,23 +47,16 @@ public class URLDecoder {
 
     /**
      * Decodes the argument which is assumed to be encoded in the {@code
-     * x-www-form-urlencoded} MIME content type using the specified encoding
-     * scheme.
-     * <p>
-     *'+' will be converted to space, '%' and two following hex digit
+     * x-www-form-urlencoded} MIME content type, assuming the given {@code charsetName}.
+     *
+     *'<p>+' will be converted to space, '%' and two following hex digit
      * characters are converted to the equivalent byte value. All other
      * characters are passed through unmodified. For example "A+B+C %24%25" ->
      * "A B C $%".
      *
-     * @param s
-     *            the encoded string.
-     * @param encoding
-     *            the encoding scheme to be used.
-     * @return the decoded clear-text representation of the given string.
-     * @throws UnsupportedEncodingException
-     *             if the specified encoding scheme is invalid.
+     * @throws UnsupportedEncodingException if {@code charsetName} is not supported.
      */
-    public static String decode(String s, String encoding) throws UnsupportedEncodingException {
-        return UriCodec.decode(s, true, Charset.forName(encoding), true);
+    public static String decode(String s, String charsetName) throws UnsupportedEncodingException {
+        return UriCodec.decode(s, true, Charset.forName(charsetName), true);
     }
 }

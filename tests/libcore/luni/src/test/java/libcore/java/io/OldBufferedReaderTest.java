@@ -19,8 +19,13 @@ package libcore.java.io;
 
 import java.io.BufferedReader;
 import java.io.CharArrayReader;
+import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.io.PipedReader;
+import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringReader;
 import tests.support.Support_ASimpleReader;
@@ -317,5 +322,80 @@ public class OldBufferedReaderTest extends junit.framework.TestCase {
             br.close();
         } catch (Exception e) {
         }
+    }
+
+    public void test_readLine_all_line_endings() throws Exception {
+        BufferedReader r = new BufferedReader(new StringReader("1\r2\n3\r\n4"));
+        assertEquals("1", r.readLine());
+        assertEquals("2", r.readLine());
+        assertEquals("3", r.readLine());
+        assertEquals("4", r.readLine());
+        assertNull(r.readLine());
+    }
+
+    public void test_readLine_interaction_with_read() throws Exception {
+        BufferedReader r = new BufferedReader(new StringReader("1\r\n2"));
+        assertEquals('1', r.read());
+        assertEquals('\r', r.read());
+        assertEquals("", r.readLine()); // The '\r' we read() didn't count.
+        assertEquals("2", r.readLine());
+        assertNull(r.readLine());
+    }
+
+    public void test_readLine_interaction_with_array_read_1() throws Exception {
+        BufferedReader r = new BufferedReader(new StringReader("1\r\n2"));
+        assertEquals(2, r.read(new char[2], 0, 2));
+        assertEquals("", r.readLine()); // The '\r' we read() didn't count.
+        assertEquals("2", r.readLine());
+        assertNull(r.readLine());
+    }
+
+    public void test_readLine_interaction_with_array_read_2() throws Exception {
+        BufferedReader r = new BufferedReader(new StringReader("1\r\n2"));
+        assertEquals("1", r.readLine());
+        char[] chars = new char[1];
+        assertEquals(1, r.read(chars, 0, 1)); // This read skips the '\n'.
+        assertEquals('2', chars[0]);
+        assertNull(r.readLine());
+    }
+
+    public void test_readLine_interaction_with_skip() throws Exception {
+        BufferedReader r = new BufferedReader(new StringReader("1\r\n2"));
+        assertEquals(2, r.skip(2));
+        assertEquals("", r.readLine()); // The '\r' we skip()ed didn't count.
+        assertEquals("2", r.readLine());
+        assertNull(r.readLine());
+    }
+
+    public void test_readLine_interaction_with_mark_and_reset() throws Exception {
+        BufferedReader r = new BufferedReader(new StringReader("1\r\n2\n3"));
+        assertEquals("1", r.readLine());
+        r.mark(256);
+        assertEquals('2', r.read()); // This read skips the '\n'.
+        assertEquals("", r.readLine());
+        r.reset(); // Now we're back half-way through the "\r\n".
+        assertEquals("2", r.readLine());
+        assertEquals("3", r.readLine());
+        assertNull(r.readLine());
+    }
+
+    public void test_8778372() throws Exception {
+        final PipedInputStream pis = new PipedInputStream();
+        final PipedOutputStream pos = new PipedOutputStream(pis);
+        final Thread t = new Thread() {
+          @Override public void run() {
+              PrintWriter pw = new PrintWriter(new OutputStreamWriter(pos));
+              pw.print("hello, world\r");
+              pw.flush();
+              try {
+                  Thread.sleep(2*60*1000);
+              } catch (InterruptedException ex) {
+                  fail();
+              }
+            }
+        };
+        t.start();
+        BufferedReader br = new BufferedReader(new InputStreamReader(pis));
+        assertEquals("hello, world", br.readLine());
     }
 }

@@ -27,20 +27,27 @@ import java.text.SimpleDateFormat;
 import libcore.icu.LocaleData;
 
 /**
- * {@code Date} represents a specific moment in time, to the millisecond.
+ * A specific moment in time, with millisecond precision. Values typically come
+ * from {@link System#currentTimeMillis}, and are always UTC, regardless of the
+ * system's time zone. This is often called "Unix time" or "epoch time".
  *
- * @see System#currentTimeMillis
- * @see Calendar
- * @see GregorianCalendar
- * @see SimpleTimeZone
- * @see TimeZone
+ * <p>Instances of this class are suitable for comparison, but little else.
+ * Use {@link java.text.DateFormat} to format a {@code Date} for display to a human.
+ * Use {@link Calendar} to break down a {@code Date} if you need to extract fields such
+ * as the current month or day of week, or to construct a {@code Date} from a broken-down
+ * time. That is: this class' deprecated display-related functionality is now provided
+ * by {@code DateFormat}, and this class' deprecated computational functionality is
+ * now provided by {@code Calendar}. Both of these other classes (and their subclasses)
+ * allow you to interpret a {@code Date} in a given time zone.
+ *
+ * <p>Note that, surprisingly, instances of this class are mutable.
  */
 public class Date implements Serializable, Cloneable, Comparable<Date> {
 
     private static final long serialVersionUID = 7523967970034938905L;
 
     // Used by parse()
-    private static int creationYear = new Date().getYear();
+    private static final int CREATION_YEAR = new Date().getYear();
 
     private transient long milliseconds;
 
@@ -62,8 +69,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
      * @param day
      *            the day of the month, 1 - 31.
      *
-     * @deprecated use
-     *             {@link GregorianCalendar#GregorianCalendar(int, int, int)}
+     * @deprecated Use {@link GregorianCalendar#GregorianCalendar(int, int, int)} instead.
      */
     @Deprecated
     public Date(int year, int month, int day) {
@@ -87,8 +93,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
      * @param minute
      *            the minute of the hour, 0 - 59.
      *
-     * @deprecated use
-     *             {@link GregorianCalendar#GregorianCalendar(int, int, int, int, int)}
+     * @deprecated Use {@link GregorianCalendar#GregorianCalendar(int, int, int, int, int)} instead.
      */
     @Deprecated
     public Date(int year, int month, int day, int hour, int minute) {
@@ -114,8 +119,8 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
      * @param second
      *            the second of the minute, 0 - 59.
      *
-     * @deprecated use
-     *             {@link GregorianCalendar#GregorianCalendar(int, int, int, int, int, int)}
+     * @deprecated Use {@link GregorianCalendar#GregorianCalendar(int, int, int, int, int, int)}
+     * instead.
      */
     @Deprecated
     public Date(int year, int month, int day, int hour, int minute, int second) {
@@ -142,7 +147,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
      * @param string
      *            the String to parse.
      *
-     * @deprecated use {@link DateFormat}
+     * @deprecated Use {@link DateFormat} instead.
      */
     @Deprecated
     public Date(String string) {
@@ -231,7 +236,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
      *
      * @return the day of the month.
      *
-     * @deprecated use {@code Calendar.get(Calendar.DATE)}
+     * @deprecated Use {@code Calendar.get(Calendar.DATE)} instead.
      */
     @Deprecated
     public int getDate() {
@@ -243,7 +248,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
      *
      * @return the day of the week.
      *
-     * @deprecated use {@code Calendar.get(Calendar.DAY_OF_WEEK)}
+     * @deprecated Use {@code Calendar.get(Calendar.DAY_OF_WEEK)} instead.
      */
     @Deprecated
     public int getDay() {
@@ -255,7 +260,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
      *
      * @return the hour of the day.
      *
-     * @deprecated use {@code Calendar.get(Calendar.HOUR_OF_DAY)}
+     * @deprecated Use {@code Calendar.get(Calendar.HOUR_OF_DAY)} instead.
      */
     @Deprecated
     public int getHours() {
@@ -267,7 +272,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
      *
      * @return the minutes.
      *
-     * @deprecated use {@code Calendar.get(Calendar.MINUTE)}
+     * @deprecated Use {@code Calendar.get(Calendar.MINUTE)} instead.
      */
     @Deprecated
     public int getMinutes() {
@@ -279,7 +284,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
      *
      * @return the month.
      *
-     * @deprecated use {@code Calendar.get(Calendar.MONTH)}
+     * @deprecated Use {@code Calendar.get(Calendar.MONTH)} instead.
      */
     @Deprecated
     public int getMonth() {
@@ -291,7 +296,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
      *
      * @return the seconds.
      *
-     * @deprecated use {@code Calendar.get(Calendar.SECOND)}
+     * @deprecated Use {@code Calendar.get(Calendar.SECOND)} instead.
      */
     @Deprecated
     public int getSeconds() {
@@ -313,8 +318,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
      *
      * @return the timezone offset in minutes of the default {@code TimeZone}.
      *
-     * @deprecated use
-     *             {@code (Calendar.get(Calendar.ZONE_OFFSET) + Calendar.get(Calendar.DST_OFFSET)) / 60000}
+     * @deprecated Use {@code (Calendar.get(Calendar.ZONE_OFFSET) + Calendar.get(Calendar.DST_OFFSET)) / 60000} instead.
      */
     @Deprecated
     public int getTimezoneOffset() {
@@ -327,7 +331,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
      *
      * @return the year - 1900.
      *
-     * @deprecated use {@code Calendar.get(Calendar.YEAR) - 1900}
+     * @deprecated Use {@code Calendar.get(Calendar.YEAR) - 1900} instead.
      */
     @Deprecated
     public int getYear() {
@@ -356,6 +360,10 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
         return -1;
     }
 
+    private static IllegalArgumentException parseError(String string) {
+        throw new IllegalArgumentException("Parse error: " + string);
+    }
+
     /**
      * Returns the millisecond value of the date and time parsed from the
      * specified {@code String}. Many date/time formats are recognized, including IETF
@@ -365,7 +373,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
      *            the String to parse.
      * @return the millisecond value parsed from the String.
      *
-     * @deprecated use {@link DateFormat}
+     * @deprecated Use {@link DateFormat} instead.
      */
     @Deprecated
     public static long parse(String string) {
@@ -406,7 +414,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
             } else if ('0' <= next && next <= '9') {
                 nextState = NUMBERS;
             } else if (!Character.isSpace(next) && ",+-:/".indexOf(next) == -1) {
-                throw new IllegalArgumentException();
+                throw parseError(string);
             }
 
             if (state == NUMBERS && nextState != NUMBERS) {
@@ -426,7 +434,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
                         zoneOffset = sign == '-' ? -digit : digit;
                         sign = 0;
                     } else {
-                        throw new IllegalArgumentException();
+                        throw parseError(string);
                     }
                 } else if (digit >= 70) {
                     if (year == -1
@@ -434,7 +442,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
                                     || next == '/' || next == '\r')) {
                         year = digit;
                     } else {
-                        throw new IllegalArgumentException();
+                        throw parseError(string);
                     }
                 } else if (next == ':') {
                     if (hour == -1) {
@@ -442,7 +450,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
                     } else if (minute == -1) {
                         minute = digit;
                     } else {
-                        throw new IllegalArgumentException();
+                        throw parseError(string);
                     }
                 } else if (next == '/') {
                     if (month == -1) {
@@ -450,7 +458,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
                     } else if (date == -1) {
                         date = digit;
                     } else {
-                        throw new IllegalArgumentException();
+                        throw parseError(string);
                     }
                 } else if (Character.isSpace(next) || next == ','
                         || next == '-' || next == '\r') {
@@ -463,30 +471,30 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
                     } else if (year == -1) {
                         year = digit;
                     } else {
-                        throw new IllegalArgumentException();
+                        throw parseError(string);
                     }
                 } else if (year == -1 && month != -1 && date != -1) {
                     year = digit;
                 } else {
-                    throw new IllegalArgumentException();
+                    throw parseError(string);
                 }
             } else if (state == LETTERS && nextState != LETTERS) {
                 String text = buffer.toString().toUpperCase(Locale.US);
                 buffer.setLength(0);
                 if (text.length() == 1) {
-                    throw new IllegalArgumentException();
+                    throw parseError(string);
                 }
                 if (text.equals("AM")) {
                     if (hour == 12) {
                         hour = 0;
                     } else if (hour < 1 || hour > 12) {
-                        throw new IllegalArgumentException();
+                        throw parseError(string);
                     }
                 } else if (text.equals("PM")) {
                     if (hour == 12) {
                         hour = 0;
                     } else if (hour < 1 || hour > 12) {
-                        throw new IllegalArgumentException();
+                        throw parseError(string);
                     }
                     hour += 12;
                 } else {
@@ -503,7 +511,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
                         zone = true;
                         zoneOffset = value;
                     } else {
-                        throw new IllegalArgumentException();
+                        throw parseError(string);
                     }
                 }
             }
@@ -531,7 +539,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
             if (second == -1) {
                 second = 0;
             }
-            if (year < (creationYear - 80)) {
+            if (year < (CREATION_YEAR - 80)) {
                 year += 2000;
             } else if (year < 100) {
                 year += 1900;
@@ -549,7 +557,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
             return new Date(year - 1900, month, date, hour, minute, second)
                     .getTime();
         }
-        throw new IllegalArgumentException();
+        throw parseError(string);
     }
 
     /**
@@ -558,7 +566,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
      * @param day
      *            the day of the month.
      *
-     * @deprecated use {@code Calendar.set(Calendar.DATE, day)}
+     * @deprecated Use {@code Calendar.set(Calendar.DATE, day)} instead.
      */
     @Deprecated
     public void setDate(int day) {
@@ -573,7 +581,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
      * @param hour
      *            the hour of the day.
      *
-     * @deprecated use {@code Calendar.set(Calendar.HOUR_OF_DAY, hour)}
+     * @deprecated Use {@code Calendar.set(Calendar.HOUR_OF_DAY, hour)} instead.
      */
     @Deprecated
     public void setHours(int hour) {
@@ -588,7 +596,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
      * @param minute
      *            the minutes.
      *
-     * @deprecated use {@code Calendar.set(Calendar.MINUTE, minute)}
+     * @deprecated Use {@code Calendar.set(Calendar.MINUTE, minute)} instead.
      */
     @Deprecated
     public void setMinutes(int minute) {
@@ -603,7 +611,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
      * @param month
      *            the month.
      *
-     * @deprecated use {@code Calendar.set(Calendar.MONTH, month)}
+     * @deprecated Use {@code Calendar.set(Calendar.MONTH, month)} instead.
      */
     @Deprecated
     public void setMonth(int month) {
@@ -618,7 +626,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
      * @param second
      *            the seconds.
      *
-     * @deprecated use {@code Calendar.set(Calendar.SECOND, second)}
+     * @deprecated Use {@code Calendar.set(Calendar.SECOND, second)} instead.
      */
     @Deprecated
     public void setSeconds(int second) {
@@ -644,7 +652,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
      * @param year
      *            the year since 1900.
      *
-     * @deprecated use {@code Calendar.set(Calendar.YEAR, year + 1900)}
+     * @deprecated Use {@code Calendar.set(Calendar.YEAR, year + 1900)} instead.
      */
     @Deprecated
     public void setYear(int year) {
@@ -657,7 +665,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
      * Returns the string representation of this {@code Date} in GMT in the format
      * {@code "22 Jun 1999 13:02:00 GMT"}.
      *
-     * @deprecated use {@link DateFormat}
+     * @deprecated Use {@link DateFormat} instead.
      */
     @Deprecated
     public String toGMTString() {
@@ -672,7 +680,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
     /**
      * Returns the string representation of this {@code Date} for the default {@code Locale}.
      *
-     * @deprecated use {@link DateFormat}
+     * @deprecated Use {@link DateFormat} instead.
      */
     @Deprecated
     public String toLocaleString() {
@@ -738,7 +746,7 @@ public class Date implements Serializable, Cloneable, Comparable<Date> {
      *            the second of the minute, 0 - 59.
      * @return the date and time in GMT in milliseconds.
      *
-     * @deprecated use: <code>
+     * @deprecated Use code like this instead:<code>
      *  Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
      *  cal.set(year + 1900, month, day, hour, minute, second);
      *  cal.getTime().getTime();</code>

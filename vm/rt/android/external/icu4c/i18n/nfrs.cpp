@@ -1,6 +1,6 @@
 /*
 ******************************************************************************
-*   Copyright (C) 1997-2011, International Business Machines
+*   Copyright (C) 1997-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 ******************************************************************************
 *   file name:  nfrs.cpp
@@ -113,12 +113,18 @@ static const UChar gPercentPercent[] =
     0x25, 0x25, 0
 }; /* "%%" */
 
+static const UChar gNoparse[] =
+{
+    0x40, 0x6E, 0x6F, 0x70, 0x61, 0x72, 0x73, 0x65, 0
+}; /* "@noparse" */
+
 NFRuleSet::NFRuleSet(UnicodeString* descriptions, int32_t index, UErrorCode& status)
   : name()
   , rules(0)
   , negativeNumberRule(NULL)
   , fIsFractionRuleSet(FALSE)
   , fIsPublic(FALSE)
+  , fIsParseable(TRUE)
   , fRecursionCount(0)
 {
     for (int i = 0; i < 3; ++i) {
@@ -161,7 +167,12 @@ NFRuleSet::NFRuleSet(UnicodeString* descriptions, int32_t index, UErrorCode& sta
         status = U_PARSE_ERROR;
     }
 
-    fIsPublic = name.indexOf(gPercentPercent) != 0;
+    fIsPublic = name.indexOf(gPercentPercent, 2, 0) != 0;
+
+    if ( name.endsWith(gNoparse,8) ) {
+        fIsParseable = FALSE;
+        name.truncate(name.length()-8); // remove the @noparse from the name
+    }
 
     // all of the other members of NFRuleSet are initialized
     // by parseRules()
@@ -178,6 +189,9 @@ NFRuleSet::parseRules(UnicodeString& description, const RuleBasedNumberFormat* o
     if (U_FAILURE(status)) {
         return;
     }
+
+    // ensure we are starting with an empty rule list
+    rules.deleteAll();
 
     // dlf - the original code kept a separate description array for no reason,
     // so I got rid of it.  The loop was too complex so I simplified it.
@@ -224,24 +238,36 @@ NFRuleSet::parseRules(UnicodeString& description, const RuleBasedNumberFormat* o
             // if it's the negative-number rule, copy it into its own
             // data member and delete it from the list
         case NFRule::kNegativeNumberRule:
+            if (negativeNumberRule) {
+                delete negativeNumberRule;
+            }
             negativeNumberRule = rules.remove(i);
             break;
 
             // if it's the improper fraction rule, copy it into the
             // correct element of fractionRules
         case NFRule::kImproperFractionRule:
+            if (fractionRules[0]) {
+                delete fractionRules[0];
+            }
             fractionRules[0] = rules.remove(i);
             break;
 
             // if it's the proper fraction rule, copy it into the
             // correct element of fractionRules
         case NFRule::kProperFractionRule:
+            if (fractionRules[1]) {
+                delete fractionRules[1];
+            }
             fractionRules[1] = rules.remove(i);
             break;
 
             // if it's the master rule, copy it into the
             // correct element of fractionRules
         case NFRule::kMasterRule:
+            if (fractionRules[2]) {
+                delete fractionRules[2];
+            }
             fractionRules[2] = rules.remove(i);
             break;
 
@@ -701,14 +727,14 @@ NFRuleSet::appendRules(UnicodeString& result) const
 
     // followed by the regular rules...
     for (uint32_t i = 0; i < rules.size(); i++) {
-        result.append(gFourSpaces);
+        result.append(gFourSpaces, 4);
         rules[i]->_appendRuleText(result);
         result.append(gLineFeed);
     }
 
     // followed by the special rules (if they exist)
     if (negativeNumberRule) {
-        result.append(gFourSpaces);
+        result.append(gFourSpaces, 4);
         negativeNumberRule->_appendRuleText(result);
         result.append(gLineFeed);
     }
@@ -716,7 +742,7 @@ NFRuleSet::appendRules(UnicodeString& result) const
     {
         for (uint32_t i = 0; i < 3; ++i) {
             if (fractionRules[i]) {
-                result.append(gFourSpaces);
+                result.append(gFourSpaces, 4);
                 fractionRules[i]->_appendRuleText(result);
                 result.append(gLineFeed);
             }

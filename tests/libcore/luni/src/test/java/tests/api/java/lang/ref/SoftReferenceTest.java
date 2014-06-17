@@ -22,6 +22,7 @@ import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
 import java.util.Vector;
+import libcore.java.lang.ref.FinalizationTester;
 
 public class SoftReferenceTest extends junit.framework.TestCase {
     static Boolean bool;
@@ -124,8 +125,7 @@ public class SoftReferenceTest extends junit.framework.TestCase {
             TestThread t = new TestThread();
             t.start();
             t.join();
-            System.gc();
-            System.runFinalization();
+            FinalizationTester.induceFinalization();
             ref = rq.poll();
             assertNotNull("Object not garbage collected.", ref);
             assertNull("Object is not null.", ref.get());

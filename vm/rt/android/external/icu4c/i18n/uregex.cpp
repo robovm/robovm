@@ -1,6 +1,6 @@
 /*
 *******************************************************************************
-*   Copyright (C) 2004-2011, International Business Machines
+*   Copyright (C) 2004-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *******************************************************************************
 *   file name:  regex.cpp
@@ -16,6 +16,7 @@
 #include "unicode/ustring.h"
 #include "unicode/uchar.h"
 #include "unicode/uobject.h"
+#include "unicode/utf16.h"
 #include "umutex.h"
 #include "uassert.h"
 #include "cmemory.h"
@@ -853,7 +854,7 @@ uregex_setRegion64(URegularExpression   *regexp2,
 //    uregex_setRegionAndStart
 //
 //------------------------------------------------------------------------------
-U_DRAFT void U_EXPORT2 
+U_CAPI void U_EXPORT2 
 uregex_setRegionAndStart(URegularExpression   *regexp2,
                  int64_t               regionStart,
                  int64_t               regionLimit,
@@ -1405,9 +1406,10 @@ int32_t RegexCImpl::appendReplacement(RegularExpression    *regexp,
     } else {
         UErrorCode possibleOverflowError = U_ZERO_ERROR; // ignore
         destIdx += utext_extract(m->fInputText, m->fLastMatchEnd, m->fMatchStart,
-                                 &dest[destIdx], REMAINING_CAPACITY(destIdx, capacity), &possibleOverflowError);
+                                 dest==NULL?NULL:&dest[destIdx], REMAINING_CAPACITY(destIdx, capacity),
+                                 &possibleOverflowError);
     }
-    
+    U_ASSERT(destIdx >= 0);
 
     // scan the replacement text, looking for substitutions ($n) and \escapes.
     int32_t  replIdx = 0;
@@ -1495,7 +1497,8 @@ int32_t RegexCImpl::appendReplacement(RegularExpression    *regexp,
         }
 
         // Finally, append the capture group data to the destination.
-        destIdx += uregex_group((URegularExpression*)regexp, groupNum, &dest[destIdx], REMAINING_CAPACITY(destIdx, capacity), status);
+        destIdx += uregex_group((URegularExpression*)regexp, groupNum,
+                                dest==NULL?NULL:&dest[destIdx], REMAINING_CAPACITY(destIdx, capacity), status);
         if (*status == U_BUFFER_OVERFLOW_ERROR) {
             // Ignore buffer overflow when extracting the group.  We need to
             //   continue on to get full size of the untruncated result.  We will
@@ -1625,6 +1628,8 @@ int32_t RegexCImpl::appendTail(RegularExpression    *regexp,
         }
             
         for (;;) {
+            U_ASSERT(destIdx >= 0);
+
             if (srcIdx == regexp->fTextLength) {
                 break;
             }
@@ -1633,6 +1638,7 @@ int32_t RegexCImpl::appendTail(RegularExpression    *regexp,
                 regexp->fTextLength = srcIdx;
                 break;
             }
+
             if (destIdx < destCap) {
                 dest[destIdx] = c;
             } else {
@@ -1685,7 +1691,7 @@ int32_t RegexCImpl::appendTail(RegularExpression    *regexp,
     if (destIdx < destCap) {
         *destBuf      += destIdx;
         *destCapacity -= destIdx;
-    } else {
+    } else if (*destBuf != NULL) {
         *destBuf      += destCap;
         *destCapacity  = 0;
     }

@@ -30,7 +30,13 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/time.h>
+#include <time.h>
 #include <unistd.h>
+#ifdef __APPLE__
+// RoboVM note: Needed for mach_absolute_time() on Darwin
+#   include <mach/mach_time.h>
+#endif
 
 extern "C" void Java_java_lang_System_log(JNIEnv* env, jclass, jchar type, jstring javaMessage, jthrowable exception) {
     ScopedUtfChars message(env, javaMessage);
@@ -83,3 +89,38 @@ extern "C" jobjectArray Java_java_lang_System_specialProperties(JNIEnv* env, jcl
     return toStringArray(env, properties);
 }
 
+extern "C" jlong Java_java_lang_System_currentTimeMillis(JNIEnv*, jclass) {
+    timeval now;
+    gettimeofday(&now, NULL);
+    jlong when = now.tv_sec * 1000LL + now.tv_usec / 1000;
+    return when;
+}
+
+extern "C" jlong Java_java_lang_System_nanoTime(JNIEnv*, jclass) {
+// RoboVM note: Darwin doesn't have CLOCK_MONOTONIC
+#if defined(__APPLE__)
+    mach_timebase_info_data_t info;
+    mach_timebase_info(&info);
+    uint64_t t = mach_absolute_time();
+    t *= info.numer;
+    t /= info.denom;
+    return (jlong) t;
+#else
+    timespec now;
+    clock_gettime(CLOCK_MONOTONIC, &now);
+    return now.tv_sec * 1000000000LL + now.tv_nsec;
+#endif
+}
+
+// RoboVM note: Renamed by appending '0'
+extern "C" jstring Java_java_lang_System_mapLibraryName0(JNIEnv* env, jclass, jstring javaName) {
+    ScopedUtfChars name(env, javaName);
+    if (name.c_str() == NULL) {
+        return NULL;
+    }
+    char* mappedName = NULL;
+    asprintf(&mappedName, OS_SHARED_LIB_FORMAT_STR, name.c_str());
+    jstring result = env->NewStringUTF(mappedName);
+    free(mappedName);
+    return result;
+}

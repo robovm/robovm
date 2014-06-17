@@ -237,7 +237,7 @@ public class X509CRLImpl extends X509CRL {
      */
     public X509CRLEntry getRevokedCertificate(X509Certificate certificate) {
         if (certificate == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("certificate == null");
         }
         if (!entriesRetrieved) {
             retrieveEntries();

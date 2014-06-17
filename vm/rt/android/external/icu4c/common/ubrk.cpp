@@ -1,6 +1,6 @@
 /*
 ********************************************************************************
-*   Copyright (C) 1996-2008, International Business Machines
+*   Copyright (C) 1996-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 ********************************************************************************
 */
@@ -166,16 +166,6 @@ ubrk_setText(UBreakIterator* bi,
              int32_t         textLength,
              UErrorCode*     status)
 {
-    // BEGIN android-added
-    // For icu ticket#9115
-    if (bi == NULL) {
-        if (U_SUCCESS(*status)) {
-            *status = U_ILLEGAL_ARGUMENT_ERROR;
-        }
-        return;
-    }
-    // END android-added
-
     BreakIterator *brit = (BreakIterator *)bi;
     UText  ut = UTEXT_INITIALIZER;
     utext_openUChars(&ut, text, textLength, status);
@@ -298,6 +288,16 @@ ubrk_getLocaleByType(const UBreakIterator *bi,
     }
     return ((BreakIterator*)bi)->getLocaleID(type, *status);
 }
+
+
+void ubrk_refreshUText(UBreakIterator *bi,
+                       UText          *text,
+                       UErrorCode     *status)
+{
+    BreakIterator *bii = reinterpret_cast<BreakIterator *>(bi);
+    bii->refreshInputText(text, *status);
+}
+
 
 
 #endif /* #if !UCONFIG_NO_BREAK_ITERATION */

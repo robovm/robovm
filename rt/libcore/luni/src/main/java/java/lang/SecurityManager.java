@@ -30,7 +30,7 @@ import java.security.Permission;
  */
 public class SecurityManager {
     /**
-     * @deprecated Use {@link #checkPermission}
+     * @deprecated Use {@link #checkPermission} instead.
      */
     @Deprecated
     protected boolean inCheck;
@@ -64,7 +64,7 @@ public class SecurityManager {
     public void checkMulticast(InetAddress maddr) { }
 
     /**
-     * @deprecated use {@link #checkMulticast(java.net.InetAddress)}
+     * @deprecated use {@link #checkMulticast(java.net.InetAddress)} instead.
      */
     @Deprecated public void checkMulticast(InetAddress maddr, byte ttl) { }
 
@@ -99,41 +99,41 @@ public class SecurityManager {
     public void checkWrite(String file) { }
 
     /**
-     * @deprecated Use {@link #checkPermission}.
+     * @deprecated Use {@link #checkPermission} instead.
      */
     @Deprecated public boolean getInCheck() { return inCheck; }
 
     protected Class[] getClassContext() { return null; }
 
     /**
-     * @deprecated Use {@link #checkPermission}.
+     * @deprecated Use {@link #checkPermission} instead.
      */
     @Deprecated protected ClassLoader currentClassLoader() { return null; }
 
     /**
-     * @deprecated Use {@link #checkPermission}.
+     * @deprecated Use {@link #checkPermission} instead.
      */
     @Deprecated protected int classLoaderDepth() {
         return -1;
     }
 
     /**
-     * @deprecated Use {@link #checkPermission}.
+     * @deprecated Use {@link #checkPermission} instead.
      */
     @Deprecated protected Class<?> currentLoadedClass() { return null; }
 
     /**
-     * @deprecated Use {@link #checkPermission}.
+     * @deprecated Use {@link #checkPermission} instead.
      */
     @Deprecated protected int classDepth(String name) { return -1; }
 
     /**
-     * @deprecated Use {@link #checkPermission}.
+     * @deprecated Use {@link #checkPermission} instead.
      */
     @Deprecated protected boolean inClass(String name) { return false; }
 
     /**
-     * @deprecated Use {@link #checkPermission}
+     * @deprecated Use {@link #checkPermission} instead.
      */
     @Deprecated protected boolean inClassLoader() { return false; }
 

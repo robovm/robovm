@@ -55,4 +55,13 @@ public class NativePluralRulesTest extends junit.framework.TestCase {
         assertEquals(NativePluralRules.FEW, npr.quantityForInt(103));
         assertEquals(NativePluralRules.MANY, npr.quantityForInt(111));
     }
+
+    public void testHebrew() throws Exception {
+        // java.util.Locale will translate "he" to the deprecated "iw".
+        NativePluralRules he = NativePluralRules.forLocale(new Locale("he"));
+        assertEquals(NativePluralRules.ONE, he.quantityForInt(1));
+        assertEquals(NativePluralRules.TWO, he.quantityForInt(2));
+        assertEquals(NativePluralRules.OTHER, he.quantityForInt(3));
+        assertEquals(NativePluralRules.MANY, he.quantityForInt(10));
+    }
 }

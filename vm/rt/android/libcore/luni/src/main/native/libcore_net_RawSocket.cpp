@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
+#define LOG_TAG "RawSocket"
+
 #include "AsynchronousSocketCloseMonitor.h"
+#include "cutils/log.h"
 #include "JNIHelp.h"
 #include "JniException.h"
 #include "JniConstants.h"
@@ -38,10 +41,10 @@
 #include <netinet/ip.h>
 #include <linux/udp.h>
 
-union GCC_HIDDEN sockunion {
+union sockunion {
     sockaddr sa;
     sockaddr_ll sll;
-} su;
+};
 
 /*
  * Creates a socket suitable for raw socket operations.  The socket is
@@ -53,13 +56,15 @@ union GCC_HIDDEN sockunion {
  * setBlocking() method followed by polymorphic bind().
  */
 extern "C" void Java_libcore_net_RawSocket_create(JNIEnv* env, jclass, jobject fileDescriptor,
-    jshort protocolType, jstring interfaceName) {
+    jshort protocolType, jstring interfaceName)
+{
 
   ScopedUtfChars ifname(env, interfaceName);
   if (ifname.c_str() == NULL) {
     return;
   }
 
+  sockunion su;
   memset(&su, 0, sizeof(su));
   su.sll.sll_family = PF_PACKET;
   su.sll.sll_protocol = htons(protocolType);
@@ -118,6 +123,7 @@ extern "C" int Java_libcore_net_RawSocket_sendPacket(JNIEnv* env, jclass, jobjec
     return 0;
   }
 
+  sockunion su;
   memset(&su, 0, sizeof(su));
   su.sll.sll_hatype = htons(1); // ARPHRD_ETHER
   su.sll.sll_halen = mac.size();

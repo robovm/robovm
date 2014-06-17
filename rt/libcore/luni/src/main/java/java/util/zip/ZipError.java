@@ -18,7 +18,7 @@
 package java.util.zip;
 
 /**
- * Thrown when an unrecoverable ZIP error has occurred.
+ * Thrown when an unrecoverable zip error has occurred.
  * @since 1.6
  */
 public class ZipError extends InternalError {

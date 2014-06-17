@@ -42,11 +42,11 @@ public final class RuleBasedCollatorICU implements Cloneable {
     public static final int STRENGTH = 5;
 
     // The address of the ICU4C native peer.
-    private int address;
+    private final long address;
 
     public RuleBasedCollatorICU(String rules) throws ParseException {
         if (rules == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("rules == null");
         }
         address = NativeCollation.openCollatorFromRules(rules, VALUE_OFF, VALUE_DEFAULT_STRENGTH);
     }
@@ -55,7 +55,7 @@ public final class RuleBasedCollatorICU implements Cloneable {
         address = NativeCollation.openCollator(locale.toString());
     }
 
-    private RuleBasedCollatorICU(int address) {
+    private RuleBasedCollatorICU(long address) {
         this.address = address;
     }
 

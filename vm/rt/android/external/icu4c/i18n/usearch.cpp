@@ -14,6 +14,7 @@
 #include "unicode/usearch.h"
 #include "unicode/ustring.h"
 #include "unicode/uchar.h"
+#include "unicode/utf16.h"
 #include "normalizer2impl.h"
 #include "ucol_imp.h"
 #include "usrchimp.h"
@@ -36,8 +37,7 @@ U_NAMESPACE_USE
 #define SECOND_LAST_BYTE_SHIFT_  8
 #define SUPPLEMENTARY_MIN_VALUE_ 0x10000
 
-static const uint16_t *fcdTrieIndex = NULL;
-static UChar32 fcdHighStart = 0;
+static const Normalizer2Impl *g_nfcImpl = NULL;
 
 // internal methods -------------------------------------------------
 
@@ -102,7 +102,7 @@ inline int hash(uint32_t ce)
 U_CDECL_BEGIN
 static UBool U_CALLCONV
 usearch_cleanup(void) {
-    fcdTrieIndex = NULL;
+    g_nfcImpl = NULL;
     return TRUE;
 }
 U_CDECL_END
@@ -116,8 +116,8 @@ U_CDECL_END
 static
 inline void initializeFCD(UErrorCode *status)
 {
-    if (fcdTrieIndex == NULL) {
-        fcdTrieIndex = unorm_getFCDTrieIndex(fcdHighStart, status);
+    if (g_nfcImpl == NULL) {
+        g_nfcImpl = Normalizer2Factory::getNFCImpl(*status);
         ucln_i18n_registerCleanup(UCLN_I18N_USEARCH, usearch_cleanup);
     }
 }
@@ -137,7 +137,7 @@ uint16_t getFCD(const UChar   *str, int32_t *offset,
                              int32_t  strlength)
 {
     const UChar *temp = str + *offset;
-    uint16_t    result = unorm_nextFCD16(fcdTrieIndex, fcdHighStart, temp, str + strlength);
+    uint16_t    result = g_nfcImpl->nextFCD16(temp, str + strlength);
     *offset = (int32_t)(temp - str);
     return result;
 }
@@ -459,7 +459,7 @@ inline int16_t initializePattern(UStringSearch *strsrch, UErrorCode *status)
         pattern->hasPrefixAccents = getFCD(patterntext, &index, length) >>
                                                          SECOND_LAST_BYTE_SHIFT_;
         index = length;
-        UTF_BACK_1(patterntext, 0, index);
+        U16_BACK_1(patterntext, 0, index);
         pattern->hasSuffixAccents = getFCD(patterntext, &index, length) &
                                                                  LAST_BYTE_MASK_;
     }
@@ -717,7 +717,7 @@ inline int32_t getNextUStringSearchBaseOffset(UStringSearch *strsrch,
         textoffset < textlength) {
               int32_t  temp       = textoffset;
         const UChar       *text       = strsrch->search->text;
-        UTF_BACK_1(text, 0, temp);
+        U16_BACK_1(text, 0, temp);
         if (getFCD(text, &temp, textlength) & LAST_BYTE_MASK_) {
             return getNextBaseOffset(text, textoffset, textlength);
         }
@@ -847,7 +847,7 @@ UBool checkExtraMatchAccents(const UStringSearch *strsrch, int32_t start,
               int32_t  offset = 0;
         const UChar       *text   = strsrch->search->text + start;
 
-        UTF_FWD_1(text, offset, length);
+        U16_FWD_1(text, offset, length);
         // we are only concerned with the first composite character
         if (unorm_quickCheck(text, offset, UNORM_NFD, status) == UNORM_NO) {
             int32_t safeoffset = getNextSafeOffset(strsrch->collator,
@@ -893,7 +893,7 @@ UBool checkExtraMatchAccents(const UStringSearch *strsrch, int32_t start,
                 ce = ucol_next(coleiter, status);
             }
             UChar32 codepoint;
-            UTF_PREV_CHAR(norm, 0, offset, codepoint);
+            U16_PREV(norm, 0, offset, codepoint);
             result = !ignorable && (u_getCombiningClass(codepoint) != 0);
 
             if (norm != buffer) {
@@ -975,7 +975,7 @@ UBool hasAccentsBeforeMatch(const UStringSearch *strsrch, int32_t start,
         }
         if (start > 0) {
             temp = start;
-            UTF_BACK_1(strsrch->search->text, 0, temp);
+            U16_BACK_1(strsrch->search->text, 0, temp);
             if (getFCD(strsrch->search->text, &temp,
                        strsrch->search->textLength) & LAST_BYTE_MASK_) {
                 setColEIterOffset(coleiter, start);
@@ -1015,7 +1015,7 @@ UBool hasAccentsAfterMatch(const UStringSearch *strsrch, int32_t start,
         const UChar       *text       = strsrch->search->text;
               int32_t  temp       = end;
               int32_t      textlength = strsrch->search->textLength;
-        UTF_BACK_1(text, 0, temp);
+        U16_BACK_1(text, 0, temp);
         if (getFCD(text, &temp, textlength) & LAST_BYTE_MASK_) {
             int32_t             firstce  = strsrch->pattern.CE[0];
             UCollationElements *coleiter = strsrch->textIter;
@@ -1304,7 +1304,7 @@ inline int32_t getPreviousBaseOffset(const UChar       *text,
     if (textoffset > 0) {
         for (;;) {
             int32_t result = textoffset;
-            UTF_BACK_1(text, 0, textoffset);
+            U16_BACK_1(text, 0, textoffset);
             int32_t temp = textoffset;
             uint16_t fcd = getFCD(text, &temp, result);
             if ((fcd >> SECOND_LAST_BYTE_SHIFT_) == 0) {
@@ -1338,7 +1338,7 @@ inline int getUnblockedAccentIndex(UChar *accents, int32_t *accentsindex)
     int32_t temp;
     while (index < length) {
         temp = index;
-        UTF_NEXT_CHAR(accents, index, length, codepoint);
+        U16_NEXT(accents, index, length, codepoint);
         if (u_getCombiningClass(codepoint) != cclass) {
             cclass        = u_getCombiningClass(codepoint);
             accentsindex[result] = temp;
@@ -1722,7 +1722,7 @@ UBool doNextCanonicalMatch(UStringSearch *strsrch,
 {
     const UChar       *text = strsrch->search->text;
           int32_t  temp = textoffset;
-    UTF_BACK_1(text, 0, temp);
+    U16_BACK_1(text, 0, temp);
     if ((getFCD(text, &temp, textoffset) & LAST_BYTE_MASK_) == 0) {
         UCollationElements *coleiter = strsrch->textIter;
         int32_t         offset   = getColElemIterOffset(coleiter, FALSE);
@@ -2164,7 +2164,7 @@ int32_t doPreviousCanonicalSuffixMatch(UStringSearch *strsrch,
     const UChar       *text       = strsrch->search->text;
           int32_t  tempend    = end;
 
-    UTF_BACK_1(text, 0, tempend);
+    U16_BACK_1(text, 0, tempend);
     if (!(getFCD(text, &tempend, strsrch->search->textLength) &
                                                            LAST_BYTE_MASK_)) {
         // die... failed at a base character
@@ -2513,7 +2513,7 @@ UBool checkPreviousCanonicalContractionMatch(UStringSearch *strsrch,
                 // accents may have extra starting ces, this occurs when a
                 // pure accent pattern is matched without rearrangement
                 int32_t    expected = patternce[patterncelength - 1];
-                UTF_BACK_1(text, 0, *end);
+                U16_BACK_1(text, 0, *end);
                 if (getFCD(text, end, textlength) & LAST_BYTE_MASK_) {
                     ce = getCE(strsrch, ucol_previous(coleiter, status));
                     while (U_SUCCESS(*status) && ce != expected &&
@@ -3227,7 +3227,7 @@ U_CAPI int32_t U_EXPORT2 usearch_next(UStringSearch *strsrch,
                     search->matchedIndex = offset;
                 }
                 else { // moves by codepoints
-                    UTF_FWD_1(search->text, search->matchedIndex, textlength);
+                    U16_FWD_1(search->text, search->matchedIndex, textlength);
                 }
 
                 search->matchedLength = 0;
@@ -3341,7 +3341,7 @@ U_CAPI int32_t U_EXPORT2 usearch_previous(UStringSearch *strsrch,
                     // status checked below
                 }
                 else { // move by codepoints
-                    UTF_BACK_1(search->text, 0, search->matchedIndex);
+                    U16_BACK_1(search->text, 0, search->matchedIndex);
                     setColEIterOffset(strsrch->textIter, search->matchedIndex);
                     // status checked below
                     search->matchedLength = 0;

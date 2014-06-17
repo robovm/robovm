@@ -29,24 +29,25 @@ import libcore.io.Memory;
 import libcore.io.Streams;
 
 /**
- * This class provides an implementation of {@code FilterInputStream} that
- * decompresses data from an {@code InputStream} containing a ZIP archive.
+ * Used to read (decompress) the data from zip files.
  *
- * <p>A ZIP archive is a collection of (possibly) compressed files.
- * When reading from a {@code ZipInputStream}, you retrieve the
- * entry's metadata with {@code getNextEntry} before you can read the userdata.
+ * <p>A zip file (or "archive") is a collection of (possibly) compressed files.
+ * When reading from a {@code ZipInputStream}, you call {@link #getNextEntry}
+ * which returns a {@link ZipEntry} of metadata corresponding to the userdata that follows.
+ * When you appear to have hit the end of this stream (which is really just the end of the current
+ * entry's userdata), call {@code getNextEntry} again. When it returns null,
+ * there are no more entries in the input file.
  *
- * <p>Although {@code InflaterInputStream} can only read compressed ZIP archive
+ * <p>Although {@code InflaterInputStream} can only read compressed zip
  * entries, this class can read non-compressed entries as well.
  *
- * <p>Use {@code ZipFile} if you can access the archive as a file directly,
- * especially if you want random access to entries, rather than needing to
- * iterate over all entries.
+ * <p>Use {@link ZipFile} if you need random access to entries by name, but use this class
+ * if you just want to iterate over all entries.
  *
  * <h3>Example</h3>
  * <p>Using {@code ZipInputStream} is a little more complicated than {@link GZIPInputStream}
- * because ZIP archives are containers that can contain multiple files. This code pulls all the
- * files out of a ZIP archive, similar to the {@code unzip(1)} utility.
+ * because zip files are containers that can contain multiple files. This code pulls all the
+ * files out of a zip file, similar to the {@code unzip(1)} utility.
  * <pre>
  * InputStream is = ...
  * ZipInputStream zis = new ZipInputStream(new BufferedInputStream(is));
@@ -67,9 +68,6 @@ import libcore.io.Streams;
  *     zis.close();
  * }
  * </pre>
- *
- * @see ZipEntry
- * @see ZipFile
  */
 public class ZipInputStream extends InflaterInputStream implements ZipConstants {
     private static final int ZIPLocalHeaderVersionNeeded = 20;
@@ -93,15 +91,12 @@ public class ZipInputStream extends InflaterInputStream implements ZipConstants 
     private char[] charBuf = new char[256];
 
     /**
-     * Constructs a new {@code ZipInputStream} from the specified input stream.
-     *
-     * @param stream
-     *            the input stream to representing a ZIP archive.
+     * Constructs a new {@code ZipInputStream} to read zip entries from the given input stream.
      */
     public ZipInputStream(InputStream stream) {
         super(new PushbackInputStream(stream, BUF_SIZE), new Inflater(true));
         if (stream == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("stream == null");
         }
     }
 
@@ -120,7 +115,7 @@ public class ZipInputStream extends InflaterInputStream implements ZipConstants 
     }
 
     /**
-     * Closes the current ZIP entry and positions to read the next entry.
+     * Closes the current zip entry and prepares to read the next entry.
      *
      * @throws IOException
      *             if an {@code IOException} occurs.
@@ -213,13 +208,10 @@ public class ZipInputStream extends InflaterInputStream implements ZipConstants 
     }
 
     /**
-     * Reads the next entry from this {@code ZipInputStream} or {@code null} if
+     * Returns the next entry from this {@code ZipInputStream} or {@code null} if
      * no more entries are present.
      *
-     * @return the next {@code ZipEntry} contained in the input stream.
-     * @throws IOException
-     *             if an {@code IOException} occurs.
-     * @see ZipEntry
+     * @throws IOException if an {@code IOException} occurs.
      */
     public ZipEntry getNextEntry() throws IOException {
         closeEntry();
@@ -245,6 +237,10 @@ public class ZipInputStream extends InflaterInputStream implements ZipConstants 
             throw new ZipException("Cannot read local header version " + version);
         }
         int flags = peekShort(LOCFLG - LOCVER);
+        if ((flags & ZipFile.GPBF_UNSUPPORTED_MASK) != 0) {
+            throw new ZipException("Invalid General Purpose Bit Flag: " + flags);
+        }
+
         hasDD = ((flags & ZipFile.GPBF_DATA_DESCRIPTOR_FLAG) != 0);
         int ceLastModifiedTime = peekShort(LOCTIM - LOCVER);
         int ceLastModifiedDate = peekShort(LOCTIM - LOCVER + 2);
@@ -290,15 +286,13 @@ public class ZipInputStream extends InflaterInputStream implements ZipConstants 
     }
 
     /**
-     * Reads up to the specified number of uncompressed bytes into the buffer
-     * starting at the offset.
-     *
-     * @return the number of bytes read
+     * Reads up to {@code byteCount} uncompressed bytes into the buffer
+     * starting at {@code byteOffset}. Returns the number of bytes actually read, or -1.
      */
     @Override
-    public int read(byte[] buffer, int offset, int byteCount) throws IOException {
+    public int read(byte[] buffer, int byteOffset, int byteCount) throws IOException {
         checkClosed();
-        Arrays.checkOffsetAndCount(buffer.length, offset, byteCount);
+        Arrays.checkOffsetAndCount(buffer.length, byteOffset, byteCount);
 
         if (inf.finished() || currentEntry == null) {
             return -1;
@@ -321,10 +315,10 @@ public class ZipInputStream extends InflaterInputStream implements ZipConstants 
             if ((csize - inRead) < toRead) {
                 toRead = csize - inRead;
             }
-            System.arraycopy(buf, lastRead, buffer, offset, toRead);
+            System.arraycopy(buf, lastRead, buffer, byteOffset, toRead);
             lastRead += toRead;
             inRead += toRead;
-            crc.update(buffer, offset, toRead);
+            crc.update(buffer, byteOffset, toRead);
             return toRead;
         }
         if (inf.needsInput()) {
@@ -335,14 +329,14 @@ public class ZipInputStream extends InflaterInputStream implements ZipConstants 
         }
         int read;
         try {
-            read = inf.inflate(buffer, offset, byteCount);
+            read = inf.inflate(buffer, byteOffset, byteCount);
         } catch (DataFormatException e) {
             throw new ZipException(e.getMessage());
         }
         if (read == 0 && inf.finished()) {
             return -1;
         }
-        crc.update(buffer, offset, read);
+        crc.update(buffer, byteOffset, read);
         return read;
     }
 

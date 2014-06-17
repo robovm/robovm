@@ -17,11 +17,6 @@
 072-precise-gc
 074-gc-thrash
 
-# TODO: Don't exclude these tests! Once proper virtual dispatch using vtables 
-# have been implemented (issue #3) these tests should succeed.
-077-method-override
-300-package-override
-
 # Tests Dalvik specific stuff
 080-oom-throw
 
@@ -31,3 +26,6 @@
 
 # Tests dex file format limits
 089-many-methods
+
+# Tests Dalvik GC specifics
+098-native-allocations

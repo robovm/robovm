@@ -91,7 +91,6 @@ public final class Currency implements Serializable {
     /**
      * Returns a set of all known currencies.
      * @since 1.7
-     * @hide 1.7
      */
     public static Set<Currency> getAvailableCurrencies() {
         Set<Currency> result = new LinkedHashSet<Currency>();
@@ -113,7 +112,6 @@ public final class Currency implements Serializable {
      * Equivalent to {@code getDisplayName(Locale.getDefault())}.
      * See "<a href="../util/Locale.html#default_locale">Be wary of the default locale</a>".
      * @since 1.7
-     * @hide 1.7
      */
     public String getDisplayName() {
         return getDisplayName(Locale.getDefault());
@@ -123,7 +121,6 @@ public final class Currency implements Serializable {
      * Returns the localized name of this currency in the given {@code locale}.
      * Returns the ISO 4217 currency code if no localized name is available.
      * @since 1.7
-     * @hide 1.7
      */
     public String getDisplayName(Locale locale) {
         return ICU.getCurrencyDisplayName(locale.toString(), currencyCode);

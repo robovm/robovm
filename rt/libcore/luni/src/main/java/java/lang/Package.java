@@ -73,7 +73,7 @@ public class Package implements AnnotatedElement {
     }
 
     /**
-     * Gets the annotation associated with the specified annotation type and
+     * Returns the annotation associated with the specified annotation type and
      * this package, if present.
      *
      * @param annotationType
@@ -92,17 +92,23 @@ public class Package implements AnnotatedElement {
     }
 
     /**
-     * Returns an empty array. Package annotations are not supported on Android.
+     * Returns an array of this package's annotations.
      */
     public Annotation[] getAnnotations() {
-        return NO_ANNOTATIONS;
+        try {
+            Class<?> c = Class.forName(getName() + ".package-info");
+            return c.getAnnotations();
+        } catch (Exception ex) {
+            return NO_ANNOTATIONS;
+        }
     }
 
     /**
-     * Returns an empty array. Package annotations are not supported on Android.
+     * Returns an array of this package's declared annotations. Package annotations aren't
+     * inherited, so this is equivalent to {@link #getAnnotations}.
      */
     public Annotation[] getDeclaredAnnotations() {
-        return NO_ANNOTATIONS;
+        return getAnnotations();
     }
 
     /**

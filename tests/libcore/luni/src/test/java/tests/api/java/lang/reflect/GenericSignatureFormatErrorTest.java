@@ -32,6 +32,7 @@ public class GenericSignatureFormatErrorTest extends TestCase{
     }
 
 
+    // RoboVM note: Commented out. Tests Android specific class.
     // @AndroidOnly("Uses Android specific class dalvik.system.DexFile " +
     //         "for loading classes.")
     // @SideEffect("strange issue (exception: 'could not open dex file', " +

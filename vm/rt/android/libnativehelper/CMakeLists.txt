@@ -6,6 +6,8 @@ include_directories(
 
 set(SRC
   JNIHelp.cpp
+  JniConstants.cpp
+  toStringArray.cpp
 )
 
 add_library(android-libnativehelper OBJECT ${SRC})

@@ -1,7 +1,7 @@
 /*
 *******************************************************************************
 *
-*   Copyright (C) 2004-2010, International Business Machines
+*   Copyright (C) 2004-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 *******************************************************************************
@@ -21,15 +21,26 @@
 
 #include "unicode/utypes.h"
 #include "unicode/uset.h"
+#include "putilimp.h"
 #include "uset_imp.h"
 #include "udataswp.h"
 
-U_CDECL_BEGIN
+#ifdef __cplusplus
+U_NAMESPACE_BEGIN
+
+class UnicodeString;
+
+U_NAMESPACE_END
+#endif
 
 /* library API -------------------------------------------------------------- */
 
+U_CDECL_BEGIN
+
 struct UCaseProps;
 typedef struct UCaseProps UCaseProps;
+
+U_CDECL_END
 
 U_CAPI const UCaseProps * U_EXPORT2
 ucase_getSingleton(void);
@@ -111,6 +122,36 @@ ucase_addCaseClosure(const UCaseProps *csp, UChar32 c, const USetAdder *sa);
 U_CFUNC UBool U_EXPORT2
 ucase_addStringCaseClosure(const UCaseProps *csp, const UChar *s, int32_t length, const USetAdder *sa);
 
+#ifdef __cplusplus
+U_NAMESPACE_BEGIN
+
+/**
+ * Iterator over characters with more than one code point in the full default Case_Folding.
+ */
+class U_COMMON_API FullCaseFoldingIterator {
+public:
+    /** Constructor. */
+    FullCaseFoldingIterator();
+    /**
+     * Returns the next (cp, full) pair where "full" is cp's full default Case_Folding.
+     * Returns a negative cp value at the end of the iteration.
+     */
+    UChar32 next(UnicodeString &full);
+private:
+    FullCaseFoldingIterator(const FullCaseFoldingIterator &);  // no copy
+    FullCaseFoldingIterator &operator=(const FullCaseFoldingIterator &);  // no assignment
+
+    const UChar *unfold;
+    int32_t unfoldRows;
+    int32_t unfoldRowWidth;
+    int32_t unfoldStringWidth;
+    int32_t currentRow;
+    int32_t rowCpIndex;
+};
+
+U_NAMESPACE_END
+#endif
+
 /** @return UCASE_NONE, UCASE_LOWER, UCASE_UPPER, UCASE_TITLE */
 U_CAPI int32_t U_EXPORT2
 ucase_getType(const UCaseProps *csp, UChar32 c);
@@ -126,6 +167,8 @@ U_CAPI UBool U_EXPORT2
 ucase_isCaseSensitive(const UCaseProps *csp, UChar32 c);
 
 /* string case mapping functions */
+
+U_CDECL_BEGIN
 
 /**
  * Iterator function for string case mappings, which need to look at the
@@ -160,6 +203,10 @@ struct UCaseContext {
     int8_t b1, b2, b3;
 };
 typedef struct UCaseContext UCaseContext;
+
+U_CDECL_END
+
+#define UCASECONTEXT_INITIALIZER { NULL,  0, 0, 0,  0, 0,  0,  0, 0, 0 }
 
 enum {
     /**
@@ -275,33 +322,36 @@ enum {
 };
 
 #define UCASE_GET_TYPE(props) ((props)&UCASE_TYPE_MASK)
+#define UCASE_GET_TYPE_AND_IGNORABLE(props) ((props)&7)
 
-#define UCASE_SENSITIVE     4
-#define UCASE_EXCEPTION     8
+#define UCASE_IGNORABLE         4
+#define UCASE_SENSITIVE         8
+#define UCASE_EXCEPTION         0x10
 
-#define UCASE_DOT_MASK      0x30
+#define UCASE_DOT_MASK      0x60
 enum {
     UCASE_NO_DOT=0,         /* normal characters with cc=0 */
-    UCASE_SOFT_DOTTED=0x10, /* soft-dotted characters with cc=0 */
-    UCASE_ABOVE=0x20,       /* "above" accents with cc=230 */
-    UCASE_OTHER_ACCENT=0x30 /* other accent character (0<cc!=230) */
+    UCASE_SOFT_DOTTED=0x20, /* soft-dotted characters with cc=0 */
+    UCASE_ABOVE=0x40,       /* "above" accents with cc=230 */
+    UCASE_OTHER_ACCENT=0x60 /* other accent character (0<cc!=230) */
 };
 
-/* no exception: bits 15..6 are a 10-bit signed case mapping delta */
-#define UCASE_DELTA_SHIFT   6
-#define UCASE_DELTA_MASK    0xffc0
-#define UCASE_MAX_DELTA     0x1ff
+/* no exception: bits 15..7 are a 9-bit signed case mapping delta */
+#define UCASE_DELTA_SHIFT   7
+#define UCASE_DELTA_MASK    0xff80
+#define UCASE_MAX_DELTA     0xff
 #define UCASE_MIN_DELTA     (-UCASE_MAX_DELTA-1)
 
-#define UCASE_GET_DELTA(props) ((int16_t)(props)>>UCASE_DELTA_SHIFT)
+#if U_SIGNED_RIGHT_SHIFT_IS_ARITHMETIC
+#   define UCASE_GET_DELTA(props) ((int16_t)(props)>>UCASE_DELTA_SHIFT)
+#else
+#   define UCASE_GET_DELTA(props) (int16_t)(((props)&0x8000) ? (((props)>>UCASE_DELTA_SHIFT)|0xfe00) : ((uint16_t)(props)>>UCASE_DELTA_SHIFT))
+#endif
 
-/* case-ignorable uses one of the delta bits, see gencase/store.c */
-#define UCASE_CASE_IGNORABLE 0x40
-
-/* exception: bits 15..4 are an unsigned 12-bit index into the exceptions array */
-#define UCASE_EXC_SHIFT     4
-#define UCASE_EXC_MASK      0xfff0
-#define UCASE_MAX_EXCEPTIONS 0x1000
+/* exception: bits 15..5 are an unsigned 11-bit index into the exceptions array */
+#define UCASE_EXC_SHIFT     5
+#define UCASE_EXC_MASK      0xffe0
+#define UCASE_MAX_EXCEPTIONS ((UCASE_EXC_MASK>>UCASE_EXC_SHIFT)+1)
 
 /* definitions for 16-bit main exceptions word ------------------------------ */
 
@@ -321,12 +371,10 @@ enum {
 /* each slot is 2 uint16_t instead of 1 */
 #define UCASE_EXC_DOUBLE_SLOTS      0x100
 
-/* reserved: exception bits 10..9 */
-
-#define UCASE_EXC_CASE_IGNORABLE        0x800
+/* reserved: exception bits 11..9 */
 
 /* UCASE_EXC_DOT_MASK=UCASE_DOT_MASK<<UCASE_EXC_DOT_SHIFT */
-#define UCASE_EXC_DOT_SHIFT     8
+#define UCASE_EXC_DOT_SHIFT     7
 
 /* normally stored in the main word, but pushed out for larger exception indexes */
 #define UCASE_EXC_DOT_MASK      0x3000
@@ -357,7 +405,5 @@ enum {
     UCASE_UNFOLD_ROW_WIDTH,
     UCASE_UNFOLD_STRING_WIDTH
 };
-
-U_CDECL_END
 
 #endif

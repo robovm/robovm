@@ -280,9 +280,6 @@ extern "C" {
 
 #define SSL3_RT_MAX_EXTRA			(16384)
 
-/* Default buffer length used for writen records.  Thus a generated record
- * will contain plaintext no larger than this value. */
-#define SSL3_RT_DEFAULT_PLAIN_LENGTH	2048
 /* Maximum plaintext length: defined by SSL/TLS standards */
 #define SSL3_RT_MAX_PLAIN_LENGTH		16384
 /* Maximum compression overhead: defined by SSL/TLS standards */
@@ -313,13 +310,6 @@ extern "C" {
 		(SSL3_RT_MAX_ENCRYPTED_OVERHEAD+SSL3_RT_MAX_COMPRESSED_LENGTH)
 #define SSL3_RT_MAX_PACKET_SIZE		\
 		(SSL3_RT_MAX_ENCRYPTED_LENGTH+SSL3_RT_HEADER_LENGTH)
-
-/* Extra space for empty fragment, headers, MAC, and padding. */
-#define SSL3_RT_DEFAULT_WRITE_OVERHEAD  256
-#define SSL3_RT_DEFAULT_PACKET_SIZE     4096 - SSL3_RT_DEFAULT_WRITE_OVERHEAD
-#if SSL3_RT_DEFAULT_PLAIN_LENGTH + SSL3_RT_DEFAULT_WRITE_OVERHEAD > SSL3_RT_DEFAULT_PACKET_SIZE
-#error "Insufficient space allocated for write buffers."
-#endif
 
 #define SSL3_MD_CLIENT_FINISHED_CONST	"\x43\x4C\x4E\x54"
 #define SSL3_MD_SERVER_FINISHED_CONST	"\x53\x52\x56\x52"
@@ -549,6 +539,37 @@ typedef struct ssl3_state_st
 	/* Set if we saw the Next Protocol Negotiation extension from our peer. */
 	int next_proto_neg_seen;
 #endif
+
+	/* In a client, this means that the server supported Channel ID and that
+	 * a Channel ID was sent. In a server it means that we echoed support
+	 * for Channel IDs and that tlsext_channel_id will be valid after the
+	 * handshake. */
+	char tlsext_channel_id_valid;
+	/* For a server:
+	 *     If |tlsext_channel_id_valid| is true, then this contains the
+	 *     verified Channel ID from the client: a P256 point, (x,y), where
+	 *     each are big-endian values. */
+	unsigned char tlsext_channel_id[64];
+
+	/* ALPN information
+	 * (we are in the process of transitioning from NPN to ALPN.) */
+
+	/* In a server these point to the selected ALPN protocol after the
+	 * ClientHello has been processed. In a client these contain the
+	 * protocol that the server selected once the ServerHello has been
+	 * processed. */
+	unsigned char *alpn_selected;
+	unsigned alpn_selected_len;
+
+	/* These point to the digest function to use for signatures made with
+	 * each type of public key. A NULL value indicates that the default
+	 * digest should be used, which is SHA1 as of TLS 1.2.
+	 *
+	 * (These should be in the tmp member, but we have to put them here to
+	 * ensure binary compatibility with earlier OpenSSL 1.0.* releases.) */
+	const EVP_MD *digest_rsa;
+	const EVP_MD *digest_dsa;
+	const EVP_MD *digest_ecdsa;
 	} SSL3_STATE;
 
 #endif
@@ -589,8 +610,12 @@ typedef struct ssl3_state_st
 #define SSL3_ST_CW_CERT_VRFY_B		(0x191|SSL_ST_CONNECT)
 #define SSL3_ST_CW_CHANGE_A		(0x1A0|SSL_ST_CONNECT)
 #define SSL3_ST_CW_CHANGE_B		(0x1A1|SSL_ST_CONNECT)
+#ifndef OPENSSL_NO_NEXTPROTONEG
 #define SSL3_ST_CW_NEXT_PROTO_A		(0x200|SSL_ST_CONNECT)
 #define SSL3_ST_CW_NEXT_PROTO_B		(0x201|SSL_ST_CONNECT)
+#endif
+#define SSL3_ST_CW_CHANNEL_ID_A		(0x210|SSL_ST_CONNECT)
+#define SSL3_ST_CW_CHANNEL_ID_B		(0x211|SSL_ST_CONNECT)
 #define SSL3_ST_CW_FINISHED_A		(0x1B0|SSL_ST_CONNECT)
 #define SSL3_ST_CW_FINISHED_B		(0x1B1|SSL_ST_CONNECT)
 /* read from server */
@@ -640,8 +665,13 @@ typedef struct ssl3_state_st
 #define SSL3_ST_SR_CERT_VRFY_B		(0x1A1|SSL_ST_ACCEPT)
 #define SSL3_ST_SR_CHANGE_A		(0x1B0|SSL_ST_ACCEPT)
 #define SSL3_ST_SR_CHANGE_B		(0x1B1|SSL_ST_ACCEPT)
+#define SSL3_ST_SR_POST_CLIENT_CERT	(0x1BF|SSL_ST_ACCEPT)
+#ifndef OPENSSL_NO_NEXTPROTONEG
 #define SSL3_ST_SR_NEXT_PROTO_A		(0x210|SSL_ST_ACCEPT)
 #define SSL3_ST_SR_NEXT_PROTO_B		(0x211|SSL_ST_ACCEPT)
+#endif
+#define SSL3_ST_SR_CHANNEL_ID_A		(0x220|SSL_ST_ACCEPT)
+#define SSL3_ST_SR_CHANNEL_ID_B		(0x221|SSL_ST_ACCEPT)
 #define SSL3_ST_SR_FINISHED_A		(0x1C0|SSL_ST_ACCEPT)
 #define SSL3_ST_SR_FINISHED_B		(0x1C1|SSL_ST_ACCEPT)
 /* write to client */
@@ -666,7 +696,10 @@ typedef struct ssl3_state_st
 #define SSL3_MT_CLIENT_KEY_EXCHANGE		16
 #define SSL3_MT_FINISHED			20
 #define SSL3_MT_CERTIFICATE_STATUS		22
+#ifndef OPENSSL_NO_NEXTPROTONEG
 #define SSL3_MT_NEXT_PROTO			67
+#endif
+#define SSL3_MT_ENCRYPTED_EXTENSIONS		203
 #define DTLS1_MT_HELLO_VERIFY_REQUEST    3
 
 

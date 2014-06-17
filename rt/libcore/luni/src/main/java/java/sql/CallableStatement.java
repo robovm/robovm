@@ -111,8 +111,7 @@ public interface CallableStatement extends PreparedStatement {
      *         the parameter in question is an SQL {@code NULL}.
      * @throws SQLException
      *             if a database error occurs.
-     * @deprecated Use {@link #getBigDecimal(int)} or
-     *             {@link #getBigDecimal(String)}
+     * @deprecated Use {@link #getBigDecimal(int)} or {@link #getBigDecimal(String)} instead.
      */
     @Deprecated
     public BigDecimal getBigDecimal(int parameterIndex, int scale)

@@ -204,8 +204,7 @@ public class Charset_TestGenerator {
 
         @Override
         void consume (int code) {
-            System.out.print(code);
-            System.out.print(", ");
+            System.out.printf("0x%x, ", code);
             col++;
             if (col == colMax) {
                 System.out.println();

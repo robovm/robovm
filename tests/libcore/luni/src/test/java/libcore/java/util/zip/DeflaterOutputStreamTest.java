@@ -19,6 +19,7 @@ package libcore.java.util.zip;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.EOFException;
+import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
@@ -30,13 +31,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 import java.util.zip.InflaterInputStream;
 import junit.framework.TestCase;
 
 public class DeflaterOutputStreamTest extends TestCase {
 
     public void testSyncFlushEnabled() throws Exception {
-        InflaterInputStream in = createInflaterStream(true);
+        InputStream in = createInflaterStream(DeflaterOutputStream.class, true);
         assertEquals(1, in.read());
         assertEquals(2, in.read());
         assertEquals(3, in.read());
@@ -44,7 +47,7 @@ public class DeflaterOutputStreamTest extends TestCase {
     }
 
     public void testSyncFlushDisabled() throws Exception {
-        InflaterInputStream in = createInflaterStream(false);
+        InputStream in = createInflaterStream(DeflaterOutputStream.class, false);
         try {
             in.read();
             fail();
@@ -65,14 +68,21 @@ public class DeflaterOutputStreamTest extends TestCase {
      * way demonstrate that data is unavailable. Ie. other techniques will cause
      * the dry read to block indefinitely.
      */
-    private InflaterInputStream createInflaterStream(final boolean flushing) throws Exception {
+    static InputStream createInflaterStream(final Class<?> c, final boolean flushing) throws Exception {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         final PipedOutputStream pout = new PipedOutputStream();
         PipedInputStream pin = new PipedInputStream(pout);
 
         executor.submit(new Callable<Void>() {
             public Void call() throws Exception {
-                OutputStream out = new DeflaterOutputStream(pout, flushing);
+                OutputStream out;
+                if (c == DeflaterOutputStream.class) {
+                    out = new DeflaterOutputStream(pout, flushing);
+                } else if (c == GZIPOutputStream.class) {
+                    out = new GZIPOutputStream(pout, flushing);
+                } else {
+                    throw new AssertionError();
+                }
                 out.write(1);
                 out.write(2);
                 out.write(3);
@@ -82,7 +92,13 @@ public class DeflaterOutputStreamTest extends TestCase {
         }).get();
         executor.shutdown();
 
-        return new InflaterInputStream(pin);
+        if (c == DeflaterOutputStream.class) {
+            return new InflaterInputStream(pin);
+        } else if (c == GZIPOutputStream.class) {
+            return new GZIPInputStream(pin);
+        } else {
+            throw new AssertionError();
+        }
     }
 
     /**
@@ -146,5 +162,9 @@ public class DeflaterOutputStreamTest extends TestCase {
         // during the test, since that would lead to the results being
         // flushed even without SYNC_FLUSH being used
         assertFalse(def.finished());
+
+        // Quieten CloseGuard.
+        def.end();
+        iis.close();
     }
 }

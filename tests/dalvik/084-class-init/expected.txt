@@ -1,6 +1,7 @@
 Got expected EIIE for FIELD0
 Got expected NCDFE for FIELD0
 Got expected NCDFE for FIELD1
+Got expected 'hello!' from Exploder
 SlowInit static block pre-sleep
 SlowInit static block post-sleep
 MethodThread message

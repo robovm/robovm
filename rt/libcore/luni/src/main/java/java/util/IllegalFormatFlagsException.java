@@ -38,7 +38,7 @@ public class IllegalFormatFlagsException extends IllegalFormatException implemen
      */
     public IllegalFormatFlagsException(String flags) {
         if (flags == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("flags == null");
         }
         this.flags = flags;
     }

@@ -1,7 +1,7 @@
 /*
 *******************************************************************************
-* Copyright (C) 2007-2008, International Business Machines Corporation and         *
-* others. All Rights Reserved.                                                *
+* Copyright (C) 2007-2013, International Business Machines Corporation and
+* others. All Rights Reserved.
 *******************************************************************************
 */
 #ifndef BASICTZ_H
@@ -47,7 +47,7 @@ public:
      * @return  TRUE if the transition is found.
      * @stable ICU 3.8
      */
-    virtual UBool getNextTransition(UDate base, UBool inclusive, TimeZoneTransition& result) /*const*/ = 0;
+    virtual UBool getNextTransition(UDate base, UBool inclusive, TimeZoneTransition& result) const = 0;
 
     /**
      * Gets the most recent time zone transition before the base time.
@@ -57,7 +57,7 @@ public:
      * @return  TRUE if the transition is found.
      * @stable ICU 3.8
      */
-    virtual UBool getPreviousTransition(UDate base, UBool inclusive, TimeZoneTransition& result) /*const*/ = 0;
+    virtual UBool getPreviousTransition(UDate base, UBool inclusive, TimeZoneTransition& result) const = 0;
 
     /**
      * Checks if the time zone has equivalent transitions in the time range.
@@ -79,8 +79,8 @@ public:
      *              time range.
      * @stable ICU 3.8
      */
-    virtual UBool hasEquivalentTransitions(/*const*/ BasicTimeZone& tz, UDate start, UDate end,
-        UBool ignoreDstAmount, UErrorCode& ec) /*const*/;
+    virtual UBool hasEquivalentTransitions(const BasicTimeZone& tz, UDate start, UDate end,
+        UBool ignoreDstAmount, UErrorCode& ec) const;
 
     /**
      * Returns the number of <code>TimeZoneRule</code>s which represents time transitions,
@@ -90,7 +90,7 @@ public:
      * @return The number of <code>TimeZoneRule</code>s representing time transitions.
      * @stable ICU 3.8
      */
-    virtual int32_t countTransitionRules(UErrorCode& status) /*const*/ = 0;
+    virtual int32_t countTransitionRules(UErrorCode& status) const = 0;
 
     /**
      * Gets the <code>InitialTimeZoneRule</code> and the set of <code>TimeZoneRule</code>
@@ -109,7 +109,7 @@ public:
      * @stable ICU 3.8
      */
     virtual void getTimeZoneRules(const InitialTimeZoneRule*& initial,
-        const TimeZoneRule* trsrules[], int32_t& trscount, UErrorCode& status) /*const*/ = 0;
+        const TimeZoneRule* trsrules[], int32_t& trscount, UErrorCode& status) const = 0;
 
     /**
      * Gets the set of time zone rules valid at the specified time.  Some known external time zone
@@ -138,9 +138,10 @@ public:
      * @stable ICU 3.8
      */
     virtual void getSimpleRulesNear(UDate date, InitialTimeZoneRule*& initial,
-        AnnualTimeZoneRule*& std, AnnualTimeZoneRule*& dst, UErrorCode& status) /*const*/;
+        AnnualTimeZoneRule*& std, AnnualTimeZoneRule*& dst, UErrorCode& status) const;
 
 
+#ifndef U_HIDE_INTERNAL_API
     /**
      * The time type option bit flags used by getOffsetFromLocal
      * @internal
@@ -151,16 +152,18 @@ public:
         kFormer = 0x04,
         kLatter = 0x0C
     };
+#endif  /* U_HIDE_INTERNAL_API */
 
     /**
      * Get time zone offsets from local wall time.
      * @internal
      */
     virtual void getOffsetFromLocal(UDate date, int32_t nonExistingTimeOpt, int32_t duplicatedTimeOpt,
-        int32_t& rawOffset, int32_t& dstOffset, UErrorCode& status) /*const*/;
+        int32_t& rawOffset, int32_t& dstOffset, UErrorCode& status) const;
 
 protected:
 
+#ifndef U_HIDE_INTERNAL_API
     /**
      * The time type option bit masks used by getOffsetFromLocal
      * @internal
@@ -169,6 +172,7 @@ protected:
         kStdDstMask = kDaylight,
         kFormerLatterMask = kLatter
     };
+#endif  /* U_HIDE_INTERNAL_API */
 
     /**
      * Default constructor.
@@ -198,7 +202,7 @@ protected:
      * @param status    Receives error status code
      */
     void getTimeZoneRulesAfter(UDate start, InitialTimeZoneRule*& initial, UVector*& transitionRules,
-        UErrorCode& status) /*const*/;
+        UErrorCode& status) const;
 };
 
 U_NAMESPACE_END

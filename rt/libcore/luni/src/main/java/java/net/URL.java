@@ -24,8 +24,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.jar.JarFile;
-import libcore.net.http.HttpHandler;
-import libcore.net.http.HttpsHandler;
 import libcore.net.url.FileHandler;
 import libcore.net.url.FtpHandler;
 import libcore.net.url.JarHandler;
@@ -427,9 +425,19 @@ public final class URL implements Serializable {
         } else if (protocol.equals("ftp")) {
             streamHandler = new FtpHandler();
         } else if (protocol.equals("http")) {
-            streamHandler = new HttpHandler();
+            try {
+                String name = "com.android.okhttp.HttpHandler";
+                streamHandler = (URLStreamHandler) Class.forName(name).newInstance();
+            } catch (Exception e) {
+                throw new AssertionError(e);
+            }
         } else if (protocol.equals("https")) {
-            streamHandler = new HttpsHandler();
+            try {
+                String name = "com.android.okhttp.HttpsHandler";
+                streamHandler = (URLStreamHandler) Class.forName(name).newInstance();
+            } catch (Exception e) {
+                throw new AssertionError(e);
+            }
         } else if (protocol.equals("jar")) {
             streamHandler = new JarHandler();
         }

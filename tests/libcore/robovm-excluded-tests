@@ -1,3 +1,26 @@
+# Hangs or takes a loooong time. Fix!
+org.apache.harmony.luni.tests.java.util.ScannerParseLargeFileBenchmarkTest#testParseLargeFile
+org.apache.harmony.luni.tests.java.util.ScannerTest#testPerformance
+
+# Hangs. Fix!
+libcore.java.net.URLConnectionTest#testServerClosesSocket
+
+# Uses StuckServer with backlog which doesn't work reliably on Darwin.
+libcore.java.nio.channels.SelectorTest#testNonBlockingConnect_slow
+
+# Requires a /system/usr/share/zoneinfo/tzdata file which we don't have.
+libcore.util.ZoneInfoDBTest#testGoodOverrideFile
+
+# Fail with "mmap failed: ENODEV (Operation not supported by device)". Maybe we can't mmap /dev/zero on Darwin?
+libcore.java.nio.BufferTest#testDevZeroMap
+libcore.java.nio.BufferTest#testDevZeroMapRW
+
+# Hang. Fix!
+libcore.java.net.URLConnectionTest#testGetHeadersThrows
+
+# Darwin does not support Unix domain sockets with "abstract socket addresses" as Linux does.
+libcore.io.OsTest#testUnixDomainSocket_abstract_name
+
 # Known to sometimes hang on RoboVM in Linux. See issue #47.
 libcore.java.io.InterruptedStreamTest#testInterruptWritablePipeChannel
 libcore.java.io.InterruptedStreamTest#testInterruptReadablePipeChannel

@@ -39,6 +39,9 @@ public final class DistinguishedNameParser {
     private char[] chars;
 
     public DistinguishedNameParser(X500Principal principal) {
+        // RFC2253 is used to ensure we get attributes in the reverse
+        // order of the underlying ASN.1 encoding, so that the most
+        // significant values of repeated attributes occur first.
         this.dn = principal.getName(X500Principal.RFC2253);
         this.length = this.dn.length();
     }
@@ -196,7 +199,7 @@ public final class DistinguishedNameParser {
             case '+':
             case ',':
             case ';':
-                // separator char has beed found
+                // separator char has been found
                 return new String(chars, beg, end - beg);
             case '\\':
                 // escaped char
@@ -216,7 +219,7 @@ public final class DistinguishedNameParser {
                 }
                 if (pos == length || chars[pos] == ',' || chars[pos] == '+'
                         || chars[pos] == ';') {
-                    // separator char or the end of DN has beed found
+                    // separator char or the end of DN has been found
                     return new String(chars, beg, cur - beg);
                 }
                 break;
@@ -340,12 +343,12 @@ public final class DistinguishedNameParser {
     }
 
     /**
-     * Parses the DN and returns the attribute value for an attribute type.
+     * Parses the DN and returns the most significant attribute value
+     * for an attribute type, or null if none found.
      *
      * @param attributeType attribute type to look for (e.g. "ca")
-     * @return value of the attribute that first found, or null if none found
      */
-    public String find(String attributeType) {
+    public String findMostSpecific(String attributeType) {
         // Initialize internal state.
         pos = 0;
         beg = 0;
@@ -380,6 +383,9 @@ public final class DistinguishedNameParser {
                 attValue = escapedAV();
             }
 
+            // Values are ordered from most specific to least specific
+            // due to the RFC2253 formatting. So take the first match
+            // we see.
             if (attributeType.equalsIgnoreCase(attType)) {
                 return attValue;
             }

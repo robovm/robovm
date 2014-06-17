@@ -29,6 +29,7 @@ import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -37,6 +38,7 @@ import org.apache.harmony.security.asn1.ASN1Choice;
 import org.apache.harmony.security.asn1.ASN1Implicit;
 import org.apache.harmony.security.asn1.ASN1OctetString;
 import org.apache.harmony.security.asn1.ASN1Oid;
+import org.apache.harmony.security.asn1.ASN1SequenceOf;
 import org.apache.harmony.security.asn1.ASN1StringType;
 import org.apache.harmony.security.asn1.ASN1Type;
 import org.apache.harmony.security.asn1.BerInputStream;
@@ -219,10 +221,6 @@ public final class GeneralName {
      *  component is doubled (to 8 and 32 bytes respectively).
      */
     public GeneralName(byte[] name) throws IllegalArgumentException {
-        int length = name.length;
-        if (length != 4 && length != 8 && length != 16 && length != 32) {
-            throw new IllegalArgumentException("name.length invalid");
-        }
         this.tag = IP_ADDR;
         this.name = new byte[name.length];
         System.arraycopy(name, 0, this.name, 0, name.length);
@@ -390,6 +388,20 @@ public final class GeneralName {
                 byte[] address = (byte[]) name;
                 byte[] _address = (byte[]) gname.getName();
                 int length = address.length;
+
+                /*
+                 * For IP v4, as specified in RFC 791, the address must contain
+                 * exactly 4 byte component. For IP v6, as specified in RFC
+                 * 1883, the address must contain exactly 16 byte component. If
+                 * GeneralName structure is used as a part of Name Constraints
+                 * extension, to represent an address range the number of
+                 * address component is doubled (to 8 and 32 bytes
+                 * respectively).
+                 */
+                if (length != 4 && length != 8 && length != 16 && length != 32) {
+                    return false;
+                }
+
                 int _length = _address.length;
                 if (length == _length) {
                     return Arrays.equals(address, _address);
@@ -644,8 +656,9 @@ public final class GeneralName {
     }
 
     /**
-     * Returns the string form of the given IP address. Addresses of length 2x
-     * the canonical length are treated as a route/mask pair.
+     * Returns the string form of the given IP address. If the address is not 4
+     * octets for IPv4 or 16 octets for IPv6, an IllegalArgumentException will
+     * be thrown.
      */
     public static String ipBytesToStr(byte[] ip) {
         try {
@@ -655,12 +668,23 @@ public final class GeneralName {
         }
     }
 
+    /**
+     * The "Name" is actually a CHOICE of one entry, so we need to pretend it's
+     * a SEQUENCE OF and just grab the first entry.
+     */
+    private static final ASN1SequenceOf NAME_ASN1 = new ASN1SequenceOf(Name.ASN1) {
+        @Override
+        public Object decode(BerInputStream in) throws IOException {
+            return ((List<?>) super.decode(in)).get(0);
+        }
+    };
+
     public static final ASN1Choice ASN1 = new ASN1Choice(new ASN1Type[] {
            new ASN1Implicit(0, OtherName.ASN1),
            new ASN1Implicit(1, ASN1StringType.IA5STRING),
            new ASN1Implicit(2, ASN1StringType.IA5STRING),
            new ASN1Implicit(3, ORAddress.ASN1),
-           new ASN1Implicit(4, Name.ASN1),
+           new ASN1Implicit(4, NAME_ASN1),
            new ASN1Implicit(5, EDIPartyName.ASN1),
            new ASN1Implicit(6, ASN1StringType.IA5STRING),
            new ASN1Implicit(7, ASN1OctetString.getInstance()),

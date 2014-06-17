@@ -1,7 +1,7 @@
 /*
 ******************************************************************************
 *
-*   Copyright (C) 2007-2008, International Business Machines
+*   Copyright (C) 2007-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 ******************************************************************************
@@ -16,8 +16,11 @@
 
 #include "unicode/utypes.h"
 #include "unicode/uniset.h"
+#include "unicode/utf8.h"
+#include "unicode/utf16.h"
 #include "cmemory.h"
 #include "bmpset.h"
+#include "uassert.h"
 
 U_NAMESPACE_BEGIN
 
@@ -61,8 +64,11 @@ BMPSet::~BMPSet() {
  * start<limit<=0x800
  */
 static void set32x64Bits(uint32_t table[64], int32_t start, int32_t limit) {
-    int32_t lead=start>>6;
-    int32_t trail=start&0x3f;
+    U_ASSERT(start<limit);
+    U_ASSERT(limit<=0x800);
+
+    int32_t lead=start>>6;  // Named for UTF-8 2-byte lead byte with upper 5 bits.
+    int32_t trail=start&0x3f;  // Named for UTF-8 2-byte trail byte with lower 6 bits.
 
     // Set one bit indicating an all-one block.
     uint32_t bits=(uint32_t)1<<lead;
@@ -98,7 +104,10 @@ static void set32x64Bits(uint32_t table[64], int32_t start, int32_t limit) {
                 table[trail]|=bits;
             }
         }
-        bits=1<<limitLead;
+        // limit<=0x800. If limit==0x800 then limitLead=32 and limitTrail=0.
+        // In that case, bits=1<<limitLead is undefined but the bits value
+        // is not used because trail<limitTrail is already false.
+        bits=(uint32_t)1<<((limitLead == 0x20) ? (limitLead - 1) : limitLead);
         for(trail=0; trail<limitTrail; ++trail) {
             table[trail]|=bits;
         }
@@ -681,16 +690,9 @@ BMPSet::spanBackUTF8(const uint8_t *s, int32_t length, USetSpanCondition spanCon
 
         int32_t prev=length;
         UChar32 c;
-        if(b<0xc0) {
-            // trail byte: collect a multi-byte character
-            c=utf8_prevCharSafeBody(s, 0, &length, b, -1);
-            if(c<0) {
-                c=0xfffd;
-            }
-        } else {
-            // lead byte in last-trail position
-            c=0xfffd;
-        }
+        // trail byte: collect a multi-byte character
+        // (or  lead byte in last-trail position)
+        c=utf8_prevCharSafeBody(s, 0, &length, b, -3);
         // c is a valid code point, not ASCII, not a surrogate
         if(c<=0x7ff) {
             if((USetSpanCondition)((table7FF[c&0x3f]&((uint32_t)1<<(c>>6)))!=0) != spanCondition) {

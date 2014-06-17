@@ -40,6 +40,9 @@ public class KeyManagerFactory {
     // Store default property name
     private static final String PROPERTY_NAME = "ssl.KeyManagerFactory.algorithm";
 
+    // Default value of KeyManagerFactory type.
+    private static final String DEFAULT_PROPERTY = "PKIX";
+
     /**
      * Returns the default key manager factory algorithm name.
      * <p>
@@ -49,7 +52,8 @@ public class KeyManagerFactory {
      * @return the default algorithm name.
      */
     public static final String getDefaultAlgorithm() {
-        return Security.getProperty(PROPERTY_NAME);
+        String algorithm = Security.getProperty(PROPERTY_NAME);
+        return (algorithm != null ? algorithm : DEFAULT_PROPERTY);
     }
 
     /**
@@ -68,7 +72,7 @@ public class KeyManagerFactory {
     public static final KeyManagerFactory getInstance(String algorithm)
             throws NoSuchAlgorithmException {
         if (algorithm == null) {
-            throw new NullPointerException("algorithm is null");
+            throw new NullPointerException("algorithm == null");
         }
         Engine.SpiAndProvider sap = ENGINE.getInstance(algorithm, null);
         return new KeyManagerFactory((KeyManagerFactorySpi) sap.spi, sap.provider, algorithm);
@@ -127,7 +131,7 @@ public class KeyManagerFactory {
             throw new IllegalArgumentException("Provider is null");
         }
         if (algorithm == null) {
-            throw new NullPointerException("algorithm is null");
+            throw new NullPointerException("algorithm == null");
         }
         Object spi = ENGINE.getInstance(algorithm, provider, null);
         return new KeyManagerFactory((KeyManagerFactorySpi) spi, provider, algorithm);

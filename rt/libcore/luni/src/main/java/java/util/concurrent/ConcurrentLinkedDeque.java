@@ -1,7 +1,7 @@
 /*
  * Written by Doug Lea and Martin Buchholz with assistance from members of
  * JCP JSR-166 Expert Group and released to the public domain, as explained
- * at http://creativecommons.org/licenses/publicdomain
+ * at http://creativecommons.org/publicdomain/zero/1.0/
  */
 
 package java.util.concurrent;
@@ -34,10 +34,17 @@ import java.util.Queue;
  * ConcurrentModificationException}, and may proceed concurrently with
  * other operations.
  *
- * <p>Beware that, unlike in most collections, the {@code size}
- * method is <em>NOT</em> a constant-time operation. Because of the
+ * <p>Beware that, unlike in most collections, the {@code size} method
+ * is <em>NOT</em> a constant-time operation. Because of the
  * asynchronous nature of these deques, determining the current number
- * of elements requires a traversal of the elements.
+ * of elements requires a traversal of the elements, and so may report
+ * inaccurate results if this collection is modified during traversal.
+ * Additionally, the bulk operations {@code addAll},
+ * {@code removeAll}, {@code retainAll}, {@code containsAll},
+ * {@code equals}, and {@code toArray} are <em>not</em> guaranteed
+ * to be performed atomically. For example, an iterator operating
+ * concurrently with an {@code addAll} operation might view only some
+ * of the added elements.
  *
  * <p>This class and its iterator implement all of the <em>optional</em>
  * methods of the {@link Deque} and {@link Iterator} interfaces.
@@ -56,7 +63,6 @@ import java.util.Queue;
  * @author Martin Buchholz
  * @param <E> the type of elements held in this collection
  */
-
 public class ConcurrentLinkedDeque<E>
     extends AbstractCollection<E>
     implements Deque<E>, java.io.Serializable {
@@ -245,13 +251,6 @@ public class ConcurrentLinkedDeque<E>
 
     private static final Node<Object> PREV_TERMINATOR, NEXT_TERMINATOR;
 
-    static {
-        PREV_TERMINATOR = new Node<Object>(null);
-        PREV_TERMINATOR.next = PREV_TERMINATOR;
-        NEXT_TERMINATOR = new Node<Object>(null);
-        NEXT_TERMINATOR.prev = NEXT_TERMINATOR;
-    }
-
     @SuppressWarnings("unchecked")
     Node<E> prevTerminator() {
         return (Node<E>) PREV_TERMINATOR;
@@ -266,6 +265,9 @@ public class ConcurrentLinkedDeque<E>
         volatile Node<E> prev;
         volatile E item;
         volatile Node<E> next;
+
+        Node() {  // default constructor for NEXT_TERMINATOR, PREV_TERMINATOR
+        }
 
         /**
          * Constructs a new node.  Uses relaxed write because item can
@@ -297,14 +299,25 @@ public class ConcurrentLinkedDeque<E>
 
         // Unsafe mechanics
 
-        private static final sun.misc.Unsafe UNSAFE =
-            sun.misc.Unsafe.getUnsafe();
-        private static final long prevOffset =
-            objectFieldOffset(UNSAFE, "prev", Node.class);
-        private static final long itemOffset =
-            objectFieldOffset(UNSAFE, "item", Node.class);
-        private static final long nextOffset =
-            objectFieldOffset(UNSAFE, "next", Node.class);
+        private static final sun.misc.Unsafe UNSAFE;
+        private static final long prevOffset;
+        private static final long itemOffset;
+        private static final long nextOffset;
+
+        static {
+            try {
+                UNSAFE = sun.misc.Unsafe.getUnsafe();
+                Class<?> k = Node.class;
+                prevOffset = UNSAFE.objectFieldOffset
+                    (k.getDeclaredField("prev"));
+                itemOffset = UNSAFE.objectFieldOffset
+                    (k.getDeclaredField("item"));
+                nextOffset = UNSAFE.objectFieldOffset
+                    (k.getDeclaredField("next"));
+            } catch (Exception e) {
+                throw new Error(e);
+            }
+        }
     }
 
     /**
@@ -776,7 +789,7 @@ public class ConcurrentLinkedDeque<E>
      * Creates an array list and fills it with elements of this list.
      * Used by toArray.
      *
-     * @return the arrayList
+     * @return the array list
      */
     private ArrayList<E> toArrayList() {
         ArrayList<E> list = new ArrayList<E>();
@@ -1209,8 +1222,7 @@ public class ConcurrentLinkedDeque<E>
      * The following code can be used to dump the deque into a newly
      * allocated array of {@code String}:
      *
-     * <pre>
-     *     String[] y = x.toArray(new String[0]);</pre>
+     *  <pre> {@code String[] y = x.toArray(new String[0]);}</pre>
      *
      * Note that {@code toArray(new Object[0])} is identical in function to
      * {@code toArray()}.
@@ -1347,11 +1359,10 @@ public class ConcurrentLinkedDeque<E>
     }
 
     /**
-     * Saves the state to a stream (that is, serializes it).
+     * Saves this deque to a stream (that is, serializes it).
      *
      * @serialData All of the elements (each an {@code E}) in
      * the proper order, followed by a null
-     * @param s the stream
      */
     private void writeObject(java.io.ObjectOutputStream s)
         throws java.io.IOException {
@@ -1371,8 +1382,7 @@ public class ConcurrentLinkedDeque<E>
     }
 
     /**
-     * Reconstitutes the instance from a stream (that is, deserializes it).
-     * @param s the stream
+     * Reconstitutes this deque from a stream (that is, deserializes it).
      */
     private void readObject(java.io.ObjectInputStream s)
         throws java.io.IOException, ClassNotFoundException {
@@ -1395,15 +1405,6 @@ public class ConcurrentLinkedDeque<E>
         initHeadTail(h, t);
     }
 
-    // Unsafe mechanics
-
-    private static final sun.misc.Unsafe UNSAFE =
-        sun.misc.Unsafe.getUnsafe();
-    private static final long headOffset =
-        objectFieldOffset(UNSAFE, "head", ConcurrentLinkedDeque.class);
-    private static final long tailOffset =
-        objectFieldOffset(UNSAFE, "tail", ConcurrentLinkedDeque.class);
-
     private boolean casHead(Node<E> cmp, Node<E> val) {
         return UNSAFE.compareAndSwapObject(this, headOffset, cmp, val);
     }
@@ -1412,15 +1413,25 @@ public class ConcurrentLinkedDeque<E>
         return UNSAFE.compareAndSwapObject(this, tailOffset, cmp, val);
     }
 
-    static long objectFieldOffset(sun.misc.Unsafe UNSAFE,
-                                  String field, Class<?> klazz) {
+    // Unsafe mechanics
+
+    private static final sun.misc.Unsafe UNSAFE;
+    private static final long headOffset;
+    private static final long tailOffset;
+    static {
+        PREV_TERMINATOR = new Node<Object>();
+        PREV_TERMINATOR.next = PREV_TERMINATOR;
+        NEXT_TERMINATOR = new Node<Object>();
+        NEXT_TERMINATOR.prev = NEXT_TERMINATOR;
         try {
-            return UNSAFE.objectFieldOffset(klazz.getDeclaredField(field));
-        } catch (NoSuchFieldException e) {
-            // Convert Exception to corresponding Error
-            NoSuchFieldError error = new NoSuchFieldError(field);
-            error.initCause(e);
-            throw error;
+            UNSAFE = sun.misc.Unsafe.getUnsafe();
+            Class<?> k = ConcurrentLinkedDeque.class;
+            headOffset = UNSAFE.objectFieldOffset
+                (k.getDeclaredField("head"));
+            tailOffset = UNSAFE.objectFieldOffset
+                (k.getDeclaredField("tail"));
+        } catch (Exception e) {
+            throw new Error(e);
         }
     }
 }

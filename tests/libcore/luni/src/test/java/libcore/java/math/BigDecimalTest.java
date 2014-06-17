@@ -64,4 +64,36 @@ public final class BigDecimalTest extends TestCase {
         BigDecimal rounded = bigDecimal.round(new MathContext(2, RoundingMode.FLOOR));
         assertEquals("0.99", rounded.toString());
     }
+
+    // https://code.google.com/p/android/issues/detail?id=43480
+    public void testPrecisionFromString() {
+      BigDecimal a = new BigDecimal("-0.011111111111111111111");
+      BigDecimal b = a.multiply(BigDecimal.ONE);
+
+      assertEquals("-0.011111111111111111111", a.toString());
+      assertEquals("-0.011111111111111111111", b.toString());
+
+      assertEquals(20, a.precision());
+      assertEquals(20, b.precision());
+
+      assertEquals(21, a.scale());
+      assertEquals(21, b.scale());
+
+      assertEquals("-11111111111111111111", a.unscaledValue().toString());
+      assertEquals("-11111111111111111111", b.unscaledValue().toString());
+
+      assertEquals(a, b);
+      assertEquals(b, a);
+
+      assertEquals(0, a.subtract(b).signum());
+      assertEquals(0, a.compareTo(b));
+    }
+
+    // https://code.google.com/p/android/issues/detail?id=54580
+    public void test54580() {
+        BigDecimal a = new BigDecimal("1.200002");
+        assertEquals("1.200002", a.toPlainString());
+        assertEquals("1.20", a.abs(new MathContext(3,RoundingMode.HALF_UP)).toPlainString());
+        assertEquals("1.200002", a.toPlainString());
+    }
 }

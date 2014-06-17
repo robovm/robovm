@@ -19,17 +19,24 @@
  *
  * This file may be included by C or C++ code, which is trouble because jni.h
  * uses different typedefs for JNIEnv in each language.
+ *
+ * TODO: remove C support.
  */
 #ifndef NATIVEHELPER_JNIHELP_H_
 #define NATIVEHELPER_JNIHELP_H_
 
 #include "jni.h"
-#include "cutils/log.h"
 #include <unistd.h>
 
 #ifndef NELEM
 # define NELEM(x) ((int) (sizeof(x) / sizeof((x)[0])))
 #endif
+
+// TODO: the build system doesn't ensure the standard C++ library header files are on the include
+// path when compiling C++, and this file is included all over the place.
+#ifdef LIBCORE_CPP_JNI_HELPERS
+#include <string>
+#endif // LIBCORE_CPP_JNI_HELPERS
 
 #ifdef __cplusplus
 extern "C" {
@@ -97,6 +104,11 @@ int jniGetFDFromFileDescriptor(C_JNIEnv* env, jobject fileDescriptor);
 void jniSetFileDescriptorOfFD(C_JNIEnv* env, jobject fileDescriptor, int value);
 
 /*
+ * Returns the reference from a java.lang.ref.Reference.
+ */
+jobject jniGetReferent(C_JNIEnv* env, jobject ref);
+
+/*
  * Log a message and an exception.
  * If exception is NULL, logs the current exception in the JNI environment.
  */
@@ -157,23 +169,25 @@ inline void jniSetFileDescriptorOfFD(JNIEnv* env, jobject fileDescriptor, int va
     jniSetFileDescriptorOfFD(&env->functions, fileDescriptor, value);
 }
 
+inline jobject jniGetReferent(JNIEnv* env, jobject ref) {
+    return jniGetReferent(&env->functions, ref);
+}
+
 inline void jniLogException(JNIEnv* env, int priority, const char* tag, jthrowable exception = NULL) {
     jniLogException(&env->functions, priority, tag, exception);
 }
-#endif
 
-/* Logging macros.
- *
- * Logs an exception.  If the exception is omitted or NULL, logs the current exception
- * from the JNI environment, if any.
- */
-#define LOG_EX(env, priority, tag, ...) \
-    IF_ALOG(priority, tag) jniLogException(env, ANDROID_##priority, tag, ##__VA_ARGS__)
-#define LOGV_EX(env, ...) LOG_EX(env, LOG_VERBOSE, LOG_TAG, ##__VA_ARGS__)
-#define LOGD_EX(env, ...) LOG_EX(env, LOG_DEBUG, LOG_TAG, ##__VA_ARGS__)
-#define LOGI_EX(env, ...) LOG_EX(env, LOG_INFO, LOG_TAG, ##__VA_ARGS__)
-#define LOGW_EX(env, ...) LOG_EX(env, LOG_WARN, LOG_TAG, ##__VA_ARGS__)
-#define LOGE_EX(env, ...) LOG_EX(env, LOG_ERROR, LOG_TAG, ##__VA_ARGS__)
+#ifdef LIBCORE_CPP_JNI_HELPERS
+
+extern "C" std::string jniGetStackTrace(C_JNIEnv* env, jthrowable exception);
+
+inline std::string jniGetStackTrace(JNIEnv* env, jthrowable exception = NULL) {
+  return jniGetStackTrace(&env->functions, exception);
+}
+
+#endif // LIBCORE_CPP_JNI_HELPERS
+
+#endif
 
 /*
  * TEMP_FAILURE_RETRY is defined by some, but not all, versions of

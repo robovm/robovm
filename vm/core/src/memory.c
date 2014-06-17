@@ -26,8 +26,8 @@
 #define OBJECTS_GC_ROOTS_INITIAL_SIZE 2048
 #define INTERNAL_GC_ROOTS_INITIAL_SIZE 1024
 
-static Class* java_nio_ReadWriteDirectByteBuffer = NULL;
-static Method* java_nio_ReadWriteDirectByteBuffer_init = NULL;
+static Class* java_nio_DirectByteBuffer = NULL;
+static Method* java_nio_DirectByteBuffer_init = NULL;
 static InstanceField* java_nio_Buffer_effectiveDirectAddress = NULL;
 static InstanceField* java_nio_Buffer_capacity = NULL;
 static InstanceField* java_lang_ref_Reference_referent = NULL;
@@ -173,10 +173,10 @@ static struct GC_ms_entry* markObject(GC_word* addr, struct GC_ms_entry* mark_st
                 void** field_end = (void**) (((char*) field_start) + sizeof(jlong));
                 mark_stack_ptr = markRegion(field_start, field_end, mark_stack_ptr, mark_stack_limit);
             } else if (clazz == java_nio_MemoryBlock) {
-                // The 'address' field in java.nio.MemoryBlock is an int but contains a pointer.
+                // The 'address' field in java.nio.MemoryBlock is a long but contains a pointer.
                 // Possibly to an address on the GCed heap.
                 void** field_start = (void**) (((char*) obj) + java_nio_MemoryBlock_address->offset);
-                void** field_end = (void**) (((char*) field_start) + sizeof(jint));
+                void** field_end = (void**) (((char*) field_start) + sizeof(jlong));
                 mark_stack_ptr = markRegion(field_start, field_end, mark_stack_ptr, mark_stack_limit);
             }
             clazz = clazz->superclass;
@@ -653,13 +653,13 @@ jboolean rvmInitMemory(Env* env) {
     if (!java_lang_ref_ReferenceQueue) return FALSE;
     java_lang_ref_ReferenceQueue_add = rvmGetClassMethod(env, java_lang_ref_ReferenceQueue, "add", "(Ljava/lang/ref/Reference;)V");
     if (!java_lang_ref_ReferenceQueue_add) return FALSE;
-    java_nio_ReadWriteDirectByteBuffer = rvmFindClassUsingLoader(env, "java/nio/ReadWriteDirectByteBuffer", NULL);
-    if (!java_nio_ReadWriteDirectByteBuffer) return FALSE;
-    java_nio_ReadWriteDirectByteBuffer_init = rvmGetInstanceMethod(env, java_nio_ReadWriteDirectByteBuffer, "<init>", "(II)V");
-    if (!java_nio_ReadWriteDirectByteBuffer_init) return FALSE;
+    java_nio_DirectByteBuffer = rvmFindClassUsingLoader(env, "java/nio/DirectByteBuffer", NULL);
+    if (!java_nio_DirectByteBuffer) return FALSE;
+    java_nio_DirectByteBuffer_init = rvmGetInstanceMethod(env, java_nio_DirectByteBuffer, "<init>", "(JI)V");
+    if (!java_nio_DirectByteBuffer_init) return FALSE;
     Class* java_nio_Buffer = rvmFindClassUsingLoader(env, "java/nio/Buffer", NULL);
     if (!java_nio_Buffer) return FALSE;
-    java_nio_Buffer_effectiveDirectAddress = rvmGetInstanceField(env, java_nio_Buffer, "effectiveDirectAddress", "I");
+    java_nio_Buffer_effectiveDirectAddress = rvmGetInstanceField(env, java_nio_Buffer, "effectiveDirectAddress", "J");
     if (!java_nio_Buffer_effectiveDirectAddress) return FALSE;
     java_nio_Buffer_capacity = rvmGetInstanceField(env, java_nio_Buffer, "capacity", "I");
     if (!java_nio_Buffer_capacity) return FALSE;
@@ -675,7 +675,7 @@ jboolean rvmInitMemory(Env* env) {
     }
     java_nio_MemoryBlock = rvmFindClassUsingLoader(env, "java/nio/MemoryBlock", NULL);
     if (!java_nio_MemoryBlock) return FALSE;
-    java_nio_MemoryBlock_address = rvmGetInstanceField(env, java_nio_MemoryBlock, "address", "I");
+    java_nio_MemoryBlock_address = rvmGetInstanceField(env, java_nio_MemoryBlock, "address", "J");
     if (!java_nio_MemoryBlock_address) return FALSE;
 
     criticalOutOfMemoryError = rvmAllocateMemoryForObject(env, java_lang_OutOfMemoryError);
@@ -895,13 +895,13 @@ void* rvmCopyMemoryZ(Env* env, const char* src) {
 
 Object* rvmNewDirectByteBuffer(Env* env, void* address, jlong capacity) {
     jvalue args[2];
-    args[0].i = (jint) address;
+    args[0].j = (jlong) address;
     args[1].i = (jint) capacity;
-    return rvmNewObjectA(env, java_nio_ReadWriteDirectByteBuffer, java_nio_ReadWriteDirectByteBuffer_init, args);
+    return rvmNewObjectA(env, java_nio_DirectByteBuffer, java_nio_DirectByteBuffer_init, args);
 }
 
 void* rvmGetDirectBufferAddress(Env* env, Object* buf) {
-    jint effectiveDirectAddress = rvmGetIntInstanceFieldValue(env, buf, java_nio_Buffer_effectiveDirectAddress);
+    jlong effectiveDirectAddress = rvmGetIntInstanceFieldValue(env, buf, java_nio_Buffer_effectiveDirectAddress);
     return (void*) (intptr_t) effectiveDirectAddress;
 }
 

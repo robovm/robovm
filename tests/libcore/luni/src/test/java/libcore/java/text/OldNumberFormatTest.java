@@ -26,7 +26,6 @@ import java.text.ParsePosition;
 import java.util.Currency;
 import java.util.Locale;
 import junit.framework.TestCase;
-import tests.support.Support_Locale;
 
 public class OldNumberFormatTest extends TestCase {
 
@@ -41,25 +40,22 @@ public class OldNumberFormatTest extends TestCase {
 
         // try with a locale that has a different integer pattern
         Locale chLocale = new Locale("de", "CH");
-        if (Support_Locale.isLocaleAvailable(chLocale)) {
-            format = (DecimalFormat) NumberFormat.getIntegerInstance(chLocale);
-            assertEquals("#,##0", format.toPattern());
-            assertEquals("-36", format.format(-35.76));
-            assertEquals(new Long(-36), format.parse("-36"));
-            assertEquals(new Long(-36), format.parseObject("-36"));
-            assertEquals(0, format.getMaximumFractionDigits());
-            assertTrue(format.isParseIntegerOnly());
-        }
+        format = (DecimalFormat) NumberFormat.getIntegerInstance(chLocale);
+        assertEquals("#,##0", format.toPattern());
+        assertEquals("-36", format.format(-35.76));
+        assertEquals(new Long(-36), format.parse("-36"));
+        assertEquals(new Long(-36), format.parseObject("-36"));
+        assertEquals(0, format.getMaximumFractionDigits());
+        assertTrue(format.isParseIntegerOnly());
+
         Locale arLocale = new Locale("ar", "AE");
-        if (Support_Locale.isLocaleAvailable(arLocale)) {
-            format = (DecimalFormat) NumberFormat.getIntegerInstance(arLocale);
-            assertEquals("#,##0;#,##0-", format.toPattern());
-            assertEquals("\u0666-", format.format(-6));
-            assertEquals(new Long(-36), format.parse("36-"));
-            assertEquals(new Long(-36), format.parseObject("36-"));
-            assertEquals(0, format.getMaximumFractionDigits());
-            assertTrue(format.isParseIntegerOnly());
-        }
+        format = (DecimalFormat) NumberFormat.getIntegerInstance(arLocale);
+        assertEquals("#0;#0-", format.toPattern());
+        assertEquals("\u0666-", format.format(-6));
+        assertEquals(new Long(-36), format.parse("36-"));
+        assertEquals(new Long(-36), format.parseObject("36-"));
+        assertEquals(0, format.getMaximumFractionDigits());
+        assertTrue(format.isParseIntegerOnly());
     }
 
     public void test_setMaximumIntegerDigits() {
@@ -114,15 +110,11 @@ public class OldNumberFormatTest extends TestCase {
         parseObjectTest(NumberFormat.getInstance(), "123.123abc123",
                 new ParsePosition(3), new Double(0.123), 7, true);
 
-        if (Support_Locale.isLocaleAvailable(Locale.FRANCE)) {
-            parseObjectTest(NumberFormat.getInstance(Locale.FRANCE),
-                "asd123,123abc123",
-                new ParsePosition(3), new Double(123.123), 10, true);
+        parseObjectTest(NumberFormat.getInstance(Locale.FRANCE), "asd123,123abc123",
+                        new ParsePosition(3), new Double(123.123), 10, true);
 
-            parseObjectTest(NumberFormat.getInstance(Locale.FRANCE),
-                "test test",
-                new ParsePosition(0), null, 0, false);
-        }
+        parseObjectTest(NumberFormat.getInstance(Locale.FRANCE), "test test",
+                        new ParsePosition(0), null, 0, false);
 
         parseObjectTest(NumberFormat.getIntegerInstance(),
                 "asd123.123abc123",
@@ -222,14 +214,12 @@ public class OldNumberFormatTest extends TestCase {
                 out.toString());
 
         Locale deLocale = new Locale("de", "CH");
-        if (Support_Locale.isLocaleAvailable(deLocale)) {
-            NumberFormat nf2 = NumberFormat.getInstance(deLocale);
-            out = nf2.format(-1234567890.0123456789);
-            // use de_CH instead
-            // assertEquals("Wrong result for double : " + out, "1,234,567,890.012-",
-            //         out.toString());
-            assertEquals("Wrong result for double : " + out, "-1'234'567'890.012", out.toString());
-        }
+        NumberFormat nf2 = NumberFormat.getInstance(deLocale);
+        out = nf2.format(-1234567890.0123456789);
+        // use de_CH instead
+        // assertEquals("Wrong result for double : " + out, "1,234,567,890.012-",
+        //         out.toString());
+        assertEquals("Wrong result for double : " + out, "-1'234'567'890.012", out.toString());
 
         out = nf1.format(1.0001);
         assertEquals("Wrong result for for double: " + out, "1", out.toString());
@@ -251,14 +241,12 @@ public class OldNumberFormatTest extends TestCase {
                 "-9,223,372,036,854,775,808", out.toString());
 
         Locale deLocale = new Locale("de", "CH");
-        if (Support_Locale.isLocaleAvailable(deLocale)) {
-            NumberFormat nf2 = NumberFormat.getInstance(deLocale);
-            out = nf2.format(-1234567890);
-            // use de_CH instead
-            // assertEquals("Wrong result for double : " + out, "-1 234 567 890", out
-            //         .toString());
-            assertEquals("Wrong result for double : " + out, "-1'234'567'890", out.toString());
-        }
+        NumberFormat nf2 = NumberFormat.getInstance(deLocale);
+        out = nf2.format(-1234567890);
+        // use de_CH instead
+        // assertEquals("Wrong result for double : " + out, "-1 234 567 890", out
+        //         .toString());
+        assertEquals("Wrong result for double : " + out, "-1'234'567'890", out.toString());
 
         // the Locale data of icu uses \uc2a0
         out = nf1.format(1);
@@ -322,18 +310,16 @@ public class OldNumberFormatTest extends TestCase {
         assertEquals("$1.00", format.format(0.999));
 
         Locale atLocale = new Locale("de", "AT");
-        if (Support_Locale.isLocaleAvailable(atLocale)) {
-            format = NumberFormat.getCurrencyInstance(atLocale);
-            // BEGIN android-changed: ICU uses non-breaking space after the euro sign; the RI uses ' '.
-            assertEquals("\u20ac\u00a035,76", format.format(35.76));
-            assertEquals("\u20ac\u00a0123.456,79", format.format(123456.789));
-            assertEquals("\u20ac\u00a00,10", format.format(0.1));
-            assertEquals("\u20ac\u00a01,00", format.format(0.999));
-            try {
-                NumberFormat.getCurrencyInstance(null);
-                fail("java.lang.NullPointerException is not thrown");
-            } catch (java.lang.NullPointerException expected) {
-            }
+        format = NumberFormat.getCurrencyInstance(atLocale);
+        // BEGIN android-changed: ICU uses non-breaking space after the euro sign; the RI uses ' '.
+        assertEquals("\u20ac\u00a035,76", format.format(35.76));
+        assertEquals("\u20ac\u00a0123.456,79", format.format(123456.789));
+        assertEquals("\u20ac\u00a00,10", format.format(0.1));
+        assertEquals("\u20ac\u00a01,00", format.format(0.999));
+        try {
+            NumberFormat.getCurrencyInstance(null);
+            fail("java.lang.NullPointerException is not thrown");
+        } catch (java.lang.NullPointerException expected) {
         }
     }
 
@@ -357,18 +343,17 @@ public class OldNumberFormatTest extends TestCase {
     }
 
     public void test_getInstanceLjava_util_Locale() {
-        Locale testLocale = new Locale("de", "CH");
+        Locale de_CH = new Locale("de", "CH");
         Locale.setDefault(Locale.US);
-        if (Support_Locale.isLocaleAvailable(testLocale)) {
-            NumberFormat format = NumberFormat.getInstance(testLocale);
+        NumberFormat format = NumberFormat.getInstance(de_CH);
 
-            assertNotSame(null, format);
-            assertTrue(format instanceof NumberFormat);
+        assertNotSame(null, format);
+        assertTrue(format instanceof NumberFormat);
 
-            assertEquals("1'234'567'890.099", format.format(1234567890.0987654321));
-            assertEquals("#,##0.###", ((DecimalFormat) format).toPattern());
-            assertEquals("123'456'789", format.format(123456789));
-        }
+        assertEquals("1'234'567'890.099", format.format(1234567890.0987654321));
+        assertEquals("#,##0.###", ((DecimalFormat) format).toPattern());
+        assertEquals("123'456'789", format.format(123456789));
+
         try {
             NumberFormat.getInstance(null);
             fail("java.lang.NullPointerException is not thrown");
@@ -398,15 +383,14 @@ public class OldNumberFormatTest extends TestCase {
     public void test_getNumberInstanceLjava_util_Locale() {
         Locale.setDefault(Locale.US);
         Locale deLocale = new Locale("de", "CH");
-        if (Support_Locale.isLocaleAvailable(deLocale)) {
-            NumberFormat format = NumberFormat.getNumberInstance(deLocale);
-            assertNotSame("Instance is null", null, format);
-            assertTrue("Object is not instance of NumberFormat", format instanceof NumberFormat);
+        NumberFormat format = NumberFormat.getNumberInstance(deLocale);
+        assertNotSame("Instance is null", null, format);
+        assertTrue("Object is not instance of NumberFormat", format instanceof NumberFormat);
 
-            assertEquals("-1'234'567'890.099", format.format(-1234567890.0987654321));
-            assertEquals("#,##0.###", ((DecimalFormat) format).toPattern());
-            assertEquals("123'456'789", format.format(123456789));
-        }
+        assertEquals("-1'234'567'890.099", format.format(-1234567890.0987654321));
+        assertEquals("#,##0.###", ((DecimalFormat) format).toPattern());
+        assertEquals("123'456'789", format.format(123456789));
+
         try {
             NumberFormat.getInstance(null);
             fail("java.lang.NullPointerException is not thrown");
@@ -436,16 +420,15 @@ public class OldNumberFormatTest extends TestCase {
     public void test_getPercentInstanceLjava_util_Locale() {
         Locale csLocale = new Locale("cs", "CZ");
         Locale.setDefault(Locale.US);
-        if (Support_Locale.isLocaleAvailable(csLocale)) {
-            NumberFormat format = NumberFormat.getPercentInstance(csLocale);
 
-            assertNotSame("Instance is null", null, format);
-            assertTrue("Object is not instance of NumberFormat", format instanceof NumberFormat);
+        NumberFormat format = NumberFormat.getPercentInstance(csLocale);
+        assertNotSame("Instance is null", null, format);
+        assertTrue("Object is not instance of NumberFormat", format instanceof NumberFormat);
 
-            assertEquals("123\u00a0456\u00a0789\u00a0010\u00a0%", format.format(1234567890.0987654321));
-            assertEquals("#,##0\u00a0%", ((DecimalFormat) format).toPattern());
-            assertEquals("12\u00a0345\u00a0678\u00a0900\u00a0%", format.format(123456789));
-        }
+        assertEquals("123\u00a0456\u00a0789\u00a0010\u00a0%", format.format(1234567890.0987654321));
+        assertEquals("#,##0\u00a0%", ((DecimalFormat) format).toPattern());
+        assertEquals("12\u00a0345\u00a0678\u00a0900\u00a0%", format.format(123456789));
+
         try {
             NumberFormat.getInstance(null);
             fail("java.lang.NullPointerException is not thrown");
@@ -602,25 +585,23 @@ public class OldNumberFormatTest extends TestCase {
                 "-1,234,567,890.1", nf1.format(-1234567890.1));
 
         Locale csLocale = new Locale("cs", "CZ");
-        if (Support_Locale.isLocaleAvailable(csLocale)) {
-            NumberFormat nf2 = NumberFormat.getPercentInstance(csLocale);
-            nf2.setGroupingUsed(false);
+        NumberFormat nf2 = NumberFormat.getPercentInstance(csLocale);
+        nf2.setGroupingUsed(false);
 
-            assertEquals("123456789010\u00a0%", nf2.format(1234567890.1));
+        assertEquals("123456789010\u00a0%", nf2.format(1234567890.1));
 
-            assertEquals("-123456789010\u00a0%", nf2.format(-1234567890.1));
-            assertEquals("1,234,567,890.1", nf1.format(1234567890.1));
+        assertEquals("-123456789010\u00a0%", nf2.format(-1234567890.1));
+        assertEquals("1,234,567,890.1", nf1.format(1234567890.1));
 
-            nf2.setGroupingUsed(true);
-            assertEquals("123\u00a0456\u00a0789\u00a0010\u00a0%", nf2.format(1234567890.1));
+        nf2.setGroupingUsed(true);
+        assertEquals("123\u00a0456\u00a0789\u00a0010\u00a0%", nf2.format(1234567890.1));
 
-            assertEquals("-123\u00a0456\u00a0789\u00a0010\u00a0%", nf2.format(-1234567890.1));
+        assertEquals("-123\u00a0456\u00a0789\u00a0010\u00a0%", nf2.format(-1234567890.1));
 
-            nf2.setGroupingUsed(true);
-            assertEquals("123\u00a0456\u00a0789\u00a0010\u00a0%", nf2.format(1234567890.1));
+        nf2.setGroupingUsed(true);
+        assertEquals("123\u00a0456\u00a0789\u00a0010\u00a0%", nf2.format(1234567890.1));
 
-            assertEquals("-123\u00a0456\u00a0789\u00a0010\u00a0%", nf2.format(-1234567890.1));
-        }
+        assertEquals("-123\u00a0456\u00a0789\u00a0010\u00a0%", nf2.format(-1234567890.1));
     }
 
     public void test_isParseIntegerOnly() {

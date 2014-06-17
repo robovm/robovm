@@ -62,32 +62,32 @@ public class InputStreamReader extends Reader {
     /**
      * Constructs a new InputStreamReader on the InputStream {@code in}. The
      * character converter that is used to decode bytes into characters is
-     * identified by name by {@code enc}. If the encoding cannot be found, an
+     * identified by name by {@code charsetName}. If the encoding cannot be found, an
      * UnsupportedEncodingException error is thrown.
      *
      * @param in
      *            the InputStream from which to read characters.
-     * @param enc
+     * @param charsetName
      *            identifies the character converter to use.
      * @throws NullPointerException
-     *             if {@code enc} is {@code null}.
+     *             if {@code charsetName} is {@code null}.
      * @throws UnsupportedEncodingException
-     *             if the encoding specified by {@code enc} cannot be found.
+     *             if the encoding specified by {@code charsetName} cannot be found.
      */
-    public InputStreamReader(InputStream in, final String enc)
+    public InputStreamReader(InputStream in, final String charsetName)
             throws UnsupportedEncodingException {
         super(in);
-        if (enc == null) {
-            throw new NullPointerException();
+        if (charsetName == null) {
+            throw new NullPointerException("charsetName == null");
         }
         this.in = in;
         try {
-            decoder = Charset.forName(enc).newDecoder().onMalformedInput(
+            decoder = Charset.forName(charsetName).newDecoder().onMalformedInput(
                     CodingErrorAction.REPLACE).onUnmappableCharacter(
                     CodingErrorAction.REPLACE);
         } catch (IllegalArgumentException e) {
             throw (UnsupportedEncodingException)
-                    new UnsupportedEncodingException(enc).initCause(e);
+                    new UnsupportedEncodingException(charsetName).initCause(e);
         }
         bytes.limit(0);
     }
@@ -149,7 +149,7 @@ public class InputStreamReader extends Reader {
     }
 
     /**
-     * Returns the historical name of the encoding used by this writer to convert characters to
+     * Returns the canonical name of the encoding used by this writer to convert characters to
      * bytes, or null if this writer has been closed. Most callers should probably keep
      * track of the String or Charset they passed in; this method may not return the same
      * name.
@@ -158,7 +158,7 @@ public class InputStreamReader extends Reader {
         if (!isOpen()) {
             return null;
         }
-        return HistoricalCharsetNames.get(decoder.charset());
+        return decoder.charset().name();
     }
 
     /**
@@ -185,42 +185,31 @@ public class InputStreamReader extends Reader {
     }
 
     /**
-     * Reads at most {@code length} characters from this reader and stores them
-     * at position {@code offset} in the character array {@code buf}. Returns
+     * Reads up to {@code count} characters from this reader and stores them
+     * at position {@code offset} in the character array {@code buffer}. Returns
      * the number of characters actually read or -1 if the end of the reader has
      * been reached. The bytes are either obtained from converting bytes in this
      * reader's buffer or by first filling the buffer from the source
      * InputStream and then reading from the buffer.
      *
-     * @param buffer
-     *            the array to store the characters read.
-     * @param offset
-     *            the initial position in {@code buf} to store the characters
-     *            read from this reader.
-     * @param length
-     *            the maximum number of characters to read.
-     * @return the number of characters read or -1 if the end of the reader has
-     *         been reached.
      * @throws IndexOutOfBoundsException
-     *             if {@code offset < 0} or {@code length < 0}, or if
-     *             {@code offset + length} is greater than the length of
-     *             {@code buf}.
+     *     if {@code offset < 0 || count < 0 || offset + count > buffer.length}.
      * @throws IOException
      *             if this reader is closed or some other I/O error occurs.
      */
     @Override
-    public int read(char[] buffer, int offset, int length) throws IOException {
+    public int read(char[] buffer, int offset, int count) throws IOException {
         synchronized (lock) {
             if (!isOpen()) {
                 throw new IOException("InputStreamReader is closed");
             }
 
-            Arrays.checkOffsetAndCount(buffer.length, offset, length);
-            if (length == 0) {
+            Arrays.checkOffsetAndCount(buffer.length, offset, count);
+            if (count == 0) {
                 return 0;
             }
 
-            CharBuffer out = CharBuffer.wrap(buffer, offset, length);
+            CharBuffer out = CharBuffer.wrap(buffer, offset, count);
             CoderResult result = CoderResult.UNDERFLOW;
 
             // bytes.remaining() indicates number of bytes in buffer

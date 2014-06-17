@@ -147,42 +147,31 @@ public class PushbackInputStream extends FilterInputStream {
     }
 
     /**
-     * Reads at most {@code length} bytes from this stream and stores them in
-     * the byte array {@code buffer} starting at {@code offset}. Bytes are read
+     * Reads up to {@code byteCount} bytes from this stream and stores them in
+     * the byte array {@code buffer} starting at {@code byteOffset}. Bytes are read
      * from the pushback buffer first, then from the source stream if more bytes
-     * are required. Blocks until {@code count} bytes have been read, the end of
-     * the source stream is detected or an exception is thrown.
+     * are required. Blocks until {@code byteCount} bytes have been read, the end of
+     * the source stream is detected or an exception is thrown. Returns the number of bytes read,
+     * or -1 if the end of the source stream has been reached.
      *
-     * @param buffer
-     *            the array in which to store the bytes read from this stream.
-     * @param offset
-     *            the initial position in {@code buffer} to store the bytes read
-     *            from this stream.
-     * @param length
-     *            the maximum number of bytes to store in {@code buffer}.
-     * @return the number of bytes read or -1 if the end of the source stream
-     *         has been reached.
      * @throws IndexOutOfBoundsException
-     *             if {@code offset < 0} or {@code length < 0}, or if
-     *             {@code offset + length} is greater than the length of
-     *             {@code buffer}.
+     *     if {@code byteOffset < 0 || byteCount < 0 || byteOffset + byteCount > buffer.length}.
      * @throws IOException
      *             if this stream is closed or another I/O error occurs while
      *             reading from this stream.
      * @throws NullPointerException
-     *             if {@code buffer} is {@code null}.
+     *             if {@code buffer == null}.
      */
     @Override
-    public int read(byte[] buffer, int offset, int length) throws IOException {
+    public int read(byte[] buffer, int byteOffset, int byteCount) throws IOException {
         if (buf == null) {
             throw streamClosed();
         }
-        Arrays.checkOffsetAndCount(buffer.length, offset, length);
-        int copiedBytes = 0, copyLength = 0, newOffset = offset;
+        Arrays.checkOffsetAndCount(buffer.length, byteOffset, byteCount);
+        int copiedBytes = 0, copyLength = 0, newOffset = byteOffset;
         // Are there pushback bytes available?
         if (pos < buf.length) {
-            copyLength = (buf.length - pos >= length) ? length : buf.length
-                    - pos;
+            copyLength = (buf.length - pos >= byteCount) ? byteCount : buf.length - pos;
             System.arraycopy(buf, pos, buffer, newOffset, copyLength);
             newOffset += copyLength;
             copiedBytes += copyLength;
@@ -190,10 +179,10 @@ public class PushbackInputStream extends FilterInputStream {
             pos += copyLength;
         }
         // Have we copied enough?
-        if (copyLength == length) {
-            return length;
+        if (copyLength == byteCount) {
+            return byteCount;
         }
-        int inCopied = in.read(buffer, newOffset, length - copiedBytes);
+        int inCopied = in.read(buffer, newOffset, byteCount - copiedBytes);
         if (inCopied > 0) {
             return inCopied + copiedBytes;
         }

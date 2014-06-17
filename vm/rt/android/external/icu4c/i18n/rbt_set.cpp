@@ -1,6 +1,6 @@
 /*
  **********************************************************************
- *   Copyright (C) 1999-2008, International Business Machines
+ *   Copyright (C) 1999-2011, International Business Machines
  *   Corporation and others.  All Rights Reserved.
  **********************************************************************
  *   Date        Name        Description
@@ -14,6 +14,7 @@
 
 #include "unicode/unistr.h"
 #include "unicode/uniset.h"
+#include "unicode/utf16.h"
 #include "rbt_set.h"
 #include "rbt_rule.h"
 #include "cmemory.h"
@@ -21,7 +22,7 @@
 
 U_CDECL_BEGIN
 static void U_CALLCONV _deleteRule(void *rule) {
-    delete (U_NAMESPACE_QUALIFIER TransliterationRule *)rule;
+    delete (icu::TransliterationRule *)rule;
 }
 U_CDECL_END
 
@@ -90,7 +91,7 @@ UnicodeString& _escape(const UnicodeString &source,
                        UnicodeString &target) {
     for (int32_t i = 0; i < source.length(); ) {
         UChar32 ch = source.char32At(i);
-        i += UTF_CHAR_LENGTH(ch);
+        i += U16_LENGTH(ch);
         if (ch < 0x09 || (ch > 0x0A && ch < 0x20)|| ch > 0x7E) {
             if (ch <= 0xFFFF) {
                 target += "\\u";
@@ -133,10 +134,10 @@ inline void _debugOut(const char* msg, TransliterationRule* rule,
 
 // Fill the precontext and postcontext with the patterns of the rules
 // that are masking one another.
-static void maskingError(const U_NAMESPACE_QUALIFIER TransliterationRule& rule1,
-                         const U_NAMESPACE_QUALIFIER TransliterationRule& rule2,
+static void maskingError(const icu::TransliterationRule& rule1,
+                         const icu::TransliterationRule& rule2,
                          UParseError& parseError) {
-    U_NAMESPACE_QUALIFIER UnicodeString r;
+    icu::UnicodeString r;
     int32_t len;
 
     parseError.line = parseError.offset = -1;
@@ -416,7 +417,7 @@ UBool TransliterationRuleSet::transliterate(Replaceable& text,
         }
     }
     // No match or partial match from any rule
-    pos.start += UTF_CHAR_LENGTH(text.char32At(pos.start));
+    pos.start += U16_LENGTH(text.char32At(pos.start));
     _debugOut("no match", NULL, text, pos);
     return TRUE;
 }

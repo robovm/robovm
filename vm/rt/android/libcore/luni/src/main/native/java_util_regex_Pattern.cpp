@@ -27,7 +27,7 @@
 
 // ICU documentation: http://icu-project.org/apiref/icu4c/classRegexPattern.html
 
-static RegexPattern* toRegexPattern(jint addr) {
+static RegexPattern* toRegexPattern(jlong addr) {
     return reinterpret_cast<RegexPattern*>(static_cast<uintptr_t>(addr));
 }
 
@@ -71,11 +71,11 @@ static void throwPatternSyntaxException(JNIEnv* env, UErrorCode status, jstring 
     env->Throw(reinterpret_cast<jthrowable>(exception));
 }
 
-extern "C" void Java_java_util_regex_Pattern_closeImpl(JNIEnv*, jclass, jint addr) {
+extern "C" void Java_java_util_regex_Pattern_closeImpl(JNIEnv*, jclass, jlong addr) {
     delete toRegexPattern(addr);
 }
 
-extern "C" jint Java_java_util_regex_Pattern_compileImpl(JNIEnv* env, jclass, jstring javaRegex, jint flags) {
+extern "C" jlong Java_java_util_regex_Pattern_compileImpl(JNIEnv* env, jclass, jstring javaRegex, jint flags) {
     flags |= UREGEX_ERROR_ON_UNKNOWN_ESCAPES;
 
     UErrorCode status = U_ZERO_ERROR;
@@ -83,11 +83,13 @@ extern "C" jint Java_java_util_regex_Pattern_compileImpl(JNIEnv* env, jclass, js
     error.offset = -1;
 
     ScopedJavaUnicodeString regex(env, javaRegex);
+    if (!regex.valid()) {
+        return 0;
+    }
     UnicodeString& regexString(regex.unicodeString());
     RegexPattern* result = RegexPattern::compile(regexString, flags, error, status);
     if (!U_SUCCESS(status)) {
         throwPatternSyntaxException(env, status, javaRegex, error);
     }
-    return static_cast<jint>(reinterpret_cast<uintptr_t>(result));
+    return static_cast<jlong>(reinterpret_cast<uintptr_t>(result));
 }
-

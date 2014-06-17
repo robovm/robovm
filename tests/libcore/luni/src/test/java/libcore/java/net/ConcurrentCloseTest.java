@@ -16,12 +16,14 @@
 
 package libcore.java.net;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.net.SocketException;
 import java.nio.channels.AsynchronousCloseException;
 import java.nio.channels.ClosedChannelException;
@@ -37,25 +39,25 @@ import tests.net.StuckServer;
  */
 public class ConcurrentCloseTest extends junit.framework.TestCase {
     public void test_accept() throws Exception {
-        ServerSocket s = new ServerSocket(0);
-        new Killer(s).start();
+        ServerSocket ss = new ServerSocket(0);
+        new Killer(ss).start();
         try {
             System.err.println("accept...");
-            s.accept();
-            fail("accept returned!");
+            Socket s = ss.accept();
+            fail("accept returned " + s + "!");
         } catch (SocketException expected) {
             assertEquals("Socket closed", expected.getMessage());
         }
     }
 
     public void test_connect() throws Exception {
-        StuckServer ss = new StuckServer();
+        StuckServer ss = new StuckServer(false);
         Socket s = new Socket();
         new Killer(s).start();
         try {
             System.err.println("connect...");
             s.connect(ss.getLocalSocketAddress());
-            fail("connect returned!");
+            fail("connect returned: " + s + "!");
         } catch (SocketException expected) {
             assertEquals("Socket closed", expected.getMessage());
         } finally {
@@ -64,13 +66,13 @@ public class ConcurrentCloseTest extends junit.framework.TestCase {
     }
 
     public void test_connect_timeout() throws Exception {
-        StuckServer ss = new StuckServer();
+        StuckServer ss = new StuckServer(false);
         Socket s = new Socket();
         new Killer(s).start();
         try {
             System.err.println("connect (with timeout)...");
             s.connect(ss.getLocalSocketAddress(), 3600 * 1000);
-            fail("connect returned!");
+            fail("connect returned: " + s + "!");
         } catch (SocketException expected) {
             assertEquals("Socket closed", expected.getMessage());
         } finally {
@@ -79,7 +81,7 @@ public class ConcurrentCloseTest extends junit.framework.TestCase {
     }
 
     public void test_connect_nonBlocking() throws Exception {
-        StuckServer ss = new StuckServer();
+        StuckServer ss = new StuckServer(false);
         SocketChannel s = SocketChannel.open();
         new Killer(s.socket()).start();
         try {
@@ -89,7 +91,7 @@ public class ConcurrentCloseTest extends junit.framework.TestCase {
             while (!s.finishConnect()) {
                 // Spin like a mad thing!
             }
-            fail("connect returned!");
+            fail("connect returned: " + s + "!");
         } catch (SocketException expected) {
             assertEquals("Socket closed", expected.getMessage());
         } catch (AsynchronousCloseException alsoOkay) {
@@ -103,23 +105,14 @@ public class ConcurrentCloseTest extends junit.framework.TestCase {
     }
 
     public void test_read() throws Exception {
-        final ServerSocket ss = new ServerSocket(0);
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    ss.accept();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }).start();
+        SilentServer ss = new SilentServer();
         Socket s = new Socket();
         s.connect(ss.getLocalSocketAddress());
         new Killer(s).start();
         try {
             System.err.println("read...");
             int i = s.getInputStream().read();
-            fail("read returned " + i);
+            fail("read returned: " + i);
         } catch (SocketException expected) {
             assertEquals("Socket closed", expected.getMessage());
         }
@@ -127,16 +120,7 @@ public class ConcurrentCloseTest extends junit.framework.TestCase {
     }
 
     public void test_read_multiple() throws Throwable {
-        final ServerSocket ss = new ServerSocket(0);
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    ss.accept();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }).start();
+        SilentServer ss = new SilentServer();
         final Socket s = new Socket();
         s.connect(ss.getLocalSocketAddress());
 
@@ -153,7 +137,7 @@ public class ConcurrentCloseTest extends junit.framework.TestCase {
                         try {
                             System.err.println("read...");
                             int i = s.getInputStream().read();
-                            fail("read returned " + i);
+                            fail("read returned: " + i);
                         } catch (SocketException expected) {
                             assertEquals("Socket closed", expected.getMessage());
                         }
@@ -174,6 +158,8 @@ public class ConcurrentCloseTest extends junit.framework.TestCase {
         for (Throwable exception : thrownExceptions) {
             throw exception;
         }
+
+        ss.close();
     }
 
     public void test_recv() throws Exception {
@@ -191,33 +177,29 @@ public class ConcurrentCloseTest extends junit.framework.TestCase {
     }
 
     public void test_write() throws Exception {
-        final ServerSocket ss = new ServerSocket(0);
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    System.err.println("accepting...");
-
-                    Socket client = ss.accept();
-                    System.err.println("accepted...");
-                    Thread.sleep(30 * 1000);
-                    System.err.println("server exiting...");
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }).start();
+        final SilentServer ss = new SilentServer(128); // Minimal receive buffer size.
         Socket s = new Socket();
+
+        // Set the send buffer size really small, to ensure we block.
+        int sendBufferSize = 1024;
+        s.setSendBufferSize(sendBufferSize);
+        sendBufferSize = s.getSendBufferSize(); // How big is the buffer really, Linux?
+
+        // Linux still seems to accept more than it should.
+        // How much seems to differ from device to device, but I've yet to see anything accept
+        // twice as much again.
+        sendBufferSize *= 2;
+
         s.connect(ss.getLocalSocketAddress());
         new Killer(s).start();
         try {
             System.err.println("write...");
-            // We just keep writing here until all the buffers are full and we block,
-            // waiting for the server to read (which it never will). If the asynchronous close
-            // fails, we'll see a test timeout here.
-            while (true) {
-                byte[] buf = new byte[256*1024];
-                s.getOutputStream().write(buf);
-            }
+            // Write too much so the buffer is full and we block,
+            // waiting for the server to read (which it never will).
+            // If the asynchronous close fails, we'll see a test timeout here.
+            byte[] buf = new byte[sendBufferSize];
+            s.getOutputStream().write(buf);
+            fail();
         } catch (SocketException expected) {
             // We throw "Connection reset by peer", which I don't _think_ is a problem.
             // assertEquals("Socket closed", expected.getMessage());
@@ -225,6 +207,44 @@ public class ConcurrentCloseTest extends junit.framework.TestCase {
         ss.close();
     }
 
+    // This server accepts connections, but doesn't read or write anything.
+    // It holds on to the Socket connecting to the client so it won't be GCed.
+    // Call "close" to close both the server socket and its client connection.
+    static class SilentServer {
+        private final ServerSocket ss;
+        private Socket client;
+
+        public SilentServer() throws IOException {
+            this(0);
+        }
+
+        public SilentServer(int receiveBufferSize) throws IOException {
+            ss = new ServerSocket(0);
+            if (receiveBufferSize != 0) {
+                ss.setReceiveBufferSize(receiveBufferSize);
+            }
+            new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        client = ss.accept();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }).start();
+        }
+
+        public SocketAddress getLocalSocketAddress() {
+            return ss.getLocalSocketAddress();
+        }
+
+        public void close() throws IOException {
+            client.close();
+            ss.close();
+        }
+    }
+
+    // This thread calls the "close" method on the supplied T after 2s.
     static class Killer<T> extends Thread {
         private final T s;
 

@@ -26,36 +26,11 @@ public final class NioUtils {
     private NioUtils() {
     }
 
-    /**
-     * Gets the start address of a direct buffer.
-     * <p>
-     * This method corresponds to the JNI function:
-     *
-     * <pre>
-     *    void* GetDirectBufferAddress(JNIEnv* env, jobject buf);
-     * </pre>
-     *
-     * @param buf
-     *            the direct buffer whose address shall be returned must not be
-     *            <code>null</code>.
-     * @return the address of the buffer given, or zero if the buffer is not a
-     *         direct Buffer.
-     */
-    public static int getDirectBufferAddress(Buffer buffer) {
-        return buffer.effectiveDirectAddress;
-    }
-
     public static void freeDirectBuffer(ByteBuffer buffer) {
         if (buffer == null) {
             return;
         }
-        if (buffer instanceof DirectByteBuffer) {
-            ((DirectByteBuffer) buffer).free();
-        } else if (buffer instanceof MappedByteBuffer) {
-            ((MappedByteBufferAdapter) buffer).free();
-        } else {
-            throw new AssertionError();
-        }
+        ((DirectByteBuffer) buffer).free();
     }
 
     /**
@@ -77,7 +52,7 @@ public final class NioUtils {
      * Normally, attempting to access the array backing a read-only buffer throws.
      */
     public static byte[] unsafeArray(ByteBuffer b) {
-        return ((HeapByteBuffer) b).backingArray;
+        return ((ByteArrayBuffer) b).backingArray;
     }
 
     /**
@@ -85,6 +60,6 @@ public final class NioUtils {
      * even if the ByteBuffer is read-only.
      */
     public static int unsafeArrayOffset(ByteBuffer b) {
-        return ((HeapByteBuffer) b).offset;
+        return ((ByteArrayBuffer) b).arrayOffset;
     }
 }

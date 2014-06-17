@@ -20,24 +20,24 @@ public final class NativeCollation {
     }
 
     // Collator.
-    public static native void closeCollator(int address);
-    public static native int compare(int address, String source, String target);
-    public static native int getAttribute(int address, int type);
-    public static native int getCollationElementIterator(int address, String source);
-    public static native String getRules(int address);
-    public static native byte[] getSortKey(int address, String source);
-    public static native int openCollator(String locale);
-    public static native int openCollatorFromRules(String rules, int normalizationMode, int collationStrength);
-    public static native int safeClone(int address);
-    public static native void setAttribute(int address, int type, int value);
+    public static native void closeCollator(long address);
+    public static native int compare(long address, String source, String target);
+    public static native int getAttribute(long address, int type);
+    public static native int getCollationElementIterator(long address, String source);
+    public static native String getRules(long address);
+    public static native byte[] getSortKey(long address, String source);
+    public static native long openCollator(String locale);
+    public static native long openCollatorFromRules(String rules, int normalizationMode, int collationStrength);
+    public static native long safeClone(long address);
+    public static native void setAttribute(long address, int type, int value);
 
     // CollationElementIterator.
-    public static native void closeElements(int address);
-    public static native int getMaxExpansion(int address, int order);
-    public static native int getOffset(int address);
-    public static native int next(int address);
-    public static native int previous(int address);
-    public static native void reset(int address);
-    public static native void setOffset(int address, int offset);
-    public static native void setText(int address, String source);
+    public static native void closeElements(long address);
+    public static native int getMaxExpansion(long address, int order);
+    public static native int getOffset(long address);
+    public static native int next(long address);
+    public static native int previous(long address);
+    public static native void reset(long address);
+    public static native void setOffset(long address, int offset);
+    public static native void setText(long address, String source);
 }

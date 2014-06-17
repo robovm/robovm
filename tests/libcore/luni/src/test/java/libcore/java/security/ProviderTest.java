@@ -17,14 +17,20 @@
 package libcore.java.security;
 
 import java.security.Provider;
+import java.security.SecureRandom;
+import java.security.SecureRandomSpi;
+import java.security.Security;
+import java.security.Provider;
+import java.security.SecureRandom;
+import java.security.SecureRandomSpi;
 import java.security.Security;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -195,4 +201,48 @@ public class ProviderTest extends TestCase {
             }
         }
     }
+
+    /**
+     * http://code.google.com/p/android/issues/detail?id=21449
+     */
+    public void testSecureRandomImplementationOrder() {
+        Provider srp = new SRProvider();
+        try {
+            int position = Security.insertProviderAt(srp, 1); // first is one, not zero
+            assertEquals(1, position);
+            SecureRandom sr = new SecureRandom();
+            if (!sr.getAlgorithm().equals("SecureRandom1")) {
+                throw new IllegalStateException("Expected SecureRandom1 was " + sr.getAlgorithm());
+            }
+        } finally {
+            Security.removeProvider(srp.getName());
+        }
+    }
+
+    public static class SRProvider extends Provider {
+
+        SRProvider() {
+            super("SRProvider", 1.42, "SecureRandom Provider");
+            put("SecureRandom.SecureRandom1", SecureRandom1.class.getName());
+            put("SecureRandom.SecureRandom2", SecureRandom2.class.getName());
+            put("SecureRandom.SecureRandom3", SecureRandom3.class.getName());
+        }
+    }
+
+    public static abstract class AbstractSecureRandom extends SecureRandomSpi {
+        protected void engineSetSeed(byte[] seed) {
+            throw new UnsupportedOperationException();
+        }
+        protected void engineNextBytes(byte[] bytes) {
+            throw new UnsupportedOperationException();
+        }
+        protected byte[] engineGenerateSeed(int numBytes) {
+            throw new UnsupportedOperationException();
+        }
+    }
+
+    public static class SecureRandom1 extends AbstractSecureRandom {}
+    public static class SecureRandom2 extends AbstractSecureRandom {}
+    public static class SecureRandom3 extends AbstractSecureRandom {}
+
 }

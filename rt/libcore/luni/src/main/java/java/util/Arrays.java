@@ -35,7 +35,7 @@ public class Arrays {
 
         ArrayList(E[] storage) {
             if (storage == null) {
-                throw new NullPointerException();
+                throw new NullPointerException("storage == null");
             }
             a = storage;
         }
@@ -150,6 +150,7 @@ public class Arrays {
      *            the array.
      * @return a {@code List} of the elements of the specified array.
      */
+    @SafeVarargs
     public static <T> List<T> asList(T... array) {
         return new ArrayList<T>(array);
     }
@@ -1962,32 +1963,22 @@ public class Arrays {
     /**
      * Sorts the specified array in ascending natural order.
      *
-     * @param array
-     *            the {@code Object} array to be sorted.
-     * @throws ClassCastException
-     *                if an element in the array does not implement {@code Comparable}
-     *                or if some elements cannot be compared to each other.
-     * @see #sort(Object[], int, int)
+     * @throws ClassCastException if any element does not implement {@code Comparable},
+     *     or if {@code compareTo} throws for any pair of elements.
      */
     public static void sort(Object[] array) {
         ComparableTimSort.sort(array);
     }
 
     /**
-     * Sorts the specified range in the array in ascending natural order. All
-     * elements must implement the {@code Comparable} interface and must be
-     * comparable to each other without a {@code ClassCastException} being
-     * thrown.
+     * Sorts the specified range in the array in ascending natural order.
      *
-     * @param array
-     *            the {@code Object} array to be sorted.
      * @param start
      *            the start index to sort.
      * @param end
      *            the last + 1 index to sort.
-     * @throws ClassCastException
-     *                if an element in the array does not implement {@code Comparable}
-     *                or some elements cannot be compared to each other.
+     * @throws ClassCastException if any element does not implement {@code Comparable},
+     *     or if {@code compareTo} throws for any pair of elements.
      * @throws IllegalArgumentException
      *                if {@code start > end}.
      * @throws ArrayIndexOutOfBoundsException
@@ -2002,8 +1993,6 @@ public class Arrays {
      * All elements must be comparable to each other without a
      * {@code ClassCastException} being thrown.
      *
-     * @param array
-     *            the {@code Object} array to be sorted.
      * @param start
      *            the start index to sort.
      * @param end
@@ -2012,7 +2001,7 @@ public class Arrays {
      *            the {@code Comparator}.
      * @throws ClassCastException
      *                if elements in the array cannot be compared to each other
-     *                using the {@code Comparator}.
+     *                using the given {@code Comparator}.
      * @throws IllegalArgumentException
      *                if {@code start > end}.
      * @throws ArrayIndexOutOfBoundsException
@@ -2026,10 +2015,6 @@ public class Arrays {
      * Sorts the specified array using the specified {@code Comparator}. All elements
      * must be comparable to each other without a {@code ClassCastException} being thrown.
      *
-     * @param array
-     *            the {@code Object} array to be sorted.
-     * @param comparator
-     *            the {@code Comparator}.
      * @throws ClassCastException
      *                if elements in the array cannot be compared to each other
      *                using the {@code Comparator}.
@@ -2400,7 +2385,7 @@ public class Arrays {
                         }
                     } else {
                         // element is an Object[], so we assert that
-                        assert elem instanceof Object[];
+                        // assert elem instanceof Object[];
                         if (deepToStringImplContains(origArrays, elem)) {
                             sb.append("[...]");
                         } else {
@@ -2459,7 +2444,7 @@ public class Arrays {
      */
     public static boolean[] copyOf(boolean[] original, int newLength) {
         if (newLength < 0) {
-            throw new NegativeArraySizeException();
+            throw new NegativeArraySizeException(Integer.toString(newLength));
         }
         return copyOfRange(original, 0, newLength);
     }
@@ -2478,7 +2463,7 @@ public class Arrays {
      */
     public static byte[] copyOf(byte[] original, int newLength) {
         if (newLength < 0) {
-            throw new NegativeArraySizeException();
+            throw new NegativeArraySizeException(Integer.toString(newLength));
         }
         return copyOfRange(original, 0, newLength);
     }
@@ -2497,7 +2482,7 @@ public class Arrays {
      */
     public static char[] copyOf(char[] original, int newLength) {
         if (newLength < 0) {
-            throw new NegativeArraySizeException();
+            throw new NegativeArraySizeException(Integer.toString(newLength));
         }
         return copyOfRange(original, 0, newLength);
     }
@@ -2516,7 +2501,7 @@ public class Arrays {
      */
     public static double[] copyOf(double[] original, int newLength) {
         if (newLength < 0) {
-            throw new NegativeArraySizeException();
+            throw new NegativeArraySizeException(Integer.toString(newLength));
         }
         return copyOfRange(original, 0, newLength);
     }
@@ -2535,7 +2520,7 @@ public class Arrays {
      */
     public static float[] copyOf(float[] original, int newLength) {
         if (newLength < 0) {
-            throw new NegativeArraySizeException();
+            throw new NegativeArraySizeException(Integer.toString(newLength));
         }
         return copyOfRange(original, 0, newLength);
     }
@@ -2554,7 +2539,7 @@ public class Arrays {
      */
     public static int[] copyOf(int[] original, int newLength) {
         if (newLength < 0) {
-            throw new NegativeArraySizeException();
+            throw new NegativeArraySizeException(Integer.toString(newLength));
         }
         return copyOfRange(original, 0, newLength);
     }
@@ -2573,7 +2558,7 @@ public class Arrays {
      */
     public static long[] copyOf(long[] original, int newLength) {
         if (newLength < 0) {
-            throw new NegativeArraySizeException();
+            throw new NegativeArraySizeException(Integer.toString(newLength));
         }
         return copyOfRange(original, 0, newLength);
     }
@@ -2592,7 +2577,7 @@ public class Arrays {
      */
     public static short[] copyOf(short[] original, int newLength) {
         if (newLength < 0) {
-            throw new NegativeArraySizeException();
+            throw new NegativeArraySizeException(Integer.toString(newLength));
         }
         return copyOfRange(original, 0, newLength);
     }
@@ -2611,10 +2596,10 @@ public class Arrays {
      */
     public static <T> T[] copyOf(T[] original, int newLength) {
         if (original == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("original == null");
         }
         if (newLength < 0) {
-            throw new NegativeArraySizeException();
+            throw new NegativeArraySizeException(Integer.toString(newLength));
         }
         return copyOfRange(original, 0, newLength);
     }
@@ -2636,7 +2621,7 @@ public class Arrays {
     public static <T, U> T[] copyOf(U[] original, int newLength, Class<? extends T[]> newType) {
         // We use the null pointer check in copyOfRange for exception priority compatibility.
         if (newLength < 0) {
-            throw new NegativeArraySizeException();
+            throw new NegativeArraySizeException(Integer.toString(newLength));
         }
         return copyOfRange(original, 0, newLength, newType);
     }

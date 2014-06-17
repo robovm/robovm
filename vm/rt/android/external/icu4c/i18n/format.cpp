@@ -1,6 +1,6 @@
 /*
 *******************************************************************************
-* Copyright (C) 1997-2010, International Business Machines Corporation and    *
+* Copyright (C) 1997-2012, International Business Machines Corporation and    *
 * others. All Rights Reserved.                                                *
 *******************************************************************************
 *
@@ -19,9 +19,13 @@
 // This file was generated from the java source file Format.java
 // *****************************************************************************
 
-#include <typeinfo>  // for 'typeid' to work
+#include "utypeinfo.h"  // for 'typeid' to work
 
 #include "unicode/utypes.h"
+
+#ifndef U_I18N_IMPLEMENTATION
+#error U_I18N_IMPLEMENTATION not set - must be set for all ICU source files in i18n/ - see http://userguide.icu-project.org/howtouseicu
+#endif
 
 /*
  * Dummy code:

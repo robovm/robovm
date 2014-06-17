@@ -40,7 +40,7 @@ public class PSource {
      */
     protected PSource(String pSrcName) {
         if (pSrcName == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("pSrcName == null");
         }
         this.pSrcName = pSrcName;
     }
@@ -85,7 +85,7 @@ public class PSource {
         public PSpecified(byte[] p) {
             super("PSpecified");
             if (p == null) {
-                throw new NullPointerException();
+                throw new NullPointerException("p == null");
             }
             //TODO: It is unknown which name should be used!
             //super("");

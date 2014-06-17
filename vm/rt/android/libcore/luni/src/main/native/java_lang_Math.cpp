@@ -23,6 +23,14 @@
 #include <stdlib.h>
 #include <math.h>
 
+extern "C" jdouble Java_java_lang_Math_sin(JNIEnv*, jclass, jdouble a) {
+    return sin(a);
+}
+
+extern "C" jdouble Java_java_lang_Math_cos(JNIEnv*, jclass, jdouble a) {
+    return cos(a);
+}
+
 extern "C" jdouble Java_java_lang_Math_tan(JNIEnv*, jclass, jdouble a) {
     return tan(a);
 }
@@ -89,6 +97,10 @@ extern "C" jdouble Java_java_lang_Math_log10(JNIEnv*, jclass, jdouble a) {
 
 extern "C" jdouble Java_java_lang_Math_cbrt(JNIEnv*, jclass, jdouble a) {
     return cbrt(a);
+}
+
+extern "C" jdouble Java_java_lang_Math_sqrt(JNIEnv*, jclass, jdouble a) {
+    return sqrt(a);
 }
 
 extern "C" jdouble Java_java_lang_Math_expm1(JNIEnv*, jclass, jdouble a) {

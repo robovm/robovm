@@ -368,7 +368,7 @@ public class SSLEngineTest extends TestCase {
      * @throws NoSuchAlgorithmException
      * javax.net.ssl.SSLEngine#getDelegatedTask()
      */
-    @KnownFailure("org.apache.harmony.xnet.provider.jsse.SSLEngineImpl#getDelegatedTask() throws NPE instead of returning null")
+    @KnownFailure("com.android.org.conscrypt.SSLEngineImpl#getDelegatedTask() throws NPE instead of returning null")
     public void test_getDelegatedTask() throws NoSuchAlgorithmException {
         SSLEngine sse = getEngine();
         try {

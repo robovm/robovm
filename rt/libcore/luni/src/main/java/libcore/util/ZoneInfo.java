@@ -16,11 +16,10 @@
 
 package libcore.util;
 
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Formatter;
 import java.util.TimeZone;
+import libcore.io.BufferIterator;
 
 /**
  * Our concrete TimeZone implementation, backed by zoneinfo data.
@@ -43,35 +42,92 @@ public final class ZoneInfo extends TimeZone {
     };
 
     private int mRawOffset;
-
     private final int mEarliestRawOffset;
+    private final boolean mUseDst;
+    private final int mDstSavings; // Implements TimeZone.getDSTSavings.
 
     private final int[] mTransitions;
     private final int[] mOffsets;
     private final byte[] mTypes;
     private final byte[] mIsDsts;
-    private final boolean mUseDst;
 
-    ZoneInfo(String name, int[] transitions, byte[] type, int[] gmtOffsets, byte[] isDsts) {
+    public static TimeZone makeTimeZone(String id, BufferIterator it) {
+        // Variable names beginning tzh_ correspond to those in "tzfile.h".
+
+        // Check tzh_magic.
+        if (it.readInt() != 0x545a6966) { // "TZif"
+            return null;
+        }
+
+        // Skip the uninteresting part of the header.
+        it.skip(28);
+
+        // Read the sizes of the arrays we're about to read.
+        int tzh_timecnt = it.readInt();
+        int tzh_typecnt = it.readInt();
+
+        it.skip(4); // Skip tzh_charcnt.
+
+        int[] transitions = new int[tzh_timecnt];
+        it.readIntArray(transitions, 0, transitions.length);
+
+        byte[] type = new byte[tzh_timecnt];
+        it.readByteArray(type, 0, type.length);
+
+        int[] gmtOffsets = new int[tzh_typecnt];
+        byte[] isDsts = new byte[tzh_typecnt];
+        for (int i = 0; i < tzh_typecnt; ++i) {
+            gmtOffsets[i] = it.readInt();
+            isDsts[i] = it.readByte();
+            // We skip the abbreviation index. This would let us provide historically-accurate
+            // time zone abbreviations (such as "AHST", "YST", and "AKST" for standard time in
+            // America/Anchorage in 1982, 1983, and 1984 respectively). ICU only knows the current
+            // names, though, so even if we did use this data to provide the correct abbreviations
+            // for en_US, we wouldn't be able to provide correct abbreviations for other locales,
+            // nor would we be able to provide correct long forms (such as "Yukon Standard Time")
+            // for any locale. (The RI doesn't do any better than us here either.)
+            it.skip(1);
+        }
+
+        return new ZoneInfo(id, transitions, type, gmtOffsets, isDsts);
+    }
+
+    private ZoneInfo(String name, int[] transitions, byte[] types, int[] gmtOffsets, byte[] isDsts) {
         mTransitions = transitions;
-        mTypes = type;
+        mTypes = types;
         mIsDsts = isDsts;
         setID(name);
 
-        // Use the latest non-daylight offset (if any) as the raw offset.
-        int lastStd;
-        for (lastStd = mTransitions.length - 1; lastStd >= 0; lastStd--) {
-            if (mIsDsts[mTypes[lastStd] & 0xff] == 0) {
-                break;
+        // Find the latest daylight and standard offsets (if any).
+        int lastStd = 0;
+        boolean haveStd = false;
+        int lastDst = 0;
+        boolean haveDst = false;
+        for (int i = mTransitions.length - 1; (!haveStd || !haveDst) && i >= 0; --i) {
+            int type = mTypes[i] & 0xff;
+            if (!haveStd && mIsDsts[type] == 0) {
+                haveStd = true;
+                lastStd = i;
+            }
+            if (!haveDst && mIsDsts[type] != 0) {
+                haveDst = true;
+                lastDst = i;
             }
         }
-        if (lastStd < 0) {
-            lastStd = 0;
-        }
+
+        // Use the latest non-daylight offset (if any) as the raw offset.
         if (lastStd >= mTypes.length) {
             mRawOffset = gmtOffsets[0];
         } else {
             mRawOffset = gmtOffsets[mTypes[lastStd] & 0xff];
+        }
+
+        // Use the latest transition's pair of offsets to compute the DST savings.
+        // This isn't generally useful, but it's exposed by TimeZone.getDSTSavings.
+        if (lastDst >= mTypes.length) {
+            mDstSavings = 0;
+        } else {
+            mDstSavings = Math.abs(gmtOffsets[mTypes[lastStd] & 0xff] - gmtOffsets[mTypes[lastDst] & 0xff]) * 1000;
         }
 
         // Cache the oldest known raw offset, in case we're asked about times that predate our
@@ -111,6 +167,7 @@ public final class ZoneInfo extends TimeZone {
         }
         mUseDst = usesDst;
 
+        // tzdata uses seconds, but Java uses milliseconds.
         mRawOffset *= 1000;
         mEarliestRawOffset = earliestRawOffset * 1000;
     }
@@ -185,6 +242,10 @@ public final class ZoneInfo extends TimeZone {
         mRawOffset = off;
     }
 
+    @Override public int getDSTSavings() {
+        return mUseDst ? mDstSavings: 0;
+    }
+
     @Override public boolean useDaylightTime() {
         return mUseDst;
     }
@@ -232,29 +293,12 @@ public final class ZoneInfo extends TimeZone {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        // First the basics...
-        sb.append(getClass().getName() + "[" + getID() + ",mRawOffset=" + mRawOffset +
-                ",mUseDst=" + mUseDst + "]");
-        // ...followed by a zdump(1)-like description of all our transition data.
-        sb.append("\n");
-        Formatter f = new Formatter(sb);
-        for (int i = 0; i < mTransitions.length; ++i) {
-            int type = mTypes[i] & 0xff;
-            String utcTime = formatTime(mTransitions[i], TimeZone.getTimeZone("UTC"));
-            String localTime = formatTime(mTransitions[i], this);
-            int offset = mOffsets[type];
-            int gmtOffset = mRawOffset/1000 + offset;
-            f.format("%4d : time=%11d %s = %s isDst=%d offset=%5d gmtOffset=%d\n",
-                    i, mTransitions[i], utcTime, localTime, mIsDsts[type], offset, gmtOffset);
-        }
-        return sb.toString();
-    }
-
-    private static String formatTime(int s, TimeZone tz) {
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss yyyy zzz");
-        sdf.setTimeZone(tz);
-        long ms = ((long) s) * 1000L;
-        return sdf.format(new Date(ms));
+        return getClass().getName() + "[id=\"" + getID() + "\"" +
+            ",mRawOffset=" + mRawOffset +
+            ",mEarliestRawOffset=" + mEarliestRawOffset +
+            ",mUseDst=" + mUseDst +
+            ",mDstSavings=" + mDstSavings +
+            ",transitions=" + mTransitions.length +
+            "]";
     }
 }

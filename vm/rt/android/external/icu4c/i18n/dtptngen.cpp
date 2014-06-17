@@ -1,6 +1,6 @@
 /*
 *******************************************************************************
-* Copyright (C) 2007-2011, International Business Machines Corporation and
+* Copyright (C) 2007-2013, International Business Machines Corporation and
 * others. All Rights Reserved.
 *******************************************************************************
 *
@@ -66,9 +66,8 @@ struct UResourceBundleAIterator {
 
 /* Must be C linkage to pass function pointer to the sort function */
 
-#if !defined (OS390) && !defined (OS400)
-extern "C"
-#endif
+U_CDECL_BEGIN
+
 static int32_t U_CALLCONV
 ures_a_codepointSort(const void *context, const void *left, const void *right) {
     //CompareContext *cmp=(CompareContext *)context;
@@ -76,6 +75,7 @@ ures_a_codepointSort(const void *context, const void *left, const void *right) {
                     ((const UResAEntry *)right)->key);
 }
 
+U_CDECL_END
 
 static void ures_a_open(UResourceBundleAIterator *aiter, UResourceBundle *bund, UErrorCode *status) {
     if(U_FAILURE(*status)) {
@@ -144,6 +144,9 @@ static const dtTypeElem dtTypes[] = {
     {LOW_Y, UDATPG_YEAR_FIELD, DT_NUMERIC, 1, 20},
     {CAP_Y, UDATPG_YEAR_FIELD, DT_NUMERIC + DT_DELTA, 1, 20},
     {LOW_U, UDATPG_YEAR_FIELD, DT_NUMERIC + 2*DT_DELTA, 1, 20},
+    {CAP_U, UDATPG_YEAR_FIELD, DT_SHORT, 1, 3},
+    {CAP_U, UDATPG_YEAR_FIELD, DT_LONG, 4, 0},
+    {CAP_U, UDATPG_YEAR_FIELD, DT_NARROW, 5, 0},
     {CAP_Q, UDATPG_QUARTER_FIELD, DT_NUMERIC, 1, 2},
     {CAP_Q, UDATPG_QUARTER_FIELD, DT_SHORT, 3, 0},
     {CAP_Q, UDATPG_QUARTER_FIELD, DT_LONG, 4, 0},
@@ -214,7 +217,7 @@ static const char* const Resource_Fields[] = {
 static const UChar UDATPG_ItemFormat[]= {0x7B, 0x30, 0x7D, 0x20, 0x251C, 0x7B, 0x32, 0x7D, 0x3A,
     0x20, 0x7B, 0x31, 0x7D, 0x2524, 0};  // {0} \u251C{2}: {1}\u2524
 
-static const UChar repeatedPatterns[6]={CAP_G, CAP_E, LOW_Z, LOW_V, CAP_Q, 0}; // "GEzvQ"
+//static const UChar repeatedPatterns[6]={CAP_G, CAP_E, LOW_Z, LOW_V, CAP_Q, 0}; // "GEzvQ"
 
 static const char DT_DateTimePatternsTag[]="DateTimePatterns";
 static const char DT_DateTimeCalendarTag[]="calendar";
@@ -403,7 +406,6 @@ void
 DateTimePatternGenerator::addICUPatterns(const Locale& locale, UErrorCode& status) {
     UnicodeString dfPattern;
     UnicodeString conflictingString;
-    UDateTimePatternConflict conflictingStatus;
     DateFormat* df;
 
     if (U_FAILURE(status)) {
@@ -416,7 +418,7 @@ DateTimePatternGenerator::addICUPatterns(const Locale& locale, UErrorCode& statu
         df = DateFormat::createDateInstance(style, locale);
         SimpleDateFormat* sdf;
         if (df != NULL && (sdf = dynamic_cast<SimpleDateFormat*>(df)) != NULL) {
-            conflictingStatus = addPattern(sdf->toPattern(dfPattern), FALSE, conflictingString, status);
+            addPattern(sdf->toPattern(dfPattern), FALSE, conflictingString, status);
         }
         // TODO Maybe we should return an error when the date format isn't simple.
         delete df;
@@ -426,7 +428,7 @@ DateTimePatternGenerator::addICUPatterns(const Locale& locale, UErrorCode& statu
 
         df = DateFormat::createTimeInstance(style, locale);
         if (df != NULL && (sdf = dynamic_cast<SimpleDateFormat*>(df)) != NULL) {
-            conflictingStatus = addPattern(sdf->toPattern(dfPattern), FALSE, conflictingString, status);
+            addPattern(sdf->toPattern(dfPattern), FALSE, conflictingString, status);
             // HACK for hh:ss
             if ( i==DateFormat::kMedium ) {
                 hackPattern = dfPattern;
@@ -442,7 +444,6 @@ DateTimePatternGenerator::addICUPatterns(const Locale& locale, UErrorCode& statu
 
 void
 DateTimePatternGenerator::hackTimes(const UnicodeString& hackPattern, UErrorCode& status)  {
-    UDateTimePatternConflict conflictingStatus;
     UnicodeString conflictingString;
 
     fp->set(hackPattern);
@@ -473,7 +474,7 @@ DateTimePatternGenerator::hackTimes(const UnicodeString& hackPattern, UErrorCode
                             break;
                         }
                         mmss+= field;
-                        conflictingStatus = addPattern(mmss, FALSE, conflictingString, status);
+                        addPattern(mmss, FALSE, conflictingString, status);
                         break;
                     }
                     else {
@@ -497,7 +498,6 @@ DateTimePatternGenerator::addCLDRData(const Locale& locale, UErrorCode& err) {
     UResourceBundle *patBundle, *fieldBundle, *fBundle;
     UnicodeString rbPattern, value, field;
     UnicodeString conflictingPattern;
-    UDateTimePatternConflict conflictingStatus;
     const char *key=NULL;
     int32_t i;
 
@@ -589,7 +589,7 @@ DateTimePatternGenerator::addCLDRData(const Locale& locale, UErrorCode& err) {
 
     key=NULL;
     err = U_ZERO_ERROR;
-    fBundle = ures_getByKeyWithFallback(calTypeBundle, DT_DateTimeFieldsTag, NULL, &err);
+    fBundle = ures_getByKeyWithFallback(rb, DT_DateTimeFieldsTag, NULL, &err);
     for (i=0; i<MAX_RESOURCE_FIELD; ++i) {
         err = U_ZERO_ERROR;
         patBundle = ures_getByKeyWithFallback(fBundle, Resource_Fields[i], NULL, &err);
@@ -607,88 +607,103 @@ DateTimePatternGenerator::addCLDRData(const Locale& locale, UErrorCode& err) {
     ures_close(fBundle);
 
     // add available formats
+    UBool firstTimeThrough = TRUE;
     err = U_ZERO_ERROR;
     initHashtable(err);
-    patBundle = ures_getByKeyWithFallback(calTypeBundle, DT_DateTimeAvailableFormatsTag, NULL, &err);
-    if (U_SUCCESS(err)) {
-        int32_t numberKeys = ures_getSize(patBundle);
-        int32_t len;
-        const UChar *retPattern;
-        key=NULL;
-#if defined(U_USE_ASCII_BUNDLE_ITERATOR)
-        UResourceBundleAIterator aiter;
-        ures_a_open(&aiter, patBundle, &err);
-#endif
-        for(i=0; i<numberKeys; ++i) {
-#if defined(U_USE_ASCII_BUNDLE_ITERATOR)
-            retPattern=ures_a_getNextString(&aiter, &len, &key, &err);
-#else
-            retPattern=ures_getNextString(patBundle, &len, &key, &err);
-#endif
-            UnicodeString format=UnicodeString(retPattern);
-            UnicodeString retKey=UnicodeString(key, -1, US_INV);
-            setAvailableFormat(retKey, err);
-            // Add pattern with its associated skeleton. Override any duplicate derived from std patterns,
-            // but not a previous availableFormats entry:
-            conflictingStatus = addPatternWithSkeleton(format, &retKey, TRUE, conflictingPattern, err);
-        }
-#if defined(U_USE_ASCII_BUNDLE_ITERATOR)
-        ures_a_close(&aiter);
-#endif
-    }
-    ures_close(patBundle);
-    ures_close(calTypeBundle);
-    ures_close(calBundle);
-    ures_close(rb);
-
-    err = U_ZERO_ERROR;
-    char parentLocale[50];
-    int32_t localeNameLen=0;
-    uprv_strcpy(parentLocale, curLocaleName);
-    while((localeNameLen=uloc_getParent(parentLocale, parentLocale, 50, &err))>=0 ) {
-        rb = ures_open(NULL, parentLocale, &err);
-        curLocaleName=ures_getLocaleByType(rb, ULOC_ACTUAL_LOCALE, &err);
-        uprv_strcpy(parentLocale, curLocaleName);
-        calBundle = ures_getByKey(rb, DT_DateTimeCalendarTag, NULL, &err);
-        calTypeBundle = ures_getByKey(calBundle, calendarTypeToUse, NULL, &err);
-        patBundle = ures_getByKeyWithFallback(calTypeBundle, DT_DateTimeAvailableFormatsTag, NULL, &err);
+    UBool override = TRUE;
+    while (TRUE) {
+        // At the start of the loop:
+        // - rb is the open resource bundle for the current locale being processed,
+        //   whose actual name is in curLocaleName.
+        // - if U_SUCCESS(err), then calBundle and calTypeBundle are open;
+        //   process contents of calTypeBundle, then close calBundle and calTypeBundle.
         if (U_SUCCESS(err)) {
-            int32_t numberKeys = ures_getSize(patBundle);
-            int32_t len;
-            const UChar *retPattern;
-            key=NULL;
+            // process contents of calTypeBundle
+            patBundle = ures_getByKeyWithFallback(calTypeBundle, DT_DateTimeAvailableFormatsTag, NULL, &err);
+            if (U_SUCCESS(err)) {
+                int32_t numberKeys = ures_getSize(patBundle);
+                int32_t len;
+                const UChar *retPattern;
+                key=NULL;
 #if defined(U_USE_ASCII_BUNDLE_ITERATOR)
-            UResourceBundleAIterator aiter;
-            ures_a_open(&aiter, patBundle, &err);
+                UResourceBundleAIterator aiter;
+                ures_a_open(&aiter, patBundle, &err);
 #endif
-            for(i=0; i<numberKeys; ++i) {
+                for(i=0; i<numberKeys; ++i) {
 #if defined(U_USE_ASCII_BUNDLE_ITERATOR)
-                retPattern=ures_a_getNextString(&aiter, &len, &key, &err);
+                    retPattern=ures_a_getNextString(&aiter, &len, &key, &err);
 #else
-                retPattern=ures_getNextString(patBundle, &len, &key, &err);
+                    retPattern=ures_getNextString(patBundle, &len, &key, &err);
 #endif
-                UnicodeString format=UnicodeString(retPattern);
-                UnicodeString retKey=UnicodeString(key, -1, US_INV);
-                if ( !isAvailableFormatSet(retKey) ) {
-                    setAvailableFormat(retKey, err);
-                    // Add pattern with its associated skeleton. Override any duplicate derived from std patterns,
-                    // but not a previous availableFormats entry:
-                    conflictingStatus = addPatternWithSkeleton(format, &retKey, TRUE, conflictingPattern, err);
+                    UnicodeString format=UnicodeString(retPattern);
+                    UnicodeString retKey=UnicodeString(key, -1, US_INV);
+                    if ( firstTimeThrough || !isAvailableFormatSet(retKey) ) {
+                        setAvailableFormat(retKey, err);
+                        // Add pattern with its associated skeleton. Override any duplicate derived from std patterns,
+                        // but not a previous availableFormats entry:
+                        addPatternWithSkeleton(format, &retKey, override, conflictingPattern, err);
+                    }
                 }
-            }
 #if defined(U_USE_ASCII_BUNDLE_ITERATOR)
-            ures_a_close(&aiter);
+                ures_a_close(&aiter);
 #endif
+                ures_close(patBundle);
+            }
+            firstTimeThrough = FALSE;
+            // close calBundle and calTypeBundle
+            ures_close(calTypeBundle);
+            ures_close(calBundle);
         }
-        err = U_ZERO_ERROR; // reset; if this locale lacks the necessary data, need to keep checking up to root.
-        ures_close(patBundle);
-        ures_close(calTypeBundle);
-        ures_close(calBundle);
-        ures_close(rb);
-        if (localeNameLen==0) {
+        if (uprv_strcmp(curLocaleName,"root")==0 || uprv_strlen(curLocaleName)==0) {
+            // we just finished handling root, nothing more to check
+            ures_close(rb);
             break;
         }
-    }
+        // Find the name of the appropriate parent locale (from %%Parent if present, else
+        // uloc_getParent on the actual locale name)
+        // (It would be nice to have a ures function that did this...)
+        err = U_ZERO_ERROR;
+        char parentLocale[ULOC_FULLNAME_CAPACITY];
+        int32_t locNameLen;
+        const UChar * parentUName = ures_getStringByKey(rb, "%%Parent", &locNameLen, &err);
+        if (U_SUCCESS(err) && err != U_USING_FALLBACK_WARNING && locNameLen < ULOC_FULLNAME_CAPACITY) {
+            u_UCharsToChars(parentUName, parentLocale, locNameLen + 1);
+        } else {
+            err = U_ZERO_ERROR;
+            uloc_getParent(curLocaleName, parentLocale, ULOC_FULLNAME_CAPACITY, &err);
+            if (U_FAILURE(err) || err == U_STRING_NOT_TERMINATED_WARNING) {
+                // just fallback to root, since we are not already there
+                parentLocale[0] = 0;
+                err = U_ZERO_ERROR;
+            }
+        }
+        // Close current locale bundle
+        ures_close(rb);
+        // And open its parent, which becomes the new current locale being processed
+        rb = ures_open(NULL, parentLocale, &err);
+        if ( U_FAILURE(err) ) {
+            err = U_ZERO_ERROR;
+            break;
+        }
+        // Get the name of the parent / new current locale
+        curLocaleName=ures_getLocaleByType(rb, ULOC_ACTUAL_LOCALE, &err);
+        if ( U_FAILURE(err) ) {
+            curLocaleName = parentLocale;
+            err = U_ZERO_ERROR;
+        }
+        if (uprv_strcmp(curLocaleName,"root")==0 || uprv_strlen(curLocaleName)==0) {
+            override = FALSE;
+        }
+        // Open calBundle and calTypeBundle
+        calBundle = ures_getByKeyWithFallback(rb, DT_DateTimeCalendarTag, NULL, &err);
+        if (U_SUCCESS(err)) {
+            calTypeBundle = ures_getByKeyWithFallback(calBundle, calendarTypeToUse, NULL, &err);
+            if ( U_FAILURE(err) ) {
+                ures_close(calBundle);
+            }
+        }
+        // Go to the top of the loop to process contents of calTypeBundle
+    }    
 
     if (hackPattern.length()>0) {
         hackTimes(hackPattern, err);
@@ -818,11 +833,10 @@ DateTimePatternGenerator::getDecimal() const {
 void
 DateTimePatternGenerator::addCanonicalItems() {
     UnicodeString  conflictingPattern;
-    UDateTimePatternConflict conflictingStatus;
     UErrorCode status = U_ZERO_ERROR;
 
     for (int32_t i=0; i<UDATPG_FIELD_COUNT; i++) {
-        conflictingStatus = addPattern(UnicodeString(Canonical_Items[i]), FALSE, conflictingPattern, status);
+        addPattern(UnicodeString(Canonical_Items[i]), FALSE, conflictingPattern, status);
     }
 }
 
@@ -907,18 +921,29 @@ DateTimePatternGenerator::addPatternWithSkeleton(
         matcher.set(pattern, fp, skeleton);
         matcher.getBasePattern(basePattern);
     } else {
-        matcher.set(*skeletonToUse, fp, skeleton); // this still trims skeleton fields to max len 3, may need to change it.
+        matcher.set(*skeletonToUse, fp, skeleton); // no longer trims skeleton fields to max len 3, per #7930
         matcher.getBasePattern(basePattern); // or perhaps instead: basePattern = *skeletonToUse;
     }
+    // We only care about base conflicts - and replacing the pattern associated with a base - if:
+    // 1. the conflicting previous base pattern did *not* have an explicit skeleton; in that case the previous
+    // base + pattern combination was derived from either (a) a canonical item, (b) a standard format, or
+    // (c) a pattern specified programmatically with a previous call to addPattern (which would only happen
+    // if we are getting here from a subsequent call to addPattern).
+    // 2. a skeleton is specified for the current pattern, but override=false; in that case we are checking
+    // availableFormats items from root, which should not override any previous entry with the same base.
     UBool entryHadSpecifiedSkeleton;
     const UnicodeString *duplicatePattern = patternMap->getPatternFromBasePattern(basePattern, entryHadSpecifiedSkeleton);
-    if (duplicatePattern != NULL ) {
+    if (duplicatePattern != NULL && (!entryHadSpecifiedSkeleton || (skeletonToUse != NULL && !override))) {
         conflictingStatus = UDATPG_BASE_CONFLICT;
         conflictingPattern = *duplicatePattern;
-        if (!override || (skeletonToUse != NULL && entryHadSpecifiedSkeleton)) {
+        if (!override) {
             return conflictingStatus;
         }
     }
+    // The only time we get here with override=true and skeletonToUse!=null is when adding availableFormats
+    // items from CLDR data. In that case, we don't want an item from a parent locale to replace an item with
+    // same skeleton from the specified locale, so skip the current item if skeletonWasSpecified is true for
+    // the previously-specified conflicting item.
     const PtnSkeleton* entrySpecifiedSkeleton = NULL;
     duplicatePattern = patternMap->getPatternFromSkeleton(skeleton, &entrySpecifiedSkeleton);
     if (duplicatePattern != NULL ) {
@@ -1031,8 +1056,8 @@ DateTimePatternGenerator::adjustFieldTypes(const UnicodeString& pattern,
                     //
                     // The adjusted field should consist of characters from the originally requested
                     // skeleton, except in the case of UDATPG_HOUR_FIELD or UDATPG_MONTH_FIELD or
-                    // UDATPG_WEEKDAY_FIELD, in which case it should consist of characters from the
-                    // found pattern.
+                    // UDATPG_WEEKDAY_FIELD or UDATPG_YEAR_FIELD, in which case it should consist
+                    // of characters from the  found pattern.
                     //
                     // The length of the adjusted field (adjFieldLen) should match that in the originally
                     // requested skeleton, except that in the following cases the length of the adjusted field
@@ -1065,7 +1090,8 @@ DateTimePatternGenerator::adjustFieldTypes(const UnicodeString& pattern,
                             adjFieldLen = field.length();
                         }
                     }
-                    UChar c = (typeValue!= UDATPG_HOUR_FIELD && typeValue!= UDATPG_MONTH_FIELD && typeValue!= UDATPG_WEEKDAY_FIELD)?
+                    UChar c = (typeValue!= UDATPG_HOUR_FIELD && typeValue!= UDATPG_MONTH_FIELD &&
+                               typeValue!= UDATPG_WEEKDAY_FIELD && typeValue!= UDATPG_YEAR_FIELD)?
                         reqField.charAt(0): field.charAt(0);
                     field.remove();
                     for (int32_t i=adjFieldLen; i>0; --i) {
@@ -1383,6 +1409,9 @@ PatternMap::add(const UnicodeString& basePattern,
             }
             // Overwrite the value.
             curElem->pattern = value;
+            // It was a bug that we were not doing the following previously,
+            // though that bug hid other problems by making things partly work.
+            curElem->skeletonWasSpecified = skeletonWasSpecified;
         }
     }
 }  // PatternMap::add
@@ -1539,6 +1568,8 @@ PatternMap::getDuplicateElem(
 DateTimeMatcher::DateTimeMatcher(void) {
 }
 
+DateTimeMatcher::~DateTimeMatcher() {}
+
 DateTimeMatcher::DateTimeMatcher(const DateTimeMatcher& other) {
     copyFrom(other.skeleton);
 }
@@ -1576,7 +1607,7 @@ DateTimeMatcher::set(const UnicodeString& pattern, FormatParser* fp, PtnSkeleton
         int32_t typeValue = row->field;
         skeletonResult.original[typeValue]=field;
         UChar repeatChar = row->patternChar;
-        int32_t repeatCount = row->minLen > 3 ? 3: row->minLen;
+        int32_t repeatCount = row->minLen; // #7930 removes cap at 3
         while (repeatCount-- > 0) {
             skeletonResult.baseOriginal[typeValue] += repeatChar;
         }
@@ -1831,6 +1862,8 @@ FormatParser::isPatternSeparator(UnicodeString& field) {
     }
     return TRUE;
 }
+
+DistanceInfo::~DistanceInfo() {}
 
 void
 DistanceInfo::setTo(DistanceInfo &other) {

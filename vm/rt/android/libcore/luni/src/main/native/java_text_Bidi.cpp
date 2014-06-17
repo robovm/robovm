@@ -17,6 +17,7 @@
 
 #define LOG_TAG "Bidi"
 
+#include "IcuUtilities.h"
 #include "JNIHelp.h"
 #include "JniConstants.h"
 #include "JniException.h"
@@ -88,18 +89,18 @@ extern "C" void Java_java_text_Bidi_ubidi_1setPara(JNIEnv* env, jclass, jlong pt
     }
     UErrorCode err = U_ZERO_ERROR;
     ubidi_setPara(data->uBiDi(), chars.get(), length, paraLevel, data->embeddingLevels(), &err);
-    maybeThrowIcuException(env, err);
+    maybeThrowIcuException(env, "ubidi_setPara", err);
 }
 
 extern "C" jlong Java_java_text_Bidi_ubidi_1setLine(JNIEnv* env, jclass, jlong ptr, jint start, jint limit) {
     UErrorCode status = U_ZERO_ERROR;
     UBiDi* sized = ubidi_openSized(limit - start, 0, &status);
-    if (maybeThrowIcuException(env, status)) {
+    if (maybeThrowIcuException(env, "ubidi_openSized", status)) {
         return 0;
     }
     UniquePtr<BiDiData> lineData(new BiDiData(sized));
     ubidi_setLine(uBiDi(ptr), start, limit, lineData->uBiDi(), &status);
-    maybeThrowIcuException(env, status);
+    maybeThrowIcuException(env, "ubidi_setLine", status);
     return reinterpret_cast<uintptr_t>(lineData.release());
 }
 
@@ -118,7 +119,7 @@ extern "C" jbyte Java_java_text_Bidi_ubidi_1getParaLevel(JNIEnv*, jclass, jlong 
 extern "C" jbyteArray Java_java_text_Bidi_ubidi_1getLevels(JNIEnv* env, jclass, jlong ptr) {
     UErrorCode status = U_ZERO_ERROR;
     const UBiDiLevel* levels = ubidi_getLevels(uBiDi(ptr), &status);
-    if (maybeThrowIcuException(env, status)) {
+    if (maybeThrowIcuException(env, "ubidi_getLevels", status)) {
         return NULL;
     }
     int len = ubidi_getLength(uBiDi(ptr));
@@ -130,7 +131,7 @@ extern "C" jbyteArray Java_java_text_Bidi_ubidi_1getLevels(JNIEnv* env, jclass, 
 extern "C" jint Java_java_text_Bidi_ubidi_1countRuns(JNIEnv* env, jclass, jlong ptr) {
     UErrorCode status = U_ZERO_ERROR;
     int count = ubidi_countRuns(uBiDi(ptr), &status);
-    maybeThrowIcuException(env, status);
+    maybeThrowIcuException(env, "ubidi_countRuns", status);
     return count;
 }
 
@@ -141,10 +142,11 @@ extern "C" jobjectArray Java_java_text_Bidi_ubidi_1getRuns(JNIEnv* env, jclass, 
     UBiDi* ubidi = uBiDi(ptr);
     UErrorCode status = U_ZERO_ERROR;
     int runCount = ubidi_countRuns(ubidi, &status);
-    if (maybeThrowIcuException(env, status)) {
+    if (maybeThrowIcuException(env, "ubidi_countRuns", status)) {
         return NULL;
     }
-    jmethodID bidiRunConstructor = env->GetMethodID(JniConstants::bidiRunClass, "<init>", "(III)V");
+    static jmethodID bidiRunConstructor =
+            env->GetMethodID(JniConstants::bidiRunClass, "<init>", "(III)V");
     jobjectArray runs = env->NewObjectArray(runCount, JniConstants::bidiRunClass, NULL);
     UBiDiLevel level = 0;
     int start = 0;

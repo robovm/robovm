@@ -1,7 +1,7 @@
 /*
  * Written by Doug Lea with assistance from members of JCP JSR-166
  * Expert Group and released to the public domain, as explained at
- * http://creativecommons.org/licenses/publicdomain
+ * http://creativecommons.org/publicdomain/zero/1.0/
  */
 
 package java.util.concurrent;
@@ -18,12 +18,12 @@ public class CancellationException extends IllegalStateException {
     private static final long serialVersionUID = -9202173006928992231L;
 
     /**
-     * Constructs a <tt>CancellationException</tt> with no detail message.
+     * Constructs a {@code CancellationException} with no detail message.
      */
     public CancellationException() {}
 
     /**
-     * Constructs a <tt>CancellationException</tt> with the specified detail
+     * Constructs a {@code CancellationException} with the specified detail
      * message.
      *
      * @param message the detail message

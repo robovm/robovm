@@ -1,6 +1,6 @@
 /*
 *******************************************************************************
-*   Copyright (C) 2011, International Business Machines
+*   Copyright (C) 2011-2013, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *******************************************************************************
 *   file name:  messagepattern.h
@@ -60,7 +60,7 @@
  *     <td>I don''t know</td>
  *   </tr>
  * </table>
- * @draft ICU 4.8
+ * @stable ICU 4.8
  * @see UCONFIG_MSGPAT_DEFAULT_APOSTROPHE_MODE
  */
 enum UMessagePatternApostropheMode {
@@ -73,7 +73,7 @@ enum UMessagePatternApostropheMode {
      * or a pound symbol # if inside a plural format.
      * <p>
      * This is the default behavior starting with ICU 4.8.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UMSGPAT_APOS_DOUBLE_OPTIONAL,
     /**
@@ -82,18 +82,18 @@ enum UMessagePatternApostropheMode {
      * A single apostrophe always starts quoted literal text.
      * <p>
      * This is the behavior of ICU 4.6 and earlier, and of the JDK.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UMSGPAT_APOS_DOUBLE_REQUIRED
 };
 /**
- * @draft ICU 4.8
+ * @stable ICU 4.8
  */
 typedef enum UMessagePatternApostropheMode UMessagePatternApostropheMode;
 
 /**
  * MessagePattern::Part type constants.
- * @draft ICU 4.8
+ * @stable ICU 4.8
  */
 enum UMessagePatternPartType {
     /**
@@ -103,7 +103,7 @@ enum UMessagePatternPartType {
      * The value indicates the nesting level, starting with 0 for the main message.
      * <p>
      * There is always a later MSG_LIMIT part.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UMSGPAT_PART_TYPE_MSG_START,
     /**
@@ -112,7 +112,7 @@ enum UMessagePatternPartType {
      * the last sub-message of a choice argument,
      * otherwise 1 for the '}' or (in a choice argument style) the '|'.
      * The value indicates the nesting level, starting with 0 for the main message.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UMSGPAT_PART_TYPE_MSG_LIMIT,
     /**
@@ -120,14 +120,14 @@ enum UMessagePatternPartType {
      * For example, an apostrophe that begins or ends quoted text
      * would be indicated with such a part.
      * The value is undefined and currently always 0.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UMSGPAT_PART_TYPE_SKIP_SYNTAX,
     /**
      * Indicates that a syntax character needs to be inserted for auto-quoting.
      * The length is 0.
      * The value is the character code of the insertion character. (U+0027=APOSTROPHE)
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UMSGPAT_PART_TYPE_INSERT_CHAR,
     /**
@@ -135,61 +135,61 @@ enum UMessagePatternPartType {
      * When formatting, replace this part's substring with the
      * (value-offset) for the plural argument value.
      * The value is undefined and currently always 0.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UMSGPAT_PART_TYPE_REPLACE_NUMBER,
     /**
      * Start of an argument.
      * The length is 1 for the '{'.
      * The value is the ordinal value of the ArgType. Use getArgType().
-     * @draft ICU 4.8
+     * <p>
+     * This part is followed by either an ARG_NUMBER or ARG_NAME,
+     * followed by optional argument sub-parts (see UMessagePatternArgType constants)
+     * and finally an ARG_LIMIT part.
+     * @stable ICU 4.8
      */
     UMSGPAT_PART_TYPE_ARG_START,
     /**
      * End of an argument.
      * The length is 1 for the '}'.
      * The value is the ordinal value of the ArgType. Use getArgType().
-     * <p>
-     * This part is followed by either an ARG_NUMBER or ARG_NAME,
-     * followed by optional argument sub-parts (see UMessagePatternArgType constants)
-     * and finally an ARG_LIMIT part.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UMSGPAT_PART_TYPE_ARG_LIMIT,
     /**
      * The argument number, provided by the value.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UMSGPAT_PART_TYPE_ARG_NUMBER,
     /**
      * The argument name.
      * The value is undefined and currently always 0.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UMSGPAT_PART_TYPE_ARG_NAME,
     /**
      * The argument type.
      * The value is undefined and currently always 0.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UMSGPAT_PART_TYPE_ARG_TYPE,
     /**
      * The argument style text.
      * The value is undefined and currently always 0.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UMSGPAT_PART_TYPE_ARG_STYLE,
     /**
      * A selector substring in a "complex" argument style.
      * The value is undefined and currently always 0.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UMSGPAT_PART_TYPE_ARG_SELECTOR,
     /**
      * An integer value, for example the offset or an explicit selector value
      * in a PluralFormat style.
      * The part value is the integer value.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UMSGPAT_PART_TYPE_ARG_INT,
     /**
@@ -197,12 +197,12 @@ enum UMessagePatternPartType {
      * in a PluralFormat style.
      * The part value is an index into an internal array of numeric values;
      * use getNumericValue().
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UMSGPAT_PART_TYPE_ARG_DOUBLE
 };
 /**
- * @draft ICU 4.8
+ * @stable ICU 4.8
  */
 typedef enum UMessagePatternPartType UMessagePatternPartType;
 
@@ -212,55 +212,70 @@ typedef enum UMessagePatternPartType UMessagePatternPartType;
  *
  * Messages nested inside an argument are each delimited by MSG_START and MSG_LIMIT,
  * with a nesting level one greater than the surrounding message.
- * @draft ICU 4.8
+ * @stable ICU 4.8
  */
 enum UMessagePatternArgType {
     /**
      * The argument has no specified type.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UMSGPAT_ARG_TYPE_NONE,
     /**
      * The argument has a "simple" type which is provided by the ARG_TYPE part.
      * An ARG_STYLE part might follow that.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UMSGPAT_ARG_TYPE_SIMPLE,
     /**
      * The argument is a ChoiceFormat with one or more
      * ((ARG_INT | ARG_DOUBLE), ARG_SELECTOR, message) tuples.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UMSGPAT_ARG_TYPE_CHOICE,
     /**
-     * The argument is a PluralFormat with an optional ARG_INT or ARG_DOUBLE offset
+     * The argument is a cardinal-number PluralFormat with an optional ARG_INT or ARG_DOUBLE offset
      * (e.g., offset:1)
      * and one or more (ARG_SELECTOR [explicit-value] message) tuples.
      * If the selector has an explicit value (e.g., =2), then
      * that value is provided by the ARG_INT or ARG_DOUBLE part preceding the message.
      * Otherwise the message immediately follows the ARG_SELECTOR.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UMSGPAT_ARG_TYPE_PLURAL,
     /**
      * The argument is a SelectFormat with one or more (ARG_SELECTOR, message) pairs.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
-    UMSGPAT_ARG_TYPE_SELECT
+    UMSGPAT_ARG_TYPE_SELECT,
+#ifndef U_HIDE_DRAFT_API
+    /**
+     * The argument is an ordinal-number PluralFormat
+     * with the same style parts sequence and semantics as UMSGPAT_ARG_TYPE_PLURAL.
+     * @draft ICU 50
+     */
+    UMSGPAT_ARG_TYPE_SELECTORDINAL
+#endif /* U_HIDE_DRAFT_API */
 };
 /**
- * @draft ICU 4.8
+ * @stable ICU 4.8
  */
 typedef enum UMessagePatternArgType UMessagePatternArgType;
 
+#ifndef U_HIDE_DRAFT_API
 /**
- * @draft ICU 4.8
+ * Returns TRUE if the argument type has a plural style part sequence and semantics,
+ * for example UMSGPAT_ARG_TYPE_PLURAL and UMSGPAT_ARG_TYPE_SELECTORDINAL.
+ * @draft ICU 50
  */
+#define UMSGPAT_ARG_TYPE_HAS_PLURAL_STYLE(argType) \
+    ((argType)==UMSGPAT_ARG_TYPE_PLURAL || (argType)==UMSGPAT_ARG_TYPE_SELECTORDINAL)
+#endif /* U_HIDE_DRAFT_API */
+
 enum {
     /**
      * Return value from MessagePattern.validateArgumentName() for when
      * the string is a valid "pattern identifier" but not a number.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UMSGPAT_ARG_NAME_NOT_NUMBER=-1,
 
@@ -269,7 +284,7 @@ enum {
      * the string is invalid.
      * It might not be a valid "pattern identifier",
      * or it have only ASCII digits but there is a leading zero or the number is too large.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UMSGPAT_ARG_NAME_NOT_VALID=-2
 };
@@ -278,7 +293,7 @@ enum {
  * Special value that is returned by getNumericValue(Part) when no
  * numeric value is defined for a part.
  * @see MessagePattern.getNumericValue()
- * @draft ICU 4.8
+ * @stable ICU 4.8
  */
 #define UMSGPAT_NO_NUMERIC_VALUE ((double)(-123456789))
 
@@ -341,7 +356,7 @@ class MessagePatternPartsList;
  * <p>
  * This class is not intended for public subclassing.
  *
- * @draft ICU 4.8
+ * @stable ICU 4.8
  */
 class U_COMMON_API MessagePattern : public UObject {
 public:
@@ -351,7 +366,7 @@ public:
      *                  pass the U_SUCCESS() test, or else the function returns
      *                  immediately. Check for U_FAILURE() on output or use with
      *                  function chaining. (See User Guide for details.)
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     MessagePattern(UErrorCode &errorCode);
 
@@ -362,7 +377,7 @@ public:
      *                  pass the U_SUCCESS() test, or else the function returns
      *                  immediately. Check for U_FAILURE() on output or use with
      *                  function chaining. (See User Guide for details.)
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     MessagePattern(UMessagePatternApostropheMode mode, UErrorCode &errorCode);
 
@@ -382,14 +397,14 @@ public:
      * @throws IndexOutOfBoundsException if certain limits are exceeded
      *         (e.g., argument number too high, argument name too long, etc.)
      * @throws NumberFormatException if a number could not be parsed
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     MessagePattern(const UnicodeString &pattern, UParseError *parseError, UErrorCode &errorCode);
 
     /**
      * Copy constructor.
      * @param other Object to copy.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     MessagePattern(const MessagePattern &other);
 
@@ -397,13 +412,13 @@ public:
      * Assignment operator.
      * @param other Object to copy.
      * @return *this=other
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     MessagePattern &operator=(const MessagePattern &other);
 
     /**
      * Destructor.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     virtual ~MessagePattern();
 
@@ -422,7 +437,7 @@ public:
      * @throws IndexOutOfBoundsException if certain limits are exceeded
      *         (e.g., argument number too high, argument name too long, etc.)
      * @throws NumberFormatException if a number could not be parsed
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     MessagePattern &parse(const UnicodeString &pattern,
                           UParseError *parseError, UErrorCode &errorCode);
@@ -442,7 +457,7 @@ public:
      * @throws IndexOutOfBoundsException if certain limits are exceeded
      *         (e.g., argument number too high, argument name too long, etc.)
      * @throws NumberFormatException if a number could not be parsed
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     MessagePattern &parseChoiceStyle(const UnicodeString &pattern,
                                      UParseError *parseError, UErrorCode &errorCode);
@@ -462,7 +477,7 @@ public:
      * @throws IndexOutOfBoundsException if certain limits are exceeded
      *         (e.g., argument number too high, argument name too long, etc.)
      * @throws NumberFormatException if a number could not be parsed
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     MessagePattern &parsePluralStyle(const UnicodeString &pattern,
                                      UParseError *parseError, UErrorCode &errorCode);
@@ -482,7 +497,7 @@ public:
      * @throws IndexOutOfBoundsException if certain limits are exceeded
      *         (e.g., argument number too high, argument name too long, etc.)
      * @throws NumberFormatException if a number could not be parsed
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     MessagePattern &parseSelectStyle(const UnicodeString &pattern,
                                      UParseError *parseError, UErrorCode &errorCode);
@@ -490,7 +505,7 @@ public:
     /**
      * Clears this MessagePattern.
      * countParts() will return 0.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     void clear();
 
@@ -498,7 +513,7 @@ public:
      * Clears this MessagePattern and sets the UMessagePatternApostropheMode.
      * countParts() will return 0.
      * @param mode The new UMessagePatternApostropheMode.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     void clearPatternAndSetApostropheMode(UMessagePatternApostropheMode mode) {
         clear();
@@ -508,14 +523,14 @@ public:
     /**
      * @param other another object to compare with.
      * @return TRUE if this object is equivalent to the other one.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UBool operator==(const MessagePattern &other) const;
 
     /**
      * @param other another object to compare with.
      * @return FALSE if this object is equivalent to the other one.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     inline UBool operator!=(const MessagePattern &other) const {
         return !operator==(other);
@@ -523,13 +538,13 @@ public:
 
     /**
      * @return A hash code for this object.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     int32_t hashCode() const;
 
     /**
      * @return this instance's UMessagePatternApostropheMode.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UMessagePatternApostropheMode getApostropheMode() const {
         return aposMode;
@@ -540,7 +555,7 @@ public:
 
     /**
      * @return the parsed pattern string (null if none was parsed).
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     const UnicodeString &getPatternString() const {
         return msg;
@@ -549,7 +564,7 @@ public:
     /**
      * Does the parsed pattern have named arguments like {first_name}?
      * @return TRUE if the parsed pattern has at least one named argument.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UBool hasNamedArguments() const {
         return hasArgNames;
@@ -558,7 +573,7 @@ public:
     /**
      * Does the parsed pattern have numbered arguments like {2}?
      * @return TRUE if the parsed pattern has at least one numbered argument.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UBool hasNumberedArguments() const {
         return hasArgNumbers;
@@ -573,7 +588,7 @@ public:
      * @return &gt;=0 if the name is a valid number,
      *         ARG_NAME_NOT_NUMBER (-1) if it is a "pattern identifier" but not all ASCII digits,
      *         ARG_NAME_NOT_VALID (-2) if it is neither.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     static int32_t validateArgumentName(const UnicodeString &name);
 
@@ -585,7 +600,7 @@ public:
      * into "I don''t '{know}' {gender,select,female{h''er}other{h''im}}."
      * @return the deep-auto-quoted version of the parsed pattern string.
      * @see MessageFormat.autoQuoteApostrophe()
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UnicodeString autoQuoteApostropheDeep() const;
 
@@ -595,7 +610,7 @@ public:
      * Returns the number of "parts" created by parsing the pattern string.
      * Returns 0 if no pattern has been parsed or clear() was called.
      * @return the number of pattern parts.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     int32_t countParts() const {
         return partsLength;
@@ -605,7 +620,7 @@ public:
      * Gets the i-th pattern "part".
      * @param i The index of the Part data. (0..countParts()-1)
      * @return the i-th pattern "part".
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     const Part &getPart(int32_t i) const {
         return parts[i];
@@ -616,7 +631,7 @@ public:
      * Convenience method for getPart(i).getType().
      * @param i The index of the Part data. (0..countParts()-1)
      * @return The UMessagePatternPartType of the i-th Part.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UMessagePatternPartType getPartType(int32_t i) const {
         return getPart(i).type;
@@ -627,7 +642,7 @@ public:
      * Convenience method for getPart(partIndex).getIndex().
      * @param partIndex The index of the Part data. (0..countParts()-1)
      * @return The pattern index of this Part.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     int32_t getPatternIndex(int32_t partIndex) const {
         return getPart(partIndex).index;
@@ -638,7 +653,7 @@ public:
      * Convenience method for getPatternString().substring(part.getIndex(), part.getLimit()).
      * @param part a part of this MessagePattern.
      * @return the substring associated with part.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UnicodeString getSubstring(const Part &part) const {
         return msg.tempSubString(part.index, part.length);
@@ -649,7 +664,7 @@ public:
      * @param part a part of this MessagePattern.
      * @param s a string.
      * @return TRUE if getSubstring(part).equals(s).
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     UBool partSubstringMatches(const Part &part, const UnicodeString &s) const {
         return 0==msg.compare(part.index, part.length, s);
@@ -659,7 +674,7 @@ public:
      * Returns the numeric value associated with an ARG_INT or ARG_DOUBLE.
      * @param part a part of this MessagePattern.
      * @return the part's numeric value, or UMSGPAT_NO_NUMERIC_VALUE if this is not a numeric part.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     double getNumericValue(const Part &part) const;
 
@@ -667,7 +682,7 @@ public:
      * Returns the "offset:" value of a PluralFormat argument, or 0 if none is specified.
      * @param pluralStart the index of the first PluralFormat argument style part. (0..countParts()-1)
      * @return the "offset:" value.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     double getPluralOffset(int32_t pluralStart) const;
 
@@ -677,7 +692,7 @@ public:
      *        this Part should be of Type ARG_START or MSG_START.
      * @return The first i>start where getPart(i).getType()==ARG|MSG_LIMIT at the same nesting level,
      *         or start itself if getPartType(msgStart)!=ARG|MSG_START.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     int32_t getLimitPartIndex(int32_t start) const {
         int32_t limit=getPart(start).limitPartIndex;
@@ -692,7 +707,7 @@ public:
      * There is a part for the start and end of a message or argument,
      * for quoting and escaping of and with ASCII apostrophes,
      * and for syntax elements of "complex" arguments.
-     * @draft ICU 4.8
+     * @stable ICU 4.8
      */
     class Part : public UMemory {
     public:
@@ -705,7 +720,7 @@ public:
         /**
          * Returns the type of this part.
          * @return the part type.
-         * @draft ICU 4.8
+         * @stable ICU 4.8
          */
         UMessagePatternPartType getType() const {
             return type;
@@ -714,7 +729,7 @@ public:
         /**
          * Returns the pattern string index associated with this Part.
          * @return this part's pattern string index.
-         * @draft ICU 4.8
+         * @stable ICU 4.8
          */
         int32_t getIndex() const {
             return index;
@@ -723,8 +738,8 @@ public:
         /**
          * Returns the length of the pattern substring associated with this Part.
          * This is 0 for some parts.
-         * @return this part's pattern string index.
-         * @draft ICU 4.8
+         * @return this part's pattern substring length.
+         * @stable ICU 4.8
          */
         int32_t getLength() const {
             return length;
@@ -734,7 +749,7 @@ public:
          * Returns the pattern string limit (exclusive-end) index associated with this Part.
          * Convenience method for getIndex()+getLength().
          * @return this part's pattern string limit index, same as getIndex()+getLength().
-         * @draft ICU 4.8
+         * @stable ICU 4.8
          */
         int32_t getLimit() const {
             return index+length;
@@ -744,7 +759,7 @@ public:
          * Returns a value associated with this part.
          * See the documentation of each part type for details.
          * @return the part value.
-         * @draft ICU 4.8
+         * @stable ICU 4.8
          */
         int32_t getValue() const {
             return value;
@@ -754,7 +769,7 @@ public:
          * Returns the argument type if this part is of type ARG_START or ARG_LIMIT,
          * otherwise UMSGPAT_ARG_TYPE_NONE.
          * @return the argument type for this part.
-         * @draft ICU 4.8
+         * @stable ICU 4.8
          */
         UMessagePatternArgType getArgType() const {
             UMessagePatternPartType type=getType();
@@ -770,7 +785,7 @@ public:
          * If so, then that numeric value can be retrieved via MessagePattern.getNumericValue().
          * @param type The Part type to be tested.
          * @return TRUE if the Part type has a numeric value.
-         * @draft ICU 4.8
+         * @stable ICU 4.8
          */
         static UBool hasNumericValue(UMessagePatternPartType type) {
             return type==UMSGPAT_PART_TYPE_ARG_INT || type==UMSGPAT_PART_TYPE_ARG_DOUBLE;
@@ -779,14 +794,14 @@ public:
         /**
          * @param other another object to compare with.
          * @return TRUE if this object is equivalent to the other one.
-         * @draft ICU 4.8
+         * @stable ICU 4.8
          */
         UBool operator==(const Part &other) const;
 
         /**
          * @param other another object to compare with.
          * @return FALSE if this object is equivalent to the other one.
-         * @draft ICU 4.8
+         * @stable ICU 4.8
          */
         inline UBool operator!=(const Part &other) const {
             return !operator==(other);
@@ -794,7 +809,7 @@ public:
 
         /**
          * @return A hash code for this object.
-         * @draft ICU 4.8
+         * @stable ICU 4.8
          */
         int32_t hashCode() const {
             return ((type*37+index)*37+length)*37+value;
@@ -881,6 +896,8 @@ private:
 
     UBool isSelect(int32_t index);
 
+    UBool isOrdinal(int32_t index);
+
     /**
      * @return TRUE if we are inside a MessageFormat (sub-)pattern,
      *         as opposed to inside a top-level choice/plural/select pattern.
@@ -903,9 +920,6 @@ private:
     void addArgDoublePart(double numericValue, int32_t start, int32_t length, UErrorCode &errorCode);
 
     void setParseError(UParseError *parseError, int32_t index);
-
-    // No ICU "poor man's RTTI" for this class nor its subclasses.
-    virtual UClassID getDynamicClassID() const;
 
     UBool init(UErrorCode &errorCode);
     UBool copyStorage(const MessagePattern &other, UErrorCode &errorCode);

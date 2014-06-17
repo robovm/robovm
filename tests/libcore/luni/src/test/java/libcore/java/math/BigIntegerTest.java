@@ -17,6 +17,7 @@
 package libcore.java.math;
 
 import java.math.BigInteger;
+import java.util.Random;
 
 public class BigIntegerTest extends junit.framework.TestCase {
     // http://code.google.com/p/android/issues/detail?id=18452
@@ -82,5 +83,77 @@ public class BigIntegerTest extends junit.framework.TestCase {
             fail();
         } catch (NumberFormatException expected) {
         }
+    }
+
+    public void test_Constructor_ILjava_util_Random() throws Exception {
+      Random rand = new Random();
+      BigInteger b;
+      for (int rep = 0; rep < 1024; ++rep) { // Manual flakiness protection for random tests.
+        b = new BigInteger(128, rand);
+        assertTrue(b.toString() + " " + b.bitLength(), b.bitLength() <= 128);
+
+        b = new BigInteger(16, rand);
+        assertTrue(b.toString() + " " + b.bitLength(), b.bitLength() <= 16);
+
+        b = new BigInteger(5, rand);
+        assertTrue(b.toString() + " " + b.bitLength(), b.bitLength() <= 5);
+      }
+    }
+
+    public void test_Constructor_IILjava_util_Random() throws Exception {
+      Random rand = new Random();
+      BigInteger b;
+      for (int rep = 0; rep < 1024; ++rep) { // Manual flakiness protection for random tests.
+        b = new BigInteger(128, 100, rand);
+        assertEquals(b.toString(), 128, b.bitLength());
+        assertTrue(b.isProbablePrime(100));
+
+        b = new BigInteger(16, 100, rand);
+        assertEquals(b.toString(), 16, b.bitLength());
+        assertTrue(b.isProbablePrime(100));
+
+        b = new BigInteger(5, 100, rand);
+        assertEquals(b.toString(), 5, b.bitLength());
+        assertTrue(b.isProbablePrime(100));
+      }
+
+      // Two bits is an interesting special case because there's an even 2-bit prime.
+      int[] primes = new int[1024];
+      boolean saw2 = false;
+      boolean saw3 = false;
+      for (int rep = 0; rep < primes.length; ++rep) { // Manual flakiness protection for random tests.
+        b = new BigInteger(2, 100, rand);
+        assertEquals(b.toString(), 2, b.bitLength());
+        assertTrue(b.isProbablePrime(100));
+        primes[rep] = b.intValue();
+      }
+      for (int i = 0; i < primes.length; ++i) {
+        if (primes[i] == 2) {
+          saw2 = true;
+        } else if (primes[i] == 3) {
+          saw3 = true;
+        } else {
+          fail();
+        }
+      }
+      assertTrue(saw2 && saw3);
+    }
+
+    public void test_probablePrime() throws Exception {
+      Random rand = new Random();
+      BigInteger b;
+      for (int rep = 0; rep < 1024; ++rep) { // Manual flakiness protection for random tests.
+        b = BigInteger.probablePrime(128, rand);
+        assertEquals(b.toString(), 128, b.bitLength());
+        assertTrue(b.isProbablePrime(100));
+
+        b = BigInteger.probablePrime(16, rand);
+        assertEquals(b.toString(), 16, b.bitLength());
+        assertTrue(b.isProbablePrime(100));
+
+        b = BigInteger.probablePrime(5, rand);
+        assertEquals(b.toString(), 5, b.bitLength());
+        assertTrue(b.isProbablePrime(100));
+      }
     }
 }

@@ -17,12 +17,14 @@
 package libcore.java.util;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 import java.util.SimpleTimeZone;
+import java.util.TimeZone;
+import junit.framework.TestCase;
 
-public class TimeZoneTest extends junit.framework.TestCase {
+public class TimeZoneTest extends TestCase {
     // http://code.google.com/p/android/issues/detail?id=877
     public void test_useDaylightTime_Taiwan() {
         TimeZone asiaTaipei = TimeZone.getTimeZone("Asia/Taipei");
@@ -144,8 +146,8 @@ public class TimeZoneTest extends junit.framework.TestCase {
 
     // http://code.google.com/p/android/issues/detail?id=11918
     public void testHasSameRules() throws Exception {
-        TimeZone denver = TimeZone.getTimeZone ("America/Denver") ;
-        TimeZone phoenix = TimeZone.getTimeZone ("America/Phoenix") ;
+        TimeZone denver = TimeZone.getTimeZone("America/Denver");
+        TimeZone phoenix = TimeZone.getTimeZone("America/Phoenix");
         assertFalse(denver.hasSameRules(phoenix));
     }
 
@@ -156,5 +158,164 @@ public class TimeZoneTest extends junit.framework.TestCase {
             fail();
         } catch (NullPointerException expected) {
         }
+    }
+
+    // http://b.corp.google.com/issue?id=6556561
+    public void testCustomZoneIds() throws Exception {
+        // These are all okay (and equivalent).
+        assertEquals("GMT+05:00", TimeZone.getTimeZone("GMT+05:00").getID());
+        assertEquals("GMT+05:00", TimeZone.getTimeZone("GMT+5:00").getID());
+        assertEquals("GMT+05:00", TimeZone.getTimeZone("GMT+0500").getID());
+        assertEquals("GMT+05:00", TimeZone.getTimeZone("GMT+500").getID());
+        assertEquals("GMT+05:00", TimeZone.getTimeZone("GMT+5").getID());
+        // These aren't.
+        assertEquals("GMT", TimeZone.getTimeZone("GMT+5.5").getID());
+        assertEquals("GMT", TimeZone.getTimeZone("GMT+5:5").getID());
+        assertEquals("GMT", TimeZone.getTimeZone("GMT+5:0").getID());
+        assertEquals("GMT", TimeZone.getTimeZone("GMT+5:005").getID());
+        assertEquals("GMT", TimeZone.getTimeZone("GMT+5:000").getID());
+        assertEquals("GMT", TimeZone.getTimeZone("GMT+005:00").getID());
+        assertEquals("GMT", TimeZone.getTimeZone("GMT+05:99").getID());
+        assertEquals("GMT", TimeZone.getTimeZone("GMT+28:00").getID());
+        assertEquals("GMT", TimeZone.getTimeZone("GMT+05:00.00").getID());
+        assertEquals("GMT", TimeZone.getTimeZone("GMT+05:00:00").getID());
+        assertEquals("GMT", TimeZone.getTimeZone("GMT+5:").getID());
+        assertEquals("GMT", TimeZone.getTimeZone("GMT+junk").getID());
+        assertEquals("GMT", TimeZone.getTimeZone("GMT+5junk").getID());
+        assertEquals("GMT", TimeZone.getTimeZone("GMT+5:junk").getID());
+        assertEquals("GMT", TimeZone.getTimeZone("GMT+5:00junk").getID());
+        assertEquals("GMT", TimeZone.getTimeZone("junkGMT+5:00").getID());
+        assertEquals("GMT", TimeZone.getTimeZone("junk").getID());
+        assertEquals("GMT", TimeZone.getTimeZone("gmt+5:00").getID());
+    }
+
+    public void test_getDSTSavings() throws Exception {
+      assertEquals(0, TimeZone.getTimeZone("UTC").getDSTSavings());
+      assertEquals(3600000, TimeZone.getTimeZone("America/Los_Angeles").getDSTSavings());
+      assertEquals(1800000, TimeZone.getTimeZone("Australia/Lord_Howe").getDSTSavings());
+    }
+
+    public void testSimpleTimeZoneDoesNotCallOverrideableMethodsFromConstructor() {
+        new SimpleTimeZone(0, "X", Calendar.MARCH, 1, 1, 1, Calendar.SEPTEMBER, 1, 1, 1) {
+            @Override public void setStartRule(int m, int d, int dow, int time) {
+                fail();
+            }
+            @Override public void setStartRule(int m, int d, int dow, int time, boolean after) {
+                fail();
+            }
+            @Override public void setEndRule(int m, int d, int dow, int time) {
+                fail();
+            }
+            @Override public void setEndRule(int m, int d, int dow, int time, boolean after) {
+                fail();
+            }
+        };
+    }
+
+    // http://b/7955614 and http://b/8026776.
+    public void testDisplayNames() throws Exception {
+        // Check that there are no time zones that use DST but have the same display name for
+        // both standard and daylight time.
+        StringBuilder failures = new StringBuilder();
+        for (String id : TimeZone.getAvailableIDs()) {
+            TimeZone tz = TimeZone.getTimeZone(id);
+            String longDst = tz.getDisplayName(true, TimeZone.LONG, Locale.US);
+            String longStd = tz.getDisplayName(false, TimeZone.LONG, Locale.US);
+            String shortDst = tz.getDisplayName(true, TimeZone.SHORT, Locale.US);
+            String shortStd = tz.getDisplayName(false, TimeZone.SHORT, Locale.US);
+
+            if (tz.useDaylightTime()) {
+                // The long std and dst strings must differ!
+                if (longDst.equals(longStd)) {
+                    failures.append(String.format("\n%20s: LD='%s' LS='%s'!",
+                                                  id, longDst, longStd));
+                }
+                // The short std and dst strings must differ!
+                if (shortDst.equals(shortStd)) {
+                    failures.append(String.format("\n%20s: SD='%s' SS='%s'!",
+                                                  id, shortDst, shortStd));
+                }
+
+                // If the short std matches the long dst, or the long std matches the short dst,
+                // it probably means we have a time zone that icu4c doesn't believe has ever
+                // observed dst.
+                if (shortStd.equals(longDst)) {
+                    failures.append(String.format("\n%20s: SS='%s' LD='%s'!",
+                                                  id, shortStd, longDst));
+                }
+                if (longStd.equals(shortDst)) {
+                    failures.append(String.format("\n%20s: LS='%s' SD='%s'!",
+                                                  id, longStd, shortDst));
+                }
+
+                // The long and short dst strings must differ!
+                if (longDst.equals(shortDst) && !longDst.startsWith("GMT")) {
+                  failures.append(String.format("\n%20s: LD='%s' SD='%s'!",
+                                                id, longDst, shortDst));
+                }
+            }
+
+            // Sanity check that whenever a display name is just a GMT string that it's the
+            // right GMT string.
+            String gmtDst = formatGmtString(tz, true);
+            String gmtStd = formatGmtString(tz, false);
+            if (isGmtString(longDst) && !longDst.equals(gmtDst)) {
+                failures.append(String.format("\n%s: LD %s", id, longDst));
+            }
+            if (isGmtString(longStd) && !longStd.equals(gmtStd)) {
+                failures.append(String.format("\n%s: LS %s", id, longStd));
+            }
+            if (isGmtString(shortDst) && !shortDst.equals(gmtDst)) {
+                failures.append(String.format("\n%s: SD %s", id, shortDst));
+            }
+            if (isGmtString(shortStd) && !shortStd.equals(gmtStd)) {
+                failures.append(String.format("\n%s: SS %s", id, shortStd));
+            }
+        }
+        assertEquals("", failures.toString());
+    }
+
+    public void testSantiago() throws Exception {
+        TimeZone tz = TimeZone.getTimeZone("America/Santiago");
+        assertEquals("Chile Summer Time", tz.getDisplayName(true, TimeZone.LONG, Locale.US));
+        assertEquals("Chile Standard Time", tz.getDisplayName(false, TimeZone.LONG, Locale.US));
+        assertEquals("GMT-03:00", tz.getDisplayName(true, TimeZone.SHORT, Locale.US));
+        assertEquals("GMT-04:00", tz.getDisplayName(false, TimeZone.SHORT, Locale.US));
+    }
+
+    // http://b/7955614
+    public void testApia() throws Exception {
+        TimeZone tz = TimeZone.getTimeZone("Pacific/Apia");
+        assertEquals("Samoa Daylight Time", tz.getDisplayName(true, TimeZone.LONG, Locale.US));
+        assertEquals("Samoa Standard Time", tz.getDisplayName(false, TimeZone.LONG, Locale.US));
+        assertEquals("GMT+14:00", tz.getDisplayName(true, TimeZone.SHORT, Locale.US));
+        assertEquals("GMT+13:00", tz.getDisplayName(false, TimeZone.SHORT, Locale.US));
+    }
+
+    private static boolean isGmtString(String s) {
+        return s.startsWith("GMT+") || s.startsWith("GMT-");
+    }
+
+    private static String formatGmtString(TimeZone tz, boolean daylight) {
+        int offset = tz.getRawOffset();
+        if (daylight) {
+            offset += tz.getDSTSavings();
+        }
+        offset /= 60000;
+        char sign = '+';
+        if (offset < 0) {
+            sign = '-';
+            offset = -offset;
+        }
+        return String.format("GMT%c%02d:%02d", sign, offset / 60, offset % 60);
+    }
+
+    public void testAllDisplayNames() throws Exception {
+      for (Locale locale : Locale.getAvailableLocales()) {
+        for (String id : TimeZone.getAvailableIDs()) {
+          TimeZone tz = TimeZone.getTimeZone(id);
+          assertNotNull(tz.getDisplayName(false, TimeZone.LONG, locale));
+        }
+      }
     }
 }

@@ -15,11 +15,6 @@
  *  limitations under the License.
  */
 
-/**
-* @author Boris V. Kuznetsov
-* @version $Revision$
-*/
-
 package org.apache.harmony.security.fortress;
 
 import java.security.Provider;
@@ -34,87 +29,83 @@ import java.util.Map;
 /**
  * This class contains information about all registered providers and preferred
  * implementations for all "serviceName.algName".
- *
  */
-
 public class Services {
 
-    // The HashMap that contains information about preferred implementations for
-    // all serviceName.algName in the registered providers.
-    // Set the initial size to 600 so we don't grow to 1024 by default because
-    // initialization adds a few entries more than the growth threshold.
+    /**
+     * The HashMap that contains information about preferred implementations for
+     * all serviceName.algName in the registered providers.
+     * Set the initial size to 600 so we don't grow to 1024 by default because
+     * initialization adds a few entries more than the growth threshold.
+     */
     private static final Map<String, Provider.Service> services
             = new HashMap<String, Provider.Service>(600);
-    // Save default SecureRandom service as well.
-    // Avoids similar provider/services iteration in SecureRandom constructor
-    private static Provider.Service secureRandom;
-
-    // Need refresh flag
-    private static boolean needRefresh; // = false;
 
     /**
-     * Refresh number
+     * Save default SecureRandom service as well.
+     * Avoids similar provider/services iteration in SecureRandom constructor.
      */
-    static int refreshNumber = 1;
+    private static Provider.Service cachedSecureRandomService;
 
-    // Registered providers
+    /**
+     * Need refresh flag.
+     */
+    private static boolean needRefresh;
+
+    /**
+     * The cacheVersion is changed on every update of service
+     * information. It is used by external callers to validate their
+     * own caches of Service information.
+     */
+    private static int cacheVersion = 1;
+
+    /**
+     * Registered providers.
+     */
     private static final List<Provider> providers = new ArrayList<Provider>(20);
 
-    // Hash for quick provider access by name
+    /**
+     * Hash for quick provider access by name.
+     */
     private static final Map<String, Provider> providersNames = new HashMap<String, Provider>(20);
     static {
-        loadProviders();
-    }
-
-    // Load statically registered providers and init Services Info
-    private static void loadProviders() {
         String providerClassName = null;
         int i = 1;
         ClassLoader cl = ClassLoader.getSystemClassLoader();
-        Provider p;
 
-        while ((providerClassName = Security.getProperty("security.provider."
-                + i++)) != null) {
+        while ((providerClassName = Security.getProperty("security.provider." + i++)) != null) {
             try {
-                p = (Provider) Class
-                        .forName(providerClassName.trim(), true, cl)
-                        .newInstance();
+                Class providerClass = Class.forName(providerClassName.trim(), true, cl);
+                Provider p = (Provider) providerClass.newInstance();
                 providers.add(p);
                 providersNames.put(p.getName(), p);
                 initServiceInfo(p);
-            } catch (ClassNotFoundException e) { // ignore Exceptions
-            } catch (IllegalAccessException e) {
-            } catch (InstantiationException e) {
+            } catch (ClassNotFoundException ignored) {
+            } catch (IllegalAccessException ignored) {
+            } catch (InstantiationException ignored) {
             }
         }
         Engine.door.renumProviders();
     }
 
     /**
-     * Returns registered providers
-     *
-     * @return
+     * Returns a copy of the registered providers as an array.
      */
-    public static Provider[] getProviders() {
+    public static synchronized Provider[] getProviders() {
         return providers.toArray(new Provider[providers.size()]);
     }
 
     /**
-     * Returns registered providers as List
-     *
-     * @return
+     * Returns a copy of the registered providers as a list.
      */
-    public static List<Provider> getProvidersList() {
+    public static synchronized List<Provider> getProvidersList() {
         return new ArrayList<Provider>(providers);
     }
 
     /**
-     * Returns the provider with the specified name
-     *
-     * @param name
-     * @return
+     * Returns the provider with the specified name.
      */
-    public static Provider getProvider(String name) {
+    public static synchronized Provider getProvider(String name) {
         if (name == null) {
             return null;
         }
@@ -122,13 +113,9 @@ public class Services {
     }
 
     /**
-     * Inserts a provider at a specified position
-     *
-     * @param provider
-     * @param position
-     * @return
+     * Inserts a provider at a specified 1-based position.
      */
-    public static int insertProviderAt(Provider provider, int position) {
+    public static synchronized int insertProviderAt(Provider provider, int position) {
         int size = providers.size();
         if ((position < 1) || (position > size)) {
             position = size + 1;
@@ -140,98 +127,91 @@ public class Services {
     }
 
     /**
-     * Removes the provider
-     *
-     * @param providerNumber
+     * Removes the provider at the specified 1-based position.
      */
-    public static void removeProvider(int providerNumber) {
+    public static synchronized void removeProvider(int providerNumber) {
         Provider p = providers.remove(providerNumber - 1);
         providersNames.remove(p.getName());
         setNeedRefresh();
     }
 
     /**
-     *
      * Adds information about provider services into HashMap.
-     *
-     * @param p
      */
-    public static void initServiceInfo(Provider p) {
-        for (Provider.Service serv : p.getServices()) {
-            String type = serv.getType();
-            if (secureRandom == null && type.equals("SecureRandom")) {
-                secureRandom = serv;
+    public static synchronized void initServiceInfo(Provider p) {
+        for (Provider.Service service : p.getServices()) {
+            String type = service.getType();
+            if (cachedSecureRandomService == null && type.equals("SecureRandom")) {
+                cachedSecureRandomService = service;
             }
-            String key = type + "." + serv.getAlgorithm().toUpperCase(Locale.US);
+            String key = type + "." + service.getAlgorithm().toUpperCase(Locale.US);
             if (!services.containsKey(key)) {
-                services.put(key, serv);
+                services.put(key, service);
             }
-            for (String alias : Engine.door.getAliases(serv)) {
+            for (String alias : Engine.door.getAliases(service)) {
                 key = type + "." + alias.toUpperCase(Locale.US);
                 if (!services.containsKey(key)) {
-                    services.put(key, serv);
+                    services.put(key, service);
                 }
             }
         }
     }
 
     /**
-     *
-     * Updates services hashtable for all registered providers
-     *
+     * Returns true if services contain any provider information.
      */
-    public static void updateServiceInfo() {
-        services.clear();
-        secureRandom = null;
-        for (Provider p : providers) {
-            initServiceInfo(p);
-        }
-        needRefresh = false;
-    }
-
-    /**
-     * Returns true if services contain any provider information
-     * @return
-     */
-    public static boolean isEmpty() {
+    public static synchronized boolean isEmpty() {
         return services.isEmpty();
     }
 
     /**
-     * Returns service description.
-     * Call refresh() before.
+     * Looks up the requested service by type and algorithm. The
+     * service key should be provided in the same format used when
+     * registering a service with a provider, for example,
+     * "KeyFactory.RSA".
      *
-     * @param key in the format TYPE.ALGORITHM
-     * @return
+     * Callers can cache the returned service information but such
+     * caches should be validated against the result of
+     * Service.getCacheVersion() before use.
      */
-    public static Provider.Service getService(String key) {
+    public static synchronized Provider.Service getService(String key) {
         return services.get(key);
     }
 
     /**
      * Returns the default SecureRandom service description.
-     * Call refresh() before.
      */
-    public static Provider.Service getSecureRandomService() {
-        return secureRandom;
+    public static synchronized Provider.Service getSecureRandomService() {
+        getCacheVersion();  // used for side effect of updating cache if needed
+        return cachedSecureRandomService;
     }
 
     /**
-     * Set flag needRefresh
-     *
+     * In addition to being used here when the list of providers
+     * changes, this method is also used by the Provider
+     * implementation to indicate that a provides list of services has
+     * changed.
      */
-    public static void setNeedRefresh() {
+    public static synchronized void setNeedRefresh() {
         needRefresh = true;
     }
 
     /**
-     * Refresh services info
-     *
+     * Returns the current cache version. This has the possible side
+     * effect of updating the cache if needed.
      */
-    public static void refresh() {
+    public static synchronized int getCacheVersion() {
         if (needRefresh) {
-            refreshNumber++;
-            updateServiceInfo();
+            cacheVersion++;
+            synchronized (services) {
+                services.clear();
+            }
+            cachedSecureRandomService = null;
+            for (Provider p : providers) {
+                initServiceInfo(p);
+            }
+            needRefresh = false;
         }
+        return cacheVersion;
     }
 }

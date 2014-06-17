@@ -35,7 +35,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
-import java.nio.charset.Charsets;
+import java.nio.charset.StandardCharsets;
 import java.security.Permission;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -350,7 +350,7 @@ public class FtpURLConnection extends URLConnection {
             }
             code[i] = (byte) tmp;
         }
-        replyCode = new String(code, 0, code.length, Charsets.ISO_8859_1);
+        replyCode = new String(code, 0, code.length, StandardCharsets.ISO_8859_1);
 
         boolean multiline = false;
         if (ctrlInput.read() == '-') {
@@ -497,6 +497,6 @@ public class FtpURLConnection extends URLConnection {
     }
 
     private void write(String command) throws IOException {
-        ctrlOutput.write(command.getBytes(Charsets.ISO_8859_1));
+        ctrlOutput.write(command.getBytes(StandardCharsets.ISO_8859_1));
     }
 }

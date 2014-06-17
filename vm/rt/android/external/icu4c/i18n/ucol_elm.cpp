@@ -1,7 +1,7 @@
 /*
 *******************************************************************************
 *
-*   Copyright (C) 2001-2010, International Business Machines
+*   Copyright (C) 2001-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 *******************************************************************************
@@ -31,12 +31,14 @@
 #include "unicode/unistr.h"
 #include "unicode/ucoleitr.h"
 #include "unicode/normlzr.h"
+#include "unicode/utf16.h"
 #include "normalizer2impl.h"
 #include "ucol_elm.h"
 #include "ucol_tok.h"
 #include "ucol_cnt.h"
 #include "unicode/caniter.h"
 #include "cmemory.h"
+#include "uassert.h"
 
 U_NAMESPACE_USE
 
@@ -157,7 +159,7 @@ uprv_uca_initTempTable(UCATableHeader *image, UColOptionSet *opts, const UCollat
     if (U_FAILURE(*status)) {
         goto allocation_failure;
     }
-    uhash_setValueDeleter(t->prefixLookup, uhash_freeBlock);
+    uhash_setValueDeleter(t->prefixLookup, uprv_free);
 
     t->contractions = uprv_cnttab_open(t->mapping, status);
     if (U_FAILURE(*status)) {
@@ -741,15 +743,12 @@ uprv_uca_copyCMTable(tempUCATable *t, UChar *cm, uint16_t *index) {
 static void uprv_uca_unsafeCPAddCCNZ(tempUCATable *t, UErrorCode *status) {
 
     UChar              c;
-    uint16_t           fcd;     // Hi byte is lead combining class.
-    // lo byte is trailing combing class.
-    const uint16_t    *fcdTrieIndex;
-    UChar32            fcdHighStart;
+    uint16_t           fcd;     // Hi byte is lead combining class. lo byte is trailing combing class.
     UBool buildCMTable = (t->cmLookup==NULL); // flag for building combining class table
     UChar *cm=NULL;
     uint16_t index[256];
     int32_t count=0;
-    fcdTrieIndex = unorm_getFCDTrieIndex(fcdHighStart, status);
+    const Normalizer2Impl *nfcImpl = Normalizer2Factory::getNFCImpl(*status);
     if (U_FAILURE(*status)) {
         return;
     }
@@ -765,9 +764,20 @@ static void uprv_uca_unsafeCPAddCCNZ(tempUCATable *t, UErrorCode *status) {
         uprv_memset(index, 0, sizeof(index));
     }
     for (c=0; c<0xffff; c++) {
-        fcd = unorm_getFCD16(fcdTrieIndex, c);
+        if (U16_IS_LEAD(c)) {
+            fcd = 0;
+            if (nfcImpl->singleLeadMightHaveNonZeroFCD16(c)) {
+                UChar32 supp = U16_GET_SUPPLEMENTARY(c, 0xdc00);
+                UChar32 suppLimit = supp + 0x400;
+                while (supp < suppLimit) {
+                    fcd |= nfcImpl->getFCD16FromNormData(supp++);
+                }
+            }
+        } else {
+            fcd = nfcImpl->getFCD16(c);
+        }
         if (fcd >= 0x100 ||               // if the leading combining class(c) > 0 ||
-            (UTF_IS_LEAD(c) && fcd != 0)) {//    c is a leading surrogate with some FCD data
+            (U16_IS_LEAD(c) && fcd != 0)) {//    c is a leading surrogate with some FCD data
             if (buildCMTable) {
                 uint32_t cClass = fcd & 0xff;
                 //uint32_t temp=(cClass<<8)+index[cClass];
@@ -796,13 +806,12 @@ static void uprv_uca_unsafeCPAddCCNZ(tempUCATable *t, UErrorCode *status) {
         const UHashElement *e = NULL;
         UCAElements *element = NULL;
         UChar NFCbuf[256];
-        uint32_t NFCbufLen = 0;
         while((e = uhash_nextElement(t->prefixLookup, &i)) != NULL) {
             element = (UCAElements *)e->value.pointer;
             // codepoints here are in the NFD form. We need to add the
             // first code point of the NFC form to unsafe, because
             // strcoll needs to backup over them.
-            NFCbufLen = unorm_normalize(element->cPoints, element->cSize, UNORM_NFC, 0,
+            unorm_normalize(element->cPoints, element->cSize, UNORM_NFC, 0,
                 NFCbuf, 256, status);
             unsafeCPSet(t->unsafeCP, NFCbuf[0]);
         }
@@ -845,7 +854,7 @@ static uint32_t uprv_uca_addPrefix(tempUCATable *t, uint32_t CE,
     for (j = 1; j<element->prefixSize; j++) {   /* First add NFD prefix chars to unsafe CP hash table */
         // Unless it is a trail surrogate, which is handled algoritmically and
         // shouldn't take up space in the table.
-        if(!(UTF_IS_TRAIL(element->prefix[j]))) {
+        if(!(U16_IS_TRAIL(element->prefix[j]))) {
             unsafeCPSet(t->unsafeCP, element->prefix[j]);
         }
     }
@@ -868,13 +877,13 @@ static uint32_t uprv_uca_addPrefix(tempUCATable *t, uint32_t CE,
 #endif
 
     // the first codepoint is also unsafe, as it forms a 'contraction' with the prefix
-    if(!(UTF_IS_TRAIL(element->cPoints[0]))) {
+    if(!(U16_IS_TRAIL(element->cPoints[0]))) {
         unsafeCPSet(t->unsafeCP, element->cPoints[0]);
     }
 
     // Maybe we need this... To handle prefixes completely in the forward direction...
     //if(element->cSize == 1) {
-    //  if(!(UTF_IS_TRAIL(element->cPoints[0]))) {
+    //  if(!(U16_IS_TRAIL(element->cPoints[0]))) {
     //    ContrEndCPSet(t->contrEndCP, element->cPoints[0]);
     //  }
     //}
@@ -885,12 +894,12 @@ static uint32_t uprv_uca_addPrefix(tempUCATable *t, uint32_t CE,
     // Add the last char of the contraction to the contraction-end hash table.
     // unless it is a trail surrogate, which is handled algorithmically and
     // shouldn't be in the table
-    if(!(UTF_IS_TRAIL(element->cPoints[element->cSize -1]))) {
+    if(!(U16_IS_TRAIL(element->cPoints[element->cSize -1]))) {
         ContrEndCPSet(t->contrEndCP, element->cPoints[element->cSize -1]);
     }
 
     // First we need to check if contractions starts with a surrogate
-    UTF_NEXT_CHAR(element->cPoints, cpsize, element->cSize, cp);
+    U16_NEXT(element->cPoints, cpsize, element->cSize, cp);
 
     // If there are any Jamos in the contraction, we should turn on special
     // processing for Jamos
@@ -943,21 +952,21 @@ static uint32_t uprv_uca_addContraction(tempUCATable *t, uint32_t CE,
     contractions->currentTag = CONTRACTION_TAG;
 
     // First we need to check if contractions starts with a surrogate
-    UTF_NEXT_CHAR(element->cPoints, cpsize, element->cSize, cp);
+    U16_NEXT(element->cPoints, cpsize, element->cSize, cp);
 
     if(cpsize<element->cSize) { // This is a real contraction, if there are other characters after the first
         uint32_t j = 0;
         for (j=1; j<element->cSize; j++) {   /* First add contraction chars to unsafe CP hash table */
             // Unless it is a trail surrogate, which is handled algoritmically and 
             // shouldn't take up space in the table.
-            if(!(UTF_IS_TRAIL(element->cPoints[j]))) {
+            if(!(U16_IS_TRAIL(element->cPoints[j]))) {
                 unsafeCPSet(t->unsafeCP, element->cPoints[j]);
             }
         }
         // Add the last char of the contraction to the contraction-end hash table.
         // unless it is a trail surrogate, which is handled algorithmically and 
         // shouldn't be in the table
-        if(!(UTF_IS_TRAIL(element->cPoints[element->cSize -1]))) {
+        if(!(U16_IS_TRAIL(element->cPoints[element->cSize -1]))) {
             ContrEndCPSet(t->contrEndCP, element->cPoints[element->cSize -1]);
         }
 
@@ -1065,7 +1074,7 @@ static uint32_t uprv_uca_finalizeAddition(tempUCATable *t, UCAElements *element,
     uint32_t i = 0;
     if(element->mapCE == 0) {
         for(i = 0; i < element->cSize; i++) {
-            if(!UTF_IS_TRAIL(element->cPoints[i])) {
+            if(!U16_IS_TRAIL(element->cPoints[i])) {
                 unsafeCPSet(t->unsafeCP, element->cPoints[i]);
             }
         }
@@ -1074,7 +1083,7 @@ static uint32_t uprv_uca_finalizeAddition(tempUCATable *t, UCAElements *element,
         uint32_t i = 0;
         UChar32 cp;
 
-        UTF_NEXT_CHAR(element->cPoints, i, element->cSize, cp);
+        U16_NEXT(element->cPoints, i, element->cSize, cp);
         /*CE = ucmpe32_get(t->mapping, cp);*/
         CE = utrie_get32(t->mapping, cp, NULL);
 
@@ -1286,7 +1295,7 @@ uprv_uca_addAnElement(tempUCATable *t, UCAElements *element, UErrorCode *status)
     // We need to use the canonical iterator here
     // the way we do it is to generate the canonically equivalent strings 
     // for the contraction and then add the sequences that pass FCD check
-    if(element->cSize > 1 && !(element->cSize==2 && UTF16_IS_LEAD(element->cPoints[0]) && UTF16_IS_TRAIL(element->cPoints[1]))) { // this is a contraction, we should check whether a composed form should also be included
+    if(element->cSize > 1 && !(element->cSize==2 && U16_IS_LEAD(element->cPoints[0]) && U16_IS_TRAIL(element->cPoints[1]))) { // this is a contraction, we should check whether a composed form should also be included
         UnicodeString source(element->cPoints, element->cSize);
         CanonicalIterator it(source, *status);
         source = it.next();
@@ -1406,7 +1415,7 @@ UBool enumRange(const void *context, UChar32 start, UChar32 limit, uint32_t valu
     if(start<0x10000) {
         fprintf(stdout, "%08X, %08X, %08X\n", start, limit, value);
     } else {
-        fprintf(stdout, "%08X=%04X %04X, %08X=%04X %04X, %08X\n", start, UTF16_LEAD(start), UTF16_TRAIL(start), limit, UTF16_LEAD(limit), UTF16_TRAIL(limit), value);
+        fprintf(stdout, "%08X=%04X %04X, %08X=%04X %04X, %08X\n", start, U16_LEAD(start), U16_TRAIL(start), limit, U16_LEAD(limit), U16_TRAIL(limit), value);
     }
     return TRUE;
 }
@@ -1771,6 +1780,7 @@ uprv_uca_addFCD4AccentedContractions(tempUCATable *t,
         uprv_uca_setMapCE(t, el, status);
         uprv_uca_addAnElement(t, el, status);
     }
+    el->cPoints=NULL; /* don't leak reference to stack */
 }
 
 static void
@@ -1782,12 +1792,11 @@ uprv_uca_addMultiCMContractions(tempUCATable *t,
     CombinClassTable *cmLookup = t->cmLookup;
     UChar  newDecomp[256];
     int32_t maxComp, newDecLen;
-    UChar32 fcdHighStart;
-    const uint16_t *fcdTrieIndex = unorm_getFCDTrieIndex(fcdHighStart, status);
+    const Normalizer2Impl *nfcImpl = Normalizer2Factory::getNFCImpl(*status);
     if (U_FAILURE(*status)) {
         return;
     }
-    int16_t curClass = (unorm_getFCD16(fcdTrieIndex, c->tailoringCM) & 0xff);
+    int16_t curClass = nfcImpl->getFCD16(c->tailoringCM) & 0xff;
     CompData *precomp = c->precomp;
     int32_t  compLen = c->compLen;
     UChar *comp = c->comp;
@@ -1852,27 +1861,26 @@ uprv_uca_addTailCanonicalClosures(tempUCATable *t,
                                   UCAElements *el,
                                   UErrorCode *status) {
     CombinClassTable *cmLookup = t->cmLookup;
-    UChar32 fcdHighStart;
-    const uint16_t *fcdTrieIndex = unorm_getFCDTrieIndex(fcdHighStart, status);
+    const Normalizer2Impl *nfcImpl = Normalizer2Factory::getNFCImpl(*status);
     if (U_FAILURE(*status)) {
         return;
     }
-    int16_t maxIndex = (unorm_getFCD16(fcdTrieIndex, cMark) & 0xff );
+    int16_t maxIndex = nfcImpl->getFCD16(cMark) & 0xff;
     UCAElements element;
     uint16_t *index;
     UChar  decomp[256];
     UChar  comp[256];
     CompData precomp[256];   // precomposed array
     int32_t  precompLen = 0; // count for precomp
-    int32_t i, len, decompLen, curClass, replacedPos;
+    int32_t i, len, decompLen, replacedPos;
     tempTailorContext c;
 
     if ( cmLookup == NULL ) {
         return;
     }
     index = cmLookup->index;
-    int32_t cClass=(unorm_getFCD16(fcdTrieIndex, cMark) & 0xff);
-    maxIndex = (int32_t)index[(unorm_getFCD16(fcdTrieIndex, cMark) & 0xff)-1];
+    int32_t cClass=nfcImpl->getFCD16(cMark) & 0xff;
+    maxIndex = (int32_t)index[(nfcImpl->getFCD16(cMark) & 0xff)-1];
     c.comp = comp;
     c.decomp = decomp;
     c.precomp = precomp;
@@ -1894,8 +1902,8 @@ uprv_uca_addTailCanonicalClosures(tempUCATable *t,
             // Save the current precomposed char and its class to find any
             // other combining mark combinations.
             precomp[precompLen].cp=comp[0];
-            curClass = precomp[precompLen].cClass =
-                       index[unorm_getFCD16(fcdTrieIndex, decomp[1]) & 0xff];
+            precomp[precompLen].cClass =
+                       index[nfcImpl->getFCD16(decomp[1]) & 0xff];
             precompLen++;
             replacedPos=0;
             for (decompLen=0; decompLen< (int32_t)el->cSize; decompLen++) {
@@ -1935,7 +1943,7 @@ uprv_uca_addTailCanonicalClosures(tempUCATable *t,
             // This is a fix for tailoring contractions with accented
             // character at the end of contraction string.
             if ((len>2) && 
-                (unorm_getFCD16(fcdTrieIndex, comp[len-2]) & 0xff00)==0) {
+                (nfcImpl->getFCD16(comp[len-2]) & 0xff00)==0) {
                 uprv_uca_addFCD4AccentedContractions(t, colEl, comp, len, &element, status);
             }
 
@@ -1964,8 +1972,6 @@ uprv_uca_canonicalClosure(tempUCATable *t,
     UColToken *tok;
     uint32_t i = 0, j = 0;
     UChar  baseChar, firstCM;
-    UChar32 fcdHighStart;
-    const uint16_t *fcdTrieIndex = unorm_getFCDTrieIndex(fcdHighStart, status);
     context.nfcImpl=Normalizer2Factory::getNFCImpl(*status);
     if(U_FAILURE(*status)) {
         return 0;
@@ -2036,7 +2042,7 @@ uprv_uca_canonicalClosure(tempUCATable *t,
             }
             if(src->UCA != NULL) {
                 for(j = 0; j<el.cSize; j++) {
-                    int16_t fcd = unorm_getFCD16(fcdTrieIndex, el.cPoints[j]);
+                    int16_t fcd = context.nfcImpl->getFCD16(el.cPoints[j]);
                     if ( (fcd & 0xff) == 0 ) {
                         baseChar = el.cPoints[j];  // last base character
                         firstCM=0;  // reset combining mark value

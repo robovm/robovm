@@ -1,6 +1,6 @@
 /*
  ********************************************************************************
- *   Copyright (C) 1997-2011, International Business Machines
+ *   Copyright (C) 1997-2012, International Business Machines
  *   Corporation and others.  All Rights Reserved.
  ********************************************************************************
  *
@@ -387,13 +387,37 @@ public:
                           UErrorCode& status) const;
 
     /**
-     * Parse a date/time string.
+     * Parse a date/time string. For example, a time text "07/10/96 4:5 PM, PDT"
+     * will be parsed into a UDate that is equivalent to Date(837039928046).
+     * Parsing begins at the beginning of the string and proceeds as far as
+     * possible.  Assuming no parse errors were encountered, this function
+     * doesn't return any information about how much of the string was consumed
+     * by the parsing.  If you need that information, use the version of
+     * parse() that takes a ParsePosition.
+     * <P>
+     * By default, parsing is lenient: If the input is not in the form used by
+     * this object's format method but can still be parsed as a date, then the
+     * parse succeeds. Clients may insist on strict adherence to the format by
+     * calling setLenient(false).
+     * @see DateFormat::setLenient(boolean)
+     * <P>
+     * Note that the normal date formats associated with some calendars - such
+     * as the Chinese lunar calendar - do not specify enough fields to enable
+     * dates to be parsed unambiguously. In the case of the Chinese lunar
+     * calendar, while the year within the current 60-year cycle is specified,
+     * the number of such cycles since the start date of the calendar (in the
+     * ERA field of the Calendar object) is not normally part of the format,
+     * and parsing may assume the wrong era. For cases such as this it is
+     * recommended that clients parse using the method
+     * parse(const UnicodeString&, Calendar& cal, ParsePosition&)
+     * with the Calendar passed in set to the current date, or to a date
+     * within the era/cycle that should be assumed if absent in the format.
      *
-     * @param text      The string to be parsed into a UDate value.
+     * @param text      The date/time string to be parsed into a UDate value.
      * @param status    Output param to be set to success/failure code. If
      *                  'text' cannot be parsed, it will be set to a failure
      *                  code.
-     * @result          The parsed UDate value, if successful.
+     * @return          The parsed UDate value, if successful.
      * @stable ICU 2.0
      */
     virtual UDate parse( const UnicodeString& text,
@@ -408,21 +432,21 @@ public:
      * this object's format method but can still be parsed as a date, then the
      * parse succeeds. Clients may insist on strict adherence to the format by
      * calling setLenient(false).
-     *
      * @see DateFormat::setLenient(boolean)
      *
-     * @param text  The date/time string to be parsed
-     * @param cal   a Calendar set to the date and time to be formatted
-     *              into a date/time string.  When the calendar type
-     *              is different from the internal calendar held by this
-     *              DateFormat instance, calendar field values will be
-     *              parsed based on the internal calendar, then the result
-     *              (time in milliseconds and time zone) will be set in
-     *              this calendar.
+     * @param text  The date/time string to be parsed.
+     * @param cal   A Calendar set on input to the date and time to be used for
+     *              missing values in the date/time string being parsed, and set
+     *              on output to the parsed date/time. When the calendar type is
+     *              different from the internal calendar held by this DateFormat
+     *              instance, the internal calendar will be cloned to a work
+     *              calendar set to the same milliseconds and time zone as the
+     *              cal parameter, field values will be parsed based on the work
+     *              calendar, then the result (milliseconds and time zone) will
+     *              be set in this calendar.
      * @param pos   On input, the position at which to start parsing; on
      *              output, the position at which parsing terminated, or the
      *              start position if the parse failed.
-     * @return      A valid UDate if the input could be parsed.
      * @stable ICU 2.1
      */
     virtual void parse( const UnicodeString& text,
@@ -438,10 +462,21 @@ public:
      * this object's format method but can still be parsed as a date, then the
      * parse succeeds. Clients may insist on strict adherence to the format by
      * calling setLenient(false).
-     *
      * @see DateFormat::setLenient(boolean)
+     * <P>
+     * Note that the normal date formats associated with some calendars - such
+     * as the Chinese lunar calendar - do not specify enough fields to enable
+     * dates to be parsed unambiguously. In the case of the Chinese lunar
+     * calendar, while the year within the current 60-year cycle is specified,
+     * the number of such cycles since the start date of the calendar (in the
+     * ERA field of the Calendar object) is not normally part of the format,
+     * and parsing may assume the wrong era. For cases such as this it is
+     * recommended that clients parse using the method
+     * parse(const UnicodeString&, Calendar& cal, ParsePosition&)
+     * with the Calendar passed in set to the current date, or to a date
+     * within the era/cycle that should be assumed if absent in the format.
      *
-     * @param text  The date/time string to be parsed
+     * @param text  The date/time string to be parsed into a UDate value.
      * @param pos   On input, the position at which to start parsing; on
      *              output, the position at which parsing terminated, or the
      *              start position if the parse failed.
@@ -472,9 +507,6 @@ public:
      *                  last character successfully parsed. If the
      *                  source is not parsed successfully, this param
      *                  will remain unchanged.
-     * @return          A newly created Formattable* object, or NULL
-     *                  on failure.  The caller owns this and should
-     *                  delete it when done.
      * @stable ICU 2.0
      */
     virtual void parseObject(const UnicodeString& source,
@@ -508,8 +540,13 @@ public:
      * Creates a date formatter with the given formatting style for the given
      * const locale.
      *
-     * @param style     The given formatting style. For example,
-     *                  SHORT for "M/d/yy" in the US locale.
+     * @param style     The given formatting style. For example, SHORT for "M/d/yy" in the
+     *                  US locale. As currently implemented, relative date formatting only
+     *                  affects a limited range of calendar days before or after the
+     *                  current date, based on the CLDR &lt;field type="day"&gt;/&lt;relative&gt; data:
+     *                  For example, in English, "Yesterday", "Today", and "Tomorrow".
+     *                  Outside of this range, dates are formatted using the corresponding
+     *                  non-relative style.
      * @param aLocale   The given locale.
      * @return          A date formatter which the caller owns.
      * @stable ICU 2.0
@@ -522,7 +559,12 @@ public:
      * given locale.
      *
      * @param dateStyle The given formatting style for the date portion of the result.
-     *                  For example, SHORT for "M/d/yy" in the US locale.
+     *                  For example, SHORT for "M/d/yy" in the US locale. As currently
+     *                  implemented, relative date formatting only affects a limited range
+     *                  of calendar days before or after the current date, based on the
+     *                  CLDR &lt;field type="day"&gt;/&lt;relative&gt; data: For example, in English,
+     *                  "Yesterday", "Today", and "Tomorrow". Outside of this range, dates
+     *                  are formatted using the corresponding non-relative style.
      * @param timeStyle The given formatting style for the time portion of the result.
      *                  For example, SHORT for "h:mm a" in the US locale. Relative
      *                  time styles are not currently supported.
@@ -683,6 +725,7 @@ private:
     static DateFormat* U_EXPORT2 create(EStyle timeStyle, EStyle dateStyle, const Locale& inLocale);
 
 public:
+#ifndef U_HIDE_OBSOLETE_API
     /**
      * Field selector for FieldPosition for DateFormat fields.
      * @obsolete ICU 3.4 use UDateFormatField instead, since this API will be
@@ -735,6 +778,7 @@ public:
         HOUR0_FIELD = UDAT_HOUR0_FIELD,
         TIMEZONE_FIELD = UDAT_TIMEZONE_FIELD
     };
+#endif  /* U_HIDE_OBSOLETE_API */
 };
 
 inline UnicodeString&

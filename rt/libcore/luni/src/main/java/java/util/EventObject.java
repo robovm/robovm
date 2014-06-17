@@ -41,7 +41,7 @@ public class EventObject implements Serializable {
      */
     public EventObject(Object source) {
         if (source == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("source == null");
         }
         this.source = source;
     }

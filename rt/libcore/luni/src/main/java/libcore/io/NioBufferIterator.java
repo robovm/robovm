@@ -25,13 +25,13 @@ import libcore.io.Memory;
  * @hide don't make this public without adding bounds checking.
  */
 public final class NioBufferIterator extends BufferIterator {
-    private final int address;
+    private final long address;
     private final int size;
     private final boolean swap;
 
     private int position;
 
-    NioBufferIterator(int address, int size, boolean swap) {
+    NioBufferIterator(long address, int size, boolean swap) {
         this.address = address;
         this.size = size;
         this.swap = swap;

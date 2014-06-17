@@ -1,6 +1,6 @@
 /*
 **********************************************************************
-*   Copyright (C) 1997-2011, International Business Machines
+*   Copyright (C) 1997-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 **********************************************************************
 *
@@ -20,12 +20,34 @@
 
 #include "unicode/utypes.h"
 #include "unicode/uclean.h"
+#include "putilimp.h"
 
-#if defined(U_WINDOWS)
+/* For _ReadWriteBarrier(). */
+#if defined(_MSC_VER) && _MSC_VER >= 1500
 # include <intrin.h>
 #endif
 
-#if defined(U_DARWIN)
+/* For CRITICAL_SECTION */
+#if U_PLATFORM_HAS_WIN32_API
+#if 0  
+/* TODO(andy): Why doesn't windows.h compile in all files? It does in some.
+ *             The intent was to include windows.h here, and have struct UMutex
+ *             have an embedded CRITICAL_SECTION when building on Windows.
+ *             The workaround is to put some char[] storage in UMutex instead,
+ *             avoiding the need to include windows.h everwhere this header is included.
+ */
+# define WIN32_LEAN_AND_MEAN
+# define VC_EXTRALEAN
+# define NOUSER
+# define NOSERVICE
+# define NOIME
+# define NOMCX
+# include <windows.h>
+#endif  /* 0 */
+#define U_WINDOWS_CRIT_SEC_SIZE 64
+#endif  /* win32 */
+
+#if U_PLATFORM_IS_DARWIN_BASED
 #if defined(__STRICT_ANSI__)
 #define UPRV_REMAP_INLINE
 #define inline
@@ -49,30 +71,13 @@
 # define ANNOTATE_UNPROTECTED_READ(x) (x)
 #endif
 
-/* APP_NO_THREADS is an old symbol. We'll honour it if present. */
-#ifdef APP_NO_THREADS
-# define ICU_USE_THREADS 0
-#endif
-
-/* ICU_USE_THREADS
- *
- *   Allows thread support (use of mutexes) to be compiled out of ICU.
- *   Default: use threads.
- *   Even with thread support compiled out, applications may override the
- *   (empty) mutex implementation with the u_setMutexFunctions() functions.
- */
-#ifndef ICU_USE_THREADS
-# define ICU_USE_THREADS 1
-#endif
-
 #ifndef UMTX_FULL_BARRIER
-# if !ICU_USE_THREADS
-#  define UMTX_FULL_BARRIER
-# elif U_HAVE_GCC_ATOMICS
+# if U_HAVE_GCC_ATOMICS
 #  define UMTX_FULL_BARRIER __sync_synchronize();
-# elif defined(U_WINDOWS)
+# elif defined(_MSC_VER) && _MSC_VER >= 1500
+    /* From MSVC intrin.h. Use _ReadWriteBarrier() only on MSVC 9 and higher. */
 #  define UMTX_FULL_BARRIER _ReadWriteBarrier();
-# elif defined(U_DARWIN)
+# elif U_PLATFORM_IS_DARWIN_BASED
 #  define UMTX_FULL_BARRIER OSMemoryBarrier();
 # else
 #  define UMTX_FULL_BARRIER \
@@ -133,40 +138,80 @@
  * an alternative C++ mutex API is defined in the file common/mutex.h
  */
 
+/*
+ * UMutex - Mutexes for use by ICU implementation code.
+ *          Must be declared as static or globals. They cannot appear as members
+ *          of other objects.
+ *          UMutex structs must be initialized.
+ *          Example:
+ *            static UMutex = U_MUTEX_INITIALIZER;
+ *          The declaration of struct UMutex is platform dependent.
+ */
+
+
+#if U_PLATFORM_HAS_WIN32_API
+
+/*  U_INIT_ONCE mimics the windows API INIT_ONCE, which exists on Windows Vista and newer.
+ *  When ICU no longer needs to support older Windows platforms (XP) that do not have
+ * a native INIT_ONCE, switch this implementation over to wrap the native Windows APIs.
+ */
+typedef struct U_INIT_ONCE {
+    long               fState;
+    void              *fContext;
+} U_INIT_ONCE;
+#define U_INIT_ONCE_STATIC_INIT {0, NULL}
+
+typedef struct UMutex {
+    U_INIT_ONCE       fInitOnce;
+    UMTX              fUserMutex;
+    UBool             fInitialized;  /* Applies to fUserMutex only. */
+    /* CRITICAL_SECTION  fCS; */  /* See note above. Unresolved problems with including
+                                   * Windows.h, which would allow using CRITICAL_SECTION
+                                   * directly here. */
+    char              fCS[U_WINDOWS_CRIT_SEC_SIZE];
+} UMutex;
+
+/* Initializer for a static UMUTEX. Deliberately contains no value for the
+ *  CRITICAL_SECTION.
+ */
+#define U_MUTEX_INITIALIZER {U_INIT_ONCE_STATIC_INIT, NULL, FALSE}
+
+#elif U_PLATFORM_IMPLEMENTS_POSIX
+#include <pthread.h>
+
+struct UMutex {
+    pthread_mutex_t  fMutex;
+    UMTX             fUserMutex;
+    UBool            fInitialized;
+};
+#define U_MUTEX_INITIALIZER  {PTHREAD_MUTEX_INITIALIZER, NULL, FALSE}
+
+#else
+/* Unknow platform type. */
+struct UMutex {
+    void *fMutex;
+};
+#define U_MUTEX_INITIALIZER {NULL}
+#error Unknown Platform.
+
+#endif
+
+#if (U_PLATFORM != U_PF_CYGWIN && U_PLATFORM != U_PF_MINGW) || defined(CYGWINMSVC)
+typedef struct UMutex UMutex;
+#endif
+    
 /* Lock a mutex.
  * @param mutex The given mutex to be locked.  Pass NULL to specify
  *              the global ICU mutex.  Recursive locks are an error
  *              and may cause a deadlock on some platforms.
  */
-U_CAPI void U_EXPORT2 umtx_lock   ( UMTX* mutex ); 
+U_CAPI void U_EXPORT2 umtx_lock(UMutex* mutex); 
 
-/* Unlock a mutex. Pass in NULL if you want the single global
-   mutex. 
+/* Unlock a mutex.
  * @param mutex The given mutex to be unlocked.  Pass NULL to specify
  *              the global ICU mutex.
  */
-U_CAPI void U_EXPORT2 umtx_unlock ( UMTX* mutex );
-
-/* Initialize a mutex. Use it this way:
-   umtx_init( &aMutex ); 
- * ICU Mutexes do not need explicit initialization before use.  Use of this
- *   function is not necessary.
- * Initialization of an already initialized mutex has no effect, and is safe to do.
- * Initialization of mutexes is thread safe.  Two threads can concurrently 
- *   initialize the same mutex without causing problems.
- * @param mutex The given mutex to be initialized
- */
-U_CAPI void U_EXPORT2 umtx_init   ( UMTX* mutex );
-
-/* Destroy a mutex. This will free the resources of a mutex.
- * Use it this way:
- *   umtx_destroy( &aMutex ); 
- * Destroying an already destroyed mutex has no effect, and causes no problems.
- * This function is not thread safe.  Two threads must not attempt to concurrently
- *   destroy the same mutex.
- * @param mutex The given mutex to be destroyed.
- */
-U_CAPI void U_EXPORT2 umtx_destroy( UMTX *mutex );
+U_CAPI void U_EXPORT2 umtx_unlock (UMutex* mutex);
 
 /*
  * Atomic Increment and Decrement of an int32_t value.

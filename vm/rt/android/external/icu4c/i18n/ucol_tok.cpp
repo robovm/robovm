@@ -1,7 +1,7 @@
 /*
 *******************************************************************************
 *
-*   Copyright (C) 2001-2011, International Business Machines
+*   Copyright (C) 2001-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 *******************************************************************************
@@ -133,12 +133,6 @@ U_CDECL_END
 #ifdef DEBUG_FOR_CODE_POINTS
     FILE* dfcp_fp = NULL;
 #endif
-
-
-/*static inline void U_CALLCONV
-uhash_freeBlockWrapper(void *obj) {
-    uhash_freeBlock(obj);
-}*/
 
 
 typedef struct {
@@ -1555,7 +1549,7 @@ inline UColToken *getVirginBefore(UColTokenParser *src, UColToken *sourceToken, 
     collIterate s;
     uint32_t baseCE = UCOL_NOT_FOUND, baseContCE = UCOL_NOT_FOUND;
     uint32_t CE, SecondCE;
-    uint32_t invPos;
+    // uint32_t invPos;
     if(sourceToken != NULL) {
         uprv_init_collIterate(src->UCA, src->source+((sourceToken->source)&0xFFFFFF), 1, &s, status);
     } else {
@@ -1614,7 +1608,7 @@ inline UColToken *getVirginBefore(UColTokenParser *src, UColToken *sourceToken, 
         }
 
     } else {
-        invPos = ucol_inv_getPrevCE(src, baseCE, baseContCE, &CE, &SecondCE, strength);
+        /* invPos = */ ucol_inv_getPrevCE(src, baseCE, baseContCE, &CE, &SecondCE, strength);
 
         // we got the previous CE. Now we need to see if the difference between
         // the two CEs is really of the requested strength.
@@ -2367,7 +2361,7 @@ void ucol_tok_initTokenList(
     if(U_FAILURE(*status)) {
         return;
     }
-    uhash_setValueDeleter(src->tailored, uhash_freeBlock);
+    uhash_setValueDeleter(src->tailored, uprv_free);
 
     src->opts = (UColOptionSet *)uprv_malloc(sizeof(UColOptionSet));
     /* test for NULL */

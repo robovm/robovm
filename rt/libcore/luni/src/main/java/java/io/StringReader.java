@@ -83,7 +83,7 @@ public class StringReader extends Reader {
     @Override
     public void mark(int readLimit) throws IOException {
         if (readLimit < 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("readLimit < 0: " + readLimit);
         }
 
         synchronized (lock) {
@@ -131,39 +131,29 @@ public class StringReader extends Reader {
     }
 
     /**
-     * Reads at most {@code len} characters from the source string and stores
-     * them at {@code offset} in the character array {@code buf}. Returns the
+     * Reads up to {@code count} characters from the source string and stores
+     * them at {@code offset} in the character array {@code buffer}. Returns the
      * number of characters actually read or -1 if the end of the source string
      * has been reached.
      *
-     * @param buf
-     *            the character array to store the characters read.
-     * @param offset
-     *            the initial position in {@code buffer} to store the characters
-     *            read from this reader.
-     * @param len
-     *            the maximum number of characters to read.
-     * @return the number of characters read or -1 if the end of the reader has
-     *         been reached.
      * @throws IndexOutOfBoundsException
-     *             if {@code offset < 0} or {@code len < 0}, or if
-     *             {@code offset + len} is greater than the size of {@code buf}.
+                if {@code offset < 0 || count < 0 || offset + count > buffer.length}.
      * @throws IOException
      *             if this reader is closed.
      */
     @Override
-    public int read(char[] buf, int offset, int len) throws IOException {
+    public int read(char[] buffer, int offset, int count) throws IOException {
         synchronized (lock) {
             checkNotClosed();
-            Arrays.checkOffsetAndCount(buf.length, offset, len);
-            if (len == 0) {
+            Arrays.checkOffsetAndCount(buffer.length, offset, count);
+            if (count == 0) {
                 return 0;
             }
             if (pos == this.count) {
                 return -1;
             }
-            int end = pos + len > this.count ? this.count : pos + len;
-            str.getChars(pos, end, buf, offset);
+            int end = pos + count > this.count ? this.count : pos + count;
+            str.getChars(pos, end, buffer, offset);
             int read = end - pos;
             pos = end;
             return read;

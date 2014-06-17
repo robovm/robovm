@@ -20,7 +20,7 @@ package java.lang;
 /**
  * Thrown when a class loader is unable to find a class.
  */
-public class ClassNotFoundException extends Exception {
+public class ClassNotFoundException extends ReflectiveOperationException {
 
     private static final long serialVersionUID = 9176873029745254542L;
 

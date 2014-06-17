@@ -93,15 +93,15 @@ public class Engine {
         /** used to test for cache hit */
         private final String algorithm;
         /** used to test for cache validity */
-        private final int refreshNumber;
+        private final int cacheVersion;
         /** cached result */
         private final Provider.Service service;
 
         private ServiceCacheEntry(String algorithm,
-                                  int refreshNumber,
+                                  int cacheVersion,
                                   Provider.Service service) {
             this.algorithm = algorithm;
-            this.refreshNumber = refreshNumber;
+            this.cacheVersion = cacheVersion;
             this.service = service;
         }
     }
@@ -134,12 +134,12 @@ public class Engine {
         if (algorithm == null) {
             throw new NoSuchAlgorithmException("Null algorithm name");
         }
-        Services.refresh();
+        int newCacheVersion = Services.getCacheVersion();
         Provider.Service service;
         ServiceCacheEntry cacheEntry = this.serviceCache;
         if (cacheEntry != null
                 && cacheEntry.algorithm.equalsIgnoreCase(algorithm)
-                && Services.refreshNumber == cacheEntry.refreshNumber) {
+                && newCacheVersion == cacheEntry.cacheVersion) {
             service = cacheEntry.service;
         } else {
             if (Services.isEmpty()) {
@@ -150,7 +150,7 @@ public class Engine {
             if (service == null) {
                 throw notFound(serviceName, algorithm);
             }
-            this.serviceCache = new ServiceCacheEntry(algorithm, Services.refreshNumber, service);
+            this.serviceCache = new ServiceCacheEntry(algorithm, newCacheVersion, service);
         }
         return new SpiAndProvider(service.newInstance(param), service.getProvider());
     }

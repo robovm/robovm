@@ -123,7 +123,7 @@ public final class X500Principal implements Serializable, Principal {
      */
     public X500Principal(String name) {
         if (name == null) {
-            throw new NullPointerException("Name cannot be null");
+            throw new NullPointerException("name == null");
         }
         try {
             dn = new Name(name);
@@ -134,7 +134,7 @@ public final class X500Principal implements Serializable, Principal {
 
     public X500Principal(String name, Map<String,String> keywordMap){
         if (name == null) {
-            throw new NullPointerException("Name cannot be null");
+            throw new NullPointerException("name == null");
         }
         try {
             dn = new Name(substituteNameFromMap(name, keywordMap));

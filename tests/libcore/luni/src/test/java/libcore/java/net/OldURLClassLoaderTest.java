@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.jar.Manifest;
 import org.apache.harmony.security.tests.support.TestCertUtils;
 import tests.support.Support_Configuration;
-import tests.support.Support_PortManager;
 import tests.support.Support_TestWebData;
 import tests.support.Support_TestWebServer;
 import tests.support.resource.Support_Resources;
@@ -210,13 +209,12 @@ public class OldURLClassLoaderTest extends junit.framework.TestCase {
 
     @SideEffect("Support_TestWebServer requires isolation.")
     public void test_findResourceLjava_lang_String() throws Exception {
-        int port = Support_PortManager.getNextPort();
         File tmp = File.createTempFile("test", ".txt");
 
         Support_TestWebServer server = new Support_TestWebServer();
         try {
 
-            server.initServer(port, tmp.getAbsolutePath(), "text/html");
+            int port = server.initServer(tmp.getAbsolutePath(), "text/html");
 
             URL[] urls = { new URL("http://localhost:" + port + "/") };
             ucl = new URLClassLoader(urls);
@@ -244,9 +242,8 @@ public class OldURLClassLoaderTest extends junit.framework.TestCase {
         tempFile2.deleteOnExit();
 
         Support_TestWebServer server = new Support_TestWebServer();
-        int port = Support_PortManager.getNextPort();
         try {
-            server.initServer(port, false);
+            int port = server.initServer();
 
             String tempPath1 = tempFile1.getParentFile().getAbsolutePath() + "/";
             InputStream is = getClass().getResourceAsStream(

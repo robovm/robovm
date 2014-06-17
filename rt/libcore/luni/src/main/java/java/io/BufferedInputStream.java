@@ -242,35 +242,14 @@ public class BufferedInputStream extends FilterInputStream {
         return -1;
     }
 
-    /**
-     * Reads at most {@code byteCount} bytes from this stream and stores them in
-     * byte array {@code buffer} starting at offset {@code offset}. Returns the
-     * number of bytes actually read or -1 if no bytes were read and the end of
-     * the stream was encountered. If all the buffered bytes have been used, a
-     * mark has not been set and the requested number of bytes is larger than
-     * the receiver's buffer size, this implementation bypasses the buffer and
-     * simply places the results directly into {@code buffer}.
-     *
-     * @param buffer
-     *            the byte array in which to store the bytes read.
-     * @return the number of bytes actually read or -1 if end of stream.
-     * @throws IndexOutOfBoundsException
-     *             if {@code offset < 0} or {@code byteCount < 0}, or if
-     *             {@code offset + byteCount} is greater than the size of
-     *             {@code buffer}.
-     * @throws IOException
-     *             if the stream is already closed or another IOException
-     *             occurs.
-     */
-    @Override
-    public synchronized int read(byte[] buffer, int offset, int byteCount) throws IOException {
+    @Override public synchronized int read(byte[] buffer, int byteOffset, int byteCount) throws IOException {
         // Use local ref since buf may be invalidated by an unsynchronized
         // close()
         byte[] localBuf = buf;
         if (localBuf == null) {
             throw streamClosed();
         }
-        Arrays.checkOffsetAndCount(buffer.length, offset, byteCount);
+        Arrays.checkOffsetAndCount(buffer.length, byteOffset, byteCount);
         if (byteCount == 0) {
             return 0;
         }
@@ -283,12 +262,12 @@ public class BufferedInputStream extends FilterInputStream {
         if (pos < count) {
             /* There are bytes available in the buffer. */
             int copylength = count - pos >= byteCount ? byteCount : count - pos;
-            System.arraycopy(localBuf, pos, buffer, offset, copylength);
+            System.arraycopy(localBuf, pos, buffer, byteOffset, copylength);
             pos += copylength;
             if (copylength == byteCount || localIn.available() == 0) {
                 return copylength;
             }
-            offset += copylength;
+            byteOffset += copylength;
             required = byteCount - copylength;
         } else {
             required = byteCount;
@@ -301,7 +280,7 @@ public class BufferedInputStream extends FilterInputStream {
              * buffer, simply read the bytes directly bypassing the buffer.
              */
             if (markpos == -1 && required >= localBuf.length) {
-                read = localIn.read(buffer, offset, required);
+                read = localIn.read(buffer, byteOffset, required);
                 if (read == -1) {
                     return required == byteCount ? -1 : byteCount - required;
                 }
@@ -318,7 +297,7 @@ public class BufferedInputStream extends FilterInputStream {
                 }
 
                 read = count - pos >= required ? required : count - pos;
-                System.arraycopy(localBuf, pos, buffer, offset, read);
+                System.arraycopy(localBuf, pos, buffer, byteOffset, read);
                 pos += read;
             }
             required -= read;
@@ -328,7 +307,7 @@ public class BufferedInputStream extends FilterInputStream {
             if (localIn.available() == 0) {
                 return byteCount - required;
             }
-            offset += read;
+            byteOffset += read;
         }
     }
 

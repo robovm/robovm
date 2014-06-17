@@ -49,7 +49,7 @@ public class Observable {
      */
     public void addObserver(Observer observer) {
         if (observer == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("observer == null");
         }
         synchronized (this) {
             if (!observers.contains(observer))

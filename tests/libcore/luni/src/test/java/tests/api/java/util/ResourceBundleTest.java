@@ -33,6 +33,12 @@ import tests.support.resource.Support_Resources;
 
 public class ResourceBundleTest extends junit.framework.TestCase {
 
+    public void test_getCandidateLocales() throws Exception {
+        ResourceBundle.Control c = ResourceBundle.Control.getControl(ResourceBundle.Control.FORMAT_DEFAULT);
+        assertEquals("[en_US, en, ]", c.getCandidateLocales("base", Locale.US).toString());
+        assertEquals("[de_CH, de, ]", c.getCandidateLocales("base", new Locale("de", "CH")).toString());
+    }
+
     /**
      * java.util.ResourceBundle#getBundle(java.lang.String,
      *        java.util.Locale)
@@ -64,15 +70,19 @@ public class ResourceBundleTest extends junit.framework.TestCase {
         assertEquals("Wrong bundle de_FR_var 2", "parentValue4", bundle.getString("parent4")
                 );
 
-        // Test with a security manager
-        Locale.setDefault(new Locale("en", "US"));
-
         try {
-            ResourceBundle.getBundle(null, Locale.getDefault());
+            ResourceBundle.getBundle(null, Locale.US);
             fail("NullPointerException expected");
         } catch (NullPointerException ee) {
             //expected
         }
+        try {
+            ResourceBundle.getBundle("blah", (Locale) null);
+            fail("NullPointerException expected");
+        } catch (NullPointerException ee) {
+            //expected
+        }
+
 
         try {
             ResourceBundle.getBundle("", new Locale("xx", "yy"));
@@ -80,8 +90,6 @@ public class ResourceBundleTest extends junit.framework.TestCase {
         } catch (MissingResourceException ee) {
             //expected
         }
-
-        Locale.setDefault(defLocale);
     }
 
     /**

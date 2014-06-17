@@ -19,7 +19,7 @@ package libcore.javax.net.ssl;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.math.BigInteger;
-import java.nio.charset.Charsets;
+import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.security.PublicKey;
 import java.security.cert.CertificateFactory;
@@ -31,7 +31,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import javax.net.ssl.DefaultHostnameVerifier;
-import javax.net.ssl.DistinguishedNameParser;
 import javax.security.auth.x500.X500Principal;
 import junit.framework.TestCase;
 
@@ -41,39 +40,6 @@ public final class DefaultHostnameVerifierTest extends TestCase {
     private static final int ALT_IPA_NAME = 7;
 
     private final DefaultHostnameVerifier verifier = new DefaultHostnameVerifier();
-
-    public void testGetFirstCn() {
-        assertFirstCn("", null);
-        assertFirstCn("ou=xxx", null);
-        assertFirstCn("ou=xxx,cn=xxx", "xxx");
-        assertFirstCn("ou=xxx+cn=yyy,cn=zzz+cn=abc", "yyy");
-        assertFirstCn("cn=a,cn=b", "a");
-        assertFirstCn("cn=Cc,cn=Bb,cn=Aa", "Cc");
-        assertFirstCn("cn=imap.gmail.com", "imap.gmail.com");
-    }
-
-    public void testGetFirstCnWithOid() {
-        assertFirstCn("2.5.4.3=a,ou=xxx", "a");
-    }
-
-    public void testGetFirstCnWithQuotedStrings() {
-        assertFirstCn("cn=\"\\\" a ,=<>#;\"", "\" a ,=<>#;");
-        assertFirstCn("cn=abc\\,def", "abc,def");
-    }
-
-    public void testGetFirstCnWithUtf8() {
-        assertFirstCn("cn=Lu\\C4\\8Di\\C4\\87", "\u004c\u0075\u010d\u0069\u0107");
-    }
-
-    public void testGetFirstCnWithWhitespace() {
-        assertFirstCn("ou=a, cn=  a  b  ,o=x", "a  b");
-        assertFirstCn("cn=\"  a  b  \" ,o=x", "  a  b  ");
-    }
-
-    private void assertFirstCn(String dn, String expected) {
-        X500Principal principal = new X500Principal(dn);
-        assertEquals("dn:" + dn, expected, new DistinguishedNameParser(principal).find("cn"));
-    }
 
     public void testVerify() {
         assertTrue(verifier.verify("imap.g.com", new StubX509Certificate("cn=imap.g.com")));
@@ -335,7 +301,7 @@ public final class DefaultHostnameVerifierTest extends TestCase {
     }
 
     X509Certificate parseCertificate(String encoded) throws Exception {
-        InputStream in = new ByteArrayInputStream(encoded.getBytes(Charsets.US_ASCII));
+        InputStream in = new ByteArrayInputStream(encoded.getBytes(StandardCharsets.US_ASCII));
         return (X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(in);
     }
 

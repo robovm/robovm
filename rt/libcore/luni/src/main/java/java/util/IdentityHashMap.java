@@ -261,13 +261,12 @@ public class IdentityHashMap<K, V> extends AbstractMap<K, V> implements
      *            this map.
      */
     public IdentityHashMap(int maxSize) {
-        if (maxSize >= 0) {
-            this.size = 0;
-            threshold = getThreshold(maxSize);
-            elementData = newElementArray(computeElementArraySize());
-        } else {
-            throw new IllegalArgumentException();
+        if (maxSize < 0) {
+            throw new IllegalArgumentException("maxSize < 0: " + maxSize);
         }
+        size = 0;
+        threshold = getThreshold(maxSize);
+        elementData = newElementArray(computeElementArraySize());
     }
 
     private int getThreshold(int maxSize) {
@@ -442,7 +441,7 @@ public class IdentityHashMap<K, V> extends AbstractMap<K, V> implements
     }
 
     private int getModuloHash(Object key, int length) {
-        return ((System.identityHashCode(key) & 0x7FFFFFFF) % (length / 2)) * 2;
+        return ((Collections.secondaryIdentityHash(key) & 0x7FFFFFFF) % (length / 2)) * 2;
     }
 
     /**

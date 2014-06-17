@@ -165,11 +165,7 @@ public abstract class NumberFormat extends Format {
     }
 
     /**
-     * Returns a new {@code NumberFormat} with the same properties as this
-     * {@code NumberFormat}.
-     *
-     * @return a shallow copy of this {@code NumberFormat}.
-     * @see java.lang.Cloneable
+     * Returns a new {@code NumberFormat} with the same properties.
      */
     @Override
     public Object clone() {
@@ -305,7 +301,7 @@ public abstract class NumberFormat extends Format {
             double dv = ((Number) object).doubleValue();
             return format(dv, buffer, field);
         }
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("Bad class: " + object.getClass());
     }
 
     /**
@@ -570,7 +566,7 @@ public abstract class NumberFormat extends Format {
     @Override
     public final Object parseObject(String string, ParsePosition position) {
         if (position == null) {
-            throw new NullPointerException("position is null");
+            throw new NullPointerException("position == null");
         }
         try {
             return parse(string, position);

@@ -385,6 +385,9 @@ public abstract class BreakIterator implements Cloneable {
      *            the new text string to be analyzed.
      */
     public void setText(String newText) {
+        if (newText == null) {
+            throw new NullPointerException("newText == null");
+        }
         wrapped.setText(newText);
     }
 

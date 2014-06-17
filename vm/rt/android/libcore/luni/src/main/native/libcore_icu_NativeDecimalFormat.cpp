@@ -16,6 +16,7 @@
 
 #define LOG_TAG "NativeDecimalFormat"
 
+#include "IcuUtilities.h"
 #include "JNIHelp.h"
 #include "JniConstants.h"
 #include "JniException.h"
@@ -35,11 +36,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-static DecimalFormat* toDecimalFormat(jint addr) {
+static DecimalFormat* toDecimalFormat(jlong addr) {
     return reinterpret_cast<DecimalFormat*>(static_cast<uintptr_t>(addr));
 }
 
-static UNumberFormat* toUNumberFormat(jint addr) {
+static UNumberFormat* toUNumberFormat(jlong addr) {
     return reinterpret_cast<UNumberFormat*>(static_cast<uintptr_t>(addr));
 }
 
@@ -86,7 +87,7 @@ static DecimalFormatSymbols* makeDecimalFormatSymbols(JNIEnv* env,
     return result;
 }
 
-extern "C" void Java_libcore_icu_NativeDecimalFormat_setDecimalFormatSymbols(JNIEnv* env, jclass, jint addr,
+extern "C" void Java_libcore_icu_NativeDecimalFormat_setDecimalFormatSymbols(JNIEnv* env, jclass, jlong addr,
         jstring currencySymbol, jchar decimalSeparator, jchar digit, jstring exponentSeparator,
         jchar groupingSeparator, jstring infinity,
         jstring internationalCurrencySymbol, jchar minusSign,
@@ -100,19 +101,18 @@ extern "C" void Java_libcore_icu_NativeDecimalFormat_setDecimalFormatSymbols(JNI
     toDecimalFormat(addr)->adoptDecimalFormatSymbols(symbols);
 }
 
-extern "C" jint Java_libcore_icu_NativeDecimalFormat_open(JNIEnv* env, jclass, jstring pattern0,
+extern "C" jlong Java_libcore_icu_NativeDecimalFormat_open(JNIEnv* env, jclass, jstring pattern0,
         jstring currencySymbol, jchar decimalSeparator, jchar digit, jstring exponentSeparator,
         jchar groupingSeparator, jstring infinity,
         jstring internationalCurrencySymbol, jchar minusSign,
         jchar monetaryDecimalSeparator, jstring nan, jchar patternSeparator,
         jchar percent, jchar perMill, jchar zeroDigit) {
-    if (pattern0 == NULL) {
-        jniThrowNullPointerException(env, NULL);
-        return 0;
-    }
     UErrorCode status = U_ZERO_ERROR;
     UParseError parseError;
     ScopedJavaUnicodeString pattern(env, pattern0);
+    if (!pattern.valid()) {
+      return 0;
+    }
     DecimalFormatSymbols* symbols = makeDecimalFormatSymbols(env,
             currencySymbol, decimalSeparator, digit, exponentSeparator, groupingSeparator,
             infinity, internationalCurrencySymbol, minusSign,
@@ -122,21 +122,21 @@ extern "C" jint Java_libcore_icu_NativeDecimalFormat_open(JNIEnv* env, jclass, j
     if (fmt == NULL) {
         delete symbols;
     }
-    maybeThrowIcuException(env, status);
-    return static_cast<jint>(reinterpret_cast<uintptr_t>(fmt));
+    maybeThrowIcuException(env, "DecimalFormat::DecimalFormat", status);
+    return reinterpret_cast<uintptr_t>(fmt);
 }
 
-extern "C" void Java_libcore_icu_NativeDecimalFormat_close(JNIEnv*, jclass, jint addr) {
+extern "C" void Java_libcore_icu_NativeDecimalFormat_close(JNIEnv*, jclass, jlong addr) {
     delete toDecimalFormat(addr);
 }
 
-extern "C" void Java_libcore_icu_NativeDecimalFormat_setRoundingMode(JNIEnv*, jclass, jint addr, jint mode, jdouble increment) {
+extern "C" void Java_libcore_icu_NativeDecimalFormat_setRoundingMode(JNIEnv*, jclass, jlong addr, jint mode, jdouble increment) {
     DecimalFormat* fmt = toDecimalFormat(addr);
     fmt->setRoundingMode(static_cast<DecimalFormat::ERoundingMode>(mode));
     fmt->setRoundingIncrement(increment);
 }
 
-extern "C" void Java_libcore_icu_NativeDecimalFormat_setSymbol(JNIEnv* env, jclass, jint addr, jint javaSymbol, jstring javaValue) {
+extern "C" void Java_libcore_icu_NativeDecimalFormat_setSymbol(JNIEnv* env, jclass, jlong addr, jint javaSymbol, jstring javaValue) {
     ScopedStringChars value(env, javaValue);
     if (value.get() == NULL) {
         return;
@@ -144,20 +144,20 @@ extern "C" void Java_libcore_icu_NativeDecimalFormat_setSymbol(JNIEnv* env, jcla
     UErrorCode status = U_ZERO_ERROR;
     UNumberFormatSymbol symbol = static_cast<UNumberFormatSymbol>(javaSymbol);
     unum_setSymbol(toUNumberFormat(addr), symbol, value.get(), value.size(), &status);
-    maybeThrowIcuException(env, status);
+    maybeThrowIcuException(env, "unum_setSymbol", status);
 }
 
-extern "C" void Java_libcore_icu_NativeDecimalFormat_setAttribute(JNIEnv*, jclass, jint addr, jint javaAttr, jint value) {
+extern "C" void Java_libcore_icu_NativeDecimalFormat_setAttribute(JNIEnv*, jclass, jlong addr, jint javaAttr, jint value) {
     UNumberFormatAttribute attr = static_cast<UNumberFormatAttribute>(javaAttr);
     unum_setAttribute(toUNumberFormat(addr), attr, value);
 }
 
-extern "C" jint Java_libcore_icu_NativeDecimalFormat_getAttribute(JNIEnv*, jclass, jint addr, jint javaAttr) {
+extern "C" jint Java_libcore_icu_NativeDecimalFormat_getAttribute(JNIEnv*, jclass, jlong addr, jint javaAttr) {
     UNumberFormatAttribute attr = static_cast<UNumberFormatAttribute>(javaAttr);
     return unum_getAttribute(toUNumberFormat(addr), attr);
 }
 
-extern "C" void Java_libcore_icu_NativeDecimalFormat_setTextAttribute(JNIEnv* env, jclass, jint addr, jint javaAttr, jstring javaValue) {
+extern "C" void Java_libcore_icu_NativeDecimalFormat_setTextAttribute(JNIEnv* env, jclass, jlong addr, jint javaAttr, jstring javaValue) {
     ScopedStringChars value(env, javaValue);
     if (value.get() == NULL) {
         return;
@@ -165,10 +165,10 @@ extern "C" void Java_libcore_icu_NativeDecimalFormat_setTextAttribute(JNIEnv* en
     UErrorCode status = U_ZERO_ERROR;
     UNumberFormatTextAttribute attr = static_cast<UNumberFormatTextAttribute>(javaAttr);
     unum_setTextAttribute(toUNumberFormat(addr), attr, value.get(), value.size(), &status);
-    maybeThrowIcuException(env, status);
+    maybeThrowIcuException(env, "unum_setTextAttribute", status);
 }
 
-extern "C" jstring Java_libcore_icu_NativeDecimalFormat_getTextAttribute(JNIEnv* env, jclass, jint addr, jint javaAttr) {
+extern "C" jstring Java_libcore_icu_NativeDecimalFormat_getTextAttribute(JNIEnv* env, jclass, jlong addr, jint javaAttr) {
     UErrorCode status = U_ZERO_ERROR;
     UNumberFormat* fmt = toUNumberFormat(addr);
     UNumberFormatTextAttribute attr = static_cast<UNumberFormatTextAttribute>(javaAttr);
@@ -184,26 +184,28 @@ extern "C" jstring Java_libcore_icu_NativeDecimalFormat_getTextAttribute(JNIEnv*
         chars.reset(new UChar[charCount]);
         charCount = unum_getTextAttribute(fmt, attr, chars.get(), charCount, &status);
     }
-    return maybeThrowIcuException(env, status) ? NULL : env->NewString(chars.get(), charCount);
+    return maybeThrowIcuException(env, "unum_getTextAttribute", status) ? NULL : env->NewString(chars.get(), charCount);
 }
 
-extern "C" void Java_libcore_icu_NativeDecimalFormat_applyPatternImpl(JNIEnv* env, jclass, jint addr, jboolean localized, jstring pattern0) {
-    if (pattern0 == NULL) {
-        jniThrowNullPointerException(env, NULL);
-        return;
-    }
+extern "C" void Java_libcore_icu_NativeDecimalFormat_applyPatternImpl(JNIEnv* env, jclass, jlong addr, jboolean localized, jstring pattern0) {
     ScopedJavaUnicodeString pattern(env, pattern0);
+    if (!pattern.valid()) {
+      return;
+    }
     DecimalFormat* fmt = toDecimalFormat(addr);
     UErrorCode status = U_ZERO_ERROR;
+    const char* function;
     if (localized) {
+        function = "DecimalFormat::applyLocalizedPattern";
         fmt->applyLocalizedPattern(pattern.unicodeString(), status);
     } else {
+        function = "DecimalFormat::applyPattern";
         fmt->applyPattern(pattern.unicodeString(), status);
     }
-    maybeThrowIcuException(env, status);
+    maybeThrowIcuException(env, function, status);
 }
 
-extern "C" jstring Java_libcore_icu_NativeDecimalFormat_toPatternImpl(JNIEnv* env, jclass, jint addr, jboolean localized) {
+extern "C" jstring Java_libcore_icu_NativeDecimalFormat_toPatternImpl(JNIEnv* env, jclass, jlong addr, jboolean localized) {
     DecimalFormat* fmt = toDecimalFormat(addr);
     UnicodeString pattern;
     if (localized) {
@@ -239,7 +241,7 @@ static jcharArray formatResult(JNIEnv* env, const UnicodeString &str, FieldPosit
 }
 
 template <typename T>
-static jcharArray format(JNIEnv* env, jint addr, jobject fpIter, T val) {
+static jcharArray format(JNIEnv* env, jlong addr, jobject fpIter, T val) {
     UErrorCode status = U_ZERO_ERROR;
     UnicodeString str;
     DecimalFormat* fmt = toDecimalFormat(addr);
@@ -249,15 +251,15 @@ static jcharArray format(JNIEnv* env, jint addr, jobject fpIter, T val) {
     return formatResult(env, str, pfpi, fpIter);
 }
 
-extern "C" jcharArray Java_libcore_icu_NativeDecimalFormat_formatLong(JNIEnv* env, jclass, jint addr, jlong value, jobject fpIter) {
+extern "C" jcharArray Java_libcore_icu_NativeDecimalFormat_formatLong(JNIEnv* env, jclass, jlong addr, jlong value, jobject fpIter) {
     return format(env, addr, fpIter, value);
 }
 
-extern "C" jcharArray Java_libcore_icu_NativeDecimalFormat_formatDouble(JNIEnv* env, jclass, jint addr, jdouble value, jobject fpIter) {
+extern "C" jcharArray Java_libcore_icu_NativeDecimalFormat_formatDouble(JNIEnv* env, jclass, jlong addr, jdouble value, jobject fpIter) {
     return format(env, addr, fpIter, value);
 }
 
-extern "C" jcharArray Java_libcore_icu_NativeDecimalFormat_formatDigitList(JNIEnv* env, jclass, jint addr, jstring value, jobject fpIter) {
+extern "C" jcharArray Java_libcore_icu_NativeDecimalFormat_formatDigitList(JNIEnv* env, jclass, jlong addr, jstring value, jobject fpIter) {
     ScopedUtfChars chars(env, value);
     if (chars.c_str() == NULL) {
         return NULL;
@@ -278,7 +280,7 @@ static jobject newBigDecimal(JNIEnv* env, const char* value, jsize len) {
     return env->NewObject(JniConstants::bigDecimalClass, gBigDecimal_init, str);
 }
 
-extern "C" jobject Java_libcore_icu_NativeDecimalFormat_parse(JNIEnv* env, jclass, jint addr, jstring text,
+extern "C" jobject Java_libcore_icu_NativeDecimalFormat_parse(JNIEnv* env, jclass, jlong addr, jstring text,
         jobject position, jboolean parseBigDecimal) {
 
     static jmethodID gPP_getIndex = env->GetMethodID(JniConstants::parsePositionClass, "getIndex", "()I");
@@ -296,13 +298,16 @@ extern "C" jobject Java_libcore_icu_NativeDecimalFormat_parse(JNIEnv* env, jclas
     Formattable res;
     ParsePosition pp(parsePos);
     ScopedJavaUnicodeString src(env, text);
+    if (!src.valid()) {
+      return NULL;
+    }
     DecimalFormat* fmt = toDecimalFormat(addr);
     fmt->parse(src.unicodeString(), res, pp);
 
     if (pp.getErrorIndex() == -1) {
-        env->CallVoidMethod(position, gPP_setIndex, (jint) pp.getIndex());
+        env->CallVoidMethod(position, gPP_setIndex, pp.getIndex());
     } else {
-        env->CallVoidMethod(position, gPP_setErrorIndex, (jint) pp.getErrorIndex());
+        env->CallVoidMethod(position, gPP_setErrorIndex, pp.getErrorIndex());
         return NULL;
     }
 
@@ -316,35 +321,23 @@ extern "C" jobject Java_libcore_icu_NativeDecimalFormat_parse(JNIEnv* env, jclas
                 strncmp(data, "Inf", 3) == 0 ||
                 strncmp(data, "-Inf", 4) == 0) {
                 double resultDouble = res.getDouble(status);
-                return doubleValueOf(env, (jdouble) resultDouble);
+                return doubleValueOf(env, resultDouble);
             }
             return newBigDecimal(env, data, len);
         }
         return NULL;
     }
 
-    Formattable::Type numType = res.getType();
-        switch(numType) {
-        case Formattable::kDouble: {
-            double resultDouble = res.getDouble();
-            return doubleValueOf(env, (jdouble) resultDouble);
-        }
-        case Formattable::kLong: {
-            long resultLong = res.getLong();
-            return longValueOf(env, (jlong) resultLong);
-        }
-        case Formattable::kInt64: {
-            int64_t resultInt64 = res.getInt64();
-            return longValueOf(env, (jlong) resultInt64);
-        }
-        default: {
-            return NULL;
-        }
+    switch (res.getType()) {
+        case Formattable::kDouble: return doubleValueOf(env, res.getDouble());
+        case Formattable::kLong:   return longValueOf(env, res.getLong());
+        case Formattable::kInt64:  return longValueOf(env, res.getInt64());
+        default:                   return NULL;
     }
 }
 
-extern "C" jint Java_libcore_icu_NativeDecimalFormat_cloneImpl(JNIEnv*, jclass, jint addr) {
+extern "C" jint Java_libcore_icu_NativeDecimalFormat_cloneImpl(JNIEnv*, jclass, jlong addr) {
     DecimalFormat* fmt = toDecimalFormat(addr);
-    return static_cast<jint>(reinterpret_cast<uintptr_t>(fmt->clone()));
+    return reinterpret_cast<uintptr_t>(fmt->clone());
 }
 

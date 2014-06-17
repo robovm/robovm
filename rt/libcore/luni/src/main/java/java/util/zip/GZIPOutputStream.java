@@ -47,32 +47,39 @@ public class GZIPOutputStream extends DeflaterOutputStream {
     protected CRC32 crc = new CRC32();
 
     /**
-     * Construct a new {@code GZIPOutputStream} to write data in GZIP format to
-     * the underlying stream.
-     *
-     * @param os
-     *            the {@code OutputStream} to write data to.
-     * @throws IOException
-     *             if an {@code IOException} occurs.
+     * Constructs a new {@code GZIPOutputStream} to write data in GZIP format to
+     * the given stream.
      */
     public GZIPOutputStream(OutputStream os) throws IOException {
-        this(os, BUF_SIZE);
+        this(os, BUF_SIZE, true);
     }
 
     /**
-     * Construct a new {@code GZIPOutputStream} to write data in GZIP format to
-     * the underlying stream. Set the internal compression buffer to size
-     * {@code size}.
-     *
-     * @param os
-     *            the {@code OutputStream} to write to.
-     * @param size
-     *            the internal buffer size.
-     * @throws IOException
-     *             if an {@code IOException} occurs.
+     * Constructs a new {@code GZIPOutputStream} to write data in GZIP format to
+     * the given stream with the given flushing behavior (see {@link DeflaterOutputStream#flush}).
+     * @since 1.7
      */
-    public GZIPOutputStream(OutputStream os, int size) throws IOException {
-        super(os, new Deflater(Deflater.DEFAULT_COMPRESSION, true), size);
+    public GZIPOutputStream(OutputStream os, boolean syncFlush) throws IOException {
+        this(os, BUF_SIZE, syncFlush);
+    }
+
+    /**
+     * Constructs a new {@code GZIPOutputStream} to write data in GZIP format to
+     * the given stream with the given internal buffer size and
+     * flushing behavior (see {@link DeflaterOutputStream#flush}).
+     */
+    public GZIPOutputStream(OutputStream os, int bufferSize) throws IOException {
+        this(os, bufferSize, true);
+    }
+
+    /**
+     * Constructs a new {@code GZIPOutputStream} to write data in GZIP format to
+     * the given stream with the given internal buffer size and
+     * flushing behavior (see {@link DeflaterOutputStream#flush}).
+     * @since 1.7
+     */
+    public GZIPOutputStream(OutputStream os, int bufferSize, boolean syncFlush) throws IOException {
+        super(os, new Deflater(Deflater.DEFAULT_COMPRESSION, true), bufferSize, syncFlush);
         writeShort(GZIPInputStream.GZIP_MAGIC);
         out.write(Deflater.DEFLATED);
         out.write(0); // flags

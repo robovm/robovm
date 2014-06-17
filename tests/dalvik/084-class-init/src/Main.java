@@ -48,6 +48,13 @@ public class Main {
         } catch (NoClassDefFoundError ncdfe) {
             System.out.println("Got expected NCDFE for FIELD1");
         }
+
+        try {
+            System.out.println(Exploder.FIELD);
+            System.err.println("Load of FIELD succeeded unexpectedly");
+        } catch (AssertionError expected) {
+            System.out.println("Got expected '" + expected.getMessage() + "' from Exploder");
+        }
     }
 
     static void checkTiming() {

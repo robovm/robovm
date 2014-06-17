@@ -133,9 +133,7 @@ public abstract class XPathFactory {
     public static final XPathFactory newInstance(final String uri)
         throws XPathFactoryConfigurationException {
         if (uri == null) {
-            throw new NullPointerException(
-                "XPathFactory#newInstance(String uri) cannot be called with uri == null"
-            );
+            throw new NullPointerException("uri == null");
         }
         if (uri.length() == 0) {
             throw new IllegalArgumentException(
@@ -167,9 +165,7 @@ public abstract class XPathFactory {
     public static XPathFactory newInstance(String uri, String factoryClassName,
             ClassLoader classLoader) throws XPathFactoryConfigurationException {
         if (uri == null) {
-            throw new NullPointerException(
-                "XPathFactory#newInstance(String uri) cannot be called with uri == null"
-            );
+            throw new NullPointerException("uri == null");
         }
         if (uri.length() == 0) {
             throw new IllegalArgumentException(

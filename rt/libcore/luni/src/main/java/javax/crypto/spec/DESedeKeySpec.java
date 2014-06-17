@@ -45,7 +45,7 @@ public class DESedeKeySpec implements KeySpec {
      */
     public DESedeKeySpec(byte[] key) throws InvalidKeyException {
         if (key == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("key == null");
         }
         if (key.length < DES_EDE_KEY_LEN) {
             throw new InvalidKeyException();
@@ -71,7 +71,7 @@ public class DESedeKeySpec implements KeySpec {
      */
     public DESedeKeySpec(byte[] key, int offset) throws InvalidKeyException {
         if (key == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("key == null");
         }
         if (key.length - offset < DES_EDE_KEY_LEN) {
             throw new InvalidKeyException();

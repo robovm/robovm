@@ -1,7 +1,7 @@
 /*
  * Written by Doug Lea with assistance from members of JCP JSR-166
  * Expert Group and released to the public domain, as explained at
- * http://creativecommons.org/licenses/publicdomain
+ * http://creativecommons.org/publicdomain/zero/1.0/
  */
 
 package java.util;
@@ -150,9 +150,9 @@ public abstract class AbstractQueue<E>
      */
     public boolean addAll(Collection<? extends E> c) {
         if (c == null)
-            throw new NullPointerException();
+            throw new NullPointerException("c == null");
         if (c == this)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("c == this");
         boolean modified = false;
         for (E e : c)
             if (add(e))

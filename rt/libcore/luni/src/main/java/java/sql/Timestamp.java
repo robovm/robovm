@@ -20,6 +20,7 @@ package java.sql;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
@@ -56,7 +57,7 @@ public class Timestamp extends Date {
      * supplied values for <i>Year</i>, <i>Month</i>, <i>Date</i>, <i>Hour</i>,
      * <i>Minutes</i>, <i>Seconds</i> and <i>Nanoseconds</i>.
      *
-     * @deprecated Use the constructor {@link #Timestamp(long)}.
+     * @deprecated Use the constructor {@link #Timestamp(long)} instead.
      * @param theYear
      *            specified as the year minus 1900.
      * @param theMonth
@@ -82,7 +83,7 @@ public class Timestamp extends Date {
             throws IllegalArgumentException {
         super(theYear, theMonth, theDate, theHour, theMinute, theSecond);
         if (theNano < 0 || theNano > 999999999) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("ns out of range: " + theNano);
         }
         nanos = theNano;
     }
@@ -413,7 +414,7 @@ public class Timestamp extends Date {
             throw badTimestampString(s);
         }
 
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
         ParsePosition pp = new ParsePosition(0);
 
         /*

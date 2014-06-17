@@ -121,7 +121,7 @@ public class EncryptedPrivateKeyInfo {
      * Creates an {@code EncryptedPrivateKeyInfo} instance from an algorithm
      * name and its encrypted data.
      *
-     * @param encrAlgName
+     * @param encryptionAlgorithmName
      *            the name of an algorithm.
      * @param encryptedData
      *            the encrypted data.
@@ -133,12 +133,12 @@ public class EncryptedPrivateKeyInfo {
      * @throws IllegalArgumentException
      *             if {@code encryptedData} is empty.
      */
-    public EncryptedPrivateKeyInfo(String encrAlgName, byte[] encryptedData)
+    public EncryptedPrivateKeyInfo(String encryptionAlgorithmName, byte[] encryptedData)
         throws NoSuchAlgorithmException {
-        if (encrAlgName == null) {
-            throw new NullPointerException("the algName parameter is null");
+        if (encryptionAlgorithmName == null) {
+            throw new NullPointerException("encryptionAlgorithmName == null");
         }
-        this.algName = encrAlgName;
+        this.algName = encryptionAlgorithmName;
         if (!mapAlgName()) {
             throw new NoSuchAlgorithmException("Unsupported algorithm: " + this.algName);
         }

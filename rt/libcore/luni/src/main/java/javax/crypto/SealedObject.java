@@ -33,12 +33,12 @@ import java.security.NoSuchProviderException;
 /**
  * A {@code SealedObject} is a wrapper around a {@code serializable} object
  * instance and encrypts it using a cryptographic cipher.
- * <p>
- * Since a {@code SealedObject} instance is a serializable object itself it can
+ *
+ * <p>Since a {@code SealedObject} instance is serializable it can
  * either be stored or transmitted over an insecure channel.
- * <p>
- * The wrapped object can later be decrypted (unsealed) using the corresponding
- * key and then be deserialized to retrieve the original object.The sealed
+ *
+ * <p>The wrapped object can later be decrypted (unsealed) using the corresponding
+ * key and then be deserialized to retrieve the original object. The sealed
  * object itself keeps track of the cipher and corresponding parameters.
  */
 public class SealedObject implements Serializable {
@@ -46,19 +46,25 @@ public class SealedObject implements Serializable {
     private static final long serialVersionUID = 4482838265551344752L;
 
     /**
-     * The {@link AlgorithmParameters} in encoded format.
+     * The cipher's {@link AlgorithmParameters} in encoded format.
+     * Equivalent to {@code cipher.getParameters().getEncoded()},
+     * or null if the cipher did not use any parameters.
      */
     protected byte[] encodedParams;
+
     private byte[] encryptedContent;
     private String sealAlg;
     private String paramsAlg;
 
-    private void readObject(ObjectInputStream s)
-                throws IOException, ClassNotFoundException {
-        encodedParams = (byte []) s.readUnshared();
-        encryptedContent = (byte []) s.readUnshared();
-        sealAlg = (String) s.readUnshared();
-        paramsAlg = (String) s.readUnshared();
+    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
+        // We do unshared reads here to ensure we have our own clones of the byte[]s.
+        encodedParams = (byte[]) s.readUnshared();
+        encryptedContent = (byte[]) s.readUnshared();
+        // These are regular shared reads because the algorithms used by a given stream are
+        // almost certain to the be same for each object, and String is immutable anyway,
+        // so there's no security concern about sharing.
+        sealAlg = (String) s.readObject();
+        paramsAlg = (String) s.readObject();
     }
 
     /**

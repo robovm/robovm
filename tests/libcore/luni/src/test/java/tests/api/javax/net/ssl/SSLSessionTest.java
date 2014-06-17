@@ -39,12 +39,7 @@ import junit.framework.TestCase;
 import libcore.io.Base64;
 import tests.api.javax.net.ssl.HandshakeCompletedEventTest.MyHandshakeListener;
 import tests.api.javax.net.ssl.HandshakeCompletedEventTest.TestTrustManager;
-import tests.support.Support_PortManager;
 
-/**
- * Tests for SSLSession class
- *
- */
 public class SSLSessionTest extends TestCase {
 
     // set to true if on Android, false if on RI
@@ -57,7 +52,7 @@ public class SSLSessionTest extends TestCase {
     public void test_getPeerHost() throws Exception {
         SSLSession s = clientSession;
         assertEquals(InetAddress.getLocalHost().getHostName(), s.getPeerHost());
-        assertEquals(port, s.getPeerPort());
+        assertEquals(serverSocket.getLocalPort(), s.getPeerPort());
     }
 
     /**
@@ -258,12 +253,10 @@ public class SSLSessionTest extends TestCase {
     TestClient client;
 
     @Override
-    protected void setUp() {
-        port = Support_PortManager.getNextPort();
+    protected void setUp() throws Exception {
         String serverKeys = (useBKS ? SERVER_KEYS_BKS : SERVER_KEYS_JKS);
         String clientKeys = (useBKS ? CLIENT_KEYS_BKS : CLIENT_KEYS_JKS);
-        server = new TestServer(true,
-                TestServer.CLIENT_AUTH_WANTED, serverKeys);
+        server = new TestServer(true, TestServer.CLIENT_AUTH_WANTED, serverKeys);
         client = new TestClient(true, clientKeys);
 
         serverThread = new Thread(server);
@@ -453,8 +446,7 @@ public class SSLSessionTest extends TestCase {
             + "NMGpCX6qmjbkJQLVK/Yfo1ePaUexPSOX0G9m8+DoV3iyNw6at01NRw==";
 
 
-    int port;
-    SSLSocket serverSocket;
+    SSLServerSocket serverSocket;
     MyHandshakeListener listener;
     String host = "localhost";
     boolean notFinished = true;
@@ -489,36 +481,35 @@ public class SSLSessionTest extends TestCase {
 
         private KeyStore store;
 
-        public TestServer(boolean provideKeys, int clientAuth, String keys) {
+        public TestServer(boolean provideKeys, int clientAuth, String keys) throws Exception {
             this.keys = keys;
             this.clientAuth = clientAuth;
             this.provideKeys = provideKeys;
 
             trustManager = new TestTrustManager();
+
+            store = provideKeys ? getKeyStore(keys) : null;
+            KeyManager[] keyManagers = store != null ? getKeyManagers(store) : null;
+            TrustManager[] trustManagers = new TrustManager[] { trustManager };
+
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(keyManagers, trustManagers, null);
+
+            serverSocket = (SSLServerSocket)sslContext.getServerSocketFactory().createServerSocket();
+
+            if (clientAuth == CLIENT_AUTH_WANTED) {
+                serverSocket.setWantClientAuth(true);
+            } else if (clientAuth == CLIENT_AUTH_NEEDED) {
+                serverSocket.setNeedClientAuth(true);
+            } else {
+                serverSocket.setWantClientAuth(false);
+            }
+
+            serverSocket.bind(null);
         }
 
         public void run() {
             try {
-                store = provideKeys ? getKeyStore(keys) : null;
-                KeyManager[] keyManagers = store != null ? getKeyManagers(store) : null;
-                TrustManager[] trustManagers = new TrustManager[] { trustManager };
-
-                SSLContext sslContext = SSLContext.getInstance("TLS");
-                sslContext.init(keyManagers, trustManagers, null);
-
-                SSLServerSocket serverSocket = (SSLServerSocket)sslContext
-                        .getServerSocketFactory().createServerSocket();
-
-                if (clientAuth == CLIENT_AUTH_WANTED) {
-                    serverSocket.setWantClientAuth(true);
-                } else if (clientAuth == CLIENT_AUTH_NEEDED) {
-                    serverSocket.setNeedClientAuth(true);
-                } else {
-                    serverSocket.setWantClientAuth(false);
-                }
-
-                serverSocket.bind(new InetSocketAddress(port));
-
                 SSLSocket clientSocket = (SSLSocket)serverSocket.accept();
 
                 InputStream istream = clientSocket.getInputStream();
@@ -589,7 +580,7 @@ public class SSLSessionTest extends TestCase {
 
                 SSLSocket socket = (SSLSocket)clientSslContext.getSocketFactory().createSocket();
 
-                socket.connect(new InetSocketAddress(port));
+                socket.connect(serverSocket.getLocalSocketAddress());
                 OutputStream ostream = socket.getOutputStream();
                 ostream.write(testData.getBytes());
                 ostream.flush();

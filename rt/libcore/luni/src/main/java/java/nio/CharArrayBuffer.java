@@ -18,82 +18,153 @@
 package java.nio;
 
 /**
- * CharArrayBuffer, ReadWriteCharArrayBuffer and ReadOnlyCharArrayBuffer compose
- * the implementation of array based char buffers.
- * <p>
- * CharArrayBuffer implements all the shared readonly methods and is extended by
- * the other two classes.
- * </p>
- * <p>
- * All methods are marked final for runtime performance.
- * </p>
- *
+ * CharArrayBuffer implements char[]-based CharBuffers.
  */
-abstract class CharArrayBuffer extends CharBuffer {
+final class CharArrayBuffer extends CharBuffer {
 
-    protected final char[] backingArray;
+  private final char[] backingArray;
 
-    protected final int offset;
+  private final int arrayOffset;
 
-    CharArrayBuffer(char[] array) {
-        this(array.length, array, 0);
+  private final boolean isReadOnly;
+
+  CharArrayBuffer(char[] array) {
+    this(array.length, array, 0, false);
+  }
+
+  private CharArrayBuffer(int capacity, char[] backingArray, int arrayOffset, boolean isReadOnly) {
+    super(capacity);
+    this.backingArray = backingArray;
+    this.arrayOffset = arrayOffset;
+    this.isReadOnly = isReadOnly;
+  }
+
+  private static CharArrayBuffer copy(CharArrayBuffer other, int markOfOther, boolean isReadOnly) {
+    CharArrayBuffer buf = new CharArrayBuffer(other.capacity(), other.backingArray, other.arrayOffset, isReadOnly);
+    buf.limit = other.limit;
+    buf.position = other.position();
+    buf.mark = markOfOther;
+    return buf;
+  }
+
+  @Override public CharBuffer asReadOnlyBuffer() {
+    return copy(this, mark, true);
+  }
+
+  @Override public CharBuffer compact() {
+    if (isReadOnly) {
+      throw new ReadOnlyBufferException();
     }
+    System.arraycopy(backingArray, position + arrayOffset, backingArray, arrayOffset, remaining());
+    position = limit - position;
+    limit = capacity;
+    mark = UNSET_MARK;
+    return this;
+  }
 
-    CharArrayBuffer(int capacity) {
-        this(capacity, new char[capacity], 0);
-    }
+  @Override public CharBuffer duplicate() {
+    return copy(this, mark, isReadOnly);
+  }
 
-    CharArrayBuffer(int capacity, char[] backingArray, int offset) {
-        super(capacity);
-        this.backingArray = backingArray;
-        this.offset = offset;
-    }
+  @Override public CharBuffer slice() {
+    return new CharArrayBuffer(remaining(), backingArray, arrayOffset + position, isReadOnly);
+  }
 
-    @Override
-    public final char get() {
-        if (position == limit) {
-            throw new BufferUnderflowException();
-        }
-        return backingArray[offset + position++];
-    }
+  @Override public boolean isReadOnly() {
+    return isReadOnly;
+  }
 
-    @Override
-    public final char get(int index) {
-        checkIndex(index);
-        return backingArray[offset + index];
+  @Override char[] protectedArray() {
+    if (isReadOnly) {
+      throw new ReadOnlyBufferException();
     }
+    return backingArray;
+  }
 
-    @Override
-    public final CharBuffer get(char[] dst, int srcOffset, int charCount) {
-        if (charCount > remaining()) {
-            throw new BufferUnderflowException();
-        }
-        System.arraycopy(backingArray, offset + position, dst, srcOffset, charCount);
-        position += charCount;
-        return this;
+  @Override int protectedArrayOffset() {
+    if (isReadOnly) {
+      throw new ReadOnlyBufferException();
     }
+    return arrayOffset;
+  }
 
-    @Override
-    public final boolean isDirect() {
-        return false;
+  @Override boolean protectedHasArray() {
+    if (isReadOnly) {
+      return false;
     }
+    return true;
+  }
 
-    @Override
-    public final ByteOrder order() {
-        return ByteOrder.nativeOrder();
+  @Override public final char get() {
+    if (position == limit) {
+      throw new BufferUnderflowException();
     }
+    return backingArray[arrayOffset + position++];
+  }
 
-    @Override
-    public final CharSequence subSequence(int start, int end) {
-        checkStartEndRemaining(start, end);
-        CharBuffer result = duplicate();
-        result.limit(position + end);
-        result.position(position + start);
-        return result;
-    }
+  @Override public final char get(int index) {
+    checkIndex(index);
+    return backingArray[arrayOffset + index];
+  }
 
-    @Override
-    public final String toString() {
-        return String.copyValueOf(backingArray, offset + position, remaining());
+  @Override public final CharBuffer get(char[] dst, int srcOffset, int charCount) {
+    if (charCount > remaining()) {
+      throw new BufferUnderflowException();
     }
+    System.arraycopy(backingArray, arrayOffset + position, dst, srcOffset, charCount);
+    position += charCount;
+    return this;
+  }
+
+  @Override public final boolean isDirect() {
+    return false;
+  }
+
+  @Override public final ByteOrder order() {
+    return ByteOrder.nativeOrder();
+  }
+
+  @Override public final CharBuffer subSequence(int start, int end) {
+    checkStartEndRemaining(start, end);
+    CharBuffer result = duplicate();
+    result.limit(position + end);
+    result.position(position + start);
+    return result;
+  }
+
+  @Override public CharBuffer put(char c) {
+    if (isReadOnly) {
+      throw new ReadOnlyBufferException();
+    }
+    if (position == limit) {
+      throw new BufferOverflowException();
+    }
+    backingArray[arrayOffset + position++] = c;
+    return this;
+  }
+
+  @Override public CharBuffer put(int index, char c) {
+    if (isReadOnly) {
+      throw new ReadOnlyBufferException();
+    }
+    checkIndex(index);
+    backingArray[arrayOffset + index] = c;
+    return this;
+  }
+
+  @Override public CharBuffer put(char[] src, int srcOffset, int charCount) {
+    if (isReadOnly) {
+      throw new ReadOnlyBufferException();
+    }
+    if (charCount > remaining()) {
+      throw new BufferOverflowException();
+    }
+    System.arraycopy(src, srcOffset, backingArray, arrayOffset + position, charCount);
+    position += charCount;
+    return this;
+  }
+
+  @Override public final String toString() {
+    return String.copyValueOf(backingArray, arrayOffset + position, remaining());
+  }
 }

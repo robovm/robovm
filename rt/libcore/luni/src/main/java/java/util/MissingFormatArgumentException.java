@@ -37,7 +37,7 @@ public class MissingFormatArgumentException extends IllegalFormatException {
      */
     public MissingFormatArgumentException(String s) {
         if (s == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("s == null");
         }
         this.s = s;
     }

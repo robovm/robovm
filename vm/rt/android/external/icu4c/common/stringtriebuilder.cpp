@@ -1,6 +1,6 @@
 /*
 *******************************************************************************
-*   Copyright (C) 2010-2011, International Business Machines
+*   Copyright (C) 2010-2012, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *******************************************************************************
 *   file name:  stringtriebuilder.cpp
@@ -12,7 +12,7 @@
 *   created by: Markus W. Scherer
 */
 
-#include <typeinfo>  // for 'typeid' to work
+#include "utypeinfo.h"  // for 'typeid' to work
 #include "unicode/utypes.h"
 #include "unicode/stringtriebuilder.h"
 #include "uassert.h"
@@ -22,12 +22,12 @@ U_CDECL_BEGIN
 
 static int32_t U_CALLCONV
 hashStringTrieNode(const UHashTok key) {
-    return U_NAMESPACE_QUALIFIER StringTrieBuilder::hashNode(key.pointer);
+    return icu::StringTrieBuilder::hashNode(key.pointer);
 }
 
 static UBool U_CALLCONV
 equalStringTrieNodes(const UHashTok key1, const UHashTok key2) {
-    return U_NAMESPACE_QUALIFIER StringTrieBuilder::equalNodes(key1.pointer, key2.pointer);
+    return icu::StringTrieBuilder::equalNodes(key1.pointer, key2.pointer);
 }
 
 U_CDECL_END
@@ -47,11 +47,12 @@ StringTrieBuilder::createCompactBuilder(int32_t sizeGuess, UErrorCode &errorCode
     }
     nodes=uhash_openSize(hashStringTrieNode, equalStringTrieNodes, NULL,
                          sizeGuess, &errorCode);
-    if(U_SUCCESS(errorCode) && nodes==NULL) {
-        errorCode=U_MEMORY_ALLOCATION_ERROR;
-    }
     if(U_SUCCESS(errorCode)) {
-        uhash_setKeyDeleter(nodes, uhash_deleteUObject);
+        if(nodes==NULL) {
+          errorCode=U_MEMORY_ALLOCATION_ERROR;
+        } else {
+          uhash_setKeyDeleter(nodes, uprv_deleteUObject);
+        }
     }
 }
 
@@ -329,7 +330,7 @@ StringTrieBuilder::registerNode(Node *newNode, UErrorCode &errorCode) {
     }
     // If uhash_puti() returns a non-zero value from an equivalent, previously
     // registered node, then uhash_find() failed to find that and we will leak newNode.
-#if !U_RELEASE
+#if U_DEBUG
     int32_t oldValue=  // Only in debug mode to avoid a compiler warning about unused oldValue.
 #endif
     uhash_puti(nodes, newNode, 1, &errorCode);
@@ -358,7 +359,7 @@ StringTrieBuilder::registerFinalValue(int32_t value, UErrorCode &errorCode) {
     }
     // If uhash_puti() returns a non-zero value from an equivalent, previously
     // registered node, then uhash_find() failed to find that and we will leak newNode.
-#if !U_RELEASE
+#if U_DEBUG
     int32_t oldValue=  // Only in debug mode to avoid a compiler warning about unused oldValue.
 #endif
     uhash_puti(nodes, newNode, 1, &errorCode);
@@ -380,8 +381,6 @@ StringTrieBuilder::equalNodes(const void *left, const void *right) {
     return *(const Node *)left==*(const Node *)right;
 }
 
-UOBJECT_DEFINE_NO_RTTI_IMPLEMENTATION(StringTrieBuilder)
-
 UBool
 StringTrieBuilder::Node::operator==(const Node &other) const {
     return this==&other || (typeid(*this)==typeid(other) && hash==other.hash);
@@ -394,8 +393,6 @@ StringTrieBuilder::Node::markRightEdgesFirst(int32_t edgeNumber) {
     }
     return edgeNumber;
 }
-
-UOBJECT_DEFINE_NO_RTTI_IMPLEMENTATION(StringTrieBuilder::Node)
 
 UBool
 StringTrieBuilder::FinalValueNode::operator==(const Node &other) const {

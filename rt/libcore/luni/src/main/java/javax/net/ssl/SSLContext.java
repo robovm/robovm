@@ -93,7 +93,7 @@ public class SSLContext {
      */
     public static SSLContext getInstance(String protocol) throws NoSuchAlgorithmException {
         if (protocol == null) {
-            throw new NullPointerException("protocol is null");
+            throw new NullPointerException("protocol == null");
         }
         Engine.SpiAndProvider sap = ENGINE.getInstance(protocol, null);
         return new SSLContext((SSLContextSpi) sap.spi, sap.provider, protocol);
@@ -154,7 +154,7 @@ public class SSLContext {
             throw new IllegalArgumentException("provider is null");
         }
         if (protocol == null) {
-            throw new NullPointerException("protocol is null");
+            throw new NullPointerException("protocol == null");
         }
         Object spi = ENGINE.getInstance(protocol, provider, null);
         return new SSLContext((SSLContextSpi) spi, provider, protocol);

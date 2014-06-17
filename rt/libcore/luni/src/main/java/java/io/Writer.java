@@ -59,7 +59,7 @@ public abstract class Writer implements Appendable, Closeable, Flushable {
      */
     protected Writer(Object lock) {
         if (lock == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("lock == null");
         }
         this.lock = lock;
     }

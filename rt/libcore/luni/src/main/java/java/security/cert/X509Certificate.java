@@ -364,9 +364,11 @@ public abstract class X509Certificate
      * Returns the path length of the certificate constraints from the {@code
      * BasicContraints} extension.
      *
-     * @return the path length of the certificate constraints if the extension
-     *         is present or {@code -1} if the extension is not present. {@code
-     *         Integer.MAX_VALUE} if there's not limit.
+     * If the certificate has no basic constraints or is not a
+     * certificate authority, {@code -1} is returned. If the
+     * certificate is a certificate authority without a path length,
+     * {@code Integer.MAX_VALUE} is returned. Otherwise, the
+     * certificate authority's path length is returned.
      */
     public abstract int getBasicConstraints();
 

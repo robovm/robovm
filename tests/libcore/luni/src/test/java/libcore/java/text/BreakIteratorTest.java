@@ -17,6 +17,7 @@
 package libcore.java.text;
 
 import java.text.BreakIterator;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class BreakIteratorTest extends junit.framework.TestCase {
@@ -48,6 +49,15 @@ public class BreakIteratorTest extends junit.framework.TestCase {
         assertTrue("Incorrect BreakIterator", it1 != BreakIterator.getWordInstance());
         BreakIterator it2 = BreakIterator.getWordInstance(new Locale("bad locale"));
         assertTrue("Incorrect BreakIterator", it2 != BreakIterator.getWordInstance());
+    }
+
+    // http://b/7307154 - we used to pin an unbounded number of char[]s, relying on finalization.
+    public void testStress() throws Exception {
+        char[] cs = { 'a' };
+        for (int i = 0; i < 4096; ++i) {
+            BreakIterator it = BreakIterator.getWordInstance(Locale.US);
+            it.setText(new String(cs));
+        }
     }
 
     public void testWordBoundaries() {
@@ -163,4 +173,31 @@ public class BreakIteratorTest extends junit.framework.TestCase {
         }
     }
 
+    // http://code.google.com/p/android/issues/detail?id=41143
+    // This code is inherently unsafe and crazy;
+    // we're just trying to provoke native crashes!
+    public void testConcurrentBreakIteratorAccess() throws Exception {
+        final BreakIterator it = BreakIterator.getCharacterInstance();
+
+        ArrayList<Thread> threads = new ArrayList<Thread>();
+        for (int i = 0; i < 10; ++i) {
+            Thread t = new Thread(new Runnable() {
+                public void run() {
+                    for (int i = 0; i < 4096; ++i) {
+                        it.setText("some example text");
+                        for (int index = it.first(); index != BreakIterator.DONE; index = it.next()) {
+                        }
+                    }
+                }
+            });
+            threads.add(t);
+        }
+
+        for (Thread t : threads) {
+            t.start();
+        }
+        for (Thread t : threads) {
+            t.join();
+        }
+    }
 }

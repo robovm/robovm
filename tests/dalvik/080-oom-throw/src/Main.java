@@ -16,64 +16,61 @@
 
 public class Main {
     static class ArrayMemEater {
-        static int blowup(char[][] holder, int size) {
-            int i = 0;
+        static boolean sawOome;
+
+        static void blowup(char[][] holder) {
             try {
-                for ( ; i < size; i++)
-                    holder[i] = new char[128];
+                for (int i = 0; i < holder.length; ++i) {
+                    holder[i] = new char[128 * 1024];
+                }
             } catch (OutOfMemoryError oome) {
-                return i;
+                ArrayMemEater.sawOome = true;
             }
-
-            return size;
-        }
-
-        static void confuseCompilerOptimization(char[][] holder) {
         }
     }
 
     static class InstanceMemEater {
+        static boolean sawOome;
+
         InstanceMemEater next;
-        double d1, d2, d3, d4, d5, d6, d7, d8;
+        double d1, d2, d3, d4, d5, d6, d7, d8; // Bloat this object so we fill the heap faster.
 
-        static InstanceMemEater blowup() {
-            InstanceMemEater memEater;
+        static InstanceMemEater allocate() {
             try {
-                memEater = new InstanceMemEater();
+                return new InstanceMemEater();
             } catch (OutOfMemoryError e) {
-                memEater = null;
+                InstanceMemEater.sawOome = true;
+                return null;
             }
-            return memEater;
         }
 
-        static void confuseCompilerOptimization(InstanceMemEater memEater) {
-        }
-    }
-
-    static void triggerArrayOOM() {
-        int size = 1 * 1024 * 1024;
-        char[][] holder = new char[size][];
-
-        int count = ArrayMemEater.blowup(holder, size);
-        ArrayMemEater.confuseCompilerOptimization(holder);
-        if (count < size) {
-            System.out.println("Array allocation failed");
+        static void confuseCompilerOptimization(InstanceMemEater instance) {
         }
     }
 
-    static void triggerInstanceOOM() {
-        InstanceMemEater memEater = InstanceMemEater.blowup();
+    static boolean triggerArrayOOM() {
+        ArrayMemEater.blowup(new char[1 * 1024 * 1024][]);
+        return ArrayMemEater.sawOome;
+    }
+
+    static boolean triggerInstanceOOM() {
+        InstanceMemEater memEater = InstanceMemEater.allocate();
         InstanceMemEater lastMemEater = memEater;
         do {
-            lastMemEater.next = InstanceMemEater.blowup();
+            lastMemEater.next = InstanceMemEater.allocate();
             lastMemEater = lastMemEater.next;
         } while (lastMemEater != null);
         memEater.confuseCompilerOptimization(memEater);
-        System.out.println("Instance allocation failed");
+        return InstanceMemEater.sawOome;
     }
 
     public static void main(String[] args) {
-        triggerArrayOOM();
-        triggerInstanceOOM();
+        if (triggerArrayOOM()) {
+            System.out.println("NEW_ARRAY correctly threw OOME");
+        }
+
+        if (triggerInstanceOOM()) {
+            System.out.println("NEW_INSTANCE correctly threw OOME");
+        }
     }
 }

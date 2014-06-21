@@ -88,6 +88,14 @@ import org.robovm.apple.security.*;
         }
     }
     
+    public NSMutableDictionary<NSString, NSString> toNSMutableDictionary (Map<String, String> map) {
+		NSMutableDictionary<NSString, NSString> dictionary = new NSMutableDictionary<NSString, NSString>();
+		for (Map.Entry<String, String> entry : map.entrySet()) {
+			dictionary.put(new NSString(entry.getKey()), new NSString(entry.getValue()));
+		}
+		return dictionary;
+	}
+    
     public static NSMutableDictionary<?, ?> read(java.io.File file) {
         return dictionaryWithContentsOfFile$(file.getAbsolutePath());
     }

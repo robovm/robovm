@@ -105,6 +105,26 @@ import org.robovm.apple.security.*;
     public static NSArray<?> read(java.io.File file) {
         return arrayWithContentsOfFile$(file.getAbsolutePath());
     }
+    
+    public NSMutableArray<NSString> toNSMutableArray (String... strings) {
+		int length = strings.length;
+		NSString[] nsStrings = new NSString[length];
+
+		for (int i = 0; i < length; i++) {
+			nsStrings[i] = new NSString(strings[i]);
+		}
+		return new NSMutableArray<NSString>(nsStrings);
+	}
+
+	public NSMutableArray<NSString> toNSMutableArray (List<String> strings) {
+		int size = strings.size();
+		NSString[] nsStrings = new NSString[size];
+
+		for (int i = 0; i < size; i++) {
+			nsStrings[i] = new NSString(strings.get(i));
+		}
+		return new NSMutableArray<NSString>(nsStrings);
+	}
 
     @Method(selector = "arrayWithContentsOfFile:")
     protected static native NSArray<? extends NSObject> arrayWithContentsOfFile$(String path);

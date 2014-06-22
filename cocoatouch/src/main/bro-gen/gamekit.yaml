@@ -1,0 +1,581 @@
+package: org.robovm.apple.gamekit
+include: [foundation.yaml, uikit.yaml]
+library: GameKit
+framework: GameKit
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/GameKit.framework/Headers/GameKit.h
+typedefs:
+    'void (^)(UIImage *, NSError *)': '@Block VoidBlock2<UIImage, NSError>'
+    'void (^)(NSArray *, NSArray *, NSError *)': '@Block VoidBlock2<NSArray<NSString>, NSArray<NSString>, NSError>'
+    'void (^)(NSString *, NSError *)': '@Block VoidBlock2<NSString, NSError>'
+    'void (^)(NSURL *, NSData *, NSData *, uint64_t, NSError *)': '@Block VoidBlock5<NSURL, NSData, NSData, Long, NSError>'
+    'void (^)(UIViewController *, NSError *)': '@Block VoidBlock2<UIViewController, NSError>'
+    'void (^)(NSString *)': '@Block VoidBlock1<NSString>'
+    'void (^)(GKMatch *, NSError *)': '@Block VoidBlock2<GKMatch, NSError>'
+    'void (^)(NSString *, GKInviteeResponse)': '@Block VoidBlock2<NSString, GKInviteeResponse>'
+    'void (^)(NSInteger, NSError *)': '@Block VoidBlock2<Integer, NSError>'
+    'void (^)(NSString *, BOOL)': '@Block VoidBlock2<NSString, Boolean>'
+    'void (^)(GKInvite *, NSArray *)': '@Block VoidBlock2<GKInvite, NSArray<NSString>'
+    'void (^)(GKTurnBasedMatch *, NSError *)': '@Block VoidBlock2<GKTurnBasedMatch, NSError>'
+    'void (^)(NSData *, NSError *)': '@Block VoidBlock2<NSData, NSError>'
+    'void (^)(GKTurnBasedExchange *, NSError *)': '@Block VoidBlock2<GKTurnBasedExchange, NSError>'
+    'void (^)(NSString *, GKVoiceChatPlayerState)': '@Block VoidBlock2<NSString, GKVoiceChatPlayerState>'
+enums:
+    GKErrorCode: { first: GKErrorUnknown, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
+    GKChallengeState: { marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
+    GKGameCenterViewControllerState: { marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
+    GKLeaderboardTimeScope: { first: GKLeaderboardTimeScopeToday, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
+    GKLeaderboardPlayerScope: { first: GKLeaderboardPlayerScopeGlobal, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
+    GKMatchSendDataMode: { first: GKMatchSendDataReliable, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
+    GKPlayerConnectionState: { first: GKPlayerStateUnknown, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
+    GKPhotoSize: { first: GKPhotoSizeSmall, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
+    GKSendDataMode: { first: GKSendDataReliable, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
+    GKInviteeResponse: { first: GKInviteeResponseAccepted, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
+    GKSessionMode: { first: GKSessionModeServer, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
+    GKSessionError: { first: GKSessionInvalidParameterError, suffix: Error, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
+    GKMatchType: { first: GKMatchTypePeerToPeer, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    GKPeerConnectionState: { first: GKPeerStateAvailable, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
+    GKPeerPickerConnectionType: { first: GKPeerPickerConnectionTypeOnline, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    _GKTurnBasedExchangeStatus: { first: GKTurnBasedExchangeStatusUnknown } # int8_t marshaler?? rename without underscore??
+    GKTurnBasedMatchStatus: { first: GKTurnBasedMatchStatusUnknown, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
+    GKTurnBasedParticipantStatus: { first: GKTurnBasedParticipantStatusUnknown, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
+    GKTurnBasedMatchOutcome: { first: GKTurnBasedMatchOutcomeNone, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
+    GKVoiceChatPlayerState: { first: GKVoiceChatPlayerConnected, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
+    GKVoiceChatServiceError: { first: GKVoiceChatServiceInternalError, suffix: Error, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
+        
+classes:
+    GKAchievement: # DONE
+        methods:
+            '-reportAchievementWithCompletionHandler:':
+                name: "reportAchievement"
+            '+reportAchievements:withCompletionHandler:':
+                name: "reportAchievements"
+                parameters:
+                    achievements:
+                        type: "NSArray<GKAchievement>"
+            '+loadAchievementsWithCompletionHandler:':
+                name: "loadAchievements"
+                parameters:
+                    completionHandler:
+                        type: "@Block VoidBlock2<NSArray<GKAchievement>, NSError>"
+            '+resetAchievementsWithCompletionHandler:':
+                name: "resetAchievements"
+            '-reportAchievements:withCompletionHandler:':
+                trim_after_first_colon: true
+            '-challengeComposeControllerWithPlayers:message:completionHandler:':
+                name: "getChallengeComposeController"
+                parameters:
+                    playerIDs:
+                        type: "NSArray<NSString>"
+                    completionHandler:
+                        type: "@Block VoidBlock3<UIViewController, Boolean, NSArray<NSString>>"
+            '-selectChallengeablePlayerIDs:withCompletionHandler:':
+                trim_after_first_colon: true
+                parameters:
+                    playerIDs:
+                        type: "NSArray<NSString>"
+                    completionHandler:
+                        type: "@Block VoidBlock2<NSArray<NSString>, NSError>"
+            '+reportAchievements:withEligibleChallenges:withCompletionHandler:':
+                trim_after_first_colon: true
+                parameters:
+                    achievements:
+                        type: "NSArray<GKAchievement>"
+                    challenges:
+                        type: "NSArray<GKChallenge>"
+    GKAchievementChallenge: {} # DONE
+    GKAchievementDescription: # DONE
+         methods:
+            '+loadAchievementDescriptionsWithCompletionHandler:':
+                name: "loadAchievementDescriptions"
+                parameters:
+                    completionHandler:
+                        type: "@Block VoidBlock2<NSArray<GKAchievementDescription>, NSError>"
+            '-loadImageWithCompletionHandler:':
+                name: "loadImage"
+            '+incompleteAchievementImage':
+                name: "getIncompleteAchievementImage"
+            '+placeholderCompletedAchievementImage':
+                name: "getPlaceholderCompletedAchievementImage"
+    GKAchievementViewController: {} # DONE
+    GKChallenge: # DONE
+        methods:
+            '+loadReceivedChallengesWithCompletionHandler:':
+                name: "loadReceivedChallenges"
+                parameters:
+                    completionHandler:
+                        type: "@Block VoidBlock2<NSArray<GKChallenge>, NSError>"
+    GKChallengeEventHandler: # DONE
+        methods:
+            '+challengeEventHandler':
+                name: "getChallengeEventHandler"
+    GKFriendRequestComposeViewController: # DONE
+        methods:
+            '-addRecipientsWithPlayerIDs:':
+                name: "addRecipients"
+                parameters:
+                    playerIDs:
+                        type: "NSArray<NSString>"
+            '-addRecipientsWithEmailAddresses:':
+                name: "addRecipients"
+                parameters:
+                    emailAddresses:
+                        type: "NSArray<NSString>"
+            '+maxNumberOfRecipients':
+                name: "getMaxNumberOfRecipients"
+    GKGameCenterViewController: {} # DONE
+    GKInvite: {} # DONE
+    GKLeaderboard: # DONE
+        properties:
+            'scores':
+                type: "NSArray<GKScore>"
+        methods:
+            '-initWithPlayerIDs:':
+                name: "init"
+                parameters:
+                    playerIDs:
+                        type: "NSArray<NSString>"
+            '-loadScoresWithCompletionHandler:':
+                name: "loadScores"
+                parameters:
+                    completionHandler:
+                        type: "@Block VoidBlock2<NSArray<GKScore>, NSError>"
+            '+loadCategoriesWithCompletionHandler:':
+                name: "loadCategories"
+            '+loadLeaderboardsWithCompletionHandler:':
+                name: "loadLeaderboards"
+                parameters:
+                    completionHandler:
+                        type: "@Block VoidBlock2<NSArray<GKLeaderboard>, NSError>"
+            '-loadImageWithCompletionHandler:':
+                name: "loadImage"
+    GKLeaderboardViewController: {} # DONE
+    GKLocalPlayer: # DONE
+        properties:
+            'friends':
+                type: "NSArray<NSString>"
+        methods:
+            '-loadFriendsWithCompletionHandler:':
+                name: "loadFriends"
+                parameters:
+                    completionHandler:
+                        type: "@Block VoidBlock2<NSArray<NSString>, NSError>"
+            '-setDefaultLeaderboardIdentifier:completionHandler:':
+                trim_after_first_colon: true
+            '-loadDefaultLeaderboardIdentifierWithCompletionHandler:':
+                name: "loadDefaultLeaderboardIdentifier"
+            '-generateIdentityVerificationSignatureWithCompletionHandler:':
+                name: "generateIdentityVerificationSignature"
+            '-authenticateWithCompletionHandler:':
+                name: "authenticate"
+            '+localPlayer':
+                name: "create"
+            '-registerListener:':
+                trim_after_first_colon: true
+            '-unregisterListener:':
+                trim_after_first_colon: true
+    GKMatch: # DONE
+        properties:
+            'playerIDs':
+                type: "NSArray<NSString>"
+        methods:
+            '-sendData:toPlayers:withDataMode:error:':
+                trim_after_first_colon: true
+                parameters:
+                    playerIDs:
+                        type: "NSArray<NSString>"
+            '-sendDataToAllPlayers:withDataMode:error:':
+                trim_after_first_colon: true
+            '-voiceChatWithName:':
+                name: "getVoiceChat"
+            '-chooseBestHostPlayerWithCompletionHandler:':
+                name: "chooseBestHostPlayer"
+            '-rematchWithCompletionHandler:':
+                name: "rematch"
+    GKMatchmaker: # DONE
+        methods:
+            '-matchForInvite:completionHandler:':
+                name: "match"
+            '-findMatchForRequest:withCompletionHandler:':
+                name: "findMatch"
+            '-findPlayersForHostedMatchRequest:withCompletionHandler:':
+                name: "findPlayers"
+                parameters:
+                    completionHandler:
+                        type: "@Block VoidBlock2<NSArray<NSString>, NSError>"
+            '-addPlayersToMatch:matchRequest:completionHandler:':
+                trim_after_first_colon: true
+            '-cancelInviteToPlayer:':
+                trim_after_first_colon: true
+            '-finishMatchmakingForMatch:':
+                name: "finishMatchmaking"
+            '-queryPlayerGroupActivity:withCompletionHandler:':
+                trim_after_first_colon: true
+            '-queryActivityWithCompletionHandler:':
+                name: "queryActivity"
+            '-startBrowsingForNearbyPlayersWithReachableHandler:':
+                name: "startBrowsingForNearbyPlayers"
+    GKMatchmakerViewController: # DONE
+        methods:
+            '-addPlayersToMatch:':
+                trim_after_first_colon: true
+            '-setHostedPlayer:connected:':
+                trim_after_first_colon: true
+    GKMatchRequest: # DONE
+        properties:
+            'playersToInvite':
+                type: "NSArray<NSString>"
+        methods:
+            '+maxPlayersAllowedForMatchOfType:':
+                name: "getMaxPlayersAllowed"
+    GKNotificationBanner: # DONE 
+        methods:
+            '+showBannerWithTitle:message:completionHandler:':
+                name: "showBanner"
+            '+showBannerWithTitle:message:duration:completionHandler:':
+                name: "showBanner"
+    GKPeerPickerController: {} # DONE
+    GKPlayer: # DONE
+        properties:
+            'isFriend':
+                name: "friend"
+        methods:
+            '+loadPlayersForIdentifiers:withCompletionHandler:':
+                name: "loadPlayers"
+                parameters:
+                    identifiers:
+                        type: "NSArray<NSString>"
+                    completionHandler:
+                        type: "@Block VoidBlock2<NSArray<GKPlayer>, NSError>"
+            '-loadPhotoForSize:withCompletionHandler:':
+                name: "loadPhoto"
+    GKScore: # DONE
+        methods:
+            '-initWithCategory:':
+                exclude: true
+            '-reportScoreWithCompletionHandler:':
+                name: "reportScore"
+            '+reportScores:withCompletionHandler:':
+                trim_after_first_colon: true
+                parameters:
+                    scores:
+                        type: "NSArray<GKScore>"
+            '-challengeComposeControllerWithPlayers:message:completionHandler:':
+                name: "getChallengeComposeController"
+                parameters:
+                    playerIDs:
+                        type: "NSArray<NSString>"
+                    completionHandler:
+                        type: "@Block VoidBlock3<UIViewController, Boolean, NSArray<NSString>>"
+            '+reportScores:withEligibleChallenges:withCompletionHandler:':
+                trim_after_first_colon: true
+                parameters:
+                    scores:
+                        type: "NSArray<GKScore>"
+                    challenges:
+                        type: "NSArray<GKChallenge>" 
+    GKScoreChallenge: {} # DONE
+    GKSession: # DONE
+        methods:
+            '-displayNameForPeer:':
+                name: "getDisplayName"
+            '-sendData:toPeers:withDataMode:error:':
+                trim_after_first_colon: true
+                parameters:
+                    peers:
+                        type: "NSArray<NSString>"
+            '-sendDataToAllPeers:withDataMode:error:':
+                trim_after_first_colon: true
+            '-setDataReceiveHandler:withContext:':
+                trim_after_first_colon: true
+            '-connectToPeer:withTimeout:':
+                name: "connect"
+            '-cancelConnectToPeer:':
+                name: "cancelConnect"
+            '-acceptConnectionFromPeer:error:':
+                name: "acceptConnection"
+            '-denyConnectionFromPeer:':
+                name: "denyConnection"
+            '-disconnectPeerFromAllPeers:':
+                name: "disconnectPeer"
+            '-peersWithConnectionState:':
+                name: "getPeers"
+                return_type: "NSArray<NSString>"
+    GKTurnBasedEventHandler: {} # DONE
+    GKTurnBasedMatch: # DONE
+        properties:
+            'participants':
+                type: "NSArray<GKTurnBasedParticipant>"
+            'exchanges|activeExchanges|completedExchanges':
+                type: "NSArray<GKTurnBasedExchange>"
+        methods:
+            '-setLocalizableMessageWithKey:arguments:':
+                name: "setLocalizableMessage"
+                parameters:
+                    arguments:
+                        type: "NSArray<NSString>"
+            '-rematchWithCompletionHandler:':
+                name: "rematch"
+            '-acceptInviteWithCompletionHandler:':
+                name: "acceptInvite"
+            '-declineInviteWithCompletionHandler:':
+                name: "declineInvite"
+            '-removeWithCompletionHandler:':
+                name: "remove"
+            '-loadMatchDataWithCompletionHandler:':
+                name: "loadMatchData"
+            '-endTurnWithNextParticipants:turnTimeout:matchData:completionHandler:':
+                name: "endTurn"
+                parameters:
+                    nextParticipants:
+                        type: "NSArray<GKTurnBasedParticipant>"
+            '-participantQuitInTurnWithOutcome:nextParticipants:turnTimeout:matchData:completionHandler:':
+                name: "participantQuitInTurn"
+                parameters:
+                    nextParticipants:
+                        type: "NSArray<GKTurnBasedParticipant>"
+            '-participantQuitOutOfTurnWithOutcome:withCompletionHandler:':
+                name: "participantQuitOutOfTurn"
+            '-endMatchInTurnWithMatchData:completionHandler:':
+                name: "endMatch"
+            '-endMatchInTurnWithMatchData:scores:achievements:completionHandler:':
+                name: "endMatch"
+                parameters:
+                    scores:
+                        type: "NSArray<GKScore>"
+                    achievements:
+                        type: "NSArray<GKAchievement>"
+            '-saveCurrentTurnWithMatchData:completionHandler:':
+                name: "saveCurrentTurn"
+            '-saveMergedMatchData:withResolvedExchanges:completionHandler:':
+                trim_after_first_colon: true
+                parameters:
+                    exchanges:
+                        type: "NSArray<GKTurnBasedExchange>"
+            '-sendExchangeToParticipants:data:localizableMessageKey:arguments:timeout:completionHandler:':
+                name: "sendExchange"
+                parameters:
+                    participants:
+                        type: "NSArray<GKTurnBasedParticipant>"
+                    arguments:
+                        type: "NSArray<NSString>"
+            '-sendReminderToParticipants:localizableMessageKey:arguments:completionHandler:':
+                name: "sendReminder"
+                parameters:
+                    participants:
+                        type: "NSArray<GKTurnBasedParticipant>"
+                    arguments:
+                        type: "NSArray<NSString>"
+            '-endTurnWithNextParticipant:matchData:completionHandler:':
+                name: "endTurn"
+            '-participantQuitInTurnWithOutcome:nextParticipant:matchData:completionHandler:':
+                name: "participantQuitInTurn"
+            '+findMatchForRequest:withCompletionHandler:':
+                name: "findMatch"
+            '+loadMatchesWithCompletionHandler:':
+                name: "loadMatches"
+                parameters:
+                    completionHandler:
+                        type: "@Block VoidBlock2<NSArray<GKTurnBasedMatch>, NSError>"
+            '+loadMatchWithID:withCompletionHandler:':
+                name: "loadMatches" 
+    GKTurnBasedMatchmakerViewController: {} # DONE
+    GKTurnBasedParticipant: {} # DONE
+    GKVoiceChat: # DONE
+        properties:
+            'playerIDs':
+                type: "NSArray<NSString>"
+        methods:
+            '-setMute:forPlayer:':
+                trim_after_first_colon: true
+    GKVoiceChatService: # DONE
+        methods:
+            '-startVoiceChatWithParticipantID:error:':
+                name: "startVoiceChat"
+            '-stopVoiceChatWithParticipantID:':
+                name: "stopVoiceChat"
+            '-acceptCallID:error:':
+                trim_after_first_colon: true
+            '-denyCallID:':
+                trim_after_first_colon: true
+            '-receivedRealTimeData:fromParticipantID:':
+                trim_after_first_colon: true
+            '-receivedData:fromParticipantID:':
+                trim_after_first_colon: true
+
+protocols:
+    GKAchievementViewControllerDelegate: # DONE
+        methods:
+            '-achievementViewControllerDidFinish:':
+                name: "didFinish"
+    GKChallengeEventHandlerDelegate: # DONE
+        methods:
+            '-localPlayerDidSelectChallenge:':
+                trim_after_first_colon: true
+            '-shouldShowBannerForLocallyReceivedChallenge:':
+                trim_after_first_colon: true
+            '-localPlayerDidReceiveChallenge:':
+                trim_after_first_colon: true
+            '-shouldShowBannerForLocallyCompletedChallenge:':
+                trim_after_first_colon: true
+            '-localPlayerDidCompleteChallenge:':
+                trim_after_first_colon: true
+            '-shouldShowBannerForRemotelyCompletedChallenge:':
+                trim_after_first_colon: true
+            '-remotePlayerDidCompleteChallenge:':
+                trim_after_first_colon: true
+    GKChallengeListener: # DONE
+        methods:
+            '-player:wantsToPlayChallenge:':
+                name: "wantsToPlayChallenge"
+            '-player:didReceiveChallenge:':
+                name: "didReceiveChallenge"
+            '-player:didCompleteChallenge:issuedByFriend:':
+                name: "didCompleteChallenge"
+            '-player:issuedChallengeWasCompleted:byFriend:':
+                name: "issuedChallengeWasCompleted"
+    GKFriendRequestComposeViewControllerDelegate: # DONE
+        methods:
+            '-friendRequestComposeViewControllerDidFinish:':
+                name: "didFinish"
+    GKGameCenterControllerDelegate: # DONE
+        methods:
+            '-gameCenterViewControllerDidFinish:':
+                name: "didFinish"
+    GKInviteEventListener: # DONE
+        methods:
+            '-player:didAcceptInvite:':
+                name: "didAcceptInvite"
+            '-player:didRequestMatchWithPlayers:':
+                name: "didRequestMatch"
+                parameters:
+                    playerIDsToInvite:
+                        type: "NSArray<NSString>"
+    GKLeaderboardViewControllerDelegate: # DONE
+        methods:
+            '-leaderboardViewControllerDidFinish:':
+                name: "didFinish"
+    GKLocalPlayerListener: {} # DONE
+    GKMatchDelegate: # DONE
+        methods:
+            '-match:didReceiveData:fromPlayer:':
+                name: "didReceiveData"
+            '-match:player:didChangeState:':
+                name: "didChangeState"
+            '-match:didFailWithError:':
+                name: "didFail"
+            '-match:shouldReinvitePlayer:':
+                name: "shouldReinvitePlayer"
+    GKMatchmakerViewControllerDelegate: # DONE
+        methods:
+            '-matchmakerViewControllerWasCancelled:':
+                name: "wasCancelled"
+            '-matchmakerViewController:didFailWithError:':
+                name: "didFail"
+            '-matchmakerViewController:didFindMatch:':
+                name: "didFindMatch"
+            '-matchmakerViewController:didFindPlayers:':
+                name: "didFindPlayers"
+                parameters:
+                    playerIDs:
+                        type: "NSArray<NSString>"
+            '-matchmakerViewController:didReceiveAcceptFromHostedPlayer:':
+                name: "didReceiveAccept"
+    GKPeerPickerControllerDelegate: # DONE
+        methods:
+            '-peerPickerController:didSelectConnectionType:':
+                name: "didSelectConnectionType"
+            '-peerPickerController:sessionForConnectionType:':
+                name: "getSession"
+            '-peerPickerController:didConnectPeer:toSession:':
+                name: "didConnectPeer"
+            '-peerPickerControllerDidCancel:':
+                name: "didCancel"
+    GKSessionDelegate: # DONE
+        methods:
+            '-session:peer:didChangeState:':
+                name: "didChangeState"
+            '-session:didReceiveConnectionRequestFromPeer:':
+                name: "didReceiveConnectionRequest"
+            '-session:connectionWithPeerFailed:withError:':
+                name: "connectionWithPeerFailed"
+            '-session:didFailWithError:':
+                name: "didFail"
+    GKTurnBasedEventHandlerDelegate: # DONE
+        methods:
+            '-handleInviteFromGameCenter:':
+                name: "handleInvite"
+                parameters:
+                    playersToInvite:
+                        type: "NSArray<NSString>"
+            '-handleTurnEventForMatch:didBecomeActive:':
+                name: "handleTurnEvent"
+            '-handleTurnEventForMatch:':
+                name: "handleTurnEvent"
+            '-handleMatchEnded:':
+                trim_after_first_colon: true
+    GKTurnBasedEventListener: # DONE
+        methods:
+            '-player:didRequestMatchWithPlayers:':
+                name: "didRequestMatch"
+                parameters:
+                    playerIDsToInvite:
+                        type: "NSArray<NSString>"
+            '-player:receivedTurnEventForMatch:didBecomeActive:':
+                name: "receivedTurnEvent"
+            '-player:matchEnded:':
+                name: "matchEnded"
+            '-player:receivedExchangeRequest:forMatch:':
+                name: "receivedExchangeRequest"
+            '-player:receivedExchangeCancellation:forMatch:':
+                name: "receivedExchangeCancellation"
+            '-player:receivedExchangeReplies:forCompletedExchange:forMatch:':
+                name: "receivedExchangeReplies"
+                parameters:
+                    replies:
+                        type: "NSArray<GKTurnBasedExchange>"
+    GKTurnBasedMatchmakerViewControllerDelegate: # DONE
+        methods:
+            '-turnBasedMatchmakerViewControllerWasCancelled:':
+                name: "wasCancelled"
+            '-turnBasedMatchmakerViewController:didFailWithError:':
+                name: "didFail"
+            '-turnBasedMatchmakerViewController:didFindMatch:':
+                name: "didFindMatch"
+            '-turnBasedMatchmakerViewController:playerQuitForMatch:':
+                name: "playerQuit"
+    GKVoiceChatClient:
+        methods:
+            '-voiceChatService:sendData:toParticipantID:':
+                name: "sendData"
+            '-participantID':
+                property: true
+            '-voiceChatService:sendRealTimeData:toParticipantID:':
+                name: "sendRealTimeData"
+            '-voiceChatService:didStartWithParticipantID:':
+                name: "didStart"
+            '-voiceChatService:didNotStartWithParticipantID:error:':
+                name: "didNotStart"
+            '-voiceChatService:didStopWithParticipantID:error:':
+                name: "didStop"
+            '-voiceChatService:didReceiveInvitationFromParticipantID:callID:':
+                name: "didReceiveInvitation" 
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (GK.*):
+        class: GameKit
+        name: "Function__#{g[0]}"
+
+values: 
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (GK.*):
+        class: GameKit
+        name: "Value__#{g[0]}"
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (GK.*):
+        class: GameKit
+        name: "Constant__#{g[0]}"

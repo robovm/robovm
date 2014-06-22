@@ -58,9 +58,9 @@ import org.robovm.apple.uikit.*;
     @Method(selector = "setMessage:")
     public native void setMessage(String message);
     @Method(selector = "addRecipientsWithPlayerIDs:")
-    public native void addRecipients(NSArray<NSString> playerIDs);
+    public native void addRecipientsWithPlayerIDs(NSArray<NSString> playerIDs);
     @Method(selector = "addRecipientsWithEmailAddresses:")
-    public native void addRecipients(NSArray<NSString> emailAddresses);
+    public native void addRecipientsWithEmailAddresses(NSArray<NSString> emailAddresses);
     @Method(selector = "maxNumberOfRecipients")
     public static native @MachineSizedUInt long getMaxNumberOfRecipients();
     /*</methods>*/

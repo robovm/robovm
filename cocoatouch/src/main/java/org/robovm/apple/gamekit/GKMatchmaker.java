@@ -54,14 +54,14 @@ import org.robovm.apple.uikit.*;
      */
     @Deprecated
     @Property(selector = "inviteHandler")
-    public native @Block VoidBlock2<GKInvite, NSArray<NSString> getInviteHandler();
+    public native @Block VoidBlock2<GKInvite, NSArray<NSString>> getInviteHandler();
     /**
      * @since Available in iOS 4.1 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Property(selector = "setInviteHandler:")
-    public native void setInviteHandler(@Block VoidBlock2<GKInvite, NSArray<NSString> v);
+    public native void setInviteHandler(@Block VoidBlock2<GKInvite, NSArray<NSString>> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

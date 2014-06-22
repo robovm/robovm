@@ -44,7 +44,6 @@ import org.robovm.apple.uikit.*;
     /*<bind>*/static { ObjCRuntime.bind(GKLeaderboard.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public GKLeaderboard() {}
     protected GKLeaderboard(SkipInit skipInit) { super(skipInit); }
     public GKLeaderboard() { super((SkipInit) null); initObject(init()); }
     public GKLeaderboard(NSArray<NSString> playerIDs) { super((SkipInit) null); initObject(init(playerIDs)); }
@@ -116,7 +115,7 @@ import org.robovm.apple.uikit.*;
      */
     @Deprecated
     @Method(selector = "loadCategoriesWithCompletionHandler:")
-    public static native void loadCategories(@Block VoidBlock2<NSArray<NSString>, NSArray<NSString>, NSError> completionHandler);
+    public static native void loadCategories(@Block VoidBlock3<NSArray<NSString>, NSArray<NSString>, NSError> completionHandler);
     /**
      * @since Available in iOS 6.0 and later.
      */

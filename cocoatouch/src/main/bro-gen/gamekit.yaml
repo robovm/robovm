@@ -7,7 +7,7 @@ headers:
     - /System/Library/Frameworks/GameKit.framework/Headers/GameKit.h
 typedefs:
     'void (^)(UIImage *, NSError *)': '@Block VoidBlock2<UIImage, NSError>'
-    'void (^)(NSArray *, NSArray *, NSError *)': '@Block VoidBlock2<NSArray<NSString>, NSArray<NSString>, NSError>'
+    'void (^)(NSArray *, NSArray *, NSError *)': '@Block VoidBlock3<NSArray<NSString>, NSArray<NSString>, NSError>'
     'void (^)(NSString *, NSError *)': '@Block VoidBlock2<NSString, NSError>'
     'void (^)(NSURL *, NSData *, NSData *, uint64_t, NSError *)': '@Block VoidBlock5<NSURL, NSData, NSData, Long, NSError>'
     'void (^)(UIViewController *, NSError *)': '@Block VoidBlock2<UIViewController, NSError>'
@@ -16,7 +16,7 @@ typedefs:
     'void (^)(NSString *, GKInviteeResponse)': '@Block VoidBlock2<NSString, GKInviteeResponse>'
     'void (^)(NSInteger, NSError *)': '@Block VoidBlock2<Integer, NSError>'
     'void (^)(NSString *, BOOL)': '@Block VoidBlock2<NSString, Boolean>'
-    'void (^)(GKInvite *, NSArray *)': '@Block VoidBlock2<GKInvite, NSArray<NSString>'
+    'void (^)(GKInvite *, NSArray *)': '@Block VoidBlock2<GKInvite, NSArray<NSString>>'
     'void (^)(GKTurnBasedMatch *, NSError *)': '@Block VoidBlock2<GKTurnBasedMatch, NSError>'
     'void (^)(NSData *, NSError *)': '@Block VoidBlock2<NSData, NSError>'
     'void (^)(GKTurnBasedExchange *, NSError *)': '@Block VoidBlock2<GKTurnBasedExchange, NSError>'
@@ -113,12 +113,12 @@ classes:
     GKFriendRequestComposeViewController: # DONE
         methods:
             '-addRecipientsWithPlayerIDs:':
-                name: "addRecipients"
+                trim_after_first_colon: true
                 parameters:
                     playerIDs:
                         type: "NSArray<NSString>"
             '-addRecipientsWithEmailAddresses:':
-                name: "addRecipients"
+                trim_after_first_colon: true
                 parameters:
                     emailAddresses:
                         type: "NSArray<NSString>"
@@ -127,6 +127,7 @@ classes:
     GKGameCenterViewController: {} # DONE
     GKInvite: {} # DONE
     GKLeaderboard: # DONE
+        skip_def_constructor: true
         properties:
             'scores':
                 type: "NSArray<GKScore>"
@@ -303,6 +304,22 @@ classes:
                 name: "getPeers"
                 return_type: "NSArray<NSString>"
     GKTurnBasedEventHandler: {} # DONE
+    GKTurnBasedExchange: # DONE
+        properties:
+            'recipients':
+                type: "NSArray<GKTurnBasedParticipant>"
+            'replies':
+                type: "NSArray<?>" # What type ????
+        methods:
+            '-cancelWithLocalizableMessageKey:arguments:completionHandler:':
+                name: "cancel"
+                parameters:
+                    arguments:
+                        type: "NSArray<NSString>"
+            '-replyWithLocalizableMessageKey:arguments:data:completionHandler:':
+                name: "reply"
+                parameters:
+                    arguments:
     GKTurnBasedMatch: # DONE
         properties:
             'participants':

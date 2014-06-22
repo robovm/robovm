@@ -280,13 +280,13 @@ import org.robovm.apple.security.*;
         return writeToFile$atomically$(file.getAbsolutePath(), useAuxiliaryFile);
     }
     
-    public NSDictionary<NSString, NSString> toNSDictionary (Map<String, String> map) {
-		Map<NSString, NSString> dictionary = new HashMap<NSString, NSString>();
-		for (Map.Entry<String, String> entry : map.entrySet()) {
-			dictionary.put(new NSString(entry.getKey()), new NSString(entry.getValue()));
-		}
-		return new NSDictionary<NSString, NSString>(dictionary);
-	}
+    public static NSDictionary<NSString, NSString> toNSDictionary (Map<String, String> map) {
+        Map<NSString, NSString> dictionary = new HashMap<NSString, NSString>();
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            dictionary.put(new NSString(entry.getKey()), new NSString(entry.getValue()));
+        }
+        return new NSDictionary<NSString, NSString>(dictionary);
+    }
     
     /*<methods>*/
     @Method(selector = "count")

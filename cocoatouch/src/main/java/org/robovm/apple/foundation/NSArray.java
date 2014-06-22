@@ -247,25 +247,25 @@ import org.robovm.apple.security.*;
         writeToFile$atomically$(file.getAbsolutePath(), atomically);
     }
     
-    public NSArray<NSString> toNSArray (String... strings) {
-		int length = strings.length;
-		NSString[] nsStrings = new NSString[length];
+    public static NSArray<NSString> toNSArray (String... strings) {
+        int length = strings.length;
+        NSString[] nsStrings = new NSString[length];
 
-		for (int i = 0; i < length; i++) {
-			nsStrings[i] = new NSString(strings[i]);
-		}
-		return new NSArray<NSString>(nsStrings);
-	}
+        for (int i = 0; i < length; i++) {
+            nsStrings[i] = new NSString(strings[i]);
+        }
+        return new NSArray<NSString>(nsStrings);
+    }
 
-	public NSArray<NSString> toNSArray (List<String> strings) {
-		int size = strings.size();
-		NSString[] nsStrings = new NSString[size];
+    public static NSArray<NSString> toNSArray (List<String> strings) {
+        int size = strings.size();
+        NSString[] nsStrings = new NSString[size];
 
-		for (int i = 0; i < size; i++) {
-			nsStrings[i] = new NSString(strings.get(i));
-		}
-		return new NSArray<NSString>(nsStrings);
-	}
+        for (int i = 0; i < size; i++) {
+            nsStrings[i] = new NSString(strings.get(i));
+        }
+        return new NSArray<NSString>(nsStrings);
+    }
 
     /*<methods>*/
     @Method(selector = "count")

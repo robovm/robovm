@@ -95,7 +95,7 @@ int main(int argc, char* argv[]) {
 
 static ClassInfoHeader** getClassInfosBase(void* hash) {
     hash += sizeof(jint); // Skip count
-    jint size = ((jshort*) hash)[0];
+    jint size = ((uint16_t*) hash)[0];
 #ifdef _LP64
     ClassInfoHeader** base  = hash + (size << 1) + 4;
 #else
@@ -113,10 +113,10 @@ static ClassInfoHeader* lookupClassInfo(Env* env, const char* className, void* h
     jint h = 0;
     MurmurHash3_x86_32(className, strlen(className) + 1, 0x1ce79e5c, &h);
     hash += sizeof(jint); // Skip count
-    jint size = ((jshort*) hash)[0];
+    jint size = ((uint16_t*) hash)[0];
     h &= size - 1;
-    jint start = ((jshort*) hash)[h + 1];
-    jint end = ((jshort*) hash)[h + 1 + 1];
+    jint start = ((uint16_t*) hash)[h + 1];
+    jint end = ((uint16_t*) hash)[h + 1 + 1];
     jint i;
     for (i = start; i < end; i++) {
         ClassInfoHeader* header = base[i];

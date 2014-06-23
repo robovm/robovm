@@ -541,7 +541,9 @@ public class IOSTarget extends AbstractTarget {
     
     public void init(Config config) {
         super.init(config);
-        
+
+        entitlementsPList = config.getIosEntitlementsPList();
+
         if (config.getArch() == null) {
             arch = Arch.thumbv7;
         } else {

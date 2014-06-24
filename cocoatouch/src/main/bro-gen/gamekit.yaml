@@ -596,27 +596,36 @@ functions:
         name: "Function__#{g[0]}"
 
 values: 
-    GKErrorDomain:
+    GK(ErrorDomain):
+        name: "#{g[0]}"
         type: NSString
         readonly: true
-    GKTurnTimeoutDefault:
+    GK(TurnTimeoutDefault):
+        name: "#{g[0]}"
         readonly: true
-    GKTurnTimeoutNone:
+    GK(TurnTimeoutNone):
+        name: "#{g[0]}"
         readonly: true
-    GKExchangeTimeoutDefault:
+    GK(ExchangeTimeoutDefault):
+        name: "#{g[0]}"
         readonly: true
-    GKExchangeTimeoutNone:
+    GK(ExchangeTimeoutNone):
+        name: "#{g[0]}"
         readonly: true
-    GKSessionErrorDomain:
+    GK(SessionErrorDomain):
+        name: "#{g[0]}"
         type: NSString
         readonly: true
-    GKVoiceChatServiceErrorDomain:
+    GK(VoiceChatServiceErrorDomain):
+        name: "#{g[0]}"
         type: NSString
         readonly: true
-    GKPlayerAuthenticationDidChangeNotificationName:
+    GK(PlayerAuthenticationDidChangeNotificationName):
+        name: "#{g[0]}"
         type: NSString
         readonly: true
-    GKPlayerDidChangeNotificationName:
+    GK(PlayerDidChangeNotificationName):
+        name: "#{g[0]}"
         type: NSString
         readonly: true
 

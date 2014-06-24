@@ -74,7 +74,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="ALAssetsLibraryErrorDomain", optional=true)
-    public static native NSString ErrorDomain();
+    public static native NSString AssetsLibraryErrorDomain();
     /**
      * @since Available in iOS 4.0 and later.
      */

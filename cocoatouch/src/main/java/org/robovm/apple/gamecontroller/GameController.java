@@ -45,8 +45,8 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @GlobalValue(symbol="GCControllerDidConnectNotification", optional=true)
-    public static native NSString DidConnectNotification();
+    public static native NSString ControllerDidConnectNotification();
     @GlobalValue(symbol="GCControllerDidDisconnectNotification", optional=true)
-    public static native NSString DidDisconnectNotification();
+    public static native NSString ControllerDidDisconnectNotification();
     /*</methods>*/
 }

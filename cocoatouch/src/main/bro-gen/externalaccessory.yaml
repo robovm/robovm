@@ -46,7 +46,7 @@ values:
         name: "#{g[0]}"
         type: NSString
 
-    EAAccessory(.*Notification):
+    EA(Accessory.*Notification):
         name: "#{g[0]}"
         type: NSString
 

@@ -50,12 +50,12 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="EAAccessoryDidConnectNotification", optional=true)
-    public static native NSString DidConnectNotification();
+    public static native NSString AccessoryDidConnectNotification();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="EAAccessoryDidDisconnectNotification", optional=true)
-    public static native NSString DidDisconnectNotification();
+    public static native NSString AccessoryDidDisconnectNotification();
     /**
      * @since Available in iOS 3.0 and later.
      */

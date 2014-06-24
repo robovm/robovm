@@ -45,12 +45,7 @@ import org.robovm.apple.coreimage.*;
 
     /*<ptr>*/public static class NSLayoutConstraintPtr extends Ptr<NSLayoutConstraint, NSLayoutConstraintPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSLayoutConstraint.class); }/*</bind>*/
-    /*<constants>*/
-    public static final float PriorityRequired = 1000;
-    public static final float PriorityDefaultHigh = 750;
-    public static final float PriorityDefaultLow = 250;
-    public static final float PriorityFittingSizeLevel = 50;
-    /*</constants>*/
+    /*<constants>*//*</constants>*/
     /*<constructors>*/
     public NSLayoutConstraint() {}
     protected NSLayoutConstraint(SkipInit skipInit) { super(skipInit); }

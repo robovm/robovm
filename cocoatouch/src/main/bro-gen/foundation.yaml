@@ -1998,96 +1998,140 @@ values:
     NSAssertionHandlerKey:
         exclude: true
 
-    NS(.*)Notification:
+    NS(.*Notification):
+        name: "#{g[0]}"
         type: NSString
     NS(LoadedClasses):
+        name: "#{g[0]}"
         type: NSString
-    NS(LocalizedDescription|ErrorFailingURLString|FilePathError|StringEncodingError)Key:
+    NS((LocalizedDescription|ErrorFailingURLString|FilePathError|StringEncodingError)Key):
+        name: "#{g[0]}"
         type: NSString
-    NS(UnderlyingError|URLError|LocalizedFailureReasonError|LocalizedRecoverySuggestionError)Key:
+    NS((UnderlyingError|URLError|LocalizedFailureReasonError|LocalizedRecoverySuggestionError)Key):
+        name: "#{g[0]}"
         type: NSString
-    NS(LocalizedRecoveryOptionsError|RecoveryAttempterError|HelpAnchorError|URLErrorFailingURLError)Key:
+    NS((LocalizedRecoveryOptionsError|RecoveryAttempterError|HelpAnchorError|URLErrorFailingURLError)Key):
+        name: "#{g[0]}"
         type: NSString
-    NS(URLErrorFailingURLStringError|URLErrorFailingURLPeerTrustError)Key:
+    NS((URLErrorFailingURLStringError|URLErrorFailingURLPeerTrustError)Key):
+        name: "#{g[0]}"
         type: NSString
-    NS(.*)ErrorDomain:
+    NS(.*ErrorDomain):
+        name: "#{g[0]}"
         type: NSString
-    NSFile(AppendOnly|Busy|CreationDate|DeviceIdentifier|ExtensionHidden|GroupOwnerAccountID|GroupOwnerAccountName):
+    NS(File(AppendOnly|Busy|CreationDate|DeviceIdentifier|ExtensionHidden|GroupOwnerAccountID|GroupOwnerAccountName)):
+        name: "#{g[0]}"
         type: NSString
-    NSFile(HFSCreatorCode|HFSTypeCode|Immutable|ModificationDate|OwnerAccountID|OwnerAccountName|PosixPermissions):
+    NS(File(HFSCreatorCode|HFSTypeCode|Immutable|ModificationDate|OwnerAccountID|OwnerAccountName|PosixPermissions)):
+        name: "#{g[0]}"
         type: NSString
-    NSFile(ReferenceCount|Size|SystemFileNumber|SystemNumber|Type):
+    NS(File(ReferenceCount|Size|SystemFileNumber|SystemNumber|Type)):
+        name: "#{g[0]}"
         type: NSString
-    NSFile(.*)Key:
+    NS(File.*Key):
+        name: "#{g[0]}"
         type: NSString
     NS(FileProtection.*):
+        name: "#{g[0]}"
         type: NSString
     NS(FileSystem.*):
+        name: "#{g[0]}"
         type: NSString
     NS(FileType.*):
+        name: "#{g[0]}"
         type: NSString
-    NSHTTPCookie(.*):
+    NS(HTTPCookie.*):
+        name: "#{g[0]}"
         type: NSString
-    NSKeyedArchive(RootObjectKey):
+    NS(KeyedArchiveRootObjectKey):
+        name: "#{g[0]}"
         type: NSString
-    NSKeyValue(.*)Key:
+    NS(KeyValue.*Key):
+        name: "#{g[0]}"
         type: NSString
-    NSLinguistic(TagScheme.*):
+    NS(LinguisticTagScheme.*):
+        name: "#{g[0]}"
         type: NSString
-    NSLinguisticTag(Word|Punctuation|Whitespace|Other):
+    NS(LinguisticTag(Word|Punctuation|Whitespace|Other)):
+        name: "#{g[0]}"
         type: NSString
-    NSLinguisticTag(.*)Name:
+    NS(LinguisticTag.*Name):
+        name: "#{g[0]}"
         type: NSString
-    NSLinguisticTag(.*):
+    NS(LinguisticTag.*):
+        name: "#{g[0]}"
         type: NSString
-    NSLocale(.*)Key:
+    NS(Locale.*Key):
+        name: "#{g[0]}"
         type: NSString
-    NSLocale(.*):
+    NS(Locale.*):
+        name: "#{g[0]}"
         type: NSString
-    NSMetadataItem(.*)Key:
+    NS(MetadataItem.*Key):
+        name: "#{g[0]}"
         type: NSString
-    NSMetadataUbiquitousItem(.*)Key:
+    NS(MetadataUbiquitousItem.*Key):
+        name: "#{g[0]}"
         type: NSString
-    NSMetadataUbiquitousItem(DownloadingStatus.*):
+    NS(MetadataUbiquitousItemDownloadingStatus.*):
+        name: "#{g[0]}"
         type: NSString
-    NSMetadataQuery(.*)Key:
+    NS(MetadataQuery.*Key):
+        name: "#{g[0]}"
         type: NSString
-    NSMetadataQuery(.*)Scope:
+    NS(MetadataQuery.*Scope):
+        name: "#{g[0]}"
         type: NSString
-    NSMetadataQuery(ResultContentRelevanceAttribute):
+    NS(MetadataQueryResultContentRelevanceAttribute):
+        name: "#{g[0]}"
         type: NSString
-    NSNetServices(ErrorCode):
+    NS(NetServicesErrorCode):
+        name: "#{g[0]}"
         type: NSString
-    NSProgress(.*)Key:
+    NS(Progress.*Key):
+        name: "#{g[0]}"
         type: NSString
-    NSProgress(FileOperationKind.*):
+    NS(ProgressFileOperationKind.*):
+        name: "#{g[0]}"
         type: NSString
-    NSStream(.*)Key:
+    NS(Stream.*Key):
+        name: "#{g[0]}"
         type: NSString
-    NSStreamNetworkServiceType:
+    NS(StreamNetworkServiceType):
+        name: "#{g[0]}"
         type: NSString
-    NSStream(SocketSecurityLevel.*):
+    NS(StreamSocketSecurityLevel.*):
+        name: "#{g[0]}"
         type: NSString
-    NSStream(SOCKSProxyVersion.*):
+    NS(StreamSOCKSProxyVersion.*):
+        name: "#{g[0]}"
         type: NSString
-    NSStream(NetworkServiceType.*):
+    NS(StreamNetworkServiceType.*):
+        name: "#{g[0]}"
         type: NSString
-    NSTextChecking(.*)Key:
+    NS(TextChecking.*Key):
+        name: "#{g[0]}"
         type: NSString
-    NSUbiquitousKeyValueStore(.*)Key:
+    NS(UbiquitousKeyValueStore.*Key):
+        name: "#{g[0]}"
         type: NSString
-    NSUndoManager(.*)Key:
+    NS(UndoManager.*Key):
+        name: "#{g[0]}"
         type: NSString
-    NSURLCredentialStorage(RemoveSynchronizableCredentials):
+    NS(URLCredentialStorageRemoveSynchronizableCredentials):
+        name: "#{g[0]}"
         type: NSString
-    NSURLSession(DownloadTaskResumeData):
+    NS(URLSessionDownloadTaskResumeData):
+        name: "#{g[0]}"
         type: NSString
-    NSURLError(BackgroundTaskCancelledReasonKey):
+    NS(URLErrorBackgroundTaskCancelledReasonKey):
+        name: "#{g[0]}"
         type: NSString
-    NSURL(.*)Key:
+    NS(URL.*Key):
+        name: "#{g[0]}"
         type: NSString
 
-    (NS.*):
+    NS(.*):
         class: Foundation
         readonly: true
         name: "#{g[0]}"
@@ -2116,6 +2160,6 @@ constants:
 
     NSWrapCalendarComponents: { exclude: true }
 
-    (NS.*):
+    NS(.*):
         class: Foundation
         name: "#{g[0]}"

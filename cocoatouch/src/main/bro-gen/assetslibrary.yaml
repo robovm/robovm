@@ -174,7 +174,7 @@ values:
         name: "#{g[0]}"
         type: NSString
         
-    ALAssetsLibrary(ErrorDomain):
+    AL(AssetsLibraryErrorDomain):
         name: "#{g[0]}"
         type: NSString
    

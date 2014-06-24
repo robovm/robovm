@@ -46,37 +46,37 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @GlobalValue(symbol="GKErrorDomain", optional=true)
-    public static native NSString GKErrorDomain();
+    public static native NSString ErrorDomain();
     @GlobalValue(symbol="GKPlayerDidChangeNotificationName", optional=true)
-    public static native NSString GKPlayerDidChangeNotificationName();
+    public static native NSString PlayerDidChangeNotificationName();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @GlobalValue(symbol="GKTurnTimeoutDefault", optional=true)
-    public static native double GKTurnTimeoutDefault();
+    public static native double TurnTimeoutDefault();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @GlobalValue(symbol="GKTurnTimeoutNone", optional=true)
-    public static native double GKTurnTimeoutNone();
+    public static native double TurnTimeoutNone();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="GKExchangeTimeoutDefault", optional=true)
-    public static native double GKExchangeTimeoutDefault();
+    public static native double ExchangeTimeoutDefault();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="GKExchangeTimeoutNone", optional=true)
-    public static native double GKExchangeTimeoutNone();
+    public static native double ExchangeTimeoutNone();
     /**
      * @since Available in iOS 4.1 and later.
      */
     @GlobalValue(symbol="GKPlayerAuthenticationDidChangeNotificationName", optional=true)
-    public static native NSString GKPlayerAuthenticationDidChangeNotificationName();
+    public static native NSString PlayerAuthenticationDidChangeNotificationName();
     @GlobalValue(symbol="GKSessionErrorDomain", optional=true)
-    public static native NSString GKSessionErrorDomain();
+    public static native NSString SessionErrorDomain();
     @GlobalValue(symbol="GKVoiceChatServiceErrorDomain", optional=true)
-    public static native NSString GKVoiceChatServiceErrorDomain();
+    public static native NSString VoiceChatServiceErrorDomain();
     /*</methods>*/
 }

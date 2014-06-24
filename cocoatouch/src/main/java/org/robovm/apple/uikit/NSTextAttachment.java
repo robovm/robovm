@@ -45,9 +45,7 @@ import org.robovm.apple.coreimage.*;
 
     /*<ptr>*/public static class NSTextAttachmentPtr extends Ptr<NSTextAttachment, NSTextAttachmentPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSTextAttachment.class); }/*</bind>*/
-    /*<constants>*/
-    public static final int AttachmentCharacter = 65532;
-    /*</constants>*/
+    /*<constants>*//*</constants>*/
     /*<constructors>*/
     public NSTextAttachment() {}
     protected NSTextAttachment(SkipInit skipInit) { super(skipInit); }

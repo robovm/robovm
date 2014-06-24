@@ -42,96 +42,96 @@ import org.robovm.apple.security.*;
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(Foundation.class); }/*</bind>*/
     /*<constants>*/
-    public static final double NSFoundationVersionNumber10_0 = 397.40;
-    public static final double NSFoundationVersionNumber10_1 = 425.00;
-    public static final double NSFoundationVersionNumber10_1_1 = 425.00;
-    public static final double NSFoundationVersionNumber10_1_2 = 425.00;
-    public static final double NSFoundationVersionNumber10_1_3 = 425.00;
-    public static final double NSFoundationVersionNumber10_1_4 = 425.00;
-    public static final double NSFoundationVersionNumber10_2 = 462.00;
-    public static final double NSFoundationVersionNumber10_2_1 = 462.00;
-    public static final double NSFoundationVersionNumber10_2_2 = 462.00;
-    public static final double NSFoundationVersionNumber10_2_3 = 462.00;
-    public static final double NSFoundationVersionNumber10_2_4 = 462.00;
-    public static final double NSFoundationVersionNumber10_2_5 = 462.00;
-    public static final double NSFoundationVersionNumber10_2_6 = 462.00;
-    public static final double NSFoundationVersionNumber10_2_7 = 462.70;
-    public static final double NSFoundationVersionNumber10_2_8 = 462.70;
-    public static final double NSFoundationVersionNumber10_3 = 500.00;
-    public static final double NSFoundationVersionNumber10_3_1 = 500.00;
-    public static final double NSFoundationVersionNumber10_3_2 = 500.30;
-    public static final double NSFoundationVersionNumber10_3_3 = 500.54;
-    public static final double NSFoundationVersionNumber10_3_4 = 500.56;
-    public static final double NSFoundationVersionNumber10_3_5 = 500.56;
-    public static final double NSFoundationVersionNumber10_3_6 = 500.56;
-    public static final double NSFoundationVersionNumber10_3_7 = 500.56;
-    public static final double NSFoundationVersionNumber10_3_8 = 500.56;
-    public static final double NSFoundationVersionNumber10_3_9 = 500.58;
-    public static final double NSFoundationVersionNumber10_4 = 567.00;
-    public static final double NSFoundationVersionNumber10_4_1 = 567.00;
-    public static final double NSFoundationVersionNumber10_4_2 = 567.12;
-    public static final double NSFoundationVersionNumber10_4_3 = 567.21;
-    public static final double NSFoundationVersionNumber10_4_4_Intel = 567.23;
-    public static final double NSFoundationVersionNumber10_4_4_PowerPC = 567.21;
-    public static final double NSFoundationVersionNumber10_4_5 = 567.25;
-    public static final double NSFoundationVersionNumber10_4_6 = 567.26;
-    public static final double NSFoundationVersionNumber10_4_7 = 567.27;
-    public static final double NSFoundationVersionNumber10_4_8 = 567.28;
-    public static final double NSFoundationVersionNumber10_4_9 = 567.29;
-    public static final double NSFoundationVersionNumber10_4_10 = 567.29;
-    public static final double NSFoundationVersionNumber10_4_11 = 567.36;
-    public static final double NSFoundationVersionNumber10_5 = 677.00;
-    public static final double NSFoundationVersionNumber10_5_1 = 677.10;
-    public static final double NSFoundationVersionNumber10_5_2 = 677.15;
-    public static final double NSFoundationVersionNumber10_5_3 = 677.19;
-    public static final double NSFoundationVersionNumber10_5_4 = 677.19;
-    public static final double NSFoundationVersionNumber10_5_5 = 677.21;
-    public static final double NSFoundationVersionNumber10_5_6 = 677.22;
-    public static final double NSFoundationVersionNumber10_5_7 = 677.24;
-    public static final double NSFoundationVersionNumber10_5_8 = 677.26;
-    public static final double NSFoundationVersionNumber10_6 = 751.00;
-    public static final double NSFoundationVersionNumber10_6_1 = 751.00;
-    public static final double NSFoundationVersionNumber10_6_2 = 751.14;
-    public static final double NSFoundationVersionNumber10_6_3 = 751.21;
-    public static final double NSFoundationVersionNumber10_6_4 = 751.29;
-    public static final double NSFoundationVersionNumber10_6_5 = 751.42;
-    public static final double NSFoundationVersionNumber10_6_6 = 751.53;
-    public static final double NSFoundationVersionNumber10_6_7 = 751.53;
-    public static final double NSFoundationVersionNumber10_6_8 = 751.62;
-    public static final double NSFoundationVersionNumber10_7 = 833.10;
-    public static final double NSFoundationVersionNumber10_7_1 = 833.10;
-    public static final double NSFoundationVersionNumber10_7_2 = 833.20;
-    public static final double NSFoundationVersionNumber10_7_3 = 833.24;
-    public static final double NSFoundationVersionNumber10_7_4 = 833.25;
-    public static final double NSFoundationVersionNumber10_8 = 945.00;
-    public static final double NSFoundationVersionNumber10_8_1 = 945.00;
-    public static final double NSFoundationVersionNumber10_8_2 = 945.11;
-    public static final double NSFoundationVersionNumber10_8_3 = 945.16;
-    public static final double NSFoundationVersionNumber10_8_4 = 945.18;
-    public static final double NSFoundationVersionNumber_iPhoneOS_2_0 = 678.24;
-    public static final double NSFoundationVersionNumber_iPhoneOS_2_1 = 678.26;
-    public static final double NSFoundationVersionNumber_iPhoneOS_2_2 = 678.29;
-    public static final double NSFoundationVersionNumber_iPhoneOS_3_0 = 678.47;
-    public static final double NSFoundationVersionNumber_iPhoneOS_3_1 = 678.51;
-    public static final double NSFoundationVersionNumber_iPhoneOS_3_2 = 678.60;
-    public static final double NSFoundationVersionNumber_iOS_4_0 = 751.32;
-    public static final double NSFoundationVersionNumber_iOS_4_1 = 751.37;
-    public static final double NSFoundationVersionNumber_iOS_4_2 = 751.49;
-    public static final double NSFoundationVersionNumber_iOS_4_3 = 751.49;
-    public static final double NSFoundationVersionNumber_iOS_5_0 = 881.00;
-    public static final double NSFoundationVersionNumber_iOS_5_1 = 890.10;
-    public static final double NSFoundationVersionNumber_iOS_6_0 = 993.00;
-    public static final double NSFoundationVersionNumber_iOS_6_1 = 993.00;
-    public static final double NSTimeIntervalSince1970 = 978307200.0;
-    public static final int NSDecimalMaxSize = 8;
-    public static final int NSDecimalNoScale = 32767;
-    public static final int NSFoundationVersionWithFileManagerResourceForkSupport = 412;
-    public static final int NSURLResponseUnknownLength = -1;
-    public static final int NSNotFound = 2147483647;
-    public static final int NSDateComponentUndefined = 2147483647;
-    public static final int NSOpenStepUnicodeReservedBase = 62464;
-    public static final int NSOperationQueueDefaultMaxConcurrentOperationCount = -1;
-    public static final int NSUndoCloseGroupingRunLoopOrdering = 350000;
+    public static final double FoundationVersionNumber10_0 = 397.40;
+    public static final double FoundationVersionNumber10_1 = 425.00;
+    public static final double FoundationVersionNumber10_1_1 = 425.00;
+    public static final double FoundationVersionNumber10_1_2 = 425.00;
+    public static final double FoundationVersionNumber10_1_3 = 425.00;
+    public static final double FoundationVersionNumber10_1_4 = 425.00;
+    public static final double FoundationVersionNumber10_2 = 462.00;
+    public static final double FoundationVersionNumber10_2_1 = 462.00;
+    public static final double FoundationVersionNumber10_2_2 = 462.00;
+    public static final double FoundationVersionNumber10_2_3 = 462.00;
+    public static final double FoundationVersionNumber10_2_4 = 462.00;
+    public static final double FoundationVersionNumber10_2_5 = 462.00;
+    public static final double FoundationVersionNumber10_2_6 = 462.00;
+    public static final double FoundationVersionNumber10_2_7 = 462.70;
+    public static final double FoundationVersionNumber10_2_8 = 462.70;
+    public static final double FoundationVersionNumber10_3 = 500.00;
+    public static final double FoundationVersionNumber10_3_1 = 500.00;
+    public static final double FoundationVersionNumber10_3_2 = 500.30;
+    public static final double FoundationVersionNumber10_3_3 = 500.54;
+    public static final double FoundationVersionNumber10_3_4 = 500.56;
+    public static final double FoundationVersionNumber10_3_5 = 500.56;
+    public static final double FoundationVersionNumber10_3_6 = 500.56;
+    public static final double FoundationVersionNumber10_3_7 = 500.56;
+    public static final double FoundationVersionNumber10_3_8 = 500.56;
+    public static final double FoundationVersionNumber10_3_9 = 500.58;
+    public static final double FoundationVersionNumber10_4 = 567.00;
+    public static final double FoundationVersionNumber10_4_1 = 567.00;
+    public static final double FoundationVersionNumber10_4_2 = 567.12;
+    public static final double FoundationVersionNumber10_4_3 = 567.21;
+    public static final double FoundationVersionNumber10_4_4_Intel = 567.23;
+    public static final double FoundationVersionNumber10_4_4_PowerPC = 567.21;
+    public static final double FoundationVersionNumber10_4_5 = 567.25;
+    public static final double FoundationVersionNumber10_4_6 = 567.26;
+    public static final double FoundationVersionNumber10_4_7 = 567.27;
+    public static final double FoundationVersionNumber10_4_8 = 567.28;
+    public static final double FoundationVersionNumber10_4_9 = 567.29;
+    public static final double FoundationVersionNumber10_4_10 = 567.29;
+    public static final double FoundationVersionNumber10_4_11 = 567.36;
+    public static final double FoundationVersionNumber10_5 = 677.00;
+    public static final double FoundationVersionNumber10_5_1 = 677.10;
+    public static final double FoundationVersionNumber10_5_2 = 677.15;
+    public static final double FoundationVersionNumber10_5_3 = 677.19;
+    public static final double FoundationVersionNumber10_5_4 = 677.19;
+    public static final double FoundationVersionNumber10_5_5 = 677.21;
+    public static final double FoundationVersionNumber10_5_6 = 677.22;
+    public static final double FoundationVersionNumber10_5_7 = 677.24;
+    public static final double FoundationVersionNumber10_5_8 = 677.26;
+    public static final double FoundationVersionNumber10_6 = 751.00;
+    public static final double FoundationVersionNumber10_6_1 = 751.00;
+    public static final double FoundationVersionNumber10_6_2 = 751.14;
+    public static final double FoundationVersionNumber10_6_3 = 751.21;
+    public static final double FoundationVersionNumber10_6_4 = 751.29;
+    public static final double FoundationVersionNumber10_6_5 = 751.42;
+    public static final double FoundationVersionNumber10_6_6 = 751.53;
+    public static final double FoundationVersionNumber10_6_7 = 751.53;
+    public static final double FoundationVersionNumber10_6_8 = 751.62;
+    public static final double FoundationVersionNumber10_7 = 833.10;
+    public static final double FoundationVersionNumber10_7_1 = 833.10;
+    public static final double FoundationVersionNumber10_7_2 = 833.20;
+    public static final double FoundationVersionNumber10_7_3 = 833.24;
+    public static final double FoundationVersionNumber10_7_4 = 833.25;
+    public static final double FoundationVersionNumber10_8 = 945.00;
+    public static final double FoundationVersionNumber10_8_1 = 945.00;
+    public static final double FoundationVersionNumber10_8_2 = 945.11;
+    public static final double FoundationVersionNumber10_8_3 = 945.16;
+    public static final double FoundationVersionNumber10_8_4 = 945.18;
+    public static final double FoundationVersionNumber_iPhoneOS_2_0 = 678.24;
+    public static final double FoundationVersionNumber_iPhoneOS_2_1 = 678.26;
+    public static final double FoundationVersionNumber_iPhoneOS_2_2 = 678.29;
+    public static final double FoundationVersionNumber_iPhoneOS_3_0 = 678.47;
+    public static final double FoundationVersionNumber_iPhoneOS_3_1 = 678.51;
+    public static final double FoundationVersionNumber_iPhoneOS_3_2 = 678.60;
+    public static final double FoundationVersionNumber_iOS_4_0 = 751.32;
+    public static final double FoundationVersionNumber_iOS_4_1 = 751.37;
+    public static final double FoundationVersionNumber_iOS_4_2 = 751.49;
+    public static final double FoundationVersionNumber_iOS_4_3 = 751.49;
+    public static final double FoundationVersionNumber_iOS_5_0 = 881.00;
+    public static final double FoundationVersionNumber_iOS_5_1 = 890.10;
+    public static final double FoundationVersionNumber_iOS_6_0 = 993.00;
+    public static final double FoundationVersionNumber_iOS_6_1 = 993.00;
+    public static final double TimeIntervalSince1970 = 978307200.0;
+    public static final int DecimalMaxSize = 8;
+    public static final int DecimalNoScale = 32767;
+    public static final int FoundationVersionWithFileManagerResourceForkSupport = 412;
+    public static final int URLResponseUnknownLength = -1;
+    public static final int NotFound = 2147483647;
+    public static final int DateComponentUndefined = 2147483647;
+    public static final int OpenStepUnicodeReservedBase = 62464;
+    public static final int OperationQueueDefaultMaxConcurrentOperationCount = -1;
+    public static final int UndoCloseGroupingRunLoopOrdering = 350000;
     /*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
@@ -142,8 +142,8 @@ import org.robovm.apple.security.*;
      * 
      * @param message the message to print to the log.
      */
-    @Bridge
-    public native static void NSLog(String message);
+    @Bridge(symbol = "NSLog")
+    public native static void log(String message);
     
     /**
      * Formats a log message using the specified format string and argument and
@@ -153,8 +153,8 @@ import org.robovm.apple.security.*;
      * @param format the format string.
      * @param arg the argument to be used in the format string.
      */
-    @Bridge
-    public native static void NSLog(String format, NSObject arg);
+    @Bridge(symbol = "NSLog")
+    public native static void log(String format, NSObject arg);
 
     /**
      * Formats a log message using the specified format string and arguments and
@@ -165,8 +165,8 @@ import org.robovm.apple.security.*;
      * @param arg1 the first argument to be used in the format string.
      * @param arg2 the second argument to be used in the format string.
      */
-    @Bridge
-    public native static void NSLog(String format, NSObject arg1, NSObject arg2);
+    @Bridge(symbol = "NSLog")
+    public native static void log(String format, NSObject arg1, NSObject arg2);
 
     /**
      * Formats a log message using the specified format string and arguments and
@@ -178,8 +178,8 @@ import org.robovm.apple.security.*;
      * @param arg2 the second argument to be used in the format string.
      * @param arg3 the third argument to be used in the format string.
      */
-    @Bridge
-    public native static void NSLog(String format, NSObject arg1, NSObject arg2, NSObject arg3);
+    @Bridge(symbol = "NSLog")
+    public native static void log(String format, NSObject arg1, NSObject arg2, NSObject arg3);
 
     /**
      * Formats a log message using the specified format string and arguments and
@@ -192,8 +192,8 @@ import org.robovm.apple.security.*;
      * @param arg3 the third argument to be used in the format string.
      * @param arg4 the forth argument to be used in the format string.
      */
-    @Bridge
-    public native static void NSLog(String format, NSObject arg1, NSObject arg2, NSObject arg3, NSObject arg4);
+    @Bridge(symbol = "NSLog")
+    public native static void log(String format, NSObject arg1, NSObject arg2, NSObject arg3, NSObject arg4);
 
     /**
      * Formats a log message using the specified format string and arguments and
@@ -207,1711 +207,1711 @@ import org.robovm.apple.security.*;
      * @param arg4 the forth argument to be used in the format string.
      * @param arg5 the fifth argument to be used in the format string.
      */
-    @Bridge
-    public native static void NSLog(String format, NSObject arg1, NSObject arg2, NSObject arg3, NSObject arg4, NSObject arg5);
+    @Bridge(symbol = "NSLog")
+    public native static void log(String format, NSObject arg1, NSObject arg2, NSObject arg3, NSObject arg4, NSObject arg5);
     
     /*<methods>*/
     @GlobalValue(symbol="NSFoundationVersionNumber", optional=true)
-    public static native double NSFoundationVersionNumber();
+    public static native double FoundationVersionNumber();
     @GlobalValue(symbol="NSBundleDidLoadNotification", optional=true)
-    public static native NSString NSBundleDidLoadNotification();
+    public static native NSString BundleDidLoadNotification();
     @GlobalValue(symbol="NSLoadedClasses", optional=true)
-    public static native NSString NSLoadedClasses();
+    public static native NSString LoadedClasses();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSSystemClockDidChangeNotification", optional=true)
-    public static native NSString NSSystemClockDidChangeNotification();
+    public static native NSString SystemClockDidChangeNotification();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSCalendarIdentifierGregorian", optional=true)
-    public static native String NSCalendarIdentifierGregorian();
+    public static native String CalendarIdentifierGregorian();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSCalendarIdentifierBuddhist", optional=true)
-    public static native String NSCalendarIdentifierBuddhist();
+    public static native String CalendarIdentifierBuddhist();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSCalendarIdentifierChinese", optional=true)
-    public static native String NSCalendarIdentifierChinese();
+    public static native String CalendarIdentifierChinese();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSCalendarIdentifierCoptic", optional=true)
-    public static native String NSCalendarIdentifierCoptic();
+    public static native String CalendarIdentifierCoptic();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSCalendarIdentifierEthiopicAmeteMihret", optional=true)
-    public static native String NSCalendarIdentifierEthiopicAmeteMihret();
+    public static native String CalendarIdentifierEthiopicAmeteMihret();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSCalendarIdentifierEthiopicAmeteAlem", optional=true)
-    public static native String NSCalendarIdentifierEthiopicAmeteAlem();
+    public static native String CalendarIdentifierEthiopicAmeteAlem();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSCalendarIdentifierHebrew", optional=true)
-    public static native String NSCalendarIdentifierHebrew();
+    public static native String CalendarIdentifierHebrew();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSCalendarIdentifierISO8601", optional=true)
-    public static native String NSCalendarIdentifierISO8601();
+    public static native String CalendarIdentifierISO8601();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSCalendarIdentifierIndian", optional=true)
-    public static native String NSCalendarIdentifierIndian();
+    public static native String CalendarIdentifierIndian();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSCalendarIdentifierIslamic", optional=true)
-    public static native String NSCalendarIdentifierIslamic();
+    public static native String CalendarIdentifierIslamic();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSCalendarIdentifierIslamicCivil", optional=true)
-    public static native String NSCalendarIdentifierIslamicCivil();
+    public static native String CalendarIdentifierIslamicCivil();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSCalendarIdentifierJapanese", optional=true)
-    public static native String NSCalendarIdentifierJapanese();
+    public static native String CalendarIdentifierJapanese();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSCalendarIdentifierPersian", optional=true)
-    public static native String NSCalendarIdentifierPersian();
+    public static native String CalendarIdentifierPersian();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSCalendarIdentifierRepublicOfChina", optional=true)
-    public static native String NSCalendarIdentifierRepublicOfChina();
+    public static native String CalendarIdentifierRepublicOfChina();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSCalendarDayChangedNotification", optional=true)
-    public static native NSString NSCalendarDayChangedNotification();
+    public static native NSString CalendarDayChangedNotification();
     @GlobalValue(symbol="NSCocoaErrorDomain", optional=true)
-    public static native NSString NSCocoaErrorDomain();
+    public static native NSString CocoaErrorDomain();
     @GlobalValue(symbol="NSPOSIXErrorDomain", optional=true)
-    public static native NSString NSPOSIXErrorDomain();
+    public static native NSString POSIXErrorDomain();
     @GlobalValue(symbol="NSOSStatusErrorDomain", optional=true)
-    public static native NSString NSOSStatusErrorDomain();
+    public static native NSString OSStatusErrorDomain();
     @GlobalValue(symbol="NSMachErrorDomain", optional=true)
-    public static native NSString NSMachErrorDomain();
+    public static native NSString MachErrorDomain();
     @GlobalValue(symbol="NSUnderlyingErrorKey", optional=true)
-    public static native NSString NSUnderlyingErrorKey();
+    public static native NSString UnderlyingErrorKey();
     @GlobalValue(symbol="NSLocalizedDescriptionKey", optional=true)
-    public static native NSString NSLocalizedDescriptionKey();
+    public static native NSString LocalizedDescriptionKey();
     @GlobalValue(symbol="NSLocalizedFailureReasonErrorKey", optional=true)
-    public static native NSString NSLocalizedFailureReasonErrorKey();
+    public static native NSString LocalizedFailureReasonErrorKey();
     @GlobalValue(symbol="NSLocalizedRecoverySuggestionErrorKey", optional=true)
-    public static native NSString NSLocalizedRecoverySuggestionErrorKey();
+    public static native NSString LocalizedRecoverySuggestionErrorKey();
     @GlobalValue(symbol="NSLocalizedRecoveryOptionsErrorKey", optional=true)
-    public static native NSString NSLocalizedRecoveryOptionsErrorKey();
+    public static native NSString LocalizedRecoveryOptionsErrorKey();
     @GlobalValue(symbol="NSRecoveryAttempterErrorKey", optional=true)
-    public static native NSString NSRecoveryAttempterErrorKey();
+    public static native NSString RecoveryAttempterErrorKey();
     @GlobalValue(symbol="NSHelpAnchorErrorKey", optional=true)
-    public static native NSString NSHelpAnchorErrorKey();
+    public static native NSString HelpAnchorErrorKey();
     @GlobalValue(symbol="NSStringEncodingErrorKey", optional=true)
-    public static native NSString NSStringEncodingErrorKey();
+    public static native NSString StringEncodingErrorKey();
     @GlobalValue(symbol="NSURLErrorKey", optional=true)
-    public static native NSString NSURLErrorKey();
+    public static native NSString URLErrorKey();
     @GlobalValue(symbol="NSFilePathErrorKey", optional=true)
-    public static native NSString NSFilePathErrorKey();
+    public static native NSString FilePathErrorKey();
     @GlobalValue(symbol="NSFileHandleReadCompletionNotification", optional=true)
-    public static native NSString NSFileHandleReadCompletionNotification();
+    public static native NSString FileHandleReadCompletionNotification();
     @GlobalValue(symbol="NSFileHandleReadToEndOfFileCompletionNotification", optional=true)
-    public static native NSString NSFileHandleReadToEndOfFileCompletionNotification();
+    public static native NSString FileHandleReadToEndOfFileCompletionNotification();
     @GlobalValue(symbol="NSFileHandleConnectionAcceptedNotification", optional=true)
-    public static native NSString NSFileHandleConnectionAcceptedNotification();
+    public static native NSString FileHandleConnectionAcceptedNotification();
     @GlobalValue(symbol="NSFileHandleDataAvailableNotification", optional=true)
-    public static native NSString NSFileHandleDataAvailableNotification();
+    public static native NSString FileHandleDataAvailableNotification();
     @GlobalValue(symbol="NSFileHandleNotificationDataItem", optional=true)
-    public static native String NSFileHandleNotificationDataItem();
+    public static native String FileHandleNotificationDataItem();
     @GlobalValue(symbol="NSFileHandleNotificationFileHandleItem", optional=true)
-    public static native String NSFileHandleNotificationFileHandleItem();
+    public static native String FileHandleNotificationFileHandleItem();
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 5.0.
      */
     @Deprecated
     @GlobalValue(symbol="NSFileHandleNotificationMonitorModes", optional=true)
-    public static native String NSFileHandleNotificationMonitorModes();
+    public static native String FileHandleNotificationMonitorModes();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @GlobalValue(symbol="NSUbiquityIdentityDidChangeNotification", optional=true)
-    public static native NSString NSUbiquityIdentityDidChangeNotification();
+    public static native NSString UbiquityIdentityDidChangeNotification();
     @GlobalValue(symbol="NSFileType", optional=true)
-    public static native NSString NSFileType();
+    public static native NSString FileType();
     @GlobalValue(symbol="NSFileTypeDirectory", optional=true)
-    public static native NSString NSFileTypeDirectory();
+    public static native NSString FileTypeDirectory();
     @GlobalValue(symbol="NSFileTypeRegular", optional=true)
-    public static native NSString NSFileTypeRegular();
+    public static native NSString FileTypeRegular();
     @GlobalValue(symbol="NSFileTypeSymbolicLink", optional=true)
-    public static native NSString NSFileTypeSymbolicLink();
+    public static native NSString FileTypeSymbolicLink();
     @GlobalValue(symbol="NSFileTypeSocket", optional=true)
-    public static native NSString NSFileTypeSocket();
+    public static native NSString FileTypeSocket();
     @GlobalValue(symbol="NSFileTypeCharacterSpecial", optional=true)
-    public static native NSString NSFileTypeCharacterSpecial();
+    public static native NSString FileTypeCharacterSpecial();
     @GlobalValue(symbol="NSFileTypeBlockSpecial", optional=true)
-    public static native NSString NSFileTypeBlockSpecial();
+    public static native NSString FileTypeBlockSpecial();
     @GlobalValue(symbol="NSFileTypeUnknown", optional=true)
-    public static native NSString NSFileTypeUnknown();
+    public static native NSString FileTypeUnknown();
     @GlobalValue(symbol="NSFileSize", optional=true)
-    public static native NSString NSFileSize();
+    public static native NSString FileSize();
     @GlobalValue(symbol="NSFileModificationDate", optional=true)
-    public static native NSString NSFileModificationDate();
+    public static native NSString FileModificationDate();
     @GlobalValue(symbol="NSFileReferenceCount", optional=true)
-    public static native NSString NSFileReferenceCount();
+    public static native NSString FileReferenceCount();
     @GlobalValue(symbol="NSFileDeviceIdentifier", optional=true)
-    public static native NSString NSFileDeviceIdentifier();
+    public static native NSString FileDeviceIdentifier();
     @GlobalValue(symbol="NSFileOwnerAccountName", optional=true)
-    public static native NSString NSFileOwnerAccountName();
+    public static native NSString FileOwnerAccountName();
     @GlobalValue(symbol="NSFileGroupOwnerAccountName", optional=true)
-    public static native NSString NSFileGroupOwnerAccountName();
+    public static native NSString FileGroupOwnerAccountName();
     @GlobalValue(symbol="NSFilePosixPermissions", optional=true)
-    public static native NSString NSFilePosixPermissions();
+    public static native NSString FilePosixPermissions();
     @GlobalValue(symbol="NSFileSystemNumber", optional=true)
-    public static native NSString NSFileSystemNumber();
+    public static native NSString FileSystemNumber();
     @GlobalValue(symbol="NSFileSystemFileNumber", optional=true)
-    public static native NSString NSFileSystemFileNumber();
+    public static native NSString FileSystemFileNumber();
     @GlobalValue(symbol="NSFileExtensionHidden", optional=true)
-    public static native NSString NSFileExtensionHidden();
+    public static native NSString FileExtensionHidden();
     @GlobalValue(symbol="NSFileHFSCreatorCode", optional=true)
-    public static native NSString NSFileHFSCreatorCode();
+    public static native NSString FileHFSCreatorCode();
     @GlobalValue(symbol="NSFileHFSTypeCode", optional=true)
-    public static native NSString NSFileHFSTypeCode();
+    public static native NSString FileHFSTypeCode();
     @GlobalValue(symbol="NSFileImmutable", optional=true)
-    public static native NSString NSFileImmutable();
+    public static native NSString FileImmutable();
     @GlobalValue(symbol="NSFileAppendOnly", optional=true)
-    public static native NSString NSFileAppendOnly();
+    public static native NSString FileAppendOnly();
     @GlobalValue(symbol="NSFileCreationDate", optional=true)
-    public static native NSString NSFileCreationDate();
+    public static native NSString FileCreationDate();
     @GlobalValue(symbol="NSFileOwnerAccountID", optional=true)
-    public static native NSString NSFileOwnerAccountID();
+    public static native NSString FileOwnerAccountID();
     @GlobalValue(symbol="NSFileGroupOwnerAccountID", optional=true)
-    public static native NSString NSFileGroupOwnerAccountID();
+    public static native NSString FileGroupOwnerAccountID();
     @GlobalValue(symbol="NSFileBusy", optional=true)
-    public static native NSString NSFileBusy();
+    public static native NSString FileBusy();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSFileProtectionKey", optional=true)
-    public static native NSString NSFileProtectionKey();
+    public static native NSString FileProtectionKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSFileProtectionNone", optional=true)
-    public static native NSString NSFileProtectionNone();
+    public static native NSString FileProtectionNone();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSFileProtectionComplete", optional=true)
-    public static native NSString NSFileProtectionComplete();
+    public static native NSString FileProtectionComplete();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSFileProtectionCompleteUnlessOpen", optional=true)
-    public static native NSString NSFileProtectionCompleteUnlessOpen();
+    public static native NSString FileProtectionCompleteUnlessOpen();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSFileProtectionCompleteUntilFirstUserAuthentication", optional=true)
-    public static native NSString NSFileProtectionCompleteUntilFirstUserAuthentication();
+    public static native NSString FileProtectionCompleteUntilFirstUserAuthentication();
     @GlobalValue(symbol="NSFileSystemSize", optional=true)
-    public static native NSString NSFileSystemSize();
+    public static native NSString FileSystemSize();
     @GlobalValue(symbol="NSFileSystemFreeSize", optional=true)
-    public static native NSString NSFileSystemFreeSize();
+    public static native NSString FileSystemFreeSize();
     @GlobalValue(symbol="NSFileSystemNodes", optional=true)
-    public static native NSString NSFileSystemNodes();
+    public static native NSString FileSystemNodes();
     @GlobalValue(symbol="NSFileSystemFreeNodes", optional=true)
-    public static native NSString NSFileSystemFreeNodes();
+    public static native NSString FileSystemFreeNodes();
     @GlobalValue(symbol="NSHTTPCookieName", optional=true)
-    public static native NSString NSHTTPCookieName();
+    public static native NSString HTTPCookieName();
     @GlobalValue(symbol="NSHTTPCookieValue", optional=true)
-    public static native NSString NSHTTPCookieValue();
+    public static native NSString HTTPCookieValue();
     @GlobalValue(symbol="NSHTTPCookieOriginURL", optional=true)
-    public static native NSString NSHTTPCookieOriginURL();
+    public static native NSString HTTPCookieOriginURL();
     @GlobalValue(symbol="NSHTTPCookieVersion", optional=true)
-    public static native NSString NSHTTPCookieVersion();
+    public static native NSString HTTPCookieVersion();
     @GlobalValue(symbol="NSHTTPCookieDomain", optional=true)
-    public static native NSString NSHTTPCookieDomain();
+    public static native NSString HTTPCookieDomain();
     @GlobalValue(symbol="NSHTTPCookiePath", optional=true)
-    public static native NSString NSHTTPCookiePath();
+    public static native NSString HTTPCookiePath();
     @GlobalValue(symbol="NSHTTPCookieSecure", optional=true)
-    public static native NSString NSHTTPCookieSecure();
+    public static native NSString HTTPCookieSecure();
     @GlobalValue(symbol="NSHTTPCookieExpires", optional=true)
-    public static native NSString NSHTTPCookieExpires();
+    public static native NSString HTTPCookieExpires();
     @GlobalValue(symbol="NSHTTPCookieComment", optional=true)
-    public static native NSString NSHTTPCookieComment();
+    public static native NSString HTTPCookieComment();
     @GlobalValue(symbol="NSHTTPCookieCommentURL", optional=true)
-    public static native NSString NSHTTPCookieCommentURL();
+    public static native NSString HTTPCookieCommentURL();
     @GlobalValue(symbol="NSHTTPCookieDiscard", optional=true)
-    public static native NSString NSHTTPCookieDiscard();
+    public static native NSString HTTPCookieDiscard();
     @GlobalValue(symbol="NSHTTPCookieMaximumAge", optional=true)
-    public static native NSString NSHTTPCookieMaximumAge();
+    public static native NSString HTTPCookieMaximumAge();
     @GlobalValue(symbol="NSHTTPCookiePort", optional=true)
-    public static native NSString NSHTTPCookiePort();
+    public static native NSString HTTPCookiePort();
     @GlobalValue(symbol="NSHTTPCookieManagerAcceptPolicyChangedNotification", optional=true)
-    public static native NSString NSHTTPCookieManagerAcceptPolicyChangedNotification();
+    public static native NSString HTTPCookieManagerAcceptPolicyChangedNotification();
     @GlobalValue(symbol="NSHTTPCookieManagerCookiesChangedNotification", optional=true)
-    public static native NSString NSHTTPCookieManagerCookiesChangedNotification();
+    public static native NSString HTTPCookieManagerCookiesChangedNotification();
     @GlobalValue(symbol="NSAverageKeyValueOperator", optional=true)
-    public static native String NSAverageKeyValueOperator();
+    public static native String AverageKeyValueOperator();
     @GlobalValue(symbol="NSCountKeyValueOperator", optional=true)
-    public static native String NSCountKeyValueOperator();
+    public static native String CountKeyValueOperator();
     @GlobalValue(symbol="NSDistinctUnionOfArraysKeyValueOperator", optional=true)
-    public static native String NSDistinctUnionOfArraysKeyValueOperator();
+    public static native String DistinctUnionOfArraysKeyValueOperator();
     @GlobalValue(symbol="NSDistinctUnionOfObjectsKeyValueOperator", optional=true)
-    public static native String NSDistinctUnionOfObjectsKeyValueOperator();
+    public static native String DistinctUnionOfObjectsKeyValueOperator();
     @GlobalValue(symbol="NSDistinctUnionOfSetsKeyValueOperator", optional=true)
-    public static native String NSDistinctUnionOfSetsKeyValueOperator();
+    public static native String DistinctUnionOfSetsKeyValueOperator();
     @GlobalValue(symbol="NSMaximumKeyValueOperator", optional=true)
-    public static native String NSMaximumKeyValueOperator();
+    public static native String MaximumKeyValueOperator();
     @GlobalValue(symbol="NSMinimumKeyValueOperator", optional=true)
-    public static native String NSMinimumKeyValueOperator();
+    public static native String MinimumKeyValueOperator();
     @GlobalValue(symbol="NSSumKeyValueOperator", optional=true)
-    public static native String NSSumKeyValueOperator();
+    public static native String SumKeyValueOperator();
     @GlobalValue(symbol="NSUnionOfArraysKeyValueOperator", optional=true)
-    public static native String NSUnionOfArraysKeyValueOperator();
+    public static native String UnionOfArraysKeyValueOperator();
     @GlobalValue(symbol="NSUnionOfObjectsKeyValueOperator", optional=true)
-    public static native String NSUnionOfObjectsKeyValueOperator();
+    public static native String UnionOfObjectsKeyValueOperator();
     @GlobalValue(symbol="NSUnionOfSetsKeyValueOperator", optional=true)
-    public static native String NSUnionOfSetsKeyValueOperator();
+    public static native String UnionOfSetsKeyValueOperator();
     @GlobalValue(symbol="NSKeyValueChangeKindKey", optional=true)
-    public static native NSString NSKeyValueChangeKindKey();
+    public static native NSString KeyValueChangeKindKey();
     @GlobalValue(symbol="NSKeyValueChangeNewKey", optional=true)
-    public static native NSString NSKeyValueChangeNewKey();
+    public static native NSString KeyValueChangeNewKey();
     @GlobalValue(symbol="NSKeyValueChangeOldKey", optional=true)
-    public static native NSString NSKeyValueChangeOldKey();
+    public static native NSString KeyValueChangeOldKey();
     @GlobalValue(symbol="NSKeyValueChangeIndexesKey", optional=true)
-    public static native NSString NSKeyValueChangeIndexesKey();
+    public static native NSString KeyValueChangeIndexesKey();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSKeyValueChangeNotificationIsPriorKey", optional=true)
-    public static native NSString NSKeyValueChangeNotificationIsPriorKey();
+    public static native NSString KeyValueChangeNotificationIsPriorKey();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSKeyedArchiveRootObjectKey", optional=true)
-    public static native NSString NSKeyedArchiveRootObjectKey();
+    public static native NSString KeyedArchiveRootObjectKey();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSCurrentLocaleDidChangeNotification", optional=true)
-    public static native NSString NSCurrentLocaleDidChangeNotification();
+    public static native NSString CurrentLocaleDidChangeNotification();
     @GlobalValue(symbol="NSLocaleIdentifier", optional=true)
-    public static native NSString NSLocaleIdentifier();
+    public static native NSString LocaleIdentifier();
     @GlobalValue(symbol="NSLocaleLanguageCode", optional=true)
-    public static native NSString NSLocaleLanguageCode();
+    public static native NSString LocaleLanguageCode();
     @GlobalValue(symbol="NSLocaleCountryCode", optional=true)
-    public static native NSString NSLocaleCountryCode();
+    public static native NSString LocaleCountryCode();
     @GlobalValue(symbol="NSLocaleScriptCode", optional=true)
-    public static native NSString NSLocaleScriptCode();
+    public static native NSString LocaleScriptCode();
     @GlobalValue(symbol="NSLocaleVariantCode", optional=true)
-    public static native NSString NSLocaleVariantCode();
+    public static native NSString LocaleVariantCode();
     @GlobalValue(symbol="NSLocaleExemplarCharacterSet", optional=true)
-    public static native NSString NSLocaleExemplarCharacterSet();
+    public static native NSString LocaleExemplarCharacterSet();
     @GlobalValue(symbol="NSLocaleCalendar", optional=true)
-    public static native NSString NSLocaleCalendar();
+    public static native NSString LocaleCalendar();
     @GlobalValue(symbol="NSLocaleCollationIdentifier", optional=true)
-    public static native NSString NSLocaleCollationIdentifier();
+    public static native NSString LocaleCollationIdentifier();
     @GlobalValue(symbol="NSLocaleUsesMetricSystem", optional=true)
-    public static native NSString NSLocaleUsesMetricSystem();
+    public static native NSString LocaleUsesMetricSystem();
     @GlobalValue(symbol="NSLocaleMeasurementSystem", optional=true)
-    public static native NSString NSLocaleMeasurementSystem();
+    public static native NSString LocaleMeasurementSystem();
     @GlobalValue(symbol="NSLocaleDecimalSeparator", optional=true)
-    public static native NSString NSLocaleDecimalSeparator();
+    public static native NSString LocaleDecimalSeparator();
     @GlobalValue(symbol="NSLocaleGroupingSeparator", optional=true)
-    public static native NSString NSLocaleGroupingSeparator();
+    public static native NSString LocaleGroupingSeparator();
     @GlobalValue(symbol="NSLocaleCurrencySymbol", optional=true)
-    public static native NSString NSLocaleCurrencySymbol();
+    public static native NSString LocaleCurrencySymbol();
     @GlobalValue(symbol="NSLocaleCurrencyCode", optional=true)
-    public static native NSString NSLocaleCurrencyCode();
+    public static native NSString LocaleCurrencyCode();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSLocaleCollatorIdentifier", optional=true)
-    public static native NSString NSLocaleCollatorIdentifier();
+    public static native NSString LocaleCollatorIdentifier();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSLocaleQuotationBeginDelimiterKey", optional=true)
-    public static native NSString NSLocaleQuotationBeginDelimiterKey();
+    public static native NSString LocaleQuotationBeginDelimiterKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSLocaleQuotationEndDelimiterKey", optional=true)
-    public static native NSString NSLocaleQuotationEndDelimiterKey();
+    public static native NSString LocaleQuotationEndDelimiterKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSLocaleAlternateQuotationBeginDelimiterKey", optional=true)
-    public static native NSString NSLocaleAlternateQuotationBeginDelimiterKey();
+    public static native NSString LocaleAlternateQuotationBeginDelimiterKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSLocaleAlternateQuotationEndDelimiterKey", optional=true)
-    public static native NSString NSLocaleAlternateQuotationEndDelimiterKey();
+    public static native NSString LocaleAlternateQuotationEndDelimiterKey();
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="NSGregorianCalendar", optional=true)
-    public static native String NSGregorianCalendar();
+    public static native String GregorianCalendar();
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="NSBuddhistCalendar", optional=true)
-    public static native String NSBuddhistCalendar();
+    public static native String BuddhistCalendar();
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="NSChineseCalendar", optional=true)
-    public static native String NSChineseCalendar();
+    public static native String ChineseCalendar();
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="NSHebrewCalendar", optional=true)
-    public static native String NSHebrewCalendar();
+    public static native String HebrewCalendar();
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="NSIslamicCalendar", optional=true)
-    public static native String NSIslamicCalendar();
+    public static native String IslamicCalendar();
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="NSIslamicCivilCalendar", optional=true)
-    public static native String NSIslamicCivilCalendar();
+    public static native String IslamicCivilCalendar();
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="NSJapaneseCalendar", optional=true)
-    public static native String NSJapaneseCalendar();
+    public static native String JapaneseCalendar();
     /**
      * @since Available in iOS 4.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="NSRepublicOfChinaCalendar", optional=true)
-    public static native String NSRepublicOfChinaCalendar();
+    public static native String RepublicOfChinaCalendar();
     /**
      * @since Available in iOS 4.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="NSPersianCalendar", optional=true)
-    public static native String NSPersianCalendar();
+    public static native String PersianCalendar();
     /**
      * @since Available in iOS 4.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="NSIndianCalendar", optional=true)
-    public static native String NSIndianCalendar();
+    public static native String IndianCalendar();
     /**
      * @since Available in iOS 4.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="NSISO8601Calendar", optional=true)
-    public static native String NSISO8601Calendar();
+    public static native String ISO8601Calendar();
     @GlobalValue(symbol="NSPortDidBecomeInvalidNotification", optional=true)
-    public static native NSString NSPortDidBecomeInvalidNotification();
+    public static native NSString PortDidBecomeInvalidNotification();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSTextCheckingNameKey", optional=true)
-    public static native NSString NSTextCheckingNameKey();
+    public static native NSString TextCheckingNameKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSTextCheckingJobTitleKey", optional=true)
-    public static native NSString NSTextCheckingJobTitleKey();
+    public static native NSString TextCheckingJobTitleKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSTextCheckingOrganizationKey", optional=true)
-    public static native NSString NSTextCheckingOrganizationKey();
+    public static native NSString TextCheckingOrganizationKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSTextCheckingStreetKey", optional=true)
-    public static native NSString NSTextCheckingStreetKey();
+    public static native NSString TextCheckingStreetKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSTextCheckingCityKey", optional=true)
-    public static native NSString NSTextCheckingCityKey();
+    public static native NSString TextCheckingCityKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSTextCheckingStateKey", optional=true)
-    public static native NSString NSTextCheckingStateKey();
+    public static native NSString TextCheckingStateKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSTextCheckingZIPKey", optional=true)
-    public static native NSString NSTextCheckingZIPKey();
+    public static native NSString TextCheckingZIPKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSTextCheckingCountryKey", optional=true)
-    public static native NSString NSTextCheckingCountryKey();
+    public static native NSString TextCheckingCountryKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSTextCheckingPhoneKey", optional=true)
-    public static native NSString NSTextCheckingPhoneKey();
+    public static native NSString TextCheckingPhoneKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSTextCheckingAirlineKey", optional=true)
-    public static native NSString NSTextCheckingAirlineKey();
+    public static native NSString TextCheckingAirlineKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSTextCheckingFlightKey", optional=true)
-    public static native NSString NSTextCheckingFlightKey();
+    public static native NSString TextCheckingFlightKey();
     @GlobalValue(symbol="NSDefaultRunLoopMode", optional=true)
-    public static native String NSDefaultRunLoopMode();
+    public static native String DefaultRunLoopMode();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSRunLoopCommonModes", optional=true)
-    public static native String NSRunLoopCommonModes();
+    public static native String RunLoopCommonModes();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSStreamSocketSecurityLevelKey", optional=true)
-    public static native NSString NSStreamSocketSecurityLevelKey();
+    public static native NSString StreamSocketSecurityLevelKey();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSStreamSocketSecurityLevelNone", optional=true)
-    public static native NSString NSStreamSocketSecurityLevelNone();
+    public static native NSString StreamSocketSecurityLevelNone();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSStreamSocketSecurityLevelSSLv2", optional=true)
-    public static native NSString NSStreamSocketSecurityLevelSSLv2();
+    public static native NSString StreamSocketSecurityLevelSSLv2();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSStreamSocketSecurityLevelSSLv3", optional=true)
-    public static native NSString NSStreamSocketSecurityLevelSSLv3();
+    public static native NSString StreamSocketSecurityLevelSSLv3();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSStreamSocketSecurityLevelTLSv1", optional=true)
-    public static native NSString NSStreamSocketSecurityLevelTLSv1();
+    public static native NSString StreamSocketSecurityLevelTLSv1();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSStreamSocketSecurityLevelNegotiatedSSL", optional=true)
-    public static native NSString NSStreamSocketSecurityLevelNegotiatedSSL();
+    public static native NSString StreamSocketSecurityLevelNegotiatedSSL();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSStreamSOCKSProxyConfigurationKey", optional=true)
-    public static native NSString NSStreamSOCKSProxyConfigurationKey();
+    public static native NSString StreamSOCKSProxyConfigurationKey();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSStreamSOCKSProxyHostKey", optional=true)
-    public static native NSString NSStreamSOCKSProxyHostKey();
+    public static native NSString StreamSOCKSProxyHostKey();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSStreamSOCKSProxyPortKey", optional=true)
-    public static native NSString NSStreamSOCKSProxyPortKey();
+    public static native NSString StreamSOCKSProxyPortKey();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSStreamSOCKSProxyVersionKey", optional=true)
-    public static native NSString NSStreamSOCKSProxyVersionKey();
+    public static native NSString StreamSOCKSProxyVersionKey();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSStreamSOCKSProxyUserKey", optional=true)
-    public static native NSString NSStreamSOCKSProxyUserKey();
+    public static native NSString StreamSOCKSProxyUserKey();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSStreamSOCKSProxyPasswordKey", optional=true)
-    public static native NSString NSStreamSOCKSProxyPasswordKey();
+    public static native NSString StreamSOCKSProxyPasswordKey();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSStreamSOCKSProxyVersion4", optional=true)
-    public static native NSString NSStreamSOCKSProxyVersion4();
+    public static native NSString StreamSOCKSProxyVersion4();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSStreamSOCKSProxyVersion5", optional=true)
-    public static native NSString NSStreamSOCKSProxyVersion5();
+    public static native NSString StreamSOCKSProxyVersion5();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSStreamDataWrittenToMemoryStreamKey", optional=true)
-    public static native NSString NSStreamDataWrittenToMemoryStreamKey();
+    public static native NSString StreamDataWrittenToMemoryStreamKey();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSStreamFileCurrentOffsetKey", optional=true)
-    public static native NSString NSStreamFileCurrentOffsetKey();
+    public static native NSString StreamFileCurrentOffsetKey();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSStreamSocketSSLErrorDomain", optional=true)
-    public static native NSString NSStreamSocketSSLErrorDomain();
+    public static native NSString StreamSocketSSLErrorDomain();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSStreamSOCKSErrorDomain", optional=true)
-    public static native NSString NSStreamSOCKSErrorDomain();
+    public static native NSString StreamSOCKSErrorDomain();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSStreamNetworkServiceType", optional=true)
-    public static native NSString NSStreamNetworkServiceType();
+    public static native NSString StreamNetworkServiceType();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSStreamNetworkServiceTypeVoIP", optional=true)
-    public static native NSString NSStreamNetworkServiceTypeVoIP();
+    public static native NSString StreamNetworkServiceTypeVoIP();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSStreamNetworkServiceTypeVideo", optional=true)
-    public static native NSString NSStreamNetworkServiceTypeVideo();
+    public static native NSString StreamNetworkServiceTypeVideo();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSStreamNetworkServiceTypeBackground", optional=true)
-    public static native NSString NSStreamNetworkServiceTypeBackground();
+    public static native NSString StreamNetworkServiceTypeBackground();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSStreamNetworkServiceTypeVoice", optional=true)
-    public static native NSString NSStreamNetworkServiceTypeVoice();
+    public static native NSString StreamNetworkServiceTypeVoice();
     @GlobalValue(symbol="NSWillBecomeMultiThreadedNotification", optional=true)
-    public static native NSString NSWillBecomeMultiThreadedNotification();
+    public static native NSString WillBecomeMultiThreadedNotification();
     @GlobalValue(symbol="NSDidBecomeSingleThreadedNotification", optional=true)
-    public static native NSString NSDidBecomeSingleThreadedNotification();
+    public static native NSString DidBecomeSingleThreadedNotification();
     @GlobalValue(symbol="NSThreadWillExitNotification", optional=true)
-    public static native NSString NSThreadWillExitNotification();
+    public static native NSString ThreadWillExitNotification();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSSystemTimeZoneDidChangeNotification", optional=true)
-    public static native NSString NSSystemTimeZoneDidChangeNotification();
+    public static native NSString SystemTimeZoneDidChangeNotification();
     @GlobalValue(symbol="NSURLFileScheme", optional=true)
-    public static native String NSURLFileScheme();
+    public static native String URLFileScheme();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLKeysOfUnsetValuesKey", optional=true)
-    public static native NSString NSURLKeysOfUnsetValuesKey();
+    public static native NSString URLKeysOfUnsetValuesKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLNameKey", optional=true)
-    public static native NSString NSURLNameKey();
+    public static native NSString URLNameKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLLocalizedNameKey", optional=true)
-    public static native NSString NSURLLocalizedNameKey();
+    public static native NSString URLLocalizedNameKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLIsRegularFileKey", optional=true)
-    public static native NSString NSURLIsRegularFileKey();
+    public static native NSString URLIsRegularFileKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLIsDirectoryKey", optional=true)
-    public static native NSString NSURLIsDirectoryKey();
+    public static native NSString URLIsDirectoryKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLIsSymbolicLinkKey", optional=true)
-    public static native NSString NSURLIsSymbolicLinkKey();
+    public static native NSString URLIsSymbolicLinkKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLIsVolumeKey", optional=true)
-    public static native NSString NSURLIsVolumeKey();
+    public static native NSString URLIsVolumeKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLIsPackageKey", optional=true)
-    public static native NSString NSURLIsPackageKey();
+    public static native NSString URLIsPackageKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLIsSystemImmutableKey", optional=true)
-    public static native NSString NSURLIsSystemImmutableKey();
+    public static native NSString URLIsSystemImmutableKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLIsUserImmutableKey", optional=true)
-    public static native NSString NSURLIsUserImmutableKey();
+    public static native NSString URLIsUserImmutableKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLIsHiddenKey", optional=true)
-    public static native NSString NSURLIsHiddenKey();
+    public static native NSString URLIsHiddenKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLHasHiddenExtensionKey", optional=true)
-    public static native NSString NSURLHasHiddenExtensionKey();
+    public static native NSString URLHasHiddenExtensionKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLCreationDateKey", optional=true)
-    public static native NSString NSURLCreationDateKey();
+    public static native NSString URLCreationDateKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLContentAccessDateKey", optional=true)
-    public static native NSString NSURLContentAccessDateKey();
+    public static native NSString URLContentAccessDateKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLContentModificationDateKey", optional=true)
-    public static native NSString NSURLContentModificationDateKey();
+    public static native NSString URLContentModificationDateKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLAttributeModificationDateKey", optional=true)
-    public static native NSString NSURLAttributeModificationDateKey();
+    public static native NSString URLAttributeModificationDateKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLLinkCountKey", optional=true)
-    public static native NSString NSURLLinkCountKey();
+    public static native NSString URLLinkCountKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLParentDirectoryURLKey", optional=true)
-    public static native NSString NSURLParentDirectoryURLKey();
+    public static native NSString URLParentDirectoryURLKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeURLKey", optional=true)
-    public static native NSString NSURLVolumeURLKey();
+    public static native NSString URLVolumeURLKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLTypeIdentifierKey", optional=true)
-    public static native NSString NSURLTypeIdentifierKey();
+    public static native NSString URLTypeIdentifierKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLLocalizedTypeDescriptionKey", optional=true)
-    public static native NSString NSURLLocalizedTypeDescriptionKey();
+    public static native NSString URLLocalizedTypeDescriptionKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLLabelNumberKey", optional=true)
-    public static native NSString NSURLLabelNumberKey();
+    public static native NSString URLLabelNumberKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLLabelColorKey", optional=true)
-    public static native NSString NSURLLabelColorKey();
+    public static native NSString URLLabelColorKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLLocalizedLabelKey", optional=true)
-    public static native NSString NSURLLocalizedLabelKey();
+    public static native NSString URLLocalizedLabelKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLEffectiveIconKey", optional=true)
-    public static native NSString NSURLEffectiveIconKey();
+    public static native NSString URLEffectiveIconKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLCustomIconKey", optional=true)
-    public static native NSString NSURLCustomIconKey();
+    public static native NSString URLCustomIconKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLFileResourceIdentifierKey", optional=true)
-    public static native NSString NSURLFileResourceIdentifierKey();
+    public static native NSString URLFileResourceIdentifierKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeIdentifierKey", optional=true)
-    public static native NSString NSURLVolumeIdentifierKey();
+    public static native NSString URLVolumeIdentifierKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLPreferredIOBlockSizeKey", optional=true)
-    public static native NSString NSURLPreferredIOBlockSizeKey();
+    public static native NSString URLPreferredIOBlockSizeKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLIsReadableKey", optional=true)
-    public static native NSString NSURLIsReadableKey();
+    public static native NSString URLIsReadableKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLIsWritableKey", optional=true)
-    public static native NSString NSURLIsWritableKey();
+    public static native NSString URLIsWritableKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLIsExecutableKey", optional=true)
-    public static native NSString NSURLIsExecutableKey();
+    public static native NSString URLIsExecutableKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLFileSecurityKey", optional=true)
-    public static native NSString NSURLFileSecurityKey();
+    public static native NSString URLFileSecurityKey();
     /**
      * @since Available in iOS 5.1 and later.
      */
     @GlobalValue(symbol="NSURLIsExcludedFromBackupKey", optional=true)
-    public static native NSString NSURLIsExcludedFromBackupKey();
+    public static native NSString URLIsExcludedFromBackupKey();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @GlobalValue(symbol="NSURLPathKey", optional=true)
-    public static native NSString NSURLPathKey();
+    public static native NSString URLPathKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLIsMountTriggerKey", optional=true)
-    public static native NSString NSURLIsMountTriggerKey();
+    public static native NSString URLIsMountTriggerKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLFileResourceTypeKey", optional=true)
-    public static native NSString NSURLFileResourceTypeKey();
+    public static native NSString URLFileResourceTypeKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLFileResourceTypeNamedPipe", optional=true)
-    public static native String NSURLFileResourceTypeNamedPipe();
+    public static native String URLFileResourceTypeNamedPipe();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLFileResourceTypeCharacterSpecial", optional=true)
-    public static native String NSURLFileResourceTypeCharacterSpecial();
+    public static native String URLFileResourceTypeCharacterSpecial();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLFileResourceTypeDirectory", optional=true)
-    public static native String NSURLFileResourceTypeDirectory();
+    public static native String URLFileResourceTypeDirectory();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLFileResourceTypeBlockSpecial", optional=true)
-    public static native String NSURLFileResourceTypeBlockSpecial();
+    public static native String URLFileResourceTypeBlockSpecial();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLFileResourceTypeRegular", optional=true)
-    public static native String NSURLFileResourceTypeRegular();
+    public static native String URLFileResourceTypeRegular();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLFileResourceTypeSymbolicLink", optional=true)
-    public static native String NSURLFileResourceTypeSymbolicLink();
+    public static native String URLFileResourceTypeSymbolicLink();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLFileResourceTypeSocket", optional=true)
-    public static native String NSURLFileResourceTypeSocket();
+    public static native String URLFileResourceTypeSocket();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLFileResourceTypeUnknown", optional=true)
-    public static native String NSURLFileResourceTypeUnknown();
+    public static native String URLFileResourceTypeUnknown();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLFileSizeKey", optional=true)
-    public static native NSString NSURLFileSizeKey();
+    public static native NSString URLFileSizeKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLFileAllocatedSizeKey", optional=true)
-    public static native NSString NSURLFileAllocatedSizeKey();
+    public static native NSString URLFileAllocatedSizeKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLTotalFileSizeKey", optional=true)
-    public static native NSString NSURLTotalFileSizeKey();
+    public static native NSString URLTotalFileSizeKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLTotalFileAllocatedSizeKey", optional=true)
-    public static native NSString NSURLTotalFileAllocatedSizeKey();
+    public static native NSString URLTotalFileAllocatedSizeKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLIsAliasFileKey", optional=true)
-    public static native NSString NSURLIsAliasFileKey();
+    public static native NSString URLIsAliasFileKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeLocalizedFormatDescriptionKey", optional=true)
-    public static native NSString NSURLVolumeLocalizedFormatDescriptionKey();
+    public static native NSString URLVolumeLocalizedFormatDescriptionKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeTotalCapacityKey", optional=true)
-    public static native NSString NSURLVolumeTotalCapacityKey();
+    public static native NSString URLVolumeTotalCapacityKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeAvailableCapacityKey", optional=true)
-    public static native NSString NSURLVolumeAvailableCapacityKey();
+    public static native NSString URLVolumeAvailableCapacityKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeResourceCountKey", optional=true)
-    public static native NSString NSURLVolumeResourceCountKey();
+    public static native NSString URLVolumeResourceCountKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeSupportsPersistentIDsKey", optional=true)
-    public static native NSString NSURLVolumeSupportsPersistentIDsKey();
+    public static native NSString URLVolumeSupportsPersistentIDsKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeSupportsSymbolicLinksKey", optional=true)
-    public static native NSString NSURLVolumeSupportsSymbolicLinksKey();
+    public static native NSString URLVolumeSupportsSymbolicLinksKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeSupportsHardLinksKey", optional=true)
-    public static native NSString NSURLVolumeSupportsHardLinksKey();
+    public static native NSString URLVolumeSupportsHardLinksKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeSupportsJournalingKey", optional=true)
-    public static native NSString NSURLVolumeSupportsJournalingKey();
+    public static native NSString URLVolumeSupportsJournalingKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeIsJournalingKey", optional=true)
-    public static native NSString NSURLVolumeIsJournalingKey();
+    public static native NSString URLVolumeIsJournalingKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeSupportsSparseFilesKey", optional=true)
-    public static native NSString NSURLVolumeSupportsSparseFilesKey();
+    public static native NSString URLVolumeSupportsSparseFilesKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeSupportsZeroRunsKey", optional=true)
-    public static native NSString NSURLVolumeSupportsZeroRunsKey();
+    public static native NSString URLVolumeSupportsZeroRunsKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeSupportsCaseSensitiveNamesKey", optional=true)
-    public static native NSString NSURLVolumeSupportsCaseSensitiveNamesKey();
+    public static native NSString URLVolumeSupportsCaseSensitiveNamesKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeSupportsCasePreservedNamesKey", optional=true)
-    public static native NSString NSURLVolumeSupportsCasePreservedNamesKey();
+    public static native NSString URLVolumeSupportsCasePreservedNamesKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeSupportsRootDirectoryDatesKey", optional=true)
-    public static native NSString NSURLVolumeSupportsRootDirectoryDatesKey();
+    public static native NSString URLVolumeSupportsRootDirectoryDatesKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeSupportsVolumeSizesKey", optional=true)
-    public static native NSString NSURLVolumeSupportsVolumeSizesKey();
+    public static native NSString URLVolumeSupportsVolumeSizesKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeSupportsRenamingKey", optional=true)
-    public static native NSString NSURLVolumeSupportsRenamingKey();
+    public static native NSString URLVolumeSupportsRenamingKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeSupportsAdvisoryFileLockingKey", optional=true)
-    public static native NSString NSURLVolumeSupportsAdvisoryFileLockingKey();
+    public static native NSString URLVolumeSupportsAdvisoryFileLockingKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeSupportsExtendedSecurityKey", optional=true)
-    public static native NSString NSURLVolumeSupportsExtendedSecurityKey();
+    public static native NSString URLVolumeSupportsExtendedSecurityKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeIsBrowsableKey", optional=true)
-    public static native NSString NSURLVolumeIsBrowsableKey();
+    public static native NSString URLVolumeIsBrowsableKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeMaximumFileSizeKey", optional=true)
-    public static native NSString NSURLVolumeMaximumFileSizeKey();
+    public static native NSString URLVolumeMaximumFileSizeKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeIsEjectableKey", optional=true)
-    public static native NSString NSURLVolumeIsEjectableKey();
+    public static native NSString URLVolumeIsEjectableKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeIsRemovableKey", optional=true)
-    public static native NSString NSURLVolumeIsRemovableKey();
+    public static native NSString URLVolumeIsRemovableKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeIsInternalKey", optional=true)
-    public static native NSString NSURLVolumeIsInternalKey();
+    public static native NSString URLVolumeIsInternalKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeIsAutomountedKey", optional=true)
-    public static native NSString NSURLVolumeIsAutomountedKey();
+    public static native NSString URLVolumeIsAutomountedKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeIsLocalKey", optional=true)
-    public static native NSString NSURLVolumeIsLocalKey();
+    public static native NSString URLVolumeIsLocalKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeIsReadOnlyKey", optional=true)
-    public static native NSString NSURLVolumeIsReadOnlyKey();
+    public static native NSString URLVolumeIsReadOnlyKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeCreationDateKey", optional=true)
-    public static native NSString NSURLVolumeCreationDateKey();
+    public static native NSString URLVolumeCreationDateKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeURLForRemountingKey", optional=true)
-    public static native NSString NSURLVolumeURLForRemountingKey();
+    public static native NSString URLVolumeURLForRemountingKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeUUIDStringKey", optional=true)
-    public static native NSString NSURLVolumeUUIDStringKey();
+    public static native NSString URLVolumeUUIDStringKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeNameKey", optional=true)
-    public static native NSString NSURLVolumeNameKey();
+    public static native NSString URLVolumeNameKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLVolumeLocalizedNameKey", optional=true)
-    public static native NSString NSURLVolumeLocalizedNameKey();
+    public static native NSString URLVolumeLocalizedNameKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLIsUbiquitousItemKey", optional=true)
-    public static native NSString NSURLIsUbiquitousItemKey();
+    public static native NSString URLIsUbiquitousItemKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLUbiquitousItemHasUnresolvedConflictsKey", optional=true)
-    public static native NSString NSURLUbiquitousItemHasUnresolvedConflictsKey();
+    public static native NSString URLUbiquitousItemHasUnresolvedConflictsKey();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="NSURLUbiquitousItemIsDownloadedKey", optional=true)
-    public static native NSString NSURLUbiquitousItemIsDownloadedKey();
+    public static native NSString URLUbiquitousItemIsDownloadedKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLUbiquitousItemIsDownloadingKey", optional=true)
-    public static native NSString NSURLUbiquitousItemIsDownloadingKey();
+    public static native NSString URLUbiquitousItemIsDownloadingKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLUbiquitousItemIsUploadedKey", optional=true)
-    public static native NSString NSURLUbiquitousItemIsUploadedKey();
+    public static native NSString URLUbiquitousItemIsUploadedKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLUbiquitousItemIsUploadingKey", optional=true)
-    public static native NSString NSURLUbiquitousItemIsUploadingKey();
+    public static native NSString URLUbiquitousItemIsUploadingKey();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 6.0.
      */
     @Deprecated
     @GlobalValue(symbol="NSURLUbiquitousItemPercentDownloadedKey", optional=true)
-    public static native NSString NSURLUbiquitousItemPercentDownloadedKey();
+    public static native NSString URLUbiquitousItemPercentDownloadedKey();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 6.0.
      */
     @Deprecated
     @GlobalValue(symbol="NSURLUbiquitousItemPercentUploadedKey", optional=true)
-    public static native NSString NSURLUbiquitousItemPercentUploadedKey();
+    public static native NSString URLUbiquitousItemPercentUploadedKey();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSURLUbiquitousItemDownloadingStatusKey", optional=true)
-    public static native NSString NSURLUbiquitousItemDownloadingStatusKey();
+    public static native NSString URLUbiquitousItemDownloadingStatusKey();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSURLUbiquitousItemDownloadingErrorKey", optional=true)
-    public static native NSString NSURLUbiquitousItemDownloadingErrorKey();
+    public static native NSString URLUbiquitousItemDownloadingErrorKey();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSURLUbiquitousItemUploadingErrorKey", optional=true)
-    public static native NSString NSURLUbiquitousItemUploadingErrorKey();
+    public static native NSString URLUbiquitousItemUploadingErrorKey();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSURLUbiquitousItemDownloadingStatusNotDownloaded", optional=true)
-    public static native String NSURLUbiquitousItemDownloadingStatusNotDownloaded();
+    public static native String URLUbiquitousItemDownloadingStatusNotDownloaded();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSURLUbiquitousItemDownloadingStatusDownloaded", optional=true)
-    public static native String NSURLUbiquitousItemDownloadingStatusDownloaded();
+    public static native String URLUbiquitousItemDownloadingStatusDownloaded();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSURLUbiquitousItemDownloadingStatusCurrent", optional=true)
-    public static native String NSURLUbiquitousItemDownloadingStatusCurrent();
+    public static native String URLUbiquitousItemDownloadingStatusCurrent();
     @GlobalValue(symbol="NSURLCredentialStorageChangedNotification", optional=true)
-    public static native NSString NSURLCredentialStorageChangedNotification();
+    public static native NSString URLCredentialStorageChangedNotification();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSURLCredentialStorageRemoveSynchronizableCredentials", optional=true)
-    public static native NSString NSURLCredentialStorageRemoveSynchronizableCredentials();
+    public static native NSString URLCredentialStorageRemoveSynchronizableCredentials();
     @GlobalValue(symbol="NSURLErrorDomain", optional=true)
-    public static native NSString NSURLErrorDomain();
+    public static native NSString URLErrorDomain();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLErrorFailingURLErrorKey", optional=true)
-    public static native NSString NSURLErrorFailingURLErrorKey();
+    public static native NSString URLErrorFailingURLErrorKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLErrorFailingURLStringErrorKey", optional=true)
-    public static native NSString NSURLErrorFailingURLStringErrorKey();
+    public static native NSString URLErrorFailingURLStringErrorKey();
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 4.0.
      */
     @Deprecated
     @GlobalValue(symbol="NSErrorFailingURLStringKey", optional=true)
-    public static native NSString NSErrorFailingURLStringKey();
+    public static native NSString ErrorFailingURLStringKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="NSURLErrorFailingURLPeerTrustErrorKey", optional=true)
-    public static native NSString NSURLErrorFailingURLPeerTrustErrorKey();
+    public static native NSString URLErrorFailingURLPeerTrustErrorKey();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSURLErrorBackgroundTaskCancelledReasonKey", optional=true)
-    public static native NSString NSURLErrorBackgroundTaskCancelledReasonKey();
+    public static native NSString URLErrorBackgroundTaskCancelledReasonKey();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSURLProtectionSpaceHTTP", optional=true)
-    public static native String NSURLProtectionSpaceHTTP();
+    public static native String URLProtectionSpaceHTTP();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSURLProtectionSpaceHTTPS", optional=true)
-    public static native String NSURLProtectionSpaceHTTPS();
+    public static native String URLProtectionSpaceHTTPS();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSURLProtectionSpaceFTP", optional=true)
-    public static native String NSURLProtectionSpaceFTP();
+    public static native String URLProtectionSpaceFTP();
     @GlobalValue(symbol="NSURLProtectionSpaceHTTPProxy", optional=true)
-    public static native String NSURLProtectionSpaceHTTPProxy();
+    public static native String URLProtectionSpaceHTTPProxy();
     @GlobalValue(symbol="NSURLProtectionSpaceHTTPSProxy", optional=true)
-    public static native String NSURLProtectionSpaceHTTPSProxy();
+    public static native String URLProtectionSpaceHTTPSProxy();
     @GlobalValue(symbol="NSURLProtectionSpaceFTPProxy", optional=true)
-    public static native String NSURLProtectionSpaceFTPProxy();
+    public static native String URLProtectionSpaceFTPProxy();
     @GlobalValue(symbol="NSURLProtectionSpaceSOCKSProxy", optional=true)
-    public static native String NSURLProtectionSpaceSOCKSProxy();
+    public static native String URLProtectionSpaceSOCKSProxy();
     @GlobalValue(symbol="NSURLAuthenticationMethodDefault", optional=true)
-    public static native String NSURLAuthenticationMethodDefault();
+    public static native String URLAuthenticationMethodDefault();
     @GlobalValue(symbol="NSURLAuthenticationMethodHTTPBasic", optional=true)
-    public static native String NSURLAuthenticationMethodHTTPBasic();
+    public static native String URLAuthenticationMethodHTTPBasic();
     @GlobalValue(symbol="NSURLAuthenticationMethodHTTPDigest", optional=true)
-    public static native String NSURLAuthenticationMethodHTTPDigest();
+    public static native String URLAuthenticationMethodHTTPDigest();
     @GlobalValue(symbol="NSURLAuthenticationMethodHTMLForm", optional=true)
-    public static native String NSURLAuthenticationMethodHTMLForm();
+    public static native String URLAuthenticationMethodHTMLForm();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSURLAuthenticationMethodNTLM", optional=true)
-    public static native String NSURLAuthenticationMethodNTLM();
+    public static native String URLAuthenticationMethodNTLM();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSURLAuthenticationMethodNegotiate", optional=true)
-    public static native String NSURLAuthenticationMethodNegotiate();
+    public static native String URLAuthenticationMethodNegotiate();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="NSURLAuthenticationMethodClientCertificate", optional=true)
-    public static native String NSURLAuthenticationMethodClientCertificate();
+    public static native String URLAuthenticationMethodClientCertificate();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="NSURLAuthenticationMethodServerTrust", optional=true)
-    public static native String NSURLAuthenticationMethodServerTrust();
+    public static native String URLAuthenticationMethodServerTrust();
     @GlobalValue(symbol="NSGlobalDomain", optional=true)
-    public static native String NSGlobalDomain();
+    public static native String GlobalDomain();
     @GlobalValue(symbol="NSArgumentDomain", optional=true)
-    public static native String NSArgumentDomain();
+    public static native String ArgumentDomain();
     @GlobalValue(symbol="NSRegistrationDomain", optional=true)
-    public static native String NSRegistrationDomain();
+    public static native String RegistrationDomain();
     @GlobalValue(symbol="NSUserDefaultsDidChangeNotification", optional=true)
-    public static native NSString NSUserDefaultsDidChangeNotification();
+    public static native NSString UserDefaultsDidChangeNotification();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="NSNegateBooleanTransformerName", optional=true)
-    public static native String NSNegateBooleanTransformerName();
+    public static native String NegateBooleanTransformerName();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="NSIsNilTransformerName", optional=true)
-    public static native String NSIsNilTransformerName();
+    public static native String IsNilTransformerName();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="NSIsNotNilTransformerName", optional=true)
-    public static native String NSIsNotNilTransformerName();
+    public static native String IsNotNilTransformerName();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="NSUnarchiveFromDataTransformerName", optional=true)
-    public static native String NSUnarchiveFromDataTransformerName();
+    public static native String UnarchiveFromDataTransformerName();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="NSKeyedUnarchiveFromDataTransformerName", optional=true)
-    public static native String NSKeyedUnarchiveFromDataTransformerName();
+    public static native String KeyedUnarchiveFromDataTransformerName();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSXMLParserErrorDomain", optional=true)
-    public static native NSString NSXMLParserErrorDomain();
+    public static native NSString XMLParserErrorDomain();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagSchemeTokenType", optional=true)
-    public static native NSString NSLinguisticTagSchemeTokenType();
+    public static native NSString LinguisticTagSchemeTokenType();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagSchemeLexicalClass", optional=true)
-    public static native NSString NSLinguisticTagSchemeLexicalClass();
+    public static native NSString LinguisticTagSchemeLexicalClass();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagSchemeNameType", optional=true)
-    public static native NSString NSLinguisticTagSchemeNameType();
+    public static native NSString LinguisticTagSchemeNameType();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagSchemeNameTypeOrLexicalClass", optional=true)
-    public static native NSString NSLinguisticTagSchemeNameTypeOrLexicalClass();
+    public static native NSString LinguisticTagSchemeNameTypeOrLexicalClass();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagSchemeLemma", optional=true)
-    public static native NSString NSLinguisticTagSchemeLemma();
+    public static native NSString LinguisticTagSchemeLemma();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagSchemeLanguage", optional=true)
-    public static native NSString NSLinguisticTagSchemeLanguage();
+    public static native NSString LinguisticTagSchemeLanguage();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagSchemeScript", optional=true)
-    public static native NSString NSLinguisticTagSchemeScript();
+    public static native NSString LinguisticTagSchemeScript();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagWord", optional=true)
-    public static native NSString NSLinguisticTagWord();
+    public static native NSString LinguisticTagWord();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagPunctuation", optional=true)
-    public static native NSString NSLinguisticTagPunctuation();
+    public static native NSString LinguisticTagPunctuation();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagWhitespace", optional=true)
-    public static native NSString NSLinguisticTagWhitespace();
+    public static native NSString LinguisticTagWhitespace();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagOther", optional=true)
-    public static native NSString NSLinguisticTagOther();
+    public static native NSString LinguisticTagOther();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagNoun", optional=true)
-    public static native NSString NSLinguisticTagNoun();
+    public static native NSString LinguisticTagNoun();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagVerb", optional=true)
-    public static native NSString NSLinguisticTagVerb();
+    public static native NSString LinguisticTagVerb();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagAdjective", optional=true)
-    public static native NSString NSLinguisticTagAdjective();
+    public static native NSString LinguisticTagAdjective();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagAdverb", optional=true)
-    public static native NSString NSLinguisticTagAdverb();
+    public static native NSString LinguisticTagAdverb();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagPronoun", optional=true)
-    public static native NSString NSLinguisticTagPronoun();
+    public static native NSString LinguisticTagPronoun();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagDeterminer", optional=true)
-    public static native NSString NSLinguisticTagDeterminer();
+    public static native NSString LinguisticTagDeterminer();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagParticle", optional=true)
-    public static native NSString NSLinguisticTagParticle();
+    public static native NSString LinguisticTagParticle();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagPreposition", optional=true)
-    public static native NSString NSLinguisticTagPreposition();
+    public static native NSString LinguisticTagPreposition();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagNumber", optional=true)
-    public static native NSString NSLinguisticTagNumber();
+    public static native NSString LinguisticTagNumber();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagConjunction", optional=true)
-    public static native NSString NSLinguisticTagConjunction();
+    public static native NSString LinguisticTagConjunction();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagInterjection", optional=true)
-    public static native NSString NSLinguisticTagInterjection();
+    public static native NSString LinguisticTagInterjection();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagClassifier", optional=true)
-    public static native NSString NSLinguisticTagClassifier();
+    public static native NSString LinguisticTagClassifier();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagIdiom", optional=true)
-    public static native NSString NSLinguisticTagIdiom();
+    public static native NSString LinguisticTagIdiom();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagOtherWord", optional=true)
-    public static native NSString NSLinguisticTagOtherWord();
+    public static native NSString LinguisticTagOtherWord();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagSentenceTerminator", optional=true)
-    public static native NSString NSLinguisticTagSentenceTerminator();
+    public static native NSString LinguisticTagSentenceTerminator();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagOpenQuote", optional=true)
-    public static native NSString NSLinguisticTagOpenQuote();
+    public static native NSString LinguisticTagOpenQuote();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagCloseQuote", optional=true)
-    public static native NSString NSLinguisticTagCloseQuote();
+    public static native NSString LinguisticTagCloseQuote();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagOpenParenthesis", optional=true)
-    public static native NSString NSLinguisticTagOpenParenthesis();
+    public static native NSString LinguisticTagOpenParenthesis();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagCloseParenthesis", optional=true)
-    public static native NSString NSLinguisticTagCloseParenthesis();
+    public static native NSString LinguisticTagCloseParenthesis();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagWordJoiner", optional=true)
-    public static native NSString NSLinguisticTagWordJoiner();
+    public static native NSString LinguisticTagWordJoiner();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagDash", optional=true)
-    public static native NSString NSLinguisticTagDash();
+    public static native NSString LinguisticTagDash();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagOtherPunctuation", optional=true)
-    public static native NSString NSLinguisticTagOtherPunctuation();
+    public static native NSString LinguisticTagOtherPunctuation();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagParagraphBreak", optional=true)
-    public static native NSString NSLinguisticTagParagraphBreak();
+    public static native NSString LinguisticTagParagraphBreak();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagOtherWhitespace", optional=true)
-    public static native NSString NSLinguisticTagOtherWhitespace();
+    public static native NSString LinguisticTagOtherWhitespace();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagPersonalName", optional=true)
-    public static native NSString NSLinguisticTagPersonalName();
+    public static native NSString LinguisticTagPersonalName();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagPlaceName", optional=true)
-    public static native NSString NSLinguisticTagPlaceName();
+    public static native NSString LinguisticTagPlaceName();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSLinguisticTagOrganizationName", optional=true)
-    public static native NSString NSLinguisticTagOrganizationName();
+    public static native NSString LinguisticTagOrganizationName();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSMetadataItemFSNameKey", optional=true)
-    public static native NSString NSMetadataItemFSNameKey();
+    public static native NSString MetadataItemFSNameKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSMetadataItemDisplayNameKey", optional=true)
-    public static native NSString NSMetadataItemDisplayNameKey();
+    public static native NSString MetadataItemDisplayNameKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSMetadataItemURLKey", optional=true)
-    public static native NSString NSMetadataItemURLKey();
+    public static native NSString MetadataItemURLKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSMetadataItemPathKey", optional=true)
-    public static native NSString NSMetadataItemPathKey();
+    public static native NSString MetadataItemPathKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSMetadataItemFSSizeKey", optional=true)
-    public static native NSString NSMetadataItemFSSizeKey();
+    public static native NSString MetadataItemFSSizeKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSMetadataItemFSCreationDateKey", optional=true)
-    public static native NSString NSMetadataItemFSCreationDateKey();
+    public static native NSString MetadataItemFSCreationDateKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSMetadataItemFSContentChangeDateKey", optional=true)
-    public static native NSString NSMetadataItemFSContentChangeDateKey();
+    public static native NSString MetadataItemFSContentChangeDateKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSMetadataItemIsUbiquitousKey", optional=true)
-    public static native NSString NSMetadataItemIsUbiquitousKey();
+    public static native NSString MetadataItemIsUbiquitousKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSMetadataUbiquitousItemHasUnresolvedConflictsKey", optional=true)
-    public static native NSString NSMetadataUbiquitousItemHasUnresolvedConflictsKey();
+    public static native NSString MetadataUbiquitousItemHasUnresolvedConflictsKey();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="NSMetadataUbiquitousItemIsDownloadedKey", optional=true)
-    public static native NSString NSMetadataUbiquitousItemIsDownloadedKey();
+    public static native NSString MetadataUbiquitousItemIsDownloadedKey();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSMetadataUbiquitousItemDownloadingStatusKey", optional=true)
-    public static native NSString NSMetadataUbiquitousItemDownloadingStatusKey();
+    public static native NSString MetadataUbiquitousItemDownloadingStatusKey();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSMetadataUbiquitousItemDownloadingStatusNotDownloaded", optional=true)
-    public static native NSString NSMetadataUbiquitousItemDownloadingStatusNotDownloaded();
+    public static native NSString MetadataUbiquitousItemDownloadingStatusNotDownloaded();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSMetadataUbiquitousItemDownloadingStatusDownloaded", optional=true)
-    public static native NSString NSMetadataUbiquitousItemDownloadingStatusDownloaded();
+    public static native NSString MetadataUbiquitousItemDownloadingStatusDownloaded();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSMetadataUbiquitousItemDownloadingStatusCurrent", optional=true)
-    public static native NSString NSMetadataUbiquitousItemDownloadingStatusCurrent();
+    public static native NSString MetadataUbiquitousItemDownloadingStatusCurrent();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSMetadataUbiquitousItemIsDownloadingKey", optional=true)
-    public static native NSString NSMetadataUbiquitousItemIsDownloadingKey();
+    public static native NSString MetadataUbiquitousItemIsDownloadingKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSMetadataUbiquitousItemIsUploadedKey", optional=true)
-    public static native NSString NSMetadataUbiquitousItemIsUploadedKey();
+    public static native NSString MetadataUbiquitousItemIsUploadedKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSMetadataUbiquitousItemIsUploadingKey", optional=true)
-    public static native NSString NSMetadataUbiquitousItemIsUploadingKey();
+    public static native NSString MetadataUbiquitousItemIsUploadingKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSMetadataUbiquitousItemPercentDownloadedKey", optional=true)
-    public static native NSString NSMetadataUbiquitousItemPercentDownloadedKey();
+    public static native NSString MetadataUbiquitousItemPercentDownloadedKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSMetadataUbiquitousItemPercentUploadedKey", optional=true)
-    public static native NSString NSMetadataUbiquitousItemPercentUploadedKey();
+    public static native NSString MetadataUbiquitousItemPercentUploadedKey();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSMetadataUbiquitousItemDownloadingErrorKey", optional=true)
-    public static native NSString NSMetadataUbiquitousItemDownloadingErrorKey();
+    public static native NSString MetadataUbiquitousItemDownloadingErrorKey();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSMetadataUbiquitousItemUploadingErrorKey", optional=true)
-    public static native NSString NSMetadataUbiquitousItemUploadingErrorKey();
+    public static native NSString MetadataUbiquitousItemUploadingErrorKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSMetadataQueryDidStartGatheringNotification", optional=true)
-    public static native NSString NSMetadataQueryDidStartGatheringNotification();
+    public static native NSString MetadataQueryDidStartGatheringNotification();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSMetadataQueryGatheringProgressNotification", optional=true)
-    public static native NSString NSMetadataQueryGatheringProgressNotification();
+    public static native NSString MetadataQueryGatheringProgressNotification();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSMetadataQueryDidFinishGatheringNotification", optional=true)
-    public static native NSString NSMetadataQueryDidFinishGatheringNotification();
+    public static native NSString MetadataQueryDidFinishGatheringNotification();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSMetadataQueryDidUpdateNotification", optional=true)
-    public static native NSString NSMetadataQueryDidUpdateNotification();
+    public static native NSString MetadataQueryDidUpdateNotification();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSMetadataQueryUpdateAddedItemsKey", optional=true)
-    public static native NSString NSMetadataQueryUpdateAddedItemsKey();
+    public static native NSString MetadataQueryUpdateAddedItemsKey();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSMetadataQueryUpdateChangedItemsKey", optional=true)
-    public static native NSString NSMetadataQueryUpdateChangedItemsKey();
+    public static native NSString MetadataQueryUpdateChangedItemsKey();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSMetadataQueryUpdateRemovedItemsKey", optional=true)
-    public static native NSString NSMetadataQueryUpdateRemovedItemsKey();
+    public static native NSString MetadataQueryUpdateRemovedItemsKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSMetadataQueryResultContentRelevanceAttribute", optional=true)
-    public static native NSString NSMetadataQueryResultContentRelevanceAttribute();
+    public static native NSString MetadataQueryResultContentRelevanceAttribute();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSMetadataQueryUbiquitousDocumentsScope", optional=true)
-    public static native NSString NSMetadataQueryUbiquitousDocumentsScope();
+    public static native NSString MetadataQueryUbiquitousDocumentsScope();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSMetadataQueryUbiquitousDataScope", optional=true)
-    public static native NSString NSMetadataQueryUbiquitousDataScope();
+    public static native NSString MetadataQueryUbiquitousDataScope();
     @GlobalValue(symbol="NSNetServicesErrorCode", optional=true)
-    public static native NSString NSNetServicesErrorCode();
+    public static native NSString NetServicesErrorCode();
     @GlobalValue(symbol="NSNetServicesErrorDomain", optional=true)
-    public static native NSString NSNetServicesErrorDomain();
+    public static native NSString NetServicesErrorDomain();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSProgressEstimatedTimeRemainingKey", optional=true)
-    public static native NSString NSProgressEstimatedTimeRemainingKey();
+    public static native NSString ProgressEstimatedTimeRemainingKey();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSProgressThroughputKey", optional=true)
-    public static native NSString NSProgressThroughputKey();
+    public static native NSString ProgressThroughputKey();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSProgressKindFile", optional=true)
-    public static native String NSProgressKindFile();
+    public static native String ProgressKindFile();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSProgressFileOperationKindKey", optional=true)
-    public static native NSString NSProgressFileOperationKindKey();
+    public static native NSString ProgressFileOperationKindKey();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSProgressFileOperationKindDownloading", optional=true)
-    public static native NSString NSProgressFileOperationKindDownloading();
+    public static native NSString ProgressFileOperationKindDownloading();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSProgressFileOperationKindDecompressingAfterDownloading", optional=true)
-    public static native NSString NSProgressFileOperationKindDecompressingAfterDownloading();
+    public static native NSString ProgressFileOperationKindDecompressingAfterDownloading();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSProgressFileOperationKindReceiving", optional=true)
-    public static native NSString NSProgressFileOperationKindReceiving();
+    public static native NSString ProgressFileOperationKindReceiving();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSProgressFileOperationKindCopying", optional=true)
-    public static native NSString NSProgressFileOperationKindCopying();
+    public static native NSString ProgressFileOperationKindCopying();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSProgressFileURLKey", optional=true)
-    public static native NSString NSProgressFileURLKey();
+    public static native NSString ProgressFileURLKey();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSProgressFileTotalCountKey", optional=true)
-    public static native NSString NSProgressFileTotalCountKey();
+    public static native NSString ProgressFileTotalCountKey();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSProgressFileCompletedCountKey", optional=true)
-    public static native NSString NSProgressFileCompletedCountKey();
+    public static native NSString ProgressFileCompletedCountKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSUbiquitousKeyValueStoreDidChangeExternallyNotification", optional=true)
-    public static native NSString NSUbiquitousKeyValueStoreDidChangeExternallyNotification();
+    public static native NSString UbiquitousKeyValueStoreDidChangeExternallyNotification();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSUbiquitousKeyValueStoreChangeReasonKey", optional=true)
-    public static native NSString NSUbiquitousKeyValueStoreChangeReasonKey();
+    public static native NSString UbiquitousKeyValueStoreChangeReasonKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSUbiquitousKeyValueStoreChangedKeysKey", optional=true)
-    public static native NSString NSUbiquitousKeyValueStoreChangedKeysKey();
+    public static native NSString UbiquitousKeyValueStoreChangedKeysKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSUndoManagerGroupIsDiscardableKey", optional=true)
-    public static native NSString NSUndoManagerGroupIsDiscardableKey();
+    public static native NSString UndoManagerGroupIsDiscardableKey();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="NSUndoManagerCheckpointNotification", optional=true)
-    public static native NSString NSUndoManagerCheckpointNotification();
+    public static native NSString UndoManagerCheckpointNotification();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="NSUndoManagerWillUndoChangeNotification", optional=true)
-    public static native NSString NSUndoManagerWillUndoChangeNotification();
+    public static native NSString UndoManagerWillUndoChangeNotification();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="NSUndoManagerWillRedoChangeNotification", optional=true)
-    public static native NSString NSUndoManagerWillRedoChangeNotification();
+    public static native NSString UndoManagerWillRedoChangeNotification();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="NSUndoManagerDidUndoChangeNotification", optional=true)
-    public static native NSString NSUndoManagerDidUndoChangeNotification();
+    public static native NSString UndoManagerDidUndoChangeNotification();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="NSUndoManagerDidRedoChangeNotification", optional=true)
-    public static native NSString NSUndoManagerDidRedoChangeNotification();
+    public static native NSString UndoManagerDidRedoChangeNotification();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="NSUndoManagerDidOpenUndoGroupNotification", optional=true)
-    public static native NSString NSUndoManagerDidOpenUndoGroupNotification();
+    public static native NSString UndoManagerDidOpenUndoGroupNotification();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="NSUndoManagerWillCloseUndoGroupNotification", optional=true)
-    public static native NSString NSUndoManagerWillCloseUndoGroupNotification();
+    public static native NSString UndoManagerWillCloseUndoGroupNotification();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSUndoManagerDidCloseUndoGroupNotification", optional=true)
-    public static native NSString NSUndoManagerDidCloseUndoGroupNotification();
+    public static native NSString UndoManagerDidCloseUndoGroupNotification();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSURLSessionTransferSizeUnknown", optional=true)
-    public static native long NSURLSessionTransferSizeUnknown();
+    public static native long URLSessionTransferSizeUnknown();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSURLSessionDownloadTaskResumeData", optional=true)
-    public static native NSString NSURLSessionDownloadTaskResumeData();
+    public static native NSString URLSessionDownloadTaskResumeData();
     /*</methods>*/
 }

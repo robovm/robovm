@@ -43,7 +43,14 @@ import org.robovm.apple.coreimage.*;
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(UIKit.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
+    public static final float LayoutPriorityRequired = 1000;
+    public static final float LayoutPriorityDefaultHigh = 750;
+    public static final float LayoutPriorityDefaultLow = 250;
+    public static final float LayoutPriorityFittingSizeLevel = 50;
+    public static final int SegmentedControlNoSegment = -1;
+    public static final int AttachmentCharacter = 65532;
+    /*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/

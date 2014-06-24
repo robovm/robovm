@@ -3661,16 +3661,13 @@ values:
 constants:
 
     NS(AttachmentCharacter):
-        class: NSTextAttachment
         name: "#{g[0]}"
 
-    UILayout(Priority.*):
-        class: NSLayoutConstraint
+    UI(LayoutPriority.*):
         name: "#{g[0]}"
         type: float
 
-    UISegmentedControl(NoSegment):
-        class: UISegmentedControl
+    UI(SegmentedControlNoSegment):
         name: "#{g[0]}"
 
     # Make sure we don't miss any constants if new ones are introduced in a later UIKit

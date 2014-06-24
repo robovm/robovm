@@ -45,9 +45,7 @@ import org.robovm.apple.coreimage.*;
 
     /*<ptr>*/public static class UISegmentedControlPtr extends Ptr<UISegmentedControl, UISegmentedControlPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UISegmentedControl.class); }/*</bind>*/
-    /*<constants>*/
-    public static final int NoSegment = -1;
-    /*</constants>*/
+    /*<constants>*//*</constants>*/
     /*<constructors>*/
     public UISegmentedControl() {}
     protected UISegmentedControl(SkipInit skipInit) { super(skipInit); }

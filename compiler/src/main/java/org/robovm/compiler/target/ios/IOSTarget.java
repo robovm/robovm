@@ -602,6 +602,8 @@ public class IOSTarget extends AbstractTarget {
                 throw new IllegalArgumentException("No SDK found matching version string " + sdkVersion);
             }
         }
+
+        entitlementsPList = config.getIosEntitlementsPList();
     }
 
     @Override

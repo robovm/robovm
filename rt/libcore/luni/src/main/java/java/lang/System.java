@@ -471,7 +471,12 @@ public final class System {
             p.put("user.home", passwd.pw_dir);
             p.put("user.name", passwd.pw_name);
         } catch (ErrnoException exception) {
-            throw new AssertionError(exception);
+            // RoboVM note: Start change. Fall back to environment variables. getpwuid() fails on iOS.
+            String home = getenv("HOME");
+            String user = getenv("USER");
+            p.put("user.home", home != null ? home : "");
+            p.put("user.name", user != null ? user : "");
+            // RoboVM note: End change.
         }
 
         StructUtsname info = Libcore.os.uname();

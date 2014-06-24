@@ -57,9 +57,9 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     
     public Locale toLocale() {
-        NSString language = (NSString) getComponent(Foundation.NSLocaleLanguageCode());
-        NSString country = (NSString) getComponent(Foundation.NSLocaleCountryCode());
-        NSString variant = (NSString) getComponent(Foundation.NSLocaleVariantCode());
+        NSString language = (NSString) getComponent(Foundation.LocaleLanguageCode());
+        NSString country = (NSString) getComponent(Foundation.LocaleCountryCode());
+        NSString variant = (NSString) getComponent(Foundation.LocaleVariantCode());
         if (language != null && country != null && variant != null) {
             return new Locale(language.toString(), country.toString(), variant.toString());
         }

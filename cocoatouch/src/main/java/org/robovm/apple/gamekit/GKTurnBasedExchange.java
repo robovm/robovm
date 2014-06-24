@@ -55,7 +55,7 @@ import org.robovm.apple.uikit.*;
     @Property(selector = "recipients")
     public native NSArray<GKTurnBasedParticipant> getRecipients();
     @Property(selector = "status")
-    public native GKTurnBasedExchangeStatus getStatus();
+    public native _GKTurnBasedExchangeStatus getStatus();
     @Property(selector = "message")
     public native String getMessage();
     @Property(selector = "data")

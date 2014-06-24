@@ -48,6 +48,33 @@ import org.robovm.apple.uikit.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    
+    @Override
+    public void didAcceptInvite (GKPlayer player, GKInvite invite) {
+    }
+
+    @Override
+    public void didRequestMatch (GKPlayer player, NSArray<NSString> playerIDsToInvite) {
+    }
+
+    @Override
+    public void receivedTurnEvent (GKPlayer player, GKTurnBasedMatch match, boolean didBecomeActive) {
+    }
+
+    @Override
+    public void matchEnded (GKPlayer player, GKTurnBasedMatch match) {
+    }
+
+    @Override
+    public void receivedExchangeRequest (GKPlayer player, GKTurnBasedExchange exchange, GKTurnBasedMatch match) {
+    }
+
+    @Override
+    public void receivedExchangeCancellation (GKPlayer player, GKTurnBasedExchange exchange, GKTurnBasedMatch match) {
+    }
+
+    @Override
+    public void receivedExchangeReplies (GKPlayer player, NSArray<GKTurnBasedExchange> replies, GKTurnBasedExchange exchange,
+        GKTurnBasedMatch match) {
+    }
     /*</methods>*/
 }

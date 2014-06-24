@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.gamekit;
+package org.robovm.apple.externalaccessory;
 
 /*<imports>*/
 import java.io.*;
@@ -27,15 +27,14 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/GKLocalPlayerListenerAdapter/*</name>*/ 
-    extends /*<extends>*/GKChallengeListenerAdapter/*</extends>*/ 
-    /*<implements>*/implements GKLocalPlayerListener/*</implements>*/ {
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/EAAccessoryDelegateAdapter/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
+    /*<implements>*/implements EAAccessoryDelegate/*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
@@ -48,33 +47,10 @@ import org.robovm.apple.uikit.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Override
-    public void didAcceptInvite (GKPlayer player, GKInvite invite) {
-    }
-
-    @Override
-    public void didRequestMatch (GKPlayer player, NSArray<NSString> playerIDsToInvite) {
-    }
-
-    @Override
-    public void receivedTurnEvent (GKPlayer player, GKTurnBasedMatch match, boolean didBecomeActive) {
-    }
-
-    @Override
-    public void matchEnded (GKPlayer player, GKTurnBasedMatch match) {
-    }
-
-    @Override
-    public void receivedExchangeRequest (GKPlayer player, GKTurnBasedExchange exchange, GKTurnBasedMatch match) {
-    }
-
-    @Override
-    public void receivedExchangeCancellation (GKPlayer player, GKTurnBasedExchange exchange, GKTurnBasedMatch match) {
-    }
-
-    @Override
-    public void receivedExchangeReplies (GKPlayer player, NSArray<GKTurnBasedExchange> replies, GKTurnBasedExchange exchange,
-        GKTurnBasedMatch match) {
-    }
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @NotImplemented("accessoryDidDisconnect:")
+    public void didDisconnect(EAAccessory accessory) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

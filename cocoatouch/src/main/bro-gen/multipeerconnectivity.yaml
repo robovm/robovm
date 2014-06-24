@@ -1,0 +1,162 @@
+package: org.robovm.apple.multipeerconnectivity
+include: [foundation.yaml, uikit.yaml]
+library: MultipeerConnectivity
+framework: MultipeerConnectivity
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/MultipeerConnectivity.framework/Headers/MultipeerConnectivity.h
+typedefs:
+    'void (^)(BOOL, MCSession *)': '@Block VoidBlock2<Boolean, MCSession>'
+    'void (^)(NSData *, NSError *)': '@Block VoidBlock2<NSData, NSError>'
+    
+enums:
+    MCErrorCode: {}
+    MCSessionSendDataMode: {}
+    MCSessionState: {}
+    MCEncryptionPreference: {}
+        
+classes:
+    MCAdvertiserAssistant: # DONE
+        properties:
+            'discoveryInfo':
+                type: "NSDictionary<NSString, NSString>"
+        methods:
+            '-initWithServiceType:discoveryInfo:session:':
+                name: "init"
+                parameters:
+                    info:
+                        type: "NSDictionary<NSString, NSString>"
+    MCBrowserViewController: # DONE
+        methods:
+            '-browser:foundPeer:withDiscoveryInfo:':
+                name: "foundPeer"
+                parameters:
+                    info:
+                        type: "NSDictionary<NSString, NSString>"
+            '-browser:lostPeer:':
+                name: "lostPeer"
+            '-browser:didNotStartBrowsingForPeers:':
+                name: "didNotStartBrowsing"
+    MCNearbyServiceAdvertiser: # DONE
+        properties:
+            'discoveryInfo':
+                type: "NSDictionary<NSString, NSString>"
+        methods:
+            '-initWithPeer:discoveryInfo:serviceType:':
+                name: "init"
+                parameters:
+                    info:
+                        type: "NSDictionary<NSString, NSString>"
+    MCNearbyServiceBrowser: # DONE
+        methods:
+            '-startBrowsingForPeers':
+                name: "startBrowsing"
+            '-stopBrowsingForPeers':
+                name: "stopBrowsing"
+            '-invitePeer:toSession:withContext:timeout:':
+                name: "invitePeer"
+    MCPeerID: {} # DONE
+    MCSession: # DONE
+        properties:
+            'securityIdentity':
+                type: "NSArray<?>" # SecIdentityRef?
+            'connectedPeers':
+                type: "NSArray<MCPeerID>"
+        methods:
+            '-initWithPeer:':
+                name: "init"
+            '-initWithPeer:securityIdentity:encryptionPreference:':
+                name: "init"
+                parameters:
+                    identity:
+                        type: "NSArray<?>"
+            '-sendData:toPeers:withMode:error:':
+                trim_after_first_colon: true
+                parameters:
+                    peerIDs:
+                        type: "NSArray<MCPeerID>"
+            '-sendResourceAtURL:withName:toPeer:withCompletionHandler:':
+                name: "sendResource"
+            '-startStreamWithName:toPeer:error:':
+                name: "startStream"
+            '-nearbyConnectionDataForPeer:withCompletionHandler:':
+                name: "requestNearbyConnectionData"
+            '-connectPeer:withNearbyConnectionData:':
+                trim_after_first_colon: true
+            '-cancelConnectPeer:':
+                trim_after_first_colon: true
+
+protocols:
+    MCAdvertiserAssistantDelegate: # DONE
+        methods:
+            '-advertiserAssitantWillPresentInvitation:':
+                name: "willPresentInvitation"
+            '-advertiserAssistantDidDismissInvitation:':
+                name: "didDismissInvitation"
+    MCBrowserViewControllerDelegate: # DONE
+        methods:
+            '-browserViewControllerDidFinish:':
+                name: "didFinish"
+            '-browserViewControllerWasCancelled:':
+                name: "wasCancelled"
+            '-browserViewController:shouldPresentNearbyPeer:withDiscoveryInfo:':
+                name: "shouldPresentNearbyPeer"
+                parameters:
+                    info:
+                        type: "NSDictionary<NSString, NSString>"
+    MCNearbyServiceAdvertiserDelegate: # DONE
+        methods:
+            '-advertiser:didReceiveInvitationFromPeer:withContext:invitationHandler:':
+                name: "didReceiveInvitation"
+            '-advertiser:didNotStartAdvertisingPeer:':
+                name: "didNotStart"
+    MCNearbyServiceBrowserDelegate: # DONE
+        methods:
+            '-browser:foundPeer:withDiscoveryInfo:':
+                name: "foundPeer"
+                parameters:
+                    info:
+                        type: "NSDictionary<NSString, NSString>"
+            '-browser:lostPeer:':
+                name: "lostPeer"
+            '-browser:didNotStartBrowsingForPeers:':
+                name: "didNotStartBrowsing"  
+    MCSessionDelegate: # DONE
+        methods:
+            '-session:peer:didChangeState:':
+                name: "didChangeState"
+            '-session:didReceiveData:fromPeer:':
+                name: "didReceiveData"
+            '-session:didReceiveStream:withName:fromPeer:':
+                name: "didReceiveStream"
+            '-session:didStartReceivingResourceWithName:fromPeer:withProgress:':
+                name: "didStartReceivingResource"
+            '-session:didFinishReceivingResourceWithName:fromPeer:atURL:withError:':
+                name: "didFinishReceivingResource"
+            '-session:didReceiveCertificate:fromPeer:certificateHandler:':
+                name: "didReceiveCertificate"
+                parameters:
+                    certificate:
+                        type: "NSArray<?>" # TODO SecIdentityRef?
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (MC.*):
+        class: MultipeerConnectivity
+        name: "Function__#{g[0]}"
+
+values:
+    MC(.*ErrorDomain):
+        name: "#{g[0]}"
+        type: NSString
+
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (MC.*):
+        class: MultipeerConnectivity
+        name: "Value__#{g[0]}"
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (MC.*):
+        class: MultipeerConnectivity
+        name: "Constant__#{g[0]}"

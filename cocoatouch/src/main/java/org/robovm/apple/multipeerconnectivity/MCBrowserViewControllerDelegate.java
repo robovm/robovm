@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.gamekit;
+package org.robovm.apple.multipeerconnectivity;
 
 /*<imports>*/
 import java.io.*;
@@ -31,50 +31,28 @@ import org.robovm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
+
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/GKLocalPlayerListenerAdapter/*</name>*/ 
-    extends /*<extends>*/GKChallengeListenerAdapter/*</extends>*/ 
-    /*<implements>*/implements GKLocalPlayerListener/*</implements>*/ {
+/*<visibility>*/public/*</visibility>*/ interface /*<name>*/MCBrowserViewControllerDelegate/*</name>*/ 
+    /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
     /*<properties>*/
     
     /*</properties>*/
-    /*<members>*//*</members>*/
     /*<methods>*/
-    @Override
-    public void didAcceptInvite (GKPlayer player, GKInvite invite) {
-    }
-
-    @Override
-    public void didRequestMatch (GKPlayer player, NSArray<NSString> playerIDsToInvite) {
-    }
-
-    @Override
-    public void receivedTurnEvent (GKPlayer player, GKTurnBasedMatch match, boolean didBecomeActive) {
-    }
-
-    @Override
-    public void matchEnded (GKPlayer player, GKTurnBasedMatch match) {
-    }
-
-    @Override
-    public void receivedExchangeRequest (GKPlayer player, GKTurnBasedExchange exchange, GKTurnBasedMatch match) {
-    }
-
-    @Override
-    public void receivedExchangeCancellation (GKPlayer player, GKTurnBasedExchange exchange, GKTurnBasedMatch match) {
-    }
-
-    @Override
-    public void receivedExchangeReplies (GKPlayer player, NSArray<GKTurnBasedExchange> replies, GKTurnBasedExchange exchange,
-        GKTurnBasedMatch match) {
-    }
+    @Method(selector = "browserViewControllerDidFinish:")
+    void didFinish(MCBrowserViewController browserViewController);
+    @Method(selector = "browserViewControllerWasCancelled:")
+    void wasCancelled(MCBrowserViewController browserViewController);
+    @Method(selector = "browserViewController:shouldPresentNearbyPeer:withDiscoveryInfo:")
+    boolean shouldPresentNearbyPeer(MCBrowserViewController browserViewController, MCPeerID peerID, NSDictionary<NSString, NSString> info);
     /*</methods>*/
+    /*<adapter>*/
+    /*</adapter>*/
 }

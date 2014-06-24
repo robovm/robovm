@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.gamekit;
+package org.robovm.apple.multipeerconnectivity;
 
 /*<imports>*/
 import java.io.*;
@@ -33,9 +33,9 @@ import org.robovm.apple.uikit.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/GKLocalPlayerListenerAdapter/*</name>*/ 
-    extends /*<extends>*/GKChallengeListenerAdapter/*</extends>*/ 
-    /*<implements>*/implements GKLocalPlayerListener/*</implements>*/ {
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/MCBrowserViewControllerDelegateAdapter/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
+    /*<implements>*/implements MCBrowserViewControllerDelegate/*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
@@ -48,33 +48,11 @@ import org.robovm.apple.uikit.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Override
-    public void didAcceptInvite (GKPlayer player, GKInvite invite) {
-    }
-
-    @Override
-    public void didRequestMatch (GKPlayer player, NSArray<NSString> playerIDsToInvite) {
-    }
-
-    @Override
-    public void receivedTurnEvent (GKPlayer player, GKTurnBasedMatch match, boolean didBecomeActive) {
-    }
-
-    @Override
-    public void matchEnded (GKPlayer player, GKTurnBasedMatch match) {
-    }
-
-    @Override
-    public void receivedExchangeRequest (GKPlayer player, GKTurnBasedExchange exchange, GKTurnBasedMatch match) {
-    }
-
-    @Override
-    public void receivedExchangeCancellation (GKPlayer player, GKTurnBasedExchange exchange, GKTurnBasedMatch match) {
-    }
-
-    @Override
-    public void receivedExchangeReplies (GKPlayer player, NSArray<GKTurnBasedExchange> replies, GKTurnBasedExchange exchange,
-        GKTurnBasedMatch match) {
-    }
+    @NotImplemented("browserViewControllerDidFinish:")
+    public void didFinish(MCBrowserViewController browserViewController) { throw new UnsupportedOperationException(); }
+    @NotImplemented("browserViewControllerWasCancelled:")
+    public void wasCancelled(MCBrowserViewController browserViewController) { throw new UnsupportedOperationException(); }
+    @NotImplemented("browserViewController:shouldPresentNearbyPeer:withDiscoveryInfo:")
+    public boolean shouldPresentNearbyPeer(MCBrowserViewController browserViewController, MCPeerID peerID, NSDictionary<NSString, NSString> info) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

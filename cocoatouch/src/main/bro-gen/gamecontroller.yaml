@@ -1,0 +1,86 @@
+package: org.robovm.apple.gamecontroller
+include: [foundation.yaml]
+library: GameController
+framework: GameController
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/GameController.framework/Headers/GameController.h
+typedefs:
+    'void (^)(GCController *)': '@Block VoidBlock1<GCController>'
+    
+enums:
+    GCControllerPlayerIndex: { first: GCControllerPlayerIndexUnset, prefix: GCControllerPlayerIndex }
+        
+classes:
+    GCController: # DONE
+        methods:
+            '+controllers':
+                property: true
+                return_type: "NSArray<GCController>"
+            '+startWirelessControllerDiscoveryWithCompletionHandler:':
+                name: "startWirelessControllerDiscovery"
+    GCControllerAxisInput: # DONE
+        properties:
+            'valueChangedHandler':
+                type: "@Block VoidBlock2<GCControllerAxisInput, Float>"
+    GCControllerButtonInput: # DONE
+        properties:
+            'valueChangedHandler':
+                type: "@Block VoidBlock3<GCControllerButtonInput, Float, Boolean>"
+    GCControllerDirectionPad: # DONE
+        properties:
+            'valueChangedHandler':
+                type: "@Block VoidBlock3<GCControllerDirectionPad, Float, Float>"
+    GCControllerElement: {} # DONE
+    GCExtendedGamepad: # DONE
+        properties:
+            'valueChangedHandler':
+                type: "@Block VoidBlock2<GCExtendedGamepad, GCControllerElement>"
+    GCExtendedGamepadSnapshot: {} # DONE
+    GCExtendedGamepadSnapShotDataV100: {} # DONE
+    GCGamepad: # DONE
+        properties:
+            'valueChangedHandler':
+                type: "@Block VoidBlock2<GCGamepad, GCControllerElement>"
+    GCGamepadSnapshot: {} # DONE
+    GCGamepadSnapShotDataV100: {} # DONE
+
+protocols: {}
+
+functions:
+    (GCExtendedGamepadSnapShotDataV100FromNSData):
+        class: GCExtendedGamepadSnapShotDataV100
+        name: "setData"
+
+    (NSDataFromGCExtendedGamepadSnapShotDataV100):
+        class: GCExtendedGamepadSnapShotDataV100
+        name: "getData"
+
+    (GCGamepadSnapShotDataV100FromNSData):
+        class: GCGamepadSnapShotDataV100
+        name: "setData"
+        
+    (NSDataFromGCGamepadSnapShotDataV100):
+        class: GCGamepadSnapShotDataV100
+        name: "getData"
+
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (GC.*):
+        class: GameController
+        name: "Function__#{g[0]}"
+
+values:
+    GCController(.*Notification):
+        name: "#{g[0]}"
+        type: NSString
+
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (GC.*):
+        class: GameController
+        name: "Value__#{g[0]}"
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (GC.*):
+        class: GameController
+        name: "Constant__#{g[0]}"

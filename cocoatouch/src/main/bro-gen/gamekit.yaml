@@ -14,13 +14,14 @@ typedefs:
     'void (^)(NSString *)': '@Block VoidBlock1<NSString>'
     'void (^)(GKMatch *, NSError *)': '@Block VoidBlock2<GKMatch, NSError>'
     'void (^)(NSString *, GKInviteeResponse)': '@Block VoidBlock2<NSString, GKInviteeResponse>'
-    'void (^)(NSInteger, NSError *)': '@Block VoidBlock2<Integer, NSError>'
+    'void (^)(NSInteger, NSError *)': '@Block("(@MachineSizedSInt,)") VoidBlock2<Long, NSError>'
     'void (^)(NSString *, BOOL)': '@Block VoidBlock2<NSString, Boolean>'
     'void (^)(GKInvite *, NSArray *)': '@Block VoidBlock2<GKInvite, NSArray<NSString>>'
     'void (^)(GKTurnBasedMatch *, NSError *)': '@Block VoidBlock2<GKTurnBasedMatch, NSError>'
     'void (^)(NSData *, NSError *)': '@Block VoidBlock2<NSData, NSError>'
     'void (^)(GKTurnBasedExchange *, NSError *)': '@Block VoidBlock2<GKTurnBasedExchange, NSError>'
     'void (^)(NSString *, GKVoiceChatPlayerState)': '@Block VoidBlock2<NSString, GKVoiceChatPlayerState>'
+    'void (^)(NSArray *, NSError *)': '@Block VoidBlock2<NSArray<GKLeaderboardSet>, NSError>'
 enums:
     GKErrorCode: { first: GKErrorUnknown, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
     GKChallengeState: { marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
@@ -37,7 +38,7 @@ enums:
     GKMatchType: { first: GKMatchTypePeerToPeer, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     GKPeerConnectionState: { first: GKPeerStateAvailable, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
     GKPeerPickerConnectionType: { first: GKPeerPickerConnectionTypeOnline, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
-    _GKTurnBasedExchangeStatus: { first: GKTurnBasedExchangeStatusUnknown } # int8_t marshaler?? rename without underscore??
+    GKTurnBasedExchangeStatus: { first: GKTurnBasedExchangeStatusUnknown, marshaler: ValuedEnum.AsSignedByteMarshaler }
     GKTurnBasedMatchStatus: { first: GKTurnBasedMatchStatusUnknown, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
     GKTurnBasedParticipantStatus: { first: GKTurnBasedParticipantStatusUnknown, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
     GKTurnBasedMatchOutcome: { first: GKTurnBasedMatchOutcomeNone, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
@@ -151,6 +152,14 @@ classes:
                         type: "@Block VoidBlock2<NSArray<GKLeaderboard>, NSError>"
             '-loadImageWithCompletionHandler:':
                 name: "loadImage"
+    GKLeaderboardSet:
+        methods:
+            '+loadLeaderboardSetsWithCompletionHandler:':
+                name: loadLeaderboardSets
+            '-loadLeaderboardsWithCompletionHandler:':
+                name: loadLeaderboards
+            '-loadImageWithCompletionHandler:':
+                name: loadImage
     GKLeaderboardViewController: {} # DONE
     GKLocalPlayer: # DONE
         properties:
@@ -208,7 +217,7 @@ classes:
             '-addPlayersToMatch:matchRequest:completionHandler:':
                 trim_after_first_colon: true
             '-cancelInviteToPlayer:':
-                trim_after_first_colon: true
+                name: cancelInvite
             '-finishMatchmakingForMatch:':
                 name: "finishMatchmaking"
             '-queryPlayerGroupActivity:withCompletionHandler:':
@@ -320,6 +329,7 @@ classes:
                 name: "reply"
                 parameters:
                     arguments:
+    GKTurnBasedExchangeReply: {} # DONE
     GKTurnBasedMatch: # DONE
         properties:
             'participants':
@@ -562,7 +572,7 @@ protocols:
                 name: "didFindMatch"
             '-turnBasedMatchmakerViewController:playerQuitForMatch:':
                 name: "playerQuit"
-    GKVoiceChatClient:
+    GKVoiceChatClient: # DONE
         methods:
             '-voiceChatService:sendData:toParticipantID:':
                 name: "sendData"
@@ -586,6 +596,30 @@ functions:
         name: "Function__#{g[0]}"
 
 values: 
+    GKErrorDomain:
+        type: NSString
+        readonly: true
+    GKTurnTimeoutDefault:
+        readonly: true
+    GKTurnTimeoutNone:
+        readonly: true
+    GKExchangeTimeoutDefault:
+        readonly: true
+    GKExchangeTimeoutNone:
+        readonly: true
+    GKSessionErrorDomain:
+        type: NSString
+        readonly: true
+    GKVoiceChatServiceErrorDomain:
+        type: NSString
+        readonly: true
+    GKPlayerAuthenticationDidChangeNotificationName:
+        type: NSString
+        readonly: true
+    GKPlayerDidChangeNotificationName:
+        type: NSString
+        readonly: true
+
     # Make sure we don't miss any values if new ones are introduced in a later version
     (GK.*):
         class: GameKit

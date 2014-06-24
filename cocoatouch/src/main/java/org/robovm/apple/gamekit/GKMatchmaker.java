@@ -82,16 +82,16 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "cancelInviteToPlayer:")
-    public native void cancelInviteToPlayer(String playerID);
+    public native void cancelInvite(String playerID);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "finishMatchmakingForMatch:")
     public native void finishMatchmaking(GKMatch match);
     @Method(selector = "queryPlayerGroupActivity:withCompletionHandler:")
-    public native void queryPlayerGroupActivity(@MachineSizedUInt long playerGroup, @Block VoidBlock2<Integer, NSError> completionHandler);
+    public native void queryPlayerGroupActivity(@MachineSizedUInt long playerGroup, @Block("(@MachineSizedSInt,)") VoidBlock2<Long, NSError> completionHandler);
     @Method(selector = "queryActivityWithCompletionHandler:")
-    public native void queryActivity(@Block VoidBlock2<Integer, NSError> completionHandler);
+    public native void queryActivity(@Block("(@MachineSizedSInt,)") VoidBlock2<Long, NSError> completionHandler);
     /**
      * @since Available in iOS 6.0 and later.
      */

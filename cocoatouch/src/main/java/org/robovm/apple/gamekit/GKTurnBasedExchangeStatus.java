@@ -33,8 +33,8 @@ import org.robovm.apple.uikit.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-public enum /*<name>*/_GKTurnBasedExchangeStatus/*</name>*/ implements ValuedEnum {
+/*<annotations>*/@Marshaler(ValuedEnum.AsSignedByteMarshaler.class)/*</annotations>*/
+public enum /*<name>*/GKTurnBasedExchangeStatus/*</name>*/ implements ValuedEnum {
     /*<values>*/
     Unknown(0L),
     Active(1L),
@@ -50,15 +50,15 @@ public enum /*<name>*/_GKTurnBasedExchangeStatus/*</name>*/ implements ValuedEnu
 
     private final long n;
 
-    private /*<name>*/_GKTurnBasedExchangeStatus/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/GKTurnBasedExchangeStatus/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/_GKTurnBasedExchangeStatus/*</name>*/ valueOf(long n) {
-        for (/*<name>*/_GKTurnBasedExchangeStatus/*</name>*/ v : values()) {
+    public static /*<name>*/GKTurnBasedExchangeStatus/*</name>*/ valueOf(long n) {
+        for (/*<name>*/GKTurnBasedExchangeStatus/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/_GKTurnBasedExchangeStatus/*</name>*/.class.getName());
+            + /*<name>*/GKTurnBasedExchangeStatus/*</name>*/.class.getName());
     }
 }

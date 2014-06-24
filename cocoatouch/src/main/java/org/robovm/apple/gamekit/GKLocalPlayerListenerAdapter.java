@@ -47,34 +47,38 @@ import org.robovm.apple.uikit.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    @NotImplemented("player:didAcceptInvite:")
+    public void didAcceptInvite(GKPlayer player, GKInvite invite) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @NotImplemented("player:didRequestMatchWithPlayers:")
+    public void didRequestMatch(GKPlayer player, NSArray<NSString> playerIDsToInvite) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @NotImplemented("player:receivedTurnEventForMatch:didBecomeActive:")
+    public void receivedTurnEvent(GKPlayer player, GKTurnBasedMatch match, boolean didBecomeActive) { throw new UnsupportedOperationException(); }
+    @NotImplemented("player:matchEnded:")
+    public void matchEnded(GKPlayer player, GKTurnBasedMatch match) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @NotImplemented("player:receivedExchangeRequest:forMatch:")
+    public void receivedExchangeRequest(GKPlayer player, GKTurnBasedExchange exchange, GKTurnBasedMatch match) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @NotImplemented("player:receivedExchangeCancellation:forMatch:")
+    public void receivedExchangeCancellation(GKPlayer player, GKTurnBasedExchange exchange, GKTurnBasedMatch match) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @NotImplemented("player:receivedExchangeReplies:forCompletedExchange:forMatch:")
+    public void receivedExchangeReplies(GKPlayer player, NSArray<GKTurnBasedExchange> replies, GKTurnBasedExchange exchange, GKTurnBasedMatch match) { throw new UnsupportedOperationException(); }
+    
     /*<methods>*/
-    @Override
-    public void didAcceptInvite (GKPlayer player, GKInvite invite) {
-    }
-
-    @Override
-    public void didRequestMatch (GKPlayer player, NSArray<NSString> playerIDsToInvite) {
-    }
-
-    @Override
-    public void receivedTurnEvent (GKPlayer player, GKTurnBasedMatch match, boolean didBecomeActive) {
-    }
-
-    @Override
-    public void matchEnded (GKPlayer player, GKTurnBasedMatch match) {
-    }
-
-    @Override
-    public void receivedExchangeRequest (GKPlayer player, GKTurnBasedExchange exchange, GKTurnBasedMatch match) {
-    }
-
-    @Override
-    public void receivedExchangeCancellation (GKPlayer player, GKTurnBasedExchange exchange, GKTurnBasedMatch match) {
-    }
-
-    @Override
-    public void receivedExchangeReplies (GKPlayer player, NSArray<GKTurnBasedExchange> replies, GKTurnBasedExchange exchange,
-        GKTurnBasedMatch match) {
-    }
+    
     /*</methods>*/
 }

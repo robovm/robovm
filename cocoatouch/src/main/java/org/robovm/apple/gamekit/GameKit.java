@@ -46,66 +46,37 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @GlobalValue(symbol="GKErrorDomain", optional=true)
-    public static native String Value__GKErrorDomain();
-    @GlobalValue(symbol="GKErrorDomain", optional=true)
-    public static native void Value__GKErrorDomain(String v);
+    public static native NSString GKErrorDomain();
     @GlobalValue(symbol="GKPlayerDidChangeNotificationName", optional=true)
-    public static native String Value__GKPlayerDidChangeNotificationName();
-    @GlobalValue(symbol="GKPlayerDidChangeNotificationName", optional=true)
-    public static native void Value__GKPlayerDidChangeNotificationName(String v);
+    public static native NSString GKPlayerDidChangeNotificationName();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @GlobalValue(symbol="GKTurnTimeoutDefault", optional=true)
-    public static native double Value__GKTurnTimeoutDefault();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="GKTurnTimeoutDefault", optional=true)
-    public static native void Value__GKTurnTimeoutDefault(double v);
+    public static native double GKTurnTimeoutDefault();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @GlobalValue(symbol="GKTurnTimeoutNone", optional=true)
-    public static native double Value__GKTurnTimeoutNone();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="GKTurnTimeoutNone", optional=true)
-    public static native void Value__GKTurnTimeoutNone(double v);
+    public static native double GKTurnTimeoutNone();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="GKExchangeTimeoutDefault", optional=true)
-    public static native double Value__GKExchangeTimeoutDefault();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="GKExchangeTimeoutDefault", optional=true)
-    public static native void Value__GKExchangeTimeoutDefault(double v);
+    public static native double GKExchangeTimeoutDefault();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="GKExchangeTimeoutNone", optional=true)
-    public static native double Value__GKExchangeTimeoutNone();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="GKExchangeTimeoutNone", optional=true)
-    public static native void Value__GKExchangeTimeoutNone(double v);
+    public static native double GKExchangeTimeoutNone();
     /**
      * @since Available in iOS 4.1 and later.
      */
     @GlobalValue(symbol="GKPlayerAuthenticationDidChangeNotificationName", optional=true)
-    public static native String Value__GKPlayerAuthenticationDidChangeNotificationName();
-    /**
-     * @since Available in iOS 4.1 and later.
-     */
-    @GlobalValue(symbol="GKPlayerAuthenticationDidChangeNotificationName", optional=true)
-    public static native void Value__GKPlayerAuthenticationDidChangeNotificationName(String v);
+    public static native NSString GKPlayerAuthenticationDidChangeNotificationName();
     @GlobalValue(symbol="GKSessionErrorDomain", optional=true)
-    public static native String Value__GKSessionErrorDomain();
+    public static native NSString GKSessionErrorDomain();
     @GlobalValue(symbol="GKVoiceChatServiceErrorDomain", optional=true)
-    public static native String Value__GKVoiceChatServiceErrorDomain();
+    public static native NSString GKVoiceChatServiceErrorDomain();
     /*</methods>*/
 }

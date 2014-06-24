@@ -9,8 +9,7 @@ headers:
 typedefs: {}
     
 enums:
-    EAConnectionID: { first: EAConnectionIDNone, prefix: EAConnectionID }
-    EABluetoothAccessoryPicker: { first: EABluetoothAccessoryPickerAlreadyConnected }
+    EABluetoothAccessoryPickerErrorCode: { first: EABluetoothAccessoryPickerAlreadyConnected, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
         
 classes:
     EAAccessory: # DONE
@@ -60,6 +59,9 @@ values:
         name: "Value__#{g[0]}"
 
 constants:
+    EA(ConnectionIDNone):
+        name: "#{g[0]}"
+
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (EA.*):
         class: ExternalAccessory

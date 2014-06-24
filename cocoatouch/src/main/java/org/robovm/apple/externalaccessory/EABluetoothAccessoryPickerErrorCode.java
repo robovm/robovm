@@ -32,8 +32,8 @@ import org.robovm.apple.foundation.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-public enum /*<name>*/EABluetoothAccessoryPicker/*</name>*/ implements ValuedEnum {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/EABluetoothAccessoryPickerErrorCode/*</name>*/ implements ValuedEnum {
     /*<values>*/
     AlreadyConnected(0L),
     ResultNotFound(1L),
@@ -48,15 +48,15 @@ public enum /*<name>*/EABluetoothAccessoryPicker/*</name>*/ implements ValuedEnu
 
     private final long n;
 
-    private /*<name>*/EABluetoothAccessoryPicker/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/EABluetoothAccessoryPickerErrorCode/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/EABluetoothAccessoryPicker/*</name>*/ valueOf(long n) {
-        for (/*<name>*/EABluetoothAccessoryPicker/*</name>*/ v : values()) {
+    public static /*<name>*/EABluetoothAccessoryPickerErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/EABluetoothAccessoryPickerErrorCode/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/EABluetoothAccessoryPicker/*</name>*/.class.getName());
+            + /*<name>*/EABluetoothAccessoryPickerErrorCode/*</name>*/.class.getName());
     }
 }

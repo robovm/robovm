@@ -15,33 +15,10 @@
  */
 package org.robovm.rt;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
-
-import libcore.icu.TimeZones;
 
 /**
  * 
  */
 public class ICUTest {
-
-    public static void main(String[] args) {
-        String[][] zoneStrings = TimeZones.getZoneStrings(new Locale("sv"));
-        for (String[] s : zoneStrings) {
-            System.out.println(Arrays.asList(s));
-        }
-//        System.out.println(Locale.getDefault());
-//        System.out.println(new Date());
-        //System.out.println(Arrays.asList(Locale.getAvailableLocales()));
-//        List<String> l = Arrays.asList(TimeZone.getAvailableIDs(60 * 60 * 1000));
-//        Collections.sort(l);
-//        for (String s : l) {
-//            System.out.println(s);
-//        } 
-    }
     
 }

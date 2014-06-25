@@ -5,7 +5,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -15,10 +14,8 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.regex.Pattern;
 
-import junit.framework.Assert;
 import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -28,6 +25,7 @@ import junit.runner.Version;
 import libcore.io.Libcore;
 import libcore.util.BasicLruCache;
 
+import org.junit.Assert;
 import org.junit.internal.TextListener;
 import org.junit.runner.Description;
 import org.junit.runner.JUnitCore;
@@ -121,21 +119,6 @@ public class RoboVMAllTests {
         field(addressCacheClass, "cache").set(field(InetAddress.class, "addressCache").get(null), cache);
     }
     
-    @SuppressWarnings("unchecked")
-    private static void cleanupHttpConnectionPool() throws Throwable {
-        Class<?> poolClass = Class.forName("libcore.net.http.HttpConnectionPool");
-        Map<Object, List<Object>> connections = 
-                (Map<Object, List<Object>>) field(poolClass, "connectionPool").get(field(poolClass, "INSTANCE").get(null));
-        Method closeSocketAndStreamsMethod = Class.forName("libcore.net.http.HttpConnection").getDeclaredMethod("closeSocketAndStreams");
-        closeSocketAndStreamsMethod.setAccessible(true);
-        for (List<Object> l : connections.values()) {
-            for (Object connection : l) {
-                closeSocketAndStreamsMethod.invoke(connection);
-            }
-        }
-        connections.clear();
-    }
-    
     /**
      * Wraps a {@link Test} and "forgets" it after it's been run in order to make it reclaimable
      * by the GC (unless it's reachable from somewhere other than JUnit).
@@ -168,15 +151,6 @@ public class RoboVMAllTests {
             } finally {
                 t = null;
                 Locale.setDefault(defLoc);
-                try {
-                    // Close any connections created by the test and now pooled by 
-                    // libcore.net.http.HttpConnectionPool. If we don't do this
-                    // we'll end up with "Too many open files" errors on iOS when 
-                    // running the tests.
-                    cleanupHttpConnectionPool();
-                } catch (Throwable e) {
-                    e.printStackTrace();
-                }
             }
         }
     }
@@ -309,6 +283,7 @@ public class RoboVMAllTests {
             InputStreamReader in = new InputStreamReader(RoboVMAllTests.class.getResourceAsStream(path), "UTF8");
             StringWriter out = new StringWriter();
             copy(in, out);
+            in.close();
             ArrayList<String> lines = new ArrayList<String>();
             for (String s : out.toString().split("\\s+")) {
                 s = s.trim();
